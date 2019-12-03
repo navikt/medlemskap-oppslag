@@ -25,7 +25,7 @@ fun createHttpServer(applicationState: ApplicationState): ApplicationEngine = em
     }
 
     install(CallLogging) {
-        level = Level.TRACE
+        level = Level.DEBUG
         filter { call -> call.request.path().startsWith("/oppslag") }
     }
 
