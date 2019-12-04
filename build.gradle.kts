@@ -6,7 +6,7 @@ val prometheusVersion = "0.7.0"
 val logbackVersion = "1.2.3"
 val logstashVersion = "5.1"
 
-val mainClass = "no.nav.btn.ApplicationKt"
+val mainClass = "no.nav.medlemskap.ApplicationKt"
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.3.50"

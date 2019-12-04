@@ -2,7 +2,7 @@ package no.nav.medlemskap
 
 import io.prometheus.client.Counter
 
-const val METRICS_NS = "medlemskap-oppslag"
+private const val METRICS_NS = "medlemskap-oppslag"
 
 val API_COUNTER: Counter = Counter.Builder()
         .namespace(METRICS_NS)
