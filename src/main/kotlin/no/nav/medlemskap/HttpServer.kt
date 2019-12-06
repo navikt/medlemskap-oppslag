@@ -29,7 +29,7 @@ fun createHttpServer(applicationState: ApplicationState): ApplicationEngine = em
         naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running })
         route("/") {
             get {
-                API_COUNTER.labels("get").inc()
+                API_COUNTER.inc()
                 call.respond(Resultat(KANSKJE, "Ingen regler implementert"))
             }
         }
