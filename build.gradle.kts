@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
-val ktorVersion = "1.2.5"
+val ktorVersion = "1.2.6"
 val prometheusVersion = "0.7.0"
 val logbackVersion = "1.2.3"
 val logstashVersion = "5.1"
@@ -9,7 +9,7 @@ val logstashVersion = "5.1"
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.3.50"
+    id("org.jetbrains.kotlin.jvm") version "1.3.61"
     id("com.github.johnrengelman.shadow") version "5.1.0"
 }
 
@@ -21,6 +21,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-gson:$ktorVersion")
     implementation("io.prometheus:simpleclient_hotspot:$prometheusVersion")

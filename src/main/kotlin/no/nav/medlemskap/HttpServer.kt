@@ -5,8 +5,6 @@ import io.ktor.application.install
 import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
 import io.ktor.gson.gson
-import io.ktor.http.HttpStatusCode
-import io.ktor.request.path
 import io.ktor.response.respond
 import io.ktor.routing.get
 import io.ktor.routing.route
@@ -14,9 +12,12 @@ import io.ktor.routing.routing
 import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
-import org.slf4j.event.Level
+import no.nav.medlemskap.modell.Resultat
+import no.nav.medlemskap.modell.Resultattype.*
 
 fun createHttpServer(applicationState: ApplicationState): ApplicationEngine = embeddedServer(Netty, 7070) {
+    install(CallLogging)
+
     install(ContentNegotiation) {
         gson {
             setPrettyPrinting()
@@ -24,17 +25,12 @@ fun createHttpServer(applicationState: ApplicationState): ApplicationEngine = em
         }
     }
 
-    install(CallLogging) {
-        level = Level.TRACE
-        filter { call -> call.request.path().startsWith("/oppslag") }
-    }
-
     routing {
         naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running })
-        route("/oppslag") {
+        route("/") {
             get {
                 API_COUNTER.labels("get").inc()
-                call.respond(HttpStatusCode.OK)
+                call.respond(Resultat(KANSKJE, "Ingen regler implementert"))
             }
         }
     }
