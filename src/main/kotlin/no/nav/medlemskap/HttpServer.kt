@@ -30,7 +30,7 @@ fun createHttpServer(applicationState: ApplicationState): ApplicationEngine = em
         route("/") {
             get {
                 API_COUNTER.inc()
-                call.respond(Resultat(KANSKJE, "Ingen regler implementert"))
+                call.respond(Resultat(KANSKJE, "Ingen regler implementert!"))
             }
         }
     }
