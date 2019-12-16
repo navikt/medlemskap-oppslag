@@ -35,8 +35,6 @@ jobs:
       - name: deploy to dev
         uses: nais/deploy/actions/deploy@master
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_ACCESS_TOKEN }}
-        with:
-          cluster: dev-fss
-          team: medlemskap
-          resources: deploy/preprod.yaml
+          APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
+          CLUSTER: dev-fss
+          RESOURCE: deploy/preprod.yaml
