@@ -16,16 +16,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
       - name: test and build
-          run: ./gradlew test shadowJar
-          env:
-            ORG_GRADLE_PROJECT_githubUser: x-access-token
-            ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew test shadowJar
+        env:
+          ORG_GRADLE_PROJECT_githubUser: x-access-token
+          ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
       - name: Build docker image
         run: docker build -t $IMAGE .
       - name: Login to Github package registry
+        run: docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
       - name: Push docker image
         run: docker push $IMAGE
   deploypreprod:
