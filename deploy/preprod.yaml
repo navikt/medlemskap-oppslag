@@ -4,9 +4,9 @@ metadata:
   name: medlemskap-oppslag
   namespace: default
   labels:
-    team: {{team}}
+    team: medlemskap
 spec:
-  image: {{image}}:{{tag}}
+  image: {{image}}
   port: 7070
   liveness:
     path: isAlive
