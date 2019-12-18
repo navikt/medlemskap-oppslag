@@ -1,12 +1,11 @@
 package no.nav.medlemskap
 
-import com.github.kittinunf.fuel.core.Deserializable
-import com.github.kittinunf.fuel.core.Request
-import com.github.kittinunf.fuel.core.Response
-import com.github.kittinunf.fuel.core.response
-import com.github.kittinunf.fuel.httpGet
-import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.client.request.url
+import io.ktor.http.HttpHeaders
+import kotlinx.coroutines.runBlocking
 import java.time.LocalDateTime
 import java.util.*
 
@@ -17,12 +16,9 @@ class StsClient(val baseUrl: String, val username: String, val password: String)
     fun oidcToken(): String {
         val shouldRenewToken = cachedOidcToken?.hasExpired() ?: true
         if (shouldRenewToken)  {
-            val (_, _, result) = "$baseUrl/rest/v1/sts/token?grant_type=client_credentials&scope=openid".httpGet()
-                    .authenticate(username, password)
-                    .header(mapOf("Accept" to "application/json"))
-                    .responseJson()
-
-            cachedOidcToken = result.get()
+            cachedOidcToken = runBlocking {
+                fetchToken("$baseUrl/rest/v1/sts/token?grant_type=client_credentials&scope=openid")
+            }
         }
 
         return cachedOidcToken!!.token
@@ -31,12 +27,9 @@ class StsClient(val baseUrl: String, val username: String, val password: String)
     fun samlToken(): String {
         val shouldRenewToken = cachedSamlToken?.hasExpired() ?: true
         if (shouldRenewToken)  {
-            val (_, _, result) = "$baseUrl/rest/v1/sts/samltoken".httpGet()
-                    .authenticate(username, password)
-                    .header(mapOf("Accept" to "application/json"))
-                    .responseJson()
-
-            cachedSamlToken = result.get()
+            cachedSamlToken = runBlocking {
+                fetchToken("$baseUrl/rest/v1/sts/samltoken")
+            }
         }
 
         val urldecodedBase64 = cachedSamlToken!!.token
@@ -47,16 +40,12 @@ class StsClient(val baseUrl: String, val username: String, val password: String)
         return String(Base64.getDecoder().decode(urldecodedBase64))
     }
 
-    private fun Request.responseJson() = response(TokenDeserializer())
+    private suspend fun fetchToken(url: String): Token {
+        val credentials = Base64.getEncoder().encode("${username}:${password}".toByteArray(Charsets.UTF_8))
 
-    class TokenDeserializer : Deserializable<Token> {
-        override fun deserialize(response: Response): Token {
-            return GsonBuilder()
-                    .create()
-                    .fromJson(
-                            response.dataStream.bufferedReader(Charsets.UTF_8).readText(),
-                            Token::class.java
-                    )
+        return defaultHttpClient.get {
+            url("$url")
+            header(HttpHeaders.Authorization, "Basic $credentials")
         }
     }
 
