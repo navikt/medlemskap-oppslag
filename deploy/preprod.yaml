@@ -45,7 +45,7 @@ spec:
       value: navtestb2c.onmicrosoft.com
     - name: AZURE_AUTHORITY_ENDPOINT
       value: https://login.microsoftonline.com
-    - name: SECURITY_TOKEN_SERVICE_REST_URL
-      value:  https://security-token-service.nais.preprod.local
+    - name: SECURITY_TOKEN_SERVICE_BASE_URL
+      value: https://security-token-service.nais.preprod.local
     - name: TPSWS_URL
       value: https://wasapp-q1.adeo.no/tpsws/ws/Person/v3

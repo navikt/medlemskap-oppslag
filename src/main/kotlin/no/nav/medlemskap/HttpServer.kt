@@ -54,7 +54,8 @@ fun createHttpServer(
             conditionalAuthenticate(useAuthentication) {
                 get {
                     API_COUNTER.inc()
-                    call.respond(Resultat(KANSKJE, "Ingen regler implementert!"))
+                    val token = stsClient.oidcToken()
+                    call.respond(Resultat(KANSKJE, "${configuration.sts.username} ${token.substring(0, 5)}"))
                 }
             }
         }
