@@ -39,6 +39,7 @@ spec:
     paths:
       - mountPath: /var/run/secrets/nais.io/vault
         kvPath: /kv/preprod/fss/medlemskap-oppslag/default
+  webproxy: true
 
   env:
     - name: AZURE_TENANT

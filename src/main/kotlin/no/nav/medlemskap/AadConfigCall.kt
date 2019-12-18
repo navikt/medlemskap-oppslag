@@ -1,12 +1,12 @@
 package no.nav.medlemskap
 
-import com.github.kittinunf.fuel.core.Deserializable
-import com.github.kittinunf.fuel.core.Request
-import com.github.kittinunf.fuel.core.Response
-import com.github.kittinunf.fuel.core.response
+import com.github.kittinunf.fuel.core.*
 import com.github.kittinunf.fuel.httpGet
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
+import java.net.InetSocketAddress
+import java.net.Proxy
+import java.net.URI
 
 data class AzureAdOpenIdConfiguration(
         @SerializedName("jwks_uri")
@@ -19,7 +19,9 @@ data class AzureAdOpenIdConfiguration(
         val authorizationEndpoint: String
 )
 
-fun getAadConfig(authorityEndpoint: String, tenant: String): AzureAdOpenIdConfiguration {
+fun getAadConfig(authorityEndpoint: String, tenant: String, proxy: URI): AzureAdOpenIdConfiguration {
+        val proxyAddress = InetSocketAddress(proxy.host, proxy.port)
+        FuelManager.instance.proxy = Proxy(Proxy.Type.SOCKS, proxyAddress)
         val (_,_,result) = "$authorityEndpoint/$tenant/v2.0/.well-known/openid-configuration".httpGet()
                 .header(mapOf("Accept" to "application/json"))
                 .responseJson()

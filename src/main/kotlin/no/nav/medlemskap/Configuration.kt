@@ -1,6 +1,7 @@
 package no.nav.medlemskap
 
 import com.natpryce.konfig.*
+import java.net.URI
 
 private val defaultProperties = ConfigurationMap(
         mapOf(
@@ -28,6 +29,10 @@ data class Configuration(
             val clientId: String = config[Key("NAIS_APP_NAME", stringType)],
             val tenant: String = config[Key("AZURE_TENANT", stringType)],
             val authorityEndpoint: String = config[Key("AZURE_AUTHORITY_ENDPOINT", stringType)].removeSuffix("/"),
-            val openIdConfiguration: AzureAdOpenIdConfiguration = getAadConfig(authorityEndpoint, tenant)
+            val openIdConfiguration: AzureAdOpenIdConfiguration = getAadConfig(
+                    authorityEndpoint,
+                    tenant,
+                    URI(config[Key("HTTPS_PROXY", stringType)])
+            )
     )
 }
