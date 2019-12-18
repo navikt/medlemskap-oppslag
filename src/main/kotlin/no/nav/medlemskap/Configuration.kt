@@ -5,8 +5,8 @@ import com.natpryce.konfig.*
 private val defaultProperties = ConfigurationMap(
         mapOf(
                 "client.id" to "medlemskap-oppslag",
-                "azuread.tenant" to "navtestb2c.onmicrosoft.com",
-                "azuread.authority.endpoint" to "https://login.microsoftonline.com/"
+                "azuread.tenant" to "",
+                "azuread.authority.endpoint" to ""
         )
 )
 
