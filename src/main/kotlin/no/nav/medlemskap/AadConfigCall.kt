@@ -4,6 +4,7 @@ import com.github.kittinunf.fuel.core.*
 import com.github.kittinunf.fuel.httpGet
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
+import org.slf4j.LoggerFactory
 import java.net.InetSocketAddress
 import java.net.Proxy
 import java.net.URI
@@ -19,9 +20,12 @@ data class AzureAdOpenIdConfiguration(
         val authorizationEndpoint: String
 )
 
+private val logger = LoggerFactory.getLogger("AADlookup")
+
 fun getAadConfig(authorityEndpoint: String, tenant: String, proxy: URI): AzureAdOpenIdConfiguration {
         val proxyAddress = InetSocketAddress(proxy.host, proxy.port)
         FuelManager.instance.proxy = Proxy(Proxy.Type.SOCKS, proxyAddress)
+        logger.info("${proxy.host} ${proxy.port}")
         val (_,_,result) = "$authorityEndpoint/$tenant/v2.0/.well-known/openid-configuration".httpGet()
                 .header(mapOf("Accept" to "application/json"))
                 .responseJson()
