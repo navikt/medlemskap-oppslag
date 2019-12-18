@@ -6,6 +6,7 @@ val prometheusVersion = "0.7.0"
 val logbackVersion = "1.2.3"
 val logstashVersion = "5.1"
 val konfigVersion = "1.6.10.0"
+val fuelVersion = "1.15.1"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
@@ -27,9 +28,7 @@ dependencies {
     implementation("io.ktor:ktor-gson:$ktorVersion")
     implementation("io.ktor:ktor-auth:$ktorVersion")
     implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
-    implementation("io.ktor:ktor-client-core:$ktorVersion")
-    implementation("io.ktor:ktor-client-json:$ktorVersion")
-    implementation("io.ktor:ktor-client-gson:$ktorVersion")
+    implementation("com.github.kittinunf.fuel:fuel:$fuelVersion")
     implementation("io.prometheus:simpleclient_hotspot:$prometheusVersion")
     implementation("io.prometheus:simpleclient_common:$prometheusVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")

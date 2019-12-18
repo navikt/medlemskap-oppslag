@@ -1,11 +1,12 @@
 package no.nav.medlemskap
 
+import com.github.kittinunf.fuel.core.Deserializable
+import com.github.kittinunf.fuel.core.Request
+import com.github.kittinunf.fuel.core.Response
+import com.github.kittinunf.fuel.core.response
+import com.github.kittinunf.fuel.httpGet
+import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
-import io.ktor.client.HttpClient
-import io.ktor.client.features.json.GsonSerializer
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.request.get
-import kotlinx.coroutines.runBlocking
 
 data class AzureAdOpenIdConfiguration(
         @SerializedName("jwks_uri")
@@ -19,17 +20,21 @@ data class AzureAdOpenIdConfiguration(
 )
 
 fun getAadConfig(authorityEndpoint: String, tenant: String): AzureAdOpenIdConfiguration {
-        val client = HttpClient {
-                install(JsonFeature) {
-                        serializer = GsonSerializer()
-                }
-        }
-
-        val config = runBlocking {
-                client.get<AzureAdOpenIdConfiguration>("$authorityEndpoint/$tenant/v2.0/.well-known/openid-configuration")
-        }
-
-        client.close()
-
-        return config
+        val (_,_,result) = "$authorityEndpoint/$tenant/v2.0/.well-known/openid-configuration".httpGet()
+                .header(mapOf("Accept" to "application/json"))
+                .responseJson()
+        return result.get()
 }
+
+private class AadDeserializer : Deserializable<AzureAdOpenIdConfiguration> {
+        override fun deserialize(response: Response): AzureAdOpenIdConfiguration {
+                return GsonBuilder()
+                        .create()
+                        .fromJson(
+                                response.dataStream.bufferedReader(Charsets.UTF_8).readText(),
+                                AzureAdOpenIdConfiguration::class.java
+                        )
+        }
+}
+
+private fun Request.responseJson() = response(AadDeserializer())
