@@ -2,10 +2,15 @@ package no.nav.medlemskap
 
 import io.ktor.application.call
 import io.ktor.application.install
+import io.ktor.auth.Authentication
+import io.ktor.auth.AuthenticationRouteSelector
+import io.ktor.auth.authenticate
+import io.ktor.auth.jwt.jwt
 import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
 import io.ktor.gson.gson
 import io.ktor.response.respond
+import io.ktor.routing.Route
 import io.ktor.routing.get
 import io.ktor.routing.route
 import io.ktor.routing.routing
@@ -15,7 +20,12 @@ import io.ktor.server.netty.Netty
 import no.nav.medlemskap.modell.Resultat
 import no.nav.medlemskap.modell.Resultattype.*
 
-fun createHttpServer(applicationState: ApplicationState): ApplicationEngine = embeddedServer(Netty, 7070) {
+private const val REALM = "medlemskap-oppslag"
+
+fun createHttpServer(
+        applicationState: ApplicationState,
+        useAuthentication: Boolean = true
+): ApplicationEngine = embeddedServer(Netty, 7070) {
     install(CallLogging)
 
     install(ContentNegotiation) {
@@ -25,15 +35,39 @@ fun createHttpServer(applicationState: ApplicationState): ApplicationEngine = em
         }
     }
 
+    if (useAuthentication) {
+        install(Authentication) {
+            jwt {
+                val jwtConfig = JwtConfig()
+                realm = REALM
+                verifier(jwtConfig.jwkProvider, configuration.azureAd.openIdConfiguration.issuer)
+                validate { credentials ->
+                    jwtConfig.validate(credentials)
+                }
+            }
+        }
+    }
+
     routing {
         naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running })
         route("/") {
-            get {
-                API_COUNTER.inc()
-                call.respond(Resultat(KANSKJE, "Ingen regler implementert!"))
+            conditionalAuthenticate(useAuthentication) {
+                get {
+                    API_COUNTER.inc()
+                    call.respond(Resultat(KANSKJE, "Ingen regler implementert!"))
+                }
             }
         }
     }
 
     applicationState.initialized = true
+}
+
+private fun Route.conditionalAuthenticate(useAuthentication: Boolean, build: Route.() -> Unit): Route {
+    if (useAuthentication) {
+        return authenticate(build = build)
+    }
+    val route = createChild(AuthenticationRouteSelector(listOf<String?>(null)))
+    route.build()
+    return route
 }
