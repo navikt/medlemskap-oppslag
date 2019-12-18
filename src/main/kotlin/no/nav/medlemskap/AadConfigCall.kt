@@ -25,7 +25,7 @@ private val logger = LoggerFactory.getLogger("AADlookup")
 fun getAadConfig(authorityEndpoint: String, tenant: String, proxy: URI): AzureAdOpenIdConfiguration {
         val proxyAddress = InetSocketAddress(proxy.host, proxy.port)
         FuelManager.instance.proxy = Proxy(Proxy.Type.SOCKS, proxyAddress)
-        logger.info("${proxy.host} ${proxy.port}")
+        logger.info("${proxy.host} ${proxy.port} ${proxy.path}")
         val (_,_,result) = "$authorityEndpoint/$tenant/v2.0/.well-known/openid-configuration".httpGet()
                 .header(mapOf("Accept" to "application/json"))
                 .responseJson()
