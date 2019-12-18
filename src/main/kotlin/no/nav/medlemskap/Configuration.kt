@@ -4,7 +4,6 @@ import com.natpryce.konfig.*
 
 private val defaultProperties = ConfigurationMap(
         mapOf(
-                "client.id" to "medlemskap-oppslag",
                 "AZURE_TENANT" to "",
                 "AZURE_AUTHORITY_ENDPOINT" to "",
                 "SECURITY_TOKEN_SERVICE_BASE_URL" to ""
@@ -26,9 +25,9 @@ data class Configuration(
     )
 
     data class AzureAd(
-            val clientId: String = config[Key("client.id", stringType)],
-            val tenant: String = config[Key("azuread.tenant", stringType)],
-            val authorityEndpoint: String = config[Key("azuread.authority.endpoint", stringType)].removeSuffix("/"),
+            val clientId: String = config[Key("NAIS_APP_NAME", stringType)],
+            val tenant: String = config[Key("AZURE_TENANT", stringType)],
+            val authorityEndpoint: String = config[Key("AZURE_AUTHORITY_ENDPOINT", stringType)].removeSuffix("/"),
             val openIdConfiguration: AzureAdOpenIdConfiguration = getAadConfig(authorityEndpoint, tenant)
     )
 }
