@@ -2,6 +2,7 @@ package no.nav.medlemskap
 
 import com.github.kittinunf.result.Result;
 import com.github.kittinunf.fuel.httpGet
+import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
 import io.ktor.client.request.get
 import io.ktor.client.request.header
@@ -20,6 +21,7 @@ class StsClient(val baseUrl: String, val username: String, val password: String)
     private var cachedSamlToken: Token? = null
 
     fun testToken() {
+        var str = ""
         "$baseUrl/rest/v1/sts/token?grant_type=client_credentials&scope=openid".httpGet()
                 .authenticate(username, password)
                 .responseString { _, _, result ->
@@ -31,9 +33,13 @@ class StsClient(val baseUrl: String, val username: String, val password: String)
                         is Result.Success -> {
                             val data = result.get()
                             logger.info { data.substring(0, 10) }
+                            str = data
                         }
                     }
                 }
+        val gson = GsonBuilder().create()
+        val token = gson.fromJson(str, Token::class.java)
+        logger.info { token.expiresIn }
     }
 
     fun oidcToken(): String {
