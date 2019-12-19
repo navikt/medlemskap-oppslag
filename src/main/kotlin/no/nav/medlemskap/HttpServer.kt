@@ -6,10 +6,9 @@ import io.ktor.auth.Authentication
 import io.ktor.auth.AuthenticationRouteSelector
 import io.ktor.auth.authenticate
 import io.ktor.auth.jwt.jwt
-import io.ktor.features.CallLogging
-import io.ktor.features.ContentNegotiation
-import io.ktor.features.StatusPages
+import io.ktor.features.*
 import io.ktor.gson.gson
+import io.ktor.http.HttpHeaders
 import io.ktor.response.respond
 import io.ktor.routing.Route
 import io.ktor.routing.get
@@ -20,6 +19,8 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import no.nav.medlemskap.modell.Resultat
 import no.nav.medlemskap.modell.Resultattype.*
+import org.slf4j.event.Level
+import java.util.*
 
 private const val REALM = "medlemskap-oppslag"
 
@@ -31,13 +32,22 @@ fun createHttpServer(
         exceptionHandler()
     }
 
-    install(CallLogging)
+    install(CallLogging) {
+        level = Level.DEBUG
+        callIdMdc(MDC_CALL_ID)
+    }
 
     install(ContentNegotiation) {
         gson {
             setPrettyPrinting()
             disableHtmlEscaping()
         }
+    }
+
+    install(CallId) {
+        generate { UUID.randomUUID().toString() }
+        verify { callId: String -> callId.isNotEmpty() }
+        header(HttpHeaders.XCorrelationId)
     }
 
     if (useAuthentication) {
