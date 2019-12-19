@@ -8,6 +8,7 @@ import io.ktor.auth.authenticate
 import io.ktor.auth.jwt.jwt
 import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
+import io.ktor.features.StatusPages
 import io.ktor.gson.gson
 import io.ktor.response.respond
 import io.ktor.routing.Route
@@ -26,6 +27,10 @@ fun createHttpServer(
         applicationState: ApplicationState,
         useAuthentication: Boolean = true
 ): ApplicationEngine = embeddedServer(Netty, 7070) {
+    install(StatusPages) {
+        exceptionHandler()
+    }
+
     install(CallLogging)
 
     install(ContentNegotiation) {
