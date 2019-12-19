@@ -7,6 +7,7 @@ val logbackVersion = "1.2.3"
 val logstashVersion = "5.1"
 val konfigVersion = "1.6.10.0"
 val kotlinLoggerVersion = "1.7.6"
+val fuelVersion = "1.15.1"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
@@ -38,6 +39,8 @@ dependencies {
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashVersion")
     implementation("com.natpryce:konfig:$konfigVersion")
     implementation("io.github.microutils:kotlin-logging:$kotlinLoggerVersion")
+
+    implementation("com.github.kittinunf.fuel:fuel:$fuelVersion")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")

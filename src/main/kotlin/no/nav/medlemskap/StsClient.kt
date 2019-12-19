@@ -1,5 +1,7 @@
 package no.nav.medlemskap
 
+import com.github.kittinunf.result.Result;
+import com.github.kittinunf.fuel.httpGet
 import com.google.gson.annotations.SerializedName
 import io.ktor.client.request.get
 import io.ktor.client.request.header
@@ -7,12 +9,32 @@ import io.ktor.client.request.parameter
 import io.ktor.client.request.url
 import io.ktor.http.HttpHeaders
 import kotlinx.coroutines.runBlocking
+import mu.KotlinLogging
 import java.time.LocalDateTime
 import java.util.*
+
+private val logger = KotlinLogging.logger { }
 
 class StsClient(val baseUrl: String, val username: String, val password: String) {
     private var cachedOidcToken: Token? = null
     private var cachedSamlToken: Token? = null
+
+    fun testToken() {
+        "$baseUrl/rest/v1/sts/token?grant_type=client_credentials&scope=openid".httpGet()
+                .authenticate(username, password)
+                .responseString { _, _, result ->
+                    when (result) {
+                        is Result.Failure -> {
+                            val ex = result.getException()
+                            logger.error(ex) { "STS error" }
+                        }
+                        is Result.Success -> {
+                            val data = result.get()
+                            logger.info { data }
+                        }
+                    }
+                }
+    }
 
     fun oidcToken(): String {
         if (cachedOidcToken.shouldBeRenewed())  {
