@@ -39,7 +39,8 @@ class StsClient(val baseUrl: String, val username: String, val password: String)
                 }
         val gson = GsonBuilder().create()
         val token = gson.fromJson(str, Token::class.java)
-        logger.info { token.expiresIn }
+        val tokenType = token?.type ?: "NULL"
+        logger.info { tokenType }
     }
 
     fun oidcToken(): String {
