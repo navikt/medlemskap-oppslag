@@ -4,10 +4,8 @@ import com.github.kittinunf.result.Result;
 import com.github.kittinunf.fuel.httpGet
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
-import io.ktor.client.request.get
-import io.ktor.client.request.header
-import io.ktor.client.request.parameter
-import io.ktor.client.request.url
+import io.ktor.client.request.*
+import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging
@@ -39,6 +37,17 @@ class StsClient(val baseUrl: String, val username: String, val password: String)
                         }
                     }
                 }
+    }
+
+    fun anotherTest() {
+        runBlocking {
+            defaultHttpClient.get<String> {
+                url("$baseUrl/rest/v1/sts/token")
+                header(HttpHeaders.Authorization, "Basic ${credentials()}")
+                parameter("grant_type", "client_credentials")
+                parameter("scope", "openid")
+            }.also { str -> logger.info { str.substring(0, 10) } }
+        }
     }
 
     fun oidcToken(): String {
