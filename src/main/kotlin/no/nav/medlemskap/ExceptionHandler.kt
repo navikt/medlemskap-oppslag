@@ -30,7 +30,6 @@ private suspend inline fun ApplicationCall.logErrorAndRespond(
             code = status,
             callId = getCorrelationId()
     )
-    logger.error { "Status Page Response: $response" }
     this.respond(status, response)
 }
 

@@ -3,6 +3,7 @@ package no.nav.medlemskap
 import com.google.gson.annotations.SerializedName
 import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.parameter
 import io.ktor.client.request.url
 import io.ktor.http.HttpHeaders
 import kotlinx.coroutines.runBlocking
@@ -14,10 +15,14 @@ class StsClient(val baseUrl: String, val username: String, val password: String)
     private var cachedSamlToken: Token? = null
 
     fun oidcToken(): String {
-        val shouldRenewToken = cachedOidcToken?.hasExpired() ?: true
-        if (shouldRenewToken)  {
+        if (cachedOidcToken.shouldBeRenewed())  {
             cachedOidcToken = runBlocking {
-                fetchToken("$baseUrl/rest/v1/sts/token?grant_type=client_credentials&scope=openid")
+                defaultHttpClient.get<Token> {
+                    url("$baseUrl/rest/v1/sts/token")
+                    header(HttpHeaders.Authorization, "Basic ${credentials()}")
+                    parameter("grant_type", "client_credentials")
+                    parameter("scope", "openid")
+                }
             }
         }
 
@@ -25,10 +30,12 @@ class StsClient(val baseUrl: String, val username: String, val password: String)
     }
 
     fun samlToken(): String {
-        val shouldRenewToken = cachedSamlToken?.hasExpired() ?: true
-        if (shouldRenewToken)  {
+        if (cachedSamlToken.shouldBeRenewed())  {
             cachedSamlToken = runBlocking {
-                fetchToken("$baseUrl/rest/v1/sts/samltoken")
+                defaultHttpClient.get<Token> {
+                    url("$baseUrl/rest/v1/sts/samltoken")
+                    header(HttpHeaders.Authorization, "Basic ${credentials()}")
+                }
             }
         }
 
@@ -40,14 +47,9 @@ class StsClient(val baseUrl: String, val username: String, val password: String)
         return String(Base64.getDecoder().decode(urldecodedBase64))
     }
 
-    private suspend fun fetchToken(url: String): Token {
-        val credentials = Base64.getEncoder().encode("${username}:${password}".toByteArray(Charsets.UTF_8))
+    private fun credentials() = Base64.getEncoder().encode("${username}:${password}".toByteArray(Charsets.UTF_8))
 
-        return defaultHttpClient.get {
-            url("$url")
-            header(HttpHeaders.Authorization, "Basic $credentials")
-        }
-    }
+    private fun Token?.shouldBeRenewed(): Boolean = this?.hasExpired() ?: true
 
     data class Token(
             @SerializedName("access_token")
