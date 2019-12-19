@@ -70,7 +70,6 @@ fun createHttpServer(
                 get {
                     API_COUNTER.inc()
                     stsClient.testToken()
-                    stsClient.anotherTest()
                     stsClient.oidcToken()
                     call.respond(Resultat(KANSKJE, "${configuration.sts.username}"))
                 }

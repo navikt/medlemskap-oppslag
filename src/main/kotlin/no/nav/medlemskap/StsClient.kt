@@ -39,26 +39,13 @@ class StsClient(val baseUrl: String, val username: String, val password: String)
                 }
     }
 
-    fun anotherTest() {
-        runBlocking {
-            defaultHttpClient.get<String> {
+    suspend fun oidcToken(): String {
+        if (cachedOidcToken.shouldBeRenewed()) {
+            cachedOidcToken = defaultHttpClient.get<Token> {
                 url("$baseUrl/rest/v1/sts/token")
                 header(HttpHeaders.Authorization, "Basic ${credentials()}")
                 parameter("grant_type", "client_credentials")
                 parameter("scope", "openid")
-            }.also { str -> logger.info { str.substring(0, 10) } }
-        }
-    }
-
-    fun oidcToken(): String {
-        if (cachedOidcToken.shouldBeRenewed())  {
-            cachedOidcToken = runBlocking {
-                defaultHttpClient.get<Token> {
-                    url("$baseUrl/rest/v1/sts/token")
-                    header(HttpHeaders.Authorization, "Basic ${credentials()}")
-                    parameter("grant_type", "client_credentials")
-                    parameter("scope", "openid")
-                }
             }
         }
 
@@ -66,7 +53,7 @@ class StsClient(val baseUrl: String, val username: String, val password: String)
     }
 
     fun samlToken(): String {
-        if (cachedSamlToken.shouldBeRenewed())  {
+        if (cachedSamlToken.shouldBeRenewed()) {
             cachedSamlToken = runBlocking {
                 defaultHttpClient.get<Token> {
                     url("$baseUrl/rest/v1/sts/samltoken")
