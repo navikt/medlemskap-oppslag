@@ -59,6 +59,7 @@ class StsClient(val baseUrl: String, val username: String, val password: String)
             @SerializedName("expires_in")
             val expiresIn: Int) {
         // Sett utløpstid litt før, for å være sikker
+        @Transient
         private val expirationTime: LocalDateTime = LocalDateTime.now().plusSeconds(expiresIn - 10L)
 
         fun hasExpired(): Boolean = expirationTime.isBefore(LocalDateTime.now())
