@@ -21,12 +21,14 @@ class JwtConfig {
 
     fun validate(credentials: JWTCredential): Principal? {
         return try {
+            /*
             requireNotNull(credentials.payload.audience) {
                 "Audience not present"
             }
             require(credentials.payload.audience.contains(configuration.azureAd.clientId)) {
                 "Valid audience not found in claims"
-            }
+            }*/
+            log.info("Validating token.")
             JWTPrincipal(credentials.payload)
         } catch (e: Exception) {
             log.warn("Failed to validate token", e)
