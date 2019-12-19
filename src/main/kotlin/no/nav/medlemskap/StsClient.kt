@@ -30,7 +30,7 @@ class StsClient(val baseUrl: String, val username: String, val password: String)
                         }
                         is Result.Success -> {
                             val data = result.get()
-                            logger.info { data }
+                            logger.info { data.substring(0, 10) }
                         }
                     }
                 }
