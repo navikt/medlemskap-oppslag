@@ -3,6 +3,7 @@ package no.nav.medlemskap
 import com.google.gson.annotations.SerializedName
 import io.ktor.client.request.get
 import kotlinx.coroutines.runBlocking
+import mu.KotlinLogging
 
 data class AzureAdOpenIdConfiguration(
         @SerializedName("jwks_uri")
@@ -15,6 +16,8 @@ data class AzureAdOpenIdConfiguration(
         val authorizationEndpoint: String
 )
 
+private val logger = KotlinLogging.logger { }
+
 fun getAadConfig(authorityEndpoint: String, tenant: String): AzureAdOpenIdConfiguration = runBlocking {
-        defaultHttpClient.get<AzureAdOpenIdConfiguration>("$authorityEndpoint/$tenant/v2.0/.well-known/openid-configuration")
+        defaultHttpClient.get<AzureAdOpenIdConfiguration>("$authorityEndpoint/$tenant/v2.0/.well-known/openid-configuration").also { logger.info { it } }
 }
