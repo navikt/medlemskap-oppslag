@@ -21,7 +21,6 @@ class StsClient(val baseUrl: String, val username: String, val password: String)
     private var cachedSamlToken: Token? = null
 
     fun testToken() {
-        var str = ""
         "$baseUrl/rest/v1/sts/token?grant_type=client_credentials&scope=openid".httpGet()
                 .authenticate(username, password)
                 .responseString { _, _, result ->
@@ -33,14 +32,13 @@ class StsClient(val baseUrl: String, val username: String, val password: String)
                         is Result.Success -> {
                             val data = result.get()
                             logger.info { data.substring(0, 10) }
-                            str = data
+                            val gson = GsonBuilder().create()
+                            val token = gson.fromJson(data, Token::class.java)
+                            val tokenType = token?.type ?: "NULL"
+                            logger.info { tokenType }
                         }
                     }
                 }
-        val gson = GsonBuilder().create()
-        val token = gson.fromJson(str, Token::class.java)
-        val tokenType = token?.type ?: "NULL"
-        logger.info { tokenType }
     }
 
     fun oidcToken(): String {
