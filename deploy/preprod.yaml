@@ -43,7 +43,7 @@ spec:
 
   env:
     - name: AZURE_TENANT
-      value: navtestb2c.onmicrosoft.com
+      value: 966ac572-f5b7-4bbe-aa88-c76419c0f851
     - name: AZURE_AUTHORITY_ENDPOINT
       value: https://login.microsoftonline.com
     - name: SECURITY_TOKEN_SERVICE_BASE_URL
