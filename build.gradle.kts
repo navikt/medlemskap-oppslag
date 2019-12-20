@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
 
 val ktorVersion = "1.2.6"
 val prometheusVersion = "0.7.0"
@@ -92,5 +93,9 @@ tasks.withType<ShadowJar> {
                         "Main-Class" to mainClass
                 )
         )
+    }
+    transform(ServiceFileTransformer::class.java) {
+        setPath("META-INF/cxf")
+        include("bus-extensions.txt")
     }
 }
