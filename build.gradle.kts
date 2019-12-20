@@ -7,18 +7,32 @@ val logbackVersion = "1.2.3"
 val logstashVersion = "5.1"
 val konfigVersion = "1.6.10.0"
 val kotlinLoggerVersion = "1.7.6"
+val tjenestespesifikasjonerVersion = "1.2019.12.18-12.22-ce897c4eb2c1"
+val cxfVersion = "3.3.1"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
+
+fun tjenestespesifikasjon(name: String) = "no.nav.tjenestespesifikasjoner:$name:$tjenestespesifikasjonerVersion"
 
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.3.61"
     id("com.github.johnrengelman.shadow") version "5.1.0"
 }
 
+val githubUser: String by project
+val githubPassword: String by project
+
 repositories {
     jcenter()
     mavenCentral()
     maven("https://dl.bintray.com/kotlin/ktor")
+    maven {
+        url = uri("https://maven.pkg.github.com/navikt/tjenestespesifikasjoner")
+        credentials {
+            username = githubUser
+            password = githubPassword
+        }
+    }
 }
 
 dependencies {
@@ -38,6 +52,16 @@ dependencies {
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashVersion")
     implementation("com.natpryce:konfig:$konfigVersion")
     implementation("io.github.microutils:kotlin-logging:$kotlinLoggerVersion")
+
+    implementation("org.apache.cxf:cxf-rt-ws-security:$cxfVersion")
+    implementation("org.apache.cxf:cxf-rt-ws-policy:$cxfVersion")
+    implementation("org.apache.cxf:cxf-rt-frontend-jaxws:$cxfVersion")
+    implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersion")
+    implementation("org.apache.cxf:cxf-rt-transports-http:$cxfVersion")
+    implementation("javax.activation:activation:1.1.1")
+    implementation("com.sun.xml.ws:jaxws-rt:2.3.2")
+
+    implementation(tjenestespesifikasjon("person-v3-tjenestespesifikasjon"))
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")

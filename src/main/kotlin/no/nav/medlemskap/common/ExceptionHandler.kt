@@ -1,4 +1,4 @@
-package no.nav.medlemskap
+package no.nav.medlemskap.common
 
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
@@ -7,13 +7,30 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.request.uri
 import io.ktor.response.respond
 import mu.KotlinLogging
+import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
+import no.nav.medlemskap.common.exceptions.Sikkerhetsbegrensing
 
 private val logger = KotlinLogging.logger { }
 
 fun StatusPages.Configuration.exceptionHandler() {
-    exception<Throwable> { cause ->
-        call.logErrorAndRespond(cause) { "An internal error occurred during routing" }
+    exception<PersonIkkeFunnet> { cause ->
+        call.logErrorAndRespond(cause, HttpStatusCode.NotFound) {
+            "Person ikke funnet i ${cause.system}"
+        }
     }
+
+    exception<Sikkerhetsbegrensing> { cause ->
+        call.logErrorAndRespond(cause, HttpStatusCode.Forbidden) {
+            "Personen har sikkerhetsbegrensing i ${cause.system}"
+        }
+    }
+
+    exception<Throwable> { cause ->
+        call.logErrorAndRespond(cause) {
+            "An internal error occurred during routing"
+        }
+    }
+
 }
 
 private suspend inline fun ApplicationCall.logErrorAndRespond(

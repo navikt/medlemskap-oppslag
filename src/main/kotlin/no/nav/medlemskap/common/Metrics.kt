@@ -1,4 +1,4 @@
-package no.nav.medlemskap
+package no.nav.medlemskap.common
 
 import io.prometheus.client.Counter
 

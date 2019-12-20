@@ -1,9 +1,10 @@
-package no.nav.medlemskap
+package no.nav.medlemskap.config
 
 import com.google.gson.annotations.SerializedName
 import io.ktor.client.request.get
 import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging
+import no.nav.medlemskap.common.defaultHttpClient
 
 data class AzureAdOpenIdConfiguration(
         @SerializedName("jwks_uri")

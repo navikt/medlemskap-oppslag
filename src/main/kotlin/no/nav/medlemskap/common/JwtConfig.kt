@@ -1,4 +1,4 @@
-package no.nav.medlemskap
+package no.nav.medlemskap.common
 
 import com.auth0.jwk.JwkProvider
 import com.auth0.jwk.JwkProviderBuilder
@@ -6,6 +6,7 @@ import io.ktor.auth.Principal
 import io.ktor.auth.jwt.JWTCredential
 import io.ktor.auth.jwt.JWTPrincipal
 import mu.KotlinLogging
+import no.nav.medlemskap.configuration
 import java.lang.Exception
 import java.net.URL
 import java.util.concurrent.TimeUnit

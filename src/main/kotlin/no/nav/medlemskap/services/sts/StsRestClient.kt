@@ -1,16 +1,17 @@
-package no.nav.medlemskap
+package no.nav.medlemskap.services.sts
 
 import com.google.gson.annotations.SerializedName
 import io.ktor.client.request.*
 import io.ktor.http.HttpHeaders
 import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging
+import no.nav.medlemskap.common.defaultHttpClient
 import java.time.LocalDateTime
 import java.util.*
 
 private val logger = KotlinLogging.logger { }
 
-class StsClient(val baseUrl: String, val username: String, val password: String) {
+class StsRestClient(val baseUrl: String, val username: String, val password: String) {
     private var cachedOidcToken: Token? = null
     private var cachedSamlToken: Token? = null
 

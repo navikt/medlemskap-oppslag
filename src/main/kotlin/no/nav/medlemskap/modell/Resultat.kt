@@ -1,7 +1,7 @@
 package no.nav.medlemskap.modell
 
 enum class Resultattype {
-    JA, NEI, KANSKJE
+    JA, NEI, UAVKLART
 }
 
 data class Resultat(val resultattype: Resultattype, val beskrivelse: String)
