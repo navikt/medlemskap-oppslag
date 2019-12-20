@@ -54,12 +54,15 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging:$kotlinLoggerVersion")
 
     implementation("org.apache.cxf:cxf-rt-ws-security:$cxfVersion")
-    implementation("org.apache.cxf:cxf-rt-ws-policy:$cxfVersion")
+    // implementation("org.apache.cxf:cxf-rt-ws-policy:$cxfVersion")
     implementation("org.apache.cxf:cxf-rt-frontend-jaxws:$cxfVersion")
     implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersion")
     implementation("org.apache.cxf:cxf-rt-transports-http:$cxfVersion")
     implementation("javax.activation:activation:1.1.1")
-    implementation("com.sun.xml.ws:jaxws-rt:2.3.2")
+    implementation("org.apache.ws.xmlschema:xmlschema-core:2.2.4") // Force newer version of XMLSchema to fix illegal reflective access warning
+    implementation("com.sun.xml.ws:jaxws-tools:2.3.1") {
+        exclude(group = "com.sun.xml.ws", module = "policy")
+    }
 
     implementation(tjenestespesifikasjon("person-v3-tjenestespesifikasjon"))
 
