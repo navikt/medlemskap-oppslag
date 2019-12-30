@@ -7,15 +7,15 @@ import no.nav.tjeneste.virksomhet.person.v3.informasjon.PersonIdent
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personidenter
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentPersonhistorikkRequest
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentPersonhistorikkResponse
-import org.apache.xml.security.stax.ext.XMLSecurityConstants.datatypeFactory
 import java.time.ZonedDateTime
 import java.util.*
+import javax.xml.datatype.DatatypeFactory
 import javax.xml.datatype.XMLGregorianCalendar
 
 class PersonClient(private val personV3: PersonV3) {
 
     companion object {
-        val HISTORIKK_FRA_OG_MED: XMLGregorianCalendar = datatypeFactory
+        val HISTORIKK_FRA_OG_MED: XMLGregorianCalendar = DatatypeFactory.newInstance()
                 .newXMLGregorianCalendar(GregorianCalendar.from(ZonedDateTime.now().minusYears(3)))
     }
 
