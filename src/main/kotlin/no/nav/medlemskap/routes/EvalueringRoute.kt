@@ -4,6 +4,8 @@ import io.ktor.application.call
 import io.ktor.auth.authenticate
 import io.ktor.client.request.post
 import io.ktor.client.request.url
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
 import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Routing
@@ -39,6 +41,7 @@ private fun createDatagrunnlag(fnr: String): Personhistorikk {
 private fun evaluerData(personhistorikk: Personhistorikk): Evaluering = runBlocking {
     defaultHttpClient.post<Evaluering> {
         url(configuration.reglerUrl)
+        contentType(ContentType.Application.Json)
         body = personhistorikk
     }
 }
