@@ -15,7 +15,7 @@ import javax.xml.datatype.XMLGregorianCalendar
 fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkResponse): Personhistorikk {
     val statsborgerskap: List<Statsborgerskap> = personhistorikkResponse.statsborgerskapListe.map {
         Statsborgerskap(
-                landkode = it.statsborgerskap.land.kodeverksRef,
+                landkode = it.statsborgerskap.land.value,
                 fom = it.periode.fom.asDate(),
                 tom = it.periode.tom.asDate()
         )
@@ -23,7 +23,7 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
 
     val personstatuser: List<Personstatus> = personhistorikkResponse.personstatusListe.map {
         Personstatus(
-                personstatus = it.personstatus.kodeverksRef,
+                personstatus = it.personstatus.value,
                 fom = it.periode.fom.asDate(),
                 tom = it.periode.tom.asDate()
         )
@@ -32,7 +32,7 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
     val bostedsadresser: List<Adresse> = personhistorikkResponse.bostedsadressePeriodeListe.map {
         Adresse(
                 adresselinje = it.bostedsadresse.strukturertAdresse.tilleggsadresse ?: "Ukjent adresse",
-                landkode = it.bostedsadresse.strukturertAdresse.landkode.kodeverksRef,
+                landkode = it.bostedsadresse.strukturertAdresse.landkode.value,
                 fom = it.periode.fom.asDate(),
                 tom = it.periode.tom.asDate()
         )
@@ -41,7 +41,7 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
     val postadresser: List<Adresse> = personhistorikkResponse.postadressePeriodeListe.map {
         Adresse(
                 adresselinje = it.postadresse.ustrukturertAdresse.adresselinje(),
-                landkode = it.postadresse.ustrukturertAdresse.landkode.kodeverksRef,
+                landkode = it.postadresse.ustrukturertAdresse.landkode.value,
                 fom = it.periode.fom.asDate(),
                 tom = it.periode.tom.asDate()
         )
@@ -51,13 +51,13 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
         when(it) {
             is MidlertidigPostadresseNorge -> Adresse(
                     adresselinje = it.strukturertAdresse.tilleggsadresse ?: "Ukjent adresse",
-                    landkode = it.strukturertAdresse.landkode.kodeverksRef,
+                    landkode = it.strukturertAdresse.landkode.value,
                     fom = it.postleveringsPeriode.fom.asDate(),
                     tom = it.postleveringsPeriode.tom.asDate()
             )
             is MidlertidigPostadresseUtland -> Adresse(
                     adresselinje = it.ustrukturertAdresse.adresselinje(),
-                    landkode = it.ustrukturertAdresse.landkode.kodeverksRef,
+                    landkode = it.ustrukturertAdresse.landkode.value,
                     fom = it.postleveringsPeriode.fom.asDate(),
                     tom = it.postleveringsPeriode.tom.asDate()
             )
