@@ -10,6 +10,8 @@ val konfigVersion = "1.6.10.0"
 val kotlinLoggerVersion = "1.7.6"
 val tjenestespesifikasjonerVersion = "1.2019.12.18-12.22-ce897c4eb2c1"
 val cxfVersion = "3.3.1"
+val nareVersion = "13785ff"
+val medlemskapDomeneVersion = "9"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
@@ -53,14 +55,15 @@ dependencies {
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashVersion")
     implementation("com.natpryce:konfig:$konfigVersion")
     implementation("io.github.microutils:kotlin-logging:$kotlinLoggerVersion")
+    implementation("no.nav.medlemskap:medlemskap-domene:$medlemskapDomeneVersion")
+    implementation("no.nav:nare:$nareVersion")
 
     implementation("org.apache.cxf:cxf-rt-ws-security:$cxfVersion")
-    // implementation("org.apache.cxf:cxf-rt-ws-policy:$cxfVersion")
     implementation("org.apache.cxf:cxf-rt-frontend-jaxws:$cxfVersion")
     implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersion")
     implementation("org.apache.cxf:cxf-rt-transports-http:$cxfVersion")
     implementation("javax.activation:activation:1.1.1")
-    implementation("org.apache.ws.xmlschema:xmlschema-core:2.2.4") // Force newer version of XMLSchema to fix illegal reflective access warning
+    implementation("org.apache.ws.xmlschema:xmlschema-core:2.2.4")
     implementation("com.sun.xml.ws:jaxws-tools:2.3.1") {
         exclude(group = "com.sun.xml.ws", module = "policy")
     }

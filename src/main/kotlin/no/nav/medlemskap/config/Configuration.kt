@@ -19,7 +19,8 @@ private fun String.configProperty(): String = config[Key(this, stringType)]
 data class Configuration(
         val register: Register = Register(),
         val sts: Sts = Sts(),
-        val azureAd: AzureAd = AzureAd()
+        val azureAd: AzureAd = AzureAd(),
+        val reglerUrl: String = "MEDLEMSKAP_REGLER_URL".configProperty()
 ) {
     data class Register(
             val tpsUrl: String = "TPSWS_URL".configProperty()

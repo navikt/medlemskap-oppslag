@@ -1,7 +1,6 @@
 package no.nav.medlemskap.modell
 
-enum class Resultattype {
-    JA, NEI, UAVKLART
-}
+import no.nav.medlemskap.domene.Personhistorikk
+import no.nav.nare.core.evaluations.Evaluering
 
-data class Resultat(val resultattype: Resultattype, val beskrivelse: String)
+data class Resultat(val datagrunnlag: Personhistorikk, val evaluering: Evaluering)

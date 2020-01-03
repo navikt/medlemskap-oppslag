@@ -1,65 +1,43 @@
 package no.nav.medlemskap
 
-import io.ktor.application.call
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonPrimitive
+import com.google.gson.JsonSerializer
 import io.ktor.application.install
 import io.ktor.auth.Authentication
-import io.ktor.auth.authenticate
 import io.ktor.auth.jwt.jwt
 import io.ktor.features.*
 import io.ktor.gson.gson
-import io.ktor.request.receive
-import io.ktor.response.respond
-import io.ktor.routing.*
+import io.ktor.routing.routing
 import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
-import mu.KotlinLogging
-import no.nav.medlemskap.common.API_COUNTER
 import no.nav.medlemskap.common.JwtConfig
 import no.nav.medlemskap.common.MDC_CALL_ID
+import no.nav.medlemskap.common.callIdGenerator
 import no.nav.medlemskap.common.exceptionHandler
-import no.nav.medlemskap.modell.Request
-import no.nav.medlemskap.modell.Resultat
-import no.nav.medlemskap.modell.Resultattype.*
-import no.nav.medlemskap.services.WsClients
-import no.nav.medlemskap.services.sts.StsRestClient
-import no.nav.medlemskap.services.sts.stsClient
-import no.nav.medlemskap.services.tpsws.PersonService
+import no.nav.medlemskap.routes.evalueringRoute
+import no.nav.medlemskap.routes.naisRoutes
 import org.slf4j.event.Level
-import java.util.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 private const val REALM = "medlemskap-oppslag"
 
-private val logger = KotlinLogging.logger { }
+private val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
 
-private val callIdGenerator = ThreadLocal.withInitial {
-    UUID.randomUUID().toString()
+val localDateSerializer: JsonSerializer<LocalDate> = JsonSerializer { src, _, _ ->
+    if (src == null) null else JsonPrimitive(src.format(formatter))
+}
+
+val localDateDeserializer: JsonDeserializer<LocalDate> = JsonDeserializer<LocalDate> { json, _, _ ->
+    if (json == null) null else LocalDate.parse(json.asString, formatter)
 }
 
 fun createHttpServer(
         applicationState: ApplicationState,
         useAuthentication: Boolean = true
 ): ApplicationEngine = embeddedServer(Netty, 7070) {
-
-    val stsWsClient = stsClient(
-            stsUrl = configuration.sts.endpointUrl,
-            username = configuration.sts.username,
-            password = configuration.sts.password
-    )
-
-    val stsRestClient = StsRestClient(
-            baseUrl = configuration.sts.restUrl,
-            username = configuration.sts.username,
-            password = configuration.sts.password
-    )
-
-    val wsClients = WsClients(
-            stsClientWs = stsWsClient,
-            stsClientRest = stsRestClient,
-            callIdGenerator = callIdGenerator::get
-    )
-
-    val personService = PersonService(wsClients.person(configuration.register.tpsUrl))
 
     install(StatusPages) {
         exceptionHandler()
@@ -72,44 +50,34 @@ fun createHttpServer(
 
     install(ContentNegotiation) {
         gson {
+            registerTypeAdapter(LocalDate::class.java, localDateDeserializer)
+            registerTypeAdapter(LocalDate::class.java, localDateSerializer)
             setPrettyPrinting()
             disableHtmlEscaping()
         }
     }
 
     install(CallId) {
-        header("Nav-Call-Id")
+        header(MDC_CALL_ID)
         generate { callIdGenerator.get() }
         reply { _, callId -> callIdGenerator.set(callId) }
     }
 
-    if (useAuthentication) {
-        install(Authentication) {
-            jwt {
-                skipWhen { !useAuthentication }
-                val jwtConfig = JwtConfig()
-                realm = REALM
-                verifier(jwtConfig.jwkProvider, configuration.azureAd.openIdConfiguration.issuer)
-                validate { credentials ->
-                    jwtConfig.validate(credentials)
-                }
+    install(Authentication) {
+        jwt {
+            skipWhen { !useAuthentication }
+            val jwtConfig = JwtConfig()
+            realm = REALM
+            verifier(jwtConfig.jwkProvider, configuration.azureAd.openIdConfiguration.issuer)
+            validate { credentials ->
+                jwtConfig.validate(credentials)
             }
         }
     }
 
     routing {
         naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running })
-        authenticate {
-            route("/") {
-                post {
-                    API_COUNTER.inc()
-                    val request = call.receive<Request>()
-                    logger.info { "Recieved request for ${request.fnr}" }
-                    val historikk = personService.personhistorikk(request.fnr)
-                    call.respond(Resultat(UAVKLART, "Historikk: ${historikk.statsborgerskapListe}"))
-                }
-            }
-        }
+        evalueringRoute()
     }
 
     applicationState.initialized = true

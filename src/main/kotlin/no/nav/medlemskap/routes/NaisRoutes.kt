@@ -1,4 +1,4 @@
-package no.nav.medlemskap
+package no.nav.medlemskap.routes
 
 import io.ktor.application.call
 import io.ktor.http.ContentType

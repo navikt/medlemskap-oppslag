@@ -52,3 +52,5 @@ spec:
       value: https://security-token-service.nais.preprod.local
     - name: TPSWS_URL
       value: https://wasapp-q1.adeo.no/tpsws/ws/Person/v3
+    - name: MEDLEMSKAP_REGLER_URL
+      value: https://medlemskap-regler.nais.preprod.local
