@@ -31,7 +31,7 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
 
     val bostedsadresser: List<Adresse> = personhistorikkResponse.bostedsadressePeriodeListe.map {
         Adresse(
-                adresselinje = it.bostedsadresse.strukturertAdresse.tilleggsadresse,
+                adresselinje = it.bostedsadresse.strukturertAdresse.tilleggsadresse ?: "Ukjent adresse",
                 landkode = it.bostedsadresse.strukturertAdresse.landkode.kodeverksRef,
                 fom = it.periode.fom.asDate(),
                 tom = it.periode.tom.asDate()
@@ -50,7 +50,7 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
     val midlertidigAdresser: List<Adresse> = personhistorikkResponse.midlertidigAdressePeriodeListe.map {
         when(it) {
             is MidlertidigPostadresseNorge -> Adresse(
-                    adresselinje = it.strukturertAdresse.tilleggsadresse,
+                    adresselinje = it.strukturertAdresse.tilleggsadresse ?: "Ukjent adresse",
                     landkode = it.strukturertAdresse.landkode.kodeverksRef,
                     fom = it.postleveringsPeriode.fom.asDate(),
                     tom = it.postleveringsPeriode.tom.asDate()
