@@ -13,6 +13,7 @@ import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 import no.nav.medlemskap.common.JwtConfig
+import no.nav.medlemskap.common.JwtConfig.Companion.REALM
 import no.nav.medlemskap.common.MDC_CALL_ID
 import no.nav.medlemskap.common.callIdGenerator
 import no.nav.medlemskap.common.exceptionHandler
@@ -21,8 +22,6 @@ import no.nav.medlemskap.routes.naisRoutes
 import org.slf4j.event.Level
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-
-private const val REALM = "medlemskap-oppslag"
 
 private val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
 

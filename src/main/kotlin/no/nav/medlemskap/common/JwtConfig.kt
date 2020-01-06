@@ -15,6 +15,10 @@ private val logger = KotlinLogging.logger { }
 
 class JwtConfig {
 
+    companion object {
+        const val REALM = "medlemskap-oppslag"
+    }
+
     val jwkProvider: JwkProvider = JwkProviderBuilder(URL(configuration.azureAd.openIdConfiguration.jwksUri))
             .cached(10, 24, TimeUnit.HOURS)
             .rateLimited(10, 1, TimeUnit.MINUTES)
@@ -22,6 +26,8 @@ class JwtConfig {
 
     fun validate(credentials: JWTCredential): Principal? {
         return try {
+            requireNotNull(credentials.payload.audience) { "Auth: Audience mangler i token" }
+            require(credentials.payload.audience.contains(configuration.azureAd.jwtAudience)) { "Auth: Ugyldig audience i token" }
             JWTPrincipal(credentials.payload)
         } catch (e: Exception) {
             logger.error(e) {"Failed to validate token"}

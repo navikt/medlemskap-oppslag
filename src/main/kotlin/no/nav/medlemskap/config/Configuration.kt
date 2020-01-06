@@ -35,6 +35,7 @@ data class Configuration(
 
     data class AzureAd(
             val clientId: String = "NAIS_APP_NAME".configProperty(),
+            val jwtAudience: String = "JWT_AUDIENCE".configProperty(),
             val tenant: String = "AZURE_TENANT".configProperty(),
             val authorityEndpoint: String = "AZURE_AUTHORITY_ENDPOINT".configProperty().removeSuffix("/"),
             val openIdConfiguration: AzureAdOpenIdConfiguration = getAadConfig(authorityEndpoint, tenant)
