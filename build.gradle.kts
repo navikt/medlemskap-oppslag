@@ -13,6 +13,8 @@ val cxfVersion = "3.3.1"
 val nareVersion = "13785ff"
 val medlemskapDomeneVersion = "9"
 
+val mockkVersion = "1.9.3.kotlin12"
+
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
 fun tjenestespesifikasjon(name: String) = "no.nav.tjenestespesifikasjoner:$name:$tjenestespesifikasjonerVersion"
@@ -72,6 +74,7 @@ dependencies {
 
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+    testImplementation("io.mockk:mockk:$mockkVersion")
 }
 
 java {
