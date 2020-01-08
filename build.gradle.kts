@@ -11,7 +11,7 @@ val kotlinLoggerVersion = "1.7.6"
 val tjenestespesifikasjonerVersion = "1.2019.12.18-12.22-ce897c4eb2c1"
 val cxfVersion = "3.3.1"
 val nareVersion = "13785ff"
-val medlemskapDomeneVersion = "9"
+val medlemskapDomeneVersion = "11"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 

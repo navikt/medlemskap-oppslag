@@ -14,12 +14,15 @@ import kotlinx.coroutines.runBlocking
 import no.nav.medlemskap.common.API_COUNTER
 import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.configuration
+import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Personhistorikk
+import no.nav.medlemskap.domene.Regelavklaring
 import no.nav.medlemskap.modell.Request
 import no.nav.medlemskap.modell.Resultat
 import no.nav.medlemskap.services.Services.personService
 import no.nav.medlemskap.services.tpsws.mapPersonhistorikkResultat
 import no.nav.nare.core.evaluations.Evaluering
+import java.time.LocalDate
 
 fun Routing.evalueringRoute() {
     authenticate {
@@ -32,16 +35,16 @@ fun Routing.evalueringRoute() {
     }
 }
 
-private fun createDatagrunnlag(fnr: String): Personhistorikk {
+private fun createDatagrunnlag(fnr: String): Regelavklaring {
     val historikkFraTps = personService.personhistorikk(fnr)
 
-    return mapPersonhistorikkResultat(historikkFraTps)
+    return Regelavklaring(soknadsperiode = Periode(fom = LocalDate.now(), tom = LocalDate.now()), soknadstidspunkt = LocalDate.now(), personhistorikk = mapPersonhistorikkResultat(historikkFraTps))
 }
 
-private fun evaluerData(personhistorikk: Personhistorikk): Evaluering = runBlocking {
+private fun evaluerData(regelavklaring: Regelavklaring): Evaluering = runBlocking {
     defaultHttpClient.post<Evaluering> {
         url(configuration.reglerUrl)
         contentType(ContentType.Application.Json)
-        body = personhistorikk
+        body = regelavklaring
     }
 }
