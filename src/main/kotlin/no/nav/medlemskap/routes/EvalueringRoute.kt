@@ -29,16 +29,16 @@ fun Routing.evalueringRoute() {
         post("/") {
             API_COUNTER.inc()
             val request = call.receive<Request>()
-            val datagrunnlag = createDatagrunnlag(request.fnr)
+            val datagrunnlag = createDatagrunnlag(request.fnr, request.soknadsperiodeStart, request.soknadsperiodeSlutt, request.soknadstidspunkt)
             call.respond(Resultat(datagrunnlag, evaluerData(datagrunnlag)))
         }
     }
 }
 
-private fun createDatagrunnlag(fnr: String): Regelavklaring {
+private fun createDatagrunnlag(fnr: String, soknadsperiodeStart: LocalDate, soknadsperiodeSlutt: LocalDate, soknadstidspunkt: LocalDate): Regelavklaring {
     val historikkFraTps = personService.personhistorikk(fnr)
 
-    return Regelavklaring(soknadsperiode = Periode(fom = LocalDate.now(), tom = LocalDate.now()), soknadstidspunkt = LocalDate.now(), personhistorikk = mapPersonhistorikkResultat(historikkFraTps))
+    return Regelavklaring(soknadsperiode = Periode(fom = soknadsperiodeStart, tom = soknadsperiodeSlutt), soknadstidspunkt = soknadstidspunkt, personhistorikk = mapPersonhistorikkResultat(historikkFraTps))
 }
 
 private fun evaluerData(regelavklaring: Regelavklaring): Evaluering = runBlocking {
