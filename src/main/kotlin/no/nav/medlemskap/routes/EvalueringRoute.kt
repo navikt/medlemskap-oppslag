@@ -1,5 +1,6 @@
 package no.nav.medlemskap.routes
 
+import kotlinx.coroutines.async
 import io.ktor.application.call
 import io.ktor.auth.authenticate
 import io.ktor.client.request.post
@@ -10,19 +11,23 @@ import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.routing.post
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
+import mu.KotlinLogging
 import no.nav.medlemskap.common.API_COUNTER
 import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.configuration
 import no.nav.medlemskap.domene.Periode
-import no.nav.medlemskap.domene.Personhistorikk
 import no.nav.medlemskap.domene.Regelavklaring
 import no.nav.medlemskap.modell.Request
 import no.nav.medlemskap.modell.Resultat
+import no.nav.medlemskap.services.Services.medlClient
 import no.nav.medlemskap.services.Services.personService
 import no.nav.medlemskap.services.tpsws.mapPersonhistorikkResultat
 import no.nav.nare.core.evaluations.Evaluering
 import java.time.LocalDate
+
+private val logger = KotlinLogging.logger { }
 
 fun Routing.evalueringRoute() {
     authenticate {
@@ -35,10 +40,24 @@ fun Routing.evalueringRoute() {
     }
 }
 
-private fun createDatagrunnlag(fnr: String, soknadsperiodeStart: LocalDate, soknadsperiodeSlutt: LocalDate, soknadstidspunkt: LocalDate): Regelavklaring {
-    val historikkFraTps = personService.personhistorikk(fnr)
+private suspend fun createDatagrunnlag(
+        fnr: String,
+        soknadsperiodeStart: LocalDate,
+        soknadsperiodeSlutt: LocalDate,
+        soknadstidspunkt: LocalDate): Regelavklaring = coroutineScope {
 
-    return Regelavklaring(soknadsperiode = Periode(fom = soknadsperiodeStart, tom = soknadsperiodeSlutt), soknadstidspunkt = soknadstidspunkt, personhistorikk = mapPersonhistorikkResultat(historikkFraTps))
+    val historikkFraTpsRequest = async { personService.personhistorikk(fnr) }
+    val medlemskapsunntakRequest = async { medlClient.hentMedlemskapsunntak(fnr) }
+
+    val historikkFraTps = historikkFraTpsRequest.await()
+    val medlemskapsunntak = medlemskapsunntakRequest.await()
+
+    logger.info { medlemskapsunntak } // En test for å se på data
+
+    Regelavklaring(
+            soknadsperiode = Periode(fom = soknadsperiodeStart, tom = soknadsperiodeSlutt),
+            soknadstidspunkt = soknadstidspunkt,
+            personhistorikk = mapPersonhistorikkResultat(historikkFraTps))
 }
 
 private fun evaluerData(regelavklaring: Regelavklaring): Evaluering = runBlocking {
