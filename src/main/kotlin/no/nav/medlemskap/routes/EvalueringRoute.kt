@@ -48,6 +48,7 @@ private suspend fun createDatagrunnlag(
 
     val historikkFraTpsRequest = async { personService.personhistorikk(fnr) }
     val medlemskapsunntakRequest = async { medlClient.hentMedlemskapsunntak(fnr) }
+    val arbeidsforhold = async { aaRegClient.hentArbeidsforhold(fnr) }
 
     val historikkFraTps = historikkFraTpsRequest.await()
     val medlemskapsunntak = medlemskapsunntakRequest.await()

@@ -17,7 +17,7 @@ class AaRegClient(val baseUrl: String, val stsClient: StsRestClient, val callIdG
     suspend fun hentArbeidsforhold(fnr: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<Arbeidsforhold> {
         with(stsClient.oidcToken()) {
             return defaultHttpClient.get<List<Arbeidsforhold>> {
-                url("$baseUrl/api/v1/arbeidstaker/arbeidsforhold")
+                url("$baseUrl/v1/arbeidstaker/arbeidsforhold")
                 header(HttpHeaders.Authorization, "Bearer ${this}")
                 header(HttpHeaders.Accept, ContentType.Application.Json)
                 header("Nav-Call-Id", callIdGenerator.invoke())

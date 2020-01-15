@@ -24,7 +24,8 @@ data class Configuration(
 ) {
     data class Register(
             val tpsUrl: String = "TPSWS_URL".configProperty(),
-            val medl2BaseUrl: String = "MEDL2_BASE_URL".configProperty()
+            val medl2BaseUrl: String = "MEDL2_BASE_URL".configProperty(),
+            val aaRegBaseUrl: String = "AAREG_BASE_URL".configProperty()
     )
 
     data class Sts(
