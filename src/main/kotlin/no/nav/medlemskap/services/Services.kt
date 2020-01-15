@@ -2,6 +2,7 @@ package no.nav.medlemskap.services
 
 import no.nav.medlemskap.common.callIdGenerator
 import no.nav.medlemskap.configuration
+import no.nav.medlemskap.services.medl.MedlClient
 import no.nav.medlemskap.services.sts.StsRestClient
 import no.nav.medlemskap.services.sts.stsClient
 import no.nav.medlemskap.services.tpsws.PersonService
@@ -9,6 +10,7 @@ import no.nav.medlemskap.services.tpsws.PersonService
 object Services {
 
     var personService: PersonService
+    val medlClient: MedlClient
 
     init {
         val stsWsClient = stsClient(
@@ -29,7 +31,13 @@ object Services {
                 callIdGenerator = callIdGenerator::get
         )
 
+        val restClients = RestClients(
+                stsClientRest = stsRestClient,
+                callIdGenerator = callIdGenerator::get
+        )
+
         personService = PersonService(wsClients.person(configuration.register.tpsUrl))
+        medlClient = restClients.medl2(configuration.register.medl2BaseUrl)
     }
 
 }

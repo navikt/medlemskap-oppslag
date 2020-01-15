@@ -23,7 +23,8 @@ data class Configuration(
         val reglerUrl: String = "MEDLEMSKAP_REGLER_URL".configProperty()
 ) {
     data class Register(
-            val tpsUrl: String = "TPSWS_URL".configProperty()
+            val tpsUrl: String = "TPSWS_URL".configProperty(),
+            val medl2BaseUrl: String = "MEDL2_BASE_URL".configProperty()
     )
 
     data class Sts(
