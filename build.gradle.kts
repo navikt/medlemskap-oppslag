@@ -12,6 +12,7 @@ val tjenestespesifikasjonerVersion = "1.2019.12.18-12.22-ce897c4eb2c1"
 val cxfVersion = "3.3.1"
 val nareVersion = "13785ff"
 val medlemskapDomeneVersion = "11"
+val coroutinesVersion = "1.3.3"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
@@ -29,6 +30,7 @@ repositories {
     jcenter()
     mavenCentral()
     maven("https://dl.bintray.com/kotlin/ktor")
+    maven("https://kotlin.bintray.com/kotlinx")
     maven {
         url = uri("https://maven.pkg.github.com/navikt/tjenestespesifikasjoner")
         credentials {
@@ -40,6 +42,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-gson:$ktorVersion")
