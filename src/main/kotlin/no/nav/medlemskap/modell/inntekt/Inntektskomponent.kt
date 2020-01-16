@@ -1,5 +1,11 @@
 package no.nav.medlemskap.modell.inntekt
 
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Aktoer
+import java.math.BigDecimal
+import java.time.LocalDateTime
+import java.time.YearMonth
+
+
 data class InntektskomponentResponse (
         val arbeidsInntektMaaned: List<ArbeidsinntektMaaned>
 )
@@ -10,6 +16,11 @@ data class ArbeidsinntektMaaned (
 )
 
 data class Avvik (
+        val ident : Aktoer,
+        val opplysningspliktig: Aktoer,
+        val virksomhet: Aktoer,
+        val avvikPeriode: String,
+        val tekst: String
 
 )
 
@@ -32,10 +43,23 @@ enum class InntektType {
     YTELSE_FRA_OFFENTLIGE
 }
 
-data class Forskuddstrekk (
-
+data class Forskuddstrekk(
+    val beloep: Int,
+    val beskrivelse: String,
+    val leveringstidspunkt: LocalDateTime,
+    val opplysningspliktig: Aktoer,
+    val utbetaler: Aktoer,
+    val forskuddstrekkGjelder: Aktoer
 )
 
 data class Fradrag (
-
+    val beloep: BigDecimal,
+    val beskrivelse: String,
+    val fradragsperiode: String,
+    val leveringstidspunkt: LocalDateTime,
+    val inntektspliktig: Aktoer,
+    val utbetaler: Aktoer,
+    val fradragGjelder: Aktoer
 )
+
+//val versjon: String
