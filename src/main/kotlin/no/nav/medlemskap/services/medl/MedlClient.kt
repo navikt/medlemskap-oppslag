@@ -7,6 +7,7 @@ import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import no.nav.medlemskap.common.defaultHttpClient
+import no.nav.medlemskap.configuration
 import no.nav.medlemskap.modell.medl.Medlemskapsunntak
 import no.nav.medlemskap.services.sts.StsRestClient
 import java.time.LocalDate
@@ -26,6 +27,7 @@ class MedlClient(
             header(HttpHeaders.Accept, ContentType.Application.Json)
             header("Nav-Call-Id", callIdGenerator.invoke())
             header("Nav-Personident", ident)
+            header("Nav-Consumer-Id", configuration.sts.username)
             fraOgMed?.let { parameter("fraOgMed", fraOgMed.tilIsoFormat()) }
             tilOgMed?.let { parameter("tilOgMed", tilOgMed.tilIsoFormat()) }
         }
