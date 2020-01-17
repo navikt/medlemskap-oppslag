@@ -1,6 +1,7 @@
 package no.nav.medlemskap.modell.inntekt
 
 import java.math.BigDecimal
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.YearMonth
 
@@ -29,9 +30,27 @@ data class Ident (
 )
 
 data class ArbeidsInntektInformasjon (
+    val arbeidsforholdListe: List<Arbeidsforhold>,
     val inntektListe: List<Inntekt>,
     val forskuddstrekkListe: List<Forskuddstrekk>,
     val fradragListe: List<Fradrag>
+)
+
+data class Arbeidsforhold (
+        val antallTimerPerUkeSomEnFullStillingTilsvarer: Double?,
+        val arbeidstidsordning: String?,
+        val avloenningstype: String?,
+        val sisteDatoForStillingsprosentendring: LocalDate?,
+        val sisteLoennsendring: LocalDate?,
+        val frilansperiodeFom: LocalDate?,
+        val frilansperiodeTom: LocalDate?,
+        val stillingsprosent: Double?,
+        val yrke: String?,
+        val arbeidsforholdID: String?,
+        val arbeidsforholdIDnav: String?,
+        val arbeidsforholdType: String?,
+        val arbeidsgiver: Ident,
+        val arbeidstaker: Ident
 )
 
 data class Inntekt (
