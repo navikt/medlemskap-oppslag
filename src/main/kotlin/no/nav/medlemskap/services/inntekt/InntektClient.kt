@@ -28,7 +28,7 @@ class InntektClient(val baseUrl: String, val stsClient: StsRestClient, val callI
                     ainntektsfilter = "MedlemskapA-inntekt",
                     maanedFom = fraOgMed?.tilAarOgMnd(),
                     maanedTom = tilOgMed?.tilAarOgMnd(),
-                    formaal = "Medlemskap")
+                    formaal = "Medlemskap") //Må diskutere med Helle om vi skal bruke Medlemskap eller sykepenger som formål
         }
 
     }
