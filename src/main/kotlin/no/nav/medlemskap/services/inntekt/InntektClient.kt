@@ -14,10 +14,10 @@ import java.time.format.DateTimeFormatter
 class InntektClient(val baseUrl: String, val stsClient: StsRestClient, val callIdGenerator: () -> String) {
 
     suspend fun hentInntektListe(ident: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<ArbeidsinntektMaaned> {
-        with(stsClient.oidcToken()) {
+            val token = stsClient.oidcToken()
             return defaultHttpClient.post<List<ArbeidsinntektMaaned>> {
                 url("$baseUrl/hentinntektliste")
-                header(HttpHeaders.Authorization, "Bearer ${this}")
+                header(HttpHeaders.Authorization, "Bearer $token")
                 header(HttpHeaders.Accept, ContentType.Application.Json)
                 header("Nav-Call-Id", callIdGenerator.invoke())
                 body = HentInntektListeRequest(
@@ -25,7 +25,7 @@ class InntektClient(val baseUrl: String, val stsClient: StsRestClient, val callI
                         fraOgMed?.tilIsoFormat()?.tilAarOgMnd(),
                         tilOgMed?.tilIsoFormat()?.tilAarOgMnd())
             }
-        }
+
     }
 
     private fun LocalDate.tilIsoFormat() = this.format(DateTimeFormatter.ISO_DATE)
