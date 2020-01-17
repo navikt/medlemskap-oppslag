@@ -4,6 +4,7 @@ import io.ktor.client.request.*
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import no.nav.medlemskap.common.defaultHttpClient
+import no.nav.medlemskap.configuration
 import no.nav.medlemskap.modell.inntekt.ArbeidsinntektMaaned
 import no.nav.medlemskap.modell.inntekt.HentInntektListeRequest
 import no.nav.medlemskap.modell.inntekt.Ident
@@ -20,6 +21,7 @@ class InntektClient(val baseUrl: String, val stsClient: StsRestClient, val callI
                 header(HttpHeaders.Authorization, "Bearer $token")
                 header(HttpHeaders.Accept, ContentType.Application.Json)
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
+                header("Nav-Consumer-Id", configuration.sts.username)
                 header("Nav-Call-Id", callIdGenerator.invoke())
                 body = HentInntektListeRequest(
                         Ident(ident, "NATURLIG_IDENT"),
