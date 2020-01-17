@@ -12,7 +12,7 @@ object Services {
 
     var personService: PersonService
     val medlClient: MedlClient
-    val inntektClients: InntektClient
+    val inntektClient: InntektClient
 
     init {
         val stsWsClient = stsClient(
@@ -40,7 +40,7 @@ object Services {
 
         personService = PersonService(wsClients.person(configuration.register.tpsUrl))
         medlClient = restClients.medl2(configuration.register.medl2BaseUrl)
-        inntektClients = restClients.inntektskomponenten(configuration.register.inntektBaseUrl)
+        inntektClient = restClients.inntektskomponenten(configuration.register.inntektBaseUrl)
     }
 
 }

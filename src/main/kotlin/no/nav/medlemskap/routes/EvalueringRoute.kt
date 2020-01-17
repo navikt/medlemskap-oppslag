@@ -21,6 +21,7 @@ import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Regelavklaring
 import no.nav.medlemskap.modell.Request
 import no.nav.medlemskap.modell.Resultat
+import no.nav.medlemskap.services.Services.inntektClient
 import no.nav.medlemskap.services.Services.medlClient
 import no.nav.medlemskap.services.Services.personService
 import no.nav.medlemskap.services.tpsws.mapPersonhistorikkResultat
@@ -48,11 +49,14 @@ private suspend fun createDatagrunnlag(
 
     val historikkFraTpsRequest = async { personService.personhistorikk(fnr) }
     val medlemskapsunntakRequest = async { medlClient.hentMedlemskapsunntak(fnr) }
+    val inntektListeRequest = async { inntektClient.hentInntektListe(fnr)}
 
     val historikkFraTps = historikkFraTpsRequest.await()
     val medlemskapsunntak = medlemskapsunntakRequest.await()
+    val inntektListe = inntektListeRequest.await()
 
     logger.info { medlemskapsunntak } // En test for å se på data
+    logger.info { inntektListe }
 
     Regelavklaring(
             soknadsperiode = Periode(fom = soknadsperiodeStart, tom = soknadsperiodeSlutt),

@@ -24,6 +24,12 @@ data class Avvik (
 
 )
 
+
+data class Ident (
+    val identifikator: String,
+    val aktoerTypde: String
+)
+
 data class ArbeidsInntektInformasjon (
     val inntektListe: List<Inntekt>,
     val forskuddstrekkListe: List<Forskuddstrekk>,
