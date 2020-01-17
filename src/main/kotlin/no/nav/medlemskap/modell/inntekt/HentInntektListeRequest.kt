@@ -4,6 +4,6 @@ data class HentInntektListeRequest(
 
         val ident: Ident,
         val maanedFom: String?,
-        val maanedTil: String?
+        val maanedTom: String?
 
 )
