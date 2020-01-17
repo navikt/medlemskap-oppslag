@@ -19,6 +19,7 @@ class InntektClient(val baseUrl: String, val stsClient: StsRestClient, val callI
                 url("$baseUrl/hentinntektliste")
                 header(HttpHeaders.Authorization, "Bearer $token")
                 header(HttpHeaders.Accept, ContentType.Application.Json)
+                header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header("Nav-Call-Id", callIdGenerator.invoke())
                 body = HentInntektListeRequest(
                         Ident(ident, "NATURLIG_IDENT"),
