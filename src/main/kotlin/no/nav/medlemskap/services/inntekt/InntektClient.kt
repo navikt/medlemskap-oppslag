@@ -31,7 +31,7 @@ class InntektClient(val baseUrl: String, val stsClient: StsRestClient, val callI
 
     }
 
-    private fun LocalDate.tilAarOgMnd() = this.format(DateTimeFormatter.ofPattern("yyyy-mm"))
+    private fun LocalDate.tilAarOgMnd() = this.format(DateTimeFormatter.ofPattern("yyyy-MM"))
 }
 
 
