@@ -29,6 +29,7 @@ data class Ident (
     val aktoerType: String
 )
 
+
 data class ArbeidsInntektInformasjon (
     val arbeidsforholdListe: List<Arbeidsforhold>,
     val inntektListe: List<Inntekt>,

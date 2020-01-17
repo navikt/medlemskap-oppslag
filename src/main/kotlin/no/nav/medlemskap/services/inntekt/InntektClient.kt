@@ -26,7 +26,9 @@ class InntektClient(val baseUrl: String, val stsClient: StsRestClient, val callI
             body = HentInntektListeRequest(
                     Ident(ident, "NATURLIG_IDENT"),
                     fraOgMed?.tilAarOgMnd(),
-                    tilOgMed?.tilAarOgMnd())
+                    tilOgMed?.tilAarOgMnd(),
+                    "MedlemskapA-inntekt",
+                    "Medlemskap")
         }
 
     }
