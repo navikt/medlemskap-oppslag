@@ -9,26 +9,26 @@ data class Ansettelsesperiode(
         val bruksperiode: Bruksperiode,
         val periode: Periode,
         val sporingsinformasjon: Sporingsinformasjon,
-        val varslingskode: String
+        val varslingskode: String?
 )
 
 data class AntallTimerForTimeloennet(
         val antallTimer: Double,
-        val periode: Periode,
+        val periode: Periode?,
         val rapporteringsperiode: YearMonth,
         val sporingsinformasjon: Sporingsinformasjon
 )
 
 data class Arbeidsavtale(
-        val antallTimerPrUke: Double,
-        val arbeidstidsordning: String,
-        val beregnetAntallTimerPrUke: Double,
+        val antallTimerPrUke: Double?,
+        val arbeidstidsordning: String?,
+        val beregnetAntallTimerPrUke: Double?,
         val bruksperiode: Bruksperiode,
         val gyldighetsperiode: Gyldighetsperiode,
-        val sistLoennsendring: String,
-        val sistStillingsendring: String,
+        val sistLoennsendring: String?,
+        val sistStillingsendring: String?,
         val sporingsinformasjon: Sporingsinformasjon,
-        val stillingsprosent: Double,
+        val stillingsprosent: Double?,
         val yrke: String
 )
 
@@ -44,7 +44,7 @@ data class Arbeidsforhold(
         val opplysningspliktig: OpplysningspliktigArbeidsgiver,
         val permisjonPermitteringer: PermisjonPermittering,
         val registrert: LocalDateTime,
-        val sistBekreftet: LocalDateTime,
+        val sistBekreftet: LocalDateTime?,
         val sporingsinformasjon: Sporingsinformasjon,
         val type: String,
         val utenlandsopphold: List<Utenlandsopphold>
@@ -57,7 +57,7 @@ data class ArbeidsgiverArbeidsforhold(
 
 data class Bruksperiode(
         val fom: LocalDateTime,
-        val tom: LocalDateTime
+        val tom: LocalDateTime?
 )
 
 enum class OpplysningspliktigArbeidsgiverType {
@@ -66,7 +66,7 @@ enum class OpplysningspliktigArbeidsgiverType {
 
 data class Gyldighetsperiode(
         val fom: LocalDate,
-        val tom: LocalDate
+        val tom: LocalDate?
 )
 
 data class OpplysningspliktigArbeidsgiver(
@@ -84,14 +84,14 @@ data class Organisasjon(
 )
 
 data class Periode(
-        val fom: LocalDate,
-        val tom: LocalDate
+        val fom: LocalDate?,
+        val tom: LocalDate?
 )
 
 data class PermisjonPermittering(
-        val periode: Periode,
+        val periode: Periode?,
         val permisjonPermitteringId: String,
-        val prosent: Double,
+        val prosent: Double?,
         val sporingsinformasjon: Sporingsinformasjon,
         val type: String
 )
@@ -123,7 +123,7 @@ data class TjenestefeilResponse(
 
 data class Utenlandsopphold(
         val landkode: String,
-        val periode: Periode,
+        val periode: Periode?,
         val rapporteringsperiode: YearMonth,
         val sporingsinformasjon: Sporingsinformasjon
 )
