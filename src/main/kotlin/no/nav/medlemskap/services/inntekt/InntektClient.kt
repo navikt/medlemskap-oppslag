@@ -24,11 +24,11 @@ class InntektClient(val baseUrl: String, val stsClient: StsRestClient, val callI
             header("Nav-Consumer-Id", configuration.sts.username)
             header("Nav-Call-Id", callIdGenerator.invoke())
             body = HentInntektListeRequest(
-                    Ident(ident, "NATURLIG_IDENT"),
-                    fraOgMed?.tilAarOgMnd(),
-                    tilOgMed?.tilAarOgMnd(),
-                    "MedlemskapA-inntekt",
-                    "Medlemskap")
+                    ident = Ident(ident, "NATURLIG_IDENT"),
+                    ainntektsfilter = "MedlemskapA-inntekt",
+                    maanedFom = fraOgMed?.tilAarOgMnd(),
+                    maanedTom = tilOgMed?.tilAarOgMnd(),
+                    formaal = "Medlemskap")
         }
 
     }
