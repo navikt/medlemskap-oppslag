@@ -54,6 +54,8 @@ spec:
       value: https://security-token-service.nais.preprod.local
     - name: TPSWS_URL
       value: https://wasapp-q1.adeo.no/tpsws/ws/Person/v3
+    - name: INNTEKT_URL
+      value: https://app-q1.adeo.no/inntektskomponenten-ws/rs/api/v1
     - name: MEDL2_BASE_URL
       value: https://app-q1.adeo.no/medl2
     - name: MEDLEMSKAP_REGLER_URL
