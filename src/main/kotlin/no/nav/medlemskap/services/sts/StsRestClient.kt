@@ -46,6 +46,7 @@ class StsRestClient(val baseUrl: String, val username: String, val password: Str
         return String(Base64.getDecoder().decode(urldecodedBase64))
     }
 
+
     private fun credentials() = Base64.getEncoder().encodeToString("${username}:${password}".toByteArray(Charsets.UTF_8))
 
     private fun Token?.shouldBeRenewed(): Boolean = this?.hasExpired() ?: true
