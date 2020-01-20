@@ -3,6 +3,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
 
 val ktorVersion = "1.2.6"
+val jacksonVersion = "2.10.1"
 val prometheusVersion = "0.7.0"
 val logbackVersion = "1.2.3"
 val logstashVersion = "5.1"
@@ -47,13 +48,13 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    implementation("io.ktor:ktor-gson:$ktorVersion")
+    implementation("io.ktor:ktor-jackson:$ktorVersion")
     implementation("io.ktor:ktor-auth:$ktorVersion")
     implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-apache:$ktorVersion")
     implementation("io.ktor:ktor-client-json:$ktorVersion")
-    implementation("io.ktor:ktor-client-gson:$ktorVersion")
+    implementation("io.ktor:ktor-client-jackson:$ktorVersion")
     implementation("io.prometheus:simpleclient_hotspot:$prometheusVersion")
     implementation("io.prometheus:simpleclient_common:$prometheusVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
@@ -62,6 +63,10 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging:$kotlinLoggerVersion")
     implementation("no.nav.medlemskap:medlemskap-domene:$medlemskapDomeneVersion")
     implementation("no.nav:nare:$nareVersion")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
 
     implementation("org.apache.cxf:cxf-rt-ws-security:$cxfVersion")
     implementation("org.apache.cxf:cxf-rt-frontend-jaxws:$cxfVersion")

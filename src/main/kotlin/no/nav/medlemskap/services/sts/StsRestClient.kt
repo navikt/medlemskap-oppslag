@@ -1,15 +1,12 @@
 package no.nav.medlemskap.services.sts
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 import io.ktor.client.request.*
 import io.ktor.http.HttpHeaders
 import kotlinx.coroutines.runBlocking
-import mu.KotlinLogging
 import no.nav.medlemskap.common.defaultHttpClient
 import java.time.LocalDateTime
 import java.util.*
-
-private val logger = KotlinLogging.logger { }
 
 class StsRestClient(val baseUrl: String, val username: String, val password: String) {
     private var cachedOidcToken: Token? = null
@@ -23,7 +20,6 @@ class StsRestClient(val baseUrl: String, val username: String, val password: Str
                 parameter("grant_type", "client_credentials")
                 parameter("scope", "openid")
             }
-            cachedOidcToken!!.initExpirationTime()
         }
 
         return cachedOidcToken!!.token
@@ -37,7 +33,6 @@ class StsRestClient(val baseUrl: String, val username: String, val password: Str
                     header(HttpHeaders.Authorization, "Basic ${credentials()}")
                 }
             }
-            cachedSamlToken!!.initExpirationTime()
         }
 
         val urldecodedBase64 = cachedSamlToken!!.token
@@ -53,20 +48,15 @@ class StsRestClient(val baseUrl: String, val username: String, val password: Str
     private fun Token?.shouldBeRenewed(): Boolean = this?.hasExpired() ?: true
 
     data class Token(
-            @SerializedName("access_token")
+            @JsonProperty(value = "access_token", required = true)
             val token: String,
-            @SerializedName("token_type")
+            @JsonProperty(value = "token_type", required = true)
             val type: String,
-            @SerializedName("expires_in")
+            @JsonProperty(value = "expires_in", required = true)
             val expiresIn: Int) {
 
-        private var expirationTime: LocalDateTime? = null
+        private val expirationTime: LocalDateTime = LocalDateTime.now().plusSeconds(expiresIn - 20L)
 
-        // Fordi GSON ikke kaller konstruktør på dataklasser, så må man lage en liten hack for å sette utløpstid
-        fun initExpirationTime() {
-            expirationTime = LocalDateTime.now().plusSeconds(expiresIn - 20L)
-        }
-
-        fun hasExpired(): Boolean = expirationTime?.isBefore(LocalDateTime.now()) ?: true
+        fun hasExpired(): Boolean = expirationTime.isBefore(LocalDateTime.now())
     }
 }
