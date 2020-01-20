@@ -13,6 +13,8 @@ val cxfVersion = "3.3.1"
 val nareVersion = "13785ff"
 val medlemskapDomeneVersion = "11"
 val coroutinesVersion = "1.3.3"
+val wireMockVersion = "2.19.0"
+val junitJupiterVersion = "5.4.0"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
@@ -73,8 +75,12 @@ dependencies {
 
     implementation(tjenestespesifikasjon("person-v3-tjenestespesifikasjon"))
 
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
+    testImplementation("com.github.tomakehurst:wiremock:$wireMockVersion") {
+        exclude(group = "junit")
+    }
 }
 
 java {
@@ -84,6 +90,13 @@ java {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }
 
 tasks.withType<Wrapper> {

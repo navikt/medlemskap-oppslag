@@ -23,6 +23,7 @@ class StsRestClient(val baseUrl: String, val username: String, val password: Str
                 parameter("grant_type", "client_credentials")
                 parameter("scope", "openid")
             }
+            cachedOidcToken!!.initExpirationTime()
         }
 
         return cachedOidcToken!!.token
@@ -36,6 +37,7 @@ class StsRestClient(val baseUrl: String, val username: String, val password: Str
                     header(HttpHeaders.Authorization, "Basic ${credentials()}")
                 }
             }
+            cachedSamlToken!!.initExpirationTime()
         }
 
         val urldecodedBase64 = cachedSamlToken!!.token
@@ -57,9 +59,14 @@ class StsRestClient(val baseUrl: String, val username: String, val password: Str
             val type: String,
             @SerializedName("expires_in")
             val expiresIn: Int) {
-        // Sett utløpstid litt før, for å være sikker
-        private val expirationTime: LocalDateTime = LocalDateTime.now().plusSeconds(expiresIn - 10L)
 
-        fun hasExpired(): Boolean = expirationTime.isBefore(LocalDateTime.now())
+        private var expirationTime: LocalDateTime? = null
+
+        // Fordi GSON ikke kaller konstruktør på dataklasser, så må man lage en liten hack for å sette utløpstid
+        fun initExpirationTime() {
+            expirationTime = LocalDateTime.now().plusSeconds(expiresIn - 20L)
+        }
+
+        fun hasExpired(): Boolean = expirationTime?.isBefore(LocalDateTime.now()) ?: true
     }
 }
