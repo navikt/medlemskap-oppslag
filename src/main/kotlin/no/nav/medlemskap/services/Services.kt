@@ -2,6 +2,7 @@ package no.nav.medlemskap.services
 
 import no.nav.medlemskap.common.callIdGenerator
 import no.nav.medlemskap.configuration
+import no.nav.medlemskap.services.aareg.AaRegClient
 import no.nav.medlemskap.services.inntekt.InntektClient
 import no.nav.medlemskap.services.medl.MedlClient
 import no.nav.medlemskap.services.sts.StsRestClient
@@ -12,6 +13,7 @@ object Services {
 
     var personService: PersonService
     val medlClient: MedlClient
+    val aaRegClient: AaRegClient
     val inntektClient: InntektClient
 
     init {
@@ -40,6 +42,7 @@ object Services {
 
         personService = PersonService(wsClients.person(configuration.register.tpsUrl))
         medlClient = restClients.medl2(configuration.register.medl2BaseUrl)
+        aaRegClient = restClients.aaReg(configuration.register.aaRegBaseUrl)
         inntektClient = restClients.inntektskomponenten(configuration.register.inntektBaseUrl)
     }
 

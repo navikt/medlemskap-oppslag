@@ -57,6 +57,8 @@ spec:
     - name: INNTEKT_BASE_URL
       value: https://app-q1.adeo.no/inntektskomponenten-ws/rs/api/v1
     - name: MEDL2_BASE_URL
-      value: https://app-q1.adeo.no/medl2
+      value: https://app-q2.adeo.no/medl2
+    - name: AAREG_BASE_URL
+      value: https://modapp-q1.adeo.no/aareg-services/api
     - name: MEDLEMSKAP_REGLER_URL
       value: https://medlemskap-regler.nais.preprod.local
