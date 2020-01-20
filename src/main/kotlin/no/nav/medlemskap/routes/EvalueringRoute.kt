@@ -1,6 +1,5 @@
 package no.nav.medlemskap.routes
 
-import kotlinx.coroutines.async
 import io.ktor.application.call
 import io.ktor.auth.authenticate
 import io.ktor.client.request.post
@@ -11,6 +10,7 @@ import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.routing.post
+import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging
@@ -22,6 +22,7 @@ import no.nav.medlemskap.domene.Regelavklaring
 import no.nav.medlemskap.modell.Request
 import no.nav.medlemskap.modell.Resultat
 import no.nav.medlemskap.services.Services.aaRegClient
+import no.nav.medlemskap.services.Services.inntektClient
 import no.nav.medlemskap.services.Services.medlClient
 import no.nav.medlemskap.services.Services.personService
 import no.nav.medlemskap.services.tpsws.mapPersonhistorikkResultat
@@ -50,14 +51,17 @@ private suspend fun createDatagrunnlag(
     val historikkFraTpsRequest = async { personService.personhistorikk(fnr) }
     val medlemskapsunntakRequest = async { medlClient.hentMedlemskapsunntak(fnr) }
     val arbeidsforholdRequest = async { aaRegClient.hentArbeidsforhold(fnr) }
+    val inntektListeRequest = async { inntektClient.hentInntektListe(fnr, soknadsperiodeStart, soknadsperiodeSlutt) }
 
     val historikkFraTps = historikkFraTpsRequest.await()
     val medlemskapsunntak = medlemskapsunntakRequest.await()
     val arbeidsforhold = arbeidsforholdRequest.await()
+    val inntektListe = inntektListeRequest.await()
 
     // En test for å se på data:
     logger.info { medlemskapsunntak }
     logger.info { arbeidsforhold }
+    logger.info { inntektListe }
 
     Regelavklaring(
             soknadsperiode = Periode(fom = soknadsperiodeStart, tom = soknadsperiodeSlutt),
