@@ -3,6 +3,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
 
 val ktorVersion = "1.2.6"
+val jacksonVersion = "2.10.1"
 val prometheusVersion = "0.7.0"
 val logbackVersion = "1.2.3"
 val logstashVersion = "5.1"
@@ -13,6 +14,8 @@ val cxfVersion = "3.3.1"
 val nareVersion = "13785ff"
 val medlemskapDomeneVersion = "11"
 val coroutinesVersion = "1.3.3"
+val wireMockVersion = "2.19.0"
+val junitJupiterVersion = "5.4.0"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
@@ -45,13 +48,13 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    implementation("io.ktor:ktor-gson:$ktorVersion")
+    implementation("io.ktor:ktor-jackson:$ktorVersion")
     implementation("io.ktor:ktor-auth:$ktorVersion")
     implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-apache:$ktorVersion")
     implementation("io.ktor:ktor-client-json:$ktorVersion")
-    implementation("io.ktor:ktor-client-gson:$ktorVersion")
+    implementation("io.ktor:ktor-client-jackson:$ktorVersion")
     implementation("io.prometheus:simpleclient_hotspot:$prometheusVersion")
     implementation("io.prometheus:simpleclient_common:$prometheusVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
@@ -60,6 +63,10 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging:$kotlinLoggerVersion")
     implementation("no.nav.medlemskap:medlemskap-domene:$medlemskapDomeneVersion")
     implementation("no.nav:nare:$nareVersion")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
 
     implementation("org.apache.cxf:cxf-rt-ws-security:$cxfVersion")
     implementation("org.apache.cxf:cxf-rt-frontend-jaxws:$cxfVersion")
@@ -73,8 +80,12 @@ dependencies {
 
     implementation(tjenestespesifikasjon("person-v3-tjenestespesifikasjon"))
 
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
+    testImplementation("com.github.tomakehurst:wiremock:$wireMockVersion") {
+        exclude(group = "junit")
+    }
 }
 
 java {
@@ -84,6 +95,13 @@ java {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+    testLogging {
+        events("passed", "skipped", "failed")
+    }
 }
 
 tasks.withType<Wrapper> {

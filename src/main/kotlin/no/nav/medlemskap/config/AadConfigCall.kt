@@ -1,19 +1,19 @@
 package no.nav.medlemskap.config
 
-import com.google.gson.annotations.SerializedName
+import com.fasterxml.jackson.annotation.JsonProperty
 import io.ktor.client.request.get
 import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging
 import no.nav.medlemskap.common.defaultHttpClient
 
 data class AzureAdOpenIdConfiguration(
-        @SerializedName("jwks_uri")
+        @JsonProperty("jwks_uri")
         val jwksUri: String,
-        @SerializedName("issuer")
+        @JsonProperty("issuer")
         val issuer: String,
-        @SerializedName("token_endpoint")
+        @JsonProperty("token_endpoint")
         val tokenEndpoint: String,
-        @SerializedName("authorization_endpoint")
+        @JsonProperty("authorization_endpoint")
         val authorizationEndpoint: String
 )
 
