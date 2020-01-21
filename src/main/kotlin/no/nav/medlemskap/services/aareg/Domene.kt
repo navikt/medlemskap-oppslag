@@ -29,7 +29,11 @@ data class Arbeidsavtale(
         val sistStillingsendring: String?,
         val sporingsinformasjon: Sporingsinformasjon,
         val stillingsprosent: Double?,
-        val yrke: String
+        val yrke: String,
+        val fartsomraade: String?,
+        val skipsregister: String?,
+        val skipstype: String?
+
 )
 
 data class Arbeidsforhold(
