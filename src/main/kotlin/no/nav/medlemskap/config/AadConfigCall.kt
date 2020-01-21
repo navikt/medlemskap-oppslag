@@ -1,12 +1,13 @@
 package no.nav.medlemskap.config
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.ktor.client.request.get
 import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging
 import no.nav.medlemskap.common.defaultHttpClient
 
-
+@JsonIgnoreProperties
 data class AzureAdOpenIdConfiguration(
         @JsonProperty("jwks_uri")
         val jwksUri: String,
