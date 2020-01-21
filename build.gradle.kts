@@ -15,6 +15,7 @@ val nareVersion = "13785ff"
 val medlemskapDomeneVersion = "11"
 val coroutinesVersion = "1.3.3"
 val wireMockVersion = "2.19.0"
+val mockkVersion = "1.9"
 val junitJupiterVersion = "5.4.0"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
@@ -86,6 +87,7 @@ dependencies {
     testImplementation("com.github.tomakehurst:wiremock:$wireMockVersion") {
         exclude(group = "junit")
     }
+    testImplementation("io.mockk:mockk:$mockkVersion")
 }
 
 java {
