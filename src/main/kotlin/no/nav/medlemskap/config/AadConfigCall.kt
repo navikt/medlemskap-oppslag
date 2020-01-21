@@ -7,7 +7,7 @@ import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging
 import no.nav.medlemskap.common.defaultHttpClient
 
-@JsonIgnoreProperties
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class AzureAdOpenIdConfiguration(
         @JsonProperty("jwks_uri")
         val jwksUri: String,
