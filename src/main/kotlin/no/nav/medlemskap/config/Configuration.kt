@@ -26,7 +26,8 @@ data class Configuration(
             val tpsUrl: String = "TPSWS_URL".configProperty(),
             val medl2BaseUrl: String = "MEDL2_BASE_URL".configProperty(),
             val aaRegBaseUrl: String = "AAREG_BASE_URL".configProperty(),
-            val inntektBaseUrl: String = "INNTEKT_BASE_URL".configProperty()
+            val inntektBaseUrl: String = "INNTEKT_BASE_URL".configProperty(),
+            val safBaseUrl: String = "SAF_BASE_URL".configProperty()
     )
 
     data class Sts(
