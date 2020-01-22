@@ -8,6 +8,11 @@ import io.ktor.http.HttpHeaders
 import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.services.sts.StsRestClient
 
+private const val TEMA_MEDLEMSKAP = "MED"
+private const val TEMA_UNNTAK_FRA_MEDLEMSKAP = "UFM"
+private const val TEMA_TRYGDEAVGIFT = "TRY"
+private const val ANTALL_JOURNALPOSTER = 10
+
 class SafClient(val baseUrl: String, val stsClient: StsRestClient, val callIdGenerator: () -> String) {
 
     suspend fun hentJournaldata(fnr: String): SafResponse {
@@ -15,7 +20,7 @@ class SafClient(val baseUrl: String, val stsClient: StsRestClient, val callIdGen
         val query =
                 """
                 query {
-                  dokumentoversiktBruker(brukerId: {id: "$fnr", type: FNR}, tema: [MED, UFM, TRY], foerste: 10) {
+                  dokumentoversiktBruker(brukerId: {id: "$fnr", type: FNR}, tema: [$TEMA_MEDLEMSKAP, $TEMA_UNNTAK_FRA_MEDLEMSKAP, $TEMA_TRYGDEAVGIFT], foerste: $ANTALL_JOURNALPOSTER) {
                     journalposter {
                       journalpostId
                       tittel
@@ -41,4 +46,5 @@ class SafClient(val baseUrl: String, val stsClient: StsRestClient, val callIdGen
         }
     }
 }
+
 
