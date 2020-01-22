@@ -13,8 +13,8 @@ data class FinnOppgaverResponse (
 data class Oppgave (
         val aktivDato: LocalDate,
         val prioritet: Prioritet,
-        val status: Int,
-        val versjon: String,
+        val status: Status,
+        val versjon: Int,
         val tilordnetRessurs: String?,
         val tema: String?,
         val beskrivelse: String?
