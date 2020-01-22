@@ -16,7 +16,8 @@ private val defaultProperties = ConfigurationMap(
                 "SECURITY_TOKEN_SERVICE_REST_URL" to "",
                 "SERVICE_USER_PASSWORD" to "",
                 "NAIS_APP_NAME" to "",
-                "JWT_AUDIENCE" to ""
+                "JWT_AUDIENCE" to "",
+                "SAF_BASE_URL" to ""
         )
 )
 
