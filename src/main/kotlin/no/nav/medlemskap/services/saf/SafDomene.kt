@@ -1,14 +1,26 @@
 package no.nav.medlemskap.services.saf
 
-data class Dokument(val dokumentId: String, val tittel: String)
+import java.time.LocalDateTime
 
-data class JournalPost(val journalpostId: String, val tittel: String, val journalposttype: String, val journalstatus: String, val tema: String, val dokumenter: List<Dokument> )
 
-data class DokumentoversiktBruker(val journalposter: List<JournalPost>)
+enum class JournalStatus {
+    MOTTATT, JOURNALFOERT, FERDIGSTILT, EKSPEDERT, UNDER_ARBEID, FEILREGISTRERT, UTGAAR, AVBRUTT, UKJENT_BRUKER, RESERVERT, OPPLASTING_DOKUMENT, UKJENT
+}
 
-data class Data(val dokumentoversiktBruker: DokumentoversiktBruker)
+enum class JournalPostType {
+    I, U, N
+}
+
+data class DokumentInfo(val dokumentInfoId: String, val tittel: String?)
+
+data class JournalPost(val journalpostId: String, val tittel: String?, val journalposttype: JournalPostType?, val journalstatus: JournalStatus?, val tema: String?, val datoOpprettet: LocalDateTime, val dokumenter: List<DokumentInfo>?)
+
+data class Dokumentoversikt(val journalposter: List<JournalPost>)
+
+data class Data(val dokumentoversiktBruker: Dokumentoversikt)
 
 data class SafResponse(val data: Data)
+
 
 // Kan utvides:
 //
