@@ -62,3 +62,5 @@ spec:
       value: https://modapp-q1.adeo.no/aareg-services/api
     - name: MEDLEMSKAP_REGLER_URL
       value: https://medlemskap-regler.nais.preprod.local
+    - name: OPPGAVE_BASE_URL
+      value: https://oppgave.nais.preprod.local
