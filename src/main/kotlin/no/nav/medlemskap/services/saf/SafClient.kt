@@ -21,7 +21,7 @@ class SafClient(val baseUrl: String, val stsClient: StsRestClient, val callIdGen
                 """
                 {"query": "
                     query {
-                      dokumentoversiktBruker(brukerId: {id: "$fnr", type: FNR}, tema: [$TEMA_MEDLEMSKAP, $TEMA_UNNTAK_FRA_MEDLEMSKAP, $TEMA_TRYGDEAVGIFT], foerste: $ANTALL_JOURNALPOSTER) {
+                      dokumentoversiktBruker(brukerId: {id: \"$fnr\", type: FNR}, tema: [$TEMA_MEDLEMSKAP, $TEMA_UNNTAK_FRA_MEDLEMSKAP, $TEMA_TRYGDEAVGIFT], foerste: $ANTALL_JOURNALPOSTER) {
                         journalposter {
                           journalpostId
                           tittel
