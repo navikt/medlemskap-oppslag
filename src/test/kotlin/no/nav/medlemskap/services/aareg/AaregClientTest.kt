@@ -3,6 +3,7 @@ package no.nav.medlemskap.services.aareg
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock
+import com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
@@ -58,27 +59,20 @@ fun `tester response`() {
 
     val client = AaRegClient(server.baseUrl(), stsClient, callId)
 
-    val response = runBlocking { client.hentArbeidsforhold("10108000398", LocalDate.of(2016, 1, 1), LocalDate.of(2016, 8, 1)) }
+    val response = runBlocking { client.hentArbeidsforhold("10109000398", LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
     println(response)
 
 
-    Assertions.assertEquals(response, aaRegResponse)
-    Assertions.assertEquals("ZZ990693", response[0].sporingsinformasjon.endretAv)
+    Assertions.assertEquals("ERKONK", response[0].ansettelsesperiode.varslingskode)
+    Assertions.assertEquals("Z990693", response[0].sporingsinformasjon.endretAv)
 
 
 
 }
 
-private val config = Configuration(
-        azureAd = Configuration.AzureAd(
-                openIdConfiguration = AzureAdOpenIdConfiguration("", "", "", "")
-        )
-)
-
 private val aaRegResponse = """
-    {
    [
-  {
+     {
     "ansettelsesperiode": {
       "bruksperiode": {
         "fom": "2015-01-06T21:44:04.748",
@@ -219,27 +213,20 @@ private val aaRegResponse = """
       }
     ]
   }
+]
 """.trimIndent()
 
 private val queryMapping: MappingBuilder = WireMock.get(WireMock.urlPathEqualTo("/v1/arbeidstaker/arbeidsforhold"))
-        .withHeader(HttpHeaders.Accept, WireMock.equalTo("application/json"))
-        .withHeader(HttpHeaders.ContentType, WireMock.equalTo("application/json"))
-        .withHeader(HttpHeaders.Authorization, WireMock.equalTo("Bearer dummytoken"))
-        .withHeader("Nav-Consumer-Token", WireMock.equalTo("Bearer dummytoken"))
-        .withHeader("Nav-Consumer-Id", WireMock.equalTo("test"))
-        .withHeader("Nav-Call-Id", WireMock.equalTo("12345"))
-        .withQueryParam("ansettelsesperiodeFom", "2020-01-01")
-        .withQueryParam("ansettelsesperiodeTom", "2020-01-01")
-        .withQueryParam("historikk", "true")
-    header("Nav-Call-Id", callIdGenerator.invoke())
-    header("Nav-Personident", fnr)
-    header("Nav-Consumer-Token", "Bearer ${oidcToken}")
-    //header(HttpHeaders.AcceptCharset, Charsets)
-    fraOgMed?.let { parameter("ansettelsesperiodeFom", fraOgMed.tilIsoFormat()) }
-    tilOgMed?.let { parameter("ansettelsesperiodeTom", tilOgMed.tilIsoFormat()) }
-    parameter("historikk", "true")
-    parameter("regelverk", "ALLE")
+        .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
+        .withHeader("Nav-Consumer-Token", equalTo("Bearer dummytoken"))
+        .withHeader("Nav-Personident", equalTo("10109000398"))
+        .withHeader("Nav-Call-Id", equalTo("12345"))
+        .withQueryParam("ansettelsesperiodeFom", equalTo("2010-01-01"))
+        .withQueryParam("ansettelsesperiodeTom", equalTo("2016-01-01"))
+        .withQueryParam("historikk", equalTo("true"))
+        .withQueryParam("regelverk", equalTo("ALLE"))
 
 
 }
+
 

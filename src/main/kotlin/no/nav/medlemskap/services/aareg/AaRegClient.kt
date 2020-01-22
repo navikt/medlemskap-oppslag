@@ -23,7 +23,6 @@ class AaRegClient(val baseUrl: String, val stsClient: StsRestClient, val callIdG
             header("Nav-Call-Id", callIdGenerator.invoke())
             header("Nav-Personident", fnr)
             header("Nav-Consumer-Token", "Bearer ${oidcToken}")
-            //header(HttpHeaders.AcceptCharset, Charsets)
             fraOgMed?.let { parameter("ansettelsesperiodeFom", fraOgMed.tilIsoFormat()) }
             tilOgMed?.let { parameter("ansettelsesperiodeTom", tilOgMed.tilIsoFormat()) }
             parameter("historikk", "true")
