@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services.aareg
+package no.nav.medlemskap.modell.aareg
 
 import java.time.LocalDate
 import java.time.LocalDateTime
