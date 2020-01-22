@@ -6,7 +6,8 @@ private val defaultProperties = ConfigurationMap(
         mapOf(
                 "AZURE_TENANT" to "",
                 "AZURE_AUTHORITY_ENDPOINT" to "",
-                "SECURITY_TOKEN_SERVICE_BASE_URL" to ""
+                "SECURITY_TOKEN_SERVICE_BASE_URL" to "",
+                "OPPGAVE_BASE_URL" to ""
         )
 )
 
@@ -26,7 +27,8 @@ data class Configuration(
             val tpsUrl: String = "TPSWS_URL".configProperty(),
             val medl2BaseUrl: String = "MEDL2_BASE_URL".configProperty(),
             val aaRegBaseUrl: String = "AAREG_BASE_URL".configProperty(),
-            val inntektBaseUrl: String = "INNTEKT_BASE_URL".configProperty()
+            val inntektBaseUrl: String = "INNTEKT_BASE_URL".configProperty(),
+            val oppgaveBaseUrl: String = "OPPGAVE_BASE_URL".configProperty()
     )
 
     data class Sts(

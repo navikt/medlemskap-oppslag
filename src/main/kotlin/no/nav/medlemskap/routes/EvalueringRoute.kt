@@ -24,6 +24,7 @@ import no.nav.medlemskap.modell.Resultat
 import no.nav.medlemskap.services.Services.aaRegClient
 import no.nav.medlemskap.services.Services.inntektClient
 import no.nav.medlemskap.services.Services.medlClient
+import no.nav.medlemskap.services.Services.oppgaveClient
 import no.nav.medlemskap.services.Services.personService
 import no.nav.medlemskap.services.tpsws.mapPersonhistorikkResultat
 import no.nav.nare.core.evaluations.Evaluering
@@ -52,16 +53,19 @@ private suspend fun createDatagrunnlag(
     val medlemskapsunntakRequest = async { medlClient.hentMedlemskapsunntak(fnr) }
     val arbeidsforholdRequest = async { aaRegClient.hentArbeidsforhold(fnr) }
     val inntektListeRequest = async { inntektClient.hentInntektListe(fnr, soknadsperiodeStart, soknadsperiodeSlutt) }
+    val gosysOppgaver = async { oppgaveClient.hentOppgaver(fnr) }
 
     val historikkFraTps = historikkFraTpsRequest.await()
     val medlemskapsunntak = medlemskapsunntakRequest.await()
     val arbeidsforhold = arbeidsforholdRequest.await()
     val inntektListe = inntektListeRequest.await()
+    val oppgaver = gosysOppgaver.await()
 
     // En test for å se på data:
     logger.info { medlemskapsunntak }
     logger.info { arbeidsforhold }
     logger.info { inntektListe }
+    logger.info { oppgaver }
 
     Regelavklaring(
             soknadsperiode = Periode(fom = soknadsperiodeStart, tom = soknadsperiodeSlutt),
