@@ -65,11 +65,10 @@ class InntektClientTest {
         val response = runBlocking { client.hentInntektListe("10108000398", LocalDate.of(2016, 1, 1), LocalDate.of(2016, 8, 1)) }
         println(response)
 
-
-      //  assertEquals(YearMonth.of(2016, 1), response.arbeidsInntektMaaned[0].aarMaaned)
+        assertEquals(YearMonth.of(2016, 1), response.arbeidsInntektMaaned[0].aarMaaned)
         assertEquals("LOENNSINNTEKT", response.arbeidsInntektMaaned[0].arbeidsInntektInformasjon.inntektListe[0].inntektType)
         assertEquals(25000.0, response.arbeidsInntektMaaned[0].arbeidsInntektInformasjon.inntektListe[0].beloep)
-      //  assertEquals(YearMonth.of(2020, 1), response.arbeidsInntektMaaned[0].arbeidsInntektInformasjon.inntektListe[0].leveringstidspunkt)
+        assertEquals(YearMonth.of(2020, 1), response.arbeidsInntektMaaned[0].arbeidsInntektInformasjon.inntektListe[0].leveringstidspunkt)
         assertEquals(null, response.arbeidsInntektMaaned[0].avvikListe)
     }
 

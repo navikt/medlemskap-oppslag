@@ -80,7 +80,7 @@ data class Inntekt (
     val inntektskilde: String,
     val inntektsperiodetype: String,
     val inntektsstatus: String,
-    val leveringstidspunkt: String,
+    val leveringstidspunkt: YearMonth,
     val utbetaltIMaaned: YearMonth,
     val arbeidsforholdREF: String?,
     val opplysningspliktig: Ident,

@@ -17,7 +17,8 @@ private val defaultProperties = ConfigurationMap(
                 "SERVICE_USER_PASSWORD" to "",
                 "NAIS_APP_NAME" to "",
                 "JWT_AUDIENCE" to "",
-                "SAF_BASE_URL" to ""
+                "SAF_BASE_URL" to "",
+                "OPPGAVE_BASE_URL" to ""
         )
 )
 
@@ -38,7 +39,8 @@ data class Configuration(
             val medl2BaseUrl: String = "MEDL2_BASE_URL".configProperty(),
             val aaRegBaseUrl: String = "AAREG_BASE_URL".configProperty(),
             val inntektBaseUrl: String = "INNTEKT_BASE_URL".configProperty(),
-            val safBaseUrl: String = "SAF_BASE_URL".configProperty()
+            val safBaseUrl: String = "SAF_BASE_URL".configProperty(),
+            val oppgaveBaseUrl: String = "OPPGAVE_BASE_URL".configProperty()
     )
 
     data class Sts(

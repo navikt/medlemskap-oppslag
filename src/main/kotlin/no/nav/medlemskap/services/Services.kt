@@ -5,6 +5,7 @@ import no.nav.medlemskap.configuration
 import no.nav.medlemskap.services.aareg.AaRegClient
 import no.nav.medlemskap.services.inntekt.InntektClient
 import no.nav.medlemskap.services.medl.MedlClient
+import no.nav.medlemskap.services.oppgave.OppgaveClient
 import no.nav.medlemskap.services.saf.SafClient
 import no.nav.medlemskap.services.sts.StsRestClient
 import no.nav.medlemskap.services.sts.stsClient
@@ -17,6 +18,7 @@ object Services {
     val aaRegClient: AaRegClient
     val inntektClient: InntektClient
     val safClient: SafClient
+    val oppgaveClient: OppgaveClient
 
     init {
         val stsWsClient = stsClient(
@@ -47,6 +49,7 @@ object Services {
         aaRegClient = restClients.aaReg(configuration.register.aaRegBaseUrl)
         inntektClient = restClients.inntektskomponenten(configuration.register.inntektBaseUrl)
         safClient = restClients.saf(configuration.register.safBaseUrl)
+        oppgaveClient = restClients.oppgaver(configuration.register.oppgaveBaseUrl)
     }
 
 }
