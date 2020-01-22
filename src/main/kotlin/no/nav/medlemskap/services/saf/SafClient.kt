@@ -27,6 +27,7 @@ class SafClient(val baseUrl: String, val stsClient: StsRestClient, val callIdGen
                       journalposttype
                       journalstatus
                       tema
+                      datoOpprettet
                       dokumenter {
                         dokumentInfoId
                         tittel
@@ -39,6 +40,7 @@ class SafClient(val baseUrl: String, val stsClient: StsRestClient, val callIdGen
         return defaultHttpClient.post<SafResponse>(body = query) {
             url("$baseUrl")
             header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
+            header(HttpHeaders.ContentType, ContentType.Application.Json)
             header(HttpHeaders.Accept, ContentType.Application.Json)
             header("Nav-Callid", callIdGenerator.invoke())
             header("Nav-Consumer-Id", "p3-medlemskap")
