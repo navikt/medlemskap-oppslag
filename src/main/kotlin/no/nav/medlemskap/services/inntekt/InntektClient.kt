@@ -6,7 +6,6 @@ import io.ktor.http.HttpHeaders
 import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.configuration
-import no.nav.medlemskap.modell.inntekt.ArbeidsinntektMaaned
 import no.nav.medlemskap.modell.inntekt.HentInntektListeRequest
 import no.nav.medlemskap.modell.inntekt.Ident
 import no.nav.medlemskap.modell.inntekt.InntektskomponentResponse
