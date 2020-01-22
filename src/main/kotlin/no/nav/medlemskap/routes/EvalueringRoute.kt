@@ -37,7 +37,8 @@ fun Routing.evalueringRoute() {
             API_COUNTER.inc()
             val request = call.receive<Request>()
             val datagrunnlag = createDatagrunnlag(request.fnr, request.soknadsperiodeStart, request.soknadsperiodeSlutt, request.soknadstidspunkt)
-            call.respond(Resultat(datagrunnlag, evaluerData(datagrunnlag)))
+            // call.respond(Resultat(datagrunnlag, evaluerData(datagrunnlag))) DISABLER TIL DENNE ER FIKSET FOR NY DATA
+            call.respond(datagrunnlag)
         }
     }
 }

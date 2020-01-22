@@ -6,7 +6,8 @@ import java.time.YearMonth
 
 
 data class InntektskomponentResponse (
-        val arbeidsInntektMaaned: List<ArbeidsinntektMaaned>,
+        val arbeidsInntektMaaned: List<ArbeidsinntektMaaned>?,
+
         val ident: Ident?
 )
 
