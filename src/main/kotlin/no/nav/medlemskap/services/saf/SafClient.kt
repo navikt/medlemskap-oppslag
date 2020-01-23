@@ -17,7 +17,7 @@ private const val ANTALL_JOURNALPOSTER = 10
 class SafClient(val baseUrl: String, val stsClient: StsRestClient, val callIdGenerator: () -> String) {
 
     suspend fun hentJournaldata(fnr: String): SafResponse {
-        val minimalQuery = """{"query": "query{ dokumentoversiktBruker(brukerId: {id: \"$fnr\", type: FNR}, foerste:5) {journalposter {journalpostId}}}"}"""
+        val minimalQuery = "{\"query\": \"query{ dokumentoversiktBruker(brukerId: {id: \\\"$fnr\\\", type: FNR}, foerste:5) {journalposter {journalpostId}}}\"}"
         val query =
                 """
                 { 
