@@ -5,6 +5,7 @@ import io.ktor.client.request.post
 import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import io.ktor.http.content.TextContent
 import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.services.sts.StsRestClient
 
@@ -36,17 +37,17 @@ class SafClient(val baseUrl: String, val stsClient: StsRestClient, val callIdGen
                         }
                       }
                     }"
-                    "variables": null
                 }
                 """.trimIndent()
 
-        return defaultHttpClient.post<SafResponse>(body = query) {
+        return defaultHttpClient.post<SafResponse>() {
             url("$baseUrl")
             header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
             header(HttpHeaders.ContentType, ContentType.Application.Json)
             header(HttpHeaders.Accept, ContentType.Application.Json)
             header("Nav-Callid", callIdGenerator.invoke())
             header("Nav-Consumer-Id", "p3-medlemskap")
+            body = TextContent(query, contentType = ContentType.Application.Json)
             //header(HttpHeaders.AcceptCharset, Charsets)
         }
     }
