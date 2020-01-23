@@ -17,7 +17,7 @@ private const val ANTALL_JOURNALPOSTER = 10
 class SafClient(val baseUrl: String, val stsClient: StsRestClient, val callIdGenerator: () -> String) {
 
     suspend fun hentJournaldata(fnr: String): SafResponse {
-        //TODO("Skal det sjekkes bare for en gitt periode??")
+        val minimalQuery = """{"query": "query{ dokumentoversiktBruker(brukerId: {id: \"$fnr\", type: FNR}, foerste:5) {journalposter {journalpostId}}}"}"""
         val query =
                 """
                 { 
@@ -40,6 +40,8 @@ class SafClient(val baseUrl: String, val stsClient: StsRestClient, val callIdGen
                 }
                 """.trimIndent()
 
+//                {"query": "query{ dokumentoversiktBruker(brukerId: {id: \"1000034467123\", type: AKTOERID}, foerste:5) {journalposter {journalpostId}}}"}
+
         return defaultHttpClient.post<SafResponse>() {
             url("$baseUrl")
             header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
@@ -47,7 +49,7 @@ class SafClient(val baseUrl: String, val stsClient: StsRestClient, val callIdGen
             header(HttpHeaders.Accept, ContentType.Application.Json)
             header("Nav-Callid", callIdGenerator.invoke())
             header("Nav-Consumer-Id", "p3-medlemskap")
-            body = TextContent(query, contentType = ContentType.Application.Json)
+            body = TextContent(minimalQuery, contentType = ContentType.Application.Json)
             //header(HttpHeaders.AcceptCharset, Charsets)
         }
     }
