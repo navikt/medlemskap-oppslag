@@ -19,7 +19,25 @@ class SafClient(val baseUrl: String, val stsClient: StsRestClient, val callIdGen
         //TODO("Skal det sjekkes bare for en gitt periode??")
         val query =
                 """
-                { "query": "query { dokumentoversiktBruker(brukerId: {id: \"$fnr\", type: FNR}, tema: [$TEMA_MEDLEMSKAP, $TEMA_UNNTAK_FRA_MEDLEMSKAP, $TEMA_TRYGDEAVGIFT], foerste: $ANTALL_JOURNALPOSTER) { journalposter { journalpostId tittel journalposttype journalstatus tema datoOpprettet dokumenter { dokumentInfoId tittel } } } }" }
+                { 
+                    "query": "query {
+                      dokumentoversiktBruker(brukerId: {id: \"$fnr\", type: FNR}, tema: [$TEMA_MEDLEMSKAP, $TEMA_UNNTAK_FRA_MEDLEMSKAP, $TEMA_TRYGDEAVGIFT], foerste: $ANTALL_JOURNALPOSTER) {
+                        journalposter {
+                          journalpostId
+                          tittel
+                          journalposttype
+                          journalstatus
+                          tema
+                          datoOpprettet
+                          dokumenter {
+                            dokumentInfoId
+                            tittel
+                          }
+                        }
+                      }
+                    }"
+                    "variables": null
+                }
                 """.trimIndent()
 
         return defaultHttpClient.post<SafResponse>(body = query) {
