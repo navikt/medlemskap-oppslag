@@ -59,7 +59,7 @@ class SafClient(val baseUrl: String, val stsClient: StsRestClient, val callIdGen
             header(HttpHeaders.Accept, ContentType.Application.Json)
             header("Nav-Callid", callIdGenerator.invoke())
             header("Nav-Consumer-Id", "p3-medlemskap")
-            body = TextContent(objectMapper.writeValueAsString(DokumentoversiktBrukerQuery(fnr)), contentType = ContentType.Application.Json)
+            body = DokumentoversiktBrukerQuery(fnr)
             //header(HttpHeaders.AcceptCharset, Charsets)
         }
     }
