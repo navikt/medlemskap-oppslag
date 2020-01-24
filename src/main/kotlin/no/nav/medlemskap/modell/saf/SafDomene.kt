@@ -106,7 +106,7 @@ data class DokumentoversiktBrukerQuery(val fnr: String, val antallJournalPoster:
               dokumentoversiktBruker(
                     brukerId: {id: "$fnr", type: ${BrukerIdType.FNR}}, 
                     tema: [${Tema.MED}, ${Tema.UFM}, ${Tema.TRY}], 
-                    journalstatus: [${JournalStatus.MOTTATT}, ${JournalStatus.JOURNALFOERT}, ${JournalStatus.FERDIGSTILT}, ${JournalStatus.EKSPEDERT}, ${JournalStatus.UNDER_ARBEID}, ${JournalStatus.RESERVERT}, ${JournalStatus.OPPLASTING_DOKUMENT}, ${JournalStatus.UKJENT}], 
+                    journalstatuser: [${JournalStatus.MOTTATT}, ${JournalStatus.JOURNALFOERT}, ${JournalStatus.FERDIGSTILT}, ${JournalStatus.EKSPEDERT}, ${JournalStatus.UNDER_ARBEID}, ${JournalStatus.RESERVERT}, ${JournalStatus.OPPLASTING_DOKUMENT}, ${JournalStatus.UKJENT}], 
                     foerste: $antallJournalPoster) {
                 journalposter {
                   journalpostId
