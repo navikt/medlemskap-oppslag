@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services.aareg
+package no.nav.medlemskap.modell.aareg
 
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -38,7 +38,7 @@ data class Arbeidsavtale(
 
 data class Arbeidsforhold(
         val ansettelsesperiode: Ansettelsesperiode,
-        val antallTimerForTimeloennet: AntallTimerForTimeloennet,
+        val antallTimerForTimeloennet: List<AntallTimerForTimeloennet>,
         val arbeidsavtaler: List<Arbeidsavtale>,
         val arbeidsforholdId: String,
         val arbeidsgiver: OpplysningspliktigArbeidsgiver,
@@ -46,7 +46,7 @@ data class Arbeidsforhold(
         val innrapportertEtterAOrdningen: Boolean,
         val navArbeidsforholdId: Int,
         val opplysningspliktig: OpplysningspliktigArbeidsgiver,
-        val permisjonPermitteringer: PermisjonPermittering,
+        val permisjonPermitteringer: List<PermisjonPermittering>,
         val registrert: LocalDateTime,
         val sistBekreftet: LocalDateTime?,
         val sporingsinformasjon: Sporingsinformasjon,
@@ -97,7 +97,8 @@ data class PermisjonPermittering(
         val permisjonPermitteringId: String,
         val prosent: Double?,
         val sporingsinformasjon: Sporingsinformasjon,
-        val type: String
+        val type: String,
+        val varslingskode: String
 )
 
 enum class PersonType {
@@ -113,7 +114,7 @@ data class Person(
 data class Sporingsinformasjon(
         val endretAv: String,
         val endretKilde: String,
-        val endretKildeReferanse: String,
+        val endretKildeReferanse: String?,
         val endretTidspunkt: LocalDateTime,
         val opprettetAv: String,
         val opprettetKilde: String,

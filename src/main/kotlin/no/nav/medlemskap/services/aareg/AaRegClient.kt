@@ -7,6 +7,7 @@ import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import no.nav.medlemskap.common.defaultHttpClient
+import no.nav.medlemskap.modell.aareg.Arbeidsforhold
 import no.nav.medlemskap.services.sts.StsRestClient
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -23,7 +24,6 @@ class AaRegClient(val baseUrl: String, val stsClient: StsRestClient, val callIdG
             header("Nav-Call-Id", callIdGenerator.invoke())
             header("Nav-Personident", fnr)
             header("Nav-Consumer-Token", "Bearer ${oidcToken}")
-            //header(HttpHeaders.AcceptCharset, Charsets)
             fraOgMed?.let { parameter("ansettelsesperiodeFom", fraOgMed.tilIsoFormat()) }
             tilOgMed?.let { parameter("ansettelsesperiodeTom", tilOgMed.tilIsoFormat()) }
             parameter("historikk", "true")
