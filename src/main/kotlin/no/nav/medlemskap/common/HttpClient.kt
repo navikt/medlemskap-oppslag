@@ -11,16 +11,21 @@ import io.ktor.client.features.json.JsonFeature
 import org.apache.http.impl.conn.SystemDefaultRoutePlanner
 import java.net.ProxySelector
 
+
 internal val defaultHttpClient = HttpClient(Apache) {
     install(JsonFeature) {
         serializer = JacksonSerializer {
             this.registerModule(JavaTimeModule())
-                .configure(SerializationFeature.INDENT_OUTPUT, true)
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-                .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true)
+                    .configure(SerializationFeature.INDENT_OUTPUT, true)
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                    .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true)
         }
     }
+
     engine {
         customizeClient { setRoutePlanner(SystemDefaultRoutePlanner(ProxySelector.getDefault())) }
     }
+
+    Metrikker()
+
 }
