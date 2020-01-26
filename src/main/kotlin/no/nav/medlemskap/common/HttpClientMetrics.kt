@@ -33,32 +33,26 @@ class HttpClientMetrics {
         val operation = response.call.request.method.value
         val service = response.call.request.url.encodedPath
         restClientCounter.labels(service, operation, status).inc()
-        println("logResponse $status, $operation, $service")
 
-        val tidsbruk = response.call.attributes.getOrNull<Histogram.Timer>(timerKey)?.observeDuration()
-        println("logResponse tidsbruk $tidsbruk")
-
+        response.call.attributes.getOrNull<Histogram.Timer>(timerKey)?.observeDuration()
     }
 
     private fun logRequestException(context: HttpRequestBuilder, cause: Throwable) {
         val service = context.url.encodedPath
         val operation = context.method.value
         restClientCounter.labels(service, operation, Companion.REQUEST_EXCEPTION_STATUS).inc()
-        println("logRequestException ${Companion.REQUEST_EXCEPTION_STATUS}, $operation, $service")
     }
 
     private fun logResponseException(context: HttpClientCall, cause: Throwable) {
         val service = context.request.url.encodedPath
         val operation = context.request.method.value
         restClientCounter.labels(service, operation, Companion.RESPONSE_EXCEPTION_STATUS).inc()
-        println("logResponseException ${Companion.RESPONSE_EXCEPTION_STATUS}, $operation, $service")
     }
 
     companion object : HttpClientFeature<Config, HttpClientMetrics> {
         override val key: AttributeKey<HttpClientMetrics> = AttributeKey("HttpClientMetrics")
 
         override fun prepare(block: Config.() -> Unit): HttpClientMetrics {
-            //val config = Config().apply(block)
             return HttpClientMetrics()
         }
 
