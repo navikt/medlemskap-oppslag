@@ -22,10 +22,13 @@ internal val defaultHttpClient = HttpClient(Apache) {
         }
     }
 
+    httpClientMetrics()
+
     engine {
         customizeClient { setRoutePlanner(SystemDefaultRoutePlanner(ProxySelector.getDefault())) }
     }
 
-    Metrikker()
+
 
 }
+
