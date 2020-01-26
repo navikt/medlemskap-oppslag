@@ -11,7 +11,6 @@ import io.ktor.client.features.json.JsonFeature
 import org.apache.http.impl.conn.SystemDefaultRoutePlanner
 import java.net.ProxySelector
 
-
 internal val defaultHttpClient = HttpClient(Apache) {
     install(JsonFeature) {
         serializer = JacksonSerializer {
@@ -27,8 +26,5 @@ internal val defaultHttpClient = HttpClient(Apache) {
     engine {
         customizeClient { setRoutePlanner(SystemDefaultRoutePlanner(ProxySelector.getDefault())) }
     }
-
-
-
 }
 
