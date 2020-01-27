@@ -10,11 +10,14 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.HttpResponsePipeline
 import io.ktor.util.AttributeKey
 import io.prometheus.client.Histogram
+import mu.KotlinLogging
 
 /**
  * [HttpClient] Prometheus metrics feature.
  */
 class HttpClientMetrics {
+
+    private val logger = KotlinLogging.logger { }
 
     /**
      * [HttpClientMetrics] feature configuration
@@ -22,31 +25,47 @@ class HttpClientMetrics {
     class Config {}
 
     private suspend fun logRequest(request: HttpRequestBuilder) {
-        val service = request.url.encodedPath
-        val operation = request.method.value
-        val timer = restClientTimer.labels(service, operation).startTimer()
-        request.attributes.put(timerKey, timer)
+        try {
+            val service = request.url.encodedPath
+            val operation = request.method.value
+            val timer = restClientTimer.labels(service, operation).startTimer()
+            request.attributes.put(timerKey, timer)
+        } catch (t: Throwable) {
+            logger.info("Feilet under metrikk-kall i logRequest, ignorerer og går videre", t)
+        }
     }
 
     private suspend fun logResponse(response: HttpResponse) {
-        val status = response.status.value.toString()
-        val operation = response.call.request.method.value
-        val service = response.call.request.url.encodedPath
-        restClientCounter.labels(service, operation, status).inc()
+        try {
+            val status = response.status.value.toString()
+            val operation = response.call.request.method.value
+            val service = response.call.request.url.encodedPath
+            restClientCounter.labels(service, operation, status).inc()
 
-        response.call.attributes.getOrNull<Histogram.Timer>(timerKey)?.observeDuration()
+            response.call.attributes.getOrNull<Histogram.Timer>(timerKey)?.observeDuration()
+        } catch (t: Throwable) {
+            logger.info("Feilet under metrikk-kall i logResponse, ignorerer og går videre", t)
+        }
     }
 
     private fun logRequestException(context: HttpRequestBuilder, cause: Throwable) {
-        val service = context.url.encodedPath
-        val operation = context.method.value
-        restClientCounter.labels(service, operation, Companion.REQUEST_EXCEPTION_STATUS).inc()
+        try {
+            val service = context.url.encodedPath
+            val operation = context.method.value
+            restClientCounter.labels(service, operation, Companion.REQUEST_EXCEPTION_STATUS).inc()
+        } catch (t: Throwable) {
+            logger.info("Feilet under metrikk-kall i logRequestException, ignorerer og går videre", t)
+        }
     }
 
     private fun logResponseException(context: HttpClientCall, cause: Throwable) {
-        val service = context.request.url.encodedPath
-        val operation = context.request.method.value
-        restClientCounter.labels(service, operation, Companion.RESPONSE_EXCEPTION_STATUS).inc()
+        try {
+            val service = context.request.url.encodedPath
+            val operation = context.request.method.value
+            restClientCounter.labels(service, operation, Companion.RESPONSE_EXCEPTION_STATUS).inc()
+        } catch (t: Throwable) {
+            logger.info("Feilet under metrikk-kall i logResponseException, ignorerer og går videre", t)
+        }
     }
 
     companion object : HttpClientFeature<Config, HttpClientMetrics> {
@@ -58,12 +77,8 @@ class HttpClientMetrics {
 
         override fun install(feature: HttpClientMetrics, scope: HttpClient) {
             scope.sendPipeline.intercept(HttpSendPipeline.Monitoring) {
-                try {
-                    feature.logRequest(context)
-                } catch (_: Throwable) {
 
-                }
-
+                feature.logRequest(context)
                 try {
                     proceedWith(subject)
                 } catch (cause: Throwable) {
@@ -75,11 +90,7 @@ class HttpClientMetrics {
             scope.responsePipeline.intercept(HttpResponsePipeline.Receive) {
                 try {
                     proceedWith(subject)
-                    try {
-                        feature.logResponse(context.response)
-                    } catch (_: Throwable) {
-
-                    }
+                    feature.logResponse(context.response)
                 } catch (cause: Throwable) {
                     feature.logResponseException(context, cause)
                     throw cause
