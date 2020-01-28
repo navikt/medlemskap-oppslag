@@ -17,16 +17,20 @@ import mu.KotlinLogging
 import no.nav.medlemskap.common.API_COUNTER
 import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.configuration
+import no.nav.medlemskap.domene.Brukerinput
+import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.Inntekt
 import no.nav.medlemskap.domene.Periode
-import no.nav.medlemskap.domene.Regelavklaring
 import no.nav.medlemskap.modell.Request
-import no.nav.medlemskap.modell.Resultat
+import no.nav.medlemskap.modell.aareg.mapAaregResultat
+import no.nav.medlemskap.modell.medl.mapMedlemskapResultat
 import no.nav.medlemskap.services.Services.aaRegClient
 import no.nav.medlemskap.services.Services.inntektClient
 import no.nav.medlemskap.services.Services.medlClient
 import no.nav.medlemskap.services.Services.oppgaveClient
 import no.nav.medlemskap.services.Services.personService
 import no.nav.medlemskap.services.Services.safClient
+import no.nav.medlemskap.services.inntekt.mapInntektResultat
 import no.nav.medlemskap.services.tpsws.mapPersonhistorikkResultat
 import no.nav.nare.core.evaluations.Evaluering
 import java.time.LocalDate
@@ -38,9 +42,9 @@ fun Routing.evalueringRoute() {
         post("/") {
             API_COUNTER.inc()
             val request = call.receive<Request>()
-            val datagrunnlag = createDatagrunnlag(request.fnr, request.soknadsperiodeStart, request.soknadsperiodeSlutt, request.soknadstidspunkt)
-            // call.respond(Resultat(datagrunnlag, evaluerData(datagrunnlag))) DISABLER TIL DENNE ER FIKSET FOR NY DATA
-            call.respond(datagrunnlag)
+            val datagrunnlag = createDatagrunnlag(request.fnr, request.soknadsperiodeStart, request.soknadsperiodeSlutt, request.soknadstidspunkt, request.brukerinput)
+            evaluerData(datagrunnlag)
+            //call.respond(datagrunnlag)
         }
     }
 }
@@ -49,7 +53,8 @@ private suspend fun createDatagrunnlag(
         fnr: String,
         soknadsperiodeStart: LocalDate,
         soknadsperiodeSlutt: LocalDate,
-        soknadstidspunkt: LocalDate): Regelavklaring = coroutineScope {
+        soknadstidspunkt: LocalDate,
+        brukerinput: Brukerinput): Datagrunnlag = coroutineScope {
 
     val historikkFraTpsRequest = async { personService.personhistorikk(fnr) }
     val medlemskapsunntakRequest = async { medlClient.hentMedlemskapsunntak(fnr) }
@@ -72,16 +77,24 @@ private suspend fun createDatagrunnlag(
     logger.info { journalPoster }
     logger.info { oppgaver }
 
-    Regelavklaring(
+    Datagrunnlag(
             soknadsperiode = Periode(fom = soknadsperiodeStart, tom = soknadsperiodeSlutt),
             soknadstidspunkt = soknadstidspunkt,
-            personhistorikk = mapPersonhistorikkResultat(historikkFraTps))
+            brukerinput = brukerinput,
+            personhistorikk = mapPersonhistorikkResultat(historikkFraTps),
+            medlemskapsunntak = mapMedlemskapResultat(medlemskapsunntak),
+            arbeidsforhold = mapAaregResultat(arbeidsforhold),
+            inntekt = mapInntektResultat(inntektListe)
+
+            )
+
+
 }
 
-private fun evaluerData(regelavklaring: Regelavklaring): Evaluering = runBlocking {
+private fun evaluerData(datagrunnlag: Datagrunnlag): Evaluering = runBlocking {
     defaultHttpClient.post<Evaluering> {
         url(configuration.reglerUrl)
         contentType(ContentType.Application.Json)
-        body = regelavklaring
+        body = datagrunnlag
     }
 }
