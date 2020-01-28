@@ -7,19 +7,19 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.request.uri
 import io.ktor.response.respond
 import mu.KotlinLogging
-import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
-import no.nav.medlemskap.common.exceptions.Sikkerhetsbegrensing
+import no.nav.medlemskap.common.exceptions.PersonBleIkkeFunnet
+import no.nav.medlemskap.common.exceptions.PersonHarSikkerhetsbegrensing
 
 private val logger = KotlinLogging.logger { }
 
 fun StatusPages.Configuration.exceptionHandler() {
-    exception<PersonIkkeFunnet> { cause ->
+    exception<PersonBleIkkeFunnet> { cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.NotFound) {
             "Person ikke funnet i ${cause.system}"
         }
     }
 
-    exception<Sikkerhetsbegrensing> { cause ->
+    exception<PersonHarSikkerhetsbegrensing> { cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.Forbidden) {
             "Personen har sikkerhetsbegrensing i ${cause.system}"
         }
