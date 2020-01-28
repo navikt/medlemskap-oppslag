@@ -44,7 +44,7 @@ fun Routing.evalueringRoute() {
             val request = call.receive<Request>()
             val datagrunnlag = createDatagrunnlag(request.fnr, request.soknadsperiodeStart, request.soknadsperiodeSlutt, request.soknadstidspunkt, request.brukerinput)
             evaluerData(datagrunnlag)
-            //call.respond(datagrunnlag)
+            call.respond(datagrunnlag)
         }
     }
 }
