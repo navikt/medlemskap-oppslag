@@ -46,12 +46,12 @@ data class Arbeidsforhold(
         val innrapportertEtterAOrdningen: Boolean,
         val navArbeidsforholdId: Int,
         val opplysningspliktig: OpplysningspliktigArbeidsgiver,
-        val permisjonPermitteringer: List<PermisjonPermittering>,
+        val permisjonPermitteringer: List<PermisjonPermittering>?,
         val registrert: LocalDateTime,
         val sistBekreftet: LocalDateTime?,
         val sporingsinformasjon: Sporingsinformasjon,
         val type: String,
-        val utenlandsopphold: List<Utenlandsopphold>
+        val utenlandsopphold: List<Utenlandsopphold>?
 )
 
 data class ArbeidsgiverArbeidsforhold(
@@ -74,7 +74,10 @@ data class Gyldighetsperiode(
 )
 
 data class OpplysningspliktigArbeidsgiver(
-        val type: OpplysningspliktigArbeidsgiverType
+        val type: OpplysningspliktigArbeidsgiverType,
+        val organisasjonsnummer: String?,
+        val aktoerId: String?,
+        val offentligIdent: String?
 )
 
 enum class OrganisasjonType {

@@ -62,7 +62,7 @@ fun mapArbeidsForholdType(arbeidsforhold: Arbeidsforhold): Arbeidsforholdstype {
 }
 
 fun mapArbeidsgiver(arbeidsforhold: Arbeidsforhold): Arbeidsgiver {
-    return Arbeidsgiver(arbeidsforhold.type, null, null);
+    return Arbeidsgiver(arbeidsforhold.type, arbeidsforhold.opplysningspliktig.organisasjonsnummer, null);
 
 }
 
@@ -73,12 +73,12 @@ fun mapPeriodeTilArbeidsavtale(arbeidsavtale: no.nav.medlemskap.modell.aareg.Arb
 
 }
 
-fun mapUtenLandsopphold(arbeidsforhold: Arbeidsforhold): List<Utenlandsopphold> {
-    return arbeidsforhold.utenlandsopphold.map {
+fun mapUtenLandsopphold(arbeidsforhold: Arbeidsforhold): List<Utenlandsopphold>? {
+    return arbeidsforhold.utenlandsopphold?.map {
         Utenlandsopphold(
-                 landkode = it.landkode,
-                 periode = mapPeriodeTilUtenlandsopphold(it),
-                 rapporteringsperiode = it.rapporteringsperiode)
+                landkode = it.landkode,
+                periode = mapPeriodeTilUtenlandsopphold(it),
+                rapporteringsperiode = it.rapporteringsperiode)
 
     }
 
