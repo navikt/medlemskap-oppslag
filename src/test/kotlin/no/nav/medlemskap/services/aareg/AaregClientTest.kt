@@ -5,20 +5,15 @@ import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
-import io.ktor.client.request.parameter
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
-import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.services.sts.StsRestClient
 import org.junit.jupiter.api.*
-import org.opensaml.saml.saml1.core.Assertion
 import java.time.LocalDate
-import java.util.*
 
 class AaregClientTest {
 
