@@ -38,7 +38,7 @@ data class Arbeidsavtale(
 
 data class Arbeidsforhold(
         val ansettelsesperiode: Ansettelsesperiode,
-        val antallTimerForTimeloennet: List<AntallTimerForTimeloennet>,
+        val antallTimerForTimeloennet: List<AntallTimerForTimeloennet>?,
         val arbeidsavtaler: List<Arbeidsavtale>,
         val arbeidsforholdId: String,
         val arbeidsgiver: OpplysningspliktigArbeidsgiver,
@@ -46,12 +46,12 @@ data class Arbeidsforhold(
         val innrapportertEtterAOrdningen: Boolean,
         val navArbeidsforholdId: Int,
         val opplysningspliktig: OpplysningspliktigArbeidsgiver,
-        val permisjonPermitteringer: List<PermisjonPermittering>,
+        val permisjonPermitteringer: List<PermisjonPermittering>?,
         val registrert: LocalDateTime,
         val sistBekreftet: LocalDateTime?,
         val sporingsinformasjon: Sporingsinformasjon,
         val type: String,
-        val utenlandsopphold: List<Utenlandsopphold>
+        val utenlandsopphold: List<Utenlandsopphold>?
 )
 
 data class ArbeidsgiverArbeidsforhold(
@@ -74,7 +74,10 @@ data class Gyldighetsperiode(
 )
 
 data class OpplysningspliktigArbeidsgiver(
-        val type: OpplysningspliktigArbeidsgiverType
+        val type: OpplysningspliktigArbeidsgiverType,
+        val organisasjonsnummer: String?,
+        val aktoerId: String?,
+        val offentligIdent: String?
 )
 
 enum class OrganisasjonType {
@@ -112,14 +115,14 @@ data class Person(
 )
 
 data class Sporingsinformasjon(
-        val endretAv: String,
-        val endretKilde: String,
+        val endretAv: String?,
+        val endretKilde: String?,
         val endretKildeReferanse: String?,
-        val endretTidspunkt: LocalDateTime,
+        val endretTidspunkt: LocalDateTime?,
         val opprettetAv: String,
-        val opprettetKilde: String,
-        val opprettetKildereferanse: String,
-        val opprettetTidspunkt: LocalDateTime
+        val opprettetKilde: String?,
+        val opprettetKildereferanse: String?,
+        val opprettetTidspunkt: LocalDateTime?
 )
 
 data class TjenestefeilResponse(

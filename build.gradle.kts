@@ -12,7 +12,7 @@ val kotlinLoggerVersion = "1.7.6"
 val tjenestespesifikasjonerVersion = "1.2019.12.18-12.22-ce897c4eb2c1"
 val cxfVersion = "3.3.1"
 val nareVersion = "13785ff"
-val medlemskapDomeneVersion = "11"
+val medlemskapDomeneVersion = "20"
 val coroutinesVersion = "1.3.3"
 val wireMockVersion = "2.19.0"
 val mockkVersion = "1.9"
@@ -53,13 +53,13 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    implementation("io.ktor:ktor-jackson:$ktorVersion")
     implementation("io.ktor:ktor-auth:$ktorVersion")
     implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-apache:$ktorVersion")
     implementation("io.ktor:ktor-client-json:$ktorVersion")
     implementation("io.ktor:ktor-client-jackson:$ktorVersion")
+    implementation("io.ktor:ktor-jackson:$ktorVersion")
     implementation("io.prometheus:simpleclient_hotspot:$prometheusVersion")
     implementation("io.prometheus:simpleclient_common:$prometheusVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")

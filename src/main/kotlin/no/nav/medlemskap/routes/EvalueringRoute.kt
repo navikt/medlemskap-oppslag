@@ -7,7 +7,6 @@ import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.request.receive
-import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.routing.post
 import kotlinx.coroutines.async
@@ -17,24 +16,28 @@ import mu.KotlinLogging
 import no.nav.medlemskap.common.API_COUNTER
 import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.config.Configuration
+import no.nav.medlemskap.domene.Brukerinput
+import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Periode
-import no.nav.medlemskap.domene.Regelavklaring
 import no.nav.medlemskap.modell.Request
+import no.nav.medlemskap.modell.aareg.mapAaregResultat
+import no.nav.medlemskap.modell.medl.mapMedlemskapResultat
 import no.nav.medlemskap.services.Services
+import no.nav.medlemskap.services.inntekt.mapInntektResultat
 import no.nav.medlemskap.services.tpsws.mapPersonhistorikkResultat
 import no.nav.nare.core.evaluations.Evaluering
 import java.time.LocalDate
 
 private val logger = KotlinLogging.logger { }
 
-fun Routing.evalueringRoute(services: Services, useAuthentication: Boolean) {
+fun Routing.evalueringRoute(configuration: Configuration, services: Services, useAuthentication: Boolean) {
     fun receiveAndRespond() {
         post("/") {
             API_COUNTER.inc()
             val request = call.receive<Request>()
-            val datagrunnlag = createDatagrunnlag(request.fnr, request.soknadsperiodeStart, request.soknadsperiodeSlutt, request.soknadstidspunkt, services)
-            // call.respond(Resultat(datagrunnlag, evaluerData(datagrunnlag, configuration))) DISABLER TIL DENNE ER FIKSET FOR NY DATA
-            call.respond(datagrunnlag)
+            val datagrunnlag = createDatagrunnlag(request.fnr, request.soknadsperiodeStart, request.soknadsperiodeSlutt, request.soknadstidspunkt, request.brukerinput, services)
+            evaluerData(datagrunnlag, configuration)
+            //call.respond(datagrunnlag)
         }
     }
 
@@ -52,7 +55,8 @@ private suspend fun createDatagrunnlag(
         soknadsperiodeStart: LocalDate,
         soknadsperiodeSlutt: LocalDate,
         soknadstidspunkt: LocalDate,
-        services: Services): Regelavklaring = coroutineScope {
+        brukerinput: Brukerinput,
+        services: Services): Datagrunnlag = coroutineScope {
 
     val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr) }
     val medlemskapsunntakRequest = async { services.medlClient.hentMedlemskapsunntak(fnr) }
@@ -75,16 +79,24 @@ private suspend fun createDatagrunnlag(
     logger.info { journalPoster }
     logger.info { oppgaver }
 
-    Regelavklaring(
+    Datagrunnlag(
             soknadsperiode = Periode(fom = soknadsperiodeStart, tom = soknadsperiodeSlutt),
             soknadstidspunkt = soknadstidspunkt,
-            personhistorikk = mapPersonhistorikkResultat(historikkFraTps))
+            brukerinput = brukerinput,
+            personhistorikk = mapPersonhistorikkResultat(historikkFraTps),
+            medlemskapsunntak = mapMedlemskapResultat(medlemskapsunntak),
+            arbeidsforhold = mapAaregResultat(arbeidsforhold),
+            inntekt = mapInntektResultat(inntektListe)
+
+    )
+
+
 }
 
-private fun evaluerData(regelavklaring: Regelavklaring, configuration: Configuration): Evaluering = runBlocking {
+private fun evaluerData(datagrunnlag: Datagrunnlag, configuration: Configuration): Evaluering = runBlocking {
     defaultHttpClient.post<Evaluering> {
         url(configuration.reglerUrl)
         contentType(ContentType.Application.Json)
-        body = regelavklaring
+        body = datagrunnlag
     }
 }
