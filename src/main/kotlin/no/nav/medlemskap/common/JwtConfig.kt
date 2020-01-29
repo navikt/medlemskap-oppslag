@@ -6,20 +6,20 @@ import io.ktor.auth.Principal
 import io.ktor.auth.jwt.JWTCredential
 import io.ktor.auth.jwt.JWTPrincipal
 import mu.KotlinLogging
-import no.nav.medlemskap.configuration
-import java.lang.Exception
+import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
+import no.nav.medlemskap.config.Configuration
 import java.net.URL
 import java.util.concurrent.TimeUnit
 
 private val logger = KotlinLogging.logger { }
 
-class JwtConfig {
+class JwtConfig(val configuration: Configuration, azureAdOpenIdConfiguration: AzureAdOpenIdConfiguration) {
 
     companion object {
         const val REALM = "medlemskap-oppslag"
     }
 
-    val jwkProvider: JwkProvider = JwkProviderBuilder(URL(configuration.azureAd.openIdConfiguration.jwksUri))
+    val jwkProvider: JwkProvider = JwkProviderBuilder(URL(azureAdOpenIdConfiguration.jwksUri))
             .cached(10, 24, TimeUnit.HOURS)
             .rateLimited(10, 1, TimeUnit.MINUTES)
             .build()

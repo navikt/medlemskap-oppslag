@@ -10,15 +10,25 @@ import io.ktor.routing.routing
 import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import ktor_health_check.Health
 import no.nav.medlemskap.common.*
 import no.nav.medlemskap.common.JwtConfig.Companion.REALM
+import no.nav.medlemskap.common.healthcheck.healthRoute
+import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
+import no.nav.medlemskap.config.Configuration
+import no.nav.medlemskap.config.getAadConfig
 import no.nav.medlemskap.routes.evalueringRoute
 import no.nav.medlemskap.routes.naisRoutes
+import no.nav.medlemskap.services.Services
+
 import org.slf4j.event.Level
 
 fun createHttpServer(
         applicationState: ApplicationState,
-        useAuthentication: Boolean = true
+        useAuthentication: Boolean = true,
+        configuration: Configuration = Configuration(),
+        azureAdOpenIdConfiguration: AzureAdOpenIdConfiguration = getAadConfig(configuration.azureAd),
+        services: Services = Services(configuration)
 ): ApplicationEngine = embeddedServer(Netty, 7070) {
 
     install(StatusPages) {
@@ -40,21 +50,30 @@ fun createHttpServer(
         reply { _, callId -> callIdGenerator.set(callId) }
     }
 
-    install(Authentication) {
-        jwt {
-            skipWhen { !useAuthentication }
-            val jwtConfig = JwtConfig()
-            realm = REALM
-            verifier(jwtConfig.jwkProvider, configuration.azureAd.openIdConfiguration.issuer)
-            validate { credentials ->
-                jwtConfig.validate(credentials)
+    if (useAuthentication) {
+        install(Authentication) {
+            jwt {
+                skipWhen { !useAuthentication }
+                val jwtConfig = JwtConfig(configuration, azureAdOpenIdConfiguration)
+                realm = REALM
+                verifier(jwtConfig.jwkProvider, azureAdOpenIdConfiguration.issuer)
+                validate { credentials ->
+                    jwtConfig.validate(credentials)
+                }
             }
         }
     }
 
+    install(Health) {
+        customCheck(url = "/smoketest", name = "Gosys") { services.oppgaveClient.healthCheck() }
+        customCheck(url = "/smoketest", name = "AaReg") { services.aaRegClient.healthCheck() }
+        customCheck(url = "/smoketest", name = "TPS") { services.personService.healthCheck() }
+    }
+
     routing {
         naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running })
-        evalueringRoute()
+        evalueringRoute(services, useAuthentication)
+        healthRoute("/healthCheck", services.healthService)
     }
 
     applicationState.initialized = true

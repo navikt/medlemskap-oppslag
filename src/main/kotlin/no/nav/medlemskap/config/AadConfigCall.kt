@@ -21,6 +21,6 @@ data class AzureAdOpenIdConfiguration(
 
 private val logger = KotlinLogging.logger { }
 
-fun getAadConfig(authorityEndpoint: String, tenant: String): AzureAdOpenIdConfiguration = runBlocking {
-        defaultHttpClient.get<AzureAdOpenIdConfiguration>("$authorityEndpoint/$tenant/v2.0/.well-known/openid-configuration").also { logger.info { it } }
+fun getAadConfig(azureAdConfig: Configuration.AzureAd): AzureAdOpenIdConfiguration = runBlocking {
+    defaultHttpClient.get<AzureAdOpenIdConfiguration>("${azureAdConfig.authorityEndpoint}/${azureAdConfig.tenant}/v2.0/.well-known/openid-configuration").also { logger.info { it } }
 }

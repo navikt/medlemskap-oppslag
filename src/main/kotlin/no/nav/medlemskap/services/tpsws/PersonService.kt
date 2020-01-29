@@ -17,5 +17,9 @@ class PersonService(private val personClient: PersonClient) {
                     else -> err
                 }
             }
+
+    fun healthCheck() : Boolean = personClient.healthCheck()
+
+    fun healthCheckQuery() = personClient.healthCheckQuery()
 }
 

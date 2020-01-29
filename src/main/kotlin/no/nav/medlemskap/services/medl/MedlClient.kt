@@ -8,7 +8,6 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.config.Configuration
-import no.nav.medlemskap.configuration
 import no.nav.medlemskap.modell.medl.Medlemskapsunntak
 import no.nav.medlemskap.services.sts.StsRestClient
 import java.time.LocalDate
@@ -18,11 +17,11 @@ class MedlClient(
         private val baseUrl: String,
         private val stsClient: StsRestClient,
         private val callIdGenerator: () -> String,
-        private val config: Configuration = configuration){
+        private val config: Configuration) {
 
     suspend fun hentMedlemskapsunntak(ident: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<Medlemskapsunntak> {
         val token = stsClient.oidcToken()
-        return defaultHttpClient.get{
+        return defaultHttpClient.get {
             url("$baseUrl/api/v1/medlemskapsunntak")
             header(HttpHeaders.Authorization, "Bearer $token")
             header(HttpHeaders.Accept, ContentType.Application.Json)

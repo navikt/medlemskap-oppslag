@@ -11,7 +11,6 @@ import io.ktor.http.HttpStatusCode
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.services.medl.MedlClient
 import no.nav.medlemskap.services.sts.StsRestClient
@@ -62,17 +61,9 @@ class medlClientTest {
 
 
         Assertions.assertEquals("Full", response[0].dekning)
-
-
-
     }
 
-    private val config = Configuration(
-            azureAd = Configuration.AzureAd(
-                    openIdConfiguration = AzureAdOpenIdConfiguration("", "", "", "")
-            )
-    )
-
+    private val config = Configuration()
 
     private val medlResponse = """
 [

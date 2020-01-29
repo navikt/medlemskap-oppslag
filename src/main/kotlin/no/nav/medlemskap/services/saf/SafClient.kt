@@ -7,7 +7,6 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.config.Configuration
-import no.nav.medlemskap.configuration
 import no.nav.medlemskap.modell.saf.DokumentoversiktBrukerQuery
 import no.nav.medlemskap.modell.saf.DokumentoversiktBrukerResponse
 import no.nav.medlemskap.services.sts.StsRestClient
@@ -18,7 +17,7 @@ class SafClient(
         val baseUrl: String,
         val stsClient: StsRestClient,
         val callIdGenerator: () -> String,
-        private val config: Configuration = configuration) {
+        private val config: Configuration) {
 
     suspend fun hentJournaldata(fnr: String): DokumentoversiktBrukerResponse {
 

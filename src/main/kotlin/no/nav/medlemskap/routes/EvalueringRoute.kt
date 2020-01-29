@@ -16,32 +16,34 @@ import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging
 import no.nav.medlemskap.common.API_COUNTER
 import no.nav.medlemskap.common.defaultHttpClient
-import no.nav.medlemskap.configuration
+import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Regelavklaring
 import no.nav.medlemskap.modell.Request
-import no.nav.medlemskap.modell.Resultat
-import no.nav.medlemskap.services.Services.aaRegClient
-import no.nav.medlemskap.services.Services.inntektClient
-import no.nav.medlemskap.services.Services.medlClient
-import no.nav.medlemskap.services.Services.oppgaveClient
-import no.nav.medlemskap.services.Services.personService
-import no.nav.medlemskap.services.Services.safClient
+import no.nav.medlemskap.services.Services
 import no.nav.medlemskap.services.tpsws.mapPersonhistorikkResultat
 import no.nav.nare.core.evaluations.Evaluering
 import java.time.LocalDate
 
 private val logger = KotlinLogging.logger { }
 
-fun Routing.evalueringRoute() {
-    authenticate {
+fun Routing.evalueringRoute(services: Services, useAuthentication: Boolean) {
+    fun receiveAndRespond() {
         post("/") {
             API_COUNTER.inc()
             val request = call.receive<Request>()
-            val datagrunnlag = createDatagrunnlag(request.fnr, request.soknadsperiodeStart, request.soknadsperiodeSlutt, request.soknadstidspunkt)
-            // call.respond(Resultat(datagrunnlag, evaluerData(datagrunnlag))) DISABLER TIL DENNE ER FIKSET FOR NY DATA
+            val datagrunnlag = createDatagrunnlag(request.fnr, request.soknadsperiodeStart, request.soknadsperiodeSlutt, request.soknadstidspunkt, services)
+            // call.respond(Resultat(datagrunnlag, evaluerData(datagrunnlag, configuration))) DISABLER TIL DENNE ER FIKSET FOR NY DATA
             call.respond(datagrunnlag)
         }
+    }
+
+    if (useAuthentication) {
+        authenticate {
+            receiveAndRespond()
+        }
+    } else {
+        receiveAndRespond()
     }
 }
 
@@ -49,14 +51,15 @@ private suspend fun createDatagrunnlag(
         fnr: String,
         soknadsperiodeStart: LocalDate,
         soknadsperiodeSlutt: LocalDate,
-        soknadstidspunkt: LocalDate): Regelavklaring = coroutineScope {
+        soknadstidspunkt: LocalDate,
+        services: Services): Regelavklaring = coroutineScope {
 
-    val historikkFraTpsRequest = async { personService.personhistorikk(fnr) }
-    val medlemskapsunntakRequest = async { medlClient.hentMedlemskapsunntak(fnr) }
-    val arbeidsforholdRequest = async { aaRegClient.hentArbeidsforhold(fnr) }
-    val inntektListeRequest = async { inntektClient.hentInntektListe(fnr, soknadsperiodeStart, soknadsperiodeSlutt) }
-    val journalPosterRequest = async { safClient.hentJournaldata(fnr) }
-    val gosysOppgaver = async { oppgaveClient.hentOppgaver(fnr) }
+    val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr) }
+    val medlemskapsunntakRequest = async { services.medlClient.hentMedlemskapsunntak(fnr) }
+    val arbeidsforholdRequest = async { services.aaRegClient.hentArbeidsforhold(fnr) }
+    val inntektListeRequest = async { services.inntektClient.hentInntektListe(fnr, soknadsperiodeStart, soknadsperiodeSlutt) }
+    val journalPosterRequest = async { services.safClient.hentJournaldata(fnr) }
+    val gosysOppgaver = async { services.oppgaveClient.hentOppgaver(fnr) }
 
     val historikkFraTps = historikkFraTpsRequest.await()
     val medlemskapsunntak = medlemskapsunntakRequest.await()
@@ -78,7 +81,7 @@ private suspend fun createDatagrunnlag(
             personhistorikk = mapPersonhistorikkResultat(historikkFraTps))
 }
 
-private fun evaluerData(regelavklaring: Regelavklaring): Evaluering = runBlocking {
+private fun evaluerData(regelavklaring: Regelavklaring, configuration: Configuration): Evaluering = runBlocking {
     defaultHttpClient.post<Evaluering> {
         url(configuration.reglerUrl)
         contentType(ContentType.Application.Json)

@@ -11,7 +11,6 @@ import io.ktor.http.HttpStatusCode
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.services.sts.StsRestClient
 import org.junit.jupiter.api.AfterAll
@@ -20,7 +19,6 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
-import java.time.Year
 import java.time.YearMonth
 
 class InntektClientTest {
@@ -72,14 +70,9 @@ class InntektClientTest {
         assertEquals(null, response.arbeidsInntektMaaned?.get(0)?.avvikListe)
     }
 
-
 }
 
-private val config = Configuration(
-        azureAd = Configuration.AzureAd(
-                openIdConfiguration = AzureAdOpenIdConfiguration("", "", "", "")
-        )
-)
+private val config = Configuration()
 
 private val inntektRequest = """
     {
