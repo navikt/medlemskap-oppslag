@@ -7,6 +7,7 @@ import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.request.receive
+import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.routing.post
 import kotlinx.coroutines.async
@@ -20,12 +21,12 @@ import no.nav.medlemskap.domene.Brukerinput
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.modell.Request
+import no.nav.medlemskap.modell.Resultat
 import no.nav.medlemskap.modell.aareg.mapAaregResultat
 import no.nav.medlemskap.modell.medl.mapMedlemskapResultat
 import no.nav.medlemskap.services.Services
 import no.nav.medlemskap.services.inntekt.mapInntektResultat
 import no.nav.medlemskap.services.tpsws.mapPersonhistorikkResultat
-import no.nav.nare.core.evaluations.Evaluering
 import java.time.LocalDate
 
 private val logger = KotlinLogging.logger { }
@@ -36,8 +37,7 @@ fun Routing.evalueringRoute(configuration: Configuration, services: Services, us
             API_COUNTER.inc()
             val request = call.receive<Request>()
             val datagrunnlag = createDatagrunnlag(request.fnr, request.soknadsperiodeStart, request.soknadsperiodeSlutt, request.soknadstidspunkt, request.brukerinput, services)
-            evaluerData(datagrunnlag, configuration)
-            //call.respond(datagrunnlag)
+            call.respond(evaluerData(datagrunnlag, configuration))
         }
     }
 
@@ -89,12 +89,11 @@ private suspend fun createDatagrunnlag(
             inntekt = mapInntektResultat(inntektListe)
 
     )
-
-
 }
 
-private fun evaluerData(datagrunnlag: Datagrunnlag, configuration: Configuration): Evaluering = runBlocking {
-    defaultHttpClient.post<Evaluering> {
+
+private fun evaluerData(datagrunnlag: Datagrunnlag, configuration: Configuration): Resultat = runBlocking {
+    defaultHttpClient.post<Resultat> {
         url(configuration.reglerUrl)
         contentType(ContentType.Application.Json)
         body = datagrunnlag

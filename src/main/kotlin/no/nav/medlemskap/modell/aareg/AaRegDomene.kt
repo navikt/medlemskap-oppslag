@@ -101,7 +101,7 @@ data class PermisjonPermittering(
         val prosent: Double?,
         val sporingsinformasjon: Sporingsinformasjon,
         val type: String,
-        val varslingskode: String
+        val varslingskode: String?
 )
 
 enum class PersonType {
