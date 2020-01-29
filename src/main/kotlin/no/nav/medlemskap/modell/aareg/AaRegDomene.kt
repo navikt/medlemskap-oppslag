@@ -38,7 +38,7 @@ data class Arbeidsavtale(
 
 data class Arbeidsforhold(
         val ansettelsesperiode: Ansettelsesperiode,
-        val antallTimerForTimeloennet: List<AntallTimerForTimeloennet>,
+        val antallTimerForTimeloennet: List<AntallTimerForTimeloennet>?,
         val arbeidsavtaler: List<Arbeidsavtale>,
         val arbeidsforholdId: String,
         val arbeidsgiver: OpplysningspliktigArbeidsgiver,
