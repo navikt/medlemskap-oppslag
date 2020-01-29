@@ -22,6 +22,7 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Inntekt
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.modell.Request
+import no.nav.medlemskap.modell.Resultat
 import no.nav.medlemskap.modell.aareg.mapAaregResultat
 import no.nav.medlemskap.modell.medl.mapMedlemskapResultat
 import no.nav.medlemskap.services.Services.aaRegClient
@@ -43,8 +44,7 @@ fun Routing.evalueringRoute() {
             API_COUNTER.inc()
             val request = call.receive<Request>()
             val datagrunnlag = createDatagrunnlag(request.fnr, request.soknadsperiodeStart, request.soknadsperiodeSlutt, request.soknadstidspunkt, request.brukerinput)
-            evaluerData(datagrunnlag)
-            //call.respond(datagrunnlag)
+            call.respond(evaluerData(datagrunnlag))
         }
     }
 }
@@ -91,8 +91,8 @@ private suspend fun createDatagrunnlag(
 
 }
 
-private fun evaluerData(datagrunnlag: Datagrunnlag): Evaluering = runBlocking {
-    defaultHttpClient.post<Evaluering> {
+private fun evaluerData(datagrunnlag: Datagrunnlag): Resultat = runBlocking {
+    defaultHttpClient.post<Resultat> {
         url(configuration.reglerUrl)
         contentType(ContentType.Application.Json)
         body = datagrunnlag
