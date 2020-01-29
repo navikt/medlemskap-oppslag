@@ -115,14 +115,14 @@ data class Person(
 )
 
 data class Sporingsinformasjon(
-        val endretAv: String,
-        val endretKilde: String,
+        val endretAv: String?,
+        val endretKilde: String?,
         val endretKildeReferanse: String?,
-        val endretTidspunkt: LocalDateTime,
+        val endretTidspunkt: LocalDateTime?,
         val opprettetAv: String,
-        val opprettetKilde: String,
-        val opprettetKildereferanse: String,
-        val opprettetTidspunkt: LocalDateTime
+        val opprettetKilde: String?,
+        val opprettetKildereferanse: String?,
+        val opprettetTidspunkt: LocalDateTime?
 )
 
 data class TjenestefeilResponse(
