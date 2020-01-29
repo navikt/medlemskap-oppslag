@@ -25,6 +25,8 @@ import no.nav.medlemskap.modell.Request
 import no.nav.medlemskap.modell.Resultat
 import no.nav.medlemskap.modell.aareg.mapAaregResultat
 import no.nav.medlemskap.modell.medl.mapMedlemskapResultat
+import no.nav.medlemskap.modell.oppgave.mapOppgaveResultat
+import no.nav.medlemskap.modell.saf.mapJournalResultat
 import no.nav.medlemskap.services.Services.aaRegClient
 import no.nav.medlemskap.services.Services.inntektClient
 import no.nav.medlemskap.services.Services.medlClient
@@ -84,7 +86,10 @@ private suspend fun createDatagrunnlag(
             personhistorikk = mapPersonhistorikkResultat(historikkFraTps),
             medlemskapsunntak = mapMedlemskapResultat(medlemskapsunntak),
             arbeidsforhold = mapAaregResultat(arbeidsforhold),
-            inntekt = mapInntektResultat(inntektListe)
+            inntekt = mapInntektResultat(inntektListe),
+            oppgaver = mapOppgaveResultat(oppgaver.oppgaver),
+            dokument = mapJournalResultat(journalPoster.data.dokumentoversiktBruker.journalposter)
+
 
             )
 
