@@ -45,7 +45,13 @@ fun Routing.evalueringRoute() {
         post("/") {
             API_COUNTER.inc()
             val request = call.receive<Request>()
-            val datagrunnlag = createDatagrunnlag(request.fnr, request.soknadsperiodeStart, request.soknadsperiodeSlutt, request.soknadstidspunkt, request.brukerinput)
+            val datagrunnlag = createDatagrunnlag(
+                    fnr = request.fnr,
+                    aktoer = request.aktoerId,
+                    soknadsperiodeStart =  request.soknadsperiodeStart,
+                    soknadsperiodeSlutt = request.soknadsperiodeSlutt,
+                    soknadstidspunkt = request.soknadstidspunkt,
+                    brukerinput = request.brukerinput)
             call.respond(evaluerData(datagrunnlag))
         }
     }
@@ -53,17 +59,20 @@ fun Routing.evalueringRoute() {
 
 private suspend fun createDatagrunnlag(
         fnr: String,
+        aktoer: String,
         soknadsperiodeStart: LocalDate,
         soknadsperiodeSlutt: LocalDate,
         soknadstidspunkt: LocalDate,
         brukerinput: Brukerinput): Datagrunnlag = coroutineScope {
 
+
+    //Todo : fikse opp i aktoer/fnr
     val historikkFraTpsRequest = async { personService.personhistorikk(fnr) }
     val medlemskapsunntakRequest = async { medlClient.hentMedlemskapsunntak(fnr) }
     val arbeidsforholdRequest = async { aaRegClient.hentArbeidsforhold(fnr) }
     val inntektListeRequest = async { inntektClient.hentInntektListe(fnr, soknadsperiodeStart, soknadsperiodeSlutt) }
-    val journalPosterRequest = async { safClient.hentJournaldata(fnr) }
-    val gosysOppgaver = async { oppgaveClient.hentOppgaver(fnr) }
+    val journalPosterRequest = async { safClient.hentJournaldata(aktoer) }
+    val gosysOppgaver = async { oppgaveClient.hentOppgaver(aktoer) }
 
     val historikkFraTps = historikkFraTpsRequest.await()
     val medlemskapsunntak = medlemskapsunntakRequest.await()
