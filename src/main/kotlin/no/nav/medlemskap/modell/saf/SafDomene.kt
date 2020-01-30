@@ -30,7 +30,6 @@ enum class JournalPostType(@Suppress("unused") val beskrivelse: String) {
     N("Notat")
 }
 
-@Suppress("unused")
 enum class Tema(@Suppress("unused") val beskrivelse: String) {
     AAP("Arbeidsavklaringspenger"),
     AAR("Aa-registeret"),

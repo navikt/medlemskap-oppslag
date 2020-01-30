@@ -1,7 +1,7 @@
 package no.nav.medlemskap.common.healthcheck
 
-import io.ktor.client.response.HttpResponse
-import io.ktor.http.isSuccess
+import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.HttpStatement
 
 interface Result {
     val name: String
@@ -34,7 +34,7 @@ class HttpResponseHealthCheck(override val name: String,
     override suspend fun check(): Result {
         return try {
             val httpResponse = block.invoke()
-            if (httpResponse.status.isSuccess())
+            if (httpResponse.status.value in 200..299)
                 Healthy(name = name, result = "${httpResponse.status.value} (${httpResponse.status.description})")
             else
                 UnHealthy(name = name, result = httpResponse.status.description)
