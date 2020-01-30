@@ -1,11 +1,12 @@
 package no.nav.medlemskap.services.inntekt
 
-import io.ktor.client.request.*
+import io.ktor.client.request.header
+import io.ktor.client.request.post
+import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.config.Configuration
-import no.nav.medlemskap.configuration
 import no.nav.medlemskap.modell.inntekt.HentInntektListeRequest
 import no.nav.medlemskap.modell.inntekt.Ident
 import no.nav.medlemskap.modell.inntekt.InntektskomponentResponse
@@ -17,7 +18,7 @@ class InntektClient(
         val baseUrl: String,
         val stsClient: StsRestClient,
         val callIdGenerator: () -> String,
-        val config: Configuration = configuration) {
+        val config: Configuration) {
 
     suspend fun hentInntektListe(ident: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): InntektskomponentResponse {
         val token = stsClient.oidcToken()
