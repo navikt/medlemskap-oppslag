@@ -4,9 +4,8 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.request.url
-import io.ktor.client.response.HttpResponse
+import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpHeaders
-import io.ktor.http.isSuccess
 import mu.KotlinLogging
 import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.modell.oppgave.FinnOppgaverResponse

@@ -48,7 +48,7 @@ class HttpClientMetrics {
         }
     }
 
-    private fun logRequestException(context: HttpRequestBuilder, cause: Throwable) {
+    private fun logRequestException(context: HttpRequestBuilder, @Suppress("UNUSED_PARAMETER") cause: Throwable) {
         try {
             val service = context.url.encodedPath
             val operation = context.method.value
@@ -58,7 +58,7 @@ class HttpClientMetrics {
         }
     }
 
-    private fun logResponseException(context: HttpClientCall, cause: Throwable) {
+    private fun logResponseException(context: HttpClientCall, @Suppress("UNUSED_PARAMETER") cause: Throwable) {
         try {
             val service = context.request.url.encodedPath
             val operation = context.request.method.value
