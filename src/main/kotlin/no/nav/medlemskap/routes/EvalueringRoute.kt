@@ -24,6 +24,8 @@ import no.nav.medlemskap.modell.Request
 import no.nav.medlemskap.modell.Resultat
 import no.nav.medlemskap.modell.aareg.mapAaregResultat
 import no.nav.medlemskap.modell.medl.mapMedlemskapResultat
+import no.nav.medlemskap.modell.oppgave.mapOppgaveResultat
+import no.nav.medlemskap.modell.saf.mapJournalResultat
 import no.nav.medlemskap.services.Services
 import no.nav.medlemskap.services.inntekt.mapInntektResultat
 import no.nav.medlemskap.services.tpsws.mapPersonhistorikkResultat
@@ -36,7 +38,14 @@ fun Routing.evalueringRoute(configuration: Configuration, services: Services, us
         post("/") {
             API_COUNTER.inc()
             val request = call.receive<Request>()
-            val datagrunnlag = createDatagrunnlag(request.fnr, request.soknadsperiodeStart, request.soknadsperiodeSlutt, request.soknadstidspunkt, request.brukerinput, services)
+            val datagrunnlag = createDatagrunnlag(
+                    fnr = request.fnr,
+                    aktoer = request.aktoerId,
+                    soknadsperiodeStart = request.soknadsperiodeStart,
+                    soknadsperiodeSlutt = request.soknadsperiodeSlutt,
+                    soknadstidspunkt = request.soknadstidspunkt,
+                    brukerinput = request.brukerinput,
+                    services = services)
             call.respond(evaluerData(datagrunnlag, configuration))
         }
     }
@@ -52,18 +61,20 @@ fun Routing.evalueringRoute(configuration: Configuration, services: Services, us
 
 private suspend fun createDatagrunnlag(
         fnr: String,
+        aktoer: String,
         soknadsperiodeStart: LocalDate,
         soknadsperiodeSlutt: LocalDate,
         soknadstidspunkt: LocalDate,
         brukerinput: Brukerinput,
         services: Services): Datagrunnlag = coroutineScope {
 
+    //Todo : fikse opp i aktoer/fnr
     val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr) }
     val medlemskapsunntakRequest = async { services.medlClient.hentMedlemskapsunntak(fnr) }
     val arbeidsforholdRequest = async { services.aaRegClient.hentArbeidsforhold(fnr) }
     val inntektListeRequest = async { services.inntektClient.hentInntektListe(fnr, soknadsperiodeStart, soknadsperiodeSlutt) }
-    val journalPosterRequest = async { services.safClient.hentJournaldata(fnr) }
-    val gosysOppgaver = async { services.oppgaveClient.hentOppgaver(fnr) }
+    val journalPosterRequest = async { services.safClient.hentJournaldata(aktoer) }
+    val gosysOppgaver = async { services.oppgaveClient.hentOppgaver(aktoer) }
 
     val historikkFraTps = historikkFraTpsRequest.await()
     val medlemskapsunntak = medlemskapsunntakRequest.await()
@@ -86,7 +97,10 @@ private suspend fun createDatagrunnlag(
             personhistorikk = mapPersonhistorikkResultat(historikkFraTps),
             medlemskapsunntak = mapMedlemskapResultat(medlemskapsunntak),
             arbeidsforhold = mapAaregResultat(arbeidsforhold),
-            inntekt = mapInntektResultat(inntektListe)
+            inntekt = mapInntektResultat(inntektListe),
+            oppgaver = mapOppgaveResultat(oppgaver.oppgaver),
+            dokument = mapJournalResultat(journalPoster.data.dokumentoversiktBruker.journalposter)
+
 
     )
 }
