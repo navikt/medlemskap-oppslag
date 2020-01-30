@@ -18,7 +18,7 @@ interface HealthCheck {
 }
 
 class TryCatchHealthCheck(override val name: String,
-                          private val block: () -> String) : HealthCheck {
+                          private val block: () -> Unit) : HealthCheck {
     override suspend fun check(): Result {
         return try {
             block.invoke()
