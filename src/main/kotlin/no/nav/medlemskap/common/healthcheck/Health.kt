@@ -37,7 +37,7 @@ class HttpResponseHealthCheck(override val name: String,
             if (httpResponse.status.value in 200..299)
                 Healthy(name = name, result = "${httpResponse.status.value} (${httpResponse.status.description})")
             else
-                UnHealthy(name = name, result = httpResponse.status.description)
+                UnHealthy(name = name, result = "${httpResponse.status.value} (${httpResponse.status.description})")
         } catch (cause: Throwable) {
             UnHealthy(name = name, result = cause.message ?: "Unhealthy!")
         }
