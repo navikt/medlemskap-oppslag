@@ -1,7 +1,11 @@
 package no.nav.medlemskap.services
 
 import no.nav.medlemskap.common.callIdGenerator
-import no.nav.medlemskap.configuration
+import no.nav.medlemskap.common.healthcheck.HealthReporter
+import no.nav.medlemskap.common.healthcheck.HealthService
+import no.nav.medlemskap.common.healthcheck.HttpResponseHealthCheck
+import no.nav.medlemskap.common.healthcheck.TryCatchHealthCheck
+import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.services.aareg.AaRegClient
 import no.nav.medlemskap.services.inntekt.InntektClient
 import no.nav.medlemskap.services.medl.MedlClient
@@ -11,14 +15,16 @@ import no.nav.medlemskap.services.sts.StsRestClient
 import no.nav.medlemskap.services.sts.stsClient
 import no.nav.medlemskap.services.tpsws.PersonService
 
-object Services {
+class Services(val configuration: Configuration) {
 
-    var personService: PersonService
+    val personService: PersonService
     val medlClient: MedlClient
     val aaRegClient: AaRegClient
     val inntektClient: InntektClient
     val safClient: SafClient
     val oppgaveClient: OppgaveClient
+    val healthService: HealthService
+    val healthReporter: HealthReporter
 
     init {
         val stsWsClient = stsClient(
@@ -41,7 +47,8 @@ object Services {
 
         val restClients = RestClients(
                 stsClientRest = stsRestClient,
-                callIdGenerator = callIdGenerator::get
+                callIdGenerator = callIdGenerator::get,
+                configuration = configuration
         )
 
         personService = PersonService(wsClients.person(configuration.register.tpsUrl))
@@ -50,6 +57,14 @@ object Services {
         inntektClient = restClients.inntektskomponenten(configuration.register.inntektBaseUrl)
         safClient = restClients.saf(configuration.register.safBaseUrl)
         oppgaveClient = restClients.oppgaver(configuration.register.oppgaveBaseUrl)
+
+        healthService = HealthService(setOf(
+                HttpResponseHealthCheck("GSak", { oppgaveClient.healthCheck() }),
+                HttpResponseHealthCheck("AaReg", { aaRegClient.healthCheck() }),
+                TryCatchHealthCheck("TPS", { personService.healthCheck() })
+        ))
+
+        healthReporter = HealthReporter(healthService)
     }
 
 }

@@ -17,6 +17,8 @@ val coroutinesVersion = "1.3.3"
 val wireMockVersion = "2.19.0"
 val mockkVersion = "1.9"
 val junitJupiterVersion = "5.4.0"
+val assertkVersion = "0.21"
+val restAssuredVersion = "4.2.0"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
@@ -35,6 +37,7 @@ repositories {
     mavenCentral()
     maven("https://dl.bintray.com/kotlin/ktor")
     maven("https://kotlin.bintray.com/kotlinx")
+    maven("https://jitpack.io")
     maven {
         url = uri("https://maven.pkg.github.com/navikt/tjenestespesifikasjoner")
         credentials {
@@ -88,6 +91,9 @@ dependencies {
         exclude(group = "junit")
     }
     testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("com.willowtreeapps.assertk:assertk-jvm:$assertkVersion")
+    testImplementation("io.rest-assured:rest-assured:$restAssuredVersion")
+
 }
 
 java {
