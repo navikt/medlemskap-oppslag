@@ -10,6 +10,8 @@ import no.nav.medlemskap.services.aareg.AaRegClient
 import no.nav.medlemskap.services.inntekt.InntektClient
 import no.nav.medlemskap.services.medl.MedlClient
 import no.nav.medlemskap.services.oppgave.OppgaveClient
+import no.nav.medlemskap.services.pdl.PdlClient
+import no.nav.medlemskap.services.pdl.PdlService
 import no.nav.medlemskap.services.saf.SafClient
 import no.nav.medlemskap.services.sts.StsRestClient
 import no.nav.medlemskap.services.sts.stsClient
@@ -25,6 +27,8 @@ class Services(val configuration: Configuration) {
     val oppgaveClient: OppgaveClient
     val healthService: HealthService
     val healthReporter: HealthReporter
+    val pdlClient: PdlClient
+    val pdlService : PdlService
 
     init {
         val stsWsClient = stsClient(
@@ -57,6 +61,8 @@ class Services(val configuration: Configuration) {
         inntektClient = restClients.inntektskomponenten(configuration.register.inntektBaseUrl)
         safClient = restClients.saf(configuration.register.safBaseUrl)
         oppgaveClient = restClients.oppgaver(configuration.register.oppgaveBaseUrl)
+        pdlClient = restClients.pdl(configuration.register.pdlBaseUrl)
+        pdlService = PdlService(pdlClient)
 
         healthService = HealthService(setOf(
                 HttpResponseHealthCheck("GSak", { oppgaveClient.healthCheck() }),
