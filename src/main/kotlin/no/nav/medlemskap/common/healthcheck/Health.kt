@@ -5,12 +5,12 @@ import io.ktor.http.isSuccess
 
 interface Result {
     val name: String
-    val result: Any
+    val result: String
 }
 
-data class Healthy(override val name: String, override val result: Any) : Result
+data class Healthy(override val name: String, override val result: String) : Result
 
-data class UnHealthy(override val name: String, override val result: Any) : Result
+data class UnHealthy(override val name: String, override val result: String) : Result
 
 interface HealthCheck {
     val name: String
@@ -18,7 +18,7 @@ interface HealthCheck {
 }
 
 class TryCatchHealthCheck(override val name: String,
-                          private val block: () -> Any) : HealthCheck {
+                          private val block: () -> String) : HealthCheck {
     override suspend fun check(): Result {
         return try {
             block.invoke()
@@ -35,11 +35,11 @@ class HttpResponseHealthCheck(override val name: String,
         return try {
             val httpResponse = block.invoke()
             if (httpResponse.status.isSuccess())
-                Healthy(name = name, result = httpResponse.status.description)
+                Healthy(name = name, result = "${httpResponse.status.value} (${httpResponse.status.description})")
             else
                 UnHealthy(name = name, result = httpResponse.status.description)
         } catch (cause: Throwable) {
-            UnHealthy(name = name, result = if (cause.message == null) "Unhealthy!" else cause.message!!)
+            UnHealthy(name = name, result = cause.message ?: "Unhealthy!")
         }
     }
 }
