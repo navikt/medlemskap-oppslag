@@ -71,7 +71,7 @@ private suspend fun createDatagrunnlag(
     val medlemskapsunntakRequest = async { medlClient.hentMedlemskapsunntak(fnr) }
     val arbeidsforholdRequest = async { aaRegClient.hentArbeidsforhold(fnr) }
     val inntektListeRequest = async { inntektClient.hentInntektListe(fnr, soknadsperiodeStart, soknadsperiodeSlutt) }
-    val journalPosterRequest = async { safClient.hentJournaldata(aktoer) }
+    val journalPosterRequest = async { safClient.hentJournaldata(fnr) }
     val gosysOppgaver = async { oppgaveClient.hentOppgaver(aktoer) }
 
     val historikkFraTps = historikkFraTpsRequest.await()
