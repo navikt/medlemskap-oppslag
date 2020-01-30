@@ -1,5 +1,6 @@
 package no.nav.medlemskap.services.tpsws
 
+import mu.KotlinLogging
 import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.NorskIdent
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Periode
@@ -17,6 +18,8 @@ class PersonClient(private val personV3: PersonV3) {
     companion object {
         val HISTORIKK_FRA_OG_MED: XMLGregorianCalendar = DatatypeFactory.newInstance()
                 .newXMLGregorianCalendar(GregorianCalendar.from(ZonedDateTime.now().minusYears(3)))
+
+        private val logger = KotlinLogging.logger { }
     }
 
     fun hentPersonHistorikk(fnr: String): HentPersonhistorikkResponse =
@@ -36,4 +39,8 @@ class PersonClient(private val personV3: PersonV3) {
                     fom = fraOgMed
                 }
             }
+
+    fun healthCheck() {
+        personV3.ping()
+    }
 }

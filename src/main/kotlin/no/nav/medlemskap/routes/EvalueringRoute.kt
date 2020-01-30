@@ -16,47 +16,67 @@ import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging
 import no.nav.medlemskap.common.API_COUNTER
 import no.nav.medlemskap.common.defaultHttpClient
-import no.nav.medlemskap.configuration
+import no.nav.medlemskap.config.Configuration
+import no.nav.medlemskap.domene.Brukerinput
+import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Periode
-import no.nav.medlemskap.domene.Regelavklaring
 import no.nav.medlemskap.modell.Request
 import no.nav.medlemskap.modell.Resultat
-import no.nav.medlemskap.services.Services.aaRegClient
-import no.nav.medlemskap.services.Services.inntektClient
-import no.nav.medlemskap.services.Services.medlClient
-import no.nav.medlemskap.services.Services.oppgaveClient
-import no.nav.medlemskap.services.Services.personService
-import no.nav.medlemskap.services.Services.safClient
+import no.nav.medlemskap.modell.aareg.mapAaregResultat
+import no.nav.medlemskap.modell.medl.mapMedlemskapResultat
+import no.nav.medlemskap.modell.oppgave.mapOppgaveResultat
+import no.nav.medlemskap.modell.saf.mapJournalResultat
+import no.nav.medlemskap.services.Services
+import no.nav.medlemskap.services.inntekt.mapInntektResultat
 import no.nav.medlemskap.services.tpsws.mapPersonhistorikkResultat
-import no.nav.nare.core.evaluations.Evaluering
 import java.time.LocalDate
 
 private val logger = KotlinLogging.logger { }
 
-fun Routing.evalueringRoute() {
-    authenticate {
+fun Routing.evalueringRoute(configuration: Configuration, services: Services, useAuthentication: Boolean) {
+    fun receiveAndRespond() {
         post("/") {
             API_COUNTER.inc()
             val request = call.receive<Request>()
-            val datagrunnlag = createDatagrunnlag(request.fnr, request.soknadsperiodeStart, request.soknadsperiodeSlutt, request.soknadstidspunkt)
-            // call.respond(Resultat(datagrunnlag, evaluerData(datagrunnlag))) DISABLER TIL DENNE ER FIKSET FOR NY DATA
-            call.respond(datagrunnlag)
+            val datagrunnlag = createDatagrunnlag(
+                    fnr = request.fnr,
+                    aktoer = request.aktoerId,
+                    soknadsperiodeStart = request.soknadsperiodeStart,
+                    soknadsperiodeSlutt = request.soknadsperiodeSlutt,
+                    soknadstidspunkt = request.soknadstidspunkt,
+                    brukerinput = request.brukerinput,
+                    services = services)
+            call.respond(evaluerData(datagrunnlag, configuration))
         }
+    }
+
+    if (useAuthentication) {
+        authenticate {
+            receiveAndRespond()
+        }
+    } else {
+        receiveAndRespond()
     }
 }
 
 private suspend fun createDatagrunnlag(
         fnr: String,
+        aktoer: String,
         soknadsperiodeStart: LocalDate,
         soknadsperiodeSlutt: LocalDate,
-        soknadstidspunkt: LocalDate): Regelavklaring = coroutineScope {
+        soknadstidspunkt: LocalDate,
+        brukerinput: Brukerinput,
+        services: Services): Datagrunnlag = coroutineScope {
 
-    val historikkFraTpsRequest = async { personService.personhistorikk(fnr) }
-    val medlemskapsunntakRequest = async { medlClient.hentMedlemskapsunntak(fnr) }
-    val arbeidsforholdRequest = async { aaRegClient.hentArbeidsforhold(fnr) }
-    val inntektListeRequest = async { inntektClient.hentInntektListe(fnr, soknadsperiodeStart, soknadsperiodeSlutt) }
-    val journalPosterRequest = async { safClient.hentJournaldata(fnr) }
-    val gosysOppgaver = async { oppgaveClient.hentOppgaver(fnr) }
+    //Todo : fikse opp i aktoer/fnr
+
+    val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr) }
+    val medlemskapsunntakRequest = async { services.medlClient.hentMedlemskapsunntak(fnr) }
+    val arbeidsforholdRequest = async { services.aaRegClient.hentArbeidsforhold(fnr) }
+    val inntektListeRequest = async { services.inntektClient.hentInntektListe(fnr, soknadsperiodeStart, soknadsperiodeSlutt) }
+    val journalPosterRequest = async { services.safClient.hentJournaldata(fnr) }
+    val gosysOppgaver = async { services.oppgaveClient.hentOppgaver(aktoer) }
+
 
     val historikkFraTps = historikkFraTpsRequest.await()
     val medlemskapsunntak = medlemskapsunntakRequest.await()
@@ -72,16 +92,26 @@ private suspend fun createDatagrunnlag(
     logger.info { journalPoster }
     logger.info { oppgaver }
 
-    Regelavklaring(
+    Datagrunnlag(
             soknadsperiode = Periode(fom = soknadsperiodeStart, tom = soknadsperiodeSlutt),
             soknadstidspunkt = soknadstidspunkt,
-            personhistorikk = mapPersonhistorikkResultat(historikkFraTps))
+            brukerinput = brukerinput,
+            personhistorikk = mapPersonhistorikkResultat(historikkFraTps),
+            medlemskapsunntak = mapMedlemskapResultat(medlemskapsunntak),
+            arbeidsforhold = mapAaregResultat(arbeidsforhold),
+            inntekt = mapInntektResultat(inntektListe),
+            oppgaver = mapOppgaveResultat(oppgaver.oppgaver),
+            dokument = mapJournalResultat(journalPoster.data.dokumentoversiktBruker.journalposter)
+
+
+    )
 }
 
-private fun evaluerData(regelavklaring: Regelavklaring): Evaluering = runBlocking {
-    defaultHttpClient.post<Evaluering> {
+
+private fun evaluerData(datagrunnlag: Datagrunnlag, configuration: Configuration): Resultat = runBlocking {
+    defaultHttpClient.post<Resultat> {
         url(configuration.reglerUrl)
         contentType(ContentType.Application.Json)
-        body = regelavklaring
+        body = datagrunnlag
     }
 }

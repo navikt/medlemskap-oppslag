@@ -1,11 +1,8 @@
 package no.nav.medlemskap
 
-import no.nav.medlemskap.config.Configuration
 import java.util.concurrent.TimeUnit
 
 data class ApplicationState(var running: Boolean = true, var initialized: Boolean = false)
-
-val configuration = Configuration()
 
 fun main() {
     val applicationState = ApplicationState()
