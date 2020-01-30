@@ -40,18 +40,7 @@ class PersonClient(private val personV3: PersonV3) {
                 }
             }
 
-    fun healthCheck(): Boolean {
-        return try {
-            healthCheckQuery()
-            logger.info("Healthcheck mot PersonV3 returnerte vellykket")
-            true
-        } catch (t: Throwable) {
-            logger.warn("Healthcheck mot PersonV3 feilet", t)
-            false
-        }
-    }
-
-    fun healthCheckQuery() {
+    fun healthCheck() {
         personV3.ping()
     }
 }

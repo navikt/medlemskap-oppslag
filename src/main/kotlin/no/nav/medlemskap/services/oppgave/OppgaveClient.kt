@@ -39,18 +39,7 @@ class OppgaveClient(
         }
     }
 
-    suspend fun healthCheck(): Boolean {
-        return try {
-            val response: HttpResponse = healthCheckQuery()
-            logger.info("Healthcheck mot GSak returnerte status ${response.status.value} (${response.status.description})")
-            response.status.isSuccess()
-        } catch (t: Throwable) {
-            logger.warn("Healthcheck mot GSak feilet", t)
-            false
-        }
-    }
-
-    suspend fun healthCheckQuery(): HttpResponse {
+    suspend fun healthCheck(): HttpResponse {
         val token = stsClient.oidcToken()
         return defaultHttpClient.get {
             url("$baseUrl/internal/alive")

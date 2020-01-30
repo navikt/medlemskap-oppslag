@@ -18,8 +18,6 @@ class PersonService(private val personClient: PersonClient) {
                 }
             }
 
-    fun healthCheck() : Boolean = personClient.healthCheck()
-
-    fun healthCheckQuery() = personClient.healthCheckQuery()
+    fun healthCheck() = personClient.healthCheck()
 }
 

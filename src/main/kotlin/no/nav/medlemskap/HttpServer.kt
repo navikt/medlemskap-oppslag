@@ -10,7 +10,6 @@ import io.ktor.routing.routing
 import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
-import ktor_health_check.Health
 import no.nav.medlemskap.common.*
 import no.nav.medlemskap.common.JwtConfig.Companion.REALM
 import no.nav.medlemskap.common.healthcheck.healthRoute
@@ -62,12 +61,6 @@ fun createHttpServer(
                 }
             }
         }
-    }
-
-    install(Health) {
-        customCheck(url = "/smoketest", name = "Gosys") { services.oppgaveClient.healthCheck() }
-        customCheck(url = "/smoketest", name = "AaReg") { services.aaRegClient.healthCheck() }
-        customCheck(url = "/smoketest", name = "TPS") { services.personService.healthCheck() }
     }
 
     routing {

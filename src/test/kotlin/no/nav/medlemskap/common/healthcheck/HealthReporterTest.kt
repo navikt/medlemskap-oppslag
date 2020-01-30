@@ -19,18 +19,7 @@ class HealthReporterTest : ServerTest() {
                 .statusCode(503)
                 .body("healthy", hasSize<Int>(0))
                 .and().body("unhealthy", hasSize<Int>(3))
-                .and().body("unhealthy.name", hasItems("Gosys", "AaReg", "TPS"))
-    }
-
-    @Test
-    fun testSmoketestResponse() {
-        val resultat = get("/smoketest")
-                .then()
-                .statusCode(500)
-                .extract().to<Map<String, Boolean>>()
-
-        assertThat(resultat).hasSize(3)
-        assertThat(resultat).containsOnly("Gosys" to false, "AaReg" to false, "TPS" to false)
+                .and().body("unhealthy.name", hasItems("GSak", "AaReg", "TPS"))
     }
 
 }

@@ -59,9 +59,9 @@ class Services(val configuration: Configuration) {
         oppgaveClient = restClients.oppgaver(configuration.register.oppgaveBaseUrl)
 
         healthService = HealthService(setOf(
-                HttpResponseHealthCheck("Gosys", { oppgaveClient.healthCheckQuery() }),
-                HttpResponseHealthCheck("AaReg", { aaRegClient.healthCheckQuery() }),
-                TryCatchHealthCheck("TPS", { personService.healthCheckQuery() })
+                HttpResponseHealthCheck("GSak", { oppgaveClient.healthCheck() }),
+                HttpResponseHealthCheck("AaReg", { aaRegClient.healthCheck() }),
+                TryCatchHealthCheck("TPS", { personService.healthCheck() })
         ))
 
         healthReporter = HealthReporter(healthService)

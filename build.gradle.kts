@@ -17,7 +17,6 @@ val coroutinesVersion = "1.3.3"
 val wireMockVersion = "2.19.0"
 val mockkVersion = "1.9"
 val junitJupiterVersion = "5.4.0"
-val ktorHealthCheckVersion = "011a5a8"
 val assertkVersion = "0.21"
 val restAssuredVersion = "4.2.0"
 
@@ -82,7 +81,6 @@ dependencies {
     implementation("com.sun.xml.ws:jaxws-tools:2.3.1") {
         exclude(group = "com.sun.xml.ws", module = "policy")
     }
-    implementation("com.github.zensum:ktor-health-check:$ktorHealthCheckVersion")
 
     implementation(tjenestespesifikasjon("person-v3-tjenestespesifikasjon"))
 
