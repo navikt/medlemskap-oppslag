@@ -76,6 +76,7 @@ private suspend fun createDatagrunnlag(
     val journalPosterRequest = async { services.safClient.hentJournaldata(fnr) }
     val gosysOppgaver = async { services.oppgaveClient.hentOppgaver(aktoer) }
 
+
     val historikkFraTps = historikkFraTpsRequest.await()
     val medlemskapsunntak = medlemskapsunntakRequest.await()
     val arbeidsforhold = arbeidsforholdRequest.await()
