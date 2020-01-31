@@ -4,9 +4,9 @@ metadata:
   name: medlemskap-oppslag
   namespace: default
   labels:
-    team: {{team}}
+    team: medlemskap
 spec:
-  image: {{image}}:{{tag}}
+  image: {{ image }}
   port: 7070
   liveness:
     path: isAlive
@@ -34,3 +34,35 @@ spec:
   prometheus:
     enabled: true
     path: /metrics
+  vault:
+    enabled: true
+    paths:
+      - mountPath: /var/run/secrets/nais.io/vault
+        kvPath: /kv/prod/fss/medlemskap-oppslag/default
+  secureLogs:
+    enabled: true
+  webproxy: true
+
+  env:
+    - name: AZURE_TENANT
+      value: 966ac572-f5b7-4bbe-aa88-c76419c0f851
+    - name: AZURE_AUTHORITY_ENDPOINT
+      value: https://login.microsoftonline.com
+    - name: SECURITY_TOKEN_SERVICE_URL
+      value: https://sts.adeo.no/SecurityTokenServiceProvider/
+    - name: SECURITY_TOKEN_SERVICE_REST_URL
+      value: https://security-token-service.nais.adeo.no
+    - name: TPSWS_URL
+      value: https://wasapp.adeo.no/tpsws/ws/Person/v3
+    - name: INNTEKT_BASE_URL
+      value: https://app.adeo.no/inntektskomponenten-ws/rs/api/v1
+    - name: MEDL2_BASE_URL
+      value: https://app.adeo.no/medl2
+    - name: AAREG_BASE_URL
+      value: https://modapp.adeo.no/aareg-services/api
+    - name: MEDLEMSKAP_REGLER_URL
+      value: https://medlemskap-regler.nais.adeo.no
+    - name: SAF_BASE_URL
+      value: https://saf.nais.adeo.no/graphql
+    - name: OPPGAVE_BASE_URL
+      value: https://oppgave.nais.adeo.no
