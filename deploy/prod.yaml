@@ -45,7 +45,7 @@ spec:
 
   env:
     - name: AZURE_TENANT
-      value: 966ac572-f5b7-4bbe-aa88-c76419c0f851
+      value: 62366534-1ec3-4962-8869-9b5535279d0b
     - name: AZURE_AUTHORITY_ENDPOINT
       value: https://login.microsoftonline.com
     - name: SECURITY_TOKEN_SERVICE_URL
