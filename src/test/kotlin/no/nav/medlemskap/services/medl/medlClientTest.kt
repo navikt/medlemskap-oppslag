@@ -5,6 +5,8 @@ import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
+import io.ktor.client.features.ClientRequestException
+import io.ktor.client.features.ServerResponseException
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
@@ -17,10 +19,12 @@ import no.nav.medlemskap.services.sts.StsRestClient
 import org.junit.jupiter.api.*
 import java.time.LocalDate
 
+
 class medlClientTest {
 
     companion object {
         val server: WireMockServer = WireMockServer(WireMockConfiguration.options().dynamicPort())
+        private val config = Configuration()
 
         @BeforeAll
         @JvmStatic
@@ -41,10 +45,8 @@ class medlClientTest {
     }
 
     @Test
-    fun `tester response`() {
+    fun `tester response 200 OK`() {
         val callId: () -> String = { "12345" }
-
-
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
@@ -54,16 +56,64 @@ class medlClientTest {
                         .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                         .withBody(medlResponse)
         ))
+
         val client = MedlClient(server.baseUrl(), stsClient, callId, config)
-
         val response = runBlocking { client.hentMedlemskapsunntak("10109000398", LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
-        println(response)
-
 
         Assertions.assertEquals("Full", response[0].dekning)
     }
 
-    private val config = Configuration()
+    @Test
+    fun `tester ServerResponseException`() {
+
+
+        val callId: () -> String = { "12345" }
+        val stsClient: StsRestClient = mockk()
+        coEvery { stsClient.oidcToken() } returns "dummytoken"
+
+        WireMock.stubFor(queryMapping.willReturn(
+                WireMock.aResponse()
+                        .withStatus(HttpStatusCode.InternalServerError.value)
+                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+
+        ))
+
+        val client = MedlClient(server.baseUrl(), stsClient, callId, config)
+
+        Assertions.assertThrows(ServerResponseException::class.java) {
+            runBlocking { client.hentMedlemskapsunntak("10109000398", LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
+        }
+    }
+
+    @Test
+    fun `tester ClientRequestException`() {
+
+        val callId: () -> String = { "12345" }
+        val stsClient: StsRestClient = mockk()
+        coEvery { stsClient.oidcToken() } returns "dummytoken"
+
+        WireMock.stubFor(queryMapping.willReturn(
+                WireMock.aResponse()
+                        .withStatus(HttpStatusCode.Forbidden.value)
+                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+
+        ))
+
+        val client = MedlClient(server.baseUrl(), stsClient, callId, config)
+
+        Assertions.assertThrows(ClientRequestException::class.java) {
+            runBlocking { client.hentMedlemskapsunntak("10109000398", LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
+        }
+    }
+
+    private val queryMapping: MappingBuilder = WireMock.get(WireMock.urlPathEqualTo("/api/v1/medlemskapsunntak"))
+            .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
+            .withHeader("Nav-Personident", equalTo("10109000398"))
+            .withHeader("Nav-Call-Id", equalTo("12345"))
+            .withHeader("Nav-Consumer-Id", equalTo("test"))
+            .withQueryParam("fraOgMed", equalTo("2010-01-01"))
+            .withQueryParam("fraOgMed", equalTo("2010-01-01"))
+
 
     private val medlResponse = """
 [
@@ -99,15 +149,6 @@ class medlClientTest {
   }
 ]
 """.trimIndent()
-
-    private val queryMapping: MappingBuilder = WireMock.get(WireMock.urlPathEqualTo("/api/v1/medlemskapsunntak"))
-            .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
-            .withHeader("Nav-Personident", equalTo("10109000398"))
-            .withHeader("Nav-Call-Id", equalTo("12345"))
-            .withHeader("Nav-Consumer-Id", equalTo("test"))
-            .withQueryParam("fraOgMed", equalTo("2010-01-01"))
-            .withQueryParam("fraOgMed", equalTo("2010-01-01"))
-
 
 }
 
