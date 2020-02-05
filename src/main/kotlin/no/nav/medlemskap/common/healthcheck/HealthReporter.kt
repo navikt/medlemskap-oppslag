@@ -18,7 +18,7 @@ class HealthReporter(
         private val clientsGauge = Gauge
                 .build("health_check_clients_status",
                         "Indikerer applikasjonens helse status. 0 er OK, 1 indikerer feil.")
-                .labelNames("app")
+                .labelNames("client")
                 .register()
 
         private val totalGauge = Gauge

@@ -5,6 +5,8 @@ import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
+import io.ktor.client.features.ClientRequestException
+import io.ktor.client.features.ServerResponseException
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
@@ -12,12 +14,11 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.medlemskap.config.Configuration
+import no.nav.medlemskap.services.aareg.AaRegClient
+import no.nav.medlemskap.services.aareg.AaregClientTest
 import no.nav.medlemskap.services.sts.StsRestClient
-import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
 import java.time.LocalDate
 import java.time.YearMonth
 
@@ -70,11 +71,51 @@ class InntektClientTest {
         assertEquals(null, response.arbeidsInntektMaaned?.get(0)?.avvikListe)
     }
 
-}
+    @Test
+    fun `tester ServerResponseException`() {
 
-private val config = Configuration()
 
-private val inntektRequest = """
+        val callId: () -> String = { "12345" }
+        val stsClient: StsRestClient = mockk()
+        coEvery { stsClient.oidcToken() } returns "dummytoken"
+
+        WireMock.stubFor(queryMapping.willReturn(
+                WireMock.aResponse()
+                        .withStatus(HttpStatusCode.InternalServerError.value)
+                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+
+        ))
+        val client = InntektClient(server.baseUrl(), stsClient, callId, config)
+
+        Assertions.assertThrows(ServerResponseException::class.java) {
+            runBlocking { client.hentInntektListe("10108000398", LocalDate.of(2016, 1, 1), LocalDate.of(2016, 8, 1)) }
+        }
+    }
+
+    @Test
+    fun `tester ClientRequestException`() {
+
+        val callId: () -> String = { "12345" }
+        val stsClient: StsRestClient = mockk()
+        coEvery { stsClient.oidcToken() } returns "dummytoken"
+
+        WireMock.stubFor(queryMapping.willReturn(
+                WireMock.aResponse()
+                        .withStatus(HttpStatusCode.Forbidden.value)
+                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+
+        ))
+
+        val client = InntektClient(server.baseUrl(), stsClient, callId, config)
+
+        Assertions.assertThrows(ClientRequestException::class.java) {
+            runBlocking { client.hentInntektListe("10108000398", LocalDate.of(2016, 1, 1), LocalDate.of(2016, 8, 1)) }
+        }
+
+    }
+    private val config = Configuration()
+
+    private val inntektRequest = """
     {
         "ident": {
             "identifikator": "10108000398",
@@ -87,15 +128,16 @@ private val inntektRequest = """
     }
 """.trimIndent()
 
-private val queryMapping: MappingBuilder = post(urlPathEqualTo("/hentinntektliste"))
-        .withHeader(HttpHeaders.Accept, equalTo("application/json"))
-        .withHeader(HttpHeaders.ContentType, equalTo("application/json"))
-        .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
-        .withHeader("Nav-Consumer-Id", equalTo("test"))
-        .withHeader("Nav-Call-Id", equalTo("12345"))
-        .withRequestBody(equalToJson(inntektRequest))
+    private val queryMapping: MappingBuilder = post(urlPathEqualTo("/hentinntektliste"))
+            .withHeader(HttpHeaders.Accept, equalTo("application/json"))
+            .withHeader(HttpHeaders.ContentType, equalTo("application/json"))
+            .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
+            .withHeader("Nav-Consumer-Id", equalTo("test"))
+            .withHeader("Nav-Call-Id", equalTo("12345"))
+            .withRequestBody(equalToJson(inntektRequest))
 
-private val inntektResponse = """
+
+    private val inntektResponse = """
     {
         "arbeidsInntektMaaned": [
             {
@@ -165,3 +207,5 @@ private val inntektResponse = """
         }
     }
 """.trimIndent()
+
+}

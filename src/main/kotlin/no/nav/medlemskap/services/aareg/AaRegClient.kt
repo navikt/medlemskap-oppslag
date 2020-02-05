@@ -1,13 +1,10 @@
 package no.nav.medlemskap.services.aareg
 
-import io.ktor.client.request.get
-import io.ktor.client.request.header
-import io.ktor.client.request.parameter
-import io.ktor.client.request.url
-import io.ktor.client.response.HttpResponse
+import io.ktor.client.request.*
+import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.HttpStatement
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
-import io.ktor.http.isSuccess
 import mu.KotlinLogging
 import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.modell.aareg.Arbeidsforhold
@@ -40,7 +37,7 @@ class AaRegClient(val baseUrl: String, val stsClient: StsRestClient, val callIdG
 
     suspend fun healthCheck(): HttpResponse {
         val oidcToken = stsClient.oidcToken()
-        return defaultHttpClient.get {
+        return defaultHttpClient.options {
             url("$baseUrl/v1")
             header(HttpHeaders.Authorization, "Bearer $oidcToken")
             header(HttpHeaders.Accept, ContentType.Application.Json)

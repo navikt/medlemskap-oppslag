@@ -2,6 +2,8 @@ package no.nav.medlemskap.common
 
 import io.ktor.application.ApplicationCall
 import io.ktor.application.call
+import io.ktor.client.features.ClientRequestException
+import io.ktor.client.features.ServerResponseException
 import io.ktor.features.StatusPages
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.uri
@@ -25,12 +27,26 @@ fun StatusPages.Configuration.exceptionHandler() {
         }
     }
 
+    exception<ClientRequestException> { cause ->
+        call.logErrorAndRespond(cause, HttpStatusCode.InternalServerError) {
+            val url = cause.response.call.request.url
+            "Kall mot $url feilet"
+        }
+
+    }
+
+    exception<ServerResponseException> { cause ->
+        call.logErrorAndRespond(cause, HttpStatusCode.InternalServerError) {
+            val url = cause.response.call.request.url
+            "Kall mot $url feilet"
+        }
+    }
+
     exception<Throwable> { cause ->
         call.logErrorAndRespond(cause) {
             "An internal error occurred during routing"
         }
     }
-
 }
 
 private suspend inline fun ApplicationCall.logErrorAndRespond(
