@@ -1,8 +1,7 @@
 package no.nav.medlemskap.services.pdl
 
-import io.ktor.client.request.header
-import io.ktor.client.request.post
-import io.ktor.client.request.url
+import io.ktor.client.request.*
+import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import no.nav.medlemskap.common.defaultHttpClient
@@ -30,6 +29,15 @@ class PdlClient(
             header("Nav-Consumer-Token", "Bearer ${stsClient.oidcToken()}")
             header("Nav-Consumer-Id", configuration.sts.username)
             body = HentIdenterQuery(fnr)
+        }
+    }
+
+    suspend fun healthCheck(): HttpResponse {
+        val oidcToken = stsClient.oidcToken()
+        return defaultHttpClient.options {
+            url("$baseUrl")
+            header(HttpHeaders.Accept, ContentType.Application.Json)
+            header("Nav-Consumer-Id", configuration.sts.username)
         }
     }
 }
