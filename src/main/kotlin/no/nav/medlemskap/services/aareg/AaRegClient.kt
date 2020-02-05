@@ -1,19 +1,29 @@
 package no.nav.medlemskap.services.aareg
 
-import io.ktor.client.request.*
+import io.github.resilience4j.kotlin.retry.executeSuspendFunction
+import io.github.resilience4j.retry.Retry
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.client.request.parameter
+import io.ktor.client.request.url
 import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.HttpStatement
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
 import no.nav.medlemskap.common.defaultHttpClient
+import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.modell.aareg.Arbeidsforhold
 import no.nav.medlemskap.services.sts.StsRestClient
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 
-class AaRegClient(val baseUrl: String, val stsClient: StsRestClient, val callIdGenerator: () -> String) {
+class AaRegClient(
+        private val baseUrl: String,
+        private val stsClient: StsRestClient,
+        private val callIdGenerator: () -> String,
+        private val retry: Retry? = null
+) {
 
     private val IKKE_EKSISTERENDE_FNR = "01010100000"
 
@@ -22,6 +32,15 @@ class AaRegClient(val baseUrl: String, val stsClient: StsRestClient, val callIdG
     }
 
     suspend fun hentArbeidsforhold(fnr: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<Arbeidsforhold> {
+        retry?.let {
+            return it.executeSuspendFunction {
+                hentArbeidsforholdRequest(fnr, fraOgMed, tilOgMed)
+            }
+        }
+        return hentArbeidsforholdRequest(fnr, fraOgMed, tilOgMed)
+    }
+
+    private suspend fun hentArbeidsforholdRequest(fnr: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<Arbeidsforhold> {
         val oidcToken = stsClient.oidcToken()
         return defaultHttpClient.get<List<Arbeidsforhold>> {
             url("$baseUrl/v1/arbeidstaker/arbeidsforhold")

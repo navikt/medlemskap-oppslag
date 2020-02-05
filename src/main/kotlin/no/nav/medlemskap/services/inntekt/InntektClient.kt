@@ -1,5 +1,7 @@
 package no.nav.medlemskap.services.inntekt
 
+import io.github.resilience4j.kotlin.retry.executeSuspendFunction
+import io.github.resilience4j.retry.Retry
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.url
@@ -15,18 +17,29 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class InntektClient(
-        val baseUrl: String,
-        val stsClient: StsRestClient,
-        val callIdGenerator: () -> String,
-        val config: Configuration) {
+        private val baseUrl: String,
+        private val stsClient: StsRestClient,
+        private val callIdGenerator: () -> String,
+        private val configuration: Configuration,
+        private val retry: Retry? = null
+) {
 
     suspend fun hentInntektListe(ident: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): InntektskomponentResponse {
+        retry?.let {
+            return it.executeSuspendFunction {
+                hentInntektListeRequest(ident, fraOgMed, tilOgMed)
+            }
+        }
+        return hentInntektListeRequest(ident, fraOgMed, tilOgMed)
+    }
+
+    suspend fun hentInntektListeRequest(ident: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): InntektskomponentResponse {
         val token = stsClient.oidcToken()
         return defaultHttpClient.post {
             url("$baseUrl/hentinntektliste")
             header(HttpHeaders.Authorization, "Bearer $token")
             header(HttpHeaders.ContentType, ContentType.Application.Json)
-            header("Nav-Consumer-Id", config.sts.username)
+            header("Nav-Consumer-Id", configuration.sts.username)
             header("Nav-Call-Id", callIdGenerator.invoke())
             body = HentInntektListeRequest(
                     ident = Ident(ident, "NATURLIG_IDENT"),

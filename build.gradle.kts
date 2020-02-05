@@ -19,6 +19,7 @@ val mockkVersion = "1.9"
 val junitJupiterVersion = "5.4.0"
 val assertkVersion = "0.21"
 val restAssuredVersion = "4.2.0"
+val resilience4jVersion = "1.2.0"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
@@ -82,8 +83,9 @@ dependencies {
     implementation("com.sun.xml.ws:jaxws-tools:2.3.1") {
         exclude(group = "com.sun.xml.ws", module = "policy")
     }
-
     implementation(tjenestespesifikasjon("person-v3-tjenestespesifikasjon"))
+    implementation("io.github.resilience4j:resilience4j-retry:$resilience4jVersion")
+    implementation("io.github.resilience4j:resilience4j-kotlin:$resilience4jVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")

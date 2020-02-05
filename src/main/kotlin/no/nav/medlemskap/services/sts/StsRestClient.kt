@@ -1,6 +1,8 @@
 package no.nav.medlemskap.services.sts
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import io.github.resilience4j.kotlin.retry.executeSuspendFunction
+import io.github.resilience4j.retry.Retry
 import io.ktor.client.request.*
 import io.ktor.http.HttpHeaders
 import kotlinx.coroutines.runBlocking
@@ -8,11 +10,20 @@ import no.nav.medlemskap.common.defaultHttpClient
 import java.time.LocalDateTime
 import java.util.*
 
-class StsRestClient(val baseUrl: String, var username: String, val password: String) {
+class StsRestClient(val baseUrl: String, var username: String, val password: String, private val retry: Retry? = null) {
     private var cachedOidcToken: Token? = null
     private var cachedSamlToken: Token? = null
 
-    suspend fun oidcToken(): String {
+    suspend fun oidcToken() : String {
+        retry?.let {
+            return it.executeSuspendFunction {
+                oidcTokenRequest()
+            }
+        }
+        return oidcTokenRequest()
+    }
+
+    suspend fun oidcTokenRequest(): String {
         if (cachedOidcToken.shouldBeRenewed()) {
             cachedOidcToken = defaultHttpClient.get<Token> {
                 url("$baseUrl/rest/v1/sts/token")

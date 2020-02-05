@@ -6,6 +6,7 @@ import no.nav.medlemskap.common.healthcheck.HealthService
 import no.nav.medlemskap.common.healthcheck.HttpResponseHealthCheck
 import no.nav.medlemskap.common.healthcheck.TryCatchHealthCheck
 import no.nav.medlemskap.config.Configuration
+import no.nav.medlemskap.config.stsRetry
 import no.nav.medlemskap.services.aareg.AaRegClient
 import no.nav.medlemskap.services.inntekt.InntektClient
 import no.nav.medlemskap.services.medl.MedlClient
@@ -40,7 +41,8 @@ class Services(val configuration: Configuration) {
         val stsRestClient = StsRestClient(
                 baseUrl = configuration.sts.restUrl,
                 username = configuration.sts.username,
-                password = configuration.sts.password
+                password = configuration.sts.password,
+                retry = stsRetry
         )
 
         val wsClients = WsClients(

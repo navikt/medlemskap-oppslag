@@ -1,5 +1,7 @@
 package no.nav.medlemskap.services.medl
 
+import io.github.resilience4j.kotlin.retry.executeSuspendFunction
+import io.github.resilience4j.retry.Retry
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
@@ -17,9 +19,20 @@ class MedlClient(
         private val baseUrl: String,
         private val stsClient: StsRestClient,
         private val callIdGenerator: () -> String,
-        private val config: Configuration) {
+        private val configuration: Configuration,
+        private val retry: Retry? = null
+) {
 
     suspend fun hentMedlemskapsunntak(ident: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<Medlemskapsunntak> {
+        retry?.let {
+            return it.executeSuspendFunction {
+                hentMedlemskapsunntakRequest(ident, fraOgMed, tilOgMed)
+            }
+        }
+        return hentMedlemskapsunntakRequest(ident, fraOgMed, tilOgMed)
+    }
+
+    suspend fun hentMedlemskapsunntakRequest(ident: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<Medlemskapsunntak> {
         val token = stsClient.oidcToken()
         return defaultHttpClient.get {
             url("$baseUrl/api/v1/medlemskapsunntak")
@@ -27,7 +40,7 @@ class MedlClient(
             header(HttpHeaders.Accept, ContentType.Application.Json)
             header("Nav-Call-Id", callIdGenerator.invoke())
             header("Nav-Personident", ident)
-            header("Nav-Consumer-Id", config.sts.username)
+            header("Nav-Consumer-Id", configuration.sts.username)
             fraOgMed?.let { parameter("fraOgMed", fraOgMed.tilIsoFormat()) }
             tilOgMed?.let { parameter("tilOgMed", tilOgMed.tilIsoFormat()) }
         }
