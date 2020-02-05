@@ -38,9 +38,10 @@ fun Routing.evalueringRoute(configuration: Configuration, services: Services, us
         post("/") {
             API_COUNTER.inc()
             val request = call.receive<Request>()
+            val aktorId = services.pdlService.hentAktorId(request.fnr)
             val datagrunnlag = createDatagrunnlag(
                     fnr = request.fnr,
-                    aktoer = request.aktoerId,
+                    aktoer = aktorId,
                     soknadsperiodeStart = request.soknadsperiodeStart,
                     soknadsperiodeSlutt = request.soknadsperiodeSlutt,
                     soknadstidspunkt = request.soknadstidspunkt,
@@ -67,8 +68,6 @@ private suspend fun createDatagrunnlag(
         soknadstidspunkt: LocalDate,
         brukerinput: Brukerinput,
         services: Services): Datagrunnlag = coroutineScope {
-
-    //Todo : fikse opp i aktoer/fnr
 
     val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr) }
     val medlemskapsunntakRequest = async { services.medlClient.hentMedlemskapsunntak(fnr) }
