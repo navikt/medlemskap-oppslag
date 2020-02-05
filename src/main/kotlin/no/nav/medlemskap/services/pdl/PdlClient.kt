@@ -33,7 +33,6 @@ class PdlClient(
     }
 
     suspend fun healthCheck(): HttpResponse {
-        val oidcToken = stsClient.oidcToken()
         return defaultHttpClient.options {
             url("$baseUrl")
             header(HttpHeaders.Accept, ContentType.Application.Json)

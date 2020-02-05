@@ -68,7 +68,7 @@ class Services(val configuration: Configuration) {
                 HttpResponseHealthCheck("GSak", { oppgaveClient.healthCheck() }),
                 HttpResponseHealthCheck("AaReg", { aaRegClient.healthCheck() }),
                 TryCatchHealthCheck("TPS", { personService.healthCheck() }),
-                HttpResponseHealthCheck("PDL", { pdlClient.healthCheck() }),
+                HttpResponseHealthCheck("PDL", { pdlClient.healthCheck() })
         ))
 
         healthReporter = HealthReporter(healthService)

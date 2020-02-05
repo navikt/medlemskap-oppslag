@@ -15,6 +15,8 @@ import java.time.format.DateTimeFormatter
 
 class AaRegClient(val baseUrl: String, val stsClient: StsRestClient, val callIdGenerator: () -> String) {
 
+    private val IKKE_EKSISTERENDE_FNR = "01010100000"
+
     companion object {
         private val logger = KotlinLogging.logger { }
     }
@@ -37,12 +39,15 @@ class AaRegClient(val baseUrl: String, val stsClient: StsRestClient, val callIdG
 
     suspend fun healthCheck(): HttpResponse {
         val oidcToken = stsClient.oidcToken()
-        return defaultHttpClient.options {
-            url("$baseUrl/v1")
-            header(HttpHeaders.Authorization, "Bearer $oidcToken")
+        return defaultHttpClient.get {
+            url("$baseUrl/v1/arbeidstaker/arbeidsforhold")
+            header(HttpHeaders.Authorization, "Bearer ${oidcToken}")
             header(HttpHeaders.Accept, ContentType.Application.Json)
             header("Nav-Call-Id", callIdGenerator.invoke())
-            header("Nav-Consumer-Token", "Bearer $oidcToken")
+            header("Nav-Personident", IKKE_EKSISTERENDE_FNR)
+            header("Nav-Consumer-Token", "Bearer ${oidcToken}")
+            parameter("historikk", "false")
+            parameter("regelverk", "ALLE")
         }
     }
 
