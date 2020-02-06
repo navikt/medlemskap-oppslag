@@ -12,7 +12,6 @@ val kotlinLoggerVersion = "1.7.6"
 val tjenestespesifikasjonerVersion = "1.2019.12.18-12.22-ce897c4eb2c1"
 val cxfVersion = "3.3.1"
 val nareVersion = "13785ff"
-val medlemskapDomeneVersion = "24"
 val coroutinesVersion = "1.3.3"
 val wireMockVersion = "2.19.0"
 val mockkVersion = "1.9"
@@ -67,7 +66,6 @@ dependencies {
     implementation("net.logstash.logback:logstash-logback-encoder:$logstashVersion")
     implementation("com.natpryce:konfig:$konfigVersion")
     implementation("io.github.microutils:kotlin-logging:$kotlinLoggerVersion")
-    implementation("no.nav.medlemskap:medlemskap-domene:$medlemskapDomeneVersion")
     implementation("no.nav:nare:$nareVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
