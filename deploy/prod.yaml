@@ -39,6 +39,8 @@ spec:
     paths:
       - mountPath: /var/run/secrets/nais.io/vault
         kvPath: /kv/prod/fss/medlemskap-oppslag/default
+      - mountPath: /var/run/secrets/nais.io/azure
+        kvPath: /azuread/data/prod/creds/medlemskap-oppslag
   secureLogs:
     enabled: true
   webproxy: true
