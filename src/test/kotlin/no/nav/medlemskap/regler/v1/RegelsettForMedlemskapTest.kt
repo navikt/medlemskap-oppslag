@@ -1,5 +1,6 @@
 package no.nav.medlemskap.regler.v1
 
+import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.regler.common.Fakta
 import no.nav.medlemskap.regler.common.Resultattype
@@ -18,7 +19,9 @@ class RegelsettForMedlemskapTest {
 
     private fun evaluer(datagrunnlag: Datagrunnlag): Resultattype {
         val regelsett = RegelsettForMedlemskap(Fakta.initialiserFakta(datagrunnlag))
-        return regelsett.evaluer().resultat
+        val resultat = regelsett.evaluer()
+        println(objectMapper.writeValueAsString(resultat))
+        return resultat.resultat
     }
 
 }
