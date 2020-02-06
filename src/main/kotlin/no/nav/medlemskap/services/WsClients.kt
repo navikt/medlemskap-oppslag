@@ -1,5 +1,6 @@
 package no.nav.medlemskap.services
 
+import io.github.resilience4j.retry.Retry
 import no.nav.medlemskap.common.MetricFeature
 import no.nav.medlemskap.services.sts.StsRestClient
 import no.nav.medlemskap.services.sts.configureFor
@@ -27,10 +28,10 @@ class WsClients(private val stsClientWs: STSClient,
                 stsClientWs.configureFor(this)
             }
 
-    fun person(endpointUrl: String) =
+    fun person(endpointUrl: String, retry: Retry?) =
             PersonFactory.create(endpointUrl, features, outInterceptors)
                     .withSts().let { port ->
-                        PersonClient(port)
+                        PersonClient(port, retry)
                     }
 
 }

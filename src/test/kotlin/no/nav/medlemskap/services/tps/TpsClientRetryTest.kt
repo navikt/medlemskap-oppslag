@@ -4,7 +4,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.runBlocking
-import no.nav.medlemskap.config.tpsRetry
+import no.nav.medlemskap.config.retryRegistry
 import no.nav.medlemskap.services.tpsws.PersonClient
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentPersonhistorikkPersonIkkeFunnet
 import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3
@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
 class TpsClientRetryTest {
+
+    private val tpsRetry = retryRegistry.retry("TPS")
 
     @Test
     fun `skal retrye paa en runtimeexception`() {

@@ -13,11 +13,4 @@ val retryConfig: RetryConfig = RetryConfig
 
 val retryRegistry: RetryRegistry = RetryRegistry.of(retryConfig)
 
-val aaRegRetry = retryRegistry.retry("AaReg")
-val inntektRetry = retryRegistry.retry("Inntekt")
-val medlRetry = retryRegistry.retry("Medl")
-val oppgaveRetry = retryRegistry.retry("Oppgave")
-val pdlRetry = retryRegistry.retry("PDL")
-val safRetry = retryRegistry.retry("Saf")
-val stsRetry = retryRegistry.retry("STS")
-val tpsRetry = retryRegistry.retry("TPS")
+

@@ -13,6 +13,13 @@ class RestClients(private val stsClientRest: StsRestClient,
                   private val callIdGenerator: () -> String,
                   private val configuration: Configuration) {
 
+    private val aaRegRetry = retryRegistry.retry("AaReg")
+    private val inntektRetry = retryRegistry.retry("Inntekt")
+    private val medlRetry = retryRegistry.retry("Medl")
+    private val oppgaveRetry = retryRegistry.retry("Oppgave")
+    private val pdlRetry = retryRegistry.retry("PDL")
+    private val safRetry = retryRegistry.retry("Saf")
+
     fun aaReg(endpointUrl: String) = AaRegClient(endpointUrl, stsClientRest, callIdGenerator, aaRegRetry)
     fun medl2(endpointBaseUrl: String) = MedlClient(endpointBaseUrl, stsClientRest, callIdGenerator, configuration, medlRetry)
     fun inntektskomponenten(endpointBaseUrl: String) = InntektClient(endpointBaseUrl, stsClientRest, callIdGenerator, configuration, inntektRetry)

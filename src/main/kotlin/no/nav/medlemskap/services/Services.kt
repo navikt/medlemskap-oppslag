@@ -6,7 +6,7 @@ import no.nav.medlemskap.common.healthcheck.HealthService
 import no.nav.medlemskap.common.healthcheck.HttpResponseHealthCheck
 import no.nav.medlemskap.common.healthcheck.TryCatchHealthCheck
 import no.nav.medlemskap.config.Configuration
-import no.nav.medlemskap.config.stsRetry
+import no.nav.medlemskap.config.retryRegistry
 import no.nav.medlemskap.services.aareg.AaRegClient
 import no.nav.medlemskap.services.inntekt.InntektClient
 import no.nav.medlemskap.services.medl.MedlClient
@@ -30,6 +30,9 @@ class Services(val configuration: Configuration) {
     val healthReporter: HealthReporter
     val pdlClient: PdlClient
     val pdlService : PdlService
+
+    private val stsRetry = retryRegistry.retry("STS")
+    private val tpsRetry = retryRegistry.retry("TPS")
 
     init {
         val stsWsClient = stsClient(
@@ -57,7 +60,7 @@ class Services(val configuration: Configuration) {
                 configuration = configuration
         )
 
-        personService = PersonService(wsClients.person(configuration.register.tpsUrl))
+        personService = PersonService(wsClients.person(configuration.register.tpsUrl, tpsRetry))
         medlClient = restClients.medl2(configuration.register.medl2BaseUrl)
         aaRegClient = restClients.aaReg(configuration.register.aaRegBaseUrl)
         inntektClient = restClients.inntektskomponenten(configuration.register.inntektBaseUrl)
