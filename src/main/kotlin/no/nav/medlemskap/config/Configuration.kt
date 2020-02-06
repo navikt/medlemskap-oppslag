@@ -1,6 +1,8 @@
 package no.nav.medlemskap.config
 
 import com.natpryce.konfig.*
+import java.io.File
+import java.io.FileNotFoundException
 
 private val defaultProperties = ConfigurationMap(
         mapOf(
@@ -29,6 +31,13 @@ private val config = ConfigurationProperties.systemProperties() overriding
 
 private fun String.configProperty(): String = config[Key(this, stringType)]
 
+private fun String.readFile() =
+        try {
+            File(this).readText(Charsets.UTF_8)
+        } catch (err: FileNotFoundException) {
+            null
+        }
+
 data class Configuration(
         val register: Register = Register(),
         val sts: Sts = Sts(),
@@ -54,7 +63,7 @@ data class Configuration(
 
     data class AzureAd(
             val clientId: String = "NAIS_APP_NAME".configProperty(),
-            val jwtAudience: String = "JWT_AUDIENCE".configProperty(),
+            val jwtAudience: String = "/var/run/secrets/nais.io/azure/client_id".readFile() ?: "AZURE_CLIENT_ID".configProperty(),
             val tenant: String = "AZURE_TENANT".configProperty(),
             val authorityEndpoint: String = "AZURE_AUTHORITY_ENDPOINT".configProperty().removeSuffix("/")
     )
