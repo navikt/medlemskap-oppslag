@@ -18,6 +18,7 @@ import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.config.getAadConfig
 import no.nav.medlemskap.routes.evalueringRoute
 import no.nav.medlemskap.routes.naisRoutes
+import no.nav.medlemskap.routes.reglerRoute
 import no.nav.medlemskap.services.Services
 
 import org.slf4j.event.Level
@@ -65,7 +66,8 @@ fun createHttpServer(
 
     routing {
         naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running })
-        evalueringRoute(configuration, services, useAuthentication)
+        evalueringRoute(services, useAuthentication)
+        reglerRoute()
         healthRoute("/healthCheck", services.healthService)
     }
 

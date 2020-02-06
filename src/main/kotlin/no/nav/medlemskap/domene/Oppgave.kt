@@ -6,7 +6,7 @@ data class Oppgave (
         val aktivDato: LocalDate,
         val prioritet: Prioritet,
         val status: Status,
-        val tema: String
+        val tema: String?
 )
 
 enum class Prioritet {

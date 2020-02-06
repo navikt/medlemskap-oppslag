@@ -15,6 +15,6 @@ data class Datagrunnlag (
 )
 
 data class Periode (
-        val fom: LocalDate,
-        val tom: LocalDate
+        val fom: LocalDate?,
+        val tom: LocalDate?
 )

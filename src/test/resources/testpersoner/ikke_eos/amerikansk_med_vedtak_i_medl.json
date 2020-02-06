@@ -1,0 +1,31 @@
+{
+  "soknadsperiode" : {
+    "fom" : "2020-01-30",
+    "tom" : "2020-01-30"
+  },
+  "soknadstidspunkt" : "2020-01-30",
+  "brukerinput" : {
+    "arbeidUtenforNorge" : true
+  },
+  "personhistorikk" : {
+    "statsborgerskap" : [ {
+      "landkode" : "USA",
+      "fom" : "2020-01-30",
+      "tom" : "2020-01-30"
+    } ],
+    "personstatuser" : [ ],
+    "bostedsadresser" : [ ],
+    "postadresser" : [ ],
+    "midlertidigAdresser" : [ ]
+  },
+  "medlemskapsunntak" : [ {
+    "fraOgMed" : "2020-01-01",
+    "tilOgMed" : "2020-01-12",
+    "erMedlem" : true,
+    "lovvalg" : "lovvalg"
+  } ],
+  "arbeidsforhold" : [ ],
+  "inntekt" : [ ],
+  "oppgaver" : [ ],
+  "dokument" : [ ]
+}

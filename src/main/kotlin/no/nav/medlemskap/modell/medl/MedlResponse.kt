@@ -3,7 +3,7 @@ package no.nav.medlemskap.modell.medl
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-data class Medlemskapsunntak (
+data class MedlMedlemskapsunntak (
         val dekning: String?,
         val fraOgMed: LocalDate,
         val grunnlag: String,
@@ -16,11 +16,11 @@ data class Medlemskapsunntak (
         val statusaarsak: String?,
         val tilOgMed: LocalDate,
         val untakId: Int,
-        val sporingsinformasjon: Sporingsinformasjon?,
-        val studieinformasjon: Studieinformasjon?
+        val sporingsinformasjon: MedlSporingsinformasjon?,
+        val studieinformasjon: MedlStudieinformasjon?
 )
 
-data class Sporingsinformasjon (
+data class MedlSporingsinformasjon (
         val besluttet: LocalDate?,
         val kilde: String,
         val kildedokument: String?,
@@ -32,7 +32,7 @@ data class Sporingsinformasjon (
         val versjon: String
 )
 
-data class Studieinformasjon (
+data class MedlStudieinformasjon (
         val delstudie: Boolean,
         val soeknadInnvilget: Boolean,
         val statsborgerland: String,

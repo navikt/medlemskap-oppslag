@@ -10,7 +10,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.config.Configuration
-import no.nav.medlemskap.modell.medl.Medlemskapsunntak
+import no.nav.medlemskap.modell.medl.MedlMedlemskapsunntak
 import no.nav.medlemskap.services.sts.StsRestClient
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -23,7 +23,7 @@ class MedlClient(
         private val retry: Retry? = null
 ) {
 
-    suspend fun hentMedlemskapsunntak(ident: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<Medlemskapsunntak> {
+    suspend fun hentMedlemskapsunntak(ident: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<MedlMedlemskapsunntak> {
         retry?.let {
             return it.executeSuspendFunction {
                 hentMedlemskapsunntakRequest(ident, fraOgMed, tilOgMed)
@@ -32,7 +32,7 @@ class MedlClient(
         return hentMedlemskapsunntakRequest(ident, fraOgMed, tilOgMed)
     }
 
-    suspend fun hentMedlemskapsunntakRequest(ident: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<Medlemskapsunntak> {
+    suspend fun hentMedlemskapsunntakRequest(ident: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<MedlMedlemskapsunntak> {
         val token = stsClient.oidcToken()
         return defaultHttpClient.get {
             url("$baseUrl/api/v1/medlemskapsunntak")

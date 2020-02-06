@@ -5,29 +5,29 @@ import java.time.LocalDateTime
 import java.time.YearMonth
 
 
-data class Ansettelsesperiode(
-        val bruksperiode: Bruksperiode,
-        val periode: Periode,
-        val sporingsinformasjon: Sporingsinformasjon,
+data class AaRegAnsettelsesperiode(
+        val bruksperiode: AaRegBruksperiode,
+        val periode: AaRegPeriode,
+        val sporingsinformasjon: AaRegSporingsinformasjon,
         val varslingskode: String?
 )
 
-data class AntallTimerForTimeloennet(
+data class AaRegAntallTimerForTimeloennet(
         val antallTimer: Double,
-        val periode: Periode?,
+        val periode: AaRegPeriode?,
         val rapporteringsperiode: YearMonth,
-        val sporingsinformasjon: Sporingsinformasjon
+        val sporingsinformasjon: AaRegSporingsinformasjon
 )
 
-data class Arbeidsavtale(
+data class AaRegArbeidsavtale(
         val antallTimerPrUke: Double?,
         val arbeidstidsordning: String?,
         val beregnetAntallTimerPrUke: Double?,
-        val bruksperiode: Bruksperiode,
-        val gyldighetsperiode: Gyldighetsperiode,
+        val bruksperiode: AaRegBruksperiode,
+        val gyldighetsperiode: AaRegGyldighetsperiode,
         val sistLoennsendring: String?,
         val sistStillingsendring: String?,
-        val sporingsinformasjon: Sporingsinformasjon,
+        val sporingsinformasjon: AaRegSporingsinformasjon,
         val stillingsprosent: Double?,
         val yrke: String,
         val fartsomraade: String?,
@@ -36,85 +36,85 @@ data class Arbeidsavtale(
 
 )
 
-data class Arbeidsforhold(
-        val ansettelsesperiode: Ansettelsesperiode,
-        val antallTimerForTimeloennet: List<AntallTimerForTimeloennet>?,
-        val arbeidsavtaler: List<Arbeidsavtale>,
+data class AaRegArbeidsforhold(
+        val ansettelsesperiode: AaRegAnsettelsesperiode,
+        val antallTimerForTimeloennet: List<AaRegAntallTimerForTimeloennet>?,
+        val arbeidsavtaler: List<AaRegArbeidsavtale>,
         val arbeidsforholdId: String,
-        val arbeidsgiver: OpplysningspliktigArbeidsgiver,
-        val arbeidstaker: Person,
+        val arbeidsgiver: AaRegOpplysningspliktigArbeidsgiver,
+        val arbeidstaker: AaRegPerson,
         val innrapportertEtterAOrdningen: Boolean,
         val navArbeidsforholdId: Int,
-        val opplysningspliktig: OpplysningspliktigArbeidsgiver,
-        val permisjonPermitteringer: List<PermisjonPermittering>?,
+        val opplysningspliktig: AaRegOpplysningspliktigArbeidsgiver,
+        val permisjonPermitteringer: List<AaRegPermisjonPermittering>?,
         val registrert: LocalDateTime,
         val sistBekreftet: LocalDateTime?,
-        val sporingsinformasjon: Sporingsinformasjon,
+        val sporingsinformasjon: AaRegSporingsinformasjon,
         val type: String,
-        val utenlandsopphold: List<Utenlandsopphold>?
+        val utenlandsopphold: List<AaRegUtenlandsopphold>?
 )
 
-data class ArbeidsgiverArbeidsforhold(
+data class AaRegArbeidsgiverArbeidsforhold(
         val antall: Int,
-        val arbeidsforhold: List<Arbeidsforhold>
+        val arbeidsforhold: List<AaRegArbeidsforhold>
 )
 
-data class Bruksperiode(
+data class AaRegBruksperiode(
         val fom: LocalDateTime,
         val tom: LocalDateTime?
 )
 
-enum class OpplysningspliktigArbeidsgiverType {
+enum class AaRegOpplysningspliktigArbeidsgiverType {
     Organisasjon, Person
 }
 
-data class Gyldighetsperiode(
+data class AaRegGyldighetsperiode(
         val fom: LocalDate,
         val tom: LocalDate?
 )
 
-data class OpplysningspliktigArbeidsgiver(
-        val type: OpplysningspliktigArbeidsgiverType,
+data class AaRegOpplysningspliktigArbeidsgiver(
+        val type: AaRegOpplysningspliktigArbeidsgiverType,
         val organisasjonsnummer: String?,
         val aktoerId: String?,
         val offentligIdent: String?
 )
 
-enum class OrganisasjonType {
+enum class AaRegOrganisasjonType {
     Organisasjon
 }
 
 
-data class Organisasjon(
-        val type: OrganisasjonType,
+data class AaRegOrganisasjon(
+        val type: AaRegOrganisasjonType,
         val organisasjonsnummer: String
 )
 
-data class Periode(
+data class AaRegPeriode(
         val fom: LocalDate?,
         val tom: LocalDate?
 )
 
-data class PermisjonPermittering(
-        val periode: Periode?,
+data class AaRegPermisjonPermittering(
+        val periode: AaRegPeriode?,
         val permisjonPermitteringId: String,
         val prosent: Double?,
-        val sporingsinformasjon: Sporingsinformasjon,
+        val sporingsinformasjon: AaRegSporingsinformasjon,
         val type: String,
         val varslingskode: String?
 )
 
-enum class PersonType {
+enum class AaRegPersonType {
     Person
 }
 
-data class Person(
-        val type: PersonType,
+data class AaRegPerson(
+        val type: AaRegPersonType,
         val aktoerId: String,
         val offentligIdent: String
 )
 
-data class Sporingsinformasjon(
+data class AaRegSporingsinformasjon(
         val endretAv: String?,
         val endretKilde: String?,
         val endretKildeReferanse: String?,
@@ -125,15 +125,15 @@ data class Sporingsinformasjon(
         val opprettetTidspunkt: LocalDateTime?
 )
 
-data class TjenestefeilResponse(
+data class AaRegTjenestefeilResponse(
         val melding: String
 )
 
-data class Utenlandsopphold(
+data class AaRegUtenlandsopphold(
         val landkode: String,
-        val periode: Periode?,
+        val periode: AaRegPeriode?,
         val rapporteringsperiode: YearMonth,
-        val sporingsinformasjon: Sporingsinformasjon
+        val sporingsinformasjon: AaRegSporingsinformasjon
 )
 
 

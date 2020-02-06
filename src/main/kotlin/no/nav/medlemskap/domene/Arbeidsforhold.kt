@@ -4,7 +4,7 @@ import java.time.YearMonth
 
 data class Arbeidsforhold (
         val periode: Periode,
-        val utenlandsopphold: List<Utenlandsopphold>,
+        val utenlandsopphold: List<Utenlandsopphold>?,
         val arbeidsgiver: Arbeidsgiver,
         val arbeidsfolholdstype: Arbeidsforholdstype,
         val arbeidsavtaler: List<Arbeidsavtale>
@@ -19,8 +19,8 @@ data class Arbeidsavtale (
 
 data class Arbeidsgiver (
         val type: String,
-        val identifikator: String,
-        val landkode: String // Må kanskje hentes fra https://data.brreg.no/enhetsregisteret/api/docs/index.html#enheter-oppslag
+        val identifikator: String?,
+        val landkode: String? // Må kanskje hentes fra https://data.brreg.no/enhetsregisteret/api/docs/index.html#enheter-oppslag
 )
 
 data class Utenlandsopphold (

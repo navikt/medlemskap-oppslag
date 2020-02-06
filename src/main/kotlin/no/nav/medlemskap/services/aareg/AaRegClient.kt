@@ -11,7 +11,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
 import no.nav.medlemskap.common.defaultHttpClient
-import no.nav.medlemskap.modell.aareg.Arbeidsforhold
+import no.nav.medlemskap.modell.aareg.AaRegArbeidsforhold
 import no.nav.medlemskap.services.sts.StsRestClient
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -30,7 +30,7 @@ class AaRegClient(
         private val logger = KotlinLogging.logger { }
     }
 
-    suspend fun hentArbeidsforhold(fnr: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<Arbeidsforhold> {
+    suspend fun hentArbeidsforhold(fnr: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<AaRegArbeidsforhold> {
         retry?.let {
             return it.executeSuspendFunction {
                 hentArbeidsforholdRequest(fnr, fraOgMed, tilOgMed)
@@ -39,9 +39,9 @@ class AaRegClient(
         return hentArbeidsforholdRequest(fnr, fraOgMed, tilOgMed)
     }
 
-    private suspend fun hentArbeidsforholdRequest(fnr: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<Arbeidsforhold> {
+    private suspend fun hentArbeidsforholdRequest(fnr: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<AaRegArbeidsforhold> {
         val oidcToken = stsClient.oidcToken()
-        return defaultHttpClient.get<List<Arbeidsforhold>> {
+        return defaultHttpClient.get<List<AaRegArbeidsforhold>> {
             url("$baseUrl/v1/arbeidstaker/arbeidsforhold")
             header(HttpHeaders.Authorization, "Bearer ${oidcToken}")
             header(HttpHeaders.Accept, ContentType.Application.Json)

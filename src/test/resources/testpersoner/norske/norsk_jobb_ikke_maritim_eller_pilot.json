@@ -1,0 +1,45 @@
+{
+  "soknadsperiode" : {
+    "fom" : "2020-01-30",
+    "tom" : "2020-01-30"
+  },
+  "soknadstidspunkt" : "2020-01-30",
+  "brukerinput" : {
+    "arbeidUtenforNorge" : false
+  },
+  "personhistorikk" : {
+    "statsborgerskap" : [ {
+      "landkode" : "NOR",
+      "fom" : "2020-01-30",
+      "tom" : "2020-01-30"
+    } ],
+    "personstatuser" : [ ],
+    "bostedsadresser" : [ ],
+    "postadresser" : [ ],
+    "midlertidigAdresser" : [ ]
+  },
+  "medlemskapsunntak" : [ ],
+  "arbeidsforhold" : [ {
+    "periode" : {
+      "fom" : "2020-01-30",
+      "tom" : "2020-01-30"
+    },
+    "utenlandsopphold" : [ ],
+    "arbeidsgiver" : {
+      "type" : "Organisasjon",
+      "identifikator" : "1",
+      "landkode" : "NOR"
+    },
+    "arbeidsfolholdstype" : "NORMALT",
+    "arbeidsavtaler" : [ {
+      "periode" : {
+        "fom" : "2020-01-30",
+        "tom" : "2020-01-30"
+      },
+      "yrkeskode" : "0001"
+    } ]
+  } ],
+  "inntekt" : [ ],
+  "oppgaver" : [ ],
+  "dokument" : [ ]
+}
