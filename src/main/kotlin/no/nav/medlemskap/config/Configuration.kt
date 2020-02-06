@@ -18,7 +18,7 @@ private val defaultProperties = ConfigurationMap(
                 "SECURITY_TOKEN_SERVICE_REST_URL" to "",
                 "SERVICE_USER_PASSWORD" to "",
                 "NAIS_APP_NAME" to "",
-                "JWT_AUDIENCE" to "",
+                "AZURE_CLIENT_ID" to "",
                 "SAF_BASE_URL" to "",
                 "OPPGAVE_BASE_URL" to "",
                 "PDL_BASE_URL" to ""
