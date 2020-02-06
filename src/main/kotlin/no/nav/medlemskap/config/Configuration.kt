@@ -1,8 +1,11 @@
 package no.nav.medlemskap.config
 
 import com.natpryce.konfig.*
+import mu.KotlinLogging
 import java.io.File
 import java.io.FileNotFoundException
+
+private val logger = KotlinLogging.logger { }
 
 private val defaultProperties = ConfigurationMap(
         mapOf(
@@ -33,8 +36,10 @@ private fun String.configProperty(): String = config[Key(this, stringType)]
 
 private fun String.readFile() =
         try {
+            logger.info { "Leser fra azure-fil $this" }
             File(this).readText(Charsets.UTF_8)
         } catch (err: FileNotFoundException) {
+            logger.warn { "Azure fil ikke funnet" }
             null
         }
 
