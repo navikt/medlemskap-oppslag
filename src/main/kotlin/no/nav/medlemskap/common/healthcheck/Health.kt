@@ -1,7 +1,6 @@
 package no.nav.medlemskap.common.healthcheck
 
 import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.HttpStatement
 
 interface Result {
     val name: String
@@ -18,7 +17,7 @@ interface HealthCheck {
 }
 
 class TryCatchHealthCheck(override val name: String,
-                          private val block: () -> Unit) : HealthCheck {
+                          private val block: suspend () -> Unit) : HealthCheck {
     override suspend fun check(): Result {
         return try {
             block.invoke()

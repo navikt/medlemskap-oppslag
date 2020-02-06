@@ -13,12 +13,9 @@ import io.ktor.http.HttpStatusCode
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import no.nav.medlemskap.services.aareg.medlClientTest
-import no.nav.medlemskap.services.medl.MedlClient
 import no.nav.medlemskap.services.sts.StsRestClient
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
-import java.time.LocalDate
 
 class OppgaveClientTest {
 

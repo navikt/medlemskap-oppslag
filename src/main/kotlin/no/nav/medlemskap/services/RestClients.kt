@@ -1,6 +1,6 @@
 package no.nav.medlemskap.services
 
-import no.nav.medlemskap.config.Configuration
+import no.nav.medlemskap.config.*
 import no.nav.medlemskap.services.aareg.AaRegClient
 import no.nav.medlemskap.services.inntekt.InntektClient
 import no.nav.medlemskap.services.medl.MedlClient
@@ -13,11 +13,18 @@ class RestClients(private val stsClientRest: StsRestClient,
                   private val callIdGenerator: () -> String,
                   private val configuration: Configuration) {
 
-    fun aaReg(endpointUrl: String) = AaRegClient(endpointUrl, stsClientRest, callIdGenerator)
-    fun medl2(endpointBaseUrl: String) = MedlClient(endpointBaseUrl, stsClientRest, callIdGenerator, configuration)
-    fun inntektskomponenten(endpointBaseUrl: String) = InntektClient(endpointBaseUrl, stsClientRest, callIdGenerator, configuration)
-    fun saf(endpointBaseUrl: String) = SafClient(endpointBaseUrl, stsClientRest, callIdGenerator, configuration)
-    fun oppgaver(endpointBaseUrl: String) = OppgaveClient(endpointBaseUrl, stsClientRest, callIdGenerator)
-    fun pdl(endpointBaseURl: String) = PdlClient(endpointBaseURl, stsClientRest, callIdGenerator, configuration)
+    private val aaRegRetry = retryRegistry.retry("AaReg")
+    private val inntektRetry = retryRegistry.retry("Inntekt")
+    private val medlRetry = retryRegistry.retry("Medl")
+    private val oppgaveRetry = retryRegistry.retry("Oppgave")
+    private val pdlRetry = retryRegistry.retry("PDL")
+    private val safRetry = retryRegistry.retry("Saf")
+
+    fun aaReg(endpointUrl: String) = AaRegClient(endpointUrl, stsClientRest, callIdGenerator, aaRegRetry)
+    fun medl2(endpointBaseUrl: String) = MedlClient(endpointBaseUrl, stsClientRest, callIdGenerator, configuration, medlRetry)
+    fun inntektskomponenten(endpointBaseUrl: String) = InntektClient(endpointBaseUrl, stsClientRest, callIdGenerator, configuration, inntektRetry)
+    fun saf(endpointBaseUrl: String) = SafClient(endpointBaseUrl, stsClientRest, callIdGenerator, configuration, safRetry)
+    fun oppgaver(endpointBaseUrl: String) = OppgaveClient(endpointBaseUrl, stsClientRest, callIdGenerator, oppgaveRetry)
+    fun pdl(endpointBaseURl: String) = PdlClient(endpointBaseURl, stsClientRest, callIdGenerator, configuration, pdlRetry)
 
 }

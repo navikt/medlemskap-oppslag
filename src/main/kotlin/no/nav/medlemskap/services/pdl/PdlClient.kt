@@ -1,5 +1,7 @@
 package no.nav.medlemskap.services.pdl
 
+import io.github.resilience4j.kotlin.retry.executeSuspendFunction
+import io.github.resilience4j.retry.Retry
 import io.ktor.client.request.*
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
@@ -16,9 +18,20 @@ class PdlClient(
         private val baseUrl: String,
         private val stsClient: StsRestClient,
         private val callIdGenerator: () -> String,
-        private val configuration: Configuration) {
+        private val configuration: Configuration,
+        private val retry: Retry? = null
+) {
 
     suspend fun hentIdenter(fnr: String): HentIdenterResponse {
+        retry?.let {
+            return it.executeSuspendFunction {
+                hentIdenterRequest(fnr)
+            }
+        }
+        return hentIdenterRequest(fnr)
+    }
+
+    suspend fun hentIdenterRequest(fnr: String): HentIdenterResponse {
 
         return defaultHttpClient.post<HentIdenterResponse>() {
             url("$baseUrl")

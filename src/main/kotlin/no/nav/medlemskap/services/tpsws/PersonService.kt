@@ -7,7 +7,7 @@ import no.nav.tjeneste.virksomhet.person.v3.binding.HentPersonhistorikkSikkerhet
 
 class PersonService(private val personClient: PersonClient) {
 
-    fun personhistorikk(fnr: String) =
+    suspend fun personhistorikk(fnr: String) =
             try {
                 personClient.hentPersonHistorikk(fnr)
             } catch (err: Exception) {
@@ -18,6 +18,6 @@ class PersonService(private val personClient: PersonClient) {
                 }
             }
 
-    fun healthCheck() = personClient.healthCheck()
+    suspend fun healthCheck() = personClient.healthCheck()
 }
 

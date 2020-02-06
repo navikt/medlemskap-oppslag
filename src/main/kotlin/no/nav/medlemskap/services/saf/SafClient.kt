@@ -1,5 +1,7 @@
 package no.nav.medlemskap.services.saf
 
+import io.github.resilience4j.kotlin.retry.executeSuspendFunction
+import io.github.resilience4j.retry.Retry
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.url
@@ -14,12 +16,23 @@ import no.nav.medlemskap.services.sts.StsRestClient
 private const val ANTALL_JOURNALPOSTER = 10
 
 class SafClient(
-        val baseUrl: String,
-        val stsClient: StsRestClient,
-        val callIdGenerator: () -> String,
-        private val config: Configuration) {
+        private val baseUrl: String,
+        private val stsClient: StsRestClient,
+        private val callIdGenerator: () -> String,
+        private val configuration: Configuration,
+        private val retry: Retry? = null
+) {
 
     suspend fun hentJournaldata(fnr: String): DokumentoversiktBrukerResponse {
+        retry?.let {
+            return it.executeSuspendFunction {
+                hentJournaldataRequest(fnr)
+            }
+        }
+        return hentJournaldataRequest(fnr)
+    }
+
+    suspend fun hentJournaldataRequest(fnr: String): DokumentoversiktBrukerResponse {
 
         return defaultHttpClient.post<DokumentoversiktBrukerResponse>() {
             url("$baseUrl")
@@ -27,7 +40,7 @@ class SafClient(
             header(HttpHeaders.ContentType, ContentType.Application.Json)
             header(HttpHeaders.Accept, ContentType.Application.Json)
             header("Nav-Callid", callIdGenerator.invoke())
-            header("Nav-Consumer-Id", config.sts.username)
+            header("Nav-Consumer-Id", configuration.sts.username)
             body = DokumentoversiktBrukerQuery(fnr, ANTALL_JOURNALPOSTER)
         }
     }
