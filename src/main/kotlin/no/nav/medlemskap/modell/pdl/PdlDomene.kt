@@ -13,26 +13,11 @@ enum class IdentGruppe {
     FOLKEREGISTERIDENT, NPID, AKTORID
 }
 
+open class GraphqlQuery(val query: String, val variables: Variables)
 
-open class GraphqlQuery(val query: String, val variables: String)
+data class Variables(val ident: String, val navnHistorikk: Boolean = false, val grupper: List<IdentGruppe> = listOf(IdentGruppe.AKTORID, IdentGruppe.FOLKEREGISTERIDENT, IdentGruppe.NPID))
 
 data class HentIdenterQuery(val fnr: String) : GraphqlQuery(
-        query = """ 
-            query(${'$'}ident: ID!, ${'$'}grupper: [IdentGruppe!], ${'$'}historikk: Boolean = false) {
-                hentIdenter(ident: ${'$'}ident, grupper:${'$'}grupper, historikk:${'$'}historikk) {
-                    identer {
-                        ident,
-                        historisk,
-                        gruppe
-                    }
-                }
-            }
-            """.trimIndent(),
-        variables = """
-            {
-                  "ident":"$fnr",
-                  "historikk": true,
-                  "grupper": ["${IdentGruppe.FOLKEREGISTERIDENT}", "${IdentGruppe.AKTORID}", "${IdentGruppe.NPID}"]
-              }
-        """.trimIndent()
+        query = HentIdenterQuery::class.java.getResource("/pdl/hentIdenter.graphql").readText().replace("[\n\r]", ""),
+        variables = Variables(fnr)
 )
