@@ -17,7 +17,8 @@ open class GraphqlQuery(val query: String, val variables: Variables)
 
 data class Variables(val ident: String, val navnHistorikk: Boolean = false, val grupper: List<IdentGruppe> = listOf(IdentGruppe.AKTORID, IdentGruppe.FOLKEREGISTERIDENT, IdentGruppe.NPID))
 
-data class HentIdenterQuery(val fnr: String) : GraphqlQuery(
-        query = HentIdenterQuery::class.java.getResource("/pdl/hentIdenter.graphql").readText().replace("[\n\r]", ""),
-        variables = Variables(fnr)
-)
+
+fun hentIndenterQuery(fnr: String): GraphqlQuery {
+    val query = GraphqlQuery::class.java.getResource("/pdl/hentIdenter.graphql").readText().replace("[\n\r]", "")
+    return GraphqlQuery(query, Variables(fnr))
+}
