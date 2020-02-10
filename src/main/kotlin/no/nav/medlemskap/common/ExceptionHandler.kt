@@ -9,12 +9,26 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.request.uri
 import io.ktor.response.respond
 import mu.KotlinLogging
+import no.nav.medlemskap.common.exceptions.GraphqlError
+import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
 import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
 import no.nav.medlemskap.common.exceptions.Sikkerhetsbegrensing
 
 private val logger = KotlinLogging.logger { }
 
 fun StatusPages.Configuration.exceptionHandler() {
+    exception<GraphqlError> { cause ->
+        call.logErrorAndRespond(cause, HttpStatusCode.InternalServerError) {
+            "Feil fra graphql: ${cause.errorAsJson()}"
+        }
+    }
+
+    exception<IdenterIkkeFunnet> { cause ->
+        call.logErrorAndRespond(cause, HttpStatusCode.NotFound) {
+            "Fant ingen aktør-id for fødselsnummer"
+        }
+    }
+
     exception<PersonIkkeFunnet> { cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.NotFound) {
             "Person ikke funnet i ${cause.system}"

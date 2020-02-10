@@ -6,13 +6,18 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import mu.KotlinLogging
 import no.nav.medlemskap.common.defaultHttpClient
+import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
+import no.nav.medlemskap.common.exceptions.GraphqlError
+import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.modell.pdl.HentIdenterResponse
 import no.nav.medlemskap.modell.pdl.IdentGruppe
 import no.nav.medlemskap.modell.pdl.hentIndenterQuery
 import no.nav.medlemskap.services.sts.StsRestClient
 
+private val logger = KotlinLogging.logger { }
 
 class PdlClient(
         private val baseUrl: String,
@@ -55,7 +60,17 @@ class PdlClient(
 }
 
 class PdlService(val pdlClient: PdlClient) {
-    suspend fun hentAktorId(fnr: String) : String = pdlClient.hentIdenter(fnr).data.hentIdenter.identer.first { !it.historisk && it.type == IdentGruppe.AKTORID }.ident
+    suspend fun hentAktorId(fnr: String): String {
+        val pdlResponse = pdlClient.hentIdenter(fnr)
+        pdlResponse.errors?.let { errors ->
+            logger.warn { "Fikk følgende feil fra PDL: ${objectMapper.writeValueAsString(errors)}" }
+            throw GraphqlError(errors.first())
+        }
+
+        return pdlClient.hentIdenter(fnr).data.hentIdenter?.identer?.first {
+            !it.historisk && it.type == IdentGruppe.AKTORID
+        }?.ident ?: throw IdenterIkkeFunnet()
+    }
 
 }
 
