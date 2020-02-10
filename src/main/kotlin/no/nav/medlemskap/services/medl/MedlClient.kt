@@ -54,6 +54,7 @@ class MedlClient(
         return defaultHttpClient.get {
             url("$baseUrl/api/ping")
             header("Nav-Consumer-Id", configuration.sts.username)
+            header(HttpHeaders.Accept, ContentType.Application.Json)
         }
     }
 
