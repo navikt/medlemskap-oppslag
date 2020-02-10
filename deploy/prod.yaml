@@ -68,3 +68,5 @@ spec:
       value: https://saf.nais.adeo.no/graphql
     - name: OPPGAVE_BASE_URL
       value: https://oppgave.nais.adeo.no
+    - name: PDL_BASE_URL
+      value: https://pdl-api.nais.adeo.no/graphql
