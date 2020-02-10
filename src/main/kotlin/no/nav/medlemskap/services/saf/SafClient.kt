@@ -51,7 +51,7 @@ class SafClient(
             body = DokumentoversiktBrukerQuery(fnr, ANTALL_JOURNALPOSTER)
         }
 
-        dokumentoversiktBrukerResponse?.errors?.forEach {
+        dokumentoversiktBrukerResponse.errors?.forEach {
             logger.warn{ "Error fra SAF: ${it.message} ($it)"}
         }
 

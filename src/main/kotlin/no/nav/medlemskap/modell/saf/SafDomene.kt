@@ -101,7 +101,7 @@ data class Location(val line: Int, val column: Int)
 @JsonIgnoreProperties(ignoreUnknown=true)
 data class Errors(val message: String, val locations: List<Location>, val path: List<String>)
 
-data class DokumentoversiktBrukerResponse(val data: Data?, val errors: List<Errors>?)
+data class DokumentoversiktBrukerResponse(val data: Data, val errors: List<Errors>?)
 
 open class GraphqlQuery(val query: String, val variables: Any? = null)
 
