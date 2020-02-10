@@ -24,10 +24,9 @@ class AaRegClient(
         private val retry: Retry? = null
 ) {
 
-    private val IKKE_EKSISTERENDE_FNR = "01010100000"
-
     companion object {
         private val logger = KotlinLogging.logger { }
+        private const val IKKE_EKSISTERENDE_FNR = "01010100000"
     }
 
     suspend fun hentArbeidsforhold(fnr: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<AaRegArbeidsforhold> {

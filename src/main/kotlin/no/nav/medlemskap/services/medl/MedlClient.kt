@@ -6,6 +6,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
 import io.ktor.client.request.url
+import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import no.nav.medlemskap.common.defaultHttpClient
@@ -48,5 +49,12 @@ class MedlClient(
     }
 
     private fun LocalDate.tilIsoFormat() = this.format(DateTimeFormatter.ISO_DATE)
+
+    suspend fun healthCheck(): HttpResponse {
+        return defaultHttpClient.get {
+            url("$baseUrl/api/ping")
+            header("Nav-Consumer-Id", configuration.sts.username)
+        }
+    }
 
 }

@@ -1,8 +1,5 @@
 package no.nav.medlemskap.common.healthcheck
 
-import assertk.assertThat
-import assertk.assertions.containsOnly
-import assertk.assertions.hasSize
 import io.restassured.RestAssured.get
 import no.nav.medlemskap.common.ServerTest
 import org.hamcrest.Matchers.hasItems
@@ -18,8 +15,8 @@ class HealthReporterTest : ServerTest() {
                 .then()
                 .statusCode(503)
                 .body("healthy", hasSize<Int>(0))
-                .and().body("unhealthy", hasSize<Int>(4))
-                .and().body("unhealthy.name", hasItems("GSak", "AaReg", "TPS", "PDL"))
+                .and().body("unhealthy", hasSize<Int>(8))
+                .and().body("unhealthy.name", hasItems("AaReg", "Inntekt", "Medl", "Oppg", "PDL", "SAF", "STS", "TPS"))
     }
 
 }
