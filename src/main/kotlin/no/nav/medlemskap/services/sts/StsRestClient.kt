@@ -40,8 +40,7 @@ class StsRestClient(val baseUrl: String, var username: String, val password: Str
 
     suspend fun healthCheck(): HttpResponse {
         return defaultHttpClient.options {
-            url("$baseUrl/rest/v1")
-            header(HttpHeaders.Accept, ContentType.Application.Json)
+            url("$baseUrl/isReady")
             header("Nav-Consumer-Id", username)
         }
     }
