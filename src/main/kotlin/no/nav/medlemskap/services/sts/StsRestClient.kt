@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import io.github.resilience4j.kotlin.retry.executeSuspendFunction
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.request.*
+import io.ktor.client.statement.HttpResponse
+import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import kotlinx.coroutines.runBlocking
 import no.nav.medlemskap.common.defaultHttpClient
@@ -34,6 +36,14 @@ class StsRestClient(val baseUrl: String, var username: String, val password: Str
         }
 
         return cachedOidcToken!!.token
+    }
+
+    suspend fun healthCheck(): HttpResponse {
+        return defaultHttpClient.options {
+            url("$baseUrl/rest/v1")
+            header(HttpHeaders.Accept, ContentType.Application.Json)
+            header("Nav-Consumer-Id", username)
+        }
     }
 
     fun samlToken(): String {

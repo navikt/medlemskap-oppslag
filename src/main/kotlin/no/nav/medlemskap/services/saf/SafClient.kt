@@ -3,8 +3,10 @@ package no.nav.medlemskap.services.saf
 import io.github.resilience4j.kotlin.retry.executeSuspendFunction
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.request.header
+import io.ktor.client.request.options
 import io.ktor.client.request.post
 import io.ktor.client.request.url
+import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import no.nav.medlemskap.common.defaultHttpClient
@@ -42,6 +44,15 @@ class SafClient(
             header("Nav-Callid", callIdGenerator.invoke())
             header("Nav-Consumer-Id", configuration.sts.username)
             body = DokumentoversiktBrukerQuery(fnr, ANTALL_JOURNALPOSTER)
+        }
+    }
+
+    suspend fun healthCheck(): HttpResponse {
+        return defaultHttpClient.options {
+            url("$baseUrl")
+            header(HttpHeaders.ContentType, ContentType.Application.Json)
+            header(HttpHeaders.Accept, ContentType.Application.Json)
+            header("Nav-Consumer-Id", configuration.sts.username)
         }
     }
 }
