@@ -1,9 +1,9 @@
 package no.nav.medlemskap.modell.pdl
 
 
-data class HentIdenterResponse(val data: Data)
+data class HentIdenterResponse(val data: Data, val errors: List<PdlError>?)
 
-data class Data(val hentIdenter: Identliste)
+data class Data(val hentIdenter: Identliste?)
 
 data class Identliste(val identer: List<IdentInformasjon>)
 
@@ -28,6 +28,22 @@ data class Variables(
         val grupper: List<IdentGruppe> = listOf(IdentGruppe.AKTORID, IdentGruppe.FOLKEREGISTERIDENT, IdentGruppe.NPID)
 )
 
+data class PdlError(
+        val message: String,
+        val locations: List<PdlErrorLocation>,
+        val path: List<String>?,
+        val extensions: PdlErrorExtension
+)
+
+data class PdlErrorLocation(
+        val line: Int?,
+        val column: Int?
+)
+
+data class PdlErrorExtension(
+        val code: String?,
+        val classification: String
+)
 
 fun hentIndenterQuery(fnr: String): GraphqlQuery {
     val query = GraphqlQuery::class.java.getResource("/pdl/hentIdenter.graphql").readText().replace("[\n\r]", "")
