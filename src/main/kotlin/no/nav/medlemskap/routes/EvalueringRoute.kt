@@ -14,6 +14,7 @@ import no.nav.medlemskap.domene.Brukerinput
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.modell.Request
+import no.nav.medlemskap.modell.Response
 import no.nav.medlemskap.modell.aareg.mapAaregResultat
 import no.nav.medlemskap.modell.medl.mapMedlemskapResultat
 import no.nav.medlemskap.modell.oppgave.mapOppgaveResultat
@@ -25,6 +26,7 @@ import no.nav.medlemskap.services.Services
 import no.nav.medlemskap.services.inntekt.mapInntektResultat
 import no.nav.medlemskap.services.tpsws.mapPersonhistorikkResultat
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 private val logger = KotlinLogging.logger { }
 
@@ -42,7 +44,16 @@ fun Routing.evalueringRoute(services: Services, useAuthentication: Boolean) {
                     soknadstidspunkt = request.soknadstidspunkt,
                     brukerinput = request.brukerinput,
                     services = services)
-            call.respond(evaluerData(datagrunnlag))
+            val resultat = evaluerData(datagrunnlag)
+            val response = Response(
+                    tidspunkt = LocalDateTime.now(),
+                    versjonRegler = "v1",
+                    versjonTjeneste = "TODO",
+                    datagrunnlag = datagrunnlag,
+                    resultat = resultat
+            )
+
+            call.respond(response)
         }
     }
 

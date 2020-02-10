@@ -8,9 +8,9 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.config.Configuration
-import no.nav.medlemskap.modell.pdl.HentIdenterQuery
 import no.nav.medlemskap.modell.pdl.HentIdenterResponse
 import no.nav.medlemskap.modell.pdl.IdentGruppe
+import no.nav.medlemskap.modell.pdl.hentIndenterQuery
 import no.nav.medlemskap.services.sts.StsRestClient
 
 
@@ -31,9 +31,9 @@ class PdlClient(
         return hentIdenterRequest(fnr)
     }
 
-    suspend fun hentIdenterRequest(fnr: String): HentIdenterResponse {
+    private suspend fun hentIdenterRequest(fnr: String): HentIdenterResponse {
 
-        return defaultHttpClient.post<HentIdenterResponse>() {
+        return defaultHttpClient.post {
             url("$baseUrl")
             header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
             header(HttpHeaders.ContentType, ContentType.Application.Json)
@@ -41,7 +41,7 @@ class PdlClient(
             header("Nav-Call-Id", callIdGenerator.invoke())
             header("Nav-Consumer-Token", "Bearer ${stsClient.oidcToken()}")
             header("Nav-Consumer-Id", configuration.sts.username)
-            body = HentIdenterQuery(fnr)
+            body = hentIndenterQuery(fnr)
         }
     }
 
