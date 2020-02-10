@@ -70,7 +70,7 @@ class Services(val configuration: Configuration) {
         pdlService = PdlService(pdlClient)
 
         healthService = HealthService(setOf(
-                HttpResponseHealthCheck("AaReg", { aaRegClient.healthCheck() }),
+                //HttpResponseHealthCheck("AaReg", { aaRegClient.healthCheck() }),
                 HttpResponseHealthCheck("Inntekt", { inntektClient.healthCheck() }),
                 HttpResponseHealthCheck("Medl", { medlClient.healthCheck() }),
                 HttpResponseHealthCheck("Oppg", { oppgaveClient.healthCheck() }),
