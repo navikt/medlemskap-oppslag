@@ -9,7 +9,10 @@ import io.ktor.client.request.url
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import mu.KotlinLogging
 import no.nav.medlemskap.common.defaultHttpClient
+import no.nav.medlemskap.common.exceptions.GraphqlError
+import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.modell.saf.DokumentoversiktBrukerQuery
 import no.nav.medlemskap.modell.saf.DokumentoversiktBrukerResponse
@@ -25,6 +28,10 @@ class SafClient(
         private val retry: Retry? = null
 ) {
 
+    companion object {
+        private val logger = KotlinLogging.logger { }
+    }
+
     suspend fun hentJournaldata(fnr: String): DokumentoversiktBrukerResponse {
         retry?.let {
             return it.executeSuspendFunction {
@@ -36,7 +43,7 @@ class SafClient(
 
     suspend fun hentJournaldataRequest(fnr: String): DokumentoversiktBrukerResponse {
 
-        return defaultHttpClient.post<DokumentoversiktBrukerResponse>() {
+        val dokumentoversiktBrukerResponse = defaultHttpClient.post<DokumentoversiktBrukerResponse>() {
             url("$baseUrl")
             header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
             header(HttpHeaders.ContentType, ContentType.Application.Json)
@@ -45,6 +52,13 @@ class SafClient(
             header("Nav-Consumer-Id", configuration.sts.username)
             body = DokumentoversiktBrukerQuery(fnr, ANTALL_JOURNALPOSTER)
         }
+
+        dokumentoversiktBrukerResponse.errors?.let { errors ->
+            logger.warn { "Fikk følgende feil fra Saf: ${objectMapper.writeValueAsString(errors)}" }
+            throw GraphqlError(errors.first(), "Saf")
+        }
+
+        return dokumentoversiktBrukerResponse
     }
 
     suspend fun healthCheck(): HttpResponse {

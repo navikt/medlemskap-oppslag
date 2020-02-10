@@ -19,7 +19,7 @@ private val logger = KotlinLogging.logger { }
 fun StatusPages.Configuration.exceptionHandler() {
     exception<GraphqlError> { cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.InternalServerError) {
-            "Feil fra graphql: ${cause.errorAsJson()}"
+            "Feil fra graphql i $cause.system: ${cause.errorAsJson()}"
         }
     }
 
