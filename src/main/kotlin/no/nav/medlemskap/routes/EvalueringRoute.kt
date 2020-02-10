@@ -18,6 +18,7 @@ import no.nav.medlemskap.modell.Response
 import no.nav.medlemskap.modell.aareg.mapAaregResultat
 import no.nav.medlemskap.modell.medl.mapMedlemskapResultat
 import no.nav.medlemskap.modell.oppgave.mapOppgaveResultat
+import no.nav.medlemskap.modell.saf.mapDokumentoversiktBrukerResponse
 import no.nav.medlemskap.modell.saf.mapJournalResultat
 import no.nav.medlemskap.regler.common.Fakta
 import no.nav.medlemskap.regler.common.Resultat
@@ -90,13 +91,6 @@ private suspend fun createDatagrunnlag(
     val journalPoster = journalPosterRequest.await()
     val oppgaver = gosysOppgaver.await()
 
-    // En test for å se på data:
-    logger.info { medlemskapsunntak }
-    logger.info { arbeidsforhold }
-    logger.info { inntektListe }
-    logger.info { journalPoster }
-    logger.info { oppgaver }
-
     Datagrunnlag(
             soknadsperiode = Periode(fom = soknadsperiodeStart, tom = soknadsperiodeSlutt),
             soknadstidspunkt = soknadstidspunkt,
@@ -106,10 +100,9 @@ private suspend fun createDatagrunnlag(
             arbeidsforhold = mapAaregResultat(arbeidsforhold),
             inntekt = mapInntektResultat(inntektListe),
             oppgaver = mapOppgaveResultat(oppgaver.oppgaver),
-            dokument = mapJournalResultat(journalPoster.data.dokumentoversiktBruker.journalposter)
+            dokument = mapDokumentoversiktBrukerResponse(journalPoster)
     )
 }
-
 
 private fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =
         RegelsettForMedlemskap(Fakta.initialiserFakta(datagrunnlag)).evaluer()

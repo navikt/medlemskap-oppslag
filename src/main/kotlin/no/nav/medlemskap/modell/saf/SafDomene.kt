@@ -1,5 +1,6 @@
 package no.nav.medlemskap.modell.saf
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import java.time.LocalDateTime
 
 enum class BrukerIdType(@Suppress("unused") val beskrivelse: String) {
@@ -95,7 +96,12 @@ data class Dokumentoversikt(val journalposter: List<JournalPost>)
 
 data class Data(val dokumentoversiktBruker: Dokumentoversikt)
 
-data class DokumentoversiktBrukerResponse(val data: Data)
+data class Location(val line: Int, val column: Int)
+
+@JsonIgnoreProperties(ignoreUnknown=true)
+data class Errors(val message: String, val locations: List<Location>, val path: List<String>)
+
+data class DokumentoversiktBrukerResponse(val data: Data?, val errors: List<Errors>?)
 
 open class GraphqlQuery(val query: String, val variables: Any? = null)
 
