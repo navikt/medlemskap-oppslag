@@ -8,9 +8,8 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
-import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
+import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.config.Configuration
-import no.nav.medlemskap.modell.inntekt.Ident
 import no.nav.medlemskap.modell.pdl.HentIdenterResponse
 import no.nav.medlemskap.modell.pdl.IdentGruppe
 import no.nav.medlemskap.modell.pdl.hentIndenterQuery
@@ -58,10 +57,16 @@ class PdlClient(
 }
 
 class PdlService(val pdlClient: PdlClient) {
-    suspend fun hentAktorId(fnr: String): String =
-            pdlClient.hentIdenter(fnr).data.hentIdenter?.identer?.first {
-                !it.historisk && it.type == IdentGruppe.AKTORID
-            }?.ident ?: throw IdenterIkkeFunnet()
+    suspend fun hentAktorId(fnr: String): String {
+        val pdlResponse = pdlClient.hentIdenter(fnr)
+        pdlResponse.errors?.let { errors ->
+            throw GraphqlError(errors.first())
+        }
+
+        return pdlClient.hentIdenter(fnr).data.hentIdenter?.identer?.first {
+            !it.historisk && it.type == IdentGruppe.AKTORID
+        }?.ident ?: throw IdenterIkkeFunnet()
+    }
 
 }
 
