@@ -11,6 +11,8 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
 import no.nav.medlemskap.common.defaultHttpClient
+import no.nav.medlemskap.common.exceptions.GraphqlError
+import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.modell.saf.DokumentoversiktBrukerQuery
 import no.nav.medlemskap.modell.saf.DokumentoversiktBrukerResponse
@@ -51,8 +53,9 @@ class SafClient(
             body = DokumentoversiktBrukerQuery(fnr, ANTALL_JOURNALPOSTER)
         }
 
-        dokumentoversiktBrukerResponse.errors?.forEach {
-            logger.warn{ "Error fra SAF: ${it.message} ($it)"}
+        dokumentoversiktBrukerResponse.errors?.let { errors ->
+            logger.warn { "Fikk følgende feil fra Saf: ${objectMapper.writeValueAsString(errors)}" }
+            throw GraphqlError(errors.first(), "Saf")
         }
 
         return dokumentoversiktBrukerResponse

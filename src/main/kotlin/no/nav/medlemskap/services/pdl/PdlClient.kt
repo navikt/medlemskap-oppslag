@@ -64,7 +64,7 @@ class PdlService(val pdlClient: PdlClient) {
         val pdlResponse = pdlClient.hentIdenter(fnr)
         pdlResponse.errors?.let { errors ->
             logger.warn { "Fikk følgende feil fra PDL: ${objectMapper.writeValueAsString(errors)}" }
-            throw GraphqlError(errors.first())
+            throw GraphqlError(errors.first(), "PDL")
         }
 
         return pdlClient.hentIdenter(fnr).data.hentIdenter?.identer?.first {
