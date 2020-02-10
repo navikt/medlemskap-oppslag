@@ -56,8 +56,10 @@ class InntektClient(
     private fun LocalDate.tilAarOgMnd() = this.format(DateTimeFormatter.ofPattern("yyyy-MM"))
 
     suspend fun healthCheck(): HttpResponse {
+        val token = stsClient.oidcToken()
         return defaultHttpClient.options {
             url("$baseUrl")
+            header(HttpHeaders.Authorization, "Bearer $token")
             header(HttpHeaders.ContentType, ContentType.Application.Json)
             header("Nav-Consumer-Id", configuration.sts.username)
         }
