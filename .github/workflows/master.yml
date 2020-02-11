@@ -28,6 +28,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Push docker image
         run: docker push $IMAGE
+      - name: Post failures to Slack
+        if: failure()
+        run: |
+          curl -X POST --data-urlencode "payload={\"channel\": \"$CHANNEL\", \"text\": \"$MESSAGE\", \"icon_emoji\": \":ghost:\"}" $WEBHOOK_URL
+        env:
+          MESSAGE: "Bygg feilet"
+          CHANNEL: "#team-p3-medlemskap-notifications"
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
   deploypreprod:
     name: Deploy to Preprod
     needs: build
@@ -41,6 +49,14 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
           CLUSTER: dev-fss
           RESOURCE: deploy/preprod.yaml
+      - name: Post failures to Slack
+        if: failure()
+        run: |
+          curl -X POST --data-urlencode "payload={\"channel\": \"$CHANNEL\", \"text\": \"$MESSAGE\", \"icon_emoji\": \":ghost:\"}" $WEBHOOK_URL
+        env:
+          MESSAGE: "Deploy til preprod feilet"
+          CHANNEL: "#team-p3-medlemskap-notifications"
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
   deployprod:
     name: Deploy to Prod
     needs: build
@@ -54,3 +70,11 @@ jobs:
           APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
           CLUSTER: prod-fss
           RESOURCE: deploy/prod.yaml
+      - name: Post failures to Slack
+        if: failure()
+        run: |
+          curl -X POST --data-urlencode "payload={\"channel\": \"$CHANNEL\", \"text\": \"$MESSAGE\", \"icon_emoji\": \":ghost:\"}" $WEBHOOK_URL
+        env:
+          MESSAGE: "Deploy til prod feilet"
+          CHANNEL: "#team-p3-medlemskap-notifications"
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
