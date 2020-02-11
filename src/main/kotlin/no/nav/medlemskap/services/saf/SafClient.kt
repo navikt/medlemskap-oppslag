@@ -48,7 +48,7 @@ class SafClient(
             header(HttpHeaders.Accept, ContentType.Application.Json)
             header("Nav-Callid", callIdGenerator.invoke())
             header("Nav-Consumer-Id", configuration.sts.username)
-            body = DokumentoversiktBrukerQuery(fnr, ANTALL_JOURNALPOSTER)
+            body = hentSafQuery(fnr, ANTALL_JOURNALPOSTER)
         }
 
         dokumentoversiktBrukerResponse.errors?.let { errors ->
