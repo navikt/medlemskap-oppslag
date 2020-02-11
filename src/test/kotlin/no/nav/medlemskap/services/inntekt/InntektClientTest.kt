@@ -128,7 +128,7 @@ class InntektClientTest {
     }
 """.trimIndent()
 
-    private val queryMapping: MappingBuilder = post(urlPathEqualTo("/hentinntektliste"))
+    private val queryMapping: MappingBuilder = post(urlPathEqualTo("/rs/api/v1/hentinntektliste"))
             .withHeader(HttpHeaders.Accept, equalTo("application/json"))
             .withHeader(HttpHeaders.ContentType, equalTo("application/json"))
             .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
