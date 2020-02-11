@@ -33,7 +33,7 @@ jobs:
         run: |
           curl -X POST --data-urlencode "payload={\"channel\": \"$CHANNEL\", \"text\": \"$MESSAGE\", \"icon_emoji\": \":ghost:\"}" $WEBHOOK_URL
         env:
-          MESSAGE: "@channel Bygg feilet"
+          MESSAGE: "Bygg feilet"
           CHANNEL: "#team-p3-medlemskap-notifications"
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
   deploypreprod:
@@ -54,7 +54,7 @@ jobs:
         run: |
           curl -X POST --data-urlencode "payload={\"channel\": \"$CHANNEL\", \"text\": \"$MESSAGE\", \"icon_emoji\": \":ghost:\"}" $WEBHOOK_URL
         env:
-          MESSAGE: "@channel Deploy til preprod feilet"
+          MESSAGE: "Deploy til preprod feilet"
           CHANNEL: "#team-p3-medlemskap-notifications"
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
   deployprod:
@@ -75,6 +75,6 @@ jobs:
         run: |
           curl -X POST --data-urlencode "payload={\"channel\": \"$CHANNEL\", \"text\": \"$MESSAGE\", \"icon_emoji\": \":ghost:\"}" $WEBHOOK_URL
         env:
-          MESSAGE: "@channel Deploy til prod feilet"
+          MESSAGE: "Deploy til prod feilet"
           CHANNEL: "#team-p3-medlemskap-notifications"
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
