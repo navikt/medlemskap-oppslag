@@ -1,4 +1,4 @@
-package no.nav.medlemskap.modell.medl
+package no.nav.medlemskap.services.medl
 import no.nav.medlemskap.domene.Medlemskapsunntak
 
 

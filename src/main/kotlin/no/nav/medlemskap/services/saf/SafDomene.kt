@@ -1,4 +1,4 @@
-package no.nav.medlemskap.modell.saf
+package no.nav.medlemskap.services.saf
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import java.time.LocalDateTime

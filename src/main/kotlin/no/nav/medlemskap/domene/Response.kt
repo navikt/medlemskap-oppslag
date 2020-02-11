@@ -1,4 +1,4 @@
-package no.nav.medlemskap.modell
+package no.nav.medlemskap.domene
 
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.regler.common.Resultat

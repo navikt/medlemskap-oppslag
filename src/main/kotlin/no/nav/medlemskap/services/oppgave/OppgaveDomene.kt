@@ -1,4 +1,4 @@
-package no.nav.medlemskap.modell.oppgave
+package no.nav.medlemskap.services.oppgave
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import java.time.LocalDate

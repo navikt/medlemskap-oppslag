@@ -14,8 +14,6 @@ import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.config.Configuration
-import no.nav.medlemskap.modell.saf.DokumentoversiktBrukerResponse
-import no.nav.medlemskap.modell.saf.hentSafQuery
 import no.nav.medlemskap.services.sts.StsRestClient
 
 private const val ANTALL_JOURNALPOSTER = 10
@@ -69,6 +67,11 @@ class SafClient(
             header("Nav-Consumer-Id", configuration.sts.username)
         }
     }
+}
+
+class SafService(private val safClient: SafClient) {
+    suspend fun hentJournaldata(fnr: String) =
+            mapDokumentoversiktBrukerResponse(safClient.hentJournaldata(fnr))
 }
 
 

@@ -1,4 +1,4 @@
-package no.nav.medlemskap.modell.saf
+package no.nav.medlemskap.services.saf
 
 import no.nav.medlemskap.domene.Dokument
 import no.nav.medlemskap.domene.Journalpost
@@ -6,7 +6,7 @@ import no.nav.medlemskap.domene.Journalpost
 fun mapDokumentoversiktBrukerResponse(response: DokumentoversiktBrukerResponse): List<Journalpost> =
         mapJournalResultat(response.data.dokumentoversiktBruker.journalposter)
 
-fun mapJournalResultat(journal: List<no.nav.medlemskap.modell.saf.JournalPost>): List<Journalpost> {
+fun mapJournalResultat(journal: List<JournalPost>): List<Journalpost> {
     return  journal.map {
        Journalpost(
                dokumenter = mapDokumenter(it),

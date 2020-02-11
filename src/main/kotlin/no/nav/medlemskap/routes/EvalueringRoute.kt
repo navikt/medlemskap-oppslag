@@ -13,19 +13,12 @@ import no.nav.medlemskap.common.API_COUNTER
 import no.nav.medlemskap.domene.Brukerinput
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Periode
-import no.nav.medlemskap.modell.Request
-import no.nav.medlemskap.modell.Response
-import no.nav.medlemskap.modell.aareg.mapAaregResultat
-import no.nav.medlemskap.modell.medl.mapMedlemskapResultat
-import no.nav.medlemskap.modell.oppgave.mapOppgaveResultat
-import no.nav.medlemskap.modell.saf.mapDokumentoversiktBrukerResponse
-import no.nav.medlemskap.modell.saf.mapJournalResultat
+import no.nav.medlemskap.domene.Request
+import no.nav.medlemskap.domene.Response
 import no.nav.medlemskap.regler.common.Fakta
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.RegelsettForMedlemskap
 import no.nav.medlemskap.services.Services
-import no.nav.medlemskap.services.inntekt.mapInntektResultat
-import no.nav.medlemskap.services.tpsws.mapPersonhistorikkResultat
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -77,11 +70,11 @@ private suspend fun createDatagrunnlag(
         services: Services): Datagrunnlag = coroutineScope {
 
     val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr) }
-    val medlemskapsunntakRequest = async { services.medlClient.hentMedlemskapsunntak(fnr) }
-    val arbeidsforholdRequest = async { services.aaRegClient.hentArbeidsforhold(fnr) }
-    val inntektListeRequest = async { services.inntektClient.hentInntektListe(fnr, soknadsperiodeStart, soknadsperiodeSlutt) }
-    val journalPosterRequest = async { services.safClient.hentJournaldata(fnr) }
-    val gosysOppgaver = async { services.oppgaveClient.hentOppgaver(aktoer) }
+    val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(fnr) }
+    val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr) }
+    val inntektListeRequest = async { services.inntektService.hentInntektListe(fnr, soknadsperiodeStart, soknadsperiodeSlutt) }
+    val journalPosterRequest = async { services.safService.hentJournaldata(fnr) }
+    val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktoer) }
 
 
     val historikkFraTps = historikkFraTpsRequest.await()
@@ -95,12 +88,12 @@ private suspend fun createDatagrunnlag(
             soknadsperiode = Periode(fom = soknadsperiodeStart, tom = soknadsperiodeSlutt),
             soknadstidspunkt = soknadstidspunkt,
             brukerinput = brukerinput,
-            personhistorikk = mapPersonhistorikkResultat(historikkFraTps),
-            medlemskapsunntak = mapMedlemskapResultat(medlemskapsunntak),
-            arbeidsforhold = mapAaregResultat(arbeidsforhold),
-            inntekt = mapInntektResultat(inntektListe),
-            oppgaver = mapOppgaveResultat(oppgaver.oppgaver),
-            dokument = mapDokumentoversiktBrukerResponse(journalPoster)
+            personhistorikk = historikkFraTps,
+            medlemskapsunntak = medlemskapsunntak,
+            arbeidsforhold = arbeidsforhold,
+            inntekt = inntektListe,
+            oppgaver = oppgaver,
+            dokument = journalPoster
     )
 }
 

@@ -11,7 +11,6 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
 import no.nav.medlemskap.common.defaultHttpClient
-import no.nav.medlemskap.modell.aareg.AaRegArbeidsforhold
 import no.nav.medlemskap.services.sts.StsRestClient
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -69,4 +68,11 @@ class AaRegClient(
     }
 
     private fun LocalDate.tilIsoFormat() = this.format(DateTimeFormatter.ISO_LOCAL_DATE)
+}
+
+class AaRegService(private val aaRegClient: AaRegClient) {
+
+    suspend fun hentArbeidsforhold(fnr: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null) =
+            mapAaregResultat(aaRegClient.hentArbeidsforhold(fnr, fraOgMed, tilOgMed))
+
 }

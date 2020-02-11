@@ -9,7 +9,7 @@ class PersonService(private val personClient: PersonClient) {
 
     suspend fun personhistorikk(fnr: String) =
             try {
-                personClient.hentPersonHistorikk(fnr)
+                mapPersonhistorikkResultat(personClient.hentPersonHistorikk(fnr))
             } catch (err: Exception) {
                 throw when (err) {
                     is HentPersonhistorikkPersonIkkeFunnet -> PersonIkkeFunnet(err, "TPS")
@@ -17,7 +17,5 @@ class PersonService(private val personClient: PersonClient) {
                     else -> err
                 }
             }
-
-    suspend fun healthCheck() = personClient.healthCheck()
 }
 

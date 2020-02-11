@@ -12,9 +12,6 @@ import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
 import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.config.Configuration
-import no.nav.medlemskap.modell.pdl.HentIdenterResponse
-import no.nav.medlemskap.modell.pdl.IdentGruppe
-import no.nav.medlemskap.modell.pdl.hentIndenterQuery
 import no.nav.medlemskap.services.sts.StsRestClient
 
 private val logger = KotlinLogging.logger { }
@@ -59,7 +56,8 @@ class PdlClient(
     }
 }
 
-class PdlService(val pdlClient: PdlClient) {
+class PdlService(private val pdlClient: PdlClient) {
+
     suspend fun hentAktorId(fnr: String): String {
         val pdlResponse = pdlClient.hentIdenter(fnr)
         pdlResponse.errors?.let { errors ->
@@ -67,7 +65,7 @@ class PdlService(val pdlClient: PdlClient) {
             throw GraphqlError(errors.first(), "PDL")
         }
 
-        return pdlClient.hentIdenter(fnr).data.hentIdenter?.identer?.first {
+        return pdlResponse.data.hentIdenter?.identer?.first {
             !it.historisk && it.gruppe == IdentGruppe.AKTORID
         }?.ident ?: throw IdenterIkkeFunnet()
     }

@@ -8,28 +8,41 @@ import no.nav.medlemskap.common.healthcheck.TryCatchHealthCheck
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.config.retryRegistry
 import no.nav.medlemskap.services.aareg.AaRegClient
+import no.nav.medlemskap.services.aareg.AaRegService
 import no.nav.medlemskap.services.inntekt.InntektClient
+import no.nav.medlemskap.services.inntekt.InntektService
 import no.nav.medlemskap.services.medl.MedlClient
+import no.nav.medlemskap.services.medl.MedlService
 import no.nav.medlemskap.services.oppgave.OppgaveClient
+import no.nav.medlemskap.services.oppgave.OppgaveService
 import no.nav.medlemskap.services.pdl.PdlClient
 import no.nav.medlemskap.services.pdl.PdlService
 import no.nav.medlemskap.services.saf.SafClient
+import no.nav.medlemskap.services.saf.SafService
 import no.nav.medlemskap.services.sts.StsRestClient
 import no.nav.medlemskap.services.sts.stsClient
+import no.nav.medlemskap.services.tpsws.PersonClient
 import no.nav.medlemskap.services.tpsws.PersonService
 
 class Services(val configuration: Configuration) {
 
+    private val personClient: PersonClient
     val personService: PersonService
-    val medlClient: MedlClient
-    val aaRegClient: AaRegClient
-    val inntektClient: InntektClient
-    val safClient: SafClient
-    val oppgaveClient: OppgaveClient
+    private val medlClient: MedlClient
+    val medlService: MedlService
+    private val aaRegClient: AaRegClient
+    val aaRegService: AaRegService
+    private val inntektClient: InntektClient
+    val inntektService: InntektService
+    private val safClient: SafClient
+    val safService: SafService
+    private val oppgaveClient: OppgaveClient
+    val oppgaveService: OppgaveService
+    private val pdlClient: PdlClient
+    val pdlService: PdlService
+
     val healthService: HealthService
     val healthReporter: HealthReporter
-    val pdlClient: PdlClient
-    val pdlService : PdlService
 
     private val stsRetry = retryRegistry.retry("STS")
     private val tpsRetry = retryRegistry.retry("TPS")
@@ -60,12 +73,18 @@ class Services(val configuration: Configuration) {
                 configuration = configuration
         )
 
-        personService = PersonService(wsClients.person(configuration.register.tpsUrl, tpsRetry))
+        personClient = wsClients.person(configuration.register.tpsUrl, tpsRetry)
+        personService = PersonService(personClient)
         medlClient = restClients.medl2(configuration.register.medl2BaseUrl)
+        medlService = MedlService(medlClient)
         aaRegClient = restClients.aaReg(configuration.register.aaRegBaseUrl)
+        aaRegService = AaRegService(aaRegClient)
         inntektClient = restClients.inntektskomponenten(configuration.register.inntektBaseUrl)
+        inntektService = InntektService(inntektClient)
         safClient = restClients.saf(configuration.register.safBaseUrl)
+        safService = SafService(safClient)
         oppgaveClient = restClients.oppgaver(configuration.register.oppgaveBaseUrl)
+        oppgaveService = OppgaveService(oppgaveClient)
         pdlClient = restClients.pdl(configuration.register.pdlBaseUrl)
         pdlService = PdlService(pdlClient)
 
@@ -77,7 +96,7 @@ class Services(val configuration: Configuration) {
                 HttpResponseHealthCheck("PDL", { pdlClient.healthCheck() }),
                 HttpResponseHealthCheck("SAF", { safClient.healthCheck() }),
                 HttpResponseHealthCheck("STS", { stsRestClient.healthCheck() }),
-                TryCatchHealthCheck("TPS", { personService.healthCheck() })
+                TryCatchHealthCheck("TPS", { personClient.healthCheck() })
         ))
 
         healthReporter = HealthReporter(healthService)
