@@ -13,8 +13,8 @@ import no.nav.medlemskap.common.API_COUNTER
 import no.nav.medlemskap.domene.Brukerinput
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Periode
-import no.nav.medlemskap.modell.Request
-import no.nav.medlemskap.modell.Response
+import no.nav.medlemskap.domene.Request
+import no.nav.medlemskap.domene.Response
 import no.nav.medlemskap.regler.common.Fakta
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.RegelsettForMedlemskap
