@@ -55,13 +55,13 @@ spec:
     - name: SECURITY_TOKEN_SERVICE_REST_URL
       value: https://security-token-service.nais.preprod.local
     - name: TPSWS_URL
-      value: https://wasapp-q1.adeo.no/tpsws/ws/Person/v3
+      value: https://wasapp-q2.adeo.no/tpsws/ws/Person/v3
     - name: INNTEKT_BASE_URL
-      value: https://app-q1.adeo.no/inntektskomponenten-ws
+      value: https://app-q2.adeo.no/inntektskomponenten-ws
     - name: MEDL2_BASE_URL
       value: https://app-q2.adeo.no/medl2
     - name: AAREG_BASE_URL
-      value: https://modapp-q1.adeo.no/aareg-services/api
+      value: https://modapp-q2.adeo.no/aareg-services/api
     - name: MEDLEMSKAP_REGLER_URL
       value: https://medlemskap-regler.nais.preprod.local
     - name: SAF_BASE_URL
