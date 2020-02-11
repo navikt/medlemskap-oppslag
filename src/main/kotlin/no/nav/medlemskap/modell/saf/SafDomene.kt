@@ -103,30 +103,17 @@ data class Errors(val message: String, val locations: List<Location>, val path: 
 
 data class DokumentoversiktBrukerResponse(val data: Data, val errors: List<Errors>?)
 
-open class GraphqlQuery(val query: String, val variables: Any? = null)
+data class GraphqlQuery(val query: String, val variables: Variables)
 
-data class DokumentoversiktBrukerQuery(val fnr: String, val antallJournalPoster: Int) : GraphqlQuery(
-        query = """ 
-            query {
-              dokumentoversiktBruker(
-                    brukerId: {id: "$fnr", type: ${BrukerIdType.FNR}}, 
-                    tema: [${Tema.MED}, ${Tema.UFM}, ${Tema.TRY}], 
-                    journalstatuser: [${JournalStatus.MOTTATT}, ${JournalStatus.JOURNALFOERT}, ${JournalStatus.FERDIGSTILT}, ${JournalStatus.EKSPEDERT}, ${JournalStatus.UNDER_ARBEID}, ${JournalStatus.RESERVERT}, ${JournalStatus.OPPLASTING_DOKUMENT}, ${JournalStatus.UKJENT}], 
-                    foerste: $antallJournalPoster) {
-                journalposter {
-                  journalpostId
-                  tittel
-                  journalposttype
-                  journalstatus
-                  tema
-                  datoOpprettet
-                  dokumenter {
-                    dokumentInfoId
-                    tittel
-                  }
-                }
-              }
-            }
-            """.trimIndent(),
-        variables = null
+data class Variables(
+        val ident: String,
+        val antallJournalPoster: Int,
+        val brukerIdType: BrukerIdType = BrukerIdType.FNR,
+        val temaer: List<Tema> = listOf(Tema.MED, Tema.UFM, Tema.TRY),
+        val statuser: List<JournalStatus> = listOf(JournalStatus.MOTTATT, JournalStatus.JOURNALFOERT, JournalStatus.FERDIGSTILT, JournalStatus.EKSPEDERT, JournalStatus.UNDER_ARBEID, JournalStatus.RESERVERT, JournalStatus.OPPLASTING_DOKUMENT, JournalStatus.UKJENT)
 )
+
+fun hentSafQuery(fnr: String, antallJournalPoster: Int): GraphqlQuery {
+    val query = GraphqlQuery::class.java.getResource("/saf/dokumenter.graphql").readText().replace("[\n\r]", "")
+    return GraphqlQuery(query, Variables(fnr, antallJournalPoster))
+}

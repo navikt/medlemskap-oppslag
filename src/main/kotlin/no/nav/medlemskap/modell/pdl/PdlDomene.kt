@@ -17,7 +17,7 @@ enum class IdentGruppe {
     FOLKEREGISTERIDENT, NPID, AKTORID
 }
 
-open class GraphqlQuery(
+data class GraphqlQuery(
         val query: String,
         val variables: Variables
 )
