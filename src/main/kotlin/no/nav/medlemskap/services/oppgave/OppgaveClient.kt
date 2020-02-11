@@ -10,8 +10,6 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
 import no.nav.medlemskap.common.defaultHttpClient
-import no.nav.medlemskap.config.Configuration
-import no.nav.medlemskap.modell.oppgave.FinnOppgaverResponse
 import no.nav.medlemskap.services.sts.StsRestClient
 
 private const val TEMA_MEDLEMSKAP = "MED"
@@ -58,5 +56,12 @@ class OppgaveClient(
             header(HttpHeaders.Authorization, "Bearer $token")
         }
     }
+
+}
+
+class OppgaveService(private val oppgaveClient: OppgaveClient) {
+
+    suspend fun hentOppgaver(ident: String) =
+            mapOppgaveResultat(oppgaveClient.hentOppgaver(ident).oppgaver)
 
 }

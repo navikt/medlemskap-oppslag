@@ -11,7 +11,6 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.config.Configuration
-import no.nav.medlemskap.modell.medl.MedlMedlemskapsunntak
 import no.nav.medlemskap.services.sts.StsRestClient
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -58,4 +57,10 @@ class MedlClient(
         }
     }
 
+}
+
+class MedlService(private val medlClient: MedlClient) {
+
+    suspend fun hentMedlemskapsunntak(ident: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null) =
+            mapMedlemskapResultat(medlClient.hentMedlemskapsunntak(ident, fraOgMed, tilOgMed))
 }

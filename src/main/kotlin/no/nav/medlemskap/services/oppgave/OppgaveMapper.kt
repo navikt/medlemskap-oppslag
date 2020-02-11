@@ -1,4 +1,4 @@
-package no.nav.medlemskap.modell.oppgave
+package no.nav.medlemskap.services.oppgave
 
 import no.nav.medlemskap.domene.Oppgave
 import no.nav.medlemskap.domene.Prioritet

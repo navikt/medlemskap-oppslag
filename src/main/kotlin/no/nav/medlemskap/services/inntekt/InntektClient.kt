@@ -11,9 +11,6 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.config.Configuration
-import no.nav.medlemskap.modell.inntekt.HentInntektListeRequest
-import no.nav.medlemskap.modell.inntekt.Ident
-import no.nav.medlemskap.modell.inntekt.InntektskomponentResponse
 import no.nav.medlemskap.services.sts.StsRestClient
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -66,7 +63,12 @@ class InntektClient(
     }
 }
 
+class InntektService(private val inntektClient: InntektClient) {
 
+    suspend fun hentInntektListe(ident: String, fraOgMed: LocalDate?, tilOgMed: LocalDate?) =
+            mapInntektResultat(inntektClient.hentInntektListe(ident, fraOgMed, tilOgMed))
+
+}
 
 
 

@@ -1,4 +1,4 @@
-package no.nav.medlemskap.modell.medl
+package no.nav.medlemskap.services.medl
 
 import java.time.LocalDate
 import java.time.LocalDateTime

@@ -1,4 +1,4 @@
-package no.nav.medlemskap.modell.aareg
+package no.nav.medlemskap.services.aareg
 
 import no.nav.medlemskap.domene.*
 
