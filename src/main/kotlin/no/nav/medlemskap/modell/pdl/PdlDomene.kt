@@ -10,7 +10,7 @@ data class Identliste(val identer: List<IdentInformasjon>)
 data class IdentInformasjon(
         val ident: String,
         val historisk: Boolean,
-        val type: IdentGruppe
+        val gruppe: IdentGruppe
 )
 
 enum class IdentGruppe {
