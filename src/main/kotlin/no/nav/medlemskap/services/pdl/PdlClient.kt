@@ -68,7 +68,7 @@ class PdlService(val pdlClient: PdlClient) {
         }
 
         return pdlClient.hentIdenter(fnr).data.hentIdenter?.identer?.first {
-            !it.historisk && it.type == IdentGruppe.AKTORID
+            !it.historisk && it.gruppe == IdentGruppe.AKTORID
         }?.ident ?: throw IdenterIkkeFunnet()
     }
 
