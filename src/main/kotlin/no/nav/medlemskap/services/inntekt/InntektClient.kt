@@ -38,7 +38,7 @@ class InntektClient(
     suspend fun hentInntektListeRequest(ident: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): InntektskomponentResponse {
         val token = stsClient.oidcToken()
         return defaultHttpClient.post {
-            url("$baseUrl/hentinntektliste")
+            url("$baseUrl/rs/api/v1/hentinntektliste")
             header(HttpHeaders.Authorization, "Bearer $token")
             header(HttpHeaders.ContentType, ContentType.Application.Json)
             header("Nav-Consumer-Id", configuration.sts.username)
@@ -59,7 +59,7 @@ class InntektClient(
         val token = stsClient.oidcToken()
         return defaultHttpClient.options {
             url("$baseUrl")
-            header(HttpHeaders.Authorization, "Bearer $token")
+            //header(HttpHeaders.Authorization, "Bearer $token")
             header(HttpHeaders.ContentType, ContentType.Application.Json)
             header("Nav-Consumer-Id", configuration.sts.username)
         }
