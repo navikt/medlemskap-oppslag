@@ -16,8 +16,6 @@ import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.services.sts.StsRestClient
 
-private const val ANTALL_JOURNALPOSTER = 10
-
 class SafClient(
         private val baseUrl: String,
         private val stsClient: StsRestClient,
@@ -28,6 +26,7 @@ class SafClient(
 
     companion object {
         private val logger = KotlinLogging.logger { }
+        private const val ANTALL_JOURNALPOSTER = 10
     }
 
     suspend fun hentJournaldata(fnr: String): DokumentoversiktBrukerResponse {
