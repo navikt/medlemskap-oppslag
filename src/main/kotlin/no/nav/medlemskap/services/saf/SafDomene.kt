@@ -3,13 +3,12 @@ package no.nav.medlemskap.services.saf
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import java.time.LocalDateTime
 
-enum class BrukerIdType(@Suppress("unused") val beskrivelse: String) {
-    AKTOERID("NAV aktørid for en person"),
-    FNR("Folkeregisterets fødselsnummer for en person"),
-    ORGNR("Foretaksregisterets organisasjonsnummer for en juridisk person")
-}
+data class BrukerIdInput(
+        val id: String,
+        val type: String = "FNR"
+)
 
-enum class JournalStatus {
+enum class Journalstatus {
     MOTTATT,
     JOURNALFOERT,
     FERDIGSTILT,
@@ -90,7 +89,7 @@ enum class Tema(@Suppress("unused") val beskrivelse: String) {
 
 data class DokumentInfo(val dokumentInfoId: String, val tittel: String?)
 
-data class JournalPost(val journalpostId: String, val tittel: String?, val journalposttype: JournalPostType?, val journalstatus: JournalStatus?, val tema: Tema?, val datoOpprettet: LocalDateTime, val dokumenter: List<DokumentInfo>?)
+data class JournalPost(val journalpostId: String, val tittel: String?, val journalposttype: JournalPostType?, val journalstatus: Journalstatus?, val tema: Tema?, val datoOpprettet: LocalDateTime, val dokumenter: List<DokumentInfo>?)
 
 data class Dokumentoversikt(val journalposter: List<JournalPost>)
 
@@ -101,19 +100,18 @@ data class Location(val line: Int, val column: Int)
 @JsonIgnoreProperties(ignoreUnknown=true)
 data class Errors(val message: String, val locations: List<Location>, val path: List<String>?)
 
-data class DokumentoversiktBrukerResponse(val data: Data, val errors: List<Errors>?)
+data class DokumentoversiktBrukerResponse(val data: Data?, val errors: List<Errors>?)
 
 data class GraphqlQuery(val query: String, val variables: Variables)
 
 data class Variables(
-        val id: String,
+        val brukerId: BrukerIdInput,
         val foerste: Int,
-        val type: BrukerIdType = BrukerIdType.FNR,
         val tema: List<Tema> = listOf(Tema.MED, Tema.UFM, Tema.TRY),
-        val journalstatuser: List<JournalStatus> = listOf(JournalStatus.MOTTATT, JournalStatus.JOURNALFOERT, JournalStatus.FERDIGSTILT, JournalStatus.EKSPEDERT, JournalStatus.UNDER_ARBEID, JournalStatus.RESERVERT, JournalStatus.OPPLASTING_DOKUMENT, JournalStatus.UKJENT)
+        val journalstatuser: List<Journalstatus> = listOf(Journalstatus.MOTTATT, Journalstatus.JOURNALFOERT, Journalstatus.FERDIGSTILT, Journalstatus.EKSPEDERT, Journalstatus.UNDER_ARBEID, Journalstatus.RESERVERT, Journalstatus.OPPLASTING_DOKUMENT, Journalstatus.UKJENT)
 )
 
 fun hentSafQuery(fnr: String, antallJournalPoster: Int): GraphqlQuery {
     val query = GraphqlQuery::class.java.getResource("/saf/dokumenter.graphql").readText().replace("[\n\r]", "")
-    return GraphqlQuery(query, Variables(fnr, antallJournalPoster))
+    return GraphqlQuery(query, Variables(BrukerIdInput(fnr), antallJournalPoster))
 }
