@@ -1,6 +1,5 @@
 package no.nav.medlemskap.services.saf
 
-import io.github.resilience4j.kotlin.retry.executeSuspendFunction
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.request.header
 import io.ktor.client.request.options
@@ -14,6 +13,7 @@ import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.config.Configuration
+import no.nav.medlemskap.services.runWithRetryAndMetrics
 import no.nav.medlemskap.services.sts.StsRestClient
 
 class SafClient(
@@ -30,32 +30,24 @@ class SafClient(
     }
 
     suspend fun hentJournaldata(fnr: String): DokumentoversiktBrukerResponse {
-        retry?.let {
-            return it.executeSuspendFunction {
-                hentJournaldataRequest(fnr)
+        return runWithRetryAndMetrics("SAF", "DokumentoversiktBruker", retry) {
+            val dokumentoversiktBrukerResponse = defaultHttpClient.post<DokumentoversiktBrukerResponse>() {
+                url("$baseUrl")
+                header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
+                header(HttpHeaders.ContentType, ContentType.Application.Json)
+                header(HttpHeaders.Accept, ContentType.Application.Json)
+                header("Nav-Callid", callIdGenerator.invoke())
+                header("Nav-Consumer-Id", configuration.sts.username)
+                body = hentSafQuery(fnr, ANTALL_JOURNALPOSTER)
             }
+
+            dokumentoversiktBrukerResponse.errors?.let { errors ->
+                logger.warn { "Fikk følgende feil fra Saf: ${objectMapper.writeValueAsString(errors)}" }
+                throw GraphqlError(errors.first(), "Saf")
+            }
+
+            dokumentoversiktBrukerResponse
         }
-        return hentJournaldataRequest(fnr)
-    }
-
-    suspend fun hentJournaldataRequest(fnr: String): DokumentoversiktBrukerResponse {
-
-        val dokumentoversiktBrukerResponse = defaultHttpClient.post<DokumentoversiktBrukerResponse>() {
-            url("$baseUrl")
-            header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
-            header(HttpHeaders.ContentType, ContentType.Application.Json)
-            header(HttpHeaders.Accept, ContentType.Application.Json)
-            header("Nav-Callid", callIdGenerator.invoke())
-            header("Nav-Consumer-Id", configuration.sts.username)
-            body = hentSafQuery(fnr, ANTALL_JOURNALPOSTER)
-        }
-
-        dokumentoversiktBrukerResponse.errors?.let { errors ->
-            logger.warn { "Fikk følgende feil fra Saf: ${objectMapper.writeValueAsString(errors)}" }
-            throw GraphqlError(errors.first(), "Saf")
-        }
-
-        return dokumentoversiktBrukerResponse
     }
 
     suspend fun healthCheck(): HttpResponse {

@@ -1,6 +1,5 @@
 package no.nav.medlemskap.common
 
-import io.prometheus.client.Counter
 import io.prometheus.client.Histogram
 import org.apache.cxf.Bus
 import org.apache.cxf.feature.AbstractFeature
@@ -9,7 +8,7 @@ import org.apache.cxf.message.Message
 import org.apache.cxf.phase.AbstractPhaseInterceptor
 import org.apache.cxf.phase.Phase
 
-class MetricFeature: AbstractFeature() {
+class MetricFeature : AbstractFeature() {
     override fun initializeProvider(provider: InterceptorProvider?, bus: Bus?) {
         provider?.outInterceptors?.add(MetricInterceptor())
         provider?.outInterceptors?.add(TimerStartInterceptor())
@@ -32,7 +31,7 @@ internal class MetricInterceptor : AbstractPhaseInterceptor<Message>(Phase.SETUP
             "failure"
         } ?: "success"
 
-        wsCounter.labels(service, operation, status).inc()
+        clientCounter.labels(service, operation, status).inc()
     }
 
     override fun handleFault(message: Message?) {
@@ -50,7 +49,7 @@ internal class TimerStartInterceptor : AbstractPhaseInterceptor<Message>(Phase.P
         val service = ep?.service?.name?.localPart
         val operation = message?.exchange?.bindingOperationInfo?.name?.localPart
 
-        message?.exchange?.put(MetricInterceptor::class.java.name + ".timer", wsTimer.labels(service, operation).startTimer())
+        message?.exchange?.put(MetricInterceptor::class.java.name + ".timer", clientTimer.labels(service, operation).startTimer())
     }
 }
 
@@ -62,15 +61,3 @@ internal class TimerEndInterceptor : AbstractPhaseInterceptor<Message>(Phase.REC
         }?.observeDuration()
     }
 }
-
-private val wsTimer: Histogram = Histogram.build()
-        .name("webservice_calls_latency")
-        .labelNames("service", "operation")
-        .help("latency for webservice calls")
-        .register()
-
-private val wsCounter: Counter = Counter.build()
-        .name("webservice_calls_total")
-        .labelNames("service", "operation", "status")
-        .help("counter for failed or successful webservice calls")
-        .register()

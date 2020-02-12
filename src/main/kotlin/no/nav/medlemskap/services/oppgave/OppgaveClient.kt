@@ -1,6 +1,5 @@
 package no.nav.medlemskap.services.oppgave
 
-import io.github.resilience4j.kotlin.retry.executeSuspendFunction
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.request.get
 import io.ktor.client.request.header
@@ -10,6 +9,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
 import no.nav.medlemskap.common.defaultHttpClient
+import no.nav.medlemskap.services.runWithRetryAndMetrics
 import no.nav.medlemskap.services.sts.StsRestClient
 
 private const val TEMA_MEDLEMSKAP = "MED"
@@ -28,24 +28,17 @@ class OppgaveClient(
     }
 
     suspend fun hentOppgaver(ident: String): FinnOppgaverResponse {
-        retry?.let {
-            return it.executeSuspendFunction {
-                hentOppgaverRequest(ident)
-            }
-        }
-        return hentOppgaverRequest(ident)
-    }
-
-    suspend fun hentOppgaverRequest(ident: String): FinnOppgaverResponse {
         val token = stsClient.oidcToken()
-        return defaultHttpClient.get {
-            url("$baseUrl/api/v1/oppgaver")
-            header(HttpHeaders.Authorization, "Bearer $token")
-            header("X-Correlation-Id", callIdGenerator.invoke())
-            parameter("aktoerId", ident)
-            parameter("tema", TEMA_MEDLEMSKAP)
-            parameter("tema", TEMA_UNNTAK_FRA_MEDLEMSKAP)
-            parameter("tema", TEMA_TRYGDEAVGIFT)
+        return runWithRetryAndMetrics("Oppgave", "OppgaverV1", retry) {
+            defaultHttpClient.get<FinnOppgaverResponse> {
+                url("$baseUrl/api/v1/oppgaver")
+                header(HttpHeaders.Authorization, "Bearer $token")
+                header("X-Correlation-Id", callIdGenerator.invoke())
+                parameter("aktoerId", ident)
+                parameter("tema", TEMA_MEDLEMSKAP)
+                parameter("tema", TEMA_UNNTAK_FRA_MEDLEMSKAP)
+                parameter("tema", TEMA_TRYGDEAVGIFT)
+            }
         }
     }
 

@@ -1,14 +1,13 @@
 package no.nav.medlemskap.services.sts
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import io.github.resilience4j.kotlin.retry.executeSuspendFunction
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.request.*
 import io.ktor.client.statement.HttpResponse
-import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import kotlinx.coroutines.runBlocking
 import no.nav.medlemskap.common.defaultHttpClient
+import no.nav.medlemskap.services.runWithRetryAndMetrics
 import java.time.LocalDateTime
 import java.util.*
 
@@ -16,22 +15,15 @@ class StsRestClient(val baseUrl: String, var username: String, val password: Str
     private var cachedOidcToken: Token? = null
     private var cachedSamlToken: Token? = null
 
-    suspend fun oidcToken() : String {
-        retry?.let {
-            return it.executeSuspendFunction {
-                oidcTokenRequest()
-            }
-        }
-        return oidcTokenRequest()
-    }
-
-    suspend fun oidcTokenRequest(): String {
+    suspend fun oidcToken(): String {
         if (cachedOidcToken.shouldBeRenewed()) {
-            cachedOidcToken = defaultHttpClient.get<Token> {
-                url("$baseUrl/rest/v1/sts/token")
-                header(HttpHeaders.Authorization, "Basic ${credentials()}")
-                parameter("grant_type", "client_credentials")
-                parameter("scope", "openid")
+            cachedOidcToken = runWithRetryAndMetrics("STS", "TokenV1", retry) {
+                defaultHttpClient.get<Token> {
+                    url("$baseUrl/rest/v1/sts/token")
+                    header(HttpHeaders.Authorization, "Basic ${credentials()}")
+                    parameter("grant_type", "client_credentials")
+                    parameter("scope", "openid")
+                }
             }
         }
 
