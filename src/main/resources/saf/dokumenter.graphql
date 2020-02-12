@@ -1,9 +1,9 @@
-query {
+query($id: ID!, $type: String!, $tema: [String!], $journalstatuser: [String!], $foerste: Int!) {
     dokumentoversiktBruker(
-        brukerId: {id: $ident, type: $brukerIdType},
-        tema: $temaer,
-        journalstatuser: $statuser,
-        foerste: $antallJournalPoster) {
+        brukerId: {id: $id, type: $type},
+        tema: $tema,
+        journalstatuser: $journalstatuser,
+        foerste: $foerste) {
         journalposter {
             journalpostId
             tittel

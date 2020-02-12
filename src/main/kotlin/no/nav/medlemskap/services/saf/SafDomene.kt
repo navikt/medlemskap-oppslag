@@ -99,18 +99,18 @@ data class Data(val dokumentoversiktBruker: Dokumentoversikt)
 data class Location(val line: Int, val column: Int)
 
 @JsonIgnoreProperties(ignoreUnknown=true)
-data class Errors(val message: String, val locations: List<Location>, val path: List<String>)
+data class Errors(val message: String, val locations: List<Location>, val path: List<String>?)
 
 data class DokumentoversiktBrukerResponse(val data: Data, val errors: List<Errors>?)
 
 data class GraphqlQuery(val query: String, val variables: Variables)
 
 data class Variables(
-        val ident: String,
-        val antallJournalPoster: Int,
-        val brukerIdType: BrukerIdType = BrukerIdType.FNR,
-        val temaer: List<Tema> = listOf(Tema.MED, Tema.UFM, Tema.TRY),
-        val statuser: List<JournalStatus> = listOf(JournalStatus.MOTTATT, JournalStatus.JOURNALFOERT, JournalStatus.FERDIGSTILT, JournalStatus.EKSPEDERT, JournalStatus.UNDER_ARBEID, JournalStatus.RESERVERT, JournalStatus.OPPLASTING_DOKUMENT, JournalStatus.UKJENT)
+        val id: String,
+        val foerste: Int,
+        val type: BrukerIdType = BrukerIdType.FNR,
+        val tema: List<Tema> = listOf(Tema.MED, Tema.UFM, Tema.TRY),
+        val journalstatuser: List<JournalStatus> = listOf(JournalStatus.MOTTATT, JournalStatus.JOURNALFOERT, JournalStatus.FERDIGSTILT, JournalStatus.EKSPEDERT, JournalStatus.UNDER_ARBEID, JournalStatus.RESERVERT, JournalStatus.OPPLASTING_DOKUMENT, JournalStatus.UKJENT)
 )
 
 fun hentSafQuery(fnr: String, antallJournalPoster: Int): GraphqlQuery {
