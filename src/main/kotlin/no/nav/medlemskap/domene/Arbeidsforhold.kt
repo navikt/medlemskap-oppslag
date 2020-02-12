@@ -42,3 +42,7 @@ enum class Skipsregister (val beskrivelse: String) {
     nor("Norsk Ordinært Skipsregister"),
     utl("Utenlandsk skipsregister")
 }
+
+
+
+
