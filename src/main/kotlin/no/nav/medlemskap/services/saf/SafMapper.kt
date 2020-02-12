@@ -4,7 +4,7 @@ import no.nav.medlemskap.domene.Dokument
 import no.nav.medlemskap.domene.Journalpost
 
 fun mapDokumentoversiktBrukerResponse(response: DokumentoversiktBrukerResponse): List<Journalpost> =
-        mapJournalResultat(response.data.dokumentoversiktBruker.journalposter)
+        response.data?.let { mapJournalResultat(it.dokumentoversiktBruker.journalposter) } ?: listOf()
 
 fun mapJournalResultat(journal: List<JournalPost>): List<Journalpost> {
     return  journal.map {
