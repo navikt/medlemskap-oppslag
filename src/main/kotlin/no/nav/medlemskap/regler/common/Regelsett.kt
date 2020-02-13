@@ -19,7 +19,7 @@ abstract class Regelsett(val navn: String, val fakta: Fakta) {
     }
 
     protected fun konkluderMed(resultat: Resultat): Resultat? {
-        konklusjon = resultat.copy (
+        konklusjon = resultat.copy(
                 identifikator = KONKLUSJON_IDENTIFIKATOR,
                 avklaring = KONKLUSJON_AVKLARING,
                 delresultat = delresultat
@@ -28,20 +28,21 @@ abstract class Regelsett(val navn: String, val fakta: Fakta) {
     }
 
     protected fun hentUtKonklusjon(underRestultat: Resultat): Resultat {
-        return (konklusjon ?: uavklart("Kom ikke til noen konklusjon")).apply { regelCounter.labels(navn, this.resultat.name).inc() }
+        return (konklusjon
+                ?: uavklart("Kom ikke til noen konklusjon")).apply { regelCounter.labels(navn.replace("?", ""), this.resultat.name).inc() }
     }
 
-    protected fun ja(begrunnelse: String): Resultat = Resultat (
-            resultat= Resultattype.JA,
+    protected fun ja(begrunnelse: String): Resultat = Resultat(
+            resultat = Resultattype.JA,
             beskrivelse = begrunnelse
     )
 
-    protected fun nei(begrunnelse: String): Resultat = Resultat (
+    protected fun nei(begrunnelse: String): Resultat = Resultat(
             resultat = Resultattype.NEI,
             beskrivelse = begrunnelse
     )
 
-    protected fun uavklart(begrunnelse: String): Resultat = Resultat (
+    protected fun uavklart(begrunnelse: String): Resultat = Resultat(
             resultat = Resultattype.UAVKLART,
             beskrivelse = begrunnelse
     )
