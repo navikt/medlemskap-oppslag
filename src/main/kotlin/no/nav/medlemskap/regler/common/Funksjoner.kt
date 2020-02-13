@@ -6,4 +6,6 @@ object Funksjoner {
 
     infix fun List<Any>.inneholder(objekt: Any?) = this.contains(objekt)
 
+    infix fun Map<String, String>.inneholder(key: String?) = this.containsKey(key)
+
 }
