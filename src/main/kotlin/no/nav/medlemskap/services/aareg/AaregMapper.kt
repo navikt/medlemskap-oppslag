@@ -59,8 +59,9 @@ fun mapArbeidsForholdType(arbeidsforhold: AaRegArbeidsforhold): Arbeidsforholdst
 
 }
 
+//TODO --> LA INN NOR SOM DEAFULT FOR TEST
 fun mapArbeidsgiver(arbeidsforhold: AaRegArbeidsforhold): Arbeidsgiver {
-    return Arbeidsgiver(arbeidsforhold.type, arbeidsforhold.opplysningspliktig.organisasjonsnummer, null);
+    return Arbeidsgiver(arbeidsforhold.type, arbeidsforhold.opplysningspliktig.organisasjonsnummer, "NOR");
 
 }
 
