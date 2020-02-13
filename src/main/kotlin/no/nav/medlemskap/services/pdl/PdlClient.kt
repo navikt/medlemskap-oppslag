@@ -56,10 +56,16 @@ class PdlClient(
     }
 }
 
-class PdlService(private val pdlClient: PdlClient) {
+class PdlService(private val pdlClient: PdlClient, private val clusterName: String = "dev-fss") {
 
     suspend fun hentAktorId(fnr: String): String {
         val pdlResponse = pdlClient.hentIdenter(fnr)
+
+        // Hack for å overleve manglende aktørID i ikke-konsistente data i Q2
+        if (pdlResponse.errors != null && clusterName == "dev-fss") {
+            return ""
+        }
+
         pdlResponse.errors?.let { errors ->
             logger.warn { "Fikk følgende feil fra PDL: ${objectMapper.writeValueAsString(errors)}" }
             throw GraphqlError(errors.first(), "PDL")
