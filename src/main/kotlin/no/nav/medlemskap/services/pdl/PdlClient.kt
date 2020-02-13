@@ -63,7 +63,7 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
 
         // Hack for å overleve manglende aktørID i ikke-konsistente data i Q2
         if (pdlResponse.errors != null && clusterName == "dev-fss") {
-            return ""
+            return "111111111111"
         }
 
         pdlResponse.errors?.let { errors ->
