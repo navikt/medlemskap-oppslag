@@ -10,12 +10,18 @@ import io.prometheus.client.CollectorRegistry
 import no.nav.medlemskap.regler.common.Fakta.Companion.initialiserFakta
 import no.nav.medlemskap.regler.personer.Personleser
 import no.nav.medlemskap.regler.v1.RegelsettForEøsforordningen
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 
 class RegelMetricsTest {
 
     private val personleser = Personleser()
+
+    @BeforeEach
+    fun initCollectorRegistry() {
+        CollectorRegistry.defaultRegistry.clear()
+    }
 
     @Test
     fun `evaluering av regelsett for eøs forordningen for amerikansk statsborgerskap gir to metrikker`() {
