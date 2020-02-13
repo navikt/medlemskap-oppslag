@@ -1,17 +1,20 @@
 package no.nav.medlemskap.services.pdl
 
-import io.github.resilience4j.kotlin.retry.executeSuspendFunction
 import io.github.resilience4j.retry.Retry
-import io.ktor.client.request.*
+import io.ktor.client.request.header
+import io.ktor.client.request.options
+import io.ktor.client.request.post
+import io.ktor.client.request.url
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
 import no.nav.medlemskap.common.defaultHttpClient
-import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
 import no.nav.medlemskap.common.exceptions.GraphqlError
+import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.config.Configuration
+import no.nav.medlemskap.services.runWithRetryAndMetrics
 import no.nav.medlemskap.services.sts.StsRestClient
 
 private val logger = KotlinLogging.logger { }
@@ -23,27 +26,19 @@ class PdlClient(
         private val configuration: Configuration,
         private val retry: Retry? = null
 ) {
-
     suspend fun hentIdenter(fnr: String): HentIdenterResponse {
-        retry?.let {
-            return it.executeSuspendFunction {
-                hentIdenterRequest(fnr)
+
+        return runWithRetryAndMetrics("PDL", "HentIdenter", retry) {
+            defaultHttpClient.post<HentIdenterResponse> {
+                url("$baseUrl")
+                header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
+                header(HttpHeaders.ContentType, ContentType.Application.Json)
+                header(HttpHeaders.Accept, ContentType.Application.Json)
+                header("Nav-Call-Id", callIdGenerator.invoke())
+                header("Nav-Consumer-Token", "Bearer ${stsClient.oidcToken()}")
+                header("Nav-Consumer-Id", configuration.sts.username)
+                body = hentIndenterQuery(fnr)
             }
-        }
-        return hentIdenterRequest(fnr)
-    }
-
-    private suspend fun hentIdenterRequest(fnr: String): HentIdenterResponse {
-
-        return defaultHttpClient.post {
-            url("$baseUrl")
-            header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
-            header(HttpHeaders.ContentType, ContentType.Application.Json)
-            header(HttpHeaders.Accept, ContentType.Application.Json)
-            header("Nav-Call-Id", callIdGenerator.invoke())
-            header("Nav-Consumer-Token", "Bearer ${stsClient.oidcToken()}")
-            header("Nav-Consumer-Id", configuration.sts.username)
-            body = hentIndenterQuery(fnr)
         }
     }
 
