@@ -40,8 +40,9 @@ fun mapSkipsregister(arbeidsavtale: AaRegArbeidsavtale): Skipsregister? {
     when (arbeidsavtale.skipsregister) {
         "nis" -> return Skipsregister.nis
         "nor" -> return Skipsregister.nor
+        "utl" -> return Skipsregister.utl
         else -> {
-            return Skipsregister.utl
+            return null
         }
     }
 }
