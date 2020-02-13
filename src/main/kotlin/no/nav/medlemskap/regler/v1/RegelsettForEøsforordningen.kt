@@ -73,7 +73,4 @@ class RegelsettForEøsforordningen(fakta: Fakta) : Regelsett("Regelsett for EØS
             "AUT" to "ØSTERRIKE"
     )
 
-        //Tsjekkia?
-        //Spesielt FOR storbritania/Nord irland ut 2020
-
 }
