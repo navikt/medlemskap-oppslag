@@ -8,4 +8,8 @@ object Funksjoner {
 
     infix fun Map<String, String>.inneholder(key: String?) = this.containsKey(key)
 
+    infix fun Any?.erDelAv(liste: List<Any>) = liste.contains(this)
+
+    infix fun String?.erDelAv(map: Map<String, String>) = map.containsKey(this)
+
 }

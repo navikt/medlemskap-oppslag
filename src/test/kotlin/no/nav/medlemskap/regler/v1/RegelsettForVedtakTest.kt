@@ -4,8 +4,8 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.regler.common.Fakta.Companion.initialiserFakta
 import no.nav.medlemskap.regler.common.Resultattype
 import no.nav.medlemskap.regler.personer.Personleser
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 
 class RegelsettForVedtakTest {
 
@@ -32,7 +32,7 @@ class RegelsettForVedtakTest {
     }
 
     private fun evaluer(datagrunnlag: Datagrunnlag): Resultattype {
-        val regelsett = RegelsettForVedtak(initialiserFakta(datagrunnlag))
+        val regelsett = RegelsettForManuelleVedtak(initialiserFakta(datagrunnlag))
         return regelsett.evaluer().resultat
     }
 

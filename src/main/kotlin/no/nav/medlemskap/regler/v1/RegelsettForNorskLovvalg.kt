@@ -2,9 +2,12 @@ package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.Arbeidsforholdstype
 import no.nav.medlemskap.domene.Skipsregister
-import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.common.HvisUttrykk.Companion.hvis
-import no.nav.medlemskap.regler.common.Funksjoner.inneholder
+import no.nav.medlemskap.regler.common.Avklaring
+import no.nav.medlemskap.regler.common.Fakta
+import no.nav.medlemskap.regler.common.Funksjoner.erDelAv
+import no.nav.medlemskap.regler.common.Regelsett
+import no.nav.medlemskap.regler.common.Resultat
+import no.nav.medlemskap.regler.common.uttrykk.HvisUttrykk.Companion.hvis
 
 class RegelsettForNorskLovvalg(fakta: Fakta) : Regelsett("Regelsett for norsk lovvalg", fakta) {
 
@@ -115,7 +118,7 @@ class RegelsettForNorskLovvalg(fakta: Fakta) : Regelsett("Regelsett for norsk lo
 
     private fun sjekkYrkeskodeLuftfart(fakta: Fakta): Resultat =
             hvis {
-                yrkeskoderLuftfart inneholder fakta.sisteArbeidsforholdYrkeskode()
+                fakta.sisteArbeidsforholdYrkeskode() erDelAv yrkeskoderLuftfart
             } så {
                 ja("Personen er pilot eller kabinansatt")
             } ellers {
@@ -124,7 +127,7 @@ class RegelsettForNorskLovvalg(fakta: Fakta) : Regelsett("Regelsett for norsk lo
 
     private fun sjekkSkipsregister(fakta: Fakta): Resultat =
             hvis {
-                norskeSkipsregister inneholder fakta.sisteArbeidsforholdSkipsregister()
+                fakta.sisteArbeidsforholdSkipsregister() erDelAv norskeSkipsregister
             } så {
                 ja("Personen jobber på et norskregistrert skip")
             } ellers {

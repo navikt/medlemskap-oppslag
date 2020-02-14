@@ -6,8 +6,8 @@ import no.nav.medlemskap.regler.common.Resultat
 
 class RegelsettForMedlemskap(fakta: Fakta) : Regelsett("Regelsett for medlemskap", fakta) {
 
-    private val manuelleVedtakFraNav = RegelsettForVedtak(fakta)
-    private val eøsforordningen = RegelsettForEøsforordningen(fakta)
+    private val manuelleVedtakFraNav = RegelsettForManuelleVedtak(fakta)
+    private val grunnforordningen = RegelsettForGrunnforordningen(fakta)
     private val lovvalgNorge = RegelsettForNorskLovvalg(fakta)
 
     override val KONKLUSJON_IDENTIFIKATOR: String get() = "LOVME"
@@ -24,11 +24,11 @@ class RegelsettForMedlemskap(fakta: Fakta) : Regelsett("Regelsett for medlemskap
                     konkluderMed(uavklart("Kan ikke vurdere manuelle vedtak på grunn av mangelfulle data"))
                 } hvisNei {
                     avklar {
-                        eøsforordningen.evaluer()
+                        grunnforordningen.evaluer()
                     } hvisNei {
-                        konkluderMed(uavklart("Personen er ikke omfattet av EØS-ordningen"))
+                        konkluderMed(uavklart("Personen er ikke omfattet av grunnordningen"))
                     } hvisUavklart {
-                        konkluderMed(uavklart("Kan ikke vurdere EØS på grunn av mangelfulle data"))
+                        konkluderMed(uavklart("Kan ikke vurdere grunnforordningen på grunn av mangelfulle data"))
                     } hvisJa {
                         avklar {
                             lovvalgNorge.evaluer()
