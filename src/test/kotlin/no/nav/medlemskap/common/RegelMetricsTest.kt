@@ -7,7 +7,7 @@ import assertk.assertions.isEqualTo
 import assertk.assertions.size
 import io.prometheus.client.Collector
 import io.prometheus.client.CollectorRegistry
-import no.nav.medlemskap.regler.common.Fakta.Companion.initialiserFakta
+import no.nav.medlemskap.regler.common.Personfakta.Companion.initialiserFakta
 import no.nav.medlemskap.regler.personer.Personleser
 import no.nav.medlemskap.regler.v1.RegelsettForGrunnforordningen
 import org.junit.jupiter.api.BeforeEach
@@ -25,7 +25,7 @@ class RegelMetricsTest {
 
     @Test
     fun `evaluering av regelsett for eøs forordningen for amerikansk statsborgerskap gir to metrikker`() {
-        RegelsettForGrunnforordningen(initialiserFakta(personleser.enkelAmerikansk())).evaluer()
+        RegelsettForGrunnforordningen().evaluer(initialiserFakta(personleser.enkelAmerikansk()))
 
         val sampleList = CollectorRegistry.defaultRegistry.metricFamilySamples().toList().flatMap { it.samples.toList() }
 

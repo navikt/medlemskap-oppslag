@@ -3,30 +3,30 @@ package no.nav.medlemskap.regler.v1
 import no.nav.medlemskap.domene.Arbeidsforholdstype
 import no.nav.medlemskap.domene.Skipsregister
 import no.nav.medlemskap.regler.common.Avklaring
-import no.nav.medlemskap.regler.common.Fakta
 import no.nav.medlemskap.regler.common.Funksjoner.erDelAv
+import no.nav.medlemskap.regler.common.Personfakta
 import no.nav.medlemskap.regler.common.Regelsett
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.uttrykk.HvisUttrykk.Companion.hvis
 
-class RegelsettForNorskLovvalg(fakta: Fakta) : Regelsett("Regelsett for norsk lovvalg", fakta) {
+class RegelsettForNorskLovvalg : Regelsett("Regelsett for norsk lovvalg") {
 
     override val KONKLUSJON_IDENTIFIKATOR: String get() = "LOV"
     override val KONKLUSJON_AVKLARING: String get() = "Er personen omfattet av norsk lovvalg?"
 
-    override fun evaluer(): Resultat {
+    override fun evaluer(personfakta: Personfakta): Resultat {
         val resultat =
                 avklar {
-                    erArbeidsgiverNorsk evaluerMed fakta
+                    personfakta oppfyller erArbeidsgiverNorsk
                 } hvisJa {
                     avklar {
-                        erArbeidsforholdetMaritimt evaluerMed fakta
+                        personfakta oppfyller erArbeidsforholdetMaritimt
                     } hvisJa {
                         avklar {
-                            jobberPersonenPåEtNorskregistrertSkip evaluerMed fakta
+                            personfakta oppfyller jobberPersonenPåEtNorskregistrertSkip
                         } hvisJa {
                             avklar {
-                                harBrukerJobbetUtenforNorge evaluerMed fakta
+                                personfakta oppfyller harBrukerJobbetUtenforNorge
                             } hvisNei {
                                 konkluderMed(ja("Personen er omfattet av norsk lovvalg"))
                             } hvisJa {
@@ -37,10 +37,10 @@ class RegelsettForNorskLovvalg(fakta: Fakta) : Regelsett("Regelsett for norsk lo
                         }
                     } hvisNei {
                         avklar {
-                            erPersonenPilotEllerKabinansatt evaluerMed fakta
+                            personfakta oppfyller erPersonenPilotEllerKabinansatt
                         } hvisNei {
                             avklar {
-                                harBrukerJobbetUtenforNorge evaluerMed fakta
+                                personfakta oppfyller harBrukerJobbetUtenforNorge
                             } hvisNei {
                                 konkluderMed(ja("Personen er omfattet av norsk lovvalg"))
                             } hvisJa {
@@ -96,19 +96,19 @@ class RegelsettForNorskLovvalg(fakta: Fakta) : Regelsett("Regelsett for norsk lo
             operasjon = { sjekkOmBrukerHarJobbetUtenforNorge(it) }
     )
 
-    private fun sjekkArbeidsgiver(fakta: Fakta): Resultat =
+    private fun sjekkArbeidsgiver(personfakta: Personfakta): Resultat =
             hvis {
-                fakta.sisteArbeidsgiversLand() == "NOR"
+                personfakta.sisteArbeidsgiversLand() == "NOR"
             } så {
                 ja("Arbeidsgiver er norsk")
             } ellers {
-                nei("Arbeidsgiver er ikke norsk. Land: ${fakta.sisteArbeidsgiversLand()}")
+                nei("Arbeidsgiver er ikke norsk. Land: ${personfakta.sisteArbeidsgiversLand()}")
             }
 
 
-    private fun sjekkMaritim(fakta: Fakta): Resultat =
+    private fun sjekkMaritim(personfakta: Personfakta): Resultat =
             hvis {
-                fakta.sisteArbeidsforholdtype() == Arbeidsforholdstype.MARITIM
+                personfakta.sisteArbeidsforholdtype() == Arbeidsforholdstype.MARITIM
             } så {
                 ja("Personen er ansatt i det maritime")
             } ellers {
@@ -116,27 +116,27 @@ class RegelsettForNorskLovvalg(fakta: Fakta) : Regelsett("Regelsett for norsk lo
             }
 
 
-    private fun sjekkYrkeskodeLuftfart(fakta: Fakta): Resultat =
+    private fun sjekkYrkeskodeLuftfart(personfakta: Personfakta): Resultat =
             hvis {
-                fakta.sisteArbeidsforholdYrkeskode() erDelAv yrkeskoderLuftfart
+                personfakta.sisteArbeidsforholdYrkeskode() erDelAv yrkeskoderLuftfart
             } så {
                 ja("Personen er pilot eller kabinansatt")
             } ellers {
                 nei("Personen er ikke pilot eller kabinansatt")
             }
 
-    private fun sjekkSkipsregister(fakta: Fakta): Resultat =
+    private fun sjekkSkipsregister(personfakta: Personfakta): Resultat =
             hvis {
-                fakta.sisteArbeidsforholdSkipsregister() erDelAv norskeSkipsregister
+                personfakta.sisteArbeidsforholdSkipsregister() erDelAv norskeSkipsregister
             } så {
                 ja("Personen jobber på et norskregistrert skip")
             } ellers {
                 nei("Personen jobber ikke på et norskregistrert skip")
             }
 
-    private fun sjekkOmBrukerHarJobbetUtenforNorge(fakta: Fakta): Resultat =
+    private fun sjekkOmBrukerHarJobbetUtenforNorge(personfakta: Personfakta): Resultat =
             hvis {
-                fakta.hentBrukerinputArbeidUtenforNorge()
+                personfakta.hentBrukerinputArbeidUtenforNorge()
             } så {
                 ja("Bruker har oppgitt å ha jobbet utenfor Norge")
             } ellers {

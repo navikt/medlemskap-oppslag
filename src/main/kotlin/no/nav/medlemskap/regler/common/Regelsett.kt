@@ -2,7 +2,7 @@ package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.common.regelCounter
 
-abstract class Regelsett(val navn: String, val fakta: Fakta) {
+abstract class Regelsett(val navn: String) {
 
     private var konklusjon: Resultat? = null
     private val delresultat: MutableList<Resultat> = mutableListOf()
@@ -10,7 +10,7 @@ abstract class Regelsett(val navn: String, val fakta: Fakta) {
     protected abstract val KONKLUSJON_IDENTIFIKATOR: String
     protected abstract val KONKLUSJON_AVKLARING: String
 
-    abstract fun evaluer(): Resultat
+    abstract fun evaluer(personfakta: Personfakta): Resultat
 
     protected fun avklar(metode: () -> Resultat): Resultat {
         val resultat = metode.invoke()

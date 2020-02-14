@@ -1,11 +1,12 @@
 package no.nav.medlemskap.regler.common
 
+import no.nav.medlemskap.common.regelCounter
 import no.nav.medlemskap.domene.*
 
-class Fakta(private val datagrunnlag: Datagrunnlag) {
+class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     companion object {
-        fun initialiserFakta(datagrunnlag: Datagrunnlag) = Fakta(datagrunnlag)
+        fun initialiserFakta(datagrunnlag: Datagrunnlag) = Personfakta(datagrunnlag)
     }
 
     fun personensPerioderIMedl(): List<Medlemskapsunntak> = datagrunnlag.medlemskapsunntak
@@ -25,5 +26,14 @@ class Fakta(private val datagrunnlag: Datagrunnlag) {
     fun sisteArbeidsforholdSkipsregister(): Skipsregister? = datagrunnlag.arbeidsforhold[0].arbeidsavtaler[0].skipsregister
 
     fun hentBrukerinputArbeidUtenforNorge(): Boolean = datagrunnlag.brukerinput.arbeidUtenforNorge
+
+    infix fun oppfyller(avklaring: Avklaring): Resultat {
+        val resultat = avklaring.operasjon.invoke(this).apply {
+            regelCounter.labels(avklaring.avklaring.replace("?", ""), this.resultat.name).inc()
+        }
+        return resultat.copy(identifikator = avklaring.identifikator, avklaring = avklaring.avklaring)
+    }
+
+    infix fun oppfyller(regelsett: Regelsett): Resultat = regelsett.evaluer(this)
 
 }

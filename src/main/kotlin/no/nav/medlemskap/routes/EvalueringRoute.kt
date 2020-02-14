@@ -8,21 +8,14 @@ import io.ktor.routing.Routing
 import io.ktor.routing.post
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import mu.KotlinLogging
 import no.nav.medlemskap.common.API_COUNTER
-import no.nav.medlemskap.domene.Brukerinput
-import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.Periode
-import no.nav.medlemskap.domene.Request
-import no.nav.medlemskap.domene.Response
-import no.nav.medlemskap.regler.common.Fakta
+import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.regler.common.Personfakta
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.RegelsettForMedlemskap
 import no.nav.medlemskap.services.Services
 import java.time.LocalDate
 import java.time.LocalDateTime
-
-private val logger = KotlinLogging.logger { }
 
 fun Routing.evalueringRoute(services: Services, useAuthentication: Boolean) {
     fun receiveAndRespond() {
@@ -98,4 +91,4 @@ private suspend fun createDatagrunnlag(
 }
 
 private fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =
-        RegelsettForMedlemskap(Fakta.initialiserFakta(datagrunnlag)).evaluer()
+        RegelsettForMedlemskap().evaluer(Personfakta.initialiserFakta(datagrunnlag))
