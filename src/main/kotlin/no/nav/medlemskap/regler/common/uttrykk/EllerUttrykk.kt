@@ -17,8 +17,8 @@ class EllerUttrykk(val resultat: Resultat) {
     }
 
     infix fun resultatMedId(id: () -> String): Resultat {
-        val avklaring = resultater.joinToString("ELLER") { it.avklaring }
-        val beskrivelse = resultater.joinToString("ELLER") { it.beskrivelse }
+        val avklaring = resultater.joinToString(" ELLER ") { it.avklaring }
+        val beskrivelse = resultater.joinToString(" OG ") { it.beskrivelse }
 
         return Resultat(
                 identifikator = id.invoke(),

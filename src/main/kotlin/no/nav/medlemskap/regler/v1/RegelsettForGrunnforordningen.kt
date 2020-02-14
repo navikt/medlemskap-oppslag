@@ -1,21 +1,21 @@
 package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.regler.common.Avklaring
-import no.nav.medlemskap.regler.common.Fakta
 import no.nav.medlemskap.regler.common.Funksjoner.erDelAv
+import no.nav.medlemskap.regler.common.Personfakta
 import no.nav.medlemskap.regler.common.Regelsett
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.uttrykk.HvisUttrykk.Companion.hvis
 
-class RegelsettForGrunnforordningen(fakta: Fakta) : Regelsett("Regelsett for grunnforordningen", fakta) {
+class RegelsettForGrunnforordningen : Regelsett("Regelsett for grunnforordningen") {
 
     override val KONKLUSJON_IDENTIFIKATOR: String get() = "EØS"
     override val KONKLUSJON_AVKLARING: String get() = "Er personen omfattet av Grunnforordningen?"
 
-    override fun evaluer(): Resultat {
+    override fun evaluer(personfakta: Personfakta): Resultat {
         val resultat =
                 avklar {
-                    erPersonenEøsStatsborger evaluerMed fakta
+                    personfakta oppfyller erPersonenEøsStatsborger
                 } hvisJa {
                     konkluderMed(ja("Personen er omfattet av Grunnforordningen"))
                 } hvisNei {
@@ -33,9 +33,9 @@ class RegelsettForGrunnforordningen(fakta: Fakta) : Regelsett("Regelsett for gru
             operasjon = { sjekkStatsborgerskap(it) }
     )
 
-    private fun sjekkStatsborgerskap(fakta: Fakta): Resultat =
+    private fun sjekkStatsborgerskap(personfakta: Personfakta): Resultat =
             hvis {
-                fakta.personensSisteStatsborgerskap() erDelAv eøsLand
+                personfakta.personensSisteStatsborgerskap() erDelAv eøsLand
             } så {
                 ja("Personen er statsborger i et EØS-land.")
             } ellers {

@@ -1,37 +1,37 @@
 package no.nav.medlemskap.regler.v1
 
-import no.nav.medlemskap.regler.common.Fakta
+import no.nav.medlemskap.regler.common.Personfakta
 import no.nav.medlemskap.regler.common.Regelsett
 import no.nav.medlemskap.regler.common.Resultat
 
-class RegelsettForMedlemskap(fakta: Fakta) : Regelsett("Regelsett for medlemskap", fakta) {
+class RegelsettForMedlemskap : Regelsett("Regelsett for medlemskap") {
 
-    private val manuelleVedtakFraNav = RegelsettForManuelleVedtak(fakta)
-    private val grunnforordningen = RegelsettForGrunnforordningen(fakta)
-    private val lovvalgNorge = RegelsettForNorskLovvalg(fakta)
+    private val manuelleVedtakFraNav = RegelsettForManuelleVedtak()
+    private val grunnforordningen = RegelsettForGrunnforordningen()
+    private val lovvalgNorge = RegelsettForNorskLovvalg()
 
     override val KONKLUSJON_IDENTIFIKATOR: String get() = "LOVME"
 
     override val KONKLUSJON_AVKLARING: String get() = "Er personen medlem av folketrygden?"
 
-    override fun evaluer(): Resultat {
+    override fun evaluer(personfakta: Personfakta): Resultat {
         val resultat =
                 avklar {
-                    manuelleVedtakFraNav.evaluer()
+                    personfakta oppfyller manuelleVedtakFraNav
                 } hvisJa {
                     konkluderMed(uavklart("Personen har et manuelt vedtak om medlemskap fra NAV"))
                 } hvisUavklart {
                     konkluderMed(uavklart("Kan ikke vurdere manuelle vedtak på grunn av mangelfulle data"))
                 } hvisNei {
                     avklar {
-                        grunnforordningen.evaluer()
+                        personfakta oppfyller grunnforordningen
                     } hvisNei {
                         konkluderMed(uavklart("Personen er ikke omfattet av grunnordningen"))
                     } hvisUavklart {
                         konkluderMed(uavklart("Kan ikke vurdere grunnforordningen på grunn av mangelfulle data"))
                     } hvisJa {
                         avklar {
-                            lovvalgNorge.evaluer()
+                            personfakta oppfyller lovvalgNorge
                         } hvisNei {
                             konkluderMed(uavklart("Lovvalg er ikke Norge"))
                         } hvisUavklart {
