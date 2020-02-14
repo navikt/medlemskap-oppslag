@@ -1,23 +1,25 @@
 package no.nav.medlemskap.regler.v1
 
-import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.common.HvisUttrykk.Companion.hvis
-import no.nav.medlemskap.regler.common.Funksjoner.inneholder
-import java.util.stream.Collectors.toList
+import no.nav.medlemskap.regler.common.Avklaring
+import no.nav.medlemskap.regler.common.Fakta
+import no.nav.medlemskap.regler.common.Funksjoner.erDelAv
+import no.nav.medlemskap.regler.common.Regelsett
+import no.nav.medlemskap.regler.common.Resultat
+import no.nav.medlemskap.regler.common.uttrykk.HvisUttrykk.Companion.hvis
 
-class RegelsettForEøsforordningen(fakta: Fakta) : Regelsett("Regelsett for EØS forordningen", fakta) {
+class RegelsettForGrunnforordningen(fakta: Fakta) : Regelsett("Regelsett for grunnforordningen", fakta) {
 
     override val KONKLUSJON_IDENTIFIKATOR: String get() = "EØS"
-    override val KONKLUSJON_AVKLARING: String get() = "Er personen omfattet av EØS-forordningen?"
+    override val KONKLUSJON_AVKLARING: String get() = "Er personen omfattet av Grunnforordningen?"
 
     override fun evaluer(): Resultat {
         val resultat =
                 avklar {
                     erPersonenEøsStatsborger evaluerMed fakta
                 } hvisJa {
-                    konkluderMed(ja("Personen er omfattet av EØS-ordningen"))
+                    konkluderMed(ja("Personen er omfattet av Grunnforordningen"))
                 } hvisNei {
-                    konkluderMed(nei("Personen er ikke omfattet av EØS-ordningen"))
+                    konkluderMed(nei("Personen er ikke omfattet av Grunnforordningen"))
                 }
 
         return hentUtKonklusjon(resultat)
@@ -33,7 +35,7 @@ class RegelsettForEøsforordningen(fakta: Fakta) : Regelsett("Regelsett for EØS
 
     private fun sjekkStatsborgerskap(fakta: Fakta): Resultat =
             hvis {
-                eøsLand inneholder fakta.personensSisteStatsborgerskap()
+                fakta.personensSisteStatsborgerskap() erDelAv eøsLand
             } så {
                 ja("Personen er statsborger i et EØS-land.")
             } ellers {
@@ -44,7 +46,7 @@ class RegelsettForEøsforordningen(fakta: Fakta) : Regelsett("Regelsett for EØS
     private val eøsLand = mapOf(
             "BEL" to "BELGIA",
             "BGR" to "BULGARIA",
-            "DNK" to "DANMAKR",
+            "DNK" to "DANMARK",
             "EST" to "ESTLAND",
             "FIN" to "FINLAND",
             "FRA" to "FRANKRIKE",
@@ -68,12 +70,9 @@ class RegelsettForEøsforordningen(fakta: Fakta) : Regelsett("Regelsett for EØS
             "SVN" to "SLOVENIA",
             "ESP" to "SPANIA",
             "SWE" to "SVERIGE",
+            "CZE" to "TSJEKKIA",
             "DEU" to "TYSKAND",
             "HUN" to "UNGARN",
             "AUT" to "ØSTERRIKE"
     )
-
-        //Tsjekkia?
-        //Spesielt FOR storbritania/Nord irland ut 2020
-
 }

@@ -1,6 +1,8 @@
-package no.nav.medlemskap.regler.common
+package no.nav.medlemskap.regler.common.uttrykk
 
-class HvisUttrykk (private val resultat: Boolean) {
+import no.nav.medlemskap.regler.common.Resultat
+
+class HvisUttrykk(private val resultat: Boolean) {
 
     private var svar: Resultat? = null
 

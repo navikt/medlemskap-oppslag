@@ -9,7 +9,7 @@ import io.prometheus.client.Collector
 import io.prometheus.client.CollectorRegistry
 import no.nav.medlemskap.regler.common.Fakta.Companion.initialiserFakta
 import no.nav.medlemskap.regler.personer.Personleser
-import no.nav.medlemskap.regler.v1.RegelsettForEøsforordningen
+import no.nav.medlemskap.regler.v1.RegelsettForGrunnforordningen
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -25,7 +25,7 @@ class RegelMetricsTest {
 
     @Test
     fun `evaluering av regelsett for eøs forordningen for amerikansk statsborgerskap gir to metrikker`() {
-        RegelsettForEøsforordningen(initialiserFakta(personleser.enkelAmerikansk())).evaluer()
+        RegelsettForGrunnforordningen(initialiserFakta(personleser.enkelAmerikansk())).evaluer()
 
         val sampleList = CollectorRegistry.defaultRegistry.metricFamilySamples().toList().flatMap { it.samples.toList() }
 
@@ -33,7 +33,7 @@ class RegelMetricsTest {
         assertThat(sampleList.map { it.name }.toList()).size().isEqualTo(2)
 
         assertThat(sampleList).extracting(Collector.MetricFamilySamples.Sample::labelNames, Collector.MetricFamilySamples.Sample::labelValues).contains(listOf("regel", "status") to listOf("Er personen statsborger i et EØS land?", "NEI"))
-        assertThat(sampleList).extracting(Collector.MetricFamilySamples.Sample::labelNames, Collector.MetricFamilySamples.Sample::labelValues).contains(listOf("regel", "status") to listOf("Regelsett for EØS forordningen", "NEI"))
+        assertThat(sampleList).extracting(Collector.MetricFamilySamples.Sample::labelNames, Collector.MetricFamilySamples.Sample::labelValues).contains(listOf("regel", "status") to listOf("Regelsett for grunnforordningen", "NEI"))
 
         assertThat(sampleList).extracting(Collector.MetricFamilySamples.Sample::labelNames, Collector.MetricFamilySamples.Sample::value).contains(listOf("regel", "status") to 1.0)
         assertThat(sampleList).extracting(Collector.MetricFamilySamples.Sample::labelNames, Collector.MetricFamilySamples.Sample::value).contains(listOf("regel", "status") to 1.0)
