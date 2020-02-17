@@ -18,8 +18,8 @@ Kallet er en POST på `/`
         "tom": "2019-12-31", 
     }, 
     "brukerinput": {
-          "arbeidUtenforNorge": false
-     }
+        "arbeidUtenforNorge": false
+    }
 }
 ```
 ### Inputperiode
@@ -97,15 +97,7 @@ Input fra bruker som må fylles ut i søknadsdialogen og er nødvendig for å av
         ]
       }
     ],
-    "inntekt": [
-      {
-        "arbeidsforhold": [
-          {
-            "yrke": "yrke"
-          }
-        ]
-      }
-    ],
+    "inntekt": [],
     "oppgaver": [],
     "dokument": []
   },
