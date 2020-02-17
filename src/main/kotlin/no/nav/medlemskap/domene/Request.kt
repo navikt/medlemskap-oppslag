@@ -1,11 +1,18 @@
 package no.nav.medlemskap.domene
-import no.nav.medlemskap.domene.Brukerinput
+
 import java.time.LocalDate
 
-data class Request (
+data class Request(
         val fnr: String,
-        val soknadsperiodeStart : LocalDate,
-        val soknadsperiodeSlutt: LocalDate,
-        val soknadstidspunkt: LocalDate,
+        val periode: InputPeriode,
         val brukerinput: Brukerinput
+)
+
+data class Brukerinput(
+        val arbeidUtenforNorge: Boolean
+)
+
+data class InputPeriode(
+        val fom: LocalDate,
+        val tom: LocalDate
 )
