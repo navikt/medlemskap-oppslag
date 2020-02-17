@@ -25,13 +25,15 @@ internal class MetricInterceptor : AbstractPhaseInterceptor<Message>(Phase.SETUP
         val service = ep?.service?.name?.localPart
         val operation = message?.exchange?.bindingOperationInfo?.name?.localPart
 
-        val status = message?.exchange?.inFaultMessage?.getContent(Exception::class.java)?.let {
-            "error"
-        } ?: message?.exchange?.get(Exception::class.java)?.let {
-            "failure"
-        } ?: "success"
+        if (operation != "ping") {
+            val status = message?.exchange?.inFaultMessage?.getContent(Exception::class.java)?.let {
+                "error"
+            } ?: message?.exchange?.get(Exception::class.java)?.let {
+                "failure"
+            } ?: "success"
 
-        clientCounter.labels(service, operation, status).inc()
+            clientCounter.labels(service, operation, status).inc()
+        }
     }
 
     override fun handleFault(message: Message?) {
@@ -49,7 +51,9 @@ internal class TimerStartInterceptor : AbstractPhaseInterceptor<Message>(Phase.P
         val service = ep?.service?.name?.localPart
         val operation = message?.exchange?.bindingOperationInfo?.name?.localPart
 
-        message?.exchange?.put(MetricInterceptor::class.java.name + ".timer", clientTimer.labels(service, operation).startTimer())
+        if (operation != "ping") {
+            message?.exchange?.put(MetricInterceptor::class.java.name + ".timer", clientTimer.labels(service, operation).startTimer())
+        }
     }
 }
 

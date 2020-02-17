@@ -40,9 +40,11 @@ class StsRestClient(val baseUrl: String, var username: String, val password: Str
     fun samlToken(): String {
         if (cachedSamlToken.shouldBeRenewed()) {
             cachedSamlToken = runBlocking {
-                defaultHttpClient.get<Token> {
-                    url("$baseUrl/rest/v1/sts/samltoken")
-                    header(HttpHeaders.Authorization, "Basic ${credentials()}")
+                runWithRetryAndMetrics("STS", "SamlTokenV1", retry) {
+                    defaultHttpClient.get<Token> {
+                        url("$baseUrl/rest/v1/sts/samltoken")
+                        header(HttpHeaders.Authorization, "Basic ${credentials()}")
+                    }
                 }
             }
         }

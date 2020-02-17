@@ -1,9 +1,8 @@
 {
-  "soknadsperiode" : {
-    "fom" : "2020-01-30",
-    "tom" : "2020-01-30"
+  "periode": {
+    "fom": "2020-01-30",
+    "tom": "2020-01-30"
   },
-  "soknadstidspunkt" : "2020-01-30",
   "brukerinput" : {
     "arbeidUtenforNorge" : false
   },

@@ -3,8 +3,7 @@ package no.nav.medlemskap.domene
 import java.time.LocalDate
 
 data class Datagrunnlag (
-        val soknadsperiode: Periode,
-        val soknadstidspunkt: LocalDate,
+        val periode: InputPeriode,
         val brukerinput: Brukerinput,
         val personhistorikk: Personhistorikk,
         val medlemskapsunntak: List<Medlemskapsunntak> = listOf(),

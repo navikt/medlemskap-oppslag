@@ -59,7 +59,8 @@ fun mapArbeidsForholdType(arbeidsforhold: AaRegArbeidsforhold): Arbeidsforholdst
     }
 
 }
-//TODO --> LANDEKODE (BRUKES FOR Å TEST)
+
+//TODO --> LA INN NOR SOM DEAFULT FOR TEST
 fun mapArbeidsgiver(arbeidsforhold: AaRegArbeidsforhold): Arbeidsgiver {
     return Arbeidsgiver(arbeidsforhold.type, arbeidsforhold.opplysningspliktig.organisasjonsnummer, "NOR");
 

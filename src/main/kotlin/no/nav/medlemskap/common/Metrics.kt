@@ -18,7 +18,7 @@ val clientTimer: Histogram = Histogram.build()
         .register()
 
 val clientCounter: Counter = Counter.build()
-        .name("restclient_calls_total")
+        .name("client_calls_total")
         .labelNames("service", "operation", "status")
         .help("counter for failed or successful calls to other services")
         .register()
