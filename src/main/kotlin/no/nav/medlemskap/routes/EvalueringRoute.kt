@@ -14,7 +14,6 @@ import no.nav.medlemskap.regler.common.Personfakta
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.RegelsettForMedlemskap
 import no.nav.medlemskap.services.Services
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 fun Routing.evalueringRoute(services: Services, useAuthentication: Boolean) {
@@ -26,9 +25,7 @@ fun Routing.evalueringRoute(services: Services, useAuthentication: Boolean) {
             val datagrunnlag = createDatagrunnlag(
                     fnr = request.fnr,
                     aktoer = aktorId,
-                    soknadsperiodeStart = request.soknadsperiodeStart,
-                    soknadsperiodeSlutt = request.soknadsperiodeSlutt,
-                    soknadstidspunkt = request.soknadstidspunkt,
+                    periode = request.periode,
                     brukerinput = request.brukerinput,
                     services = services)
             val resultat = evaluerData(datagrunnlag)
@@ -56,16 +53,14 @@ fun Routing.evalueringRoute(services: Services, useAuthentication: Boolean) {
 private suspend fun createDatagrunnlag(
         fnr: String,
         aktoer: String,
-        soknadsperiodeStart: LocalDate,
-        soknadsperiodeSlutt: LocalDate,
-        soknadstidspunkt: LocalDate,
+        periode: InputPeriode,
         brukerinput: Brukerinput,
         services: Services): Datagrunnlag = coroutineScope {
 
     val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr) }
     val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(fnr) }
     val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr) }
-    val inntektListeRequest = async { services.inntektService.hentInntektListe(fnr, soknadsperiodeStart, soknadsperiodeSlutt) }
+    val inntektListeRequest = async { services.inntektService.hentInntektListe(fnr, periode.fom, periode.tom) }
     val journalPosterRequest = async { services.safService.hentJournaldata(fnr) }
     val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktoer) }
 
@@ -78,8 +73,7 @@ private suspend fun createDatagrunnlag(
     val oppgaver = gosysOppgaver.await()
 
     Datagrunnlag(
-            soknadsperiode = Periode(fom = soknadsperiodeStart, tom = soknadsperiodeSlutt),
-            soknadstidspunkt = soknadstidspunkt,
+            periode = periode,
             brukerinput = brukerinput,
             personhistorikk = historikkFraTps,
             medlemskapsunntak = medlemskapsunntak,
