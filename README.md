@@ -13,14 +13,17 @@ Kallet er en POST på `/`
 ```
 {
     "fnr": "123456789",
-    "soknadsperiodeStart": "YYYY-MM-DD",
-    "soknadsperiodeSlutt": "YYYY-MM-DD",
-    "soknadstidspunkt": "YYYY-MM-DD",
+    "periode": {
+        "fom": "2019-01-01", 
+        "tom": "2019-12-31", 
+    }, 
     "brukerinput": {
         "arbeidUtenforNorge": false
     }
 }
 ```
+### Inputperiode
+Periode brukeren søker sykepenger for
 
 ### Brukerinput
 Input fra bruker som må fylles ut i søknadsdialogen og er nødvendig for å avgjøre medlemskap
@@ -30,34 +33,73 @@ Input fra bruker som må fylles ut i søknadsdialogen og er nødvendig for å av
 ## Eksempel på svar
 ```
 {
-  "tidspunkt": "YYYY-MM-DD",
-  "versjonTjeneste": "1.2",
+  "tidspunkt": "2020-02-17T13:40:42.103606",
+  "versjonTjeneste": "TODO",
   "versjonRegler": "v1",
   "datagrunnlag": {
-    "soknadsperiode" : {
-      "fom" : "2020-01-30",
-      "tom" : "2020-01-30"
+    "periode": {
+      "fom": "2020-01-01",
+      "tom": "2018-01-01"
     },
-    "soknadstidspunkt" : "2020-01-30",
-    "brukerinput" : {
-      "arbeidUtenforNorge" : false
+    "brukerinput": {
+      "arbeidUtenforNorge": false
     },
-    "personhistorikk" : {
-      "statsborgerskap" : [ {
-        "landkode" : "NOR",
-        "fom" : "2020-01-30",
-        "tom" : "2020-01-30"
-      } ],
-      "personstatuser" : [ ],
-      "bostedsadresser" : [ ],
-      "postadresser" : [ ],
-      "midlertidigAdresser" : [ ]
+    "personhistorikk": {
+      "statsborgerskap": [
+        {
+          "landkode": "NOR",
+          "fom": "1983-08-27",
+          "tom": null
+        }
+      ],
+      "personstatuser": [
+        {
+          "personstatus": "BOSA",
+          "fom": "1983-08-27",
+          "tom": null
+        }
+      ],
+      "bostedsadresser": [
+        {
+          "adresselinje": "Ukjent adresse",
+          "landkode": "NOR",
+          "fom": "1983-08-27",
+          "tom": null
+        }
+      ],
+      "postadresser": [],
+      "midlertidigAdresser": []
     },
-    "medlemskapsunntak" : [ ],
-    "arbeidsforhold" : [ ],
-    "inntekt" : [ ],
-    "oppgaver" : [ ],
-    "dokument" : [ ]
+    "medlemskapsunntak": [],
+    "arbeidsforhold": [
+      {
+        "periode": {
+          "fom": "2000-02-13",
+          "tom": null
+        },
+        "utenlandsopphold": null,
+        "arbeidsgiver": {
+          "type": "ordinaertArbeidsforhold",
+          "identifikator": "928497704",
+          "landkode": "NOR"
+        },
+        "arbeidsfolholdstype": "NORMALT",
+        "arbeidsavtaler": [
+          {
+            "periode": {
+              "fom": "2020-02-13",
+              "tom": null
+            },
+            "yrkeskode": "2130109",
+            "skipsregister": null,
+            "stillingsprosent": 100.0
+          }
+        ]
+      }
+    ],
+    "inntekt": [],
+    "oppgaver": [],
+    "dokument": []
   },
   "resultat": {
     "identifikator": "LOVME",
@@ -72,33 +114,41 @@ Input fra bruker som må fylles ut i søknadsdialogen og er nødvendig for å av
         "beskrivelse": "Personen har ingen manuelle vedtak",
         "delresultat": [
           {
-            "identifikator": "VED-1",
-            "avklaring": "Sjekk om det finnes avklarte vedtak i MEDL",
+            "identifikator": "VED",
+            "avklaring": "Sjekk om det finnes avklarte vedtak i MEDL ELLER Finnes det åpne oppgaver i GOSYS ELLER Finnes det åpne dokumenter i JOARK",
             "resultat": "NEI",
-            "beskrivelse": "Personen har ingen vedtak i MEDL",
-            "delresultat": []
-          },
-          {
-            "identifikator": "VED-3",
-            "avklaring": "Finnes det åpne oppgaver i GOSYS",
-            "resultat": "NEI",
-            "beskrivelse": "Personen har ingen åpne oppgaver i GOSYS.",
-            "delresultat": []
-          },
-          {
-            "identifikator": "VED-2",
-            "avklaring": "Finnes det åpne dokumenter i JOARK",
-            "resultat": "NEI",
-            "beskrivelse": "Personen har ingen dokumenter knyttet til medlemskapsaker.",
-            "delresultat": []
+            "beskrivelse": "Personen har ingen vedtak i MEDL OG Personen har ingen åpne oppgaver i GOSYS. OG Personen har ingen dokumenter knyttet til medlemskapsaker.",
+            "delresultat": [
+              {
+                "identifikator": "VED-1",
+                "avklaring": "Sjekk om det finnes avklarte vedtak i MEDL",
+                "resultat": "NEI",
+                "beskrivelse": "Personen har ingen vedtak i MEDL",
+                "delresultat": []
+              },
+              {
+                "identifikator": "VED-3",
+                "avklaring": "Finnes det åpne oppgaver i GOSYS",
+                "resultat": "NEI",
+                "beskrivelse": "Personen har ingen åpne oppgaver i GOSYS.",
+                "delresultat": []
+              },
+              {
+                "identifikator": "VED-2",
+                "avklaring": "Finnes det åpne dokumenter i JOARK",
+                "resultat": "NEI",
+                "beskrivelse": "Personen har ingen dokumenter knyttet til medlemskapsaker.",
+                "delresultat": []
+              }
+            ]
           }
         ]
       },
       {
         "identifikator": "EØS",
-        "avklaring": "Er personen omfattet av EØS-forordningen?",
+        "avklaring": "Er personen omfattet av Grunnforordningen?",
         "resultat": "JA",
-        "beskrivelse": "Personen er omfattet av EØS-ordningen",
+        "beskrivelse": "Personen er omfattet av Grunnforordningen",
         "delresultat": [
           {
             "identifikator": "EØS-1",
