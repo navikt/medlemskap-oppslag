@@ -30,11 +30,11 @@ class EllerUttrykk(val resultat: Resultat) {
     }
 
     private fun utledResultattype(typer: List<Resultattype>): Resultattype = when {
-        typer.contains(Resultattype.UAVKLART) -> {
-            Resultattype.UAVKLART
-        }
         typer.contains(Resultattype.JA) -> {
             Resultattype.JA
+        }
+        typer.contains(Resultattype.UAVKLART) -> {
+            Resultattype.UAVKLART
         }
         else -> {
             Resultattype.NEI
