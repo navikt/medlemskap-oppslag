@@ -45,7 +45,11 @@ private fun String.readFile() =
             null
         }
 
-private fun hentCommitSha(image: String): String = image.split(":")[1].substring(0, 7)
+private fun hentCommitSha(image: String): String {
+    val parts = image.split(":")
+    if (parts.size == 1) return image
+    return parts[1].substring(0, 7)
+}
 
 data class Configuration(
         val register: Register = Register(),
