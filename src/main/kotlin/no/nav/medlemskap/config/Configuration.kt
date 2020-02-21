@@ -22,6 +22,7 @@ private val defaultProperties = ConfigurationMap(
                 "SERVICE_USER_PASSWORD" to "",
                 "NAIS_APP_NAME" to "",
                 "NAIS_CLUSTER_NAME" to "",
+                "NAIS_APP_IMAGE" to "",
                 "AZURE_CLIENT_ID" to "",
                 "SAF_BASE_URL" to "",
                 "OPPGAVE_BASE_URL" to "",
@@ -44,11 +45,14 @@ private fun String.readFile() =
             null
         }
 
+private fun hentCommitSha(image: String): String = image.split(":")[1].substring(0, 7)
+
 data class Configuration(
         val register: Register = Register(),
         val sts: Sts = Sts(),
         val azureAd: AzureAd = AzureAd(),
-        val cluster: String = "NAIS_CLUSTER_NAME".configProperty()
+        val cluster: String = "NAIS_CLUSTER_NAME".configProperty(),
+        val commitSha: String = hentCommitSha("NAIS_APP_IMAGE".configProperty())
 ) {
     data class Register(
             val tpsUrl: String = "TPSWS_URL".configProperty(),

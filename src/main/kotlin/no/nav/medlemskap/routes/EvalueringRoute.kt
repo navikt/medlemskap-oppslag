@@ -9,6 +9,7 @@ import io.ktor.routing.post
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import no.nav.medlemskap.common.API_COUNTER
+import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Personfakta
 import no.nav.medlemskap.regler.common.Resultat
@@ -16,7 +17,10 @@ import no.nav.medlemskap.regler.v1.RegelsettForMedlemskap
 import no.nav.medlemskap.services.Services
 import java.time.LocalDateTime
 
-fun Routing.evalueringRoute(services: Services, useAuthentication: Boolean) {
+fun Routing.evalueringRoute(
+        services: Services,
+        useAuthentication: Boolean,
+        configuration: Configuration) {
     fun receiveAndRespond() {
         post("/") {
             API_COUNTER.inc()
@@ -32,7 +36,7 @@ fun Routing.evalueringRoute(services: Services, useAuthentication: Boolean) {
             val response = Response(
                     tidspunkt = LocalDateTime.now(),
                     versjonRegler = "v1",
-                    versjonTjeneste = "TODO",
+                    versjonTjeneste = configuration.commitSha,
                     datagrunnlag = datagrunnlag,
                     resultat = resultat
             )

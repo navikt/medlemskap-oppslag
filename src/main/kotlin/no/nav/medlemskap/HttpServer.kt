@@ -66,7 +66,7 @@ fun createHttpServer(
 
     routing {
         naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running })
-        evalueringRoute(services, useAuthentication)
+        evalueringRoute(services, useAuthentication, configuration)
         reglerRoute()
         healthRoute("/healthCheck", services.healthService)
     }
