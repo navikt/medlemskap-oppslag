@@ -10,15 +10,17 @@ import io.prometheus.client.CollectorRegistry
 import no.nav.medlemskap.regler.common.Personfakta.Companion.initialiserFakta
 import no.nav.medlemskap.regler.personer.Personleser
 import no.nav.medlemskap.regler.v1.RegelsettForGrunnforordningen
-import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
+import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
 
-
+@TestInstance(PER_CLASS)
 class RegelMetricsTest {
 
     private val personleser = Personleser()
 
-    @BeforeEach
+    @BeforeAll
     fun initCollectorRegistry() {
         CollectorRegistry.defaultRegistry.clear()
     }
