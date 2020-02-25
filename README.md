@@ -1,6 +1,7 @@
 # medlemskap-oppslag
 Oppslagstjeneste for lovvalg og medlemskap i Folketrygden
 
+
 ## URL til tjeneste
 * preprod: https://medlemskap-oppslag.nais.preprod.local
 * prod: https://medlemskap-oppslag.nais.adeo.no
