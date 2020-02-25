@@ -2,3 +2,9 @@
 .idea
 build
 out
+mininorge_response.csv
+jmeter.log
+MedlemskapOppslagMedMiniNorge.jtl
+MedlemskapOppslagResults.log
+.DS_Store
+
