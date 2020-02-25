@@ -6,20 +6,29 @@ Oppslagstjeneste for medlemskap i Folketrygden
 * prod: https://medlemskap-oppslag.nais.adeo.no
 
 ## Autentisering
-Forventer et AzureAD-token utstedt til servicebruker.
+Forventer et AzureAD-token utstedt til servicebruker, satt Authorization-header (Bearer)
+
+## Headere
+I tillegg til Authorization-headeren kreves det at Content-Type er satt til application/json
 
 ## Eksempel på kall
 Kallet er en POST på `/`
 ```
 {
     "fnr": "123456789",
-    "soknadsperiodeStart": "YYYY-MM-DD",
-    "soknadsperiodeSlutt": "YYYY-MM-DD",
-    "soknadstidspunkt": "YYYY-MM-DD",
+    "periode": {
+        "fom": "2019-01-01",
+        "tom": "2019-12-31"
+    },
     "brukerinput": {
         "arbeidUtenforNorge": false
     }
 }
+```
+
+## Eksempel på kall med CURL, gitt at port-forwarding er satt opp på port 8080:
+```
+curl -X POST -H "Authorization: Bearer <AAD_TOKEN>" -H "Content-Type: application/json" -d '{ "fnr": "123456789", "periode": { "fom": "2019-01-01", "tom": "2019-12-31" }, "brukerinput": { "arbeidUtenforNorge": false } }' localhost:8080
 ```
 
 ### Brukerinput
@@ -161,3 +170,15 @@ Input fra bruker som må fylles ut i søknadsdialogen og er nødvendig for å av
 curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d 'client_id=<clientid>>&scope=api://<clientid>/.default&client_secret=<clientsecret>&grant_type=client_credentials' 'https://login.microsoftonline.com/966ac572-f5b7-4bbe-aa88-c76419c0f851/oauth2/v2.0/token'
 ```
 Der `clientid` og `clientsecret` kan hentes fra vault under `azuread`
+
+## Testing med jMeter
+En jMeter-test som henter ned MiniNorge populasjonen og gjør et kall mot medlemskap-oppslag for hver person kan kjøres med følgende script
+```
+jmeter/runJMeterTest.sh <AAD_TOKEN>
+```
+jMeter-testen krever port-forwarding for medlemskap-oppslag satt opp på port 8080, og for testnorge-hodejegeren på port 8081. Dette kan enklest gjøres med "Kube Forwarder", hvor konfigurasjonen ligger på kube-forwarder-config/cluster-dev-fss — nais-user.kpf-export.v2.json
+
+For å kjøre jMeter med GUI, enten fordi man liker det bedre eller fordi man skal redigere test planen, så kan følgende kommando kjøres:
+```
+jmeter/apache-jmeter-5.2.1/bin/jmeter -JAAD_TOKEN=<AAD_TOKEN> -t jmeter/MedlemskapOppslagMedMiniNorge.jmx
+```
