@@ -3,36 +3,36 @@ package no.nav.medlemskap.regler.v1
 import no.nav.medlemskap.domene.Journalpost
 import no.nav.medlemskap.domene.Oppgave
 import no.nav.medlemskap.domene.Status
-import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.common.HvisUttrykk.Companion.hvis
+import no.nav.medlemskap.regler.common.Avklaring
 import no.nav.medlemskap.regler.common.Funksjoner.antall
-import no.nav.medlemskap.regler.common.Funksjoner.inneholder
+import no.nav.medlemskap.regler.common.Funksjoner.erDelAv
+import no.nav.medlemskap.regler.common.Personfakta
+import no.nav.medlemskap.regler.common.Regelsett
+import no.nav.medlemskap.regler.common.Resultat
+import no.nav.medlemskap.regler.common.uttrykk.EllerUttrykk.Companion.enten
+import no.nav.medlemskap.regler.common.uttrykk.HvisUttrykk.Companion.hvis
 
-class RegelsettForVedtak(fakta: Fakta) : Regelsett("Regelsett for vedtak", fakta) {
+class RegelsettForManuelleVedtak : Regelsett("Regelsett for manuelle vedtak") {
 
     override val KONKLUSJON_IDENTIFIKATOR: String get() = "VED"
     override val KONKLUSJON_AVKLARING: String get() = "Har personen manuelle vadtak fra NAV?"
 
-    override fun evaluer(): Resultat {
+    override fun evaluer(personfakta: Personfakta): Resultat {
         val resultat =
                 avklar {
-                    harAvklarteVedtakIMedl evaluerMed fakta
-                } hvisNei {
-                    avklar {
-                        finnesDetÅpenOppgaveIGsak evaluerMed fakta
-                    } hvisNei {
-                        avklar {
-                            finnesDetDokumenterIJoark evaluerMed fakta
-                        } hvisNei {
-                            konkluderMed(nei("Personen har ingen manuelle vedtak"))
-                        } hvisJa {
-                            konkluderMed(ja("Personen har dokumenter i JOARK"))
-                        }
-                    } hvisJa {
-                        konkluderMed(ja("Personen har dokumenter i GOSYS"))
-                    }
+                    enten {
+                        personfakta oppfyller harAvklarteVedtakIMedl
+                    } eller {
+                        personfakta oppfyller harÅpenOppgaveIGsak
+                    } eller {
+                        personfakta oppfyller harDokumenterIJoark
+                    } resultatMedId { KONKLUSJON_IDENTIFIKATOR }
                 } hvisJa {
-                    konkluderMed(ja("Personen har vedtak i MEDL"))
+                    konkluderMed(ja("Personen har manuelle vedtak"))
+                } hvisNei {
+                    konkluderMed(nei("Personen har ingen manuelle vedtak"))
+                } hvisUavklart {
+                    konkluderMed(uavklart("Kan ikke vurdere manuelle vedtak"))
                 }
 
         return hentUtKonklusjon(resultat)
@@ -48,32 +48,32 @@ class RegelsettForVedtak(fakta: Fakta) : Regelsett("Regelsett for vedtak", fakta
             operasjon = { sjekkPerioderIMedl(it) }
     )
 
-    private val finnesDetDokumenterIJoark = Avklaring(
+    private val harDokumenterIJoark = Avklaring(
             identifikator = "VED-2",
             avklaring = "Finnes det åpne dokumenter i JOARK",
             beskrivelse = "",
             operasjon = { tellDokumenter(it) }
     )
 
-    private val finnesDetÅpenOppgaveIGsak = Avklaring(
+    private val harÅpenOppgaveIGsak = Avklaring(
             identifikator = "VED-3",
             avklaring = "Finnes det åpne oppgaver i GOSYS",
             beskrivelse = "",
             operasjon = { tellÅpneOppgaver(it) }
     )
 
-    private fun sjekkPerioderIMedl(fakta: Fakta): Resultat =
+    private fun sjekkPerioderIMedl(personfakta: Personfakta): Resultat =
             hvis {
-                antall(fakta.personensPerioderIMedl()) == 0
+                antall(personfakta.personensPerioderIMedl()) == 0
             } så {
                 nei("Personen har ingen vedtak i MEDL")
             } ellers {
                 ja("Personen har vedtak i MEDL")
             }
 
-    private fun tellDokumenter(fakta: Fakta): Resultat =
+    private fun tellDokumenter(personfakta: Personfakta): Resultat =
             hvis {
-                antallDokumenter(fakta.personensDokumenterIJoark()) > 0
+                antallDokumenter(personfakta.personensDokumenterIJoark()) > 0
             } så {
                 ja("Personen har dokumenter knyttet til medlemskapsaker.")
             } ellers {
@@ -81,9 +81,9 @@ class RegelsettForVedtak(fakta: Fakta) : Regelsett("Regelsett for vedtak", fakta
             }
 
 
-    private fun tellÅpneOppgaver(fakta: Fakta): Resultat =
+    private fun tellÅpneOppgaver(personfakta: Personfakta): Resultat =
             hvis {
-                antallÅpneOppgaver(fakta.personensOppgaverIGsak()) > 0
+                antallÅpneOppgaver(personfakta.personensOppgaverIGsak()) > 0
             } så {
                 ja("Personen har åpne oppgaver i GOSYS.")
             } ellers {
@@ -92,12 +92,14 @@ class RegelsettForVedtak(fakta: Fakta) : Regelsett("Regelsett for vedtak", fakta
 
 
     private fun antallDokumenter(liste: List<Journalpost>) =
-            liste
-                    .count { journalpost -> tillatteTemaer inneholder journalpost.tema }
+            liste.count { journalpost ->
+                journalpost.tema erDelAv tillatteTemaer
+            }
 
     private fun antallÅpneOppgaver(liste: List<Oppgave>) =
-            liste
-                    .count { oppgave -> tillatteTemaer inneholder oppgave.tema && tillatteStatuser inneholder oppgave.status }
+            liste.count { oppgave ->
+                oppgave.tema erDelAv tillatteTemaer && oppgave.status erDelAv tillatteStatuser
+            }
 
 
 }
