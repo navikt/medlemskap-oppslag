@@ -106,6 +106,25 @@ class medlClientTest {
         }
     }
 
+    @Test
+    fun `404 gir tom liste`() {
+        val callId: () -> String = { "12345" }
+        val stsClient: StsRestClient = mockk()
+        coEvery { stsClient.oidcToken() } returns "dummytoken"
+
+        WireMock.stubFor(queryMapping.willReturn(
+                WireMock.aResponse()
+                        .withStatus(HttpStatusCode.NotFound.value)
+                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+
+        ))
+
+        val client = MedlClient(server.baseUrl(), stsClient, callId, config)
+        val response = runBlocking { client.hentMedlemskapsunntak("10109000398", LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
+
+        Assertions.assertEquals(0, response.size)
+    }
+
     private val queryMapping: MappingBuilder = WireMock.get(WireMock.urlPathEqualTo("/api/v1/medlemskapsunntak"))
             .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
             .withHeader("Nav-Personident", equalTo("10109000398"))

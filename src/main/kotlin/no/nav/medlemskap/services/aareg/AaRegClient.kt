@@ -1,6 +1,7 @@
 package no.nav.medlemskap.services.aareg
 
 import io.github.resilience4j.retry.Retry
+import io.ktor.client.features.ClientRequestException
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
@@ -30,20 +31,36 @@ class AaRegClient(
 
     suspend fun hentArbeidsforhold(fnr: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<AaRegArbeidsforhold> {
         val oidcToken = stsClient.oidcToken()
-        return runWithRetryAndMetrics("AaReg", "ArbeidsforholdV1", retry) {
-            defaultHttpClient.get<List<AaRegArbeidsforhold>> {
-                url("$baseUrl/v1/arbeidstaker/arbeidsforhold")
-                header(HttpHeaders.Authorization, "Bearer ${oidcToken}")
-                header(HttpHeaders.Accept, ContentType.Application.Json)
-                header("Nav-Call-Id", callIdGenerator.invoke())
-                header("Nav-Personident", fnr)
-                header("Nav-Consumer-Token", "Bearer ${oidcToken}")
-                fraOgMed?.let { parameter("ansettelsesperiodeFom", fraOgMed.tilIsoFormat()) }
-                tilOgMed?.let { parameter("ansettelsesperiodeTom", tilOgMed.tilIsoFormat()) }
-                parameter("historikk", "true")
-                parameter("regelverk", "ALLE")
+        return runCatching {
+            runWithRetryAndMetrics("AaReg", "ArbeidsforholdV1", retry) {
+                defaultHttpClient.get<List<AaRegArbeidsforhold>> {
+                    url("$baseUrl/v1/arbeidstaker/arbeidsforhold")
+                    header(HttpHeaders.Authorization, "Bearer ${oidcToken}")
+                    header(HttpHeaders.Accept, ContentType.Application.Json)
+                    header("Nav-Call-Id", callIdGenerator.invoke())
+                    header("Nav-Personident", fnr)
+                    header("Nav-Consumer-Token", "Bearer ${oidcToken}")
+                    fraOgMed?.let { parameter("ansettelsesperiodeFom", fraOgMed.tilIsoFormat()) }
+                    tilOgMed?.let { parameter("ansettelsesperiodeTom", tilOgMed.tilIsoFormat()) }
+                    parameter("historikk", "true")
+                    parameter("regelverk", "ALLE")
+                }
             }
-        }
+        }.fold(
+                onSuccess = { liste -> liste },
+                onFailure = { error ->
+                    when (error) {
+                        is ClientRequestException -> {
+                            if (error.response.status.value == 404) {
+                                listOf()
+                            } else {
+                                throw error
+                            }
+                        }
+                        else -> throw error
+                    }
+                }
+        )
     }
 
     suspend fun healthCheck(): HttpResponse {
