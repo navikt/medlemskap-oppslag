@@ -10,12 +10,17 @@ import no.nav.medlemskap.common.clientTimer
 private val logger = KotlinLogging.logger { }
 
 suspend fun <T> runWithRetryAndMetrics(service: String, operation: String, retry: Retry?, block: suspend () -> T): T {
-    retry?.let {
-        return it.executeSuspendFunction {
-            runWithMetrics(service, operation, block)
+    try {
+        retry?.let {
+            return it.executeSuspendFunction {
+                runWithMetrics(service, operation, block)
+            }
         }
+        return runWithMetrics(service, operation, block)
+    } catch (t: Throwable) {
+        logger.warn("Feilet under kall mot $service:$operation", t)
+        throw t
     }
-    return runWithMetrics(service, operation, block)
 }
 
 suspend fun <T> runWithMetrics(service: String, operation: String, block: suspend () -> T): T {
