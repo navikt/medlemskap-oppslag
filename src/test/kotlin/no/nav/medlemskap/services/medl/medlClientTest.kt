@@ -46,7 +46,7 @@ class medlClientTest {
 
     @Test
     fun `tester response 200 OK`() {
-        val callId: () -> String = { "12345" }
+        val callId = "12345"
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
@@ -57,17 +57,15 @@ class medlClientTest {
                         .withBody(medlResponse)
         ))
 
-        val client = MedlClient(server.baseUrl(), stsClient, callId, config)
-        val response = runBlocking { client.hentMedlemskapsunntak("10109000398", LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
+        val client = MedlClient(server.baseUrl(), stsClient, config)
+        val response = runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
 
         Assertions.assertEquals("Full", response[0].dekning)
     }
 
     @Test
     fun `tester ServerResponseException`() {
-
-
-        val callId: () -> String = { "12345" }
+        val callId = "12345"
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
@@ -78,17 +76,17 @@ class medlClientTest {
 
         ))
 
-        val client = MedlClient(server.baseUrl(), stsClient, callId, config)
+        val client = MedlClient(server.baseUrl(), stsClient, config)
 
         Assertions.assertThrows(ServerResponseException::class.java) {
-            runBlocking { client.hentMedlemskapsunntak("10109000398", LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
+            runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
         }
     }
 
     @Test
     fun `tester ClientRequestException`() {
 
-        val callId: () -> String = { "12345" }
+        val callId = "12345"
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
@@ -99,16 +97,16 @@ class medlClientTest {
 
         ))
 
-        val client = MedlClient(server.baseUrl(), stsClient, callId, config)
+        val client = MedlClient(server.baseUrl(), stsClient, config)
 
         Assertions.assertThrows(ClientRequestException::class.java) {
-            runBlocking { client.hentMedlemskapsunntak("10109000398", LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
+            runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
         }
     }
 
     @Test
     fun `404 gir tom liste`() {
-        val callId: () -> String = { "12345" }
+        val callId = "12345"
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
@@ -119,8 +117,8 @@ class medlClientTest {
 
         ))
 
-        val client = MedlClient(server.baseUrl(), stsClient, callId, config)
-        val response = runBlocking { client.hentMedlemskapsunntak("10109000398", LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
+        val client = MedlClient(server.baseUrl(), stsClient, config)
+        val response = runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
 
         Assertions.assertEquals(0, response.size)
     }

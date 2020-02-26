@@ -2,7 +2,6 @@ package no.nav.medlemskap.services.oppgave
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.MappingBuilder
-import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import io.ktor.client.features.ClientRequestException
@@ -37,12 +36,12 @@ class OppgaveClientTest {
 
     @BeforeEach
     fun configure() {
-        WireMock.configureFor(server.port())
+        configureFor(server.port())
     }
 
     @Test
     fun `henter oppgaver`() {
-        val callIdGenerator: () -> String = { "123456" }
+        val callId = "123456"
 
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
@@ -55,9 +54,9 @@ class OppgaveClientTest {
                                 .withBody(oppgaveResponse)
                 ))
 
-        val oppgaveclient = OppgaveClient(server.baseUrl(), stsClient, callIdGenerator)
+        val oppgaveclient = OppgaveClient(server.baseUrl(), stsClient)
 
-        val oppgaveResponse = runBlocking { oppgaveclient.hentOppgaver("1234567890") }
+        val oppgaveResponse = runBlocking { oppgaveclient.hentOppgaver("1234567890", callId) }
         val oppgave = oppgaveResponse.oppgaver[0]
 
         assertEquals(1, oppgaveResponse.antallTreffTotalt)
@@ -67,44 +66,41 @@ class OppgaveClientTest {
 
     @Test
     fun `tester ServerResponseException`() {
-
-
-        val callIdGenerator: () -> String = { "123456" }
+        val callId = "123456"
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        WireMock.stubFor(oppgaveRequestMapping.willReturn(
-                WireMock.aResponse()
+        stubFor(oppgaveRequestMapping.willReturn(
+                aResponse()
                         .withStatus(HttpStatusCode.InternalServerError.value)
                         .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
         ))
 
-        val oppgaveclient = OppgaveClient(server.baseUrl(), stsClient, callIdGenerator)
+        val oppgaveclient = OppgaveClient(server.baseUrl(), stsClient)
 
         Assertions.assertThrows(ServerResponseException::class.java) {
-            runBlocking { oppgaveclient.hentOppgaver("1234567890") }
+            runBlocking { oppgaveclient.hentOppgaver("1234567890", callId) }
         }
     }
 
     @Test
     fun `tester ClientRequestException`() {
-
-        val callIdGenerator: () -> String = { "123456" }
+        val callId = "123456"
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        WireMock.stubFor(oppgaveRequestMapping.willReturn(
-                WireMock.aResponse()
+        stubFor(oppgaveRequestMapping.willReturn(
+                aResponse()
                         .withStatus(HttpStatusCode.Forbidden.value)
                         .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
         ))
 
-        val oppgaveclient = OppgaveClient(server.baseUrl(), stsClient, callIdGenerator)
+        val oppgaveclient = OppgaveClient(server.baseUrl(), stsClient)
 
         Assertions.assertThrows(ClientRequestException::class.java) {
-            runBlocking { oppgaveclient.hentOppgaver("1234567890") }
+            runBlocking { oppgaveclient.hentOppgaver("1234567890", callId) }
         }
     }
 

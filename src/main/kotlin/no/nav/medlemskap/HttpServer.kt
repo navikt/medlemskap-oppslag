@@ -10,9 +10,12 @@ import io.ktor.routing.routing
 import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
-import no.nav.medlemskap.common.*
+import no.nav.medlemskap.common.JwtConfig
 import no.nav.medlemskap.common.JwtConfig.Companion.REALM
+import no.nav.medlemskap.common.MDC_CALL_ID
+import no.nav.medlemskap.common.exceptionHandler
 import no.nav.medlemskap.common.healthcheck.healthRoute
+import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.config.getAadConfig
@@ -20,8 +23,8 @@ import no.nav.medlemskap.routes.evalueringRoute
 import no.nav.medlemskap.routes.naisRoutes
 import no.nav.medlemskap.routes.reglerRoute
 import no.nav.medlemskap.services.Services
-
 import org.slf4j.event.Level
+import java.util.*
 
 fun createHttpServer(
         applicationState: ApplicationState,
@@ -46,8 +49,8 @@ fun createHttpServer(
 
     install(CallId) {
         header(MDC_CALL_ID)
-        generate { callIdGenerator.get() }
-        reply { _, callId -> callIdGenerator.set(callId) }
+        generate { UUID.randomUUID().toString() }
+        verify { callId: String -> callId.isNotEmpty() }
     }
 
     if (useAuthentication) {

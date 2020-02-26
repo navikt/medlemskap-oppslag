@@ -19,7 +19,6 @@ private const val TEMA_TRYGDEAVGIFT = "TRY"
 class OppgaveClient(
         private val baseUrl: String,
         private val stsClient: StsRestClient,
-        private val callIdGenerator: () -> String,
         private val retry: Retry? = null
 ) {
 
@@ -27,13 +26,13 @@ class OppgaveClient(
         private val logger = KotlinLogging.logger { }
     }
 
-    suspend fun hentOppgaver(ident: String): FinnOppgaverResponse {
+    suspend fun hentOppgaver(ident: String, callId: String): FinnOppgaverResponse {
         val token = stsClient.oidcToken()
         return runWithRetryAndMetrics("Oppgave", "OppgaverV1", retry) {
             defaultHttpClient.get<FinnOppgaverResponse> {
                 url("$baseUrl/api/v1/oppgaver")
                 header(HttpHeaders.Authorization, "Bearer $token")
-                header("X-Correlation-Id", callIdGenerator.invoke())
+                header("X-Correlation-Id", callId)
                 parameter("aktoerId", ident)
                 parameter("tema", TEMA_MEDLEMSKAP)
                 parameter("tema", TEMA_UNNTAK_FRA_MEDLEMSKAP)
@@ -54,7 +53,7 @@ class OppgaveClient(
 
 class OppgaveService(private val oppgaveClient: OppgaveClient) {
 
-    suspend fun hentOppgaver(ident: String) =
-            mapOppgaveResultat(oppgaveClient.hentOppgaver(ident).oppgaver)
+    suspend fun hentOppgaver(ident: String, callId: String) =
+            mapOppgaveResultat(oppgaveClient.hentOppgaver(ident, callId).oppgaver)
 
 }

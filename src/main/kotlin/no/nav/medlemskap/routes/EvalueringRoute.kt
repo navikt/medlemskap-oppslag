@@ -2,6 +2,7 @@ package no.nav.medlemskap.routes
 
 import io.ktor.application.call
 import io.ktor.auth.authenticate
+import io.ktor.features.callId
 import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Routing
@@ -16,6 +17,7 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.RegelsettForMedlemskap
 import no.nav.medlemskap.services.Services
 import java.time.LocalDateTime
+import java.util.*
 
 fun Routing.evalueringRoute(
         services: Services,
@@ -25,9 +27,11 @@ fun Routing.evalueringRoute(
         post("/") {
             API_COUNTER.inc()
             val request = call.receive<Request>()
-            val aktorId = services.pdlService.hentAktorId(request.fnr)
+            val callId = call.callId ?: UUID.randomUUID().toString()
+            val aktorId = services.pdlService.hentAktorId(request.fnr, callId)
             val datagrunnlag = createDatagrunnlag(
                     fnr = request.fnr,
+                    callId = callId,
                     aktoer = aktorId,
                     periode = request.periode,
                     brukerinput = request.brukerinput,
@@ -56,17 +60,18 @@ fun Routing.evalueringRoute(
 
 private suspend fun createDatagrunnlag(
         fnr: String,
+        callId: String,
         aktoer: String,
         periode: InputPeriode,
         brukerinput: Brukerinput,
         services: Services): Datagrunnlag = coroutineScope {
 
     val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr) }
-    val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(fnr) }
-    val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr) }
-    val inntektListeRequest = async { services.inntektService.hentInntektListe(fnr, periode.fom, periode.tom) }
-    val journalPosterRequest = async { services.safService.hentJournaldata(fnr) }
-    val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktoer) }
+    val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(fnr, callId) }
+    val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr, callId) }
+    val inntektListeRequest = async { services.inntektService.hentInntektListe(fnr, callId, periode.fom, periode.tom) }
+    val journalPosterRequest = async { services.safService.hentJournaldata(fnr, callId) }
+    val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktoer, callId) }
 
 
     val historikkFraTps = historikkFraTpsRequest.await()

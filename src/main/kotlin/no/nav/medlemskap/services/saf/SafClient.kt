@@ -19,7 +19,6 @@ import no.nav.medlemskap.services.sts.StsRestClient
 class SafClient(
         private val baseUrl: String,
         private val stsClient: StsRestClient,
-        private val callIdGenerator: () -> String,
         private val configuration: Configuration,
         private val retry: Retry? = null
 ) {
@@ -29,14 +28,14 @@ class SafClient(
         private const val ANTALL_JOURNALPOSTER = 10
     }
 
-    suspend fun hentJournaldata(fnr: String): DokumentoversiktBrukerResponse {
+    suspend fun hentJournaldata(fnr: String, callId: String): DokumentoversiktBrukerResponse {
         return runWithRetryAndMetrics("SAF", "DokumentoversiktBruker", retry) {
             val dokumentoversiktBrukerResponse = defaultHttpClient.post<DokumentoversiktBrukerResponse>() {
                 url("$baseUrl")
                 header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
-                header("Nav-Callid", callIdGenerator.invoke())
+                header("Nav-Callid", callId)
                 header("Nav-Consumer-Id", configuration.sts.username)
                 body = hentSafQuery(fnr, ANTALL_JOURNALPOSTER)
             }
@@ -61,8 +60,8 @@ class SafClient(
 }
 
 class SafService(private val safClient: SafClient) {
-    suspend fun hentJournaldata(fnr: String) =
-            mapDokumentoversiktBrukerResponse(safClient.hentJournaldata(fnr))
+    suspend fun hentJournaldata(fnr: String, callId: String) =
+            mapDokumentoversiktBrukerResponse(safClient.hentJournaldata(fnr, callId))
 }
 
 

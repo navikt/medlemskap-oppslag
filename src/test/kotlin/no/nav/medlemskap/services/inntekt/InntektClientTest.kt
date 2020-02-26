@@ -47,7 +47,7 @@ class InntektClientTest {
 
     @Test
     fun `tester response`() {
-        val callId: () -> String = { "12345" }
+        val callId = "12345"
 
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
@@ -59,9 +59,9 @@ class InntektClientTest {
                         .withBody(inntektResponse)
         ))
 
-        val client = InntektClient(server.baseUrl(), stsClient, callId, config)
+        val client = InntektClient(server.baseUrl(), stsClient, config)
 
-        val response = runBlocking { client.hentInntektListe("10108000398", LocalDate.of(2016, 1, 1), LocalDate.of(2016, 8, 1)) }
+        val response = runBlocking { client.hentInntektListe("10108000398", callId, LocalDate.of(2016, 1, 1), LocalDate.of(2016, 8, 1)) }
         println(response)
 
         assertEquals(YearMonth.of(2016, 1), response.arbeidsInntektMaaned?.get(0)?.aarMaaned)
@@ -73,9 +73,7 @@ class InntektClientTest {
 
     @Test
     fun `tester ServerResponseException`() {
-
-
-        val callId: () -> String = { "12345" }
+        val callId = "12345"
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
@@ -85,21 +83,20 @@ class InntektClientTest {
                         .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
         ))
-        val client = InntektClient(server.baseUrl(), stsClient, callId, config)
+        val client = InntektClient(server.baseUrl(), stsClient, config)
 
 //        Assertions.assertThrows(ServerResponseException::class.java) {
-////            runBlocking { client.hentInntektListe("10108000398", LocalDate.of(2016, 1, 1), LocalDate.of(2016, 8, 1)) }
+////            runBlocking { client.hentInntektListe("10108000398", callId, LocalDate.of(2016, 1, 1), LocalDate.of(2016, 8, 1)) }
 ////        }
 
-        val response = runBlocking { client.hentInntektListe("10108000398", LocalDate.of(2016, 1, 1), LocalDate.of(2016, 8, 1)) }
+        val response = runBlocking { client.hentInntektListe("10108000398", callId, LocalDate.of(2016, 1, 1), LocalDate.of(2016, 8, 1)) }
         assertThat(response.arbeidsInntektMaaned).isNotNull()
         assertThat(response.arbeidsInntektMaaned!!.size).isEqualTo(0)
     }
 
     @Test
     fun `tester ClientRequestException`() {
-
-        val callId: () -> String = { "12345" }
+        val callId = "12345"
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
@@ -110,10 +107,10 @@ class InntektClientTest {
 
         ))
 
-        val client = InntektClient(server.baseUrl(), stsClient, callId, config)
+        val client = InntektClient(server.baseUrl(), stsClient, config)
 
         Assertions.assertThrows(ClientRequestException::class.java) {
-            runBlocking { client.hentInntektListe("10108000398", LocalDate.of(2016, 1, 1), LocalDate.of(2016, 8, 1)) }
+            runBlocking { client.hentInntektListe("10108000398", callId, LocalDate.of(2016, 1, 1), LocalDate.of(2016, 8, 1)) }
         }
 
     }
