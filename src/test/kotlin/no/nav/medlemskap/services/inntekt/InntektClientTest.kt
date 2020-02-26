@@ -1,12 +1,14 @@
 package no.nav.medlemskap.services.inntekt
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNotNull
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import io.ktor.client.features.ClientRequestException
-import io.ktor.client.features.ServerResponseException
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
@@ -14,8 +16,6 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.medlemskap.config.Configuration
-import no.nav.medlemskap.services.aareg.AaRegClient
-import no.nav.medlemskap.services.aareg.AaregClientTest
 import no.nav.medlemskap.services.sts.StsRestClient
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -87,9 +87,13 @@ class InntektClientTest {
         ))
         val client = InntektClient(server.baseUrl(), stsClient, callId, config)
 
-        Assertions.assertThrows(ServerResponseException::class.java) {
-            runBlocking { client.hentInntektListe("10108000398", LocalDate.of(2016, 1, 1), LocalDate.of(2016, 8, 1)) }
-        }
+//        Assertions.assertThrows(ServerResponseException::class.java) {
+////            runBlocking { client.hentInntektListe("10108000398", LocalDate.of(2016, 1, 1), LocalDate.of(2016, 8, 1)) }
+////        }
+
+        val response = runBlocking { client.hentInntektListe("10108000398", LocalDate.of(2016, 1, 1), LocalDate.of(2016, 8, 1)) }
+        assertThat(response.arbeidsInntektMaaned).isNotNull()
+        assertThat(response.arbeidsInntektMaaned!!.size).isEqualTo(0)
     }
 
     @Test
@@ -113,6 +117,7 @@ class InntektClientTest {
         }
 
     }
+
     private val config = Configuration()
 
     private val inntektRequest = """
