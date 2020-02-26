@@ -42,7 +42,7 @@ class AaregClientTest {
 
     @Test
     fun `tester response`() {
-        val callId: () -> String = { "12345" }
+        val callId = "12345"
 
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
@@ -54,9 +54,9 @@ class AaregClientTest {
                         .withBody(aaRegResponse)
         ))
 
-        val client = AaRegClient(server.baseUrl(), stsClient, callId)
+        val client = AaRegClient(server.baseUrl(), stsClient)
 
-        val response = runBlocking { client.hentArbeidsforhold("26104635775", LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
+        val response = runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
         println(response)
 
 
@@ -68,9 +68,7 @@ class AaregClientTest {
 
     @Test
     fun `tester ServerResponseException`() {
-
-
-        val callId: () -> String = { "12345" }
+        val callId = "12345"
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
@@ -80,17 +78,16 @@ class AaregClientTest {
                         .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
         ))
-        val client = AaRegClient(server.baseUrl(), stsClient, callId)
+        val client = AaRegClient(server.baseUrl(), stsClient)
 
         Assertions.assertThrows(ServerResponseException::class.java) {
-            runBlocking { client.hentArbeidsforhold("26104635775", LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
+            runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
         }
     }
 
     @Test
     fun `tester ClientRequestException`() {
-
-        val callId: () -> String = { "12345" }
+        val callId = "12345"
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
@@ -101,16 +98,16 @@ class AaregClientTest {
 
         ))
 
-        val client = AaRegClient(server.baseUrl(), stsClient, callId)
+        val client = AaRegClient(server.baseUrl(), stsClient)
 
         Assertions.assertThrows(ClientRequestException::class.java) {
-            runBlocking { client.hentArbeidsforhold("26104635775", LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
+            runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
         }
     }
 
     @Test
     fun `404 gir tom liste`() {
-        val callId: () -> String = { "12345" }
+        val callId = "12345"
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
@@ -121,8 +118,8 @@ class AaregClientTest {
 
         ))
 
-        val client = AaRegClient(server.baseUrl(), stsClient, callId)
-        val response = runBlocking { client.hentArbeidsforhold("26104635775", LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
+        val client = AaRegClient(server.baseUrl(), stsClient)
+        val response = runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
 
         Assertions.assertEquals(0, response.size)
     }

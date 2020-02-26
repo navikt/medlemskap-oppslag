@@ -19,12 +19,11 @@ import java.time.format.DateTimeFormatter
 class InntektClient(
         private val baseUrl: String,
         private val stsClient: StsRestClient,
-        private val callIdGenerator: () -> String,
         private val configuration: Configuration,
         private val retry: Retry? = null
 ) {
 
-    suspend fun hentInntektListe(ident: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): InntektskomponentResponse {
+    suspend fun hentInntektListe(ident: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): InntektskomponentResponse {
         val token = stsClient.oidcToken()
         return runCatching {
             runWithRetryAndMetrics("Inntekt", "HentinntektlisteV1", retry) {
@@ -33,7 +32,7 @@ class InntektClient(
                     header(HttpHeaders.Authorization, "Bearer $token")
                     header(HttpHeaders.ContentType, ContentType.Application.Json)
                     header("Nav-Consumer-Id", configuration.sts.username)
-                    header("Nav-Call-Id", callIdGenerator.invoke())
+                    header("Nav-Call-Id", callId)
                     body = HentInntektListeRequest(
                             ident = Ident(ident, "NATURLIG_IDENT"),
                             ainntektsfilter = "MedlemskapA-inntekt",
@@ -73,8 +72,8 @@ class InntektClient(
 
 class InntektService(private val inntektClient: InntektClient) {
 
-    suspend fun hentInntektListe(ident: String, fraOgMed: LocalDate?, tilOgMed: LocalDate?) =
-            mapInntektResultat(inntektClient.hentInntektListe(ident, fraOgMed, tilOgMed))
+    suspend fun hentInntektListe(ident: String, callId: String, fraOgMed: LocalDate?, tilOgMed: LocalDate?) =
+            mapInntektResultat(inntektClient.hentInntektListe(ident, callId, fraOgMed, tilOgMed))
 
 }
 

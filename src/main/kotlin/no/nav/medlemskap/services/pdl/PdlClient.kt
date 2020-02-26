@@ -22,11 +22,10 @@ private val logger = KotlinLogging.logger { }
 class PdlClient(
         private val baseUrl: String,
         private val stsClient: StsRestClient,
-        private val callIdGenerator: () -> String,
         private val configuration: Configuration,
         private val retry: Retry? = null
 ) {
-    suspend fun hentIdenter(fnr: String): HentIdenterResponse {
+    suspend fun hentIdenter(fnr: String, callId: String): HentIdenterResponse {
 
         return runWithRetryAndMetrics("PDL", "HentIdenter", retry) {
             defaultHttpClient.post<HentIdenterResponse> {
@@ -34,7 +33,7 @@ class PdlClient(
                 header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
-                header("Nav-Call-Id", callIdGenerator.invoke())
+                header("Nav-Call-Id", callId)
                 header("Nav-Consumer-Token", "Bearer ${stsClient.oidcToken()}")
                 header("Nav-Consumer-Id", configuration.sts.username)
                 body = hentIndenterQuery(fnr)
@@ -53,8 +52,8 @@ class PdlClient(
 
 class PdlService(private val pdlClient: PdlClient, private val clusterName: String = "dev-fss") {
 
-    suspend fun hentAktorId(fnr: String): String {
-        val pdlResponse = pdlClient.hentIdenter(fnr)
+    suspend fun hentAktorId(fnr: String, callId: String): String {
+        val pdlResponse = pdlClient.hentIdenter(fnr, callId)
 
         // Hack for å overleve manglende aktørID i ikke-konsistente data i Q2
         if (pdlResponse.errors != null && clusterName == "dev-fss") {

@@ -19,12 +19,11 @@ import java.time.format.DateTimeFormatter
 class MedlClient(
         private val baseUrl: String,
         private val stsClient: StsRestClient,
-        private val callIdGenerator: () -> String,
         private val configuration: Configuration,
         private val retry: Retry? = null
 ) {
 
-    suspend fun hentMedlemskapsunntak(ident: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<MedlMedlemskapsunntak> {
+    suspend fun hentMedlemskapsunntak(ident: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<MedlMedlemskapsunntak> {
         val token = stsClient.oidcToken()
         return runCatching {
             runWithRetryAndMetrics("Medl", "MedlemskapsunntakV1", retry) {
@@ -32,7 +31,7 @@ class MedlClient(
                     url("$baseUrl/api/v1/medlemskapsunntak")
                     header(HttpHeaders.Authorization, "Bearer $token")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
-                    header("Nav-Call-Id", callIdGenerator.invoke())
+                    header("Nav-Call-Id", callId)
                     header("Nav-Personident", ident)
                     header("Nav-Consumer-Id", configuration.sts.username)
                     fraOgMed?.let { parameter("fraOgMed", fraOgMed.tilIsoFormat()) }
@@ -70,6 +69,6 @@ class MedlClient(
 
 class MedlService(private val medlClient: MedlClient) {
 
-    suspend fun hentMedlemskapsunntak(ident: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null) =
-            mapMedlemskapResultat(medlClient.hentMedlemskapsunntak(ident, fraOgMed, tilOgMed))
+    suspend fun hentMedlemskapsunntak(ident: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null) =
+            mapMedlemskapResultat(medlClient.hentMedlemskapsunntak(ident, callId, fraOgMed, tilOgMed))
 }

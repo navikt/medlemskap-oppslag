@@ -15,12 +15,12 @@ import no.nav.medlemskap.services.runWithRetryAndMetrics
 import no.nav.medlemskap.services.sts.StsRestClient
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 
 class AaRegClient(
         private val baseUrl: String,
         private val stsClient: StsRestClient,
-        private val callIdGenerator: () -> String,
         private val retry: Retry? = null
 ) {
 
@@ -29,7 +29,7 @@ class AaRegClient(
         private const val IKKE_EKSISTERENDE_FNR = "01010100000"
     }
 
-    suspend fun hentArbeidsforhold(fnr: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<AaRegArbeidsforhold> {
+    suspend fun hentArbeidsforhold(fnr: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<AaRegArbeidsforhold> {
         val oidcToken = stsClient.oidcToken()
         return runCatching {
             runWithRetryAndMetrics("AaReg", "ArbeidsforholdV1", retry) {
@@ -37,7 +37,7 @@ class AaRegClient(
                     url("$baseUrl/v1/arbeidstaker/arbeidsforhold")
                     header(HttpHeaders.Authorization, "Bearer ${oidcToken}")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
-                    header("Nav-Call-Id", callIdGenerator.invoke())
+                    header("Nav-Call-Id", callId)
                     header("Nav-Personident", fnr)
                     header("Nav-Consumer-Token", "Bearer ${oidcToken}")
                     fraOgMed?.let { parameter("ansettelsesperiodeFom", fraOgMed.tilIsoFormat()) }
@@ -69,7 +69,7 @@ class AaRegClient(
             url("$baseUrl/v1/arbeidstaker/arbeidsforhold")
             header(HttpHeaders.Authorization, "Bearer ${oidcToken}")
             header(HttpHeaders.Accept, ContentType.Application.Json)
-            header("Nav-Call-Id", callIdGenerator.invoke())
+            header("Nav-Call-Id", UUID.randomUUID().toString())
             header("Nav-Personident", IKKE_EKSISTERENDE_FNR)
             header("Nav-Consumer-Token", "Bearer ${oidcToken}")
             parameter("historikk", "false")
@@ -82,7 +82,7 @@ class AaRegClient(
 
 class AaRegService(private val aaRegClient: AaRegClient) {
 
-    suspend fun hentArbeidsforhold(fnr: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null) =
-            mapAaregResultat(aaRegClient.hentArbeidsforhold(fnr, fraOgMed, tilOgMed))
+    suspend fun hentArbeidsforhold(fnr: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null) =
+            mapAaregResultat(aaRegClient.hentArbeidsforhold(fnr, callId, fraOgMed, tilOgMed))
 
 }

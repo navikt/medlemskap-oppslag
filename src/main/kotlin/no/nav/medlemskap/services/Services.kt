@@ -69,7 +69,6 @@ class Services(val configuration: Configuration) {
 
         val restClients = RestClients(
                 stsClientRest = stsRestClient,
-                callIdGenerator = callIdGenerator::get,
                 configuration = configuration
         )
 
