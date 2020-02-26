@@ -13,7 +13,6 @@ import io.ktor.http.HttpStatusCode
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import no.nav.medlemskap.services.medl.MedlClient
 import no.nav.medlemskap.services.sts.StsRestClient
 import org.junit.jupiter.api.*
 import java.time.LocalDate
@@ -107,6 +106,25 @@ class AaregClientTest {
         Assertions.assertThrows(ClientRequestException::class.java) {
             runBlocking { client.hentArbeidsforhold("26104635775", LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
         }
+    }
+
+    @Test
+    fun `404 gir tom liste`() {
+        val callId: () -> String = { "12345" }
+        val stsClient: StsRestClient = mockk()
+        coEvery { stsClient.oidcToken() } returns "dummytoken"
+
+        WireMock.stubFor(queryMapping.willReturn(
+                WireMock.aResponse()
+                        .withStatus(HttpStatusCode.NotFound.value)
+                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+
+        ))
+
+        val client = AaRegClient(server.baseUrl(), stsClient, callId)
+        val response = runBlocking { client.hentArbeidsforhold("26104635775", LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
+
+        Assertions.assertEquals(0, response.size)
     }
 
 

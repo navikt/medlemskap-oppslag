@@ -26,7 +26,7 @@ class InntektClient(
 
     suspend fun hentInntektListe(ident: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): InntektskomponentResponse {
         val token = stsClient.oidcToken()
-        return return runCatching {
+        return runCatching {
             runWithRetryAndMetrics("Inntekt", "HentinntektlisteV1", retry) {
                 defaultHttpClient.post<InntektskomponentResponse> {
                     url("$baseUrl/rs/api/v1/hentinntektliste")
