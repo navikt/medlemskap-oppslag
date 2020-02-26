@@ -17,6 +17,8 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     fun personensSisteStatsborgerskap(): String = datagrunnlag.personhistorikk.statsborgerskap[0].landkode
 
+    fun arbeidsforhold(): List<Arbeidsforhold> = datagrunnlag.arbeidsforhold
+
     fun sisteArbeidsgiversLand(): String? = datagrunnlag.arbeidsforhold[0].arbeidsgiver.landkode
 
     fun sisteArbeidsforholdtype(): Arbeidsforholdstype = datagrunnlag.arbeidsforhold[0].arbeidsfolholdstype

@@ -12,4 +12,7 @@ object Funksjoner {
 
     infix fun String?.erDelAv(map: Map<String, String>) = map.containsKey(this)
 
+    fun List<Any>.erTom() = this.isNullOrEmpty()
+
+    fun List<Any>.erIkkeTom() = !erTom()
 }
