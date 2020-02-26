@@ -2,6 +2,7 @@ package no.nav.medlemskap.services.inntekt
 
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.features.ClientRequestException
+import io.ktor.client.features.ServerResponseException
 import io.ktor.client.request.header
 import io.ktor.client.request.options
 import io.ktor.client.request.post
@@ -56,7 +57,14 @@ class InntektClient(
                 onFailure = { error ->
                     when (error) {
                         is ClientRequestException -> {
-                            if (error.response.status.value == 500 || error.response.status.value == 400) {
+                            if (error.response.status.value == 400) {
+                                InntektskomponentResponse(listOf(), Ident(ident, ""))
+                            } else {
+                                throw error
+                            }
+                        }
+                        is ServerResponseException -> {
+                            if (error.response.status.value == 500) {
                                 InntektskomponentResponse(listOf(), Ident(ident, ""))
                             } else {
                                 throw error
