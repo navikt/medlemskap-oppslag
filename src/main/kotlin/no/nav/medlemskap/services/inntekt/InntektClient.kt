@@ -9,6 +9,7 @@ import io.ktor.client.request.url
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.services.runWithRetryAndMetrics
@@ -28,7 +29,7 @@ class InntektClient(
         val token = stsClient.oidcToken()
         return runCatching {
             runWithRetryAndMetrics("Inntekt", "HentinntektlisteV1", retry) {
-                defaultHttpClient.post<InntektskomponentResponse> {
+                cioHttpClient.post<InntektskomponentResponse> {
                     url("$baseUrl/rs/api/v1/hentinntektliste")
                     header(HttpHeaders.Authorization, "Bearer $token")
                     header(HttpHeaders.ContentType, ContentType.Application.Json)
