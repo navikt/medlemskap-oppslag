@@ -73,8 +73,6 @@ class InntektClientTest {
 
     @Test
     fun `tester ServerResponseException`() {
-
-
         val callId = "12345"
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
@@ -91,7 +89,7 @@ class InntektClientTest {
 ////            runBlocking { client.hentInntektListe("10108000398", callId, LocalDate.of(2016, 1, 1), LocalDate.of(2016, 8, 1)) }
 ////        }
 
-        val response = runBlocking { client.hentInntektListe("10108000398", LocalDate.of(2016, 1, 1), LocalDate.of(2016, 8, 1)) }
+        val response = runBlocking { client.hentInntektListe("10108000398", callId, LocalDate.of(2016, 1, 1), LocalDate.of(2016, 8, 1)) }
         assertThat(response.arbeidsInntektMaaned).isNotNull()
         assertThat(response.arbeidsInntektMaaned!!.size).isEqualTo(0)
     }
