@@ -47,7 +47,7 @@ class InntektClient(
                 onFailure = { error ->
                     when (error) {
                         is ClientRequestException -> {
-                            if (error.response.status.value == 500 || error.response.status.value == 500) {
+                            if (error.response.status.value == 500 || error.response.status.value == 400) {
                                 InntektskomponentResponse(listOf(), Ident(ident, ""))
                             } else {
                                 throw error
