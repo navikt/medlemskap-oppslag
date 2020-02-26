@@ -4,6 +4,7 @@ import no.nav.medlemskap.domene.Arbeidsforholdstype
 import no.nav.medlemskap.domene.Skipsregister
 import no.nav.medlemskap.regler.common.Avklaring
 import no.nav.medlemskap.regler.common.Funksjoner.erDelAv
+import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Personfakta
 import no.nav.medlemskap.regler.common.Regelsett
 import no.nav.medlemskap.regler.common.Resultat
@@ -17,38 +18,44 @@ class RegelsettForNorskLovvalg : Regelsett("Regelsett for norsk lovvalg") {
     override fun evaluer(personfakta: Personfakta): Resultat {
         val resultat =
                 avklar {
-                    personfakta oppfyller erArbeidsgiverNorsk
+                    personfakta oppfyller harArbeidsforhold
                 } hvisJa {
                     avklar {
-                        personfakta oppfyller erArbeidsforholdetMaritimt
+                        personfakta oppfyller erArbeidsgiverNorsk
                     } hvisJa {
                         avklar {
-                            personfakta oppfyller jobberPersonenPåEtNorskregistrertSkip
+                            personfakta oppfyller erArbeidsforholdetMaritimt
                         } hvisJa {
                             avklar {
-                                personfakta oppfyller harBrukerJobbetUtenforNorge
-                            } hvisNei {
-                                konkluderMed(ja("Personen er omfattet av norsk lovvalg"))
+                                personfakta oppfyller jobberPersonenPåEtNorskregistrertSkip
                             } hvisJa {
-                                konkluderMed(uavklart("Bruker har jobbet utenfor Norge"))
+                                avklar {
+                                    personfakta oppfyller harBrukerJobbetUtenforNorge
+                                } hvisNei {
+                                    konkluderMed(ja("Personen er omfattet av norsk lovvalg"))
+                                } hvisJa {
+                                    konkluderMed(uavklart("Bruker har jobbet utenfor Norge"))
+                                }
+                            } hvisNei {
+                                konkluderMed(uavklart("Bruker jobber ikke på et norskregistrert skip"))
                             }
                         } hvisNei {
-                            konkluderMed(uavklart("Bruker jobber ikke på et norskregistrert skip"))
+                            avklar {
+                                personfakta oppfyller erPersonenPilotEllerKabinansatt
+                            } hvisNei {
+                                avklar {
+                                    personfakta oppfyller harBrukerJobbetUtenforNorge
+                                } hvisNei {
+                                    konkluderMed(ja("Personen er omfattet av norsk lovvalg"))
+                                } hvisJa {
+                                    konkluderMed(uavklart("Bruker har jobbet utenfor Norge"))
+                                }
+                            } hvisJa {
+                                konkluderMed(uavklart("Personen er pilot eller kabinansatt"))
+                            }
                         }
                     } hvisNei {
-                        avklar {
-                            personfakta oppfyller erPersonenPilotEllerKabinansatt
-                        } hvisNei {
-                            avklar {
-                                personfakta oppfyller harBrukerJobbetUtenforNorge
-                            } hvisNei {
-                                konkluderMed(ja("Personen er omfattet av norsk lovvalg"))
-                            } hvisJa {
-                                konkluderMed(uavklart("Bruker har jobbet utenfor Norge"))
-                            }
-                        } hvisJa {
-                            konkluderMed(uavklart("Personen er pilot eller kabinansatt"))
-                        }
+                        konkluderMed(uavklart("Kan ikke konkludere på arbeidsgiver"))
                     }
                 } hvisNei {
                     konkluderMed(uavklart("Kan ikke konkludere på arbeidsgiver"))
@@ -95,6 +102,22 @@ class RegelsettForNorskLovvalg : Regelsett("Regelsett for norsk lovvalg") {
             beskrivelse = "",
             operasjon = { sjekkOmBrukerHarJobbetUtenforNorge(it) }
     )
+
+    private val harArbeidsforhold = Avklaring(
+            identifikator = "LOV-6",
+            avklaring = "Har personen et registrert arbeidsforhold",
+            beskrivelse = "",
+            operasjon = { sjekkArbeidsforhold(it) }
+    )
+
+    private fun sjekkArbeidsforhold(personfakta: Personfakta): Resultat =
+            hvis {
+                personfakta.arbeidsforhold().erIkkeTom()
+            } så {
+                ja("Personen har et registrert arbeidsforhold")
+            } ellers {
+                nei("Personen har ikke et registrert arbeidsforhold")
+            }
 
     private fun sjekkArbeidsgiver(personfakta: Personfakta): Resultat =
             hvis {
