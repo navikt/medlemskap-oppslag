@@ -9,6 +9,7 @@ import io.ktor.client.request.url
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import mu.KotlinLogging
 import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.config.Configuration
@@ -25,22 +26,29 @@ class InntektClient(
         private val retry: Retry? = null
 ) {
 
+    private val logger = KotlinLogging.logger { }
+
     suspend fun hentInntektListe(ident: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): InntektskomponentResponse {
         val token = stsClient.oidcToken()
         return runCatching {
             runWithRetryAndMetrics("Inntekt", "HentinntektlisteV1", retry) {
-                cioHttpClient.post<InntektskomponentResponse> {
-                    url("$baseUrl/rs/api/v1/hentinntektliste")
-                    header(HttpHeaders.Authorization, "Bearer $token")
-                    header(HttpHeaders.ContentType, ContentType.Application.Json)
-                    header("Nav-Consumer-Id", configuration.sts.username)
-                    header("Nav-Call-Id", callIdGenerator.invoke())
-                    body = HentInntektListeRequest(
-                            ident = Ident(ident, "NATURLIG_IDENT"),
-                            ainntektsfilter = "MedlemskapA-inntekt",
-                            maanedFom = fraOgMed?.tilAarOgMnd(),
-                            maanedTom = tilOgMed?.tilAarOgMnd(),
-                            formaal = "Medlemskap") //Må diskutere med Helle om vi skal bruke Medlemskap eller sykepenger som formål
+                try {
+                    cioHttpClient.post<InntektskomponentResponse> {
+                        url("$baseUrl/rs/api/v1/hentinntektliste")
+                        header(HttpHeaders.Authorization, "Bearer $token")
+                        header(HttpHeaders.ContentType, ContentType.Application.Json)
+                        header("Nav-Consumer-Id", configuration.sts.username)
+                        header("Nav-Call-Id", callIdGenerator.invoke())
+                        body = HentInntektListeRequest(
+                                ident = Ident(ident, "NATURLIG_IDENT"),
+                                ainntektsfilter = "MedlemskapA-inntekt",
+                                maanedFom = fraOgMed?.tilAarOgMnd(),
+                                maanedTom = tilOgMed?.tilAarOgMnd(),
+                                formaal = "Medlemskap") //Må diskutere med Helle om vi skal bruke Medlemskap eller sykepenger som formål
+                    }
+                } catch (t: Throwable) {
+                    logger.warn("Feilet mot inntektskomponenten", t)
+                    throw t
                 }
             }
         }.fold(
