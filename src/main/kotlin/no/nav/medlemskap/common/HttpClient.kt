@@ -23,6 +23,8 @@ internal val defaultHttpClient = HttpClient(Apache) {
     }
 
     engine {
+        socketTimeout = 45000
+
         customizeClient { setRoutePlanner(SystemDefaultRoutePlanner(ProxySelector.getDefault())) }
     }
 }
@@ -35,6 +37,10 @@ internal val cioHttpClient = HttpClient(CIO) {
                     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                     .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true)
         }
+    }
+
+    engine {
+        requestTimeout = 45000
     }
 }
 
