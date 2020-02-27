@@ -85,10 +85,17 @@
             <stringProp name="filename"></stringProp>
             <stringProp name="parameters"></stringProp>
             <stringProp name="script">import groovy.json.*
- 
+
+def filePath = &apos;mininorge_response.csv&apos;
+try {
+	new File(filePath).delete()
+} catch (Exception e) {
+	println &quot;Unable to delete $filePath: &quot; + e.getMessage()
+}
+
 def js = prev.getResponseDataAsString()
 def list = new JsonSlurper().parseText( js ) 
-def out = new File(&apos;mininorge_response.csv&apos;)
+def out = new File(filePath)
 list.each {
 	out.append(it)
 	out.append(&apos;\n&apos;)

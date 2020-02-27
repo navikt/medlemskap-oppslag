@@ -3,6 +3,7 @@ package no.nav.medlemskap.services
 import io.github.resilience4j.kotlin.retry.executeSuspendFunction
 import io.github.resilience4j.retry.Retry
 import io.prometheus.client.Histogram
+import kotlinx.coroutines.CancellationException
 import mu.KotlinLogging
 import no.nav.medlemskap.common.clientCounter
 import no.nav.medlemskap.common.clientTimer
@@ -17,6 +18,9 @@ suspend fun <T> runWithRetryAndMetrics(service: String, operation: String, retry
             }
         }
         return runWithMetrics(service, operation, block)
+    } catch (jce: CancellationException) {
+        logger.info("Kall mot $service:$operation kanselleres pga feil i kall mot annet baksystem", jce)
+        throw jce
     } catch (t: Throwable) {
         logger.warn("Feilet under kall mot $service:$operation", t)
         throw t

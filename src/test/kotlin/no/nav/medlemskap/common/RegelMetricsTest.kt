@@ -6,7 +6,6 @@ import assertk.assertions.extracting
 import assertk.assertions.isEqualTo
 import assertk.assertions.size
 import io.prometheus.client.Collector
-import io.prometheus.client.CollectorRegistry
 import no.nav.medlemskap.regler.common.Personfakta.Companion.initialiserFakta
 import no.nav.medlemskap.regler.personer.Personleser
 import no.nav.medlemskap.regler.v1.RegelsettForGrunnforordningen
@@ -22,15 +21,15 @@ class RegelMetricsTest {
 
     @BeforeAll
     fun initCollectorRegistry() {
-        CollectorRegistry.defaultRegistry.clear()
+        regelCounter.clear()
     }
 
     @Test
     fun `evaluering av regelsett for eøs forordningen for amerikansk statsborgerskap gir to metrikker`() {
         RegelsettForGrunnforordningen().evaluer(initialiserFakta(personleser.enkelAmerikansk()))
 
-        val sampleList = CollectorRegistry.defaultRegistry.metricFamilySamples().toList().flatMap { it.samples.toList() }
-
+        val sampleList = regelCounter.collect().flatMap { it.samples.toList() }
+        
         assertThat(sampleList.map { it.name }.distinct()).contains("regel_calls_total")
         assertThat(sampleList.map { it.name }.toList()).size().isEqualTo(2)
 
