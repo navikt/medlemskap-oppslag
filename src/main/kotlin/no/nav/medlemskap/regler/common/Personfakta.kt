@@ -19,7 +19,20 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     fun arbeidsforhold(): List<Arbeidsforhold> = datagrunnlag.arbeidsforhold
 
-    fun sisteArbeidsgiversLand(): String? = datagrunnlag.arbeidsforhold[0].arbeidsgiver.landkode
+    fun sisteArbeidsgiversLand(): String? {
+
+        val arbeidsforholdIPeriode = datagrunnlag.arbeidsforhold.filter {
+            it.periode.fom!! >= datagrunnlag.periode.fom && it.periode.tom!! <= datagrunnlag.periode.tom}
+
+        for(arbeidsforhold in arbeidsforholdIPeriode){
+            if(!arbeidsforhold.arbeidsgiver.landkode.equals("NOR")){
+                return arbeidsforhold.arbeidsgiver.landkode
+            }
+        }
+
+        return "NOR"
+
+    }
 
     fun sisteArbeidsforholdtype(): Arbeidsforholdstype = datagrunnlag.arbeidsforhold[0].arbeidsfolholdstype
 
