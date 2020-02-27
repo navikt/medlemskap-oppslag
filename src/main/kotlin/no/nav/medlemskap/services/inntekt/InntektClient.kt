@@ -32,23 +32,18 @@ class InntektClient(
         val token = stsClient.oidcToken()
         return runCatching {
             runWithRetryAndMetrics("Inntekt", "HentinntektlisteV1", retry) {
-                try {
-                    cioHttpClient.post<InntektskomponentResponse> {
-                        url("$baseUrl/rs/api/v1/hentinntektliste")
-                        header(HttpHeaders.Authorization, "Bearer $token")
-                        header(HttpHeaders.ContentType, ContentType.Application.Json)
-                        header("Nav-Consumer-Id", configuration.sts.username)
-                        header("Nav-Call-Id", callId)
-                        body = HentInntektListeRequest(
-                                ident = Ident(ident, "NATURLIG_IDENT"),
-                                ainntektsfilter = "MedlemskapA-inntekt",
-                                maanedFom = fraOgMed?.tilAarOgMnd(),
-                                maanedTom = tilOgMed?.tilAarOgMnd(),
-                                formaal = "Medlemskap") //Må diskutere med Helle om vi skal bruke Medlemskap eller sykepenger som formål
-                    }
-                } catch (t: Throwable) {
-                    logger.warn("Feilet mot inntektskomponenten", t)
-                    throw t
+                cioHttpClient.post<InntektskomponentResponse> {
+                    url("$baseUrl/rs/api/v1/hentinntektliste")
+                    header(HttpHeaders.Authorization, "Bearer $token")
+                    header(HttpHeaders.ContentType, ContentType.Application.Json)
+                    header("Nav-Consumer-Id", configuration.sts.username)
+                    header("Nav-Call-Id", callId)
+                    body = HentInntektListeRequest(
+                            ident = Ident(ident, "NATURLIG_IDENT"),
+                            ainntektsfilter = "MedlemskapA-inntekt",
+                            maanedFom = fraOgMed?.tilAarOgMnd(),
+                            maanedTom = tilOgMed?.tilAarOgMnd(),
+                            formaal = "Medlemskap") //Må diskutere med Helle om vi skal bruke Medlemskap eller sykepenger som formål
                 }
             }
         }.fold(
