@@ -12,27 +12,27 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.uttrykk.EllerUttrykk.Companion.enten
 import no.nav.medlemskap.regler.common.uttrykk.HvisUttrykk.Companion.hvis
 
-class RegelsettForManuelleVedtak : Regelsett("Regelsett for manuelle vedtak") {
+class RegelsettForRegistrerteOpplysninger : Regelsett("Regelsett for registrerte opplysninger") {
 
-    override val KONKLUSJON_IDENTIFIKATOR: String get() = "VED"
-    override val KONKLUSJON_AVKLARING: String get() = "Har personen manuelle vadtak fra NAV?"
+    override val KONKLUSJON_IDENTIFIKATOR: String get() = "OPP"
+    override val KONKLUSJON_AVKLARING: String get() = "Har brukeren registrerte eller uregistrerte opplysninger på medlemskapsområdet"
 
     override fun evaluer(personfakta: Personfakta): Resultat {
         val resultat =
                 avklar {
                     enten {
-                        personfakta oppfyller harAvklarteVedtakIMedl
+                        personfakta oppfyller harRegistrerteOpplysningerIMedl
                     } eller {
                         personfakta oppfyller harÅpenOppgaveIGsak
                     } eller {
                         personfakta oppfyller harDokumenterIJoark
                     } resultatMedId { KONKLUSJON_IDENTIFIKATOR }
                 } hvisJa {
-                    konkluderMed(ja("Personen har manuelle vedtak"))
+                    konkluderMed(ja("Brukeren har registrerte eller uregistrerte opplysninger på medlemskapsområdet"))
                 } hvisNei {
-                    konkluderMed(nei("Personen har ingen manuelle vedtak"))
+                    konkluderMed(nei("Brukeren har ingen registrerte eller uregistrerte opplysninger på medlemskapsområdet"))
                 } hvisUavklart {
-                    konkluderMed(uavklart("Kan ikke vurdere manuelle vedtak"))
+                    konkluderMed(uavklart("Kan ikke vurdere registrerte eller uregistrerte opplysninger"))
                 }
 
         return hentUtKonklusjon(resultat)
@@ -41,24 +41,24 @@ class RegelsettForManuelleVedtak : Regelsett("Regelsett for manuelle vedtak") {
     private val tillatteTemaer = listOf("MED", "UFM", "TRY")
     private val tillatteStatuser = listOf(Status.AAPNET, Status.OPPRETTET, Status.UNDER_BEHANDLING)
 
-    private val harAvklarteVedtakIMedl = Avklaring(
+    private val harRegistrerteOpplysningerIMedl = Avklaring(
             identifikator = "VED-1",
-            avklaring = "Sjekk om det finnes avklarte vedtak i MEDL",
-            beskrivelse = "",
+            avklaring = "Finnes det registrerte opplysninger i MEDL",
+            beskrivelse = "For å sjekke avklarte lovvalg og/eller medlemskap",
             operasjon = { sjekkPerioderIMedl(it) }
     )
 
     private val harDokumenterIJoark = Avklaring(
             identifikator = "VED-2",
-            avklaring = "Finnes det åpne dokumenter i JOARK",
-            beskrivelse = "",
+            avklaring = "Finnes det dokumenter i JOARK på medlemskapsområdet",
+            beskrivelse = "For å sjekke uregistrerte lovvalg og/eller medlemskap",
             operasjon = { tellDokumenter(it) }
     )
 
     private val harÅpenOppgaveIGsak = Avklaring(
             identifikator = "VED-3",
-            avklaring = "Finnes det åpne oppgaver i GOSYS",
-            beskrivelse = "",
+            avklaring = "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet",
+            beskrivelse = "For å sjekke uregistrerte lovvalg og/eller medlemskap",
             operasjon = { tellÅpneOppgaver(it) }
     )
 
@@ -66,18 +66,18 @@ class RegelsettForManuelleVedtak : Regelsett("Regelsett for manuelle vedtak") {
             hvis {
                 antall(personfakta.personensPerioderIMedl()) == 0
             } så {
-                nei("Personen har ingen vedtak i MEDL")
+                nei("Brukeren har ingen registrerte opplysninger i MEDL")
             } ellers {
-                ja("Personen har vedtak i MEDL")
+                ja("Brukeren har registrerte opplysninger i MEDL")
             }
 
     private fun tellDokumenter(personfakta: Personfakta): Resultat =
             hvis {
                 antallDokumenter(personfakta.personensDokumenterIJoark()) > 0
             } så {
-                ja("Personen har dokumenter knyttet til medlemskapsaker.")
+                ja("Brukeren har dokumenter på medlemskapsområdet")
             } ellers {
-                nei("Personen har ingen dokumenter knyttet til medlemskapsaker.")
+                nei("Brukeren har ingen dokumenter på medlemskapsområdet")
             }
 
 
@@ -85,9 +85,9 @@ class RegelsettForManuelleVedtak : Regelsett("Regelsett for manuelle vedtak") {
             hvis {
                 antallÅpneOppgaver(personfakta.personensOppgaverIGsak()) > 0
             } så {
-                ja("Personen har åpne oppgaver i GOSYS.")
+                ja("Brukeren har åpne oppgaver i GOSYS på medlemskapsområdet")
             } ellers {
-                nei("Personen har ingen åpne oppgaver i GOSYS.")
+                nei("Brukeren har ingen åpne oppgaver i GOSYS på medlemskapsområdet")
             }
 
 
