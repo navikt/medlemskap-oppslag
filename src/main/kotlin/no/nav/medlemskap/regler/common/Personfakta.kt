@@ -15,14 +15,31 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     fun personensDokumenterIJoark(): List<Journalpost> = datagrunnlag.dokument
 
-    fun personensSisteStatsborgerskap(): String = datagrunnlag.personhistorikk.statsborgerskap[0].landkode
+    fun personensSisteStatsborgerskap(): String {
+
+        //Trenger litt hjelp til å bekrefte at disse sjekker riktig
+        val statsborgerskapIPeriode = datagrunnlag.personhistorikk.statsborgerskap.filter {
+            it.tom!! >= datagrunnlag.periode.fom &&
+            datagrunnlag.periode.tom >= it.fom
+        }
+        for(stasborgerskap in statsborgerskapIPeriode){
+            if(!stasborgerskap.landkode.equals("NOR")){
+                return stasborgerskap.landkode
+            }
+        }
+        return "NOR"
+    }
+
 
     fun arbeidsforhold(): List<Arbeidsforhold> = datagrunnlag.arbeidsforhold
 
     fun sisteArbeidsgiversLand(): String? {
 
+        //Trenger hjelp på å bekrefte at disse sjekker riktig
         val arbeidsforholdIPeriode = datagrunnlag.arbeidsforhold.filter {
-            it.periode.fom!! >= datagrunnlag.periode.fom && it.periode.tom!! <= datagrunnlag.periode.tom}
+            it.periode.tom!! >= datagrunnlag.periode.fom &&
+            datagrunnlag.periode.tom >= it.periode.fom}
+
 
         for(arbeidsforhold in arbeidsforholdIPeriode){
             if(!arbeidsforhold.arbeidsgiver.landkode.equals("NOR")){
@@ -34,7 +51,11 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     }
 
+
+    //Hvis det finnes to arbeidsforholdstyper innenfor en periode hvordan skal vi håndtere dette?
     fun sisteArbeidsforholdtype(): Arbeidsforholdstype = datagrunnlag.arbeidsforhold[0].arbeidsfolholdstype
+
+
 
     fun sisteArbeidsforholdYrkeskode(): String = datagrunnlag.arbeidsforhold[0].arbeidsavtaler[0].yrkeskode
 
