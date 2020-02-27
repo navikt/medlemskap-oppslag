@@ -53,7 +53,7 @@ spec:
     - name: SECURITY_TOKEN_SERVICE_URL
       value: https://sts-q1.preprod.local/SecurityTokenServiceProvider/
     - name: SECURITY_TOKEN_SERVICE_REST_URL
-      value: http://security-token-service
+      value: http://security-token-service.default.svc.nais.local
     - name: TPSWS_URL
       value: https://wasapp-q2.adeo.no/tpsws/ws/Person/v3
     - name: INNTEKT_BASE_URL
@@ -65,6 +65,6 @@ spec:
     - name: SAF_BASE_URL
       value: http://saf.q1.svc.nais.local/graphql
     - name: OPPGAVE_BASE_URL
-      value: http://oppgave
+      value: http://oppgave.default.svc.nais.local
     - name: PDL_BASE_URL
-      value: http://pdl-api/graphql
+      value: http://pdl-api.default.svc.nais.local/graphql
