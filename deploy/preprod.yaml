@@ -44,26 +44,27 @@ spec:
   secureLogs:
     enabled: true
   webproxy: true
-env:
-  - name: AZURE_TENANT
-    value: 966ac572-f5b7-4bbe-aa88-c76419c0f851
-  - name: AZURE_AUTHORITY_ENDPOINT
-    value: https://login.microsoftonline.com
-  - name: SECURITY_TOKEN_SERVICE_URL
-    value: https://sts-q1.preprod.local/SecurityTokenServiceProvider/
-  - name: SECURITY_TOKEN_SERVICE_REST_URL
-    value: http://security-token-service
-  - name: TPSWS_URL
-    value: https://wasapp-q2.adeo.no/tpsws/ws/Person/v3
-  - name: INNTEKT_BASE_URL
-    value: https://app-q2.adeo.no/inntektskomponenten-ws
-  - name: MEDL2_BASE_URL
-    value: https://app-q2.adeo.no/medl2
-  - name: AAREG_BASE_URL
-    value: https://modapp-q2.adeo.no/aareg-services/api
-  - name: SAF_BASE_URL
-    value: http://saf.q1/graphql
-  - name: OPPGAVE_BASE_URL
-    value: http://oppgave
-  - name: PDL_BASE_URL
-    value: http://pdl-api/graphql
+
+  env:
+    - name: AZURE_TENANT
+      value: 966ac572-f5b7-4bbe-aa88-c76419c0f851
+    - name: AZURE_AUTHORITY_ENDPOINT
+      value: https://login.microsoftonline.com
+    - name: SECURITY_TOKEN_SERVICE_URL
+      value: https://sts-q1.preprod.local/SecurityTokenServiceProvider/
+    - name: SECURITY_TOKEN_SERVICE_REST_URL
+      value: http://security-token-service
+    - name: TPSWS_URL
+      value: https://wasapp-q2.adeo.no/tpsws/ws/Person/v3
+    - name: INNTEKT_BASE_URL
+      value: https://app-q2.adeo.no/inntektskomponenten-ws
+    - name: MEDL2_BASE_URL
+      value: https://app-q2.adeo.no/medl2
+    - name: AAREG_BASE_URL
+      value: https://modapp-q2.adeo.no/aareg-services/api
+    - name: SAF_BASE_URL
+      value: http://saf.q1/graphql
+    - name: OPPGAVE_BASE_URL
+      value: http://oppgave
+    - name: PDL_BASE_URL
+      value: http://pdl-api/graphql
