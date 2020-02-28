@@ -2,6 +2,7 @@ package no.nav.medlemskap.routes
 
 import io.ktor.application.call
 import io.ktor.auth.authenticate
+import io.ktor.features.BadRequestException
 import io.ktor.features.callId
 import io.ktor.request.receive
 import io.ktor.response.respond
@@ -16,6 +17,7 @@ import no.nav.medlemskap.regler.common.Personfakta
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.RegelsettForMedlemskap
 import no.nav.medlemskap.services.Services
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
@@ -26,7 +28,7 @@ fun Routing.evalueringRoute(
     fun receiveAndRespond() {
         post("/") {
             API_COUNTER.inc()
-            val request = call.receive<Request>()
+            val request = validerRequest(call.receive())
             val callId = call.callId ?: UUID.randomUUID().toString()
             val aktorId = services.pdlService.hentAktorId(request.fnr, callId)
             val datagrunnlag = createDatagrunnlag(
@@ -56,6 +58,22 @@ fun Routing.evalueringRoute(
     } else {
         receiveAndRespond()
     }
+}
+
+private fun validerRequest(request: Request): Request {
+    if (request.periode.tom.isBefore(request.periode.fom)) {
+        throw BadRequestException("Periode tom kan ikke være før periode fom")
+    }
+
+    if (request.periode.fom.isBefore(LocalDate.of(2016, 1, 1))) {
+        throw BadRequestException("Periode fom kan ikke være før 2016-01-01")
+    }
+
+    if (!gyldigFnr(request.fnr)) {
+        throw BadRequestException("Ugyldig fødslesnummer")
+    }
+
+    return request
 }
 
 private suspend fun createDatagrunnlag(
