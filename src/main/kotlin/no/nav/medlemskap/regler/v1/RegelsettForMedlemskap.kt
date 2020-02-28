@@ -6,29 +6,29 @@ import no.nav.medlemskap.regler.common.Resultat
 
 class RegelsettForMedlemskap : Regelsett("Regelsett for medlemskap") {
 
-    private val manuelleVedtakFraNav = RegelsettForManuelleVedtak()
+    private val registrerteOpplysninger = RegelsettForRegistrerteOpplysninger()
     private val grunnforordningen = RegelsettForGrunnforordningen()
     private val lovvalgNorge = RegelsettForNorskLovvalg()
 
     override val KONKLUSJON_IDENTIFIKATOR: String get() = "LOVME"
 
-    override val KONKLUSJON_AVKLARING: String get() = "Er personen medlem av folketrygden?"
+    override val KONKLUSJON_AVKLARING: String get() = "Er brukeren medlem i folketrygden"
 
     override fun evaluer(personfakta: Personfakta): Resultat {
         val resultat =
                 avklar {
-                    personfakta oppfyller manuelleVedtakFraNav
+                    personfakta oppfyller registrerteOpplysninger
                 } hvisJa {
-                    konkluderMed(uavklart("Personen har et manuelt vedtak om medlemskap fra NAV"))
+                    konkluderMed(uavklart("Brukeren har registrerte og uregistrerte opplysninger på medlemskapsområdet"))
                 } hvisUavklart {
-                    konkluderMed(uavklart("Kan ikke vurdere manuelle vedtak på grunn av mangelfulle data"))
+                    konkluderMed(uavklart("Kan ikke vurdere opplysninger på grunn av mangelfulle data"))
                 } hvisNei {
                     avklar {
                         personfakta oppfyller grunnforordningen
                     } hvisNei {
-                        konkluderMed(uavklart("Personen er ikke omfattet av grunnordningen"))
+                        konkluderMed(uavklart("Brukeren er ikke omfattet av grunnordningen, men kan være omfattet av en annen trygdeavtale"))
                     } hvisUavklart {
-                        konkluderMed(uavklart("Kan ikke vurdere grunnforordningen på grunn av mangelfulle data"))
+                        konkluderMed(uavklart("Kan ikke vurdere om brukeren er omfattet av grunnforordningen på grunn av mangelfulle data"))
                     } hvisJa {
                         avklar {
                             personfakta oppfyller lovvalgNorge
@@ -37,7 +37,7 @@ class RegelsettForMedlemskap : Regelsett("Regelsett for medlemskap") {
                         } hvisUavklart {
                             konkluderMed(uavklart("Kan ikke vurdere lovvalg på grunn av mangelfulle data"))
                         } hvisJa {
-                            konkluderMed(ja("Personen er omfattet av norsk lovvalg, og dermed medlem"))
+                            konkluderMed(ja("Brukeren er omfattet av norsk lovvalg, og dermed medlem"))
                         }
                     }
                 }

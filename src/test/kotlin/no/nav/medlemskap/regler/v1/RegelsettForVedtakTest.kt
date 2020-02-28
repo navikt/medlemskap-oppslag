@@ -32,7 +32,7 @@ class RegelsettForVedtakTest {
     }
 
     private fun evaluer(datagrunnlag: Datagrunnlag): Resultattype {
-        val regelsett = RegelsettForManuelleVedtak()
+        val regelsett = RegelsettForRegistrerteOpplysninger()
         return regelsett.evaluer(initialiserFakta(datagrunnlag)).resultat
     }
 
