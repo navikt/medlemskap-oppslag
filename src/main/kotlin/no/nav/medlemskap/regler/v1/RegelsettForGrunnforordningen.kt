@@ -10,16 +10,16 @@ import no.nav.medlemskap.regler.common.uttrykk.HvisUttrykk.Companion.hvis
 class RegelsettForGrunnforordningen : Regelsett("Regelsett for grunnforordningen") {
 
     override val KONKLUSJON_IDENTIFIKATOR: String get() = "EØS"
-    override val KONKLUSJON_AVKLARING: String get() = "Er personen omfattet av Grunnforordningen?"
+    override val KONKLUSJON_AVKLARING: String get() = "Er brukeren omfattet av Grunnforordningen?"
 
     override fun evaluer(personfakta: Personfakta): Resultat {
         val resultat =
                 avklar {
                     personfakta oppfyller erPersonenEøsStatsborger
                 } hvisJa {
-                    konkluderMed(ja("Personen er omfattet av Grunnforordningen"))
+                    konkluderMed(ja("Brukeren er omfattet av Grunnforordningen"))
                 } hvisNei {
-                    konkluderMed(nei("Personen er ikke omfattet av Grunnforordningen"))
+                    konkluderMed(nei("Brukeren er ikke omfattet av Grunnforordningen"))
                 }
 
         return hentUtKonklusjon(resultat)
@@ -28,8 +28,8 @@ class RegelsettForGrunnforordningen : Regelsett("Regelsett for grunnforordningen
 
     private val erPersonenEøsStatsborger = Avklaring(
             identifikator = "EØS-1",
-            avklaring = "Er personen statsborger i et EØS land?",
-            beskrivelse = "",
+            avklaring = "Er brukeren statsborger i et EØS land?",
+            beskrivelse = "For å avklare om bruker er omfattet av grunnforordningen",
             operasjon = { sjekkStatsborgerskap(it) }
     )
 
@@ -37,9 +37,9 @@ class RegelsettForGrunnforordningen : Regelsett("Regelsett for grunnforordningen
             hvis {
                 personfakta.personensSisteStatsborgerskap() erDelAv eøsLand
             } så {
-                ja("Personen er statsborger i et EØS-land.")
+                ja("Brukeren er statsborger i et EØS-land.")
             } ellers {
-                nei("Personen er ikke statsborger i et EØS-land.")
+                nei("Brukeren er ikke statsborger i et EØS-land.")
             }
 
 
