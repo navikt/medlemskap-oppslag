@@ -8,7 +8,7 @@ import io.ktor.client.request.url
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
-import no.nav.medlemskap.common.defaultHttpClient
+import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.services.runWithRetryAndMetrics
 import no.nav.medlemskap.services.sts.StsRestClient
 
@@ -29,7 +29,7 @@ class OppgaveClient(
     suspend fun hentOppgaver(ident: String, callId: String): FinnOppgaverResponse {
         val token = stsClient.oidcToken()
         return runWithRetryAndMetrics("Oppgave", "OppgaverV1", retry) {
-            defaultHttpClient.get<FinnOppgaverResponse> {
+            cioHttpClient.get<FinnOppgaverResponse> {
                 url("$baseUrl/api/v1/oppgaver")
                 header(HttpHeaders.Authorization, "Bearer $token")
                 header("X-Correlation-Id", callId)
@@ -42,8 +42,13 @@ class OppgaveClient(
     }
 
     suspend fun healthCheck(): HttpResponse {
-        val token = stsClient.oidcToken()
-        return defaultHttpClient.get {
+        val token = try {
+            stsClient.oidcToken()
+        } catch (t: Throwable) {
+            logger.warn("Feilet under henting av OIDC token i helsesjekken")
+            throw t
+        }
+        return cioHttpClient.get {
             url("$baseUrl/internal/alive")
             header(HttpHeaders.Authorization, "Bearer $token")
         }
