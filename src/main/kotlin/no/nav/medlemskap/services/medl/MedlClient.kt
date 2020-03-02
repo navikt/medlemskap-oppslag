@@ -9,7 +9,7 @@ import io.ktor.client.request.url
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
-import no.nav.medlemskap.common.defaultHttpClient
+import no.nav.medlemskap.common.apacheHttpClient
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.services.runWithRetryAndMetrics
 import no.nav.medlemskap.services.sts.StsRestClient
@@ -27,7 +27,7 @@ class MedlClient(
         val token = stsClient.oidcToken()
         return runCatching {
             runWithRetryAndMetrics("Medl", "MedlemskapsunntakV1", retry) {
-                defaultHttpClient.get<List<MedlMedlemskapsunntak>> {
+                apacheHttpClient.get<List<MedlMedlemskapsunntak>> {
                     url("$baseUrl/api/v1/medlemskapsunntak")
                     header(HttpHeaders.Authorization, "Bearer $token")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
@@ -58,7 +58,7 @@ class MedlClient(
     private fun LocalDate.tilIsoFormat() = this.format(DateTimeFormatter.ISO_DATE)
 
     suspend fun healthCheck(): HttpResponse {
-        return defaultHttpClient.get {
+        return apacheHttpClient.get {
             url("$baseUrl/api/ping")
             header("Nav-Consumer-Id", configuration.sts.username)
             header(HttpHeaders.Accept, ContentType.Application.Json)

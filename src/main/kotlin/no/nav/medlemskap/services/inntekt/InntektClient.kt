@@ -11,8 +11,8 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
+import no.nav.medlemskap.common.apacheHttpClient
 import no.nav.medlemskap.common.cioHttpClient
-import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.services.runWithRetryAndMetrics
 import no.nav.medlemskap.services.sts.StsRestClient
@@ -74,7 +74,7 @@ class InntektClient(
     private fun LocalDate.tilAarOgMnd() = this.format(DateTimeFormatter.ofPattern("yyyy-MM"))
 
     suspend fun healthCheck(): HttpResponse {
-        return defaultHttpClient.options {
+        return apacheHttpClient.options {
             url("$baseUrl")
             header(HttpHeaders.ContentType, ContentType.Application.Json)
             header("Nav-Consumer-Id", configuration.sts.username)

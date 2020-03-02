@@ -10,7 +10,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
-import no.nav.medlemskap.common.defaultHttpClient
+import no.nav.medlemskap.common.apacheHttpClient
 import no.nav.medlemskap.services.runWithRetryAndMetrics
 import no.nav.medlemskap.services.sts.StsRestClient
 import java.time.LocalDate
@@ -33,7 +33,7 @@ class AaRegClient(
         val oidcToken = stsClient.oidcToken()
         return runCatching {
             runWithRetryAndMetrics("AaReg", "ArbeidsforholdV1", retry) {
-                defaultHttpClient.get<List<AaRegArbeidsforhold>> {
+                apacheHttpClient.get<List<AaRegArbeidsforhold>> {
                     url("$baseUrl/v1/arbeidstaker/arbeidsforhold")
                     header(HttpHeaders.Authorization, "Bearer ${oidcToken}")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
@@ -65,7 +65,7 @@ class AaRegClient(
 
     suspend fun healthCheck(): HttpResponse {
         val oidcToken = stsClient.oidcToken()
-        return defaultHttpClient.get {
+        return apacheHttpClient.get {
             url("$baseUrl/v1/arbeidstaker/arbeidsforhold")
             header(HttpHeaders.Authorization, "Bearer ${oidcToken}")
             header(HttpHeaders.Accept, ContentType.Application.Json)

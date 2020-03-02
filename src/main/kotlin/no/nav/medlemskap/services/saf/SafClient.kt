@@ -9,7 +9,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
-import no.nav.medlemskap.common.defaultHttpClient
+import no.nav.medlemskap.common.apacheHttpClient
 import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.config.Configuration
@@ -30,7 +30,7 @@ class SafClient(
 
     suspend fun hentJournaldata(fnr: String, callId: String): DokumentoversiktBrukerResponse {
         return runWithRetryAndMetrics("SAF", "DokumentoversiktBruker", retry) {
-            val dokumentoversiktBrukerResponse = defaultHttpClient.post<DokumentoversiktBrukerResponse>() {
+            val dokumentoversiktBrukerResponse = apacheHttpClient.post<DokumentoversiktBrukerResponse>() {
                 url("$baseUrl")
                 header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
@@ -50,7 +50,7 @@ class SafClient(
     }
 
     suspend fun healthCheck(): HttpResponse {
-        return defaultHttpClient.options {
+        return apacheHttpClient.options {
             url("$baseUrl")
             header(HttpHeaders.ContentType, ContentType.Application.Json)
             header(HttpHeaders.Accept, ContentType.Application.Json)

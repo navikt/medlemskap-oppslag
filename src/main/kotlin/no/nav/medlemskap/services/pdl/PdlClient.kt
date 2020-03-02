@@ -9,7 +9,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
-import no.nav.medlemskap.common.defaultHttpClient
+import no.nav.medlemskap.common.apacheHttpClient
 import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
 import no.nav.medlemskap.common.objectMapper
@@ -28,7 +28,7 @@ class PdlClient(
     suspend fun hentIdenter(fnr: String, callId: String): HentIdenterResponse {
 
         return runWithRetryAndMetrics("PDL", "HentIdenter", retry) {
-            defaultHttpClient.post<HentIdenterResponse> {
+            apacheHttpClient.post<HentIdenterResponse> {
                 url("$baseUrl")
                 header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
@@ -42,7 +42,7 @@ class PdlClient(
     }
 
     suspend fun healthCheck(): HttpResponse {
-        return defaultHttpClient.options {
+        return apacheHttpClient.options {
             url("$baseUrl")
             header(HttpHeaders.Accept, ContentType.Application.Json)
             header("Nav-Consumer-Id", configuration.sts.username)
