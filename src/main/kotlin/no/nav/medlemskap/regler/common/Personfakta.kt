@@ -2,6 +2,11 @@ package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.common.regelCounter
 import no.nav.medlemskap.domene.*
+import org.threeten.extra.Interval
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.ZoneId
+
 
 class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
@@ -18,17 +23,22 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     fun personensSisteStatsborgerskap(): String {
 
         //Trenger litt hjelp til å bekrefte at disse sjekker riktig
+        val periodeDatagrunnlag = Interval.of(datagrunnlag.periode.tom.atStartOfDay(ZoneId.systemDefault()).toInstant(), datagrunnlag.periode.fom.atStartOfDay(ZoneId.systemDefault()).toInstant())
+
         val statsborgerskapIPeriode = datagrunnlag.personhistorikk.statsborgerskap.filter {
-            it.tom!! >= datagrunnlag.periode.fom &&
-            datagrunnlag.periode.tom >= it.fom
+            hentIntervaller(it.tom, it.fom, periodeDatagrunnlag)
         }
-        for(stasborgerskap in statsborgerskapIPeriode){
-            if(!stasborgerskap.landkode.equals("NOR")){
-                return stasborgerskap.landkode
+
+        statsborgerskapIPeriode.forEach{
+            if(it.landkode != "NOR"){
+                return it.landkode
             }
         }
         return "NOR"
     }
+
+
+
 
 
     fun arbeidsforhold(): List<Arbeidsforhold> = datagrunnlag.arbeidsforhold
@@ -36,14 +46,15 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     fun sisteArbeidsgiversLand(): String? {
 
         //Trenger hjelp på å bekrefte at disse sjekker riktig
-        val arbeidsforholdIPeriode = datagrunnlag.arbeidsforhold.filter {
-            it.periode.tom!! >= datagrunnlag.periode.fom &&
-            datagrunnlag.periode.tom >= it.periode.fom}
+        val periodeDatagrunnlag = Interval.of(datagrunnlag.periode.tom.atStartOfDay(ZoneId.systemDefault()).toInstant(), datagrunnlag.periode.fom.atStartOfDay(ZoneId.systemDefault()).toInstant())
 
+        val arbeidsforholdPeriode = datagrunnlag.arbeidsforhold.filter {
+            hentIntervaller(it.periode.tom, it.periode.fom, periodeDatagrunnlag)
+        }
 
-        for(arbeidsforhold in arbeidsforholdIPeriode){
-            if(!arbeidsforhold.arbeidsgiver.landkode.equals("NOR")){
-                return arbeidsforhold.arbeidsgiver.landkode
+        arbeidsforholdPeriode.forEach{
+            if(!it.arbeidsgiver.landkode.equals("NOR")){
+                return it.arbeidsgiver.landkode
             }
         }
 
@@ -51,15 +62,82 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     }
 
+    private fun hentIntervaller(tom: LocalDate?, fom: LocalDate?, periodeDatagrunnlag: Interval?): Boolean {
+    val maxTom = LocalDate.MAX
+    val minFom = LocalDate.MIN
+
+        return if(tom == null && fom != null){
+            Interval.of(fom.atStartOfDay(ZoneId.systemDefault()).toInstant(), maxTom.atStartOfDay(ZoneId.systemDefault()).toInstant()).overlaps(periodeDatagrunnlag)
+        } else if(tom != null && fom == null){
+            Interval.of(minFom.atStartOfDay(ZoneId.systemDefault()).toInstant(), tom.atStartOfDay(ZoneId.systemDefault()).toInstant()).overlaps(periodeDatagrunnlag)
+        } else if(tom == null && fom == null){
+            Interval.of(minFom.atStartOfDay(ZoneId.systemDefault()).toInstant(), maxTom.atStartOfDay(ZoneId.systemDefault()).toInstant()).overlaps(periodeDatagrunnlag)
+        } else {
+            Interval.of(fom?.atStartOfDay(ZoneId.systemDefault())?.toInstant(), tom?.atStartOfDay(ZoneId.systemDefault())?.toInstant()).overlaps(periodeDatagrunnlag)
+        }
+    }
+
 
     //Hvis det finnes to arbeidsforholdstyper innenfor en periode hvordan skal vi håndtere dette?
-    fun sisteArbeidsforholdtype(): Arbeidsforholdstype = datagrunnlag.arbeidsforhold[0].arbeidsfolholdstype
+    fun sisteArbeidsforholdtype(): Arbeidsforholdstype {
+        val periodeDatagrunnlag = Interval.of(datagrunnlag.periode.tom.atStartOfDay(ZoneId.systemDefault()).toInstant(), datagrunnlag.periode.fom.atStartOfDay(ZoneId.systemDefault()).toInstant())
+
+        val arbeidsforholdPeriode = datagrunnlag.arbeidsforhold.filter {
+            hentIntervaller(it.periode.tom, it.periode.fom, periodeDatagrunnlag)
+        }
+        arbeidsforholdPeriode.forEach{
+            if(!it.arbeidsgiver.landkode.equals("NORMALT")){
+                return it.arbeidsfolholdstype
+            }
+        }
+
+        return Arbeidsforholdstype.NORMALT
+    }
 
 
 
-    fun sisteArbeidsforholdYrkeskode(): String = datagrunnlag.arbeidsforhold[0].arbeidsavtaler[0].yrkeskode
+    fun sisteArbeidsforholdYrkeskode(): String {
+        val yrkeskoderLuftfart = listOf("3143107", "5111105", "5111117")
 
-    fun sisteArbeidsforholdSkipsregister(): Skipsregister? = datagrunnlag.arbeidsforhold[0].arbeidsavtaler[0].skipsregister
+
+        val periodeDatagrunnlag = Interval.of(datagrunnlag.periode.tom.atStartOfDay(ZoneId.systemDefault()).toInstant(), datagrunnlag.periode.fom.atStartOfDay(ZoneId.systemDefault()).toInstant())
+
+        val arbeidsforholdPeriode = datagrunnlag.arbeidsforhold.filter {
+            hentIntervaller(it.periode.tom, it.periode.fom, periodeDatagrunnlag)
+        }
+
+        arbeidsforholdPeriode.forEach{ it ->
+            it.arbeidsavtaler.forEach{
+                if(yrkeskoderLuftfart.contains(it.yrkeskode)){
+                    return it.yrkeskode
+                }
+            }
+        }
+        return arbeidsforholdPeriode.last().arbeidsavtaler.last().yrkeskode
+
+    }
+
+    fun sisteArbeidsforholdSkipsregister(): Skipsregister? {
+
+        val periodeDatagrunnlag = Interval.of(datagrunnlag.periode.tom.atStartOfDay(ZoneId.systemDefault()).toInstant(), datagrunnlag.periode.fom.atStartOfDay(ZoneId.systemDefault()).toInstant())
+
+        val arbeidsforholdPeriode = datagrunnlag.arbeidsforhold.filter {
+            hentIntervaller(it.periode.tom, it.periode.fom, periodeDatagrunnlag)
+        }
+        arbeidsforholdPeriode.forEach{ it ->
+            it.arbeidsavtaler.forEach{
+                if(!it.skipsregister?.name?.equals(Skipsregister.nor.toString())!!){
+                    return it.skipsregister
+                }
+            }
+        }
+
+        return Skipsregister.nor
+
+
+
+    }
+
 
     fun hentBrukerinputArbeidUtenforNorge(): Boolean = datagrunnlag.brukerinput.arbeidUtenforNorge
 

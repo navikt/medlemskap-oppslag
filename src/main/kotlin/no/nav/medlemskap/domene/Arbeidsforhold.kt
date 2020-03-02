@@ -11,7 +11,7 @@ data class Arbeidsforhold (
 )
 
 data class Arbeidsavtale (
-        val periode: Periode,
+        var periode: Periode,
         val yrkeskode: String,
         val skipsregister: Skipsregister?,
         val stillingsprosent: Double?
