@@ -42,12 +42,7 @@ class OppgaveClient(
     }
 
     suspend fun healthCheck(): HttpResponse {
-        val token = try {
-            stsClient.oidcToken()
-        } catch (t: Throwable) {
-            logger.warn("Feilet under henting av OIDC token i helsesjekken")
-            throw t
-        }
+        val token = stsClient.oidcToken()
         return cioHttpClient.get {
             url("$baseUrl/internal/alive")
             header(HttpHeaders.Authorization, "Bearer $token")
