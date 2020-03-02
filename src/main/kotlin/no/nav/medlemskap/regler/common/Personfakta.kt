@@ -4,7 +4,6 @@ import no.nav.medlemskap.common.regelCounter
 import no.nav.medlemskap.domene.*
 import org.threeten.extra.Interval
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.ZoneId
 
 
@@ -21,14 +20,14 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     fun personensDokumenterIJoark(): List<Journalpost> = datagrunnlag.dokument
 
     fun personensSisteStatsborgerskap(): String {
-
-        //Trenger litt hjelp til å bekrefte at disse sjekker riktig
         val periodeDatagrunnlag = Interval.of(datagrunnlag.periode.tom.atStartOfDay(ZoneId.systemDefault()).toInstant(), datagrunnlag.periode.fom.atStartOfDay(ZoneId.systemDefault()).toInstant())
-
         val statsborgerskapIPeriode = datagrunnlag.personhistorikk.statsborgerskap.filter {
-            hentIntervaller(it.tom, it.fom, periodeDatagrunnlag)
+            hentOverlappedeIntervaller(it.tom, it.fom, periodeDatagrunnlag) &&
+            hentInnlukkedeIntervaller(it.tom, it.fom, periodeDatagrunnlag)
         }
 
+
+        println(statsborgerskapIPeriode.size)
         statsborgerskapIPeriode.forEach{
             if(it.landkode != "NOR"){
                 return it.landkode
@@ -38,19 +37,11 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     }
 
 
-
-
-
     fun arbeidsforhold(): List<Arbeidsforhold> = datagrunnlag.arbeidsforhold
 
     fun sisteArbeidsgiversLand(): String? {
 
-        //Trenger hjelp på å bekrefte at disse sjekker riktig
-        val periodeDatagrunnlag = Interval.of(datagrunnlag.periode.tom.atStartOfDay(ZoneId.systemDefault()).toInstant(), datagrunnlag.periode.fom.atStartOfDay(ZoneId.systemDefault()).toInstant())
-
-        val arbeidsforholdPeriode = datagrunnlag.arbeidsforhold.filter {
-            hentIntervaller(it.periode.tom, it.periode.fom, periodeDatagrunnlag)
-        }
+        val arbeidsforholdPeriode = hentArbeidsforholdIPeriode()
 
         arbeidsforholdPeriode.forEach{
             if(!it.arbeidsgiver.landkode.equals("NOR")){
@@ -62,7 +53,22 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     }
 
-    private fun hentIntervaller(tom: LocalDate?, fom: LocalDate?, periodeDatagrunnlag: Interval?): Boolean {
+    private fun hentInnlukkedeIntervaller(tom: LocalDate?, fom: LocalDate?, periodeDatagrunnlag: Interval?): Boolean {
+        val maxTom = LocalDate.MAX
+        val minFom = LocalDate.MIN
+
+        return if(tom == null && fom != null){
+            Interval.of(fom.atStartOfDay(ZoneId.systemDefault()).toInstant(), maxTom.atStartOfDay(ZoneId.systemDefault()).toInstant()).encloses(periodeDatagrunnlag)
+        } else if(tom != null && fom == null){
+            Interval.of(minFom.atStartOfDay(ZoneId.systemDefault()).toInstant(), tom.atStartOfDay(ZoneId.systemDefault()).toInstant()).encloses(periodeDatagrunnlag)
+        } else if(tom == null && fom == null){
+            Interval.of(minFom.atStartOfDay(ZoneId.systemDefault()).toInstant(), maxTom.atStartOfDay(ZoneId.systemDefault()).toInstant()).encloses(periodeDatagrunnlag)
+        } else {
+            Interval.of(fom?.atStartOfDay(ZoneId.systemDefault())?.toInstant(), tom?.atStartOfDay(ZoneId.systemDefault())?.toInstant()).encloses(periodeDatagrunnlag)
+        }
+    }
+
+    private fun hentOverlappedeIntervaller(tom: LocalDate?, fom: LocalDate?, periodeDatagrunnlag: Interval?): Boolean {
     val maxTom = LocalDate.MAX
     val minFom = LocalDate.MIN
 
@@ -78,13 +84,8 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     }
 
 
-    //Hvis det finnes to arbeidsforholdstyper innenfor en periode hvordan skal vi håndtere dette?
     fun sisteArbeidsforholdtype(): Arbeidsforholdstype {
-        val periodeDatagrunnlag = Interval.of(datagrunnlag.periode.tom.atStartOfDay(ZoneId.systemDefault()).toInstant(), datagrunnlag.periode.fom.atStartOfDay(ZoneId.systemDefault()).toInstant())
-
-        val arbeidsforholdPeriode = datagrunnlag.arbeidsforhold.filter {
-            hentIntervaller(it.periode.tom, it.periode.fom, periodeDatagrunnlag)
-        }
+        val arbeidsforholdPeriode = hentArbeidsforholdIPeriode()
         arbeidsforholdPeriode.forEach{
             if(!it.arbeidsgiver.landkode.equals("NORMALT")){
                 return it.arbeidsfolholdstype
@@ -100,11 +101,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         val yrkeskoderLuftfart = listOf("3143107", "5111105", "5111117")
 
 
-        val periodeDatagrunnlag = Interval.of(datagrunnlag.periode.tom.atStartOfDay(ZoneId.systemDefault()).toInstant(), datagrunnlag.periode.fom.atStartOfDay(ZoneId.systemDefault()).toInstant())
-
-        val arbeidsforholdPeriode = datagrunnlag.arbeidsforhold.filter {
-            hentIntervaller(it.periode.tom, it.periode.fom, periodeDatagrunnlag)
-        }
+        val arbeidsforholdPeriode = hentArbeidsforholdIPeriode()
 
         arbeidsforholdPeriode.forEach{ it ->
             it.arbeidsavtaler.forEach{
@@ -117,13 +114,23 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     }
 
-    fun sisteArbeidsforholdSkipsregister(): Skipsregister? {
-
+    private fun hentArbeidsforholdIPeriode(): List<Arbeidsforhold> {
         val periodeDatagrunnlag = Interval.of(datagrunnlag.periode.tom.atStartOfDay(ZoneId.systemDefault()).toInstant(), datagrunnlag.periode.fom.atStartOfDay(ZoneId.systemDefault()).toInstant())
 
         val arbeidsforholdPeriode = datagrunnlag.arbeidsforhold.filter {
-            hentIntervaller(it.periode.tom, it.periode.fom, periodeDatagrunnlag)
+            hentOverlappedeIntervaller(it.periode.tom, it.periode.fom, periodeDatagrunnlag) &&
+                    hentInnlukkedeIntervaller(it.periode.tom, it.periode.fom, periodeDatagrunnlag)
         }
+        return arbeidsforholdPeriode
+    }
+
+    fun sisteArbeidsforholdSkipsregister(): Skipsregister? {
+
+        val periodeDatagrunnlag = Interval.of(datagrunnlag.periode.tom.atStartOfDay(ZoneId.systemDefault()).toInstant(), datagrunnlag.periode.fom.atStartOfDay(ZoneId.systemDefault()).toInstant())
+        val arbeidsforholdPeriode = datagrunnlag.arbeidsforhold.filter {
+            hentOverlappedeIntervaller(it.periode.tom, it.periode.fom, periodeDatagrunnlag)
+        }
+
         arbeidsforholdPeriode.forEach{ it ->
             it.arbeidsavtaler.forEach{
                 if(!it.skipsregister?.name?.equals(Skipsregister.nor.toString())!!){
@@ -131,11 +138,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
                 }
             }
         }
-
         return Skipsregister.nor
-
-
-
     }
 
 
