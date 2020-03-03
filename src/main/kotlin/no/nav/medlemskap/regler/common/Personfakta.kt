@@ -20,20 +20,18 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     fun personensDokumenterIJoark(): List<Journalpost> = datagrunnlag.dokument
 
     fun personensSisteStatsborgerskap(): String {
-        val periodeDatagrunnlag = Interval.of(datagrunnlag.periode.tom.atStartOfDay(ZoneId.systemDefault()).toInstant(), datagrunnlag.periode.fom.atStartOfDay(ZoneId.systemDefault()).toInstant())
+        val periodeDatagrunnlag = Interval.of(datagrunnlag.periode.fom.atStartOfDay(ZoneId.systemDefault()).toInstant(), datagrunnlag.periode.tom.atStartOfDay(ZoneId.systemDefault()).toInstant())
         val statsborgerskapIPeriode = datagrunnlag.personhistorikk.statsborgerskap.filter {
-            hentOverlappedeIntervaller(it.tom, it.fom, periodeDatagrunnlag) &&
-            hentInnlukkedeIntervaller(it.tom, it.fom, periodeDatagrunnlag)
+            periodeDatagrunnlag.overlaps(lagInterval(Periode(it.fom, it.tom))) ||
+            periodeDatagrunnlag.encloses(lagInterval(Periode(it.fom, it.tom)))
         }
 
-
-        println(statsborgerskapIPeriode.size)
         statsborgerskapIPeriode.forEach{
-            if(it.landkode != "NOR"){
+            if(!eøsLand.containsKey(it.landkode)){
                 return it.landkode
             }
         }
-        return "NOR"
+        return statsborgerskapIPeriode.last().landkode
     }
 
 
@@ -53,36 +51,19 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     }
 
-    private fun hentInnlukkedeIntervaller(tom: LocalDate?, fom: LocalDate?, periodeDatagrunnlag: Interval?): Boolean {
+    private fun lagInterval(periode: Periode): Interval {
         val maxTom = LocalDate.MAX
         val minFom = LocalDate.MIN
 
-        return if(tom == null && fom != null){
-            Interval.of(fom.atStartOfDay(ZoneId.systemDefault()).toInstant(), maxTom.atStartOfDay(ZoneId.systemDefault()).toInstant()).encloses(periodeDatagrunnlag)
-        } else if(tom != null && fom == null){
-            Interval.of(minFom.atStartOfDay(ZoneId.systemDefault()).toInstant(), tom.atStartOfDay(ZoneId.systemDefault()).toInstant()).encloses(periodeDatagrunnlag)
-        } else if(tom == null && fom == null){
-            Interval.of(minFom.atStartOfDay(ZoneId.systemDefault()).toInstant(), maxTom.atStartOfDay(ZoneId.systemDefault()).toInstant()).encloses(periodeDatagrunnlag)
-        } else {
-            Interval.of(fom?.atStartOfDay(ZoneId.systemDefault())?.toInstant(), tom?.atStartOfDay(ZoneId.systemDefault())?.toInstant()).encloses(periodeDatagrunnlag)
-        }
+        println(maxTom)
+        println(minFom)
+
+        val fom = periode.fom ?: minFom
+        val tom = periode.tom ?: maxTom
+        println("tom " + tom + " fom " + fom)
+        //TODO FUNKER IKKE PÅ NULL
+        return Interval.of(fom.atStartOfDay(ZoneId.systemDefault()).toInstant(), tom.atStartOfDay(ZoneId.systemDefault()).toInstant())
     }
-
-    private fun hentOverlappedeIntervaller(tom: LocalDate?, fom: LocalDate?, periodeDatagrunnlag: Interval?): Boolean {
-    val maxTom = LocalDate.MAX
-    val minFom = LocalDate.MIN
-
-        return if(tom == null && fom != null){
-            Interval.of(fom.atStartOfDay(ZoneId.systemDefault()).toInstant(), maxTom.atStartOfDay(ZoneId.systemDefault()).toInstant()).overlaps(periodeDatagrunnlag)
-        } else if(tom != null && fom == null){
-            Interval.of(minFom.atStartOfDay(ZoneId.systemDefault()).toInstant(), tom.atStartOfDay(ZoneId.systemDefault()).toInstant()).overlaps(periodeDatagrunnlag)
-        } else if(tom == null && fom == null){
-            Interval.of(minFom.atStartOfDay(ZoneId.systemDefault()).toInstant(), maxTom.atStartOfDay(ZoneId.systemDefault()).toInstant()).overlaps(periodeDatagrunnlag)
-        } else {
-            Interval.of(fom?.atStartOfDay(ZoneId.systemDefault())?.toInstant(), tom?.atStartOfDay(ZoneId.systemDefault())?.toInstant()).overlaps(periodeDatagrunnlag)
-        }
-    }
-
 
     fun sisteArbeidsforholdtype(): Arbeidsforholdstype {
         val arbeidsforholdPeriode = hentArbeidsforholdIPeriode()
@@ -98,8 +79,9 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
 
     fun sisteArbeidsforholdYrkeskode(): String {
-        val yrkeskoderLuftfart = listOf("3143107", "5111105", "5111117")
-
+        val yrkeskoderLuftfart = listOf(LuftfartYrkeskoder.KABINPERSONALE.beskrivelse,
+                                        LuftfartYrkeskoder.KABINSJEF.beskrivelse,
+                                        LuftfartYrkeskoder.PILOT.beskrivelse)
 
         val arbeidsforholdPeriode = hentArbeidsforholdIPeriode()
 
@@ -117,18 +99,18 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     private fun hentArbeidsforholdIPeriode(): List<Arbeidsforhold> {
         val periodeDatagrunnlag = Interval.of(datagrunnlag.periode.tom.atStartOfDay(ZoneId.systemDefault()).toInstant(), datagrunnlag.periode.fom.atStartOfDay(ZoneId.systemDefault()).toInstant())
 
-        val arbeidsforholdPeriode = datagrunnlag.arbeidsforhold.filter {
-            hentOverlappedeIntervaller(it.periode.tom, it.periode.fom, periodeDatagrunnlag) &&
-                    hentInnlukkedeIntervaller(it.periode.tom, it.periode.fom, periodeDatagrunnlag)
+        return datagrunnlag.arbeidsforhold.filter {
+            lagInterval(Periode(it.periode.tom, it.periode.fom)).overlaps(periodeDatagrunnlag) &&
+            lagInterval(Periode(it.periode.tom, it.periode.fom)).encloses(periodeDatagrunnlag)
         }
-        return arbeidsforholdPeriode
     }
 
     fun sisteArbeidsforholdSkipsregister(): Skipsregister? {
 
         val periodeDatagrunnlag = Interval.of(datagrunnlag.periode.tom.atStartOfDay(ZoneId.systemDefault()).toInstant(), datagrunnlag.periode.fom.atStartOfDay(ZoneId.systemDefault()).toInstant())
         val arbeidsforholdPeriode = datagrunnlag.arbeidsforhold.filter {
-            hentOverlappedeIntervaller(it.periode.tom, it.periode.fom, periodeDatagrunnlag)
+            lagInterval(Periode(it.periode.tom, it.periode.fom)).overlaps(periodeDatagrunnlag) &&
+            lagInterval(Periode(it.periode.tom, it.periode.fom)).encloses(periodeDatagrunnlag)
         }
 
         arbeidsforholdPeriode.forEach{ it ->
@@ -152,5 +134,39 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     }
 
     infix fun oppfyller(regelsett: Regelsett): Resultat = regelsett.evaluer(this)
+
+    //flytte ut denne
+    val eøsLand = mapOf(
+            "BEL" to "BELGIA",
+            "BGR" to "BULGARIA",
+            "DNK" to "DANMARK",
+            "EST" to "ESTLAND",
+            "FIN" to "FINLAND",
+            "FRA" to "FRANKRIKE",
+            "GRC" to "HELLAS",
+            "IRL" to "IRLAND",
+            "ISL" to "ISLAND",
+            "ITA" to "ITALIA",
+            "HRV" to "KROATIA",
+            "CYP" to "KYPROS",
+            "LVA" to "LATVIA",
+            "LIE" to "LIECHTENSTEIN",
+            "LTU" to "LITAUEN",
+            "LUX" to "LUXENBURG",
+            "MLT" to "MALTA",
+            "NLD" to "NEDERLAND",
+            "NOR" to "NORGE",
+            "POL" to "POLEN",
+            "PRT" to "PORTUGAL",
+            "ROU" to "ROMANIA",
+            "SVK" to "SLOVAKIA",
+            "SVN" to "SLOVENIA",
+            "ESP" to "SPANIA",
+            "SWE" to "SVERIGE",
+            "CZE" to "TSJEKKIA",
+            "DEU" to "TYSKAND",
+            "HUN" to "UNGARN",
+            "AUT" to "ØSTERRIKE"
+    )
 
 }

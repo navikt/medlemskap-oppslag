@@ -43,7 +43,7 @@ class RegelsettForGrunnforordningen : Regelsett("Regelsett for grunnforordningen
             }
 
 
-    private val eøsLand = mapOf(
+    val eøsLand = mapOf(
             "BEL" to "BELGIA",
             "BGR" to "BULGARIA",
             "DNK" to "DANMARK",
