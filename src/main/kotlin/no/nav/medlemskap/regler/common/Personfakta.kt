@@ -60,7 +60,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     fun sisteArbeidsforholdtype(): Arbeidsforholdstype {
         val arbeidsforholdPeriode = hentArbeidsforholdIPeriode()
         arbeidsforholdPeriode.forEach{
-            if(!it.arbeidsgiver.landkode.equals("NORMALT")){
+            if(!it.arbeidsgiver.landkode.equals(Arbeidsforholdstype.NORMALT.toString())){
                 return it.arbeidsfolholdstype
             }
         }
@@ -127,7 +127,6 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     infix fun oppfyller(regelsett: Regelsett): Resultat = regelsett.evaluer(this)
 
-    //flytte ut denne
     val eøsLand = mapOf(
             "BEL" to "BELGIA",
             "BGR" to "BULGARIA",
