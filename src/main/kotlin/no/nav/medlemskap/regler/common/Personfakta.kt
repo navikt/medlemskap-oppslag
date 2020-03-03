@@ -52,16 +52,8 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     }
 
     private fun lagInterval(periode: Periode): Interval {
-        val maxTom = LocalDate.MAX
-        val minFom = LocalDate.MIN
-
-        println(maxTom)
-        println(minFom)
-
-        val fom = periode.fom ?: minFom
-        val tom = periode.tom ?: maxTom
-        println("tom " + tom + " fom " + fom)
-        //TODO FUNKER IKKE PÅ NULL
+        val fom = periode.fom ?: LocalDate.MIN
+        val tom = periode.tom ?: LocalDate.MAX
         return Interval.of(fom.atStartOfDay(ZoneId.systemDefault()).toInstant(), tom.atStartOfDay(ZoneId.systemDefault()).toInstant())
     }
 
@@ -97,17 +89,17 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     }
 
     private fun hentArbeidsforholdIPeriode(): List<Arbeidsforhold> {
-        val periodeDatagrunnlag = Interval.of(datagrunnlag.periode.tom.atStartOfDay(ZoneId.systemDefault()).toInstant(), datagrunnlag.periode.fom.atStartOfDay(ZoneId.systemDefault()).toInstant())
+        val periodeDatagrunnlag = Interval.of(datagrunnlag.periode.fom.atStartOfDay(ZoneId.systemDefault()).toInstant(), datagrunnlag.periode.tom.atStartOfDay(ZoneId.systemDefault()).toInstant())
 
         return datagrunnlag.arbeidsforhold.filter {
-            lagInterval(Periode(it.periode.tom, it.periode.fom)).overlaps(periodeDatagrunnlag) &&
-            lagInterval(Periode(it.periode.tom, it.periode.fom)).encloses(periodeDatagrunnlag)
+            periodeDatagrunnlag.overlaps(lagInterval(Periode(it.periode.fom, it.periode.tom))) ||
+            periodeDatagrunnlag.encloses(lagInterval(Periode(it.periode.fom, it.periode.tom)))
         }
     }
 
     fun sisteArbeidsforholdSkipsregister(): Skipsregister? {
 
-        val periodeDatagrunnlag = Interval.of(datagrunnlag.periode.tom.atStartOfDay(ZoneId.systemDefault()).toInstant(), datagrunnlag.periode.fom.atStartOfDay(ZoneId.systemDefault()).toInstant())
+        val periodeDatagrunnlag = Interval.of(datagrunnlag.periode.fom.atStartOfDay(ZoneId.systemDefault()).toInstant(), datagrunnlag.periode.tom.atStartOfDay(ZoneId.systemDefault()).toInstant())
         val arbeidsforholdPeriode = datagrunnlag.arbeidsforhold.filter {
             lagInterval(Periode(it.periode.tom, it.periode.fom)).overlaps(periodeDatagrunnlag) &&
             lagInterval(Periode(it.periode.tom, it.periode.fom)).encloses(periodeDatagrunnlag)
