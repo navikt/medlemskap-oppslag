@@ -1,12 +1,19 @@
 package no.nav.medlemskap
 
-import java.util.concurrent.TimeUnit
+import io.micrometer.prometheus.PrometheusConfig
+import io.micrometer.prometheus.PrometheusMeterRegistry
+import io.micrometer.prometheus.PrometheusRenameFilter
 
 data class ApplicationState(var running: Boolean = true, var initialized: Boolean = false)
 
+val prometheusRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
+
 fun main() {
     val applicationState = ApplicationState()
-    val applicationServer = createHttpServer(applicationState)
+
+    prometheusRegistry.config().meterFilter(PrometheusRenameFilter())
+
+    val applicationServer = createHttpServer(applicationState = applicationState, prometheusRegistry = prometheusRegistry)
 
     Runtime.getRuntime().addShutdownHook(Thread {
         applicationState.initialized = false

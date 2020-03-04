@@ -6,10 +6,19 @@ import io.ktor.auth.jwt.jwt
 import io.ktor.features.*
 import io.ktor.http.ContentType
 import io.ktor.jackson.JacksonConverter
+import io.ktor.metrics.micrometer.MicrometerMetrics
 import io.ktor.routing.routing
 import io.ktor.server.engine.ApplicationEngine
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import io.micrometer.core.instrument.binder.jvm.ClassLoaderMetrics
+import io.micrometer.core.instrument.binder.jvm.JvmGcMetrics
+import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics
+import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics
+import io.micrometer.core.instrument.binder.system.FileDescriptorMetrics
+import io.micrometer.core.instrument.binder.system.ProcessorMetrics
+import io.micrometer.prometheus.PrometheusConfig
+import io.micrometer.prometheus.PrometheusMeterRegistry
 import no.nav.medlemskap.common.JwtConfig
 import no.nav.medlemskap.common.JwtConfig.Companion.REALM
 import no.nav.medlemskap.common.MDC_CALL_ID
@@ -31,7 +40,8 @@ fun createHttpServer(
         useAuthentication: Boolean = true,
         configuration: Configuration = Configuration(),
         azureAdOpenIdConfiguration: AzureAdOpenIdConfiguration = getAadConfig(configuration.azureAd),
-        services: Services = Services(configuration)
+        services: Services = Services(configuration),
+        prometheusRegistry: PrometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
 ): ApplicationEngine = embeddedServer(Netty, 7070) {
 
     install(StatusPages) {
@@ -67,8 +77,20 @@ fun createHttpServer(
         }
     }
 
+    install(MicrometerMetrics) {
+        registry = prometheusRegistry
+        meterBinders = listOf(
+                ClassLoaderMetrics(),
+                JvmMemoryMetrics(),
+                JvmGcMetrics(),
+                ProcessorMetrics(),
+                JvmThreadMetrics(),
+                FileDescriptorMetrics()
+        )
+    }
+
     routing {
-        naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running })
+        naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = prometheusRegistry.prometheusRegistry)
         evalueringRoute(services, useAuthentication, configuration)
         reglerRoute()
         healthRoute("/healthCheck", services.healthService)
