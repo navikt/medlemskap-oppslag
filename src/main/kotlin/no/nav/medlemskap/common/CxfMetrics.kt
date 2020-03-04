@@ -1,6 +1,5 @@
 package no.nav.medlemskap.common
 
-import io.prometheus.client.Histogram
 import org.apache.cxf.Bus
 import org.apache.cxf.feature.AbstractFeature
 import org.apache.cxf.interceptor.InterceptorProvider
@@ -32,14 +31,14 @@ internal class MetricInterceptor : AbstractPhaseInterceptor<Message>(Phase.SETUP
                 "failure"
             } ?: "success"
 
-            clientCounter.labels(service, operation, status).inc()
+            clientCounter(service, operation, status).inc()
         }
     }
 
     override fun handleFault(message: Message?) {
         message?.exchange?.get(MetricInterceptor::class.java.name + ".timer")?.let {
             message.exchange[MetricInterceptor::class.java.name + ".timer"] = null
-            it as Histogram.Timer
+            it as HoldTimer
         }?.observeDuration()
     }
 }
@@ -52,7 +51,7 @@ internal class TimerStartInterceptor : AbstractPhaseInterceptor<Message>(Phase.P
         val operation = message?.exchange?.bindingOperationInfo?.name?.localPart
 
         if (operation != "ping") {
-            message?.exchange?.put(MetricInterceptor::class.java.name + ".timer", clientTimer.labels(service, operation).startTimer())
+            message?.exchange?.put(MetricInterceptor::class.java.name + ".timer", clientTimer(service, operation).startTimer())
         }
     }
 }
@@ -61,7 +60,7 @@ internal class TimerEndInterceptor : AbstractPhaseInterceptor<Message>(Phase.REC
     override fun handleMessage(message: Message?) {
         message?.exchange?.get(MetricInterceptor::class.java.name + ".timer")?.let {
             message.exchange[MetricInterceptor::class.java.name + ".timer"] = null
-            it as Histogram.Timer
+            it as HoldTimer
         }?.observeDuration()
     }
 }

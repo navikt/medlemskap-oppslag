@@ -11,6 +11,7 @@ import io.ktor.routing.post
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import no.nav.medlemskap.common.API_COUNTER
+import no.nav.medlemskap.common.inc
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Personfakta

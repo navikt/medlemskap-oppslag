@@ -1,19 +1,15 @@
 package no.nav.medlemskap
 
-import io.micrometer.prometheus.PrometheusConfig
-import io.micrometer.prometheus.PrometheusMeterRegistry
-import io.micrometer.prometheus.PrometheusRenameFilter
+import no.nav.medlemskap.common.configurePrometheusMeterRegistry
 
 data class ApplicationState(var running: Boolean = true, var initialized: Boolean = false)
-
-val prometheusRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
 
 fun main() {
     val applicationState = ApplicationState()
 
-    prometheusRegistry.config().meterFilter(PrometheusRenameFilter())
+    val prometheusMeterRegistry = configurePrometheusMeterRegistry()
 
-    val applicationServer = createHttpServer(applicationState = applicationState, prometheusRegistry = prometheusRegistry)
+    val applicationServer = createHttpServer(applicationState = applicationState, prometheusRegistry = prometheusMeterRegistry)
 
     Runtime.getRuntime().addShutdownHook(Thread {
         applicationState.initialized = false

@@ -1,5 +1,6 @@
 package no.nav.medlemskap.regler.common
 
+import no.nav.medlemskap.common.inc
 import no.nav.medlemskap.common.regelCounter
 
 abstract class Regelsett(val navn: String) {
@@ -29,7 +30,7 @@ abstract class Regelsett(val navn: String) {
 
     protected fun hentUtKonklusjon(underRestultat: Resultat): Resultat {
         return (konklusjon
-                ?: uavklart("Kom ikke til noen konklusjon")).apply { regelCounter.labels(navn.replace("?", ""), this.resultat.name).inc() }
+                ?: uavklart("Kom ikke til noen konklusjon")).apply { regelCounter(navn.replace("?", ""), this.resultat.name).inc() }
     }
 
     protected fun ja(begrunnelse: String): Resultat = Resultat(
