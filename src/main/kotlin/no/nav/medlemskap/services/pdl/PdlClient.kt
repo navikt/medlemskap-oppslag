@@ -41,6 +41,10 @@ class PdlClient(
         }
     }
 
+    suspend fun hentNasjonalitet(fnr: String, callId: String): String {
+        TODO()
+    }
+
     suspend fun healthCheck(): HttpResponse {
         return apacheHttpClient.options {
             url("$baseUrl")

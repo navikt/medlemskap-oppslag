@@ -11,6 +11,9 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
 import no.nav.medlemskap.common.apacheHttpClient
+import no.nav.medlemskap.domene.Arbeidsforhold
+import no.nav.medlemskap.services.ereg.EregClient
+import no.nav.medlemskap.services.pdl.PdlClient
 import no.nav.medlemskap.services.runWithRetryAndMetrics
 import no.nav.medlemskap.services.sts.StsRestClient
 import java.time.LocalDate
@@ -80,9 +83,41 @@ class AaRegClient(
     private fun LocalDate.tilIsoFormat() = this.format(DateTimeFormatter.ISO_LOCAL_DATE)
 }
 
-class AaRegService(private val aaRegClient: AaRegClient) {
+class AaRegService(
+        private val aaRegClient: AaRegClient,
+        private val eregClient: EregClient,
+        private val pdlClient: PdlClient) {
 
-    suspend fun hentArbeidsforhold(fnr: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null) =
-            mapAaregResultat(aaRegClient.hentArbeidsforhold(fnr, callId, fraOgMed, tilOgMed))
+    suspend fun hentArbeidsforhold(fnr: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<Arbeidsforhold> {
+        val arbeidsforhold = aaRegClient.hentArbeidsforhold(fnr, callId, fraOgMed, tilOgMed)
+
+        val arbeidsgiver: List<AaRegOpplysningspliktigArbeidsgiver> = TODO()
+
+
+
+        return mapAaregResultat(arbeidsforhold)
+    }
+
+    private suspend fun hentArbeidsgiversLand(arbeidsgiver: List<AaRegOpplysningspliktigArbeidsgiver>): Map<String, String> {
+        val map: MutableMap<String, String> = mutableMapOf()
+
+        arbeidsgiver.forEach {
+            arbeidsgiver ->
+                val enhetstype = when(arbeidsgiver.type) {
+                    AaRegOpplysningspliktigArbeidsgiverType.Organisasjon -> {
+                        val type = eregClient.hentEnhetstype(arbeidsgiver.organisasjonsnummer!!, "", "")
+                        if (type == "NUF" || type == "UTLA") {
+                            "IKKE NOR"
+                        } else {
+                            "NOR"
+                        }
+                    }
+                    else -> pdlClient.hentNasjonalitet(arbeidsgiver.offentligIdent!!, "")
+                }
+            map[""] = enhetstype
+        }
+
+        return map
+    }
 
 }
