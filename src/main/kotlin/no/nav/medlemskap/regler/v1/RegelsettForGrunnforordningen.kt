@@ -1,7 +1,7 @@
 package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.regler.common.Avklaring
-import no.nav.medlemskap.regler.common.Funksjoner.erDelAv
+import no.nav.medlemskap.regler.common.Funksjoner.harAlle
 import no.nav.medlemskap.regler.common.Personfakta
 import no.nav.medlemskap.regler.common.Regelsett
 import no.nav.medlemskap.regler.common.Resultat
@@ -35,7 +35,7 @@ class RegelsettForGrunnforordningen : Regelsett("Regelsett for grunnforordningen
 
     private fun sjekkStatsborgerskap(personfakta: Personfakta): Resultat =
             hvis {
-                personfakta.personensSisteStatsborgerskap() erDelAv eøsLand
+                eøsLand harAlle personfakta.hentStatsborgerskapIPeriode()
             } så {
                 ja("Personen er statsborger i et EØS-land.")
             } ellers {
