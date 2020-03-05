@@ -1,6 +1,5 @@
 package no.nav.medlemskap.regler.common
 
-import no.nav.medlemskap.common.inc
 import no.nav.medlemskap.common.regelCounter
 import no.nav.medlemskap.domene.*
 
@@ -32,7 +31,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     infix fun oppfyller(avklaring: Avklaring): Resultat {
         val resultat = avklaring.operasjon.invoke(this).apply {
-            regelCounter(avklaring.avklaring.replace("?", ""), this.resultat.name).inc()
+            regelCounter(avklaring.avklaring.replace("?", ""), this.resultat.name).increment()
         }
         return resultat.copy(identifikator = avklaring.identifikator, avklaring = avklaring.avklaring)
     }
