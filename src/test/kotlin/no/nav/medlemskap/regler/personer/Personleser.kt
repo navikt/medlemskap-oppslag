@@ -17,9 +17,14 @@ class Personleser {
 
     fun norskMedFlereStatsborgerskap() = lesDatagrunnlag("$variertDatagrunnlag/norsk_flere_statsborgerskap_i_periode.json")
     fun norskMedFlereStatsborgerskapUtenforPeriode() = lesDatagrunnlag("$variertDatagrunnlag/norsk_flere_stasborgerskap_utenfor_periode.json")
+    fun norskMedFlereStatsborgerskapIogUtenforPeriode() = lesDatagrunnlag("$variertDatagrunnlag/norsk_flere_statsborgerskap_i_og_utenfor_periode.json")
+    fun norskMedUtgaattStatsborgerskapIPeriode() = lesDatagrunnlag("$variertDatagrunnlag/norsk_med_utgaatt_statsborgerskap_i_periode.json")
+
     fun norskArbeidsgiverMedFlereIPeriode () = lesDatagrunnlag("$variertDatagrunnlag/norsk_og_flere_arbeidsgivere_i_periode.json")
     fun norskMedFlereArbeidsforholdstyperIPerioder() = lesDatagrunnlag("$variertDatagrunnlag/norsk_og_flere_arbeidsforholdtyper_i_periode.json")
     fun norskMedFlereYrkeskoderIPeriode () = lesDatagrunnlag("$variertDatagrunnlag/norsk_med_flere_yrkestyper_i_periode.json")
+
+
 
     fun enkelAmerikansk() = lesDatagrunnlag("$ikkeEøs/kun_enkelt_amerikansk_statsborgerskap.json")
     fun amerikanskMedl() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_vedtak_i_medl.json")
