@@ -37,7 +37,6 @@ fun clientTimer(service: String?, operation: String?): Timer =
         Timer.builder("client_calls_latency")
                 .tags("service", service ?: "UKJENT", "operation", operation ?: "UKJENT")
                 .description("latency for calls to other services")
-                .publishPercentiles(0.5, 0.90)
                 .publishPercentileHistogram()
                 .register(Metrics.globalRegistry)
 
