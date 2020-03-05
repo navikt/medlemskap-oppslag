@@ -27,7 +27,7 @@ fun Routing.evalueringRoute(
         configuration: Configuration) {
     fun receiveAndRespond() {
         post("/") {
-            API_COUNTER.inc()
+            API_COUNTER.increment()
             val request = validerRequest(call.receive())
             val callId = call.callId ?: UUID.randomUUID().toString()
             val aktorId = services.pdlService.hentAktorId(request.fnr, callId)
