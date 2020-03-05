@@ -5,8 +5,6 @@ import no.nav.medlemskap.domene.*
 import org.threeten.extra.Interval
 import java.time.LocalDate
 import java.time.ZoneId
-import java.util.*
-import java.util.stream.Collectors
 
 
 class Personfakta(private val datagrunnlag: Datagrunnlag) {
@@ -24,10 +22,12 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     fun hentStatsborgerskapIPeriode(): List<Statsborgerskap> {
         val periodeDatagrunnlag = lagInterval(Periode(datagrunnlag.periode.fom, datagrunnlag.periode.tom))
         return datagrunnlag.personhistorikk.statsborgerskap.filter {
-            periodeDatagrunnlag.overlaps(lagInterval(Periode(it.fom, it.tom))) ||
-            periodeDatagrunnlag.encloses(lagInterval(Periode(it.fom, it.tom)))
+            filtrerListe(periodeDatagrunnlag, Periode(it.fom, it.tom))
         }
+    }
 
+    private fun filtrerListe(periodeDatagrunnlag: Interval, periode: Periode): Boolean {
+       return periodeDatagrunnlag.overlaps(lagInterval(periode)) || periodeDatagrunnlag.encloses(lagInterval(periode))
     }
 
     fun arbeidsforhold(): List<Arbeidsforhold> = datagrunnlag.arbeidsforhold
@@ -54,20 +54,13 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return hentArbeidsforholdIPeriode().flatMap { it -> it.arbeidsavtaler.map { it.skipsregister?.name.toString()} }
     }
 
-
     fun hentBrukerinputArbeidUtenforNorge(): Boolean = datagrunnlag.brukerinput.arbeidUtenforNorge
-
 
     private fun hentArbeidsforholdIPeriode(): List<Arbeidsforhold> {
         val periodeDatagrunnlag = lagInterval(Periode(datagrunnlag.periode.fom, datagrunnlag.periode.tom))
-
-        return datagrunnlag.arbeidsforhold.filter {
-            periodeDatagrunnlag.overlaps(lagInterval(Periode(it.periode.fom, it.periode.tom))) ||
-            periodeDatagrunnlag.encloses(lagInterval(Periode(it.periode.fom, it.periode.tom)))
+        return datagrunnlag.arbeidsforhold.filter {filtrerListe(periodeDatagrunnlag, Periode(it.periode.fom, it.periode.tom))
         }
     }
-
-
 
     infix fun oppfyller(avklaring: Avklaring): Resultat {
         val resultat = avklaring.operasjon.invoke(this).apply {

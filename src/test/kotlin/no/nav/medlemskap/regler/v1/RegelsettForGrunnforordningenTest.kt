@@ -26,10 +26,7 @@ class RegelsettForGrunnforordningenTest {
         assertEquals(Resultattype.NEI, evaluer(personleser.norskMedFlereStatsborgerskapUtenforPeriode()))
     }
 
-
-
-
-@Test
+    @Test
     fun `person med ett amerikansk statsborgerskap gir resuktat nei`() {
         assertEquals(Resultattype.NEI, evaluer(personleser.enkelAmerikansk()))
     }
