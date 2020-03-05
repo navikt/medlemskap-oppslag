@@ -12,27 +12,6 @@ import java.util.concurrent.atomic.AtomicInteger
 
 const val COUNTER_REGEL_CALLS_TOTAL = "regel_calls_total"
 
-fun Counter.inc() = this.increment()
-
-class HoldTimer(private val service: String, private val operation: String) {
-    private lateinit var sample: Timer.Sample
-
-    fun startTimer(): HoldTimer {
-        sample = Timer.start()
-        return this
-    }
-
-    fun observeDuration() {
-        sample.stop(
-                Timer.builder("client_calls_latency")
-                        .tags("service", service, "operation", operation)
-                        .description("latency for calls to other services")
-                        .publishPercentiles(0.5, 0.90)
-                        .publishPercentileHistogram()
-                        .register(Metrics.globalRegistry))
-    }
-}
-
 fun configurePrometheusMeterRegistry(): PrometheusMeterRegistry {
     val prometheusRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
     Metrics.globalRegistry.add(prometheusRegistry)
@@ -54,8 +33,13 @@ val API_COUNTER: Counter = Counter
         .register(Metrics.globalRegistry)
 
 
-fun clientTimer(service: String?, operation: String?): HoldTimer =
-        HoldTimer(service ?: "UKJENT", operation ?: "UKJENT")
+fun clientTimer(service: String?, operation: String?): Timer =
+        Timer.builder("client_calls_latency")
+                .tags("service", service ?: "UKJENT", "operation", operation ?: "UKJENT")
+                .description("latency for calls to other services")
+                .publishPercentiles(0.5, 0.90)
+                .publishPercentileHistogram()
+                .register(Metrics.globalRegistry)
 
 fun clientCounter(service: String?, operation: String?, status: String): Counter = Counter
         .builder("client_calls_total")

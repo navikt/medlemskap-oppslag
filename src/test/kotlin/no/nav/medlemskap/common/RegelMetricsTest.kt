@@ -14,7 +14,7 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import no.nav.medlemskap.regler.common.Personfakta.Companion.initialiserFakta
 import no.nav.medlemskap.regler.personer.Personleser
 import no.nav.medlemskap.regler.v1.RegelsettForGrunnforordningen
-import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
@@ -37,17 +37,20 @@ class RegelMetricsTest {
     private val personleser = Personleser()
     private val simpleRegistry = SimpleMeterRegistry(SimpleConfig.DEFAULT, MockClock())
 
-    @BeforeAll
+    @BeforeEach
     fun initCollectorRegistry() {
         Metrics.addRegistry(simpleRegistry)
         simpleRegistry.clear()
-        clock(simpleRegistry).add(step());
+        gjørNoeMagiJegIkkeForstår()
     }
 
     @Test
     fun `evaluering av regelsett for eøs forordningen for amerikansk statsborgerskap gir to metrikker`() {
+        gjørNoeMagiJegIkkeForstår()
+
         RegelsettForGrunnforordningen().evaluer(initialiserFakta(personleser.enkelAmerikansk()))
-        clock(simpleRegistry).add(step());
+
+        gjørNoeMagiJegIkkeForstår()
 
         assertThat(simpleRegistry.meters.map { it.id.name }).contains("regel_calls_total")
 
@@ -59,12 +62,18 @@ class RegelMetricsTest {
                         Tag.of("status", "NEI"),
                         Tag.of("status", "NEI")
                 )
-        assertThat(meters.counterVerdi("Er brukeren statsborger i et EØS land")).containsExactly(1.0)
-        assertThat(meters.counterVerdi("Regelsett for grunnforordningen")).containsExactly(1.0)
+        assertThat(meters.medTagRegelVerdi("Er brukeren statsborger i et EØS land")).containsExactly(1.0)
+        assertThat(meters.medTagRegelVerdi("Regelsett for grunnforordningen")).containsExactly(1.0)
 
+    }
+
+    private fun gjørNoeMagiJegIkkeForstår() {
+        clock(simpleRegistry).add(step());
+        simpleRegistry.forEachMeter { it.measure() }
+        clock(simpleRegistry).add(step());
     }
 
 }
 
-private fun List<Meter>.counterVerdi(s: String): List<Double> =
+private fun List<Meter>.medTagRegelVerdi(s: String): List<Double> =
         filter { it.id.tags.contains(Tag.of("regel", s)) }.flatMap { it.measure() }.map { it.value }

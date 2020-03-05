@@ -7,7 +7,6 @@ import mu.KotlinLogging
 import no.nav.medlemskap.common.HoldTimer
 import no.nav.medlemskap.common.clientCounter
 import no.nav.medlemskap.common.clientTimer
-import no.nav.medlemskap.common.inc
 
 private val logger = KotlinLogging.logger { }
 
@@ -38,14 +37,14 @@ suspend fun <T> runWithMetrics(service: String, operation: String, block: suspen
     try {
         val result: T = block.invoke()
         try {
-            clientCounter(service, operation, "success").inc()
+            clientCounter(service, operation, "success").increment()
         } catch (t: Throwable) {
             logger.warn("Feilet under inkrementinger av counter for $service:$operation", t)
         }
         return result
     } catch (t: Throwable) {
         try {
-            clientCounter(service, operation, "failure").inc()
+            clientCounter(service, operation, "failure").increment()
         } catch (t: Throwable) {
             logger.warn("Feilet under inkrementinger av counter for $service:$operation", t)
         }

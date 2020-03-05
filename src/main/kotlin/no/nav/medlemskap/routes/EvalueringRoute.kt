@@ -11,7 +11,6 @@ import io.ktor.routing.post
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import no.nav.medlemskap.common.API_COUNTER
-import no.nav.medlemskap.common.inc
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Personfakta
@@ -28,7 +27,7 @@ fun Routing.evalueringRoute(
         configuration: Configuration) {
     fun receiveAndRespond() {
         post("/") {
-            API_COUNTER.inc()
+            API_COUNTER.increment()
             val request = validerRequest(call.receive())
             val callId = call.callId ?: UUID.randomUUID().toString()
             val aktorId = services.pdlService.hentAktorId(request.fnr, callId)
