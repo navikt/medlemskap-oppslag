@@ -11,7 +11,7 @@ data class Arbeidsforhold (
 )
 
 data class Arbeidsavtale (
-        var periode: Periode,
+        val periode: Periode,
         val yrkeskode: String,
         val skipsregister: Skipsregister?,
         val stillingsprosent: Double?
@@ -47,8 +47,6 @@ enum class LuftfartYrkeskoder(val beskrivelse: String){
     PILOT("13143107"),
     KABINPERSONALE("5111105"),
     KABINSJEF("5111117")
-
-
 }
 
 
