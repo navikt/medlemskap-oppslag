@@ -69,7 +69,7 @@ class RegelsettForNorskLovvalg : Regelsett("Regelsett for norsk lovvalg") {
 
     private val yrkeskoderLuftfart = listOf("3143107", "5111105", "5111117")
 
-    private val norskeSkipsregister = listOf(Skipsregister.nor)
+    private val norskeSkipsregister = listOf(Skipsregister.nor.name)
 
     private val erArbeidsgiverNorsk = Avklaring(
             identifikator = "LOV-1",
@@ -134,7 +134,7 @@ class RegelsettForNorskLovvalg : Regelsett("Regelsett for norsk lovvalg") {
 
     private fun sjekkMaritim(personfakta: Personfakta): Resultat =
             hvis {
-                personfakta.sisteArbeidsforholdtype() inneholder Arbeidsforholdstype.MARITIM.name
+                personfakta.sisteArbeidsforholdtype() inneholder Arbeidsforholdstype.MARITIM.navn
             } så {
                 ja("Personen er ansatt i det maritime")
             } ellers {
@@ -153,7 +153,7 @@ class RegelsettForNorskLovvalg : Regelsett("Regelsett for norsk lovvalg") {
 
     private fun sjekkSkipsregister(personfakta: Personfakta): Resultat =
             hvis {
-                personfakta.sisteArbeidsforholdSkipsregister() kunInneholder "nor"
+                personfakta.sisteArbeidsforholdSkipsregister() kunInneholder Skipsregister.nor.name
             } så {
                 ja("Personen jobber på et norskregistrert skip")
             } ellers {

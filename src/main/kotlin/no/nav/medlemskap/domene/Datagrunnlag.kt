@@ -7,7 +7,7 @@ data class Datagrunnlag (
         val brukerinput: Brukerinput,
         val personhistorikk: Personhistorikk,
         val medlemskapsunntak: List<Medlemskapsunntak> = listOf(),
-        var arbeidsforhold: List<Arbeidsforhold> = listOf(),
+        val arbeidsforhold: List<Arbeidsforhold> = listOf(),
         val inntekt: List<Inntekt> = listOf(),
         val oppgaver: List<Oppgave> = listOf(),
         val dokument: List<Journalpost> = listOf()

@@ -1,6 +1,5 @@
 package no.nav.medlemskap.regler.common
 
-import no.nav.medlemskap.domene.Arbeidsforholdstype
 import no.nav.medlemskap.domene.Statsborgerskap
 import java.util.stream.Collectors
 
