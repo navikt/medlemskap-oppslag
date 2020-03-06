@@ -1,0 +1,72 @@
+
+{
+  "periode": {
+    "fom": "2020-01-30",
+    "tom": "2020-10-30"
+  },
+  "brukerinput" : {
+    "arbeidUtenforNorge" : false
+  },
+  "personhistorikk" : {
+    "statsborgerskap" : [ {
+      "landkode" : "NOR",
+      "fom" : "1991-02-20",
+      "tom" : "9999-01-01"
+    }
+    ],
+    "personstatuser" : [ ],
+    "bostedsadresser" : [ ],
+    "postadresser" : [ ],
+    "midlertidigAdresser" : [ ]
+  },
+  "medlemskapsunntak" : [ ],
+  "arbeidsforhold" : [
+    {
+      "periode": {
+        "fom": "2020-01-01",
+        "tom": "2020-06-30"
+      },
+      "utenlandsopphold": [],
+      "arbeidsgiver": {
+        "type": "Organisasjon",
+        "identifikator": "1",
+        "landkode": "SWE"
+      },
+      "arbeidsfolholdstype": "NORMALT",
+      "arbeidsavtaler": [
+        {
+          "periode": {
+            "fom": "2020-01-30",
+            "tom": "2020-06-30"
+          },
+          "yrkeskode": "0001"
+        }
+      ]
+    },
+    {
+      "periode" : {
+        "fom" : "2020-07-01",
+        "tom" : null
+      },
+      "utenlandsopphold" : [ ],
+      "arbeidsgiver" : {
+        "type" : "Organisasjon",
+        "identifikator" : "1",
+        "landkode" : "NOR"
+      },
+      "arbeidsfolholdstype" : "MARITIM",
+      "skipsregister": "nis",
+      "arbeidsavtaler" : [ {
+        "periode" : {
+          "fom" : "2020-07-01",
+          "tom" : null
+        },
+        "yrkeskode" : "0001"
+      }
+      ]
+    }
+  ],
+  "inntekt" : [ ],
+  "oppgaver" : [ ],
+  "dokument" : [ ]
+}

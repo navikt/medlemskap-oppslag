@@ -2,6 +2,10 @@ package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.common.regelCounter
 import no.nav.medlemskap.domene.*
+import org.threeten.extra.Interval
+import java.time.LocalDate
+import java.time.ZoneId
+
 
 class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
@@ -15,19 +19,48 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     fun personensDokumenterIJoark(): List<Journalpost> = datagrunnlag.dokument
 
-    fun personensSisteStatsborgerskap(): String = datagrunnlag.personhistorikk.statsborgerskap[0].landkode
+    fun hentStatsborgerskapIPeriode(): List<Statsborgerskap> {
+        val periodeDatagrunnlag = lagInterval(Periode(datagrunnlag.periode.fom, datagrunnlag.periode.tom))
+        return datagrunnlag.personhistorikk.statsborgerskap.filter {
+            filtrerListe(periodeDatagrunnlag, Periode(it.fom, it.tom))
+        }
+    }
+
+    private fun filtrerListe(periodeDatagrunnlag: Interval, periode: Periode): Boolean {
+       return periodeDatagrunnlag.overlaps(lagInterval(periode)) || periodeDatagrunnlag.encloses(lagInterval(periode))
+    }
 
     fun arbeidsforhold(): List<Arbeidsforhold> = datagrunnlag.arbeidsforhold
 
-    fun sisteArbeidsgiversLand(): String? = datagrunnlag.arbeidsforhold[0].arbeidsgiver.landkode
+    fun arbeidsgiversLandForPeriode(): List<String> {
+        return hentArbeidsforholdIPeriode().mapNotNull { it.arbeidsgiver.landkode }
+    }
 
-    fun sisteArbeidsforholdtype(): Arbeidsforholdstype = datagrunnlag.arbeidsforhold[0].arbeidsfolholdstype
+    private fun lagInterval(periode: Periode): Interval {
+        val fom = periode.fom ?: LocalDate.MIN
+        val tom = periode.tom ?: LocalDate.MAX
+        return Interval.of(fom.atStartOfDay(ZoneId.systemDefault()).toInstant(), tom.atStartOfDay(ZoneId.systemDefault()).toInstant())
+    }
 
-    fun sisteArbeidsforholdYrkeskode(): String = datagrunnlag.arbeidsforhold[0].arbeidsavtaler[0].yrkeskode
+    fun sisteArbeidsforholdtype(): List<String> {
+        return hentArbeidsforholdIPeriode().map { it.arbeidsfolholdstype.navn }
+    }
 
-    fun sisteArbeidsforholdSkipsregister(): Skipsregister? = datagrunnlag.arbeidsforhold[0].arbeidsavtaler[0].skipsregister
+    fun sisteArbeidsforholdYrkeskode(): List<String> {
+        return hentArbeidsforholdIPeriode().flatMap {  it.arbeidsavtaler }.map { it.yrkeskode }
+    }
+
+    fun sisteArbeidsforholdSkipsregister(): List<String> {
+        return hentArbeidsforholdIPeriode().flatMap { it -> it.arbeidsavtaler.map { it.skipsregister?.name.toString()} }
+    }
 
     fun hentBrukerinputArbeidUtenforNorge(): Boolean = datagrunnlag.brukerinput.arbeidUtenforNorge
+
+    private fun hentArbeidsforholdIPeriode(): List<Arbeidsforhold> {
+        val periodeDatagrunnlag = lagInterval(Periode(datagrunnlag.periode.fom, datagrunnlag.periode.tom))
+        return datagrunnlag.arbeidsforhold.filter {filtrerListe(periodeDatagrunnlag, Periode(it.periode.fom, it.periode.tom))
+        }
+    }
 
     infix fun oppfyller(avklaring: Avklaring): Resultat {
         val resultat = avklaring.operasjon.invoke(this).apply {

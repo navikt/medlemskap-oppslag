@@ -43,6 +43,11 @@ enum class Skipsregister (val beskrivelse: String) {
     utl("Utenlandsk skipsregister")
 }
 
+enum class LuftfartYrkeskoder(val beskrivelse: String){
+    PILOT("13143107"),
+    KABINPERSONALE("5111105"),
+    KABINSJEF("5111117")
+}
 
 
 

@@ -17,6 +17,16 @@ class RegelsettForGrunnforordningenTest {
     }
 
     @Test
+    fun `person med flere statsborgerskap i periode får nei`() {
+        assertEquals(Resultattype.NEI, evaluer(personleser.norskMedFlereStatsborgerskap()))
+    }
+
+    @Test
+    fun `person med flere statsborgerskap som overlapper periode får nei`() {
+        assertEquals(Resultattype.NEI, evaluer(personleser.norskMedFlereStatsborgerskapUtenforPeriode()))
+    }
+
+    @Test
     fun `person med ett amerikansk statsborgerskap gir resuktat nei`() {
         assertEquals(Resultattype.NEI, evaluer(personleser.enkelAmerikansk()))
     }

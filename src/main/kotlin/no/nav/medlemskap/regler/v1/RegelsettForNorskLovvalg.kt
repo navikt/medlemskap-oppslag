@@ -4,7 +4,10 @@ import no.nav.medlemskap.domene.Arbeidsforholdstype
 import no.nav.medlemskap.domene.Skipsregister
 import no.nav.medlemskap.regler.common.Avklaring
 import no.nav.medlemskap.regler.common.Funksjoner.erDelAv
+import no.nav.medlemskap.regler.common.Funksjoner.inneholderNoe
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
+import no.nav.medlemskap.regler.common.Funksjoner.kunInneholder
+import no.nav.medlemskap.regler.common.Funksjoner.inneholder
 import no.nav.medlemskap.regler.common.Personfakta
 import no.nav.medlemskap.regler.common.Regelsett
 import no.nav.medlemskap.regler.common.Resultat
@@ -66,7 +69,7 @@ class RegelsettForNorskLovvalg : Regelsett("Regelsett for norsk lovvalg") {
 
     private val yrkeskoderLuftfart = listOf("3143107", "5111105", "5111117")
 
-    private val norskeSkipsregister = listOf(Skipsregister.nor)
+    private val norskeSkipsregister = listOf(Skipsregister.nor.name)
 
     private val erArbeidsgiverNorsk = Avklaring(
             identifikator = "LOV-1",
@@ -121,17 +124,17 @@ class RegelsettForNorskLovvalg : Regelsett("Regelsett for norsk lovvalg") {
 
     private fun sjekkArbeidsgiver(personfakta: Personfakta): Resultat =
             hvis {
-                personfakta.sisteArbeidsgiversLand() == "NOR"
+                personfakta.arbeidsgiversLandForPeriode() kunInneholder "NOR"
             } så {
                 ja("Arbeidsgiver er norsk")
             } ellers {
-                nei("Arbeidsgiver er ikke norsk. Land: ${personfakta.sisteArbeidsgiversLand()}")
+                nei("Arbeidsgiver er ikke norsk. Land: ${personfakta.arbeidsgiversLandForPeriode()}")
             }
 
 
     private fun sjekkMaritim(personfakta: Personfakta): Resultat =
             hvis {
-                personfakta.sisteArbeidsforholdtype() == Arbeidsforholdstype.MARITIM
+                personfakta.sisteArbeidsforholdtype() inneholder Arbeidsforholdstype.MARITIM.navn
             } så {
                 ja("Personen er ansatt i det maritime")
             } ellers {
@@ -141,7 +144,7 @@ class RegelsettForNorskLovvalg : Regelsett("Regelsett for norsk lovvalg") {
 
     private fun sjekkYrkeskodeLuftfart(personfakta: Personfakta): Resultat =
             hvis {
-                personfakta.sisteArbeidsforholdYrkeskode() erDelAv yrkeskoderLuftfart
+                personfakta.sisteArbeidsforholdYrkeskode() inneholderNoe yrkeskoderLuftfart
             } så {
                 ja("Personen er pilot eller kabinansatt")
             } ellers {
@@ -150,7 +153,7 @@ class RegelsettForNorskLovvalg : Regelsett("Regelsett for norsk lovvalg") {
 
     private fun sjekkSkipsregister(personfakta: Personfakta): Resultat =
             hvis {
-                personfakta.sisteArbeidsforholdSkipsregister() erDelAv norskeSkipsregister
+                personfakta.sisteArbeidsforholdSkipsregister() kunInneholder Skipsregister.nor.name
             } så {
                 ja("Personen jobber på et norskregistrert skip")
             } ellers {

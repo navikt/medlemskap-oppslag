@@ -31,6 +31,22 @@ class RegelsettForNorskLovvalgTest {
         assertEquals(Resultattype.UAVKLART, evaluer(personleser.enkelNorskUtenlandskSkip()))
     }
 
+    @Test
+    fun `person med flere arbeidsgivere, hvor en er norsk får nei i periode`() {
+        assertEquals(Resultattype.UAVKLART, evaluer(personleser.norskArbeidsgiverMedFlereIPeriode()))
+    }
+
+    @Test
+    fun `person med flere arbeidsforhold, hvor en maritimt med nis som skipsregister`() {
+        val data = personleser.norskMedFlereArbeidsforholdstyperIPerioder()
+        val evaluering = evaluer(data)
+        assertEquals(Resultattype.UAVKLART, evaluering)
+    }
+
+    @Test
+    fun `person med flere arbeidsforhold, hvor en har yrkeskode pilot`() {
+        assertEquals(Resultattype.UAVKLART, evaluer(personleser.norskMedFlereYrkeskoderIPeriode()))
+    }
     private fun evaluer(datagrunnlag: Datagrunnlag): Resultattype {
         val regelsett = RegelsettForNorskLovvalg()
         return regelsett.evaluer(initialiserFakta(datagrunnlag)).resultat
