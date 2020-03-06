@@ -3,6 +3,8 @@ package no.nav.medlemskap.regler.v2
 import no.nav.medlemskap.regler.common.Personfakta
 import no.nav.medlemskap.regler.common.Resultattype
 import no.nav.medlemskap.regler.v2.arbeidsforhold.RegelgruppeForArbeidsforhold
+import no.nav.medlemskap.regler.v2.common.Spørsmål
+import no.nav.medlemskap.regler.v2.common.Svar
 import no.nav.medlemskap.regler.v2.grunnforordningen.RegelgruppeForGrunnforordningen
 import no.nav.medlemskap.regler.v2.registrerte_opplysninger.RegelgruppeForRegistrerteOpplysninger
 

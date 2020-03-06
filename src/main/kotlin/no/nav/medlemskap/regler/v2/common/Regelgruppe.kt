@@ -1,4 +1,4 @@
-package no.nav.medlemskap.regler.v2
+package no.nav.medlemskap.regler.v2.common
 
 import no.nav.medlemskap.regler.common.Resultattype
 

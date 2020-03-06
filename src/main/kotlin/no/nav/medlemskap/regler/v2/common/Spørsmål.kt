@@ -1,4 +1,4 @@
-package no.nav.medlemskap.regler.v2
+package no.nav.medlemskap.regler.v2.common
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 

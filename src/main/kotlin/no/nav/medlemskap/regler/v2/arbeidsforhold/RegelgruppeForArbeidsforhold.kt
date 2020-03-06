@@ -6,7 +6,7 @@ import no.nav.medlemskap.regler.common.Funksjoner.erDelAv
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Personfakta
 import no.nav.medlemskap.regler.common.Resultattype.*
-import no.nav.medlemskap.regler.v2.*
+import no.nav.medlemskap.regler.v2.common.*
 
 class RegelgruppeForArbeidsforhold(val personfakta: Personfakta) : Regelgruppe() {
 

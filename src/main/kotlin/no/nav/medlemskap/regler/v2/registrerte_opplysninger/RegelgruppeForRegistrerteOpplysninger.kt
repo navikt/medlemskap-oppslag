@@ -6,7 +6,7 @@ import no.nav.medlemskap.domene.Status
 import no.nav.medlemskap.regler.common.Funksjoner.antall
 import no.nav.medlemskap.regler.common.Funksjoner.erDelAv
 import no.nav.medlemskap.regler.common.Personfakta
-import no.nav.medlemskap.regler.v2.*
+import no.nav.medlemskap.regler.v2.common.*
 
 class RegelgruppeForRegistrerteOpplysninger(val personfakta: Personfakta) : Regelgruppe() {
 

@@ -2,7 +2,7 @@ package no.nav.medlemskap.regler.v2.grunnforordningen
 
 import no.nav.medlemskap.regler.common.Funksjoner.erDelAv
 import no.nav.medlemskap.regler.common.Personfakta
-import no.nav.medlemskap.regler.v2.*
+import no.nav.medlemskap.regler.v2.common.*
 
 class RegelgruppeForGrunnforordningen(val personfakta: Personfakta) : Regelgruppe() {
 
