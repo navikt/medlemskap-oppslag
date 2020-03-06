@@ -1,6 +1,7 @@
 package no.nav.medlemskap.services.pdl
 
 import io.github.resilience4j.retry.Retry
+import io.ktor.client.HttpClient
 import io.ktor.client.request.header
 import io.ktor.client.request.options
 import io.ktor.client.request.post
@@ -9,7 +10,6 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
-import no.nav.medlemskap.common.apacheHttpClient
 import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
 import no.nav.medlemskap.common.objectMapper
@@ -23,12 +23,13 @@ class PdlClient(
         private val baseUrl: String,
         private val stsClient: StsRestClient,
         private val configuration: Configuration,
+        private val httpClient: HttpClient,
         private val retry: Retry? = null
 ) {
     suspend fun hentIdenter(fnr: String, callId: String): HentIdenterResponse {
 
         return runWithRetryAndMetrics("PDL", "HentIdenter", retry) {
-            apacheHttpClient.post<HentIdenterResponse> {
+            httpClient.post<HentIdenterResponse> {
                 url("$baseUrl")
                 header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
@@ -42,7 +43,7 @@ class PdlClient(
     }
 
     suspend fun healthCheck(): HttpResponse {
-        return apacheHttpClient.options {
+        return httpClient.options {
             url("$baseUrl")
             header(HttpHeaders.Accept, ContentType.Application.Json)
             header("Nav-Consumer-Id", configuration.sts.username)
