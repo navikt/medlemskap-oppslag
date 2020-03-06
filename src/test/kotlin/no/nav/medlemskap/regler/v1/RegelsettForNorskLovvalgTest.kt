@@ -38,7 +38,9 @@ class RegelsettForNorskLovvalgTest {
 
     @Test
     fun `person med flere arbeidsforhold, hvor en maritimt med nis som skipsregister`() {
-        assertEquals(Resultattype.UAVKLART, evaluer(personleser.norskMedFlereArbeidsforholdstyperIPerioder()))
+        val data = personleser.norskMedFlereArbeidsforholdstyperIPerioder()
+        val evaluering = evaluer(data)
+        assertEquals(Resultattype.UAVKLART, evaluering)
     }
 
     @Test
