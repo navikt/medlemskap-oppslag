@@ -7,7 +7,7 @@ class Personleser {
 
     private val norsk = "/testpersoner/norske"
     private val ikkeEøs = "/testpersoner/ikke_eos"
-    private val variertDatagrunnlag = "/testpersoner/variertDatagrunnlagiPeriode"
+    private val variertDatagrunnlag = "/testpersoner/variertDatagrunnlagIPeriode"
 
     fun enkelNorsk() = lesDatagrunnlag("$norsk/kun_enkelt_statsborgerskap.json")
     fun enkelNorskArbeid() = lesDatagrunnlag("$norsk/norsk_jobb_ikke_maritim_eller_pilot.json")
