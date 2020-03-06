@@ -1,12 +1,15 @@
 package no.nav.medlemskap
 
-import java.util.concurrent.TimeUnit
+import no.nav.medlemskap.common.configurePrometheusMeterRegistry
 
 data class ApplicationState(var running: Boolean = true, var initialized: Boolean = false)
 
 fun main() {
     val applicationState = ApplicationState()
-    val applicationServer = createHttpServer(applicationState)
+
+    val prometheusMeterRegistry = configurePrometheusMeterRegistry()
+
+    val applicationServer = createHttpServer(applicationState = applicationState, prometheusRegistry = prometheusMeterRegistry)
 
     Runtime.getRuntime().addShutdownHook(Thread {
         applicationState.initialized = false

@@ -12,6 +12,7 @@ import io.ktor.http.HttpStatusCode
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.services.sts.StsRestClient
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -54,7 +55,7 @@ class OppgaveClientTest {
                                 .withBody(oppgaveResponse)
                 ))
 
-        val oppgaveclient = OppgaveClient(server.baseUrl(), stsClient)
+        val oppgaveclient = OppgaveClient(server.baseUrl(), stsClient, cioHttpClient)
 
         val oppgaveResponse = runBlocking { oppgaveclient.hentOppgaver("1234567890", callId) }
         val oppgave = oppgaveResponse.oppgaver[0]
@@ -77,7 +78,7 @@ class OppgaveClientTest {
 
         ))
 
-        val oppgaveclient = OppgaveClient(server.baseUrl(), stsClient)
+        val oppgaveclient = OppgaveClient(server.baseUrl(), stsClient, cioHttpClient)
 
         Assertions.assertThrows(ServerResponseException::class.java) {
             runBlocking { oppgaveclient.hentOppgaver("1234567890", callId) }
@@ -97,7 +98,7 @@ class OppgaveClientTest {
 
         ))
 
-        val oppgaveclient = OppgaveClient(server.baseUrl(), stsClient)
+        val oppgaveclient = OppgaveClient(server.baseUrl(), stsClient, cioHttpClient)
 
         Assertions.assertThrows(ClientRequestException::class.java) {
             runBlocking { oppgaveclient.hentOppgaver("1234567890", callId) }

@@ -48,6 +48,7 @@ repositories {
 }
 
 
+
 dependencies {
     implementation(kotlin("stdlib"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
@@ -61,6 +62,8 @@ dependencies {
     implementation("io.ktor:ktor-client-json:$ktorVersion")
     implementation("io.ktor:ktor-client-jackson:$ktorVersion")
     implementation("io.ktor:ktor-jackson:$ktorVersion")
+    implementation("io.ktor:ktor-metrics-micrometer:$ktorVersion")
+    implementation("io.micrometer:micrometer-registry-prometheus:latest.release")
     implementation("io.prometheus:simpleclient_hotspot:$prometheusVersion")
     implementation("io.prometheus:simpleclient_common:$prometheusVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")

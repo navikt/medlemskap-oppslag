@@ -1,6 +1,7 @@
 package no.nav.medlemskap.services.oppgave
 
 import io.github.resilience4j.retry.Retry
+import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.parameter
@@ -8,7 +9,6 @@ import io.ktor.client.request.url
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
-import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.services.runWithRetryAndMetrics
 import no.nav.medlemskap.services.sts.StsRestClient
 
@@ -19,6 +19,7 @@ private const val TEMA_TRYGDEAVGIFT = "TRY"
 class OppgaveClient(
         private val baseUrl: String,
         private val stsClient: StsRestClient,
+        private val httpClient: HttpClient,
         private val retry: Retry? = null
 ) {
 
@@ -29,7 +30,7 @@ class OppgaveClient(
     suspend fun hentOppgaver(ident: String, callId: String): FinnOppgaverResponse {
         val token = stsClient.oidcToken()
         return runWithRetryAndMetrics("Oppgave", "OppgaverV1", retry) {
-            defaultHttpClient.get<FinnOppgaverResponse> {
+            httpClient.get<FinnOppgaverResponse> {
                 url("$baseUrl/api/v1/oppgaver")
                 header(HttpHeaders.Authorization, "Bearer $token")
                 header("X-Correlation-Id", callId)
@@ -43,7 +44,7 @@ class OppgaveClient(
 
     suspend fun healthCheck(): HttpResponse {
         val token = stsClient.oidcToken()
-        return defaultHttpClient.get {
+        return httpClient.get {
             url("$baseUrl/internal/alive")
             header(HttpHeaders.Authorization, "Bearer $token")
         }

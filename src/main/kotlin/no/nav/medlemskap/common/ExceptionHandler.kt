@@ -4,6 +4,7 @@ import io.ktor.application.ApplicationCall
 import io.ktor.application.call
 import io.ktor.client.features.ClientRequestException
 import io.ktor.client.features.ServerResponseException
+import io.ktor.features.BadRequestException
 import io.ktor.features.StatusPages
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.uri
@@ -53,6 +54,12 @@ fun StatusPages.Configuration.exceptionHandler() {
         call.logErrorAndRespond(cause, HttpStatusCode.InternalServerError) {
             val url = cause.response.call.request.url
             "Kall mot $url feilet"
+        }
+    }
+
+    exception<BadRequestException> { cause ->
+        call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
+            cause.message!!
         }
     }
 

@@ -62,11 +62,9 @@ spec:
       value: https://app.adeo.no/medl2
     - name: AAREG_BASE_URL
       value: https://modapp.adeo.no/aareg-services/api
-    - name: MEDLEMSKAP_REGLER_URL
-      value: https://medlemskap-regler.nais.adeo.no
     - name: SAF_BASE_URL
-      value: https://saf.nais.adeo.no/graphql
+      value: http://saf.default.svc.nais.local/graphql
     - name: OPPGAVE_BASE_URL
-      value: https://oppgave.nais.adeo.no
+      value: http://oppgave.default.svc.nais.local
     - name: PDL_BASE_URL
-      value: https://pdl-api.nais.adeo.no/graphql
+      value: http://pdl-api.default.svc.nais.local/graphql

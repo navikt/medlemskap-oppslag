@@ -1,6 +1,7 @@
 package no.nav.medlemskap.services.medl
 
 import io.github.resilience4j.retry.Retry
+import io.ktor.client.HttpClient
 import io.ktor.client.features.ClientRequestException
 import io.ktor.client.request.get
 import io.ktor.client.request.header
@@ -9,7 +10,6 @@ import io.ktor.client.request.url
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
-import no.nav.medlemskap.common.defaultHttpClient
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.services.runWithRetryAndMetrics
 import no.nav.medlemskap.services.sts.StsRestClient
@@ -20,6 +20,7 @@ class MedlClient(
         private val baseUrl: String,
         private val stsClient: StsRestClient,
         private val configuration: Configuration,
+        private val httpClient: HttpClient,
         private val retry: Retry? = null
 ) {
 
@@ -27,7 +28,7 @@ class MedlClient(
         val token = stsClient.oidcToken()
         return runCatching {
             runWithRetryAndMetrics("Medl", "MedlemskapsunntakV1", retry) {
-                defaultHttpClient.get<List<MedlMedlemskapsunntak>> {
+                httpClient.get<List<MedlMedlemskapsunntak>> {
                     url("$baseUrl/api/v1/medlemskapsunntak")
                     header(HttpHeaders.Authorization, "Bearer $token")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
@@ -58,7 +59,7 @@ class MedlClient(
     private fun LocalDate.tilIsoFormat() = this.format(DateTimeFormatter.ISO_DATE)
 
     suspend fun healthCheck(): HttpResponse {
-        return defaultHttpClient.get {
+        return httpClient.get {
             url("$baseUrl/api/ping")
             header("Nav-Consumer-Id", configuration.sts.username)
             header(HttpHeaders.Accept, ContentType.Application.Json)

@@ -13,6 +13,7 @@ import io.ktor.http.HttpStatusCode
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.services.medl.MedlClient
 import no.nav.medlemskap.services.sts.StsRestClient
@@ -57,7 +58,7 @@ class medlClientTest {
                         .withBody(medlResponse)
         ))
 
-        val client = MedlClient(server.baseUrl(), stsClient, config)
+        val client = MedlClient(server.baseUrl(), stsClient, config, cioHttpClient)
         val response = runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
 
         Assertions.assertEquals("Full", response[0].dekning)
@@ -76,7 +77,7 @@ class medlClientTest {
 
         ))
 
-        val client = MedlClient(server.baseUrl(), stsClient, config)
+        val client = MedlClient(server.baseUrl(), stsClient, config, cioHttpClient)
 
         Assertions.assertThrows(ServerResponseException::class.java) {
             runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
@@ -97,7 +98,7 @@ class medlClientTest {
 
         ))
 
-        val client = MedlClient(server.baseUrl(), stsClient, config)
+        val client = MedlClient(server.baseUrl(), stsClient, config, cioHttpClient)
 
         Assertions.assertThrows(ClientRequestException::class.java) {
             runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
@@ -117,7 +118,7 @@ class medlClientTest {
 
         ))
 
-        val client = MedlClient(server.baseUrl(), stsClient, config)
+        val client = MedlClient(server.baseUrl(), stsClient, config, cioHttpClient)
         val response = runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
 
         Assertions.assertEquals(0, response.size)

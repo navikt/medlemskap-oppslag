@@ -53,7 +53,7 @@ spec:
     - name: SECURITY_TOKEN_SERVICE_URL
       value: https://sts-q1.preprod.local/SecurityTokenServiceProvider/
     - name: SECURITY_TOKEN_SERVICE_REST_URL
-      value: https://security-token-service.nais.preprod.local
+      value: http://security-token-service.default.svc.nais.local
     - name: TPSWS_URL
       value: https://wasapp-q2.adeo.no/tpsws/ws/Person/v3
     - name: INNTEKT_BASE_URL
@@ -62,11 +62,9 @@ spec:
       value: https://app-q2.adeo.no/medl2
     - name: AAREG_BASE_URL
       value: https://modapp-q2.adeo.no/aareg-services/api
-    - name: MEDLEMSKAP_REGLER_URL
-      value: https://medlemskap-regler.nais.preprod.local
     - name: SAF_BASE_URL
-      value: https://saf-q1.nais.preprod.local/graphql
+      value: http://saf.q1.svc.nais.local/graphql
     - name: OPPGAVE_BASE_URL
-      value: https://oppgave.nais.preprod.local
+      value: http://oppgave.default.svc.nais.local
     - name: PDL_BASE_URL
-      value: https://pdl-api.nais.preprod.local/graphql
+      value: http://pdl-api.default.svc.nais.local/graphql

@@ -1,5 +1,6 @@
 package no.nav.medlemskap.services
 
+import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.config.retryRegistry
 import no.nav.medlemskap.services.aareg.AaRegClient
@@ -20,11 +21,13 @@ class RestClients(private val stsClientRest: StsRestClient,
     private val pdlRetry = retryRegistry.retry("PDL")
     private val safRetry = retryRegistry.retry("Saf")
 
-    fun aaReg(endpointUrl: String) = AaRegClient(endpointUrl, stsClientRest, aaRegRetry)
-    fun medl2(endpointBaseUrl: String) = MedlClient(endpointBaseUrl, stsClientRest, configuration, medlRetry)
-    fun inntektskomponenten(endpointBaseUrl: String) = InntektClient(endpointBaseUrl, stsClientRest, configuration, inntektRetry)
-    fun saf(endpointBaseUrl: String) = SafClient(endpointBaseUrl, stsClientRest, configuration, safRetry)
-    fun oppgaver(endpointBaseUrl: String) = OppgaveClient(endpointBaseUrl, stsClientRest, oppgaveRetry)
-    fun pdl(endpointBaseURl: String) = PdlClient(endpointBaseURl, stsClientRest, configuration, pdlRetry)
+    private val httpClient = cioHttpClient
+
+    fun aaReg(endpointUrl: String) = AaRegClient(endpointUrl, stsClientRest, httpClient, aaRegRetry)
+    fun medl2(endpointBaseUrl: String) = MedlClient(endpointBaseUrl, stsClientRest, configuration, httpClient, medlRetry)
+    fun inntektskomponenten(endpointBaseUrl: String) = InntektClient(endpointBaseUrl, stsClientRest, configuration, httpClient, inntektRetry)
+    fun saf(endpointBaseUrl: String) = SafClient(endpointBaseUrl, stsClientRest, configuration, httpClient, safRetry)
+    fun oppgaver(endpointBaseUrl: String) = OppgaveClient(endpointBaseUrl, stsClientRest, httpClient, oppgaveRetry)
+    fun pdl(endpointBaseURl: String) = PdlClient(endpointBaseURl, stsClientRest, configuration, httpClient, pdlRetry)
 
 }
