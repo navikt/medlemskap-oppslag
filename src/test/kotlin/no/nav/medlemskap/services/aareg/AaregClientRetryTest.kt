@@ -6,6 +6,7 @@ import io.mockk.mockk
 import io.mockk.spyk
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.runBlocking
+import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.config.retryRegistry
 import no.nav.medlemskap.services.sts.StsRestClient
 import org.junit.jupiter.api.Test
@@ -25,7 +26,7 @@ class AaregClientRetryTest {
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        val client = spyk(AaRegClient("http://localhost:9987/finnesIkke", stsClient, testRetry))
+        val client = spyk(AaRegClient("http://localhost:9987/finnesIkke", stsClient, cioHttpClient, testRetry))
 
         assertThrows<CancellationException> {
             runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }

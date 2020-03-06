@@ -1,6 +1,7 @@
 package no.nav.medlemskap.services.inntekt
 
 import io.github.resilience4j.retry.Retry
+import io.ktor.client.HttpClient
 import io.ktor.client.features.ClientRequestException
 import io.ktor.client.features.ServerResponseException
 import io.ktor.client.request.header
@@ -11,8 +12,6 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
-import no.nav.medlemskap.common.apacheHttpClient
-import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.services.runWithRetryAndMetrics
 import no.nav.medlemskap.services.sts.StsRestClient
@@ -23,6 +22,7 @@ class InntektClient(
         private val baseUrl: String,
         private val stsClient: StsRestClient,
         private val configuration: Configuration,
+        private val httpClient: HttpClient,
         private val retry: Retry? = null
 ) {
 
@@ -32,7 +32,7 @@ class InntektClient(
         val token = stsClient.oidcToken()
         return runCatching {
             runWithRetryAndMetrics("Inntekt", "HentinntektlisteV1", retry) {
-                cioHttpClient.post<InntektskomponentResponse> {
+                httpClient.post<InntektskomponentResponse> {
                     url("$baseUrl/rs/api/v1/hentinntektliste")
                     header(HttpHeaders.Authorization, "Bearer $token")
                     header(HttpHeaders.ContentType, ContentType.Application.Json)
@@ -74,7 +74,7 @@ class InntektClient(
     private fun LocalDate.tilAarOgMnd() = this.format(DateTimeFormatter.ofPattern("yyyy-MM"))
 
     suspend fun healthCheck(): HttpResponse {
-        return apacheHttpClient.options {
+        return httpClient.options {
             url("$baseUrl")
             header(HttpHeaders.ContentType, ContentType.Application.Json)
             header("Nav-Consumer-Id", configuration.sts.username)

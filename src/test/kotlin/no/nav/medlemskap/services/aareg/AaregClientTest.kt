@@ -13,6 +13,7 @@ import io.ktor.http.HttpStatusCode
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.services.sts.StsRestClient
 import org.junit.jupiter.api.*
 import java.time.LocalDate
@@ -54,7 +55,7 @@ class AaregClientTest {
                         .withBody(aaRegResponse)
         ))
 
-        val client = AaRegClient(server.baseUrl(), stsClient)
+        val client = AaRegClient(server.baseUrl(), stsClient, cioHttpClient)
 
         val response = runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
         println(response)
@@ -78,7 +79,7 @@ class AaregClientTest {
                         .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
         ))
-        val client = AaRegClient(server.baseUrl(), stsClient)
+        val client = AaRegClient(server.baseUrl(), stsClient, cioHttpClient)
 
         Assertions.assertThrows(ServerResponseException::class.java) {
             runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
@@ -98,7 +99,7 @@ class AaregClientTest {
 
         ))
 
-        val client = AaRegClient(server.baseUrl(), stsClient)
+        val client = AaRegClient(server.baseUrl(), stsClient, cioHttpClient)
 
         Assertions.assertThrows(ClientRequestException::class.java) {
             runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
@@ -118,7 +119,7 @@ class AaregClientTest {
 
         ))
 
-        val client = AaRegClient(server.baseUrl(), stsClient)
+        val client = AaRegClient(server.baseUrl(), stsClient, cioHttpClient)
         val response = runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
 
         Assertions.assertEquals(0, response.size)
