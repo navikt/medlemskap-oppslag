@@ -12,7 +12,8 @@ import no.nav.tjeneste.virksomhet.person.v3.informasjon.PersonIdent
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personidenter
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentPersonhistorikkRequest
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentPersonhistorikkResponse
-import java.time.ZonedDateTime
+import java.time.LocalDate
+import java.time.ZoneId
 import java.util.*
 import javax.xml.datatype.DatatypeFactory
 import javax.xml.datatype.XMLGregorianCalendar
@@ -23,30 +24,30 @@ class PersonClient(
 ) {
 
     companion object {
-        val HISTORIKK_FRA_OG_MED: XMLGregorianCalendar = DatatypeFactory.newInstance()
-                .newXMLGregorianCalendar(GregorianCalendar.from(ZonedDateTime.now().minusYears(3)))
+        val dataTypeFactory: DatatypeFactory = DatatypeFactory.newInstance()
 
         private val logger = KotlinLogging.logger { }
     }
 
-    suspend fun hentPersonHistorikk(fnr: String) : HentPersonhistorikkResponse {
+    suspend fun hentPersonHistorikk(fnr: String, fom: LocalDate): HentPersonhistorikkResponse {
         retry?.let {
             return it.executeSuspendFunction {
-                hentPersonHistorikkRequest(fnr)
+                hentPersonHistorikkRequest(fnr, fom)
             }
         }
-        return hentPersonHistorikkRequest(fnr)
+        return hentPersonHistorikkRequest(fnr, fom)
     }
 
-    suspend fun hentPersonHistorikkRequest(fnr: String): HentPersonhistorikkResponse {
+    suspend fun hentPersonHistorikkRequest(fnr: String, fom: LocalDate): HentPersonhistorikkResponse {
+
         return withContext(Dispatchers.Default) {
-            personV3.hentPersonhistorikk(lagHentPersonHistorikkRequest(fnr))
+            personV3.hentPersonhistorikk(lagHentPersonHistorikkRequest(fnr, dataTypeFactory.newXMLGregorianCalendar(GregorianCalendar.from(fom.atStartOfDay(ZoneId.of("Europe/Paris")).minusYears(3)))))
         }
     }
 
     private fun lagHentPersonHistorikkRequest(
             fnr: String,
-            fraOgMed: XMLGregorianCalendar = HISTORIKK_FRA_OG_MED
+            fraOgMed: XMLGregorianCalendar
     ): HentPersonhistorikkRequest =
             HentPersonhistorikkRequest().apply {
                 this.aktoer = PersonIdent().withIdent(
