@@ -6,7 +6,6 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.*
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpHeaders
-import kotlinx.coroutines.runBlocking
 import no.nav.medlemskap.services.runWithRetryAndMetrics
 import java.time.LocalDateTime
 import java.util.*
@@ -43,14 +42,12 @@ class StsRestClient(
         }
     }
 
-    fun samlToken(): String {
+    suspend fun samlToken(): String {
         if (cachedSamlToken.shouldBeRenewed()) {
-            cachedSamlToken = runBlocking {
-                runWithRetryAndMetrics("STS", "SamlTokenV1", retry) {
-                    httpClient.get<Token> {
-                        url("$baseUrl/rest/v1/sts/samltoken")
-                        header(HttpHeaders.Authorization, "Basic ${credentials()}")
-                    }
+            cachedSamlToken = runWithRetryAndMetrics("STS", "SamlTokenV1", retry) {
+                httpClient.get<Token> {
+                    url("$baseUrl/rest/v1/sts/samltoken")
+                    header(HttpHeaders.Authorization, "Basic ${credentials()}")
                 }
             }
         }
