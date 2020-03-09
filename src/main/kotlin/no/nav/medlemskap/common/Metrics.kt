@@ -28,7 +28,7 @@ fun configureInfluxMeterRegistry(): InfluxMeterRegistry {
         }
 
         override fun db(): String? {
-            return "p3medlemskap"
+            return "default"
         }
 
         override fun uri(): String? {
@@ -42,6 +42,8 @@ fun configureInfluxMeterRegistry(): InfluxMeterRegistry {
         override fun password(): String? {
             return ""
         }
+
+        override fun autoCreateDb(): Boolean = false
 
         override operator fun get(k: String?): String? {
             return null // accept the rest of the defaults
