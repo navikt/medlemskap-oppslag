@@ -56,6 +56,10 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     fun hentBrukerinputArbeidUtenforNorge(): Boolean = datagrunnlag.brukerinput.arbeidUtenforNorge
 
+    fun hentTotalStillingprosenter(): List<Double?> {
+        val stillingsprosenter = hentArbeidsforholdIPeriode().flatMap { it -> it.arbeidsavtaler.map { it.stillingsprosent  } }
+    }
+
     private fun hentArbeidsforholdIPeriode(): List<Arbeidsforhold> {
         val periodeDatagrunnlag = lagInterval(Periode(datagrunnlag.periode.fom, datagrunnlag.periode.tom))
         return datagrunnlag.arbeidsforhold.filter {filtrerListe(periodeDatagrunnlag, Periode(it.periode.fom, it.periode.tom))
@@ -72,3 +76,6 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     infix fun oppfyller(regelsett: Regelsett): Resultat = regelsett.evaluer(this)
 
 }
+
+
+
