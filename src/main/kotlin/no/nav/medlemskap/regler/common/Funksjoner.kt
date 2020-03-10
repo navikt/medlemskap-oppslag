@@ -23,7 +23,7 @@ object Funksjoner {
 
     infix fun String?.erDelAv(map: Map<String, String>) = map.containsKey(this)
 
-    infix fun List<Double?>.erMerEnn(stillingsprosent: Double) = this.sum() > stillingsprosent
+    infix fun List<Double>.erMerEnn(stillingsprosent: Double) = this.sum() > stillingsprosent
 
     fun List<Any>.erTom() = this.isNullOrEmpty()
 

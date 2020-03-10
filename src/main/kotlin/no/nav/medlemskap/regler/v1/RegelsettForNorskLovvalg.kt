@@ -50,7 +50,14 @@ class RegelsettForNorskLovvalg : Regelsett("Regelsett for norsk lovvalg") {
                                 avklar {
                                     personfakta oppfyller harBrukerJobbetUtenforNorge
                                 } hvisNei {
-                                    konkluderMed(ja("Personen er omfattet av norsk lovvalg"))
+                                    avklar {
+                                        personfakta oppfyller harBrukerJobbbetMerEnn25Prosent
+                                    } hvisJa {
+                                        konkluderMed(ja("Personen har jobbet mer enn 25 prosent"))
+                                    } hvisNei{
+                                        konkluderMed(uavklart("Personen har ikke hatt stor nok stillingsprosent"))
+                                    }
+                                    //konkluderMed(ja("Personen er omfattet av norsk lovvalg"))
                                 } hvisJa {
                                     konkluderMed(uavklart("Bruker har jobbet utenfor Norge"))
                                 }
@@ -112,6 +119,13 @@ class RegelsettForNorskLovvalg : Regelsett("Regelsett for norsk lovvalg") {
             avklaring = "Har personen et registrert arbeidsforhold",
             beskrivelse = "",
             operasjon = { sjekkArbeidsforhold(it) }
+    )
+
+    private val harBrukerJobbbetMerEnn25Prosent= Avklaring(
+            identifikator = "LOV-6",
+            avklaring = "Har personen jobbet mer enn 25%",
+            beskrivelse = "",
+            operasjon = { sjekkOmBrukerHarJobbetMerEnn25Prosent(it) }
     )
 
     private fun sjekkArbeidsforhold(personfakta: Personfakta): Resultat =

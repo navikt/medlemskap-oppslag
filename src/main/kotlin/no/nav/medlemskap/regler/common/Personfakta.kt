@@ -56,8 +56,8 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     fun hentBrukerinputArbeidUtenforNorge(): Boolean = datagrunnlag.brukerinput.arbeidUtenforNorge
 
-    fun hentTotalStillingprosenter(): List<Double?> {
-        val stillingsprosenter = hentArbeidsforholdIPeriode().flatMap { it -> it.arbeidsavtaler.map { it.stillingsprosent  } }
+    fun hentTotalStillingprosenter(): List<Double> {
+        return hentArbeidsforholdIPeriode().flatMap { it -> it.arbeidsavtaler.mapNotNull { it.stillingsprosent  } }
     }
 
     private fun hentArbeidsforholdIPeriode(): List<Arbeidsforhold> {

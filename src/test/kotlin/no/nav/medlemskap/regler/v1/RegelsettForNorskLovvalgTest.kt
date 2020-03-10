@@ -32,8 +32,13 @@ class RegelsettForNorskLovvalgTest {
     }
 
     @Test
-    fun `person med flere arbeidsgivere, hvor en er norsk får nei i periode`() {
+    fun `person med flere arbeidsgivere, hvor en er norsk får uavklart i periode`() {
         assertEquals(Resultattype.UAVKLART, evaluer(personleser.norskArbeidsgiverMedFlereIPeriode()))
+    }
+
+    @Test
+    fun `person med for liten stillingsprosent, får uavklart`() {
+        assertEquals(Resultattype.UAVKLART, evaluer(personleser.enkelNorskMedForLiteStillingsporsent()))
     }
 
     @Test
