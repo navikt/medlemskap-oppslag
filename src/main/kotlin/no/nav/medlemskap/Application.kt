@@ -1,6 +1,5 @@
 package no.nav.medlemskap
 
-import no.nav.medlemskap.common.configureInfluxMeterRegistry
 import no.nav.medlemskap.common.configurePrometheusMeterRegistry
 
 data class ApplicationState(var running: Boolean = true, var initialized: Boolean = false)
@@ -9,7 +8,7 @@ fun main() {
     val applicationState = ApplicationState()
 
     val prometheusMeterRegistry = configurePrometheusMeterRegistry()
-    configureInfluxMeterRegistry()
+    //configureInfluxMeterRegistry()
 
     val applicationServer = createHttpServer(applicationState = applicationState, prometheusRegistry = prometheusMeterRegistry)
 
