@@ -84,6 +84,8 @@ private suspend fun createDatagrunnlag(
         brukerinput: Brukerinput,
         services: Services): Datagrunnlag = coroutineScope {
 
+
+    val pdlHistorikk = async { services.pdlService.hentPersonHistorikk(fnr, callId) }
     val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr, periode.fom) }
     val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(fnr, callId) }
     val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr, callId) }
