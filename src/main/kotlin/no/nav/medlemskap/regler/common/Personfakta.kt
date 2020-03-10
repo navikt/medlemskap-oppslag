@@ -51,13 +51,13 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     }
 
     fun sisteArbeidsforholdSkipsregister(): List<String> {
-        return hentArbeidsforholdIPeriode().flatMap { it -> it.arbeidsavtaler.map { it.skipsregister?.name.toString()} }
+        return hentArbeidsforholdIPeriode().flatMap { it.arbeidsavtaler.map { it.skipsregister?.name.toString()} }
     }
 
     fun hentBrukerinputArbeidUtenforNorge(): Boolean = datagrunnlag.brukerinput.arbeidUtenforNorge
 
     fun hentTotalStillingprosenter(): List<Double> {
-        return hentArbeidsforholdIPeriode().flatMap { it -> it.arbeidsavtaler.mapNotNull { it.stillingsprosent  } }
+        return hentArbeidsforholdIPeriode().flatMap { it.arbeidsavtaler.mapNotNull { it.stillingsprosent  } }
     }
 
     private fun hentArbeidsforholdIPeriode(): List<Arbeidsforhold> {
