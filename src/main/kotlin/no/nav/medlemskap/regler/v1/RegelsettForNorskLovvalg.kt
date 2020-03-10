@@ -57,7 +57,6 @@ class RegelsettForNorskLovvalg : Regelsett("Regelsett for norsk lovvalg") {
                                     } hvisNei{
                                         konkluderMed(uavklart("Personen har ikke hatt stor nok stillingsprosent"))
                                     }
-                                    //konkluderMed(ja("Personen er omfattet av norsk lovvalg"))
                                 } hvisJa {
                                     konkluderMed(uavklart("Bruker har jobbet utenfor Norge"))
                                 }

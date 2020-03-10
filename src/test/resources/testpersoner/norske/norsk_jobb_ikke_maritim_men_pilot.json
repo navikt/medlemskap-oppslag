@@ -31,6 +31,7 @@
     },
     "arbeidsfolholdstype" : "NORMALT",
     "arbeidsavtaler" : [ {
+      "stillingsprosent" : 80.0,
       "periode" : {
         "fom" : "2020-01-30",
         "tom" : "2020-01-30"
