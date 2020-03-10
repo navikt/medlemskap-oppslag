@@ -1,0 +1,11 @@
+query($ident: ID!, $bostedHistorikk: Boolean!){
+    hentPerson(ident: $ident) {
+        bostedsadresse(historikk: $navnHistorikk) {
+            angittFlyttedato,
+            coAdressenavn,
+            vegadresse,
+            matrikkeladresse,
+            ukjentBosted
+        }
+    }
+}
