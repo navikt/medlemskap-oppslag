@@ -10,6 +10,8 @@ import io.ktor.routing.Routing
 import io.ktor.routing.post
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import mu.KotlinLogging
+import mu.KotlinLogging.logger
 import no.nav.medlemskap.common.API_COUNTER
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.*
@@ -21,10 +23,15 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
+private val logger = KotlinLogging.logger { }
+
+
 fun Routing.evalueringRoute(
         services: Services,
         useAuthentication: Boolean,
         configuration: Configuration) {
+
+
     fun receiveAndRespond() {
         post("/") {
             API_COUNTER.increment()
@@ -84,6 +91,8 @@ private suspend fun createDatagrunnlag(
         brukerinput: Brukerinput,
         services: Services): Datagrunnlag = coroutineScope {
 
+
+    val pdlHistorikkRequest = async { services.pdlService.hentPersonHistorikk(fnr, callId) }
     val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr, periode.fom) }
     val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(fnr, callId) }
     val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr, callId) }
@@ -91,13 +100,17 @@ private suspend fun createDatagrunnlag(
     val journalPosterRequest = async { services.safService.hentJournaldata(fnr, callId) }
     val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktoer, callId) }
 
-
+    val pdlHistorikk = pdlHistorikkRequest.await()
     val historikkFraTps = historikkFraTpsRequest.await()
     val medlemskapsunntak = medlemskapsunntakRequest.await()
     val arbeidsforhold = arbeidsforholdRequest.await()
     val inntektListe = inntektListeRequest.await()
     val journalPoster = journalPosterRequest.await()
     val oppgaver = gosysOppgaver.await()
+
+
+    logger.apply { pdlHistorikk }
+
 
     Datagrunnlag(
             periode = periode,
@@ -109,6 +122,8 @@ private suspend fun createDatagrunnlag(
             oppgaver = oppgaver,
             dokument = journalPoster
     )
+
+
 }
 
 private fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =

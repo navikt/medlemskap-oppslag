@@ -16,6 +16,7 @@ import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.services.runWithRetryAndMetrics
 import no.nav.medlemskap.services.sts.StsRestClient
+import no.nav.tjeneste.virksomhet.person.v3.HentPersonResponse
 
 private val logger = KotlinLogging.logger { }
 
@@ -40,6 +41,24 @@ class PdlClient(
                 body = hentIndenterQuery(fnr)
             }
         }
+    }
+
+
+
+    suspend fun hentPerson(fnr: String, callId: String): HentPdlPersonResponse{
+        return runWithRetryAndMetrics("PDL", "HentPerson", retry) {
+            httpClient.post<HentPdlPersonResponse> {
+                url("$baseUrl")
+                header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
+                header(HttpHeaders.ContentType, ContentType.Application.Json)
+                header(HttpHeaders.Accept, ContentType.Application.Json)
+                header("Nav-Call-Id", callId)
+                header("Nav-Consumer-Token", "Bearer ${stsClient.oidcToken()}")
+                header("Nav-Consumer-Id", configuration.sts.username)
+                body = hentPersonQuery(fnr)
+            }
+        }
+
     }
 
     suspend fun healthCheck(): HttpResponse {
@@ -69,6 +88,21 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
         return pdlResponse.data.hentIdenter?.identer?.first {
             !it.historisk && it.gruppe == IdentGruppe.AKTORID
         }?.ident ?: throw IdenterIkkeFunnet()
+    }
+
+    suspend fun hentPersonHistorikk(fnr: String, callId: String): HentPdlPersonResponse{
+        return pdlClient.hentPerson(fnr, callId)
+
+/*        // Hack for å overleve manglende aktørID i ikke-konsistente data i Q2
+        if (pdlResponse.errors != null && clusterName == "dev-fss") {
+            return "111111111111"
+        }
+
+        pdlResponse.errors?.let { errors ->
+            logger.warn { "Fikk følgende feil fra PDL: ${objectMapper.writeValueAsString(errors)}" }
+            throw GraphqlError(errors.first(), "PDL")
+        }*/
+
     }
 
 }
