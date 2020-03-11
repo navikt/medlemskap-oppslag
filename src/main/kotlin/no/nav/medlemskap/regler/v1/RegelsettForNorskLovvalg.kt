@@ -4,7 +4,7 @@ import no.nav.medlemskap.domene.Arbeidsforholdstype
 import no.nav.medlemskap.domene.Skipsregister
 import no.nav.medlemskap.regler.common.Avklaring
 import no.nav.medlemskap.regler.common.Funksjoner.erDelAv
-import no.nav.medlemskap.regler.common.Funksjoner.erMerEnn
+import no.nav.medlemskap.regler.common.Funksjoner.sumErMerEnn
 import no.nav.medlemskap.regler.common.Funksjoner.inneholderNoe
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Funksjoner.kunInneholder
@@ -186,7 +186,7 @@ class RegelsettForNorskLovvalg : Regelsett("Regelsett for norsk lovvalg") {
 
     private fun sjekkOmBrukerHarJobbetMerEnn25Prosent(personfakta: Personfakta): Resultat =
             hvis{
-                personfakta.hentTotalStillingprosenter() erMerEnn 25.0
+                personfakta.hentTotalStillingprosenter() sumErMerEnn 25.0
             } så {
                 ja("Bruker har jobbet mer enn 25 %")
             } ellers {
