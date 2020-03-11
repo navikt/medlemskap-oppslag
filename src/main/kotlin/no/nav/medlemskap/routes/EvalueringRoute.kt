@@ -10,6 +10,7 @@ import io.ktor.routing.Routing
 import io.ktor.routing.post
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import mu.KotlinLogging
 import no.nav.medlemskap.common.API_COUNTER
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.*
@@ -85,7 +86,7 @@ private suspend fun createDatagrunnlag(
         services: Services): Datagrunnlag = coroutineScope {
 
 
-    val pdlHistorikk = async { services.pdlService.hentPersonHistorikk(fnr, callId) }
+    val pdlHistorikkRequest = async { services.pdlService.hentPersonHistorikk(fnr, callId) }
     val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr, periode.fom) }
     val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(fnr, callId) }
     val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr, callId) }
@@ -93,13 +94,14 @@ private suspend fun createDatagrunnlag(
     val journalPosterRequest = async { services.safService.hentJournaldata(fnr, callId) }
     val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktoer, callId) }
 
-
+    val pdlHistorikk = pdlHistorikkRequest.await()
     val historikkFraTps = historikkFraTpsRequest.await()
     val medlemskapsunntak = medlemskapsunntakRequest.await()
     val arbeidsforhold = arbeidsforholdRequest.await()
     val inntektListe = inntektListeRequest.await()
     val journalPoster = journalPosterRequest.await()
     val oppgaver = gosysOppgaver.await()
+
 
     Datagrunnlag(
             periode = periode,
@@ -111,6 +113,8 @@ private suspend fun createDatagrunnlag(
             oppgaver = oppgaver,
             dokument = journalPoster
     )
+
+
 }
 
 private fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =
