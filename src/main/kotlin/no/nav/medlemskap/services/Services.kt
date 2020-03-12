@@ -1,6 +1,7 @@
 package no.nav.medlemskap.services
 
 import no.nav.medlemskap.common.callIdGenerator
+import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.common.healthcheck.HealthReporter
 import no.nav.medlemskap.common.healthcheck.HealthService
 import no.nav.medlemskap.common.healthcheck.HttpResponseHealthCheck
@@ -44,7 +45,7 @@ class Services(val configuration: Configuration) {
     private val eregClient: EregClient
 
     val healthService: HealthService
-    val healthReporter: HealthReporter
+    private val healthReporter: HealthReporter
 
     private val stsRetry = retryRegistry.retry("STS")
     private val tpsRetry = retryRegistry.retry("TPS")
@@ -60,12 +61,12 @@ class Services(val configuration: Configuration) {
                 baseUrl = configuration.sts.restUrl,
                 username = configuration.sts.username,
                 password = configuration.sts.password,
-                retry = stsRetry
+                retry = stsRetry,
+                httpClient = cioHttpClient
         )
 
         val wsClients = WsClients(
                 stsClientWs = stsWsClient,
-                stsClientRest = stsRestClient,
                 callIdGenerator = callIdGenerator::get
         )
 

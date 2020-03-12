@@ -50,6 +50,12 @@ fun hentIndenterQuery(fnr: String): GraphqlQuery {
     return GraphqlQuery(query, Variables(fnr))
 }
 
+
+fun hentPersonQuery(fnr: String): GraphqlQuery{
+    val query = GraphqlQuery::class.java.getResource("/pdl/hentPerson.graphql").readText().replace("[\n\r]", "")
+    return GraphqlQuery(query, Variables(fnr, true))
+}
+
 fun hentNasjonalitetQuery(fnr: String): GraphqlQuery {
     val query = GraphqlQuery::class.java.getResource("/pdl/hentNasjonalitet.graphql").readText().replace("[\n\r]", "")
     return GraphqlQuery(query, Variables(fnr))

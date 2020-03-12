@@ -18,6 +18,7 @@ val junitJupiterVersion = "5.4.0"
 val assertkVersion = "0.21"
 val restAssuredVersion = "4.2.0"
 val resilience4jVersion = "1.2.0"
+val threetenVersion = "1.5.0"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
@@ -47,6 +48,7 @@ repositories {
 }
 
 
+
 dependencies {
     implementation(kotlin("stdlib"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
@@ -60,6 +62,9 @@ dependencies {
     implementation("io.ktor:ktor-client-json:$ktorVersion")
     implementation("io.ktor:ktor-client-jackson:$ktorVersion")
     implementation("io.ktor:ktor-jackson:$ktorVersion")
+    implementation("io.ktor:ktor-metrics-micrometer:$ktorVersion")
+    implementation("io.micrometer:micrometer-registry-prometheus:latest.release")
+    implementation("io.micrometer:micrometer-registry-influx:latest.release")
     implementation("io.prometheus:simpleclient_hotspot:$prometheusVersion")
     implementation("io.prometheus:simpleclient_common:$prometheusVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
@@ -70,6 +75,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+    implementation("org.threeten:threeten-extra:$threetenVersion")
 
     implementation("org.apache.cxf:cxf-rt-ws-security:$cxfVersion")
     implementation("org.apache.cxf:cxf-rt-frontend-jaxws:$cxfVersion")

@@ -10,6 +10,7 @@ import no.nav.tjeneste.virksomhet.person.v3.binding.HentPersonhistorikkPersonIkk
 import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import java.time.LocalDate
 
 class TpsClientRetryTest {
 
@@ -23,7 +24,7 @@ class TpsClientRetryTest {
 
         assertThrows<RuntimeException> {
             runBlocking {
-                personClient.hentPersonHistorikk("100")
+                personClient.hentPersonHistorikk("100", LocalDate.now())
             }
         }
         verify(exactly = 2) { mockPersonV3.hentPersonhistorikk(any()) }
@@ -37,7 +38,7 @@ class TpsClientRetryTest {
 
         assertThrows<HentPersonhistorikkPersonIkkeFunnet> {
             runBlocking {
-                personClient.hentPersonHistorikk("100")
+                personClient.hentPersonHistorikk("100", LocalDate.now())
             }
         }
         verify(exactly = 1) { mockPersonV3.hentPersonhistorikk(any()) }

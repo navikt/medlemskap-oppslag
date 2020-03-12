@@ -2,23 +2,28 @@ package no.nav.medlemskap.services.sts
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.github.resilience4j.retry.Retry
+import io.ktor.client.HttpClient
 import io.ktor.client.request.*
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpHeaders
-import kotlinx.coroutines.runBlocking
-import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.services.runWithRetryAndMetrics
 import java.time.LocalDateTime
 import java.util.*
 
-class StsRestClient(val baseUrl: String, var username: String, val password: String, private val retry: Retry? = null) {
+class StsRestClient(
+        private val baseUrl: String,
+        private val username: String,
+        private val password: String,
+        private val httpClient: HttpClient,
+        private val retry: Retry? = null
+) {
     private var cachedOidcToken: Token? = null
     private var cachedSamlToken: Token? = null
 
     suspend fun oidcToken(): String {
         if (cachedOidcToken.shouldBeRenewed()) {
             cachedOidcToken = runWithRetryAndMetrics("STS", "TokenV1", retry) {
-                cioHttpClient.get<Token> {
+                httpClient.get<Token> {
                     url("$baseUrl/rest/v1/sts/token")
                     header(HttpHeaders.Authorization, "Basic ${credentials()}")
                     parameter("grant_type", "client_credentials")
@@ -31,20 +36,18 @@ class StsRestClient(val baseUrl: String, var username: String, val password: Str
     }
 
     suspend fun healthCheck(): HttpResponse {
-        return cioHttpClient.options {
+        return httpClient.options {
             url("$baseUrl/isReady")
             header("Nav-Consumer-Id", username)
         }
     }
 
-    fun samlToken(): String {
+    suspend fun samlToken(): String {
         if (cachedSamlToken.shouldBeRenewed()) {
-            cachedSamlToken = runBlocking {
-                runWithRetryAndMetrics("STS", "SamlTokenV1", retry) {
-                    cioHttpClient.get<Token> {
-                        url("$baseUrl/rest/v1/sts/samltoken")
-                        header(HttpHeaders.Authorization, "Basic ${credentials()}")
-                    }
+            cachedSamlToken = runWithRetryAndMetrics("STS", "SamlTokenV1", retry) {
+                httpClient.get<Token> {
+                    url("$baseUrl/rest/v1/sts/samltoken")
+                    header(HttpHeaders.Authorization, "Basic ${credentials()}")
                 }
             }
         }

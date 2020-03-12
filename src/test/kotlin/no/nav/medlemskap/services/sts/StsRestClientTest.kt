@@ -9,8 +9,9 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.runBlocking
+import no.nav.medlemskap.common.cioHttpClient
 import org.junit.jupiter.api.AfterAll
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -63,7 +64,7 @@ class StsRestClientTest {
                 .whenScenarioStateIs("token acquired")
         )
 
-        val authHelper = StsRestClient(baseUrl = server.baseUrl(), username = "foo", password = "bar")
+        val authHelper = StsRestClient(baseUrl = server.baseUrl(), username = "foo", password = "bar", httpClient = cioHttpClient)
         val first = runBlocking { authHelper.oidcToken() }
 
         val second: String = runBlocking { authHelper.oidcToken() }

@@ -1,6 +1,7 @@
 package no.nav.medlemskap.services.aareg
 
 import io.github.resilience4j.retry.Retry
+import io.ktor.client.HttpClient
 import io.ktor.client.features.ClientRequestException
 import io.ktor.client.request.get
 import io.ktor.client.request.header
@@ -10,7 +11,6 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
-import no.nav.medlemskap.common.apacheHttpClient
 import no.nav.medlemskap.domene.Arbeidsforhold
 import no.nav.medlemskap.services.ereg.EregClient
 import no.nav.medlemskap.services.pdl.PdlClient
@@ -24,6 +24,7 @@ import java.util.*
 class AaRegClient(
         private val baseUrl: String,
         private val stsClient: StsRestClient,
+        private val httpClient: HttpClient,
         private val retry: Retry? = null
 ) {
 
@@ -36,7 +37,7 @@ class AaRegClient(
         val oidcToken = stsClient.oidcToken()
         return runCatching {
             runWithRetryAndMetrics("AaReg", "ArbeidsforholdV1", retry) {
-                apacheHttpClient.get<List<AaRegArbeidsforhold>> {
+                httpClient.get<List<AaRegArbeidsforhold>> {
                     url("$baseUrl/v1/arbeidstaker/arbeidsforhold")
                     header(HttpHeaders.Authorization, "Bearer ${oidcToken}")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
@@ -68,7 +69,7 @@ class AaRegClient(
 
     suspend fun healthCheck(): HttpResponse {
         val oidcToken = stsClient.oidcToken()
-        return apacheHttpClient.get {
+        return httpClient.get {
             url("$baseUrl/v1/arbeidstaker/arbeidsforhold")
             header(HttpHeaders.Authorization, "Bearer ${oidcToken}")
             header(HttpHeaders.Accept, ContentType.Application.Json)

@@ -1,6 +1,6 @@
 package no.nav.medlemskap.common
 
-import io.prometheus.client.Histogram
+import io.micrometer.core.instrument.Timer
 import org.apache.cxf.Bus
 import org.apache.cxf.feature.AbstractFeature
 import org.apache.cxf.interceptor.InterceptorProvider
@@ -32,36 +32,38 @@ internal class MetricInterceptor : AbstractPhaseInterceptor<Message>(Phase.SETUP
                 "failure"
             } ?: "success"
 
-            clientCounter.labels(service, operation, status).inc()
+            clientCounter(service, operation, status).increment()
         }
     }
 
     override fun handleFault(message: Message?) {
-        message?.exchange?.get(MetricInterceptor::class.java.name + ".timer")?.let {
-            message.exchange[MetricInterceptor::class.java.name + ".timer"] = null
-            it as Histogram.Timer
-        }?.observeDuration()
+        message.stopTimer()
     }
 }
 
 internal class TimerStartInterceptor : AbstractPhaseInterceptor<Message>(Phase.PREPARE_SEND) {
     override fun handleMessage(message: Message?) {
-        val ep = message?.exchange?.endpoint?.endpointInfo
-
-        val service = ep?.service?.name?.localPart
         val operation = message?.exchange?.bindingOperationInfo?.name?.localPart
 
         if (operation != "ping") {
-            message?.exchange?.put(MetricInterceptor::class.java.name + ".timer", clientTimer.labels(service, operation).startTimer())
+            message?.exchange?.put(MetricInterceptor::class.java.name + ".timer", Timer.start())
         }
     }
 }
 
 internal class TimerEndInterceptor : AbstractPhaseInterceptor<Message>(Phase.RECEIVE) {
     override fun handleMessage(message: Message?) {
-        message?.exchange?.get(MetricInterceptor::class.java.name + ".timer")?.let {
-            message.exchange[MetricInterceptor::class.java.name + ".timer"] = null
-            it as Histogram.Timer
-        }?.observeDuration()
+        message.stopTimer()
+    }
+}
+
+private fun Message?.stopTimer() {
+    this?.exchange?.get(MetricInterceptor::class.java.name + ".timer")?.let {
+        exchange[MetricInterceptor::class.java.name + ".timer"] = null
+        val ep = exchange?.endpoint?.endpointInfo
+
+        val service = ep?.service?.name?.localPart
+        val operation = exchange?.bindingOperationInfo?.name?.localPart
+        (it as Timer.Sample).stop(clientTimer(service, operation))
     }
 }
