@@ -21,7 +21,7 @@ class EregClient (
                     url("$baseUrl/v1/organisasjon/$orgnummer/noekkelinfo")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
                     header("Nav-Call-Id", callId)
-                    header("Nav-Consumer-Id", consumerId)
+                    header("Nav-Consumer-Token", consumerId)
                 }
             }
         }.fold(

@@ -3,6 +3,7 @@ package no.nav.medlemskap.services
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.config.retryRegistry
 import no.nav.medlemskap.services.aareg.AaRegClient
+import no.nav.medlemskap.services.ereg.EregClient
 import no.nav.medlemskap.services.inntekt.InntektClient
 import no.nav.medlemskap.services.medl.MedlClient
 import no.nav.medlemskap.services.oppgave.OppgaveClient
@@ -19,6 +20,7 @@ class RestClients(private val stsClientRest: StsRestClient,
     private val oppgaveRetry = retryRegistry.retry("Oppgave")
     private val pdlRetry = retryRegistry.retry("PDL")
     private val safRetry = retryRegistry.retry("Saf")
+    private val eregRetry = retryRegistry.retry("Ereg")
 
     fun aaReg(endpointUrl: String) = AaRegClient(endpointUrl, stsClientRest, aaRegRetry)
     fun medl2(endpointBaseUrl: String) = MedlClient(endpointBaseUrl, stsClientRest, configuration, medlRetry)
@@ -26,5 +28,5 @@ class RestClients(private val stsClientRest: StsRestClient,
     fun saf(endpointBaseUrl: String) = SafClient(endpointBaseUrl, stsClientRest, configuration, safRetry)
     fun oppgaver(endpointBaseUrl: String) = OppgaveClient(endpointBaseUrl, stsClientRest, oppgaveRetry)
     fun pdl(endpointBaseURl: String) = PdlClient(endpointBaseURl, stsClientRest, configuration, pdlRetry)
-
+    fun ereg(endpointBaseUrl: String) = EregClient(endpointBaseUrl, eregRetry)
 }

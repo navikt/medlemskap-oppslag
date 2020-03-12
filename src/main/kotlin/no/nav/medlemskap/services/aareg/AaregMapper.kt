@@ -3,13 +3,13 @@ package no.nav.medlemskap.services.aareg
 import no.nav.medlemskap.domene.*
 
 
-fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>): List<Arbeidsforhold> {
-    return  arbeidsforhold.map {
+fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, arbeidsgiversLand: Map<String, String>): List<Arbeidsforhold> {
+    return arbeidsforhold.map {
         Arbeidsforhold(
                 periode = mapPeriodeTilArbeidsforhold(it),
                 utenlandsopphold = mapUtenLandsopphold(it),
                 arbeidsfolholdstype = mapArbeidsForholdType(it),
-                arbeidsgiver = mapArbeidsgiver(it),
+                arbeidsgiver = mapArbeidsgiver(it, arbeidsgiversLand),
                 arbeidsavtaler = mapArbeidsAvtaler(it)
 
         )
@@ -57,13 +57,12 @@ fun mapArbeidsForholdType(arbeidsforhold: AaRegArbeidsforhold): Arbeidsforholdst
             return Arbeidsforholdstype.ANDRE
         }
     }
-
 }
 
-//TODO --> LA INN NOR SOM DEAFULT FOR TEST
-fun mapArbeidsgiver(arbeidsforhold: AaRegArbeidsforhold): Arbeidsgiver {
-    return Arbeidsgiver(arbeidsforhold.type, arbeidsforhold.opplysningspliktig.organisasjonsnummer, "NOR");
-
+fun mapArbeidsgiver(arbeidsforhold: AaRegArbeidsforhold, arbeidsgiversLand: Map<String, String>): Arbeidsgiver {
+    val identifikator = arbeidsforhold.arbeidsgiver.organisasjonsnummer
+            ?: (arbeidsforhold.arbeidsgiver.offentligIdent ?: arbeidsforhold.arbeidsgiver.aktoerId)
+    return Arbeidsgiver(arbeidsforhold.type, arbeidsgiversLand[identifikator])
 }
 
 fun mapPeriodeTilArbeidsavtale(arbeidsavtale: AaRegArbeidsavtale): Periode {

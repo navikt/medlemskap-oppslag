@@ -90,34 +90,24 @@ class AaRegService(
 
     suspend fun hentArbeidsforhold(fnr: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<Arbeidsforhold> {
         val arbeidsforhold = aaRegClient.hentArbeidsforhold(fnr, callId, fraOgMed, tilOgMed)
+        val arbeidsgiver: List<AaRegOpplysningspliktigArbeidsgiver> = arbeidsforhold.map { it.arbeidsgiver }
+        val arbeidsgiversLand = hentArbeidsgiversLand(arbeidsgiver)
 
-        val arbeidsgiver: List<AaRegOpplysningspliktigArbeidsgiver> = TODO()
-
-
-
-        return mapAaregResultat(arbeidsforhold)
+        return mapAaregResultat(arbeidsforhold, arbeidsgiversLand)
     }
 
-    private suspend fun hentArbeidsgiversLand(arbeidsgiver: List<AaRegOpplysningspliktigArbeidsgiver>): Map<String, String> {
-        val map: MutableMap<String, String> = mutableMapOf()
-
-        arbeidsgiver.forEach {
-            arbeidsgiver ->
-                val enhetstype = when(arbeidsgiver.type) {
-                    AaRegOpplysningspliktigArbeidsgiverType.Organisasjon -> {
-                        val type = eregClient.hentEnhetstype(arbeidsgiver.organisasjonsnummer!!, "", "")
-                        if (type == "NUF" || type == "UTLA") {
-                            "IKKE NOR"
-                        } else {
-                            "NOR"
+    private suspend fun hentArbeidsgiversLand(opplysningspliktigArbeidsgiver: List<AaRegOpplysningspliktigArbeidsgiver>): Map<String, String> {
+        return opplysningspliktigArbeidsgiver.associateBy(
+                { arbeidsgiver ->
+                    arbeidsgiver.organisasjonsnummer ?: (arbeidsgiver.offentligIdent ?: (arbeidsgiver.aktoerId ?: ""))
+                },
+                { arbeidsgiver ->
+                    when (arbeidsgiver.type) {
+                        AaRegOpplysningspliktigArbeidsgiverType.Organisasjon -> {
+                            eregClient.hentEnhetstype(arbeidsgiver.organisasjonsnummer!!, "", "")
                         }
-                    }
-                    else -> pdlClient.hentNasjonalitet(arbeidsgiver.offentligIdent!!, "")
-                }
-            map[""] = enhetstype
-        }
-
-        return map
+                        else -> pdlClient.hentNasjonalitet(arbeidsgiver.offentligIdent!!, "")
+                    } ?: ""
+                })
     }
-
 }

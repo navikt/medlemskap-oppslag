@@ -9,7 +9,7 @@ val retryConfig: RetryConfig = RetryConfig
         .maxAttempts(2)
         .waitDuration(Duration.ofSeconds(1))
         .retryExceptions(RuntimeException::class.java)
-        .build();
+        .build()
 
 val retryRegistry: RetryRegistry = RetryRegistry.of(retryConfig)
 

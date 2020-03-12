@@ -26,7 +26,8 @@ private val defaultProperties = ConfigurationMap(
                 "AZURE_CLIENT_ID" to "",
                 "SAF_BASE_URL" to "",
                 "OPPGAVE_BASE_URL" to "",
-                "PDL_BASE_URL" to ""
+                "PDL_BASE_URL" to "",
+                "EREG_BASE_URL" to ""
         )
 )
 
@@ -65,7 +66,8 @@ data class Configuration(
             val inntektBaseUrl: String = "INNTEKT_BASE_URL".configProperty(),
             val safBaseUrl: String = "SAF_BASE_URL".configProperty(),
             val oppgaveBaseUrl: String = "OPPGAVE_BASE_URL".configProperty(),
-            val pdlBaseUrl: String = "PDL_BASE_URL".configProperty()
+            val pdlBaseUrl: String = "PDL_BASE_URL".configProperty(),
+            val eregBaseUrl: String = "EREG_BASE_URL".configProperty()
     )
 
     data class Sts(
