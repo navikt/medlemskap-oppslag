@@ -57,7 +57,7 @@ fun regelCounter(regel: String, status: String): Counter = Counter
         .description("counter for ja, nei, uavklart for regel calls")
         .register(Metrics.globalRegistry)
 
-val API_COUNTER: Counter = Counter
+fun apiCounter(): Counter = Counter
         .builder("api_hit_counter")
         .description("Registers a counter for each hit to the api")
         .register(Metrics.globalRegistry)

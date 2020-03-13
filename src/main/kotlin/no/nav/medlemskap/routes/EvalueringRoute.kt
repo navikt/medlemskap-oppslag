@@ -11,8 +11,8 @@ import io.ktor.routing.post
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
-import mu.KotlinLogging.logger
 import no.nav.medlemskap.common.API_COUNTER
+import no.nav.medlemskap.common.apiCounter
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Personfakta
@@ -30,11 +30,10 @@ fun Routing.evalueringRoute(
         services: Services,
         useAuthentication: Boolean,
         configuration: Configuration) {
-
-
+    
     fun receiveAndRespond() {
         post("/") {
-            API_COUNTER.increment()
+            apiCounter().increment()
             val request = validerRequest(call.receive())
             val callId = call.callId ?: UUID.randomUUID().toString()
             val aktorId = services.pdlService.hentAktorId(request.fnr, callId)
