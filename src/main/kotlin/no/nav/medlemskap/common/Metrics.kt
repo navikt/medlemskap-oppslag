@@ -3,11 +3,11 @@ package no.nav.medlemskap.common
 
 import io.micrometer.core.instrument.*
 import io.micrometer.core.instrument.config.MeterFilter
-import io.micrometer.influx.InfluxConfig
-import io.micrometer.influx.InfluxMeterRegistry
 import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
 import io.micrometer.prometheus.PrometheusRenameFilter
+import no.nav.medlemskap.common.influx.SensuInfluxConfig
+import no.nav.medlemskap.common.influx.SensuInfluxMeterRegistry
 import java.time.Duration
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -21,41 +21,35 @@ fun configurePrometheusMeterRegistry(): PrometheusMeterRegistry {
     return prometheusRegistry
 }
 
-fun configureInfluxMeterRegistry(): InfluxMeterRegistry {
-    val config: InfluxConfig = object : InfluxConfig {
+fun configureSensuInfluxMeterRegistry(): SensuInfluxMeterRegistry {
+    val config: SensuInfluxConfig = object : SensuInfluxConfig {
         override fun step(): Duration? {
             return Duration.ofSeconds(10)
         }
 
-        override fun db(): String? {
-            return "default"
-        }
-
-        override fun uri(): String? {
-            return "sensu.nais:3030"
-        }
-
-        override fun userName(): String? {
-            return ""
-        }
-
-        override fun password(): String? {
-            return ""
-        }
-
-        override fun autoCreateDb(): Boolean = false
+        override fun sensuName(): String = "medlemskap-oppslag-events"
 
         override operator fun get(k: String?): String? {
             return null // accept the rest of the defaults
         }
     }
 
-    val influxMeterRegistry = InfluxMeterRegistry(config, Clock.SYSTEM)
+    val influxMeterRegistry = SensuInfluxMeterRegistry(config, Clock.SYSTEM)
     influxMeterRegistry.config().meterFilter(MeterFilter.denyUnless { it.name.startsWith("regel_call") || it.name.startsWith("api_hit_counter") })
+    influxMeterRegistry.config().commonTags(defaultInfluxTags());
     Metrics.globalRegistry.add(influxMeterRegistry)
     return influxMeterRegistry
 }
 
+fun defaultInfluxTags() = listOf(
+        Tag.of("application", getenv("NAIS_APP_NAME", "medlemskap-oppslag")),
+        Tag.of("cluster", getenv("NAIS_CLUSTER_NAME", "dev-fss")),
+        Tag.of("namespace", getenv("NAIS_NAMESPACE", "default"))
+)
+
+private fun getenv(env: String, defaultValue: String): String {
+    return if (System.getenv(env) != null) System.getenv(env) else defaultValue
+}
 
 fun regelCounter(regel: String, status: String): Counter = Counter
         .builder("regel_calls_total")
