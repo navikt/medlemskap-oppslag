@@ -13,8 +13,8 @@ import no.nav.medlemskap.services.runWithRetryAndMetrics
 
 class EregClient (
         private val baseUrl: String,
-        private val retry: Retry? = null,
-        private val httpClient: HttpClient
+        private val httpClient: HttpClient,
+        private val retry: Retry? = null
 ) {
     suspend fun hentEnhetstype(orgnummer:String, callId: String, consumerId: String): String? {
         val organisasjon = runCatching {

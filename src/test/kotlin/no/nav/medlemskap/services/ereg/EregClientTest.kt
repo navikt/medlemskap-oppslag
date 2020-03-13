@@ -13,6 +13,7 @@ import io.ktor.http.HttpStatusCode
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.services.aareg.AaRegClient
 import no.nav.medlemskap.services.sts.StsRestClient
 import org.junit.jupiter.api.*
@@ -23,6 +24,8 @@ class EregClientTest {
 
     companion object {
         val server: WireMockServer = WireMockServer(WireMockConfiguration.options().dynamicPort())
+        val httpClient = cioHttpClient
+
 
         @BeforeAll
         @JvmStatic
@@ -56,7 +59,7 @@ class EregClientTest {
                         .withBody(eregResponse)
         ))
 
-        val client = EregClient(server.baseUrl())
+        val client = EregClient(server.baseUrl(), httpClient)
 
         val response = runBlocking { client.hentEnhetstype("977074010", callId, "test") }
         println(response)
@@ -77,7 +80,7 @@ class EregClientTest {
                         .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
         ))
-        val client = EregClient(server.baseUrl())
+        val client = EregClient(server.baseUrl(), httpClient)
 
         Assertions.assertThrows(ServerResponseException::class.java) {
             runBlocking { client.hentEnhetstype("977074010", callId, "test") }
@@ -97,7 +100,7 @@ class EregClientTest {
 
         ))
 
-        val client = EregClient(server.baseUrl())
+        val client = EregClient(server.baseUrl(), httpClient)
 
         Assertions.assertThrows(ClientRequestException::class.java) {
             runBlocking { client.hentEnhetstype("977074010", callId, "test") }
@@ -117,7 +120,7 @@ class EregClientTest {
 
         ))
 
-        val client = EregClient(server.baseUrl())
+        val client = EregClient(server.baseUrl(), httpClient)
         val response = runBlocking { client.hentEnhetstype("977074010", callId, "test") }
         Assertions.assertNull(response)
     }
