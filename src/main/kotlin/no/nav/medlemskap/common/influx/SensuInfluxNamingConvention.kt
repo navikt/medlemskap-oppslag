@@ -30,7 +30,6 @@ package no.nav.medlemskap.common.influx
 
 import io.micrometer.core.instrument.Meter
 import io.micrometer.core.instrument.config.NamingConvention
-import io.micrometer.core.lang.Nullable
 import java.util.regex.Pattern
 
 /**
@@ -45,7 +44,7 @@ class SensuInfluxNamingConvention
  * is an underscore, which corresponds to [NamingConvention.snakeCase].
  */
 @JvmOverloads constructor(private val delegate: NamingConvention = NamingConvention.snakeCase) : NamingConvention {
-    override fun name(name: String, type: Meter.Type, @Nullable baseUnit: String): String {
+    override fun name(name: String, type: Meter.Type, baseUnit: String?): String {
         return escape(delegate.name(name, type, baseUnit).replace("=", "_"))
     }
 
