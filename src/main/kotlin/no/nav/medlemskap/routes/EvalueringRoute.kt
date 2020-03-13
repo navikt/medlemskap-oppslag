@@ -11,7 +11,6 @@ import io.ktor.routing.post
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
-import no.nav.medlemskap.common.API_COUNTER
 import no.nav.medlemskap.common.apiCounter
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.*
@@ -30,7 +29,7 @@ fun Routing.evalueringRoute(
         services: Services,
         useAuthentication: Boolean,
         configuration: Configuration) {
-    
+
     fun receiveAndRespond() {
         post("/") {
             apiCounter().increment()
