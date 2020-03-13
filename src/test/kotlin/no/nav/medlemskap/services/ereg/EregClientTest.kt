@@ -58,7 +58,7 @@ class EregClientTest {
 
         val client = EregClient(server.baseUrl())
 
-        val response = runBlocking { client.hentEnhetstype("977074010", callId, "Bearer dummytoken") }
+        val response = runBlocking { client.hentEnhetstype("977074010", callId, "test") }
         println(response)
         assertEquals(response, "NUF")
 
@@ -80,7 +80,7 @@ class EregClientTest {
         val client = EregClient(server.baseUrl())
 
         Assertions.assertThrows(ServerResponseException::class.java) {
-            runBlocking { client.hentEnhetstype("977074010", callId, "Bearer dummytoken") }
+            runBlocking { client.hentEnhetstype("977074010", callId, "test") }
         }
     }
 
@@ -100,7 +100,7 @@ class EregClientTest {
         val client = EregClient(server.baseUrl())
 
         Assertions.assertThrows(ClientRequestException::class.java) {
-            runBlocking { client.hentEnhetstype("977074010", callId, "Bearer dummytoken") }
+            runBlocking { client.hentEnhetstype("977074010", callId, "test") }
         }
     }
 
@@ -118,7 +118,7 @@ class EregClientTest {
         ))
 
         val client = EregClient(server.baseUrl())
-        val response = runBlocking { client.hentEnhetstype("977074010", callId, "Bearer dummytoken") }
+        val response = runBlocking { client.hentEnhetstype("977074010", callId, "test") }
         Assertions.assertNull(response)
     }
 
@@ -156,6 +156,6 @@ class EregClientTest {
     private val orgnummer = "977074010"
     private val queryMapping: MappingBuilder = WireMock.get(WireMock.urlPathEqualTo("/v1/organisasjon/$orgnummer/noekkelinfo"))
             .withHeader("Nav-Call-Id", equalTo("12345"))
-            .withHeader("Nav-Consumer-Token", equalTo("Bearer dummytoken"))
+            .withHeader("Nav-Consumer-Id", equalTo("test"))
 
 }

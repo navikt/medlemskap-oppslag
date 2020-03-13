@@ -92,12 +92,12 @@ class AaRegService(
     suspend fun hentArbeidsforhold(fnr: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<Arbeidsforhold> {
         val arbeidsforhold = aaRegClient.hentArbeidsforhold(fnr, callId, fraOgMed, tilOgMed)
         val arbeidsgiver: List<AaRegOpplysningspliktigArbeidsgiver> = arbeidsforhold.map { it.arbeidsgiver }
-        val arbeidsgiversLand = hentArbeidsgiversLand(arbeidsgiver)
+        val arbeidsgiversLand = hentArbeidsgiversLand(arbeidsgiver, callId)
 
         return mapAaregResultat(arbeidsforhold, arbeidsgiversLand)
     }
 
-    private suspend fun hentArbeidsgiversLand(opplysningspliktigArbeidsgiver: List<AaRegOpplysningspliktigArbeidsgiver>): Map<String, String> {
+    private suspend fun hentArbeidsgiversLand(opplysningspliktigArbeidsgiver: List<AaRegOpplysningspliktigArbeidsgiver>, callId: String): Map<String, String> {
         return opplysningspliktigArbeidsgiver.associateBy(
                 { arbeidsgiver ->
                     arbeidsgiver.organisasjonsnummer ?: (arbeidsgiver.offentligIdent ?: (arbeidsgiver.aktoerId ?: ""))
@@ -105,10 +105,10 @@ class AaRegService(
                 { arbeidsgiver ->
                     when (arbeidsgiver.type) {
                         AaRegOpplysningspliktigArbeidsgiverType.Organisasjon -> {
-                            eregClient.hentEnhetstype(arbeidsgiver.organisasjonsnummer!!, "", "")
+                            eregClient.hentEnhetstype(arbeidsgiver.organisasjonsnummer!!, callId, "")
                         }
-                        else -> pdlClient.hentNasjonalitet(arbeidsgiver.offentligIdent!!, "")
-                    } ?: ""
+                        else -> pdlClient.hentNasjonalitet(arbeidsgiver.offentligIdent ?: arbeidsgiver.aktoerId!!, callId)
+                    } ?: throw NullPointerException("Finner ikke orgnumer, aktørid eller offentligident")
                 })
     }
 }
