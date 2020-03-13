@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
     <appender name="STDOUT_JSON" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
     </appender>
 
     <appender name="httpTraceLogAppender" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
     </appender>
 
     <appender name="secureLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -18,22 +18,23 @@
         <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
             <maxFileSize>50MB</maxFileSize>
         </triggeringPolicy>
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
     </appender>
 
     <logger name="tjenestekall" level="INFO" additivity="false">
-        <appender-ref ref="secureLog" />
+        <appender-ref ref="secureLog"/>
     </logger>
     <logger name="org.apache.cxf.services" level="INFO" additivity="false">
-        <appender-ref ref="secureLog" />
+        <appender-ref ref="secureLog"/>
     </logger>
 
     <logger name="HttpTraceLog" level="INFO" additivity="false">
-        <appender-ref ref="httpTraceLogAppender" />
+        <appender-ref ref="httpTraceLogAppender"/>
     </logger>
 
-    <logger name="org.apache.cxf" level="WARN" />
-    <logger name="io.ktor.auth.jwt" level="TRACE" />
+    <logger name="org.apache.cxf" level="WARN"/>
+    <logger name="io.ktor.auth.jwt" level="TRACE"/>
+    <logger name="no.nav.medlemskap.common.influx" level="DEBUG"/>
 
     <root level="INFO">
         <appender-ref ref="STDOUT_JSON"/>

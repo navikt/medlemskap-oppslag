@@ -71,12 +71,16 @@ class SensuInfluxMeterRegistry private constructor(config: SensuInfluxConfig, cl
             val sensuName = config.sensuName()
             for (batch in MeterPartition.partition(this, config.batchSize())) {
                 val influxLineProtocolData = batch.stream()
-                        .flatMap { m: Meter ->
-                            m.match(
+                        .flatMap { meter: Meter ->
+                            meter.match(
                                     { gauge: Gauge -> writeGauge(gauge.id, gauge.value()) },
-                                    { counter: Counter -> writeCounter(counter.id, counter.count()) }, { timer: Timer -> writeTimer(timer) }, { summary: DistributionSummary -> writeSummary(summary) }, { timer: LongTaskTimer -> writeLongTaskTimer(timer) },
+                                    { counter: Counter -> writeCounter(counter.id, counter.count()) },
+                                    { timer: Timer -> writeTimer(timer) },
+                                    { summary: DistributionSummary -> writeSummary(summary) },
+                                    { timer: LongTaskTimer -> writeLongTaskTimer(timer) },
                                     { gauge: TimeGauge -> writeGauge(gauge.id, gauge.value(baseTimeUnit)) },
-                                    { counter: FunctionCounter -> writeCounter(counter.id, counter.count()) }, { timer: FunctionTimer -> writeFunctionTimer(timer) }) { m: Meter -> writeMeter(m) }
+                                    { counter: FunctionCounter -> writeCounter(counter.id, counter.count()) },
+                                    { timer: FunctionTimer -> writeFunctionTimer(timer) }) { m: Meter -> writeMeter(m) }
                         }
                         .collect(Collectors.joining("\n"))
                 val data = SensuEvent(sensuName, influxLineProtocolData)
@@ -88,6 +92,7 @@ class SensuInfluxMeterRegistry private constructor(config: SensuInfluxConfig, cl
                                 writer.write(data.json, 0, data.json.length)
                                 writer.flush()
                                 logger.debug("wrote {} bytes of data", data.json.length)
+                                logger.debug("wrote {} to Sensu", data.json)
                             }
                         } catch (e: IOException) {
                             logger.error("Unable to send event {}", data, e)
