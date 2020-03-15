@@ -195,7 +195,7 @@ class SensuInfluxMeterRegistry private constructor(config: SensuInfluxConfig, cl
     }
 
     override fun getBaseTimeUnit(): TimeUnit {
-        return TimeUnit.MILLISECONDS
+        return TimeUnit.NANOSECONDS
     }
 
     class Builder internal constructor(private val config: SensuInfluxConfig) {
