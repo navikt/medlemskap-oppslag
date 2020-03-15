@@ -191,7 +191,7 @@ class SensuInfluxMeterRegistry private constructor(config: SensuInfluxConfig, cl
         return (getConventionName(id)
                 + tags + ",metric_type=" + metricType + " "
                 + fields.map { obj: Field -> obj.toString() }.collect(Collectors.joining(","))
-                + " " + clock.wallTime())
+                + " " + clock.monotonicTime())
     }
 
     override fun getBaseTimeUnit(): TimeUnit {
