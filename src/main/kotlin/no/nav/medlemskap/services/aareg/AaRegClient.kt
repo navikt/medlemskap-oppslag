@@ -105,7 +105,7 @@ class AaRegService(
                 { arbeidsgiver ->
                     when (arbeidsgiver.type) {
                         AaRegOpplysningspliktigArbeidsgiverType.Organisasjon -> {
-                            eregClient.hentEnhetstype(arbeidsgiver.organisasjonsnummer!!, callId, "")
+                            eregClient.hentEnhetstype(arbeidsgiver.organisasjonsnummer!!, callId)
                         }
                         else -> pdlClient.hentNasjonalitet(arbeidsgiver.offentligIdent ?: arbeidsgiver.aktoerId!!, callId)
                     } ?: throw NullPointerException("Finner ikke orgnumer, aktørid eller offentligident")

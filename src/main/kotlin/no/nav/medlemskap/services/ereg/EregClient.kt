@@ -8,22 +8,23 @@ import io.ktor.client.request.header
 import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
-import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.services.runWithRetryAndMetrics
+import no.nav.medlemskap.config.Configuration
 
 class EregClient (
         private val baseUrl: String,
         private val httpClient: HttpClient,
+        private val configuration: Configuration,
         private val retry: Retry? = null
 ) {
-    suspend fun hentEnhetstype(orgnummer:String, callId: String, consumerId: String): String? {
+    suspend fun hentEnhetstype(orgnummer:String, callId: String): String? {
         val organisasjon = runCatching {
             runWithRetryAndMetrics("Ereg", "noekkelinfo", retry) {
                 httpClient.get<Organisasjon> {
                     url("$baseUrl/v1/organisasjon/$orgnummer/noekkelinfo")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
                     header("Nav-Call-Id", callId)
-                    header("Nav-Consumer-Id", consumerId)
+                    header("Nav-Consumer-Id", configuration.sts.username)
                 }
             }
         }.fold(

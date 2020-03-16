@@ -14,11 +14,11 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.medlemskap.common.cioHttpClient
-import no.nav.medlemskap.services.aareg.AaRegClient
 import no.nav.medlemskap.services.sts.StsRestClient
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
-import java.time.LocalDate
+import no.nav.medlemskap.config.Configuration
+
 
 class EregClientTest {
 
@@ -59,9 +59,9 @@ class EregClientTest {
                         .withBody(eregResponse)
         ))
 
-        val client = EregClient(server.baseUrl(), httpClient)
+        val client = EregClient(server.baseUrl(), httpClient, config)
 
-        val response = runBlocking { client.hentEnhetstype("977074010", callId, "test") }
+        val response = runBlocking { client.hentEnhetstype("977074010", callId) }
         println(response)
         assertEquals(response, "NUF")
 
@@ -80,10 +80,10 @@ class EregClientTest {
                         .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
         ))
-        val client = EregClient(server.baseUrl(), httpClient)
+        val client = EregClient(server.baseUrl(), httpClient, config)
 
         Assertions.assertThrows(ServerResponseException::class.java) {
-            runBlocking { client.hentEnhetstype("977074010", callId, "test") }
+            runBlocking { client.hentEnhetstype("977074010", callId) }
         }
     }
 
@@ -100,10 +100,10 @@ class EregClientTest {
 
         ))
 
-        val client = EregClient(server.baseUrl(), httpClient)
+        val client = EregClient(server.baseUrl(), httpClient, config)
 
         Assertions.assertThrows(ClientRequestException::class.java) {
-            runBlocking { client.hentEnhetstype("977074010", callId, "test") }
+            runBlocking { client.hentEnhetstype("977074010", callId) }
         }
     }
 
@@ -120,11 +120,12 @@ class EregClientTest {
 
         ))
 
-        val client = EregClient(server.baseUrl(), httpClient)
-        val response = runBlocking { client.hentEnhetstype("977074010", callId, "test") }
+        val client = EregClient(server.baseUrl(), httpClient, config)
+        val response = runBlocking { client.hentEnhetstype("977074010", callId) }
         Assertions.assertNull(response)
     }
 
+    private val config = Configuration()
 
     private val eregResponse = """
         {

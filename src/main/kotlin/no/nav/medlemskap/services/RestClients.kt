@@ -31,5 +31,5 @@ class RestClients(private val stsClientRest: StsRestClient,
     fun saf(endpointBaseUrl: String) = SafClient(endpointBaseUrl, stsClientRest, configuration, httpClient, safRetry)
     fun oppgaver(endpointBaseUrl: String) = OppgaveClient(endpointBaseUrl, stsClientRest, httpClient, oppgaveRetry)
     fun pdl(endpointBaseURl: String) = PdlClient(endpointBaseURl, stsClientRest, configuration, httpClient, pdlRetry)
-    fun ereg(endpointBaseUrl: String) = EregClient(endpointBaseUrl, httpClient, eregRetry)
+    fun ereg(endpointBaseUrl: String) = EregClient(endpointBaseUrl, httpClient, configuration, eregRetry)
 }
