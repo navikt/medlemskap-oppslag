@@ -1,4 +1,5 @@
 query($ident: ID!, $bostedHistorikk: Boolean!){
+
     hentPerson(ident: $ident) {
         bostedsadresse(historikk: $bostedHistorikk) {
             angittFlyttedato,
