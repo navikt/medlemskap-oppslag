@@ -1,0 +1,7 @@
+query($ident: ID!, $statsborgerskapHistorikk: Boolean!){
+  hentPerson(ident: $ident) {
+	statsborgerskap(historikk: $statsborgerskapHistorikk) {
+	  land
+    }
+  }
+}
