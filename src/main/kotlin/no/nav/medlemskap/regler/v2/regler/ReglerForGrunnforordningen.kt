@@ -12,7 +12,7 @@ class ReglerForGrunnforordningen(val personfakta: Personfakta) : Regler() {
             }
 
     private val erBrukerEØSborger = Regel(
-            identifikator = "EØS-1",
+            identifikator = "GRUNN-1",
             avklaring = "Er brukeren statsborger i et EØS land?",
             beskrivelse = "For å avklare om bruker er omfattet av grunnforordningen",
             operasjon = { sjekkStatsborgerskap() }
@@ -20,8 +20,8 @@ class ReglerForGrunnforordningen(val personfakta: Personfakta) : Regler() {
 
     private fun sjekkStatsborgerskap(): Resultat =
             when {
-                eøsLand harAlle personfakta.hentStatsborgerskapIPeriode() -> ja("Brukeren er statsborger i et EØS-land.")
-                else -> nei("Brukeren er ikke statsborger i et EØS-land.")
+                eøsLand harAlle personfakta.hentStatsborgerskapIPeriode() -> ja()
+                else -> nei("Brukeren er ikke statsborger i et EØS-land(${personfakta.hentStatsborgerskapIPeriode()}).")
             }
 
 

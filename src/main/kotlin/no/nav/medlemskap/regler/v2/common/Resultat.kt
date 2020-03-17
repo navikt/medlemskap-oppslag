@@ -5,9 +5,9 @@ enum class Svar {
 }
 
 data class Resultat(
-        val identifikator: String = "ukjent",
-        val avklaring: String = "uavklart",
-        val begrunnelse: String = "ukjent",
+        val identifikator: String = "",
+        val avklaring: String = "",
+        val begrunnelse: String = "",
         val svar: Svar,
         val delresultat: List<Resultat> = listOf()
 )

@@ -5,7 +5,7 @@ abstract class Regler {
     abstract fun hentHovedRegel(): Regel
 
     protected fun minstEnAvDisse(vararg regler: Regel): Resultat {
-        val delresultat = regler.map { it.operasjon.invoke() }
+        val delresultat = regler.map { it.utfør() }
 
         return utledResultat(delresultat).copy(
                 delresultat = delresultat

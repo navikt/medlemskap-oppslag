@@ -15,15 +15,15 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
             }
 
     private val harBrukerJobbetUtenforNorge = Regel(
-            identifikator = "LOV-5",
-            avklaring = "Sjekk om personen har oppgitt å ha jobbet utenfor Norge",
+            identifikator = "LOV-1",
+            avklaring = "Har bruker oppgitt å ha jobbet utenfor Norge?",
             beskrivelse = "",
             operasjon = { sjekkOmBrukerHarJobbetUtenforNorge() }
     )
 
     private fun sjekkOmBrukerHarJobbetUtenforNorge(): Resultat =
             when {
-                personfakta.hentBrukerinputArbeidUtenforNorge() -> ja("Bruker har oppgitt å ha jobbet utenfor Norge")
-                else -> nei("Bruker har ikke jobbet utenfor Norge")
+                personfakta.hentBrukerinputArbeidUtenforNorge() -> ja()
+                else -> nei()
             }
 }

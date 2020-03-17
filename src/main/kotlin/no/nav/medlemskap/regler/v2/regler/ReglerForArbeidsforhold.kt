@@ -13,7 +13,7 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
     override fun hentHovedRegel() =
             sjekkRegel {
-                harArbeidsforhold
+                harBrukerEtArbeidsforhold
             } hvisNei {
                 uavklartKonklusjon
             } hvisJa {
@@ -50,37 +50,37 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
     private val reglerForLovvalg = ReglerForLovvalg(personfakta)
 
-    private val harArbeidsforhold = Regel(
+    private val harBrukerEtArbeidsforhold = Regel(
             identifikator = "ARB-1",
-            avklaring = "Har personen et registrert arbeidsforhold",
+            avklaring = "Har bruker et registrert arbeidsforhold?",
             beskrivelse = "",
             operasjon = { sjekkArbeidsforhold() }
     )
 
     private val erArbeidsgiverNorsk = Regel(
             identifikator = "ARB-2",
-            avklaring = "Jobber personen for en norsk arbeidsgiver?",
+            avklaring = "Jobber bruker for en norsk arbeidsgiver?",
             beskrivelse = "",
             operasjon = { sjekkArbeidsgiver() }
     )
 
     private val erBrukerPilotEllerKabinansatt = Regel(
             identifikator = "ARB-3",
-            avklaring = "Sjekk om personen er pilot eller kabinansatt",
+            avklaring = "Er bruker pilot eller kabinansatt?",
             beskrivelse = "",
             operasjon = { sjekkYrkeskodeLuftfart() }
     )
 
     private val erArbeidsforholdetMaritimt = Regel(
             identifikator = "ARB-4",
-            avklaring = "Sjekk om personen jobber i det maritime",
+            avklaring = "Har bruker et maritimt arbeidsforhold?",
             beskrivelse = "",
             operasjon = { sjekkMaritim() }
     )
 
     private val jobberBrukerPåNorskSkip = Regel(
             identifikator = "ARB-5",
-            avklaring = "Sjekk om personen jobber på et norskregistrert skip",
+            avklaring = "Jobber bruker på et norskregistrert skip?",
             beskrivelse = "",
             operasjon = { sjekkSkipsregister() }
     )
@@ -89,33 +89,32 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
     private fun sjekkArbeidsforhold(): Resultat =
             when {
-                personfakta.arbeidsforhold().erIkkeTom() -> ja("Personen har et registrert arbeidsforhold")
-                else -> nei("Personen har ikke et registrert arbeidsforhold")
+                personfakta.arbeidsforhold().erIkkeTom() -> ja()
+                else -> nei()
             }
 
     private fun sjekkArbeidsgiver(): Resultat =
             when {
-                personfakta.arbeidsgiversLandForPeriode() kunInneholder "NOR" -> ja("Arbeidsgiver er norsk")
+                personfakta.arbeidsgiversLandForPeriode() kunInneholder "NOR" -> ja()
                 else -> nei("Arbeidsgiver er ikke norsk. Land: ${personfakta.arbeidsgiversLandForPeriode()}")
             }
 
     private fun sjekkMaritim(): Resultat =
             when {
-                personfakta.sisteArbeidsforholdtype() inneholder Arbeidsforholdstype.MARITIM.navn -> ja("Personen er ansatt i det maritime")
-                else -> nei("Personen jobber ikke i det maritime")
+                personfakta.sisteArbeidsforholdtype() inneholder Arbeidsforholdstype.MARITIM.navn -> ja()
+                else -> nei()
             }
 
 
     private fun sjekkYrkeskodeLuftfart(): Resultat =
             when {
-                personfakta.sisteArbeidsforholdYrkeskode() inneholderNoe yrkeskoderLuftfart -> ja("Personen er pilot eller kabinansatt")
-                else -> nei("Personen er ikke pilot eller kabinansatt")
+                personfakta.sisteArbeidsforholdYrkeskode() inneholderNoe yrkeskoderLuftfart -> ja()
+                else -> nei()
             }
 
     private fun sjekkSkipsregister(): Resultat =
             when {
-                personfakta.sisteArbeidsforholdSkipsregister() kunInneholder Skipsregister.nor.name -> ja("Personen jobber på et norskregistrert skip")
-                else -> nei("Personen jobber ikke på et norskregistrert skip")
+                personfakta.sisteArbeidsforholdSkipsregister() kunInneholder Skipsregister.nor.name -> ja()
+                else -> nei()
             }
-
 }

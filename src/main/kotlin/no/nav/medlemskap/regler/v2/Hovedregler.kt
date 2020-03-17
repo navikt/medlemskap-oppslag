@@ -11,29 +11,30 @@ import no.nav.medlemskap.regler.v2.regler.ReglerForRegistrerteOpplysninger
 class Hovedregler(personfakta: Personfakta) {
 
     private val resultatliste: MutableList<Resultat> = mutableListOf()
+
     private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger(personfakta)
     private val reglerForGrunnforordningen = ReglerForGrunnforordningen(personfakta)
     private val reglerForArbeidsforhold = ReglerForArbeidsforhold(personfakta)
 
-    fun kjørHovedregler(): List<Resultat> {
-        val regel =
+    private fun hentHovedRegel() =
+            sjekkRegelsett {
+                reglerForRegistrerteOpplysninger
+            } hvisJa {
+                uavklartKonklusjon
+            } hvisNei {
                 sjekkRegelsett {
-                    reglerForRegistrerteOpplysninger
-                } hvisJa {
-                    uavklartKonklusjon
+                    reglerForGrunnforordningen
                 } hvisNei {
+                    uavklartKonklusjon
+                } hvisJa {
                     sjekkRegelsett {
-                        reglerForGrunnforordningen
-                    } hvisNei {
-                        uavklartKonklusjon
-                    } hvisJa {
-                        sjekkRegelsett {
-                            reglerForArbeidsforhold
-                        }
+                        reglerForArbeidsforhold
                     }
                 }
+            }
 
-        regel.utfør(resultatliste)
+    fun kjørHovedregler(): List<Resultat> {
+        hentHovedRegel().utfør(resultatliste)
         return resultatliste
     }
 }

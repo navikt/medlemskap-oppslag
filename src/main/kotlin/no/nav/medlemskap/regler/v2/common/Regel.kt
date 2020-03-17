@@ -25,6 +25,11 @@ data class Regel(
         return resultat
     }
 
+    fun utfør(): Resultat = operasjon.invoke().copy(
+            identifikator = identifikator,
+            avklaring = avklaring
+    )
+
     infix fun hvisJa(regel: () -> Regel) = this.copy(hvisJa = regel.invoke())
 
     infix fun hvisNei(regel: () -> Regel) = this.copy(hvisNei = regel.invoke())

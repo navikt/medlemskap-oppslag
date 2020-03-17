@@ -5,15 +5,21 @@ fun ja(begrunnelse: String) = Resultat(
         svar = Svar.JA
 )
 
+fun ja() = Resultat(svar = Svar.JA)
+
 fun nei(begrunnelse: String) = Resultat(
         begrunnelse = begrunnelse,
         svar = Svar.NEI
 )
 
+fun nei() = Resultat(svar = Svar.NEI)
+
 fun uavklart(begrunnelse: String) = Resultat(
         begrunnelse = begrunnelse,
         svar = Svar.UAVKLART
 )
+
+fun uavklart() = Resultat(svar = Svar.UAVKLART)
 
 fun sjekkRegelsett(metode: () -> Regler): Regel = metode.invoke().hentHovedRegel()
 
@@ -21,7 +27,7 @@ val uavklartKonklusjon = Regel(
         identifikator = "LOVME",
         avklaring = "Er bruker medlem?",
         beskrivelse = "",
-        operasjon = { uavklart("Kan ikke konkludere") }
+        operasjon = { uavklart("Kan ikke konkludere med medlemskap") }
 )
 
 val jaKonklusjon = Regel(

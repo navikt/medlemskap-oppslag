@@ -24,21 +24,21 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
 
     private val medl = Regel(
             identifikator = "OPP-1",
-            avklaring = "Finnes det registrerte opplysninger i MEDL",
+            avklaring = "Finnes det registrerte opplysninger i MEDL?",
             beskrivelse = "For å sjekke avklarte lovvalg og/eller medlemskap",
             operasjon = { sjekkPerioderIMedl() }
     )
 
     private val joark = Regel(
             identifikator = "OPP-2",
-            avklaring = "Finnes det dokumenter i JOARK på medlemskapsområdet",
+            avklaring = "Finnes det dokumenter i JOARK på medlemskapsområdet?",
             beskrivelse = "For å sjekke uregistrerte lovvalg og/eller medlemskap",
             operasjon = { tellDokumenter() }
     )
 
     private val gsak = Regel(
             identifikator = "OPP-3",
-            avklaring = "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet",
+            avklaring = "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?",
             beskrivelse = "For å sjekke uregistrerte lovvalg og/eller medlemskap",
             operasjon = { tellÅpneOppgaver() }
     )
@@ -48,21 +48,21 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
 
     private fun sjekkPerioderIMedl(): Resultat =
             when {
-                antall(personfakta.personensPerioderIMedl()) == 0 -> nei("Brukeren har ingen registrerte opplysninger i MEDL")
-                else -> ja("Brukeren har registrerte opplysninger i MEDL")
+                antall(personfakta.personensPerioderIMedl()) == 0 -> nei()
+                else -> ja()
             }
 
     private fun tellDokumenter(): Resultat =
             when {
-                antallDokumenter(personfakta.personensDokumenterIJoark()) > 0 -> ja("Brukeren har dokumenter på medlemskapsområdet")
-                else -> nei("Brukeren har ingen dokumenter på medlemskapsområdet")
+                antallDokumenter(personfakta.personensDokumenterIJoark()) > 0 -> ja()
+                else -> nei()
             }
 
 
     private fun tellÅpneOppgaver(): Resultat =
             when {
-                antallÅpneOppgaver(personfakta.personensOppgaverIGsak()) > 0 -> ja("Brukeren har åpne oppgaver i GOSYS på medlemskapsområdet")
-                else -> nei("Brukeren har ingen åpne oppgaver i GOSYS på medlemskapsområdet")
+                antallÅpneOppgaver(personfakta.personensOppgaverIGsak()) > 0 -> ja()
+                else -> nei()
             }
 
 
