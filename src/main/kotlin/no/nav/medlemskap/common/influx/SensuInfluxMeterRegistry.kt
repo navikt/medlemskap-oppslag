@@ -191,11 +191,11 @@ class SensuInfluxMeterRegistry private constructor(config: SensuInfluxConfig, cl
         return (getConventionName(id)
                 + tags + ",metric_type=" + metricType + " "
                 + fields.map { obj: Field -> obj.toString() }.collect(Collectors.joining(","))
-                + " " + clock.wallTime())
+                + " " + clock.wallTime() + "000000")
     }
 
     override fun getBaseTimeUnit(): TimeUnit {
-        return TimeUnit.MILLISECONDS
+        return TimeUnit.NANOSECONDS
     }
 
     class Builder internal constructor(private val config: SensuInfluxConfig) {
@@ -231,7 +231,7 @@ class SensuInfluxMeterRegistry private constructor(config: SensuInfluxConfig, cl
             json = "{" +
                     "\"name\":\"" + sensuName + "\"," +
                     "\"type\":\"metric\"," +
-                    "\"handlers\":[\"events\"]," +
+                    "\"handlers\":[\"events_nano\"]," +
                     "\"output\":\"" + output + "\"," +
                     "\"status\":0" +
                     "}"
