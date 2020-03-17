@@ -1,12 +1,22 @@
 query($ident: ID!, $bostedHistorikk: Boolean!){
-
-    hentPerson(ident: $ident) {
-        bostedsadresse(historikk: $bostedHistorikk) {
-            angittFlyttedato,
-            coAdressenavn,
-            vegadresse,
-            matrikkeladresse,
-            ukjentBosted
-        }
-    }
+  hentPerson(ident: $ident) {
+    adressebeskyttelse{
+      gradering
+    },
+    kjoenn{kjoenn},
+    navn{fornavn,mellomnavn,etternavn},
+      bostedsadresse(historikk: $bostedHistorikk) {
+          angittFlyttedato,
+          coAdressenavn,
+          ukjentBosted {
+             bostedskommune
+          },
+          vegadresse {
+            postnummer
+          },
+      matrikkeladresse {
+        postnummer
+      }
+      }
+  }
 }

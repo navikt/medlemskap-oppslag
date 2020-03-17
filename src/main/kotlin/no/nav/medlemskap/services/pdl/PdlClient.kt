@@ -62,6 +62,22 @@ class PdlClient(
 
     }
 
+    suspend fun hentNasjonalitet(fnr: String, callId: String): String {
+        return runWithRetryAndMetrics("PDL", "HentNasjonalitet", retry) {
+            httpClient.post<String> {
+                url("$baseUrl")
+                header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
+                header(HttpHeaders.ContentType, ContentType.Application.Json)
+                header(HttpHeaders.Accept, ContentType.Application.Json)
+                header("Nav-Call-Id", callId)
+                header("Nav-Consumer-Token", "Bearer ${stsClient.oidcToken()}")
+                header("Nav-Consumer-Id", configuration.sts.username)
+                body = hentNasjonalitetQuery(fnr)
+            }
+        }
+
+    }
+
     suspend fun healthCheck(): HttpResponse {
         return httpClient.options {
             url("$baseUrl")
