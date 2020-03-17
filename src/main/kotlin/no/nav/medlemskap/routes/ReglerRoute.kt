@@ -30,4 +30,7 @@ fun Routing.reglerRoute() {
             call.respond(hentVersjoner())
         }
     }
+
+
+
 }

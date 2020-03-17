@@ -107,7 +107,7 @@ private suspend fun createDatagrunnlag(
     val oppgaver = gosysOppgaver.await()
 
 
-    logger.apply { pdlHistorikk }
+    logger.info { pdlHistorikk }
 
 
     Datagrunnlag(
