@@ -1,6 +1,6 @@
 package no.nav.medlemskap.domene
 
-import no.nav.medlemskap.regler.common.Resultat
+import no.nav.medlemskap.regler.v2.common.Resultat
 import java.time.LocalDateTime
 
 data class Response (
@@ -8,6 +8,6 @@ data class Response (
         val versjonTjeneste: String,
         val versjonRegler: String,
         val datagrunnlag: Datagrunnlag,
-        val resultat: Resultat
+        val resultat: List<Resultat>
 )
 

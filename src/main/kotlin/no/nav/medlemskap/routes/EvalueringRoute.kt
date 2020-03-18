@@ -15,8 +15,8 @@ import no.nav.medlemskap.common.apiCounter
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Personfakta
-import no.nav.medlemskap.regler.common.Resultat
-import no.nav.medlemskap.regler.v1.RegelsettForMedlemskap
+import no.nav.medlemskap.regler.v2.Hovedregler
+import no.nav.medlemskap.regler.v2.common.Resultat
 import no.nav.medlemskap.services.Services
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -124,5 +124,5 @@ private suspend fun createDatagrunnlag(
 
 }
 
-private fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =
-        RegelsettForMedlemskap().evaluer(Personfakta.initialiserFakta(datagrunnlag))
+private fun evaluerData(datagrunnlag: Datagrunnlag): List<Resultat> =
+        Hovedregler(Personfakta.initialiserFakta(datagrunnlag)).kjørHovedregler()
