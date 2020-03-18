@@ -3,13 +3,13 @@ package no.nav.medlemskap.services.aareg
 import no.nav.medlemskap.domene.*
 
 
-fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, arbeidsgiversLand: Map<String, String>): List<Arbeidsforhold> {
+fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, arbeidsgiversLand: Map<String?, String?>, arbeidsgiverEnhetstype: Map<String?, String?>): List<Arbeidsforhold> {
     return arbeidsforhold.map {
         Arbeidsforhold(
                 periode = mapPeriodeTilArbeidsforhold(it),
                 utenlandsopphold = mapUtenLandsopphold(it),
                 arbeidsfolholdstype = mapArbeidsForholdType(it),
-                arbeidsgiver = mapArbeidsgiver(it, arbeidsgiversLand),
+                arbeidsgiver = mapArbeidsgiver(it, arbeidsgiversLand, arbeidsgiverEnhetstype),
                 arbeidsavtaler = mapArbeidsAvtaler(it)
 
         )
@@ -59,10 +59,9 @@ fun mapArbeidsForholdType(arbeidsforhold: AaRegArbeidsforhold): Arbeidsforholdst
     }
 }
 
-fun mapArbeidsgiver(arbeidsforhold: AaRegArbeidsforhold, arbeidsgiversLand: Map<String, String>): Arbeidsgiver {
-    val identifikator = arbeidsforhold.arbeidsgiver.organisasjonsnummer
-            ?: (arbeidsforhold.arbeidsgiver.offentligIdent ?: arbeidsforhold.arbeidsgiver.aktoerId)
-    return Arbeidsgiver(arbeidsforhold.type, arbeidsgiversLand[identifikator])
+fun mapArbeidsgiver(arbeidsforhold: AaRegArbeidsforhold, arbeidsgiversLand: Map<String?, String?>, arbeidsgiverEnhetstype: Map<String?, String?>): Arbeidsgiver {
+    val identifikator = arbeidsforhold.arbeidsgiver.offentligIdent ?: arbeidsforhold.arbeidsgiver.aktoerId
+    return Arbeidsgiver(arbeidsgiverEnhetstype[arbeidsforhold.arbeidsgiver.organisasjonsnummer], arbeidsgiversLand[identifikator])
 }
 
 fun mapPeriodeTilArbeidsavtale(arbeidsavtale: AaRegArbeidsavtale): Periode {
