@@ -45,9 +45,3 @@ class Hovedregler(personfakta: Personfakta) {
         return mutableResultat
     }
 }
-
-fun main() {
-    val list = mutableListOf(1, 2, 3, 4, 5)
-    Collections.rotate(list, 1)
-    println(list)
-}
