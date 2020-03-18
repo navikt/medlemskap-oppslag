@@ -6,7 +6,7 @@ data class HentPdlPersonResponse (
         val adressebeskyttelse: List<String>?,
         val kjoenn: List<String>?,
         val navn: List<Navn>?,
-        val bostedsadresse: List<Bostedsadresse>)
+        val bostedsadresse: List<Bostedsadresse>?)
 
 data class Navn (
         val fornavn: String?,
@@ -28,7 +28,6 @@ data class Metadata(
         val opplysningsId: String?,
         val master: String,
         val endringer: List<Endring>
-
 )
 
 enum class Endringstype {
