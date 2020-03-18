@@ -1,6 +1,6 @@
 package no.nav.medlemskap.services.pdl
-import org.joda.time.DateTime
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class HentPdlPersonResponse (
         val adressebeskyttelse: List<String>?,
@@ -39,15 +39,15 @@ enum class Endringstype {
 
 data class Endring(
         val type: Endringstype?,
-        val registrert: DateTime?,
+        val registrert: LocalDateTime?,
         val registrertAv: String?,
         val systemKilde: String?,
         val kilde: String?)
 
 data class FolkeregisterMetadata(
-        val ajourholdstidspunkt: DateTime?,
-        val gyldighetstidspunkt: DateTime?,
-        val opphoerstidspunkt: DateTime?,
+        val ajourholdstidspunkt: LocalDateTime?,
+        val gyldighetstidspunkt: LocalDateTime?,
+        val opphoerstidspunkt: LocalDateTime?,
         val kilde:  String?,
         val aarsak: String?,
         val sekvens:  Int?
