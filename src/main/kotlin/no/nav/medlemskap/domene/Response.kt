@@ -1,6 +1,6 @@
 package no.nav.medlemskap.domene
 
-import no.nav.medlemskap.regler.v2.common.Resultat
+import no.nav.medlemskap.regler.common.Resultat
 import java.time.LocalDateTime
 
 data class Response (

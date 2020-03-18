@@ -3,9 +3,8 @@ package no.nav.medlemskap.regler.v1
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.regler.common.Personfakta
+import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.personer.Personleser
-import no.nav.medlemskap.regler.v2.Hovedregler
-import no.nav.medlemskap.regler.v2.common.Svar
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

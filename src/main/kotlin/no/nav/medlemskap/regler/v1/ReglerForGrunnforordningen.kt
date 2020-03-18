@@ -1,8 +1,7 @@
-package no.nav.medlemskap.regler.v2.regler
+package no.nav.medlemskap.regler.v1
 
+import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.harAlle
-import no.nav.medlemskap.regler.common.Personfakta
-import no.nav.medlemskap.regler.v2.common.*
 
 class ReglerForGrunnforordningen(val personfakta: Personfakta) : Regler() {
 

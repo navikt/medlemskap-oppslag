@@ -2,9 +2,8 @@ package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.regler.common.Personfakta.Companion.initialiserFakta
+import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.personer.Personleser
-import no.nav.medlemskap.regler.v2.common.Svar
-import no.nav.medlemskap.regler.v2.regler.ReglerForRegistrerteOpplysninger
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 

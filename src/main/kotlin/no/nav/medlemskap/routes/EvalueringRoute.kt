@@ -15,8 +15,8 @@ import no.nav.medlemskap.common.apiCounter
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Personfakta
-import no.nav.medlemskap.regler.v2.Hovedregler
-import no.nav.medlemskap.regler.v2.common.Resultat
+import no.nav.medlemskap.regler.common.Resultat
+import no.nav.medlemskap.regler.v1.Hovedregler
 import no.nav.medlemskap.services.Services
 import java.time.LocalDate
 import java.time.LocalDateTime

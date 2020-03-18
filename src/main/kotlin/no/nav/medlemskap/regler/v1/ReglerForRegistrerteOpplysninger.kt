@@ -1,12 +1,11 @@
-package no.nav.medlemskap.regler.v2.regler
+package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.Journalpost
 import no.nav.medlemskap.domene.Oppgave
 import no.nav.medlemskap.domene.Status
+import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.antall
 import no.nav.medlemskap.regler.common.Funksjoner.erDelAv
-import no.nav.medlemskap.regler.common.Personfakta
-import no.nav.medlemskap.regler.v2.common.*
 
 class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() {
 

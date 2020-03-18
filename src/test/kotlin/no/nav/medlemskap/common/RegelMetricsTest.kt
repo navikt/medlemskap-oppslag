@@ -13,7 +13,7 @@ import io.micrometer.core.instrument.simple.SimpleConfig
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import no.nav.medlemskap.regler.common.Personfakta.Companion.initialiserFakta
 import no.nav.medlemskap.regler.personer.Personleser
-import no.nav.medlemskap.regler.v2.regler.ReglerForGrunnforordningen
+import no.nav.medlemskap.regler.v1.ReglerForGrunnforordningen
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test

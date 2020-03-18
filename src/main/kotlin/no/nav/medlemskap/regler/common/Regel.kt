@@ -1,4 +1,4 @@
-package no.nav.medlemskap.regler.v2.common
+package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.common.regelCounter
 

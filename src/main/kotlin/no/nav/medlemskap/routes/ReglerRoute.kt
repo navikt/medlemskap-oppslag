@@ -10,7 +10,7 @@ import io.ktor.routing.route
 import no.nav.medlemskap.common.hentVersjoner
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.regler.common.Personfakta
-import no.nav.medlemskap.regler.v2.Hovedregler
+import no.nav.medlemskap.regler.v1.Hovedregler
 
 fun Routing.reglerRoute() {
     route("/regler") {
