@@ -23,22 +23,24 @@ fun uavklart() = Resultat(svar = Svar.UAVKLART)
 
 fun sjekkRegelsett(metode: () -> Regler): Regel = metode.invoke().hentHovedRegel()
 
+const val konklusjonIdentifikator = "LOVME"
+
 val uavklartKonklusjon = Regel(
-        identifikator = "LOVME",
+        identifikator = konklusjonIdentifikator,
         avklaring = "Er bruker medlem?",
         beskrivelse = "",
         operasjon = { uavklart("Kan ikke konkludere med medlemskap") }
 )
 
 val jaKonklusjon = Regel(
-        identifikator = "LOVME",
+        identifikator = konklusjonIdentifikator,
         avklaring = "Er bruker medlem?",
         beskrivelse = "",
         operasjon = { ja("Bruker er medlem") }
 )
 
 val neiKonklusjon = Regel(
-        identifikator = "LOVME",
+        identifikator = konklusjonIdentifikator,
         avklaring = "Er bruker medlem?",
         beskrivelse = "",
         operasjon = { nei("Bruker er ikke medlem") }

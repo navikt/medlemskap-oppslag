@@ -7,6 +7,7 @@ import no.nav.medlemskap.regler.v2.common.uavklartKonklusjon
 import no.nav.medlemskap.regler.v2.regler.ReglerForArbeidsforhold
 import no.nav.medlemskap.regler.v2.regler.ReglerForGrunnforordningen
 import no.nav.medlemskap.regler.v2.regler.ReglerForRegistrerteOpplysninger
+import java.util.*
 
 class Hovedregler(personfakta: Personfakta) {
 
@@ -35,6 +36,18 @@ class Hovedregler(personfakta: Personfakta) {
 
     fun kjørHovedregler(): List<Resultat> {
         hentHovedRegel().utfør(resultatliste)
-        return resultatliste
+        return resultatliste.medKonklusjonFørst()
     }
+
+    private fun List<Resultat>.medKonklusjonFørst(): List<Resultat> {
+        val mutableResultat = this.toMutableList()
+        Collections.rotate(mutableResultat, 1)
+        return mutableResultat
+    }
+}
+
+fun main() {
+    val list = mutableListOf(1, 2, 3, 4, 5)
+    Collections.rotate(list, 1)
+    println(list)
 }
