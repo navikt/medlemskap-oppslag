@@ -10,19 +10,19 @@ import io.ktor.routing.route
 import no.nav.medlemskap.common.hentVersjoner
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.regler.common.Personfakta
-import no.nav.medlemskap.regler.v1.RegelsettForMedlemskap
+import no.nav.medlemskap.regler.v2.Hovedregler
 
 fun Routing.reglerRoute() {
     route("/regler") {
         post {
             val datagrunnlag: Datagrunnlag = call.receive()
-            call.respond(RegelsettForMedlemskap().evaluer(Personfakta.initialiserFakta(datagrunnlag)))
+            call.respond(Hovedregler(Personfakta.initialiserFakta(datagrunnlag)).kjørHovedregler())
         }
     }
     route("/regler/v1") {
         post {
             val datagrunnlag: Datagrunnlag = call.receive()
-            call.respond(RegelsettForMedlemskap().evaluer(Personfakta.initialiserFakta(datagrunnlag)))
+            call.respond(Hovedregler(Personfakta.initialiserFakta(datagrunnlag)).kjørHovedregler())
         }
     }
     route("/regler/versions") {
