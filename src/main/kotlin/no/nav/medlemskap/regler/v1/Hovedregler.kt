@@ -1,12 +1,9 @@
-package no.nav.medlemskap.regler.v2
+package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.regler.common.Personfakta
-import no.nav.medlemskap.regler.v2.common.Resultat
-import no.nav.medlemskap.regler.v2.common.sjekkRegelsett
-import no.nav.medlemskap.regler.v2.common.uavklartKonklusjon
-import no.nav.medlemskap.regler.v2.regler.ReglerForArbeidsforhold
-import no.nav.medlemskap.regler.v2.regler.ReglerForGrunnforordningen
-import no.nav.medlemskap.regler.v2.regler.ReglerForRegistrerteOpplysninger
+import no.nav.medlemskap.regler.common.Resultat
+import no.nav.medlemskap.regler.common.sjekkRegelsett
+import no.nav.medlemskap.regler.common.uavklartKonklusjon
 import java.util.*
 
 class Hovedregler(personfakta: Personfakta) {

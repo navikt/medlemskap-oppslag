@@ -1,4 +1,6 @@
-package no.nav.medlemskap.regler.v2.common
+package no.nav.medlemskap.regler.common
+
+import no.nav.medlemskap.common.regelCounter
 
 data class Regel(
         val identifikator: String,
@@ -9,7 +11,9 @@ data class Regel(
         val hvisNei: Regel? = null
 ) {
     fun utfør(resultatliste: MutableList<Resultat>): Resultat {
-        val resultat = operasjon.invoke().copy(
+        val resultat = operasjon.invoke().apply {
+            regelCounter(avklaring.replace("?", ""), this.svar.name).increment()
+        }.copy(
                 identifikator = identifikator,
                 avklaring = avklaring
         )
@@ -25,7 +29,9 @@ data class Regel(
         return resultat
     }
 
-    fun utfør(): Resultat = operasjon.invoke().copy(
+    fun utfør(): Resultat = operasjon.invoke().apply {
+        regelCounter(avklaring.replace("?", ""), this.svar.name).increment()
+    }.copy(
             identifikator = identifikator,
             avklaring = avklaring
     )

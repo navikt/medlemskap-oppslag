@@ -1,7 +1,6 @@
-package no.nav.medlemskap.regler.v2.regler
+package no.nav.medlemskap.regler.v1
 
-import no.nav.medlemskap.regler.common.Personfakta
-import no.nav.medlemskap.regler.v2.common.*
+import no.nav.medlemskap.regler.common.*
 
 class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
 

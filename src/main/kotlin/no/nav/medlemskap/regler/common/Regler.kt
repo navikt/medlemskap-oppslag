@@ -1,4 +1,4 @@
-package no.nav.medlemskap.regler.v2.common
+package no.nav.medlemskap.regler.common
 
 abstract class Regler {
 
