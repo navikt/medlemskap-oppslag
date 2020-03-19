@@ -8,6 +8,6 @@ data class Response (
         val versjonTjeneste: String,
         val versjonRegler: String,
         val datagrunnlag: Datagrunnlag,
-        val resultat: Resultat
+        val resultat: List<Resultat>
 )
 

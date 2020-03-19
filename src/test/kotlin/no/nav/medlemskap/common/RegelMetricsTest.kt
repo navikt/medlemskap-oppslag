@@ -13,7 +13,7 @@ import io.micrometer.core.instrument.simple.SimpleConfig
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import no.nav.medlemskap.regler.common.Personfakta.Companion.initialiserFakta
 import no.nav.medlemskap.regler.personer.Personleser
-import no.nav.medlemskap.regler.v1.RegelsettForGrunnforordningen
+import no.nav.medlemskap.regler.v1.ReglerForGrunnforordningen
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -48,7 +48,7 @@ class RegelMetricsTest {
     fun `evaluering av regelsett for eøs forordningen for amerikansk statsborgerskap gir to metrikker`() {
         gjørNoeMagiJegIkkeForstår()
 
-        RegelsettForGrunnforordningen().evaluer(initialiserFakta(personleser.enkelAmerikansk()))
+        ReglerForGrunnforordningen(initialiserFakta(personleser.enkelAmerikansk())).hentHovedRegel().utfør(mutableListOf())
 
         gjørNoeMagiJegIkkeForstår()
 

@@ -1,6 +1,5 @@
 package no.nav.medlemskap.regler.common
 
-import no.nav.medlemskap.common.regelCounter
 import no.nav.medlemskap.domene.*
 import org.threeten.extra.Interval
 import java.time.LocalDate
@@ -61,14 +60,4 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return datagrunnlag.arbeidsforhold.filter {filtrerListe(periodeDatagrunnlag, Periode(it.periode.fom, it.periode.tom))
         }
     }
-
-    infix fun oppfyller(avklaring: Avklaring): Resultat {
-        val resultat = avklaring.operasjon.invoke(this).apply {
-            regelCounter(avklaring.avklaring.replace("?", ""), this.resultat.name).increment()
-        }
-        return resultat.copy(identifikator = avklaring.identifikator, avklaring = avklaring.avklaring)
-    }
-
-    infix fun oppfyller(regelsett: Regelsett): Resultat = regelsett.evaluer(this)
-
 }

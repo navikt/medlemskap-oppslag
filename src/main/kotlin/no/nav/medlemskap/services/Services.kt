@@ -10,6 +10,7 @@ import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.config.retryRegistry
 import no.nav.medlemskap.services.aareg.AaRegClient
 import no.nav.medlemskap.services.aareg.AaRegService
+import no.nav.medlemskap.services.ereg.EregClient
 import no.nav.medlemskap.services.inntekt.InntektClient
 import no.nav.medlemskap.services.inntekt.InntektService
 import no.nav.medlemskap.services.medl.MedlClient
@@ -41,6 +42,7 @@ class Services(val configuration: Configuration) {
     val oppgaveService: OppgaveService
     private val pdlClient: PdlClient
     val pdlService: PdlService
+    private val eregClient: EregClient
 
     val healthService: HealthService
     private val healthReporter: HealthReporter
@@ -77,16 +79,17 @@ class Services(val configuration: Configuration) {
         personService = PersonService(personClient)
         medlClient = restClients.medl2(configuration.register.medl2BaseUrl)
         medlService = MedlService(medlClient)
+        pdlClient = restClients.pdl(configuration.register.pdlBaseUrl)
+        pdlService = PdlService(pdlClient)
+        eregClient = restClients.ereg(configuration.register.eregBaseUrl)
         aaRegClient = restClients.aaReg(configuration.register.aaRegBaseUrl)
-        aaRegService = AaRegService(aaRegClient)
+        aaRegService = AaRegService(aaRegClient, eregClient, pdlClient)
         inntektClient = restClients.inntektskomponenten(configuration.register.inntektBaseUrl)
         inntektService = InntektService(inntektClient)
         safClient = restClients.saf(configuration.register.safBaseUrl)
         safService = SafService(safClient)
         oppgaveClient = restClients.oppgaver(configuration.register.oppgaveBaseUrl)
         oppgaveService = OppgaveService(oppgaveClient)
-        pdlClient = restClients.pdl(configuration.register.pdlBaseUrl)
-        pdlService = PdlService(pdlClient)
 
         healthService = HealthService(setOf(
                 //HttpResponseHealthCheck("AaReg", { aaRegClient.healthCheck() }),

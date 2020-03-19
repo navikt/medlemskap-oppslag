@@ -10,24 +10,29 @@ import io.ktor.routing.Routing
 import io.ktor.routing.post
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import no.nav.medlemskap.common.API_COUNTER
+import mu.KotlinLogging
+import no.nav.medlemskap.common.apiCounter
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Personfakta
 import no.nav.medlemskap.regler.common.Resultat
-import no.nav.medlemskap.regler.v1.RegelsettForMedlemskap
+import no.nav.medlemskap.regler.v1.Hovedregler
 import no.nav.medlemskap.services.Services
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
+private val logger = KotlinLogging.logger { }
+
+
 fun Routing.evalueringRoute(
         services: Services,
         useAuthentication: Boolean,
         configuration: Configuration) {
+
     fun receiveAndRespond() {
         post("/") {
-            API_COUNTER.increment()
+            apiCounter().increment()
             val request = validerRequest(call.receive())
             val callId = call.callId ?: UUID.randomUUID().toString()
             val aktorId = services.pdlService.hentAktorId(request.fnr, callId)
@@ -84,6 +89,8 @@ private suspend fun createDatagrunnlag(
         brukerinput: Brukerinput,
         services: Services): Datagrunnlag = coroutineScope {
 
+
+    val pdlHistorikkRequest = async { services.pdlService.hentPersonHistorikk(fnr, callId) }
     val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr, periode.fom) }
     val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(fnr, callId) }
     val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr, callId) }
@@ -91,13 +98,17 @@ private suspend fun createDatagrunnlag(
     val journalPosterRequest = async { services.safService.hentJournaldata(fnr, callId) }
     val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktoer, callId) }
 
-
+    val pdlHistorikk = pdlHistorikkRequest.await()
     val historikkFraTps = historikkFraTpsRequest.await()
     val medlemskapsunntak = medlemskapsunntakRequest.await()
     val arbeidsforhold = arbeidsforholdRequest.await()
     val inntektListe = inntektListeRequest.await()
     val journalPoster = journalPosterRequest.await()
     val oppgaver = gosysOppgaver.await()
+
+
+    logger.info { pdlHistorikk }
+
 
     Datagrunnlag(
             periode = periode,
@@ -109,7 +120,9 @@ private suspend fun createDatagrunnlag(
             oppgaver = oppgaver,
             dokument = journalPoster
     )
+
+
 }
 
-private fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =
-        RegelsettForMedlemskap().evaluer(Personfakta.initialiserFakta(datagrunnlag))
+private fun evaluerData(datagrunnlag: Datagrunnlag): List<Resultat> =
+        Hovedregler(Personfakta.initialiserFakta(datagrunnlag)).kjørHovedregler()
