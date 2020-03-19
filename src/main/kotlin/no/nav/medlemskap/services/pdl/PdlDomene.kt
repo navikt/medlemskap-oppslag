@@ -24,7 +24,7 @@ data class GraphqlQuery(
 
 data class Variables(
         val ident: String,
-        val navnHistorikk: Boolean = false,
+        val navnHistorikk: Boolean,
         val grupper: List<IdentGruppe> = listOf(IdentGruppe.AKTORID, IdentGruppe.FOLKEREGISTERIDENT, IdentGruppe.NPID)
 )
 
@@ -47,7 +47,7 @@ data class PdlErrorExtension(
 
 fun hentIndenterQuery(fnr: String): GraphqlQuery {
     val query = GraphqlQuery::class.java.getResource("/pdl/hentIdenter.graphql").readText().replace("[\n\r]", "")
-    return GraphqlQuery(query, Variables(fnr))
+    return GraphqlQuery(query, Variables(fnr, false))
 }
 
 
@@ -58,6 +58,6 @@ fun hentPersonQuery(fnr: String): GraphqlQuery{
 
 fun hentNasjonalitetQuery(fnr: String): GraphqlQuery {
     val query = GraphqlQuery::class.java.getResource("/pdl/hentNasjonalitet.graphql").readText().replace("[\n\r]", "")
-    return GraphqlQuery(query, Variables(fnr))
+    return GraphqlQuery(query, Variables(fnr, false))
 }
 
