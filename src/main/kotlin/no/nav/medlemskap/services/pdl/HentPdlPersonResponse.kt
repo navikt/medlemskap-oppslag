@@ -4,10 +4,6 @@ import java.time.LocalDateTime
 
 
 data class HentPdlPersonResponse (
-        val data: PdlPerson,
-        val errors: List<PdlError>)
-
-data class PdlPerson(
         val adressebeskyttelse: List<String>,
         val kjoenn: List<String>,
         val navn: List<Navn>,
