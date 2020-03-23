@@ -4,10 +4,24 @@ import java.time.LocalDateTime
 
 
 data class HentPdlPersonResponse (
-        val adressebeskyttelse: List<String>,
+        val adressebeskyttelse: Adressebeskyttelse,
         val kjoenn: List<String>,
         val navn: List<Navn>,
         val bostedsadresse: List<Bostedsadresse>)
+
+
+data class Adressebeskyttelse(
+        val gradering: AdressebeskyttelseGradering,
+        val folkeregisterMetadata: FolkeregisterMetadata,
+        val metadata: Metadata
+)
+
+enum class AdressebeskyttelseGradering {
+    STRENGT_FORTROLIG,
+    FORTROLIG,
+    UGRADERT,
+}
+
 
 data class Navn (
         val fornavn: String?,
