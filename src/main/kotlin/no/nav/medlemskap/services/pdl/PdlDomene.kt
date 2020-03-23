@@ -1,6 +1,7 @@
 package no.nav.medlemskap.services.pdl
 
 
+
 data class HentIdenterResponse(val data: Data, val errors: List<PdlError>?)
 
 data class Data(val hentIdenter: Identliste?)
