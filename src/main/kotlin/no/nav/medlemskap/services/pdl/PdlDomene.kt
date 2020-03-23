@@ -23,6 +23,16 @@ data class GraphqlQuery(
         val variables: Variables
 )
 
+data class PersonGraphqlQuery(
+        val query: String,
+        val variables: hentBostedVariabler
+)
+
+data class hentBostedVariabler(
+        val ident: String,
+        val bostedsHistorikk: Boolean
+)
+
 data class Variables(
         val ident: String,
         val navnHistorikk: Boolean,
@@ -52,9 +62,9 @@ fun hentIndenterQuery(fnr: String): GraphqlQuery {
 }
 
 
-fun hentPersonQuery(fnr: String): GraphqlQuery{
+fun hentPersonQuery(fnr: String): PersonGraphqlQuery{
     val query = GraphqlQuery::class.java.getResource("/pdl/hentPerson.graphql").readText().replace("[\n\r]", "")
-    return GraphqlQuery(query, Variables(fnr, true))
+    return PersonGraphqlQuery(query, hentBostedVariabler(fnr, true))
 }
 
 fun hentNasjonalitetQuery(fnr: String): GraphqlQuery {
