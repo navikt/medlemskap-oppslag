@@ -2,10 +2,15 @@ package no.nav.medlemskap.services.pdl
 import java.time.LocalDate
 import java.time.LocalDateTime
 
+
 data class HentPdlPersonResponse (
-        val adressebeskyttelse: List<String>?,
-        val kjoenn: List<String>?,
-        val navn: List<Navn>?,
+        val data: PdlPerson,
+        val errors: List<PdlError>)
+
+data class PdlPerson(
+        val adressebeskyttelse: List<String>,
+        val kjoenn: List<String>,
+        val navn: List<Navn>,
         val bostedsadresse: List<Bostedsadresse>)
 
 data class Navn (
@@ -28,7 +33,6 @@ data class Metadata(
         val opplysningsId: String?,
         val master: String,
         val endringer: List<Endring>
-
 )
 
 enum class Endringstype {
