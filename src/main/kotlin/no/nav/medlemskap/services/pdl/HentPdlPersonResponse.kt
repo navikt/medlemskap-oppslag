@@ -7,8 +7,7 @@ data class HentPdlPersonResponse (val data: Person, val errors: List<PdlError>?)
 
 
 data class Person (
-
-        val adressebeskyttelse: Adressebeskyttelse,
+        val adressebeskyttelse: List<Adressebeskyttelse>,
         val kjoenn: List<String>,
         val navn: List<Navn>,
         val bostedsadresse: List<Bostedsadresse>)
