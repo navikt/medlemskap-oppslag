@@ -13,11 +13,14 @@ data class Person(
         val bostedsadresse: List<Bostedsadresse>)
 
 
+
 data class Adressebeskyttelse(
         val gradering: AdressebeskyttelseGradering,
-        val folkeregisterMetadata: FolkeregisterMetadata,
+        val folkeregistermetadata: FolkeregisterMetadata,
         val metadata: Metadata
 )
+
+
 
 enum class AdressebeskyttelseGradering {
     STRENGT_FORTROLIG,
