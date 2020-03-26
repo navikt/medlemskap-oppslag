@@ -1,0 +1,32 @@
+{
+  "periode": {
+    "fom": "2020-01-15",
+    "tom": "2020-01-30"
+  },
+  "brukerinput": {
+    "arbeidUtenforNorge": false
+  },
+  "personhistorikk": {
+    "statsborgerskap": [
+      {
+        "landkode": "NOR",
+        "fom": "2000-01-30",
+        "tom": null
+      },
+      {
+        "landkode": "PHL",
+        "fom": "2000-01-30",
+        "tom": null
+      }
+    ],
+    "personstatuser": [],
+    "bostedsadresser": [],
+    "postadresser": [],
+    "midlertidigAdresser": []
+  },
+  "medlemskapsunntak": [],
+  "arbeidsforhold": [],
+  "inntekt": [],
+  "oppgaver": [],
+  "dokument": []
+}

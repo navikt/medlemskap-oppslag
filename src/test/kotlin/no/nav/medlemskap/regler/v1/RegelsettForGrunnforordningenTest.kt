@@ -22,13 +22,18 @@ class RegelsettForGrunnforordningenTest {
     }
 
     @Test
-    fun `person med flere statsborgerskap som overlapper periode får nei`() {
-        assertEquals(Svar.NEI, evaluer(personleser.norskMedFlereStatsborgerskapUtenforPeriode()))
+    fun `person med ulike EØS statsborgerskap på sjekk-datoer får ja`() {
+        assertEquals(Svar.JA, evaluer(personleser.norskMedUlikeEøsStatsborgerskap()))
     }
 
     @Test
-    fun `person med ett amerikansk statsborgerskap gir resuktat nei`() {
+    fun `person med ett amerikansk statsborgerskap gir resultat nei`() {
         assertEquals(Svar.NEI, evaluer(personleser.enkelAmerikansk()))
+    }
+
+    @Test
+    fun `person med dobbelt statsborgerskap der det ene er norsk, gir ja`() {
+        assertEquals(Svar.JA, evaluer(personleser.norskDobbeltStatsborgerskap()))
     }
 
     private fun evaluer(datagrunnlag: Datagrunnlag): Svar {

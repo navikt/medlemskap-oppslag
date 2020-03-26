@@ -8,7 +8,8 @@ import java.time.ZoneId
 
 class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
-    private val FØRSTE_DAG_MINUS_1 = datagrunnlag.periode.fom.minusDays(1)
+    val SISTE_DAG_I_KONTROLLPERIODE = datagrunnlag.periode.fom.minusDays(1)
+    val FØRSTE_DAG_I_KONTROLLPERIODE = SISTE_DAG_I_KONTROLLPERIODE.minusMonths(12)
 
     companion object {
         fun initialiserFakta(datagrunnlag: Datagrunnlag) = Personfakta(datagrunnlag)
@@ -20,16 +21,10 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     fun personensDokumenterIJoark(): List<Journalpost> = datagrunnlag.dokument
 
-    fun hentAktuelleStatsborgerskap(): List<Statsborgerskap> {
-        val periodeSomSkalSjekkes =
-                lagInterval(Periode(
-                        FØRSTE_DAG_MINUS_1.minusMonths(12),
-                        FØRSTE_DAG_MINUS_1
-                ))
-        return datagrunnlag.personhistorikk.statsborgerskap.filter {
-            periodefilter(periodeSomSkalSjekkes, Periode(it.fom, it.tom))
-        }
-    }
+    fun hentStatsborgerskapFor(dato: LocalDate): List<String> =
+            datagrunnlag.personhistorikk.statsborgerskap.filter {
+                lagInterval(Periode(it.fom, it.tom)).contains(lagInstant(dato))
+            }.map { it.landkode }
 
     private fun periodefilter(periodeDatagrunnlag: Interval, periode: Periode): Boolean {
         return periodeDatagrunnlag.overlaps(lagInterval(periode)) || periodeDatagrunnlag.encloses(lagInterval(periode))
@@ -44,8 +39,10 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     private fun lagInterval(periode: Periode): Interval {
         val fom = periode.fom ?: LocalDate.MIN
         val tom = periode.tom ?: LocalDate.MAX
-        return Interval.of(fom.atStartOfDay(ZoneId.systemDefault()).toInstant(), tom.atStartOfDay(ZoneId.systemDefault()).toInstant())
+        return Interval.of(lagInstant(fom), lagInstant(tom))
     }
+
+    private fun lagInstant(date: LocalDate) = date.atStartOfDay(ZoneId.systemDefault()).toInstant()
 
     fun sisteArbeidsforholdtype(): List<String> {
         return hentArbeidsforholdIPeriode().map { it.arbeidsfolholdstype.navn }

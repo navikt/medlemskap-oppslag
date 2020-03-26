@@ -1,8 +1,7 @@
 package no.nav.medlemskap.regler.v1
 
-import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.common.Funksjoner.harAlle
+import no.nav.medlemskap.regler.common.Funksjoner.finnesI
 
 class ReglerForGrunnforordningen(val personfakta: Personfakta) : Regler() {
 
@@ -21,14 +20,14 @@ class ReglerForGrunnforordningen(val personfakta: Personfakta) : Regler() {
             operasjon = { sjekkStatsborgerskap() }
     )
 
-    private fun sjekkStatsborgerskap(): Resultat =
-            when {
-                eøsLand harAlle personfakta.hentAktuelleStatsborgerskap() -> ja()
-                else -> nei("Brukeren er ikke statsborger i et EØS-land(${personfakta.hentAktuelleStatsborgerskap()}).")
-            }
-
-    private fun kunEttEøsLand(statsborgerskapListe: List<Statsborgerskap>) =
-            statsborgerskapListe.size == 1 && eøsLand harAlle statsborgerskapListe
+    private fun sjekkStatsborgerskap(): Resultat {
+        val førsteStatsborgerskap = personfakta.hentStatsborgerskapFor(personfakta.FØRSTE_DAG_I_KONTROLLPERIODE)
+        val sisteStatsborgerskap = personfakta.hentStatsborgerskapFor(personfakta.SISTE_DAG_I_KONTROLLPERIODE)
+        return when {
+            eøsLand finnesI førsteStatsborgerskap && eøsLand finnesI sisteStatsborgerskap -> ja()
+            else -> nei("Brukeren er ikke statsborger i et EØS-land.")
+        }
+    }
 
     private val eøsLand = mapOf(
             "BEL" to "BELGIA",
