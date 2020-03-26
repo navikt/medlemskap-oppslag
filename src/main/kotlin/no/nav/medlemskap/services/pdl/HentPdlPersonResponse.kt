@@ -5,9 +5,8 @@ import java.time.LocalDateTime
 
 data class HentPdlPersonResponse (val data: HentPerson?, val errors: List<PdlError>?)
 
-data class HentPerson(val person: Person)
-
-data class Person (
+data class HentPerson(val hentPerson: Person)
+data class Person(
         val adressebeskyttelse: List<Adressebeskyttelse>,
         val kjoenn: List<String>,
         val navn: List<Navn>,
