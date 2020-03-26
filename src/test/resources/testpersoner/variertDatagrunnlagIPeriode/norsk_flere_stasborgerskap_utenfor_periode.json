@@ -1,32 +1,32 @@
-
 {
     "periode": {
-    "fom": "2020-01-30",
-    "tom": "2021-01-30"
-},
-    "brukerinput" : {
-    "arbeidUtenforNorge" : false
-},
-    "personhistorikk" : {
-    "statsborgerskap" : [ {
-    "landkode" : "PHL",
-    "fom" : "1991-02-20",
-    "tom" : "2020-06-29"
-},
-    {
-        "landkode" : "NOR",
-        "fom" : "2020-06-30",
-        "tom" : null
-    }
-    ],
-    "personstatuser" : [ ],
-    "bostedsadresser" : [ ],
-    "postadresser" : [ ],
-    "midlertidigAdresser" : [ ]
-},
-    "medlemskapsunntak" : [ ],
-    "arbeidsforhold" : [ ],
-    "inntekt" : [ ],
-    "oppgaver" : [ ],
-    "dokument" : [ ]
+        "fom": "2020-01-30",
+        "tom": "2021-01-30"
+    },
+    "brukerinput": {
+        "arbeidUtenforNorge": false
+    },
+    "personhistorikk": {
+        "statsborgerskap": [
+            {
+                "landkode": "PHL",
+                "fom": "1991-02-20",
+                "tom": "2020-06-29"
+            },
+            {
+                "landkode": "NOR",
+                "fom": "2020-06-30",
+                "tom": null
+            }
+        ],
+        "personstatuser": [],
+        "bostedsadresser": [],
+        "postadresser": [],
+        "midlertidigAdresser": []
+    },
+    "medlemskapsunntak": [],
+    "arbeidsforhold": [],
+    "inntekt": [],
+    "oppgaver": [],
+    "dokument": []
 }
