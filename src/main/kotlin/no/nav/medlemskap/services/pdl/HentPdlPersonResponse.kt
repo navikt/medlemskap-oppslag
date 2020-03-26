@@ -3,10 +3,11 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 
-//data class HentPdlPersonResponse (val data: Person, val errors: List<PdlError>?)
+data class HentPdlPersonResponse (val data: HentPerson, val errors: List<PdlError>?)
 
+data class HentPerson(val person: Person)
 
-data class HentPdlPersonResponse (
+data class Person (
         val adressebeskyttelse: List<Adressebeskyttelse>,
         val kjoenn: List<String>,
         val navn: List<Navn>,
