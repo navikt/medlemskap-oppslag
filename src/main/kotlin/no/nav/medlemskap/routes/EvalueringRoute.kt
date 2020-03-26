@@ -112,6 +112,7 @@ private suspend fun createDatagrunnlag(
 
     Datagrunnlag(
             periode = periode,
+            pdl = pdlHistorikk,
             brukerinput = brukerinput,
             personhistorikk = historikkFraTps,
             medlemskapsunntak = medlemskapsunntak,
