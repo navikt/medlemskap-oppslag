@@ -13,10 +13,9 @@ data class Person(
         val bostedsadresse: List<Bostedsadresse>)
 
 
-
 data class Adressebeskyttelse(
         val gradering: AdressebeskyttelseGradering,
-        val folkeregistermetadata: FolkeregisterMetadata,
+        val folkeregistermetadata: Folkeregistermetadata,
         val metadata: Metadata
 )
 
@@ -41,7 +40,7 @@ data class Bostedsadresse(
         val adresse: String?,
         val matrikkeladresse: Matrikkeladresse?,
         val ukjentBosted: UkjentBosted?,
-        val folkeregisterMetadata: FolkeregisterMetadata,
+        val folkeregisterMetadata: Folkeregistermetadata,
         val metadata: Metadata)
 
 
@@ -64,7 +63,7 @@ data class Endring(
         val systemKilde: String?,
         val kilde: String?)
 
-data class FolkeregisterMetadata(
+data class Folkeregistermetadata(
         val ajourholdstidspunkt: LocalDateTime?,
         val gyldighetstidspunkt: LocalDateTime?,
         val opphoerstidspunkt: LocalDateTime?,
@@ -72,7 +71,6 @@ data class FolkeregisterMetadata(
         val aarsak: String?,
         val sekvens:  Int?
 )
-
 
 data class Matrikkeladresse(
         val matrikkelId: Int?,
