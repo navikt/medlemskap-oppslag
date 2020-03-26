@@ -39,8 +39,8 @@ enum class AdressebeskyttelseGradering {
 
 
 data class Navn (
-        val fornavn: String?,
-        val mellomnavn: String,
+        val fornavn: String,
+        val mellomnavn: String?,
         val etternavn: String? )
 
 data class Bostedsadresse(
