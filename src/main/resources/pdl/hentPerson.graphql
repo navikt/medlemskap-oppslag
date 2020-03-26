@@ -4,6 +4,7 @@ query($ident: ID!, $bostedHistorikk: Boolean!){
       gradering
     },
     kjoenn{kjoenn},
+    statsborgerskap{land, gyldigFraOgMed, gyldigTilOgMed},
     navn{fornavn,mellomnavn,etternavn},
       bostedsadresse(historikk: $bostedHistorikk) {
           angittFlyttedato,
