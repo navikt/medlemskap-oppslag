@@ -14,7 +14,7 @@ data class Person(
 
 
 data class Adressebeskyttelse(
-        val gradering: AdressebeskyttelseGradering,
+        val gradering: AdressebeskyttelseGradering
        // val folkeregistermetadata: Folkeregistermetadata,
        // val metadata: Metadata
 )
