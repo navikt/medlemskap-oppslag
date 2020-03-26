@@ -15,30 +15,42 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
             }
 
     private val harBrukerRegistrerteOpplysninger = Regel(
-            identifikator = "OPP",
+            identifikator = "OPPLYSNINGER",
             avklaring = "Finnes det registrerte opplysninger på bruker?",
             beskrivelse = "For å sjekke uregistrerte lovvalg og/eller medlemskap",
             operasjon = { minstEnAvDisse(medl, joark, gsak) }
     )
 
     private val medl = Regel(
-            identifikator = "OPP-1",
+            identifikator = "OPPLYSNINGER-MEDL",
             avklaring = "Finnes det registrerte opplysninger i MEDL?",
-            beskrivelse = "For å sjekke avklarte lovvalg og/eller medlemskap",
+            beskrivelse = """
+                Vedtak (gjort av NAV eller utenlandsk trygdemyndighet) som er registrert i MEDL, 
+                må vurderes manuelt og det må vurderes om brukers situasjon er uendret i forhold 
+                til situasjonen på vedtakstidspunktet.
+            """.trimIndent(),
             operasjon = { sjekkPerioderIMedl() }
     )
 
     private val joark = Regel(
-            identifikator = "OPP-2",
+            identifikator = "OPPLYSNINGER-JOARK",
             avklaring = "Finnes det dokumenter i JOARK på medlemskapsområdet?",
-            beskrivelse = "For å sjekke uregistrerte lovvalg og/eller medlemskap",
+            beskrivelse = """
+                Skal sikre at ubehandlede saker og ikke-registrerte vedtak fanges opp for å bli 
+                vurdert manuelt. MEDL er ikke en komplett oversikt over alle medlemsavklaringene 
+                som NAV har gjort. 
+            """.trimIndent(),
             operasjon = { tellDokumenter() }
     )
 
     private val gsak = Regel(
-            identifikator = "OPP-3",
+            identifikator = "OPPLYSNINGER-GOSYS",
             avklaring = "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?",
-            beskrivelse = "For å sjekke uregistrerte lovvalg og/eller medlemskap",
+            beskrivelse = """"
+                Skal sikre at ubehandlede saker og ikke-registrerte vedtak fanges opp for å bli 
+                vurdert manuelt. MEDL er ikke en komplett oversikt over alle medlemsavklaringene 
+                som NAV har gjort. 
+            """.trimIndent(),
             operasjon = { tellÅpneOppgaver() }
     )
 
