@@ -14,9 +14,9 @@ data class Person(
         val bostedsadresse: List<Bostedsadresse>)
 
 data class Statsborgerskap(
-        val land: String?,
-        val gyldigFraOgMed: LocalDate,
-        val gyldigTilOgMed: LocalDate
+        val land: String,
+        val gyldigFraOgMed: LocalDate?,
+        val gyldigTilOgMed: LocalDate?
 )
 
 data class Adressebeskyttelse(
