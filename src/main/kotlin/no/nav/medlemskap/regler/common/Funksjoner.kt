@@ -17,9 +17,11 @@ object Funksjoner {
 
     infix fun List<String>.kunInneholder(string: String) = this.contains(string) && this.size == 1
 
-    infix fun Map<String, String>.harAlle(liste: List<Statsborgerskap>) = this.keys.containsAll(liste.stream().map {it.landkode}.collect(Collectors.toList()))
+    infix fun Map<String, String>.harAlle(liste: List<Statsborgerskap>) = this.keys.containsAll(liste.stream().map { it.landkode }.collect(Collectors.toList()))
 
     infix fun List<String>.inneholderNoe(liste: List<String>) = this.any { it in liste }
+
+    infix fun Map<String, String>.finnesI(liste: List<String>) = this.keys.intersect(liste).isNotEmpty()
 
     infix fun String?.erDelAv(map: Map<String, String>) = map.containsKey(this)
 

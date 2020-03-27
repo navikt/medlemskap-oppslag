@@ -1,6 +1,6 @@
 {
   "periode": {
-    "fom": "2020-01-30",
+    "fom": "2020-01-15",
     "tom": "2020-01-30"
   },
   "brukerinput" : {
@@ -8,9 +8,9 @@
   },
   "personhistorikk" : {
     "statsborgerskap" : [ {
-      "landkode" : "NOR",
-      "fom" : "2020-01-30",
-      "tom" : "2020-01-30"
+      "landkode": "NOR",
+      "fom": "2000-01-30",
+      "tom": "2020-01-30"
     } ],
     "personstatuser" : [ ],
     "bostedsadresser" : [ ],
