@@ -100,7 +100,7 @@ Input fra bruker som må fylles ut i søknadsdialogen og er nødvendig for å av
             },
             "yrkeskode": "2130109",
             "skipsregister": null,
-            "stillingsprosent": 100.0
+            "stillingsprosent": 100
           }
         ]
       }
@@ -109,102 +109,86 @@ Input fra bruker som må fylles ut i søknadsdialogen og er nødvendig for å av
     "oppgaver": [],
     "dokument": []
   },
-  "resultat": {
-    "identifikator": "LOVME",
-    "avklaring": "Er personen medlem av folketrygden?",
-    "resultat": "JA",
-    "beskrivelse": "Personen er omfattet av norsk lovvalg, og dermed medlem",
-    "delresultat": [
-      {
-        "identifikator": "VED",
-        "avklaring": "Har personen manuelle vadtak fra NAV?",
-        "resultat": "NEI",
-        "beskrivelse": "Personen har ingen manuelle vedtak",
-        "delresultat": [
-          {
-            "identifikator": "VED",
-            "avklaring": "Sjekk om det finnes avklarte vedtak i MEDL ELLER Finnes det åpne oppgaver i GOSYS ELLER Finnes det åpne dokumenter i JOARK",
-            "resultat": "NEI",
-            "beskrivelse": "Personen har ingen vedtak i MEDL OG Personen har ingen åpne oppgaver i GOSYS. OG Personen har ingen dokumenter knyttet til medlemskapsaker.",
-            "delresultat": [
-              {
-                "identifikator": "VED-1",
-                "avklaring": "Sjekk om det finnes avklarte vedtak i MEDL",
-                "resultat": "NEI",
-                "beskrivelse": "Personen har ingen vedtak i MEDL",
-                "delresultat": []
-              },
-              {
-                "identifikator": "VED-3",
-                "avklaring": "Finnes det åpne oppgaver i GOSYS",
-                "resultat": "NEI",
-                "beskrivelse": "Personen har ingen åpne oppgaver i GOSYS.",
-                "delresultat": []
-              },
-              {
-                "identifikator": "VED-2",
-                "avklaring": "Finnes det åpne dokumenter i JOARK",
-                "resultat": "NEI",
-                "beskrivelse": "Personen har ingen dokumenter knyttet til medlemskapsaker.",
-                "delresultat": []
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "identifikator": "EØS",
-        "avklaring": "Er personen omfattet av Grunnforordningen?",
-        "resultat": "JA",
-        "beskrivelse": "Personen er omfattet av Grunnforordningen",
-        "delresultat": [
-          {
-            "identifikator": "EØS-1",
-            "avklaring": "Er personen statsborger i et EØS land?",
-            "resultat": "JA",
-            "beskrivelse": "Personen er statsborger i et EØS-land.",
-            "delresultat": []
-          }
-        ]
-      },
-      {
-        "identifikator": "LOV",
-        "avklaring": "Er personen omfattet av norsk lovvalg?",
-        "resultat": "JA",
-        "beskrivelse": "Personen er omfattet av norsk lovvalg",
-        "delresultat": [
-          {
-            "identifikator": "LOV-1",
-            "avklaring": "Jobber personen for en norsk arbeidsgiver?",
-            "resultat": "JA",
-            "beskrivelse": "Arbeidsgiver er norsk",
-            "delresultat": []
-          },
-          {
-            "identifikator": "LOV-2",
-            "avklaring": "Sjekk om personen jobber i det maritime",
-            "resultat": "NEI",
-            "beskrivelse": "Personen jobber ikke i det maritime",
-            "delresultat": []
-          },
-          {
-            "identifikator": "LOV-3",
-            "avklaring": "Sjekk om personen er pilot eller kabinansatt",
-            "resultat": "NEI",
-            "beskrivelse": "Personen er ikke pilot eller kabinansatt",
-            "delresultat": []
-          },
-          {
-            "identifikator": "LOV-5",
-            "avklaring": "Sjekk om personen har oppgitt å ha jobbet utenfor Norge",
-            "resultat": "NEI",
-            "beskrivelse": "Bruker har ikke jobbet utenfor Norge",
-            "delresultat": []
-          }
-        ]
-      }
-    ]
-  }
+  "resultat": [
+    {
+      "identifikator": "LOVME",
+      "avklaring": "Er bruker medlem?",
+      "begrunnelse": "Bruker er medlem",
+      "svar": "JA",
+      "delresultat": []
+    },
+    {
+      "identifikator": "OPPLYSNINGER",
+      "avklaring": "Finnes det registrerte opplysninger på bruker?",
+      "begrunnelse": "Alle de følgende ble NEI",
+      "svar": "NEI",
+      "delresultat": [
+        {
+          "identifikator": "OPPLYSNINGER-MEDL",
+          "avklaring": "Finnes det registrerte opplysninger i MEDL?",
+          "begrunnelse": "",
+          "svar": "NEI",
+          "delresultat": []
+        },
+        {
+          "identifikator": "OPPLYSNINGER-JOARK",
+          "avklaring": "Finnes det dokumenter i JOARK på medlemskapsområdet?",
+          "begrunnelse": "",
+          "svar": "NEI",
+          "delresultat": []
+        },
+        {
+          "identifikator": "OPPLYSNINGER-GOSYS",
+          "avklaring": "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?",
+          "begrunnelse": "",
+          "svar": "NEI",
+          "delresultat": []
+        }
+      ]
+    },
+    {
+      "identifikator": "GRUNNFORORDNING-EØS",
+      "avklaring": "Er brukeren statsborger i et EØS land?",
+      "begrunnelse": "",
+      "svar": "JA",
+      "delresultat": []
+    },
+    {
+      "identifikator": "ARB-1",
+      "avklaring": "Har bruker et registrert arbeidsforhold?",
+      "begrunnelse": "",
+      "svar": "JA",
+      "delresultat": []
+    },
+    {
+      "identifikator": "ARB-2",
+      "avklaring": "Jobber bruker for en norsk arbeidsgiver?",
+      "begrunnelse": "",
+      "svar": "JA",
+      "delresultat": []
+    },
+    {
+      "identifikator": "ARB-3",
+      "avklaring": "Er bruker pilot eller kabinansatt?",
+      "begrunnelse": "",
+      "svar": "NEI",
+      "delresultat": []
+    },
+    {
+      "identifikator": "ARB-4",
+      "avklaring": "Har bruker et maritimt arbeidsforhold?",
+      "begrunnelse": "",
+      "svar": "NEI",
+      "delresultat": []
+    },
+    {
+      "identifikator": "LOV-1",
+      "avklaring": "Har bruker oppgitt å ha jobbet utenfor Norge?",
+      "begrunnelse": "",
+      "svar": "NEI",
+      "delresultat": []
+    }
+  ]
 }
 ```
 
