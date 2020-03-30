@@ -30,7 +30,11 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return periodeDatagrunnlag.overlaps(lagInterval(periode)) || periodeDatagrunnlag.encloses(lagInterval(periode))
     }
 
-    fun arbeidsforhold(): List<Arbeidsforhold> = datagrunnlag.arbeidsforhold
+    fun arbeidsforhold(dato: LocalDate) : List<Arbeidsforhold> =
+            datagrunnlag.arbeidsforhold.filter {
+                lagInterval(Periode(it.periode.fom, it.periode.tom)).contains(lagInstant(dato)) }
+
+   // fun arbeidsforhold(): List<Arbeidsforhold> = datagrunnlag.arbeidsforhold
 
     fun arbeidsgiversLandForPeriode(): List<String> {
         return hentArbeidsforholdIPeriode().mapNotNull { it.arbeidsgiver.landkode }

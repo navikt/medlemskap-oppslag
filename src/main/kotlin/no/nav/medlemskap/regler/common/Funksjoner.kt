@@ -1,5 +1,6 @@
 package no.nav.medlemskap.regler.common
 
+import no.nav.medlemskap.domene.Arbeidsforhold
 import no.nav.medlemskap.domene.Statsborgerskap
 import java.util.stream.Collectors
 
@@ -28,6 +29,8 @@ object Funksjoner {
     fun List<Any>.erTom() = this.isNullOrEmpty()
 
     fun List<Any>.erIkkeTom() = !erTom()
+
+    infix fun List<Arbeidsforhold>.kunEr(tall: Int) = this.size == tall
 }
 
 fun ja(begrunnelse: String) = Resultat(

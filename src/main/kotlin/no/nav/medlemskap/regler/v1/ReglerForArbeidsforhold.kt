@@ -4,6 +4,7 @@ import no.nav.medlemskap.domene.Arbeidsforholdstype
 import no.nav.medlemskap.domene.Skipsregister
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
+import no.nav.medlemskap.regler.common.Funksjoner.kunEr
 import no.nav.medlemskap.regler.common.Funksjoner.inneholder
 import no.nav.medlemskap.regler.common.Funksjoner.inneholderNoe
 import no.nav.medlemskap.regler.common.Funksjoner.kunInneholder
@@ -88,7 +89,7 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
     private fun sjekkArbeidsforhold(): Resultat =
             when {
-                personfakta.arbeidsforhold().erIkkeTom() -> ja()
+                personfakta.arbeidsforhold(personfakta.FØRSTE_DAG_I_KONTROLLPERIODE) kunEr 1  -> ja()
                 else -> nei()
             }
 
