@@ -36,23 +36,18 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return periodeDatagrunnlag.overlaps(lagInterval(periode)) || periodeDatagrunnlag.encloses(lagInterval(periode))
     }
 
-   // fun arbeidsforhold() : List<Arbeidsforhold> {
-     //   return hentArbeidsforholdIPeriode()
-   // }
-
     fun arbeidsforhold() : List<Arbeidsforhold> {
        return datagrunnlag.arbeidsforhold.filter {
             periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
             Periode(FOERSTE_DAG_I_KONTROLLPERIODE_1_3, SISTE_DAG_I_KONTROLLPERIODE_1_3))
         }
-
     }
 
     fun arbeidsgiversLandForPeriode(): List<String> {
         return hentArbeidsforholdIPeriode().mapNotNull { it.arbeidsgiver.landkode }
     }
 
-     fun lagInterval(periode: Periode): Interval {
+    private fun lagInterval(periode: Periode): Interval {
         val fom = periode.fom ?: LocalDate.MIN
         val tom = periode.tom ?: LocalDate.MAX
         return Interval.of(lagInstant(fom), lagInstant(tom))
