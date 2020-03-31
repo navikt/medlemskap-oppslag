@@ -89,7 +89,8 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
     private fun sjekkArbeidsforhold(): Resultat =
             when {
-                personfakta.arbeidsforhold(personfakta.FØRSTE_DAG_I_KONTROLLPERIODE) kunEr 1  -> ja()
+
+                personfakta.arbeidsforhold() kunEr 1  -> ja()
                 else -> nei()
             }
 

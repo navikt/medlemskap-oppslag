@@ -5,11 +5,25 @@ import no.nav.medlemskap.regler.common.Personfakta.Companion.initialiserFakta
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.personer.Personleser
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class RegelsettForNorskLovvalgTest {
 
     private val personleser = Personleser()
+
+
+
+    @Test
+    fun `person med ett arbeidsforhold innenfor kontrollperiode, får ja`() {
+        assertEquals(Svar.JA, evaluer(personleser.norskMedEttArbeidsforholdIPeriode()))
+    }
+
+    @Test
+    fun `person med flere arbeidsforhold innenfor kontrollperiode, får uavklart`() {
+        assertEquals(Svar.UAVKLART, evaluer(personleser.enkelNorskFlereArbeidsforholdIPeriode()))
+    }
+
 
     @Test
     fun `person med en norsk arbeidsgiver og kun arbeid i Norge, ikke maritim eller pilot, får ja`() {

@@ -1,6 +1,6 @@
 {
   "periode": {
-    "fom": "2020-01-30",
+    "fom": "2020-01-01",
     "tom": "2020-01-30"
   },
   "brukerinput" : {
@@ -9,7 +9,7 @@
   "personhistorikk" : {
     "statsborgerskap" : [ {
       "landkode" : "NOR",
-      "fom" : "2020-01-30",
+      "fom" : "1991-01-30",
       "tom" : "2020-01-30"
     } ],
     "personstatuser" : [ ],
@@ -20,7 +20,7 @@
   "medlemskapsunntak" : [ ],
   "arbeidsforhold" : [ {
     "periode" : {
-      "fom" : "2020-01-30",
+      "fom" : "2019-10-01",
       "tom" : "2020-01-30"
     },
     "utenlandsopphold" : [ ],
@@ -32,7 +32,7 @@
     "arbeidsfolholdstype" : "MARITIM",
     "arbeidsavtaler" : [ {
       "periode" : {
-        "fom" : "2020-01-30",
+        "fom" : "2019-01-30",
         "tom" : "2020-01-30"
       },
       "yrkeskode" : "0001",
