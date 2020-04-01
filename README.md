@@ -109,86 +109,85 @@ Input fra bruker som må fylles ut i søknadsdialogen og er nødvendig for å av
     "oppgaver": [],
     "dokument": []
   },
-  "resultat": [
-    {
-      "identifikator": "LOVME",
-      "avklaring": "Er bruker medlem?",
-      "begrunnelse": "Bruker er medlem",
-      "svar": "JA",
-      "delresultat": []
-    },
-    {
-      "identifikator": "OPPLYSNINGER",
-      "avklaring": "Finnes det registrerte opplysninger på bruker?",
-      "begrunnelse": "Alle de følgende ble NEI",
-      "svar": "NEI",
-      "delresultat": [
-        {
-          "identifikator": "OPPLYSNINGER-MEDL",
-          "avklaring": "Finnes det registrerte opplysninger i MEDL?",
-          "begrunnelse": "",
-          "svar": "NEI",
-          "delresultat": []
-        },
-        {
-          "identifikator": "OPPLYSNINGER-JOARK",
-          "avklaring": "Finnes det dokumenter i JOARK på medlemskapsområdet?",
-          "begrunnelse": "",
-          "svar": "NEI",
-          "delresultat": []
-        },
-        {
-          "identifikator": "OPPLYSNINGER-GOSYS",
-          "avklaring": "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?",
-          "begrunnelse": "",
-          "svar": "NEI",
-          "delresultat": []
-        }
-      ]
-    },
-    {
-      "identifikator": "GRUNNFORORDNING-EØS",
-      "avklaring": "Er brukeren statsborger i et EØS land?",
-      "begrunnelse": "",
-      "svar": "JA",
-      "delresultat": []
-    },
-    {
-      "identifikator": "ARB-1",
-      "avklaring": "Har bruker et registrert arbeidsforhold?",
-      "begrunnelse": "",
-      "svar": "JA",
-      "delresultat": []
-    },
-    {
-      "identifikator": "ARB-2",
-      "avklaring": "Jobber bruker for en norsk arbeidsgiver?",
-      "begrunnelse": "",
-      "svar": "JA",
-      "delresultat": []
-    },
-    {
-      "identifikator": "ARB-3",
-      "avklaring": "Er bruker pilot eller kabinansatt?",
-      "begrunnelse": "",
-      "svar": "NEI",
-      "delresultat": []
-    },
-    {
-      "identifikator": "ARB-4",
-      "avklaring": "Har bruker et maritimt arbeidsforhold?",
-      "begrunnelse": "",
-      "svar": "NEI",
-      "delresultat": []
-    },
-    {
-      "identifikator": "LOV-1",
-      "avklaring": "Har bruker oppgitt å ha jobbet utenfor Norge?",
-      "begrunnelse": "",
-      "svar": "NEI",
-      "delresultat": []
-    }
-  ]
+  "resultat": {
+    "identifikator": "LOVME",
+    "avklaring": "Er bruker medlem?",
+    "begrunnelse": "Bruker er medlem",
+    "svar": "JA",
+    "delresultat": [
+      {
+        "identifikator": "OPPLYSNINGER",
+        "avklaring": "Finnes det registrerte opplysninger på bruker?",
+        "begrunnelse": "Alle de følgende ble NEI",
+        "svar": "NEI",
+        "delresultat": [
+          {
+            "identifikator": "OPPLYSNINGER-MEDL",
+            "avklaring": "Finnes det registrerte opplysninger i MEDL?",
+            "begrunnelse": "",
+            "svar": "NEI",
+            "delresultat": []
+          },
+          {
+            "identifikator": "OPPLYSNINGER-JOARK",
+            "avklaring": "Finnes det dokumenter i JOARK på medlemskapsområdet?",
+            "begrunnelse": "",
+            "svar": "NEI",
+            "delresultat": []
+          },
+          {
+            "identifikator": "OPPLYSNINGER-GOSYS",
+            "avklaring": "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?",
+            "begrunnelse": "",
+            "svar": "NEI",
+            "delresultat": []
+          }
+        ]
+      },
+      {
+        "identifikator": "GRUNNFORORDNING-EØS",
+        "avklaring": "Er brukeren statsborger i et EØS land?",
+        "begrunnelse": "",
+        "svar": "JA",
+        "delresultat": []
+      },
+      {
+        "identifikator": "ARB-1",
+        "avklaring": "Har bruker et registrert arbeidsforhold?",
+        "begrunnelse": "",
+        "svar": "JA",
+        "delresultat": []
+      },
+      {
+        "identifikator": "ARB-2",
+        "avklaring": "Jobber bruker for en norsk arbeidsgiver?",
+        "begrunnelse": "",
+        "svar": "JA",
+        "delresultat": []
+      },
+      {
+        "identifikator": "ARB-3",
+        "avklaring": "Er bruker pilot eller kabinansatt?",
+        "begrunnelse": "",
+        "svar": "NEI",
+        "delresultat": []
+      },
+      {
+        "identifikator": "ARB-4",
+        "avklaring": "Har bruker et maritimt arbeidsforhold?",
+        "begrunnelse": "",
+        "svar": "NEI",
+        "delresultat": []
+      },
+      {
+        "identifikator": "LOV-1",
+        "avklaring": "Har bruker oppgitt å ha jobbet utenfor Norge?",
+        "begrunnelse": "",
+        "svar": "NEI",
+        "delresultat": []
+      }
+    ]
+  }
 }
 ```
 
