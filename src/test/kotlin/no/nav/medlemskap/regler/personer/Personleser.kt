@@ -8,6 +8,7 @@ class Personleser {
     private val norsk = "/testpersoner/norske"
     private val ikkeEøs = "/testpersoner/ikke_eos"
     private val variertDatagrunnlag = "/testpersoner/variertDatagrunnlagIPeriode"
+    private val variertDatagrunnlagArbeidsforhold = "/testpersoner/variertDatagrunnlagIPeriode/arbeidsforhold"
 
     fun enkelNorsk() = lesDatagrunnlag("$norsk/kun_enkelt_statsborgerskap.json")
     fun enkelNorskArbeid() = lesDatagrunnlag("$norsk/norsk_jobb_ikke_maritim_eller_pilot.json")
@@ -21,9 +22,13 @@ class Personleser {
     fun norskMedFlereStatsborgerskapIogUtenforPeriode() = lesDatagrunnlag("$variertDatagrunnlag/norsk_flere_statsborgerskap_i_og_utenfor_periode.json")
     fun norskMedUtgaattStatsborgerskapIPeriode() = lesDatagrunnlag("$variertDatagrunnlag/norsk_med_utgaatt_statsborgerskap_i_periode.json")
 
-    fun norskArbeidsgiverMedFlereIPeriode () = lesDatagrunnlag("$variertDatagrunnlag/norsk_og_flere_arbeidsgivere_i_periode.json")
-    fun norskMedFlereArbeidsforholdstyperIPerioder() = lesDatagrunnlag("$variertDatagrunnlag/norsk_og_flere_arbeidsforholdtyper_i_periode.json")
-    fun norskMedFlereYrkeskoderIPeriode () = lesDatagrunnlag("$variertDatagrunnlag/norsk_med_flere_yrkestyper_i_periode.json")
+
+    fun norskMedEttArbeidsforholdIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_ett_arbeidsforhold_i_periode.json")
+    fun norskArbeidsgiverMedFlereIPeriode () = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_og_flere_arbeidsgivere_i_periode.json")
+    fun norskMedFlereArbeidsforholdstyperIPerioder() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_og_flere_arbeidsforholdtyper_i_periode.json")
+    fun norskMedFlereYrkeskoderIPeriode () = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_flere_yrkestyper_i_periode.json")
+    fun enkelNorskFlereArbeidsforholdIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_flere_yrkestyper_i_periode.json")
+
 
 
 

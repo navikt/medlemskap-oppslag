@@ -11,6 +11,12 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     val SISTE_DAG_I_KONTROLLPERIODE = datagrunnlag.periode.fom.minusDays(1)
     val FØRSTE_DAG_I_KONTROLLPERIODE = SISTE_DAG_I_KONTROLLPERIODE.minusMonths(12)
 
+
+    val SISTE_DAG_I_KONTROLLPERIODE_1_3 = datagrunnlag.periode.fom.minusDays(1)
+    val FOERSTE_DAG_I_KONTROLLPERIODE_1_3 = SISTE_DAG_I_KONTROLLPERIODE_1_3.minusDays(28)
+
+
+
     companion object {
         fun initialiserFakta(datagrunnlag: Datagrunnlag) = Personfakta(datagrunnlag)
     }
@@ -30,7 +36,12 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return periodeDatagrunnlag.overlaps(lagInterval(periode)) || periodeDatagrunnlag.encloses(lagInterval(periode))
     }
 
-    fun arbeidsforhold(): List<Arbeidsforhold> = datagrunnlag.arbeidsforhold
+    fun arbeidsforhold() : List<Arbeidsforhold> {
+       return datagrunnlag.arbeidsforhold.filter {
+            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
+            Periode(FOERSTE_DAG_I_KONTROLLPERIODE_1_3, SISTE_DAG_I_KONTROLLPERIODE_1_3))
+        }
+    }
 
     fun arbeidsgiversLandForPeriode(): List<String> {
         return hentArbeidsforholdIPeriode().mapNotNull { it.arbeidsgiver.landkode }
