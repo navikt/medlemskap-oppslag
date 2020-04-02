@@ -1,5 +1,6 @@
 package no.nav.medlemskap.regler.common
 
+import no.nav.medlemskap.domene.Arbeidsforhold
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Periode
 import org.threeten.extra.Interval
@@ -22,6 +23,17 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
     }
 
     private fun førsteSykedag() = datagrunnlag.periode.fom.minusDays(1)
+
+
+    fun kontrollPeriodeForArbeidsforhold(): Periode{
+        return when(ytelse){
+            Ytelse.SYKEPENGER -> Periode(
+                    fom = førsteSykedag().minusDays(28),
+                    tom = førsteSykedag()
+            )
+        }
+
+    }
 }
 
 fun lagInterval(periode: Periode): Interval {
