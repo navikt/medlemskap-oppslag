@@ -1,0 +1,39 @@
+package no.nav.medlemskap.regler.common
+
+import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.Periode
+import org.threeten.extra.Interval
+import java.time.LocalDate
+import java.time.ZoneId
+
+enum class Ytelse { SYKEPENGER }
+
+class Datohjelper(val datagrunnlag: Datagrunnlag) {
+
+    private val ytelse = Ytelse.SYKEPENGER // TODO: Vurder om dette skal være noe vi sjekker
+
+    fun kontrollperiodeForStatsborgerskap(): Periode {
+        return when (ytelse) {
+            Ytelse.SYKEPENGER -> Periode(
+                    fom = førsteSykedag().minusMonths(12),
+                    tom = førsteSykedag()
+            )
+        }
+    }
+
+    private fun førsteSykedag() = datagrunnlag.periode.fom.minusDays(1)
+}
+
+fun lagInterval(periode: Periode): Interval {
+    val fom = periode.fom ?: LocalDate.MIN
+    val tom = periode.tom ?: LocalDate.MAX
+    return Interval.of(lagInstant(fom), lagInstant(tom))
+}
+
+fun Periode.interval(): Interval {
+    val fom = this.fom ?: LocalDate.MIN
+    val tom = this.tom ?: LocalDate.MAX
+    return Interval.of(lagInstant(fom), lagInstant(tom))
+}
+
+fun lagInstant(date: LocalDate) = date.atStartOfDay(ZoneId.systemDefault()).toInstant()

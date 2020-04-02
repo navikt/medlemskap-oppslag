@@ -21,8 +21,8 @@ class ReglerForGrunnforordningen(val personfakta: Personfakta) : Regler() {
     )
 
     private fun sjekkStatsborgerskap(): Resultat {
-        val førsteStatsborgerskap = personfakta.hentStatsborgerskapFor(personfakta.FØRSTE_DAG_I_KONTROLLPERIODE)
-        val sisteStatsborgerskap = personfakta.hentStatsborgerskapFor(personfakta.SISTE_DAG_I_KONTROLLPERIODE)
+        val førsteStatsborgerskap = personfakta.hentStatsborgerskapVedStartAvKontrollperiode()
+        val sisteStatsborgerskap = personfakta.hentStatsborgerskapVedSluttAvKontrollperiode()
         return when {
             eøsLand finnesI førsteStatsborgerskap && eøsLand finnesI sisteStatsborgerskap -> ja()
             else -> nei("Brukeren er ikke statsborger i et EØS-land.")
