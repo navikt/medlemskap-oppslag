@@ -31,7 +31,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
             hentStatsborgerskapFor(datohjelper.kontrollperiodeForStatsborgerskap().tom!!)
 
     private fun hentStatsborgerskapFor(dato: LocalDate): List<String> =
-            datagrunnlag.personhistorikk.statsborgerskap.filter {
+            statsborgerskap.filter {
                 Periode(it.fom, it.tom).interval().contains(lagInstant(dato))
             }.map { it.landkode }
 
