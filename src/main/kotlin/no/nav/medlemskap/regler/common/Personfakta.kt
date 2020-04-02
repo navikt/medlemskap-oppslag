@@ -10,10 +10,6 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     private val datohjelper = Datohjelper(datagrunnlag)
     private val statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap
 
-    val SISTE_DAG_I_KONTROLLPERIODE_1_3 = datagrunnlag.periode.fom.minusDays(1)
-    val FOERSTE_DAG_I_KONTROLLPERIODE_1_3 = SISTE_DAG_I_KONTROLLPERIODE_1_3.minusDays(28)
-
-
     companion object {
         fun initialiserFakta(datagrunnlag: Datagrunnlag) = Personfakta(datagrunnlag)
     }
@@ -30,6 +26,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     fun hentStatsborgerskapVedSluttAvKontrollperiode(): List<String> =
             hentStatsborgerskapFor(datohjelper.kontrollperiodeForStatsborgerskap().tom!!)
 
+
     private fun hentStatsborgerskapFor(dato: LocalDate): List<String> =
             statsborgerskap.filter {
                 Periode(it.fom, it.tom).interval().contains(lagInstant(dato))
@@ -42,7 +39,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     fun arbeidsforhold(): List<Arbeidsforhold> {
         return datagrunnlag.arbeidsforhold.filter {
             periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
-                    Periode(FOERSTE_DAG_I_KONTROLLPERIODE_1_3, SISTE_DAG_I_KONTROLLPERIODE_1_3))
+                    datohjelper.kontrollPeriodeForArbeidsforhold())
         }
     }
 
