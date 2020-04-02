@@ -1,10 +1,6 @@
 package no.nav.medlemskap.regler.v1
 
-import no.nav.medlemskap.regler.common.Personfakta
-import no.nav.medlemskap.regler.common.Resultat
-import no.nav.medlemskap.regler.common.sjekkRegelsett
-import no.nav.medlemskap.regler.common.uavklartKonklusjon
-import java.util.*
+import no.nav.medlemskap.regler.common.*
 
 class Hovedregler(personfakta: Personfakta) {
 
@@ -31,14 +27,18 @@ class Hovedregler(personfakta: Personfakta) {
                 }
             }
 
-    fun kjørHovedregler(): List<Resultat> {
+    fun kjørHovedregler(): Resultat {
         hentHovedRegel().utfør(resultatliste)
-        return resultatliste.medKonklusjonFørst()
+        val konklusjon = resultatliste.hentUtKonklusjon()
+        return konklusjon.copy(delresultat = resultatliste.utenKonklusjon())
     }
 
-    private fun List<Resultat>.medKonklusjonFørst(): List<Resultat> {
-        val mutableResultat = this.toMutableList()
-        Collections.rotate(mutableResultat, 1)
-        return mutableResultat
+    private fun List<Resultat>.utenKonklusjon(): List<Resultat> {
+        return this.filter { it.identifikator != konklusjonIdentifikator }
+    }
+
+    private fun List<Resultat>.hentUtKonklusjon(): Resultat {
+        return this.find { it.identifikator == konklusjonIdentifikator }
+                ?: throw RuntimeException("Klarte ikke finne konklusjon")
     }
 }

@@ -124,5 +124,5 @@ private suspend fun createDatagrunnlag(
 
 }
 
-private fun evaluerData(datagrunnlag: Datagrunnlag): List<Resultat> =
+private fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =
         Hovedregler(Personfakta.initialiserFakta(datagrunnlag)).kjørHovedregler()

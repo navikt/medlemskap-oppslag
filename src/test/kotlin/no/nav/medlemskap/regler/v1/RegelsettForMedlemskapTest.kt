@@ -21,7 +21,7 @@ class RegelsettForMedlemskapTest {
         val regelsett = Hovedregler(Personfakta.initialiserFakta(datagrunnlag))
         val resultat = regelsett.kjørHovedregler()
         println(objectMapper.writeValueAsString(resultat))
-        return resultat[0].svar
+        return resultat.svar
     }
 
 }
