@@ -43,6 +43,15 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
             )
         }
     }
+
+    fun kontrollPeriodeForNorskarbeidsgiver(): Periode {
+        return when(ytelse) {
+            Ytelse.SYKEPENGER -> Periode(
+                    fom = førsteSykedag().minusMonths(12),
+                    tom = førsteSykedag()
+            )
+        }
+    }
 }
 
 fun lagInterval(periode: Periode): Interval {
