@@ -20,21 +20,13 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     fun personensDokumenterIJoark(): List<Journalpost> = datagrunnlag.dokument
 
+
     fun hentStatsborgerskapVedStartAvKontrollperiode(): List<String> =
             hentStatsborgerskapFor(datohjelper.kontrollperiodeForStatsborgerskap().fom!!)
 
     fun hentStatsborgerskapVedSluttAvKontrollperiode(): List<String> =
             hentStatsborgerskapFor(datohjelper.kontrollperiodeForStatsborgerskap().tom!!)
 
-
-    private fun hentStatsborgerskapFor(dato: LocalDate): List<String> =
-            statsborgerskap.filter {
-                Periode(it.fom, it.tom).interval().contains(lagInstant(dato))
-            }.map { it.landkode }
-
-    private fun periodefilter(periodeDatagrunnlag: Interval, periode: Periode): Boolean {
-        return periodeDatagrunnlag.overlaps(lagInterval(periode)) || periodeDatagrunnlag.encloses(lagInterval(periode))
-    }
 
     fun arbeidsforhold(): List<Arbeidsforhold> {
         return datagrunnlag.arbeidsforhold.filter {
@@ -44,27 +36,31 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     }
 
     fun arbeidsgiversLandForPeriode(): List<String> {
-        return hentArbeidsforholdIPeriode().mapNotNull { it.arbeidsgiver.landkode }
+        return arbeidsforhold().mapNotNull { it.arbeidsgiver.landkode }
     }
 
     fun sisteArbeidsforholdtype(): List<String> {
-        return hentArbeidsforholdIPeriode().map { it.arbeidsfolholdstype.navn }
+        return arbeidsforhold().map { it.arbeidsfolholdstype.navn }
     }
 
     fun sisteArbeidsforholdYrkeskode(): List<String> {
-        return hentArbeidsforholdIPeriode().flatMap { it.arbeidsavtaler }.map { it.yrkeskode }
+        return arbeidsforhold().flatMap { it.arbeidsavtaler }.map { it.yrkeskode }
     }
 
     fun sisteArbeidsforholdSkipsregister(): List<String> {
-        return hentArbeidsforholdIPeriode().flatMap { it -> it.arbeidsavtaler.map { it.skipsregister?.name.toString() } }
+        return arbeidsforhold().flatMap { it -> it.arbeidsavtaler.map { it.skipsregister?.name.toString() } }
     }
+
 
     fun hentBrukerinputArbeidUtenforNorge(): Boolean = datagrunnlag.brukerinput.arbeidUtenforNorge
 
-    private fun hentArbeidsforholdIPeriode(): List<Arbeidsforhold> {
-        val periodeDatagrunnlag = lagInterval(Periode(datagrunnlag.periode.fom, datagrunnlag.periode.tom))
-        return datagrunnlag.arbeidsforhold.filter {
-            periodefilter(periodeDatagrunnlag, Periode(it.periode.fom, it.periode.tom))
-        }
+    
+    private fun hentStatsborgerskapFor(dato: LocalDate): List<String> =
+            statsborgerskap.filter {
+                Periode(it.fom, it.tom).interval().contains(lagInstant(dato))
+            }.map { it.landkode }
+
+    private fun periodefilter(periodeDatagrunnlag: Interval, periode: Periode): Boolean {
+        return periodeDatagrunnlag.overlaps(lagInterval(periode)) || periodeDatagrunnlag.encloses(lagInterval(periode))
     }
 }
