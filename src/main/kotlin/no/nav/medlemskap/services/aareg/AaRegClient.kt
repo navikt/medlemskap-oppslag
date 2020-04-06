@@ -12,6 +12,9 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
 import no.nav.medlemskap.domene.Arbeidsforhold
+import no.nav.medlemskap.domene.ArbeidsgiverOrg
+import no.nav.medlemskap.domene.ArbeidsgiverPerson
+import no.nav.medlemskap.services.ereg.Bruksperiode
 import no.nav.medlemskap.services.ereg.EregClient
 import no.nav.medlemskap.services.pdl.PdlClient
 import no.nav.medlemskap.services.runWithRetryAndMetrics
@@ -87,29 +90,35 @@ class AaRegClient(
 class AaRegService(
         private val aaRegClient: AaRegClient,
         private val eregClient: EregClient,
-        private val pdlClient: PdlClient) {
+        private val pdlClient: PdlClient
+) {
 
-    suspend fun hentArbeidsforhold(fnr: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<Arbeidsforhold> {
+    suspend fun hentArbeidsforhold(fnr: String, callId: String, fraOgMed: LocalDate, tilOgMed: LocalDate): List<Arbeidsforhold> {
+        val arbeidsgiverOrg = ArbeidsgiverOrg(aaRegClient)
+        val arbeidsgiverPerson = ArbeidsgiverPerson(aaRegClient)
+
         val arbeidsforhold = aaRegClient.hentArbeidsforhold(fnr, callId, fraOgMed, tilOgMed)
-        val arbeidsgiver: List<AaRegOpplysningspliktigArbeidsgiver> = arbeidsforhold.map { it.arbeidsgiver }
 
-        val arbeidsgiversLand = arbeidsgiver.associateBy(
-                { opplysningpliktigArbeidsgiver ->
-                    opplysningpliktigArbeidsgiver.offentligIdent ?: opplysningpliktigArbeidsgiver.aktoerId
-                },
-                { opplysningspliktigArbeidsgiver ->
-                    hentArbeidsgiversLand(opplysningspliktigArbeidsgiver.offentligIdent
-                            ?: opplysningspliktigArbeidsgiver.aktoerId!!, callId)
-                }
-        )
+        val dataOmArbeidsgiver = mutableMapOf<String, ArbeidsgiverInfo>()
+        val dataOmPerson = mutableMapOf<String, String?>()
+        val orgnummere = arbeidsgiverOrg.getOrg(fnr, callId, fraOgMed, tilOgMed)
+        val personIdentifikatorer = arbeidsgiverPerson.getIdent(fnr, callId, fraOgMed, tilOgMed)
 
-        val arbeidsgiverEnhetstype = arbeidsgiver.associateBy(
-                { opplysningspliktigArbeidsgiver -> opplysningspliktigArbeidsgiver.organisasjonsnummer },
-                { opplysningspliktigArbeidsgiver -> hentArbeidsgiverEnhetstype(opplysningspliktigArbeidsgiver.organisasjonsnummer!!, callId) }
-        )
+        orgnummere.forEach { orgnummer ->
+            dataOmArbeidsgiver[orgnummer] = ArbeidsgiverInfo(
+                    arbeidsgiverEnhetstype = hentArbeidsgiverEnhetstype(orgnummer, callId),
+                    antallAnsatte = eregClient.hentAntallAnsatte(orgnummer, callId)?.get(Bruksperiode(fraOgMed, tilOgMed))
+            )
+        }
 
-        return mapAaregResultat(arbeidsforhold, arbeidsgiversLand, arbeidsgiverEnhetstype)
+        personIdentifikatorer.forEach{ personIdentifikator ->
+            dataOmPerson[personIdentifikator] = hentArbeidsgiversLand(personIdentifikator, callId)
+        }
+
+        return mapAaregResultat(arbeidsforhold, dataOmArbeidsgiver, dataOmPerson)
     }
+
+    data class ArbeidsgiverInfo(val arbeidsgiverEnhetstype: String?, val antallAnsatte: Int?)
 
     private suspend fun hentArbeidsgiverEnhetstype(orgnummer: String, callId: String): String? {
         return eregClient.hentEnhetstype(orgnummer, callId)

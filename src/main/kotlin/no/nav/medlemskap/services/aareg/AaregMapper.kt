@@ -3,13 +3,13 @@ package no.nav.medlemskap.services.aareg
 import no.nav.medlemskap.domene.*
 
 
-fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, arbeidsgiversLand: Map<String?, String?>, arbeidsgiverEnhetstype: Map<String?, String?>): List<Arbeidsforhold> {
+fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, dataOmArbeidsgiver: MutableMap<String, AaRegService.ArbeidsgiverInfo>, dataOmPerson: MutableMap<String, String?>): List<Arbeidsforhold> {
     return arbeidsforhold.map {
         Arbeidsforhold(
                 periode = mapPeriodeTilArbeidsforhold(it),
                 utenlandsopphold = mapUtenLandsopphold(it),
                 arbeidsfolholdstype = mapArbeidsForholdType(it),
-                arbeidsgiver = mapArbeidsgiver(it, arbeidsgiversLand, arbeidsgiverEnhetstype),
+                arbeidsgiver = mapArbeidsgiver(it, dataOmArbeidsgiver, dataOmPerson),
                 arbeidsavtaler = mapArbeidsAvtaler(it)
 
         )
@@ -59,9 +59,12 @@ fun mapArbeidsForholdType(arbeidsforhold: AaRegArbeidsforhold): Arbeidsforholdst
     }
 }
 
-fun mapArbeidsgiver(arbeidsforhold: AaRegArbeidsforhold, arbeidsgiversLand: Map<String?, String?>, arbeidsgiverEnhetstype: Map<String?, String?>): Arbeidsgiver {
-    val identifikator = arbeidsforhold.arbeidsgiver.offentligIdent ?: arbeidsforhold.arbeidsgiver.aktoerId
-    return Arbeidsgiver(arbeidsgiverEnhetstype[arbeidsforhold.arbeidsgiver.organisasjonsnummer], arbeidsgiversLand[identifikator])
+fun mapArbeidsgiver(arbeidsforhold: AaRegArbeidsforhold, dataOmArbeidsgiver: MutableMap<String, AaRegService.ArbeidsgiverInfo>, dataOmPerson: MutableMap<String, String?>): Arbeidsgiver {
+    val enhetstype = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.arbeidsgiverEnhetstype
+    val antallAnsatte = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.antallAnsatte
+    val arbeidsgiversLand = dataOmPerson[arbeidsforhold.arbeidsgiver.offentligIdent ?: arbeidsforhold.arbeidsgiver.aktoerId]
+
+    return Arbeidsgiver(enhetstype, arbeidsgiversLand, antallAnsatte)
 }
 
 fun mapPeriodeTilArbeidsavtale(arbeidsavtale: AaRegArbeidsavtale): Periode {
