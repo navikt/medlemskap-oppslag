@@ -113,6 +113,7 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
                 else -> nei()
             }
 
+
     private fun sjekkSkipsregister(): Resultat =
             when {
                 personfakta.sisteArbeidsforholdSkipsregister() kunInneholder Skipsregister.nor.name -> ja()
