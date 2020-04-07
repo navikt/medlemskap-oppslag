@@ -3,6 +3,7 @@ package no.nav.medlemskap.regler.common
 import no.nav.medlemskap.domene.*
 import org.threeten.extra.Interval
 import java.time.LocalDate
+import java.util.stream.Collectors
 
 
 class Personfakta(private val datagrunnlag: Datagrunnlag) {
@@ -35,6 +36,35 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         }
     }
 
+    fun arbeidsforholdForNorskArbeidsgiver(): List<Arbeidsforhold> {
+        return datagrunnlag.arbeidsforhold.filter {
+            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
+                    datohjelper.kontrollPeriodeForNorskarbeidsgiver())
+        }
+    }
+
+    fun arbeidsgivereIArbeidsforholdForNorskArbeidsgiver() : List<Arbeidsgiver> {
+        return arbeidsforholdForNorskArbeidsgiver().stream().map { it.arbeidsgiver }.collect(Collectors.toList())
+    }
+
+    fun antallAnsatteHosArbeidsgivere() : List<Int?> {
+        return arbeidsgivereIArbeidsforholdForNorskArbeidsgiver().stream().map { it.antallAnsatte }.collect(Collectors.toList())
+    }
+
+    fun harArbeidsforholdSiste12Mnd(): Boolean {
+
+        val arbeidsavtalerSiste12Mnd = arbeidsforholdForNorskArbeidsgiver().stream().map { it.arbeidsavtaler }
+        var forrigeTilDato: LocalDate? = datohjelper.kontrollPeriodeForNorskarbeidsgiver().fom
+
+        for (list in arbeidsavtalerSiste12Mnd) {
+            for (arbeidsavtale in list) {
+                arbeidsavtale.periode.fom?.isBefore(forrigeTilDato?.plusDays(2))
+                if (arbeidsavtale.periode.tom?.isAfter(forrigeTilDato)!!) forrigeTilDato = arbeidsavtale.periode.tom
+            }
+        }
+        return false
+    }
+
     fun arbeidsgiversLandForPeriode(): List<String> {
         return arbeidsforhold().mapNotNull { it.arbeidsgiver.landkode }
     }
@@ -54,7 +84,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     fun hentBrukerinputArbeidUtenforNorge(): Boolean = datagrunnlag.brukerinput.arbeidUtenforNorge
 
-    
+
     private fun hentStatsborgerskapFor(dato: LocalDate): List<String> =
             statsborgerskap.filter {
                 Periode(it.fom, it.tom).interval().contains(lagInstant(dato))
