@@ -109,7 +109,7 @@ class AaRegService(
             val organisasjon = eregClient.hentOrganisasjon(orgnummer, callId)
             dataOmArbeidsgiver[orgnummer] = ArbeidsgiverInfo(
                     arbeidsgiverEnhetstype = hentArbeidsgiverEnhetstype(orgnummer, callId),
-                    antallAnsatte = organisasjon.organisasjonDetaljer?.ansatte?.associateBy({ ansatte -> ansatte.bruksPeriode }, { ansatte -> ansatte.antall })?.get(Bruksperiode(fraOgMed, tilOgMed)),
+                    antallAnsatte = organisasjon.organisasjonDetaljer?.ansatte?.associateBy({ ansatte -> ansatte.bruksperiode }, { ansatte -> ansatte.antall })?.get(Bruksperiode(fraOgMed, tilOgMed)),
                     opphoersdato = organisasjon.organisasjonDetaljer?.opphoersdato
 
             )
