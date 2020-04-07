@@ -10,6 +10,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.services.runWithRetryAndMetrics
+import java.time.LocalDate
 
 class EregClient (
         private val baseUrl: String,
@@ -46,6 +47,37 @@ class EregClient (
         return organisasjon.enhetstype
     }
 
+
+    suspend fun hentOrganisasjon(orgnummer: String?, callId: String): OrganisasjonsInfo {
+        val organisasjonsInfo = kotlin.runCatching {
+            runWithRetryAndMetrics("Ereg", "hentAntallAnsatte", retry) {
+                httpClient.get<OrganisasjonsInfo> {
+                    url("$baseUrl/v1/organisasjon/$orgnummer")
+                    header(HttpHeaders.Accept, ContentType.Application.Json)
+                    header("Nav-Call-Id", callId)
+                    header("Nav-Consumer-Id", configuration.sts.username)
+                }
+            }
+        }.fold(
+                onSuccess = { it },
+                onFailure = { error ->
+                    when (error) {
+                        is ClientRequestException -> {
+                            if (error.response.status.value == 404) {
+                                OrganisasjonsInfo(null)
+                            } else {
+                                throw error
+                            }
+                        }
+                        else -> throw error
+                    }
+                }
+
+        )
+        return organisasjonsInfo
+
+    }
+
     suspend fun hentAntallAnsatte(orgnummer:String?, callId: String): Map<Bruksperiode, Int>? {
         val organisasjonsInfo = runCatching {
             runWithRetryAndMetrics("Ereg", "hentAntallAnsatte", retry) {
@@ -72,6 +104,9 @@ class EregClient (
                 }
 
         )
+
         return organisasjonsInfo.organisasjonDetaljer?.ansatte?.associateBy({ ansatte -> ansatte.bruksPeriode }, { ansatte -> ansatte.antall })
     }
+
+
 }

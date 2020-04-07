@@ -105,9 +105,13 @@ class AaRegService(
         val personIdentifikatorer = arbeidsgiverPerson.getIdent(fnr, callId, fraOgMed, tilOgMed)
 
         orgnummere.forEach { orgnummer ->
+
+            val organisasjon = eregClient.hentOrganisasjon(orgnummer, callId)
             dataOmArbeidsgiver[orgnummer] = ArbeidsgiverInfo(
                     arbeidsgiverEnhetstype = hentArbeidsgiverEnhetstype(orgnummer, callId),
-                    antallAnsatte = eregClient.hentAntallAnsatte(orgnummer, callId)?.get(Bruksperiode(fraOgMed, tilOgMed))
+                    antallAnsatte = organisasjon.organisasjonDetaljer?.ansatte?.associateBy({ ansatte -> ansatte.bruksPeriode }, { ansatte -> ansatte.antall })?.get(Bruksperiode(fraOgMed, tilOgMed)),
+                    opphoersdato = organisasjon.organisasjonDetaljer?.opphoersdato
+
             )
         }
 
@@ -118,7 +122,8 @@ class AaRegService(
         return mapAaregResultat(arbeidsforhold, dataOmArbeidsgiver, dataOmPerson)
     }
 
-    data class ArbeidsgiverInfo(val arbeidsgiverEnhetstype: String?, val antallAnsatte: Int?)
+    data class ArbeidsgiverInfo(val arbeidsgiverEnhetstype: String?, val antallAnsatte: Int?, val opphoersdato: LocalDate?)
+
 
     private suspend fun hentArbeidsgiverEnhetstype(orgnummer: String, callId: String): String? {
         return eregClient.hentEnhetstype(orgnummer, callId)
