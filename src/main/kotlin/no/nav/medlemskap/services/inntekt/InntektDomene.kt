@@ -25,10 +25,10 @@ data class ArbeidsinntektMaaned (
 )
 
 data class Avvik (
-        val ident : Ident,
+        val ident: Ident,
         val opplysningspliktig: Ident,
         val virksomhet: Ident,
-        val avvikPeriode: String,
+        val avvikPeriode: YearMonth,
         val tekst: String
 
 )
@@ -147,7 +147,11 @@ data class Fradrag (
 
 data class Tilleggsinformasjon(
         val kategori: String,
-        val tilleggsinformasjonDetaljer: String
+        val tilleggsinformasjonDetaljer: TilleggsinformasjonDetaljer
+)
+
+data class TilleggsinformasjonDetaljer(
+        val detaljerType: TilleggsinformasjonDetaljerType
 )
 
 //val versjon: String

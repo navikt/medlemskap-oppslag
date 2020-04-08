@@ -27,15 +27,12 @@ class JwtConfig(val configuration: Configuration, azureAdOpenIdConfiguration: Az
     fun validate(credentials: JWTCredential): Principal? {
         return try {
             requireNotNull(credentials.payload.audience) { "Auth: Audience mangler i token" }
-            require(isWhitelisted(credentials.payload.audience)) { "Auth: Ugyldig audience i token" }
+            require(credentials.payload.audience.contains(configuration.azureAd.jwtAudience)) { "Auth: Ugyldig audience i token" }
             JWTPrincipal(credentials.payload)
         } catch (e: Exception) {
             logger.error(e) { "Failed to validate token" }
             null
         }
     }
-
-    private fun isWhitelisted(audience: List<String>): Boolean =
-            audience.any { configuration.azureAd.whitelistClients.contains(it) }
 
 }

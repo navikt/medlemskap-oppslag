@@ -27,8 +27,7 @@ private val defaultProperties = ConfigurationMap(
                 "SAF_BASE_URL" to "",
                 "OPPGAVE_BASE_URL" to "",
                 "PDL_BASE_URL" to "",
-                "EREG_BASE_URL" to "",
-                "WHITELIST_CLIENTS" to "1,2"
+                "EREG_BASE_URL" to ""
         )
 )
 
@@ -83,7 +82,6 @@ data class Configuration(
             val jwtAudience: String = "/var/run/secrets/nais.io/azure/client_id".readFile()
                     ?: "AZURE_CLIENT_ID".configProperty(),
             val tenant: String = "AZURE_TENANT".configProperty(),
-            val authorityEndpoint: String = "AZURE_AUTHORITY_ENDPOINT".configProperty().removeSuffix("/"),
-            val whitelistClients: List<String> = "WHITELIST_CLIENTS".configProperty().split(",")
+            val authorityEndpoint: String = "AZURE_AUTHORITY_ENDPOINT".configProperty().removeSuffix("/")
     )
 }
