@@ -70,8 +70,8 @@ data class Arbeidsforhold (
         val avloenningstype: String?,
         val sisteDatoForStillingsprosentendring: YearMonth?,
         val sisteLoennsendring: YearMonth?,
-        val frilansperiodeFom: YearMonth?,
-        val frilansperiodeTom: YearMonth?,
+        val frilansperiodeFom: LocalDate?,
+        val frilansperiodeTom: LocalDate?,
         val stillingsprosent: Double?,
         val yrke: String?,
         val arbeidsforholdID: String?,
@@ -100,12 +100,10 @@ data class Inntekt (
         val beskrivelse: String,
         val skatteOgAvgiftsregel: String?,
         val opptjeningsland: String?,
-        val opptjeningsperiodeFom: YearMonth?,
-        val opptjeningsperiodeTom: YearMonth?,
+        val opptjeningsperiodeFom: LocalDate?,
+        val opptjeningsperiodeTom: LocalDate?,
         val skattemessigBosattLand: String?,
         val tilleggsinformasjon: Tilleggsinformasjon?
-
-
 
 
 )
