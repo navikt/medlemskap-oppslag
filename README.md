@@ -214,3 +214,6 @@ For å kjøre jMeter med GUI, enten fordi man liker det bedre eller fordi man sk
 ```
 jmeter/apache-jmeter-5.2.1/bin/jmeter -JAAD_TOKEN=<AAD_TOKEN> -t jmeter/MedlemskapOppslagMedMiniNorge.jmx
 ```
+
+## Whiteliste klienter
+Det er nå satt opp en WHITELIST_CLIENTS property i vault der man kan legge til aksepterte client id's. Dette må de som skal kalle oss hente ut fra Azure og sende til oss. Helst på mail eller som epostreferanse til applikasjonen i Azure, så ikke id eksponeres ut.
