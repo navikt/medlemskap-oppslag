@@ -95,9 +95,9 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
     private fun sjekkArbeidsgiver(): Resultat {
         return when {
-            personfakta.antallAnsatteHosArbeidsgivere() alleErOver 5
-                    && personfakta.harArbeidsforholdSiste12Mnd()
-                    && personfakta.arbeidsgiversLandForPeriode() kunInneholder "NOR" -> ja()
+            personfakta.erArbeidsgivereOrganisasjon()
+                    && personfakta.antallAnsatteHosArbeidsgivere() alleErOver 5
+                    && personfakta.harSammenhengendeArbeidsforholdSiste12Mnd() -> ja()
             else -> nei("Arbeidsgiver er ikke norsk. Land: ${personfakta.arbeidsgiversLandForPeriode()}")
         }
     }

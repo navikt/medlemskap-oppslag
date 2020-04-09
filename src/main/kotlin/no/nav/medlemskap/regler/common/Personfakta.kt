@@ -1,6 +1,7 @@
 package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.services.aareg.AaRegOrganisasjonType
 import org.threeten.extra.Interval
 import java.time.LocalDate
 import java.util.stream.Collectors
@@ -43,26 +44,30 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         }
     }
 
-    fun arbeidsgivereIArbeidsforholdForNorskArbeidsgiver() : List<Arbeidsgiver> {
+    fun arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(): List<Arbeidsgiver> {
         return arbeidsforholdForNorskArbeidsgiver().stream().map { it.arbeidsgiver }.collect(Collectors.toList())
     }
 
-    fun antallAnsatteHosArbeidsgivere() : List<Int?> {
+    fun erArbeidsgivereOrganisasjon(): Boolean {
+        return arbeidsgivereIArbeidsforholdForNorskArbeidsgiver().stream().allMatch { it.type == AaRegOrganisasjonType.Organisasjon.name }
+    }
+
+    fun antallAnsatteHosArbeidsgivere(): List<Int?> {
         return arbeidsgivereIArbeidsforholdForNorskArbeidsgiver().stream().map { it.antallAnsatte }.collect(Collectors.toList())
     }
 
-    fun harArbeidsforholdSiste12Mnd(): Boolean {
+    fun harSammenhengendeArbeidsforholdSiste12Mnd(): Boolean {
 
-        val arbeidsavtalerSiste12Mnd = arbeidsforholdForNorskArbeidsgiver().stream().map { it.arbeidsavtaler }
-        var forrigeTilDato: LocalDate? = datohjelper.kontrollPeriodeForNorskarbeidsgiver().fom
+        var forrigeTilDato: LocalDate? = null
 
-        for (list in arbeidsavtalerSiste12Mnd) {
-            for (arbeidsavtale in list) {
-                arbeidsavtale.periode.fom?.isBefore(forrigeTilDato?.plusDays(2))
-                if (arbeidsavtale.periode.tom?.isAfter(forrigeTilDato)!!) forrigeTilDato = arbeidsavtale.periode.tom
+        for (arbeidsforhold in arbeidsforholdForNorskArbeidsgiver()) {
+            if (forrigeTilDato != null && !forrigeTilDato.isAfter(arbeidsforhold.periode.fom?.minusDays(3))) {
+                return false
             }
+            forrigeTilDato = arbeidsforhold.periode.tom
         }
-        return false
+
+        return true
     }
 
     fun arbeidsgiversLandForPeriode(): List<String> {

@@ -24,6 +24,25 @@ class RegelsettForNorskLovvalgTest {
         assertEquals(Svar.UAVKLART, evaluer(personleser.enkelNorskFlereArbeidsforholdIPeriode()))
     }
 
+    @Test
+    fun `person med ett arbeidsforhold med arbeidsgiver som privatperson innenfor kontrollperiode, får uavklart`() {
+        assertEquals(Svar.UAVKLART, evaluer(personleser.norskMedEttArbeidsforholdMedPrivatpersonSomArbeidsgiverIPeriode()))
+    }
+
+    @Test
+    fun `person med flere arbeidsforhold hvorav en arbeidsgiver har færre enn 6 ansatte innenfor kontrollperiode, får uavklart`() {
+        assertEquals(Svar.UAVKLART, evaluer(personleser.norskMedFlereArbeidsforholdHvoravEnArbeidsgiverMedKun4AnsatteIPeriode()))
+    }
+
+    @Test
+    fun `person med to usammenhengende arbeidsforhold innenfor kontrollperiode, får uavklart`() {
+        assertEquals(Svar.UAVKLART, evaluer(personleser.norskMedToUsammenhengendeArbeidsforholdIPeriode()))
+    }
+
+    @Test
+    fun `person med to sammenhengende arbeidsforhold innenfor kontrollperiode, får ja`() {
+        assertEquals(Svar.JA, evaluer(personleser.norskMedToSammenhengendeArbeidsforholdIPeriode()))
+    }
 
     @Test
     fun `person med en norsk arbeidsgiver og kun arbeid i Norge, ikke maritim eller pilot, får ja`() {

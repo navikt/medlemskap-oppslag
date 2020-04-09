@@ -27,7 +27,8 @@
     "arbeidsgiver" : {
       "type" : "Organisasjon",
       "identifikator" : "1",
-      "landkode" : "NOR"
+      "landkode" : "NOR",
+      "antallAnsatte" : "6"
     },
     "arbeidsfolholdstype" : "MARITIM",
     "arbeidsavtaler" : [ {

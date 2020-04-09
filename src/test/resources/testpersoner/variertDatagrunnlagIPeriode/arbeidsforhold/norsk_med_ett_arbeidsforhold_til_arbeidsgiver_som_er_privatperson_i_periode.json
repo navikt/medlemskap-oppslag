@@ -28,10 +28,9 @@
       },
       "utenlandsopphold": [],
       "arbeidsgiver": {
-        "type": "Organisasjon",
+        "type": "Person",
         "identifikator": "1",
-        "landkode": "NOR",
-        "antallAnsatte": "6"
+        "landkode": "NOR"
       },
       "arbeidsfolholdstype": "NORMALT",
       "arbeidsavtaler": [
