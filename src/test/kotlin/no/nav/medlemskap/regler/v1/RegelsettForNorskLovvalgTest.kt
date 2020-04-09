@@ -35,13 +35,18 @@ class RegelsettForNorskLovvalgTest {
     }
 
     @Test
-    fun `person med to usammenhengende arbeidsforhold innenfor kontrollperiode, får uavklart`() {
-        assertEquals(Svar.UAVKLART, evaluer(personleser.norskMedToUsammenhengendeArbeidsforholdIPeriode()))
+    fun `person med to sammenhengende arbeidsforhold innenfor kontrollperiode, får ja`() {
+        assertEquals(Svar.JA, evaluer(personleser.norskMedToSammenhengendeArbeidsforholdIPeriode()))
     }
 
     @Test
-    fun `person med to sammenhengende arbeidsforhold innenfor kontrollperiode, får ja`() {
-        assertEquals(Svar.JA, evaluer(personleser.norskMedToSammenhengendeArbeidsforholdIPeriode()))
+    fun `person med to sammenhengende arbeidsforhold under 12 mnd innenfor kontrollperiode, får uavklart`() {
+        assertEquals(Svar.UAVKLART, evaluer(personleser.norskMedToSammenhengendeArbeidsforholdUnder12MndIPeriode()))
+    }
+
+    @Test
+    fun `person med to usammenhengende arbeidsforhold innenfor kontrollperiode, får uavklart`() {
+        assertEquals(Svar.UAVKLART, evaluer(personleser.norskMedToUsammenhengendeArbeidsforholdIPeriode()))
     }
 
     @Test
