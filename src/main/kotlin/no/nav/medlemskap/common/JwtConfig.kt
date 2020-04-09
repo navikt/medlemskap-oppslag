@@ -30,8 +30,9 @@ class JwtConfig(val configuration: Configuration, azureAdOpenIdConfiguration: Az
             require(credentials.payload.audience.contains(configuration.azureAd.jwtAudience)) { "Auth: Ugyldig audience i token" }
             JWTPrincipal(credentials.payload)
         } catch (e: Exception) {
-            logger.error(e) {"Failed to validate token"}
+            logger.error(e) { "Failed to validate token" }
             null
         }
     }
+
 }

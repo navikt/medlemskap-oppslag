@@ -79,7 +79,8 @@ data class Configuration(
 
     data class AzureAd(
             val clientId: String = "NAIS_APP_NAME".configProperty(),
-            val jwtAudience: String = "/var/run/secrets/nais.io/azure/client_id".readFile() ?: "AZURE_CLIENT_ID".configProperty(),
+            val jwtAudience: String = "/var/run/secrets/nais.io/azure/client_id".readFile()
+                    ?: "AZURE_CLIENT_ID".configProperty(),
             val tenant: String = "AZURE_TENANT".configProperty(),
             val authorityEndpoint: String = "AZURE_AUTHORITY_ENDPOINT".configProperty().removeSuffix("/")
     )

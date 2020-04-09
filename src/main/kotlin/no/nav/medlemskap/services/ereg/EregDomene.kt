@@ -6,7 +6,7 @@ data class Organisasjon(val enhetstype: String?)
 
 data class OrganisasjonsInfo(val organisasjonDetaljer: Detaljer?)
 
-data class Detaljer(val ansatte: List<Ansatte>)
+data class Detaljer(val ansatte: List<Ansatte>?)
 
 data class Ansatte(val antall: Int, val bruksPeriode: Bruksperiode, val gyldighetsperiode: Gyldighetsperiode)
 
