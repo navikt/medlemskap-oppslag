@@ -50,6 +50,11 @@ class RegelsettForNorskLovvalgTest {
     }
 
     @Test
+    fun `person med overlappende arbeidsforhold innenfor kontrollperiode, får ja`() {
+        assertEquals(Svar.JA, evaluer(personleser.norskMedOverlappendeArbeidsforholdIPeriode()))
+    }
+
+    @Test
     fun `person med en norsk arbeidsgiver og kun arbeid i Norge, ikke maritim eller pilot, får ja`() {
         assertEquals(Svar.JA, evaluer(personleser.enkelNorskArbeid()))
     }

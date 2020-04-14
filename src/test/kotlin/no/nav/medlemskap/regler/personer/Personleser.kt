@@ -29,6 +29,7 @@ class Personleser {
     fun norskMedToUsammenhengendeArbeidsforholdIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_to_usammenhengende_arbeidsforhold_i_periode.json")
     fun norskMedToSammenhengendeArbeidsforholdIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_to_sammenhengende_arbeidsforhold_i_periode.json")
     fun norskMedToSammenhengendeArbeidsforholdUnder12MndIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_to_sammenhengende_arbeidsforhold_under_12_mnd_i_periode.json")
+    fun norskMedOverlappendeArbeidsforholdIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_overlappende_arbeidsforhold_i_periode.json")
     fun norskArbeidsgiverMedFlereIPeriode () = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_og_flere_arbeidsgivere_i_periode.json")
     fun norskMedFlereArbeidsforholdstyperIPerioder() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_og_flere_arbeidsforholdtyper_i_periode.json")
     fun norskMedFlereYrkeskoderIPeriode () = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_flere_yrkestyper_i_periode.json")
