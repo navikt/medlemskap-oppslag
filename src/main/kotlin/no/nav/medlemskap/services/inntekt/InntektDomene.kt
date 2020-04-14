@@ -19,29 +19,29 @@ data class InntektskomponentResponse (
 )
 
 data class ArbeidsinntektMaaned (
-        val aarMaaned: YearMonth,
+        val aarMaaned: YearMonth?,
         val avvikListe: List<Avvik>?,
-        val arbeidsInntektInformasjon: ArbeidsInntektInformasjon
+        val arbeidsInntektInformasjon: ArbeidsInntektInformasjon?
 )
 
-data class Avvik (
-        val ident : Ident,
-        val opplysningspliktig: Ident,
-        val virksomhet: Ident,
-        val avvikPeriode: String,
-        val tekst: String
+data class Avvik(
+        val ident: Ident?,
+        val opplysningspliktig: Ident?,
+        val virksomhet: Ident?,
+        val avvikPeriode: YearMonth?,
+        val tekst: String?
 
 )
 
-data class Ident (
-    val identifikator: String,
-    val aktoerType: String
+data class Ident(
+        val identifikator: String?,
+        val aktoerType: String?
 )
 
 
-data class ArbeidsInntektInformasjon (
+data class ArbeidsInntektInformasjon(
         val arbeidsforholdListe: List<ArbeidsforholdFrilanser>?,
-        val inntektListe: List<Inntekt>,
+        val inntektListe: List<Inntekt>?,
         val forskuddstrekkListe: List<Forskuddstrekk>?,
         val fradragListe: List<Fradrag>?
 
@@ -70,42 +70,40 @@ data class Arbeidsforhold (
         val avloenningstype: String?,
         val sisteDatoForStillingsprosentendring: YearMonth?,
         val sisteLoennsendring: YearMonth?,
-        val frilansperiodeFom: YearMonth?,
-        val frilansperiodeTom: YearMonth?,
+        val frilansperiodeFom: LocalDate?,
+        val frilansperiodeTom: LocalDate?,
         val stillingsprosent: Double?,
         val yrke: String?,
         val arbeidsforholdID: String?,
         val arbeidsforholdIDnav: String?,
         val arbeidsforholdType: String?,
-        val arbeidsgiver: Ident,
-        val arbeidstaker: Ident
+        val arbeidsgiver: Ident?,
+        val arbeidstaker: Ident?
 )
 
-data class Inntekt (
-        val inntektType: String,
-        val beloep: Double,
-        val fordel: String,
-        val inntektskilde: String,
-        val inntektsperiodetype: String,
-        val inntektsstatus: String,
-        val leveringstidspunkt: YearMonth,
-        val utbetaltIMaaned: YearMonth,
+data class Inntekt(
+        val inntektType: String?,
+        val beloep: Double?,
+        val fordel: String?,
+        val inntektskilde: String?,
+        val inntektsperiodetype: String?,
+        val inntektsstatus: String?,
+        val leveringstidspunkt: YearMonth?,
+        val utbetaltIMaaned: YearMonth?,
         val arbeidsforholdREF: String?,
-        val opplysningspliktig: Ident,
-        val virksomhet: Ident,
-        val inntektsmottaker: Ident,
-        val inngaarIGrunnlagForTrekk: Boolean,
-        val utloeserArbeidsgiveravgift: Boolean,
-        val informasjonsstatus: String,
-        val beskrivelse: String,
+        val opplysningspliktig: Ident?,
+        val virksomhet: Ident?,
+        val inntektsmottaker: Ident?,
+        val inngaarIGrunnlagForTrekk: Boolean?,
+        val utloeserArbeidsgiveravgift: Boolean?,
+        val informasjonsstatus: String?,
+        val beskrivelse: String?,
         val skatteOgAvgiftsregel: String?,
         val opptjeningsland: String?,
-        val opptjeningsperiodeFom: YearMonth?,
-        val opptjeningsperiodeTom: YearMonth?,
+        val opptjeningsperiodeFom: LocalDate?,
+        val opptjeningsperiodeTom: LocalDate?,
         val skattemessigBosattLand: String?,
         val tilleggsinformasjon: Tilleggsinformasjon?
-
-
 
 
 )
@@ -128,28 +126,32 @@ enum class TilleggsinformasjonDetaljerType {
 }
 
 data class Forskuddstrekk(
-        val beloep: Int,
+        val beloep: Int?,
         val beskrivelse: String?,
-        val leveringstidspunkt: LocalDateTime,
-        val opplysningspliktig: Ident,
+        val leveringstidspunkt: LocalDateTime?,
+        val opplysningspliktig: Ident?,
         val utbetaler: Ident?,
         val forskuddstrekkGjelder: Ident?
 )
 
-data class Fradrag (
-        val beloep: BigDecimal,
+data class Fradrag(
+        val beloep: BigDecimal?,
         val beskrivelse: String?,
-        val fradragsperiode: String,
-        val leveringstidspunkt: LocalDateTime,
-        val inntektspliktig: Ident,
-        val utbetaler: Ident,
-        val fradragGjelder: Ident
+        val fradragsperiode: String?,
+        val leveringstidspunkt: LocalDateTime?,
+        val inntektspliktig: Ident?,
+        val utbetaler: Ident?,
+        val fradragGjelder: Ident?
 )
 
 
 data class Tilleggsinformasjon(
-        val kategori: String,
-        val tilleggsinformasjonDetaljer: String
+        val kategori: String?,
+        val tilleggsinformasjonDetaljer: TilleggsinformasjonDetaljer?
+)
+
+data class TilleggsinformasjonDetaljer(
+        val detaljerType: TilleggsinformasjonDetaljerType?
 )
 
 //val versjon: String

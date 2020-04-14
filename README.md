@@ -214,3 +214,6 @@ For å kjøre jMeter med GUI, enten fordi man liker det bedre eller fordi man sk
 ```
 jmeter/apache-jmeter-5.2.1/bin/jmeter -JAAD_TOKEN=<AAD_TOKEN> -t jmeter/MedlemskapOppslagMedMiniNorge.jmx
 ```
+
+# Autentisere klienter
+Klienter som ønsker å kalle oss må generere et token med vår klientid som scope.
