@@ -3,10 +3,10 @@ package no.nav.medlemskap.regler.v1
 import no.nav.medlemskap.domene.Arbeidsforholdstype
 import no.nav.medlemskap.domene.Skipsregister
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
-import no.nav.medlemskap.regler.common.Funksjoner.kunEr
+import no.nav.medlemskap.regler.common.Funksjoner.alleErOver
 import no.nav.medlemskap.regler.common.Funksjoner.inneholder
 import no.nav.medlemskap.regler.common.Funksjoner.inneholderNoe
+import no.nav.medlemskap.regler.common.Funksjoner.kunEr
 import no.nav.medlemskap.regler.common.Funksjoner.kunInneholder
 
 class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
@@ -89,16 +89,18 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
     private fun sjekkArbeidsforhold(): Resultat =
             when {
-
-                personfakta.arbeidsforhold() kunEr 1  -> ja()
+                personfakta.arbeidsforhold() kunEr 1 -> ja()
                 else -> nei()
             }
 
-    private fun sjekkArbeidsgiver(): Resultat =
-            when {
-                personfakta.arbeidsgiversLandForPeriode() kunInneholder "NOR" -> ja()
-                else -> nei("Arbeidsgiver er ikke norsk. Land: ${personfakta.arbeidsgiversLandForPeriode()}")
-            }
+    private fun sjekkArbeidsgiver(): Resultat {
+        return when {
+            personfakta.erArbeidsgivereOrganisasjon()
+                    && personfakta.antallAnsatteHosArbeidsgivere() alleErOver 5
+                    && personfakta.harSammenhengendeArbeidsforholdSiste12Mnd() -> ja()
+            else -> nei("Arbeidsgiver er ikke norsk. Land: ${personfakta.arbeidsgiversLandForPeriode()}")
+        }
+    }
 
     private fun sjekkMaritim(): Resultat =
             when {
@@ -112,6 +114,7 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
                 personfakta.sisteArbeidsforholdYrkeskode() inneholderNoe yrkeskoderLuftfart -> ja()
                 else -> nei()
             }
+
 
     private fun sjekkSkipsregister(): Resultat =
             when {

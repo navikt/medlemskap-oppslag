@@ -20,14 +20,15 @@
   "medlemskapsunntak" : [ ],
   "arbeidsforhold" : [ {
     "periode" : {
-      "fom" : "2019-10-01",
+      "fom" : "2018-12-31",
       "tom" : "2020-01-30"
     },
     "utenlandsopphold" : [ ],
     "arbeidsgiver" : {
       "type" : "Organisasjon",
       "identifikator" : "1",
-      "landkode" : "NOR"
+      "landkode" : "NOR",
+      "antallAnsatte" : "6"
     },
     "arbeidsfolholdstype" : "MARITIM",
     "arbeidsavtaler" : [ {

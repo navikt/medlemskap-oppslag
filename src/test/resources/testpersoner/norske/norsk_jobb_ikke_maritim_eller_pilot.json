@@ -20,14 +20,15 @@
   "medlemskapsunntak" : [ ],
   "arbeidsforhold" : [ {
     "periode" : {
-      "fom" : "2018-01-30",
+      "fom" : "2018-01-29",
       "tom" : "2020-01-30"
     },
     "utenlandsopphold" : [ ],
     "arbeidsgiver" : {
       "type" : "Organisasjon",
       "identifikator" : "1",
-      "landkode" : "NOR"
+      "landkode" : "NOR",
+      "antallAnsatte" : "6"
     },
     "arbeidsfolholdstype" : "NORMALT",
     "arbeidsavtaler" : [ {
