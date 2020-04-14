@@ -10,6 +10,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.services.runWithRetryAndMetrics
+import java.time.LocalDate
 
 class EregClient (
         private val baseUrl: String,
@@ -20,7 +21,7 @@ class EregClient (
     suspend fun hentEnhetstype(orgnummer:String, callId: String): String? {
         val organisasjon = runCatching {
             runWithRetryAndMetrics("Ereg", "noekkelinfo", retry) {
-                httpClient.get<Organisasjon> {
+                httpClient.get<OrganisasjonNøkkelinfo> {
                     url("$baseUrl/v1/organisasjon/$orgnummer/noekkelinfo")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
                     header("Nav-Call-Id", callId)
@@ -33,7 +34,7 @@ class EregClient (
                     when (error) {
                         is ClientRequestException -> {
                             if (error.response.status.value == 404) {
-                                Organisasjon(null)
+                                OrganisasjonNøkkelinfo(null)
                             } else {
                                 throw error
                             }
@@ -46,10 +47,11 @@ class EregClient (
         return organisasjon.enhetstype
     }
 
-    suspend fun hentAntallAnsatte(orgnummer:String?, callId: String): Map<Bruksperiode, Int>? {
-        val organisasjonsInfo = runCatching {
+
+    suspend fun hentOrganisasjon(orgnummer: String?, callId: String): Organisasjon {
+        val organisasjonsInfo = kotlin.runCatching {
             runWithRetryAndMetrics("Ereg", "hentAntallAnsatte", retry) {
-                httpClient.get<OrganisasjonsInfo> {
+                httpClient.get<Organisasjon> {
                     url("$baseUrl/v1/organisasjon/$orgnummer")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
                     header("Nav-Call-Id", callId)
@@ -62,7 +64,10 @@ class EregClient (
                     when (error) {
                         is ClientRequestException -> {
                             if (error.response.status.value == 404) {
-                                OrganisasjonsInfo(null)
+                                Organisasjon(null,
+                                        null,
+                                        null,
+                                        null)
                             } else {
                                 throw error
                             }
@@ -72,6 +77,42 @@ class EregClient (
                 }
 
         )
-        return organisasjonsInfo.organisasjonDetaljer?.ansatte?.associateBy({ ansatte -> ansatte.bruksPeriode }, { ansatte -> ansatte.antall })
+        return organisasjonsInfo
+
     }
+
+    suspend fun hentAntallAnsatte(orgnummer:String?, callId: String): Map<Bruksperiode, Int>? {
+        val organisasjonsInfo = runCatching {
+            runWithRetryAndMetrics("Ereg", "hentAntallAnsatte", retry) {
+                httpClient.get<Organisasjon> {
+                    url("$baseUrl/v1/organisasjon/$orgnummer")
+                    header(HttpHeaders.Accept, ContentType.Application.Json)
+                    header("Nav-Call-Id", callId)
+                    header("Nav-Consumer-Id", configuration.sts.username)
+                }
+            }
+        }.fold(
+                onSuccess = { it },
+                onFailure = { error ->
+                    when (error) {
+                        is ClientRequestException -> {
+                            if (error.response.status.value == 404) {
+                                Organisasjon(null,
+                                        null,
+                                        null,
+                                        null)
+                            } else {
+                                throw error
+                            }
+                        }
+                        else -> throw error
+                    }
+                }
+
+        )
+
+        return organisasjonsInfo.organisasjonDetaljer?.ansatte?.associateBy({ ansatte -> ansatte.bruksperiode }, { ansatte -> ansatte.antall })
+    }
+
+
 }
