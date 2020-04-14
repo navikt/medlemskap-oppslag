@@ -31,6 +31,8 @@ object Funksjoner {
     fun List<Any>.erIkkeTom() = !erTom()
 
     infix fun List<Arbeidsforhold>.kunEr(tall: Int) = this.size == tall
+
+    infix fun List<Int?>.alleErOver(tall: Int) = !this.stream().anyMatch { p -> p == null || p <= tall}
 }
 
 fun ja(begrunnelse: String) = Resultat(

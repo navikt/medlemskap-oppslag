@@ -67,27 +67,6 @@ class EregClientTest {
 
     }
 
-    @Test
-    fun `tester response på å hente organisasjon`() {
-        val callId = "12345"
-
-        val stsClient: StsRestClient = mockk()
-        coEvery { stsClient.oidcToken() } returns "dummytoken"
-
-        WireMock.stubFor(queryMapping.willReturn(
-                WireMock.aResponse()
-                        .withStatus(HttpStatusCode.OK.value)
-                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-                        .withBody(eregResponse)
-        ))
-
-        val client = EregClient(server.baseUrl(), httpClient, config)
-        val response = runBlocking { client.hentOrganisasjon("977074010", callId) }
-        println(response)
-        assertEquals(response, "NUF")
-
-    }
-
 
     @Test
     fun `tester ServerResponseException`() {

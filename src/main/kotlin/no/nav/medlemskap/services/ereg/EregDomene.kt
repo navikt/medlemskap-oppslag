@@ -52,7 +52,11 @@ data class MVA(val registrertIMVA: String,
 
 )
 
-data class Detaljer(val ansatte: List<Ansatte>)
+data class NAVSpesifikkInformasjon(
+        val bruksperiode: Bruksperiode,
+        val erIA: Boolean,
+        val gyldighetsperiode: Gyldighetsperiode
+)
 
 
 data class Naering(val bruksperiode: Bruksperiode,
@@ -129,3 +133,30 @@ data class Ansatte(val antall: Int, val bruksperiode: Bruksperiode, val gyldighe
 data class Bruksperiode(val fom: LocalDate, val tom: LocalDate?)
 
 data class Gyldighetsperiode(val fom: LocalDate?, val tom: LocalDate?)
+
+data class Organisasjon(val navn: Navn?,
+                        val organisasjonDetaljer: OrganiasjonsDetaljer?,
+                        val organisasjonsNummer: String?,
+                        val organisasjonstype: String?)
+
+data class Navn(val bruksperiode: Bruksperiode,
+                val gyldighetsperiode: Gyldighetsperiode,
+                val navnelinje1: String?,
+                val navnelinje2: String?,
+                val navnelinje3: String?,
+                val navnelinje4: String?,
+                val navnelinje5: String?,
+                val redigertnavn: String?
+)
+
+
+    enum class Organisasjonstype{
+        VIRKSOMHET,
+        JURDISKENHET,
+        ORGANISASJONSLEDD
+
+    }
+
+
+
+

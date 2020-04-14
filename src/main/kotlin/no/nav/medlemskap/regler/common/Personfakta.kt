@@ -1,8 +1,10 @@
 package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.services.aareg.AaRegOrganisasjonType
 import org.threeten.extra.Interval
 import java.time.LocalDate
+import java.util.stream.Collectors
 
 
 class Personfakta(private val datagrunnlag: Datagrunnlag) {
@@ -35,6 +37,50 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         }
     }
 
+    fun arbeidsforholdForNorskArbeidsgiver(): List<Arbeidsforhold> {
+        return datagrunnlag.arbeidsforhold.filter {
+            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
+                    datohjelper.kontrollPeriodeForNorskArbeidsgiver())
+        }
+    }
+
+    fun arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(): List<Arbeidsgiver> {
+        return arbeidsforholdForNorskArbeidsgiver().stream().map { it.arbeidsgiver }.collect(Collectors.toList())
+    }
+
+    fun erArbeidsgivereOrganisasjon(): Boolean {
+        return arbeidsgivereIArbeidsforholdForNorskArbeidsgiver().stream().allMatch { it.type == AaRegOrganisasjonType.Organisasjon.name }
+    }
+
+    fun antallAnsatteHosArbeidsgivere(): List<Int?> {
+        return arbeidsgivereIArbeidsforholdForNorskArbeidsgiver().stream().map { it.antallAnsatte }.collect(Collectors.toList())
+    }
+
+    /**
+     * På dette tidspunktet er det kjent at bruker er i et aktivt arbeidsforhold.
+     * Trenger derfor kun å sjekke at bruker har et arbeidsforhold minumum 12 mnd tilbake og at påfølgende arbeidsforholdene er sammenhengende.
+     */
+    fun harSammenhengendeArbeidsforholdSiste12Mnd(): Boolean {
+
+        var forrigeTilDato: LocalDate? = null
+
+        val arbeidsforholdForNorskArbeidsgiver = arbeidsforholdForNorskArbeidsgiver()
+
+        val harArbeidsforhold12MndTilbake = arbeidsforholdForNorskArbeidsgiver.stream().anyMatch { it.periode.fom?.isBefore(datohjelper.kontrollPeriodeForNorskArbeidsgiver().fom?.plusDays(1))!! }
+
+        val sortertArbeidsforholdEtterPeriode = arbeidsforholdForNorskArbeidsgiver.stream()
+                .sorted { o1, o2 -> o1.periode.tom?.compareTo(o2.periode.tom)!! }.collect(Collectors.toList())
+
+        for (arbeidsforhold in sortertArbeidsforholdEtterPeriode) { //Sjekker at alle påfølgende arbeidsforhold er sammenhengende
+            if (forrigeTilDato != null && !forrigeTilDato.isAfter(arbeidsforhold.periode.fom?.minusDays(3))) {
+                return false
+            }
+            forrigeTilDato = arbeidsforhold.periode.tom
+        }
+
+        return harArbeidsforhold12MndTilbake
+    }
+
     fun arbeidsgiversLandForPeriode(): List<String> {
         return arbeidsforhold().mapNotNull { it.arbeidsgiver.landkode }
     }
@@ -54,7 +100,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     fun hentBrukerinputArbeidUtenforNorge(): Boolean = datagrunnlag.brukerinput.arbeidUtenforNorge
 
-    
+
     private fun hentStatsborgerskapFor(dato: LocalDate): List<String> =
             statsborgerskap.filter {
                 Periode(it.fom, it.tom).interval().contains(lagInstant(dato))
