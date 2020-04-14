@@ -8,6 +8,7 @@ import no.nav.medlemskap.regler.common.Funksjoner.inneholder
 import no.nav.medlemskap.regler.common.Funksjoner.inneholderNoe
 import no.nav.medlemskap.regler.common.Funksjoner.kunEr
 import no.nav.medlemskap.regler.common.Funksjoner.kunInneholder
+import no.nav.medlemskap.regler.common.Funksjoner.erOver
 
 class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
@@ -97,7 +98,8 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
         return when {
             personfakta.erArbeidsgivereOrganisasjon()
                     && personfakta.antallAnsatteHosArbeidsgivere() alleErOver 5
-                    && personfakta.harSammenhengendeArbeidsforholdSiste12Mnd() -> ja()
+                    && personfakta.harSammenhengendeArbeidsforholdSiste12Mnd()
+                    && personfakta.hentKonkursStatus().isNullOrEmpty() -> ja()
             else -> nei("Arbeidsgiver er ikke norsk. Land: ${personfakta.arbeidsgiversLandForPeriode()}")
         }
     }

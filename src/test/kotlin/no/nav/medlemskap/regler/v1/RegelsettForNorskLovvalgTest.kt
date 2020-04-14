@@ -30,6 +30,11 @@ class RegelsettForNorskLovvalgTest {
     }
 
     @Test
+    fun  `person med ett arbeidsforhold med arbeidsgiver har konkurs status får uavklart`() {
+        assertEquals(Svar.UAVKLART, evaluer(personleser.enkelNorskMedKonkursArbeidsgiver()))
+    }
+
+    @Test
     fun `person med flere arbeidsforhold hvorav en arbeidsgiver har færre enn 6 ansatte innenfor kontrollperiode, får uavklart`() {
         assertEquals(Svar.UAVKLART, evaluer(personleser.norskMedFlereArbeidsforholdHvoravEnArbeidsgiverMedKun4AnsatteIPeriode()))
     }

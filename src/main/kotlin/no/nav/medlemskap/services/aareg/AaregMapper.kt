@@ -63,8 +63,12 @@ fun mapArbeidsgiver(arbeidsforhold: AaRegArbeidsforhold, dataOmArbeidsgiver: Mut
     val enhetstype = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.arbeidsgiverEnhetstype
     val antallAnsatte = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.antallAnsatte
     val arbeidsgiversLand = dataOmPerson[arbeidsforhold.arbeidsgiver.offentligIdent ?: arbeidsforhold.arbeidsgiver.aktoerId]
-
-    return Arbeidsgiver(enhetstype, arbeidsgiversLand, antallAnsatte)
+    val konkursStatus = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.konkursStatus
+    return Arbeidsgiver(
+                        type = enhetstype,
+                        landkode = arbeidsgiversLand,
+                        antallAnsatte = antallAnsatte,
+                        konkursStatus = konkursStatus)
 }
 
 fun mapPeriodeTilArbeidsavtale(arbeidsavtale: AaRegArbeidsavtale): Periode {

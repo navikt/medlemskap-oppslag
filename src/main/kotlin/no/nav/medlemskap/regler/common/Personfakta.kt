@@ -109,4 +109,8 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     private fun periodefilter(periodeDatagrunnlag: Interval, periode: Periode): Boolean {
         return periodeDatagrunnlag.overlaps(lagInterval(periode)) || periodeDatagrunnlag.encloses(lagInterval(periode))
     }
+
+    fun hentKonkursStatus(): List<String>? {
+      return arbeidsforholdForNorskArbeidsgiver().flatMap { it.arbeidsgiver.konkursStatus.orEmpty() }
+    }
 }
