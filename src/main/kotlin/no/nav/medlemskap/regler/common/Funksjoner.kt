@@ -30,7 +30,7 @@ object Funksjoner {
 
     infix fun List<Arbeidsforhold>.kunEr(tall: Int) = this.size == tall
 
-    infix fun List<Int?>.finnesFærreEnn(tall: Int) = this.stream().anyMatch { p -> p == null || p < tall}
+    infix fun List<Int?>.finnesMindreEnn(tall: Int) = this.stream().anyMatch { p -> p == null || p < tall}
 }
 
 fun ja(begrunnelse: String) = Resultat(

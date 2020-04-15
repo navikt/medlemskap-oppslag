@@ -4,7 +4,7 @@ import no.nav.medlemskap.domene.Arbeidsforholdstype
 import no.nav.medlemskap.domene.Skipsregister
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.finnes
-import no.nav.medlemskap.regler.common.Funksjoner.finnesFærreEnn
+import no.nav.medlemskap.regler.common.Funksjoner.finnesMindreEnn
 import no.nav.medlemskap.regler.common.Funksjoner.inneholder
 import no.nav.medlemskap.regler.common.Funksjoner.inneholderNoe
 import no.nav.medlemskap.regler.common.Funksjoner.kunEr
@@ -99,7 +99,7 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
         if (!personfakta.erArbeidsgivereOrganisasjon())
             return nei("Ikke alle arbeidsgivere er av typen organisasjon")
 
-        if (personfakta.antallAnsatteHosArbeidsgivere() finnesFærreEnn 6)
+        if (personfakta.antallAnsatteHosArbeidsgivere() finnesMindreEnn 6)
             return nei("Ikke alle arbeidsgivere har 6 ansatte eller flere")
 
         if (!personfakta.harSammenhengendeArbeidsforholdSiste12Mnd())
