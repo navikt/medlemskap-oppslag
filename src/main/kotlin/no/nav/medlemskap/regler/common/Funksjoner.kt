@@ -26,9 +26,11 @@ object Funksjoner {
 
     fun List<Any>?.erTom() = this == null || this.isNullOrEmpty()
 
+    fun List<Any>?.finnes() = this != null && this.isNotEmpty()
+
     infix fun List<Arbeidsforhold>.kunEr(tall: Int) = this.size == tall
 
-    infix fun List<Int?>.alleErOver(tall: Int) = !this.stream().anyMatch { p -> p == null || p <= tall}
+    infix fun List<Int?>.finnesFærreEnn(tall: Int) = this.stream().anyMatch { p -> p == null || p < tall}
 }
 
 fun ja(begrunnelse: String) = Resultat(
