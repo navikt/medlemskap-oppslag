@@ -47,11 +47,11 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     //Sjekker her at det ikke finnes "brudd" i perioden mens sjekken for
     // selve typen gjøres i regeltjenesten
-    fun arbeidsforholdForYrkestype(): List<Arbeidsforhold> {
+    fun arbeidsforholdForYrkestype(): List<String> {
         return datagrunnlag.arbeidsforhold.filter {
             periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
                     datohjelper.kontrollPeriodeForYrkesforholdType())
-        }
+        }.map { it.arbeidsfolholdstype.navn}
     }
 
     fun arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(): List<Arbeidsgiver> {
