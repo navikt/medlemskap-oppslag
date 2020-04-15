@@ -8,7 +8,25 @@ data class Arbeidsforhold (
         val arbeidsgiver: Arbeidsgiver,
         val arbeidsfolholdstype: Arbeidsforholdstype,
         val arbeidsavtaler: List<Arbeidsavtale>
-)
+) : Comparable<Arbeidsforhold> {
+
+    /**
+     * Comparator som sorterer arbeidsforhold etter periode.
+     * Null-verdier regnes som høyere, slik at aktive arbeidsforhold vil havne sist i listen.
+     */
+    override fun compareTo(other: Arbeidsforhold): Int {
+
+        if (this.periode.tom == null && other.periode.tom == null) {
+            return this.periode.fom?.compareTo(other.periode.fom)!! //En gyldig periode har alltid minst én dato
+        }
+
+        if (this.periode.tom == null) return 1
+        if (other.periode.tom == null) return -1
+
+        return this.periode.tom.compareTo(other.periode.tom)
+    }
+
+}
 
 data class Arbeidsavtale (
         val periode: Periode,
