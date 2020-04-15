@@ -92,7 +92,10 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     }
 
     fun sisteArbeidsforholdYrkeskode(): List<String> {
-        return arbeidsforhold().flatMap { it.arbeidsavtaler }.map { it.yrkeskode }
+        return datagrunnlag.arbeidsforhold.filter {
+            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
+                    datohjelper.kontrollPeriodeForYrkeskode())}
+                .flatMap { it.arbeidsavtaler }.map { it.yrkeskode }
     }
 
     fun sisteArbeidsforholdSkipsregister(): List<String> {

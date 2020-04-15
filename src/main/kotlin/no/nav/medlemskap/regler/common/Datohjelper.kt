@@ -35,6 +35,15 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
 
     }
 
+    fun kontrollPeriodeForYrkeskode(): Periode{
+        return when(ytelse){
+            Ytelse.SYKEPENGER -> Periode(
+                    fom = førsteSykedag().minusDays(12),
+                    tom = førsteSykedag()
+            )
+        }
+    }
+
     fun kontrollPeriodeForYrkesforholdType(): Periode {
         return when(ytelse){
             Ytelse.SYKEPENGER -> Periode(
