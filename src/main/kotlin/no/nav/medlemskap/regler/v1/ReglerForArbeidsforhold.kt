@@ -3,12 +3,12 @@ package no.nav.medlemskap.regler.v1
 import no.nav.medlemskap.domene.Arbeidsforholdstype
 import no.nav.medlemskap.domene.Skipsregister
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.common.Funksjoner.alleErOver
+import no.nav.medlemskap.regler.common.Funksjoner.finnes
+import no.nav.medlemskap.regler.common.Funksjoner.finnesMindreEnn
 import no.nav.medlemskap.regler.common.Funksjoner.inneholder
 import no.nav.medlemskap.regler.common.Funksjoner.inneholderNoe
 import no.nav.medlemskap.regler.common.Funksjoner.kunEr
 import no.nav.medlemskap.regler.common.Funksjoner.kunInneholder
-import no.nav.medlemskap.regler.common.Funksjoner.erTom
 
 class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
@@ -95,13 +95,20 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
             }
 
     private fun sjekkArbeidsgiver(): Resultat {
-        return when {
-            personfakta.erArbeidsgivereOrganisasjon()
-                    && personfakta.antallAnsatteHosArbeidsgivere() alleErOver 5
-                    && personfakta.harSammenhengendeArbeidsforholdSiste12Mnd()
-                    && personfakta.hentKonkursStatuser().erTom() -> ja()
-            else -> nei("Arbeidsgiver er ikke norsk. Land: ${personfakta.arbeidsgiversLandForPeriode()}")
-        }
+
+        if (!personfakta.erArbeidsgivereOrganisasjon())
+            return nei("Ikke alle arbeidsgivere er av typen organisasjon")
+
+        if (personfakta.antallAnsatteHosArbeidsgivere() finnesMindreEnn 6)
+            return nei("Ikke alle arbeidsgivere har 6 ansatte eller flere")
+
+        if (!personfakta.harSammenhengendeArbeidsforholdSiste12Mnd())
+            return nei("Arbeidstaker har ikke sammenhengende arbeidsforhold siste 12 mnd")
+
+        if (personfakta.konkursStatuserArbeidsgivere().finnes())
+            return nei("Arbeidstaker har hatt arbeidsforhold til arbeidsgiver som har konkurs-status satt")
+
+        return ja()
     }
 
     private fun sjekkMaritim(): Resultat =
