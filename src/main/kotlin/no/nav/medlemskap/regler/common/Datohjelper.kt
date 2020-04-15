@@ -25,18 +25,26 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
     private fun førsteSykedag() = datagrunnlag.periode.fom.minusDays(1)
 
 
-    fun kontrollPeriodeForArbeidsforhold(): Periode{
-        return when(ytelse){
+    fun kontrollPeriodeForArbeidsforhold(): Periode {
+        return when (ytelse) {
             Ytelse.SYKEPENGER -> Periode(
                     fom = førsteSykedag().minusDays(28),
                     tom = førsteSykedag()
             )
         }
-
     }
 
-    fun kontrollPeriodeForYrkeskode(): Periode{
-        return when(ytelse){
+    fun kontrollPeriodeForSkipsregister(): Periode {
+        return when (ytelse) {
+            Ytelse.SYKEPENGER -> Periode(
+                    fom = førsteSykedag().minusMonths(12),
+                    tom = førsteSykedag()
+            )
+        }
+    }
+
+    fun kontrollPeriodeForYrkeskode(): Periode {
+        return when (ytelse) {
             Ytelse.SYKEPENGER -> Periode(
                     fom = førsteSykedag().minusDays(12),
                     tom = førsteSykedag()
@@ -45,7 +53,7 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
     }
 
     fun kontrollPeriodeForYrkesforholdType(): Periode {
-        return when(ytelse){
+        return when (ytelse) {
             Ytelse.SYKEPENGER -> Periode(
                     fom = førsteSykedag().minusMonths(12),
                     tom = førsteSykedag()
@@ -54,23 +62,13 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
     }
 
     fun kontrollPeriodeForNorskArbeidsgiver(): Periode {
-        return when(ytelse) {
+        return when (ytelse) {
             Ytelse.SYKEPENGER -> Periode(
                     fom = førsteSykedag().minusMonths(12),
                     tom = førsteSykedag()
             )
         }
     }
-
-
-    fun kontrollPeriodeForSkipsregister(): Periode {
-        return when(ytelse){
-            Ytelse.SYKEPENGER -> Periode(
-                    fom = førsteSykedag().minusMonths(12),
-                    tom = førsteSykedag()
-            )
-        }
-
     fun erDatoerSammenhengende(sluttDato: LocalDate, startDato: LocalDate?): Boolean {
         return sluttDato.isAfter(startDato?.minusDays(3))
     }
