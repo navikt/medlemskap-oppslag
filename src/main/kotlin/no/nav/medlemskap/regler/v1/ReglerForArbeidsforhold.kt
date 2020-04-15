@@ -106,7 +106,7 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
     private fun sjekkMaritim(): Resultat =
             when {
-                personfakta.sisteArbeidsforholdtype() inneholder Arbeidsforholdstype.MARITIM.navn -> ja()
+                personfakta.sisteArbeidsforholdtype() kunInneholder Arbeidsforholdstype.MARITIM.navn -> ja()
                 else -> nei()
             }
 

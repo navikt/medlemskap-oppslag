@@ -44,6 +44,16 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         }
     }
 
+
+    //Sjekker her at det ikke finnes "brudd" i perioden mens sjekken for
+    // selve typen gjøres i regeltjenesten
+    fun arbeidsforholdForYrkestype(): List<Arbeidsforhold> {
+        return datagrunnlag.arbeidsforhold.filter {
+            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
+                    datohjelper.kontrollPeriodeForYrkesforholdType())
+        }
+    }
+
     fun arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(): List<Arbeidsgiver> {
         return arbeidsforholdForNorskArbeidsgiver().stream().map { it.arbeidsgiver }.collect(Collectors.toList())
     }
