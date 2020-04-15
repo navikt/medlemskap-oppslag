@@ -31,10 +31,10 @@
         "type": "Organisasjon",
         "identifikator": "1",
         "landkode": "NOR",
-        "antallAnsatte": "5"
+        "antallAnsatte": "10",
+        "konkursStatus" : ["OSKP"]
       },
       "arbeidsfolholdstype": "NORMALT",
-      "konkursStatuser" : ["OSKP"],
       "arbeidsavtaler": [
         {
           "periode": {
