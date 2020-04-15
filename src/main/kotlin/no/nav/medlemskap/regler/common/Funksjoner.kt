@@ -26,7 +26,6 @@ object Funksjoner {
 
     infix fun String?.erDelAv(map: Map<String, String>) = map.containsKey(this)
 
-    fun List<String>.erOver() = this.isNullOrEmpty()
 
     fun List<Any>.erTom() = this.isNullOrEmpty()
 
