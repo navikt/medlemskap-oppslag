@@ -24,11 +24,7 @@ object Funksjoner {
 
     infix fun Map<String, String>.finnesI(liste: List<String>) = this.keys.intersect(liste).isNotEmpty()
 
-    infix fun String?.erDelAv(map: Map<String, String>) = map.containsKey(this)
-
-    fun List<Any>.erTom() = this.isNullOrEmpty()
-
-    fun List<Any>.erIkkeTom() = !erTom()
+    fun List<Any>?.erTom() = this == null || this.isNullOrEmpty()
 
     infix fun List<Arbeidsforhold>.kunEr(tall: Int) = this.size == tall
 

@@ -1,0 +1,52 @@
+{
+  "periode": {
+    "fom": "2020-01-30",
+    "tom": "2021-01-30"
+  },
+  "brukerinput" : {
+    "arbeidUtenforNorge" : false
+  },
+  "personhistorikk" : {
+    "statsborgerskap" : [
+      {
+        "landkode" : "NOR",
+        "fom" : "1991-06-30",
+        "tom" : null
+      }
+    ],
+    "personstatuser" : [ ],
+    "bostedsadresser" : [ ],
+    "postadresser" : [ ],
+    "midlertidigAdresser" : [ ]
+  },
+  "medlemskapsunntak" : [ ],
+  "arbeidsforhold" : [
+    {
+      "periode": {
+        "fom": "2018-01-01",
+        "tom": "2022-06-30"
+      },
+      "utenlandsopphold": [],
+      "arbeidsgiver": {
+        "type": "Organisasjon",
+        "identifikator": "1",
+        "landkode": "NOR",
+        "antallAnsatte": "10",
+        "konkursStatus" : ["OSKP"]
+      },
+      "arbeidsfolholdstype": "NORMALT",
+      "arbeidsavtaler": [
+        {
+          "periode": {
+            "fom": "2020-01-30",
+            "tom": "2020-06-30"
+          },
+          "yrkeskode": "0001"
+        }
+      ]
+    }
+  ],
+  "inntekt" : [ ],
+  "oppgaver" : [ ],
+  "dokument" : [ ]
+}

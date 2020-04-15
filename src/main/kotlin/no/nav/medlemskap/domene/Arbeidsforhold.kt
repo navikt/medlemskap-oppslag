@@ -20,7 +20,8 @@ data class Arbeidsavtale (
 data class Arbeidsgiver (
         val type: String?,
         val landkode: String?,
-        val antallAnsatte: Int?
+        val antallAnsatte: Int?,
+        val konkursStatus: List<String>?
 )
 
 data class Utenlandsopphold (
