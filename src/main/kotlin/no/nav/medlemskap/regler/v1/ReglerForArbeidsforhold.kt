@@ -99,7 +99,7 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
             personfakta.erArbeidsgivereOrganisasjon()
                     && personfakta.antallAnsatteHosArbeidsgivere() alleErOver 5
                     && personfakta.harSammenhengendeArbeidsforholdSiste12Mnd()
-                    && personfakta.hentKonkursStatuser()!!.erTom() -> ja()
+                    && personfakta.hentKonkursStatuser().erTom() -> ja()
             else -> nei("Arbeidsgiver er ikke norsk. Land: ${personfakta.arbeidsgiversLandForPeriode()}")
         }
     }
