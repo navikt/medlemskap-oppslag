@@ -74,11 +74,10 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
         val harArbeidsforhold12MndTilbake = arbeidsforholdForNorskArbeidsgiver.stream().anyMatch { it.periode.fom?.isBefore(datohjelper.kontrollPeriodeForNorskArbeidsgiver().fom?.plusDays(1))!! }
 
-        val sortertArbeidsforholdEtterPeriode = arbeidsforholdForNorskArbeidsgiver.stream()
-                .sorted { o1, o2 -> o1.periode.tom?.compareTo(o2.periode.tom)!! }.collect(Collectors.toList())
+        val sortertArbeidsforholdEtterPeriode = arbeidsforholdForNorskArbeidsgiver.stream().sorted().collect(Collectors.toList())
 
         for (arbeidsforhold in sortertArbeidsforholdEtterPeriode) { //Sjekker at alle påfølgende arbeidsforhold er sammenhengende
-            if (forrigeTilDato != null && !forrigeTilDato.isAfter(arbeidsforhold.periode.fom?.minusDays(3))) {
+            if (forrigeTilDato != null && !datohjelper.erDatoerSammenhengende(forrigeTilDato, arbeidsforhold.periode.fom)) {
                 return false
             }
             forrigeTilDato = arbeidsforhold.periode.tom
@@ -116,7 +115,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return periodeDatagrunnlag.overlaps(lagInterval(periode)) || periodeDatagrunnlag.encloses(lagInterval(periode))
     }
 
-    fun hentKonkursStatuser(): List<String>? {
+    fun konkursStatuserArbeidsgivere(): List<String>? {
       return arbeidsforholdForNorskArbeidsgiver().flatMap { it.arbeidsgiver.konkursStatus.orEmpty() }
     }
 }

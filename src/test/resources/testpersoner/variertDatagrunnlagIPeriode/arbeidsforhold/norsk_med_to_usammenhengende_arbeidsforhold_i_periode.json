@@ -23,6 +23,29 @@
   "arbeidsforhold" : [
     {
       "periode": {
+        "fom": "2019-07-03",
+        "tom": null
+      },
+      "utenlandsopphold": [],
+      "arbeidsgiver": {
+        "type": "Organisasjon",
+        "identifikator": "2",
+        "landkode": "NOR",
+        "antallAnsatte": "6"
+      },
+      "arbeidsfolholdstype": "NORMALT",
+      "arbeidsavtaler": [
+        {
+          "periode": {
+            "fom": "2019-07-03",
+            "tom": "2021-06-30"
+          },
+          "yrkeskode": "0001"
+        }
+      ]
+    },
+    {
+      "periode": {
         "fom": "2018-01-01",
         "tom": "2019-06-30"
       },
@@ -39,29 +62,6 @@
           "periode": {
             "fom": "2018-01-01",
             "tom": "2019-06-30"
-          },
-          "yrkeskode": "0001"
-        }
-      ]
-    },
-    {
-      "periode": {
-        "fom": "2019-07-03",
-        "tom": "2021-06-30"
-      },
-      "utenlandsopphold": [],
-      "arbeidsgiver": {
-        "type": "Organisasjon",
-        "identifikator": "2",
-        "landkode": "NOR",
-        "antallAnsatte": "6"
-      },
-      "arbeidsfolholdstype": "NORMALT",
-      "arbeidsavtaler": [
-        {
-          "periode": {
-            "fom": "2019-07-03",
-            "tom": "2021-06-30"
           },
           "yrkeskode": "0001"
         }

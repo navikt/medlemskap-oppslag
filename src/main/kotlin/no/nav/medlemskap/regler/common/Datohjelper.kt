@@ -62,6 +62,7 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
         }
     }
 
+
     fun kontrollPeriodeForSkipsregister(): Periode {
         return when(ytelse){
             Ytelse.SYKEPENGER -> Periode(
@@ -69,6 +70,9 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
                     tom = førsteSykedag()
             )
         }
+
+    fun erDatoerSammenhengende(sluttDato: LocalDate, startDato: LocalDate?): Boolean {
+        return sluttDato.isAfter(startDato?.minusDays(3))
     }
 }
 
