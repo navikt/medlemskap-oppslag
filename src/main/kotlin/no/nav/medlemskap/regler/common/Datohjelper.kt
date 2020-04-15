@@ -52,6 +52,10 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
             )
         }
     }
+
+    fun erDatoerSammenhengende(sluttDato: LocalDate, startDato: LocalDate?): Boolean {
+        return sluttDato.isAfter(startDato?.minusDays(3))
+    }
 }
 
 fun lagInterval(periode: Periode): Interval {
