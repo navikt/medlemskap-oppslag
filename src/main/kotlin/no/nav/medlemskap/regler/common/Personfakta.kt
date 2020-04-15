@@ -11,6 +11,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     private val datohjelper = Datohjelper(datagrunnlag)
     private val statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap
+    private val arbeidsforhold = datagrunnlag.arbeidsforhold
 
     companion object {
         fun initialiserFakta(datagrunnlag: Datagrunnlag) = Personfakta(datagrunnlag)
@@ -22,26 +23,31 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     fun personensDokumenterIJoark(): List<Journalpost> = datagrunnlag.dokument
 
-
     fun hentStatsborgerskapVedStartAvKontrollperiode(): List<String> =
             hentStatsborgerskapFor(datohjelper.kontrollperiodeForStatsborgerskap().fom!!)
 
     fun hentStatsborgerskapVedSluttAvKontrollperiode(): List<String> =
             hentStatsborgerskapFor(datohjelper.kontrollperiodeForStatsborgerskap().tom!!)
 
-
     fun arbeidsforhold(): List<Arbeidsforhold> {
-        return datagrunnlag.arbeidsforhold.filter {
+        return arbeidsforhold.filter {
             periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
                     datohjelper.kontrollPeriodeForArbeidsforhold())
         }
     }
 
     fun arbeidsforholdForNorskArbeidsgiver(): List<Arbeidsforhold> {
-        return datagrunnlag.arbeidsforhold.filter {
+        return arbeidsforhold.filter {
             periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
                     datohjelper.kontrollPeriodeForNorskArbeidsgiver())
         }
+    }
+
+    fun arbeidsforholdForYrkestype(): List<String> {
+        return arbeidsforhold.filter {
+            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
+                    datohjelper.kontrollPeriodeForYrkesforholdType())
+        }.map { it.arbeidsfolholdstype.navn}
     }
 
     fun arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(): List<Arbeidsgiver> {
@@ -84,21 +90,21 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return arbeidsforhold().mapNotNull { it.arbeidsgiver.landkode }
     }
 
-    fun sisteArbeidsforholdtype(): List<String> {
-        return arbeidsforhold().map { it.arbeidsfolholdstype.navn }
-    }
-
     fun sisteArbeidsforholdYrkeskode(): List<String> {
-        return arbeidsforhold().flatMap { it.arbeidsavtaler }.map { it.yrkeskode }
+        return datagrunnlag.arbeidsforhold.filter {
+            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
+                    datohjelper.kontrollPeriodeForYrkeskode())}
+                .flatMap { it.arbeidsavtaler }.map { it.yrkeskode }
     }
 
     fun sisteArbeidsforholdSkipsregister(): List<String> {
-        return arbeidsforhold().flatMap { it -> it.arbeidsavtaler.map { it.skipsregister?.name.toString() } }
+        return datagrunnlag.arbeidsforhold.filter {
+            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
+                    datohjelper.kontrollPeriodeForSkipsregister())
+        }.flatMap { it -> it.arbeidsavtaler.map { it.skipsregister?.name.toString() } }
     }
 
-
     fun hentBrukerinputArbeidUtenforNorge(): Boolean = datagrunnlag.brukerinput.arbeidUtenforNorge
-
 
     private fun hentStatsborgerskapFor(dato: LocalDate): List<String> =
             statsborgerskap.filter {

@@ -9,6 +9,8 @@ import no.nav.medlemskap.regler.common.Funksjoner.inneholder
 import no.nav.medlemskap.regler.common.Funksjoner.inneholderNoe
 import no.nav.medlemskap.regler.common.Funksjoner.kunEr
 import no.nav.medlemskap.regler.common.Funksjoner.kunInneholder
+import no.nav.medlemskap.regler.common.Funksjoner.erTom
+import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 
 class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
@@ -113,7 +115,7 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
     private fun sjekkMaritim(): Resultat =
             when {
-                personfakta.sisteArbeidsforholdtype() inneholder Arbeidsforholdstype.MARITIM.navn -> ja()
+                personfakta.arbeidsforholdForYrkestype() alleEr Arbeidsforholdstype.MARITIM.navn -> ja()
                 else -> nei()
             }
 

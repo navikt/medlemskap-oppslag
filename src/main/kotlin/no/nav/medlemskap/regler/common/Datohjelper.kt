@@ -35,6 +35,15 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
 
     }
 
+    fun kontrollPeriodeForYrkeskode(): Periode{
+        return when(ytelse){
+            Ytelse.SYKEPENGER -> Periode(
+                    fom = førsteSykedag().minusDays(12),
+                    tom = førsteSykedag()
+            )
+        }
+    }
+
     fun kontrollPeriodeForYrkesforholdType(): Periode {
         return when(ytelse){
             Ytelse.SYKEPENGER -> Periode(
@@ -52,6 +61,15 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
             )
         }
     }
+
+
+    fun kontrollPeriodeForSkipsregister(): Periode {
+        return when(ytelse){
+            Ytelse.SYKEPENGER -> Periode(
+                    fom = førsteSykedag().minusMonths(12),
+                    tom = førsteSykedag()
+            )
+        }
 
     fun erDatoerSammenhengende(sluttDato: LocalDate, startDato: LocalDate?): Boolean {
         return sluttDato.isAfter(startDato?.minusDays(3))
