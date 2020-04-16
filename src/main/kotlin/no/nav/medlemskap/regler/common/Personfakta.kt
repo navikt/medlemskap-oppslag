@@ -29,6 +29,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     fun hentStatsborgerskapVedSluttAvKontrollperiode(): List<String> =
             hentStatsborgerskapFor(datohjelper.kontrollperiodeForStatsborgerskap().tom!!)
 
+
     fun arbeidsforhold(): List<Arbeidsforhold> {
         return arbeidsforhold.filter {
             periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
