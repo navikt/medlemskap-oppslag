@@ -2,6 +2,7 @@ package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.finnesI
+import no.nav.medlemskap.regler.common.Funksjoner.inneholder
 
 class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
 
@@ -27,13 +28,13 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
                 else -> nei()
             }
 
-
-    private fun sjekkStatsborgerskapTilBruker(): Resultat =
-             val førsteStatsborgerskap = personfakta.hentStatsborgerskapVedStartAvKontrollperiode()
-             val sisteStatsborgerskap = personfakta.hentStatsborgerskapVedSluttAvKontrollperiode()
-         /*       return when {
-                    eøsLand finnesI førsteStatsborgerskap && eøsLand finnesI sisteStatsborgerskap -> ja()
-                    else -> nei("Brukeren er ikke statsborger i et EØS-land.")
-                }*/
+    private fun sjekkOmBrukerErNorskStatsborger(): Resultat {
+        val førsteStatsborgerskap = personfakta.hentStatsborgerskapVedSluttAvKontrollperiodeNorskStatsborger()
+        val sisteStatsborgerskap = personfakta.hentStatsborgerskapVedSluttAvKontrollperiodeNorskStatsborger()
+        return when {
+            førsteStatsborgerskap inneholder "NOR" && sisteStatsborgerskap inneholder "NOR"-> ja()
+            else -> nei("Brukeren er ikke statsborger i et EØS-land.")
+        }
+    }
 
 }
