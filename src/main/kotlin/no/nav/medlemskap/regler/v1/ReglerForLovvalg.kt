@@ -10,10 +10,24 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
             sjekkRegel {
                 harBrukerJobbetUtenforNorge
             } hvisNei {
-                jaKonklusjon
+                sjekkRegel {
+                    harBrukerNorskStatsborgerskap
+                } hvisNei {
+                    neiKonklusjon
+                } hvisJa {
+                    jaKonklusjon
+                }
             } hvisJa {
                 neiKonklusjon
             }
+
+
+    private val harBrukerNorskStatsborgerskap = Regel(
+            identifikator = "LOV-1",
+            avklaring = "Har bruker norsk statsborgeskap",
+            beskrivelse = "",
+            operasjon = { sjekkOmBrukerErNorskStatsborger() }
+    )
 
     private val harBrukerJobbetUtenforNorge = Regel(
             identifikator = "LOV-1",
@@ -28,6 +42,7 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
                 else -> nei()
             }
 
+
     private fun sjekkOmBrukerErNorskStatsborger(): Resultat {
         val førsteStatsborgerskap = personfakta.hentStatsborgerskapVedSluttAvKontrollperiodeNorskStatsborger()
         val sisteStatsborgerskap = personfakta.hentStatsborgerskapVedSluttAvKontrollperiodeNorskStatsborger()
@@ -36,5 +51,7 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
             else -> nei("Brukeren er ikke statsborger i et EØS-land.")
         }
     }
+
+
 
 }

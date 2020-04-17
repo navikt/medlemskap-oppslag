@@ -132,4 +132,14 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
                 personfakta.sisteArbeidsforholdSkipsregister() kunInneholder Skipsregister.nor.name -> ja()
                 else -> nei()
             }
+
+
+    private fun sjekkOmBrukerErNorskStatsborger(): Resultat {
+        val førsteStatsborgerskap = personfakta.hentStatsborgerskapVedSluttAvKontrollperiodeNorskStatsborger()
+        val sisteStatsborgerskap = personfakta.hentStatsborgerskapVedSluttAvKontrollperiodeNorskStatsborger()
+        return when {
+            førsteStatsborgerskap inneholder "NOR" && sisteStatsborgerskap inneholder "NOR"-> ja()
+            else -> nei("Brukeren er ikke statsborger i et EØS-land.")
+        }
+    }
 }
