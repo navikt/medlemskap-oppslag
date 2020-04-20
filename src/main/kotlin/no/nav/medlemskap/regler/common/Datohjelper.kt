@@ -33,7 +33,16 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
         }
     }
 
-    fun kontrollPeriodeForSiste12Mnd(): Periode {
+    fun kontrollPeriodeForSkipsregister(): Periode {
+        return when (ytelse) {
+            Ytelse.SYKEPENGER -> Periode(
+                    fom = førsteSykedag().minusMonths(12),
+                    tom = førsteSykedag()
+            )
+        }
+    }
+
+    fun kontrollPeriodeForNorskAdresse(): Periode {
         return when (ytelse) {
             Ytelse.SYKEPENGER -> Periode(
                     fom = førsteSykedag().minusMonths(12),

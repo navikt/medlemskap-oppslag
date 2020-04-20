@@ -100,14 +100,14 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     fun sisteArbeidsforholdSkipsregister(): List<String> {
         return datagrunnlag.arbeidsforhold.filter {
             periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
-                    datohjelper.kontrollPeriodeForSiste12Mnd())
+                    datohjelper.kontrollPeriodeForSkipsregister())
         }.flatMap { it -> it.arbeidsavtaler.map { it.skipsregister?.name.toString() } }
     }
 
     fun hentBrukerinputArbeidUtenforNorge(): Boolean = datagrunnlag.brukerinput.arbeidUtenforNorge
 
     fun hentBrukerLandskodeInnenfor12Mnd(): List<Adresse> {
-        return datagrunnlag.personhistorikk.bostedsadresser.filter { it.landkode == "NOR" && it.fom!!.isAfter(datohjelper.kontrollPeriodeForSiste12Mnd().fom) }
+        return datagrunnlag.personhistorikk.bostedsadresser.filter { it.landkode == "NOR" && it.fom!!.isAfter(datohjelper.kontrollPeriodeForNorskAdresse().fom) }
     }
 
     private fun hentStatsborgerskapFor(dato: LocalDate): List<String> =
