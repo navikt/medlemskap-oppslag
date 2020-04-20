@@ -18,14 +18,14 @@ class RegelsettForMedlemskapTest {
     }
 
     @Test
-    fun `person med norsk statsborgerskap får ja `() {
+    fun `person med norsk statsborgerskap får ja`() {
         assertEquals(Svar.JA, evaluer(personleser.enkelNorskArbeid()))
     }
 
 
     @Test
-    fun `person med flere stastborgerskap innen periode får nei`() {
-        assertEquals(Svar.UAVKLART, evaluer(personleser.norskMedFlereStatsborgerskapIogUtenforPeriode() ))
+    fun `person med flere statsborgerskap innen periode får nei`() {
+        assertEquals(Svar.UAVKLART, evaluer(personleser.norskMedFlereStatsborgerskapIKontrollPeriode()))
     }
 
     private fun evaluer(datagrunnlag: Datagrunnlag): Svar {

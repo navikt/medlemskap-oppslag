@@ -19,7 +19,7 @@ class Personleser {
 
     fun norskMedFlereStatsborgerskap() = lesDatagrunnlag("$variertDatagrunnlag/norsk_flere_statsborgerskap_i_periode.json")
     fun norskMedUlikeEøsStatsborgerskap() = lesDatagrunnlag("$variertDatagrunnlag/norsk_ulike_eøs_statsborgerskap.json")
-    fun norskMedFlereStatsborgerskapIogUtenforPeriode() = lesDatagrunnlag("$variertDatagrunnlag/norsk_flere_statsborgerskap_i_og_utenfor_periode.json")
+    fun norskMedFlereStatsborgerskapIKontrollPeriode() = lesDatagrunnlag("$variertDatagrunnlag/norsk_flere_statsborgerskap_kontrollperiode.json")
     fun norskMedUtgaattStatsborgerskapIPeriode() = lesDatagrunnlag("$variertDatagrunnlag/norsk_med_utgaatt_statsborgerskap_i_periode.json")
 
 
