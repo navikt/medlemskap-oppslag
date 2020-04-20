@@ -106,6 +106,10 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     fun hentBrukerinputArbeidUtenforNorge(): Boolean = datagrunnlag.brukerinput.arbeidUtenforNorge
 
+    fun hentBrukerLandskodeInnenfor12Mnd(): List<Adresse> {
+        return datagrunnlag.personhistorikk.bostedsadresser.filter { it.landkode == "NOR" && it.fom!!.isAfter(datohjelper.kontrollPeriodeForNorskAdresse().fom) }
+    }
+
     private fun hentStatsborgerskapFor(dato: LocalDate): List<String> =
             statsborgerskap.filter {
                 Periode(it.fom, it.tom).interval().contains(lagInstant(dato))
@@ -119,4 +123,3 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
       return arbeidsforholdForNorskArbeidsgiver().flatMap { it.arbeidsgiver.konkursStatus.orEmpty() }
     }
 }
-
