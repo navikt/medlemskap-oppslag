@@ -27,7 +27,7 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
     )
 
     private val erBrukerBosattINorge = Regel(
-            identifikator = "",
+            identifikator = "LOV-2",
             avklaring = "Er bruker registrert som bosatt i Norge og har vært det i 12 mnd?",
             beskrivelse = "",
             operasjon = { sjekkLandskode() }
