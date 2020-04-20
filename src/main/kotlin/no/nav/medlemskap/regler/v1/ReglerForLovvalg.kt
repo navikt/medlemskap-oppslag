@@ -48,7 +48,7 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
         val sisteStatsborgerskap = personfakta.hentStatsborgerskapVedSluttAvKontrollperiodeNorskStatsborger()
         return when {
             førsteStatsborgerskap inneholder "NOR" && sisteStatsborgerskap inneholder "NOR"-> ja()
-            else -> nei("Brukeren er ikke norsk statborger")
+            else -> nei("Brukeren er ikke norsk statsborger")
         }
     }
 

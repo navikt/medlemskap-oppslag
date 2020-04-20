@@ -17,6 +17,17 @@ class RegelsettForMedlemskapTest {
         assertEquals(Svar.JA, evaluer(personleser.enkelNorskArbeid()))
     }
 
+    @Test
+    fun `person med norsk statsborgerskap får ja `() {
+        assertEquals(Svar.JA, evaluer(personleser.enkelNorskArbeid()))
+    }
+
+
+    @Test
+    fun `person med flere stastborgerskap innen periode får nei`() {
+        assertEquals(Svar.UAVKLART, evaluer(personleser.norskMedFlereStatsborgerskapIogUtenforPeriode() ))
+    }
+
     private fun evaluer(datagrunnlag: Datagrunnlag): Svar {
         val regelsett = Hovedregler(Personfakta.initialiserFakta(datagrunnlag))
         val resultat = regelsett.kjørHovedregler()
