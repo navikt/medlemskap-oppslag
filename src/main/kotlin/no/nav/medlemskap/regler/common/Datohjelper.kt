@@ -1,6 +1,5 @@
 package no.nav.medlemskap.regler.common
 
-import no.nav.medlemskap.domene.Arbeidsforhold
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Periode
 import org.threeten.extra.Interval
@@ -34,7 +33,7 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
         }
     }
 
-    fun kontrollPeriodeForSkipsregister(): Periode {
+    fun kontrollPeriodeForSiste12Mnd(): Periode {
         return when (ytelse) {
             Ytelse.SYKEPENGER -> Periode(
                     fom = førsteSykedag().minusMonths(12),

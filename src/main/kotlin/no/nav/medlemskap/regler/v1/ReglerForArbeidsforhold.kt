@@ -3,14 +3,12 @@ package no.nav.medlemskap.regler.v1
 import no.nav.medlemskap.domene.Arbeidsforholdstype
 import no.nav.medlemskap.domene.Skipsregister
 import no.nav.medlemskap.regler.common.*
+import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.common.Funksjoner.finnes
 import no.nav.medlemskap.regler.common.Funksjoner.finnesMindreEnn
-import no.nav.medlemskap.regler.common.Funksjoner.inneholder
 import no.nav.medlemskap.regler.common.Funksjoner.inneholderNoe
 import no.nav.medlemskap.regler.common.Funksjoner.kunEr
 import no.nav.medlemskap.regler.common.Funksjoner.kunInneholder
-import no.nav.medlemskap.regler.common.Funksjoner.erTom
-import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 
 class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
