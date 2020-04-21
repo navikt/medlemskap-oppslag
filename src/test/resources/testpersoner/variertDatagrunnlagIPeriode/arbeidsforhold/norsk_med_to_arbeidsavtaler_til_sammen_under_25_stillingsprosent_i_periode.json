@@ -1,0 +1,67 @@
+{
+  "periode": {
+    "fom": "2020-01-30",
+    "tom": "2021-01-30"
+  },
+  "brukerinput" : {
+    "arbeidUtenforNorge" : false
+  },
+  "personhistorikk" : {
+    "statsborgerskap" : [
+      {
+        "landkode" : "NOR",
+        "fom" : "1991-06-30",
+        "tom" : null
+      }
+    ],
+    "personstatuser" : [ ],
+    "bostedsadresser" : [
+      {
+        "adresselinje" : "Oslo",
+        "landkode" : "NOR",
+        "fom" : "2020-01-01",
+        "tom" : null
+      }
+    ],
+    "postadresser" : [ ],
+    "midlertidigAdresser" : [ ]
+  },
+  "medlemskapsunntak" : [ ],
+  "arbeidsforhold" : [
+    {
+      "periode": {
+        "fom": "2018-01-01",
+        "tom": "2021-06-30"
+      },
+      "utenlandsopphold": [],
+      "arbeidsgiver": {
+        "type": "Organisasjon",
+        "identifikator": "1",
+        "landkode": "NOR",
+        "antallAnsatte": "6"
+      },
+      "arbeidsfolholdstype": "NORMALT",
+      "arbeidsavtaler": [
+        {
+          "periode": {
+            "fom": "2020-01-30",
+            "tom": "2020-08-31"
+          },
+          "yrkeskode": "0001",
+          "stillingsprosent" : 12.0
+        },
+        {
+          "periode": {
+            "fom": "2020-09-01",
+            "tom": "2021-06-30"
+          },
+          "yrkeskode": "0001",
+          "stillingsprosent" : 12.0
+        }
+      ]
+    }
+  ],
+    "inntekt" : [ ],
+    "oppgaver" : [ ],
+    "dokument" : [ ]
+}

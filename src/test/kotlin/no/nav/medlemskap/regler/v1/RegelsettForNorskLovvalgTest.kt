@@ -5,7 +5,6 @@ import no.nav.medlemskap.regler.common.Personfakta.Companion.initialiserFakta
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.personer.Personleser
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class RegelsettForNorskLovvalgTest {
@@ -57,6 +56,21 @@ class RegelsettForNorskLovvalgTest {
     @Test
     fun `person med overlappende arbeidsforhold innenfor kontrollperiode, får ja`() {
         assertEquals(Svar.JA, evaluer(personleser.norskMedOverlappendeArbeidsforholdIPeriode()))
+    }
+
+    @Test
+    fun `person med ett arbeidsforhold som har en arbeidsavtale med mindre enn 25% stillingsprosent, får uavklart`() {
+        assertEquals(Svar.UAVKLART, evaluer(personleser.norskMedEttArbeidsforholdMedArbeidsavtaleUnder25ProsentStillingIPeriode()))
+    }
+
+    @Test
+    fun `person med ett arbeidsforhold med to arbeidsavtaler som utgjør mindre enn 25% i stillingsprosent, får uavklart`() {
+        assertEquals(Svar.UAVKLART, evaluer(personleser.norskMedToArbeidsavtalerISammeArbeidsforholdMedForLavTotalStillingProsentIPeriode()))
+    }
+
+    @Test
+    fun `person med ett arbeidsforhold med to overlappende arbeidsavtaler som til sammen utgjør mer enn 25% i stillingsprosent, får ja`() {
+        assertEquals(Svar.JA, evaluer(personleser.norskMedToOverlappendeArbeidsavtalerSomTilSammenErOver25ProsentIPeriode()))
     }
 
     @Test
