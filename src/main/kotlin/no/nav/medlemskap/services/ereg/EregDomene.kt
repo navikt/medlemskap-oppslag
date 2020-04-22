@@ -7,7 +7,7 @@ data class OrganisasjonNøkkelinfo(val enhetstype: String?)
 
 data class OrganiasjonsDetaljer(val ansatte: List<Ansatte>?,
                                 val dublettAv: Organisasjon?,
-                                val dubletter: List<Organiasjon>?,
+                                val dubletter: List<Organisasjon>?,
                                 val enhetstyper: List<Enhetstyper>?,
                                 val epostAdresser: List<Epostadresse>?,
                                 val formaal: List<Formaal>?,
