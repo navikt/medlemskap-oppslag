@@ -109,7 +109,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     fun hentBrukerLandskodeInnenfor12Mnd(): List<Adresse> {
         return datagrunnlag.personhistorikk.bostedsadresser.filter {
             it.landkode == "NOR"
-                    && (it.tom?.isAfter(datohjelper.kontrollPeriodeForNorskAdresse().fom) ?: it.tom == true)
+                    && (it.tom?.isAfter(datohjelper.kontrollPeriodeForNorskAdresse().fom) ?: true)
                     && it.fom!!.isBefore(datohjelper.kontrollPeriodeForNorskAdresse().tom)
         }
     }
