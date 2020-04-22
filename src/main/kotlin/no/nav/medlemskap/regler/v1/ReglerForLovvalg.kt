@@ -40,7 +40,7 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
     )
 
     private val harBrukerJobbet25ProsentEllerMer = Regel(
-            identifikator = "LOV-2",
+            identifikator = "LOV-3",
             avklaring = "Har bruker vært i minst 25% stilling?",
             beskrivelse = "",
             operasjon = { sjekkOmBrukerHarJobbet25ProsentEllerMer() }

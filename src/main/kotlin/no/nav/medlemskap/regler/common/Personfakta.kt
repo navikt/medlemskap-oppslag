@@ -137,7 +137,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
                 totalVektetStillingsprosent += (antallDager / totaltAntallDager) * stillingsprosent
                 antallArbeidsavtaler++
             }
-            if ((totalVektetStillingsprosent / antallArbeidsavtaler) <= gittStillingsprosent) return false
+            if (totalVektetStillingsprosent < gittStillingsprosent) return false
         }
 
         return true
