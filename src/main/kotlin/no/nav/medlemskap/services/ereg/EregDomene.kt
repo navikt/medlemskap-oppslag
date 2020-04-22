@@ -13,7 +13,7 @@ data class OrganiasjonsDetaljer(val ansatte: List<Ansatte>?,
                                 val formaal: List<Formaal>?,
                                 val forretningsAdresser: List<ForretningsAdresser>?,
                                 val hjemlandregistre: List<Hjemlandregistre>?,
-                                val internettadresser: List<Internettadresse>,
+                                val internettadresser: List<Internettadresse>?,
                                 val maalform: String?,
                                 val mobiltelefonnummer: List<Telefonnummer>?,
                                 val naeringer: List<Naering>?,
@@ -43,31 +43,31 @@ data class UnderlagtHjemlandLovgivningForetaksform(
 )
 
 data class Status(val bruksperiode: Bruksperiode,
-                  val gyldighetsperiode: Gyldighetsperiode,
-                  val kode: String)
+                  val gyldighetsperiode: Gyldighetsperiode?,
+                  val kode: String?)
 
-data class MVA(val registrertIMVA: String,
-               val bruksperiode: Bruksperiode,
-               val gyldighetsperiode: Gyldighetsperiode
+data class MVA(val registrertIMVA: String?,
+               val bruksperiode: Bruksperiode?,
+               val gyldighetsperiode: Gyldighetsperiode?
 
 )
 
 data class NAVSpesifikkInformasjon(
-        val bruksperiode: Bruksperiode,
-        val erIA: Boolean,
-        val gyldighetsperiode: Gyldighetsperiode
+        val bruksperiode: Bruksperiode?,
+        val erIA: Boolean?,
+        val gyldighetsperiode: Gyldighetsperiode?
 )
 
 
-data class Naering(val bruksperiode: Bruksperiode,
-                   val gyldighetsperiode: Gyldighetsperiode,
-                   val hjelpeenhet: Boolean,
-                   val naeringskode: String)
+data class Naering(val bruksperiode: Bruksperiode?,
+                   val gyldighetsperiode: Gyldighetsperiode?,
+                   val hjelpeenhet: Boolean?,
+                   val naeringskode: String?)
 
 
-data class Internettadresse(val adresse: String,
-                            val bruksperiode: Bruksperiode,
-                            val gyldighetsperiode: Gyldighetsperiode)
+data class Internettadresse(val adresse: String?,
+                            val bruksperiode: Bruksperiode?,
+                            val gyldighetsperiode: Gyldighetsperiode?)
 
 data class Telefonnummer(val nummer: String?,
                          val bruksperiode: Bruksperiode?,
@@ -100,47 +100,51 @@ data class Postadresse(val adresselinje1: String?,
 
 
 data class ForretningsAdresser(
-        val adresselinje1: String,
-        val adresselinje2: String,
-        val adresselinje3: String,
-        val bruksperiode: Bruksperiode,
-        val gyldighetsperiode: Gyldighetsperiode,
-        val kommunenr: String,
-        val landkode: String,
-        val postnummer: String,
-        val poststed: String
+        val adresselinje1: String?,
+        val adresselinje2: String?,
+        val adresselinje3: String?,
+        val bruksperiode: Bruksperiode?,
+        val gyldighetsperiode: Gyldighetsperiode?,
+        val kommunenr: String?,
+        val landkode: String?,
+        val postnummer: String?,
+        val poststed: String?
 
 )
 
-data class Formaal(val bruksperiode: Bruksperiode,
-                   val formaal: String,
-                   val gyldighetsperiode: Gyldighetsperiode)
+data class Formaal(val bruksperiode: Bruksperiode?,
+                   val formaal: String?,
+                   val gyldighetsperiode: Gyldighetsperiode?)
 
 
 
 
-data class Epostadresse(val adresse: String,
-                        val bruksperiode: Bruksperiode,
-                        val gyldighetsperiode: Gyldighetsperiode)
+data class Epostadresse(val adresse: String?,
+                        val bruksperiode: Bruksperiode?,
+                        val gyldighetsperiode: Gyldighetsperiode?)
 
-data class Enhetstyper(val bruksperiode: Bruksperiode,
-                       val enhetstype: String,
-                       val gyldighetsperiode: Gyldighetsperiode)
+data class Enhetstyper(val bruksperiode: Bruksperiode?,
+                       val enhetstype: String?,
+                       val gyldighetsperiode: Gyldighetsperiode?)
 
 
-data class Ansatte(val antall: Int, val bruksperiode: Bruksperiode, val gyldighetsperiode: Gyldighetsperiode)
+data class Ansatte(val antall: Int?,
+                   val bruksperiode: Bruksperiode?,
+                   val gyldighetsperiode: Gyldighetsperiode?)
 
-data class Bruksperiode(val fom: LocalDate, val tom: LocalDate?)
+data class Bruksperiode(val fom: LocalDate,
+                        val tom: LocalDate?)
 
-data class Gyldighetsperiode(val fom: LocalDate?, val tom: LocalDate?)
+data class Gyldighetsperiode(val fom: LocalDate?,
+                             val tom: LocalDate?)
 
 data class Organisasjon(val navn: Navn?,
                         val organisasjonDetaljer: OrganiasjonsDetaljer?,
                         val organisasjonsNummer: String?,
                         val organisasjonstype: String?)
 
-data class Navn(val bruksperiode: Bruksperiode,
-                val gyldighetsperiode: Gyldighetsperiode,
+data class Navn(val bruksperiode: Bruksperiode?,
+                val gyldighetsperiode: Gyldighetsperiode?,
                 val navnelinje1: String?,
                 val navnelinje2: String?,
                 val navnelinje3: String?,
