@@ -13,7 +13,13 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
                 } hvisNei {
                     uavklartKonklusjon
                 } hvisJa {
-                    jaKonklusjon
+                    sjekkRegel {
+                        harBrukerJobbet25ProsentEllerMer
+                    } hvisJa {
+                        jaKonklusjon
+                    } hvisNei {
+                        uavklartKonklusjon
+                    }
                 }
             } hvisJa {
                 neiKonklusjon
@@ -33,6 +39,13 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
             operasjon = { sjekkLandskode() }
     )
 
+    private val harBrukerJobbet25ProsentEllerMer = Regel(
+            identifikator = "LOV-3",
+            avklaring = "Har bruker vært i minst 25% stilling?",
+            beskrivelse = "",
+            operasjon = { sjekkOmBrukerHarJobbet25ProsentEllerMer() }
+    )
+
     private fun sjekkOmBrukerHarJobbetUtenforNorge(): Resultat =
             when {
                 personfakta.hentBrukerinputArbeidUtenforNorge() -> ja()
@@ -45,4 +58,9 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
                 else -> nei()
             }
 
+    private fun sjekkOmBrukerHarJobbet25ProsentEllerMer(): Resultat =
+            when {
+                personfakta.harBrukerJobberMerEnnGittStillingsprosent(25.0) -> ja()
+                else -> nei("Bruker har ikke jobbet 25% eller mer i løpet av periode.")
+            }
 }

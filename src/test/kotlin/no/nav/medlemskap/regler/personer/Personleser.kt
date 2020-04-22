@@ -30,12 +30,14 @@ class Personleser {
     fun norskMedToSammenhengendeArbeidsforholdIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_to_sammenhengende_arbeidsforhold_i_periode.json")
     fun norskMedToSammenhengendeArbeidsforholdUnder12MndIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_to_sammenhengende_arbeidsforhold_under_12_mnd_i_periode.json")
     fun norskMedOverlappendeArbeidsforholdIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_overlappende_arbeidsforhold_i_periode.json")
-    fun norskArbeidsgiverMedFlereIPeriode () = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_og_flere_arbeidsgivere_i_periode.json")
+    fun norskMedEttArbeidsforholdMedArbeidsavtaleUnder25ProsentStillingIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_ett_arbeidsforhold_under_25_stillingsprosent_i_periode.json")
+    fun norskMedToArbeidsavtalerISammeArbeidsforholdMedForLavTotalStillingProsentIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_to_arbeidsavtaler_til_sammen_under_25_stillingsprosent_i_periode.json")
+    fun norskMedToOverlappendeArbeidsavtalerSomTilSammenErOver25ProsentIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_to_overlappende_arbeidsavtaler_til_sammen_er_over_25_stillingsprosent_i_periode.json")
+    fun norskArbeidsgiverMedFlereIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_og_flere_arbeidsgivere_i_periode.json")
     fun norskMedFlereArbeidsforholdstyperIPerioder() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_og_flere_arbeidsforholdtyper_i_periode.json")
-    fun norskMedFlereYrkeskoderIPeriode () = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_flere_yrkestyper_i_periode.json")
+    fun norskMedFlereYrkeskoderIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_flere_yrkestyper_i_periode.json")
     fun enkelNorskFlereArbeidsforholdIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_flere_yrkestyper_i_periode.json")
     fun enkelNorskMedKonkursArbeidsgiver() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_konkurs_arbeidsgiver.json")
-
 
 
     fun enkelAmerikansk() = lesDatagrunnlag("$ikkeEøs/kun_enkelt_amerikansk_statsborgerskap.json")
@@ -47,5 +49,4 @@ class Personleser {
         val res = Personleser::class.java.getResource(filnavn)
         return objectMapper.readValue(res, Datagrunnlag::class.java)
     }
-
 }

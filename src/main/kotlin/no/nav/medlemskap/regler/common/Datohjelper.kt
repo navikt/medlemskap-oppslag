@@ -77,6 +77,16 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
             )
         }
     }
+
+    fun kontrollPeriodeForStillingsprosent(): Periode {
+        return when (ytelse) {
+            Ytelse.SYKEPENGER -> Periode(
+                    fom = førsteSykedag().minusMonths(12),
+                    tom = førsteSykedag()
+            )
+        }
+    }
+
     fun erDatoerSammenhengende(sluttDato: LocalDate, startDato: LocalDate?): Boolean {
         return sluttDato.isAfter(startDato?.minusDays(3))
     }
