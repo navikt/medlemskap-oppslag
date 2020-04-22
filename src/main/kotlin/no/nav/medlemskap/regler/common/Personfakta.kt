@@ -126,7 +126,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     fun harBrukerJobberMerEnnGittStillingsprosent(gittStillingsprosent: Double): Boolean {
 
         val kontrollPeriodeForStillingsprosent = datohjelper.kontrollPeriodeForStillingsprosent()
-        val totaltAntallDager = kontrollPeriodeForStillingsprosent.fom!!.until(kontrollPeriodeForStillingsprosent.tom!!, ChronoUnit.DAYS)
+        val totaltAntallDager = kontrollPeriodeForStillingsprosent.fom!!.until(kontrollPeriodeForStillingsprosent.tom!!, ChronoUnit.DAYS).toDouble()
 
         for (arbeidsforhold in arbeidsforholdForStillingsprosent()) {
             var antallArbeidsavtaler = 0
@@ -134,7 +134,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
             for (arbeidsavtale in arbeidsforhold.arbeidsavtaler) {
                 val stillingsprosent = arbeidsavtale.stillingsprosent ?: 100.0
                 val tilDato = arbeidsavtale.periode.tom ?: arbeidsforhold.periode.tom ?: kontrollPeriodeForStillingsprosent.tom
-                var antallDager = kontrollPeriodeForStillingsprosent.fom.until(tilDato, ChronoUnit.DAYS)
+                var antallDager = kontrollPeriodeForStillingsprosent.fom.until(tilDato, ChronoUnit.DAYS).toDouble()
                 if (antallDager > totaltAntallDager) {
                     antallDager = totaltAntallDager
                 }
