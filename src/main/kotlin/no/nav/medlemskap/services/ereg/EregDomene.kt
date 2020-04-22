@@ -6,8 +6,8 @@ data class OrganisasjonNøkkelinfo(val enhetstype: String?)
 
 
 data class OrganiasjonsDetaljer(val ansatte: List<Ansatte>?,
-                                val dublettAv: Dublettorganisasjon?,
-                                val dubletter: List<Dublettorganisasjon>?,
+                                val dublettAv: Organisasjon?,
+                                val dubletter: List<Organiasjon>?,
                                 val enhetstyper: List<Enhetstyper>?,
                                 val epostAdresser: List<Epostadresse>?,
                                 val formaal: List<Formaal>?,
@@ -29,8 +29,6 @@ data class OrganiasjonsDetaljer(val ansatte: List<Ansatte>?,
                                 val telefaksnummer: List<Telefonnummer?>?,
                                 val telefonnummer: List<Telefonnummer?>?,
                                 val underlagtHjemlandLovgivningForetaksform: List<UnderlagtHjemlandLovgivningForetaksform>?)
-
-data class Dublettorganisasjon(val string: String?)
 
 
 data class UnderlagtHjemlandLovgivningForetaksform(
