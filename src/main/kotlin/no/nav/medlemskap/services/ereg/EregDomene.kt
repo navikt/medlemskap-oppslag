@@ -26,7 +26,7 @@ data class OrganiasjonsDetaljer(val ansatte: List<Ansatte>?,
                                 val sistEndret: LocalDate?,
                                 val statuser: List<Status?>?,
                                 val stiftelsesdato: LocalDate?,
-                                val telefaksnummer: List<Telefonnummer>?,
+                                val telefaksnummer: List<Telefonnummer?>?,
                                 val telefonnummer: List<Telefonnummer?>?,
                                 val underlagtHjemlandLovgivningForetaksform: List<UnderlagtHjemlandLovgivningForetaksform>?)
 
@@ -132,7 +132,7 @@ data class Ansatte(val antall: Int?,
                    val bruksperiode: Bruksperiode?,
                    val gyldighetsperiode: Gyldighetsperiode?)
 
-data class Bruksperiode(val fom: LocalDate,
+data class Bruksperiode(val fom: LocalDate?,
                         val tom: LocalDate?)
 
 data class Gyldighetsperiode(val fom: LocalDate?,
