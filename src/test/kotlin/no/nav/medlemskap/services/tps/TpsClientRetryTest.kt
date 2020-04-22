@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.time.LocalDate
 
-/*
 class TpsClientRetryTest {
 
     private val tpsRetry = retryRegistry.retry("TPS")
@@ -46,4 +45,3 @@ class TpsClientRetryTest {
     }
 
 }
- */
