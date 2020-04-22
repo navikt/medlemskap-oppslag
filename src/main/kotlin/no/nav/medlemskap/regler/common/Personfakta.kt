@@ -116,7 +116,11 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     fun hentBrukerinputArbeidUtenforNorge(): Boolean = datagrunnlag.brukerinput.arbeidUtenforNorge
 
     fun hentBrukerLandskodeInnenfor12Mnd(): List<Adresse> {
-        return datagrunnlag.personhistorikk.bostedsadresser.filter { it.landkode == "NOR" && it.fom!!.isAfter(datohjelper.kontrollPeriodeForNorskAdresse().fom) }
+        return datagrunnlag.personhistorikk.bostedsadresser.filter {
+            it.landkode == "NOR"
+                    && (it.tom?.isAfter(datohjelper.kontrollPeriodeForNorskAdresse().fom) ?: true)
+                    && it.fom!!.isBefore(datohjelper.kontrollPeriodeForNorskAdresse().tom)
+        }
     }
 
     fun harBrukerJobberMerEnnGittStillingsprosent(gittStillingsprosent: Double): Boolean {

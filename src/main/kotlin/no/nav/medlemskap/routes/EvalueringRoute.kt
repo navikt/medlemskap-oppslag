@@ -90,7 +90,7 @@ private suspend fun createDatagrunnlag(
         services: Services): Datagrunnlag = coroutineScope {
 
 
-    val pdlHistorikkRequest = async { services.pdlService.hentPersonHistorikk(fnr, callId) }
+   // val pdlHistorikkRequest = async { services.pdlService.hentPersonHistorikk(fnr, callId) }
     val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr, periode.fom) }
     val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(fnr, callId) }
     val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr, callId, periode.fom, periode.tom) }
@@ -98,7 +98,7 @@ private suspend fun createDatagrunnlag(
     val journalPosterRequest = async { services.safService.hentJournaldata(fnr, callId) }
     val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktoer, callId) }
 
-    val pdlHistorikk = pdlHistorikkRequest.await()
+  //  val pdlHistorikk = pdlHistorikkRequest.await()
     val historikkFraTps = historikkFraTpsRequest.await()
     val medlemskapsunntak = medlemskapsunntakRequest.await()
     val arbeidsforhold = arbeidsforholdRequest.await()
@@ -107,7 +107,7 @@ private suspend fun createDatagrunnlag(
     val oppgaver = gosysOppgaver.await()
 
 
-    logger.info { pdlHistorikk }
+  //  logger.info { pdlHistorikk }
 
 
     Datagrunnlag(
