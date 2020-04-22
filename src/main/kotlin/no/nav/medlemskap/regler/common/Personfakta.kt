@@ -156,7 +156,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return periodeDatagrunnlag.overlaps(lagInterval(periode)) || periodeDatagrunnlag.encloses(lagInterval(periode))
     }
 
-    fun konkursStatuserArbeidsgivere(): List<String>? {
+    fun konkursStatuserArbeidsgivere(): List<String?>? {
         return arbeidsforholdForNorskArbeidsgiver().flatMap { it.arbeidsgiver.konkursStatus.orEmpty() }
     }
 }
