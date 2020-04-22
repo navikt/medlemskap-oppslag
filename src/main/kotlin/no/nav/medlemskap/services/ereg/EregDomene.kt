@@ -21,7 +21,7 @@ data class OrganiasjonsDetaljer(val ansatte: List<Ansatte>?,
                                 val navn: List<Navn>?,
                                 val opphoersdato: LocalDate?,
                                 val postAdresse: Postadresse?,
-                                val registreringsdato: LocalDate,
+                                val registreringsdato: LocalDate?,
                                 val registrertMVA: List<MVA>?,
                                 val sistEndret: LocalDate?,
                                 val statuser: List<Status>?,
@@ -30,7 +30,7 @@ data class OrganiasjonsDetaljer(val ansatte: List<Ansatte>?,
                                 val telefonnummer: List<Telefonnummer?>,
                                 val underlagtHjemlandLovgivningForetaksform: List<UnderlagtHjemlandLovgivningForetaksform>?)
 
-data class Dublettorganisasjon(val string: String)
+data class Dublettorganisasjon(val string: String?)
 
 
 data class UnderlagtHjemlandLovgivningForetaksform(
