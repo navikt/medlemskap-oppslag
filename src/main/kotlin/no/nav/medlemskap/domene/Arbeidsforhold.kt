@@ -1,5 +1,6 @@
 package no.nav.medlemskap.domene
 
+import no.nav.medlemskap.services.ereg.Ansatte
 import java.time.YearMonth
 
 data class Arbeidsforhold (
@@ -35,10 +36,10 @@ data class Arbeidsavtale (
         val stillingsprosent: Double?
 )
 
-data class Arbeidsgiver (
+data class Arbeidsgiver(
         val type: String?,
         val landkode: String?,
-        val antallAnsatte: Int?,
+        val ansatte: List<Ansatte>?,
         val konkursStatus: List<String?>?
 )
 
