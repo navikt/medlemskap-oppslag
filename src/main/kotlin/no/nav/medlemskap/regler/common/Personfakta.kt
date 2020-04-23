@@ -3,10 +3,12 @@ package no.nav.medlemskap.regler.common
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.services.aareg.AaRegOpplysningspliktigArbeidsgiverType
 import no.nav.medlemskap.services.aareg.AaRegOrganisasjonType
+import no.nav.medlemskap.services.ereg.Ansatte
 import org.threeten.extra.Interval
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import java.util.stream.Collectors
+
 
 
 class Personfakta(private val datagrunnlag: Datagrunnlag) {
@@ -74,10 +76,13 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return arbeidsforholdForNorskArbeidsgiver().stream().allMatch { it.arbeidsgivertype == AaRegOpplysningspliktigArbeidsgiverType.Organisasjon }
     }
 
-    fun antallAnsatteHosArbeidsgivere(): List<Int?> {
-        return arbeidsgivereIArbeidsforholdForNorskArbeidsgiver().stream().map { it.antallAnsatte }.collect(Collectors.toList())
-    }
 
+    fun ansatteHosArbeidsgivere(): List<Ansatte> {
+        return arbeidsgivereIArbeidsforholdForNorskArbeidsgiver().mapNotNull { it.ansatte }.flatten()
+    }
+    fun antallAnsatteHosArbeidsgivere(): List<Int?> {
+        return ansatteHosArbeidsgivere().map { it.antall }
+    }
     /**
      * På dette tidspunktet er det kjent at bruker er i et aktivt arbeidsforhold.
      * Trenger derfor kun å sjekke at bruker har et arbeidsforhold minumum 12 mnd tilbake og at påfølgende arbeidsforholdene er sammenhengende.

@@ -14,9 +14,8 @@ import mu.KotlinLogging
 import no.nav.medlemskap.domene.Arbeidsforhold
 import no.nav.medlemskap.domene.ArbeidsgiverOrg
 import no.nav.medlemskap.domene.ArbeidsgiverPerson
-import no.nav.medlemskap.services.ereg.Bruksperiode
+import no.nav.medlemskap.services.ereg.Ansatte
 import no.nav.medlemskap.services.ereg.EregClient
-import no.nav.medlemskap.services.ereg.Status
 import no.nav.medlemskap.services.pdl.PdlClient
 import no.nav.medlemskap.services.runWithRetryAndMetrics
 import no.nav.medlemskap.services.sts.StsRestClient
@@ -110,12 +109,14 @@ class AaRegService(
             val organisasjon = eregClient.hentOrganisasjon(orgnummer, callId)
             dataOmArbeidsgiver[orgnummer] = ArbeidsgiverInfo(
                     arbeidsgiverEnhetstype = hentArbeidsgiverEnhetstype(orgnummer, callId),
-                    antallAnsatte = organisasjon.organisasjonDetaljer?.ansatte?.associateBy({ ansatte -> ansatte.bruksperiode }, { ansatte -> ansatte.antall })?.get(Bruksperiode(fraOgMed, tilOgMed)),
+                    ansatte = organisasjon.organisasjonDetaljer?.ansatte,
                     opphoersdato = organisasjon.organisasjonDetaljer?.opphoersdato,
-                    konkursStatus = organisasjon.organisasjonDetaljer?.statuser?.map{it -> it?.kode }
+                    konkursStatus = organisasjon.organisasjonDetaljer?.statuser?.map{ it -> it?.kode }
 
 
             )
+
+
         }
 
         personIdentifikatorer.forEach{ personIdentifikator ->
@@ -125,7 +126,10 @@ class AaRegService(
         return mapAaregResultat(arbeidsforhold, dataOmArbeidsgiver, dataOmPerson)
     }
 
-    data class ArbeidsgiverInfo(val arbeidsgiverEnhetstype: String?, val antallAnsatte: Int?, val opphoersdato: LocalDate?, val konkursStatus: List<String?>?)
+    data class ArbeidsgiverInfo(val arbeidsgiverEnhetstype: String?,
+                                val ansatte: List<Ansatte>?,
+                                val opphoersdato: LocalDate?,
+                                val konkursStatus: List<String?>?)
 
 
     private suspend fun hentArbeidsgiverEnhetstype(orgnummer: String, callId: String): String? {
