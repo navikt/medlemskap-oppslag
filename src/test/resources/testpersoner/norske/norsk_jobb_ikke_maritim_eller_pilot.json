@@ -31,8 +31,9 @@
       "tom" : "2020-01-30"
     },
     "utenlandsopphold" : [ ],
-    "arbeidsgiver" : {
-      "type" : "Organisasjon",
+    "arbeidsgivertype": "Organisasjon",
+    "arbeidsgiver": {
+      "type": "BEDR",
       "identifikator" : "1",
       "landkode" : "NOR",
       "antallAnsatte" : "6"

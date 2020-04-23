@@ -9,6 +9,7 @@ fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, dataOmArbeidsgiv
                 periode = mapPeriodeTilArbeidsforhold(it),
                 utenlandsopphold = mapUtenLandsopphold(it),
                 arbeidsfolholdstype = mapArbeidsForholdType(it),
+                arbeidsgivertype = it.arbeidsgiver.type,
                 arbeidsgiver = mapArbeidsgiver(it, dataOmArbeidsgiver, dataOmPerson),
                 arbeidsavtaler = mapArbeidsAvtaler(it)
 
@@ -62,13 +63,14 @@ fun mapArbeidsForholdType(arbeidsforhold: AaRegArbeidsforhold): Arbeidsforholdst
 fun mapArbeidsgiver(arbeidsforhold: AaRegArbeidsforhold, dataOmArbeidsgiver: MutableMap<String, AaRegService.ArbeidsgiverInfo>, dataOmPerson: MutableMap<String, String?>): Arbeidsgiver {
     val enhetstype = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.arbeidsgiverEnhetstype
     val antallAnsatte = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.antallAnsatte
-    val arbeidsgiversLand = dataOmPerson[arbeidsforhold.arbeidsgiver.offentligIdent ?: arbeidsforhold.arbeidsgiver.aktoerId]
+    val arbeidsgiversLand = dataOmPerson[arbeidsforhold.arbeidsgiver.offentligIdent
+            ?: arbeidsforhold.arbeidsgiver.aktoerId]
     val konkursStatus = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.konkursStatus
     return Arbeidsgiver(
-                        type = enhetstype,
-                        landkode = arbeidsgiversLand,
-                        antallAnsatte = antallAnsatte,
-                        konkursStatus = konkursStatus)
+            type = enhetstype,
+            landkode = arbeidsgiversLand,
+            antallAnsatte = antallAnsatte,
+            konkursStatus = konkursStatus)
 }
 
 fun mapPeriodeTilArbeidsavtale(arbeidsavtale: AaRegArbeidsavtale): Periode {
