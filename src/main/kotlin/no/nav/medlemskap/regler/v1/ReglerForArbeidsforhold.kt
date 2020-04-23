@@ -25,21 +25,25 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
                 } hvisJa {
                     sjekkRegel {
                         harForetakMerEnn5Ansatte
-                    } hvisJa {
-                        erForetakAktivt
                     } hvisNei {
                         uavklartKonklusjon
                     } hvisJa {
                         sjekkRegel {
-                            erBrukerPilotEllerKabinansatt
-                        } hvisJa {
-                            uavklartKonklusjon
+                            erForetakAktivt
                         } hvisNei {
+                            uavklartKonklusjon
+                        } hvisJa {
                             sjekkRegel {
                                 erArbeidsforholdetMaritimt
                             } hvisNei {
-                                sjekkRegelsett {
-                                    reglerForLovvalg
+                                sjekkRegel {
+                                    erBrukerPilotEllerKabinansatt
+                                } hvisJa {
+                                    uavklartKonklusjon
+                                } hvisNei {
+                                    sjekkRegelsett {
+                                        reglerForLovvalg
+                                    }
                                 }
                             } hvisJa {
                                 sjekkRegel {
@@ -73,18 +77,18 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
             operasjon = { sjekkArbeidsgiver() }
     )
 
-    private  val harForetakMerEnn5Ansatte = Regel(
+    private val harForetakMerEnn5Ansatte = Regel(
             identifikator = "ARB-6",
             avklaring = "Er foretaket et reelt foretak som har reell økonomisk aktivitet i Norge?",
             beskrivelse = "",
-            operasjon = { sjekkOmForetakMerEnn5Ansatte()}
+            operasjon = { sjekkOmForetakMerEnn5Ansatte() }
     )
 
-    private val erForetakAktivt = Regel (
-        identifikator = "ARB-7",
-        avklaring = "Er foretaket aktivt?",
-        beskrivelse = "",
-        operasjon = { sjekKonkursstatus() }
+    private val erForetakAktivt = Regel(
+            identifikator = "ARB-7",
+            avklaring = "Er foretaket aktivt?",
+            beskrivelse = "",
+            operasjon = { sjekKonkursstatus() }
     )
 
     private val erBrukerPilotEllerKabinansatt = Regel(

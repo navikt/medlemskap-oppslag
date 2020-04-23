@@ -9,6 +9,7 @@ fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, dataOmArbeidsgiv
                 periode = mapPeriodeTilArbeidsforhold(it),
                 utenlandsopphold = mapUtenLandsopphold(it),
                 arbeidsfolholdstype = mapArbeidsForholdType(it),
+                arbeidsgivertype = it.arbeidsgiver.type,
                 arbeidsgiver = mapArbeidsgiver(it, dataOmArbeidsgiver, dataOmPerson),
                 arbeidsavtaler = mapArbeidsAvtaler(it)
 

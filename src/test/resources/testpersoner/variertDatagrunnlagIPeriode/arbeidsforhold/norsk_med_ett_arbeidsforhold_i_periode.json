@@ -3,39 +3,40 @@
     "fom": "2020-01-30",
     "tom": "2021-01-30"
   },
-  "brukerinput" : {
-    "arbeidUtenforNorge" : false
+  "brukerinput": {
+    "arbeidUtenforNorge": false
   },
-  "personhistorikk" : {
-    "statsborgerskap" : [
+  "personhistorikk": {
+    "statsborgerskap": [
       {
-        "landkode" : "NOR",
-        "fom" : "1991-06-30",
-        "tom" : null
+        "landkode": "NOR",
+        "fom": "1991-06-30",
+        "tom": null
       }
     ],
-    "personstatuser" : [ ],
-    "bostedsadresser" : [
+    "personstatuser": [],
+    "bostedsadresser": [
       {
-        "adresselinje" : "Oslo",
-        "landkode" : "NOR",
-        "fom" : "2020-01-01",
-        "tom" : null
+        "adresselinje": "Oslo",
+        "landkode": "NOR",
+        "fom": "2020-01-01",
+        "tom": null
       }
     ],
-    "postadresser" : [ ],
-    "midlertidigAdresser" : [ ]
+    "postadresser": [],
+    "midlertidigAdresser": []
   },
-  "medlemskapsunntak" : [ ],
-  "arbeidsforhold" : [
+  "medlemskapsunntak": [],
+  "arbeidsforhold": [
     {
       "periode": {
         "fom": "2018-01-01",
         "tom": "2022-06-30"
       },
       "utenlandsopphold": [],
+      "arbeidsgivertype": "Organisasjon",
       "arbeidsgiver": {
-        "type": "Organisasjon",
+        "type": "BEDR",
         "identifikator": "1",
         "landkode": "NOR",
         "antallAnsatte": "6"
@@ -52,7 +53,7 @@
       ]
     }
   ],
-    "inntekt" : [ ],
-    "oppgaver" : [ ],
-    "dokument" : [ ]
+  "inntekt": [],
+  "oppgaver": [],
+  "dokument": []
 }

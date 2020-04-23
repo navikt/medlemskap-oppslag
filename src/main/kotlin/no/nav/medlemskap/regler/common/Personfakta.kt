@@ -1,6 +1,7 @@
 package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.services.aareg.AaRegOpplysningspliktigArbeidsgiverType
 import no.nav.medlemskap.services.aareg.AaRegOrganisasjonType
 import no.nav.medlemskap.services.ereg.Ansatte
 import org.threeten.extra.Interval
@@ -72,7 +73,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     }
 
     fun erArbeidsgivereOrganisasjon(): Boolean {
-        return arbeidsgivereIArbeidsforholdForNorskArbeidsgiver().stream().allMatch { it.type == AaRegOrganisasjonType.Organisasjon.name }
+        return arbeidsforholdForNorskArbeidsgiver().stream().allMatch { it.arbeidsgivertype == AaRegOpplysningspliktigArbeidsgiverType.Organisasjon }
     }
 
 
