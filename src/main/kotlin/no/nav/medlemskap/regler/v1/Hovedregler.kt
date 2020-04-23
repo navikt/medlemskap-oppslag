@@ -5,10 +5,10 @@ import no.nav.medlemskap.regler.common.*
 class Hovedregler(personfakta: Personfakta) {
 
     private val resultatliste: MutableList<Resultat> = mutableListOf()
-
     private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger(personfakta)
     private val reglerForGrunnforordningen = ReglerForGrunnforordningen(personfakta)
     private val reglerForArbeidsforhold = ReglerForArbeidsforhold(personfakta)
+
 
     private fun hentHovedRegel() =
             sjekkRegelsett {
@@ -28,6 +28,7 @@ class Hovedregler(personfakta: Personfakta) {
             }
 
     fun kjørHovedregler(): Resultat {
+
         hentHovedRegel().utfør(resultatliste)
         val konklusjon = resultatliste.hentUtKonklusjon()
         return konklusjon.copy(delresultat = resultatliste.utenKonklusjon())

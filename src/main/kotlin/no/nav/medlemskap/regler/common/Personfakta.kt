@@ -1,5 +1,6 @@
 package no.nav.medlemskap.regler.common
 
+import mu.KotlinLogging
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.services.aareg.AaRegOpplysningspliktigArbeidsgiverType
 import no.nav.medlemskap.services.aareg.AaRegOrganisasjonType
@@ -41,6 +42,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
 
     fun arbeidsforhold(): List<Arbeidsforhold> {
+
         return arbeidsforhold.filter {
             periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
                     datohjelper.kontrollPeriodeForArbeidsforhold())
