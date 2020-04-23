@@ -24,24 +24,32 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
                     uavklartKonklusjon
                 } hvisJa {
                     sjekkRegel {
-                        erBrukerPilotEllerKabinansatt
+                        harForetakMerEnn5Ansatte
                     } hvisJa {
-                        uavklartKonklusjon
+                        erForetakAktivt
                     } hvisNei {
+                        uavklartKonklusjon
+                    } hvisJa {
                         sjekkRegel {
-                            erArbeidsforholdetMaritimt
-                        } hvisNei {
-                            sjekkRegelsett {
-                                reglerForLovvalg
-                            }
+                            erBrukerPilotEllerKabinansatt
                         } hvisJa {
+                            uavklartKonklusjon
+                        } hvisNei {
                             sjekkRegel {
-                                jobberBrukerPåNorskSkip
+                                erArbeidsforholdetMaritimt
                             } hvisNei {
-                                uavklartKonklusjon
-                            } hvisJa {
                                 sjekkRegelsett {
                                     reglerForLovvalg
+                                }
+                            } hvisJa {
+                                sjekkRegel {
+                                    jobberBrukerPåNorskSkip
+                                } hvisNei {
+                                    uavklartKonklusjon
+                                } hvisJa {
+                                    sjekkRegelsett {
+                                        reglerForLovvalg
+                                    }
                                 }
                             }
                         }
@@ -63,6 +71,20 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
             avklaring = "Jobber bruker for en norsk arbeidsgiver?",
             beskrivelse = "",
             operasjon = { sjekkArbeidsgiver() }
+    )
+
+    private  val harForetakMerEnn5Ansatte = Regel(
+            identifikator = "ARB-6",
+            avklaring = "Er foretaket et reelt foretak som har reell økonomisk aktivitet i Norge?",
+            beskrivelse = "",
+            operasjon = { sjekkOmForetakMerEnn5Ansatte()}
+    )
+
+    private val erForetakAktivt = Regel (
+        identifikator = "ARB-7",
+        avklaring = "Er foretaket aktivt?",
+        beskrivelse = "",
+        operasjon = { sjekKonkursstatus() }
     )
 
     private val erBrukerPilotEllerKabinansatt = Regel(
@@ -99,17 +121,20 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
         if (!personfakta.erArbeidsgivereOrganisasjon())
             return nei("Ikke alle arbeidsgivere er av typen organisasjon")
 
-        if (personfakta.antallAnsatteHosArbeidsgivere() finnesMindreEnn 6)
-            return nei("Ikke alle arbeidsgivere har 6 ansatte eller flere")
-
         if (!personfakta.harSammenhengendeArbeidsforholdSiste12Mnd())
             return nei("Arbeidstaker har ikke sammenhengende arbeidsforhold siste 12 mnd")
 
-        if (personfakta.konkursStatuserArbeidsgivere().finnes())
-            return nei("Arbeidstaker har hatt arbeidsforhold til arbeidsgiver som har konkurs-status satt")
+        return ja()
+    }
+
+
+    private fun sjekkOmForetakMerEnn5Ansatte(): Resultat {
+        if (personfakta.antallAnsatteHosArbeidsgivere() finnesMindreEnn 6)
+            return nei("Ikke alle arbeidsgivere har 6 ansatte eller flere")
 
         return ja()
     }
+
 
     private fun sjekkMaritim(): Resultat =
             when {
@@ -130,4 +155,12 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
                 personfakta.sisteArbeidsforholdSkipsregister() kunInneholder Skipsregister.nor.name -> ja()
                 else -> nei()
             }
+
+
+    private fun sjekKonkursstatus(): Resultat {
+        if (personfakta.konkursStatuserArbeidsgivere().finnes())
+            return nei("Arbeidstaker har hatt arbeidsforhold til arbeidsgiver som har konkurs-status satt")
+
+        return ja()
+    }
 }
