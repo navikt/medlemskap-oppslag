@@ -21,6 +21,15 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
         }
     }
 
+    fun kontrollPeriodeForKunNorskStatsborgerskap(): Periode {
+        return when (ytelse) {
+            Ytelse.SYKEPENGER -> Periode(
+                    fom = førsteSykedag().minusDays(28),
+                    tom = førsteSykedag()
+            )
+        }
+    }
+
     private fun førsteSykedag() = datagrunnlag.periode.fom.minusDays(1)
 
 

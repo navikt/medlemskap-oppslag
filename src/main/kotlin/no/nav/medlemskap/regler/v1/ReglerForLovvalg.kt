@@ -1,6 +1,8 @@
 package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.regler.common.*
+import no.nav.medlemskap.regler.common.Funksjoner.finnesI
+import no.nav.medlemskap.regler.common.Funksjoner.inneholder
 
 class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
 
@@ -14,9 +16,15 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
                     uavklartKonklusjon
                 } hvisJa {
                     sjekkRegel {
-                        harBrukerJobbet25ProsentEllerMer
+                       harBrukerNorskStatsborgerskap
                     } hvisJa {
-                        jaKonklusjon
+                        sjekkRegel {
+                          harBrukerJobbet25ProsentEllerMer
+                        } hvisJa{
+                            jaKonklusjon
+                        } hvisNei{
+                            uavklartKonklusjon
+                        }
                     } hvisNei {
                         uavklartKonklusjon
                     }
@@ -24,6 +32,14 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
             } hvisJa {
                 neiKonklusjon
             }
+
+
+    private val harBrukerNorskStatsborgerskap = Regel(
+            identifikator = "LOV-1",
+            avklaring = "Har bruker norsk statsborgeskap",
+            beskrivelse = "",
+            operasjon = { sjekkOmBrukerErNorskStatsborger() }
+    )
 
     private val harBrukerJobbetUtenforNorge = Regel(
             identifikator = "LOV-1",
@@ -63,4 +79,14 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
                 personfakta.harBrukerJobberMerEnnGittStillingsprosent(25.0) -> ja()
                 else -> nei("Bruker har ikke jobbet 25% eller mer i løpet av periode.")
             }
+
+
+    private fun sjekkOmBrukerErNorskStatsborger(): Resultat {
+        val førsteStatsborgerskap = personfakta.hentStatsborgerskapVedSluttAvKontrollperiodeNorskStatsborger()
+        val sisteStatsborgerskap = personfakta.hentStatsborgerskapVedSluttAvKontrollperiodeNorskStatsborger()
+        return when {
+            førsteStatsborgerskap inneholder "NOR" && sisteStatsborgerskap inneholder "NOR"-> ja()
+            else -> nei("Brukeren er ikke norsk statsborger")
+        }
+    }
 }
