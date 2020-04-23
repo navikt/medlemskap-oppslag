@@ -1,6 +1,5 @@
 package no.nav.medlemskap.regler.common
 
-import no.nav.medlemskap.domene.Arbeidsforhold
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Periode
 import org.threeten.extra.Interval
@@ -52,6 +51,15 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
         }
     }
 
+    fun kontrollPeriodeForNorskAdresse(): Periode {
+        return when (ytelse) {
+            Ytelse.SYKEPENGER -> Periode(
+                    fom = førsteSykedag().minusMonths(12),
+                    tom = førsteSykedag()
+            )
+        }
+    }
+
     fun kontrollPeriodeForYrkeskode(): Periode {
         return when (ytelse) {
             Ytelse.SYKEPENGER -> Periode(
@@ -78,6 +86,16 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
             )
         }
     }
+
+    fun kontrollPeriodeForStillingsprosent(): Periode {
+        return when (ytelse) {
+            Ytelse.SYKEPENGER -> Periode(
+                    fom = førsteSykedag().minusMonths(12),
+                    tom = førsteSykedag()
+            )
+        }
+    }
+
     fun erDatoerSammenhengende(sluttDato: LocalDate, startDato: LocalDate?): Boolean {
         return sluttDato.isAfter(startDato?.minusDays(3))
     }

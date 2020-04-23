@@ -112,7 +112,7 @@ class AaRegService(
                     arbeidsgiverEnhetstype = hentArbeidsgiverEnhetstype(orgnummer, callId),
                     antallAnsatte = organisasjon.organisasjonDetaljer?.ansatte?.associateBy({ ansatte -> ansatte.bruksperiode }, { ansatte -> ansatte.antall })?.get(Bruksperiode(fraOgMed, tilOgMed)),
                     opphoersdato = organisasjon.organisasjonDetaljer?.opphoersdato,
-                    konkursStatus = organisasjon.organisasjonDetaljer?.statuser?.map{it -> it.kode}
+                    konkursStatus = organisasjon.organisasjonDetaljer?.statuser?.map{it -> it?.kode }
 
 
             )
@@ -125,7 +125,7 @@ class AaRegService(
         return mapAaregResultat(arbeidsforhold, dataOmArbeidsgiver, dataOmPerson)
     }
 
-    data class ArbeidsgiverInfo(val arbeidsgiverEnhetstype: String?, val antallAnsatte: Int?, val opphoersdato: LocalDate?, val konkursStatus: List<String>?)
+    data class ArbeidsgiverInfo(val arbeidsgiverEnhetstype: String?, val antallAnsatte: Int?, val opphoersdato: LocalDate?, val konkursStatus: List<String?>?)
 
 
     private suspend fun hentArbeidsgiverEnhetstype(orgnummer: String, callId: String): String? {

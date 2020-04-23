@@ -4,6 +4,7 @@ import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.services.aareg.AaRegOrganisasjonType
 import org.threeten.extra.Interval
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 import java.util.stream.Collectors
 
 
@@ -50,11 +51,18 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         }
     }
 
+    fun arbeidsforholdForStillingsprosent(): List<Arbeidsforhold> {
+        return arbeidsforhold.filter {
+            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
+                    datohjelper.kontrollPeriodeForStillingsprosent())
+        }
+    }
+
     fun arbeidsforholdForYrkestype(): List<String> {
         return arbeidsforhold.filter {
             periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
                     datohjelper.kontrollPeriodeForYrkesforholdType())
-        }.map { it.arbeidsfolholdstype.navn}
+        }.map { it.arbeidsfolholdstype.navn }
     }
 
     fun arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(): List<Arbeidsgiver> {
@@ -100,7 +108,8 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     fun sisteArbeidsforholdYrkeskode(): List<String> {
         return datagrunnlag.arbeidsforhold.filter {
             periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
-                    datohjelper.kontrollPeriodeForYrkeskode())}
+                    datohjelper.kontrollPeriodeForYrkeskode())
+        }
                 .flatMap { it.arbeidsavtaler }.map { it.yrkeskode }
     }
 
@@ -113,6 +122,38 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     fun hentBrukerinputArbeidUtenforNorge(): Boolean = datagrunnlag.brukerinput.arbeidUtenforNorge
 
+    fun hentBrukerLandskodeInnenfor12Mnd(): List<Adresse> {
+        return datagrunnlag.personhistorikk.bostedsadresser.filter {
+            it.landkode == "NOR"
+                    && (it.tom?.isAfter(datohjelper.kontrollPeriodeForNorskAdresse().fom) ?: true)
+                    && it.fom!!.isBefore(datohjelper.kontrollPeriodeForNorskAdresse().tom)
+        }
+    }
+
+    fun harBrukerJobberMerEnnGittStillingsprosent(gittStillingsprosent: Double): Boolean {
+
+        val kontrollPeriodeForStillingsprosent = datohjelper.kontrollPeriodeForStillingsprosent()
+        val totaltAntallDager = kontrollPeriodeForStillingsprosent.fom!!.until(kontrollPeriodeForStillingsprosent.tom!!, ChronoUnit.DAYS).toDouble()
+
+        for (arbeidsforhold in arbeidsforholdForStillingsprosent()) {
+            var antallArbeidsavtaler = 0
+            var totalVektetStillingsprosent = 0.0
+            for (arbeidsavtale in arbeidsforhold.arbeidsavtaler) {
+                val stillingsprosent = arbeidsavtale.stillingsprosent ?: 100.0
+                val tilDato = arbeidsavtale.periode.tom ?: arbeidsforhold.periode.tom ?: kontrollPeriodeForStillingsprosent.tom
+                var antallDager = kontrollPeriodeForStillingsprosent.fom.until(tilDato, ChronoUnit.DAYS).toDouble()
+                if (antallDager > totaltAntallDager) {
+                    antallDager = totaltAntallDager
+                }
+                totalVektetStillingsprosent += (antallDager / totaltAntallDager) * stillingsprosent
+                antallArbeidsavtaler++
+            }
+            if (totalVektetStillingsprosent < gittStillingsprosent) return false
+        }
+
+        return true
+    }
+
     private fun hentStatsborgerskapFor(dato: LocalDate): List<String> =
             statsborgerskap.filter {
                 Periode(it.fom, it.tom).interval().contains(lagInstant(dato))
@@ -122,8 +163,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return periodeDatagrunnlag.overlaps(lagInterval(periode)) || periodeDatagrunnlag.encloses(lagInterval(periode))
     }
 
-    fun konkursStatuserArbeidsgivere(): List<String>? {
-      return arbeidsforholdForNorskArbeidsgiver().flatMap { it.arbeidsgiver.konkursStatus.orEmpty() }
+    fun konkursStatuserArbeidsgivere(): List<String?>? {
+        return arbeidsforholdForNorskArbeidsgiver().flatMap { it.arbeidsgiver.konkursStatus.orEmpty() }
     }
 }
-

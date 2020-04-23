@@ -11,11 +11,23 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
                 harBrukerJobbetUtenforNorge
             } hvisNei {
                 sjekkRegel {
-                    harBrukerNorskStatsborgerskap
+                    erBrukerBosattINorge
                 } hvisNei {
-                    neiKonklusjon
+                    uavklartKonklusjon
                 } hvisJa {
-                    jaKonklusjon
+                    sjekkRegel {
+                       harBrukerNorskStatsborgerskap
+                    } hvisJa {
+                        sjekkRegel {
+                          harBrukerJobbet25ProsentEllerMer
+                        } hvisJa{
+                            jaKonklusjon
+                        } hvisNei{
+                            uavklartKonklusjon
+                        }
+                    } hvisNei {
+                        uavklartKonklusjon
+                    }
                 }
             } hvisJa {
                 neiKonklusjon
@@ -36,10 +48,36 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
             operasjon = { sjekkOmBrukerHarJobbetUtenforNorge() }
     )
 
+    private val erBrukerBosattINorge = Regel(
+            identifikator = "LOV-2",
+            avklaring = "Er bruker registrert som bosatt i Norge og har vært det i 12 mnd?",
+            beskrivelse = "",
+            operasjon = { sjekkLandskode() }
+    )
+
+    private val harBrukerJobbet25ProsentEllerMer = Regel(
+            identifikator = "LOV-3",
+            avklaring = "Har bruker vært i minst 25% stilling?",
+            beskrivelse = "",
+            operasjon = { sjekkOmBrukerHarJobbet25ProsentEllerMer() }
+    )
+
     private fun sjekkOmBrukerHarJobbetUtenforNorge(): Resultat =
             when {
                 personfakta.hentBrukerinputArbeidUtenforNorge() -> ja()
                 else -> nei()
+            }
+
+    private fun sjekkLandskode(): Resultat =
+            when {
+                personfakta.hentBrukerLandskodeInnenfor12Mnd().isNotEmpty() -> ja()
+                else -> nei()
+            }
+
+    private fun sjekkOmBrukerHarJobbet25ProsentEllerMer(): Resultat =
+            when {
+                personfakta.harBrukerJobberMerEnnGittStillingsprosent(25.0) -> ja()
+                else -> nei("Bruker har ikke jobbet 25% eller mer i løpet av periode.")
             }
 
 
@@ -51,7 +89,4 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
             else -> nei("Brukeren er ikke norsk statsborger")
         }
     }
-
-
-
 }

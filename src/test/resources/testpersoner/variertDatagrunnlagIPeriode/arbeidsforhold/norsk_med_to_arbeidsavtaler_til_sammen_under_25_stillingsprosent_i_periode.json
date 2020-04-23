@@ -31,58 +31,12 @@
     {
       "periode": {
         "fom": "2018-01-01",
-        "tom": "2019-06-30"
-      },
-      "utenlandsopphold": [],
-      "arbeidsgiver": {
-        "type": "Organisasjon",
-        "identifikator": "1",
-        "landkode": "NOR",
-        "antallAnsatte": "9"
-      },
-      "arbeidsfolholdstype": "NORMALT",
-      "arbeidsavtaler": [
-        {
-          "periode": {
-            "fom": "2018-01-01",
-            "tom": "2019-06-30"
-          },
-          "yrkeskode": "0001"
-        }
-      ]
-    },
-    {
-      "periode": {
-        "fom": "2018-01-01",
-        "tom": "2019-05-30"
-      },
-      "utenlandsopphold": [],
-      "arbeidsgiver": {
-        "type": "Organisasjon",
-        "identifikator": "1",
-        "landkode": "NOR",
-        "antallAnsatte": "9"
-      },
-      "arbeidsfolholdstype": "NORMALT",
-      "arbeidsavtaler": [
-        {
-          "periode": {
-            "fom": "2018-01-01",
-            "tom": "2019-06-30"
-          },
-          "yrkeskode": "0001"
-        }
-      ]
-    },
-    {
-      "periode": {
-        "fom": "2019-07-01",
         "tom": "2021-06-30"
       },
       "utenlandsopphold": [],
       "arbeidsgiver": {
         "type": "Organisasjon",
-        "identifikator": "2",
+        "identifikator": "1",
         "landkode": "NOR",
         "antallAnsatte": "6"
       },
@@ -90,10 +44,19 @@
       "arbeidsavtaler": [
         {
           "periode": {
-            "fom": "2019-07-01",
+            "fom": "2020-01-30",
+            "tom": "2020-08-31"
+          },
+          "yrkeskode": "0001",
+          "stillingsprosent" : 12.0
+        },
+        {
+          "periode": {
+            "fom": "2020-09-01",
             "tom": "2021-06-30"
           },
-          "yrkeskode": "0001"
+          "yrkeskode": "0001",
+          "stillingsprosent" : 12.0
         }
       ]
     }

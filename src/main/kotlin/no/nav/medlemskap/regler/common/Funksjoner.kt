@@ -28,7 +28,7 @@ object Funksjoner {
 
     fun List<Any>?.erTom() = this == null || this.isNullOrEmpty()
 
-    fun List<Any>?.finnes() = this != null && this.isNotEmpty()
+    fun List<String?>?.finnes() = this != null && this.isNotEmpty()
 
     infix fun List<Arbeidsforhold>.kunEr(tall: Int) = this.size == tall
 
