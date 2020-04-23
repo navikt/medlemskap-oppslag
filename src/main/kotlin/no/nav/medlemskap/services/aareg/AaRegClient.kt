@@ -105,17 +105,19 @@ class AaRegService(
         val personIdentifikatorer = arbeidsgiverPerson.getIdent(fnr, callId, fraOgMed, tilOgMed)
 
         orgnummere.forEach { orgnummer ->
-
+            val logger = KotlinLogging.logger { }
             val organisasjon = eregClient.hentOrganisasjon(orgnummer, callId)
+
+            logger.info { organisasjon }
+
             dataOmArbeidsgiver[orgnummer] = ArbeidsgiverInfo(
                     arbeidsgiverEnhetstype = hentArbeidsgiverEnhetstype(orgnummer, callId),
                     ansatte = organisasjon.organisasjonDetaljer?.ansatte,
                     opphoersdato = organisasjon.organisasjonDetaljer?.opphoersdato,
                     konkursStatus = organisasjon.organisasjonDetaljer?.statuser?.map{ it -> it?.kode }
 
-
             )
-
+            logger.info { dataOmArbeidsgiver[orgnummer] }
 
         }
 
