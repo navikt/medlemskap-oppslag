@@ -1,34 +1,35 @@
-
 {
   "periode": {
     "fom": "2020-01-30",
     "tom": "2020-10-30"
   },
-  "brukerinput" : {
-    "arbeidUtenforNorge" : false
+  "brukerinput": {
+    "arbeidUtenforNorge": false
   },
-  "personhistorikk" : {
-    "statsborgerskap" : [ {
-      "landkode" : "NOR",
-      "fom" : "1991-02-20",
-      "tom" : "9999-01-01"
-    }
+  "personhistorikk": {
+    "statsborgerskap": [
+      {
+        "landkode": "NOR",
+        "fom": "1991-02-20",
+        "tom": "9999-01-01"
+      }
     ],
-    "personstatuser" : [ ],
-    "bostedsadresser" : [ ],
-    "postadresser" : [ ],
-    "midlertidigAdresser" : [ ]
+    "personstatuser": [],
+    "bostedsadresser": [],
+    "postadresser": [],
+    "midlertidigAdresser": []
   },
-  "medlemskapsunntak" : [ ],
-  "arbeidsforhold" : [
+  "medlemskapsunntak": [],
+  "arbeidsforhold": [
     {
       "periode": {
         "fom": "2020-01-01",
         "tom": "2020-06-30"
       },
       "utenlandsopphold": [],
+      "arbeidsgivertype": "Organisasjon",
       "arbeidsgiver": {
-        "type": "Organisasjon",
+        "type": "BEDR",
         "identifikator": "1",
         "landkode": "SWE"
       },
@@ -44,28 +45,30 @@
       ]
     },
     {
-    "periode" : {
-      "fom" : "2020-07-01",
-      "tom" : null
-    },
-    "utenlandsopphold" : [ ],
-    "arbeidsgiver" : {
-      "type" : "Organisasjon",
-      "identifikator" : "1",
-      "landkode" : "NOR"
-    },
-    "arbeidsfolholdstype" : "NORMALT",
-    "arbeidsavtaler" : [ {
-      "periode" : {
-        "fom" : "2020-07-01",
-        "tom" : null
+      "periode": {
+        "fom": "2020-07-01",
+        "tom": null
       },
-      "yrkeskode" : "13143107"
-      }
+      "utenlandsopphold": [],
+      "arbeidsgivertype": "Organisasjon",
+      "arbeidsgiver": {
+        "type": "BEDR",
+        "identifikator": "1",
+        "landkode": "NOR"
+      },
+      "arbeidsfolholdstype": "NORMALT",
+      "arbeidsavtaler": [
+        {
+          "periode": {
+            "fom": "2020-07-01",
+            "tom": null
+          },
+          "yrkeskode": "13143107"
+        }
       ]
     }
   ],
-  "inntekt" : [ ],
-  "oppgaver" : [ ],
-  "dokument" : [ ]
+  "inntekt": [],
+  "oppgaver": [],
+  "dokument": []
 }

@@ -1,6 +1,7 @@
 package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.services.aareg.AaRegOpplysningspliktigArbeidsgiverType
 import no.nav.medlemskap.services.aareg.AaRegOrganisasjonType
 import org.threeten.extra.Interval
 import java.time.LocalDate
@@ -70,7 +71,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     }
 
     fun erArbeidsgivereOrganisasjon(): Boolean {
-        return arbeidsgivereIArbeidsforholdForNorskArbeidsgiver().stream().allMatch { it.type == AaRegOrganisasjonType.Organisasjon.name }
+        return arbeidsforholdForNorskArbeidsgiver().stream().allMatch { it.arbeidsgivertype == AaRegOpplysningspliktigArbeidsgiverType.Organisasjon }
     }
 
     fun antallAnsatteHosArbeidsgivere(): List<Int?> {

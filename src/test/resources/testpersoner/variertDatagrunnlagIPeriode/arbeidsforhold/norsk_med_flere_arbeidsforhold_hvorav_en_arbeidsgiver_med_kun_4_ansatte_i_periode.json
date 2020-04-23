@@ -27,8 +27,9 @@
         "tom": "2019-06-30"
       },
       "utenlandsopphold": [],
+      "arbeidsgivertype": "Organisasjon",
       "arbeidsgiver": {
-        "type": "Organisasjon",
+        "type": "BEDR",
         "identifikator": "1",
         "landkode": "NOR",
         "antallAnsatte": "9"
@@ -50,8 +51,9 @@
         "tom": "2021-06-30"
       },
       "utenlandsopphold": [],
+      "arbeidsgivertype": "Organisasjon",
       "arbeidsgiver": {
-        "type": "Organisasjon",
+        "type": "BEDR",
         "identifikator": "2",
         "landkode": "NOR",
         "antallAnsatte": "4"
