@@ -30,7 +30,7 @@ object Funksjoner {
 
     fun List<String?>?.finnes() = this != null && this.isNotEmpty()
 
-    infix fun List<Arbeidsforhold>.kunEr(tall: Int) = this.size == tall
+    infix fun List<Arbeidsforhold>.antallErIkke(tall: Int) = this.size != tall
 
     infix fun List<Int?>.finnesMindreEnn(tall: Int) = this.stream().anyMatch { p -> p == null || p < tall}
 }
