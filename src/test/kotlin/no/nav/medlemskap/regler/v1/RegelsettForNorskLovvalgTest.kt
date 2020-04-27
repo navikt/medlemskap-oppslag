@@ -59,6 +59,11 @@ class RegelsettForNorskLovvalgTest {
     }
 
     @Test
+    fun `person med over 10 arbeidsforhold innenfor kontrollperiode, får uavklart`() {
+        assertEquals(Svar.UAVKLART, evaluer(personleser.norskMedOverTiArbeidsforhold()))
+    }
+
+    @Test
     fun `person med ett arbeidsforhold som har en arbeidsavtale med mindre enn 25% stillingsprosent, får uavklart`() {
         assertEquals(Svar.UAVKLART, evaluer(personleser.norskMedEttArbeidsforholdMedArbeidsavtaleUnder25ProsentStillingIPeriode()))
     }

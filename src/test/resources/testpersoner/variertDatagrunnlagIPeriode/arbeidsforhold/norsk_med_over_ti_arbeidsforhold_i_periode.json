@@ -1,0 +1,299 @@
+{
+  "periode": {
+    "fom": "2020-01-30",
+    "tom": "2021-01-30"
+  },
+  "brukerinput": {
+    "arbeidUtenforNorge": false
+  },
+  "personhistorikk": {
+    "statsborgerskap": [
+      {
+        "landkode": "NOR",
+        "fom": "1991-06-30",
+        "tom": null
+      }
+    ],
+    "personstatuser": [],
+    "bostedsadresser": [
+      {
+        "adresselinje": "Oslo",
+        "landkode": "NOR",
+        "fom": "2020-01-01",
+        "tom": null
+      }
+    ],
+    "postadresser": [],
+    "midlertidigAdresser": []
+  },
+  "medlemskapsunntak": [],
+  "arbeidsforhold": [
+    {
+      "periode": {
+        "fom": "2019-01-01",
+        "tom": "2019-01-31"
+      },
+      "utenlandsopphold": [],
+      "arbeidsgivertype": "Organisasjon",
+      "arbeidsgiver": {
+        "type": "BEDR",
+        "identifikator": "1",
+        "landkode": "NOR",
+        "antallAnsatte": "9"
+      },
+      "arbeidsfolholdstype": "NORMALT",
+      "arbeidsavtaler": [
+        {
+          "periode": {
+            "fom": "2019-01-01",
+            "tom": "2019-01-01"
+          },
+          "yrkeskode": "0001"
+        }
+      ]
+    },
+    {
+      "periode": {
+        "fom": "2019-02-01",
+        "tom": "2019-02-28"
+      },
+      "utenlandsopphold": [],
+      "arbeidsgivertype": "Organisasjon",
+      "arbeidsgiver": {
+        "type": "BEDR",
+        "identifikator": "1",
+        "landkode": "NOR",
+        "antallAnsatte": "9"
+      },
+      "arbeidsfolholdstype": "NORMALT",
+      "arbeidsavtaler": [
+        {
+          "periode": {
+            "fom": "2018-02-01",
+            "tom": "2019-02-28"
+          },
+          "yrkeskode": "0001"
+        }
+      ]
+    },
+    {
+      "periode": {
+        "fom": "2019-03-01",
+        "tom": "2019-03-31"
+      },
+      "utenlandsopphold": [],
+      "arbeidsgivertype": "Organisasjon",
+      "arbeidsgiver": {
+        "type": "BEDR",
+        "identifikator": "1",
+        "landkode": "NOR",
+        "antallAnsatte": "9"
+      },
+      "arbeidsfolholdstype": "NORMALT",
+      "arbeidsavtaler": [
+        {
+          "periode": {
+            "fom": "2019-03-01",
+            "tom": "2019-03-31"
+          },
+          "yrkeskode": "0001"
+        }
+      ]
+    },
+    {
+      "periode": {
+        "fom": "2019-04-01",
+        "tom": "2019-04-30"
+      },
+      "utenlandsopphold": [],
+      "arbeidsgivertype": "Organisasjon",
+      "arbeidsgiver": {
+        "type": "BEDR",
+        "identifikator": "1",
+        "landkode": "NOR",
+        "antallAnsatte": "9"
+      },
+      "arbeidsfolholdstype": "NORMALT",
+      "arbeidsavtaler": [
+        {
+          "periode": {
+            "fom": "2018-04-01",
+            "tom": "2019-04-30"
+          },
+          "yrkeskode": "0001"
+        }
+      ]
+    },
+    {
+      "periode": {
+        "fom": "2019-05-01",
+        "tom": "2019-05-31"
+      },
+      "utenlandsopphold": [],
+      "arbeidsgivertype": "Organisasjon",
+      "arbeidsgiver": {
+        "type": "BEDR",
+        "identifikator": "1",
+        "landkode": "NOR",
+        "antallAnsatte": "9"
+      },
+      "arbeidsfolholdstype": "NORMALT",
+      "arbeidsavtaler": [
+        {
+          "periode": {
+            "fom": "2019-05-01",
+            "tom": "2019-05-31"
+          },
+          "yrkeskode": "0001"
+        }
+      ]
+    },
+    {
+      "periode": {
+        "fom": "2019-06-01",
+        "tom": "2019-06-30"
+      },
+      "utenlandsopphold": [],
+      "arbeidsgivertype": "Organisasjon",
+      "arbeidsgiver": {
+        "type": "BEDR",
+        "identifikator": "1",
+        "landkode": "NOR",
+        "antallAnsatte": "9"
+      },
+      "arbeidsfolholdstype": "NORMALT",
+      "arbeidsavtaler": [
+        {
+          "periode": {
+            "fom": "2019-06-01",
+            "tom": "2019-06-30"
+          },
+          "yrkeskode": "0003"
+        }
+      ]
+    },
+    {
+      "periode": {
+        "fom": "2019-07-01",
+        "tom": "2019-07-31"
+      },
+      "utenlandsopphold": [],
+      "arbeidsgivertype": "Organisasjon",
+      "arbeidsgiver": {
+        "type": "BEDR",
+        "identifikator": "5",
+        "landkode": "NOR",
+        "antallAnsatte": "10"
+      },
+      "arbeidsfolholdstype": "NORMALT",
+      "arbeidsavtaler": [
+        {
+          "periode": {
+            "fom": "2019-07-01",
+            "tom": "2019-07-31"
+          },
+          "yrkeskode": "0002"
+        }
+      ]
+    },
+    {
+      "periode": {
+        "fom": "2019-08-01",
+        "tom": "2019-08-31"
+      },
+      "utenlandsopphold": [],
+      "arbeidsgivertype": "Organisasjon",
+      "arbeidsgiver": {
+        "type": "BEDR",
+        "identifikator": "1",
+        "landkode": "NOR",
+        "antallAnsatte": "9"
+      },
+      "arbeidsfolholdstype": "NORMALT",
+      "arbeidsavtaler": [
+        {
+          "periode": {
+            "fom": "2019-08-01",
+            "tom": "2019-08-31"
+          },
+          "yrkeskode": "0001"
+        }
+      ]
+    },
+    {
+      "periode": {
+        "fom": "2019-09-01",
+        "tom": "2019-09-30"
+      },
+      "utenlandsopphold": [],
+      "arbeidsgivertype": "Organisasjon",
+      "arbeidsgiver": {
+        "type": "BEDR",
+        "identifikator": "1",
+        "landkode": "NOR",
+        "antallAnsatte": "9"
+      },
+      "arbeidsfolholdstype": "NORMALT",
+      "arbeidsavtaler": [
+        {
+          "periode": {
+            "fom": "2018-09-01",
+            "tom": "2019-09-30"
+          },
+          "yrkeskode": "0001"
+        }
+      ]
+    },
+    {
+      "periode": {
+        "fom": "2019-10-01",
+        "tom": "2019-10-31"
+      },
+      "utenlandsopphold": [],
+      "arbeidsgivertype": "Organisasjon",
+      "arbeidsgiver": {
+        "type": "BEDR",
+        "identifikator": "1",
+        "landkode": "NOR",
+        "antallAnsatte": "9"
+      },
+      "arbeidsfolholdstype": "NORMALT",
+      "arbeidsavtaler": [
+        {
+          "periode": {
+            "fom": "2019-10-01",
+            "tom": "2019-10-31"
+          },
+          "yrkeskode": "0001"
+        }
+      ]
+    },
+    {
+      "periode": {
+        "fom": "2019-11-01",
+        "tom": "2019-11-30"
+      },
+      "utenlandsopphold": [],
+      "arbeidsgivertype": "Organisasjon",
+      "arbeidsgiver": {
+        "type": "BEDR",
+        "identifikator": "2",
+        "landkode": "NOR",
+        "antallAnsatte": "9"
+      },
+      "arbeidsfolholdstype": "NORMALT",
+      "arbeidsavtaler": [
+        {
+          "periode": {
+            "fom": "2019-11-01",
+            "tom": "2019-11-30"
+          },
+          "yrkeskode": "0001"
+        }
+      ]
+    }
+  ],
+  "inntekt": [],
+  "oppgaver": [],
+  "dokument": []
+}

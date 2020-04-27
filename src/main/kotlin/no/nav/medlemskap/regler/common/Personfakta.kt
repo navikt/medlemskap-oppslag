@@ -98,13 +98,17 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         val harArbeidsforhold12MndTilbake = arbeidsforholdForNorskArbeidsgiver.stream().anyMatch { it.periode.fom?.isBefore(datohjelper.kontrollPeriodeForNorskArbeidsgiver().fom?.plusDays(1))!! }
 
         val sortertArbeidsforholdEtterPeriode = arbeidsforholdForNorskArbeidsgiver.stream().sorted().collect(Collectors.toList())
+        var antallArbeidsforhold = 0
 
         for (arbeidsforhold in sortertArbeidsforholdEtterPeriode) { //Sjekker at alle påfølgende arbeidsforhold er sammenhengende
             if (forrigeTilDato != null && !datohjelper.erDatoerSammenhengende(forrigeTilDato, arbeidsforhold.periode.fom)) {
                 return false
             }
             forrigeTilDato = arbeidsforhold.periode.tom
+            antallArbeidsforhold++
         }
+
+        if (antallArbeidsforhold > 10) return false
 
         return harArbeidsforhold12MndTilbake
     }
