@@ -30,6 +30,7 @@ class Personleser {
     fun norskMedToSammenhengendeArbeidsforholdIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_to_sammenhengende_arbeidsforhold_i_periode.json")
     fun norskMedToSammenhengendeArbeidsforholdUnder12MndIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_to_sammenhengende_arbeidsforhold_under_12_mnd_i_periode.json")
     fun norskMedOverlappendeArbeidsforholdIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_overlappende_arbeidsforhold_i_periode.json")
+    fun norskMedOverTiArbeidsforhold() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_over_ti_arbeidsforhold_i_periode.json")
     fun norskMedEttArbeidsforholdMedArbeidsavtaleUnder25ProsentStillingIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_ett_arbeidsforhold_under_25_stillingsprosent_i_periode.json")
     fun norskMedToArbeidsavtalerISammeArbeidsforholdMedForLavTotalStillingProsentIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_to_arbeidsavtaler_til_sammen_under_25_stillingsprosent_i_periode.json")
     fun norskMedToOverlappendeArbeidsavtalerSomTilSammenErOver25ProsentIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_to_overlappende_arbeidsavtaler_til_sammen_er_over_25_stillingsprosent_i_periode.json")
@@ -49,4 +50,6 @@ class Personleser {
         val res = Personleser::class.java.getResource(filnavn)
         return objectMapper.readValue(res, Datagrunnlag::class.java)
     }
+
+
 }

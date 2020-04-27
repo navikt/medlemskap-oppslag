@@ -92,11 +92,11 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     fun harSammenhengendeArbeidsforholdSiste12Mnd(): Boolean {
 
         var forrigeTilDato: LocalDate? = null
-
         val arbeidsforholdForNorskArbeidsgiver = arbeidsforholdForNorskArbeidsgiver()
 
-        val harArbeidsforhold12MndTilbake = arbeidsforholdForNorskArbeidsgiver.stream().anyMatch { it.periode.fom?.isBefore(datohjelper.kontrollPeriodeForNorskArbeidsgiver().fom?.plusDays(1))!! }
+        if (arbeidsforholdForNorskArbeidsgiver.size > 10) return false
 
+        val harArbeidsforhold12MndTilbake = arbeidsforholdForNorskArbeidsgiver.stream().anyMatch { it.periode.fom?.isBefore(datohjelper.kontrollPeriodeForNorskArbeidsgiver().fom?.plusDays(1))!! }
         val sortertArbeidsforholdEtterPeriode = arbeidsforholdForNorskArbeidsgiver.stream().sorted().collect(Collectors.toList())
 
         for (arbeidsforhold in sortertArbeidsforholdEtterPeriode) { //Sjekker at alle påfølgende arbeidsforhold er sammenhengende
