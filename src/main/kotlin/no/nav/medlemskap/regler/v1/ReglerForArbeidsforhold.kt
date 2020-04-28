@@ -4,22 +4,22 @@ import no.nav.medlemskap.domene.Arbeidsforholdstype
 import no.nav.medlemskap.domene.Skipsregister
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.alleEr
+import no.nav.medlemskap.regler.common.Funksjoner.antallErIkke
 import no.nav.medlemskap.regler.common.Funksjoner.finnes
 import no.nav.medlemskap.regler.common.Funksjoner.finnesMindreEnn
 import no.nav.medlemskap.regler.common.Funksjoner.inneholderNoe
-import no.nav.medlemskap.regler.common.Funksjoner.kunEr
 import no.nav.medlemskap.regler.common.Funksjoner.kunInneholder
 
 class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
     override fun hentHovedRegel() =
             sjekkRegel {
-                harBrukerEtArbeidsforhold
+                harBrukerEttArbeidsforhold
             } hvisNei {
                 uavklartKonklusjon
             } hvisJa {
                 sjekkRegel {
-                    erArbeidsgiverNorsk
+                    erArbeidsgiverOrganisasjon
                 } hvisNei {
                     uavklartKonklusjon
                 } hvisJa {
@@ -63,70 +63,72 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
     private val reglerForLovvalg = ReglerForLovvalg(personfakta)
 
-    private val harBrukerEtArbeidsforhold = Regel(
+    private val harBrukerEttArbeidsforhold = Regel(
             identifikator = "ARB-1",
-            avklaring = "Har bruker et registrert arbeidsforhold?",
+            avklaring = "Har bruker hatt et arbeidsforhold i Aa-registeret de siste 12 månedene?",
             beskrivelse = "",
             operasjon = { sjekkArbeidsforhold() }
     )
 
-    private val erArbeidsgiverNorsk = Regel(
+    private val erArbeidsgiverOrganisasjon = Regel(
             identifikator = "ARB-2",
-            avklaring = "Jobber bruker for en norsk arbeidsgiver?",
+            avklaring = "Er foretaket registrert i foretaksregisteret?",
             beskrivelse = "",
             operasjon = { sjekkArbeidsgiver() }
     )
 
     private val harForetakMerEnn5Ansatte = Regel(
-            identifikator = "ARB-6",
-            avklaring = "Er foretaket et reelt foretak som har reell økonomisk aktivitet i Norge?",
+            identifikator = "ARB-3",
+            avklaring = "Har arbeidsgiver sin hovedaktivitet i Norge?",
             beskrivelse = "",
             operasjon = { sjekkOmForetakMerEnn5Ansatte() }
     )
 
     private val erForetakAktivt = Regel(
-            identifikator = "ARB-7",
+            identifikator = "ARB-4",
             avklaring = "Er foretaket aktivt?",
             beskrivelse = "",
             operasjon = { sjekKonkursstatus() }
     )
 
-    private val erBrukerPilotEllerKabinansatt = Regel(
-            identifikator = "ARB-3",
-            avklaring = "Er bruker pilot eller kabinansatt?",
-            beskrivelse = "",
-            operasjon = { sjekkYrkeskodeLuftfart() }
-    )
-
     private val erArbeidsforholdetMaritimt = Regel(
-            identifikator = "ARB-4",
+            identifikator = "ARB-5",
             avklaring = "Har bruker et maritimt arbeidsforhold?",
             beskrivelse = "",
             operasjon = { sjekkMaritim() }
     )
 
     private val jobberBrukerPåNorskSkip = Regel(
-            identifikator = "ARB-5",
+            identifikator = "ARB-6",
             avklaring = "Jobber bruker på et norskregistrert skip?",
             beskrivelse = "",
             operasjon = { sjekkSkipsregister() }
     )
 
+    private val erBrukerPilotEllerKabinansatt = Regel(
+            identifikator = "ARB-7",
+            avklaring = "Er bruker pilot eller kabinansatt?",
+            beskrivelse = "",
+            operasjon = { sjekkYrkeskodeLuftfart() }
+    )
+
     private val yrkeskoderLuftfart = listOf("3143107", "5111105", "5111117")
 
-    private fun sjekkArbeidsforhold(): Resultat =
-            when {
-                personfakta.arbeidsforhold() kunEr 1 -> ja()
-                else -> nei()
-            }
+    private fun sjekkArbeidsforhold(): Resultat {
+
+        if (!personfakta.harSammenhengendeArbeidsforholdSiste12Mnd())
+            return nei("Arbeidstaker har ikke sammenhengende arbeidsforhold siste 12 mnd")
+
+        if (personfakta.arbeidsforholdIOpptjeningsperiode() antallErIkke 1)
+            return nei("Bruker må ha ett arbeidsforhold i hele opptjeningsperioden")
+
+        return ja()
+    }
 
     private fun sjekkArbeidsgiver(): Resultat {
 
         if (!personfakta.erArbeidsgivereOrganisasjon())
             return nei("Ikke alle arbeidsgivere er av typen organisasjon")
-
-        if (!personfakta.harSammenhengendeArbeidsforholdSiste12Mnd())
-            return nei("Arbeidstaker har ikke sammenhengende arbeidsforhold siste 12 mnd")
 
         return ja()
     }
