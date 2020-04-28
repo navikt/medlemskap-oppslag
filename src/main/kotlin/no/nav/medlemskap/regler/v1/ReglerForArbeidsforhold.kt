@@ -119,7 +119,7 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
         if (!personfakta.harSammenhengendeArbeidsforholdSiste12Mnd())
             return nei("Arbeidstaker har ikke sammenhengende arbeidsforhold siste 12 mnd")
 
-        if (personfakta.arbeidsforhold() antallErIkke 1)
+        if (personfakta.arbeidsforholdIOpptjeningsperiode() antallErIkke 1)
             return nei("Bruker må ha ett arbeidsforhold i hele opptjeningsperioden")
 
         return ja()

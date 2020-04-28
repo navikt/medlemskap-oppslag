@@ -1,9 +1,7 @@
 package no.nav.medlemskap.regler.common
 
-import mu.KotlinLogging
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.services.aareg.AaRegOpplysningspliktigArbeidsgiverType
-import no.nav.medlemskap.services.aareg.AaRegOrganisasjonType
 import no.nav.medlemskap.services.ereg.Ansatte
 import org.threeten.extra.Interval
 import java.time.LocalDate
@@ -41,11 +39,11 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
             hentStatsborgerskapFor(datohjelper.kontrollPeriodeForKunNorskStatsborgerskap().tom!!)
 
 
-    fun arbeidsforhold(): List<Arbeidsforhold> {
+    fun arbeidsforholdIOpptjeningsperiode(): List<Arbeidsforhold> {
 
         return arbeidsforhold.filter {
             periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
-                    datohjelper.kontrollPeriodeForArbeidsforhold())
+                    datohjelper.kontrollPeriodeForArbeidsforholdIOpptjeningsperiode())
         }
     }
 
@@ -110,7 +108,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     }
 
     fun arbeidsgiversLandForPeriode(): List<String> {
-        return arbeidsforhold().mapNotNull { it.arbeidsgiver.landkode }
+        return arbeidsforholdIOpptjeningsperiode().mapNotNull { it.arbeidsgiver.landkode }
     }
 
     fun sisteArbeidsforholdYrkeskode(): List<String> {
