@@ -1,5 +1,6 @@
 package no.nav.medlemskap.regler.common
 
+import no.nav.medlemskap.common.stillingsprosentStatistikk
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.services.aareg.AaRegOpplysningspliktigArbeidsgiverType
 import no.nav.medlemskap.services.ereg.Ansatte
@@ -154,6 +155,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
                 totalVektetStillingsprosent += (antallDager / totaltAntallDager) * stillingsprosent
                 antallArbeidsavtaler++
             }
+            stillingsprosentStatistikk().record(totalVektetStillingsprosent)
             if (totalVektetStillingsprosent < gittStillingsprosent) return false
         }
 

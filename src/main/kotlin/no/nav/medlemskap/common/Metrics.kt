@@ -35,7 +35,7 @@ fun configureSensuInfluxMeterRegistry(): SensuInfluxMeterRegistry {
     }
 
     val influxMeterRegistry = SensuInfluxMeterRegistry(config, Clock.SYSTEM)
-    influxMeterRegistry.config().meterFilter(MeterFilter.denyUnless { it.name.startsWith("api_hit_counter") })
+    influxMeterRegistry.config().meterFilter(MeterFilter.denyUnless { it.name.startsWith("api_hit_counter") || it.name.startsWith("stillingsprosent_distribution") })
     influxMeterRegistry.config().commonTags(defaultInfluxTags());
     Metrics.globalRegistry.add(influxMeterRegistry)
     return influxMeterRegistry
@@ -55,6 +55,14 @@ fun regelCounter(regel: String, status: String): Counter = Counter
         .builder("regel_calls_total")
         .tags("regel", regel, "status", status)
         .description("counter for ja, nei, uavklart for regel calls")
+        .register(Metrics.globalRegistry)
+
+fun stillingsprosentStatistikk(): DistributionSummary = DistributionSummary
+        .builder("stillingsprosent_distribution")
+        .description("Logger beregnet stillingsprosent")
+        .scale(100.0)
+        .minimumExpectedValue(0.0)
+        .maximumExpectedValue(100.0)
         .register(Metrics.globalRegistry)
 
 fun apiCounter(): Counter = Counter
