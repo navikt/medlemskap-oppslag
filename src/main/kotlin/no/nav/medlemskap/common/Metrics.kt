@@ -6,6 +6,7 @@ import io.micrometer.core.instrument.config.MeterFilter
 import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
 import io.micrometer.prometheus.PrometheusRenameFilter
+import io.prometheus.client.Histogram
 import no.nav.medlemskap.common.influx.SensuInfluxConfig
 import no.nav.medlemskap.common.influx.SensuInfluxMeterRegistry
 import java.time.Duration
@@ -35,7 +36,7 @@ fun configureSensuInfluxMeterRegistry(): SensuInfluxMeterRegistry {
     }
 
     val influxMeterRegistry = SensuInfluxMeterRegistry(config, Clock.SYSTEM)
-    influxMeterRegistry.config().meterFilter(MeterFilter.denyUnless { it.name.startsWith("api_hit_counter") || it.name.startsWith("stillingsprosent_distribution") })
+    influxMeterRegistry.config().meterFilter(MeterFilter.denyUnless { it.name.startsWith("api_hit_counter") || it.name.startsWith("stillingsprosent") })
     influxMeterRegistry.config().commonTags(defaultInfluxTags());
     Metrics.globalRegistry.add(influxMeterRegistry)
     return influxMeterRegistry
@@ -57,12 +58,16 @@ fun regelCounter(regel: String, status: String): Counter = Counter
         .description("counter for ja, nei, uavklart for regel calls")
         .register(Metrics.globalRegistry)
 
-fun stillingsprosentStatistikk(): DistributionSummary = DistributionSummary
-        .builder("stillingsprosent_distribution")
-        .description("Logger beregnet stillingsprosent")
-        .minimumExpectedValue(0.0)
-        .maximumExpectedValue(100.0)
-        .register(Metrics.globalRegistry)
+//Legger i egen variabel utenfor, for den skal kun registreres én gang
+val stillingsprosentHistogram = Histogram.build()
+        .buckets(0.0, 10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0)
+        .name("stillingsprosent")
+        .help("Logger beregnet stillingsprosent")
+        .register()
+
+fun stillingsprosentStatistikk(): Histogram  {
+    return stillingsprosentHistogram
+}
 
 fun apiCounter(): Counter = Counter
         .builder("api_hit_counter")

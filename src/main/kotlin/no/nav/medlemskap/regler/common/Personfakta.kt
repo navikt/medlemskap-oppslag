@@ -10,7 +10,6 @@ import java.time.temporal.ChronoUnit
 import java.util.stream.Collectors
 
 
-
 class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     private val datohjelper = Datohjelper(datagrunnlag)
@@ -155,7 +154,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
                 totalVektetStillingsprosent += (antallDager / totaltAntallDager) * stillingsprosent
                 antallArbeidsavtaler++
             }
-            stillingsprosentStatistikk().record(totalVektetStillingsprosent)
+            stillingsprosentStatistikk().observe(totalVektetStillingsprosent)
             if (totalVektetStillingsprosent < gittStillingsprosent) return false
         }
 
