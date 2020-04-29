@@ -60,7 +60,6 @@ fun regelCounter(regel: String, status: String): Counter = Counter
 fun stillingsprosentStatistikk(): DistributionSummary = DistributionSummary
         .builder("stillingsprosent_distribution")
         .description("Logger beregnet stillingsprosent")
-        .scale(100.0)
         .minimumExpectedValue(0.0)
         .maximumExpectedValue(100.0)
         .register(Metrics.globalRegistry)
