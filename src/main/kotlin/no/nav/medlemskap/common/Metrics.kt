@@ -83,7 +83,7 @@ private fun getStillingsprosentIntervall(stillingsprosent: Double): String {
         (55..64).contains(stillingsprosentHeltall) -> return "55 - 64"
         (65..74).contains(stillingsprosentHeltall) -> return "65 - 74"
         (75..84).contains(stillingsprosentHeltall) -> return "75 - 84"
-        (85..100).contains(stillingsprosentHeltall) -> return "85 - 99"
+        (85..99).contains(stillingsprosentHeltall) -> return "85 - 99"
     }
     return "N/A"
 }
