@@ -75,7 +75,7 @@ private fun getStillingsprosentIntervall(stillingsprosent: Double): String {
     //Fjerner desimaler fremfor å runde av fordi regelsjekken godtar ikke f.eks. 24.9% stilling som høy nok til å regnes som 25% stilling.
     val stillingsprosentHeltall = truncate(stillingsprosent).toInt()
     when {
-        (0..15).contains(stillingsprosentHeltall) -> return "0 - 15"
+        (0..14).contains(stillingsprosentHeltall) -> return "0 - 14"
         (15..24).contains(stillingsprosentHeltall) -> return "15 - 24"
         (25..34).contains(stillingsprosentHeltall) -> return "25 - 34"
         (35..44).contains(stillingsprosentHeltall) -> return "35 - 44"
