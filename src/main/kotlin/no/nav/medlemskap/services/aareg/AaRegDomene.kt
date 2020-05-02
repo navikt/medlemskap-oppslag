@@ -40,7 +40,7 @@ data class AaRegArbeidsforhold(
         val ansettelsesperiode: AaRegAnsettelsesperiode,
         val antallTimerForTimeloennet: List<AaRegAntallTimerForTimeloennet>?,
         val arbeidsavtaler: List<AaRegArbeidsavtale>,
-        val arbeidsforholdId: String,
+        val arbeidsforholdId: String?,
         val arbeidsgiver: AaRegOpplysningspliktigArbeidsgiver,
         val arbeidstaker: AaRegPerson,
         val innrapportertEtterAOrdningen: Boolean,
