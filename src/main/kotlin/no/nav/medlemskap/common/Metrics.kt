@@ -6,11 +6,11 @@ import io.micrometer.core.instrument.config.MeterFilter
 import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
 import io.micrometer.prometheus.PrometheusRenameFilter
-import io.prometheus.client.Histogram
 import no.nav.medlemskap.common.influx.SensuInfluxConfig
 import no.nav.medlemskap.common.influx.SensuInfluxMeterRegistry
 import java.time.Duration
 import java.util.concurrent.atomic.AtomicInteger
+import kotlin.math.truncate
 
 
 fun configurePrometheusMeterRegistry(): PrometheusMeterRegistry {
@@ -58,15 +58,34 @@ fun regelCounter(regel: String, status: String): Counter = Counter
         .description("counter for ja, nei, uavklart for regel calls")
         .register(Metrics.globalRegistry)
 
-//Legger i egen variabel utenfor, for den skal kun registreres én gang
-val stillingsprosentHistogram = Histogram.build()
-        .buckets(0.0, 10.0, 20.0, 30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0)
-        .name("stillingsprosent")
-        .help("Logger beregnet stillingsprosent")
-        .register()
+fun stillingsprosentCounter(stillingsprosent: Double): Counter =
+        if (stillingsprosent < 100.0) {
+            Counter.builder("stillingsprosent_deltid")
+                    .tags("stillingsprosent", getStillingsprosentIntervall(stillingsprosent))
+                    .description("counter for fordeling av stillingsprosenter")
+                    .register(Metrics.globalRegistry)
+        } else {
+            Counter.builder("stillingsprosent_heltid")
+                    .description("counter for antall brukere med heltidsstilling")
+                    .register(Metrics.globalRegistry)
+        }
 
-fun stillingsprosentStatistikk(): Histogram  {
-    return stillingsprosentHistogram
+
+private fun getStillingsprosentIntervall(stillingsprosent: Double): String {
+    //Fjerner desimaler fremfor å runde av fordi regelsjekken godtar ikke f.eks. 24.9% stilling som høy nok til å regnes som 25% stilling.
+    val stillingsprosentHeltall = truncate(stillingsprosent).toInt()
+    when {
+        (0..14).contains(stillingsprosentHeltall) -> return "0 - 14"
+        (15..24).contains(stillingsprosentHeltall) -> return "15 - 24"
+        (25..34).contains(stillingsprosentHeltall) -> return "25 - 34"
+        (35..44).contains(stillingsprosentHeltall) -> return "35 - 44"
+        (45..54).contains(stillingsprosentHeltall) -> return "45 - 54"
+        (55..64).contains(stillingsprosentHeltall) -> return "55 - 64"
+        (65..74).contains(stillingsprosentHeltall) -> return "65 - 74"
+        (75..84).contains(stillingsprosentHeltall) -> return "75 - 84"
+        (85..99).contains(stillingsprosentHeltall) -> return "85 - 99"
+    }
+    return "N/A"
 }
 
 fun apiCounter(): Counter = Counter
