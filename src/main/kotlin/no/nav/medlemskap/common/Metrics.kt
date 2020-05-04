@@ -70,6 +70,10 @@ fun stillingsprosentCounter(stillingsprosent: Double): Counter =
                     .register(Metrics.globalRegistry)
         }
 
+fun usammenhengendeArbeidsforholdCounter(): Counter = Counter
+        .builder("usammhengende_arbeidsforhold")
+        .description("counter for antall usammenhengende arbeidsforhold")
+        .register(Metrics.globalRegistry)
 
 private fun getStillingsprosentIntervall(stillingsprosent: Double): String {
     //Fjerner desimaler fremfor å runde av fordi regelsjekken godtar ikke f.eks. 24.9% stilling som høy nok til å regnes som 25% stilling.
