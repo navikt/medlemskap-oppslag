@@ -3,6 +3,7 @@ apiVersion: "nais.io/v1"
 kind: "Alert"
 metadata:
   name: medlemskap-oppslag
+  namespace: default
   labels:
     team: medlemskap
 spec:
