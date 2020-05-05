@@ -4,7 +4,7 @@ kind: "Alert"
 metadata:
   name: medlemskap-oppslag
   labels:
-    team: p3
+    team: medlemskap
 spec:
   receivers:
     slack:
