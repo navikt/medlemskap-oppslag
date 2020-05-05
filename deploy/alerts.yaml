@@ -8,7 +8,7 @@ metadata:
 spec:
   receivers:
     slack:
-      channel: 'team-p3-medlemskap-alerts'
+      channel: '#team-p3-medlemskap-alerts'
   alerts:
     - alert: applikasjon nede
       expr: up{app="medlemskap-oppslag", job="kubernetes-pods"} == 0
