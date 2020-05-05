@@ -1,5 +1,5 @@
 # Inneholder anbefalte alerts: https://doc.nais.io/observability/alerts/recommended_alerts
-apiVersion: "nais.io/v1alpha1"
+apiVersion: "nais.io/v1"
 kind: "Alert"
 metadata:
   name: medlemskap-oppslag
