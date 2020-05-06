@@ -14,7 +14,7 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
     override fun hentHovedRegel() =
             sjekkRegel {
-                harBrukerEttArbeidsforhold
+                harBrukerSammenhengendeArbeidsforholdSiste12Mnd
             } hvisNei {
                 uavklartKonklusjon
             } hvisJa {
@@ -63,9 +63,9 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
     private val reglerForLovvalg = ReglerForLovvalg(personfakta)
 
-    private val harBrukerEttArbeidsforhold = Regel(
+    private val harBrukerSammenhengendeArbeidsforholdSiste12Mnd = Regel(
             identifikator = "ARB-1",
-            avklaring = "Har bruker hatt et arbeidsforhold i Aa-registeret de siste 12 månedene?",
+            avklaring = "Har bruker hatt sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?",
             beskrivelse = "",
             operasjon = { sjekkArbeidsforhold() }
     )
@@ -119,8 +119,9 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
         if (!personfakta.harSammenhengendeArbeidsforholdSiste12Mnd())
             return nei("Arbeidstaker har ikke sammenhengende arbeidsforhold siste 12 mnd")
 
-        if (personfakta.arbeidsforholdIOpptjeningsperiode() antallErIkke 1)
-            return nei("Bruker må ha ett arbeidsforhold i hele opptjeningsperioden")
+        //Denne skal flyttes til senere i løpet og skal modifiseres til å kunne ha flere parallelle arbeidsforhold
+        //if (personfakta.arbeidsforholdIOpptjeningsperiode() antallErIkke 1)
+        //    return nei("Bruker må ha ett arbeidsforhold i hele opptjeningsperioden")
 
         return ja()
     }

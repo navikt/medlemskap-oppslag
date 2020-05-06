@@ -36,7 +36,11 @@ fun configureSensuInfluxMeterRegistry(): SensuInfluxMeterRegistry {
     }
 
     val influxMeterRegistry = SensuInfluxMeterRegistry(config, Clock.SYSTEM)
-    influxMeterRegistry.config().meterFilter(MeterFilter.denyUnless { it.name.startsWith("api_hit_counter") || it.name.startsWith("stillingsprosent") })
+    influxMeterRegistry.config().meterFilter(MeterFilter.denyUnless {
+        it.name.startsWith("api_hit_counter")
+                || it.name.startsWith("stillingsprosent")
+                || it.name.contains("arbeidsforhold")
+    })
     influxMeterRegistry.config().commonTags(defaultInfluxTags());
     Metrics.globalRegistry.add(influxMeterRegistry)
     return influxMeterRegistry
@@ -70,9 +74,19 @@ fun stillingsprosentCounter(stillingsprosent: Double): Counter =
                     .register(Metrics.globalRegistry)
         }
 
+fun merEnn10ArbeidsforholdCounter(): Counter = Counter
+        .builder("over_10_arbeidsforhold")
+        .description("counter for brukere med flere enn 10 arbeidsforhold")
+        .register(Metrics.globalRegistry)
+
 fun usammenhengendeArbeidsforholdCounter(): Counter = Counter
-        .builder("usammhengende_arbeidsforhold")
-        .description("counter for antall usammenhengende arbeidsforhold")
+        .builder("usammenhengende_arbeidsforhold")
+        .description("counter for usammenhengende arbeidsforhold")
+        .register(Metrics.globalRegistry)
+
+fun harIkkeArbeidsforhold12MndTilbakeCounter(): Counter = Counter
+        .builder("ingen_arbeidsforhold_fra_12_mnd_tilbake")
+        .description("counter for brukere som ikke har arbeidsforhold som starter 12 mnd tilbake")
         .register(Metrics.globalRegistry)
 
 private fun getStillingsprosentIntervall(stillingsprosent: Double): String {
