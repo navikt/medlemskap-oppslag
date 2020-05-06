@@ -53,7 +53,7 @@ fun Routing.evalueringRoute(
                     datagrunnlag = datagrunnlag,
                     resultat = resultat
             )
-            secureLogger.info { response }
+            secureLogger.info("For bruker {} er responsen {}", request.fnr, response)
 
             call.respond(response)
         }
