@@ -1,5 +1,7 @@
 package no.nav.medlemskap.regler.common
 
+import no.nav.medlemskap.common.harIkkeArbeidsforhold12MndTilbakeCounter
+import no.nav.medlemskap.common.merEnn10ArbeidsforholdCounter
 import no.nav.medlemskap.common.stillingsprosentCounter
 import no.nav.medlemskap.common.usammenhengendeArbeidsforholdCounter
 import no.nav.medlemskap.domene.*
@@ -93,11 +95,18 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         var forrigeTilDato: LocalDate? = null
         val arbeidsforholdForNorskArbeidsgiver = arbeidsforholdForNorskArbeidsgiver()
 
-        if (arbeidsforholdForNorskArbeidsgiver.size > 10) return false
+        if (arbeidsforholdForNorskArbeidsgiver.size > 10) {
+            merEnn10ArbeidsforholdCounter().increment()
+            return false
+        }
 
         val harArbeidsforhold12MndTilbake = arbeidsforholdForNorskArbeidsgiver.stream().anyMatch { it.periode.fom?.isBefore(datohjelper.kontrollPeriodeForNorskArbeidsgiver().fom?.plusDays(1))!! }
-        val sortertArbeidsforholdEtterPeriode = arbeidsforholdForNorskArbeidsgiver.stream().sorted().collect(Collectors.toList())
+        if (!harArbeidsforhold12MndTilbake) {
+            harIkkeArbeidsforhold12MndTilbakeCounter().increment()
+            return false
+        }
 
+        val sortertArbeidsforholdEtterPeriode = arbeidsforholdForNorskArbeidsgiver.stream().sorted().collect(Collectors.toList())
         for (arbeidsforhold in sortertArbeidsforholdEtterPeriode) { //Sjekker at alle påfølgende arbeidsforhold er sammenhengende
             if (forrigeTilDato != null && !datohjelper.erDatoerSammenhengende(forrigeTilDato, arbeidsforhold.periode.fom)) {
                 usammenhengendeArbeidsforholdCounter().increment()
@@ -106,7 +115,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
             forrigeTilDato = arbeidsforhold.periode.tom
         }
 
-        return harArbeidsforhold12MndTilbake
+        return true
     }
 
     fun arbeidsgiversLandForPeriode(): List<String> {
