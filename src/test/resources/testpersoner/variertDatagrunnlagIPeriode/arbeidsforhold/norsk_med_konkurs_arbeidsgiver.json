@@ -32,7 +32,11 @@
         "type": "BEDR",
         "identifikator": "1",
         "landkode": "NOR",
-        "antallAnsatte": "10",
+        "ansatte": [
+          {
+            "antall": 10
+          }
+        ],
         "konkursStatus": [
           "OSKP"
         ]

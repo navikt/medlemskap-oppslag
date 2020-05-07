@@ -1,123 +1,42 @@
 package no.nav.medlemskap.regler.v1
 
-import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.regler.common.Personfakta.Companion.initialiserFakta
+import no.nav.medlemskap.regler.assertSvar
 import no.nav.medlemskap.regler.common.Svar
+import no.nav.medlemskap.regler.evaluer
 import no.nav.medlemskap.regler.personer.Personleser
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class RegelsettForNorskLovvalgTest {
 
     private val personleser = Personleser()
 
-
-
     @Test
-    fun `person med ett arbeidsforhold innenfor kontrollperiode, får ja`() {
-        assertEquals(Svar.JA, evaluer(personleser.norskMedEttArbeidsforholdIPeriode()))
+    fun `person bosatt i Norge siste 12 mnd, får ja`() {
+        assertSvar("LOV-2", Svar.JA, evaluer(personleser.enkelNorskArbeid()), Svar.JA)
     }
 
     @Test
-    fun `person med flere arbeidsforhold innenfor kontrollperiode, får uavklart`() {
-        assertEquals(Svar.UAVKLART, evaluer(personleser.enkelNorskFlereArbeidsforholdIPeriode()))
+    fun `person ikke bosatt i Norge siste 12 mnd, får uavklart`() {
+        assertSvar("LOV-2", Svar.NEI, evaluer(personleser.norskBosattIUtland()), Svar.UAVKLART)
     }
 
     @Test
-    fun `person med ett arbeidsforhold med arbeidsgiver som privatperson innenfor kontrollperiode, får uavklart`() {
-        assertEquals(Svar.UAVKLART, evaluer(personleser.norskMedEttArbeidsforholdMedPrivatpersonSomArbeidsgiverIPeriode()))
-    }
-
-    @Test
-    fun  `person med ett arbeidsforhold med arbeidsgiver har konkurs status får uavklart`() {
-        assertEquals(Svar.UAVKLART, evaluer(personleser.enkelNorskMedKonkursArbeidsgiver()))
-    }
-
-    @Test
-    fun `person med flere arbeidsforhold hvorav en arbeidsgiver har færre enn 6 ansatte innenfor kontrollperiode, får uavklart`() {
-        assertEquals(Svar.UAVKLART, evaluer(personleser.norskMedFlereArbeidsforholdHvoravEnArbeidsgiverMedKun4AnsatteIPeriode()))
-    }
-
-    @Test
-    fun `person med to sammenhengende arbeidsforhold innenfor kontrollperiode, får ja`() {
-        assertEquals(Svar.JA, evaluer(personleser.norskMedToSammenhengendeArbeidsforholdIPeriode()))
-    }
-
-    @Test
-    fun `person med to sammenhengende arbeidsforhold under 12 mnd innenfor kontrollperiode, får uavklart`() {
-        assertEquals(Svar.UAVKLART, evaluer(personleser.norskMedToSammenhengendeArbeidsforholdUnder12MndIPeriode()))
-    }
-
-    @Test
-    fun `person med to usammenhengende arbeidsforhold innenfor kontrollperiode, får uavklart`() {
-        assertEquals(Svar.UAVKLART, evaluer(personleser.norskMedToUsammenhengendeArbeidsforholdIPeriode()))
-    }
-
-    @Test
-    fun `person med overlappende arbeidsforhold innenfor kontrollperiode, får ja`() {
-        assertEquals(Svar.JA, evaluer(personleser.norskMedOverlappendeArbeidsforholdIPeriode()))
-    }
-
-    @Test
-    fun `person med over 10 arbeidsforhold innenfor kontrollperiode, får uavklart`() {
-        assertEquals(Svar.UAVKLART, evaluer(personleser.norskMedOverTiArbeidsforhold()))
-    }
-
-    @Test
-    fun `person med ett arbeidsforhold som har en arbeidsavtale med mindre enn 25% stillingsprosent, får uavklart`() {
-        assertEquals(Svar.UAVKLART, evaluer(personleser.norskMedEttArbeidsforholdMedArbeidsavtaleUnder25ProsentStillingIPeriode()))
-    }
-
-    @Test
-    fun `person med ett arbeidsforhold med to arbeidsavtaler som utgjør mindre enn 25% i stillingsprosent, får uavklart`() {
-        assertEquals(Svar.UAVKLART, evaluer(personleser.norskMedToArbeidsavtalerISammeArbeidsforholdMedForLavTotalStillingProsentIPeriode()))
+    fun `person med norsk statsborgerskap, kun arbeid i Norge, får ja`() {
+        assertSvar("LOV-3", Svar.JA, evaluer(personleser.enkelNorskArbeid()), Svar.JA)
     }
 
     @Test
     fun `person med ett arbeidsforhold med to overlappende arbeidsavtaler som til sammen utgjør mer enn 25% i stillingsprosent, får ja`() {
-        assertEquals(Svar.JA, evaluer(personleser.norskMedToOverlappendeArbeidsavtalerSomTilSammenErOver25ProsentIPeriode()))
+        assertSvar("LOV-4", Svar.JA, evaluer(personleser.norskMedToOverlappendeArbeidsavtalerSomTilSammenErOver25ProsentIPeriode()), Svar.JA)
     }
 
     @Test
-    fun `person med en norsk arbeidsgiver og kun arbeid i Norge, ikke maritim eller pilot, får ja`() {
-        assertEquals(Svar.JA, evaluer(personleser.enkelNorskArbeid()))
+    fun `person med ett arbeidsforhold som har en arbeidsavtale med mindre enn 25% stillingsprosent, får uavklart`() {
+        assertSvar("LOV-4", Svar.NEI, evaluer(personleser.norskMedEttArbeidsforholdMedArbeidsavtaleUnder25ProsentStillingIPeriode()), Svar.UAVKLART)
     }
 
     @Test
-    fun `person med en norsk arbeidsgiver og kun arbeid i Norge, maritimt på norsk skip, får ja`() {
-        assertEquals(Svar.JA, evaluer(personleser.enkelNorskMaritim()))
+    fun `person med ett arbeidsforhold med to arbeidsavtaler som utgjør mindre enn 25% i stillingsprosent, får uavklart`() {
+        assertSvar("LOV-4", Svar.NEI, evaluer(personleser.norskMedToArbeidsavtalerISammeArbeidsforholdMedForLavTotalStillingProsentIPeriode()), Svar.UAVKLART)
     }
-
-    @Test
-    fun `person med en norsk arbeidsgiver, pilot, får uavklart`() {
-        assertEquals(Svar.UAVKLART, evaluer(personleser.enkelNorskPilot()))
-    }
-
-    @Test
-    fun `person med norsk arbeidsgiver på utenlandsk skip, får uavklart`() {
-        assertEquals(Svar.UAVKLART, evaluer(personleser.enkelNorskUtenlandskSkip()))
-    }
-
-    @Test
-    fun `person med flere arbeidsgivere, hvor en er norsk får nei i periode`() {
-        assertEquals(Svar.UAVKLART, evaluer(personleser.norskArbeidsgiverMedFlereIPeriode()))
-    }
-
-    @Test
-    fun `person med flere arbeidsforhold, hvor en maritimt med nis som skipsregister`() {
-        val data = personleser.norskMedFlereArbeidsforholdstyperIPerioder()
-        val evaluering = evaluer(data)
-        assertEquals(Svar.UAVKLART, evaluering)
-    }
-
-    @Test
-    fun `person med flere arbeidsforhold, hvor en har yrkeskode pilot`() {
-        assertEquals(Svar.UAVKLART, evaluer(personleser.norskMedFlereYrkeskoderIPeriode()))
-    }
-
-    private fun evaluer(datagrunnlag: Datagrunnlag): Svar {
-        val regelsett = ReglerForArbeidsforhold(initialiserFakta(datagrunnlag))
-        return regelsett.hentHovedRegel().utfør(mutableListOf()).svar
-    }
-
 }

@@ -23,7 +23,7 @@
   "arbeidsforhold": [
     {
       "periode": {
-        "fom": "2020-01-01",
+        "fom": "2018-01-01",
         "tom": "2020-06-30"
       },
       "utenlandsopphold": [],
@@ -46,7 +46,7 @@
     },
     {
       "periode": {
-        "fom": "2020-07-01",
+        "fom": "2019-07-01",
         "tom": null
       },
       "utenlandsopphold": [],

@@ -16,13 +16,13 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
                     uavklartKonklusjon
                 } hvisJa {
                     sjekkRegel {
-                       harBrukerNorskStatsborgerskap
+                        harBrukerNorskStatsborgerskap
                     } hvisJa {
                         sjekkRegel {
-                          harBrukerJobbet25ProsentEllerMer
-                        } hvisJa{
+                            harBrukerJobbet25ProsentEllerMer
+                        } hvisJa {
                             jaKonklusjon
-                        } hvisNei{
+                        } hvisNei {
                             uavklartKonklusjon
                         }
                     } hvisNei {
@@ -33,13 +33,6 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
                 neiKonklusjon
             }
 
-
-    private val harBrukerNorskStatsborgerskap = Regel(
-            identifikator = "LOV-1",
-            avklaring = "Har bruker norsk statsborgeskap",
-            beskrivelse = "",
-            operasjon = { sjekkOmBrukerErNorskStatsborger() }
-    )
 
     private val harBrukerJobbetUtenforNorge = Regel(
             identifikator = "LOV-1",
@@ -55,8 +48,15 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
             operasjon = { sjekkLandskode() }
     )
 
-    private val harBrukerJobbet25ProsentEllerMer = Regel(
+    private val harBrukerNorskStatsborgerskap = Regel(
             identifikator = "LOV-3",
+            avklaring = "Har bruker norsk statsborgeskap",
+            beskrivelse = "",
+            operasjon = { sjekkOmBrukerErNorskStatsborger() }
+    )
+
+    private val harBrukerJobbet25ProsentEllerMer = Regel(
+            identifikator = "LOV-4",
             avklaring = "Har bruker vært i minst 25% stilling?",
             beskrivelse = "",
             operasjon = { sjekkOmBrukerHarJobbet25ProsentEllerMer() }
@@ -85,7 +85,7 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
         val førsteStatsborgerskap = personfakta.hentStatsborgerskapVedSluttAvKontrollperiodeNorskStatsborger()
         val sisteStatsborgerskap = personfakta.hentStatsborgerskapVedSluttAvKontrollperiodeNorskStatsborger()
         return when {
-            førsteStatsborgerskap inneholder "NOR" && sisteStatsborgerskap inneholder "NOR"-> ja()
+            førsteStatsborgerskap inneholder "NOR" && sisteStatsborgerskap inneholder "NOR" -> ja()
             else -> nei("Brukeren er ikke norsk statsborger")
         }
     }

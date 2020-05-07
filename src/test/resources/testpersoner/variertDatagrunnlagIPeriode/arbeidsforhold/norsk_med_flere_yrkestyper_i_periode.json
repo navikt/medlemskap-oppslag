@@ -23,7 +23,7 @@
   "arbeidsforhold": [
     {
       "periode": {
-        "fom": "2020-01-01",
+        "fom": "2019-01-01",
         "tom": "2020-06-30"
       },
       "utenlandsopphold": [],
@@ -37,7 +37,7 @@
       "arbeidsavtaler": [
         {
           "periode": {
-            "fom": "2020-01-30",
+            "fom": "2019-01-30",
             "tom": "2020-06-30"
           },
           "yrkeskode": "0001"
@@ -46,7 +46,7 @@
     },
     {
       "periode": {
-        "fom": "2020-07-01",
+        "fom": "2019-07-01",
         "tom": null
       },
       "utenlandsopphold": [],
@@ -60,10 +60,10 @@
       "arbeidsavtaler": [
         {
           "periode": {
-            "fom": "2020-07-01",
+            "fom": "2019-07-01",
             "tom": null
           },
-          "yrkeskode": "0001"
+          "yrkeskode": "3143107"
         }
       ]
     }
