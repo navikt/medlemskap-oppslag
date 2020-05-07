@@ -63,7 +63,7 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
     private val reglerForLovvalg = ReglerForLovvalg(personfakta)
 
-    private val harBrukerSammenhengendeArbeidsforholdSiste12Mnd = Regel(
+    val harBrukerSammenhengendeArbeidsforholdSiste12Mnd = Regel(
             identifikator = "ARB-1",
             avklaring = "Har bruker hatt sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?",
             beskrivelse = "",
@@ -77,7 +77,7 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
             operasjon = { sjekkArbeidsgiver() }
     )
 
-    private val harForetakMerEnn5Ansatte = Regel(
+    val harForetakMerEnn5Ansatte = Regel(
             identifikator = "ARB-3",
             avklaring = "Har arbeidsgiver sin hovedaktivitet i Norge?",
             beskrivelse = "",

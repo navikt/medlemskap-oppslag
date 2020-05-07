@@ -1,0 +1,21 @@
+package no.nav.medlemskap.regler
+
+import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.regler.common.Personfakta
+import no.nav.medlemskap.regler.common.Resultat
+import no.nav.medlemskap.regler.common.Svar
+import no.nav.medlemskap.regler.v1.Hovedregler
+import org.junit.jupiter.api.Assertions
+
+fun evaluer(datagrunnlag: Datagrunnlag): Resultat {
+    val regelsett = Hovedregler(Personfakta.initialiserFakta(datagrunnlag))
+    return regelsett.kjørHovedregler()
+}
+
+fun assertSvar(regelIdentifikator: String, svarFraRegel: Svar, resultat: Resultat, konklusjon: Svar) {
+    val find = resultat.delresultat.find { it.identifikator == regelIdentifikator }
+
+    Assertions.assertNotNull(find, "Fant ikke regel $regelIdentifikator i delsvar i Resultat. Regel det testes på ble ikke kjørt. Følgende regler ble kjørt: " + resultat.delresultat.map { it.identifikator })
+    Assertions.assertEquals(find!!.svar, svarFraRegel, "Fikk feil svar regel: $regelIdentifikator")
+    Assertions.assertEquals(konklusjon, resultat.svar)
+}

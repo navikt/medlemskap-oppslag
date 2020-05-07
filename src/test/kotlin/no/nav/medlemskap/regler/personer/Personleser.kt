@@ -34,7 +34,6 @@ class Personleser {
     fun norskMedEttArbeidsforholdMedArbeidsavtaleUnder25ProsentStillingIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_ett_arbeidsforhold_under_25_stillingsprosent_i_periode.json")
     fun norskMedToArbeidsavtalerISammeArbeidsforholdMedForLavTotalStillingProsentIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_to_arbeidsavtaler_til_sammen_under_25_stillingsprosent_i_periode.json")
     fun norskMedToOverlappendeArbeidsavtalerSomTilSammenErOver25ProsentIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_to_overlappende_arbeidsavtaler_til_sammen_er_over_25_stillingsprosent_i_periode.json")
-    fun norskArbeidsgiverMedFlereIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_og_flere_arbeidsgivere_i_periode.json")
     fun norskMedFlereArbeidsforholdstyperIPerioder() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_og_flere_arbeidsforholdtyper_i_periode.json")
     fun norskMedFlereYrkeskoderIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_flere_yrkestyper_i_periode.json")
     fun enkelNorskFlereArbeidsforholdIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_flere_yrkestyper_i_periode.json")

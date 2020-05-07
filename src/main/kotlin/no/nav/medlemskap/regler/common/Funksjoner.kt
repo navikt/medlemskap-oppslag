@@ -16,7 +16,7 @@ object Funksjoner {
 
     infix fun List<String>.inneholder(string: String) = this.contains(string)
 
-    infix fun List<String>.alleEr(string: String) = this.stream().allMatch { m -> m.equals(string)}
+    infix fun List<String>.alleEr(string: String) = this.stream().allMatch { m -> m.equals(string) }
 
     infix fun List<String>.kunInneholder(string: String) = this.contains(string) && this.size == 1
 
@@ -32,7 +32,7 @@ object Funksjoner {
 
     infix fun List<Arbeidsforhold>.antallErIkke(tall: Int) = this.size != tall
 
-    infix fun List<Int?>.finnesMindreEnn(tall: Int) = this.stream().anyMatch { p -> p == null || p < tall}
+    infix fun List<Int?>.finnesMindreEnn(tall: Int) = this.stream().anyMatch { p -> p == null || p < tall }
 }
 
 fun ja(begrunnelse: String) = Resultat(
