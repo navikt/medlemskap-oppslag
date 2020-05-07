@@ -11,6 +11,16 @@ class RegelsettForNorskLovvalgTest {
     private val personleser = Personleser()
 
     @Test
+    fun `person bosatt i Norge siste 12 mnd, får ja`() {
+        assertSvar("LOV-2", Svar.JA, evaluer(personleser.enkelNorskArbeid()), Svar.JA)
+    }
+
+    @Test
+    fun `person ikke bosatt i Norge siste 12 mnd, får uavklart`() {
+        assertSvar("LOV-2", Svar.NEI, evaluer(personleser.norskBosattIUtland()), Svar.UAVKLART)
+    }
+
+    @Test
     fun `person med norsk statsborgerskap, kun arbeid i Norge, får ja`() {
         assertSvar("LOV-3", Svar.JA, evaluer(personleser.enkelNorskArbeid()), Svar.JA)
     }
