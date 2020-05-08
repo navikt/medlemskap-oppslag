@@ -1,7 +1,6 @@
 package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.common.Funksjoner.finnesI
 import no.nav.medlemskap.regler.common.Funksjoner.inneholder
 
 class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
@@ -70,8 +69,8 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
 
     private fun sjekkLandskode(): Resultat =
             when {
-                personfakta.hentBrukerLandskodeInnenfor12Mnd().isNotEmpty() -> ja()
-                else -> nei()
+                personfakta.sjekkBrukersPostadresseOgBostedsadresseLandskode() -> ja()
+                else -> nei("Bruker har enten ikke norsk bostedsadresse eller postadresse")
             }
 
     private fun sjekkOmBrukerHarJobbet25ProsentEllerMer(): Resultat =

@@ -139,12 +139,28 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     fun hentBrukerinputArbeidUtenforNorge(): Boolean = datagrunnlag.brukerinput.arbeidUtenforNorge
 
-    fun hentBrukerLandskodeInnenfor12Mnd(): List<Adresse> {
+    fun hentBrukersBostedsadresseLandskodeInnenfor12Mnd(): List<Adresse> {
         return datagrunnlag.personhistorikk.bostedsadresser.filter {
             it.landkode == "NOR"
                     && (it.tom?.isAfter(datohjelper.kontrollPeriodeForNorskAdresse().fom) ?: true)
                     && it.fom!!.isBefore(datohjelper.kontrollPeriodeForNorskAdresse().tom)
         }
+    }
+
+    fun hentBrukersPostadresseLandskodeInnenfor12Mnd(): List<Adresse> {
+        return datagrunnlag.personhistorikk.postadresser.filter {
+            it.landkode == "NOR"
+                    && (it.tom?.isAfter(datohjelper.kontrollPeriodeForNorskAdresse().fom) ?: true)
+                    && it.fom!!.isBefore(datohjelper.kontrollPeriodeForNorskAdresse().tom)
+        }
+
+    }
+
+    fun sjekkBrukersPostadresseOgBostedsadresseLandskode(): Boolean {
+        if (hentBrukersBostedsadresseLandskodeInnenfor12Mnd().isEmpty() && hentBrukersPostadresseLandskodeInnenfor12Mnd().isEmpty()) {
+            return false
+        }
+        return true
     }
 
     fun harBrukerJobberMerEnnGittStillingsprosent(gittStillingsprosent: Double): Boolean {
