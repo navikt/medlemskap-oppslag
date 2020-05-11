@@ -1,7 +1,7 @@
 {
   "periode": {
-    "fom": "2020-01-30",
-    "tom": "2021-01-30"
+    "fom": "2019-03-23",
+    "tom": "2020-04-02"
   },
   "brukerinput": {
     "arbeidUtenforNorge": false
@@ -10,7 +10,7 @@
     "statsborgerskap": [
       {
         "landkode": "NOR",
-        "fom": "1991-06-30",
+        "fom": null,
         "tom": null
       }
     ],
@@ -30,26 +30,38 @@
   "arbeidsforhold": [
     {
       "periode": {
-        "fom": "2018-01-01",
-        "tom": "2022-06-30"
+        "fom": "2018-11-01",
+        "tom": null
       },
       "utenlandsopphold": [],
       "arbeidsgivertype": "Organisasjon",
       "arbeidsgiver": {
         "type": "BEDR",
-        "identifikator": "1",
-        "landkode": "NOR",
-        "antallAnsatte": "6"
+        "landkode": null,
+        "ansatte": [
+          {
+            "antall": 10,
+            "bruksperiode": {
+              "fom": "2020-03-01",
+              "tom": null
+            },
+            "gyldighetsperiode": {
+              "fom": "2020-03-01",
+              "tom": null
+            }
+          }
+        ],
+        "konkursStatus": null
       },
       "arbeidsfolholdstype": "NORMALT",
       "arbeidsavtaler": [
         {
           "periode": {
-            "fom": "2020-01-30",
-            "tom": "2020-06-30"
+            "fom": "2018-09-10",
+            "tom": null
           },
           "yrkeskode": "0001",
-          "stillingsprosent": 24.0
+          "stillingsprosent": "100"
         }
       ]
     }

@@ -21,6 +21,11 @@ class RegelsettForMedlemskapTest {
     }
 
     @Test
+    fun `person med ett arbeidsforhold under 12 mnd innenfor kontrollperiode, får uavklart`() {
+        assertSvar("ARB-1", Svar.NEI, evaluer(personleser.norskMedEttArbeidsforholdUnder12MndIPeriode()), Svar.UAVKLART)
+    }
+
+    @Test
     fun `person med to sammenhengende arbeidsforhold under 12 mnd innenfor kontrollperiode, får uavklart`() {
         assertSvar("ARB-1", Svar.NEI, evaluer(personleser.norskMedToSammenhengendeArbeidsforholdUnder12MndIPeriode()), Svar.UAVKLART)
     }
