@@ -21,6 +21,21 @@ class RegelsettForNorskLovvalgTest {
     }
 
     @Test
+    fun `person med norsk bostedsadresse og postadresse, får ja`() {
+        assertSvar("LOV-2", Svar.JA, evaluer(personleser.enkelNorskMedNorskBostedsadresseOgPostadresse()), Svar.JA)
+    }
+
+    @Test
+    fun `norsk person med utenlandsk bostedsadresse, får uavklart`() {
+        assertSvar("LOV-2", Svar.NEI, evaluer(personleser.norskBosattIUtland()), Svar.UAVKLART)
+    }
+
+    @Test
+    fun `norsk person med utenlandsk postadresse, får uavklart`() {
+        assertSvar("LOV-2", Svar.NEI, evaluer(personleser.norskPostadresseIUtland()), Svar.UAVKLART)
+    }
+
+    @Test
     fun `person med norsk statsborgerskap, kun arbeid i Norge, får ja`() {
         assertSvar("LOV-3", Svar.JA, evaluer(personleser.enkelNorskArbeid()), Svar.JA)
     }
@@ -39,4 +54,6 @@ class RegelsettForNorskLovvalgTest {
     fun `person med ett arbeidsforhold med to arbeidsavtaler som utgjør mindre enn 25% i stillingsprosent, får uavklart`() {
         assertSvar("LOV-4", Svar.NEI, evaluer(personleser.norskMedToArbeidsavtalerISammeArbeidsforholdMedForLavTotalStillingProsentIPeriode()), Svar.UAVKLART)
     }
+
+
 }

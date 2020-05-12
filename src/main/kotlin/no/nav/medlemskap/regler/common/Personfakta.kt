@@ -83,9 +83,11 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     fun ansatteHosArbeidsgivere(): List<Ansatte> {
         return arbeidsgivereIArbeidsforholdForNorskArbeidsgiver().mapNotNull { it.ansatte }.flatten()
     }
+
     fun antallAnsatteHosArbeidsgivere(): List<Int?> {
         return ansatteHosArbeidsgivere().map { it.antall }
     }
+
     /**
      * På dette tidspunktet er det kjent at bruker er i et aktivt arbeidsforhold.
      * Trenger derfor kun å sjekke at bruker har et arbeidsforhold minumum 12 mnd tilbake og at påfølgende arbeidsforholdene er sammenhengende.
@@ -139,25 +141,29 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     fun hentBrukerinputArbeidUtenforNorge(): Boolean = datagrunnlag.brukerinput.arbeidUtenforNorge
 
-    fun hentBrukersBostedsadresseLandskodeInnenfor12Mnd(): List<Adresse> {
-        return datagrunnlag.personhistorikk.bostedsadresser.filter {
-            it.landkode == "NOR"
-                    && (it.tom?.isAfter(datohjelper.kontrollPeriodeForNorskAdresse().fom) ?: true)
-                    && it.fom!!.isBefore(datohjelper.kontrollPeriodeForNorskAdresse().tom)
+    fun harBrukerNorskBodstedsadresseInnenforSiste12Mnd(): Boolean {
+        return datagrunnlag.personhistorikk.bostedsadresser.any {
+            adresseLandskodeErNorsk(it) && adressensPeriodeOverlapperKontrollPerioden(it)
         }
     }
 
-    fun hentBrukersPostadresseLandskodeInnenfor12Mnd(): List<Adresse> {
-        return datagrunnlag.personhistorikk.postadresser.filter {
-            it.landkode == "NOR"
-                    && (it.tom?.isAfter(datohjelper.kontrollPeriodeForNorskAdresse().fom) ?: true)
-                    && it.fom!!.isBefore(datohjelper.kontrollPeriodeForNorskAdresse().tom)
+    fun harBrukerNorskPostadresseInnenforSiste12Mnd(): Boolean {
+        return datagrunnlag.personhistorikk.postadresser.any {
+            adresseLandskodeErNorsk(it) && adressensPeriodeOverlapperKontrollPerioden(it)
         }
-
     }
+
+    private fun adresseLandskodeErNorsk(it: Adresse) = it.landkode == "NOR"
+
+    private fun adressensPeriodeOverlapperKontrollPerioden(it: Adresse) =
+            periodefilter(lagInterval(Periode(it.fom, it.tom)), datohjelper.kontrollPeriodeForNorskAdresse())
 
     fun sjekkBrukersPostadresseOgBostedsadresseLandskode(): Boolean {
-        if (hentBrukersBostedsadresseLandskodeInnenfor12Mnd().isEmpty() && hentBrukersPostadresseLandskodeInnenfor12Mnd().isEmpty()) {
+        val harUtenlandskBostedsadresse = !harBrukerNorskBodstedsadresseInnenforSiste12Mnd()
+        val harUtenlandskPostadresse = datagrunnlag.personhistorikk.postadresser.isNotEmpty() &&
+                !harBrukerNorskPostadresseInnenforSiste12Mnd()
+
+        if (harUtenlandskBostedsadresse || harUtenlandskPostadresse) {
             return false
         }
         return true
@@ -173,7 +179,8 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
             var totalVektetStillingsprosent = 0.0
             for (arbeidsavtale in arbeidsforhold.arbeidsavtaler) {
                 val stillingsprosent = arbeidsavtale.stillingsprosent ?: 100.0
-                val tilDato = arbeidsavtale.periode.tom ?: arbeidsforhold.periode.tom ?: kontrollPeriodeForStillingsprosent.tom
+                val tilDato = arbeidsavtale.periode.tom ?: arbeidsforhold.periode.tom
+                ?: kontrollPeriodeForStillingsprosent.tom
                 var antallDager = kontrollPeriodeForStillingsprosent.fom.until(tilDato, ChronoUnit.DAYS).toDouble()
                 if (antallDager > totaltAntallDager) {
                     antallDager = totaltAntallDager

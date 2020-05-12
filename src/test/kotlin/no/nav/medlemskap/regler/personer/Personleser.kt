@@ -17,6 +17,7 @@ class Personleser {
     fun enkelNorskUtenlandskSkip() = lesDatagrunnlag("$norsk/norsk_jobb_maritim_utenlandsk_skip.json")
     fun norskDobbeltStatsborgerskap() = lesDatagrunnlag("$norsk/dobbelt_statsborgerskap.json")
     fun norskBosattIUtland() = lesDatagrunnlag("$norsk/norsk_bosatt_i_utland.json")
+    fun norskPostadresseIUtland() = lesDatagrunnlag("$norsk/norsk_postadresse_i_utland.json")
 
     fun norskMedFlereStatsborgerskap() = lesDatagrunnlag("$variertDatagrunnlag/norsk_flere_statsborgerskap_i_periode.json")
     fun norskMedUlikeEøsStatsborgerskap() = lesDatagrunnlag("$variertDatagrunnlag/norsk_ulike_eøs_statsborgerskap.json")
@@ -39,6 +40,7 @@ class Personleser {
     fun norskMedFlereYrkeskoderIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_flere_yrkestyper_i_periode.json")
     fun enkelNorskFlereArbeidsforholdIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_flere_yrkestyper_i_periode.json")
     fun enkelNorskMedKonkursArbeidsgiver() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_konkurs_arbeidsgiver.json")
+    fun enkelNorskMedNorskBostedsadresseOgPostadresse() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_bostedsadresse_og_postadresse.json")
 
 
     fun enkelAmerikansk() = lesDatagrunnlag("$ikkeEøs/kun_enkelt_amerikansk_statsborgerskap.json")
