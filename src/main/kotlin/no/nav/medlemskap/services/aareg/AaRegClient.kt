@@ -93,16 +93,16 @@ class AaRegService(
         private val pdlClient: PdlClient
 ) {
 
-    suspend fun hentArbeidsforhold(fnr: String, callId: String, fraOgMed: LocalDate, tilOgMed: LocalDate): List<Arbeidsforhold> {
+    suspend fun hentArbeidsforhold(fnr: String, callId: String): List<Arbeidsforhold> {
         val arbeidsgiverOrg = ArbeidsgiverOrg(aaRegClient)
         val arbeidsgiverPerson = ArbeidsgiverPerson(aaRegClient)
 
-        val arbeidsforhold = aaRegClient.hentArbeidsforhold(fnr, callId, fraOgMed, tilOgMed)
+        val arbeidsforhold = aaRegClient.hentArbeidsforhold(fnr, callId)
 
         val dataOmArbeidsgiver = mutableMapOf<String, ArbeidsgiverInfo>()
         val dataOmPerson = mutableMapOf<String, String?>()
-        val orgnummere = arbeidsgiverOrg.getOrg(fnr, callId, fraOgMed, tilOgMed)
-        val personIdentifikatorer = arbeidsgiverPerson.getIdent(fnr, callId, fraOgMed, tilOgMed)
+        val orgnummere = arbeidsgiverOrg.getOrg(fnr, callId)
+        val personIdentifikatorer = arbeidsgiverPerson.getIdent(fnr, callId)
 
         orgnummere.forEach { orgnummer ->
             val logger = KotlinLogging.logger { }
