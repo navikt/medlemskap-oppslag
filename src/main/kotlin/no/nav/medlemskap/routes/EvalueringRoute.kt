@@ -53,6 +53,7 @@ fun Routing.evalueringRoute(
                     datagrunnlag = datagrunnlag,
                     resultat = resultat
             )
+            secureLogger.info("{} konklusjon gitt for bruker {} på regel {}", resultat.svar.name, request.fnr, resultat.sisteRegel())
             secureLogger.info("For bruker {} er responsen {}", request.fnr, response)
 
             call.respond(response)
@@ -131,3 +132,10 @@ private fun fraOgMedDatoForArbeidsforhold(periode: InputPeriode) = periode.fom.m
 
 private fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =
         Hovedregler(Personfakta.initialiserFakta(datagrunnlag)).kjørHovedregler()
+
+private fun Resultat.sisteRegel() =
+        if (this.delresultat.isEmpty()) {
+            this
+        } else {
+            this.delresultat.last()
+        }
