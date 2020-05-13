@@ -166,28 +166,43 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return !(harUtenlandskBostedsadresse || harUtenlandskPostadresse)
     }
 
-    fun harBrukerJobberMerEnnGittStillingsprosent(gittStillingsprosent: Double): Boolean {
-
-        val kontrollPeriodeForStillingsprosent = datohjelper.kontrollPeriodeForStillingsprosent()
-        val totaltAntallDager = kontrollPeriodeForStillingsprosent.fom!!.until(kontrollPeriodeForStillingsprosent.tom!!, ChronoUnit.DAYS).toDouble()
+    fun harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTidIKontrollperiode(gittStillingsprosent: Double): Boolean {
 
         for (arbeidsforhold in arbeidsforholdForStillingsprosent()) {
-            var antallArbeidsavtaler = 0
-            var totalVektetStillingsprosent = 0.0
-            for (arbeidsavtale in arbeidsforhold.arbeidsavtaler) {
-                val stillingsprosent = arbeidsavtale.stillingsprosent ?: 100.0
-                val tilDato = arbeidsavtale.periode.tom ?: arbeidsforhold.periode.tom
-                ?: kontrollPeriodeForStillingsprosent.tom
-                var antallDager = kontrollPeriodeForStillingsprosent.fom.until(tilDato, ChronoUnit.DAYS).toDouble()
-                if (antallDager > totaltAntallDager) {
-                    antallDager = totaltAntallDager
-                }
-                totalVektetStillingsprosent += (antallDager / totaltAntallDager) * stillingsprosent
-                antallArbeidsavtaler++
+            val vektetStillingsprosentForArbeidsforhold = beregnVektetStillingsprosentForArbeidsforhold(arbeidsforhold)
+
+            stillingsprosentCounter(vektetStillingsprosentForArbeidsforhold).increment()
+
+            if (vektetStillingsprosentForArbeidsforhold < gittStillingsprosent
+                    && ingenAndreParallelleArbeidsforhold(arbeidsforhold)) {
+                return false
             }
-            stillingsprosentCounter(totalVektetStillingsprosent).increment()
-            if (totalVektetStillingsprosent < gittStillingsprosent) return false
         }
+
+        return true
+    }
+
+    private fun beregnVektetStillingsprosentForArbeidsforhold(arbeidsforhold: Arbeidsforhold): Double {
+        val kontrollPeriodeForStillingsprosent = datohjelper.kontrollPeriodeForStillingsprosent()
+        val totaltAntallDager = kontrollPeriodeForStillingsprosent.fom!!.until(kontrollPeriodeForStillingsprosent.tom!!, ChronoUnit.DAYS).toDouble()
+        var vektetStillingsprosentForArbeidsforhold = 0.0
+        for (arbeidsavtale in arbeidsforhold.arbeidsavtaler) {
+            val stillingsprosent = arbeidsavtale.stillingsprosent ?: 100.0
+            val tilDato = arbeidsavtale.periode.tom ?: arbeidsforhold.periode.tom ?: kontrollPeriodeForStillingsprosent.tom
+            var antallDager = kontrollPeriodeForStillingsprosent.fom.until(tilDato, ChronoUnit.DAYS).toDouble()
+            if (antallDager > totaltAntallDager) {
+                antallDager = totaltAntallDager
+            }
+            vektetStillingsprosentForArbeidsforhold += (antallDager / totaltAntallDager) * stillingsprosent
+        }
+        return vektetStillingsprosentForArbeidsforhold
+    }
+
+    private fun ingenAndreParallelleArbeidsforhold(arbeidsforhold: Arbeidsforhold) : Boolean {
+        val andreArbeidsforhold = arbeidsforholdForStillingsprosent() as ArrayList
+        andreArbeidsforhold.remove(arbeidsforhold)
+
+        if (andreArbeidsforhold.any { it.periode.interval().encloses(arbeidsforhold.periode.interval()) }) return false
 
         return true
     }
