@@ -163,10 +163,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         val harUtenlandskPostadresse = datagrunnlag.personhistorikk.postadresser.isNotEmpty() &&
                 !harBrukerNorskPostadresseInnenforSiste12Mnd()
 
-        if (harUtenlandskBostedsadresse || harUtenlandskPostadresse) {
-            return false
-        }
-        return true
+        return !(harUtenlandskBostedsadresse || harUtenlandskPostadresse)
     }
 
     fun harBrukerJobberMerEnnGittStillingsprosent(gittStillingsprosent: Double): Boolean {
