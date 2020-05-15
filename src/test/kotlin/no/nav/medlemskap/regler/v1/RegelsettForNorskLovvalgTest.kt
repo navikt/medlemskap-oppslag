@@ -55,5 +55,19 @@ class RegelsettForNorskLovvalgTest {
         assertSvar("LOV-4", Svar.NEI, evaluer(personleser.norskMedToArbeidsavtalerISammeArbeidsforholdMedForLavTotalStillingProsentIPeriode()), Svar.UAVKLART)
     }
 
+    @Test
+    fun `person med to parallelle arbeidsforhold, hvor ene er heltid og andre er deltid`() {
+        assertSvar("LOV-4", Svar.JA, evaluer(personleser.norskMedToParallelleArbeidsforholdHvoravEnLavStillingsprosent()), Svar.JA)
+    }
+
+    @Test
+    fun `person med to serielle arbeidsforhold, hvor ene er heltid og andre er deltid`() {
+        assertSvar("LOV-4", Svar.NEI, evaluer(personleser.norskMedToSerielleArbeidsforholdHvoravEnLavStillingsprosent()), Svar.UAVKLART)
+    }
+
+    @Test
+    fun `person med to delvis overlappende arbeidsforhold, hvor ene har for lav stillingsprosent`() {
+        assertSvar("LOV-4", Svar.NEI, evaluer(personleser.norskMedToDelvisOverlappendeArbeidsforholdHvoravEnLavStillingsprosent()), Svar.UAVKLART)
+    }
 
 }

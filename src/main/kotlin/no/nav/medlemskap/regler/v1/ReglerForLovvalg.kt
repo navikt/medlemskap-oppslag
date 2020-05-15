@@ -75,7 +75,7 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
 
     private fun sjekkOmBrukerHarJobbet25ProsentEllerMer(): Resultat =
             when {
-                personfakta.harBrukerJobberMerEnnGittStillingsprosent(25.0) -> ja()
+                personfakta.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTidIKontrollperiode(25.0) -> ja()
                 else -> nei("Bruker har ikke jobbet 25% eller mer i løpet av periode.")
             }
 
