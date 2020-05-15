@@ -9,7 +9,6 @@ import no.nav.tjeneste.virksomhet.person.v3.informasjon.MidlertidigPostadresseUt
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.UstrukturertAdresse
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentPersonhistorikkResponse
 import java.time.LocalDate
-import java.util.*
 import javax.xml.datatype.XMLGregorianCalendar
 
 fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkResponse): Personhistorikk {
@@ -65,7 +64,7 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
         }
     }
 
-    return Personhistorikk(statsborgerskap, personstatuser, bostedsadresser, postadresser, midlertidigAdresser)
+    return Personhistorikk(statsborgerskap, personstatuser, bostedsadresser, postadresser, midlertidigAdresser, sivilstand, familierelasjoner)
 }
 
 private fun UstrukturertAdresse?.adresselinje(): String {

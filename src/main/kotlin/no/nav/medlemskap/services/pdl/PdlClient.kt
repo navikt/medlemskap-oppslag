@@ -12,11 +12,15 @@ import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
 import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
+import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.config.Configuration
+import no.nav.medlemskap.domene.Adresse
+import no.nav.medlemskap.domene.Personhistorikk
+import no.nav.medlemskap.domene.Personstatus
+import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.services.runWithRetryAndMetrics
 import no.nav.medlemskap.services.sts.StsRestClient
-import no.nav.tjeneste.virksomhet.person.v3.HentPersonResponse
 
 private val logger = KotlinLogging.logger { }
 
@@ -42,7 +46,6 @@ class PdlClient(
             }
         }
     }
-
 
 
     suspend fun hentPerson(fnr: String, callId: String): HentPdlPersonResponse{
@@ -107,8 +110,8 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
         }?.ident ?: throw IdenterIkkeFunnet()
     }
 
-    suspend fun hentPersonHistorikk(fnr: String, callId: String): HentPdlPersonResponse{
-        return pdlClient.hentPerson(fnr, callId)
+    suspend fun hentPersonHistorikk(fnr: String, callId: String): Personhistorikk{
+        return mapTilPersonHistorikk(pdlClient.hentPerson(fnr, callId))
 
 /*        // Hack for å overleve manglende aktørID i ikke-konsistente data i Q2
         if (pdlResponse.errors != null && clusterName == "dev-fss") {
@@ -120,6 +123,71 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
             throw GraphqlError(errors.first(), "PDL")
         }*/
 
+    }
+
+    private fun mapTilPersonHistorikk(person: HentPdlPersonResponse): Personhistorikk {
+        val statsborgerskap: List<Statsborgerskap> = person.data?.hentPerson?.statsborgerskap?.map {
+            Statsborgerskap(
+                    landkode = it.land,
+                    fom = it.gyldigFraOgMed,
+                    tom = it.gyldigTilOgMed
+            )
+        } ?: throw PersonIkkeFunnet("PDL")
+
+        val personstatuser: List<Personstatus> = person.data.hentPerson.folkeregisterpersonstatus.map {
+            Personstatus(
+                    personstatus = it.status,
+                    fom = it.folkeregistermetadata.gyldighetstidspunkt?.toLocalDate(),
+                    tom = it.folkeregistermetadata.opphoerstidspunkt?.toLocalDate()
+            )
+        }
+
+        val bostedsadresser: List<Adresse> = person.data.hentPerson.bostedsadresse.map {
+            Adresse(
+                    adresselinje = it.adresse ?: it.matrikkeladresse?.bruksenhetsnummer ?: "Ukjent adresse",
+                    landkode = "",
+                    fom = it.folkeregisterMetadata.gyldighetstidspunkt?.toLocalDate(),
+                    tom = it.folkeregisterMetadata.opphoerstidspunkt?.toLocalDate()
+            )
+        }
+
+        val postadresser: List<Adresse> = person.data.hentPerson.bostedsadresse.map {
+            Adresse(
+                    adresselinje = it.adresse ?: it.matrikkeladresse?.bruksenhetsnummer ?: "Ukjent adresse",
+                    landkode = "",
+                    fom = it.folkeregisterMetadata.gyldighetstidspunkt?.toLocalDate(),
+                    tom = it.folkeregisterMetadata.opphoerstidspunkt?.toLocalDate()
+            )
+        }
+
+        val midlertidigAdresser: List<Adresse> = person.data.hentPerson.bostedsadresse.map {
+            Adresse(
+                    adresselinje = it.adresse ?: it.matrikkeladresse?.bruksenhetsnummer ?: "Ukjent adresse",
+                    landkode = "",
+                    fom = it.folkeregisterMetadata.gyldighetstidspunkt?.toLocalDate(),
+                    tom = it.folkeregisterMetadata.opphoerstidspunkt?.toLocalDate()
+            )
+        }
+
+        val sivilstand: List<Sivilstand> = person.data.hentPerson.sivilstand.map {
+            Sivilstand(
+                    type = it.type,
+                    gyldigFraOgMed = it.gyldigFraOgMed,
+                    relatertVedSivilstand = it.relatertVedSivilstand,
+                    folkeregisterMetadata = it.folkeregisterMetadata
+            )
+        }
+
+        val familierelasjoner: List<Familierelasjon> = person.data.hentPerson.familierelasjoner.map {
+            Familierelasjon(
+                    relatertPersonIdent = it.relatertPersonIdent,
+                    relatertPersonsRolle = it.relatertPersonsRolle,
+                    minRolleForPerson = it.minRolleForPerson,
+                    folkeregisterMetadata = it.folkeregisterMetadata
+            )
+        }
+
+        return Personhistorikk(statsborgerskap, personstatuser, bostedsadresser, postadresser, midlertidigAdresser, sivilstand, familierelasjoner)
     }
 
 }

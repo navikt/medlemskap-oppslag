@@ -9,7 +9,10 @@ data class HentPerson(val hentPerson: Person)
 data class Person(
         val adressebeskyttelse: List<Adressebeskyttelse>,
         val kjoenn: List<Kjoenn>,
+        val familierelasjoner: List<Familierelasjon>,
+        val folkeregisterpersonstatus: List<Folkeregisterpersonstatus>,
         val navn: List<Navn>,
+        val sivilstand: List<Sivilstand>,
         val statsborgerskap: List<Statsborgerskap>,
         val bostedsadresse: List<Bostedsadresse>)
 
@@ -34,6 +37,25 @@ enum class KjoennType{
     UKJENT,
 }
 
+data class Familierelasjon(
+        val relatertPersonIdent: String,
+        val relatertPersonsRolle: Familierelasjonsrolle,
+        val minRolleForPerson: Familierelasjonsrolle,
+        val folkeregisterMetadata: Folkeregistermetadata
+)
+
+enum class Familierelasjonsrolle {
+    BARN,
+    MOR,
+    FAR,
+    MEDMOR
+}
+
+data class Folkeregisterpersonstatus(
+        val status: String,
+        val forenkletStatus: String,
+        val folkeregistermetadata: Folkeregistermetadata
+)
 
 enum class AdressebeskyttelseGradering {
     STRENGT_FORTROLIG,
@@ -45,7 +67,28 @@ enum class AdressebeskyttelseGradering {
 data class Navn (
         val fornavn: String,
         val mellomnavn: String?,
-        val etternavn: String? )
+        val etternavn: String?
+)
+
+data class Sivilstand(
+        val type: Sivilstandstype,
+        val gyldigFraOgMed: LocalDate?,
+        val relatertVedSivilstand: String,
+        val folkeregisterMetadata: Folkeregistermetadata
+)
+
+enum class Sivilstandstype {
+    UOPPGITT,
+    UGIFT,
+    GIFT,
+    ENKE_ELLER_ENKEMANN,
+    SKILT,
+    SEPARERT,
+    REGISTRERT_PARTNER,
+    SEPARERT_PARTNER,
+    SKILT_PARTNER,
+    GJENLEVENDE_PARTNER
+}
 
 data class Bostedsadresse(
         val angittFlyttedato: LocalDate?,

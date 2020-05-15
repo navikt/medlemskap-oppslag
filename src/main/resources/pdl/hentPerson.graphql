@@ -1,23 +1,51 @@
-query($ident: ID!, $bostedHistorikk: Boolean!){
+query($ident: ID!, $bostedHistorikk: Boolean!) {
   hentPerson(ident: $ident) {
-    adressebeskyttelse{
-      gradering
+    adressebeskyttelse {gradering},
+    kjoenn {kjoenn},
+    familierelasjoner {
+      relatertPersonsIdent
+      relatertPersonsRolle
+      minRolleForPerson
+      folkeregistermetadata {
+        ajourholdstidspunkt
+        gyldighetstidspunkt
+        opphoerstidspunkt
+      }
     },
-    kjoenn{kjoenn},
-    statsborgerskap{land, gyldigFraOgMed, gyldigTilOgMed},
-    navn{fornavn,mellomnavn,etternavn},
+    folkeregisterpersonstatus(historikk: $bostedHistorikk) {
+      status
+      forenkletStatus
+      folkeregistermetadata {
+        ajourholdstidspunkt
+        gyldighetstidspunkt
+        opphoerstidspunkt
+      }
+    }
+    navn {
+      fornavn,
+      mellomnavn,
+      etternavn
+    },
+    sivilstand(historikk: $bostedHistorikk) {
+      type
+      gyldigFraOgMed
+      relatertVedSivilstand
+      folkeregistermetadata {
+        ajourholdstidspunkt
+        gyldighetstidspunkt
+        opphoerstidspunkt
+      }
+    } ,
       bostedsadresse(historikk: $bostedHistorikk) {
           angittFlyttedato,
           coAdressenavn,
-          ukjentBosted {
-             bostedskommune
-          },
-          vegadresse {
-            postnummer
-          },
-      matrikkeladresse {
-        postnummer
+          ukjentBosted {bostedskommune},
+      matrikkeladresse {postnummer}
       }
+    kontaktadresse(historikk: $bostedHistorikk){
+      utenlandskAdresse{
+        landkode
       }
+    }
   }
 }

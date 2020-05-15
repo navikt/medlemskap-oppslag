@@ -6,6 +6,7 @@ data class Datagrunnlag (
         val periode: InputPeriode,
         val brukerinput: Brukerinput,
         val personhistorikk: Personhistorikk,
+        val pdlpersonhistorikk: Personhistorikk,
         val medlemskapsunntak: List<Medlemskapsunntak> = listOf(),
         val arbeidsforhold: List<Arbeidsforhold> = listOf(),
         val inntekt: List<Inntekt> = listOf(),
