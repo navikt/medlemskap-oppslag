@@ -1,9 +1,6 @@
 package no.nav.medlemskap.services.tpsws
 
-import no.nav.medlemskap.domene.Adresse
-import no.nav.medlemskap.domene.Personhistorikk
-import no.nav.medlemskap.domene.Personstatus
-import no.nav.medlemskap.domene.Statsborgerskap
+import no.nav.medlemskap.domene.*
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.MidlertidigPostadresseNorge
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.MidlertidigPostadresseUtland
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.UstrukturertAdresse
@@ -63,6 +60,10 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
             else -> throw Exception("Ukjent adressetype")
         }
     }
+
+    val sivilstand: List<Sivilstand> = emptyList()
+
+    val familierelasjoner: List<Familierelasjon> = emptyList()
 
     return Personhistorikk(statsborgerskap, personstatuser, bostedsadresser, postadresser, midlertidigAdresser, sivilstand, familierelasjoner)
 }

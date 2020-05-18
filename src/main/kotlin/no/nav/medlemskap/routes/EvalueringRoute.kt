@@ -129,6 +129,14 @@ private suspend fun createDatagrunnlag(
 
 }
 
+suspend fun folkeregistrertFamilierelasjon(personhistorikk: Personhistorikk, periode: InputPeriode, services: Services): List<Personhistorikk> {
+    return personhistorikk.familierelasjoner.map { services.personService.personhistorikk(it.relatertPersonIdent, periode.fom) }
+}
+
+suspend fun folkeregistrertSivilstand(sivilstand: Sivilstand, periode: InputPeriode, services: Services) : Personhistorikk {
+    return services.personService.personhistorikk(sivilstand.relatertVedSivilstand, periode.fom)
+}
+
 private fun fraOgMedDatoForArbeidsforhold(periode: InputPeriode) = periode.fom.minusYears(1).minusDays(1)
 
 private fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =
