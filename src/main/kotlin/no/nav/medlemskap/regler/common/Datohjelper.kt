@@ -30,6 +30,15 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
         }
     }
 
+    fun kontrollPeriodeForMedl(): Periode {
+        return when (ytelse){
+            Ytelse.SYKEPENGER -> Periode(
+                    fom = førsteSykedag().minusMonths(12),
+                    tom = førsteSykedag()
+            )
+        }
+    }
+
     private fun førsteSykedag() = datagrunnlag.periode.fom.minusDays(1)
 
 

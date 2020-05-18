@@ -23,7 +23,25 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         fun initialiserFakta(datagrunnlag: Datagrunnlag) = Personfakta(datagrunnlag)
     }
 
-    fun personensPerioderIMedl(): List<Medlemskapsunntak> = datagrunnlag.medlemskapsunntak
+    fun personensPerioderIMedl(): List<Medlemskap> = datagrunnlag.medlemskap
+
+    fun finnesPersonIMedlSiste12mnd(): Boolean {
+        return personensPerioderIMedlSiste12Mnd().isNotEmpty()
+    }
+
+    fun personensPerioderIMedlSiste12Mnd(): List<Medlemskap> {
+        val medlemskapsperioderForPerson = ArrayList<Medlemskap>()
+        for (medlemskap in datagrunnlag.medlemskap) {
+            val medlemsintervall = lagInterval(Periode(medlemskap.fraOgMed, medlemskap.tilOgMed))
+            val kontrollPeriodeForMedlIntervall = datohjelper.kontrollPeriodeForMedl().interval()
+            if (medlemsintervall.overlaps(kontrollPeriodeForMedlIntervall)) medlemskapsperioderForPerson.add(medlemskap)
+        }
+        return medlemskapsperioderForPerson
+    }
+
+    private fun periodefilterForInnlukkedePerioder(periodeDatagrunnlag: Interval, periode: Periode): Boolean {
+        return periodeDatagrunnlag.encloses(lagInterval(periode))
+    }
 
     fun personensOppgaverIGsak(): List<Oppgave> = datagrunnlag.oppgaver
 
@@ -218,5 +236,19 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     fun konkursStatuserArbeidsgivere(): List<String?>? {
         return arbeidsforholdForNorskArbeidsgiver().flatMap { it.arbeidsgiver.konkursStatus.orEmpty() }
+    }
+
+    fun erPeriodeUtenMedlemskapInnenfor12MndPeriode(): Boolean {
+        val personensPerioderIMedlSiste12Mnd = personensPerioderIMedlSiste12Mnd()
+
+        for (medlemskap in personensPerioderIMedlSiste12Mnd) {
+
+        }
+
+        personensPerioderIMedlSiste12Mnd.find {
+            Periode(it.fraOgMed, it.tilOgMed).interval().encloses(datohjelper.kontrollPeriodeForMedl().interval())
+        }
+
+        return true
     }
 }

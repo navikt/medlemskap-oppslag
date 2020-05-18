@@ -2,7 +2,7 @@ package no.nav.medlemskap.domene
 
 import java.time.LocalDate
 
-data class Medlemskapsunntak (
+data class Medlemskap (
         val dekning: String?,
         val fraOgMed: LocalDate,
         val tilOgMed: LocalDate,

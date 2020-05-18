@@ -104,7 +104,7 @@ private suspend fun createDatagrunnlag(
 
     //  val pdlHistorikk = pdlHistorikkRequest.await()
     val historikkFraTps = historikkFraTpsRequest.await()
-    val medlemskapsunntak = medlemskapsunntakRequest.await()
+    val medlemskap = medlemskapsunntakRequest.await()
     val arbeidsforhold = arbeidsforholdRequest.await()
     val inntektListe = inntektListeRequest.await()
     val journalPoster = journalPosterRequest.await()
@@ -118,7 +118,7 @@ private suspend fun createDatagrunnlag(
             periode = periode,
             brukerinput = brukerinput,
             personhistorikk = historikkFraTps,
-            medlemskapsunntak = medlemskapsunntak,
+            medlemskap = medlemskap,
             arbeidsforhold = arbeidsforhold,
             inntekt = inntektListe,
             oppgaver = oppgaver,
