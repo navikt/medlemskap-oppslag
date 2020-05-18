@@ -31,7 +31,14 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
                         }
                     }
                 } hvisJa {
-                    uavklartKonklusjon
+                    sjekkRegel {
+                        erPeriodeMedMedlemskapInnenfor12MndPeriode
+                    } hvisNei {
+                        uavklartKonklusjon
+                    } hvisJa {
+                        uavklartKonklusjon
+                    }
+
                 }
             } hvisNei {
                 harBrukerRegistrerteOpplysninger //Todo hvordan løse ja her
@@ -95,6 +102,15 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
             operasjon = { erPeriodeUtenMedlemskapInnenfor12MndPeriode() }
     )
 
+    private val erPeriodeMedMedlemskapInnenfor12MndPeriode = Regel (
+        identifikator = "1.1.2 Er hele input-perioden innenfor perioden uten medlemskap?",
+        avklaring = "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
+        beskrivelse = """"
+               Er hele perioden med medlemskap innenfor 12-månedersperioden?
+            """.trimIndent(),
+        operasjon = { erPeriodeMedMedlemskapInnenfor12MndPeriode() }
+    )
+
 
     private val erSituasjonenUendret = Regel(
             identifikator = "1.1.4.1 - Er brukers situasjon uendret?",
@@ -139,6 +155,12 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
     private fun erPeriodeUtenMedlemskapInnenfor12MndPeriode(): Resultat =
             when {
                 personfakta.erPeriodeUtenMedlemskapInnenfor12MndPeriode() -> ja()
+                else -> nei()
+            }
+
+    private fun erPeriodeMedMedlemskapInnenfor12MndPeriode(): Resultat =
+            when {
+                personfakta.erPeriodeMedMedlemskapInnenfor12MndPeriode() -> ja()
                 else -> nei()
             }
 

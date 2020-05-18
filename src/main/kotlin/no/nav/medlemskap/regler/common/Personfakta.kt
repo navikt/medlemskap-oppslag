@@ -251,4 +251,12 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
         return true
     }
+
+
+    //TODO --> IMPLEMENTER ELLER GJENBRUKE?
+    fun erPeriodeMedMedlemskapInnenfor12MndPeriode(): Boolean {
+
+
+        return true
+    }
 }
