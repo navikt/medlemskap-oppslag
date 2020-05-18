@@ -46,7 +46,7 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
 
     private val harBrukerMedlOpplysninger = Regel(
             identifikator = "OPPLYSNINGER-MEDL",
-            avklaring = "Finnes det registrerte opplysninger i MEDL?",
+            avklaring = "1.1- Finnes det noe på personen i MEDL?",
             beskrivelse = """
                 Vedtak (gjort av NAV eller utenlandsk trygdemyndighet) som er registrert i MEDL, 
                 må vurderes manuelt og det må vurderes om brukers situasjon er uendret i forhold 
@@ -78,16 +78,16 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
     )
 
     private val periodeMedMedlemskap = Regel(
-            identifikator = "Medl",
-            avklaring = "Er det en periode med medlemskap?",
+            identifikator = "OPPLYSNINGER-MEDL",
+            avklaring = "1.1.1 - Er det en periode med medlemskap??",
             beskrivelse = """"
-                1.1.1
+               Har medlemskap og Norge er lovvalg. 
             """.trimIndent(),
             operasjon = { periodeMedMedlemskap() }
     )
 
     private val erPeriodeUtenMedlemskapInnenfor12MndPeriode = Regel(
-            identifikator = "Medl",
+            identifikator = "1.1.4 Er hele input-perioden innenfor perioden uten medlemskap?",
             avklaring = "Er hele perioden uten medlemskap innenfor 12-måneders perioden?",
             beskrivelse = """"
                Er hele perioden uten medlemskap innenfor 12-månedersperioden?
@@ -97,7 +97,7 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
 
 
     private val erSituasjonenUendret = Regel(
-            identifikator = "Medl",
+            identifikator = "1.1.4.1 - Er brukers situasjon uendret?",
             avklaring = "Er brukers situasjon uendret?",
             beskrivelse = """"
                 Er brukers situasjon uendret i forhold til da A1 ble utstedt? Sjekker at det er samme arbeidsforhold
@@ -120,7 +120,7 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
     //TODO MÅ IMPLEMENTERES
     private fun situasjonenErUendret(): Resultat =
             when {
-                antall(personfakta.personensPerioderIMedl()) == 0 -> nei()
+                antall(personfakta.personensPerioderIMedlSiste12Mnd()) == 0 -> nei()
                 else -> ja()
             }
 
@@ -129,8 +129,8 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
     private fun periodeMedMedlemskap(): Resultat =
 
             when {
-                personfakta.personensPerioderIMedl().stream().anyMatch() {
-                    it.erMedlem && it.lovvalg er "Norge"
+                personfakta.personensPerioderIMedlSiste12Mnd().stream().anyMatch() {
+                    it.erMedlem && it.lovvalg er "NOR"
                 } -> ja()
                 else -> nei()
             }

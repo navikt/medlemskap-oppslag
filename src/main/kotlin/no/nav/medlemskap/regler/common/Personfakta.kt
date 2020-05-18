@@ -23,7 +23,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         fun initialiserFakta(datagrunnlag: Datagrunnlag) = Personfakta(datagrunnlag)
     }
 
-    fun personensPerioderIMedl(): List<Medlemskap> = datagrunnlag.medlemskap
+  //  fun personensPerioderIMedl(): List<Medlemskap> = datagrunnlag.medlemskap
 
     fun finnesPersonIMedlSiste12mnd(): Boolean {
         return personensPerioderIMedlSiste12Mnd().isNotEmpty()
