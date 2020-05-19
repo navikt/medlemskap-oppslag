@@ -40,8 +40,6 @@ data class Sivilstand(
 )
 
 enum class Sivilstandstype {
-    UOPPGITT,
-    UGIFT,
     GIFT,
     ENKE_ELLER_ENKEMANN,
     SKILT,
@@ -60,18 +58,12 @@ data class Familierelasjon(
 )
 
 enum class Familierelasjonsrolle {
-    BARN,
-    MOR,
-    FAR,
-    MEDMOR
+    BARN
 }
 
 data class Folkeregistermetadata(
         val ajourholdstidspunkt: LocalDateTime?,
         val gyldighetstidspunkt: LocalDateTime?,
-        val opphoerstidspunkt: LocalDateTime?,
-        val kilde:  String?,
-        val aarsak: String?,
-        val sekvens:  Int?
+        val opphoerstidspunkt: LocalDateTime?
 )
 

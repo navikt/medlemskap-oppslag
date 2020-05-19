@@ -1,5 +1,6 @@
 package no.nav.medlemskap.services.pdl
 
+import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Familierelasjon
@@ -38,7 +39,7 @@ fun mapTilPersonHistorikk(person: HentPdlPersonResponse): Personhistorikk {
     val midlertidigAdresser: List<Adresse> = emptyList()
 
     val sivilstand: List<Sivilstand> = person.data.hentPerson.sivilstand
-            .filter { it.type == Sivilstandstype.GIFT || it.type == Sivilstandstype.REGISTRERT_PARTNER }
+            .filter { it.type != Sivilstandstype.UGIFT && it.type != Sivilstandstype.UOPPGITT }
             .map {
         Sivilstand(
                 type = mapSivilstandType(it.type),
@@ -65,16 +66,12 @@ fun mapTilPersonHistorikk(person: HentPdlPersonResponse): Personhistorikk {
 private fun mapFamileRelasjonsrolle(relatertPersonsRolle: Familierelasjonsrolle): no.nav.medlemskap.domene.Familierelasjonsrolle {
     return when (relatertPersonsRolle) {
         Familierelasjonsrolle.BARN -> no.nav.medlemskap.domene.Familierelasjonsrolle.BARN
-        Familierelasjonsrolle.MOR -> no.nav.medlemskap.domene.Familierelasjonsrolle.MOR
-        Familierelasjonsrolle.FAR -> no.nav.medlemskap.domene.Familierelasjonsrolle.FAR
-        Familierelasjonsrolle.MEDMOR -> no.nav.medlemskap.domene.Familierelasjonsrolle.MEDMOR
+        else -> throw DetteSkalAldriSkje("Denne Familierelasjonsrollen skal være filtrert bort")
     }
 }
 
 private fun mapSivilstandType(type: Sivilstandstype): no.nav.medlemskap.domene.Sivilstandstype {
     return when (type) {
-        Sivilstandstype.UOPPGITT -> no.nav.medlemskap.domene.Sivilstandstype.UOPPGITT
-        Sivilstandstype.UGIFT -> no.nav.medlemskap.domene.Sivilstandstype.UGIFT
         Sivilstandstype.GIFT -> no.nav.medlemskap.domene.Sivilstandstype.GIFT
         Sivilstandstype.ENKE_ELLER_ENKEMANN -> no.nav.medlemskap.domene.Sivilstandstype.ENKE_ELLER_ENKEMANN
         Sivilstandstype.SKILT -> no.nav.medlemskap.domene.Sivilstandstype.SKILT
@@ -83,6 +80,7 @@ private fun mapSivilstandType(type: Sivilstandstype): no.nav.medlemskap.domene.S
         Sivilstandstype.SEPARERT_PARTNER -> no.nav.medlemskap.domene.Sivilstandstype.SEPARERT_PARTNER
         Sivilstandstype.SKILT_PARTNER -> no.nav.medlemskap.domene.Sivilstandstype.SKILT_PARTNER
         Sivilstandstype.GJENLEVENDE_PARTNER -> no.nav.medlemskap.domene.Sivilstandstype.GJENLEVENDE_PARTNER
+        else -> throw DetteSkalAldriSkje("Denne sivilstandstypen skal være filtrert bort")
     }
 }
 
@@ -90,9 +88,6 @@ private fun mapFolkeregisterMetadata(folkeregisterMetadata: no.nav.medlemskap.se
     return Folkeregistermetadata(
             ajourholdstidspunkt = folkeregisterMetadata.ajourholdstidspunkt,
             gyldighetstidspunkt = folkeregisterMetadata.gyldighetstidspunkt,
-            opphoerstidspunkt = folkeregisterMetadata.opphoerstidspunkt,
-            kilde = folkeregisterMetadata.kilde,
-            aarsak = folkeregisterMetadata.aarsak,
-            sekvens = folkeregisterMetadata.sekvens
+            opphoerstidspunkt = folkeregisterMetadata.opphoerstidspunkt
     )
 }
