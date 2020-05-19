@@ -4,7 +4,6 @@ import no.nav.medlemskap.domene.Journalpost
 import no.nav.medlemskap.domene.Oppgave
 import no.nav.medlemskap.domene.Status
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.common.Funksjoner.antall
 import no.nav.medlemskap.regler.common.Funksjoner.er
 import no.nav.medlemskap.regler.common.Funksjoner.erDelAv
 
@@ -99,7 +98,7 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
             beskrivelse = """"
                Er hele perioden uten medlemskap innenfor 12-månedersperioden?
             """.trimIndent(),
-            operasjon = { erPeriodeUtenMedlemskapInnenfor12MndPeriode() }
+            operasjon = { erMedlemskapPeriodeInnenfor12MndPeriode(false) }
     )
 
     private val erPeriodeMedMedlemskapInnenfor12MndPeriode = Regel (
@@ -108,7 +107,7 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
         beskrivelse = """"
                Er hele perioden med medlemskap innenfor 12-månedersperioden?
             """.trimIndent(),
-        operasjon = { erPeriodeMedMedlemskapInnenfor12MndPeriode() }
+        operasjon = { erMedlemskapPeriodeInnenfor12MndPeriode(true) }
     )
 
 
@@ -151,15 +150,9 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
             }
 
 
-    private fun erPeriodeUtenMedlemskapInnenfor12MndPeriode(): Resultat =
+    private fun erMedlemskapPeriodeInnenfor12MndPeriode(finnPeriodeMedMedlemskap:Boolean): Resultat =
             when {
-                personfakta.erPeriodeUtenMedlemskapInnenfor12MndPeriode() -> ja()
-                else -> nei()
-            }
-
-    private fun erPeriodeMedMedlemskapInnenfor12MndPeriode(): Resultat =
-            when {
-                personfakta.erPeriodeMedMedlemskapInnenfor12MndPeriode() -> ja()
+                personfakta.erMedlemskapPeriodeInnenfor12MndPeriode(finnPeriodeMedMedlemskap) -> ja()
                 else -> nei()
             }
 

@@ -23,8 +23,6 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         fun initialiserFakta(datagrunnlag: Datagrunnlag) = Personfakta(datagrunnlag)
     }
 
-  //  fun personensPerioderIMedl(): List<Medlemskap> = datagrunnlag.medlemskap
-
     fun finnesPersonIMedlSiste12mnd(): Boolean {
         return personensPerioderIMedlSiste12Mnd().isNotEmpty()
     }
@@ -37,10 +35,6 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
             if (medlemsintervall.overlaps(kontrollPeriodeForMedlIntervall)) medlemskapsperioderForPerson.add(medlemskap)
         }
         return medlemskapsperioderForPerson
-    }
-
-    private fun periodefilterForInnlukkedePerioder(periodeDatagrunnlag: Interval, periode: Periode): Boolean {
-        return periodeDatagrunnlag.encloses(lagInterval(periode))
     }
 
     fun personensOppgaverIGsak(): List<Oppgave> = datagrunnlag.oppgaver
@@ -145,10 +139,6 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return true
     }
 
-    fun arbeidsgiversLandForPeriode(): List<String> {
-        return arbeidsforholdIOpptjeningsperiode().mapNotNull { it.arbeidsgiver.landkode }
-    }
-
     fun sisteArbeidsforholdYrkeskode(): List<String> {
         return datagrunnlag.arbeidsforhold.filter {
             periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
@@ -213,7 +203,8 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         var vektetStillingsprosentForArbeidsforhold = 0.0
         for (arbeidsavtale in arbeidsforhold.arbeidsavtaler) {
             val stillingsprosent = arbeidsavtale.stillingsprosent ?: 100.0
-            val tilDato = arbeidsavtale.periode.tom ?: arbeidsforhold.periode.tom ?: kontrollPeriodeForStillingsprosent.tom
+            val tilDato = arbeidsavtale.periode.tom ?: arbeidsforhold.periode.tom
+            ?: kontrollPeriodeForStillingsprosent.tom
             var antallDager = kontrollPeriodeForStillingsprosent.fom.until(tilDato, ChronoUnit.DAYS).toDouble()
             if (antallDager > totaltAntallDager) {
                 antallDager = totaltAntallDager
@@ -223,7 +214,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return vektetStillingsprosentForArbeidsforhold
     }
 
-    private fun ingenAndreParallelleArbeidsforhold(arbeidsforhold: Arbeidsforhold) : Boolean {
+    private fun ingenAndreParallelleArbeidsforhold(arbeidsforhold: Arbeidsforhold): Boolean {
         val andreArbeidsforhold = arbeidsforholdForStillingsprosent() as ArrayList
         andreArbeidsforhold.remove(arbeidsforhold)
 
@@ -245,13 +236,14 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return arbeidsforholdForNorskArbeidsgiver().flatMap { it.arbeidsgiver.konkursStatus.orEmpty() }
     }
 
-    fun erPeriodeUtenMedlemskapInnenfor12MndPeriode(): Boolean {
+    fun erMedlemskapPeriodeInnenfor12MndPeriode(erMedlem: Boolean): Boolean {
         val personensPerioderIMedlSiste12Mnd = personensPerioderIMedlSiste12Mnd()
-        personensPerioderIMedlSiste12Mnd.find {
-            Periode(it.fraOgMed, it.tilOgMed).interval().encloses(datohjelper.kontrollPeriodeForMedl().interval())
+        val find = personensPerioderIMedlSiste12Mnd.find {
+            it.erMedlem == erMedlem &&
+                    Periode(it.fraOgMed, it.tilOgMed).interval().encloses(datohjelper.kontrollPeriodeForMedl().interval())
         }
 
-        return true
+        return find != null
     }
 
     fun harSammeArbeidsforholdSidenFomDatoFraMedl(): Boolean {
@@ -265,13 +257,5 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         }
 
         return arbeidsforholdForDato(fomDatoFraMedl) == arbeidsforholdForDato(LocalDate.now())
-    }
-
-
-    //TODO --> IMPLEMENTER ELLER GJENBRUKE?
-    fun erPeriodeMedMedlemskapInnenfor12MndPeriode(): Boolean {
-
-
-        return true
     }
 }
