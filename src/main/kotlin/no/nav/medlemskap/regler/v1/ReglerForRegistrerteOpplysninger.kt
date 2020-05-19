@@ -53,7 +53,7 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
 
     private val harBrukerMedlOpplysninger = Regel(
             identifikator = "OPPLYSNINGER-MEDL",
-            avklaring = "1.1- Finnes det noe på personen i MEDL?",
+            avklaring = "1.1 - Finnes det noe på personen i MEDL?",
             beskrivelse = """
                 Vedtak (gjort av NAV eller utenlandsk trygdemyndighet) som er registrert i MEDL, 
                 må vurderes manuelt og det må vurderes om brukers situasjon er uendret i forhold 
@@ -136,10 +136,9 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
     //TODO MÅ IMPLEMENTERES
     private fun situasjonenErUendret(): Resultat =
             when {
-                antall(personfakta.personensPerioderIMedlSiste12Mnd()) == 0 -> nei()
-                else -> ja()
+                personfakta.harSammeArbeidsforholdSidenFomDatoFraMedl() -> ja()
+                else -> nei()
             }
-
 
     //1.1- utvidelse 1 - Har bruker et avklart lovvalg i MEDL?
     private fun periodeMedMedlemskap(): Resultat =

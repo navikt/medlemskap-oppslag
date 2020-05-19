@@ -79,7 +79,7 @@ private fun validerRequest(request: Request): Request {
     }
 
     if (!gyldigFnr(request.fnr)) {
-        throw BadRequestException("Ugyldig fødslesnummer")
+        throw BadRequestException("Ugyldig fødselsnummer")
     }
 
     return request

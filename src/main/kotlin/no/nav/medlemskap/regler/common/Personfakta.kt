@@ -89,6 +89,13 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         }.map { it.arbeidsfolholdstype.navn }
     }
 
+    fun arbeidsforholdForDato(dato: LocalDate): List<Arbeidsforhold> {
+        return arbeidsforhold.filter {
+            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
+                    Periode(dato, dato))
+        }
+    }
+
     fun arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(): List<Arbeidsgiver> {
         return arbeidsforholdForNorskArbeidsgiver().stream().map { it.arbeidsgiver }.collect(Collectors.toList())
     }
@@ -240,16 +247,24 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     fun erPeriodeUtenMedlemskapInnenfor12MndPeriode(): Boolean {
         val personensPerioderIMedlSiste12Mnd = personensPerioderIMedlSiste12Mnd()
-
-        for (medlemskap in personensPerioderIMedlSiste12Mnd) {
-
-        }
-
         personensPerioderIMedlSiste12Mnd.find {
             Periode(it.fraOgMed, it.tilOgMed).interval().encloses(datohjelper.kontrollPeriodeForMedl().interval())
         }
 
         return true
+    }
+
+    fun harSammeArbeidsforholdSidenFomDatoFraMedl(): Boolean {
+
+        val personensPerioderIMedl = personensPerioderIMedlSiste12Mnd()
+
+        var fomDatoFraMedl = LocalDate.MAX
+
+        for (medlemskap in personensPerioderIMedl) {
+            if (medlemskap.fraOgMed.isBefore(fomDatoFraMedl)) fomDatoFraMedl = medlemskap.fraOgMed
+        }
+
+        return arbeidsforholdForDato(fomDatoFraMedl) == arbeidsforholdForDato(LocalDate.now())
     }
 
 
