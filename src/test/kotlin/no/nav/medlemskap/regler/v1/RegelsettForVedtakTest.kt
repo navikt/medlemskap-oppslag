@@ -17,8 +17,8 @@ class RegelsettForVedtakTest {
     }
 
     @Test
-    fun `person med vedtak i medl får ja på manuelle vedtak`() {
-        assertEquals(Svar.JA, evaluer(personleser.amerikanskMedl()))
+    fun `amerikansk person med vedtak i medl får uavklart på manuelle vedtak`() {
+        assertEquals(Svar.UAVKLART, evaluer(personleser.amerikanskMedl()))
     }
 
     @Test

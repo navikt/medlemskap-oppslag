@@ -17,11 +17,11 @@
     "postadresser" : [ ],
     "midlertidigAdresser" : [ ]
   },
-  "medlemskapsunntak" : [ {
+  "medlemskap" : [ {
     "fraOgMed" : "2020-01-01",
     "tilOgMed" : "2020-01-12",
     "erMedlem" : true,
-    "lovvalg" : "lovvalg"
+    "lovvalg" : "NOR"
   } ],
   "arbeidsforhold" : [ ],
   "inntekt" : [ ],

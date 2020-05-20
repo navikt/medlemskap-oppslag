@@ -27,14 +27,18 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return personensPerioderIMedlSiste12Mnd().isNotEmpty()
     }
 
-    fun personensPerioderIMedlSiste12Mnd(): List<Medlemskap> {
+    fun personensMedlemskapsperioderIMedlForPeriode(kontrollPeriode: Periode): List<Medlemskap> {
         val medlemskapsperioderForPerson = ArrayList<Medlemskap>()
         for (medlemskap in datagrunnlag.medlemskap) {
             val medlemsintervall = lagInterval(Periode(medlemskap.fraOgMed, medlemskap.tilOgMed))
-            val kontrollPeriodeForMedlIntervall = datohjelper.kontrollPeriodeForMedl().interval()
+            val kontrollPeriodeForMedlIntervall = kontrollPeriode.interval()
             if (medlemsintervall.overlaps(kontrollPeriodeForMedlIntervall)) medlemskapsperioderForPerson.add(medlemskap)
         }
         return medlemskapsperioderForPerson
+    }
+
+    fun personensPerioderIMedlSiste12Mnd(): List<Medlemskap> {
+        return personensMedlemskapsperioderIMedlForPeriode(datohjelper.kontrollPeriodeForMedl())
     }
 
     fun personensOppgaverIGsak(): List<Oppgave> = datagrunnlag.oppgaver
@@ -236,11 +240,11 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return arbeidsforholdForNorskArbeidsgiver().flatMap { it.arbeidsgiver.konkursStatus.orEmpty() }
     }
 
-    fun erMedlemskapPeriodeInnenfor12MndPeriode(erMedlem: Boolean): Boolean {
+    fun erMedlemskapPeriodeInnenforOpptjeningsperiode(erMedlem: Boolean): Boolean {
         val personensPerioderIMedlSiste12Mnd = personensPerioderIMedlSiste12Mnd()
         val find = personensPerioderIMedlSiste12Mnd.find {
             it.erMedlem == erMedlem &&
-                    Periode(it.fraOgMed, it.tilOgMed).interval().encloses(datohjelper.kontrollPeriodeForMedl().interval())
+                    Periode(it.fraOgMed, it.tilOgMed).interval().encloses(datohjelper.opptjeningsperiode().interval())
         }
 
         return find != null
@@ -248,11 +252,11 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     fun harSammeArbeidsforholdSidenFomDatoFraMedl(): Boolean {
 
-        val personensPerioderIMedl = personensPerioderIMedlSiste12Mnd()
+        val personensPerioderIMedlSiste12Mnd = personensPerioderIMedlSiste12Mnd()
 
         var fomDatoFraMedl = LocalDate.MAX
 
-        for (medlemskap in personensPerioderIMedl) {
+        for (medlemskap in personensPerioderIMedlSiste12Mnd) {
             if (medlemskap.fraOgMed.isBefore(fomDatoFraMedl)) fomDatoFraMedl = medlemskap.fraOgMed
         }
 

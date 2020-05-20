@@ -98,7 +98,7 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
             beskrivelse = """"
                Er hele perioden uten medlemskap innenfor 12-månedersperioden?
             """.trimIndent(),
-            operasjon = { erMedlemskapPeriodeInnenfor12MndPeriode(false) }
+            operasjon = { erMedlemskapPeriodeInnenforOpptjeningsperiode(false) }
     )
 
     private val erPeriodeMedMedlemskapInnenfor12MndPeriode = Regel (
@@ -107,7 +107,7 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
         beskrivelse = """"
                Er hele perioden med medlemskap innenfor 12-månedersperioden?
             """.trimIndent(),
-        operasjon = { erMedlemskapPeriodeInnenfor12MndPeriode(true) }
+        operasjon = { erMedlemskapPeriodeInnenforOpptjeningsperiode(true) }
     )
 
 
@@ -150,9 +150,9 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
             }
 
 
-    private fun erMedlemskapPeriodeInnenfor12MndPeriode(finnPeriodeMedMedlemskap:Boolean): Resultat =
+    private fun erMedlemskapPeriodeInnenforOpptjeningsperiode(finnPeriodeMedMedlemskap:Boolean): Resultat =
             when {
-                personfakta.erMedlemskapPeriodeInnenfor12MndPeriode(finnPeriodeMedMedlemskap) -> ja()
+                personfakta.erMedlemskapPeriodeInnenforOpptjeningsperiode(finnPeriodeMedMedlemskap) -> ja()
                 else -> nei()
             }
 
