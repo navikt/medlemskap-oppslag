@@ -18,6 +18,8 @@ class Personleser {
     fun norskDobbeltStatsborgerskap() = lesDatagrunnlag("$norsk/dobbelt_statsborgerskap.json")
     fun norskBosattIUtland() = lesDatagrunnlag("$norsk/norsk_bosatt_i_utland.json")
     fun norskPostadresseIUtland() = lesDatagrunnlag("$norsk/norsk_postadresse_i_utland.json")
+    fun norskMedOpplysningerIMedl() = lesDatagrunnlag("$norsk/norsk_med_opplysninger_i_medl.json")
+    fun norskMedMedlemskapDelvisInnenfor12MndPeriode() = lesDatagrunnlag("$norsk/norsk_med_medlemskap_medl_delvis_innenfor_12_mnd_periode.json")
 
     fun norskMedFlereStatsborgerskap() = lesDatagrunnlag("$variertDatagrunnlag/norsk_flere_statsborgerskap_i_periode.json")
     fun norskMedUlikeEøsStatsborgerskap() = lesDatagrunnlag("$variertDatagrunnlag/norsk_ulike_eøs_statsborgerskap.json")

@@ -32,12 +32,17 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
                 } hvisJa {
                     sjekkRegel {
                         erPeriodeMedMedlemskapInnenfor12MndPeriode
+                    } hvisJa {
+                        sjekkRegel {
+                            erSituasjonenUendret
+                        } hvisJa {
+                            jaKonklusjon
+                        } hvisNei {
+                            uavklartKonklusjon
+                        }
                     } hvisNei {
                         uavklartKonklusjon
-                    } hvisJa {
-                        uavklartKonklusjon
                     }
-
                 }
             } hvisNei {
                 harBrukerRegistrerteOpplysninger //Todo hvordan løse ja her
@@ -84,8 +89,8 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
     )
 
     private val periodeMedMedlemskap = Regel(
-            identifikator = "OPPLYSNINGER-MEDL",
-            avklaring = "1.1.1 - Er det en periode med medlemskap??",
+            identifikator = "MEDL-1.1.1",
+            avklaring = "1.1.1 - Er det en periode med medlemskap?",
             beskrivelse = """"
                Har medlemskap og Norge er lovvalg. 
             """.trimIndent(),
@@ -93,7 +98,7 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
     )
 
     private val erPeriodeUtenMedlemskapInnenfor12MndPeriode = Regel(
-            identifikator = "1.1.4 Er hele input-perioden innenfor perioden uten medlemskap?",
+            identifikator = "MEDL-1.1.4",
             avklaring = "Er hele perioden uten medlemskap innenfor 12-måneders perioden?",
             beskrivelse = """"
                Er hele perioden uten medlemskap innenfor 12-månedersperioden?
@@ -102,7 +107,7 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
     )
 
     private val erPeriodeMedMedlemskapInnenfor12MndPeriode = Regel (
-        identifikator = "1.1.2 Er hele input-perioden innenfor perioden uten medlemskap?",
+        identifikator = "MEDL-1.1.2",
         avklaring = "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
         beskrivelse = """"
                Er hele perioden med medlemskap innenfor 12-månedersperioden?
@@ -112,7 +117,7 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
 
 
     private val erSituasjonenUendret = Regel(
-            identifikator = "1.1.4.1 - Er brukers situasjon uendret?",
+            identifikator = "MEDL-1.1.4.1",
             avklaring = "Er brukers situasjon uendret?",
             beskrivelse = """"
                 Er brukers situasjon uendret i forhold til da A1 ble utstedt? Sjekker at det er samme arbeidsforhold
