@@ -65,7 +65,7 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
 
     private fun tellDokumenter(): Resultat =
             when {
-                personfakta.personensDokumenterIJoark().antallDokumenter > 0 -> ja()
+                personfakta.personensDokumenterIJoark().antallDokumenterMedTillatteTemaer > 0 -> ja()
                 else -> nei()
             }
 
@@ -77,7 +77,7 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
             }
 
 
-    private val List<Journalpost>.antallDokumenter: Int
+    private val List<Journalpost>.antallDokumenterMedTillatteTemaer: Int
         get() = count { journalpost ->
             journalpost.tema erDelAv tillatteTemaer
         }
