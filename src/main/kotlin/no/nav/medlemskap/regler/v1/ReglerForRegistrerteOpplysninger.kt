@@ -59,32 +59,32 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
 
     private fun sjekkPerioderIMedl(): Resultat =
             when {
-                antall(personfakta.personensPerioderIMedl()) == 0 -> nei()
+                personfakta.personensPerioderIMedl().antall == 0 -> nei()
                 else -> ja()
             }
 
     private fun tellDokumenter(): Resultat =
             when {
-                antallDokumenter(personfakta.personensDokumenterIJoark()) > 0 -> ja()
+                personfakta.personensDokumenterIJoark().antallDokumenterMedTillatteTemaer > 0 -> ja()
                 else -> nei()
             }
 
 
     private fun tellÅpneOppgaver(): Resultat =
             when {
-                antallÅpneOppgaver(personfakta.personensOppgaverIGsak()) > 0 -> ja()
+                personfakta.personensOppgaverIGsak().antallÅpneOppgaver > 0 -> ja()
                 else -> nei()
             }
 
 
-    private fun antallDokumenter(liste: List<Journalpost>) =
-            liste.count { journalpost ->
-                journalpost.tema erDelAv tillatteTemaer
-            }
+    private val List<Journalpost>.antallDokumenterMedTillatteTemaer: Int
+        get() = count { journalpost ->
+            journalpost.tema erDelAv tillatteTemaer
+        }
 
-    private fun antallÅpneOppgaver(liste: List<Oppgave>) =
-            liste.count { oppgave ->
-                oppgave.tema erDelAv tillatteTemaer && oppgave.status erDelAv tillatteStatuser
-            }
+    private val List<Oppgave>.antallÅpneOppgaver: Int
+        get() = count { oppgave ->
+            oppgave.tema erDelAv tillatteTemaer && oppgave.status erDelAv tillatteStatuser
+        }
 
 }
