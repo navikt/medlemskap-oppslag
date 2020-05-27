@@ -6,7 +6,8 @@ import java.util.stream.Collectors
 
 object Funksjoner {
 
-    fun antall(liste: List<Any>): Number = liste.size
+    val List<Any>.antall: Number
+        get() = size
 
     infix fun List<Any>.inneholder(objekt: Any?) = this.contains(objekt)
 
