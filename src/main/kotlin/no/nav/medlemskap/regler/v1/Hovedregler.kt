@@ -6,23 +6,29 @@ class Hovedregler(personfakta: Personfakta) {
 
     private val resultatliste: MutableList<Resultat> = mutableListOf()
     private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger(personfakta)
+    private val reglerForRegistrerteOpplysningerIMedl = ReglerForMedl(personfakta)
     private val reglerForGrunnforordningen = ReglerForGrunnforordningen(personfakta)
     private val reglerForArbeidsforhold = ReglerForArbeidsforhold(personfakta)
 
 
     private fun hentHovedRegel() =
+
             sjekkRegelsett {
-                reglerForRegistrerteOpplysninger
-            } hvisJa {
-                uavklartKonklusjon
+                reglerForRegistrerteOpplysningerIMedl
             } hvisNei {
                 sjekkRegelsett {
-                    reglerForGrunnforordningen
-                } hvisNei {
-                    uavklartKonklusjon
+                    reglerForRegistrerteOpplysninger
                 } hvisJa {
+                    uavklartKonklusjon
+                } hvisNei {
                     sjekkRegelsett {
-                        reglerForArbeidsforhold
+                        reglerForGrunnforordningen
+                    } hvisNei {
+                        uavklartKonklusjon
+                    } hvisJa {
+                        sjekkRegelsett {
+                            reglerForArbeidsforhold
+                        }
                     }
                 }
             }

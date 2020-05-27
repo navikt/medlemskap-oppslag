@@ -4,7 +4,7 @@ import no.nav.medlemskap.domene.Journalpost
 import no.nav.medlemskap.domene.Oppgave
 import no.nav.medlemskap.domene.Status
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.common.Funksjoner.antall
+import no.nav.medlemskap.regler.common.Funksjoner.er
 import no.nav.medlemskap.regler.common.Funksjoner.erDelAv
 
 class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() {
