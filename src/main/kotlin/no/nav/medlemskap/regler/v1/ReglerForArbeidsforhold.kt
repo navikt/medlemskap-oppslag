@@ -4,11 +4,47 @@ import no.nav.medlemskap.domene.Arbeidsforholdstype
 import no.nav.medlemskap.domene.Skipsregister
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.alleEr
-import no.nav.medlemskap.regler.common.Funksjoner.antallErIkke
 import no.nav.medlemskap.regler.common.Funksjoner.finnes
 import no.nav.medlemskap.regler.common.Funksjoner.finnesMindreEnn
 import no.nav.medlemskap.regler.common.Funksjoner.inneholderNoe
 import no.nav.medlemskap.regler.common.Funksjoner.kunInneholder
+
+enum class YrkeskoderForLuftFart(val styrk: String) {
+    //5111-rangen:
+    DAGLIG_LEDER_VERTER_VERTINNER_PÅ_FLY("5111013"),
+    FLY_OG_TOGVERT("5111100"),
+    FLYVERT("5111103"),
+    FLYVERTINNE("5111104"),
+    KABINPERSONALE("5111105"),
+    AIRPURSER("5111106"),
+    HOST_LUFTFARTØY("5111107"),
+    CABIN_ATTENDANT("5111108"),
+    STEWARDESS_LUFTFARTØY("5111109"),
+    PURSERASSISTENT_TRANSPORT("5111110"),
+    PURSER_TRANSPORT("5111114"),
+    CABIN_CHIEF("5111115"),
+    AIRSTEWARD("5111116"),
+    KABINSJEF("5111117"),
+    STEWARD_LUFTFARTØY("5111119"),
+    HOSTESS_LUFTFARTØY("5111122"),
+    FLYVERTLÆRLING("5111124"),
+
+    //3143-rangen:
+    FLYGER_OVERORDNET("3143100"),
+    LEDER_FLYGERE("3143001"),
+    DAGLIG_LEDER_FLYGERE("3143013"),
+    ANNENFLYGER("3143101"),
+    FLYGER("3143102"),
+    FLYNAVIGATØR("3143103"),
+    NAVIGATØR_FLY("3143104"),
+    SJEKKFLYGER("3143105"),
+    KONTROLLFLYGER("3143106"),
+    PILOT("3143107"),
+    FLYKAPTEIN("3143108"),
+    FLYSTYRMANN("3143109"),
+    TRAFIKKFLYGER("3143110")
+
+}
 
 class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
@@ -112,7 +148,7 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
             operasjon = { sjekkYrkeskodeLuftfart() }
     )
 
-    private val yrkeskoderLuftfart = listOf("3143107", "5111105", "5111117")
+    private val yrkeskoderLuftfart = YrkeskoderForLuftFart.values().map { it.styrk }
 
     private fun sjekkArbeidsforhold(): Resultat {
 
