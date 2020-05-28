@@ -31,7 +31,7 @@ class HealthService(
             futures.awaitAll()
         }
         results.filterIsInstance<UnHealthy>().forEach {
-            logger.error("Failing Health Check: $it")
+            logger.info("Failing Health Check: $it")
         }
         return results
     }
