@@ -188,7 +188,8 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         var vektetStillingsprosentForArbeidsforhold = 0.0
         for (arbeidsavtale in arbeidsforhold.arbeidsavtaler) {
             val stillingsprosent = arbeidsavtale.stillingsprosent ?: 100.0
-            val tilDato = arbeidsavtale.periode.tom ?: arbeidsforhold.periode.tom ?: kontrollPeriodeForStillingsprosent.tom
+            val tilDato = arbeidsavtale.periode.tom ?: arbeidsforhold.periode.tom
+            ?: kontrollPeriodeForStillingsprosent.tom
             var antallDager = kontrollPeriodeForStillingsprosent.fom.until(tilDato, ChronoUnit.DAYS).toDouble()
             if (antallDager > totaltAntallDager) {
                 antallDager = totaltAntallDager
@@ -198,7 +199,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return vektetStillingsprosentForArbeidsforhold
     }
 
-    private fun ingenAndreParallelleArbeidsforhold(arbeidsforhold: Arbeidsforhold) : Boolean {
+    private fun ingenAndreParallelleArbeidsforhold(arbeidsforhold: Arbeidsforhold): Boolean {
         val andreArbeidsforhold = arbeidsforholdForStillingsprosent() as ArrayList
         andreArbeidsforhold.remove(arbeidsforhold)
 
@@ -209,7 +210,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     private fun hentStatsborgerskapFor(dato: LocalDate): List<String> =
             statsborgerskap.filter {
-                Periode(it.fom, it.tom).interval().contains(lagInstant(dato))
+                Periode(it.fom, it.tom).interval().contains(lagInstantStartOfDay(dato))
             }.map { it.landkode }
 
     private fun periodefilter(periodeDatagrunnlag: Interval, periode: Periode): Boolean {
