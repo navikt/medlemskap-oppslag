@@ -1,5 +1,7 @@
 package no.nav.medlemskap.common.healthcheck
 
+import io.github.resilience4j.kotlin.retry.executeSuspendFunction
+import io.github.resilience4j.retry.Retry
 import io.ktor.client.statement.HttpResponse
 import mu.KotlinLogging
 
@@ -20,11 +22,19 @@ interface HealthCheck {
 }
 
 class TryCatchHealthCheck(override val name: String,
-                          private val block: suspend () -> Unit) : HealthCheck {
+                          private val block: suspend () -> Unit,
+                          private val retry: Retry? = null) : HealthCheck {
     override suspend fun check(): Result {
         return try {
-            block.invoke()
-            Healthy(name = name, result = "Healthy!")
+            if (retry != null) {
+                retry.executeSuspendFunction {
+                    block.invoke()
+                    Healthy(name = name, result = "Healthy!")
+                }
+            } else {
+                block.invoke()
+                Healthy(name = name, result = "Healthy!")
+            }
         } catch (cause: Throwable) {
             logger.error("Feil under helsesjekk mot $name", cause)
             UnHealthy(name = name, result = if (cause.message == null) "Unhealthy!" else cause.message!!)
@@ -33,10 +43,15 @@ class TryCatchHealthCheck(override val name: String,
 }
 
 class HttpResponseHealthCheck(override val name: String,
-                              private val block: suspend () -> HttpResponse) : HealthCheck {
+                              private val block: suspend () -> HttpResponse,
+                              private val retry: Retry? = null) : HealthCheck {
     override suspend fun check(): Result {
         return try {
-            val httpResponse = block.invoke()
+            val httpResponse = if (retry != null) {
+                retry.executeSuspendFunction { block.invoke() }
+            } else {
+                block.invoke()
+            }
             if (httpResponse.status.value in 200..299)
                 Healthy(name = name, result = "${httpResponse.status.value} (${httpResponse.status.description})")
             else
