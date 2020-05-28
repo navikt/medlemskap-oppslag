@@ -10,7 +10,6 @@ data class Person(
         val adressebeskyttelse: List<Adressebeskyttelse>,
         val kjoenn: List<Kjoenn>,
         val familierelasjoner: List<Familierelasjon>,
-        val folkeregisterpersonstatus: List<Folkeregisterpersonstatus>,
         val navn: List<Navn>,
         val sivilstand: List<Sivilstand>,
         val statsborgerskap: List<Statsborgerskap>,
@@ -50,12 +49,6 @@ enum class Familierelasjonsrolle {
     FAR,
     MEDMOR
 }
-
-data class Folkeregisterpersonstatus(
-        val status: String,
-        val forenkletStatus: String,
-        val folkeregistermetadata: Folkeregistermetadata
-)
 
 enum class AdressebeskyttelseGradering {
     STRENGT_FORTROLIG,

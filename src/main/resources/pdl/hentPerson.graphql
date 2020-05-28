@@ -1,51 +1,46 @@
-query($ident: ID!, $bostedHistorikk: Boolean!) {
+query($ident: ID!, $bostedHistorikk: Boolean!){
   hentPerson(ident: $ident) {
-    adressebeskyttelse {gradering},
-    kjoenn {kjoenn},
+    adressebeskyttelse{ gradering },
+    kjoenn{ kjoenn },
     familierelasjoner {
-      relatertPersonsIdent
-      relatertPersonsRolle
-      minRolleForPerson
-      folkeregistermetadata {
-        ajourholdstidspunkt
-        gyldighetstidspunkt
-        opphoerstidspunkt
-      }
+          relatertPersonsIdent
+          relatertPersonsRolle
+          minRolleForPerson
+          folkeregistermetadata {
+            ajourholdstidspunkt
+            gyldighetstidspunkt
+            opphoerstidspunkt
+          }
     },
-    folkeregisterpersonstatus(historikk: $bostedHistorikk) {
-      status
-      forenkletStatus
-      folkeregistermetadata {
-        ajourholdstidspunkt
-        gyldighetstidspunkt
-        opphoerstidspunkt
-      }
-    }
+    statsborgerskap {
+        land,
+        gyldigFraOgMed,
+        gyldigTilOgMed
+    },
     navn {
-      fornavn,
-      mellomnavn,
-      etternavn
-    },
+          fornavn,
+          mellomnavn,
+          etternavn
+        },
     sivilstand(historikk: $bostedHistorikk) {
-      type
-      gyldigFraOgMed
-      relatertVedSivilstand
-      folkeregistermetadata {
-        ajourholdstidspunkt
-        gyldighetstidspunkt
-        opphoerstidspunkt
-      }
-    } ,
-      bostedsadresse(historikk: $bostedHistorikk) {
-          angittFlyttedato,
-          coAdressenavn,
-          ukjentBosted {bostedskommune},
-      matrikkeladresse {postnummer}
-      }
+          type
+          gyldigFraOgMed
+          relatertVedSivilstand
+          folkeregistermetadata {
+               ajourholdstidspunkt
+               gyldighetstidspunkt
+               opphoerstidspunkt
+          }
+    },
+    bostedsadresse(historikk: $bostedHistorikk) {
+        angittFlyttedato,
+        coAdressenavn,
+        ukjentBosted { bostedskommune },
+        vegadresse { postnummer },
+        matrikkeladresse { postnummer }
+    }
     kontaktadresse(historikk: $bostedHistorikk){
-      utenlandskAdresse{
-        landkode
-      }
+          utenlandskAdresse{ landkode }
     }
   }
 }

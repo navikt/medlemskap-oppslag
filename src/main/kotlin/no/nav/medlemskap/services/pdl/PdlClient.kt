@@ -77,6 +77,20 @@ class PdlClient(
 
     }
 
+    suspend fun hentFoedselsaar(fnr: String, callId: String): Int {
+        return runWithRetryAndMetrics("PDL", "HentFoedselsaar", retry) {
+            httpClient.post<Int> {
+                header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
+                header(HttpHeaders.ContentType, ContentType.Application.Json)
+                header(HttpHeaders.Accept, ContentType.Application.Json)
+                header("Nav-Call-Id", callId)
+                header("Nav-Consumer-Token", "Bearer ${stsClient.oidcToken()}")
+                header("Nav-Consumer-Id", configuration.sts.username)
+                body = hentFoedselsaarQuery(fnr)
+            }
+        }
+    }
+
     suspend fun healthCheck(): HttpResponse {
         return httpClient.options {
             url("$baseUrl")

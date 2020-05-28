@@ -72,3 +72,7 @@ fun hentNasjonalitetQuery(fnr: String): GraphqlQuery {
     return GraphqlQuery(query, Variables(fnr, false))
 }
 
+fun hentFoedselsaarQuery(fnr: String): GraphqlQuery {
+    val query = GraphqlQuery::class.java.getResource("/pdl/hentFoedselsaar.graphql").readText().replace("[\n\r]", "")
+    return GraphqlQuery(query, Variables(fnr, false))
+}

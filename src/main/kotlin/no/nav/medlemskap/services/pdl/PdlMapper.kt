@@ -17,13 +17,7 @@ fun mapTilPersonHistorikk(person: HentPdlPersonResponse): Personhistorikk {
         )
     } ?: throw PersonIkkeFunnet("PDL")
 
-    val personstatuser: List<Personstatus> = person.data.hentPerson.folkeregisterpersonstatus.map {
-        Personstatus(
-                personstatus = it.status,
-                fom = it.folkeregistermetadata.gyldighetstidspunkt?.toLocalDate(),
-                tom = it.folkeregistermetadata.opphoerstidspunkt?.toLocalDate()
-        )
-    }
+    val personstatuser: List<Personstatus> = emptyList()
 
     val bostedsadresser: List<Adresse> = person.data.hentPerson.bostedsadresse.map {
         Adresse(
