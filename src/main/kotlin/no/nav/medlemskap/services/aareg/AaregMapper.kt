@@ -34,7 +34,6 @@ fun mapArbeidsAvtaler(arbeidsforhold: AaRegArbeidsforhold): List<Arbeidsavtale> 
                 yrkeskode = it.yrke
         )
     }
-
 }
 
 fun mapSkipsregister(arbeidsavtale: AaRegArbeidsavtale): Skipsregister? {
@@ -63,13 +62,14 @@ fun mapArbeidsForholdType(arbeidsforhold: AaRegArbeidsforhold): Arbeidsforholdst
 fun mapArbeidsgiver(arbeidsforhold: AaRegArbeidsforhold, dataOmArbeidsgiver: MutableMap<String, AaRegService.ArbeidsgiverInfo>, dataOmPerson: MutableMap<String, String?>): Arbeidsgiver {
     val enhetstype = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.arbeidsgiverEnhetstype
     val ansatte = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.ansatte
-    val arbeidsgiversLand = dataOmPerson[arbeidsforhold.arbeidsgiver.offentligIdent ?: arbeidsforhold.arbeidsgiver.aktoerId]
+    val arbeidsgiversLand = dataOmPerson[arbeidsforhold.arbeidsgiver.offentligIdent
+            ?: arbeidsforhold.arbeidsgiver.aktoerId]
     val konkursStatus = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.konkursStatus
     return Arbeidsgiver(
-                        type = enhetstype,
-                        landkode = arbeidsgiversLand,
-                        ansatte = ansatte,
-                        konkursStatus = konkursStatus)
+            type = enhetstype,
+            landkode = arbeidsgiversLand,
+            ansatte = ansatte,
+            konkursStatus = konkursStatus)
 }
 
 fun mapPeriodeTilArbeidsavtale(arbeidsavtale: AaRegArbeidsavtale): Periode {
