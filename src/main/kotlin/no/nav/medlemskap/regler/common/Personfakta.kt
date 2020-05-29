@@ -136,7 +136,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return datagrunnlag.arbeidsforhold.filter {
             periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
                     datohjelper.kontrollPeriodeForSkipsregister())
-        }.flatMap { it -> it.arbeidsavtaler.map { it.skipsregister?.name.toString() } }
+        }.flatMap { it -> it.arbeidsavtaler.map { it.skipsregister?.name ?: "" } }
     }
 
     fun hentBrukerinputArbeidUtenforNorge(): Boolean = datagrunnlag.brukerinput.arbeidUtenforNorge

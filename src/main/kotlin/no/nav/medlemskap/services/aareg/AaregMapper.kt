@@ -37,13 +37,16 @@ fun mapArbeidsAvtaler(arbeidsforhold: AaRegArbeidsforhold): List<Arbeidsavtale> 
 
 }
 
-fun mapSkipsregister(arbeidsavtale: AaRegArbeidsavtale): Skipsregister? {
+fun mapSkipsregister(arbeidsavtale: AaRegArbeidsavtale): Skipsregister {
     when (arbeidsavtale.skipsregister) {
-        "nis" -> return Skipsregister.nis
-        "nor" -> return Skipsregister.nor
-        "utl" -> return Skipsregister.utl
+        "nis" -> return Skipsregister.NIS
+        "nor" -> return Skipsregister.NOR
+        "utl" -> return Skipsregister.UTL
+        "NIS" -> return Skipsregister.NIS
+        "NOR" -> return Skipsregister.NOR
+        "UTL" -> return Skipsregister.UTL
         else -> {
-            return null
+            return Skipsregister.UKJENT
         }
     }
 }
@@ -63,13 +66,14 @@ fun mapArbeidsForholdType(arbeidsforhold: AaRegArbeidsforhold): Arbeidsforholdst
 fun mapArbeidsgiver(arbeidsforhold: AaRegArbeidsforhold, dataOmArbeidsgiver: MutableMap<String, AaRegService.ArbeidsgiverInfo>, dataOmPerson: MutableMap<String, String?>): Arbeidsgiver {
     val enhetstype = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.arbeidsgiverEnhetstype
     val ansatte = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.ansatte
-    val arbeidsgiversLand = dataOmPerson[arbeidsforhold.arbeidsgiver.offentligIdent ?: arbeidsforhold.arbeidsgiver.aktoerId]
+    val arbeidsgiversLand = dataOmPerson[arbeidsforhold.arbeidsgiver.offentligIdent
+            ?: arbeidsforhold.arbeidsgiver.aktoerId]
     val konkursStatus = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.konkursStatus
     return Arbeidsgiver(
-                        type = enhetstype,
-                        landkode = arbeidsgiversLand,
-                        ansatte = ansatte,
-                        konkursStatus = konkursStatus)
+            type = enhetstype,
+            landkode = arbeidsgiversLand,
+            ansatte = ansatte,
+            konkursStatus = konkursStatus)
 }
 
 fun mapPeriodeTilArbeidsavtale(arbeidsavtale: AaRegArbeidsavtale): Periode {
