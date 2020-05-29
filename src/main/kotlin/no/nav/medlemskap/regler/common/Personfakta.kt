@@ -38,7 +38,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     fun hentStatsborgerskapVedStartAvKontrollperiodeForNorskStatsborger(): List<String> =
             hentStatsborgerskapFor(datohjelper.kontrollPeriodeForKunNorskStatsborgerskap().fom!!)
 
-    fun hentStatsborgerskapVedSluttAvKontrollperiodeNorskStatsborger(): List<String> =
+    fun hentStatsborgerskapVedSluttAvKontrollperiodeForNorskStatsborger(): List<String> =
             hentStatsborgerskapFor(datohjelper.kontrollPeriodeForKunNorskStatsborgerskap().tom!!)
 
 
