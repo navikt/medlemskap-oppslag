@@ -81,8 +81,8 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
 
 
     private fun sjekkOmBrukerErNorskStatsborger(): Resultat {
-        val førsteStatsborgerskap = personfakta.hentStatsborgerskapVedStartAvKontrollperiodeForNorskStatsborger()
-        val sisteStatsborgerskap = personfakta.hentStatsborgerskapVedSluttAvKontrollperiodeForNorskStatsborger()
+        val førsteStatsborgerskap = personfakta.hentStatsborgerskapVedStartAvKontrollperiode()
+        val sisteStatsborgerskap = personfakta.hentStatsborgerskapVedSluttAvKontrollperiode()
         return when {
             førsteStatsborgerskap inneholder "NOR" && sisteStatsborgerskap inneholder "NOR" -> ja()
             else -> nei("Brukeren er ikke norsk statsborger")
