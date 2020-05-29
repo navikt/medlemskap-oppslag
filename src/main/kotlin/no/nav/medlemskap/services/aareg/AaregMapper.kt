@@ -6,14 +6,14 @@ import no.nav.medlemskap.domene.*
 
 private val logger = KotlinLogging.logger { }
 
-fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, dataOmArbeidsgiver: MutableMap<String, AaRegService.ArbeidsgiverInfo>, dataOmPerson: MutableMap<String, String?>): List<Arbeidsforhold> {
+fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, dataOmArbeidsgiver: Map<String, AaRegService.ArbeidsgiverInfo>, dataOmPerson: Map<String, String?>): List<Arbeidsforhold> {
     return arbeidsforhold.map {
         Arbeidsforhold(
                 periode = mapPeriodeTilArbeidsforhold(it),
                 utenlandsopphold = mapUtenLandsopphold(it),
                 arbeidsfolholdstype = mapArbeidsForholdType(it),
                 arbeidsgivertype = it.arbeidsgiver.type,
-                arbeidsgiver = mapArbeidsgiver(it, dataOmArbeidsgiver, dataOmPerson),
+                arbeidsgiver = mapArbeidsgiver(it, dataOmArbeidsgiver[it.arbeidsgiver.organisasjonsnummer], dataOmPerson),
                 arbeidsavtaler = mapArbeidsAvtaler(it)
         )
     }
@@ -63,12 +63,13 @@ fun mapArbeidsForholdType(arbeidsforhold: AaRegArbeidsforhold): Arbeidsforholdst
     }
 }
 
-fun mapArbeidsgiver(arbeidsforhold: AaRegArbeidsforhold, dataOmArbeidsgiver: MutableMap<String, AaRegService.ArbeidsgiverInfo>, dataOmPerson: MutableMap<String, String?>): Arbeidsgiver {
-    val enhetstype = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.arbeidsgiverEnhetstype
-    val ansatte = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.ansatte
+fun mapArbeidsgiver(arbeidsforhold: AaRegArbeidsforhold, dataOmArbeidsgiver: AaRegService.ArbeidsgiverInfo?, dataOmPerson: Map<String, String?>): Arbeidsgiver {
+    logger.info("Har vi data om arbeidsgiver med orgnr {} ? {}", arbeidsforhold.arbeidsgiver.organisasjonsnummer, dataOmArbeidsgiver != null)
+    val enhetstype = dataOmArbeidsgiver?.arbeidsgiverEnhetstype
+    val ansatte = dataOmArbeidsgiver?.ansatte
     val arbeidsgiversLand = dataOmPerson[arbeidsforhold.arbeidsgiver.offentligIdent
             ?: arbeidsforhold.arbeidsgiver.aktoerId]
-    val konkursStatus = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.konkursStatus
+    val konkursStatus = dataOmArbeidsgiver?.konkursStatus
     return Arbeidsgiver(
             type = enhetstype,
             landkode = arbeidsgiversLand,

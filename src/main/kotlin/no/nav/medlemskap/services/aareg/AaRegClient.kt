@@ -98,34 +98,31 @@ class AaRegService(
         val arbeidsgiverPerson = ArbeidsgiverPerson(aaRegClient)
 
         val arbeidsforhold = aaRegClient.hentArbeidsforhold(fnr, callId, fraOgMed, tilOgMed)
-
-        val dataOmArbeidsgiver = mutableMapOf<String, ArbeidsgiverInfo>()
-        val dataOmPerson = mutableMapOf<String, String?>()
         val orgnummere = arbeidsgiverOrg.getOrg(fnr, callId, fraOgMed, tilOgMed)
         val personIdentifikatorer = arbeidsgiverPerson.getIdent(fnr, callId, fraOgMed, tilOgMed)
 
-        orgnummere.forEach { orgnummer ->
+        val dataOmArbeidsgivere = orgnummere.map { orgnummer ->
             val logger = KotlinLogging.logger { }
             val organisasjon = eregClient.hentOrganisasjon(orgnummer, callId)
 
             logger.info { organisasjon }
 
-            dataOmArbeidsgiver[orgnummer] = ArbeidsgiverInfo(
+            val dataOmArbeidsgiver = ArbeidsgiverInfo(
                     arbeidsgiverEnhetstype = hentArbeidsgiverEnhetstype(orgnummer, callId),
                     ansatte = organisasjon.organisasjonDetaljer?.ansatte,
                     opphoersdato = organisasjon.organisasjonDetaljer?.opphoersdato,
-                    konkursStatus = organisasjon.organisasjonDetaljer?.statuser?.map{ it -> it?.kode }
+                    konkursStatus = organisasjon.organisasjonDetaljer?.statuser?.map { it -> it?.kode }
 
             )
-            logger.info { dataOmArbeidsgiver[orgnummer] }
+            logger.info { dataOmArbeidsgiver }
+            orgnummer to dataOmArbeidsgiver
+        }.toMap()
 
-        }
+        val dataOmPerson = personIdentifikatorer.map { personIdentifikator ->
+            personIdentifikator to hentArbeidsgiversLand(personIdentifikator, callId)
+        }.toMap()
 
-        personIdentifikatorer.forEach{ personIdentifikator ->
-            dataOmPerson[personIdentifikator] = hentArbeidsgiversLand(personIdentifikator, callId)
-        }
-
-        return mapAaregResultat(arbeidsforhold, dataOmArbeidsgiver, dataOmPerson)
+        return mapAaregResultat(arbeidsforhold, dataOmArbeidsgivere, dataOmPerson)
     }
 
     data class ArbeidsgiverInfo(val arbeidsgiverEnhetstype: String?,
