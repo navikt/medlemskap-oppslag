@@ -1,7 +1,10 @@
 package no.nav.medlemskap.services.aareg
 
+import mu.KotlinLogging
 import no.nav.medlemskap.domene.*
 
+
+private val logger = KotlinLogging.logger { }
 
 fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, dataOmArbeidsgiver: MutableMap<String, AaRegService.ArbeidsgiverInfo>, dataOmPerson: MutableMap<String, String?>): List<Arbeidsforhold> {
     return arbeidsforhold.map {
@@ -12,17 +15,14 @@ fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, dataOmArbeidsgiv
                 arbeidsgivertype = it.arbeidsgiver.type,
                 arbeidsgiver = mapArbeidsgiver(it, dataOmArbeidsgiver, dataOmPerson),
                 arbeidsavtaler = mapArbeidsAvtaler(it)
-
         )
     }
-
 }
 
 fun mapPeriodeTilArbeidsforhold(arbeidsforhold: AaRegArbeidsforhold): Periode {
     return Periode(
             fom = arbeidsforhold.ansettelsesperiode.periode.fom,
             tom = arbeidsforhold.ansettelsesperiode.periode.tom)
-
 }
 
 fun mapArbeidsAvtaler(arbeidsforhold: AaRegArbeidsforhold): List<Arbeidsavtale> {
@@ -38,6 +38,7 @@ fun mapArbeidsAvtaler(arbeidsforhold: AaRegArbeidsforhold): List<Arbeidsavtale> 
 }
 
 fun mapSkipsregister(arbeidsavtale: AaRegArbeidsavtale): Skipsregister {
+    logger.info("Mapper skipsregister {}", arbeidsavtale.skipsregister)
     when (arbeidsavtale.skipsregister) {
         "nis" -> return Skipsregister.NIS
         "nor" -> return Skipsregister.NOR
