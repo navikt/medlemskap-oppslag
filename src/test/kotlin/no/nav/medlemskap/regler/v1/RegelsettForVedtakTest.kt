@@ -28,21 +28,6 @@ class RegelsettForVedtakTest {
         assertEquals(Svar.JA, evaluerReglerForOpplysninger(personleser.amerikanskJoark()))
     }
 
-    @Test
-    fun `amerikansk person med vedtak i medl får uavklart på manuelle vedtak`() {
-        assertSvar("OPPLYSNINGER-MEDL", Svar.JA, evaluer(personleser.amerikanskMedl()), Svar.UAVKLART)
-    }
-
-    @Test
-    fun `norsk person med opplysninger i medl`() {
-        assertSvar("OPPLYSNINGER-MEDL", Svar.JA, evaluer(personleser.norskMedOpplysningerIMedl()), Svar.JA)
-    }
-
-    @Test
-    fun `norsk person med delvis sammenfallende medlemskap`() {
-        assertSvar("MEDL-1.1.1", Svar.JA, evaluer(personleser.norskMedMedlemskapDelvisInnenfor12MndPeriode()), Svar.UAVKLART)
-    }
-
     private fun evaluerReglerForOpplysninger(datagrunnlag: Datagrunnlag): Svar {
         val regelsett = ReglerForRegistrerteOpplysninger(initialiserFakta(datagrunnlag))
         return regelsett.hentHovedRegel().utfør(mutableListOf()).svar

@@ -1,0 +1,30 @@
+{
+  "periode": {
+    "fom": "2020-01-30",
+    "tom": "2020-02-02"
+  },
+  "brukerinput" : {
+    "arbeidUtenforNorge" : true
+  },
+  "personhistorikk" : {
+    "statsborgerskap" : [ {
+      "landkode" : "USA",
+      "fom" : "2020-01-30",
+      "tom" : "2020-01-30"
+    } ],
+    "personstatuser" : [ ],
+    "bostedsadresser" : [ ],
+    "postadresser" : [ ],
+    "midlertidigAdresser" : [ ]
+  },
+  "medlemskap" : [ {
+    "fraOgMed" : "2018-01-01",
+    "tilOgMed" : "2021-05-05",
+    "erMedlem" : true,
+    "lovvalg" : "NOR"
+  } ],
+  "arbeidsforhold" : [ ],
+  "inntekt" : [ ],
+  "oppgaver" : [ ],
+  "dokument" : [ ]
+}

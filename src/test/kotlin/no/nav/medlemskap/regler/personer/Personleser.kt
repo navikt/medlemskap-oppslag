@@ -19,7 +19,9 @@ class Personleser {
     fun norskBosattIUtland() = lesDatagrunnlag("$norsk/norsk_bosatt_i_utland.json")
     fun norskPostadresseIUtland() = lesDatagrunnlag("$norsk/norsk_postadresse_i_utland.json")
     fun norskMedOpplysningerIMedl() = lesDatagrunnlag("$norsk/norsk_med_opplysninger_i_medl.json")
+    fun norskUtenMedlemskapIMedl() = lesDatagrunnlag("$norsk/norsk_uten_medlemskap_i_medl.json")
     fun norskMedMedlemskapDelvisInnenfor12MndPeriode() = lesDatagrunnlag("$norsk/norsk_med_medlemskap_medl_delvis_innenfor_12_mnd_periode.json")
+    fun norskUtenMedlemskapDelvisInnenfor12MndPeriode() = lesDatagrunnlag("$norsk/norsk_uten_medlemskap_medl_delvis_innenfor_12_mnd_periode.json")
 
     fun norskMedFlereStatsborgerskap() = lesDatagrunnlag("$variertDatagrunnlag/norsk_flere_statsborgerskap_i_periode.json")
     fun norskMedUlikeEøsStatsborgerskap() = lesDatagrunnlag("$variertDatagrunnlag/norsk_ulike_eøs_statsborgerskap.json")
@@ -50,9 +52,20 @@ class Personleser {
 
 
     fun enkelAmerikansk() = lesDatagrunnlag("$ikkeEøs/kun_enkelt_amerikansk_statsborgerskap.json")
-    fun amerikanskMedl() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_vedtak_i_medl.json")
     fun amerikanskGosys() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_oppgave_i_gosys.json")
     fun amerikanskJoark() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_dokument_i_joark.json")
+    fun amerikanskMedl() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_vedtak_i_medl.json")
+    fun amerikanskMedOgUtenMedlemskap() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_og_uten_medlemskap_innenfor_periode.json")
+    fun amerikanskMedMedlemskapOver12MndPeriode() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_medlemskap_over_12_mnd_periode.json")
+    fun amerikanskUtenMedlemskapOver12MndPeriode() = lesDatagrunnlag("$ikkeEøs/amerikansk_uten_medlemskap_over_12_mnd_periode.json")
+    fun amerikanskMedMedlemskapUgyldigDato() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_ugyldig_medlemskapsdato.json")
+    fun amerikanskUtenMedlemskapEndretArbeidsforhold() = lesDatagrunnlag("$ikkeEøs/amerikansk_uten_medlemskap_endret_arbeidsforhold.json")
+    fun amerikanskMedMedlemskapEndretArbeidsforhold() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_medlemskap_endret_arbeidsforhold.json")
+    fun amerikanskUtenMedlemskapEndretAdresse() = lesDatagrunnlag("$ikkeEøs/amerikansk_uten_medlemskap_endret_adresse.json")
+    fun amerikanskMedMedlemskapEndretAdresse() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_medlemskap_endret_adresse.json")
+    fun amerikanskUtenMedlemskapUtenArbeidsforhold() = lesDatagrunnlag("$ikkeEøs/amerikansk_uten_medlemskap_uten_arbeidsforhold.json")
+    fun amerikanskUtenMedlemskapSammeArbeidsforholdOgAdresse() = lesDatagrunnlag("$ikkeEøs/amerikansk_uten_medlemskap_samme_arbeidsforhold_og_adresse.json")
+    fun amerikanskMedMedlemskapSammeArbeidsforholdOgAdresse() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_medlemskap_samme_arbeidsforhold_og_adresse.json")
 
     private fun lesDatagrunnlag(filnavn: String): Datagrunnlag {
         val res = Personleser::class.java.getResource(filnavn)

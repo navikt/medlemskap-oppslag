@@ -18,6 +18,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     private val datohjelper = Datohjelper(datagrunnlag)
     private val statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap
     private val arbeidsforhold = datagrunnlag.arbeidsforhold
+    private val bostedadresser = datagrunnlag.personhistorikk.bostedsadresser
 
     companion object {
         fun initialiserFakta(datagrunnlag: Datagrunnlag) = Personfakta(datagrunnlag)
@@ -83,6 +84,13 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     fun arbeidsforholdForDato(dato: LocalDate): List<Arbeidsforhold> {
         return arbeidsforhold.filter {
             periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
+                    Periode(dato, dato))
+        }
+    }
+
+    fun bostedAdresseForDato(dato: LocalDate): List<Adresse> {
+        return bostedadresser.filter {
+            periodefilter(lagInterval(Periode(it.fom, it.tom)),
                     Periode(dato, dato))
         }
     }
@@ -233,11 +241,12 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return arbeidsforholdForNorskArbeidsgiver().flatMap { it.arbeidsgiver.konkursStatus.orEmpty() }
     }
 
-    fun erMedlemskapPeriodeInnenforOpptjeningsperiode(erMedlem: Boolean): Boolean {
+    fun erMedlemskapPeriodeInnenfor12MndPeriode(erMedlem: Boolean): Boolean {
         val personensPerioderIMedlSiste12Mnd = personensPerioderIMedlSiste12Mnd()
+
         val find = personensPerioderIMedlSiste12Mnd.find {
             it.erMedlem == erMedlem &&
-                    Periode(it.fraOgMed, it.tilOgMed).interval().encloses(datohjelper.opptjeningsperiode().interval())
+                    Periode(it.fraOgMed, it.tilOgMed).interval().encloses(datohjelper.kontrollPeriodeForMedl().interval())
         }
 
         return find != null
@@ -245,14 +254,40 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     fun harSammeArbeidsforholdSidenFomDatoFraMedl(): Boolean {
 
-        val personensPerioderIMedlSiste12Mnd = personensPerioderIMedlSiste12Mnd()
-
         var fomDatoFraMedl = LocalDate.MAX
 
-        for (medlemskap in personensPerioderIMedlSiste12Mnd) {
+        for (medlemskap in personensPerioderIMedlSiste12Mnd()) {
             if (medlemskap.fraOgMed.isBefore(fomDatoFraMedl)) fomDatoFraMedl = medlemskap.fraOgMed
         }
 
-        return arbeidsforholdForDato(fomDatoFraMedl) == arbeidsforholdForDato(LocalDate.now())
+        return arbeidsforholdForDato(fomDatoFraMedl).isNotEmpty() &&
+                arbeidsforholdForDato(fomDatoFraMedl) == arbeidsforholdForDato(datohjelper.tilOgMedDag())
+    }
+
+    fun harMedlPeriodeMedOgUtenMedlemskap(): Boolean {
+        var harPeriodeMedMedlemskap = false
+        var harPeriodeUtenMedlemskap = false
+
+        for (medlemskap in personensPerioderIMedlSiste12Mnd()) {
+            if (medlemskap.erMedlem) harPeriodeMedMedlemskap = true
+            else harPeriodeUtenMedlemskap = true
+        }
+
+        return harPeriodeMedMedlemskap && harPeriodeUtenMedlemskap
+    }
+
+    fun harGyldigeMedlemskapsperioder(): Boolean {
+        return personensPerioderIMedlSiste12Mnd().none { it.tilOgMed.isAfter(it.fraOgMed.plusYears(5)) }
+    }
+
+    fun harSammeAdresseSidenFomDatoFraMedl(): Boolean {
+        var fomDatoFraMedl = LocalDate.MAX
+
+        for (medlemskap in personensPerioderIMedlSiste12Mnd()) {
+            if (medlemskap.fraOgMed.isBefore(fomDatoFraMedl)) fomDatoFraMedl = medlemskap.fraOgMed
+        }
+
+        return bostedAdresseForDato(fomDatoFraMedl).size == 1 &&
+                bostedAdresseForDato(fomDatoFraMedl) == bostedAdresseForDato(datohjelper.tilOgMedDag())
     }
 }
