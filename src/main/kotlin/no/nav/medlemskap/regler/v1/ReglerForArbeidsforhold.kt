@@ -2,9 +2,9 @@ package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.Arbeidsforholdstype
 import no.nav.medlemskap.domene.Skipsregister
+import no.nav.medlemskap.domene.YrkeskoderForLuftFart
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.alleEr
-import no.nav.medlemskap.regler.common.Funksjoner.antallErIkke
 import no.nav.medlemskap.regler.common.Funksjoner.finnes
 import no.nav.medlemskap.regler.common.Funksjoner.finnesMindreEnn
 import no.nav.medlemskap.regler.common.Funksjoner.inneholderNoe
@@ -112,7 +112,7 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
             operasjon = { sjekkYrkeskodeLuftfart() }
     )
 
-    private val yrkeskoderLuftfart = listOf("3143107", "5111105", "5111117")
+    private val yrkeskoderLuftfart = YrkeskoderForLuftFart.values().map { it.styrk }
 
     private fun sjekkArbeidsforhold(): Resultat {
 
@@ -159,7 +159,7 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
     private fun sjekkSkipsregister(): Resultat =
             when {
-                personfakta.sisteArbeidsforholdSkipsregister() kunInneholder Skipsregister.nor.name -> ja()
+                personfakta.sisteArbeidsforholdSkipsregister() kunInneholder Skipsregister.NOR.name -> ja()
                 else -> nei()
             }
 

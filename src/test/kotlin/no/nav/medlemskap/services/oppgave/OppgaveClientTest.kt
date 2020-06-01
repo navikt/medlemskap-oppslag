@@ -57,7 +57,7 @@ class OppgaveClientTest {
 
         val oppgaveclient = OppgaveClient(server.baseUrl(), stsClient, cioHttpClient)
 
-        val oppgaveResponse = runBlocking { oppgaveclient.hentOppgaver("1234567890", callId) }
+        val oppgaveResponse = runBlocking { oppgaveclient.hentOppgaver(listOf("1234567890"), callId) }
         val oppgave = oppgaveResponse.oppgaver[0]
 
         assertEquals(1, oppgaveResponse.antallTreffTotalt)
@@ -81,7 +81,7 @@ class OppgaveClientTest {
         val oppgaveclient = OppgaveClient(server.baseUrl(), stsClient, cioHttpClient)
 
         Assertions.assertThrows(ServerResponseException::class.java) {
-            runBlocking { oppgaveclient.hentOppgaver("1234567890", callId) }
+            runBlocking { oppgaveclient.hentOppgaver(listOf("1234567890"), callId) }
         }
     }
 
@@ -101,7 +101,7 @@ class OppgaveClientTest {
         val oppgaveclient = OppgaveClient(server.baseUrl(), stsClient, cioHttpClient)
 
         Assertions.assertThrows(ClientRequestException::class.java) {
-            runBlocking { oppgaveclient.hentOppgaver("1234567890", callId) }
+            runBlocking { oppgaveclient.hentOppgaver(listOf("1234567890"), callId) }
         }
     }
 

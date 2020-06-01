@@ -51,13 +51,6 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     fun hentStatsborgerskapVedSluttAvKontrollperiode(): List<String> =
             hentStatsborgerskapFor(datohjelper.kontrollperiodeForStatsborgerskap().tom!!)
 
-    fun hentStatsborgerskapVedStartAvKontrollperiodeForNorskStatsborger(): List<String> =
-            hentStatsborgerskapFor(datohjelper.kontrollPeriodeForKunNorskStatsborgerskap().fom!!)
-
-    fun hentStatsborgerskapVedSluttAvKontrollperiodeNorskStatsborger(): List<String> =
-            hentStatsborgerskapFor(datohjelper.kontrollPeriodeForKunNorskStatsborgerskap().tom!!)
-
-
     fun arbeidsforholdIOpptjeningsperiode(): List<Arbeidsforhold> {
 
         return arbeidsforhold.filter {
@@ -155,7 +148,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return datagrunnlag.arbeidsforhold.filter {
             periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
                     datohjelper.kontrollPeriodeForSkipsregister())
-        }.flatMap { it -> it.arbeidsavtaler.map { it.skipsregister?.name.toString() } }
+        }.flatMap { it -> it.arbeidsavtaler.map { it.skipsregister?.name ?: "" } }
     }
 
     fun hentBrukerinputArbeidUtenforNorge(): Boolean = datagrunnlag.brukerinput.arbeidUtenforNorge
@@ -229,7 +222,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     private fun hentStatsborgerskapFor(dato: LocalDate): List<String> =
             statsborgerskap.filter {
-                Periode(it.fom, it.tom).interval().contains(lagInstant(dato))
+                Periode(it.fom, it.tom).interval().contains(lagInstantStartOfDay(dato))
             }.map { it.landkode }
 
     private fun periodefilter(periodeDatagrunnlag: Interval, periode: Periode): Boolean {
