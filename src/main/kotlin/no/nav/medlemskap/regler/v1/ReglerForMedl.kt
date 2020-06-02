@@ -24,9 +24,15 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
                             uavklartKonklusjon
                         } hvisJa {
                             sjekkRegel {
-                                erSituasjonenUendretForBrukerUtenMedlemskap
+                                erArbeidsforholdUendretForBrukerUtenMedlemskap
                             } hvisJa {
-                                neiKonklusjon
+                                sjekkRegel {
+                                    erAdresseUendretForBrukerUtenMedlemskap
+                                } hvisJa {
+                                    neiKonklusjon
+                                } hvisNei {
+                                    uavklartKonklusjon
+                                }
                             } hvisNei {
                                 uavklartKonklusjon
                             }
@@ -36,9 +42,15 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
                             erPeriodeMedMedlemskapInnenfor12MndPeriode
                         } hvisJa {
                             sjekkRegel {
-                                erSituasjonenUendretForBrukerMedMedlemskap
+                                erArbeidsforholdUendretForBrukerMedMedlemskap
                             } hvisJa {
-                                jaKonklusjon
+                                sjekkRegel {
+                                    erAdresseUendretForBrukerMedMedlemskap
+                                } hvisJa {
+                                    jaKonklusjon
+                                } hvisNei {
+                                    uavklartKonklusjon
+                                }
                             } hvisNei {
                                 uavklartKonklusjon
                             }
@@ -98,26 +110,45 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
     )
 
 
-    private val erSituasjonenUendretForBrukerUtenMedlemskap = Regel(
+    private val erArbeidsforholdUendretForBrukerUtenMedlemskap = Regel(
             identifikator = "1.2.2",
             avklaring = "Er bruker uten medlemskap sin situasjon uendret?",
             beskrivelse = """"
                 Er brukers situasjon uendret i forhold til da A1 ble utstedt? Sjekker at det er samme arbeidsforhold
                 i dag som på fra og med tidspunktet for perioden gitt fra MEDL
             """.trimIndent(),
-            operasjon = { situasjonenErUendret() }
+            operasjon = { erBrukersArbeidsforholdUendret() }
     )
 
-    private val erSituasjonenUendretForBrukerMedMedlemskap = Regel(
+    private val erAdresseUendretForBrukerUtenMedlemskap = Regel(
+            identifikator = "1.2.3",
+            avklaring = "Er bruker uten medlemskap sin situasjon uendret?",
+            beskrivelse = """"
+                Er brukers situasjon uendret i forhold til da A1 ble utstedt? Sjekker at det er samme arbeidsforhold
+                i dag som på fra og med tidspunktet for perioden gitt fra MEDL
+            """.trimIndent(),
+            operasjon = { erBrukersAdresseUendret() }
+    )
+
+    private val erArbeidsforholdUendretForBrukerMedMedlemskap = Regel(
             identifikator = "1.4",
             avklaring = "Er brukers situasjon uendret?",
             beskrivelse = """"
                 Er brukers situasjon uendret i forhold til da A1 ble utstedt? Sjekker at det er samme arbeidsforhold
                 i dag som på fra og med tidspunktet for perioden gitt fra MEDL
             """.trimIndent(),
-            operasjon = { situasjonenErUendret() }
+            operasjon = { erBrukersArbeidsforholdUendret() }
     )
 
+    private val erAdresseUendretForBrukerMedMedlemskap = Regel(
+            identifikator = "1.5",
+            avklaring = "Er brukers situasjon uendret?",
+            beskrivelse = """"
+                Er brukers situasjon uendret i forhold til da A1 ble utstedt? Sjekker at det er samme arbeidsforhold
+                i dag som på fra og med tidspunktet for perioden gitt fra MEDL
+            """.trimIndent(),
+            operasjon = { erBrukersAdresseUendret() }
+    )
 
     private fun sjekkPerioderIMedl(): Resultat =
             when {
@@ -132,14 +163,18 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
                 else -> nei()
             }
 
-    private fun situasjonenErUendret(): Resultat =
+    private fun erBrukersAdresseUendret(): Resultat =
             when {
-                personfakta.harSammeArbeidsforholdSidenFomDatoFraMedl()
-                        && personfakta.harSammeAdresseSidenFomDatoFraMedl() -> ja()
+                personfakta.harSammeAdresseSidenFomDatoFraMedl() -> ja()
                 else -> nei()
             }
 
-    //1.1- utvidelse 1 - Har bruker et avklart lovvalg i MEDL?
+    private fun erBrukersArbeidsforholdUendret(): Resultat =
+            when {
+                personfakta.harSammeArbeidsforholdSidenFomDatoFraMedl() -> ja()
+                else -> nei()
+            }
+
     private fun periodeMedMedlemskap(): Resultat =
             when {
                 personfakta.personensPerioderIMedlSiste12Mnd().stream().anyMatch {

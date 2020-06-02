@@ -57,12 +57,17 @@ class RegelsettForMedlTest {
 
     @Test
     fun `amerikansk person uten medlemskap med endret adresse`() {
-        assertSvar("1.2.2", Svar.NEI, evaluer(personleser.amerikanskUtenMedlemskapEndretAdresse()), Svar.UAVKLART)
+        assertSvar("1.2.3", Svar.NEI, evaluer(personleser.amerikanskUtenMedlemskapEndretAdresse()), Svar.UAVKLART)
     }
 
     @Test
     fun `amerikansk person uten medlemskap med uendret adresse og arbeidsforhold`() {
-        assertSvar("1.2.2", Svar.JA, evaluer(personleser.amerikanskUtenMedlemskapSammeArbeidsforholdOgAdresse()), Svar.NEI)
+        assertSvar("1.2.3", Svar.JA, evaluer(personleser.amerikanskUtenMedlemskapSammeArbeidsforholdOgAdresse()), Svar.NEI)
+    }
+
+    @Test
+    fun `amerikansk person med UAVK (uavklart) statuskode i lovvalg fra medl`() {
+        assertSvar("1.2", Svar.NEI, evaluer(personleser.amerikanskUtenMedlemskapLovvalgStatuskodeUavklart()), Svar.UAVKLART)
     }
 
     @Test
@@ -87,11 +92,11 @@ class RegelsettForMedlTest {
 
     @Test
     fun `amerikansk person med medlemskap med endret adresse`() {
-        assertSvar("1.4", Svar.NEI, evaluer(personleser.amerikanskMedMedlemskapEndretAdresse()), Svar.UAVKLART)
+        assertSvar("1.5", Svar.NEI, evaluer(personleser.amerikanskMedMedlemskapEndretAdresse()), Svar.UAVKLART)
     }
 
     @Test
     fun `amerikansk person med medlemskap med uendret adresse og arbeidsforhold`() {
-        assertSvar("1.4", Svar.JA, evaluer(personleser.amerikanskMedMedlemskapSammeArbeidsforholdOgAdresse()), Svar.JA)
+        assertSvar("1.5", Svar.JA, evaluer(personleser.amerikanskMedMedlemskapSammeArbeidsforholdOgAdresse()), Svar.JA)
     }
 }

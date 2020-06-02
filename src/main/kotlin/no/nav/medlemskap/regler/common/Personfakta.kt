@@ -5,6 +5,7 @@ import no.nav.medlemskap.common.merEnn10ArbeidsforholdCounter
 import no.nav.medlemskap.common.stillingsprosentCounter
 import no.nav.medlemskap.common.usammenhengendeArbeidsforholdCounter
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.regler.common.Funksjoner.er
 import no.nav.medlemskap.services.aareg.AaRegOpplysningspliktigArbeidsgiverType
 import no.nav.medlemskap.services.ereg.Ansatte
 import org.threeten.extra.Interval
@@ -81,11 +82,11 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         }.map { it.arbeidsfolholdstype.navn }
     }
 
-    fun arbeidsforholdForDato(dato: LocalDate): List<Arbeidsforhold> {
+    fun arbeidsforholdForDato(dato: LocalDate): Set<Arbeidsforhold> {
         return arbeidsforhold.filter {
             periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
                     Periode(dato, dato))
-        }
+        }.toSet()
     }
 
     fun bostedAdresseForDato(dato: LocalDate): List<Adresse> {
@@ -245,7 +246,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         val personensPerioderIMedlSiste12Mnd = personensPerioderIMedlSiste12Mnd()
 
         val find = personensPerioderIMedlSiste12Mnd.find {
-            it.erMedlem == erMedlem &&
+            it.erMedlem == erMedlem && it.lovvalg er "ENDL" &&
                     Periode(it.fraOgMed, it.tilOgMed).interval().encloses(datohjelper.kontrollPeriodeForMedl().interval())
         }
 
