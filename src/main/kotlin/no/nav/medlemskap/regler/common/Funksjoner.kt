@@ -21,7 +21,7 @@ object Funksjoner {
 
     infix fun List<String>.kunInneholder(string: String) = this.contains(string) && this.size == 1
 
-    infix fun String.er(string: String) = this.equals(string)
+    infix fun String?.er(string: String) = this != null && this == string
 
     infix fun Map<String, String>.harAlle(liste: List<Statsborgerskap>) = this.keys.containsAll(liste.stream().map { it.landkode }.collect(Collectors.toList()))
 

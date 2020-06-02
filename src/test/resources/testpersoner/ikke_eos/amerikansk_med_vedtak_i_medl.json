@@ -3,28 +3,32 @@
     "fom": "2020-01-30",
     "tom": "2020-01-30"
   },
-  "brukerinput" : {
-    "arbeidUtenforNorge" : true
+  "brukerinput": {
+    "arbeidUtenforNorge": true
   },
-  "personhistorikk" : {
-    "statsborgerskap" : [ {
-      "landkode" : "USA",
-      "fom" : "2020-01-30",
-      "tom" : "2020-01-30"
-    } ],
-    "personstatuser" : [ ],
-    "bostedsadresser" : [ ],
-    "postadresser" : [ ],
-    "midlertidigAdresser" : [ ]
+  "personhistorikk": {
+    "statsborgerskap": [
+      {
+        "landkode": "USA",
+        "fom": "2020-01-30",
+        "tom": "2020-01-30"
+      }
+    ],
+    "personstatuser": [],
+    "bostedsadresser": [],
+    "postadresser": [],
+    "midlertidigAdresser": []
   },
-  "medlemskap" : [ {
-    "fraOgMed" : "2020-01-01",
-    "tilOgMed" : "2020-01-12",
-    "erMedlem" : true,
-    "lovvalg" : "NOR"
-  } ],
-  "arbeidsforhold" : [ ],
-  "inntekt" : [ ],
-  "oppgaver" : [ ],
-  "dokument" : [ ]
+  "medlemskap": [
+    {
+      "fraOgMed": "2020-01-01",
+      "tilOgMed": "2020-01-12",
+      "erMedlem": true,
+      "lovvalgland": "NOR"
+    }
+  ],
+  "arbeidsforhold": [],
+  "inntekt": [],
+  "oppgaver": [],
+  "dokument": []
 }

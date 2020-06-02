@@ -17,10 +17,10 @@
     "personstatuser": [],
     "bostedsadresser": [
       {
-        "adresselinje" : "Oslo",
-        "landkode" : "NOR",
-        "fom" : "2017-11-01",
-        "tom" : null
+        "adresselinje": "Oslo",
+        "landkode": "NOR",
+        "fom": "2017-11-01",
+        "tom": null
       }
     ],
     "postadresser": [],
@@ -31,7 +31,7 @@
       "fraOgMed": "2018-01-01",
       "tilOgMed": "2021-05-05",
       "erMedlem": true,
-      "lovvalg": "NOR"
+      "lovvalgland": "NOR"
     }
   ],
   "arbeidsforhold": [

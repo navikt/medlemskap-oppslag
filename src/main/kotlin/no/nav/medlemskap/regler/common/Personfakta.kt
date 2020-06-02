@@ -241,7 +241,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return arbeidsforholdForNorskArbeidsgiver().flatMap { it.arbeidsgiver.konkursStatus.orEmpty() }
     }
 
-    fun erMedlemskapPeriodeInnenfor12MndPeriode(erMedlem: Boolean): Boolean {
+    fun erMedlemskapPeriodeOver12MndPeriode(erMedlem: Boolean): Boolean {
         val personensPerioderIMedlSiste12Mnd = personensPerioderIMedlSiste12Mnd()
 
         val find = personensPerioderIMedlSiste12Mnd.find {
@@ -254,14 +254,19 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     fun harSammeArbeidsforholdSidenFomDatoFraMedl(): Boolean {
 
+        val fomDatoFraMedl = finnTidligsteFraOgMedDatoForMedl()
+
+        return arbeidsforholdForDato(fomDatoFraMedl).isNotEmpty() &&
+                arbeidsforholdForDato(fomDatoFraMedl) == arbeidsforholdForDato(datohjelper.tilOgMedDag())
+    }
+
+    private fun finnTidligsteFraOgMedDatoForMedl(): LocalDate {
         var fomDatoFraMedl = LocalDate.MAX
 
         for (medlemskap in personensPerioderIMedlSiste12Mnd()) {
             if (medlemskap.fraOgMed.isBefore(fomDatoFraMedl)) fomDatoFraMedl = medlemskap.fraOgMed
         }
-
-        return arbeidsforholdForDato(fomDatoFraMedl).isNotEmpty() &&
-                arbeidsforholdForDato(fomDatoFraMedl) == arbeidsforholdForDato(datohjelper.tilOgMedDag())
+        return fomDatoFraMedl
     }
 
     fun harMedlPeriodeMedOgUtenMedlemskap(): Boolean {
@@ -281,11 +286,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     }
 
     fun harSammeAdresseSidenFomDatoFraMedl(): Boolean {
-        var fomDatoFraMedl = LocalDate.MAX
-
-        for (medlemskap in personensPerioderIMedlSiste12Mnd()) {
-            if (medlemskap.fraOgMed.isBefore(fomDatoFraMedl)) fomDatoFraMedl = medlemskap.fraOgMed
-        }
+        val fomDatoFraMedl = finnTidligsteFraOgMedDatoForMedl()
 
         return bostedAdresseForDato(fomDatoFraMedl).size == 1 &&
                 bostedAdresseForDato(fomDatoFraMedl) == bostedAdresseForDato(datohjelper.tilOgMedDag())

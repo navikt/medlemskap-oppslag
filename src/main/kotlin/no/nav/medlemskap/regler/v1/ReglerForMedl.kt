@@ -85,7 +85,7 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
             beskrivelse = """"
                Er hele perioden uten medlemskap innenfor 12-månedersperioden?
             """.trimIndent(),
-            operasjon = { erMedlemskapPeriodeInnenforOpptjeningsperiode(false) }
+            operasjon = { erMedlemskapPeriodeOver12MndPeriode(false) }
     )
 
     private val erPeriodeMedMedlemskapInnenfor12MndPeriode = Regel(
@@ -94,7 +94,7 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
             beskrivelse = """"
                Er hele perioden med medlemskap innenfor 12-månedersperioden?
             """.trimIndent(),
-            operasjon = { erMedlemskapPeriodeInnenforOpptjeningsperiode(true) }
+            operasjon = { erMedlemskapPeriodeOver12MndPeriode(true) }
     )
 
 
@@ -143,15 +143,15 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
     private fun periodeMedMedlemskap(): Resultat =
             when {
                 personfakta.personensPerioderIMedlSiste12Mnd().stream().anyMatch {
-                    it.erMedlem && it.lovvalg er "NOR"
+                    it.erMedlem && it.lovvalgsland er "NOR"
                 } -> ja()
                 else -> nei()
             }
 
 
-    private fun erMedlemskapPeriodeInnenforOpptjeningsperiode(finnPeriodeMedMedlemskap: Boolean): Resultat =
+    private fun erMedlemskapPeriodeOver12MndPeriode(finnPeriodeMedMedlemskap: Boolean): Resultat =
             when {
-                personfakta.erMedlemskapPeriodeInnenfor12MndPeriode(finnPeriodeMedMedlemskap)
+                personfakta.erMedlemskapPeriodeOver12MndPeriode(finnPeriodeMedMedlemskap)
                         && personfakta.harGyldigeMedlemskapsperioder() -> ja()
                 else -> nei()
             }
