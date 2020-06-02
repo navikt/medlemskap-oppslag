@@ -270,15 +270,8 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     }
 
     fun harMedlPeriodeMedOgUtenMedlemskap(): Boolean {
-        var harPeriodeMedMedlemskap = false
-        var harPeriodeUtenMedlemskap = false
-
-        for (medlemskap in personensPerioderIMedlSiste12Mnd()) {
-            if (medlemskap.erMedlem) harPeriodeMedMedlemskap = true
-            else harPeriodeUtenMedlemskap = true
-        }
-
-        return harPeriodeMedMedlemskap && harPeriodeUtenMedlemskap
+        return personensPerioderIMedlSiste12Mnd().any { it.erMedlem }
+                && personensPerioderIMedlSiste12Mnd().any { !it.erMedlem }
     }
 
     fun harGyldigeMedlemskapsperioder(): Boolean {

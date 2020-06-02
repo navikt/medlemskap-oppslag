@@ -57,7 +57,8 @@
     "fraOgMed" : "2019-01-01",
     "tilOgMed" : "2020-01-26",
     "erMedlem" : true,
-    "lovvalgland": "NOR"
+    "lovvalgsland": "NOR",
+    "lovvalg": "ENDL"
   } ],
   "inntekt": [],
   "oppgaver": [],

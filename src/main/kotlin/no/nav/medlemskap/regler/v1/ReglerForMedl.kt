@@ -143,7 +143,7 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
     private fun periodeMedMedlemskap(): Resultat =
             when {
                 personfakta.personensPerioderIMedlSiste12Mnd().stream().anyMatch {
-                    it.erMedlem && it.lovvalgsland er "NOR"
+                    it.erMedlem && it.lovvalgsland er "NOR" && it.lovvalg er "ENDL"
                 } -> ja()
                 else -> nei()
             }
