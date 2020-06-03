@@ -99,4 +99,14 @@ class RegelsettForMedlTest {
     fun `amerikansk person med medlemskap med uendret adresse og arbeidsforhold`() {
         assertSvar("1.5", Svar.JA, evaluer(personleser.amerikanskMedMedlemskapSammeArbeidsforholdOgAdresse()), Svar.JA)
     }
+
+    @Test
+    fun `amerikansk person med medlemskap med dekning i medl`() {
+        assertSvar("1.6", Svar.JA, evaluer(personleser.amerikanskMedMedlemskapMedDekningIMedl()), Svar.JA)
+    }
+
+    @Test
+    fun `amerikansk person med medlemskap uten dekning i medl`() {
+        assertSvar("1.6", Svar.NEI, evaluer(personleser.amerikanskMedMedlemskapUtenDekningIMedl()), Svar.NEI)
+    }
 }

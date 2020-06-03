@@ -67,6 +67,8 @@ class Personleser {
     fun amerikanskUtenMedlemskapUtenArbeidsforhold() = lesDatagrunnlag("$ikkeEøs/amerikansk_uten_medlemskap_uten_arbeidsforhold.json")
     fun amerikanskUtenMedlemskapSammeArbeidsforholdOgAdresse() = lesDatagrunnlag("$ikkeEøs/amerikansk_uten_medlemskap_samme_arbeidsforhold_og_adresse.json")
     fun amerikanskMedMedlemskapSammeArbeidsforholdOgAdresse() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_medlemskap_samme_arbeidsforhold_og_adresse.json")
+    fun amerikanskMedMedlemskapMedDekningIMedl() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_medlemskap_med_dekning_i_medl.json")
+    fun amerikanskMedMedlemskapUtenDekningIMedl() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_medlemskap_uten_dekning_i_medl.json")
 
     private fun lesDatagrunnlag(filnavn: String): Datagrunnlag {
         val res = Personleser::class.java.getResource(filnavn)

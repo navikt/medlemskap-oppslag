@@ -1,10 +1,13 @@
 package no.nav.medlemskap.regler.v1
 
+import no.nav.medlemskap.domene.DekningForSykepenger
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.er
+import no.nav.medlemskap.regler.common.Funksjoner.inneholderNoe
 
 class ReglerForMedl(val personfakta: Personfakta) : Regler() {
 
+    private val gyldigeDekningerForSykepenger = DekningForSykepenger.values().map { it.dekning }
 
     override fun hentHovedRegel(): Regel =
             sjekkRegel {
@@ -47,7 +50,13 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
                                 sjekkRegel {
                                     erAdresseUendretForBrukerMedMedlemskap
                                 } hvisJa {
-                                    jaKonklusjon
+                                    sjekkRegel {
+                                        harBrukerDekningIMedl
+                                    } hvisJa {
+                                        jaKonklusjon
+                                    } hvisNei {
+                                        neiKonklusjon
+                                    }
                                 } hvisNei {
                                     uavklartKonklusjon
                                 }
@@ -150,6 +159,15 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
             operasjon = { erBrukersAdresseUendret() }
     )
 
+    private val harBrukerDekningIMedl = Regel(
+            identifikator = "1.6",
+            avklaring = "Har bruker et medlemskap som omfatter sykepenger? (Dekning i MEDL)",
+            beskrivelse = """"
+                Har bruker et medlemskap som omfatter sykepenger? Sjekker registrert dekning gitt fra MEDL
+            """.trimIndent(),
+            operasjon = { harBrukerMedlemskapSomOmfatterSykepenger() }
+    )
+
     private fun sjekkPerioderIMedl(): Resultat =
             when {
                 personfakta.finnesPersonIMedlSiste12mnd() -> ja()
@@ -177,7 +195,7 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
 
     private fun periodeMedMedlemskap(): Resultat =
             when {
-                personfakta.personensPerioderIMedlSiste12Mnd().stream().anyMatch {
+                personfakta.brukerensPerioderIMedlSiste12Mnd().stream().anyMatch {
                     it.erMedlem && it.lovvalgsland er "NOR" && it.lovvalg er "ENDL"
                 } -> ja()
                 else -> nei()
@@ -191,4 +209,9 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
                 else -> nei()
             }
 
+    private fun harBrukerMedlemskapSomOmfatterSykepenger(): Resultat =
+            when {
+                personfakta.medlemskapsPerioderOver12MndPeriodeDekning() inneholderNoe gyldigeDekningerForSykepenger -> ja()
+                else -> nei()
+            }
 }
