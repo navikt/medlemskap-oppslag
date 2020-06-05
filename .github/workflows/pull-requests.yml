@@ -22,5 +22,7 @@ jobs:
         uses: snyk/actions/gradle-jdk11@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_READ_TOKEN }}
+        with:
+          args: --file=build.gradle.kts --package-manager=gradle
       - name: build docker image
         run: docker build . --pull
