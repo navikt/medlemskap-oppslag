@@ -34,29 +34,29 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
 
 
     private val harBrukerJobbetUtenforNorge = Regel(
-            identifikator = "LOV-1",
-            avklaring = "Har bruker oppgitt å ha jobbet utenfor Norge?",
+            identifikator = "9",
+            avklaring = "Har bruker utført arbeid utenfor Norge?",
             beskrivelse = "",
             operasjon = { sjekkOmBrukerHarJobbetUtenforNorge() }
     )
 
     private val erBrukerBosattINorge = Regel(
-            identifikator = "LOV-2",
-            avklaring = "Er bruker registrert som bosatt i Norge og har vært det i 12 mnd?",
+            identifikator = "10",
+            avklaring = "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
             beskrivelse = "",
             operasjon = { sjekkLandskode() }
     )
 
     private val harBrukerNorskStatsborgerskap = Regel(
-            identifikator = "LOV-3",
-            avklaring = "Har bruker norsk statsborgeskap",
+            identifikator = "11",
+            avklaring = "Er bruker norsk statsborger?",
             beskrivelse = "",
             operasjon = { sjekkOmBrukerErNorskStatsborger() }
     )
 
     private val harBrukerJobbet25ProsentEllerMer = Regel(
-            identifikator = "LOV-4",
-            avklaring = "Har bruker vært i minst 25% stilling?",
+            identifikator = "12",
+            avklaring = "Har bruker vært i minst 25% stilling de siste 12 mnd?",
             beskrivelse = "",
             operasjon = { sjekkOmBrukerHarJobbet25ProsentEllerMer() }
     )
@@ -66,6 +66,15 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
                 personfakta.hentBrukerinputArbeidUtenforNorge() -> ja()
                 else -> nei()
             }
+
+    private fun sjekkOmBrukerErNorskStatsborger(): Resultat {
+        val førsteStatsborgerskap = personfakta.hentStatsborgerskapVedStartAvKontrollperiode()
+        val sisteStatsborgerskap = personfakta.hentStatsborgerskapVedSluttAvKontrollperiode()
+        return when {
+            førsteStatsborgerskap inneholder "NOR" && sisteStatsborgerskap inneholder "NOR" -> ja()
+            else -> nei("Brukeren er ikke norsk statsborger")
+        }
+    }
 
     private fun sjekkLandskode(): Resultat =
             when {
@@ -80,12 +89,5 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
             }
 
 
-    private fun sjekkOmBrukerErNorskStatsborger(): Resultat {
-        val førsteStatsborgerskap = personfakta.hentStatsborgerskapVedStartAvKontrollperiode()
-        val sisteStatsborgerskap = personfakta.hentStatsborgerskapVedSluttAvKontrollperiode()
-        return when {
-            førsteStatsborgerskap inneholder "NOR" && sisteStatsborgerskap inneholder "NOR" -> ja()
-            else -> nei("Brukeren er ikke norsk statsborger")
-        }
-    }
+
 }
