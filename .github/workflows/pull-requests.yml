@@ -3,6 +3,22 @@ name: PR build
 on: [pull_request]
 
 jobs:
+  security:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/cache@v1.1.2
+      with:
+        path: ~/.gradle/caches
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+        - name: Run Snyk to check for vulnerabilities
+          uses: snyk/actions/gradle-jdk11@master
+          env:
+            SNYK_TOKEN: ${{ secrets.SNYK_READ_TOKEN }}
+          with:
+            command: monitor
   build:
     runs-on: ubuntu-latest
     steps:
@@ -18,12 +34,5 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/gradle-jdk11@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_READ_TOKEN }}
-        with:
-          command: test
-          args: --file=build.gradle.kts --configuration-attributes=buildtype:release,usage:java-runtime
       - name: build docker image
         run: docker build . --pull
