@@ -15,7 +15,7 @@ jobs:
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
         with:
           command: monitor
-          args: --file=build.gradle.kts --configuration-attributes=buildtype:release,usage:java-runtime
+          args: --org=navikt --file=build.gradle.kts --configuration-attributes=buildtype:release,usage:java-runtime
   build:
     runs-on: ubuntu-latest
     steps:
