@@ -23,6 +23,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_READ_TOKEN }}
         with:
-          args: --file=build.gradle.kts --package-manager=gradle
+          command: test
+          args: --file=build.gradle.kts --configuration-attributes=buildtype:release,usage:java-runtime
       - name: build docker image
         run: docker build . --pull
