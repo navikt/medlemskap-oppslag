@@ -14,8 +14,7 @@ jobs:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
         with:
-          command: test
-          args: --file=build.gradle.kts --configuration-attributes=buildtype:release,usage:java-runtime
+          command: monitor
   build:
     runs-on: ubuntu-latest
     steps:
