@@ -20,6 +20,10 @@ val restAssuredVersion = "4.3.0"
 val resilience4jVersion = "1.5.0"
 val threetenVersion = "1.5.0"
 
+//Temporary to fix high severity Snyk vulernabilities:
+val nettyCodecVersion = "4.1.46.Final"
+val commonsCodecVersion = "3.2.2"
+
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
 fun tjenestespesifikasjon(name: String) = "no.nav.tjenestespesifikasjoner:$name:$tjenestespesifikasjonerVersion"
@@ -89,6 +93,10 @@ dependencies {
     implementation(tjenestespesifikasjon("person-v3-tjenestespesifikasjon"))
     implementation("io.github.resilience4j:resilience4j-retry:$resilience4jVersion")
     implementation("io.github.resilience4j:resilience4j-kotlin:$resilience4jVersion")
+
+    //Temporary to fix high severity Snyk vulernabilities:
+    implementation("io.netty:netty-codec:$nettyCodecVersion")
+    implementation("commons-collections:commons-collections:$commonsCodecVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
