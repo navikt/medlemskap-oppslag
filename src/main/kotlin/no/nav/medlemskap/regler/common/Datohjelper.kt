@@ -1,14 +1,15 @@
 package no.nav.medlemskap.regler.common
 
-import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Periode
 import org.threeten.extra.Interval
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 enum class Ytelse { SYKEPENGER }
 
-class Datohjelper(val datagrunnlag: Datagrunnlag) {
+class Datohjelper(val periode: InputPeriode) {
 
     private val ytelse = Ytelse.SYKEPENGER // TODO: Vurder om dette skal være noe vi sjekker
 
@@ -39,7 +40,7 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
         }
     }
 
-    private fun førsteSykedag() = datagrunnlag.periode.fom.minusDays(1)
+    fun førsteSykedag() = periode.fom.minusDays(1)
 
     fun opptjeningsperiode(): Periode {
         return when (ytelse) {
@@ -115,6 +116,14 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
 
     fun erDatoerSammenhengende(sluttDato: LocalDate, startDato: LocalDate?): Boolean {
         return sluttDato.isAfter(startDato?.minusDays(3))
+    }
+
+    companion object {
+        private val datoFormatter = DateTimeFormatter.ofPattern("d.MM.yyyy")
+
+        fun parseDato(dato: String): LocalDate {
+            return LocalDate.parse(dato, datoFormatter)
+        }
     }
 }
 

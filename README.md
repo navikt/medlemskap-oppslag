@@ -1,6 +1,15 @@
 # medlemskap-oppslag
 Oppslagstjeneste for lovvalg og medlemskap i Folketrygden
 
+Denne tjenesten gjør REST-kall mot følgende tjenester/registre:
+* MEDL:
+* GSAK:
+* JOARK:
+* TPS/DL: 
+
+# Funksjonell dokumentasjon
+* [Funksjonell dokumentasjon](src/test/resources/dokumentasjon/README.md)
+
 ## URL til tjeneste
 * preprod: https://medlemskap-oppslag.nais.preprod.local
 * prod: https://medlemskap-oppslag.nais.adeo.no

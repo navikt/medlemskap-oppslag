@@ -19,6 +19,7 @@ val assertkVersion = "0.21"
 val restAssuredVersion = "4.2.0"
 val resilience4jVersion = "1.2.0"
 val threetenVersion = "1.5.0"
+val cucumberVersion = "2.3.1"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
@@ -100,6 +101,8 @@ dependencies {
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:$assertkVersion")
     testImplementation("io.rest-assured:rest-assured:$restAssuredVersion")
 
+    testImplementation("io.cucumber:cucumber-java8:5.6.0")
+    testImplementation("io.cucumber:cucumber-junit:5.6.0")
 }
 
 java {
