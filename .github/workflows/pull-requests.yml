@@ -14,7 +14,7 @@ jobs:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
         with:
-          command: test
+          command: monitor
           args: --file=build.gradle.kts --configuration-attributes=usage:java-runtime --project-name=${{ github.repository }} --remote-repo-url=https://github.com/${{ github.repository }}.git
   build:
     runs-on: ubuntu-latest
