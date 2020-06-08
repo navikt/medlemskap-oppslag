@@ -2,22 +2,22 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val ktorVersion = "1.3.0"
-val jacksonVersion = "2.10.1"
+val ktorVersion = "1.3.2"
+val jacksonVersion = "2.10.4"
 val prometheusVersion = "0.7.0"
 val logbackVersion = "1.2.3"
-val logstashVersion = "5.1"
+val logstashVersion = "6.4"
 val konfigVersion = "1.6.10.0"
-val kotlinLoggerVersion = "1.7.6"
+val kotlinLoggerVersion = "1.7.9"
 val tjenestespesifikasjonerVersion = "1.2019.12.18-12.22-ce897c4eb2c1"
-val cxfVersion = "3.3.1"
-val coroutinesVersion = "1.3.3"
-val wireMockVersion = "2.19.0"
-val mockkVersion = "1.9"
-val junitJupiterVersion = "5.4.0"
-val assertkVersion = "0.21"
-val restAssuredVersion = "4.2.0"
-val resilience4jVersion = "1.2.0"
+val cxfVersion = "3.3.6"
+val coroutinesVersion = "1.3.7"
+val wireMockVersion = "2.26.3"
+val mockkVersion = "1.9.3"
+val junitJupiterVersion = "5.6.2"
+val assertkVersion = "0.22"
+val restAssuredVersion = "4.3.0"
+val resilience4jVersion = "1.5.0"
 val threetenVersion = "1.5.0"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
@@ -25,7 +25,7 @@ val mainClass = "no.nav.medlemskap.ApplicationKt"
 fun tjenestespesifikasjon(name: String) = "no.nav.tjenestespesifikasjoner:$name:$tjenestespesifikasjonerVersion"
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.3.61"
+    id("org.jetbrains.kotlin.jvm") version "1.3.72"
     id("com.github.johnrengelman.shadow") version "5.1.0"
 }
 
@@ -93,7 +93,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
-    testImplementation("com.github.tomakehurst:wiremock:$wireMockVersion") {
+    testImplementation("com.github.tomakehurst:wiremock-jre8:$wireMockVersion") {
         exclude(group = "junit")
     }
     testImplementation("io.mockk:mockk:$mockkVersion")
