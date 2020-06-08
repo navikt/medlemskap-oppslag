@@ -1,17 +1,17 @@
 {
   "periode": {
     "fom": "2020-01-30",
-    "tom": "2020-10-30"
+    "tom": "2020-02-02"
   },
   "brukerinput": {
-    "arbeidUtenforNorge": false
+    "arbeidUtenforNorge": true
   },
   "personhistorikk": {
     "statsborgerskap": [
       {
-        "landkode": "NOR",
-        "fom": "1991-02-20",
-        "tom": "9999-01-01"
+        "landkode": "USA",
+        "fom": "2008-01-30",
+        "tom": null
       }
     ],
     "personstatuser": [],
@@ -19,19 +19,28 @@
     "postadresser": [],
     "midlertidigAdresser": []
   },
-  "medlemskap": [],
+  "medlemskap": [
+    {
+      "fraOgMed": "2018-01-01",
+      "tilOgMed": "2021-05-05",
+      "erMedlem": false,
+      "lovvalgsland": "NOR",
+      "lovvalg": "ENDL"
+    }
+  ],
   "arbeidsforhold": [
     {
       "periode": {
         "fom": "2018-01-01",
-        "tom": "2020-06-30"
+        "tom": "2020-01-01"
       },
       "utenlandsopphold": [],
       "arbeidsgivertype": "Organisasjon",
       "arbeidsgiver": {
         "type": "BEDR",
         "identifikator": "1",
-        "landkode": "SWE"
+        "landkode": "NOR",
+        "antallAnsatte": "6"
       },
       "arbeidsfolholdstype": "NORMALT",
       "arbeidsavtaler": [
@@ -46,7 +55,7 @@
     },
     {
       "periode": {
-        "fom": "2019-07-01",
+        "fom": "2020-01-02",
         "tom": null
       },
       "utenlandsopphold": [],
@@ -54,15 +63,15 @@
       "arbeidsgiver": {
         "type": "BEDR",
         "identifikator": "1",
-        "landkode": "NOR"
+        "landkode": "NOR",
+        "antallAnsatte": "6"
       },
-      "arbeidsfolholdstype": "MARITIM",
-      "skipsregister": "nis",
+      "arbeidsfolholdstype": "NORMALT",
       "arbeidsavtaler": [
         {
           "periode": {
-            "fom": "2020-07-01",
-            "tom": null
+            "fom": "2020-01-30",
+            "tom": "2020-06-30"
           },
           "yrkeskode": "0001"
         }

@@ -1,21 +1,16 @@
 {
   "periode": {
-    "fom": "2020-01-15",
-    "tom": "2020-01-30"
+    "fom": "2020-01-30",
+    "tom": "2020-02-02"
   },
   "brukerinput": {
-    "arbeidUtenforNorge": false
+    "arbeidUtenforNorge": true
   },
   "personhistorikk": {
     "statsborgerskap": [
       {
-        "landkode": "NOR",
-        "fom": "2000-01-30",
-        "tom": null
-      },
-      {
-        "landkode": "PHL",
-        "fom": "2000-01-30",
+        "landkode": "USA",
+        "fom": "2008-01-30",
         "tom": null
       }
     ],
@@ -24,7 +19,15 @@
     "postadresser": [],
     "midlertidigAdresser": []
   },
-  "medlemskap": [],
+  "medlemskap": [
+    {
+      "fraOgMed": "2018-01-01",
+      "tilOgMed": "2021-05-05",
+      "erMedlem": false,
+      "lovvalgsland": "NOR",
+      "lovvalg": "ENDL"
+    }
+  ],
   "arbeidsforhold": [],
   "inntekt": [],
   "oppgaver": [],

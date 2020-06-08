@@ -5,6 +5,7 @@ import no.nav.medlemskap.common.merEnn10ArbeidsforholdCounter
 import no.nav.medlemskap.common.stillingsprosentCounter
 import no.nav.medlemskap.common.usammenhengendeArbeidsforholdCounter
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.regler.common.Funksjoner.er
 import no.nav.medlemskap.services.aareg.AaRegOpplysningspliktigArbeidsgiverType
 import no.nav.medlemskap.services.ereg.Ansatte
 import org.threeten.extra.Interval
@@ -18,12 +19,32 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     private val datohjelper = Datohjelper(datagrunnlag)
     private val statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap
     private val arbeidsforhold = datagrunnlag.arbeidsforhold
+    private val bostedadresser = datagrunnlag.personhistorikk.bostedsadresser
+
 
     companion object {
         fun initialiserFakta(datagrunnlag: Datagrunnlag) = Personfakta(datagrunnlag)
     }
 
-    fun personensPerioderIMedl(): List<Medlemskapsunntak> = datagrunnlag.medlemskapsunntak
+    fun finnesPersonIMedlSiste12mnd(): Boolean {
+        return brukerensPerioderIMedlSiste12Mnd().isNotEmpty()
+    }
+
+    fun personensPerioderIMedl(): List<Medlemskap> = datagrunnlag.medlemskap
+
+    fun personensMedlemskapsperioderIMedlForPeriode(kontrollPeriode: Periode): List<Medlemskap> {
+        val medlemskapsperioderForPerson = ArrayList<Medlemskap>()
+        for (medlemskap in datagrunnlag.medlemskap) {
+            val medlemsintervall = lagInterval(Periode(medlemskap.fraOgMed, medlemskap.tilOgMed))
+            val kontrollPeriodeForMedlIntervall = kontrollPeriode.interval()
+            if (medlemsintervall.overlaps(kontrollPeriodeForMedlIntervall)) medlemskapsperioderForPerson.add(medlemskap)
+        }
+        return medlemskapsperioderForPerson
+    }
+
+    fun brukerensPerioderIMedlSiste12Mnd(): List<Medlemskap> {
+        return personensMedlemskapsperioderIMedlForPeriode(datohjelper.kontrollPeriodeForMedl())
+    }
 
     fun personensOppgaverIGsak(): List<Oppgave> = datagrunnlag.oppgaver
 
@@ -62,6 +83,20 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
             periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
                     datohjelper.kontrollPeriodeForYrkesforholdType())
         }.map { it.arbeidsfolholdstype.navn }
+    }
+
+    fun arbeidsforholdForDato(dato: LocalDate): List<Arbeidsforhold> {
+        return arbeidsforhold.filter {
+            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
+                    Periode(dato, dato))
+        }.sorted()
+    }
+
+    fun bostedAdresseForDato(dato: LocalDate): List<Adresse> {
+        return bostedadresser.filter {
+            periodefilter(lagInterval(Periode(it.fom, it.tom)),
+                    Periode(dato, dato))
+        }
     }
 
     fun arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(): List<Arbeidsgiver> {
@@ -111,10 +146,6 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         }
 
         return true
-    }
-
-    fun arbeidsgiversLandForPeriode(): List<String> {
-        return arbeidsforholdIOpptjeningsperiode().mapNotNull { it.arbeidsgiver.landkode }
     }
 
     fun sisteArbeidsforholdYrkeskode(): List<String> {
@@ -212,5 +243,53 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     fun konkursStatuserArbeidsgivere(): List<String?>? {
         return arbeidsforholdForNorskArbeidsgiver().flatMap { it.arbeidsgiver.konkursStatus.orEmpty() }
+    }
+
+    fun erMedlemskapPeriodeOver12MndPeriode(erMedlem: Boolean): Boolean {
+        return medlemskapsPerioderOver12MndPeriode(erMedlem).isNotEmpty()
+    }
+
+    private fun medlemskapsPerioderOver12MndPeriode(erMedlem: Boolean): List<Medlemskap> {
+        return brukerensPerioderIMedlSiste12Mnd().filter {
+            it.erMedlem == erMedlem && it.lovvalg er "ENDL" &&
+                    Periode(it.fraOgMed, it.tilOgMed).interval().encloses(datohjelper.kontrollPeriodeForMedl().interval())
+        }
+    }
+
+    fun medlemskapsPerioderOver12MndPeriodeDekning(): List<String> {
+        return medlemskapsPerioderOver12MndPeriode(true).map { it.dekning.orEmpty() }
+    }
+
+    fun harSammeArbeidsforholdSidenFomDatoFraMedl(): Boolean {
+
+        val fomDatoFraMedl = finnTidligsteFraOgMedDatoForMedl()
+
+        return arbeidsforholdForDato(fomDatoFraMedl).isNotEmpty() &&
+                arbeidsforholdForDato(fomDatoFraMedl) == arbeidsforholdForDato(datohjelper.tilOgMedDag())
+    }
+
+    private fun finnTidligsteFraOgMedDatoForMedl(): LocalDate {
+        var fomDatoFraMedl = LocalDate.MAX
+
+        for (medlemskap in brukerensPerioderIMedlSiste12Mnd()) {
+            if (medlemskap.fraOgMed.isBefore(fomDatoFraMedl)) fomDatoFraMedl = medlemskap.fraOgMed
+        }
+        return fomDatoFraMedl
+    }
+
+    fun harMedlPeriodeMedOgUtenMedlemskap(): Boolean {
+        return brukerensPerioderIMedlSiste12Mnd().any { it.erMedlem }
+                && brukerensPerioderIMedlSiste12Mnd().any { !it.erMedlem }
+    }
+
+    fun harGyldigeMedlemskapsperioder(): Boolean {
+        return brukerensPerioderIMedlSiste12Mnd().none { it.tilOgMed.isAfter(it.fraOgMed.plusYears(5)) }
+    }
+
+    fun harSammeAdresseSidenFomDatoFraMedl(): Boolean {
+        val fomDatoFraMedl = finnTidligsteFraOgMedDatoForMedl()
+
+        return bostedAdresseForDato(fomDatoFraMedl).size == 1 &&
+                bostedAdresseForDato(fomDatoFraMedl) == bostedAdresseForDato(datohjelper.tilOgMedDag())
     }
 }

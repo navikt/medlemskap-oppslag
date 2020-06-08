@@ -1,6 +1,6 @@
 {
   "periode": {
-    "fom": "2020-01-30",
+    "fom": "2020-01-29",
     "tom": "2020-01-30"
   },
   "brukerinput": {
@@ -26,12 +26,12 @@
     "postadresser": [],
     "midlertidigAdresser": []
   },
-  "medlemskap": [],
+  "medlemskapsunntak": [],
   "arbeidsforhold": [
     {
       "periode": {
         "fom": "2018-01-30",
-        "tom": "2020-01-30"
+        "tom": null
       },
       "utenlandsopphold": [],
       "arbeidsgivertype": "Organisasjon",
@@ -45,7 +45,7 @@
         {
           "periode": {
             "fom": "2020-01-30",
-            "tom": "2020-01-30"
+            "tom": null
           },
           "yrkeskode": "0001",
           "skipsregister": "utl"
@@ -53,6 +53,13 @@
       ]
     }
   ],
+  "medlemskap" : [ {
+    "fraOgMed" : "2019-01-01",
+    "tilOgMed" : "2020-02-28",
+    "erMedlem" : true,
+    "lovvalgsland": "NOR",
+    "lovvalg": "ENDL"
+  } ],
   "inntekt": [],
   "oppgaver": [],
   "dokument": []

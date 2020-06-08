@@ -1,7 +1,7 @@
 {
   "periode": {
     "fom": "2020-01-30",
-    "tom": "2020-01-30"
+    "tom": "2020-02-05"
   },
   "brukerinput" : {
     "arbeidUtenforNorge" : true
@@ -17,7 +17,21 @@
     "postadresser" : [ ],
     "midlertidigAdresser" : [ ]
   },
-  "medlemskap" : [ ],
+  "medlemskap" : [
+  {
+    "fraOgMed" : "2020-01-01",
+    "tilOgMed" : "2020-01-12",
+    "erMedlem" : true,
+    "lovvalgsland": "NOR",
+    "lovvalg": "ENDL"
+  },
+  {
+    "fraOgMed" : "2018-01-01",
+    "tilOgMed" : "2021-05-05",
+    "erMedlem" : false,
+    "lovvalgsland": "NOR",
+    "lovvalg": "ENDL"
+  }],
   "arbeidsforhold" : [ ],
   "inntekt" : [ ],
   "oppgaver" : [ ],
