@@ -72,7 +72,7 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
 
     private val harBrukerMedlOpplysninger = Regel(
             identifikator = "1",
-            avklaring = "1 - Finnes det noe på personen i MEDL?",
+            avklaring = "Finnes det noe på personen i MEDL?",
             beskrivelse = """
                 Vedtak (gjort av NAV eller utenlandsk trygdemyndighet) som er registrert i MEDL, 
                 må vurderes manuelt og det må vurderes om brukers situasjon er uendret i forhold 
@@ -83,7 +83,7 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
 
     private val periodeMedOgUtenMedlemskap = Regel(
             identifikator = "1.1",
-            avklaring = "1.1 - Er det periode både med og uten medlemskap innenfor 12 mnd?",
+            avklaring = "Er det periode både med og uten medlemskap innenfor 12 mnd?",
             beskrivelse = """
                 Dersom en bruker har en periode med medlemskap og en periode uten medlemskap innenfor 12 mnd 
                 periode, skal det gå til uavklart.
@@ -93,7 +93,7 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
 
     private val periodeMedMedlemskap = Regel(
             identifikator = "1.2",
-            avklaring = "1.2 - Er det en periode med medlemskap?",
+            avklaring = "Er det en periode med medlemskap?",
             beskrivelse = """"
                Har medlemskap og Norge er lovvalg. 
             """.trimIndent(),

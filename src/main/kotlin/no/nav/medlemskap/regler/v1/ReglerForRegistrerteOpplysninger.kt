@@ -4,7 +4,7 @@ import no.nav.medlemskap.domene.Journalpost
 import no.nav.medlemskap.domene.Oppgave
 import no.nav.medlemskap.domene.Status
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.common.Funksjoner.er
+import no.nav.medlemskap.regler.common.Funksjoner.antall
 import no.nav.medlemskap.regler.common.Funksjoner.erDelAv
 
 class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() {
@@ -18,7 +18,18 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
             identifikator = "OPPLYSNINGER",
             avklaring = "Finnes det registrerte opplysninger på bruker?",
             beskrivelse = "For å sjekke uregistrerte lovvalg og/eller medlemskap",
-            operasjon = { minstEnAvDisse(joark, gsak) }
+            operasjon = { minstEnAvDisse(medl, joark, gsak) }
+    )
+
+    private val medl = Regel(
+            identifikator = "OPPLYSNINGER-MEDL",
+            avklaring = "Finnes det registrerte opplysninger i MEDL?",
+            beskrivelse = """
+                Vedtak (gjort av NAV eller utenlandsk trygdemyndighet) som er registrert i MEDL, 
+                må vurderes manuelt og det må vurderes om brukers situasjon er uendret i forhold 
+                til situasjonen på vedtakstidspunktet.
+            """.trimIndent(),
+            operasjon = { sjekkPerioderIMedl() }
     )
 
     private val joark = Regel(
@@ -45,6 +56,12 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
 
     private val tillatteTemaer = listOf("MED", "UFM", "TRY")
     private val tillatteStatuser = listOf(Status.AAPNET, Status.OPPRETTET, Status.UNDER_BEHANDLING)
+
+    private fun sjekkPerioderIMedl(): Resultat =
+            when {
+                personfakta.personensPerioderIMedl().antall == 0 -> nei()
+                else -> ja()
+            }
 
     private fun tellDokumenter(): Resultat =
             when {

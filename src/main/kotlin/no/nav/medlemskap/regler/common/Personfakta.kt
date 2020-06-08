@@ -30,6 +30,8 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return brukerensPerioderIMedlSiste12Mnd().isNotEmpty()
     }
 
+    fun personensPerioderIMedl(): List<Medlemskap> = datagrunnlag.medlemskap
+
     fun personensMedlemskapsperioderIMedlForPeriode(kontrollPeriode: Periode): List<Medlemskap> {
         val medlemskapsperioderForPerson = ArrayList<Medlemskap>()
         for (medlemskap in datagrunnlag.medlemskap) {
