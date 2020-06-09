@@ -19,7 +19,7 @@ val assertkVersion = "0.21"
 val restAssuredVersion = "4.2.0"
 val resilience4jVersion = "1.2.0"
 val threetenVersion = "1.5.0"
-val cucumberVersion = "2.3.1"
+val cucumberVersion = "5.6.0"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
@@ -47,8 +47,6 @@ repositories {
         }
     }
 }
-
-
 
 dependencies {
     implementation(kotlin("stdlib"))
@@ -101,8 +99,10 @@ dependencies {
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:$assertkVersion")
     testImplementation("io.rest-assured:rest-assured:$restAssuredVersion")
 
-    testImplementation("io.cucumber:cucumber-java8:5.6.0")
-    testImplementation("io.cucumber:cucumber-junit:5.6.0")
+    testImplementation("io.cucumber:cucumber-junit:${cucumberVersion}")
+    testImplementation("io.cucumber:cucumber-java8:${cucumberVersion}")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:${junitJupiterVersion}")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}")
 }
 
 java {

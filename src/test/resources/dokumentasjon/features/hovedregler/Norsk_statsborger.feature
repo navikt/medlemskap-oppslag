@@ -3,7 +3,7 @@
 
 Egenskap: Norsk statsborger som er bosatt i Norge og jobber i Norge
 
-  Scenario:
+  Scenario: Norsk statsborger
 
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |

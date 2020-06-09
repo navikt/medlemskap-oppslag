@@ -63,7 +63,7 @@ class DomenespråkParser {
             return emptyList()
         }
 
-        return dataTable!!.asMaps().map{ radMapper.mapRad(this, it) }
+        return dataTable.asMaps().map{ radMapper.mapRad(this, it) }
     }
 }
 

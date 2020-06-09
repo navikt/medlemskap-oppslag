@@ -3,7 +3,7 @@
 
 Egenskap: Norsk statsborger som er bosatt i Norge, og som har jobbet i Norge hele perioden uten utenlandsopphold.
 
-  Scenario:
+  Scenario: Norsk statsborger som er bosatt i Norge, json
 
      Gitt følgende datagrunnlag json
 """

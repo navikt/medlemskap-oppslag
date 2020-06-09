@@ -2,8 +2,8 @@ package no.nav.medlemskap.cucumber.steps
 
 import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
+import junit.framework.TestCase.assertEquals
 
-import junit.framework.Assert.assertEquals
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.InputPeriodeMapper
 import no.nav.medlemskap.domene.InputPeriode
@@ -20,7 +20,7 @@ class PeriodeSteps: No {
     init {
         Gitt("følgende sykemeldingsperiode:") {
             dataTable: DataTable? ->
-            sykemeldingsperiode = domenespråkParser.mapDataTable(dataTable, InputPeriodeMapper()).get(0)
+            sykemeldingsperiode = domenespråkParser.mapDataTable(dataTable, InputPeriodeMapper())[0]
         }
 
         Når("første sykedag beregnes fra sykemeldingsperiode") {

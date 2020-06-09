@@ -2,16 +2,14 @@ package no.nav.medlemskap.cucumber.steps
 
 import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
-import junit.framework.Assert.assertEquals
+import junit.framework.TestCase.assertEquals
 import no.nav.medlemskap.cucumber.AdresseMapper
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.MedlemskapsparametreMapper
 import no.nav.medlemskap.cucumber.StatsborgerskapMapper
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.assertDelresultat
-import no.nav.medlemskap.regler.assertSvar
 import no.nav.medlemskap.regler.common.Resultat
-import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.personer.Personleser
 import no.nav.medlemskap.regler.v1.ReglerService
 
@@ -63,10 +61,6 @@ class RegelSteps: No {
 
         Når("lovvalg og medlemskap beregnes fra datagrunnlag json") {
             resultat = ReglerService.kjørRegler(datagrunnlag!!)
-        }
-
-        Så("skal lovvalg være {string}") { forventetLovvalg: String? ->
-            assertSvar("LOV-4", Svar.JA, resultat!!, Svar.JA)
         }
 
         Så("skal delresultat {string} være {string}") { regelIdentifikator: String?, forventetSvar: String? ->
