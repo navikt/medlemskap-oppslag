@@ -94,25 +94,30 @@ private suspend fun createDatagrunnlag(
         services: Services): Datagrunnlag = coroutineScope {
 
 
-    val pdlHistorikkRequest = async { services.pdlService.hentPersonHistorikk(fnr, callId) }
+    val pdlHistorikkRequest = services.pdlService.hentPersonHistorikk(fnr, callId)
     val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr, periode.fom) }
     val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(fnr, callId) }
     val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr, callId, fraOgMedDatoForArbeidsforhold(periode), periode.tom) }
     val inntektListeRequest = async { services.inntektService.hentInntektListe(fnr, callId, periode.fom, periode.tom) }
     val journalPosterRequest = async { services.safService.hentJournaldata(fnr, callId) }
     val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktoer, callId) }
+    val familierelasjonBarnPersonHistorikkRequest = async {
+        folkeregistrertFamilierelasjonBarn(pdlHistorikkRequest, periode, services)
+    }
+    val sivilstandPersonHistorikkRequest = async {
+        folkeregistrertSivilstand(pdlHistorikkRequest, periode, services)
+    }
 
-    val pdlHistorikk = pdlHistorikkRequest.await()
     val historikkFraTps = historikkFraTpsRequest.await()
     val medlemskapsunntak = medlemskapsunntakRequest.await()
     val arbeidsforhold = arbeidsforholdRequest.await()
     val inntektListe = inntektListeRequest.await()
     val journalPoster = journalPosterRequest.await()
     val oppgaver = gosysOppgaver.await()
+    val familierelasjonBarnPersonHistorikk = familierelasjonBarnPersonHistorikkRequest.await()
+    val sivilstandPersonHistorikk = sivilstandPersonHistorikkRequest.await()
 
-    val familierelasjoner = folkeregistrertFamilierelasjonBarn(pdlHistorikk, periode, services)
-    val sivilstand = folkeregistrertSivilstand(pdlHistorikk.sivilstand, periode, services)
-    val familierelasjonOgSivilstand = familierelasjoner.plus(sivilstand)
+    val familierelasjonOgSivilstand = familierelasjonBarnPersonHistorikk.plus(sivilstandPersonHistorikk)
 
     //  logger.info { pdlHistorikk }
 
@@ -121,7 +126,7 @@ private suspend fun createDatagrunnlag(
             periode = periode,
             brukerinput = brukerinput,
             personhistorikk = historikkFraTps,
-            pdlpersonhistorikk = pdlHistorikk,
+            pdlpersonhistorikk = pdlHistorikkRequest,
             medlemskapsunntak = medlemskapsunntak,
             arbeidsforhold = arbeidsforhold,
             inntekt = inntektListe,
@@ -134,21 +139,24 @@ private suspend fun createDatagrunnlag(
 }
 
 suspend fun folkeregistrertFamilierelasjonBarn(personhistorikk: Personhistorikk, periode: InputPeriode, services: Services): List<PersonhistorikkRelatertPerson> {
-    val familierelasjonBarn = personhistorikk.familierelasjoner
+    return personhistorikk.familierelasjoner
             .filter { it.relatertPersonsRolle == Familierelasjonsrolle.BARN }
-
-    return barnUnder18aar(familierelasjonBarn, services)
+            .filter {
+                barnUnder18aar(it, services, periode)
+            }
             .map { services.personService.personhistorikkRelatertPerson(it.relatertPersonIdent, periode.fom) }
 }
 
-suspend fun barnUnder18aar(familierelasjon: List<Familierelasjon>, services: Services): List<Familierelasjon> {
-    return familierelasjon.filter {
-        LocalDate.now().year - services.pdlService.hentFoedselsaar(it.relatertPersonIdent, UUID.randomUUID().toString()) < 18
-    }
+suspend fun barnUnder18aar(familierelasjon: Familierelasjon, services: Services, periode: InputPeriode): Boolean {
+    val aarstall = periode.tom.year
+    val aldersGrense = 18
+    val hentFoedselsaarTilBarn = services.pdlService.hentFoedselsaar(familierelasjon.relatertPersonIdent, UUID.randomUUID().toString())
+
+    return (aarstall - hentFoedselsaarTilBarn) < aldersGrense
 }
 
-suspend fun folkeregistrertSivilstand(sivilstand: List<Sivilstand>, periode: InputPeriode, services: Services) : List<PersonhistorikkRelatertPerson> {
-    return sivilstand.map { services.personService.personhistorikkRelatertPerson(it.relatertVedSivilstand, periode.fom) }
+suspend fun folkeregistrertSivilstand(personhistorikk: Personhistorikk, periode: InputPeriode, services: Services) : List<PersonhistorikkRelatertPerson> {
+    return personhistorikk.sivilstand.map { services.personService.personhistorikkRelatertPerson(it.relatertVedSivilstand, periode.fom) }
 }
 
 private fun fraOgMedDatoForArbeidsforhold(periode: InputPeriode) = periode.fom.minusYears(1).minusDays(1)
