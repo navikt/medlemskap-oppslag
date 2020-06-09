@@ -18,7 +18,7 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
             identifikator = "OPPLYSNINGER",
             avklaring = "Finnes det registrerte opplysninger på bruker?",
             beskrivelse = "For å sjekke uregistrerte lovvalg og/eller medlemskap",
-            operasjon = { minstEnAvDisse(medl, joark, gsak) }
+            operasjon = { finnDelResultat(medl, joark, gsak) }
     )
 
     private val medl = Regel(

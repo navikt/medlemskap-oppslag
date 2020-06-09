@@ -10,9 +10,9 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
     private val gyldigeDekningerForSykepenger = DekningForSykepenger.values().map { it.dekning }
 
     override fun hentHovedRegel(): Regel =
-            sjekkRegel {
-                harBrukerMedlOpplysninger
-            } hvisJa {
+           // sjekkRegel {
+             //   harBrukerMedlOpplysninger
+           // } hvisJa {
                 sjekkRegel {
                     periodeMedOgUtenMedlemskap
                 } hvisJa {
@@ -68,7 +68,7 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
                         }
                     }
                 }
-            }
+      //      }
 
     private val harBrukerMedlOpplysninger = Regel(
             identifikator = "1",
