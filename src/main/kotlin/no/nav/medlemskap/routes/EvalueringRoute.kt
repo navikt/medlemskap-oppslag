@@ -110,6 +110,9 @@ private suspend fun createDatagrunnlag(
     val journalPoster = journalPosterRequest.await()
     val oppgaver = gosysOppgaver.await()
 
+    val familierelasjoner = folkeregistrertFamilierelasjonBarn(pdlHistorikk, periode, services)
+    val sivilstand = folkeregistrertSivilstand(pdlHistorikk.sivilstand, periode, services)
+    val familierelasjonOgSivilstand = familierelasjoner.plus(sivilstand)
 
     //  logger.info { pdlHistorikk }
 
@@ -123,18 +126,29 @@ private suspend fun createDatagrunnlag(
             arbeidsforhold = arbeidsforhold,
             inntekt = inntektListe,
             oppgaver = oppgaver,
-            dokument = journalPoster
+            dokument = journalPoster,
+            familierelasjonOgSivilstand = familierelasjonOgSivilstand
     )
 
 
 }
 
-suspend fun folkeregistrertFamilierelasjon(personhistorikk: Personhistorikk, periode: InputPeriode, services: Services): List<Personhistorikk> {
-    return personhistorikk.familierelasjoner.map { services.personService.personhistorikk(it.relatertPersonIdent, periode.fom) }
+suspend fun folkeregistrertFamilierelasjonBarn(personhistorikk: Personhistorikk, periode: InputPeriode, services: Services): List<PersonhistorikkRelatertPerson> {
+    val familierelasjonBarn = personhistorikk.familierelasjoner
+            .filter { it.relatertPersonsRolle == Familierelasjonsrolle.BARN }
+
+    return barnUnder18aar(familierelasjonBarn, services)
+            .map { services.personService.personhistorikkRelatertPerson(it.relatertPersonIdent, periode.fom) }
 }
 
-suspend fun folkeregistrertSivilstand(sivilstand: Sivilstand, periode: InputPeriode, services: Services) : Personhistorikk {
-    return services.personService.personhistorikk(sivilstand.relatertVedSivilstand, periode.fom)
+suspend fun barnUnder18aar(familierelasjon: List<Familierelasjon>, services: Services): List<Familierelasjon> {
+    return familierelasjon.filter {
+        LocalDate.now().year - services.pdlService.hentFoedselsaar(it.relatertPersonIdent, UUID.randomUUID().toString()) < 18
+    }
+}
+
+suspend fun folkeregistrertSivilstand(sivilstand: List<Sivilstand>, periode: InputPeriode, services: Services) : List<PersonhistorikkRelatertPerson> {
+    return sivilstand.map { services.personService.personhistorikkRelatertPerson(it.relatertVedSivilstand, periode.fom) }
 }
 
 private fun fraOgMedDatoForArbeidsforhold(periode: InputPeriode) = periode.fom.minusYears(1).minusDays(1)

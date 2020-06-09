@@ -134,6 +134,10 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
         }*/
 
     }
+
+    suspend fun hentFoedselsaar(fnr:String, callId: String): Int {
+        return pdlClient.hentFoedselsaar(fnr, callId)
+    }
 }
 
 

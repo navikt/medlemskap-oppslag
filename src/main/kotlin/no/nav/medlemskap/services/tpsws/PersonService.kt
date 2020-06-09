@@ -18,5 +18,16 @@ class PersonService(private val personClient: PersonClient) {
                     else -> err
                 }
             }
+
+    suspend fun personhistorikkRelatertPerson(fnr: String, fom: LocalDate) =
+            try {
+                mapPersonhistorikkRelatertPersonResultat(personClient.hentPersonHistorikk(fnr, fom))
+            } catch (err: Exception) {
+                throw when (err) {
+                    is HentPersonhistorikkPersonIkkeFunnet -> PersonIkkeFunnet(err, "TPS")
+                    is HentPersonhistorikkSikkerhetsbegrensning -> Sikkerhetsbegrensing(err, "TPS")
+                    else -> err
+                }
+            }
 }
 
