@@ -56,7 +56,7 @@
   "medlemskap" : [ {
     "fraOgMed" : "2019-01-01",
     "tilOgMed" : "2020-01-26",
-    "erMedlem" : true,
+    "erMedlem" : false,
     "lovvalgsland": "NOR",
     "lovvalg": "ENDL"
   } ],

@@ -6,7 +6,8 @@ import java.util.stream.Collectors
 
 object Funksjoner {
 
-    fun antall(liste: List<Any>): Number = liste.size
+    val List<Any>.antall: Number
+        get() = size
 
     infix fun List<Any>.inneholder(objekt: Any?) = this.contains(objekt)
 
@@ -20,7 +21,7 @@ object Funksjoner {
 
     infix fun List<String>.kunInneholder(string: String) = this.contains(string) && this.size == 1
 
-    infix fun String.er(string: String) = this.equals(string)
+    infix fun String?.er(string: String) = this != null && this == string
 
     infix fun Map<String, String>.harAlle(liste: List<Statsborgerskap>) = this.keys.containsAll(liste.stream().map { it.landkode }.collect(Collectors.toList()))
 

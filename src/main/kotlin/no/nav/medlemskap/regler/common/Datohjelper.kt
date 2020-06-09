@@ -3,6 +3,7 @@ package no.nav.medlemskap.regler.common
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Periode
 import org.threeten.extra.Interval
+import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -22,17 +23,8 @@ class Datohjelper(val periode: InputPeriode) {
         }
     }
 
-    fun kontrollPeriodeForKunNorskStatsborgerskap(): Periode {
-        return when (ytelse) {
-            Ytelse.SYKEPENGER -> Periode(
-                    fom = førsteSykedag().minusDays(28),
-                    tom = førsteSykedag()
-            )
-        }
-    }
-
     fun kontrollPeriodeForMedl(): Periode {
-        return when (ytelse){
+        return when (ytelse) {
             Ytelse.SYKEPENGER -> Periode(
                     fom = førsteSykedag().minusMonths(12),
                     tom = førsteSykedag()
@@ -42,12 +34,9 @@ class Datohjelper(val periode: InputPeriode) {
 
     fun førsteSykedag() = periode.fom.minusDays(1)
 
-    fun opptjeningsperiode(): Periode {
+    fun tilOgMedDag(): LocalDate {
         return when (ytelse) {
-            Ytelse.SYKEPENGER -> Periode(
-                    fom = førsteSykedag().minusDays(28),
-                    tom = førsteSykedag()
-            )
+            Ytelse.SYKEPENGER -> førsteSykedag()
         }
     }
 
@@ -127,16 +116,18 @@ class Datohjelper(val periode: InputPeriode) {
     }
 }
 
-fun lagInterval(periode: Periode): Interval {
-    val fom = periode.fom ?: LocalDate.MIN
-    val tom = periode.tom ?: LocalDate.MAX
-    return Interval.of(lagInstant(fom), lagInstant(tom))
-}
+fun lagInterval(periode: Periode): Interval = periode.interval()
 
 fun Periode.interval(): Interval {
-    val fom = this.fom ?: LocalDate.MIN
-    val tom = this.tom ?: LocalDate.MAX
-    return Interval.of(lagInstant(fom), lagInstant(tom))
+    return Interval.of(this.intervalStartInclusive(), this.intervalEndExclusive())
 }
 
-fun lagInstant(date: LocalDate) = date.atStartOfDay(ZoneId.systemDefault()).toInstant()
+fun lagInstantStartOfDay(date: LocalDate) = date.atStartOfDay(ZoneId.systemDefault()).toInstant()
+
+fun LocalDate.startOfDayInstant() = this.atStartOfDay(ZoneId.systemDefault()).toInstant()
+
+fun Periode.fomNotNull() = this.fom ?: LocalDate.MIN
+fun Periode.tomNotNull() = this.tom ?: LocalDate.MAX
+
+fun Periode.intervalStartInclusive(): Instant = this.fom?.startOfDayInstant() ?: Instant.MIN
+fun Periode.intervalEndExclusive(): Instant = this.tom?.plusDays(1)?.startOfDayInstant() ?: Instant.MAX

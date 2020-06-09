@@ -2,9 +2,9 @@ package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.Arbeidsforholdstype
 import no.nav.medlemskap.domene.Skipsregister
+import no.nav.medlemskap.domene.YrkeskoderForLuftFart
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.alleEr
-import no.nav.medlemskap.regler.common.Funksjoner.antallErIkke
 import no.nav.medlemskap.regler.common.Funksjoner.finnes
 import no.nav.medlemskap.regler.common.Funksjoner.finnesMindreEnn
 import no.nav.medlemskap.regler.common.Funksjoner.inneholderNoe
@@ -47,7 +47,7 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
                                 }
                             } hvisJa {
                                 sjekkRegel {
-                                    jobberBrukerPåNorskSkip
+                                    jobberBrukerPaaNorskSkip
                                 } hvisNei {
                                     uavklartKonklusjon
                                 } hvisJa {
@@ -64,55 +64,55 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
     private val reglerForLovvalg = ReglerForLovvalg(personfakta)
 
     private val harBrukerSammenhengendeArbeidsforholdSiste12Mnd = Regel(
-            identifikator = "ARB-1",
-            avklaring = "Har bruker hatt sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?",
+            identifikator = "3",
+            avklaring = "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?",
             beskrivelse = "",
             operasjon = { sjekkArbeidsforhold() }
     )
 
     private val erArbeidsgiverOrganisasjon = Regel(
-            identifikator = "ARB-2",
+            identifikator = "4",
             avklaring = "Er foretaket registrert i foretaksregisteret?",
             beskrivelse = "",
             operasjon = { sjekkArbeidsgiver() }
     )
 
     private val harForetakMerEnn5Ansatte = Regel(
-            identifikator = "ARB-3",
+            identifikator = "5",
             avklaring = "Har arbeidsgiver sin hovedaktivitet i Norge?",
             beskrivelse = "",
             operasjon = { sjekkOmForetakMerEnn5Ansatte() }
     )
 
     private val erForetakAktivt = Regel(
-            identifikator = "ARB-4",
+            identifikator = "6",
             avklaring = "Er foretaket aktivt?",
             beskrivelse = "",
             operasjon = { sjekKonkursstatus() }
     )
 
     private val erArbeidsforholdetMaritimt = Regel(
-            identifikator = "ARB-5",
-            avklaring = "Har bruker et maritimt arbeidsforhold?",
+            identifikator = "7",
+            avklaring = "Er arbeidsforholdet maritimt?",
             beskrivelse = "",
             operasjon = { sjekkMaritim() }
     )
 
-    private val jobberBrukerPåNorskSkip = Regel(
-            identifikator = "ARB-6",
-            avklaring = "Jobber bruker på et norskregistrert skip?",
+    private val jobberBrukerPaaNorskSkip = Regel(
+            identifikator = "7.1",
+            avklaring = "Er bruker ansatt på et NOR-skip?",
             beskrivelse = "",
             operasjon = { sjekkSkipsregister() }
     )
 
     private val erBrukerPilotEllerKabinansatt = Regel(
-            identifikator = "ARB-7",
+            identifikator = "8",
             avklaring = "Er bruker pilot eller kabinansatt?",
             beskrivelse = "",
             operasjon = { sjekkYrkeskodeLuftfart() }
     )
 
-    private val yrkeskoderLuftfart = listOf("3143107", "5111105", "5111117")
+    private val yrkeskoderLuftfart = YrkeskoderForLuftFart.values().map { it.styrk }
 
     private fun sjekkArbeidsforhold(): Resultat {
 
@@ -159,7 +159,7 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
     private fun sjekkSkipsregister(): Resultat =
             when {
-                personfakta.sisteArbeidsforholdSkipsregister() kunInneholder Skipsregister.nor.name -> ja()
+                personfakta.sisteArbeidsforholdSkipsregister() kunInneholder Skipsregister.NOR.name -> ja()
                 else -> nei()
             }
 

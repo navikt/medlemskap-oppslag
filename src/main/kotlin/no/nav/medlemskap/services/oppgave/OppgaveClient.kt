@@ -27,14 +27,14 @@ class OppgaveClient(
         private val logger = KotlinLogging.logger { }
     }
 
-    suspend fun hentOppgaver(ident: String, callId: String): FinnOppgaverResponse {
+    suspend fun hentOppgaver(aktorIder: List<String>, callId: String): FinnOppgaverResponse {
         val token = stsClient.oidcToken()
         return runWithRetryAndMetrics("Oppgave", "OppgaverV1", retry) {
             httpClient.get<FinnOppgaverResponse> {
                 url("$baseUrl/api/v1/oppgaver")
                 header(HttpHeaders.Authorization, "Bearer $token")
                 header("X-Correlation-Id", callId)
-                parameter("aktoerId", ident)
+                aktorIder.forEach { parameter("aktoerId", it) }
                 parameter("tema", TEMA_MEDLEMSKAP)
                 parameter("tema", TEMA_UNNTAK_FRA_MEDLEMSKAP)
                 parameter("tema", TEMA_TRYGDEAVGIFT)
@@ -54,7 +54,7 @@ class OppgaveClient(
 
 class OppgaveService(private val oppgaveClient: OppgaveClient) {
 
-    suspend fun hentOppgaver(ident: String, callId: String) =
-            mapOppgaveResultat(oppgaveClient.hentOppgaver(ident, callId).oppgaver)
+    suspend fun hentOppgaver(aktorIder: List<String>, callId: String) =
+            mapOppgaveResultat(oppgaveClient.hentOppgaver(aktorIder, callId).oppgaver)
 
 }

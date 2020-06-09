@@ -46,6 +46,7 @@ class Services(val configuration: Configuration) {
 
     val healthService: HealthService
     private val healthReporter: HealthReporter
+    private val healthRetry = retryRegistry.retry("Helsesjekker")
 
     private val stsRetry = retryRegistry.retry("STS")
     private val tpsRetry = retryRegistry.retry("TPS")
@@ -93,13 +94,13 @@ class Services(val configuration: Configuration) {
 
         healthService = HealthService(setOf(
                 //HttpResponseHealthCheck("AaReg", { aaRegClient.healthCheck() }),
-                HttpResponseHealthCheck("Inntekt", { inntektClient.healthCheck() }),
-                HttpResponseHealthCheck("Medl", { medlClient.healthCheck() }),
-                HttpResponseHealthCheck("Oppg", { oppgaveClient.healthCheck() }),
-                HttpResponseHealthCheck("PDL", { pdlClient.healthCheck() }),
-                HttpResponseHealthCheck("SAF", { safClient.healthCheck() }),
-                HttpResponseHealthCheck("STS", { stsRestClient.healthCheck() }),
-                TryCatchHealthCheck("TPS", { personClient.healthCheck() })
+                HttpResponseHealthCheck("Inntekt", { inntektClient.healthCheck() }, healthRetry),
+                HttpResponseHealthCheck("Medl", { medlClient.healthCheck() }, healthRetry),
+                HttpResponseHealthCheck("Oppg", { oppgaveClient.healthCheck() }, healthRetry),
+                HttpResponseHealthCheck("PDL", { pdlClient.healthCheck() }, healthRetry),
+                HttpResponseHealthCheck("SAF", { safClient.healthCheck() }, healthRetry),
+                HttpResponseHealthCheck("STS", { stsRestClient.healthCheck() }, healthRetry),
+                TryCatchHealthCheck("TPS", { personClient.healthCheck() }, healthRetry)
         ))
 
         healthReporter = HealthReporter(healthService)

@@ -1,46 +1,45 @@
-# language: no
-# encoding: UTF-8
-
-Egenskap: Norsk statsborger som er bosatt i Norge, og som har jobbet i Norge hele perioden uten utenlandsopphold.
-
-  Scenario: Norsk statsborger som er bosatt i Norge, json
-
-     Gitt følgende datagrunnlag json
-"""
 {
   "periode": {
     "fom": "2020-01-30",
-    "tom": "2021-01-30"
+    "tom": "2020-02-02"
   },
   "brukerinput": {
-    "arbeidUtenforNorge": false
+    "arbeidUtenforNorge": true
   },
   "personhistorikk": {
     "statsborgerskap": [
       {
-        "landkode": "NOR",
-        "fom": "1991-06-30",
+        "landkode": "USA",
+        "fom": "2008-01-30",
         "tom": null
       }
     ],
     "personstatuser": [],
     "bostedsadresser": [
       {
-        "adresselinje": "Oslo",
-        "landkode": "NOR",
-        "fom": "2020-01-01",
-        "tom": null
+        "adresselinje" : "Oslo",
+        "landkode" : "NOR",
+        "fom" : "2017-11-01",
+        "tom" : null
       }
     ],
     "postadresser": [],
     "midlertidigAdresser": []
   },
-  "medlemskap": [],
+  "medlemskap": [
+    {
+      "fraOgMed": "2018-01-01",
+      "tilOgMed": "2021-05-05",
+      "erMedlem": false,
+      "lovvalgsland": "NOR",
+      "lovvalg": "ENDL"
+    }
+  ],
   "arbeidsforhold": [
     {
       "periode": {
         "fom": "2018-01-01",
-        "tom": "2022-06-30"
+        "tom": null
       },
       "utenlandsopphold": [],
       "arbeidsgivertype": "Organisasjon",
@@ -66,10 +65,3 @@ Egenskap: Norsk statsborger som er bosatt i Norge, og som har jobbet i Norge hel
   "oppgaver": [],
   "dokument": []
 }
-"""
-
-    Når lovvalg og medlemskap beregnes fra datagrunnlag json
-
-    Så skal medlemskap i Folketrygden være "Ja"
-    Så skal delresultat "2" være "Ja"
-    Og skal delresultat "4" være "Ja"
