@@ -13,9 +13,20 @@
       "tom" : "2020-01-30"
     } ],
     "personstatuser" : [ ],
+    "sivilstand" : [],
+    "familierelasjoner" : [],
     "bostedsadresser" : [ ],
     "postadresser" : [ ],
     "midlertidigAdresser" : [ ]
+  },
+  "pdlpersonhistorikk" : {
+    "statsborgerskap" : [],
+    "personstatuser" : [],
+    "sivilstand" : [],
+    "familierelasjoner" : [],
+    "bostedsadresser" : [],
+    "postadresser" : [],
+    "midlertidigAdresser" : []
   },
   "medlemskapsunntak" : [ ],
   "arbeidsforhold" : [ ],

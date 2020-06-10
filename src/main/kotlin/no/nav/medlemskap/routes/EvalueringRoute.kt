@@ -119,7 +119,6 @@ private suspend fun createDatagrunnlag(
 
     val familierelasjonOgSivilstand = familierelasjonBarnPersonHistorikk.plus(sivilstandPersonHistorikk)
 
-    //  logger.info { pdlHistorikk }
 
 
     Datagrunnlag(
@@ -140,11 +139,9 @@ private suspend fun createDatagrunnlag(
 
 suspend fun folkeregistrertFamilierelasjonBarn(personhistorikk: Personhistorikk, periode: InputPeriode, services: Services): List<PersonhistorikkRelatertPerson> {
     return personhistorikk.familierelasjoner
-            .filter { it.relatertPersonsRolle == Familierelasjonsrolle.BARN }
-            .filter {
-                barnUnder18aar(it, services, periode)
-            }
-            .map { services.personService.personhistorikkRelatertPerson(it.relatertPersonIdent, periode.fom) }
+            .filter { it.erBarn() }
+            .filter { barnUnder18aar(it, services, periode) }
+            .map { hentRelatertPersonHistorikk(it, periode, services) }
 }
 
 suspend fun barnUnder18aar(familierelasjon: Familierelasjon, services: Services, periode: InputPeriode): Boolean {
@@ -153,6 +150,20 @@ suspend fun barnUnder18aar(familierelasjon: Familierelasjon, services: Services,
     val hentFoedselsaarTilBarn = services.pdlService.hentFoedselsaar(familierelasjon.relatertPersonIdent, UUID.randomUUID().toString())
 
     return (aarstall - hentFoedselsaarTilBarn) < aldersGrense
+}
+
+suspend fun hentRelatertPersonHistorikk(familierelasjon: Familierelasjon, periode: InputPeriode, services: Services): PersonhistorikkRelatertPerson {
+    return try{
+        services.personService.personhistorikkRelatertPerson(familierelasjon.relatertPersonIdent, periode.fom)
+    } catch (e: Exception) {
+        logger.error { e }
+        PersonhistorikkRelatertPerson(
+                bostedsadresser = emptyList(),
+                personstatuser = emptyList(),
+                postadresser = emptyList(),
+                midlertidigAdresser = emptyList()
+        )
+    }
 }
 
 suspend fun folkeregistrertSivilstand(personhistorikk: Personhistorikk, periode: InputPeriode, services: Services) : List<PersonhistorikkRelatertPerson> {
@@ -170,3 +181,5 @@ private fun Resultat.sisteRegel() =
         } else {
             this.delresultat.last()
         }
+
+private fun Familierelasjon.erBarn() = this.relatertPersonsRolle == Familierelasjonsrolle.BARN
