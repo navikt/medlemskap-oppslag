@@ -1,8 +1,11 @@
 package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.DekningForSykepenger
+import no.nav.medlemskap.domene.Oppgave
+import no.nav.medlemskap.domene.Status
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.er
+import no.nav.medlemskap.regler.common.Funksjoner.erDelAv
 import no.nav.medlemskap.regler.common.Funksjoner.inneholderNoe
 
 class ReglerForMedl(val personfakta: Personfakta) : Regler() {
@@ -10,79 +13,96 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
     private val gyldigeDekningerForSykepenger = DekningForSykepenger.values().map { it.dekning }
 
     override fun hentHovedRegel(): Regel =
-           // sjekkRegel {
-             //   harBrukerMedlOpplysninger
-           // } hvisJa {
-                sjekkRegel {
-                    periodeMedOgUtenMedlemskap
-                } hvisJa {
-                    uavklartKonklusjon
-                } hvisNei {
-                    sjekkRegel {
-                        periodeMedMedlemskap
-                    } hvisNei {
-                        sjekkRegel {
-                            erPeriodeUtenMedlemskapInnenfor12MndPeriode
-                        } hvisNei {
-                            uavklartKonklusjon
-                        } hvisJa {
-                            sjekkRegel {
-                                erArbeidsforholdUendretForBrukerUtenMedlemskap
-                            } hvisJa {
-                                sjekkRegel {
-                                    erAdresseUendretForBrukerUtenMedlemskap
-                                } hvisJa {
-                                    neiKonklusjon
-                                } hvisNei {
-                                    uavklartKonklusjon
-                                }
-                            } hvisNei {
-                                uavklartKonklusjon
-                            }
-                        }
-                    } hvisJa {
-                        sjekkRegel {
-                            erPeriodeMedMedlemskapInnenfor12MndPeriode
-                        } hvisJa {
-                            sjekkRegel {
-                                erArbeidsforholdUendretForBrukerMedMedlemskap
-                            } hvisJa {
-                                sjekkRegel {
-                                    erAdresseUendretForBrukerMedMedlemskap
-                                } hvisJa {
-                                    sjekkRegel {
-                                        harBrukerDekningIMedl
-                                    } hvisJa {
-                                        jaKonklusjon
-                                    } hvisNei {
-                                        neiKonklusjon
-                                    }
-                                } hvisNei {
-                                    uavklartKonklusjon
-                                }
-                            } hvisNei {
-                                uavklartKonklusjon
-                            }
-                        } hvisNei {
-                            uavklartKonklusjon
-                        }
-                    }
-                }
-      //      }
+       sjekkRegel {
+           harBrukerMedlOpplysninger
+       } hvisJa {
+            sjekkRegel {
+                brukerHarAapneSakerIGSAK
+            } hvisJa {
+                 sjekkRegel {
+                     periodeMedOgUtenMedlemskap
+                 } hvisJa {
+                     uavklartKonklusjon
+                 } hvisNei {
+                     sjekkRegel {
+                         periodeMedMedlemskap
+                     } hvisNei {
+                         sjekkRegel {
+                             erPeriodeUtenMedlemskapInnenfor12MndPeriode
+                         } hvisNei {
+                             uavklartKonklusjon
+                         } hvisJa {
+                             sjekkRegel {
+                                 erArbeidsforholdUendretForBrukerUtenMedlemskap
+                             } hvisJa {
+                                 sjekkRegel {
+                                     erAdresseUendretForBrukerUtenMedlemskap
+                                 } hvisJa {
+                                     neiKonklusjon
+                                 } hvisNei {
+                                     uavklartKonklusjon
+                                 }
+                             } hvisNei {
+                                 uavklartKonklusjon
+                             }
+                         }
+                     } hvisJa {
+                         sjekkRegel {
+                             erPeriodeMedMedlemskapInnenfor12MndPeriode
+                         } hvisJa {
+                             sjekkRegel {
+                                 erArbeidsforholdUendretForBrukerMedMedlemskap
+                             } hvisJa {
+                                 sjekkRegel {
+                                     erAdresseUendretForBrukerMedMedlemskap
+                                 } hvisJa {
+                                     sjekkRegel {
+                                         harBrukerDekningIMedl
+                                     } hvisJa {
+                                         jaKonklusjon
+                                     } hvisNei {
+                                         neiKonklusjon
+                                     }
+                                 } hvisNei {
+                                     uavklartKonklusjon
+                                 }
+                             } hvisNei {
+                                 uavklartKonklusjon
+                             }
+                         } hvisNei {
+                             uavklartKonklusjon
+                         }
+                     }
+                 }
+             } hvisNei {
+                 uavklartKonklusjon
+             }
+       }
 
     private val harBrukerMedlOpplysninger = Regel(
-            identifikator = "1",
-            avklaring = "Finnes det noe på personen i MEDL?",
+            identifikator = "1.1",
+            avklaring = "Finnes det noe på personen i MEDL, og ikke i GSAK?",
             beskrivelse = """
                 Vedtak (gjort av NAV eller utenlandsk trygdemyndighet) som er registrert i MEDL, 
                 må vurderes manuelt og det må vurderes om brukers situasjon er uendret i forhold 
                 til situasjonen på vedtakstidspunktet.
             """.trimIndent(),
-            operasjon = { sjekkPerioderIMedl() }
+            operasjon = { sjekkPerioderIMedl()}
+    )
+
+    private val brukerHarAapneSakerIGSAK = Regel(
+            identifikator = "1.2",
+            avklaring = "Finnes det noe på personen i MEDL, og ikke i GSAK?",
+            beskrivelse = """
+                Vedtak (gjort av NAV eller utenlandsk trygdemyndighet) som er registrert i MEDL, 
+                må vurderes manuelt og det må vurderes om brukers situasjon er uendret i forhold 
+                til situasjonen på vedtakstidspunktet.
+            """.trimIndent(),
+            operasjon = { sjekkPerioderIGSAK() }
     )
 
     private val periodeMedOgUtenMedlemskap = Regel(
-            identifikator = "1.1",
+            identifikator = "1.1.1",
             avklaring = "Er det periode både med og uten medlemskap innenfor 12 mnd?",
             beskrivelse = """
                 Dersom en bruker har en periode med medlemskap og en periode uten medlemskap innenfor 12 mnd 
@@ -92,7 +112,7 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
     )
 
     private val periodeMedMedlemskap = Regel(
-            identifikator = "1.2",
+            identifikator = "1.1.2",
             avklaring = "Er det en periode med medlemskap?",
             beskrivelse = """"
                Har medlemskap og Norge er lovvalg. 
@@ -170,7 +190,14 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
 
     private fun sjekkPerioderIMedl(): Resultat =
             when {
-                personfakta.finnesPersonIMedlSiste12mnd() -> ja()
+                personfakta.personensPerioderIMedl().isNotEmpty() -> ja()
+                else -> nei()
+            }
+
+    // Ikke noe i GSAK
+    private fun sjekkPerioderIGSAK(): Resultat =
+            when {
+                personfakta.personensOppgaverIGsak().antallAapneOppgaver > 0 -> ja()
                 else -> nei()
             }
 
@@ -214,4 +241,11 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
                 personfakta.medlemskapsPerioderOver12MndPeriodeDekning() inneholderNoe gyldigeDekningerForSykepenger -> ja()
                 else -> nei()
             }
+
+    private val List<Oppgave>.antallAapneOppgaver: Int
+        get() = count { oppgave ->
+            oppgave.tema erDelAv tillatteTemaer && oppgave.status erDelAv tillatteStatuser
+        }
+    private val tillatteTemaer = listOf("MED", "UFM", "TRY")
+    private val tillatteStatuser = listOf(Status.AAPNET, Status.OPPRETTET, Status.UNDER_BEHANDLING)
 }

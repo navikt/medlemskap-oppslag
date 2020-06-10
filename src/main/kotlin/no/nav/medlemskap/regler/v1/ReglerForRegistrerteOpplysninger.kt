@@ -18,7 +18,7 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
             identifikator = "OPPLYSNINGER",
             avklaring = "Finnes det registrerte opplysninger på bruker?",
             beskrivelse = "For å sjekke uregistrerte lovvalg og/eller medlemskap",
-            operasjon = { finnDelResultat(medl, joark, gsak) }
+            operasjon = { minstEnAvDisse(medl, joark, gsak) }
     )
 
     private val medl = Regel(
@@ -70,14 +70,14 @@ class ReglerForRegistrerteOpplysninger(val personfakta: Personfakta) : Regler() 
             }
 
 
-    private fun tellÅpneOppgaver(): Resultat =
+    fun tellÅpneOppgaver(): Resultat =
             when {
                 personfakta.personensOppgaverIGsak().antallÅpneOppgaver > 0 -> ja()
                 else -> nei()
             }
 
 
-    private val List<Journalpost>.antallDokumenterMedTillatteTemaer: Int
+    val List<Journalpost>.antallDokumenterMedTillatteTemaer: Int
         get() = count { journalpost ->
             journalpost.tema erDelAv tillatteTemaer
         }
