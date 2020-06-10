@@ -67,7 +67,11 @@ class RegelSteps: No {
             assertDelresultat(regelIdentifikator!!, domenespråkParser.parseSvar(forventetSvar!!), resultat!!)
         }
 
-        Og("skal medlemskap i Folketrygden være {string}") {
+        Så("skal omfattet av grunnforordningen EØS være {string}") { forventetSvar: String? ->
+            assertDelresultat("2", domenespråkParser.parseSvar(forventetSvar!!), resultat!!)
+        }
+
+        Så("skal medlemskap i Folketrygden være {string}") {
             forventetVerdi: String ->
             val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
 

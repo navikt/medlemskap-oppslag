@@ -1,9 +1,9 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Norsk statsborger som er bosatt i Norge, og som har jobbet i Norge hele perioden uten utenlandsopphold.
+Egenskap: Man er medlem i Folketrygden hvis man er EØS-borger og bor og jobber i Norge
 
-  Scenario: Norsk statsborger som er bosatt i Norge, json
+  Scenario: Norsk statsborger som bor og jobber i Norge
 
      Gitt følgende datagrunnlag json
 """
@@ -71,5 +71,4 @@ Egenskap: Norsk statsborger som er bosatt i Norge, og som har jobbet i Norge hel
     Når lovvalg og medlemskap beregnes fra datagrunnlag json
 
     Så skal medlemskap i Folketrygden være "Ja"
-    Så skal delresultat "2" være "Ja"
-    Og skal delresultat "4" være "Ja"
+    Og skal omfattet av grunnforordningen EØS være "Ja"
