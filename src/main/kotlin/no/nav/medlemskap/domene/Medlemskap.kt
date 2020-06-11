@@ -9,7 +9,13 @@ data class Medlemskap (
         val erMedlem: Boolean,
         val lovvalg: String,
         val lovvalgsland: String?
-)
+) : Comparable<Medlemskap> {
+
+    override fun compareTo(other: Medlemskap): Int {
+        return this.tilOgMed.compareTo(other.tilOgMed)
+    }
+
+}
 
 enum class DekningForSykepenger(val dekning: String) {
     FOLKETRYGDLOVEN2_6("FTL_2-6"),

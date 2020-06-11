@@ -204,7 +204,7 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
 
     private fun erMedlemskapPeriodeOver12MndPeriode(finnPeriodeMedMedlemskap: Boolean): Resultat =
             when {
-                personfakta.erMedlemskapPeriodeOver12MndPeriode(finnPeriodeMedMedlemskap)
+                personfakta.erMedlemskapsperioderOver12Mnd(finnPeriodeMedMedlemskap)
                         && personfakta.harGyldigeMedlemskapsperioder() -> ja()
                 else -> nei()
             }

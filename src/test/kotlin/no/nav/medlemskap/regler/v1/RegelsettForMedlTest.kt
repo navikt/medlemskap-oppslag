@@ -4,10 +4,8 @@ import no.nav.medlemskap.regler.assertSvar
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.evaluer
 import no.nav.medlemskap.regler.personer.Personleser
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-@Disabled
 class RegelsettForMedlTest {
 
     private val personleser = Personleser()
@@ -80,6 +78,21 @@ class RegelsettForMedlTest {
     @Test
     fun `amerikansk person med medlemskapdato over 5 år`() {
         assertSvar("1.3", Svar.NEI, evaluer(personleser.amerikanskMedMedlemskapUgyldigDato()), Svar.UAVKLART)
+    }
+
+    @Test
+    fun `amerikansk med overlappende medlemskapsperioder`() {
+        assertSvar("1.3", Svar.JA, evaluer(personleser.amerikanskMedMedlemskapToOverlappendePerioder()), Svar.UAVKLART)
+    }
+
+    @Test
+    fun `amerikansk med hull i medlemskapsperiode`() {
+        assertSvar("1.3", Svar.NEI, evaluer(personleser.amerikanskMedMedlemskapToUsammenhengendePerioder()), Svar.UAVKLART)
+    }
+
+    @Test
+    fun `amerikansk med to sammenhengende medlemskapsperioder`() {
+        assertSvar("1.3", Svar.JA, evaluer(personleser.amerikanskMedMedlemskapToSammenhengendePerioder()), Svar.UAVKLART)
     }
 
     @Test
