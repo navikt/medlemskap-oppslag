@@ -12,7 +12,7 @@ data class Regel(
 ) {
     fun utfør(resultatliste: MutableList<Resultat>): Resultat {
         val resultat = operasjon.invoke().apply {
-            regelCounter(this@Regel.avklaring.replace("?", ""), this.svar.name).increment()
+            regelCounter(this@Regel.identifikator + ". " + this@Regel.avklaring.replace("?", ""), this.svar.name).increment()
         }.copy(
                 identifikator = identifikator,
                 avklaring = avklaring
@@ -30,7 +30,7 @@ data class Regel(
     }
 
     fun utfør(): Resultat = operasjon.invoke().apply {
-        regelCounter(this@Regel.avklaring.replace("?", ""), this.svar.name).increment()
+        regelCounter(this@Regel.identifikator + ". " + this@Regel.avklaring.replace("?", ""), this.svar.name).increment()
     }.copy(
             identifikator = identifikator,
             avklaring = avklaring

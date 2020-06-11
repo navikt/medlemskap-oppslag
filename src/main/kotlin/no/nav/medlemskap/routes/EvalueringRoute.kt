@@ -37,11 +37,9 @@ fun Routing.evalueringRoute(
             apiCounter().increment()
             val request = validerRequest(call.receive())
             val callId = call.callId ?: UUID.randomUUID().toString()
-            val aktorId = services.pdlService.hentAktorId(request.fnr, callId)
             val datagrunnlag = createDatagrunnlag(
                     fnr = request.fnr,
                     callId = callId,
-                    aktoer = aktorId,
                     periode = request.periode,
                     brukerinput = request.brukerinput,
                     services = services)
@@ -79,7 +77,7 @@ private fun validerRequest(request: Request): Request {
     }
 
     if (!gyldigFnr(request.fnr)) {
-        throw BadRequestException("Ugyldig fødslesnummer")
+        throw BadRequestException("Ugyldig fødselsnummer")
     }
 
     return request
@@ -88,19 +86,18 @@ private fun validerRequest(request: Request): Request {
 private suspend fun createDatagrunnlag(
         fnr: String,
         callId: String,
-        aktoer: String,
         periode: InputPeriode,
         brukerinput: Brukerinput,
         services: Services): Datagrunnlag = coroutineScope {
 
-
+    val aktorIder = services.pdlService.hentAlleAktorIder(fnr, callId)
     val pdlHistorikkRequest = services.pdlService.hentPersonHistorikk(fnr, callId)
     val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr, periode.fom) }
     val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(fnr, callId) }
     val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr, callId, fraOgMedDatoForArbeidsforhold(periode), periode.tom) }
     val inntektListeRequest = async { services.inntektService.hentInntektListe(fnr, callId, periode.fom, periode.tom) }
     val journalPosterRequest = async { services.safService.hentJournaldata(fnr, callId) }
-    val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktoer, callId) }
+    val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktorIder, callId) }
     val familierelasjonBarnPersonHistorikkRequest = async {
         folkeregistrertFamilierelasjonBarn(pdlHistorikkRequest, periode, services)
     }
@@ -109,7 +106,7 @@ private suspend fun createDatagrunnlag(
     }
 
     val historikkFraTps = historikkFraTpsRequest.await()
-    val medlemskapsunntak = medlemskapsunntakRequest.await()
+    val medlemskap = medlemskapsunntakRequest.await()
     val arbeidsforhold = arbeidsforholdRequest.await()
     val inntektListe = inntektListeRequest.await()
     val journalPoster = journalPosterRequest.await()
@@ -126,7 +123,7 @@ private suspend fun createDatagrunnlag(
             brukerinput = brukerinput,
             personhistorikk = historikkFraTps,
             pdlpersonhistorikk = pdlHistorikkRequest,
-            medlemskapsunntak = medlemskapsunntak,
+            medlemskap = medlemskap,
             arbeidsforhold = arbeidsforhold,
             inntekt = inntektListe,
             oppgaver = oppgaver,

@@ -44,7 +44,7 @@ class PdlClient(
     }
 
 
-    suspend fun hentPerson(fnr: String, callId: String): HentPdlPersonResponse{
+    suspend fun hentPerson(fnr: String, callId: String): HentPdlPersonResponse {
         return runWithRetryAndMetrics("PDL", "HentPerson", retry) {
             httpClient.post<HentPdlPersonResponse> {
                 url("$baseUrl")
@@ -120,7 +120,26 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
         }?.ident ?: throw IdenterIkkeFunnet()
     }
 
-    suspend fun hentPersonHistorikk(fnr: String, callId: String): Personhistorikk{
+    suspend fun hentAlleAktorIder(fnr: String, callId: String): List<String> {
+        val pdlResponse = pdlClient.hentIdenter(fnr, callId)
+
+        // Hack for å overleve manglende aktørID i ikke-konsistente data i Q2
+        if (pdlResponse.errors != null && clusterName == "dev-fss") {
+            return listOf("111111111111")
+        }
+
+        pdlResponse.errors?.let { errors ->
+            logger.warn { "Fikk følgende feil fra PDL: ${objectMapper.writeValueAsString(errors)}" }
+            throw GraphqlError(errors.first(), "PDL")
+        }
+
+        return pdlResponse.data.hentIdenter?.identer
+                ?.filter { it.gruppe == IdentGruppe.AKTORID }
+                ?.map { it.ident } ?: throw IdenterIkkeFunnet()
+
+    }
+
+    suspend fun hentPersonHistorikk(fnr: String, callId: String): Personhistorikk {
         return mapTilPersonHistorikk(pdlClient.hentPerson(fnr, callId))
 
 /*        // Hack for å overleve manglende aktørID i ikke-konsistente data i Q2

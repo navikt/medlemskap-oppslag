@@ -3,21 +3,23 @@
     "fom": "2020-01-30",
     "tom": "2020-01-30"
   },
-  "brukerinput" : {
-    "arbeidUtenforNorge" : true
+  "brukerinput": {
+    "arbeidUtenforNorge": true
   },
-  "personhistorikk" : {
-    "statsborgerskap" : [ {
-      "landkode" : "USA",
-      "fom" : "2020-01-30",
-      "tom" : "2020-01-30"
-    } ],
-    "personstatuser" : [ ],
+  "personhistorikk": {
+    "statsborgerskap": [
+      {
+        "landkode": "USA",
+        "fom": "2020-01-30",
+        "tom": "2020-01-30"
+      }
+    ],
+    "personstatuser": [],
     "sivilstand" : [],
     "familierelasjoner" : [],
-    "bostedsadresser" : [ ],
-    "postadresser" : [ ],
-    "midlertidigAdresser" : [ ]
+    "bostedsadresser": [],
+    "postadresser": [],
+    "midlertidigAdresser": []
   },
   "pdlpersonhistorikk" : {
     "statsborgerskap" : [],
@@ -28,14 +30,17 @@
     "postadresser" : [],
     "midlertidigAdresser" : []
   },
-  "medlemskapsunntak" : [ {
-    "fraOgMed" : "2020-01-01",
-    "tilOgMed" : "2020-01-12",
-    "erMedlem" : true,
-    "lovvalg" : "lovvalg"
-  } ],
-  "arbeidsforhold" : [ ],
-  "inntekt" : [ ],
-  "oppgaver" : [ ],
-  "dokument" : [ ]
+  "medlemskap": [
+    {
+      "fraOgMed": "2020-01-01",
+      "tilOgMed": "2020-01-12",
+      "erMedlem": true,
+      "lovvalgsland": "NOR",
+      "lovvalg": "ENDL"
+    }
+  ],
+  "arbeidsforhold": [],
+  "inntekt": [],
+  "oppgaver": [],
+  "dokument": []
 }

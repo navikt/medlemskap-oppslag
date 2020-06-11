@@ -8,10 +8,12 @@ import no.nav.medlemskap.config.retryRegistry
 import no.nav.medlemskap.services.tpsws.PersonClient
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentPersonhistorikkPersonIkkeFunnet
 import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 import java.time.LocalDate
 
+@Disabled("Denne fungerer på GHA, men feiler lokalt hos noen av oss. Må fikses!")
 class TpsClientRetryTest {
 
     private val tpsRetry = retryRegistry.retry("TPS")
