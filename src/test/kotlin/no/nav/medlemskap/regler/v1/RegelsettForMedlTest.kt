@@ -91,6 +91,11 @@ class RegelsettForMedlTest {
     }
 
     @Test
+    fun `amerikansk med medlemskap avsluttet i input periode`() {
+        assertSvar("1.3", Svar.NEI, evaluer(personleser.amerikanskMedMedlemskapAvsluttetIGittInputPeriode()), Svar.UAVKLART)
+    }
+
+    @Test
     fun `amerikansk med to sammenhengende medlemskapsperioder`() {
         assertSvar("1.3", Svar.JA, evaluer(personleser.amerikanskMedMedlemskapToSammenhengendePerioder()), Svar.UAVKLART)
     }
