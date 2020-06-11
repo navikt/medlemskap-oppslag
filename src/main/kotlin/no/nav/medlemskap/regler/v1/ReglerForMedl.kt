@@ -74,14 +74,14 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
                          }
                      }
                  }
-             } hvisNei {
+            } hvisNei {
                  uavklartKonklusjon
-             }
+            }
        }
 
     private val harBrukerMedlOpplysninger = Regel(
-            identifikator = "1.1",
-            avklaring = "Finnes det noe på personen i MEDL, og ikke i GSAK?",
+            identifikator = "1",
+            avklaring = "Finnes det noe på personen i MEDL?",
             beskrivelse = """
                 Vedtak (gjort av NAV eller utenlandsk trygdemyndighet) som er registrert i MEDL, 
                 må vurderes manuelt og det må vurderes om brukers situasjon er uendret i forhold 
@@ -91,7 +91,7 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
     )
 
     private val brukerHarAapneSakerIGSAK = Regel(
-            identifikator = "1.2",
+            identifikator = "1",
             avklaring = "Finnes det noe på personen i MEDL, og ikke i GSAK?",
             beskrivelse = """
                 Vedtak (gjort av NAV eller utenlandsk trygdemyndighet) som er registrert i MEDL, 
@@ -102,7 +102,7 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
     )
 
     private val periodeMedOgUtenMedlemskap = Regel(
-            identifikator = "1.1.1",
+            identifikator = "1.1",
             avklaring = "Er det periode både med og uten medlemskap innenfor 12 mnd?",
             beskrivelse = """
                 Dersom en bruker har en periode med medlemskap og en periode uten medlemskap innenfor 12 mnd 
@@ -112,7 +112,7 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
     )
 
     private val periodeMedMedlemskap = Regel(
-            identifikator = "1.1.2",
+            identifikator = "1.2",
             avklaring = "Er det en periode med medlemskap?",
             beskrivelse = """"
                Har medlemskap og Norge er lovvalg. 
@@ -190,7 +190,7 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
 
     private fun sjekkPerioderIMedl(): Resultat =
             when {
-                personfakta.personensPerioderIMedl().isNotEmpty() -> ja()
+                personfakta.finnesPersonIMedlSiste12mnd() -> ja()
                 else -> nei()
             }
 
