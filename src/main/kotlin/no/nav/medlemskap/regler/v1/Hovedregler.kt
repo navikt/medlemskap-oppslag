@@ -18,8 +18,6 @@ class Hovedregler(personfakta: Personfakta) {
 //            } hvisNei {
 //                sjekkRegelsett {
         //           reglerForRegistrerteOpplysninger
-               } hvisJa {
-                   uavklartKonklusjon
                } hvisNei {
                   sjekkRegelsett {
                     reglerForGrunnforordningen

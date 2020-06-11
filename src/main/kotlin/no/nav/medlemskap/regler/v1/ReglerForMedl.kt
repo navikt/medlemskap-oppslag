@@ -18,7 +18,7 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
        } hvisJa {
             sjekkRegel {
                 brukerHarAapneSakerIGSAK
-            } hvisJa {
+            } hvisNei {
                  sjekkRegel {
                      periodeMedOgUtenMedlemskap
                  } hvisJa {
@@ -74,7 +74,7 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
                          }
                      }
                  }
-            } hvisNei {
+            } hvisJa {
                  uavklartKonklusjon
             }
        }

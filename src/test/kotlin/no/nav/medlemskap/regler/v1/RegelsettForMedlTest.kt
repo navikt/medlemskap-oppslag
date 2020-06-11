@@ -27,6 +27,7 @@ class RegelsettForMedlTest {
     }
 
     @Test
+    @Disabled
     fun `amerikansk person med periode med medlemskap`() {
         assertSvar("1.2.1", Svar.JA, evaluer(personleser.amerikanskMedl()), Svar.UAVKLART)
     }
