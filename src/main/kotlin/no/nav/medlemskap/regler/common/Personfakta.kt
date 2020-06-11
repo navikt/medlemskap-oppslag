@@ -258,20 +258,12 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     }
 
     fun harSammeArbeidsforholdSidenFomDatoFraMedl(): Boolean {
-
-        val fomDatoFraMedl = finnTidligsteFraOgMedDatoForMedl()
-
-        return arbeidsforholdForDato(fomDatoFraMedl).isNotEmpty() &&
-                arbeidsforholdForDato(fomDatoFraMedl) == arbeidsforholdForDato(datohjelper.tilOgMedDag())
+        return arbeidsforholdForDato(tidligsteFraOgMedDatoForMedl()).isNotEmpty() &&
+                arbeidsforholdForDato(tidligsteFraOgMedDatoForMedl()) == arbeidsforholdForDato(datohjelper.tilOgMedDag())
     }
 
-    private fun finnTidligsteFraOgMedDatoForMedl(): LocalDate {
-        var fomDatoFraMedl = LocalDate.MAX
-
-        for (medlemskap in brukerensPerioderIMedlSiste12Mnd()) {
-            if (medlemskap.fraOgMed.isBefore(fomDatoFraMedl)) fomDatoFraMedl = medlemskap.fraOgMed
-        }
-        return fomDatoFraMedl
+    private fun tidligsteFraOgMedDatoForMedl(): LocalDate {
+        return brukerensPerioderIMedlSiste12Mnd().sorted().first().fraOgMed
     }
 
     fun harMedlPeriodeMedOgUtenMedlemskap(): Boolean {
@@ -284,9 +276,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     }
 
     fun harSammeAdresseSidenFomDatoFraMedl(): Boolean {
-        val fomDatoFraMedl = finnTidligsteFraOgMedDatoForMedl()
-
-        return bostedAdresseForDato(fomDatoFraMedl).size == 1 &&
-                bostedAdresseForDato(fomDatoFraMedl) == bostedAdresseForDato(datohjelper.tilOgMedDag())
+        return bostedAdresseForDato(tidligsteFraOgMedDatoForMedl()).size == 1 &&
+                bostedAdresseForDato(tidligsteFraOgMedDatoForMedl()) == bostedAdresseForDato(datohjelper.tilOgMedDag())
     }
 }
