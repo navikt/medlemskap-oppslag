@@ -15,9 +15,9 @@ class Hovedregler(personfakta: Personfakta) {
 
                sjekkRegelsett {
                reglerForRegistrerteOpplysningerIMedl
-//            } hvisNei {
-//                sjekkRegelsett {
-        //           reglerForRegistrerteOpplysninger
+               } hvisNei {
+                    sjekkRegelsett {
+                    reglerForRegistrerteOpplysninger
                } hvisNei {
                   sjekkRegelsett {
                     reglerForGrunnforordningen
@@ -28,7 +28,7 @@ class Hovedregler(personfakta: Personfakta) {
                         reglerForArbeidsforhold
                     }
                 }
-              //  }
+               }
             }
 
     fun kjørHovedregler(): Resultat {

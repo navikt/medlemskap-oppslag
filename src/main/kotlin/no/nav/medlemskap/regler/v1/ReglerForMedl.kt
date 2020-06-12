@@ -17,7 +17,7 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
            harBrukerMedlOpplysninger
        } hvisJa {
             sjekkRegel {
-                brukerHarAapneSakerIGSAK
+                harBrukerGosysOpplysninger
             } hvisNei {
                  sjekkRegel {
                      periodeMedOgUtenMedlemskap
@@ -90,15 +90,15 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
             operasjon = { sjekkPerioderIMedl()}
     )
 
-    private val brukerHarAapneSakerIGSAK = Regel(
+    private val harBrukerGosysOpplysninger = Regel(
             identifikator = "B",
-            avklaring = "Finnes det noe på personen i MEDL, og ikke i GSAK?",
-            beskrivelse = """
-                Vedtak (gjort av NAV eller utenlandsk trygdemyndighet) som er registrert i MEDL, 
-                må vurderes manuelt og det må vurderes om brukers situasjon er uendret i forhold 
-                til situasjonen på vedtakstidspunktet.
+            avklaring = "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?",
+            beskrivelse = """"
+                Skal sikre at ubehandlede saker og ikke-registrerte vedtak fanges opp for å bli 
+                vurdert manuelt. MEDL er ikke en komplett oversikt over alle medlemsavklaringene 
+                som NAV har gjort. 
             """.trimIndent(),
-            operasjon = { sjekkPerioderIGSAK() }
+            operasjon = { harBrukerAapneOppgaverIGsak() }
     )
 
     private val periodeMedOgUtenMedlemskap = Regel(
@@ -194,7 +194,7 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
                 else -> nei()
             }
 
-    private fun sjekkPerioderIGSAK(): Resultat =
+    private fun harBrukerAapneOppgaverIGsak(): Resultat =
             when {
                 personfakta.personensOppgaverIGsak().antallAapneOppgaver > 0 -> ja()
                 else -> nei()
