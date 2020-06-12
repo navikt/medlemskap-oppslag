@@ -17,6 +17,11 @@ class RegelsettForMedlTest {
     }
 
     @Test
+    fun `amerikansk person med vedtak i medl og gosys får uavklart på manuelle vedtak`() {
+        assertSvar("1", Svar.JA, evaluer(personleser.amerikanskGosys()), Svar.UAVKLART)
+    }
+
+    @Test
     fun `norsk person med opplysninger i medl`() {
         assertSvar("1", Svar.JA, evaluer(personleser.norskMedOpplysningerIMedl()), Svar.UAVKLART)
     }
@@ -27,7 +32,6 @@ class RegelsettForMedlTest {
     }
 
     @Test
-    @Disabled
     fun `amerikansk person med periode med medlemskap`() {
         assertSvar("1.2.1", Svar.JA, evaluer(personleser.amerikanskMedl()), Svar.UAVKLART)
     }
