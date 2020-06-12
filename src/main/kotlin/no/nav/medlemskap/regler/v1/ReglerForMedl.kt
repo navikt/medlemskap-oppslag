@@ -80,7 +80,7 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
        }
 
     private val harBrukerMedlOpplysninger = Regel(
-            identifikator = "1",
+            identifikator = "A",
             avklaring = "Finnes det noe på personen i MEDL?",
             beskrivelse = """
                 Vedtak (gjort av NAV eller utenlandsk trygdemyndighet) som er registrert i MEDL, 
@@ -91,7 +91,7 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
     )
 
     private val brukerHarAapneSakerIGSAK = Regel(
-            identifikator = "1",
+            identifikator = "B",
             avklaring = "Finnes det noe på personen i MEDL, og ikke i GSAK?",
             beskrivelse = """
                 Vedtak (gjort av NAV eller utenlandsk trygdemyndighet) som er registrert i MEDL, 
