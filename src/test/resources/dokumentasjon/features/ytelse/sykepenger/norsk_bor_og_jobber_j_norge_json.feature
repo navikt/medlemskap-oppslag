@@ -71,4 +71,4 @@ Egenskap: Man er medlem i Folketrygden hvis man er EØS-borger og bor og jobber 
     Når lovvalg og medlemskap beregnes fra datagrunnlag json
 
     Så skal medlemskap i Folketrygden være "Ja"
-    Og skal omfattet av grunnforordningen EØS være "Ja"
+    Og omfattet av grunnforordningen EØS være "Ja"
