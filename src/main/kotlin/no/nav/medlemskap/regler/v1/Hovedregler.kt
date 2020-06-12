@@ -13,9 +13,9 @@ class Hovedregler(personfakta: Personfakta) {
 
     private fun hentHovedRegel() =
 
-               sjekkRegelsett {
-               reglerForRegistrerteOpplysningerIMedl
-               } hvisNei {
+             //  sjekkRegelsett {
+            // reglerForRegistrerteOpplysningerIMedl
+             //  } hvisNei {
                     sjekkRegelsett {
                     reglerForRegistrerteOpplysninger
                } hvisNei {
@@ -29,7 +29,7 @@ class Hovedregler(personfakta: Personfakta) {
                     }
                 }
                }
-            }
+          //  }
 
     fun kjørHovedregler(): Resultat {
 
