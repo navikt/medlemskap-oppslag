@@ -194,7 +194,6 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
                 else -> nei()
             }
 
-    // Ikke noe i GSAK
     private fun sjekkPerioderIGSAK(): Resultat =
             when {
                 personfakta.personensOppgaverIGsak().antallAapneOppgaver > 0 -> ja()
