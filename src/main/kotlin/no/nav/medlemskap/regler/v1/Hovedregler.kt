@@ -13,25 +13,23 @@ class Hovedregler(personfakta: Personfakta) {
 
     private fun hentHovedRegel() =
 
-            //sjekkRegelsett {
-            //    reglerForRegistrerteOpplysningerIMedl
-            //} hvisNei {
-                sjekkRegelsett {
-                    reglerForRegistrerteOpplysninger
-                } hvisJa {
-                    uavklartKonklusjon
-                } hvisNei {
+             //  sjekkRegelsett {
+            // reglerForRegistrerteOpplysningerIMedl
+             //  } hvisNei {
                     sjekkRegelsett {
-                        reglerForGrunnforordningen
+                    reglerForRegistrerteOpplysninger
+               } hvisNei {
+                  sjekkRegelsett {
+                    reglerForGrunnforordningen
                     } hvisNei {
-                        uavklartKonklusjon
-                    } hvisJa {
-                        sjekkRegelsett {
-                            reglerForArbeidsforhold
-                        }
+                          uavklartKonklusjon
+                  } hvisJa {
+                    sjekkRegelsett {
+                        reglerForArbeidsforhold
                     }
                 }
-            //}
+               }
+          //  }
 
     fun kjørHovedregler(): Resultat {
 

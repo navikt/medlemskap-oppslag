@@ -14,13 +14,19 @@ class RegelsettForMedlTest {
 
     @Test
     fun `amerikansk person med vedtak i medl får uavklart på manuelle vedtak`() {
-        assertSvar("1", Svar.JA, evaluer(personleser.amerikanskMedl()), Svar.UAVKLART)
+        assertSvar("A", Svar.JA, evaluer(personleser.amerikanskMedl()), Svar.UAVKLART)
     }
 
     @Test
     fun `norsk person med opplysninger i medl`() {
-        assertSvar("1", Svar.JA, evaluer(personleser.norskMedOpplysningerIMedl()), Svar.UAVKLART)
+        assertSvar("A", Svar.JA, evaluer(personleser.norskMedOpplysningerIMedl()), Svar.UAVKLART)
     }
+
+    @Test
+    fun `amerikansk person med vedtak i medl og gosys får uavklart på manuelle vedtak`() {
+        assertSvar("B", Svar.JA, evaluer(personleser.amerikanskGosys()), Svar.UAVKLART)
+    }
+
 
     @Test
     fun `amerikansk person med og uten medlemskap i 12 mnd perioden`() {
@@ -34,7 +40,7 @@ class RegelsettForMedlTest {
 
     @Test
     fun `norsk person med periode uten medlemskap`() {
-        assertSvar("1.2", Svar.NEI, evaluer(personleser.norskUtenMedlemskapIMedl()), Svar.UAVKLART)
+        assertSvar("1.2.1", Svar.NEI, evaluer(personleser.norskUtenMedlemskapIMedl()), Svar.UAVKLART)
     }
 
     @Test

@@ -21,4 +21,5 @@ abstract class Regler {
             else -> nei("Alle de følgende ble NEI")
         }
     }
+
 }
