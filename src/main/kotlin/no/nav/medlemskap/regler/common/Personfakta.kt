@@ -6,6 +6,7 @@ import no.nav.medlemskap.common.stillingsprosentCounter
 import no.nav.medlemskap.common.usammenhengendeArbeidsforholdCounter
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Funksjoner.er
+import no.nav.medlemskap.regler.common.Funksjoner.harSammenhengendeMedlemskapIHeleGittPeriode
 import no.nav.medlemskap.services.aareg.AaRegOpplysningspliktigArbeidsgiverType
 import no.nav.medlemskap.services.ereg.Ansatte
 import org.threeten.extra.Interval
@@ -33,13 +34,9 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     fun personensPerioderIMedl(): List<Medlemskap> = datagrunnlag.medlemskap
 
     fun personensMedlemskapsperioderIMedlForPeriode(kontrollPeriode: Periode): List<Medlemskap> {
-        val medlemskapsperioderForPerson = ArrayList<Medlemskap>()
-        for (medlemskap in datagrunnlag.medlemskap) {
-            val medlemsintervall = lagInterval(Periode(medlemskap.fraOgMed, medlemskap.tilOgMed))
-            val kontrollPeriodeForMedlIntervall = kontrollPeriode.interval()
-            if (medlemsintervall.overlaps(kontrollPeriodeForMedlIntervall)) medlemskapsperioderForPerson.add(medlemskap)
+        return datagrunnlag.medlemskap.filter {
+            lagInterval(Periode(it.fraOgMed, it.tilOgMed)).overlaps(kontrollPeriode.interval())
         }
-        return medlemskapsperioderForPerson
     }
 
     fun brukerensPerioderIMedlSiste12Mnd(): List<Medlemskap> {
@@ -245,15 +242,15 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return arbeidsforholdForNorskArbeidsgiver().flatMap { it.arbeidsgiver.konkursStatus.orEmpty() }
     }
 
-    fun erMedlemskapPeriodeOver12MndPeriode(erMedlem: Boolean): Boolean {
-        return medlemskapsPerioderOver12MndPeriode(erMedlem).isNotEmpty()
-    }
-
     private fun medlemskapsPerioderOver12MndPeriode(erMedlem: Boolean): List<Medlemskap> {
         return brukerensPerioderIMedlSiste12Mnd().filter {
-            it.erMedlem == erMedlem && it.lovvalg er "ENDL" &&
-                    Periode(it.fraOgMed, it.tilOgMed).interval().encloses(datohjelper.kontrollPeriodeForMedl().interval())
+            it.erMedlem == erMedlem && it.lovvalg er "ENDL"
         }
+    }
+
+    fun erMedlemskapsperioderOver12Mnd(erMedlem: Boolean): Boolean {
+        return brukerensPerioderIMedlSiste12Mnd().filter { it.erMedlem == erMedlem && it.lovvalg er "ENDL" }
+                .harSammenhengendeMedlemskapIHeleGittPeriode(datohjelper.kontrollPeriodeForMedl())
     }
 
     fun medlemskapsPerioderOver12MndPeriodeDekning(): List<String> {
@@ -261,20 +258,12 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     }
 
     fun harSammeArbeidsforholdSidenFomDatoFraMedl(): Boolean {
-
-        val fomDatoFraMedl = finnTidligsteFraOgMedDatoForMedl()
-
-        return arbeidsforholdForDato(fomDatoFraMedl).isNotEmpty() &&
-                arbeidsforholdForDato(fomDatoFraMedl) == arbeidsforholdForDato(datohjelper.tilOgMedDag())
+        return arbeidsforholdForDato(tidligsteFraOgMedDatoForMedl()).isNotEmpty() &&
+                arbeidsforholdForDato(tidligsteFraOgMedDatoForMedl()) == arbeidsforholdForDato(datohjelper.tilOgMedDag())
     }
 
-    private fun finnTidligsteFraOgMedDatoForMedl(): LocalDate {
-        var fomDatoFraMedl = LocalDate.MAX
-
-        for (medlemskap in brukerensPerioderIMedlSiste12Mnd()) {
-            if (medlemskap.fraOgMed.isBefore(fomDatoFraMedl)) fomDatoFraMedl = medlemskap.fraOgMed
-        }
-        return fomDatoFraMedl
+    private fun tidligsteFraOgMedDatoForMedl(): LocalDate {
+        return brukerensPerioderIMedlSiste12Mnd().sorted().first().fraOgMed
     }
 
     fun harMedlPeriodeMedOgUtenMedlemskap(): Boolean {
@@ -287,9 +276,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     }
 
     fun harSammeAdresseSidenFomDatoFraMedl(): Boolean {
-        val fomDatoFraMedl = finnTidligsteFraOgMedDatoForMedl()
-
-        return bostedAdresseForDato(fomDatoFraMedl).size == 1 &&
-                bostedAdresseForDato(fomDatoFraMedl) == bostedAdresseForDato(datohjelper.tilOgMedDag())
+        return bostedAdresseForDato(tidligsteFraOgMedDatoForMedl()).size == 1 &&
+                bostedAdresseForDato(tidligsteFraOgMedDatoForMedl()) == bostedAdresseForDato(datohjelper.tilOgMedDag())
     }
 }

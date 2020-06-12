@@ -26,7 +26,7 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
         return when (ytelse) {
             Ytelse.SYKEPENGER -> Periode(
                     fom = førsteSykedag().minusMonths(12),
-                    tom = førsteSykedag()
+                    tom = datagrunnlag.periode.tom
             )
         }
     }
