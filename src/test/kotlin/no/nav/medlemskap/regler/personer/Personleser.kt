@@ -66,6 +66,7 @@ class Personleser {
     fun amerikanskUtenMedlemskapLovvalgStatuskodeUavklart() = lesDatagrunnlag("$ikkeEøs/amerikansk_uten_medlemskap_lovvalg_statuskode_uavk.json")
     fun amerikanskUtenMedlemskapEndretArbeidsforhold() = lesDatagrunnlag("$ikkeEøs/amerikansk_uten_medlemskap_endret_arbeidsforhold.json")
     fun amerikanskMedMedlemskapEndretArbeidsforhold() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_medlemskap_endret_arbeidsforhold.json")
+    fun amerikanskUtenMedlemskapEndretArbeidsforholdSammeArbeidsgiver() = lesDatagrunnlag("$ikkeEøs/amerikansk_uten_medlemskap_endret_arbeidsforhold_samme_arbeidsgiver.json")
     fun amerikanskUtenMedlemskapEndretAdresse() = lesDatagrunnlag("$ikkeEøs/amerikansk_uten_medlemskap_endret_adresse.json")
     fun amerikanskMedMedlemskapEndretAdresse() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_medlemskap_endret_adresse.json")
     fun amerikanskUtenMedlemskapUtenArbeidsforhold() = lesDatagrunnlag("$ikkeEøs/amerikansk_uten_medlemskap_uten_arbeidsforhold.json")

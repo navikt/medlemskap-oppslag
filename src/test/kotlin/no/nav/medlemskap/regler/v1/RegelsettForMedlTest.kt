@@ -59,6 +59,11 @@ class RegelsettForMedlTest {
     }
 
     @Test
+    fun `amerikansk person uten medlemskap med endret arbeidsforhold, men med samme arbeidsgiver`() {
+        assertSvar("1.2.2", Svar.JA, evaluer(personleser.amerikanskUtenMedlemskapEndretArbeidsforholdSammeArbeidsgiver()), Svar.UAVKLART)
+    }
+
+    @Test
     fun `amerikansk person uten medlemskap uten arbeidsforhold`() {
         assertSvar("1.2.2", Svar.NEI, evaluer(personleser.amerikanskUtenMedlemskapUtenArbeidsforhold()), Svar.UAVKLART)
     }
