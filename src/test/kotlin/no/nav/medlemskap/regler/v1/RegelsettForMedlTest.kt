@@ -28,7 +28,6 @@ class RegelsettForMedlTest {
     }
 
 
-
     @Test
     fun `amerikansk person med og uten medlemskap i 12 mnd perioden`() {
         assertSvar("1.1", Svar.JA, evaluer(personleser.amerikanskMedOgUtenMedlemskap()), Svar.UAVKLART)
