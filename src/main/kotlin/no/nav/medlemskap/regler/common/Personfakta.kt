@@ -255,7 +255,7 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
     fun medlemskapsPerioderOver12MndPeriodeDekning(): List<String> {
         return medlemskapsPerioderOver12MndPeriode(true).map {
-            dekningKoderCounter(it.dekning.orEmpty())
+            dekningKoderCounter(it.dekning ?: "Uten kodeverdi i dekning")
             it.dekning.orEmpty() }
     }
 

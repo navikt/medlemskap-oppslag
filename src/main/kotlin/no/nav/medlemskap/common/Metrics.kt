@@ -90,8 +90,9 @@ fun harIkkeArbeidsforhold12MndTilbakeCounter(): Counter = Counter
         .description("counter for brukere som ikke har arbeidsforhold som starter 12 mnd tilbake")
         .register(Metrics.globalRegistry)
 
-fun dekningKoderCounter(orEmpty: String): Counter = Counter
+fun dekningKoderCounter(dekning: String?): Counter = Counter
         .builder("dekningstyper_koder")
+        .tags( "dekning", dekning)
         .description("Ulike dekningskoder til brukere som har spurt tjenesten")
         .register(Metrics.globalRegistry)
 
