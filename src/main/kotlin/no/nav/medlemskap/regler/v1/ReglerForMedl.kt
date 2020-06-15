@@ -239,6 +239,7 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
             when {
                 personfakta.medlemskapsPerioderOver12MndPeriodeDekning() inneholderNoe gyldigeDekningerForSykepenger -> ja()
                 else -> nei()
+
             }
 
     private val List<Oppgave>.antallAapneOppgaver: Int
