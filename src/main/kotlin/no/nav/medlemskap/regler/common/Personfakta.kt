@@ -192,12 +192,11 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         for (arbeidsforhold in arbeidsforholdForStillingsprosent()) {
             val vektetStillingsprosentForArbeidsforhold = beregnVektetStillingsprosentForArbeidsforhold(arbeidsforhold)
 
-            stillingsprosentCounter(vektetStillingsprosentForArbeidsforhold).increment()
-
             if (vektetStillingsprosentForArbeidsforhold < gittStillingsprosent
                     && ingenAndreParallelleArbeidsforhold(arbeidsforhold)) {
                 return false
             }
+            stillingsprosentCounter(vektetStillingsprosentForArbeidsforhold).increment()
         }
 
         return true
