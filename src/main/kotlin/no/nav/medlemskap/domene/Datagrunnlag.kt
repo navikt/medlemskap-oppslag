@@ -8,7 +8,6 @@ data class Datagrunnlag (
         val personhistorikk: Personhistorikk,
         val medlemskap: List<Medlemskap> = listOf(),
         val arbeidsforhold: List<Arbeidsforhold> = listOf(),
-        val inntekt: List<Inntekt> = listOf(),
         val oppgaver: List<Oppgave> = listOf(),
         val dokument: List<Journalpost> = listOf()
 )
