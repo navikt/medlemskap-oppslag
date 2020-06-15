@@ -258,9 +258,16 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     }
 
     fun harSammeArbeidsforholdSidenFomDatoFraMedl(): Boolean {
+
         return arbeidsforholdForDato(tidligsteFraOgMedDatoForMedl()).isNotEmpty() &&
-                arbeidsforholdForDato(tidligsteFraOgMedDatoForMedl()) == arbeidsforholdForDato(datohjelper.tilOgMedDag())
+                (ulikeArbeidsforholdMenSammeArbeidsgiver() ||
+                        arbeidsforholdForDato(tidligsteFraOgMedDatoForMedl()) == arbeidsforholdForDato(datohjelper.tilOgMedDag()))
+
     }
+
+    private fun ulikeArbeidsforholdMenSammeArbeidsgiver() =
+            (arbeidsforholdForDato(tidligsteFraOgMedDatoForMedl()) != arbeidsforholdForDato(datohjelper.tilOgMedDag()) &&
+                    arbeidsforholdForDato(tidligsteFraOgMedDatoForMedl()).map { it.arbeidsgiver.identifikator } == arbeidsforholdForDato(datohjelper.tilOgMedDag()).map { it.arbeidsgiver.identifikator })
 
     private fun tidligsteFraOgMedDatoForMedl(): LocalDate {
         return brukerensPerioderIMedlSiste12Mnd().sorted().first().fraOgMed
