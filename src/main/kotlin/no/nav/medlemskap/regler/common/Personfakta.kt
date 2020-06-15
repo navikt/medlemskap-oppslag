@@ -4,6 +4,7 @@ import no.nav.medlemskap.common.harIkkeArbeidsforhold12MndTilbakeCounter
 import no.nav.medlemskap.common.merEnn10ArbeidsforholdCounter
 import no.nav.medlemskap.common.stillingsprosentCounter
 import no.nav.medlemskap.common.usammenhengendeArbeidsforholdCounter
+import no.nav.medlemskap.common.dekningKoderCounter
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Funksjoner.er
 import no.nav.medlemskap.regler.common.Funksjoner.harSammenhengendeMedlemskapIHeleGittPeriode
@@ -253,7 +254,9 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     }
 
     fun medlemskapsPerioderOver12MndPeriodeDekning(): List<String> {
-        return medlemskapsPerioderOver12MndPeriode(true).map { it.dekning.orEmpty() }
+        return medlemskapsPerioderOver12MndPeriode(true).map {
+            dekningKoderCounter(it.dekning.orEmpty())
+            it.dekning.orEmpty() }
     }
 
     fun harSammeArbeidsforholdSidenFomDatoFraMedl(): Boolean {

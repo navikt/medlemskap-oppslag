@@ -74,6 +74,7 @@ fun stillingsprosentCounter(stillingsprosent: Double): Counter =
                     .register(Metrics.globalRegistry)
         }
 
+
 fun merEnn10ArbeidsforholdCounter(): Counter = Counter
         .builder("over_10_arbeidsforhold")
         .description("counter for brukere med flere enn 10 arbeidsforhold")
@@ -87,6 +88,11 @@ fun usammenhengendeArbeidsforholdCounter(): Counter = Counter
 fun harIkkeArbeidsforhold12MndTilbakeCounter(): Counter = Counter
         .builder("ingen_arbeidsforhold_fra_12_mnd_tilbake")
         .description("counter for brukere som ikke har arbeidsforhold som starter 12 mnd tilbake")
+        .register(Metrics.globalRegistry)
+
+fun dekningKoderCounter(orEmpty: String): Counter = Counter
+        .builder("dekningstyper_koder")
+        .description("Ulike dekningskoder til brukere som har spurt tjenesten")
         .register(Metrics.globalRegistry)
 
 private fun getStillingsprosentIntervall(stillingsprosent: Double): String {
