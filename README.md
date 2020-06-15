@@ -2,6 +2,8 @@
 Oppslagstjeneste for lovvalg og medlemskap i Folketrygden
 
 Denne tjenesten gjør REST-kall mot følgende tjenester/registre:
+
+TODO: Beskrivelse av registerne
 * MEDL:
 * GSAK:
 * JOARK:
@@ -21,6 +23,8 @@ Forventer et AzureAD-token utstedt til servicebruker, satt Authorization-header 
 I tillegg til Authorization-headeren kreves det at Content-Type er satt til application/json
 
 ## Eksempel på kall
+
+TODO: Lag kjørende Cucumber-ekspempel på kall
 Kallet er en POST på `/`
 ```
 {

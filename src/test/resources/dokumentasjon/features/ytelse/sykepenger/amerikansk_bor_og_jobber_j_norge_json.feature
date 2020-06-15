@@ -71,4 +71,4 @@ Egenskap: Borgere som ikke er EØS-borgere skal ha uavklart medlemskap i MVP
     Når lovvalg og medlemskap beregnes fra datagrunnlag json
 
     Så skal medlemskap i Folketrygden være "UAVKLART"
-    Og omfattet av grunnforordningen EØS være "Nei"
+    Og omfattet av grunnforordningen være "Nei"

@@ -33,7 +33,7 @@ class GrunnforordningSteps : No {
             bostedsadresser = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
         }
 
-        Når("omfattet av grunnforordningen EØS beregnes med følgende parametre") { dataTable: DataTable? ->
+        Når("omfattet av grunnforordningen beregnes med følgende parametre") { dataTable: DataTable? ->
             val medlemskapsparametre = domenespråkParser.mapDataTable(dataTable, MedlemskapsparametreMapper()).get(0)
 
             sykemeldingsperiode = medlemskapsparametre.inputPeriode
@@ -54,7 +54,7 @@ class GrunnforordningSteps : No {
             svar = evaluer(datagrunnlag!!)
         }
 
-        Så("skal omfattet av grunnforordningen EØS være {string}") { forventetSvar: String? ->
+        Så("skal omfattet av grunnforordningen være {string}") { forventetSvar: String? ->
             assertEquals(domenespråkParser.parseSvar(forventetSvar!!), svar)
         }
     }

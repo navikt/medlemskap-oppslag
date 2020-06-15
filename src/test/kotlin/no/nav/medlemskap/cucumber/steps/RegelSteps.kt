@@ -27,7 +27,7 @@ class RegelSteps: No {
             assertDelresultat(regelIdentifikator!!, domenespråkParser.parseSvar(forventetSvar!!), resultat!!)
         }
 
-        Så("omfattet av grunnforordningen EØS være {string}") { forventetSvar: String? ->
+        Så("omfattet av grunnforordningen være {string}") { forventetSvar: String? ->
             assertDelresultat("2", domenespråkParser.parseSvar(forventetSvar!!), resultat!!)
         }
 
