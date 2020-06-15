@@ -39,7 +39,9 @@ fun configureSensuInfluxMeterRegistry(): SensuInfluxMeterRegistry {
     influxMeterRegistry.config().meterFilter(MeterFilter.denyUnless {
         it.name.startsWith("api_hit_counter")
                 || it.name.startsWith("stillingsprosent")
+                || it.name.startsWith("dekningstyper")
                 || it.name.contains("arbeidsforhold")
+
     })
     influxMeterRegistry.config().commonTags(defaultInfluxTags());
     Metrics.globalRegistry.add(influxMeterRegistry)
@@ -91,8 +93,8 @@ fun harIkkeArbeidsforhold12MndTilbakeCounter(): Counter = Counter
         .register(Metrics.globalRegistry)
 
 fun dekningKoderCounter(dekning: String?): Counter = Counter
-        .builder("dekningstyper_koder")
-        .tags( "dekning", dekning)
+        .builder("dekningstyper")
+        .tags( "dekningstyper", dekning)
         .description("Ulike dekningskoder til brukere som har spurt tjenesten")
         .register(Metrics.globalRegistry)
 
