@@ -61,7 +61,7 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
                                      } hvisJa {
                                          jaKonklusjon
                                      } hvisNei {
-                                         neiKonklusjon
+                                         medlemskapUtenSykepengerKonklusjon
                                      }
                                  } hvisNei {
                                      uavklartKonklusjon

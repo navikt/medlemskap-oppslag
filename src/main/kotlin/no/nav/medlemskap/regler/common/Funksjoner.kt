@@ -94,3 +94,9 @@ val neiKonklusjon = Regel(
         operasjon = { nei("Bruker er ikke medlem") }
 )
 
+val medlemskapUtenSykepengerKonklusjon = Regel(
+        identifikator = konklusjonIdentifikator,
+        avklaring = "Omfatter medlemskapet sykepenger?",
+        beskrivelse = "",
+        operasjon = { nei("Bruker er medlem, men medlemskapet omfatter ikke sykepenger")}
+)
