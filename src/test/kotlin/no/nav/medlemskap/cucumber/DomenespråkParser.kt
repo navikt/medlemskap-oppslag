@@ -107,6 +107,15 @@ class DomenespråkParser {
 
         return Arbeidsforholdstype.valueOf(verdi)
     }
+
+    fun parseValgfriInt(domenebegrep: Domenebegrep, rad: Map<String, String>): Int? {
+        val verdi = valgfriVerdi(domenebegrep.nøkkel, rad)
+        if (verdi == null) {
+            return null
+        }
+
+        return parseInt(domenebegrep, rad)
+    }
 }
 
 interface RadMapper<T> {
@@ -198,9 +207,10 @@ class ArbeidsforholdMapper {
 class ArbeidsgiverMapper : RadMapper<Arbeidsgiver> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Arbeidsgiver {
         return Arbeidsgiver(
-                type = domenespråkParser.parseString(ARBEIDSGIVERTYPE, rad),
-                landkode = domenespråkParser.parseString(LANDKODE, rad),
-                ansatte = listOf(Ansatte(domenespråkParser.parseInt(ANTALL_ANSATTE, rad), null, null)),
+                identifikator = domenespråkParser.parseValgfriString(IDENTIFIKATOR, rad),
+                type = domenespråkParser.parseValgfriString(ARBEIDSGIVERTYPE, rad),
+                landkode = domenespråkParser.parseValgfriString(LANDKODE, rad),
+                ansatte = listOf(Ansatte(domenespråkParser.parseValgfriInt(ANTALL_ANSATTE, rad), null, null)),
                 konkursStatus = emptyList()
         )
     }
@@ -227,6 +237,7 @@ enum class Domenebegrep(val nøkkel: String) {
     ER_MEDLEM("Er medlem"),
     FRA_OG_MED_DATO("Fra og med dato"),
     HAR_HATT_ARBEID_UTENFOR_NORGE("Har hatt arbeid utenfor Norge"),
+    IDENTIFIKATOR("Identifikator"),
     LANDKODE("Landkode"),
     LOVVALG("Lovvalg"),
     LOVVALGSLAND("Lovvalgsland"),
