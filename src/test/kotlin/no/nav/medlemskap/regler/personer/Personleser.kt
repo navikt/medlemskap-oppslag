@@ -80,5 +80,9 @@ class Personleser {
         return objectMapper.readValue(res, Datagrunnlag::class.java)
     }
 
+    fun dataGrunnlagFraJson(json: String): Datagrunnlag {
+        return objectMapper.readValue(json, Datagrunnlag::class.java)
+    }
+
 
 }

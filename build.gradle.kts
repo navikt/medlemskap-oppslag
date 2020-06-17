@@ -19,6 +19,7 @@ val assertkVersion = "0.22"
 val restAssuredVersion = "4.3.0"
 val resilience4jVersion = "1.5.0"
 val threetenVersion = "1.5.0"
+val cucumberVersion = "5.6.0"
 
 //Temporary to fix high severity Snyk vulernabilities:
 val nettyCodecVersion = "4.1.46.Final"
@@ -50,8 +51,6 @@ repositories {
         }
     }
 }
-
-
 
 dependencies {
     implementation(kotlin("stdlib"))
@@ -108,6 +107,10 @@ dependencies {
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:$assertkVersion")
     testImplementation("io.rest-assured:rest-assured:$restAssuredVersion")
 
+    testImplementation("io.cucumber:cucumber-junit:${cucumberVersion}")
+    testImplementation("io.cucumber:cucumber-java8:${cucumberVersion}")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:${junitJupiterVersion}")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}")
 }
 
 java {

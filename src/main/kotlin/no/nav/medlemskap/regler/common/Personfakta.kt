@@ -18,7 +18,7 @@ import java.util.stream.Collectors
 
 class Personfakta(private val datagrunnlag: Datagrunnlag) {
 
-    private val datohjelper = Datohjelper(datagrunnlag)
+    private val datohjelper = Datohjelper(datagrunnlag.periode)
     private val statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap
     private val arbeidsforhold = datagrunnlag.arbeidsforhold
     private val bostedadresser = datagrunnlag.personhistorikk.bostedsadresser
