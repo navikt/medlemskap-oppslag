@@ -1,7 +1,7 @@
 {
   "periode": {
     "fom": "2020-01-30",
-    "tom": "2020-01-30"
+    "tom": "2020-02-05"
   },
   "brukerinput" : {
     "arbeidUtenforNorge" : true
@@ -18,21 +18,22 @@
     "midlertidigAdresser" : [ ]
   },
   "medlemskap" : [
-    {
-      "fraOgMed": "2018-01-01",
-      "tilOgMed": "2021-05-05",
-      "erMedlem": true,
-      "lovvalgsland": "NOR",
-      "lovvalg": "ENDL"
-    }
-  ],
+  {
+    "fraOgMed" : "2019-01-01",
+    "tilOgMed" : "2019-05-05",
+    "erMedlem" : true,
+    "lovvalgsland": "NOR",
+    "lovvalg": "ENDL"
+  },
+  {
+    "fraOgMed" : "2019-05-06",
+    "tilOgMed" : "2021-08-01",
+    "erMedlem" : true,
+    "lovvalgsland": "NOR",
+    "lovvalg": "ENDL"
+  }],
   "arbeidsforhold" : [ ],
   "inntekt" : [ ],
-  "oppgaver" : [ {
-    "aktivDato" : "2020-01-01",
-    "prioritet" : "NORM",
-    "status" : "AAPNET",
-    "tema" : "MED"
-  } ],
+  "oppgaver" : [ ],
   "dokument" : [ ]
 }

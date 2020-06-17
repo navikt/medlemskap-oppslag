@@ -14,13 +14,19 @@ class RegelsettForMedlTest {
 
     @Test
     fun `amerikansk person med vedtak i medl får uavklart på manuelle vedtak`() {
-        assertSvar("1", Svar.JA, evaluer(personleser.amerikanskMedl()), Svar.UAVKLART)
+        assertSvar("A", Svar.JA, evaluer(personleser.amerikanskMedl()), Svar.UAVKLART)
     }
 
     @Test
     fun `norsk person med opplysninger i medl`() {
-        assertSvar("1", Svar.JA, evaluer(personleser.norskMedOpplysningerIMedl()), Svar.UAVKLART)
+        assertSvar("A", Svar.JA, evaluer(personleser.norskMedOpplysningerIMedl()), Svar.UAVKLART)
     }
+
+    @Test
+    fun `amerikansk person med vedtak i medl og gosys får uavklart på manuelle vedtak`() {
+        assertSvar("B", Svar.JA, evaluer(personleser.amerikanskGosys()), Svar.UAVKLART)
+    }
+
 
     @Test
     fun `amerikansk person med og uten medlemskap i 12 mnd perioden`() {
@@ -34,7 +40,7 @@ class RegelsettForMedlTest {
 
     @Test
     fun `norsk person med periode uten medlemskap`() {
-        assertSvar("1.2", Svar.NEI, evaluer(personleser.norskUtenMedlemskapIMedl()), Svar.UAVKLART)
+        assertSvar("1.2.1", Svar.NEI, evaluer(personleser.norskUtenMedlemskapIMedl()), Svar.UAVKLART)
     }
 
     @Test
@@ -50,6 +56,11 @@ class RegelsettForMedlTest {
     @Test
     fun `amerikansk person uten medlemskap med endret arbeidsforhold`() {
         assertSvar("1.2.2", Svar.NEI, evaluer(personleser.amerikanskUtenMedlemskapEndretArbeidsforhold()), Svar.UAVKLART)
+    }
+
+    @Test
+    fun `amerikansk person uten medlemskap med endret arbeidsforhold, men med samme arbeidsgiver`() {
+        assertSvar("1.2.2", Svar.JA, evaluer(personleser.amerikanskUtenMedlemskapEndretArbeidsforholdSammeArbeidsgiver()), Svar.UAVKLART)
     }
 
     @Test
@@ -80,6 +91,26 @@ class RegelsettForMedlTest {
     @Test
     fun `amerikansk person med medlemskapdato over 5 år`() {
         assertSvar("1.3", Svar.NEI, evaluer(personleser.amerikanskMedMedlemskapUgyldigDato()), Svar.UAVKLART)
+    }
+
+    @Test
+    fun `amerikansk med overlappende medlemskapsperioder`() {
+        assertSvar("1.3", Svar.JA, evaluer(personleser.amerikanskMedMedlemskapToOverlappendePerioder()), Svar.UAVKLART)
+    }
+
+    @Test
+    fun `amerikansk med hull i medlemskapsperiode`() {
+        assertSvar("1.3", Svar.NEI, evaluer(personleser.amerikanskMedMedlemskapToUsammenhengendePerioder()), Svar.UAVKLART)
+    }
+
+    @Test
+    fun `amerikansk med medlemskap avsluttet i input periode`() {
+        assertSvar("1.3", Svar.NEI, evaluer(personleser.amerikanskMedMedlemskapAvsluttetIGittInputPeriode()), Svar.UAVKLART)
+    }
+
+    @Test
+    fun `amerikansk med to sammenhengende medlemskapsperioder`() {
+        assertSvar("1.3", Svar.JA, evaluer(personleser.amerikanskMedMedlemskapToSammenhengendePerioder()), Svar.UAVKLART)
     }
 
     @Test

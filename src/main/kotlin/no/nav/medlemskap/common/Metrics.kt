@@ -39,7 +39,9 @@ fun configureSensuInfluxMeterRegistry(): SensuInfluxMeterRegistry {
     influxMeterRegistry.config().meterFilter(MeterFilter.denyUnless {
         it.name.startsWith("api_hit_counter")
                 || it.name.startsWith("stillingsprosent")
+                || it.name.startsWith("dekningstyper")
                 || it.name.contains("arbeidsforhold")
+
     })
     influxMeterRegistry.config().commonTags(defaultInfluxTags());
     Metrics.globalRegistry.add(influxMeterRegistry)
@@ -74,6 +76,7 @@ fun stillingsprosentCounter(stillingsprosent: Double): Counter =
                     .register(Metrics.globalRegistry)
         }
 
+
 fun merEnn10ArbeidsforholdCounter(): Counter = Counter
         .builder("over_10_arbeidsforhold")
         .description("counter for brukere med flere enn 10 arbeidsforhold")
@@ -89,11 +92,18 @@ fun harIkkeArbeidsforhold12MndTilbakeCounter(): Counter = Counter
         .description("counter for brukere som ikke har arbeidsforhold som starter 12 mnd tilbake")
         .register(Metrics.globalRegistry)
 
+fun dekningKoderCounter(dekning: String): Counter = Counter
+        .builder("dekningstyper")
+        .tags( "dekningstyper", dekning)
+        .description("Ulike dekningskoder til brukere som har spurt tjenesten")
+        .register(Metrics.globalRegistry)
+
 private fun getStillingsprosentIntervall(stillingsprosent: Double): String {
     //Fjerner desimaler fremfor å runde av fordi regelsjekken godtar ikke f.eks. 24.9% stilling som høy nok til å regnes som 25% stilling.
     val stillingsprosentHeltall = truncate(stillingsprosent).toInt()
     when {
-        (0..14).contains(stillingsprosentHeltall) -> return "0 - 14"
+        0 == stillingsprosentHeltall -> return "0"
+        (1..14).contains(stillingsprosentHeltall) -> return "1 - 14"
         (15..24).contains(stillingsprosentHeltall) -> return "15 - 24"
         (25..34).contains(stillingsprosentHeltall) -> return "25 - 34"
         (35..44).contains(stillingsprosentHeltall) -> return "35 - 44"
