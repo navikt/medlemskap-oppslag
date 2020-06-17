@@ -39,7 +39,7 @@ class RegelSteps : No {
             bostedsadresser = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
         }
 
-        Gitt("følgende medlemsopplysninger") { dataTable: DataTable? ->
+        Gitt("følgende medlemsunntak fra MEDL") { dataTable: DataTable? ->
             medlemskap = domenespråkParser.mapDataTable(dataTable, MedlemskapMapper())
         }
 

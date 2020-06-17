@@ -28,6 +28,10 @@ class DomenespråkParser {
         return verdi(domenebegrep.nøkkel, rad)
     }
 
+    fun parseValgfriString(domenebegrep: Domenebegrep, rad: Map<String, String>): String? {
+        return valgfriVerdi(domenebegrep.nøkkel, rad)
+    }
+
     fun parseBoolean(domenebegrep: Domenebegrep, rad: Map<String, String>): Boolean {
         val verdi = verdi(domenebegrep.nøkkel, rad)
 
@@ -156,12 +160,12 @@ class AdresseMapper : RadMapper<Adresse> {
 class MedlemskapMapper : RadMapper<Medlemskap> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Medlemskap {
         return Medlemskap(
-                domenespråkParser.parseString(DEKNING, rad),
+                domenespråkParser.parseValgfriString(DEKNING, rad),
                 domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
                 domenespråkParser.parseDato(TIL_OG_MED_DATO, rad),
                 domenespråkParser.parseBoolean(ER_MEDLEM, rad),
                 domenespråkParser.parseString(LOVVALG, rad),
-                domenespråkParser.parseString(LOVVALGSLAND, rad)
+                domenespråkParser.parseValgfriString(LOVVALGSLAND, rad)
         )
     }
 }

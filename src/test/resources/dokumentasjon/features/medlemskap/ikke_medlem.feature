@@ -2,14 +2,18 @@
 # encoding: UTF-8
 #@ignored
 #TODO: Eksempel på hvordan man kan hente grunnlag fra tabeller istedet for fra JSON
-#TODO: Gjøre ferdig eksempelet
-Egenskap: Man er medlem hvis man er norsk statsborger som bor i Norge, og som har jobbet i Norge siste 12 måneder
+#TODO: Gjøre ferdig eksempelet, få inn realistiske verdier
+Egenskap: Uavklart hvis man har medlemsunntak fra MEDL
 
-  Scenariomal: Statsborgerskap avgjør om en som bor i Norge og jobber i Norge er medlem
+  Scenario: Uavklart hvis man har medlemsunntak
 
     Gitt følgende bostedsadresser i personhistorikken
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | Oslo    | NOR      | 01.01.2000      |                 |
+
+    Og følgende medlemsunntak fra MEDL
+      | Dekning | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland |
+      | FTL_2-6 | 01.01.2019      | 01.01.2020      | Ja        | NOR     | NOR          |
 
     Og følgende arbeidsgivere
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
@@ -31,12 +35,7 @@ Egenskap: Man er medlem hvis man er norsk statsborger som bor i Norge, og som ha
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 15.01.2020      | 30.01.2020      | Nei                           |
 
-    Så skal medlemskap være <medlemskap>
-
-    Eksempler:
-      | Statsborgerskap | medlemskap |
-      | NOR             | "Ja"       |
-      | FRA             | "UAVKLART" |
+    Så skal medlemskap være "UAVKLART"
 
 
 
