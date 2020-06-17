@@ -2,8 +2,6 @@
 
 Dette er en tjeneste som finner ut lovvalg og medlemskap.
 
-TODO: Få opp en bedre funksjonell beskrivelse
-
 ## Input til tjenesten
 * Fødselsnummer: Identifiserer en person, brukes til oppslag mot andre tjenester
 * Sykemeldingsperiode (fra og med dato, til og med dato)
@@ -11,7 +9,7 @@ TODO: Få opp en bedre funksjonell beskrivelse
 * Eksempel: Utlede første sykemeldingsdag fra sykemeldingsperiode
 
 ## Datagrunnlag
-* Personhistorikk hentes fra TPS
+* Personhistorikk hentes fra TPS/PDL
 * Medlemskap hentes fra MEDL
 * Arbeidsforhold hentes fra AAReg
 * InntektListe hentes fra InntektService

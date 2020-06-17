@@ -3,11 +3,13 @@ Oppslagstjeneste for lovvalg og medlemskap i Folketrygden
 
 Denne tjenesten gjør REST-kall mot følgende tjenester/registre:
 
-TODO: Beskrivelse av registerne
-* MEDL:
-* GSAK:
-* JOARK:
-* TPS/DL: 
+* AAREG: Arbeidstaker og arbeidsgiver registeret
+* EREG: Enhetsregisteret
+* MEDL: Medlemskapsregisteret, inneholder medlemskapsperioder som avviker fra normalen
+* GSAK: Saksbehandlingsløsning
+* JOARK: Arkivsystem
+* TPS: Tjenestebasert Persondatasystem
+* PDL: Ny persondataløsning, mangler foreløpig utenlandsopphold 
 
 # Funksjonell dokumentasjon
 * [Funksjonell dokumentasjon](src/test/resources/dokumentasjon/README.md)
@@ -24,7 +26,6 @@ I tillegg til Authorization-headeren kreves det at Content-Type er satt til appl
 
 ## Eksempel på kall
 
-TODO: Lag kjørende Cucumber-ekspempel på kall
 Kallet er en POST på `/`
 ```
 {

@@ -31,11 +31,11 @@ class RegelSteps : No {
     private var datagrunnlag: Datagrunnlag? = null
 
     init {
-        Gitt("følgende statsborgerskap i personhistorikken") { dataTable: DataTable? ->
+        Gitt("følgende statsborgerskap i personhistorikken fra TPS/PDL") { dataTable: DataTable? ->
             statsborgerskap = domenespråkParser.mapDataTable(dataTable, StatsborgerskapMapper())
         }
 
-        Gitt("følgende bostedsadresser i personhistorikken") { dataTable: DataTable? ->
+        Gitt("følgende bostedsadresser i personhistorikken fra TPS/PDL") { dataTable: DataTable? ->
             bostedsadresser = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
         }
 
@@ -43,16 +43,16 @@ class RegelSteps : No {
             medlemskap = domenespråkParser.mapDataTable(dataTable, MedlemskapMapper())
         }
 
-        Gitt("følgende arbeidsgivere") { dataTable: DataTable? ->
-            arbeidsgivere = domenespråkParser.mapDataTable(dataTable, ArbeidsgiverMapper())
-        }
-
-        Gitt("følgende arbeidsforhold") { dataTable: DataTable? ->
+        Gitt("følgende arbeidsforhold fra AAReg") { dataTable: DataTable? ->
             val arbeidsgiver = arbeidsgivere[0]
             arbeidsforhold = domenespråkParser.mapArbeidsforhold(dataTable, utenlandsopphold, arbeidsgiver)
         }
 
-        Gitt("følgende utenlandsopphold") { dataTable: DataTable? ->
+        Gitt("følgende arbeidsgiver i arbeidsforholdet") { dataTable: DataTable? ->
+            arbeidsgivere = domenespråkParser.mapDataTable(dataTable, ArbeidsgiverMapper())
+        }
+
+        Gitt("følgende utenlandsopphold i arbeidsforholdet") { dataTable: DataTable? ->
             utenlandsopphold = domenespråkParser.mapDataTable(dataTable, UtenlandsoppholdMapper())
         }
 
