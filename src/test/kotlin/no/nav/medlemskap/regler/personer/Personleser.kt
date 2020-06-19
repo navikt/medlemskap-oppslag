@@ -9,6 +9,10 @@ class Personleser {
     private val ikkeEøs = "/testpersoner/ikke_eos"
     private val variertDatagrunnlag = "/testpersoner/variertDatagrunnlagIPeriode"
     private val variertDatagrunnlagArbeidsforhold = "/testpersoner/variertDatagrunnlagIPeriode/arbeidsforhold"
+    private val hovedregler = "/testpersoner/hovedregler"
+
+    fun norskMedMedlOpplysninger() = lesDatagrunnlag("$hovedregler/norsk_med_medl_opplysninger.json")
+    fun amerikanskUtenMedlOpplysninger() = lesDatagrunnlag("$hovedregler/amerikansk_uten_medl_opplysninger.json")
 
     fun enkelNorsk() = lesDatagrunnlag("$norsk/kun_enkelt_statsborgerskap.json")
     fun enkelNorskArbeid() = lesDatagrunnlag("$norsk/norsk_jobb_ikke_maritim_eller_pilot.json")
