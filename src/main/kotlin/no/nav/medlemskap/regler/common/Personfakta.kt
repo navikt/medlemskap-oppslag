@@ -1,26 +1,20 @@
 package no.nav.medlemskap.regler.common
 
-import no.nav.medlemskap.common.harIkkeArbeidsforhold12MndTilbakeCounter
-import no.nav.medlemskap.common.merEnn10ArbeidsforholdCounter
-import no.nav.medlemskap.common.stillingsprosentCounter
-import no.nav.medlemskap.common.usammenhengendeArbeidsforholdCounter
 import no.nav.medlemskap.common.dekningKoderCounter
+import no.nav.medlemskap.common.stillingsprosentCounter
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Funksjoner.er
 import no.nav.medlemskap.regler.common.Funksjoner.harSammenhengendeMedlemskapIHeleGittPeriode
-import no.nav.medlemskap.services.aareg.AaRegOpplysningspliktigArbeidsgiverType
-import no.nav.medlemskap.services.ereg.Ansatte
 import org.threeten.extra.Interval
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
-import java.util.stream.Collectors
 
 
-class Personfakta(private val datagrunnlag: Datagrunnlag) {
+class Personfakta(val datagrunnlag: Datagrunnlag) {
 
     private val datohjelper = Datohjelper(datagrunnlag.periode)
     private val statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap
-    private val arbeidsforhold = datagrunnlag.arbeidsforhold
+    val arbeidsforhold = datagrunnlag.arbeidsforhold
     private val bostedadresser = datagrunnlag.personhistorikk.bostedsadresser
 
 
@@ -54,33 +48,12 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     fun hentStatsborgerskapVedSluttAvKontrollperiode(): List<String> =
             hentStatsborgerskapFor(datohjelper.kontrollperiodeForStatsborgerskap().tom!!)
 
-    fun arbeidsforholdIOpptjeningsperiode(): List<Arbeidsforhold> {
-
-        return arbeidsforhold.filter {
-            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
-                    datohjelper.kontrollPeriodeForArbeidsforholdIOpptjeningsperiode())
-        }
-    }
-
-    fun arbeidsforholdForNorskArbeidsgiver(): List<Arbeidsforhold> {
-        return arbeidsforhold.filter {
-            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
-                    datohjelper.kontrollPeriodeForNorskArbeidsgiver())
-        }
-    }
 
     fun arbeidsforholdForStillingsprosent(): List<Arbeidsforhold> {
         return arbeidsforhold.filter {
             periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
                     datohjelper.kontrollPeriodeForStillingsprosent())
         }
-    }
-
-    fun arbeidsforholdForYrkestype(): List<String> {
-        return arbeidsforhold.filter {
-            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
-                    datohjelper.kontrollPeriodeForYrkesforholdType())
-        }.map { it.arbeidsfolholdstype.navn }
     }
 
     fun arbeidsforholdForDato(dato: LocalDate): List<Arbeidsforhold> {
@@ -95,70 +68,6 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
             periodefilter(lagInterval(Periode(it.fom, it.tom)),
                     Periode(dato, dato))
         }
-    }
-
-    fun arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(): List<Arbeidsgiver> {
-        return arbeidsforholdForNorskArbeidsgiver().stream().map { it.arbeidsgiver }.collect(Collectors.toList())
-    }
-
-    fun erArbeidsgivereOrganisasjon(): Boolean {
-        return arbeidsforholdForNorskArbeidsgiver().stream().allMatch { it.arbeidsgivertype == AaRegOpplysningspliktigArbeidsgiverType.Organisasjon }
-    }
-
-
-    fun ansatteHosArbeidsgivere(): List<Ansatte> {
-        return arbeidsgivereIArbeidsforholdForNorskArbeidsgiver().mapNotNull { it.ansatte }.flatten()
-    }
-
-    fun antallAnsatteHosArbeidsgivere(): List<Int?> {
-        return ansatteHosArbeidsgivere().map { it.antall }
-    }
-
-    /**
-     * På dette tidspunktet er det kjent at bruker er i et aktivt arbeidsforhold.
-     * Trenger derfor kun å sjekke at bruker har et arbeidsforhold minumum 12 mnd tilbake og at påfølgende arbeidsforholdene er sammenhengende.
-     */
-    fun harSammenhengendeArbeidsforholdSiste12Mnd(): Boolean {
-
-        var forrigeTilDato: LocalDate? = null
-        val arbeidsforholdForNorskArbeidsgiver = arbeidsforholdForNorskArbeidsgiver()
-
-        if (arbeidsforholdForNorskArbeidsgiver.size > 10) {
-            merEnn10ArbeidsforholdCounter().increment()
-            return false
-        }
-
-        val harArbeidsforhold12MndTilbake = arbeidsforholdForNorskArbeidsgiver.stream().anyMatch { it.periode.fom?.isBefore(datohjelper.kontrollPeriodeForNorskArbeidsgiver().fom?.plusDays(1))!! }
-        if (!harArbeidsforhold12MndTilbake) {
-            harIkkeArbeidsforhold12MndTilbakeCounter().increment()
-            return false
-        }
-
-        val sortertArbeidsforholdEtterPeriode = arbeidsforholdForNorskArbeidsgiver.stream().sorted().collect(Collectors.toList())
-        for (arbeidsforhold in sortertArbeidsforholdEtterPeriode) { //Sjekker at alle påfølgende arbeidsforhold er sammenhengende
-            if (forrigeTilDato != null && !datohjelper.erDatoerSammenhengende(forrigeTilDato, arbeidsforhold.periode.fom)) {
-                usammenhengendeArbeidsforholdCounter().increment()
-                return false
-            }
-            forrigeTilDato = arbeidsforhold.periode.tom
-        }
-
-        return true
-    }
-
-    fun sisteArbeidsforholdYrkeskode(): List<String> {
-        return datagrunnlag.arbeidsforhold.filter {
-            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
-                    datohjelper.kontrollPeriodeForYrkeskode())
-        }
-                .flatMap { it.arbeidsavtaler }.map { it.yrkeskode }
-    }
-
-    fun sisteArbeidsforholdSkipsregister(): List<String> {
-        return datagrunnlag.arbeidsforhold.filter {
-            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
-                    datohjelper.kontrollPeriodeForSkipsregister())
-        }.flatMap { it -> it.arbeidsavtaler.map { it.skipsregister?.name ?: "" } }
     }
 
     fun hentBrukerinputArbeidUtenforNorge(): Boolean = datagrunnlag.brukerinput.arbeidUtenforNorge
@@ -238,10 +147,6 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
         return periodeDatagrunnlag.overlaps(lagInterval(periode)) || periodeDatagrunnlag.encloses(lagInterval(periode))
     }
 
-    fun konkursStatuserArbeidsgivere(): List<String?>? {
-        return arbeidsforholdForNorskArbeidsgiver().flatMap { it.arbeidsgiver.konkursStatus.orEmpty() }
-    }
-
     private fun medlemskapsPerioderOver12MndPeriode(erMedlem: Boolean): List<Medlemskap> {
         return brukerensPerioderIMedlSiste12Mnd().filter {
             it.erMedlem == erMedlem && it.lovvalg er "ENDL"
@@ -256,7 +161,8 @@ class Personfakta(private val datagrunnlag: Datagrunnlag) {
     fun medlemskapsPerioderOver12MndPeriodeDekning(): List<String> {
         return medlemskapsPerioderOver12MndPeriode(true).map {
             dekningKoderCounter(it.dekning ?: "Uten kodeverdi i dekning")
-            it.dekning.orEmpty() }
+            it.dekning.orEmpty()
+        }
     }
 
     fun harSammeArbeidsforholdSidenFomDatoFraMedl(): Boolean {

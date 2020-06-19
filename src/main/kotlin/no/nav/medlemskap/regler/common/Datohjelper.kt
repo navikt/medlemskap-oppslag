@@ -49,15 +49,6 @@ class Datohjelper(val periode: InputPeriode) {
         }
     }
 
-    fun kontrollPeriodeForSkipsregister(): Periode {
-        return when (ytelse) {
-            Ytelse.SYKEPENGER -> Periode(
-                    fom = førsteSykedag().minusMonths(12),
-                    tom = førsteSykedag()
-            )
-        }
-    }
-
     fun kontrollPeriodeForNorskAdresse(): Periode {
         return when (ytelse) {
             Ytelse.SYKEPENGER -> Periode(
@@ -67,25 +58,7 @@ class Datohjelper(val periode: InputPeriode) {
         }
     }
 
-    fun kontrollPeriodeForYrkeskode(): Periode {
-        return when (ytelse) {
-            Ytelse.SYKEPENGER -> Periode(
-                    fom = førsteSykedag().minusDays(12),
-                    tom = førsteSykedag()
-            )
-        }
-    }
-
-    fun kontrollPeriodeForYrkesforholdType(): Periode {
-        return when (ytelse) {
-            Ytelse.SYKEPENGER -> Periode(
-                    fom = førsteSykedag().minusMonths(12),
-                    tom = førsteSykedag()
-            )
-        }
-    }
-
-    fun kontrollPeriodeForNorskArbeidsgiver(): Periode {
+    fun kontrollPeriodeForArbeidsforhold(): Periode {
         return when (ytelse) {
             Ytelse.SYKEPENGER -> Periode(
                     fom = førsteSykedag().minusMonths(12),
@@ -103,10 +76,6 @@ class Datohjelper(val periode: InputPeriode) {
         }
     }
 
-    fun erDatoerSammenhengende(sluttDato: LocalDate, startDato: LocalDate?): Boolean {
-        return sluttDato.isAfter(startDato?.minusDays(3))
-    }
-
     companion object {
         private val datoFormatter = DateTimeFormatter.ofPattern("d.MM.yyyy")
 
@@ -115,6 +84,8 @@ class Datohjelper(val periode: InputPeriode) {
         }
     }
 }
+
+fun erDatoerSammenhengende(sluttDato: LocalDate, startDato: LocalDate?): Boolean = sluttDato.isAfter(startDato?.minusDays(3))
 
 fun lagInterval(periode: Periode): Interval = periode.interval()
 
