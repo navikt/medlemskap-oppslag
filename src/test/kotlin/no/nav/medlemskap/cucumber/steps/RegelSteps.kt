@@ -9,10 +9,14 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.v1.ReglerForGrunnforordningen
 import no.nav.medlemskap.regler.v1.ReglerService
+import no.nav.medlemskap.services.ereg.Ansatte
 import org.junit.jupiter.api.Assertions.assertEquals
 
 
 class RegelSteps : No {
+    private val ANSATTE_9 = listOf(Ansatte(9, null, null))
+    private val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type ="BEDR", identifikator = "1", landkode = "NOR", ansatte = ANSATTE_9, konkursStatus = null)
+
     private var sykemeldingsperiode: InputPeriode? = null
     private var harHattArbeidUtenforNorge: Boolean = false
 
@@ -31,11 +35,11 @@ class RegelSteps : No {
     private var datagrunnlag: Datagrunnlag? = null
 
     init {
-        Gitt("følgende statsborgerskap i personhistorikken fra TPS/PDL") { dataTable: DataTable? ->
+        Gitt("følgende statsborgerskap i personhistorikken") { dataTable: DataTable? ->
             statsborgerskap = domenespråkParser.mapDataTable(dataTable, StatsborgerskapMapper())
         }
 
-        Gitt("følgende bostedsadresser i personhistorikken fra TPS/PDL") { dataTable: DataTable? ->
+        Gitt("følgende bostedsadresser i personhistorikken") { dataTable: DataTable? ->
             bostedsadresser = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
         }
 
@@ -44,8 +48,7 @@ class RegelSteps : No {
         }
 
         Gitt("følgende arbeidsforhold fra AAReg") { dataTable: DataTable? ->
-            val arbeidsgiver = arbeidsgivere[0]
-            arbeidsforhold = domenespråkParser.mapArbeidsforhold(dataTable, utenlandsopphold, arbeidsgiver)
+            arbeidsforhold = domenespråkParser.mapArbeidsforhold(dataTable, utenlandsopphold, VANLIG_NORSK_ARBEIDSGIVER)
         }
 
         Gitt("følgende arbeidsgiver i arbeidsforholdet") { dataTable: DataTable? ->
@@ -105,7 +108,17 @@ class RegelSteps : No {
                         midlertidigAdresser = emptyList()
                 ),
                 medlemskap = medlemskap,
-                arbeidsforhold = arbeidsforhold
+                arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgivere, utenlandsopphold)
         )
+    }
+
+    private fun byggArbeidsforhold(arbeidsforhold: List<Arbeidsforhold>, arbeidsgivere: List<Arbeidsgiver>, utenlandsopphold: List<Utenlandsopphold>): List<Arbeidsforhold> {
+        val arbeidsgiver = if (arbeidsgivere.isEmpty()) {
+            VANLIG_NORSK_ARBEIDSGIVER
+        } else {
+            arbeidsgivere[0]
+        }
+
+        return arbeidsforhold.map{it.copy(utenlandsopphold = utenlandsopphold, arbeidsgiver = arbeidsgiver)}
     }
 }

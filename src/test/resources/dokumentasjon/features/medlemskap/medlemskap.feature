@@ -5,11 +5,11 @@ Egenskap: Man er medlem hvis man er norsk statsborger som bor i Norge, og som ha
 
   Scenariomal: Statsborgerskap avgjør om en som bor i Norge og jobber i Norge er medlem
 
-    Gitt følgende bostedsadresser i personhistorikken fra TPS/PDL
+    Gitt følgende bostedsadresser i personhistorikken
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | Oslo    | NOR      | 01.01.2000      |                 |
 
-    Og følgende statsborgerskap i personhistorikken fra TPS/PDL
+    Og følgende statsborgerskap i personhistorikken
       | Landkode          | Fra og med dato | Til og med dato |
       | <Statsborgerskap> | 30.01.2000      |                 |
 
