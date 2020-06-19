@@ -11,9 +11,9 @@ class Hovedregler(personfakta: Personfakta) {
     private val reglerForArbeidsforhold = ReglerForArbeidsforhold(personfakta)
 
 
-    private fun hentHovedRegel() =
+    fun hentHovedRegel() =
 
-    //sjekkRegelsett {
+    //sjekk Regelsett {
     //    reglerForRegistrerteOpplysningerIMedl
             //} hvisNei {
             sjekkRegelsett {
