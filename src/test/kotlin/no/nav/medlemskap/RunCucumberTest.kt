@@ -10,6 +10,7 @@ import org.junit.runner.RunWith
           glue = ["no.nav.medlemskap.cucumber.steps"],
           plugin = ["pretty", "html:build/cucumber"],
           tags = ["not @ignored"],
-        monochrome=false
+          strict = true,
+          monochrome=false
 )
 class RunCucumberTest
