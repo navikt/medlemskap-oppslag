@@ -4,6 +4,7 @@
 Egenskap: Borgere i EØS omfattes av grunnforordningen
 
   Scenariomal: EØS-borgere omfattes av grunnforordningen
+
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
       | <Land>   | 30.01.2000      |                 |
@@ -15,10 +16,10 @@ Egenskap: Borgere i EØS omfattes av grunnforordningen
     Så skal omfattet av grunnforordningen være <Svar>
 
     Eksempler:
-      | Land | Svar |
-      | NOR  | "Ja" |
-      | FRA  | "Ja" |
-
+      | Land | Svar  |
+      | NOR  | "Ja"  |
+      | FRA  | "Ja"  |
+      | USA  | "Nei" |
 
   Scenario: Person med bare amerikansk statsborgerskap omfattes ikke av grunnforordningen
     Gitt følgende statsborgerskap i personhistorikken

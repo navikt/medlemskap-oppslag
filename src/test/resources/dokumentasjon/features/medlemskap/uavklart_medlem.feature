@@ -5,11 +5,11 @@ Egenskap: Uavklart hvis man har medlemsunntak fra MEDL
 
   Scenario: Uavklart hvis man har medlemsunntak
 
-    Gitt følgende bostedsadresser i personhistorikken fra TPS/PDL
+    Gitt følgende bostedsadresser i personhistorikken
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | Oslo    | NOR      | 01.01.2000      |                 |
 
-    Og følgende statsborgerskap i personhistorikken fra TPS/PDL
+    Og følgende statsborgerskap i personhistorikken
       | Landkode          | Fra og med dato | Til og med dato |
       | <Statsborgerskap> | 30.01.2000      |                 |
 
