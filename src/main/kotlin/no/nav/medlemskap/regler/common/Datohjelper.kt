@@ -14,7 +14,7 @@ class Datohjelper(val periode: InputPeriode) {
 
     private val ytelse = Ytelse.SYKEPENGER // TODO: Vurder om dette skal være noe vi sjekker
 
-    fun kontrollperiodeForStatsborgerskap(): Periode {
+    fun kontrollPeriodeForPersonhistorikk(): Periode {
         return when (ytelse) {
             Ytelse.SYKEPENGER -> Periode(
                     fom = førsteSykedag().minusMonths(12),
@@ -44,15 +44,6 @@ class Datohjelper(val periode: InputPeriode) {
         return when (ytelse) {
             Ytelse.SYKEPENGER -> Periode(
                     fom = førsteSykedag().minusDays(28),
-                    tom = førsteSykedag()
-            )
-        }
-    }
-
-    fun kontrollPeriodeForNorskAdresse(): Periode {
-        return when (ytelse) {
-            Ytelse.SYKEPENGER -> Periode(
-                    fom = førsteSykedag().minusMonths(12),
                     tom = førsteSykedag()
             )
         }

@@ -14,7 +14,6 @@ import mu.KotlinLogging
 import no.nav.medlemskap.common.apiCounter
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.regler.common.Personfakta
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
 import no.nav.medlemskap.services.Services
@@ -125,7 +124,7 @@ private suspend fun createDatagrunnlag(
 private fun fraOgMedDatoForArbeidsforhold(periode: InputPeriode) = periode.fom.minusYears(1).minusDays(1)
 
 private fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =
-        Hovedregler(Personfakta.initialiserFakta(datagrunnlag)).kjørHovedregler()
+        Hovedregler(datagrunnlag).kjørHovedregler()
 
 private fun Resultat.sisteRegel() =
         if (this.delresultat.isEmpty()) {

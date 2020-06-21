@@ -1,9 +1,23 @@
 package no.nav.medlemskap.regler.v1
 
+import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.inneholder
+import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.harBrukerNorskAdresseInnenforSiste12Mnd
+import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
+import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedSluttAvKontrollperiode
+import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedStartAvKontrollperiode
 
-class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
+class ReglerForLovvalg(val datagrunnlag: Datagrunnlag) : Regler() {
+
+    val statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap
+    val postadresser = datagrunnlag.personhistorikk.postadresser
+    val bostedsadresser = datagrunnlag.personhistorikk.bostedsadresser
+    val arbeidsforhold = datagrunnlag.arbeidsforhold
+
+    private val datohjelper = Datohjelper(datagrunnlag.periode)
+    private val kontrollPeriodeForPersonhistorikk = datohjelper.kontrollPeriodeForPersonhistorikk()
+    private val kontrollPeriodeForArbeidsforhold = datohjelper.kontrollPeriodeForArbeidsforhold()
 
     override fun hentHovedRegel() =
             sjekkRegel {
@@ -63,13 +77,14 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
 
     private fun sjekkOmBrukerHarJobbetUtenforNorge(): Resultat =
             when {
-                personfakta.hentBrukerinputArbeidUtenforNorge() -> ja()
+                datagrunnlag.brukerinput.arbeidUtenforNorge -> ja()
                 else -> nei()
             }
 
     private fun sjekkOmBrukerErNorskStatsborger(): Resultat {
-        val førsteStatsborgerskap = personfakta.hentStatsborgerskapVedStartAvKontrollperiode()
-        val sisteStatsborgerskap = personfakta.hentStatsborgerskapVedSluttAvKontrollperiode()
+        val førsteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedStartAvKontrollperiode(kontrollPeriodeForPersonhistorikk)
+        val sisteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedSluttAvKontrollperiode(kontrollPeriodeForPersonhistorikk)
+
         return when {
             førsteStatsborgerskap inneholder "NOR" && sisteStatsborgerskap inneholder "NOR" -> ja()
             else -> nei("Brukeren er ikke norsk statsborger")
@@ -78,16 +93,21 @@ class ReglerForLovvalg(val personfakta: Personfakta) : Regler() {
 
     private fun sjekkLandskode(): Resultat =
             when {
-                personfakta.sjekkBrukersPostadresseOgBostedsadresseLandskode() -> ja()
+                sjekkBrukersPostadresseOgBostedsadresseLandskode() -> ja()
                 else -> nei("Bruker har enten ikke norsk bostedsadresse eller postadresse")
             }
 
     private fun sjekkOmBrukerHarJobbet25ProsentEllerMer(): Resultat =
             when {
-                personfakta.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTidIKontrollperiode(25.0) -> ja()
+                 arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollPeriodeForArbeidsforhold) -> ja()
                 else -> nei("Bruker har ikke jobbet 25% eller mer i løpet av periode.")
             }
 
+    fun sjekkBrukersPostadresseOgBostedsadresseLandskode(): Boolean {
+        val harUtenlandskBostedsadresse = !bostedsadresser.harBrukerNorskAdresseInnenforSiste12Mnd(kontrollPeriodeForPersonhistorikk)
+        val harUtenlandskPostadresse = postadresser.isNotEmpty() &&
+                !postadresser.harBrukerNorskAdresseInnenforSiste12Mnd(kontrollPeriodeForPersonhistorikk)
 
-
+        return !(harUtenlandskBostedsadresse || harUtenlandskPostadresse)
+    }
 }

@@ -1,10 +1,7 @@
 package no.nav.medlemskap.regler.common
 
-import no.nav.medlemskap.domene.Arbeidsforhold
-import no.nav.medlemskap.domene.Medlemskap
 import no.nav.medlemskap.domene.Periode
-import no.nav.medlemskap.domene.Statsborgerskap
-import java.util.stream.Collectors
+import org.threeten.extra.Interval
 
 object Funksjoner {
 
@@ -25,8 +22,6 @@ object Funksjoner {
 
     infix fun String?.er(string: String) = this != null && this == string
 
-    infix fun Map<String, String>.harAlle(liste: List<Statsborgerskap>) = this.keys.containsAll(liste.stream().map { it.landkode }.collect(Collectors.toList()))
-
     infix fun List<String>.inneholderNoe(liste: List<String>) = this.any { it in liste }
 
     infix fun Map<String, String>.finnesI(liste: List<String>) = this.keys.intersect(liste).isNotEmpty()
@@ -37,13 +32,9 @@ object Funksjoner {
 
     infix fun List<Int?>.finnesMindreEnn(tall: Int) = this.stream().anyMatch { p -> p == null || p < tall }
 
-    fun List<Medlemskap>.sammenhengendePerioder() = this.sorted().zipWithNext { a, b -> b.fraOgMed.isBefore(a.tilOgMed.plusDays(2)) }.all { it }
-
-    fun List<Medlemskap>.harSammenhengendeMedlemskapIHeleGittPeriode(kontrollPeriode: Periode) =
-            this.any { it.fraOgMed.isBefore(kontrollPeriode.fom?.plusDays(1)) }
-                    && this.any { it.tilOgMed.isAfter(kontrollPeriode.tom?.minusDays(1)) }
-                    && this.sammenhengendePerioder()
-
+    fun periodefilter(periodeDatagrunnlag: Interval, periode: Periode): Boolean {
+        return periodeDatagrunnlag.overlaps(lagInterval(periode)) || periodeDatagrunnlag.encloses(lagInterval(periode))
+    }
 }
 
 fun ja(begrunnelse: String) = Resultat(
