@@ -17,12 +17,11 @@ fun mapTilPersonHistorikk(person: HentPdlPersonResponse): Personhistorikk {
         )
     } ?: throw PersonIkkeFunnet("PDL")
 
-    val personstatuser: List<Personstatus> = emptyList()
+    val personstatuser: List<FolkeregisterPersonstatus> = emptyList()
 
     val bostedsadresser: List<Adresse> = person.data.hentPerson.bostedsadresse.map {
         Adresse(
-                adresselinje = it.adresse ?: it.matrikkeladresse?.bruksenhetsnummer ?: "Ukjent adresse",
-                landkode = "",
+                landkode = "NOR",
                 fom = it.folkeregisterMetadata.gyldighetstidspunkt?.toLocalDate(),
                 tom = it.folkeregisterMetadata.opphoerstidspunkt?.toLocalDate()
         )
@@ -35,24 +34,23 @@ fun mapTilPersonHistorikk(person: HentPdlPersonResponse): Personhistorikk {
     val sivilstand: List<Sivilstand> = person.data.hentPerson.sivilstand
             .filter { it.type != Sivilstandstype.UGIFT && it.type != Sivilstandstype.UOPPGITT }
             .map {
-        Sivilstand(
-                type = mapSivilstandType(it.type),
-                gyldigFraOgMed = it.gyldigFraOgMed,
-                relatertVedSivilstand = it.relatertVedSivilstand,
-                folkeregisterMetadata = mapFolkeregisterMetadata(it.folkeregisterMetadata)
-        )
-    }
+                Sivilstand(
+                        type = mapSivilstandType(it.type),
+                        gyldigFraOgMed = it.gyldigFraOgMed,
+                        relatertVedSivilstand = it.relatertVedSivilstand,
+                        folkeregisterMetadata = mapFolkeregisterMetadata(it.folkeregisterMetadata)
+                )
+            }
 
-    val familierelasjoner: List<Familierelasjon> = person.data.hentPerson.familierelasjoner.
-    filter { it.relatertPersonsRolle == Familierelasjonsrolle.BARN }
+    val familierelasjoner: List<Familierelasjon> = person.data.hentPerson.familierelasjoner.filter { it.relatertPersonsRolle == Familierelasjonsrolle.BARN }
             .map {
-        Familierelasjon(
-                relatertPersonIdent = it.relatertPersonIdent,
-                relatertPersonsRolle = mapFamileRelasjonsrolle(it.relatertPersonsRolle),
-                minRolleForPerson = mapFamileRelasjonsrolle(it.minRolleForPerson),
-                folkeregisterMetadata = mapFolkeregisterMetadata(it.folkeregisterMetadata)
-        )
-    }
+                Familierelasjon(
+                        relatertPersonsIdent = it.relatertPersonIdent,
+                        relatertPersonsRolle = mapFamileRelasjonsrolle(it.relatertPersonsRolle),
+                        minRolleForPerson = mapFamileRelasjonsrolle(it.minRolleForPerson),
+                        folkeregisterMetadata = mapFolkeregisterMetadata(it.folkeregisterMetadata)
+                )
+            }
 
     return Personhistorikk(statsborgerskap, personstatuser, bostedsadresser, postadresser, midlertidigAdresser, sivilstand, familierelasjoner)
 }
@@ -85,3 +83,7 @@ private fun mapFolkeregisterMetadata(folkeregisterMetadata: no.nav.medlemskap.se
             opphoerstidspunkt = folkeregisterMetadata.opphoerstidspunkt
     )
 }
+
+//TODO: Denne kan nok sikkert skrives bedre..
+fun mapTilFoedselsaar(response: HentFoedselsaarResponse): Int =
+        response.data?.hentPerson?.foedsel?.map { it.foedselsaar }?.sorted()?.first() ?: throw PersonIkkeFunnet("PDL")

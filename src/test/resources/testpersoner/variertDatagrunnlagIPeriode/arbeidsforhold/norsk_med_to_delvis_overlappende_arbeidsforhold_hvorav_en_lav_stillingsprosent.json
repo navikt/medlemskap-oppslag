@@ -15,11 +15,10 @@
       }
     ],
     "personstatuser": [],
-    "sivilstand" : [],
-    "familierelasjoner" : [],
+    "sivilstand": [],
+    "familierelasjoner": [],
     "bostedsadresser": [
       {
-        "adresselinje": "Oslo",
         "landkode": "NOR",
         "fom": "2019-01-01",
         "tom": null
@@ -31,8 +30,8 @@
   "pdlpersonhistorikk": {
     "statsborgerskap": [],
     "personstatuser": [],
-    "sivilstand" : [],
-    "familierelasjoner" : [],
+    "sivilstand": [],
+    "familierelasjoner": [],
     "bostedsadresser": [],
     "postadresser": [],
     "midlertidigAdresser": []

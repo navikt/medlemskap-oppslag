@@ -5,7 +5,7 @@ import java.time.LocalDateTime
 
 data class Personhistorikk(
         val statsborgerskap: List<Statsborgerskap>,
-        val personstatuser: List<Personstatus>,
+        val personstatuser: List<FolkeregisterPersonstatus>,
         val bostedsadresser: List<Adresse>,
         val postadresser: List<Adresse>,
         val midlertidigAdresser: List<Adresse>,
@@ -19,14 +19,29 @@ data class Statsborgerskap(
         val tom: LocalDate?
 )
 
-data class Personstatus(
-        val personstatus: String,
+data class FolkeregisterPersonstatus(
+        val personstatus: PersonStatus,
         val fom: LocalDate?,
         val tom: LocalDate?
 )
 
+enum class PersonStatus(s: String) {
+    ABNR("Aktivt BOSTNR"),
+    ADNR("Aktivt"),
+    BOSA("Bosatt"),
+    DØD("Død"),
+    DØDD("Død"),
+    FØDR("Fødselsregistrert"),
+    FOSV("Forsvunnet/savnet"),
+    UFUL("Ufullstendig fødselsnr"),
+    UREG("Uregistrert person"),
+    UTAN("Utgått person annullert tilgang Fnr"),
+    UTPE("Utgått person"),
+    UTVA("Utvandret"),
+    UKJENT("Ukjent verdi fra register")
+}
+
 data class Adresse(
-        val adresselinje: String,
         val landkode: String,
         val fom: LocalDate?,
         val tom: LocalDate?
@@ -51,7 +66,7 @@ enum class Sivilstandstype {
 }
 
 data class Familierelasjon(
-        val relatertPersonIdent: String,
+        val relatertPersonsIdent: String,
         val relatertPersonsRolle: Familierelasjonsrolle,
         val minRolleForPerson: Familierelasjonsrolle,
         val folkeregisterMetadata: Folkeregistermetadata

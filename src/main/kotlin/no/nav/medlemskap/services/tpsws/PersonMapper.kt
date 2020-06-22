@@ -1,12 +1,15 @@
 package no.nav.medlemskap.services.tpsws
 
+import mu.KotlinLogging
 import no.nav.medlemskap.domene.*
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.MidlertidigPostadresseNorge
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.MidlertidigPostadresseUtland
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.UstrukturertAdresse
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Personstatuser
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentPersonhistorikkResponse
 import java.time.LocalDate
 import javax.xml.datatype.XMLGregorianCalendar
+
+private val logger = KotlinLogging.logger { }
 
 fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkResponse): Personhistorikk {
     val statsborgerskap: List<Statsborgerskap> = personhistorikkResponse.statsborgerskapListe.map {
@@ -17,9 +20,9 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
         )
     }
 
-    val personstatuser: List<Personstatus> = personhistorikkResponse.personstatusListe.map {
-        Personstatus(
-                personstatus = it.personstatus.value,
+    val personstatuser: List<FolkeregisterPersonstatus> = personhistorikkResponse.personstatusListe.map {
+        FolkeregisterPersonstatus(
+                personstatus = mapPersonstatus(it.personstatus),
                 fom = it.periode.fom.asDate(),
                 tom = it.periode.tom.asDate()
         )
@@ -27,7 +30,6 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
 
     val bostedsadresser: List<Adresse> = personhistorikkResponse.bostedsadressePeriodeListe.map {
         Adresse(
-                adresselinje = it.bostedsadresse.strukturertAdresse.tilleggsadresse ?: "Ukjent adresse",
                 landkode = it.bostedsadresse.strukturertAdresse.landkode.value,
                 fom = it.periode.fom.asDate(),
                 tom = it.periode.tom.asDate()
@@ -36,7 +38,6 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
 
     val postadresser: List<Adresse> = personhistorikkResponse.postadressePeriodeListe.map {
         Adresse(
-                adresselinje = it.postadresse.ustrukturertAdresse.adresselinje(),
                 landkode = it.postadresse.ustrukturertAdresse.landkode.value,
                 fom = it.periode.fom.asDate(),
                 tom = it.periode.tom.asDate()
@@ -44,15 +45,13 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
     }
 
     val midlertidigAdresser: List<Adresse> = personhistorikkResponse.midlertidigAdressePeriodeListe.map {
-        when(it) {
+        when (it) {
             is MidlertidigPostadresseNorge -> Adresse(
-                    adresselinje = it.strukturertAdresse.tilleggsadresse ?: "Ukjent adresse",
                     landkode = it.strukturertAdresse.landkode.value,
                     fom = it.postleveringsPeriode.fom.asDate(),
                     tom = it.postleveringsPeriode.tom.asDate()
             )
             is MidlertidigPostadresseUtland -> Adresse(
-                    adresselinje = it.ustrukturertAdresse.adresselinje(),
                     landkode = it.ustrukturertAdresse.landkode.value,
                     fom = it.postleveringsPeriode.fom.asDate(),
                     tom = it.postleveringsPeriode.tom.asDate()
@@ -68,12 +67,13 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
     return Personhistorikk(statsborgerskap, personstatuser, bostedsadresser, postadresser, midlertidigAdresser, sivilstand, familierelasjoner)
 }
 
-private fun UstrukturertAdresse?.adresselinje(): String {
-    if (this == null) {
-        return "Ukjent adresse"
+fun mapPersonstatus(status: Personstatuser): PersonStatus {
+    return try {
+        status.let { PersonStatus.valueOf(it.value) }
+    } catch (e: Exception) {
+        logger.warn { "Klarte ikke å mappe personStatus " + status }
+        PersonStatus.UKJENT
     }
-
-    return "${this.adresselinje1} ${this.adresselinje2}"
 }
 
 private fun XMLGregorianCalendar?.asDate(): LocalDate? = this?.toGregorianCalendar()?.toZonedDateTime()?.toLocalDate()

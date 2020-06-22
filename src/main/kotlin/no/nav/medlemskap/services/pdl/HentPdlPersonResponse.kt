@@ -1,11 +1,13 @@
 package no.nav.medlemskap.services.pdl
+
 import java.time.LocalDate
 import java.time.LocalDateTime
 
 
-data class HentPdlPersonResponse (val data: HentPerson?, val errors: List<PdlError>?)
+data class HentPdlPersonResponse(val data: HentPerson?, val errors: List<PdlError>?)
 
 data class HentPerson(val hentPerson: Person)
+
 data class Person(
         val adressebeskyttelse: List<Adressebeskyttelse>,
         val kjoenn: List<Kjoenn>,
@@ -30,7 +32,7 @@ data class Kjoenn(
         val kjoenn: KjoennType
 )
 
-enum class KjoennType{
+enum class KjoennType {
     MANN,
     KVINNE,
     UKJENT,
@@ -57,7 +59,7 @@ enum class AdressebeskyttelseGradering {
 }
 
 
-data class Navn (
+data class Navn(
         val fornavn: String,
         val mellomnavn: String?,
         val etternavn: String?
@@ -117,9 +119,9 @@ data class Folkeregistermetadata(
         val ajourholdstidspunkt: LocalDateTime?,
         val gyldighetstidspunkt: LocalDateTime?,
         val opphoerstidspunkt: LocalDateTime?,
-        val kilde:  String?,
+        val kilde: String?,
         val aarsak: String?,
-        val sekvens:  Int?
+        val sekvens: Int?
 )
 
 data class Matrikkeladresse(

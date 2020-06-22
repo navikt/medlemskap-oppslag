@@ -77,11 +77,11 @@ class Services(val configuration: Configuration) {
         )
 
         personClient = wsClients.person(configuration.register.tpsUrl, tpsRetry)
-        personService = PersonService(personClient)
         medlClient = restClients.medl2(configuration.register.medl2BaseUrl)
         medlService = MedlService(medlClient)
         pdlClient = restClients.pdl(configuration.register.pdlBaseUrl)
         pdlService = PdlService(pdlClient)
+        personService = PersonService(personClient, pdlService)
         eregClient = restClients.ereg(configuration.register.eregBaseUrl)
         aaRegClient = restClients.aaReg(configuration.register.aaRegBaseUrl)
         aaRegService = AaRegService(aaRegClient, eregClient, pdlClient)

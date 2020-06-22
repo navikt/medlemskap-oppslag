@@ -13,7 +13,6 @@ import mu.KotlinLogging
 import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
 import no.nav.medlemskap.common.objectMapper
-import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.Personhistorikk
 import no.nav.medlemskap.services.runWithRetryAndMetrics
 import no.nav.medlemskap.services.sts.StsRestClient
@@ -23,7 +22,7 @@ private val logger = KotlinLogging.logger { }
 class PdlClient(
         private val baseUrl: String,
         private val stsClient: StsRestClient,
-        private val configuration: Configuration,
+        private val username: String,
         private val httpClient: HttpClient,
         private val retry: Retry? = null
 ) {
@@ -37,7 +36,7 @@ class PdlClient(
                 header(HttpHeaders.Accept, ContentType.Application.Json)
                 header("Nav-Call-Id", callId)
                 header("Nav-Consumer-Token", "Bearer ${stsClient.oidcToken()}")
-                header("Nav-Consumer-Id", configuration.sts.username)
+                header("Nav-Consumer-Id", username)
                 body = hentIndenterQuery(fnr)
             }
         }
@@ -54,7 +53,7 @@ class PdlClient(
                 header("Nav-Call-Id", callId)
                 header("TEMA", "MED")
                 header("Nav-Consumer-Token", "Bearer ${stsClient.oidcToken()}")
-                header("Nav-Consumer-Id", configuration.sts.username)
+                header("Nav-Consumer-Id", username)
                 body = hentPersonQuery(fnr)
             }
         }
@@ -70,22 +69,24 @@ class PdlClient(
                 header(HttpHeaders.Accept, ContentType.Application.Json)
                 header("Nav-Call-Id", callId)
                 header("Nav-Consumer-Token", "Bearer ${stsClient.oidcToken()}")
-                header("Nav-Consumer-Id", configuration.sts.username)
+                header("Nav-Consumer-Id", username)
                 body = hentNasjonalitetQuery(fnr)
             }
         }
 
     }
 
-    suspend fun hentFoedselsaar(fnr: String, callId: String): Int {
+    suspend fun hentFoedselsaar(fnr: String, callId: String): HentFoedselsaarResponse {
         return runWithRetryAndMetrics("PDL", "HentFoedselsaar", retry) {
-            httpClient.post<Int> {
-                header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
+            val oidcToken = stsClient.oidcToken()
+            httpClient.post<HentFoedselsaarResponse> {
+                url("$baseUrl")
+                header(HttpHeaders.Authorization, "Bearer ${oidcToken}")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
                 header("Nav-Call-Id", callId)
-                header("Nav-Consumer-Token", "Bearer ${stsClient.oidcToken()}")
-                header("Nav-Consumer-Id", configuration.sts.username)
+                header("Nav-Consumer-Token", "Bearer ${oidcToken}")
+                header("Nav-Consumer-Id", username)
                 body = hentFoedselsaarQuery(fnr)
             }
         }
@@ -95,7 +96,7 @@ class PdlClient(
         return httpClient.options {
             url("$baseUrl")
             header(HttpHeaders.Accept, ContentType.Application.Json)
-            header("Nav-Consumer-Id", configuration.sts.username)
+            header("Nav-Consumer-Id", username)
         }
     }
 }
@@ -154,9 +155,11 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
 
     }
 
-    suspend fun hentFoedselsaar(fnr:String, callId: String): Int {
-        return pdlClient.hentFoedselsaar(fnr, callId)
+    suspend fun hentFoedselsaar(fnr: String, callId: String): Int {
+        return mapTilFoedselsaar(pdlClient.hentFoedselsaar(fnr, callId))
     }
+
+
 }
 
 
