@@ -104,10 +104,8 @@ class ReglerForLovvalg(val datagrunnlag: Datagrunnlag) : Regler() {
             }
 
     fun sjekkBrukersPostadresseOgBostedsadresseLandskode(): Boolean {
-        val harUtenlandskBostedsadresse = !bostedsadresser.harBrukerNorskAdresseInnenforSiste12Mnd(kontrollPeriodeForPersonhistorikk)
-        val harUtenlandskPostadresse = postadresser.isNotEmpty() &&
-                !postadresser.harBrukerNorskAdresseInnenforSiste12Mnd(kontrollPeriodeForPersonhistorikk)
-
-        return !(harUtenlandskBostedsadresse || harUtenlandskPostadresse)
+        val harIngenPostadresse = datagrunnlag.personhistorikk.postadresser.isEmpty()
+        return (datagrunnlag.personhistorikk.postadresser.harBrukerNorskAdresseInnenforSiste12Mnd(kontrollPeriodeForPersonhistorikk) || harIngenPostadresse) &&
+                datagrunnlag.personhistorikk.bostedsadresser.harBrukerNorskAdresseInnenforSiste12Mnd(kontrollPeriodeForPersonhistorikk)
     }
 }
