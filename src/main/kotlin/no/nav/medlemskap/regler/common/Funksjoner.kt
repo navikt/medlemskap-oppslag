@@ -18,6 +18,8 @@ object Funksjoner {
 
     infix fun List<String>.alleEr(string: String) = this.stream().allMatch { m -> m.equals(string) }
 
+    infix fun List<String>.alleEr(strings: List<String>) = this.stream().allMatch { strings.contains(it) }
+
     infix fun List<String>.kunInneholder(string: String) = this.contains(string) && this.size == 1
 
     infix fun String?.er(string: String) = this != null && this == string
@@ -43,6 +45,18 @@ fun ja(begrunnelse: String) = Resultat(
 )
 
 fun ja() = Resultat(svar = Svar.JA)
+
+fun ja(dekning: List<String>) = Resultat(
+        svar = Svar.JA,
+        harDekning = Svar.JA,
+        dekning = dekning
+)
+
+fun nei(dekning: List<String>) = Resultat(
+        svar = Svar.NEI,
+        harDekning = Svar.NEI,
+        dekning = dekning
+)
 
 fun nei(begrunnelse: String) = Resultat(
         begrunnelse = begrunnelse,

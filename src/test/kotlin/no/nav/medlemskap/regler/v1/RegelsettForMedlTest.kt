@@ -4,6 +4,7 @@ import no.nav.medlemskap.regler.assertSvar
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.evaluer
 import no.nav.medlemskap.regler.personer.Personleser
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
@@ -135,11 +136,15 @@ class RegelsettForMedlTest {
 
     @Test
     fun `amerikansk person med medlemskap med dekning i medl`() {
-        assertSvar("1.6", Svar.JA, evaluer(personleser.amerikanskMedMedlemskapMedDekningIMedl()), Svar.JA)
+        val amerikanskMedMedlemskapMedDekningIMedl = evaluer(personleser.amerikanskMedMedlemskapMedDekningIMedl())
+        assertSvar("1.6", Svar.JA, amerikanskMedMedlemskapMedDekningIMedl, Svar.JA)
+        Assertions.assertEquals(Svar.JA, amerikanskMedMedlemskapMedDekningIMedl.harDekning!!)
     }
 
     @Test
     fun `amerikansk person med medlemskap uten dekning i medl`() {
-        assertSvar("1.6", Svar.NEI, evaluer(personleser.amerikanskMedMedlemskapUtenDekningIMedl()), Svar.NEI)
+        val amerikanskMedMedlemskapUtenDekningIMedl = evaluer(personleser.amerikanskMedMedlemskapUtenDekningIMedl())
+        assertSvar("1.6", Svar.NEI, amerikanskMedMedlemskapUtenDekningIMedl, Svar.JA)
+        Assertions.assertEquals(Svar.NEI, amerikanskMedMedlemskapUtenDekningIMedl.harDekning!!)
     }
 }

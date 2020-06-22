@@ -1,5 +1,7 @@
 package no.nav.medlemskap.regler.common
 
+import no.nav.medlemskap.domene.Dekning
+
 enum class Svar {
     JA, NEI, UAVKLART
 }
@@ -9,5 +11,7 @@ data class Resultat(
         val avklaring: String = "",
         val begrunnelse: String = "",
         val svar: Svar,
+        var harDekning: Svar? = null,
+        var dekning: List<String> = listOf(),
         val delresultat: List<Resultat> = listOf()
 )
