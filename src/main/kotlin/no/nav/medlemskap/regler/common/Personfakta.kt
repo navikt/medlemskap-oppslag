@@ -91,12 +91,11 @@ class Personfakta(val datagrunnlag: Datagrunnlag) {
 
     fun sjekkBrukersPostadresseOgBostedsadresseLandskode(): Boolean {
         val harIngenPostadresse = datagrunnlag.personhistorikk.postadresser.isEmpty()
-        return harBrukerNorskPostadresseInnenforSiste12Mnd() || harIngenPostadresse &&
+        return (harBrukerNorskPostadresseInnenforSiste12Mnd() || harIngenPostadresse) &&
                 harBrukerNorskBodstedsadresseInnenforSiste12Mnd()
     }
 
     fun harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTidIKontrollperiode(gittStillingsprosent: Double): Boolean {
-
         for (arbeidsforhold in arbeidsforholdForStillingsprosent()) {
             val vektetStillingsprosentForArbeidsforhold = beregnVektetStillingsprosentForArbeidsforhold(arbeidsforhold)
 
