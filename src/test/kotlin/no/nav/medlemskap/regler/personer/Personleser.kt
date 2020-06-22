@@ -9,6 +9,10 @@ class Personleser {
     private val ikkeEøs = "/testpersoner/ikke_eos"
     private val variertDatagrunnlag = "/testpersoner/variertDatagrunnlagIPeriode"
     private val variertDatagrunnlagArbeidsforhold = "/testpersoner/variertDatagrunnlagIPeriode/arbeidsforhold"
+    private val hovedregler = "/testpersoner/hovedregler"
+
+    fun norskMedMedlOpplysninger() = lesDatagrunnlag("$hovedregler/norsk_med_medl_opplysninger.json")
+    fun amerikanskUtenMedlOpplysninger() = lesDatagrunnlag("$hovedregler/amerikansk_uten_medl_opplysninger.json")
 
     fun enkelNorsk() = lesDatagrunnlag("$norsk/kun_enkelt_statsborgerskap.json")
     fun enkelNorskArbeid() = lesDatagrunnlag("$norsk/norsk_jobb_ikke_maritim_eller_pilot.json")
@@ -59,9 +63,14 @@ class Personleser {
     fun amerikanskMedMedlemskapOver12MndPeriode() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_medlemskap_over_12_mnd_periode.json")
     fun amerikanskUtenMedlemskapOver12MndPeriode() = lesDatagrunnlag("$ikkeEøs/amerikansk_uten_medlemskap_over_12_mnd_periode.json")
     fun amerikanskMedMedlemskapUgyldigDato() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_ugyldig_medlemskapsdato.json")
+    fun amerikanskMedMedlemskapToOverlappendePerioder() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_medlemskap_to_overlappende_perioder.json")
+    fun amerikanskMedMedlemskapToUsammenhengendePerioder() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_medlemskap_to_usammenhengende_perioder.json")
+    fun amerikanskMedMedlemskapAvsluttetIGittInputPeriode() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_medlemskap_avsluttet_i_gitt_input_periode.json")
+    fun amerikanskMedMedlemskapToSammenhengendePerioder() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_medlemskap_to_sammenhengende_perioder.json")
     fun amerikanskUtenMedlemskapLovvalgStatuskodeUavklart() = lesDatagrunnlag("$ikkeEøs/amerikansk_uten_medlemskap_lovvalg_statuskode_uavk.json")
     fun amerikanskUtenMedlemskapEndretArbeidsforhold() = lesDatagrunnlag("$ikkeEøs/amerikansk_uten_medlemskap_endret_arbeidsforhold.json")
     fun amerikanskMedMedlemskapEndretArbeidsforhold() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_medlemskap_endret_arbeidsforhold.json")
+    fun amerikanskUtenMedlemskapEndretArbeidsforholdSammeArbeidsgiver() = lesDatagrunnlag("$ikkeEøs/amerikansk_uten_medlemskap_endret_arbeidsforhold_samme_arbeidsgiver.json")
     fun amerikanskUtenMedlemskapEndretAdresse() = lesDatagrunnlag("$ikkeEøs/amerikansk_uten_medlemskap_endret_adresse.json")
     fun amerikanskMedMedlemskapEndretAdresse() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_medlemskap_endret_adresse.json")
     fun amerikanskUtenMedlemskapUtenArbeidsforhold() = lesDatagrunnlag("$ikkeEøs/amerikansk_uten_medlemskap_uten_arbeidsforhold.json")
@@ -73,6 +82,10 @@ class Personleser {
     private fun lesDatagrunnlag(filnavn: String): Datagrunnlag {
         val res = Personleser::class.java.getResource(filnavn)
         return objectMapper.readValue(res, Datagrunnlag::class.java)
+    }
+
+    fun dataGrunnlagFraJson(json: String): Datagrunnlag {
+        return objectMapper.readValue(json, Datagrunnlag::class.java)
     }
 
 

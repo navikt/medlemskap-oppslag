@@ -23,7 +23,18 @@
       }
     ],
     "postadresser": [],
-    "midlertidigAdresser": []
+    "midlertidigAdresser": [],
+    "sivilstand": [],
+    "familierelasjoner": []
+  },
+  "pdlpersonhistorikk": {
+    "statsborgerskap": [],
+    "personstatuser": [],
+    "bostedsadresser": [],
+    "postadresser": [],
+    "midlertidigAdresser": [],
+    "sivilstand": [],
+    "familierelasjoner": []
   },
   "medlemskapsunntak": [],
   "arbeidsforhold": [

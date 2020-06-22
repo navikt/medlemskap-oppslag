@@ -1,6 +1,19 @@
 # medlemskap-oppslag
 Oppslagstjeneste for lovvalg og medlemskap i Folketrygden
 
+Denne tjenesten gjør REST-kall mot følgende tjenester/registre:
+
+* AAREG: Arbeidstaker og arbeidsgiver registeret
+* EREG: Enhetsregisteret
+* MEDL: Medlemskapsregisteret, inneholder medlemskapsperioder som avviker fra normalen
+* GSAK: Saksbehandlingsløsning
+* JOARK: Journalarkiv
+* TPS: Tjenestebasert Persondatasystem
+* PDL: Ny persondataløsning, mangler foreløpig utenlandsopphold 
+
+# Funksjonell dokumentasjon
+* [Funksjonell dokumentasjon](src/test/resources/dokumentasjon/README.md)
+
 ## URL til tjeneste
 * preprod: https://medlemskap-oppslag.nais.preprod.local
 * prod: https://medlemskap-oppslag.nais.adeo.no
@@ -12,6 +25,7 @@ Forventer et AzureAD-token utstedt til servicebruker, satt Authorization-header 
 I tillegg til Authorization-headeren kreves det at Content-Type er satt til application/json
 
 ## Eksempel på kall
+
 Kallet er en POST på `/`
 ```
 {

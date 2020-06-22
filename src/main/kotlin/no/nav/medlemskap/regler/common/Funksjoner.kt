@@ -1,6 +1,8 @@
 package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.Arbeidsforhold
+import no.nav.medlemskap.domene.Medlemskap
+import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Statsborgerskap
 import java.util.stream.Collectors
 
@@ -33,9 +35,15 @@ object Funksjoner {
 
     fun List<String?>?.finnes() = this != null && this.isNotEmpty()
 
-    infix fun List<Arbeidsforhold>.antallErIkke(tall: Int) = this.size != tall
-
     infix fun List<Int?>.finnesMindreEnn(tall: Int) = this.stream().anyMatch { p -> p == null || p < tall }
+
+    fun List<Medlemskap>.sammenhengendePerioder() = this.sorted().zipWithNext { a, b -> b.fraOgMed.isBefore(a.tilOgMed.plusDays(2)) }.all { it }
+
+    fun List<Medlemskap>.harSammenhengendeMedlemskapIHeleGittPeriode(kontrollPeriode: Periode) =
+            this.any { it.fraOgMed.isBefore(kontrollPeriode.fom?.plusDays(1)) }
+                    && this.any { it.tilOgMed.isAfter(kontrollPeriode.tom?.minusDays(1)) }
+                    && this.sammenhengendePerioder()
+
 }
 
 fun ja(begrunnelse: String) = Resultat(

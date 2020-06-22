@@ -3,39 +3,51 @@
     "fom": "2020-01-30",
     "tom": "2020-01-30"
   },
-  "brukerinput" : {
-    "arbeidUtenforNorge" : true
+  "brukerinput": {
+    "arbeidUtenforNorge": true
   },
-  "personhistorikk" : {
-    "statsborgerskap" : [ {
-      "landkode" : "USA",
-      "fom" : "2020-01-30",
-      "tom" : "2020-01-30"
-    } ],
-    "personstatuser" : [ ],
-    "sivilstand" : [],
-    "familierelasjoner" : [],
-    "bostedsadresser" : [ ],
-    "postadresser" : [ ],
-    "midlertidigAdresser" : [ ]
+  "personhistorikk": {
+    "statsborgerskap": [
+      {
+        "landkode": "USA",
+        "fom": "2020-01-30",
+        "tom": "2020-01-30"
+      }
+    ],
+    "personstatuser": [],
+    "sivilstand": [],
+    "familierelasjoner": [],
+    "bostedsadresser": [],
+    "postadresser": [],
+    "midlertidigAdresser": []
   },
-  "pdlpersonhistorikk" : {
-    "statsborgerskap" : [],
-    "personstatuser" : [],
-    "sivilstand" : [],
-    "familierelasjoner" : [],
-    "bostedsadresser" : [],
-    "postadresser" : [],
-    "midlertidigAdresser" : []
+  "pdlpersonhistorikk": {
+    "statsborgerskap": [],
+    "personstatuser": [],
+    "sivilstand": [],
+    "familierelasjoner": [],
+    "bostedsadresser": [],
+    "postadresser": [],
+    "midlertidigAdresser": []
   },
-  "medlemskap" : [ ],
-  "arbeidsforhold" : [ ],
-  "inntekt" : [ ],
-  "oppgaver" : [ {
-    "aktivDato" : "2020-01-01",
-    "prioritet" : "NORM",
-    "status" : "AAPNET",
-    "tema" : "MED"
-  } ],
-  "dokument" : [ ]
+  "medlemskap": [
+    {
+      "fraOgMed": "2018-01-01",
+      "tilOgMed": "2021-05-05",
+      "erMedlem": true,
+      "lovvalgsland": "NOR",
+      "lovvalg": "ENDL"
+    }
+  ],
+  "arbeidsforhold": [],
+  "inntekt": [],
+  "oppgaver": [
+    {
+      "aktivDato": "2020-01-01",
+      "prioritet": "NORM",
+      "status": "AAPNET",
+      "tema": "MED"
+    }
+  ],
+  "dokument": []
 }

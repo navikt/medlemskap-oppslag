@@ -1,15 +1,16 @@
 package no.nav.medlemskap.regler.common
 
-import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Periode
 import org.threeten.extra.Interval
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 enum class Ytelse { SYKEPENGER }
 
-class Datohjelper(val datagrunnlag: Datagrunnlag) {
+class Datohjelper(val periode: InputPeriode) {
 
     private val ytelse = Ytelse.SYKEPENGER // TODO: Vurder om dette skal være noe vi sjekker
 
@@ -26,12 +27,12 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
         return when (ytelse) {
             Ytelse.SYKEPENGER -> Periode(
                     fom = førsteSykedag().minusMonths(12),
-                    tom = førsteSykedag()
+                    tom = periode.tom
             )
         }
     }
 
-    private fun førsteSykedag() = datagrunnlag.periode.fom.minusDays(1)
+    fun førsteSykedag() = periode.fom.minusDays(1)
 
     fun tilOgMedDag(): LocalDate {
         return when (ytelse) {
@@ -48,15 +49,6 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
         }
     }
 
-    fun kontrollPeriodeForSkipsregister(): Periode {
-        return when (ytelse) {
-            Ytelse.SYKEPENGER -> Periode(
-                    fom = førsteSykedag().minusMonths(12),
-                    tom = førsteSykedag()
-            )
-        }
-    }
-
     fun kontrollPeriodeForNorskAdresse(): Periode {
         return when (ytelse) {
             Ytelse.SYKEPENGER -> Periode(
@@ -66,25 +58,7 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
         }
     }
 
-    fun kontrollPeriodeForYrkeskode(): Periode {
-        return when (ytelse) {
-            Ytelse.SYKEPENGER -> Periode(
-                    fom = førsteSykedag().minusDays(12),
-                    tom = førsteSykedag()
-            )
-        }
-    }
-
-    fun kontrollPeriodeForYrkesforholdType(): Periode {
-        return when (ytelse) {
-            Ytelse.SYKEPENGER -> Periode(
-                    fom = førsteSykedag().minusMonths(12),
-                    tom = førsteSykedag()
-            )
-        }
-    }
-
-    fun kontrollPeriodeForNorskArbeidsgiver(): Periode {
+    fun kontrollPeriodeForArbeidsforhold(): Periode {
         return when (ytelse) {
             Ytelse.SYKEPENGER -> Periode(
                     fom = førsteSykedag().minusMonths(12),
@@ -102,10 +76,16 @@ class Datohjelper(val datagrunnlag: Datagrunnlag) {
         }
     }
 
-    fun erDatoerSammenhengende(sluttDato: LocalDate, startDato: LocalDate?): Boolean {
-        return sluttDato.isAfter(startDato?.minusDays(3))
+    companion object {
+        private val datoFormatter = DateTimeFormatter.ofPattern("d.MM.yyyy")
+
+        fun parseDato(dato: String): LocalDate {
+            return LocalDate.parse(dato, datoFormatter)
+        }
     }
 }
+
+fun erDatoerSammenhengende(sluttDato: LocalDate, startDato: LocalDate?): Boolean = sluttDato.isAfter(startDato?.minusDays(3))
 
 fun lagInterval(periode: Periode): Interval = periode.interval()
 

@@ -17,6 +17,11 @@ class RegelsettForVedtakTest {
     }
 
     @Test
+    fun `person med data i medl får ja på manuelle vedtak`() {
+        assertEquals(Svar.JA, evaluerReglerForOpplysninger(personleser.norskMedOpplysningerIMedl()))
+    }
+
+    @Test
     fun `person med oppgave i gosys får ja på manuelle vedtak`() {
         assertEquals(Svar.JA, evaluerReglerForOpplysninger(personleser.amerikanskGosys()))
     }

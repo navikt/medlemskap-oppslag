@@ -95,7 +95,6 @@ private suspend fun createDatagrunnlag(
     val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr, periode.fom) }
     val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(fnr, callId) }
     val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr, callId, fraOgMedDatoForArbeidsforhold(periode), periode.tom) }
-    val inntektListeRequest = async { services.inntektService.hentInntektListe(fnr, callId, periode.fom, periode.tom) }
     val journalPosterRequest = async { services.safService.hentJournaldata(fnr, callId) }
     val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktorIder, callId) }
     val personhistorikkForFamilieRequest = async { services.personService.hentPersonhistorikkForRelevantFamilie(personHistorikkFraPdl, periode) }
@@ -103,7 +102,6 @@ private suspend fun createDatagrunnlag(
     val historikkFraTps = historikkFraTpsRequest.await()
     val medlemskap = medlemskapsunntakRequest.await()
     val arbeidsforhold = arbeidsforholdRequest.await()
-    val inntektListe = inntektListeRequest.await()
     val journalPoster = journalPosterRequest.await()
     val oppgaver = gosysOppgaver.await()
     val personhistorikkForFamilie = try {
@@ -120,7 +118,6 @@ private suspend fun createDatagrunnlag(
             pdlpersonhistorikk = personHistorikkFraPdl,
             medlemskap = medlemskap,
             arbeidsforhold = arbeidsforhold,
-            inntekt = inntektListe,
             oppgaver = oppgaver,
             dokument = journalPoster,
             familierelasjonOgSivilstand = personhistorikkForFamilie

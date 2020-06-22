@@ -11,8 +11,6 @@ import no.nav.medlemskap.config.retryRegistry
 import no.nav.medlemskap.services.aareg.AaRegClient
 import no.nav.medlemskap.services.aareg.AaRegService
 import no.nav.medlemskap.services.ereg.EregClient
-import no.nav.medlemskap.services.inntekt.InntektClient
-import no.nav.medlemskap.services.inntekt.InntektService
 import no.nav.medlemskap.services.medl.MedlClient
 import no.nav.medlemskap.services.medl.MedlService
 import no.nav.medlemskap.services.oppgave.OppgaveClient
@@ -34,8 +32,6 @@ class Services(val configuration: Configuration) {
     val medlService: MedlService
     private val aaRegClient: AaRegClient
     val aaRegService: AaRegService
-    private val inntektClient: InntektClient
-    val inntektService: InntektService
     private val safClient: SafClient
     val safService: SafService
     private val oppgaveClient: OppgaveClient
@@ -85,8 +81,6 @@ class Services(val configuration: Configuration) {
         eregClient = restClients.ereg(configuration.register.eregBaseUrl)
         aaRegClient = restClients.aaReg(configuration.register.aaRegBaseUrl)
         aaRegService = AaRegService(aaRegClient, eregClient, pdlClient)
-        inntektClient = restClients.inntektskomponenten(configuration.register.inntektBaseUrl)
-        inntektService = InntektService(inntektClient)
         safClient = restClients.saf(configuration.register.safBaseUrl)
         safService = SafService(safClient)
         oppgaveClient = restClients.oppgaver(configuration.register.oppgaveBaseUrl)
@@ -94,7 +88,6 @@ class Services(val configuration: Configuration) {
 
         healthService = HealthService(setOf(
                 //HttpResponseHealthCheck("AaReg", { aaRegClient.healthCheck() }),
-                HttpResponseHealthCheck("Inntekt", { inntektClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("Medl", { medlClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("Oppg", { oppgaveClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("PDL", { pdlClient.healthCheck() }, healthRetry),

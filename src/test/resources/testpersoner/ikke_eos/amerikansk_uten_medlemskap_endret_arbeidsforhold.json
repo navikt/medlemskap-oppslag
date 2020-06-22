@@ -62,7 +62,7 @@
       "arbeidsgivertype": "Organisasjon",
       "arbeidsgiver": {
         "type": "BEDR",
-        "identifikator": "1",
+        "identifikator": "2",
         "landkode": "NOR",
         "antallAnsatte": "6"
       },
