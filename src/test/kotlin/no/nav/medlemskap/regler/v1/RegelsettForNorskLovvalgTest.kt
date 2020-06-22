@@ -36,6 +36,11 @@ class RegelsettForNorskLovvalgTest {
     }
 
     @Test
+    fun `norsk person med med norsk bostedsadresse, men ingen postadresse JA`() {
+        assertSvar("10", Svar.JA, evaluer(personleser.norskMedNorskBostedsadresseUtenPostadresse()), Svar.JA)
+    }
+
+    @Test
     fun `person med norsk statsborgerskap, kun arbeid i Norge, får ja`() {
         assertSvar("11", Svar.JA, evaluer(personleser.enkelNorskArbeid()), Svar.JA)
     }
