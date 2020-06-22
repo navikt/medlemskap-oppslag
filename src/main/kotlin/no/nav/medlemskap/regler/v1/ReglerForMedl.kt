@@ -82,32 +82,21 @@ class ReglerForMedl(val personfakta: Personfakta) : Regler() {
     private val harBrukerMedlOpplysninger = Regel(
             identifikator = "A",
             avklaring = "Finnes det noe på personen i MEDL?",
-            beskrivelse = """
-                Vedtak (gjort av NAV eller utenlandsk trygdemyndighet) som er registrert i MEDL, 
-                må vurderes manuelt og det må vurderes om brukers situasjon er uendret i forhold 
-                til situasjonen på vedtakstidspunktet.
-            """.trimIndent(),
+            beskrivelse = "",
             operasjon = { sjekkPerioderIMedl()}
     )
 
     private val harBrukerGosysOpplysninger = Regel(
             identifikator = "B",
             avklaring = "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?",
-            beskrivelse = """"
-                Skal sikre at ubehandlede saker og ikke-registrerte vedtak fanges opp for å bli 
-                vurdert manuelt. MEDL er ikke en komplett oversikt over alle medlemsavklaringene 
-                som NAV har gjort. 
-            """.trimIndent(),
+            beskrivelse = "",
             operasjon = { harBrukerAapneOppgaverIGsak() }
     )
 
     private val periodeMedOgUtenMedlemskap = Regel(
             identifikator = "1.1",
             avklaring = "Er det periode både med og uten medlemskap innenfor 12 mnd?",
-            beskrivelse = """
-                Dersom en bruker har en periode med medlemskap og en periode uten medlemskap innenfor 12 mnd 
-                periode, skal det gå til uavklart.
-            """.trimIndent(),
+            beskrivelse = "",
             operasjon = { harPeriodeMedOgUtenMedlemskap() }
     )
 

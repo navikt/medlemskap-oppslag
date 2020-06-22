@@ -13,10 +13,7 @@ class ReglerForGrunnforordningen(val personfakta: Personfakta) : Regler() {
     private val erBrukerEØSborger = Regel(
             identifikator = "2",
             avklaring = "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?",
-            beskrivelse = """
-                Skal sikre at bare brukere som er omfattet av grunnforordningen blir vurdert videre.
-                Grunnforordningen er forordning (EF) 883/2004
-            """.trimIndent(),
+            beskrivelse = "",
             operasjon = { sjekkStatsborgerskap() }
     )
 
