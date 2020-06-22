@@ -1,9 +1,15 @@
 package no.nav.medlemskap.regler.v1
 
+import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.finnesI
+import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedSluttAvKontrollperiode
+import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedStartAvKontrollperiode
 
-class ReglerForGrunnforordningen(val personfakta: Personfakta) : Regler() {
+class ReglerForGrunnforordningen(val datagrunnlag: Datagrunnlag) : Regler() {
+
+    val statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap
+    val kontrollPeriodeForStatsborgerskap = Datohjelper(datagrunnlag.periode).kontrollPeriodeForPersonhistorikk()
 
     override fun hentHovedRegel() =
             sjekkRegel {
@@ -18,8 +24,8 @@ class ReglerForGrunnforordningen(val personfakta: Personfakta) : Regler() {
     )
 
     private fun sjekkStatsborgerskap(): Resultat {
-        val førsteStatsborgerskap = personfakta.hentStatsborgerskapVedStartAvKontrollperiode()
-        val sisteStatsborgerskap = personfakta.hentStatsborgerskapVedSluttAvKontrollperiode()
+        val førsteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedStartAvKontrollperiode(kontrollPeriodeForStatsborgerskap)
+        val sisteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedSluttAvKontrollperiode(kontrollPeriodeForStatsborgerskap)
         return when {
             eøsLand finnesI førsteStatsborgerskap && eøsLand finnesI sisteStatsborgerskap -> ja()
             else -> nei("Brukeren er ikke statsborger i et EØS-land.")

@@ -2,14 +2,13 @@ package no.nav.medlemskap.regler
 
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.regler.common.Personfakta
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.v1.Hovedregler
 import org.junit.jupiter.api.Assertions
 
 fun evaluer(datagrunnlag: Datagrunnlag): Resultat {
-    val regelsett = Hovedregler(Personfakta.initialiserFakta(datagrunnlag))
+    val regelsett = Hovedregler(datagrunnlag)
     return regelsett.kjørHovedregler()
 }
 
