@@ -1,9 +1,6 @@
 package no.nav.medlemskap.regler.v1
 
-import no.nav.medlemskap.domene.Arbeidsforhold
-import no.nav.medlemskap.domene.Arbeidsforholdstype
-import no.nav.medlemskap.domene.Skipsregister
-import no.nav.medlemskap.domene.YrkeskoderForLuftFart
+import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.common.Funksjoner.finnes
@@ -12,16 +9,16 @@ import no.nav.medlemskap.regler.common.Funksjoner.inneholderNoe
 import no.nav.medlemskap.regler.common.Funksjoner.kunInneholder
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.antallAnsatteHosArbeidsgivere
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.arbeidsforholdForYrkestype
-import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.erArbeidsgivereOrganisasjon
+import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.erAlleArbeidsgivereOrganisasjon
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.erSammenhengendeIKontrollPeriode
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.konkursStatuserArbeidsgivere
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.sisteArbeidsforholdSkipsregister
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.sisteArbeidsforholdYrkeskode
 
-class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
+class ReglerForArbeidsforhold(val datagrunnlag: Datagrunnlag) : Regler() {
 
-    private val arbeidsforhold: List<Arbeidsforhold> = personfakta.arbeidsforhold
-    private val kontrollPeriodeForArbeidsforhold = Datohjelper(personfakta.datagrunnlag.periode).kontrollPeriodeForArbeidsforhold()
+    private val arbeidsforhold: List<Arbeidsforhold> = datagrunnlag.arbeidsforhold
+    private val kontrollPeriodeForArbeidsforhold = Datohjelper(datagrunnlag.periode).kontrollPeriodeForArbeidsforhold()
 
     override fun hentHovedRegel() =
             sjekkRegel {
@@ -72,7 +69,7 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
                 }
             }
 
-    private val reglerForLovvalg = ReglerForLovvalg(personfakta)
+    private val reglerForLovvalg = ReglerForLovvalg(datagrunnlag)
 
     private val harBrukerSammenhengendeArbeidsforholdSiste12Mnd = Regel(
             identifikator = "3",
@@ -137,7 +134,7 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
     private fun sjekkArbeidsgiver(): Resultat =
             when {
-                !arbeidsforhold.erArbeidsgivereOrganisasjon(kontrollPeriodeForArbeidsforhold) -> nei("Ikke alle arbeidsgivere er av typen organisasjon")
+                !arbeidsforhold.erAlleArbeidsgivereOrganisasjon(kontrollPeriodeForArbeidsforhold) -> nei("Ikke alle arbeidsgivere er av typen organisasjon")
                 else -> ja()
             }
 
@@ -158,14 +155,14 @@ class ReglerForArbeidsforhold(val personfakta: Personfakta) : Regler() {
 
     private fun sjekkYrkeskodeLuftfart(): Resultat =
             when {
-                arbeidsforhold.sisteArbeidsforholdYrkeskode(kontrollPeriodeForArbeidsforhold) inneholderNoe yrkeskoderLuftfart -> ja()
+                arbeidsforhold sisteArbeidsforholdYrkeskode kontrollPeriodeForArbeidsforhold inneholderNoe yrkeskoderLuftfart -> ja()
                 else -> nei()
             }
 
 
     private fun sjekkSkipsregister(): Resultat =
             when {
-                arbeidsforhold.sisteArbeidsforholdSkipsregister(kontrollPeriodeForArbeidsforhold) kunInneholder Skipsregister.NOR.name -> ja()
+                arbeidsforhold sisteArbeidsforholdSkipsregister kontrollPeriodeForArbeidsforhold kunInneholder Skipsregister.NOR.name -> ja()
                 else -> nei()
             }
 

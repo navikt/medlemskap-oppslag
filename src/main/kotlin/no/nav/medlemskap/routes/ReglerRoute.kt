@@ -9,8 +9,6 @@ import io.ktor.routing.post
 import io.ktor.routing.route
 import no.nav.medlemskap.common.hentVersjoner
 import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.regler.common.Personfakta
-import no.nav.medlemskap.regler.v1.Hovedregler
 import no.nav.medlemskap.regler.v1.ReglerService
 
 fun Routing.reglerRoute() {

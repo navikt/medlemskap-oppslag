@@ -4,7 +4,6 @@ import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
 import no.nav.medlemskap.cucumber.*
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.regler.common.Personfakta.Companion.initialiserFakta
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.v1.ReglerForGrunnforordningen
@@ -92,7 +91,7 @@ class RegelSteps : No {
     }
 
     private fun evaluerGrunnforordningen(datagrunnlag: Datagrunnlag): Svar {
-        val regelsett = ReglerForGrunnforordningen(initialiserFakta(datagrunnlag))
+        val regelsett = ReglerForGrunnforordningen(datagrunnlag)
         return regelsett.hentHovedRegel().utfør(mutableListOf()).svar
     }
 

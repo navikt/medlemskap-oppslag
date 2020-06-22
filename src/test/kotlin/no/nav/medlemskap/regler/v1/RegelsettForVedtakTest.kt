@@ -1,7 +1,6 @@
 package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.regler.common.Personfakta.Companion.initialiserFakta
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.personer.Personleser
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -32,7 +31,7 @@ class RegelsettForVedtakTest {
     }
 
     private fun evaluerReglerForOpplysninger(datagrunnlag: Datagrunnlag): Svar {
-        val regelsett = ReglerForRegistrerteOpplysninger(initialiserFakta(datagrunnlag))
+        val regelsett = ReglerForRegistrerteOpplysninger(datagrunnlag)
         return regelsett.hentHovedRegel().utfør(mutableListOf()).svar
     }
 }

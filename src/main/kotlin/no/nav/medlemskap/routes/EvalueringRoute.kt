@@ -2,6 +2,7 @@ package no.nav.medlemskap.routes
 
 import io.ktor.application.call
 import io.ktor.auth.authenticate
+import io.ktor.auth.authentication
 import io.ktor.features.BadRequestException
 import io.ktor.features.callId
 import io.ktor.request.receive
@@ -12,9 +13,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
 import no.nav.medlemskap.common.apiCounter
+import no.nav.medlemskap.common.konsumentCounter
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.regler.common.Personfakta
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
 import no.nav.medlemskap.services.Services
@@ -37,6 +38,9 @@ fun Routing.evalueringRoute(
             apiCounter().increment()
             val request = validerRequest(call.receive())
             val callId = call.callId ?: UUID.randomUUID().toString()
+            val callerPrincipal = call.authentication.principal.toString()
+            konsumentCounter(callerPrincipal).increment()
+
             val datagrunnlag = createDatagrunnlag(
                     fnr = request.fnr,
                     callId = callId,
@@ -129,7 +133,7 @@ private suspend fun createDatagrunnlag(
 private fun fraOgMedDatoForArbeidsforhold(periode: InputPeriode) = periode.fom.minusYears(1).minusDays(1)
 
 private fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =
-        Hovedregler(Personfakta.initialiserFakta(datagrunnlag)).kjørHovedregler()
+        Hovedregler(datagrunnlag).kjørHovedregler()
 
 private fun Resultat.sisteRegel() =
         if (this.delresultat.isEmpty()) {

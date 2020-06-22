@@ -11,9 +11,8 @@ import io.micrometer.core.instrument.MockClock.clock
 import io.micrometer.core.instrument.Tag
 import io.micrometer.core.instrument.simple.SimpleConfig
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
-import no.nav.medlemskap.regler.common.Personfakta.Companion.initialiserFakta
 import no.nav.medlemskap.regler.personer.Personleser
-import no.nav.medlemskap.regler.v1.ReglerForGrunnforordningen
+import no.nav.medlemskap.regler.v1.ReglerForArbeidsforhold
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
@@ -48,7 +47,8 @@ class RegelMetricsTest {
     fun `evaluering av regelsett for eøs forordningen for amerikansk statsborgerskap gir to metrikker`() {
         gjørNoeMagiJegIkkeForstår()
 
-        ReglerForGrunnforordningen(initialiserFakta(personleser.enkelAmerikansk())).hentHovedRegel().utfør(mutableListOf())
+        //ReglerForGrunnforordningen(initialiserFakta(personleser.enkelAmerikansk())).hentHovedRegel().utfør(mutableListOf())
+        ReglerForArbeidsforhold(personleser.norskMedEttArbeidsforholdMedArbeidsavtaleUnder25ProsentStillingIPeriode()).hentHovedRegel().utfør(mutableListOf())
 
         gjørNoeMagiJegIkkeForstår()
 
@@ -68,9 +68,9 @@ class RegelMetricsTest {
     }
 
     private fun gjørNoeMagiJegIkkeForstår() {
-        clock(simpleRegistry).add(step());
+        clock(simpleRegistry).add(step())
         simpleRegistry.forEachMeter { it.measure() }
-        clock(simpleRegistry).add(step());
+        clock(simpleRegistry).add(step())
     }
 
 }
