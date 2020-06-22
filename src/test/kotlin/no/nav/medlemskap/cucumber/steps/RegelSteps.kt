@@ -120,7 +120,7 @@ class RegelSteps : No {
                 ),
                 medlemskap = medlemskap,
                 arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgivere, utenlandsopphold),
-                familierelasjonOgSivilstand = emptyList()
+                personHistorikkRelatertePersoner = emptyList()
         )
     }
 

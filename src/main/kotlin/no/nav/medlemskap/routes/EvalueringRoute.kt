@@ -120,7 +120,7 @@ private suspend fun createDatagrunnlag(
             arbeidsforhold = arbeidsforhold,
             oppgaver = oppgaver,
             dokument = journalPoster,
-            familierelasjonOgSivilstand = personhistorikkForFamilie
+            personHistorikkRelatertePersoner = personhistorikkForFamilie
     )
 
 }
