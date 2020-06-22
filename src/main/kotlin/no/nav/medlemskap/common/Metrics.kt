@@ -43,7 +43,7 @@ fun configureSensuInfluxMeterRegistry(): SensuInfluxMeterRegistry {
                 || it.name.contains("arbeidsforhold")
 
     })
-    influxMeterRegistry.config().commonTags(defaultInfluxTags());
+    influxMeterRegistry.config().commonTags(defaultInfluxTags())
     Metrics.globalRegistry.add(influxMeterRegistry)
     return influxMeterRegistry
 }
@@ -63,6 +63,12 @@ fun regelCounter(regel: String, status: String): Counter = Counter
         .tags("regel", regel, "status", status)
         .description("counter for ja, nei, uavklart for regel calls")
         .register(Metrics.globalRegistry)
+
+fun konsumentCounter(konsument: String): Counter =
+        Counter.builder("konsument")
+                .tags("konsument", konsument)
+                .description("teller hvilke konsumenter som gjør kall")
+                .register(Metrics.globalRegistry)
 
 fun stillingsprosentCounter(stillingsprosent: Double): Counter =
         if (stillingsprosent < 100.0) {
