@@ -90,11 +90,9 @@ class Personfakta(val datagrunnlag: Datagrunnlag) {
             periodefilter(lagInterval(Periode(it.fom, it.tom)), datohjelper.kontrollPeriodeForNorskAdresse())
 
     fun sjekkBrukersPostadresseOgBostedsadresseLandskode(): Boolean {
-        val harUtenlandskBostedsadresse = !harBrukerNorskBodstedsadresseInnenforSiste12Mnd()
-        val harUtenlandskPostadresse = datagrunnlag.personhistorikk.postadresser.isNotEmpty() &&
-                !harBrukerNorskPostadresseInnenforSiste12Mnd()
-
-        return !(harUtenlandskBostedsadresse || harUtenlandskPostadresse)
+        val harIngenPostadresse = datagrunnlag.personhistorikk.postadresser.isEmpty()
+        return harBrukerNorskPostadresseInnenforSiste12Mnd() || harIngenPostadresse &&
+                harBrukerNorskBodstedsadresseInnenforSiste12Mnd()
     }
 
     fun harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTidIKontrollperiode(gittStillingsprosent: Double): Boolean {
