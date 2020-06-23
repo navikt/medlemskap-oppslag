@@ -20,7 +20,7 @@ data class Statsborgerskap(
 )
 
 data class Personstatus(
-        val personstatus: String,
+        val folkeregisterPersonstatus: String,
         val fom: LocalDate?,
         val tom: LocalDate?
 )

@@ -77,9 +77,9 @@ class PdlClient(
 
     }
 
-    suspend fun hentFoedselsaar(fnr: String, callId: String): Int {
+    suspend fun hentFoedselsaar(fnr: String, callId: String): HentFoedselsaarResponse {
         return runWithRetryAndMetrics("PDL", "HentFoedselsaar", retry) {
-            httpClient.post<Int> {
+            httpClient.post<HentFoedselsaarResponse> {
                 header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
@@ -154,7 +154,7 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
 
     }
 
-    suspend fun hentFoedselsaar(fnr:String, callId: String): Int {
+    suspend fun hentFoedselsaar(fnr:String, callId: String): HentFoedselsaarResponse {
         return pdlClient.hentFoedselsaar(fnr, callId)
     }
 }

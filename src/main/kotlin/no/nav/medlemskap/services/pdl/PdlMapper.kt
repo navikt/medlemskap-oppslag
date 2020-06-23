@@ -21,7 +21,7 @@ fun mapTilPersonHistorikk(person: HentPdlPersonResponse): Personhistorikk {
 
     val bostedsadresser: List<Adresse> = person.data.hentPerson.bostedsadresse.map {
         Adresse(
-                adresselinje = it.adresse ?: it.matrikkeladresse?.bruksenhetsnummer ?: "Ukjent adresse",
+                adresselinje = "",
                 landkode = "",
                 fom = it.folkeregisterMetadata.gyldighetstidspunkt?.toLocalDate(),
                 tom = it.folkeregisterMetadata.opphoerstidspunkt?.toLocalDate()
@@ -47,7 +47,7 @@ fun mapTilPersonHistorikk(person: HentPdlPersonResponse): Personhistorikk {
     filter { it.relatertPersonsRolle == Familierelasjonsrolle.BARN }
             .map {
         Familierelasjon(
-                relatertPersonIdent = it.relatertPersonIdent,
+                relatertPersonIdent = it.relatertPersonsIdent,
                 relatertPersonsRolle = mapFamileRelasjonsrolle(it.relatertPersonsRolle),
                 minRolleForPerson = mapFamileRelasjonsrolle(it.minRolleForPerson),
                 folkeregisterMetadata = mapFolkeregisterMetadata(it.folkeregisterMetadata)

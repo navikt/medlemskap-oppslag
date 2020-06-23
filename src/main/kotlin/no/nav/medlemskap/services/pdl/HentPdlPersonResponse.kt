@@ -37,7 +37,7 @@ enum class KjoennType{
 }
 
 data class Familierelasjon(
-        val relatertPersonIdent: String,
+        val relatertPersonsIdent: String,
         val relatertPersonsRolle: Familierelasjonsrolle,
         val minRolleForPerson: Familierelasjonsrolle,
         val folkeregisterMetadata: Folkeregistermetadata

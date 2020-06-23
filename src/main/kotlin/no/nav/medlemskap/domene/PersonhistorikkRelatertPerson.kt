@@ -10,15 +10,28 @@ data class PersonhistorikkRelatertPerson(
 )
 
 data class PersonAdresse(
-        val adresselinje: String,
         val landkode: String,
         val fom: LocalDate?,
         val tom: LocalDate?
 )
 
 data class RelatertPersonstatus(
-        val personstatus: String,
+        val folkeregisterPersonstatus: PersonstatusType,
         val fom: LocalDate?,
         val tom: LocalDate?
 )
 
+enum class PersonstatusType(val navn: String) {
+    ABNR("Aktivt BOSTNR"),
+    ADNR("Aktivt"),
+    BOSA("Bosatt"),
+    DØD("Død"),
+    FØDR("Fødselregistrert"),
+    FOSV("Forsvunnet/savnet"),
+    UFUL("Ufullstendig fødselsnr"),
+    UREG("Uregistrert person"),
+    UTAN(" Utgått person annullert tilgang Fnr"),
+    UTPE(" Utgått person"),
+    UTVA("Utvandret"),
+    UKJENT("Dette er en ukjent type")
+}

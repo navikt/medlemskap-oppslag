@@ -19,7 +19,7 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
 
     val personstatuser: List<Personstatus> = personhistorikkResponse.personstatusListe.map {
         Personstatus(
-                personstatus = it.personstatus.value,
+                folkeregisterPersonstatus = it.personstatus.value,
                 fom = it.periode.fom.asDate(),
                 tom = it.periode.tom.asDate()
         )
