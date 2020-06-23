@@ -2,6 +2,8 @@ package no.nav.medlemskap.routes
 
 import io.ktor.application.call
 import io.ktor.auth.authenticate
+import io.ktor.auth.authentication
+import io.ktor.auth.jwt.JWTPrincipal
 import io.ktor.features.BadRequestException
 import io.ktor.features.callId
 import io.ktor.request.receive
@@ -14,7 +16,6 @@ import mu.KotlinLogging
 import no.nav.medlemskap.common.apiCounter
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.regler.common.Personfakta
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
 import no.nav.medlemskap.services.Services
@@ -32,11 +33,53 @@ fun Routing.evalueringRoute(
         useAuthentication: Boolean,
         configuration: Configuration) {
 
-    fun receiveAndRespond() {
+    if (useAuthentication) {
+        logger.info("autentiserer kallet")
+        authenticate {
+            post("/") {
+                apiCounter().increment()
+                val callerPrincipal: JWTPrincipal? = call.authentication.principal()
+                val subject = callerPrincipal?.payload?.subject ?: "ukjent"
+                secureLogger.info("Mottar principal {} med subject {}", callerPrincipal, subject)
+                val azp = callerPrincipal?.payload?.getClaim("azp")?.asString() ?: "ukjent"
+                secureLogger.info("EvalueringRoute: azp-claim i principal-token:", azp)
+                val request = validerRequest(call.receive())
+                val callId = call.callId ?: UUID.randomUUID().toString()
+                //konsumentCounter(subject).increment()
+
+                val datagrunnlag = createDatagrunnlag(
+                        fnr = request.fnr,
+                        callId = callId,
+                        periode = request.periode,
+                        brukerinput = request.brukerinput,
+                        services = services)
+                val resultat = evaluerData(datagrunnlag)
+                val response = Response(
+                        tidspunkt = LocalDateTime.now(),
+                        versjonRegler = "v1",
+                        versjonTjeneste = configuration.commitSha,
+                        datagrunnlag = datagrunnlag,
+                        resultat = resultat
+                )
+                secureLogger.info("{} konklusjon gitt for bruker {} på regel {}", resultat.svar.name, request.fnr, resultat.sisteRegel())
+                secureLogger.info("For bruker {} er responsen {}", request.fnr, response)
+
+                call.respond(response)
+            }
+        }
+    } else {
+        logger.info("autentiserer IKKE kallet")
         post("/") {
             apiCounter().increment()
+            val callerPrincipal: JWTPrincipal? = call.authentication.principal()
+            val subject = callerPrincipal?.payload?.subject ?: "ukjent"
+            secureLogger.info("Mottar principal {} med subject {}", callerPrincipal, subject)
+            val azp = callerPrincipal?.payload?.getClaim("azp")?.asString() ?: "ukjent"
+            secureLogger.info("EvalueringRoute: azp-claim i principal-token:", azp)
             val request = validerRequest(call.receive())
             val callId = call.callId ?: UUID.randomUUID().toString()
+            //konsumentCounter(subject).increment()
+
             val datagrunnlag = createDatagrunnlag(
                     fnr = request.fnr,
                     callId = callId,
@@ -56,14 +99,6 @@ fun Routing.evalueringRoute(
 
             call.respond(response)
         }
-    }
-
-    if (useAuthentication) {
-        authenticate {
-            receiveAndRespond()
-        }
-    } else {
-        receiveAndRespond()
     }
 }
 
@@ -89,7 +124,7 @@ private suspend fun createDatagrunnlag(
         periode: InputPeriode,
         brukerinput: Brukerinput,
         services: Services): Datagrunnlag = coroutineScope {
-    
+
     val aktorIder = services.pdlService.hentAlleAktorIder(fnr, callId)
     // val pdlHistorikkRequest = async { services.pdlService.hentPersonHistorikk(fnr, callId) }
     val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr, periode.fom) }
@@ -125,7 +160,7 @@ private suspend fun createDatagrunnlag(
 private fun fraOgMedDatoForArbeidsforhold(periode: InputPeriode) = periode.fom.minusYears(1).minusDays(1)
 
 private fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =
-        Hovedregler(Personfakta.initialiserFakta(datagrunnlag)).kjørHovedregler()
+        Hovedregler(datagrunnlag).kjørHovedregler()
 
 private fun Resultat.sisteRegel() =
         if (this.delresultat.isEmpty()) {

@@ -12,6 +12,7 @@ import java.net.URL
 import java.util.concurrent.TimeUnit
 
 private val logger = KotlinLogging.logger { }
+private val secureLogger = KotlinLogging.logger("tjenestekall")
 
 class JwtConfig(val configuration: Configuration, azureAdOpenIdConfiguration: AzureAdOpenIdConfiguration) {
 
@@ -25,9 +26,13 @@ class JwtConfig(val configuration: Configuration, azureAdOpenIdConfiguration: Az
             .build()
 
     fun validate(credentials: JWTCredential): Principal? {
+        logger.info { "Validerer JWT Credential" }
         return try {
             requireNotNull(credentials.payload.audience) { "Auth: Audience mangler i token" }
             require(credentials.payload.audience.contains(configuration.azureAd.jwtAudience)) { "Auth: Ugyldig audience i token" }
+            secureLogger.info { "credentials claims fra JwtConfig: " + credentials.payload.claims }
+            var azp = credentials.payload.getClaim("azp").asString()
+            secureLogger.info("azp verdi fra credentials i JwtConfig: $azp")
             JWTPrincipal(credentials.payload)
         } catch (e: Exception) {
             logger.error(e) { "Failed to validate token" }

@@ -4,7 +4,6 @@ import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
 import no.nav.medlemskap.cucumber.*
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.regler.common.Personfakta.Companion.initialiserFakta
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.v1.ReglerForGrunnforordningen
@@ -16,7 +15,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 
 class RegelSteps : No {
     private val ANSATTE_9 = listOf(Ansatte(9, null, null))
-    private val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type ="BEDR", identifikator = "1", landkode = "NOR", ansatte = ANSATTE_9, konkursStatus = null)
+    private val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", identifikator = "1", landkode = "NOR", ansatte = ANSATTE_9, konkursStatus = null)
 
     private var statsborgerskap: List<Statsborgerskap> = emptyList()
     private var bostedsadresser: List<Adresse> = emptyList()
@@ -87,6 +86,9 @@ class RegelSteps : No {
             assertEquals(forventetSvar, resultat!!.svar)
         }
 
+    private fun evaluerGrunnforordningen(datagrunnlag: Datagrunnlag): Svar {
+        val regelsett = ReglerForGrunnforordningen(datagrunnlag)
+        return regelsett.hentHovedRegel().utfør(mutableListOf()).svar
     }
 
     private fun byggDatagrunnlag(medlemskapsparametre: Medlemskapsparametre? = null): Datagrunnlag {
@@ -119,7 +121,7 @@ class RegelSteps : No {
             arbeidsgivere[0]
         }
 
-        return arbeidsforhold.map{it.copy(utenlandsopphold = utenlandsopphold, arbeidsgiver = arbeidsgiver)}
+        return arbeidsforhold.map { it.copy(utenlandsopphold = utenlandsopphold, arbeidsgiver = arbeidsgiver) }
     }
 
     private fun evaluerGrunnforordningen(datagrunnlag: Datagrunnlag): Resultat {

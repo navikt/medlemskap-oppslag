@@ -1,14 +1,15 @@
 package no.nav.medlemskap.regler.v1
 
+import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.regler.common.*
 
-class Hovedregler(personfakta: Personfakta) {
+class Hovedregler(datagrunnlag: Datagrunnlag) {
 
     private val resultatliste: MutableList<Resultat> = mutableListOf()
-    private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger(personfakta)
-    private val reglerForRegistrerteOpplysningerIMedl = ReglerForMedl(personfakta)
-    private val reglerForGrunnforordningen = ReglerForGrunnforordningen(personfakta)
-    private val reglerForArbeidsforhold = ReglerForArbeidsforhold(personfakta)
+    private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger(datagrunnlag)
+    private val reglerForRegistrerteOpplysningerIMedl = ReglerForMedl(datagrunnlag)
+    private val reglerForGrunnforordningen = ReglerForGrunnforordningen(datagrunnlag)
+    private val reglerForArbeidsforhold = ReglerForArbeidsforhold(datagrunnlag)
 
 
     fun hentHovedRegel() =

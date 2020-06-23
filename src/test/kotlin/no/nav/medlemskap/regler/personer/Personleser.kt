@@ -55,6 +55,7 @@ class Personleser {
     fun enkelNorskFlereArbeidsforholdIPeriode() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_flere_yrkestyper_i_periode.json")
     fun enkelNorskMedKonkursArbeidsgiver() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_konkurs_arbeidsgiver.json")
     fun enkelNorskMedNorskBostedsadresseOgPostadresse() = lesDatagrunnlag("$variertDatagrunnlagArbeidsforhold/norsk_med_bostedsadresse_og_postadresse.json")
+    fun norskMedNorskBostedsadresseUtenPostadresse() = lesDatagrunnlag("$norsk/norsk_bosatt_i_norge_uten_postadresse.json")
 
     fun enkelAmerikansk() = lesDatagrunnlag("$ikkeEøs/kun_enkelt_amerikansk_statsborgerskap.json")
     fun amerikanskGosys() = lesDatagrunnlag("$ikkeEøs/amerikansk_med_oppgave_i_gosys.json")
