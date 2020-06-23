@@ -44,8 +44,8 @@ fun Routing.evalueringRoute(
                 val azp = callerPrincipal?.payload?.getClaim("azp")?.asString() ?: "ukjent"
                 secureLogger.info("EvalueringRoute: azp-claim i principal-token:", azp)
                 val claims = callerPrincipal?.payload?.claims?.toString() ?: "ukjent"
-                secureLogger.info("EvalueringRoute: alle claims:", claims)
-                
+                secureLogger.info("EvalueringRoute: alle claims: {}", claims)
+
                 val request = validerRequest(call.receive())
                 val callId = call.callId ?: UUID.randomUUID().toString()
                 //konsumentCounter(subject).increment()
