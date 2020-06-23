@@ -30,7 +30,7 @@ class JwtConfig(val configuration: Configuration, azureAdOpenIdConfiguration: Az
             requireNotNull(credentials.payload.audience) { "Auth: Audience mangler i token" }
             require(credentials.payload.audience.contains(configuration.azureAd.jwtAudience)) { "Auth: Ugyldig audience i token" }
             secureLogger.info { "credentials payload fra JwtConfig: " + credentials.payload }
-            var azp = credentials.payload.getClaim("azp")
+            var azp = credentials.payload.getClaim("azp").asString()
             secureLogger.info("azp verdi fra credentials i JwtConfig: $azp")
             JWTPrincipal(credentials.payload)
         } catch (e: Exception) {
