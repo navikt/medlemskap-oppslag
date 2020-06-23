@@ -33,7 +33,42 @@ fun Routing.evalueringRoute(
         useAuthentication: Boolean,
         configuration: Configuration) {
 
-    fun receiveAndRespond() {
+    if (useAuthentication) {
+        logger.info("autentiserer kallet")
+        authenticate {
+            post("/") {
+                apiCounter().increment()
+                val callerPrincipal: JWTPrincipal? = call.authentication.principal()
+                val subject = callerPrincipal?.payload?.subject ?: "ukjent"
+                secureLogger.info("Mottar principal {} med subject {}", callerPrincipal, subject)
+                val azp = callerPrincipal?.payload?.getClaim("azp")?.asString() ?: "ukjent"
+                secureLogger.info("EvalueringRoute: azp-claim i principal-token:", azp)
+                val request = validerRequest(call.receive())
+                val callId = call.callId ?: UUID.randomUUID().toString()
+                //konsumentCounter(subject).increment()
+
+                val datagrunnlag = createDatagrunnlag(
+                        fnr = request.fnr,
+                        callId = callId,
+                        periode = request.periode,
+                        brukerinput = request.brukerinput,
+                        services = services)
+                val resultat = evaluerData(datagrunnlag)
+                val response = Response(
+                        tidspunkt = LocalDateTime.now(),
+                        versjonRegler = "v1",
+                        versjonTjeneste = configuration.commitSha,
+                        datagrunnlag = datagrunnlag,
+                        resultat = resultat
+                )
+                secureLogger.info("{} konklusjon gitt for bruker {} på regel {}", resultat.svar.name, request.fnr, resultat.sisteRegel())
+                secureLogger.info("For bruker {} er responsen {}", request.fnr, response)
+
+                call.respond(response)
+            }
+        }
+    } else {
+        logger.info("autentiserer IKKE kallet")
         post("/") {
             apiCounter().increment()
             val callerPrincipal: JWTPrincipal? = call.authentication.principal()
@@ -64,16 +99,6 @@ fun Routing.evalueringRoute(
 
             call.respond(response)
         }
-    }
-
-    if (useAuthentication) {
-        logger.info("autentiserer kallet")
-        authenticate {
-            receiveAndRespond()
-        }
-    } else {
-        logger.info("autentiserer IKKE kallet")
-        receiveAndRespond()
     }
 }
 
