@@ -19,6 +19,7 @@ import io.micrometer.core.instrument.binder.system.FileDescriptorMetrics
 import io.micrometer.core.instrument.binder.system.ProcessorMetrics
 import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
+import mu.KotlinLogging
 import no.nav.medlemskap.common.JwtConfig
 import no.nav.medlemskap.common.JwtConfig.Companion.REALM
 import no.nav.medlemskap.common.MDC_CALL_ID
@@ -34,6 +35,8 @@ import no.nav.medlemskap.routes.reglerRoute
 import no.nav.medlemskap.services.Services
 import org.slf4j.event.Level
 import java.util.*
+
+private val logger = KotlinLogging.logger { }
 
 fun createHttpServer(
         applicationState: ApplicationState,
@@ -64,6 +67,7 @@ fun createHttpServer(
     }
 
     if (useAuthentication) {
+        logger.info { "Installerer authentication" }
         install(Authentication) {
             jwt {
                 skipWhen { !useAuthentication }
@@ -75,6 +79,8 @@ fun createHttpServer(
                 }
             }
         }
+    } else {
+        logger.info { "Installerer IKKE authentication" }
     }
 
     install(MicrometerMetrics) {
