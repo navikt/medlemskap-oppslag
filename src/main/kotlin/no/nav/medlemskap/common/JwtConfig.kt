@@ -26,6 +26,7 @@ class JwtConfig(val configuration: Configuration, azureAdOpenIdConfiguration: Az
             .build()
 
     fun validate(credentials: JWTCredential): Principal? {
+        logger.info { "Validerer JWT Credential" }
         return try {
             requireNotNull(credentials.payload.audience) { "Auth: Audience mangler i token" }
             require(credentials.payload.audience.contains(configuration.azureAd.jwtAudience)) { "Auth: Ugyldig audience i token" }
