@@ -70,7 +70,7 @@ class RegelSteps : No {
             resultat = when (avklaring) {
                 "Finnes det registrerte opplysninger på bruker?" -> evaluerReglerForMedlemsunntak(datagrunnlag!!)
                 "Er bruker omfattet av grunnforordningen?" -> evaluerGrunnforordningen(datagrunnlag!!)
-                 else -> throw java.lang.RuntimeException("Fant ikke hovedregel med avklaring = $avklaring")
+                else -> throw java.lang.RuntimeException("Fant ikke hovedregel med avklaring = $avklaring")
             }
         }
 
@@ -85,10 +85,6 @@ class RegelSteps : No {
 
             assertEquals(forventetSvar, resultat!!.svar)
         }
-
-    private fun evaluerGrunnforordningen(datagrunnlag: Datagrunnlag): Svar {
-        val regelsett = ReglerForGrunnforordningen(datagrunnlag)
-        return regelsett.hentHovedRegel().utfør(mutableListOf()).svar
     }
 
     private fun byggDatagrunnlag(medlemskapsparametre: Medlemskapsparametre? = null): Datagrunnlag {
@@ -125,12 +121,12 @@ class RegelSteps : No {
     }
 
     private fun evaluerGrunnforordningen(datagrunnlag: Datagrunnlag): Resultat {
-        val regelsett = ReglerForGrunnforordningen(initialiserFakta(datagrunnlag))
+        val regelsett = ReglerForGrunnforordningen(datagrunnlag)
         return regelsett.hentHovedRegel().utfør(mutableListOf())
     }
 
     private fun evaluerReglerForMedlemsunntak(datagrunnlag: Datagrunnlag): Resultat {
-        val regelsett = ReglerForRegistrerteOpplysninger(initialiserFakta(datagrunnlag))
+        val regelsett = ReglerForRegistrerteOpplysninger(datagrunnlag)
         return regelsett.hentHovedRegel().utfør(mutableListOf())
     }
 }
