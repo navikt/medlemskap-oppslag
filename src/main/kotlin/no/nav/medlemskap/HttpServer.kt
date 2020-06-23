@@ -70,7 +70,6 @@ fun createHttpServer(
         logger.info { "Installerer authentication" }
         install(Authentication) {
             jwt {
-                skipWhen { !useAuthentication }
                 val jwtConfig = JwtConfig(configuration, azureAdOpenIdConfiguration)
                 realm = REALM
                 verifier(jwtConfig.jwkProvider, azureAdOpenIdConfiguration.issuer)
