@@ -63,7 +63,7 @@ class PersonService(private val personClient: PersonClient, private val pdlServi
     private fun Familierelasjon.erBarn() = this.relatertPersonsRolle == Familierelasjonsrolle.BARN
 
     companion object {
-        val aldersGrense = 18
+        val aldersGrense = 26
         private val secureLogger = KotlinLogging.logger("tjenestekall")
     }
 }
