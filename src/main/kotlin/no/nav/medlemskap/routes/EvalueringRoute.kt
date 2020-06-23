@@ -42,7 +42,7 @@ fun Routing.evalueringRoute(
                 val subject = callerPrincipal?.payload?.subject ?: "ukjent"
                 secureLogger.info("Mottar principal {} med subject {}", callerPrincipal, subject)
                 val azp = callerPrincipal?.payload?.getClaim("azp")?.asString() ?: "ukjent"
-                secureLogger.info("EvalueringRoute: azp-claim i principal-token:", azp)
+                secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
                 val claims = callerPrincipal?.payload?.claims?.toString() ?: "ukjent"
                 secureLogger.info("EvalueringRoute: alle claims: {}", claims)
 
