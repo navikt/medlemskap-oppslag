@@ -44,7 +44,7 @@ fun Routing.evalueringRoute(
             secureLogger.info("EvalueringRoute: azp-claim i principal-token:", azp)
             val request = validerRequest(call.receive())
             val callId = call.callId ?: UUID.randomUUID().toString()
-            konsumentCounter(subject).increment()
+            //konsumentCounter(subject).increment()
 
             val datagrunnlag = createDatagrunnlag(
                     fnr = request.fnr,
