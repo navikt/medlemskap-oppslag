@@ -84,6 +84,6 @@ private fun mapFolkeregisterMetadata(folkeregisterMetadata: no.nav.medlemskap.se
     )
 }
 
-//TODO: Denne kan nok sikkert skrives bedre..
+//Vi velger det høyeste årstallet, da blir personen yngst og det er mest sannsynlig at vi må vurdere bosted
 fun mapTilFoedselsaar(response: HentFoedselsaarResponse): Int =
-        response.data?.hentPerson?.foedsel?.map { it.foedselsaar }?.sorted()?.first() ?: throw PersonIkkeFunnet("PDL")
+        response.data?.hentPerson?.foedsel?.map { it.foedselsaar }?.sorted()?.last() ?: throw PersonIkkeFunnet("PDL")
