@@ -40,6 +40,8 @@ fun Routing.evalueringRoute(
             val callerPrincipal: JWTPrincipal? = call.authentication.principal()
             val subject = callerPrincipal?.payload?.subject ?: "ukjent"
             secureLogger.info("Mottar principal {} med subject {}", callerPrincipal, subject)
+            val azp = callerPrincipal?.payload?.claims?.get("azp") ?: "ukjent"
+            secureLogger.info("EvalueringRoute: azp-claim i principal-token:", azp)
             val request = validerRequest(call.receive())
             val callId = call.callId ?: UUID.randomUUID().toString()
             konsumentCounter(subject).increment()
