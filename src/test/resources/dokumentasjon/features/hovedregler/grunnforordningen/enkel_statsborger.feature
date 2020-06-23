@@ -9,11 +9,11 @@ Egenskap: Borgere i EØS omfattes av grunnforordningen
       | Landkode | Fra og med dato | Til og med dato |
       | <Land>   | 30.01.2000      |                 |
 
-    Når omfattet av grunnforordningen beregnes med følgende parametre
+    Når hovedregel med avklaring "Er bruker omfattet av grunnforordningen?" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 15.01.2020      | 30.01.2020      | Nei                           |
 
-    Så skal omfattet av grunnforordningen være <Svar>
+  Så skal svaret på hovedregelen være <Svar>
 
     Eksempler:
       | Land | Svar  |
@@ -26,8 +26,8 @@ Egenskap: Borgere i EØS omfattes av grunnforordningen
       | Landkode | Fra og med dato | Til og med dato |
       | USA      | 30.01.2000      |                 |
 
-    Når omfattet av grunnforordningen beregnes med følgende parametre
+    Når hovedregel med avklaring "Er bruker omfattet av grunnforordningen?" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 15.01.2020      | 30.01.2020      | Nei                           |
 
-    Så skal omfattet av grunnforordningen være "Nei"
+    Så skal svaret på hovedregelen være "Nei"

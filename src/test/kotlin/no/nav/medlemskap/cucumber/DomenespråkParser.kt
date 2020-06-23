@@ -192,6 +192,11 @@ class ArbeidsforholdMapper {
         val yrkeskode = domenespråkParser.parseString(YRKESKODE, rad)
         val stillingsprosent = domenespråkParser.parseDouble(STILLINGSPROSENT, rad)
         val skipsregister = domenespråkParser.parseSkipsregister(rad)
+        val konkursStatus =  if (domenespråkParser.parseValgfriString(KONKURSSTATUS, rad) == null) {
+            null
+        } else {
+            listOf(domenespråkParser.parseValgfriString(KONKURSSTATUS, rad))
+        }
 
         return Arbeidsforhold(
                 periode = periode,
@@ -206,12 +211,19 @@ class ArbeidsforholdMapper {
 
 class ArbeidsgiverMapper : RadMapper<Arbeidsgiver> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Arbeidsgiver {
+        val konkursStatus = domenespråkParser.parseValgfriString(KONKURSSTATUS, rad)
+        val konkursStatuser = if (konkursStatus == null) {
+            null
+        } else {
+            listOf(konkursStatus)
+        }
+
         return Arbeidsgiver(
                 identifikator = domenespråkParser.parseValgfriString(IDENTIFIKATOR, rad),
                 type = domenespråkParser.parseValgfriString(ARBEIDSGIVERTYPE, rad),
                 landkode = domenespråkParser.parseValgfriString(LANDKODE, rad),
                 ansatte = listOf(Ansatte(domenespråkParser.parseValgfriInt(ANTALL_ANSATTE, rad), null, null)),
-                konkursStatus = emptyList()
+                konkursStatus = konkursStatuser
         )
     }
 }
@@ -238,6 +250,7 @@ enum class Domenebegrep(val nøkkel: String) {
     FRA_OG_MED_DATO("Fra og med dato"),
     HAR_HATT_ARBEID_UTENFOR_NORGE("Har hatt arbeid utenfor Norge"),
     IDENTIFIKATOR("Identifikator"),
+    KONKURSSTATUS("Konkursstatus"),
     LANDKODE("Landkode"),
     LOVVALG("Lovvalg"),
     LOVVALGSLAND("Lovvalgsland"),
