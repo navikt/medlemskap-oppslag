@@ -14,7 +14,6 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
 import no.nav.medlemskap.common.apiCounter
-import no.nav.medlemskap.common.konsumentCounter
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Resultat
@@ -68,10 +67,12 @@ fun Routing.evalueringRoute(
     }
 
     if (useAuthentication) {
+        logger.info("autentiserer kallet")
         authenticate {
             receiveAndRespond()
         }
     } else {
+        logger.info("autentiserer IKKE kallet")
         receiveAndRespond()
     }
 }
