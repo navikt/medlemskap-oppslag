@@ -37,10 +37,12 @@ fun Routing.evalueringRoute(
     fun receiveAndRespond() {
         post("/") {
             apiCounter().increment()
+            val callerPrincipal: JWTPrincipal? = call.authentication.principal()
+            val subject = callerPrincipal?.payload?.subject ?: "ukjent"
+            secureLogger.info("Mottar principal {} med subject {}", callerPrincipal, subject)
             val request = validerRequest(call.receive())
             val callId = call.callId ?: UUID.randomUUID().toString()
-            val callerPrincipal = call.authentication.principal<JWTPrincipal>().toString()
-            konsumentCounter(callerPrincipal).increment()
+            konsumentCounter(subject).increment()
 
             val datagrunnlag = createDatagrunnlag(
                     fnr = request.fnr,
