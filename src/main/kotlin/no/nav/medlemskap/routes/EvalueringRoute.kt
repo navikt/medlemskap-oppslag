@@ -3,6 +3,7 @@ package no.nav.medlemskap.routes
 import io.ktor.application.call
 import io.ktor.auth.authenticate
 import io.ktor.auth.authentication
+import io.ktor.auth.jwt.JWTPrincipal
 import io.ktor.features.BadRequestException
 import io.ktor.features.callId
 import io.ktor.request.receive
@@ -38,7 +39,7 @@ fun Routing.evalueringRoute(
             apiCounter().increment()
             val request = validerRequest(call.receive())
             val callId = call.callId ?: UUID.randomUUID().toString()
-            val callerPrincipal = call.authentication.principal.toString()
+            val callerPrincipal = call.authentication.principal<JWTPrincipal>().toString()
             konsumentCounter(callerPrincipal).increment()
 
             val datagrunnlag = createDatagrunnlag(
