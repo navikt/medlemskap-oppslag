@@ -38,13 +38,10 @@ fun Routing.evalueringRoute(
         authenticate {
             post("/") {
                 apiCounter().increment()
-                val callerPrincipal: JWTPrincipal? = call.authentication.principal()
-                val subject = callerPrincipal?.payload?.subject ?: "ukjent"
-                secureLogger.info("Mottar principal {} med subject {}", callerPrincipal, subject)
-                val azp = callerPrincipal?.payload?.getClaim("azp")?.asString() ?: "ukjent"
+
+                val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
+                val azp = callerPrincipal.payload.getClaim("azp").asString()
                 secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
-                val claims = callerPrincipal?.payload?.claims?.toString() ?: "ukjent"
-                secureLogger.info("EvalueringRoute: alle claims: {}", claims)
 
                 val request = validerRequest(call.receive())
                 val callId = call.callId ?: UUID.randomUUID().toString()
@@ -74,11 +71,6 @@ fun Routing.evalueringRoute(
         logger.info("autentiserer IKKE kallet")
         post("/") {
             apiCounter().increment()
-            val callerPrincipal: JWTPrincipal? = call.authentication.principal()
-            val subject = callerPrincipal?.payload?.subject ?: "ukjent"
-            secureLogger.info("Mottar principal {} med subject {}", callerPrincipal, subject)
-            val azp = callerPrincipal?.payload?.getClaim("azp")?.asString() ?: "ukjent"
-            secureLogger.info("EvalueringRoute: azp-claim i principal-token:", azp)
             val request = validerRequest(call.receive())
             val callId = call.callId ?: UUID.randomUUID().toString()
             //konsumentCounter(subject).increment()
