@@ -1,11 +1,8 @@
 package no.nav.medlemskap.regler.v1
 
-import no.nav.medlemskap.domene.Arbeidsforhold
-import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.DekningForSykepenger
-import no.nav.medlemskap.domene.Medlemskap
+import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.common.Funksjoner.inneholderNoe
+import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.harSammeAdressePaaGitteDatoer
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.arbeidsforholdForDato
 import no.nav.medlemskap.regler.funksjoner.GsakFunksjoner.finnesAapneOppgaver
@@ -19,7 +16,7 @@ import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.tidligsteFraOgMedDatoF
 
 class ReglerForMedl(val datagrunnlag: Datagrunnlag) : Regler() {
 
-    private val gyldigeDekningerForSykepenger = DekningForSykepenger.values().map { it.dekning }
+    private val gyldigeDekningerForSykepenger = Dekning.dekningForSykepenger()
     private val medlemskap: List<Medlemskap> = datagrunnlag.medlemskap
     private val arbeidsforhold: List<Arbeidsforhold> = datagrunnlag.arbeidsforhold
     private val kontrollPeriodeForMedl = Datohjelper(datagrunnlag.periode).kontrollPeriodeForMedl()
@@ -74,7 +71,7 @@ class ReglerForMedl(val datagrunnlag: Datagrunnlag) : Regler() {
                                         } hvisJa {
                                             jaKonklusjon
                                         } hvisNei {
-                                            neiKonklusjon
+                                            jaKonklusjon
                                         }
                                     } hvisNei {
                                         uavklartKonklusjon
@@ -215,11 +212,13 @@ class ReglerForMedl(val datagrunnlag: Datagrunnlag) : Regler() {
                 else -> nei()
             }
 
-    private fun harBrukerMedlemskapSomOmfatterSykepenger(): Resultat =
-            when {
-                medlemskap medlemskapsPerioderOver12MndPeriodeDekning kontrollPeriodeForMedl inneholderNoe gyldigeDekningerForSykepenger -> ja()
-                else -> nei()
-            }
+    private fun harBrukerMedlemskapSomOmfatterSykepenger(): Resultat {
+        val dekninger = medlemskap medlemskapsPerioderOver12MndPeriodeDekning kontrollPeriodeForMedl
+        return when {
+            dekninger alleEr gyldigeDekningerForSykepenger.map { it.dekningKodeverdi } -> ja(dekninger)
+            else -> nei(dekninger)
+        }
+    }
 
     private fun harSammeArbeidsforholdSidenFomDatoFraMedl(): Boolean =
             arbeidsforhold.arbeidsforholdForDato(medlemskap.tidligsteFraOgMedDatoForMedl(datohjelper.kontrollPeriodeForMedl())).isNotEmpty() &&
