@@ -1,19 +1,27 @@
 package no.nav.medlemskap.regler.v1
 
+import no.nav.medlemskap.domene.Adresse
+import no.nav.medlemskap.domene.Adressetype
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.inneholder
+import no.nav.medlemskap.regler.common.Funksjoner.kombinener
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.harBrukerNorskAdresseInnenforSiste12Mnd
+import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.hentAdressetyperIKontrollperiode
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedSluttAvKontrollperiode
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedStartAvKontrollperiode
+
+
 
 class ReglerForLovvalg(val datagrunnlag: Datagrunnlag) : Regler() {
 
     val statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap
     val postadresser = datagrunnlag.personhistorikk.postadresser
-    val bostedsadresser = datagrunnlag.personhistorikk.bostedsadresser
+    val midlertidigAdresse = datagrunnlag.personhistorikk.midlertidigAdresser
+    val bostedsadresse = datagrunnlag.personhistorikk.bostedsadresser
     val arbeidsforhold = datagrunnlag.arbeidsforhold
+
 
     private val datohjelper = Datohjelper(datagrunnlag.periode)
     private val kontrollPeriodeForPersonhistorikk = datohjelper.kontrollPeriodeForPersonhistorikk()
@@ -58,7 +66,7 @@ class ReglerForLovvalg(val datagrunnlag: Datagrunnlag) : Regler() {
             identifikator = "10",
             avklaring = "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
             beskrivelse = "",
-            operasjon = { sjekkLandskode() }
+            operasjon = { sjekkAdresseType() }
     )
 
     private val harBrukerNorskStatsborgerskap = Regel(
@@ -90,22 +98,40 @@ class ReglerForLovvalg(val datagrunnlag: Datagrunnlag) : Regler() {
             else -> nei("Brukeren er ikke norsk statsborger")
         }
     }
+    private fun sjekkAdresseType(): Resultat {
 
-    private fun sjekkLandskode(): Resultat =
+        val adresser = arrayListOf<Adresse>()
+        adresser.addAll(postadresser)
+        adresser.addAll(bostedsadresse)
+        adresser.addAll(midlertidigAdresse)
+
+
+        val adressetyper = adresser.hentAdressetyperIKontrollperiode(kontrollPeriodeForPersonhistorikk)
+
+        return when {
+            adressetyper inneholder Adressetype.BOAD.name && adressetyper inneholder Adressetype.POST.name -> ja()
+            adressetyper inneholder Adressetype.BOAD.name && adressetyper inneholder Adressetype.TIAD -> ja() //Kun hvis boad ligger før
+            else -> nei("Adressetypene til bruker er ikke tilstrekkelig for bosatt i Norge")
+        }
+    }
+        private fun sjekkOmBrukerHarJobbet25ProsentEllerMer(): Resultat =
+                when {
+                    arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollPeriodeForArbeidsforhold) -> ja()
+                    else -> nei("Bruker har ikke jobbet 25% eller mer i løpet av periode.")
+                }
+    }
+
+/*    private fun sjekkLandskode(): Resultat =
             when {
                 sjekkBrukersPostadresseOgBostedsadresseLandskode() -> ja()
                 else -> nei("Bruker har enten ikke norsk bostedsadresse eller postadresse")
-            }
+            }*/
 
-    private fun sjekkOmBrukerHarJobbet25ProsentEllerMer(): Resultat =
-            when {
-                 arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollPeriodeForArbeidsforhold) -> ja()
-                else -> nei("Bruker har ikke jobbet 25% eller mer i løpet av periode.")
-            }
 
+/*
     fun sjekkBrukersPostadresseOgBostedsadresseLandskode(): Boolean {
         val harIngenPostadresse = datagrunnlag.personhistorikk.postadresser.isEmpty()
         return (datagrunnlag.personhistorikk.postadresser.harBrukerNorskAdresseInnenforSiste12Mnd(kontrollPeriodeForPersonhistorikk) || harIngenPostadresse) &&
                 datagrunnlag.personhistorikk.bostedsadresser.harBrukerNorskAdresseInnenforSiste12Mnd(kontrollPeriodeForPersonhistorikk)
-    }
-}
+    }*/
+

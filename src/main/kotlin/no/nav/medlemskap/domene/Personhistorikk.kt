@@ -26,5 +26,10 @@ data class Adresse(
         val adresselinje: String,
         val landkode: String,
         val fom: LocalDate?,
-        val tom: LocalDate?
+        val tom: LocalDate?,
+        val adresseType: Adressetype
 )
+
+enum class Adressetype {
+    BOAD, MATR, OFFA, POST, PUTL, TIAD, UTAD
+}

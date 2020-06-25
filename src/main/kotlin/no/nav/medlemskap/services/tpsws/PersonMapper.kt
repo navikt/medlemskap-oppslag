@@ -1,9 +1,6 @@
 package no.nav.medlemskap.services.tpsws
 
-import no.nav.medlemskap.domene.Adresse
-import no.nav.medlemskap.domene.Personhistorikk
-import no.nav.medlemskap.domene.Personstatus
-import no.nav.medlemskap.domene.Statsborgerskap
+import no.nav.medlemskap.domene.*
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.MidlertidigPostadresseNorge
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.MidlertidigPostadresseUtland
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.UstrukturertAdresse
@@ -34,17 +31,20 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
                 adresselinje = it.bostedsadresse.strukturertAdresse.tilleggsadresse ?: "Ukjent adresse",
                 landkode = it.bostedsadresse.strukturertAdresse.landkode.value,
                 fom = it.periode.fom.asDate(),
-                tom = it.periode.tom.asDate()
+                tom = it.periode.tom.asDate(),
+                adresseType = Adressetype.BOAD
         )
     }
 
     val postadresser: List<Adresse> = personhistorikkResponse.postadressePeriodeListe.map {
-        Adresse(
-                adresselinje = it.postadresse.ustrukturertAdresse.adresselinje(),
-                landkode = it.postadresse.ustrukturertAdresse.landkode.value,
-                fom = it.periode.fom.asDate(),
-                tom = it.periode.tom.asDate()
-        )
+            Adresse(
+                    adresselinje = it.postadresse.ustrukturertAdresse.adresselinje(),
+                    landkode = it.postadresse.ustrukturertAdresse.landkode.value,
+                    fom = it.periode.fom.asDate(),
+                    tom = it.periode.tom.asDate(),
+                    adresseType = Adressetype.POST
+
+            )
     }
 
     val midlertidigAdresser: List<Adresse> = personhistorikkResponse.midlertidigAdressePeriodeListe.map {
@@ -53,13 +53,15 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
                     adresselinje = it.strukturertAdresse.tilleggsadresse ?: "Ukjent adresse",
                     landkode = it.strukturertAdresse.landkode.value,
                     fom = it.postleveringsPeriode.fom.asDate(),
-                    tom = it.postleveringsPeriode.tom.asDate()
+                    tom = it.postleveringsPeriode.tom.asDate(),
+                    adresseType = Adressetype.TIAD
             )
             is MidlertidigPostadresseUtland -> Adresse(
                     adresselinje = it.ustrukturertAdresse.adresselinje(),
                     landkode = it.ustrukturertAdresse.landkode.value,
                     fom = it.postleveringsPeriode.fom.asDate(),
-                    tom = it.postleveringsPeriode.tom.asDate()
+                    tom = it.postleveringsPeriode.tom.asDate(),
+                    adresseType = Adressetype.UTAD
             )
             else -> throw Exception("Ukjent adressetype")
         }
