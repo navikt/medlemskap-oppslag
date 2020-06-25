@@ -9,7 +9,8 @@ data class Datagrunnlag (
         val medlemskap: List<Medlemskap> = listOf(),
         val arbeidsforhold: List<Arbeidsforhold> = listOf(),
         val oppgaver: List<Oppgave> = listOf(),
-        val dokument: List<Journalpost> = listOf()
+        val dokument: List<Journalpost> = listOf(),
+        var ytelse: Ytelse?
 )
 
 data class Periode (

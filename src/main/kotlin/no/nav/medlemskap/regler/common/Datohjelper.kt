@@ -2,17 +2,15 @@ package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Periode
+import no.nav.medlemskap.domene.Ytelse
 import org.threeten.extra.Interval
 import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-enum class Ytelse { SYKEPENGER }
 
-class Datohjelper(val periode: InputPeriode) {
-
-    private val ytelse = Ytelse.SYKEPENGER // TODO: Vurder om dette skal være noe vi sjekker
+class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
 
     fun kontrollPeriodeForPersonhistorikk(): Periode {
         return when (ytelse) {
@@ -20,6 +18,8 @@ class Datohjelper(val periode: InputPeriode) {
                     fom = førsteSykedag().minusMonths(12),
                     tom = førsteSykedag()
             )
+            Ytelse.DAGPENGER -> defaultDagpengePeriode()
+            Ytelse.ENSLIG_FORSORGER -> defaultEnsligForsørgerPeriode()
         }
     }
 
@@ -29,23 +29,23 @@ class Datohjelper(val periode: InputPeriode) {
                     fom = førsteSykedag().minusMonths(12),
                     tom = periode.tom
             )
+            Ytelse.DAGPENGER -> defaultDagpengePeriode()
+            Ytelse.ENSLIG_FORSORGER -> defaultEnsligForsørgerPeriode()
         }
     }
 
     fun førsteSykedag() = periode.fom.minusDays(1)
+    fun førsteDagpengedag() = periode.fom.minusDays(1)
+    fun førsteEnsligForsørgerdag() = periode.fom.minusDays(1)
+
+    private fun defaultDagpengePeriode(): Periode = Periode(førsteDagpengedag().minusMonths(12), førsteDagpengedag())
+    private fun defaultEnsligForsørgerPeriode(): Periode = Periode(førsteEnsligForsørgerdag().minusMonths(12), førsteEnsligForsørgerdag())
 
     fun tilOgMedDag(): LocalDate {
         return when (ytelse) {
             Ytelse.SYKEPENGER -> førsteSykedag()
-        }
-    }
-
-    fun kontrollPeriodeForArbeidsforholdIOpptjeningsperiode(): Periode {
-        return when (ytelse) {
-            Ytelse.SYKEPENGER -> Periode(
-                    fom = førsteSykedag().minusDays(28),
-                    tom = førsteSykedag()
-            )
+            Ytelse.DAGPENGER -> førsteDagpengedag()
+            Ytelse.ENSLIG_FORSORGER -> førsteEnsligForsørgerdag()
         }
     }
 
@@ -55,15 +55,8 @@ class Datohjelper(val periode: InputPeriode) {
                     fom = førsteSykedag().minusMonths(12),
                     tom = førsteSykedag()
             )
-        }
-    }
-
-    fun kontrollPeriodeForStillingsprosent(): Periode {
-        return when (ytelse) {
-            Ytelse.SYKEPENGER -> Periode(
-                    fom = førsteSykedag().minusMonths(12),
-                    tom = førsteSykedag()
-            )
+            Ytelse.DAGPENGER -> defaultDagpengePeriode()
+            Ytelse.ENSLIG_FORSORGER -> defaultEnsligForsørgerPeriode()
         }
     }
 

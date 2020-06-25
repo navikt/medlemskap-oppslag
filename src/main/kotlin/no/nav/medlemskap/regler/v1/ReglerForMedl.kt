@@ -19,8 +19,8 @@ class ReglerForMedl(val datagrunnlag: Datagrunnlag) : Regler() {
     private val gyldigeDekningerForSykepenger = Dekning.dekningForSykepenger()
     private val medlemskap: List<Medlemskap> = datagrunnlag.medlemskap
     private val arbeidsforhold: List<Arbeidsforhold> = datagrunnlag.arbeidsforhold
-    private val kontrollPeriodeForMedl = Datohjelper(datagrunnlag.periode).kontrollPeriodeForMedl()
-    private val datohjelper = Datohjelper(datagrunnlag.periode)
+    private val kontrollPeriodeForMedl = Datohjelper(datagrunnlag.periode, datagrunnlag.ytelse!!).kontrollPeriodeForMedl()
+    private val datohjelper = Datohjelper(datagrunnlag.periode, datagrunnlag.ytelse!!)
 
     override fun hentHovedRegel(): Regel =
             sjekkRegel {

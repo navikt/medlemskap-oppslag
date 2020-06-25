@@ -15,7 +15,7 @@ class ReglerForLovvalg(val datagrunnlag: Datagrunnlag) : Regler() {
     val bostedsadresser = datagrunnlag.personhistorikk.bostedsadresser
     val arbeidsforhold = datagrunnlag.arbeidsforhold
 
-    private val datohjelper = Datohjelper(datagrunnlag.periode)
+    private val datohjelper = Datohjelper(datagrunnlag.periode, datagrunnlag.ytelse!!)
     private val kontrollPeriodeForPersonhistorikk = datohjelper.kontrollPeriodeForPersonhistorikk()
     private val kontrollPeriodeForArbeidsforhold = datohjelper.kontrollPeriodeForArbeidsforhold()
 

@@ -2,6 +2,7 @@ package no.nav.medlemskap.regler.personer
 
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.personer.Personleser.Companion.ikkeEøs
 import no.nav.medlemskap.regler.personer.Personleser.Companion.norsk
 
@@ -83,7 +84,9 @@ class Personleser {
 
     private fun lesDatagrunnlag(filnavn: String): Datagrunnlag {
         val res = Personleser::class.java.getResource(filnavn)
-        return objectMapper.readValue(res, Datagrunnlag::class.java)
+        val datagrunnlag = objectMapper.readValue(res, Datagrunnlag::class.java)
+        datagrunnlag.ytelse = Ytelse.SYKEPENGER
+        return datagrunnlag
     }
 
     fun dataGrunnlagFraJson(json: String): Datagrunnlag {

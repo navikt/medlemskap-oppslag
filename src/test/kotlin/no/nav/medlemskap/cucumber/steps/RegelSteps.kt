@@ -23,6 +23,7 @@ class RegelSteps : No {
     private var arbeidsgivere: List<Arbeidsgiver> = emptyList()
     private var arbeidsforhold: List<Arbeidsforhold> = emptyList()
     private var utenlandsopphold: List<Utenlandsopphold> = emptyList()
+    private var ytelse: Ytelse = Ytelse.SYKEPENGER
     private var resultat: Resultat? = null
     private var oppgaverFraGosys: List<Oppgave> = emptyList()
     private var journalPosterFraJoArk: List<Journalpost> = emptyList()
@@ -116,7 +117,8 @@ class RegelSteps : No {
                 medlemskap = medlemskap,
                 arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgivere, utenlandsopphold),
                 oppgaver = oppgaverFraGosys,
-                dokument = journalPosterFraJoArk
+                dokument = journalPosterFraJoArk,
+                ytelse = ytelse
         )
     }
 
