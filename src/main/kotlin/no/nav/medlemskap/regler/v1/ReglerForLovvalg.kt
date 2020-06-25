@@ -110,7 +110,7 @@ class ReglerForLovvalg(val datagrunnlag: Datagrunnlag) : Regler() {
         return when {
             adressetyper alleEr Adressetype.BOAD.name -> ja()
             adressetyper inneholder Adressetype.BOAD.name && adressetyper inneholder Adressetype.POST.name -> ja()
-            adressetyper inneholder Adressetype.BOAD.name && adressetyper inneholder Adressetype.TIAD.name -> ja() //Kun hvis boad ligger før
+            adressetyper inneholder Adressetype.BOAD.name && adressetyper inneholder Adressetype.TIAD.name -> ja() //TODO //Kun hvis boad ligger før
             else -> nei("Adressetypene til bruker er ikke tilstrekkelig for bosatt i Norge")
         }
     }

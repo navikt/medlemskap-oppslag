@@ -16,9 +16,6 @@ object Funksjoner {
 
     infix fun List<String>.inneholder(string: String) = this.contains(string)
 
-    infix fun List<String>.kombinener(string: String) = this.contains(string)
-
-
     infix fun List<String>.alleEr(string: String) = this.stream().allMatch { m -> m.equals(string) }
 
     infix fun List<String>.alleEr(strings: List<String>) = this.stream().allMatch { strings.contains(it) }
