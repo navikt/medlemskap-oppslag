@@ -2,6 +2,8 @@ package no.nav.medlemskap.regler.personer
 
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.regler.personer.Personleser.Companion.ikkeEøs
+import no.nav.medlemskap.regler.personer.Personleser.Companion.norsk
 
 class Personleser {
 
@@ -88,5 +90,16 @@ class Personleser {
         return objectMapper.readValue(json, Datagrunnlag::class.java)
     }
 
+    companion object {
+        val norsk = "/testpersoner/norske"
+        val ikkeEøs = "/testpersoner/ikke_eos"
+        val variertDatagrunnlag = "/testpersoner/variertDatagrunnlagIPeriode"
+        val variertDatagrunnlagArbeidsforhold = "/testpersoner/variertDatagrunnlagIPeriode/arbeidsforhold"
+    }
 
+}
+
+enum class DatagrunnlagFil(val filnavn: String) {
+    enkelNorsk("$norsk/kun_enkelt_statsborgerskap.json"),
+    enkelAmerikansk("$ikkeEøs/kun_enkelt_amerikansk_statsborgerskap.json")
 }
