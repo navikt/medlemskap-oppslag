@@ -15,15 +15,24 @@
       }
     ],
     "personstatuser": [],
-    "bostedsadresser": [
+    "bostedsadresser" : [
       {
-        "adresselinje": "Oslo",
-        "landkode": "NOR",
-        "fom": "2020-01-01",
-        "tom": null
+        "adresselinje" : "Oslo",
+        "landkode" : "NOR",
+        "fom" : "2020-01-01",
+        "tom" : null,
+        "adresseType": "BOAD"
       }
     ],
-    "postadresser": [],
+    "postadresser" : [
+      {
+        "adresselinje" : "Oslo",
+        "landkode" : "NOR",
+        "fom" : "2020-01-01",
+        "tom" : null,
+        "adresseType": "POST"
+      }
+    ],
     "midlertidigAdresser": []
   },
   "medlemskap": [],

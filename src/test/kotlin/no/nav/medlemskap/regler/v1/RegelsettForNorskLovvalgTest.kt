@@ -10,6 +10,24 @@ class RegelsettForNorskLovvalgTest {
 
     private val personleser = Personleser()
 
+
+    @Test
+    fun `person bosatt i Norge siste 12, kun BOAD adressetype får ja`(){
+        assertSvar("10", Svar.JA, evaluer(personleser.kunBOADAdressetype()), Svar.JA)
+    }
+
+    @Test
+    fun `person bosatt i Norge siste 12, med POST og BOAD får ja`(){
+        assertSvar("10", Svar.JA, evaluer(personleser.POSTOgBOADAdressetype()), Svar.JA)
+    }
+
+    @Test
+    fun `person bosatt i Norge siste 12, med BOAD og PUTL får nei`(){
+        assertSvar("10", Svar.NEI, evaluer(personleser.BOADogPUTLAdressetype()), Svar.UAVKLART)
+    }
+
+
+
     @Test
     fun `person bosatt i Norge siste 12 mnd, får ja`() {
         assertSvar("10", Svar.JA, evaluer(personleser.enkelNorskArbeid()), Svar.JA)
@@ -30,7 +48,7 @@ class RegelsettForNorskLovvalgTest {
         assertSvar("10", Svar.NEI, evaluer(personleser.norskBosattIUtland()), Svar.UAVKLART)
     }
 
-    @Test
+/*    @Test
     fun `norsk person med utenlandsk postadresse, får uavklart`() {
         assertSvar("10", Svar.NEI, evaluer(personleser.norskPostadresseIUtland()), Svar.UAVKLART)
     }
@@ -38,7 +56,7 @@ class RegelsettForNorskLovvalgTest {
     @Test
     fun `norsk person med med norsk bostedsadresse, men ingen postadresse JA`() {
         assertSvar("10", Svar.JA, evaluer(personleser.norskMedNorskBostedsadresseUtenPostadresse()), Svar.JA)
-    }
+    }*/
 
     @Test
     fun `person med norsk statsborgerskap, kun arbeid i Norge, får ja`() {

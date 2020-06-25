@@ -17,16 +17,18 @@
       {
         "adresselinje" : "Oslo",
         "landkode" : "NOR",
-        "fom" : "2018-11-01",
-        "tom" : null
+        "fom" : "2020-01-01",
+        "tom" : null,
+        "adresseType": "BOAD"
       }
     ],
     "postadresser" : [
       {
         "adresselinje" : "Oslo",
         "landkode" : "NOR",
-        "fom" : "2018-11-01",
-        "tom" : null
+        "fom" : "2020-01-01",
+        "tom" : null,
+        "adresseType": "POST"
       }
     ],
     "midlertidigAdresser" : [ ]

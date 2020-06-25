@@ -160,7 +160,8 @@ class AdresseMapper : RadMapper<Adresse> {
                 domenespråkParser.parseString(ADRESSE, rad),
                 domenespråkParser.parseString(LANDKODE, rad),
                 domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad),
-                domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
+                domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad),
+                Adressetype.valueOf(domenespråkParser.parseString(ADRESSETYPE, rad))
         )
     }
 }
@@ -245,7 +246,8 @@ enum class Domenebegrep(val nøkkel: String) {
     SKIPSREGISTER("Skipsregister"),
     STILLINGSPROSENT("Stillingsprosent"),
     TIL_OG_MED_DATO("Til og med dato"),
-    YRKESKODE("Yrkeskode")
+    YRKESKODE("Yrkeskode"),
+    ADRESSETYPE("Adressetype")
 }
 
 

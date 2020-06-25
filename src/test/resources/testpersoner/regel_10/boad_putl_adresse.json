@@ -22,7 +22,15 @@
         "adresseType": "BOAD"
       }
     ],
-    "postadresser" : [ ],
+    "postadresser" : [
+      {
+        "adresselinje" : "Oslo",
+        "landkode" : "USA",
+        "fom" : "2018-11-01",
+        "tom" : null,
+        "adresseType": "PUTL"
+      }
+    ],
     "midlertidigAdresser" : [ ]
   },
   "medlemskap" : [ ],

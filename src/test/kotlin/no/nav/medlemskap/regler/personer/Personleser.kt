@@ -10,9 +10,17 @@ class Personleser {
     private val variertDatagrunnlag = "/testpersoner/variertDatagrunnlagIPeriode"
     private val variertDatagrunnlagArbeidsforhold = "/testpersoner/variertDatagrunnlagIPeriode/arbeidsforhold"
     private val hovedregler = "/testpersoner/hovedregler"
+    private val regel_10 = "/testpersoner/regel_10/"
 
     fun norskMedMedlOpplysninger() = lesDatagrunnlag("$hovedregler/norsk_med_medl_opplysninger.json")
     fun amerikanskUtenMedlOpplysninger() = lesDatagrunnlag("$hovedregler/amerikansk_uten_medl_opplysninger.json")
+
+    //Regel 10
+    fun kunBOADAdressetype () = lesDatagrunnlag("$regel_10/kun_boad_adresse.json")
+    fun POSTOgBOADAdressetype () = lesDatagrunnlag("$regel_10/post_boad_adresse.json")
+    fun BOADogPUTLAdressetype () = lesDatagrunnlag("$regel_10/boad_putl_adresse.json")
+
+
 
     fun enkelNorsk() = lesDatagrunnlag("$norsk/kun_enkelt_statsborgerskap.json")
     fun enkelNorskArbeid() = lesDatagrunnlag("$norsk/norsk_jobb_ikke_maritim_eller_pilot.json")

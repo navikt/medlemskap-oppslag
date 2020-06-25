@@ -5,6 +5,7 @@ import no.nav.medlemskap.domene.Adressetype
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.inneholder
+import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.hentAdressetyperIKontrollperiode
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedSluttAvKontrollperiode
@@ -107,8 +108,9 @@ class ReglerForLovvalg(val datagrunnlag: Datagrunnlag) : Regler() {
         val adressetyper = adresser.hentAdressetyperIKontrollperiode(kontrollPeriodeForPersonhistorikk)
 
         return when {
+            adressetyper alleEr Adressetype.BOAD.name -> ja()
             adressetyper inneholder Adressetype.BOAD.name && adressetyper inneholder Adressetype.POST.name -> ja()
-            adressetyper inneholder Adressetype.BOAD.name && adressetyper inneholder Adressetype.TIAD -> ja() //Kun hvis boad ligger før
+            adressetyper inneholder Adressetype.BOAD.name && adressetyper inneholder Adressetype.TIAD.name -> ja() //Kun hvis boad ligger før
             else -> nei("Adressetypene til bruker er ikke tilstrekkelig for bosatt i Norge")
         }
     }

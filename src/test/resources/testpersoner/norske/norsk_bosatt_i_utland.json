@@ -13,16 +13,15 @@
       "tom": "2020-01-30"
     } ],
     "personstatuser" : [ ],
-    "bostedsadresser" : [
-      {
-        "adresselinje" : "Stockholm",
-        "landkode" : "SWE",
-        "fom" : "2018-11-01",
-        "tom" : null
-      }
-    ],
+    "bostedsadresser" : [],
     "postadresser" : [ ],
-    "midlertidigAdresser" : [ ]
+    "midlertidigAdresser" : [ {
+      "adresselinje" : "Stockholm",
+      "landkode" : "SWE",
+      "fom" : "2018-11-01",
+      "tom" : null,
+      "adresseType": "UTAD"
+    } ]
   },
   "medlemskapsunntak" : [ ],
   "arbeidsforhold" : [ {
