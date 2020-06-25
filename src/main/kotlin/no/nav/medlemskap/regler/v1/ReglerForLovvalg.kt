@@ -5,8 +5,6 @@ import no.nav.medlemskap.domene.Adressetype
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.inneholder
-import no.nav.medlemskap.regler.common.Funksjoner.kombinener
-import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.harBrukerNorskAdresseInnenforSiste12Mnd
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.hentAdressetyperIKontrollperiode
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedSluttAvKontrollperiode

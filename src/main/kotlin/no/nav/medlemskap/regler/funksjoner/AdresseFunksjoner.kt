@@ -25,13 +25,9 @@ object AdresseFunksjoner {
 
 
     infix fun List<Adresse>.hentAdressetyperIKontrollperiode(kontrollPeriode: Periode): List<String> =
-            this.filter {
+            this.sortedBy { it.tom }.filter {
                 Funksjoner.periodefilter(lagInterval(Periode(it.fom, it.tom)), kontrollPeriode)
             }.map { it.adresseType.name }
-
-
-
-
 
 
     infix fun List<Adresse>.adresseForDato(dato: LocalDate) =

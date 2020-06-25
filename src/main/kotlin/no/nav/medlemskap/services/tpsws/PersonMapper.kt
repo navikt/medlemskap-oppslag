@@ -6,7 +6,6 @@ import no.nav.tjeneste.virksomhet.person.v3.informasjon.MidlertidigPostadresseUt
 import no.nav.tjeneste.virksomhet.person.v3.informasjon.UstrukturertAdresse
 import no.nav.tjeneste.virksomhet.person.v3.meldinger.HentPersonhistorikkResponse
 import java.time.LocalDate
-import java.util.*
 import javax.xml.datatype.XMLGregorianCalendar
 
 fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkResponse): Personhistorikk {
@@ -42,7 +41,7 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
                     landkode = it.postadresse.ustrukturertAdresse.landkode.value,
                     fom = it.periode.fom.asDate(),
                     tom = it.periode.tom.asDate(),
-                    adresseType = Adressetype.POST
+                    adresseType = hentPostAdressetypeBasertPaaLandekode(it.postadresse.ustrukturertAdresse.landkode.value)
 
             )
     }
@@ -54,14 +53,14 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
                     landkode = it.strukturertAdresse.landkode.value,
                     fom = it.postleveringsPeriode.fom.asDate(),
                     tom = it.postleveringsPeriode.tom.asDate(),
-                    adresseType = Adressetype.TIAD
+                    adresseType = hentMidertidigPostadresserBasertPaaLandekode(it.strukturertAdresse.landkode.value)
             )
             is MidlertidigPostadresseUtland -> Adresse(
                     adresselinje = it.ustrukturertAdresse.adresselinje(),
                     landkode = it.ustrukturertAdresse.landkode.value,
                     fom = it.postleveringsPeriode.fom.asDate(),
                     tom = it.postleveringsPeriode.tom.asDate(),
-                    adresseType = Adressetype.UTAD
+                    adresseType = hentMidertidigPostadresserBasertPaaLandekode(it.ustrukturertAdresse.landkode.value)
             )
             else -> throw Exception("Ukjent adressetype")
         }
@@ -69,6 +68,23 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
 
     return Personhistorikk(statsborgerskap, personstatuser, bostedsadresser, postadresser, midlertidigAdresser)
 }
+
+fun hentMidertidigPostadresserBasertPaaLandekode(landekode: String?): Adressetype {
+    return if(landekode.equals("NOR")){
+        Adressetype.TIAD
+    }else{
+        Adressetype.UTAD
+    }
+}
+
+fun hentPostAdressetypeBasertPaaLandekode(landekode: String?): Adressetype {
+    return if(landekode.equals("NOR")){
+        Adressetype.POST
+    }else{
+        Adressetype.PUTL
+    }
+}
+
 
 private fun UstrukturertAdresse?.adresselinje(): String {
     if (this == null) {
