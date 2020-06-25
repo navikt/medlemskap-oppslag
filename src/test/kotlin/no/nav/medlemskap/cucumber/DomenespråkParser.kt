@@ -116,6 +116,18 @@ class DomenespråkParser {
 
         return parseInt(domenebegrep, rad)
     }
+
+    fun parsePrioritet(domenebegrep: Domenebegrep, rad: Map<String, String>): Prioritet {
+        val verdi = verdi(domenebegrep.nøkkel, rad)
+
+        return Prioritet.valueOf(verdi)
+    }
+
+    fun parseStatus(domenebegrep: Domenebegrep, rad: Map<String, String>): Status {
+        val verdi = verdi(domenebegrep.nøkkel, rad)
+
+        return Status.valueOf(verdi)
+    }
 }
 
 interface RadMapper<T> {
@@ -175,6 +187,30 @@ class MedlemskapMapper : RadMapper<Medlemskap> {
                 domenespråkParser.parseBoolean(ER_MEDLEM, rad),
                 domenespråkParser.parseString(LOVVALG, rad),
                 domenespråkParser.parseValgfriString(LOVVALGSLAND, rad)
+        )
+    }
+}
+
+class OppgaveMapper: RadMapper<Oppgave> {
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Oppgave {
+        return Oppgave(
+                aktivDato = domenespråkParser.parseDato(AKTIV_DATO, rad),
+                prioritet = domenespråkParser.parsePrioritet(PRIORITET, rad),
+                status = domenespråkParser.parseStatus(STATUS, rad),
+                tema = domenespråkParser.parseValgfriString(TEMA, rad)
+        )
+    }
+}
+
+class JournalpostMapper: RadMapper<Journalpost> {
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Journalpost {
+        return Journalpost(
+                domenespråkParser.parseString(JOURNALPOST_ID, rad),
+                domenespråkParser.parseValgfriString(TITTEL, rad),
+                domenespråkParser.parseValgfriString(JOURNALPOST_TYPE, rad),
+                domenespråkParser.parseValgfriString(JOURNAL_STATUS, rad),
+                domenespråkParser.parseValgfriString(TEMA, rad),
+                null
         )
     }
 }
@@ -242,6 +278,7 @@ class UtenlandsoppholdMapper : RadMapper<Utenlandsopphold> {
 
 enum class Domenebegrep(val nøkkel: String) {
     ADRESSE("Adresse"),
+    AKTIV_DATO("Aktiv dato"),
     ANTALL_ANSATTE("Antall ansatte"),
     ARBEIDSFORHOLDSTYPE("Arbeidsforholdstype"),
     ARBEIDSGIVERTYPE("Arbeidsgivertype"),
@@ -250,14 +287,21 @@ enum class Domenebegrep(val nøkkel: String) {
     FRA_OG_MED_DATO("Fra og med dato"),
     HAR_HATT_ARBEID_UTENFOR_NORGE("Har hatt arbeid utenfor Norge"),
     IDENTIFIKATOR("Identifikator"),
+    JOURNAL_STATUS("Journalstatus"),
+    JOURNALPOST_ID("JournalpostId"),
+    JOURNALPOST_TYPE("JournalpostType"),
     KONKURSSTATUS("Konkursstatus"),
     LANDKODE("Landkode"),
     LOVVALG("Lovvalg"),
     LOVVALGSLAND("Lovvalgsland"),
+    PRIORITET("Prioritet"),
     RAPPORTERINGSPERIODE("Rapporteringsperiode"),
     SKIPSREGISTER("Skipsregister"),
+    STATUS("Status"),
     STILLINGSPROSENT("Stillingsprosent"),
+    TEMA("Tema"),
     TIL_OG_MED_DATO("Til og med dato"),
+    TITTEL("Tittel"),
     YRKESKODE("Yrkeskode")
 }
 

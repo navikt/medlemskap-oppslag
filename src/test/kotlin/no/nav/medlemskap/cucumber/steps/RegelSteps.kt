@@ -5,7 +5,6 @@ import io.cucumber.java8.No
 import no.nav.medlemskap.cucumber.*
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Resultat
-import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.v1.ReglerForGrunnforordningen
 import no.nav.medlemskap.regler.v1.ReglerForRegistrerteOpplysninger
 import no.nav.medlemskap.regler.v1.ReglerService
@@ -25,10 +24,11 @@ class RegelSteps : No {
     private var arbeidsforhold: List<Arbeidsforhold> = emptyList()
     private var utenlandsopphold: List<Utenlandsopphold> = emptyList()
     private var resultat: Resultat? = null
+    private var oppgaverFraGosys: List<Oppgave> = emptyList()
+    private var journalPosterFraJoArk: List<Journalpost> = emptyList()
 
     private val domenespråkParser = DomenespråkParser()
 
-    private var svar: Svar? = null
     private var datagrunnlag: Datagrunnlag? = null
 
     init {
@@ -54,6 +54,14 @@ class RegelSteps : No {
 
         Gitt("følgende utenlandsopphold i arbeidsforholdet") { dataTable: DataTable? ->
             utenlandsopphold = domenespråkParser.mapDataTable(dataTable, UtenlandsoppholdMapper())
+        }
+
+        Gitt("følgende oppgaver fra Gosys") { dataTable: DataTable? ->
+            oppgaverFraGosys = domenespråkParser.mapDataTable(dataTable, OppgaveMapper())
+        }
+
+        Gitt("følgende journalposter fra Joark") { dataTable: DataTable? ->
+            journalPosterFraJoArk = domenespråkParser.mapDataTable(dataTable, JournalpostMapper())
         }
 
         Når("medlemskap beregnes med følgende parametre") { dataTable: DataTable? ->
@@ -106,7 +114,9 @@ class RegelSteps : No {
                         midlertidigAdresser = emptyList()
                 ),
                 medlemskap = medlemskap,
-                arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgivere, utenlandsopphold)
+                arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgivere, utenlandsopphold),
+                oppgaver = oppgaverFraGosys,
+                dokument = journalPosterFraJoArk
         )
     }
 
