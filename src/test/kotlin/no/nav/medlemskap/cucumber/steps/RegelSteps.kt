@@ -76,7 +76,7 @@ class RegelSteps : No {
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
 
             resultat = when (avklaring) {
-                "Finnes det registrerte opplysninger på bruker?" -> evaluerReglerForMedlemsunntak(datagrunnlag!!)
+                "Finnes det registrerte opplysninger på bruker?" -> evaluerReglerForMedlemsopplysninger(datagrunnlag!!)
                 "Er bruker omfattet av grunnforordningen?" -> evaluerGrunnforordningen(datagrunnlag!!)
                 else -> throw java.lang.RuntimeException("Fant ikke hovedregel med avklaring = $avklaring")
             }
@@ -135,7 +135,7 @@ class RegelSteps : No {
         return regelsett.hentHovedRegel().utfør(mutableListOf())
     }
 
-    private fun evaluerReglerForMedlemsunntak(datagrunnlag: Datagrunnlag): Resultat {
+    private fun evaluerReglerForMedlemsopplysninger(datagrunnlag: Datagrunnlag): Resultat {
         val regelsett = ReglerForRegistrerteOpplysninger(datagrunnlag)
         return regelsett.hentHovedRegel().utfør(mutableListOf())
     }
