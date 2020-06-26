@@ -18,6 +18,10 @@ class RegelSteps : No {
 
     private var statsborgerskap: List<Statsborgerskap> = emptyList()
     private var bostedsadresser: List<Adresse> = emptyList()
+    private var postadresser: List<Adresse> = emptyList()
+    private var midlerdigAdresser: List<Adresse> = emptyList()
+    private var personstatuser: List<Personstatus> = emptyList()
+
     private var medlemskap: List<Medlemskap> = emptyList()
 
     private var arbeidsgivere: List<Arbeidsgiver> = emptyList()
@@ -38,6 +42,18 @@ class RegelSteps : No {
 
         Gitt("følgende bostedsadresser i personhistorikken") { dataTable: DataTable? ->
             bostedsadresser = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
+        }
+
+        Gitt("følgende postadresser i personhistorikken") { dataTable: DataTable? ->
+            postadresser = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
+        }
+
+        Gitt("følgende midlertidige adresser i personhistorikken") { dataTable: DataTable? ->
+            midlerdigAdresser = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
+        }
+
+        Gitt("følgende personstatusr i personhistorikken") { dataTable: DataTable? ->
+            personstatuser = domenespråkParser.mapDataTable(dataTable, PersonstatusMapper())
         }
 
         Gitt("følgende medlemsunntak fra MEDL") { dataTable: DataTable? ->
@@ -108,10 +124,10 @@ class RegelSteps : No {
                 brukerinput = Brukerinput(harHattArbeidUtenforNorge),
                 personhistorikk = Personhistorikk(
                         statsborgerskap = statsborgerskap,
-                        personstatuser = emptyList(),
+                        personstatuser = personstatuser,
                         bostedsadresser = bostedsadresser,
-                        postadresser = emptyList(),
-                        midlertidigAdresser = emptyList()
+                        postadresser = postadresser,
+                        midlertidigAdresser = midlerdigAdresser
                 ),
                 medlemskap = medlemskap,
                 arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgivere, utenlandsopphold),

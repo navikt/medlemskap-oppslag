@@ -9,6 +9,18 @@ Egenskap: Man er medlem hvis man er norsk statsborger som bor i Norge, og som ha
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | Oslo    | NOR      | 01.01.2000      |                 |
 
+    Og følgende postadresser i personhistorikken
+      | Adresse | Landkode | Fra og med dato | Til og med dato |
+      | Oslo    | NOR      | 01.01.2000      |                 |
+
+    Og følgende midlertidige adresser i personhistorikken
+      | Adresse | Landkode | Fra og med dato | Til og med dato |
+      | Oslo    | NOR      | 01.01.2000      |                 |
+
+    Og følgende personstatusr i personhistorikken
+      | Personstatus | Fra og med dato | Til og med dato |
+      | XX           | 01.01.2012      |                 |
+
     Og følgende statsborgerskap i personhistorikken
       | Landkode          | Fra og med dato | Til og med dato |
       | <Statsborgerskap> | 30.01.2000      |                 |

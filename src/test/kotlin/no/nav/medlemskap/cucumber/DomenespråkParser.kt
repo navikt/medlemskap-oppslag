@@ -276,6 +276,16 @@ class UtenlandsoppholdMapper : RadMapper<Utenlandsopphold> {
     }
 }
 
+class PersonstatusMapper: RadMapper<Personstatus> {
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Personstatus {
+        return Personstatus(
+                personstatus = domenespråkParser.parseString(PERSONSTATUS, rad),
+                fom = domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad),
+                tom = domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
+        )
+    }
+}
+
 enum class Domenebegrep(val nøkkel: String) {
     ADRESSE("Adresse"),
     AKTIV_DATO("Aktiv dato"),
@@ -294,6 +304,7 @@ enum class Domenebegrep(val nøkkel: String) {
     LANDKODE("Landkode"),
     LOVVALG("Lovvalg"),
     LOVVALGSLAND("Lovvalgsland"),
+    PERSONSTATUS("Personstatus"),
     PRIORITET("Prioritet"),
     RAPPORTERINGSPERIODE("Rapporteringsperiode"),
     SKIPSREGISTER("Skipsregister"),
