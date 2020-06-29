@@ -121,40 +121,36 @@ private suspend fun createDatagrunnlag(
         services: Services): Datagrunnlag = coroutineScope {
 
     val aktorIder = services.pdlService.hentAlleAktorIder(fnr, callId)
-    val personHistorikkFraPdl = services.pdlService.hentPersonHistorikk(fnr, callId)
+    // val pdlHistorikkRequest = async { services.pdlService.hentPersonHistorikk(fnr, callId) }
     val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr, periode.fom) }
     val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(fnr, callId) }
     val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr, callId, fraOgMedDatoForArbeidsforhold(periode), periode.tom) }
     val journalPosterRequest = async { services.safService.hentJournaldata(fnr, callId) }
     val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktorIder, callId) }
-    val personhistorikkForFamilieRequest = async { services.personService.hentPersonhistorikkForRelevantFamilie(personHistorikkFraPdl, periode) }
 
+    //  val pdlHistorikk = pdlHistorikkRequest.await()
     val historikkFraTps = historikkFraTpsRequest.await()
     val medlemskap = medlemskapsunntakRequest.await()
     val arbeidsforhold = arbeidsforholdRequest.await()
     val journalPoster = journalPosterRequest.await()
     val oppgaver = gosysOppgaver.await()
-    val personhistorikkForFamilie = try {
-        personhistorikkForFamilieRequest.await()
-    } catch (e: Exception) {
-        logger.error("Feilet under henting av personhistorikk for familie", e)
-        emptyList<PersonhistorikkRelatertPerson>()
-    }
+
+
+    //  logger.info { pdlHistorikk }
+
 
     Datagrunnlag(
             periode = periode,
             brukerinput = brukerinput,
             personhistorikk = historikkFraTps,
-            pdlpersonhistorikk = personHistorikkFraPdl,
             medlemskap = medlemskap,
             arbeidsforhold = arbeidsforhold,
             oppgaver = oppgaver,
-            dokument = journalPoster,
-            personHistorikkRelatertePersoner = personhistorikkForFamilie
+            dokument = journalPoster
     )
 
-}
 
+}
 
 private fun fraOgMedDatoForArbeidsforhold(periode: InputPeriode) = periode.fom.minusYears(1).minusDays(1)
 
@@ -167,4 +163,3 @@ private fun Resultat.sisteRegel() =
         } else {
             this.delresultat.last()
         }
-

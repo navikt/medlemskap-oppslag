@@ -211,7 +211,7 @@ Input fra bruker som må fylles ut i søknadsdialogen og er nødvendig for å av
 ```
 
 ## Kjøre fra laptop
-* NAV-tunell må være koblet opp
+* NAV-tunnel må være koblet opp
 * Kubeconfig riktig satt opp
 * `kubectl port-forward <pod-navn> 8080:7070`
 * Endepunktet er nå tilgjengelig på `localhost:8080
@@ -236,3 +236,4 @@ jmeter/apache-jmeter-5.2.1/bin/jmeter -JAAD_TOKEN=<AAD_TOKEN> -t jmeter/Medlemsk
 
 # Autentisere klienter
 Klienter som ønsker å kalle oss må generere et token med vår klientid som scope.
+
