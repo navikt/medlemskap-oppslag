@@ -126,13 +126,27 @@ class RegelSteps : No {
                         statsborgerskap = statsborgerskap,
                         personstatuser = personstatuser,
                         bostedsadresser = bostedsadresser,
+                        postadresser = emptyList(),
+                        midlertidigAdresser = emptyList(),
+                        familierelasjoner = emptyList(),
+                        sivilstand = emptyList()
+                ),
+                pdlpersonhistorikk = Personhistorikk(
+                        statsborgerskap = statsborgerskap,
+                        personstatuser = emptyList(),
+                        bostedsadresser = bostedsadresser,
+                        postadresser = emptyList(),
+                        midlertidigAdresser = emptyList(),
+                        familierelasjoner = emptyList(),
+                        sivilstand = emptyList()
                         postadresser = postadresser,
                         midlertidigAdresser = midlerdigAdresser
                 ),
                 medlemskap = medlemskap,
                 arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgivere, utenlandsopphold),
                 oppgaver = oppgaverFraGosys,
-                dokument = journalPosterFraJoArk
+                dokument = journalPosterFraJoArk,
+                personHistorikkRelatertePersoner = emptyList()
         )
     }
 

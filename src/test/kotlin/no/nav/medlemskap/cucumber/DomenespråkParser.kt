@@ -169,7 +169,6 @@ class MedlemskapsparametreMapper : RadMapper<Medlemskapsparametre> {
 class AdresseMapper : RadMapper<Adresse> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Adresse {
         return Adresse(
-                domenespråkParser.parseString(ADRESSE, rad),
                 domenespråkParser.parseString(LANDKODE, rad),
                 domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad),
                 domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
