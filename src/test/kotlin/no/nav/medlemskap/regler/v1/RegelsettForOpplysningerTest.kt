@@ -27,7 +27,7 @@ class RegelsettForOpplysningerTest {
     }
 
     @Test
-    fun `person med åpnet oppgave i gosys får ja`() {
+    fun `person med åpen oppgave i gosys får ja`() {
         val oppgave = Oppgave(
                 aktivDato = LocalDate.of(2020, 1,1 ),
                 prioritet = Prioritet.NORM,
@@ -39,7 +39,7 @@ class RegelsettForOpplysningerTest {
     }
 
     @Test
-    fun `person uten uåpnet oppgave i gosys får nei`() {
+    fun `person uten oppgave i gosys får nei`() {
         val oppgave = Oppgave(
                 aktivDato = LocalDate.of(2020, 1,1 ),
                 prioritet = Prioritet.NORM,
