@@ -128,6 +128,7 @@ class DomenespråkParser {
 
         return Status.valueOf(verdi)
     }
+
 }
 
 interface RadMapper<T> {
@@ -190,7 +191,7 @@ class MedlemskapMapper : RadMapper<Medlemskap> {
     }
 }
 
-class OppgaveMapper: RadMapper<Oppgave> {
+class OppgaveMapper : RadMapper<Oppgave> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Oppgave {
         return Oppgave(
                 aktivDato = domenespråkParser.parseDato(AKTIV_DATO, rad),
@@ -201,7 +202,7 @@ class OppgaveMapper: RadMapper<Oppgave> {
     }
 }
 
-class JournalpostMapper: RadMapper<Journalpost> {
+class JournalpostMapper : RadMapper<Journalpost> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Journalpost {
         return Journalpost(
                 domenespråkParser.parseString(JOURNALPOST_ID, rad),
@@ -227,11 +228,6 @@ class ArbeidsforholdMapper {
         val yrkeskode = domenespråkParser.parseString(YRKESKODE, rad)
         val stillingsprosent = domenespråkParser.parseDouble(STILLINGSPROSENT, rad)
         val skipsregister = domenespråkParser.parseSkipsregister(rad)
-        val konkursStatus =  if (domenespråkParser.parseValgfriString(KONKURSSTATUS, rad) == null) {
-            null
-        } else {
-            listOf(domenespråkParser.parseValgfriString(KONKURSSTATUS, rad))
-        }
 
         return Arbeidsforhold(
                 periode = periode,
@@ -275,6 +271,16 @@ class UtenlandsoppholdMapper : RadMapper<Utenlandsopphold> {
     }
 }
 
+class PersonstatusMapper : RadMapper<FolkeregisterPersonstatus> {
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): FolkeregisterPersonstatus {
+        return FolkeregisterPersonstatus(
+                personstatus = PersonStatus.valueOf(domenespråkParser.parseString(PERSONSTATUS, rad)),
+                fom = domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad),
+                tom = domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
+        )
+    }
+}
+
 enum class Domenebegrep(val nøkkel: String) {
     ADRESSE("Adresse"),
     AKTIV_DATO("Aktiv dato"),
@@ -293,6 +299,7 @@ enum class Domenebegrep(val nøkkel: String) {
     LANDKODE("Landkode"),
     LOVVALG("Lovvalg"),
     LOVVALGSLAND("Lovvalgsland"),
+    PERSONSTATUS("Personstatus"),
     PRIORITET("Prioritet"),
     RAPPORTERINGSPERIODE("Rapporteringsperiode"),
     SKIPSREGISTER("Skipsregister"),
