@@ -5,7 +5,7 @@ Egenskap: Borgere som ikke er EØS-borgere skal ha uavklart medlemskap i MVP
 
   Scenario: Amerikansk statsborger som bor og jobber i Norge
 
-     Gitt følgende datagrunnlag json
+    Gitt følgende datagrunnlag json
 """
 {
   "periode": {
@@ -26,14 +26,24 @@ Egenskap: Borgere som ikke er EØS-borgere skal ha uavklart medlemskap i MVP
     "personstatuser": [],
     "bostedsadresser": [
       {
-        "adresselinje": "Oslo",
         "landkode": "NOR",
         "fom": "2020-01-01",
         "tom": null
       }
     ],
     "postadresser": [],
-    "midlertidigAdresser": []
+    "midlertidigAdresser": [],
+    "sivilstand": [],
+    "familierelasjoner": []
+  },
+  "pdlpersonhistorikk": {
+    "statsborgerskap": [],
+    "personstatuser": [],
+    "bostedsadresser": [],
+    "postadresser": [],
+    "midlertidigAdresser": [],
+    "sivilstand": [],
+    "familierelasjoner": []
   },
   "medlemskap": [],
   "arbeidsforhold": [
