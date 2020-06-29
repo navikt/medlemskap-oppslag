@@ -228,11 +228,6 @@ class ArbeidsforholdMapper {
         val yrkeskode = domenespråkParser.parseString(YRKESKODE, rad)
         val stillingsprosent = domenespråkParser.parseDouble(STILLINGSPROSENT, rad)
         val skipsregister = domenespråkParser.parseSkipsregister(rad)
-        val konkursStatus =  if (domenespråkParser.parseValgfriString(KONKURSSTATUS, rad) == null) {
-            null
-        } else {
-            listOf(domenespråkParser.parseValgfriString(KONKURSSTATUS, rad))
-        }
 
         return Arbeidsforhold(
                 periode = periode,
