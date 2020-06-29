@@ -20,7 +20,7 @@ class RegelSteps : No {
     private var bostedsadresser: List<Adresse> = emptyList()
     private var postadresser: List<Adresse> = emptyList()
     private var midlertidigAdresser: List<Adresse> = emptyList()
-    private var personstatuser: List<Personstatus> = emptyList()
+    private var personstatuser: List<FolkeregisterPersonstatus> = emptyList()
 
     private var medlemskap: List<Medlemskap> = emptyList()
 
@@ -120,19 +120,32 @@ class RegelSteps : No {
         val harHattArbeidUtenforNorge = medlemskapsparametre.harHattArbeidUtenforNorge
 
         return Datagrunnlag(
-                periode = sykemeldingsperiode!!,
+                periode = sykemeldingsperiode,
                 brukerinput = Brukerinput(harHattArbeidUtenforNorge),
                 personhistorikk = Personhistorikk(
                         statsborgerskap = statsborgerskap,
                         personstatuser = personstatuser,
                         bostedsadresser = bostedsadresser,
+
                         postadresser = postadresser,
-                        midlertidigAdresser = midlertidigAdresser
+                        midlertidigAdresser = midlertidigAdresser,
+                        familierelasjoner = emptyList(),
+                        sivilstand = emptyList()
+                ),
+                pdlpersonhistorikk = Personhistorikk(
+                        statsborgerskap = statsborgerskap,
+                        personstatuser = emptyList(),
+                        bostedsadresser = bostedsadresser,
+                        postadresser = emptyList(),
+                        midlertidigAdresser = emptyList(),
+                        familierelasjoner = emptyList(),
+                        sivilstand = emptyList()
                 ),
                 medlemskap = medlemskap,
                 arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgivere, utenlandsopphold),
                 oppgaver = oppgaverFraGosys,
-                dokument = journalPosterFraJoArk
+                dokument = journalPosterFraJoArk,
+                personHistorikkRelatertePersoner = emptyList()
         )
     }
 

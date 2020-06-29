@@ -3,23 +3,36 @@
     "fom": "2020-01-15",
     "tom": "2020-01-30"
   },
-  "brukerinput" : {
-    "arbeidUtenforNorge" : false
+  "brukerinput": {
+    "arbeidUtenforNorge": false
   },
-  "personhistorikk" : {
-    "statsborgerskap" : [ {
-      "landkode": "NOR",
-      "fom": "2000-01-30",
-      "tom": null
-    } ],
-    "personstatuser" : [ ],
-    "bostedsadresser" : [ ],
-    "postadresser" : [ ],
-    "midlertidigAdresser" : [ ]
+  "personhistorikk": {
+    "statsborgerskap": [
+      {
+        "landkode": "NOR",
+        "fom": "2000-01-30",
+        "tom": null
+      }
+    ],
+    "personstatuser": [],
+    "bostedsadresser": [],
+    "postadresser": [],
+    "midlertidigAdresser": [],
+    "sivilstand": [],
+    "familierelasjoner": []
   },
-  "medlemskap" : [ ],
-  "arbeidsforhold" : [ ],
-  "inntekt" : [ ],
-  "oppgaver" : [ ],
-  "dokument" : [ ]
+  "pdlpersonhistorikk": {
+    "statsborgerskap": [],
+    "personstatuser": [],
+    "bostedsadresser": [],
+    "postadresser": [],
+    "midlertidigAdresser": [],
+    "sivilstand": [],
+    "familierelasjoner": []
+  },
+  "medlemskap": [],
+  "arbeidsforhold": [],
+  "inntekt": [],
+  "oppgaver": [],
+  "dokument": []
 }
