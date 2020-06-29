@@ -143,8 +143,7 @@ class RegelSteps : No {
                 medlemskap = medlemskap,
                 arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgivere, utenlandsopphold),
                 oppgaver = oppgaverFraGosys,
-                dokument = journalPosterFraJoArk,
-                personHistorikkRelatertePersoner = emptyList()
+                dokument = journalPosterFraJoArk
         )
     }
 
