@@ -34,5 +34,6 @@
     "status" : "AAPNET",
     "tema" : "MED"
   } ],
-  "dokument" : [ ]
+  "dokument" : [ ],
+  "ytelse" : "SYKEPENGER"
 }

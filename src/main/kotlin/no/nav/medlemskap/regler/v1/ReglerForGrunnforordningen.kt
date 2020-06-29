@@ -9,7 +9,7 @@ import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsbo
 class ReglerForGrunnforordningen(val datagrunnlag: Datagrunnlag) : Regler() {
 
     val statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap
-    val kontrollPeriodeForStatsborgerskap = Datohjelper(datagrunnlag.periode).kontrollPeriodeForPersonhistorikk()
+    val kontrollPeriodeForStatsborgerskap = Datohjelper(datagrunnlag.periode, datagrunnlag.ytelse).kontrollPeriodeForPersonhistorikk()
 
     override fun hentHovedRegel() =
             sjekkRegel {

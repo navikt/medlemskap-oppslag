@@ -1,7 +1,5 @@
 package no.nav.medlemskap.regler.common
 
-import no.nav.medlemskap.domene.Dekning
-
 enum class Svar {
     JA, NEI, UAVKLART
 }

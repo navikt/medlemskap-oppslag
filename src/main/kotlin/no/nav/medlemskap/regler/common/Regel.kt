@@ -1,7 +1,6 @@
 package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.common.regelCounter
-import no.nav.medlemskap.domene.Dekning
 
 data class Regel(
         val identifikator: String,
