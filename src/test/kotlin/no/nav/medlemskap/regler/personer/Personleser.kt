@@ -2,6 +2,7 @@ package no.nav.medlemskap.regler.personer
 
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.personer.Personleser.Companion.ikkeEøs
 import no.nav.medlemskap.regler.personer.Personleser.Companion.norsk
 

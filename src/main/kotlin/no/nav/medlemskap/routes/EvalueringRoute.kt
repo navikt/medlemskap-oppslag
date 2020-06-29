@@ -14,6 +14,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
 import no.nav.medlemskap.common.apiCounter
+import no.nav.medlemskap.common.exceptions.KonsumentIkkeFunnet
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Resultat
@@ -52,7 +53,8 @@ fun Routing.evalueringRoute(
                         callId = callId,
                         periode = request.periode,
                         brukerinput = request.brukerinput,
-                        services = services)
+                        services = services,
+                        clientId = azp)
                 val resultat = evaluerData(datagrunnlag)
                 val response = Response(
                         tidspunkt = LocalDateTime.now(),
@@ -80,7 +82,8 @@ fun Routing.evalueringRoute(
                     callId = callId,
                     periode = request.periode,
                     brukerinput = request.brukerinput,
-                    services = services)
+                    services = services,
+                    clientId = null)
             val resultat = evaluerData(datagrunnlag)
             val response = Response(
                     tidspunkt = LocalDateTime.now(),
@@ -118,7 +121,8 @@ private suspend fun createDatagrunnlag(
         callId: String,
         periode: InputPeriode,
         brukerinput: Brukerinput,
-        services: Services): Datagrunnlag = coroutineScope {
+        services: Services,
+        clientId: String?): Datagrunnlag = coroutineScope {
 
     val aktorIder = services.pdlService.hentAlleAktorIder(fnr, callId)
     // val pdlHistorikkRequest = async { services.pdlService.hentPersonHistorikk(fnr, callId) }
@@ -135,9 +139,9 @@ private suspend fun createDatagrunnlag(
     val journalPoster = journalPosterRequest.await()
     val oppgaver = gosysOppgaver.await()
 
-
     //  logger.info { pdlHistorikk }
 
+    val ytelse = Ytelse.fromClientId(clientId) ?: throw KonsumentIkkeFunnet("Fant ikke clientId i mapping til ytelse. Ta kontakt med medlemskap-teamet for tilgang til tjenesten.")
 
     Datagrunnlag(
             periode = periode,
@@ -146,9 +150,9 @@ private suspend fun createDatagrunnlag(
             medlemskap = medlemskap,
             arbeidsforhold = arbeidsforhold,
             oppgaver = oppgaver,
-            dokument = journalPoster
+            dokument = journalPoster,
+            ytelse = ytelse
     )
-
 
 }
 

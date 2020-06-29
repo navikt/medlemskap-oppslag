@@ -7,6 +7,7 @@ import junit.framework.TestCase.assertEquals
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.InputPeriodeMapper
 import no.nav.medlemskap.domene.InputPeriode
+import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.Datohjelper
 import no.nav.medlemskap.regler.common.Datohjelper.Companion.parseDato
 import java.time.LocalDate
@@ -24,7 +25,7 @@ class PeriodeSteps: No {
         }
 
         Når("første sykedag beregnes fra sykemeldingsperiode") {
-            førsteSykedag = Datohjelper(sykemeldingsperiode!!).førsteSykedag()
+            førsteSykedag = Datohjelper(sykemeldingsperiode!!, Ytelse.SYKEPENGER).førsteSykedag()
         }
 
         Så("skal første sykedag være {string}") { forventetDato: String? ->

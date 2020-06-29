@@ -64,7 +64,8 @@ Egenskap: Man er medlem i Folketrygden hvis man er EØS-borger og bor og jobber 
   ],
   "inntekt": [],
   "oppgaver": [],
-  "dokument": []
+  "dokument": [],
+  "ytelse": "SYKEPENGER"
 }
 """
 

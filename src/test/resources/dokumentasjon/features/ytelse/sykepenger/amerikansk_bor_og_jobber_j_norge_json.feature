@@ -64,7 +64,8 @@ Egenskap: Borgere som ikke er EØS-borgere skal ha uavklart medlemskap i MVP
   ],
   "inntekt": [],
   "oppgaver": [],
-  "dokument": []
+  "dokument": [],
+  "ytelse": "SYKEPENGER"
 }
 """
 

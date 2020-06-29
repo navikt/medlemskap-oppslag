@@ -39,7 +39,8 @@ Egenskap: Man er medlem i Folketrygden hvis man bor i Norge eller jobber i Norge
   "arbeidsforhold": [],
   "inntekt": [],
   "oppgaver": [],
-  "dokument": []
+  "dokument": [],
+  "ytelse": "SYKEPENGER"
 }
 """
 
