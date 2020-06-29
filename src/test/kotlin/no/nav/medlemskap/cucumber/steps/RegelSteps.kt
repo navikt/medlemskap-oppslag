@@ -121,7 +121,7 @@ class RegelSteps : No {
         val harHattArbeidUtenforNorge = medlemskapsparametre.harHattArbeidUtenforNorge
 
         return Datagrunnlag(
-                periode = sykemeldingsperiode!!,
+                periode = sykemeldingsperiode,
                 brukerinput = Brukerinput(harHattArbeidUtenforNorge),
                 personhistorikk = Personhistorikk(
                         statsborgerskap = statsborgerskap,

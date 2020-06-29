@@ -84,9 +84,7 @@ class Personleser {
 
     private fun lesDatagrunnlag(filnavn: String): Datagrunnlag {
         val res = Personleser::class.java.getResource(filnavn)
-        val datagrunnlag = objectMapper.readValue(res, Datagrunnlag::class.java)
-        datagrunnlag.ytelse = Ytelse.SYKEPENGER
-        return datagrunnlag
+        return objectMapper.readValue(res, Datagrunnlag::class.java)
     }
 
     fun dataGrunnlagFraJson(json: String): Datagrunnlag {

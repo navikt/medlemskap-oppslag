@@ -1,27 +1,27 @@
-
 {
   "periode": {
     "fom": "2020-01-30",
     "tom": "2021-01-30"
   },
-  "brukerinput" : {
-    "arbeidUtenforNorge" : false
+  "brukerinput": {
+    "arbeidUtenforNorge": false
   },
-  "personhistorikk" : {
-    "statsborgerskap" : [ {
-      "landkode" : "NOR",
-      "fom" : "1991-02-20",
-      "tom" : "2020-02-29"
-    }
+  "personhistorikk": {
+    "statsborgerskap": [
+      {
+        "landkode": "NOR",
+        "fom": "1991-02-20",
+        "tom": "2020-02-29"
+      }
     ],
-    "personstatuser" : [ ],
-    "bostedsadresser" : [ ],
-    "postadresser" : [ ],
-    "midlertidigAdresser" : [ ]
+    "personstatuser": [],
+    "bostedsadresser": [],
+    "postadresser": [],
+    "midlertidigAdresser": []
   },
-  "medlemskap" : [ ],
-  "arbeidsforhold" : [ ],
-  "inntekt" : [ ],
-  "oppgaver" : [ ],
-  "dokument" : [ ]
+  "medlemskap": [],
+  "arbeidsforhold": [],
+  "inntekt": [],
+  "oppgaver": [],
+  "dokument": []
 }

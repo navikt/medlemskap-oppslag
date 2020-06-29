@@ -10,7 +10,7 @@ data class Datagrunnlag (
         val arbeidsforhold: List<Arbeidsforhold> = listOf(),
         val oppgaver: List<Oppgave> = listOf(),
         val dokument: List<Journalpost> = listOf(),
-        var ytelse: Ytelse?
+        val ytelse: Ytelse
 )
 
 data class Periode (

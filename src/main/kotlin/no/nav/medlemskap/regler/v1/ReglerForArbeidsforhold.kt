@@ -18,7 +18,7 @@ import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.sisteArbeids
 class ReglerForArbeidsforhold(val datagrunnlag: Datagrunnlag) : Regler() {
 
     private val arbeidsforhold: List<Arbeidsforhold> = datagrunnlag.arbeidsforhold
-    private val kontrollPeriodeForArbeidsforhold = Datohjelper(datagrunnlag.periode, datagrunnlag.ytelse!!).kontrollPeriodeForArbeidsforhold()
+    private val kontrollPeriodeForArbeidsforhold = Datohjelper(datagrunnlag.periode, datagrunnlag.ytelse).kontrollPeriodeForArbeidsforhold()
 
     override fun hentHovedRegel() =
             sjekkRegel {
