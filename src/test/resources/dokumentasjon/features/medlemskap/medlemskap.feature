@@ -19,7 +19,7 @@ Egenskap: Man er medlem hvis man er norsk statsborger som bor i Norge, og som ha
 
     Og følgende personstatuser i personhistorikken
       | Personstatus | Fra og med dato | Til og med dato |
-      | XX           | 01.01.2012      |                 |
+      | FØDR         | 01.01.2012      |                 |
 
     Og følgende statsborgerskap i personhistorikken
       | Landkode          | Fra og med dato | Til og med dato |

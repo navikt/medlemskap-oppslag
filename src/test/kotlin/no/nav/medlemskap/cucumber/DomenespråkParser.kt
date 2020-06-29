@@ -128,6 +128,12 @@ class DomenespråkParser {
 
         return Status.valueOf(verdi)
     }
+
+    fun parsePersonStatus(domenebegrep: Domenebegrep, rad: Map<String, String>): PersonStatus {
+        val verdi = verdi(domenebegrep.nøkkel, rad)
+
+        return PersonStatus.valueOf(verdi)
+    }
 }
 
 interface RadMapper<T> {
@@ -270,10 +276,10 @@ class UtenlandsoppholdMapper : RadMapper<Utenlandsopphold> {
     }
 }
 
-class PersonstatusMapper: RadMapper<Personstatus> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Personstatus {
-        return Personstatus(
-                personstatus = domenespråkParser.parseString(PERSONSTATUS, rad),
+class PersonstatusMapper: RadMapper<FolkeregisterPersonstatus> {
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): FolkeregisterPersonstatus {
+        return FolkeregisterPersonstatus(
+                personstatus = domenespråkParser.parsePersonStatus(PERSONSTATUS, rad),
                 fom = domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad),
                 tom = domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
         )

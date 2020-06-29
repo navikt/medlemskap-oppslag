@@ -19,8 +19,8 @@ class RegelSteps : No {
     private var statsborgerskap: List<Statsborgerskap> = emptyList()
     private var bostedsadresser: List<Adresse> = emptyList()
     private var postadresser: List<Adresse> = emptyList()
-    private var midlerdigAdresser: List<Adresse> = emptyList()
-    private var personstatuser: List<Personstatus> = emptyList()
+    private var midlertidigAdresser: List<Adresse> = emptyList()
+    private var personstatuser: List<FolkeregisterPersonstatus> = emptyList()
 
     private var medlemskap: List<Medlemskap> = emptyList()
 
@@ -49,7 +49,7 @@ class RegelSteps : No {
         }
 
         Gitt("følgende midlertidige adresser i personhistorikken") { dataTable: DataTable? ->
-            midlerdigAdresser = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
+            midlertidigAdresser = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
         }
 
         Gitt("følgende personstatuser i personhistorikken") { dataTable: DataTable? ->
@@ -126,8 +126,8 @@ class RegelSteps : No {
                         statsborgerskap = statsborgerskap,
                         personstatuser = personstatuser,
                         bostedsadresser = bostedsadresser,
-                        postadresser = emptyList(),
-                        midlertidigAdresser = emptyList(),
+                        postadresser = postadresser,
+                        midlertidigAdresser = midlertidigAdresser,
                         familierelasjoner = emptyList(),
                         sivilstand = emptyList()
                 ),
@@ -139,8 +139,6 @@ class RegelSteps : No {
                         midlertidigAdresser = emptyList(),
                         familierelasjoner = emptyList(),
                         sivilstand = emptyList()
-                        postadresser = postadresser,
-                        midlertidigAdresser = midlerdigAdresser
                 ),
                 medlemskap = medlemskap,
                 arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgivere, utenlandsopphold),
