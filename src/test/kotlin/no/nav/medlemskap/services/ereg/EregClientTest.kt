@@ -14,10 +14,10 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.medlemskap.common.cioHttpClient
-import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.services.sts.StsRestClient
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
+import no.nav.medlemskap.config.Configuration
 
 
 class EregClientTest {
@@ -143,6 +143,7 @@ class EregClientTest {
           "enhetstype": "NUF",
           "adresse": {
             "type": "Forretningsadresse",
+            "adresselinje1": "Søndre gate 15",
             "postnummer": "7011",
             "landkode": "NO",
             "kommunenummer": "5001",
