@@ -20,7 +20,7 @@ class RegelSteps : No {
     private var bostedsadresser: List<Adresse> = emptyList()
     private var postadresser: List<Adresse> = emptyList()
     private var midlertidigAdresser: List<Adresse> = emptyList()
-    private var personstatuser: List<FolkeregisterPersonstatus> = emptyList()
+    private var personstatuser: List<Personstatus> = emptyList()
 
     private var medlemskap: List<Medlemskap> = emptyList()
 
@@ -127,18 +127,7 @@ class RegelSteps : No {
                         personstatuser = personstatuser,
                         bostedsadresser = bostedsadresser,
                         postadresser = postadresser,
-                        midlertidigAdresser = midlertidigAdresser,
-                        familierelasjoner = emptyList(),
-                        sivilstand = emptyList()
-                ),
-                pdlpersonhistorikk = Personhistorikk(
-                        statsborgerskap = statsborgerskap,
-                        personstatuser = emptyList(),
-                        bostedsadresser = bostedsadresser,
-                        postadresser = emptyList(),
-                        midlertidigAdresser = emptyList(),
-                        familierelasjoner = emptyList(),
-                        sivilstand = emptyList()
+                        midlertidigAdresser = midlertidigAdresser
                 ),
                 medlemskap = medlemskap,
                 arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgivere, utenlandsopphold),
