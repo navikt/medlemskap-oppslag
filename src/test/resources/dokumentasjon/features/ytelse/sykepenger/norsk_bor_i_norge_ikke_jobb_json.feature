@@ -5,7 +5,7 @@ Egenskap: Man er medlem i Folketrygden hvis man bor i Norge eller jobber i Norge
 
   Scenario: Norsk statsborger som er bosatt i Norge, men som ikke har hatt jobb siste 12 måneder
 
-     Gitt følgende datagrunnlag json
+    Gitt følgende datagrunnlag json
 """
 {
   "periode": {
@@ -26,14 +26,24 @@ Egenskap: Man er medlem i Folketrygden hvis man bor i Norge eller jobber i Norge
     "personstatuser": [],
     "bostedsadresser": [
       {
-        "adresselinje": "Oslo",
         "landkode": "NOR",
         "fom": "2020-01-01",
         "tom": null
       }
     ],
     "postadresser": [],
-    "midlertidigAdresser": []
+    "midlertidigAdresser": [],
+    "sivilstand": [],
+    "familierelasjoner": []
+  },
+  "pdlpersonhistorikk": {
+    "statsborgerskap": [],
+    "personstatuser": [],
+    "bostedsadresser": [],
+    "postadresser": [],
+    "midlertidigAdresser": [],
+    "sivilstand": [],
+    "familierelasjoner": []
   },
   "medlemskap": [],
   "arbeidsforhold": [],

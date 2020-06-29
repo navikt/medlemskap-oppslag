@@ -1,7 +1,6 @@
 package no.nav.medlemskap.services.pdl
 
 
-
 data class HentIdenterResponse(val data: Data, val errors: List<PdlError>?)
 
 data class Data(val hentIdenter: Identliste?)
@@ -61,8 +60,7 @@ fun hentIndenterQuery(fnr: String): GraphqlQuery {
     return GraphqlQuery(query, Variables(fnr, false))
 }
 
-
-fun hentPersonQuery(fnr: String): PersonGraphqlQuery{
+fun hentPersonQuery(fnr: String): PersonGraphqlQuery {
     val query = GraphqlQuery::class.java.getResource("/pdl/hentPerson.graphql").readText().replace("[\n\r]", "")
     return PersonGraphqlQuery(query, BostedVariabler(fnr, true))
 }
@@ -72,3 +70,7 @@ fun hentNasjonalitetQuery(fnr: String): GraphqlQuery {
     return GraphqlQuery(query, Variables(fnr, false))
 }
 
+fun hentFoedselsaarQuery(fnr: String): GraphqlQuery {
+    val query = GraphqlQuery::class.java.getResource("/pdl/hentFoedselsaar.graphql").readText().replace("[\n\r]", "")
+    return GraphqlQuery(query, Variables(fnr, false))
+}

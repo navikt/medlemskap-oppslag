@@ -17,14 +17,24 @@
     "personstatuser": [],
     "bostedsadresser": [
       {
-        "adresselinje": "Oslo",
         "landkode": "NOR",
         "fom": "2019-11-01",
         "tom": null
       }
     ],
     "postadresser": [],
-    "midlertidigAdresser": []
+    "midlertidigAdresser": [],
+    "sivilstand": [],
+    "familierelasjoner": []
+  },
+  "pdlpersonhistorikk": {
+    "statsborgerskap": [],
+    "personstatuser": [],
+    "bostedsadresser": [],
+    "postadresser": [],
+    "midlertidigAdresser": [],
+    "sivilstand": [],
+    "familierelasjoner": []
   },
   "medlemskapsunntak": [],
   "arbeidsforhold": [
@@ -53,13 +63,15 @@
       ]
     }
   ],
-  "medlemskap" : [ {
-    "fraOgMed" : "2019-01-01",
-    "tilOgMed" : "2020-02-28",
-    "erMedlem" : true,
-    "lovvalgsland": "NOR",
-    "lovvalg": "ENDL"
-  } ],
+  "medlemskap": [
+    {
+      "fraOgMed": "2019-01-01",
+      "tilOgMed": "2020-02-28",
+      "erMedlem": true,
+      "lovvalgsland": "NOR",
+      "lovvalg": "ENDL"
+    }
+  ],
   "inntekt": [],
   "oppgaver": [],
   "dokument": [],
