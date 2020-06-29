@@ -4,8 +4,9 @@ on:
     branches:
       - master
     paths:
-      - 'deploy/alerts.yaml'
-      - '.github/workflows/alerts.yaml'
+      - 'deploy/alerts-preprod.yaml'
+      - 'deploy/alerts-prod.yaml'
+      - '.github/workflows/alerts-preprod.yaml'
 jobs:
   apply-alerts:
     name: Apply alerts to cluster
@@ -18,10 +19,10 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
           CLUSTER: dev-fss
-          RESOURCE: deploy/alerts.yaml
+          RESOURCE: deploy/alerts-preprod.yaml
       - name: deploy to prod
         uses: nais/deploy/actions/deploy@master
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
           CLUSTER: prod-fss
-          RESOURCE: deploy/alerts.yaml
+          RESOURCE: deploy/alerts-prod.yaml

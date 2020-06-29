@@ -42,7 +42,7 @@ open class ServerTest {
         fun startServer() {
 
             if (!applicationState.running) {
-                val applicationServer = createHttpServer(applicationState, false, configuration, openIdConfiguration, services)
+                val applicationServer = createHttpServer(applicationState, true, configuration, openIdConfiguration, services)
 
                 Runtime.getRuntime().addShutdownHook(Thread {
                     applicationState.initialized = false

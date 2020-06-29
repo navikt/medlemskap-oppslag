@@ -128,6 +128,7 @@ class DomenespråkParser {
 
         return Status.valueOf(verdi)
     }
+
 }
 
 interface RadMapper<T> {
@@ -228,11 +229,6 @@ class ArbeidsforholdMapper {
         val yrkeskode = domenespråkParser.parseString(YRKESKODE, rad)
         val stillingsprosent = domenespråkParser.parseDouble(STILLINGSPROSENT, rad)
         val skipsregister = domenespråkParser.parseSkipsregister(rad)
-        val konkursStatus =  if (domenespråkParser.parseValgfriString(KONKURSSTATUS, rad) == null) {
-            null
-        } else {
-            listOf(domenespråkParser.parseValgfriString(KONKURSSTATUS, rad))
-        }
 
         return Arbeidsforhold(
                 periode = periode,
@@ -276,6 +272,16 @@ class UtenlandsoppholdMapper : RadMapper<Utenlandsopphold> {
     }
 }
 
+class PersonstatusMapper: RadMapper<Personstatus> {
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Personstatus {
+        return Personstatus(
+                personstatus = domenespråkParser.parseString(PERSONSTATUS, rad),
+                fom = domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad),
+                tom = domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
+        )
+    }
+}
+
 enum class Domenebegrep(val nøkkel: String) {
     ADRESSE("Adresse"),
     AKTIV_DATO("Aktiv dato"),
@@ -294,6 +300,7 @@ enum class Domenebegrep(val nøkkel: String) {
     LANDKODE("Landkode"),
     LOVVALG("Lovvalg"),
     LOVVALGSLAND("Lovvalgsland"),
+    PERSONSTATUS("Personstatus"),
     PRIORITET("Prioritet"),
     RAPPORTERINGSPERIODE("Rapporteringsperiode"),
     SKIPSREGISTER("Skipsregister"),
