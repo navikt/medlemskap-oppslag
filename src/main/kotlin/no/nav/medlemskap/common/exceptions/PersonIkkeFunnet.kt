@@ -1,5 +1,12 @@
 package no.nav.medlemskap.common.exceptions
 
-import java.lang.Exception
+class PersonIkkeFunnet : Exception {
+    val system: String
 
-class PersonIkkeFunnet(cause: Throwable, val system: String) : Exception(cause)
+    constructor(system: String) : super() {
+        this.system = system
+    }
+    constructor(cause: Throwable, system: String) : super(cause) {
+        this.system = system
+    }
+}
