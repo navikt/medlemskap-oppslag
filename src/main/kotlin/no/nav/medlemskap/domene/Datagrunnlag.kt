@@ -2,20 +2,18 @@ package no.nav.medlemskap.domene
 
 import java.time.LocalDate
 
-data class Datagrunnlag(
+data class Datagrunnlag (
         val periode: InputPeriode,
         val brukerinput: Brukerinput,
         val personhistorikk: Personhistorikk,
-        val pdlpersonhistorikk: Personhistorikk,
         val medlemskap: List<Medlemskap> = listOf(),
         val arbeidsforhold: List<Arbeidsforhold> = listOf(),
         val oppgaver: List<Oppgave> = listOf(),
         val dokument: List<Journalpost> = listOf(),
-        val ytelse: Ytelse,
-        val personHistorikkRelatertePersoner: List<PersonhistorikkRelatertPerson> = listOf()
+        val ytelse: Ytelse
 )
 
-data class Periode(
+data class Periode (
         val fom: LocalDate?,
         val tom: LocalDate?
 )

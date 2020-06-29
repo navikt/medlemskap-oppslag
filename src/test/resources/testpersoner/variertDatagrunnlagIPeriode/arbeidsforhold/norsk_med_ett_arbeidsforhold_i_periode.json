@@ -17,6 +17,7 @@
     "personstatuser": [],
     "bostedsadresser": [
       {
+        "adresselinje": "Oslo",
         "landkode": "NOR",
         "fom": "2020-01-01",
         "tom": null
