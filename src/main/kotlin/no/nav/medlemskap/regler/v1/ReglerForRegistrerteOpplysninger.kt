@@ -1,16 +1,17 @@
 package no.nav.medlemskap.regler.v1
 
-import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Journalpost
+import no.nav.medlemskap.domene.Medlemskap
 import no.nav.medlemskap.domene.Oppgave
-import no.nav.medlemskap.domene.Status
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.common.Funksjoner.antall
-import no.nav.medlemskap.regler.common.Funksjoner.erDelAv
 import no.nav.medlemskap.regler.funksjoner.GsakFunksjoner.finnesAapneOppgaver
 import no.nav.medlemskap.regler.funksjoner.JoarkFunksjoner.finnesDokumenterMedTillatteTeamer
 
-class ReglerForRegistrerteOpplysninger(val datagrunnlag: Datagrunnlag) : Regler() {
+class ReglerForRegistrerteOpplysninger(
+        val medlemskap: List<Medlemskap> = emptyList(),
+        val oppgaver: List<Oppgave> = emptyList(),
+        val dokument: List<Journalpost> = emptyList()
+) : Regler() {
 
     override fun hentHovedRegel() =
             sjekkRegel {
@@ -48,20 +49,20 @@ class ReglerForRegistrerteOpplysninger(val datagrunnlag: Datagrunnlag) : Regler(
 
     private fun sjekkPerioderIMedl(): Resultat =
             when {
-                datagrunnlag.medlemskap.isNotEmpty() -> ja()
+                medlemskap.isNotEmpty() -> ja()
                 else -> nei()
             }
 
     private fun tellDokumenter(): Resultat =
             when {
-                datagrunnlag.dokument.finnesDokumenterMedTillatteTeamer() -> ja()
+                dokument.finnesDokumenterMedTillatteTeamer() -> ja()
                 else -> nei()
             }
 
 
     fun tellÅpneOppgaver(): Resultat =
             when {
-                datagrunnlag.oppgaver.finnesAapneOppgaver() -> ja()
+                oppgaver.finnesAapneOppgaver() -> ja()
                 else -> nei()
             }
 }

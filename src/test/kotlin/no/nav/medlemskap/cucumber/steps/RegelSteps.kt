@@ -154,7 +154,7 @@ class RegelSteps : No {
     }
 
     private fun evaluerReglerForMedlemsopplysninger(datagrunnlag: Datagrunnlag): Resultat {
-        val regelsett = ReglerForRegistrerteOpplysninger(datagrunnlag)
+        val regelsett = ReglerForRegistrerteOpplysninger(datagrunnlag.medlemskap, datagrunnlag.oppgaver, datagrunnlag.dokument)
         return regelsett.hentHovedRegel().utfør(mutableListOf())
     }
 }

@@ -1,12 +1,19 @@
 package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.regler.common.*
+import no.nav.medlemskap.regler.common.Resultat
+import no.nav.medlemskap.regler.common.konklusjonIdentifikator
+import no.nav.medlemskap.regler.common.sjekkRegelsett
+import no.nav.medlemskap.regler.common.uavklartKonklusjon
 
 class Hovedregler(datagrunnlag: Datagrunnlag) {
 
     private val resultatliste: MutableList<Resultat> = mutableListOf()
-    private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger(datagrunnlag)
+    private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger(
+            medlemskap = datagrunnlag.medlemskap,
+            oppgaver = datagrunnlag.oppgaver,
+            dokument = datagrunnlag.dokument
+    )
     private val reglerForRegistrerteOpplysningerIMedl = ReglerForMedl(datagrunnlag)
     private val reglerForGrunnforordningen = ReglerForGrunnforordningen(datagrunnlag)
     private val reglerForArbeidsforhold = ReglerForArbeidsforhold(datagrunnlag)
