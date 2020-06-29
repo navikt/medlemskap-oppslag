@@ -22,6 +22,8 @@ object Funksjoner {
 
     infix fun List<String>.kunInneholder(string: String) = this.contains(string) && this.size == 1
 
+    infix fun List<String>.harBOADtidligereEnn(string: String) = this.indexOf("BOAD") < this.indexOf(string)
+
     infix fun String?.er(string: String) = this != null && this == string
 
     infix fun List<String>.inneholderNoe(liste: List<String>) = this.any { it in liste }
