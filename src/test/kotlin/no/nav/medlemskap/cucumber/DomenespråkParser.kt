@@ -170,7 +170,6 @@ class MedlemskapsparametreMapper : RadMapper<Medlemskapsparametre> {
 class AdresseMapper : RadMapper<Adresse> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Adresse {
         return Adresse(
-                domenespråkParser.parseString(ADRESSE, rad),
                 domenespråkParser.parseString(LANDKODE, rad),
                 domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad),
                 domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
@@ -192,7 +191,7 @@ class MedlemskapMapper : RadMapper<Medlemskap> {
     }
 }
 
-class OppgaveMapper: RadMapper<Oppgave> {
+class OppgaveMapper : RadMapper<Oppgave> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Oppgave {
         return Oppgave(
                 aktivDato = domenespråkParser.parseDato(AKTIV_DATO, rad),
@@ -203,7 +202,7 @@ class OppgaveMapper: RadMapper<Oppgave> {
     }
 }
 
-class JournalpostMapper: RadMapper<Journalpost> {
+class JournalpostMapper : RadMapper<Journalpost> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Journalpost {
         return Journalpost(
                 domenespråkParser.parseString(JOURNALPOST_ID, rad),
@@ -272,10 +271,10 @@ class UtenlandsoppholdMapper : RadMapper<Utenlandsopphold> {
     }
 }
 
-class PersonstatusMapper: RadMapper<Personstatus> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Personstatus {
-        return Personstatus(
-                personstatus = domenespråkParser.parseString(PERSONSTATUS, rad),
+class PersonstatusMapper : RadMapper<FolkeregisterPersonstatus> {
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): FolkeregisterPersonstatus {
+        return FolkeregisterPersonstatus(
+                personstatus = PersonStatus.valueOf(domenespråkParser.parseString(PERSONSTATUS, rad)),
                 fom = domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad),
                 tom = domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
         )
