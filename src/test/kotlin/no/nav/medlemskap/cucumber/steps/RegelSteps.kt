@@ -5,8 +5,8 @@ import io.cucumber.java8.No
 import no.nav.medlemskap.cucumber.*
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Resultat
-import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.v1.ReglerForGrunnforordningen
+import no.nav.medlemskap.regler.v1.ReglerForRegistrerteOpplysninger
 import no.nav.medlemskap.regler.v1.ReglerService
 import no.nav.medlemskap.services.ereg.Ansatte
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -16,9 +16,6 @@ class RegelSteps : No {
     private val ANSATTE_9 = listOf(Ansatte(9, null, null))
     private val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", identifikator = "1", landkode = "NOR", ansatte = ANSATTE_9, konkursStatus = null)
 
-    private var sykemeldingsperiode: InputPeriode? = null
-    private var harHattArbeidUtenforNorge: Boolean = false
-
     private var statsborgerskap: List<Statsborgerskap> = emptyList()
     private var bostedsadresser: List<Adresse> = emptyList()
     private var medlemskap: List<Medlemskap> = emptyList()
@@ -27,10 +24,11 @@ class RegelSteps : No {
     private var arbeidsforhold: List<Arbeidsforhold> = emptyList()
     private var utenlandsopphold: List<Utenlandsopphold> = emptyList()
     private var resultat: Resultat? = null
+    private var oppgaverFraGosys: List<Oppgave> = emptyList()
+    private var journalPosterFraJoArk: List<Journalpost> = emptyList()
 
     private val domenespråkParser = DomenespråkParser()
 
-    private var svar: Svar? = null
     private var datagrunnlag: Datagrunnlag? = null
 
     init {
@@ -58,29 +56,30 @@ class RegelSteps : No {
             utenlandsopphold = domenespråkParser.mapDataTable(dataTable, UtenlandsoppholdMapper())
         }
 
-        Når("omfattet av grunnforordningen beregnes med følgende parametre") { dataTable: DataTable? ->
-            val medlemskapsparametre = domenespråkParser.mapDataTable(dataTable, MedlemskapsparametreMapper()).get(0)
+        Gitt("følgende oppgaver fra Gosys") { dataTable: DataTable? ->
+            oppgaverFraGosys = domenespråkParser.mapDataTable(dataTable, OppgaveMapper())
+        }
 
-            sykemeldingsperiode = medlemskapsparametre.inputPeriode
-            harHattArbeidUtenforNorge = medlemskapsparametre.harHattArbeidUtenforNorge
-
-            datagrunnlag = byggDatagrunnlag()
-            svar = evaluerGrunnforordningen(datagrunnlag!!)
+        Gitt("følgende journalposter fra Joark") { dataTable: DataTable? ->
+            journalPosterFraJoArk = domenespråkParser.mapDataTable(dataTable, JournalpostMapper())
         }
 
         Når("medlemskap beregnes med følgende parametre") { dataTable: DataTable? ->
             val medlemskapsparametre = domenespråkParser.mapDataTable(dataTable, MedlemskapsparametreMapper()).get(0)
 
-            sykemeldingsperiode = medlemskapsparametre.inputPeriode
-            harHattArbeidUtenforNorge = medlemskapsparametre.harHattArbeidUtenforNorge
-
-            datagrunnlag = byggDatagrunnlag()
-
+            datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
             resultat = ReglerService.kjørRegler(datagrunnlag!!)
         }
 
-        Så("skal omfattet av grunnforordningen være {string}") { forventetSvar: String? ->
-            assertEquals(domenespråkParser.parseSvar(forventetSvar!!), svar)
+        Når("hovedregel med avklaring {string} kjøres med følgende parametre") { avklaring: String, dataTable: DataTable? ->
+            val medlemskapsparametre = domenespråkParser.mapDataTable(dataTable, MedlemskapsparametreMapper()).get(0)
+            datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
+
+            resultat = when (avklaring) {
+                "Finnes det registrerte opplysninger på bruker?" -> evaluerReglerForMedlemsopplysninger(datagrunnlag!!)
+                "Er bruker omfattet av grunnforordningen?" -> evaluerGrunnforordningen(datagrunnlag!!)
+                else -> throw java.lang.RuntimeException("Fant ikke hovedregel med avklaring = $avklaring")
+            }
         }
 
         Så("skal medlemskap være {string}") { forventetVerdi: String ->
@@ -88,14 +87,22 @@ class RegelSteps : No {
 
             assertEquals(forventetSvar, resultat!!.svar)
         }
+
+        Så("skal svaret på hovedregelen være {string}") { forventetVerdi: String ->
+            val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
+
+            assertEquals(forventetSvar, resultat!!.svar)
+        }
     }
 
-    private fun evaluerGrunnforordningen(datagrunnlag: Datagrunnlag): Svar {
-        val regelsett = ReglerForGrunnforordningen(datagrunnlag)
-        return regelsett.hentHovedRegel().utfør(mutableListOf()).svar
-    }
+    private fun byggDatagrunnlag(medlemskapsparametre: Medlemskapsparametre? = null): Datagrunnlag {
+        if (medlemskapsparametre == null) {
+            throw RuntimeException("medlemskapsparametre må være satt for å bygge Datagrunnlag")
+        }
 
-    private fun byggDatagrunnlag(): Datagrunnlag {
+        val sykemeldingsperiode = medlemskapsparametre.inputPeriode
+        val harHattArbeidUtenforNorge = medlemskapsparametre.harHattArbeidUtenforNorge
+
         return Datagrunnlag(
                 periode = sykemeldingsperiode!!,
                 brukerinput = Brukerinput(harHattArbeidUtenforNorge),
@@ -119,6 +126,8 @@ class RegelSteps : No {
                 ),
                 medlemskap = medlemskap,
                 arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgivere, utenlandsopphold),
+                oppgaver = oppgaverFraGosys,
+                dokument = journalPosterFraJoArk,
                 personHistorikkRelatertePersoner = emptyList()
         )
     }
@@ -131,5 +140,15 @@ class RegelSteps : No {
         }
 
         return arbeidsforhold.map { it.copy(utenlandsopphold = utenlandsopphold, arbeidsgiver = arbeidsgiver) }
+    }
+
+    private fun evaluerGrunnforordningen(datagrunnlag: Datagrunnlag): Resultat {
+        val regelsett = ReglerForGrunnforordningen(datagrunnlag)
+        return regelsett.hentHovedRegel().utfør(mutableListOf())
+    }
+
+    private fun evaluerReglerForMedlemsopplysninger(datagrunnlag: Datagrunnlag): Resultat {
+        val regelsett = ReglerForRegistrerteOpplysninger(datagrunnlag)
+        return regelsett.hentHovedRegel().utfør(mutableListOf())
     }
 }
