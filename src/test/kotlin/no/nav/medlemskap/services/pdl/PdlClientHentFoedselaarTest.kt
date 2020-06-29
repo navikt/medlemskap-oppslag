@@ -18,7 +18,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class PdlClientTest {
+class PdlClientHentFoedselaarTest {
 
     companion object {
         val server: WireMockServer = WireMockServer(WireMockConfiguration.options().dynamicPort())
@@ -62,12 +62,14 @@ class PdlClientTest {
 
         assertEquals(1980, pdlResponse.data?.hentPerson?.foedsel?.first()?.foedselsaar)
     }
-}
 
-val pdlRequestMapping: MappingBuilder = post(urlPathEqualTo("/"))
-        .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
-        .withHeader("Accept", containing("application/json"))
-        .withHeader("Nav-Consumer-Token", equalTo("Bearer dummytoken"))
+
+    val pdlRequestMapping: MappingBuilder = post(urlPathEqualTo("/"))
+            .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
+            .withHeader("Accept", containing("application/json"))
+            .withHeader("Nav-Consumer-Token", equalTo("Bearer dummytoken"))
 //.withRequestBody()
 
-val pdlResponse = """{"data":{"hentPerson":{"foedsel":[{"foedselsaar":1980}]}}}""".trimIndent()
+    val pdlResponse = """{"data":{"hentPerson":{"foedsel":[{"foedselsaar":1980}]}}}""".trimIndent()
+
+}

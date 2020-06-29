@@ -39,10 +39,10 @@ enum class KjoennType {
 }
 
 data class Familierelasjon(
-        val relatertPersonIdent: String,
+        val relatertPersonsIdent: String,
         val relatertPersonsRolle: Familierelasjonsrolle,
-        val minRolleForPerson: Familierelasjonsrolle,
-        val folkeregisterMetadata: Folkeregistermetadata
+        val minRolleForPerson: Familierelasjonsrolle?,
+        val folkeregisterMetadata: Folkeregistermetadata?
 )
 
 enum class Familierelasjonsrolle {
@@ -68,8 +68,8 @@ data class Navn(
 data class Sivilstand(
         val type: Sivilstandstype,
         val gyldigFraOgMed: LocalDate?,
-        val relatertVedSivilstand: String,
-        val folkeregisterMetadata: Folkeregistermetadata
+        val relatertVedSivilstand: String?,
+        val folkeregisterMetadata: Folkeregistermetadata?
 )
 
 enum class Sivilstandstype {

@@ -37,7 +37,7 @@ fun mapTilPersonHistorikk(person: HentPdlPersonResponse): Personhistorikk {
                 Sivilstand(
                         type = mapSivilstandType(it.type),
                         gyldigFraOgMed = it.gyldigFraOgMed,
-                        relatertVedSivilstand = it.relatertVedSivilstand,
+                        relatertVedSivilstand = it.relatertVedSivilstand!!,
                         folkeregisterMetadata = mapFolkeregisterMetadata(it.folkeregisterMetadata)
                 )
             }
@@ -45,8 +45,8 @@ fun mapTilPersonHistorikk(person: HentPdlPersonResponse): Personhistorikk {
     val familierelasjoner: List<Familierelasjon> = person.data.hentPerson.familierelasjoner.filter { it.relatertPersonsRolle == Familierelasjonsrolle.BARN }
             .map {
                 Familierelasjon(
-                        relatertPersonsIdent = it.relatertPersonIdent,
-                        relatertPersonsRolle = mapFamileRelasjonsrolle(it.relatertPersonsRolle),
+                        relatertPersonsIdent = it.relatertPersonsIdent,
+                        relatertPersonsRolle = mapFamileRelasjonsrolle(it.relatertPersonsRolle)!!,
                         minRolleForPerson = mapFamileRelasjonsrolle(it.minRolleForPerson),
                         folkeregisterMetadata = mapFolkeregisterMetadata(it.folkeregisterMetadata)
                 )
@@ -55,10 +55,14 @@ fun mapTilPersonHistorikk(person: HentPdlPersonResponse): Personhistorikk {
     return Personhistorikk(statsborgerskap, personstatuser, bostedsadresser, postadresser, midlertidigAdresser, sivilstand, familierelasjoner)
 }
 
-private fun mapFamileRelasjonsrolle(relatertPersonsRolle: Familierelasjonsrolle): no.nav.medlemskap.domene.Familierelasjonsrolle {
-    return when (relatertPersonsRolle) {
-        Familierelasjonsrolle.BARN -> no.nav.medlemskap.domene.Familierelasjonsrolle.BARN
-        else -> throw DetteSkalAldriSkje("Denne Familierelasjonsrollen skal være filtrert bort")
+private fun mapFamileRelasjonsrolle(rolle: Familierelasjonsrolle?): no.nav.medlemskap.domene.Familierelasjonsrolle? {
+    return rolle?.let {
+        when (it) {
+            Familierelasjonsrolle.BARN -> no.nav.medlemskap.domene.Familierelasjonsrolle.BARN
+            Familierelasjonsrolle.MOR -> no.nav.medlemskap.domene.Familierelasjonsrolle.MOR
+            Familierelasjonsrolle.FAR -> no.nav.medlemskap.domene.Familierelasjonsrolle.FAR
+            Familierelasjonsrolle.MEDMOR -> no.nav.medlemskap.domene.Familierelasjonsrolle.MEDMOR
+        }
     }
 }
 
@@ -76,12 +80,14 @@ private fun mapSivilstandType(type: Sivilstandstype): no.nav.medlemskap.domene.S
     }
 }
 
-private fun mapFolkeregisterMetadata(folkeregisterMetadata: no.nav.medlemskap.services.pdl.Folkeregistermetadata): Folkeregistermetadata {
-    return Folkeregistermetadata(
-            ajourholdstidspunkt = folkeregisterMetadata.ajourholdstidspunkt,
-            gyldighetstidspunkt = folkeregisterMetadata.gyldighetstidspunkt,
-            opphoerstidspunkt = folkeregisterMetadata.opphoerstidspunkt
-    )
+private fun mapFolkeregisterMetadata(folkeregisterMetadata: no.nav.medlemskap.services.pdl.Folkeregistermetadata?): Folkeregistermetadata? {
+    return folkeregisterMetadata?.let {
+        Folkeregistermetadata(
+                ajourholdstidspunkt = it.ajourholdstidspunkt,
+                gyldighetstidspunkt = it.gyldighetstidspunkt,
+                opphoerstidspunkt = it.opphoerstidspunkt
+        )
+    }
 }
 
 //Vi velger det høyeste årstallet, da blir personen yngst og det er mest sannsynlig at vi må vurdere bosted
