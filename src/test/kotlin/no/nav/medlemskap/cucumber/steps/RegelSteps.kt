@@ -52,7 +52,7 @@ class RegelSteps : No {
             midlerdigAdresser = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
         }
 
-        Gitt("følgende personstatusr i personhistorikken") { dataTable: DataTable? ->
+        Gitt("følgende personstatuser i personhistorikken") { dataTable: DataTable? ->
             personstatuser = domenespråkParser.mapDataTable(dataTable, PersonstatusMapper())
         }
 
