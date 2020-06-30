@@ -85,6 +85,7 @@ class PdlClient(
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
                 header("Nav-Call-Id", callId)
+                header("TEMA", "MED")
                 header("Nav-Consumer-Token", "Bearer ${oidcToken}")
                 header("Nav-Consumer-Id", username)
                 body = hentFoedselsaarQuery(fnr)

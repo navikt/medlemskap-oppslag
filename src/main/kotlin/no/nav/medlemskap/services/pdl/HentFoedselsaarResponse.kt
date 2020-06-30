@@ -3,7 +3,7 @@ package no.nav.medlemskap.services.pdl
 
 data class HentFoedselsaarResponse(val data: HentFoedselsaar?, val errors: List<PdlError>?)
 
-data class HentFoedselsaar(val hentPerson: PdlPerson)
+data class HentFoedselsaar(val hentPerson: PdlPerson?)
 
 data class PdlPerson(
         val foedsel: List<Foedsel>
