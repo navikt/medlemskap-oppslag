@@ -170,9 +170,8 @@ private suspend fun hentPersonhistorikkFraPdl(services: Services, fnr: String, c
 //Midlertidig kode, ekstra feilhåndtering fordi integrasjonen vår mot PDL ikke er helt 100% ennå..
 private suspend fun CoroutineScope.hentPersonhistorikkForFamilieAsync(personHistorikkFraPdl: Personhistorikk?, services: Services, periode: InputPeriode): List<PersonhistorikkRelatertPerson> {
     return personHistorikkFraPdl?.let {
-        val personhistorikkForFamilieRequest = async { services.personService.hentPersonhistorikkForRelevantFamilie(it, periode) }
         try {
-            personhistorikkForFamilieRequest.await()
+            services.personService.hentPersonhistorikkForRelevantFamilie(it, periode)
         } catch (e: Exception) {
             logger.error("Feilet under henting av personhistorikk for familie", e)
             emptyList<PersonhistorikkRelatertPerson>()
