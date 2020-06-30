@@ -51,7 +51,7 @@ data class Sivilstand(
         val type: Sivilstandstype,
         val gyldigFraOgMed: LocalDate?,
         val relatertVedSivilstand: String,
-        val folkeregisterMetadata: Folkeregistermetadata?
+        val folkeregistermetadata: Folkeregistermetadata?
 )
 
 enum class Sivilstandstype {
@@ -69,7 +69,7 @@ data class Familierelasjon(
         val relatertPersonsIdent: String,
         val relatertPersonsRolle: Familierelasjonsrolle,
         val minRolleForPerson: Familierelasjonsrolle?,
-        val folkeregisterMetadata: Folkeregistermetadata?
+        val folkeregistermetadata: Folkeregistermetadata?
 )
 
 enum class Familierelasjonsrolle {

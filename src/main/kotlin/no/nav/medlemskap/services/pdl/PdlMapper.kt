@@ -38,7 +38,7 @@ fun mapTilPersonHistorikk(person: HentPdlPersonResponse): Personhistorikk {
                         type = mapSivilstandType(it.type),
                         gyldigFraOgMed = it.gyldigFraOgMed,
                         relatertVedSivilstand = it.relatertVedSivilstand!!,
-                        folkeregisterMetadata = mapFolkeregisterMetadata(it.folkeregisterMetadata)
+                        folkeregistermetadata = mapFolkeregisterMetadata(it.folkeregistermetadata)
                 )
             }
 
@@ -48,7 +48,7 @@ fun mapTilPersonHistorikk(person: HentPdlPersonResponse): Personhistorikk {
                         relatertPersonsIdent = it.relatertPersonsIdent,
                         relatertPersonsRolle = mapFamileRelasjonsrolle(it.relatertPersonsRolle)!!,
                         minRolleForPerson = mapFamileRelasjonsrolle(it.minRolleForPerson),
-                        folkeregisterMetadata = mapFolkeregisterMetadata(it.folkeregisterMetadata)
+                        folkeregistermetadata = mapFolkeregisterMetadata(it.folkeregistermetadata)
                 )
             }
 
@@ -80,8 +80,8 @@ private fun mapSivilstandType(type: Sivilstandstype): no.nav.medlemskap.domene.S
     }
 }
 
-private fun mapFolkeregisterMetadata(folkeregisterMetadata: no.nav.medlemskap.services.pdl.Folkeregistermetadata?): Folkeregistermetadata? {
-    return folkeregisterMetadata?.let {
+private fun mapFolkeregisterMetadata(folkeregistermetadata: no.nav.medlemskap.services.pdl.Folkeregistermetadata?): Folkeregistermetadata? {
+    return folkeregistermetadata?.let {
         Folkeregistermetadata(
                 ajourholdstidspunkt = it.ajourholdstidspunkt,
                 gyldighetstidspunkt = it.gyldighetstidspunkt,
