@@ -8,9 +8,6 @@ import java.time.LocalDate
 
 object AdresseFunksjoner {
 
-
-    fun Adresse.adresseLandskodeErNorsk() = this.landkode == "NOR"
-
     fun Adresse.adressensPeriodeOverlapperKontrollPerioden(kontrollPeriode: Periode) =
             Funksjoner.periodefilter(lagInterval(Periode(this.fom, this.tom)), kontrollPeriode)
 

@@ -98,13 +98,13 @@ class ReglerForLovvalg(val datagrunnlag: Datagrunnlag) : Regler() {
 
     private fun sjekkLandekode(): Resultat {
         val bostedsadresser = bostedsadresser.adresserSiste12Mnd(kontrollPeriodeForPersonhistorikk)
-        val postadresserLandekoder = postadresser.landekodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk)
-        val midlertidigadresserLandekoder = midlertidigAdresser.landekodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk)
+        val postadresserLandkoder = postadresser.landekodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk)
+        val midlertidigadresserLandkoder = midlertidigAdresser.landekodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk)
 
         return when {
             bostedsadresser.erIkkeTom()
-                    && (postadresserLandekoder alleEr "NOR" || postadresserLandekoder.erTom())
-                    && (midlertidigadresserLandekoder alleEr "NOR" || midlertidigadresserLandekoder.erTom())-> ja()
+                    && (postadresserLandkoder alleEr "NOR" || postadresserLandkoder.erTom())
+                    && (midlertidigadresserLandkoder alleEr "NOR" || midlertidigadresserLandkoder.erTom())-> ja()
             else -> nei("Ikke alle adressene til bruker er norske, eller bruker mangler bostedsadresse")
         }
     }
