@@ -41,6 +41,16 @@ class DomenespråkParser {
         }
     }
 
+    fun parseValgfriYtelse(domenebegrep: Domenebegrep, rad: Map<String, String>): Ytelse? {
+        val valgfriVerdi = valgfriVerdi(domenebegrep.nøkkel, rad)
+
+        return if (valgfriVerdi == null) {
+            null
+        } else {
+            Ytelse.valueOf(valgfriVerdi)
+        }
+    }
+
     fun parseSvar(verdi: String): Svar {
         return when (verdi) {
             "Ja" -> Svar.JA
@@ -162,7 +172,8 @@ class MedlemskapsparametreMapper : RadMapper<Medlemskapsparametre> {
                         domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
                         domenespråkParser.parseDato(TIL_OG_MED_DATO, rad)
                 ),
-                domenespråkParser.parseBoolean(HAR_HATT_ARBEID_UTENFOR_NORGE, rad)
+                domenespråkParser.parseBoolean(HAR_HATT_ARBEID_UTENFOR_NORGE, rad),
+                domenespråkParser.parseValgfriYtelse(YTELSE, rad)
         )
     }
 }
@@ -309,10 +320,14 @@ enum class Domenebegrep(val nøkkel: String) {
     TEMA("Tema"),
     TIL_OG_MED_DATO("Til og med dato"),
     TITTEL("Tittel"),
-    YRKESKODE("Yrkeskode")
+    YRKESKODE("Yrkeskode"),
+    YTELSE("Ytelse")
 }
 
 
-data class Medlemskapsparametre(val inputPeriode: InputPeriode, val harHattArbeidUtenforNorge: Boolean)
+data class Medlemskapsparametre(
+        val inputPeriode: InputPeriode,
+        val harHattArbeidUtenforNorge: Boolean,
+        val ytelse: Ytelse?)
 
 

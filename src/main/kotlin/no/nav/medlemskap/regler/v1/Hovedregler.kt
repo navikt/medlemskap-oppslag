@@ -9,13 +9,10 @@ import no.nav.medlemskap.regler.common.uavklartKonklusjon
 class Hovedregler(datagrunnlag: Datagrunnlag) {
 
     private val resultatliste: MutableList<Resultat> = mutableListOf()
-    private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger(
-            medlemskap = datagrunnlag.medlemskap,
-            oppgaver = datagrunnlag.oppgaver,
-            dokument = datagrunnlag.dokument
-    )
+    private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
+
     private val reglerForRegistrerteOpplysningerIMedl = ReglerForMedl(datagrunnlag)
-    private val reglerForGrunnforordningen = ReglerForGrunnforordningen(datagrunnlag)
+    private val reglerForGrunnforordningen = ReglerForGrunnforordningen.fraDatagrunnlag(datagrunnlag)
     private val reglerForArbeidsforhold = ReglerForArbeidsforhold(datagrunnlag)
 
 

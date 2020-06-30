@@ -10,10 +10,10 @@ Egenskap: Borgere i EØS omfattes av grunnforordningen
       | <Land>   | 30.01.2000      |                 |
 
     Når hovedregel med avklaring "Er bruker omfattet av grunnforordningen?" kjøres med følgende parametre
-      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-      | 15.01.2020      | 30.01.2020      | Nei                           |
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge | Ytelse     |
+      | 15.01.2020      | 30.01.2020      | Nei                           | SYKEPENGER |
 
-  Så skal svaret på hovedregelen være <Svar>
+    Så skal svaret på hovedregelen være <Svar>
 
     Eksempler:
       | Land | Svar  |

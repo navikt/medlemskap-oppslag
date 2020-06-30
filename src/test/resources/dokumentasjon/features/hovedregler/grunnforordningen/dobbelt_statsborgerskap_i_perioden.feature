@@ -1,14 +1,14 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Borgere som har flere statsborgerskap i perioden får "Nei"
+Egenskap: Borgere som har dobbelt statsborgerskap i hele perioden, der det ene er norsk får "Ja"
 
-  Scenariomal: Borgere som har flere statsborgerskap i perioden får "Nei"
+  Scenariomal: Borgere som har dobbelt statsborgerskap i hele perioden, der det ene er norsk får "Ja"
 
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
-      | <Land>   | 30.06.2020      | 02.12.2020      |
-      | PHL      | 20.02.2000      | 29.06.2020      |
+      | NOR      | 30.01.2000      |                 |
+      | <Land>   | 30.01.2000      |                 |
 
     Når hovedregel med avklaring "Er bruker omfattet av grunnforordningen?" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge | Ytelse     |
@@ -17,7 +17,7 @@ Egenskap: Borgere som har flere statsborgerskap i perioden får "Nei"
     Så skal svaret på hovedregelen være <Svar>
 
     Eksempler:
-      | Land | Svar  |
-      | NOR  | "Nei" |
-      | FRA  | "Nei" |
-      | USA  | "Nei" |
+      | Land | Svar |
+      | POL  | "Ja" |
+      | FRA  | "Ja" |
+      | USA  | "Ja" |

@@ -27,7 +27,6 @@ class RegelSteps : No {
     private var arbeidsgivere: List<Arbeidsgiver> = emptyList()
     private var arbeidsforhold: List<Arbeidsforhold> = emptyList()
     private var utenlandsopphold: List<Utenlandsopphold> = emptyList()
-    private var ytelse: Ytelse = Ytelse.SYKEPENGER
     private var resultat: Resultat? = null
     private var oppgaverFraGosys: List<Oppgave> = emptyList()
     private var journalPosterFraJoArk: List<Journalpost> = emptyList()
@@ -119,6 +118,7 @@ class RegelSteps : No {
 
         val sykemeldingsperiode = medlemskapsparametre.inputPeriode
         val harHattArbeidUtenforNorge = medlemskapsparametre.harHattArbeidUtenforNorge
+        val ytelse = if (medlemskapsparametre.ytelse != null) medlemskapsparametre.ytelse else Ytelse.SYKEPENGER
 
         return Datagrunnlag(
                 periode = sykemeldingsperiode,
@@ -149,12 +149,12 @@ class RegelSteps : No {
     }
 
     private fun evaluerGrunnforordningen(datagrunnlag: Datagrunnlag): Resultat {
-        val regelsett = ReglerForGrunnforordningen(datagrunnlag)
+        val regelsett = ReglerForGrunnforordningen.fraDatagrunnlag(datagrunnlag)
         return regelsett.hentHovedRegel().utfør(mutableListOf())
     }
 
     private fun evaluerReglerForMedlemsopplysninger(datagrunnlag: Datagrunnlag): Resultat {
-        val regelsett = ReglerForRegistrerteOpplysninger(datagrunnlag.medlemskap, datagrunnlag.oppgaver, datagrunnlag.dokument)
+        val regelsett = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
         return regelsett.hentHovedRegel().utfør(mutableListOf())
     }
 }
