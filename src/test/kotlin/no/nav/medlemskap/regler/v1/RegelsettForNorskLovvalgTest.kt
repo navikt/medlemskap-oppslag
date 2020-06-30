@@ -16,8 +16,8 @@ class RegelsettForNorskLovvalgTest {
     }
 
     @Test
-    fun `person ikke bosatt i Norge siste 12 mnd, får uavklart`() {
-        assertSvar("10", Svar.NEI, evaluer(personleser.norskBosattIUtland()), Svar.UAVKLART)
+    fun `person uten bostedsadresse, får uavklart`() {
+        assertSvar("10", Svar.NEI, evaluer(personleser.norskUtenBostedsadresse()), Svar.UAVKLART)
     }
 
     @Test
@@ -27,12 +27,17 @@ class RegelsettForNorskLovvalgTest {
 
     @Test
     fun `norsk person med utenlandsk bostedsadresse, får uavklart`() {
-        assertSvar("10", Svar.NEI, evaluer(personleser.norskBosattIUtland()), Svar.UAVKLART)
+        assertSvar("10", Svar.NEI, evaluer(personleser.norskUtenBostedsadresse()), Svar.UAVKLART)
     }
 
     @Test
     fun `norsk person med utenlandsk postadresse, får uavklart`() {
-        assertSvar("10", Svar.NEI, evaluer(personleser.norskPostadresseIUtland()), Svar.UAVKLART)
+        assertSvar("10", Svar.NEI, evaluer(personleser.postadresseIUtland()), Svar.UAVKLART)
+    }
+
+    @Test
+    fun `norsk person med utenlandsk midlertidig adresse, får uavklart`() {
+        assertSvar("10", Svar.NEI, evaluer(personleser.midlertidigAdresseIUtland()), Svar.UAVKLART)
     }
 
     @Test

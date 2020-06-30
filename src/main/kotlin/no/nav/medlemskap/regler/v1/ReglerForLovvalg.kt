@@ -3,7 +3,11 @@ package no.nav.medlemskap.regler.v1
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.inneholder
-import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.harBrukerNorskAdresseInnenforSiste12Mnd
+import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
+import no.nav.medlemskap.regler.common.Funksjoner.erTom
+import no.nav.medlemskap.regler.common.Funksjoner.alleEr
+import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserSiste12Mnd
+import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landekodeTilAdresseSiste12Mnd
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedSluttAvKontrollperiode
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedStartAvKontrollperiode
@@ -13,6 +17,7 @@ class ReglerForLovvalg(val datagrunnlag: Datagrunnlag) : Regler() {
     val statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap
     val postadresser = datagrunnlag.personhistorikk.postadresser
     val bostedsadresser = datagrunnlag.personhistorikk.bostedsadresser
+    val midlertidigAdresser = datagrunnlag.personhistorikk.midlertidigAdresser
     val arbeidsforhold = datagrunnlag.arbeidsforhold
 
     private val datohjelper = Datohjelper(datagrunnlag.periode, datagrunnlag.ytelse)
@@ -58,7 +63,7 @@ class ReglerForLovvalg(val datagrunnlag: Datagrunnlag) : Regler() {
             identifikator = "10",
             avklaring = "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
             beskrivelse = "",
-            operasjon = { sjekkLandskode() }
+            operasjon = { sjekkLandekodePaaAdresser() }
     )
 
     private val harBrukerNorskStatsborgerskap = Regel(
@@ -91,11 +96,18 @@ class ReglerForLovvalg(val datagrunnlag: Datagrunnlag) : Regler() {
         }
     }
 
-    private fun sjekkLandskode(): Resultat =
-            when {
-                sjekkBrukersPostadresseOgBostedsadresseLandskode() -> ja()
-                else -> nei("Bruker har enten ikke norsk bostedsadresse eller postadresse")
-            }
+    private fun sjekkLandekodePaaAdresser(): Resultat {
+        val bostedsadresseSiste12Mnd = bostedsadresser.adresserSiste12Mnd(kontrollPeriodeForPersonhistorikk)
+        val postAdresseLandekodeSiste12Mnd = postadresser.landekodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk)
+        val midlertidigAdresseLandekodeSiste12Mnd = midlertidigAdresser.landekodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk)
+
+        return when {
+            bostedsadresseSiste12Mnd.erIkkeTom()
+                    && (postAdresseLandekodeSiste12Mnd alleEr "NOR" || postAdresseLandekodeSiste12Mnd.erTom())
+                    && (midlertidigAdresseLandekodeSiste12Mnd alleEr "NOR" || midlertidigAdresseLandekodeSiste12Mnd.erTom())-> ja()
+            else -> nei("Ikke alle adressene til bruker er norske, eller bruker mangler bostedsadresse")
+        }
+    }
 
     private fun sjekkOmBrukerHarJobbet25ProsentEllerMer(): Resultat =
             when {
@@ -103,9 +115,4 @@ class ReglerForLovvalg(val datagrunnlag: Datagrunnlag) : Regler() {
                 else -> nei("Bruker har ikke jobbet 25% eller mer i løpet av periode.")
             }
 
-    fun sjekkBrukersPostadresseOgBostedsadresseLandskode(): Boolean {
-        val harIngenPostadresse = datagrunnlag.personhistorikk.postadresser.isEmpty()
-        return (datagrunnlag.personhistorikk.postadresser.harBrukerNorskAdresseInnenforSiste12Mnd(kontrollPeriodeForPersonhistorikk) || harIngenPostadresse) &&
-                datagrunnlag.personhistorikk.bostedsadresser.harBrukerNorskAdresseInnenforSiste12Mnd(kontrollPeriodeForPersonhistorikk)
-    }
 }
