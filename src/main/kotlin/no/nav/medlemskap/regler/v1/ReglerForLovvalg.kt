@@ -1,6 +1,6 @@
 package no.nav.medlemskap.regler.v1
 
-import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.inneholder
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.harBrukerNorskAdresseInnenforSiste12Mnd
@@ -8,14 +8,18 @@ import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJob
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedSluttAvKontrollperiode
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedStartAvKontrollperiode
 
-class ReglerForLovvalg(val datagrunnlag: Datagrunnlag) : Regler() {
+class ReglerForLovvalg(
+        val personhistorikk: Personhistorikk,
+        val arbeidsforhold: List<Arbeidsforhold>,
+        val periode: InputPeriode,
+        val ytelse: Ytelse,
+        val arbeidUtenforNorge: Boolean
+) : Regler() {
+    val statsborgerskap = personhistorikk.statsborgerskap
+    val postadresser = personhistorikk.postadresser
+    val bostedsadresser = personhistorikk.bostedsadresser
 
-    val statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap
-    val postadresser = datagrunnlag.personhistorikk.postadresser
-    val bostedsadresser = datagrunnlag.personhistorikk.bostedsadresser
-    val arbeidsforhold = datagrunnlag.arbeidsforhold
-
-    private val datohjelper = Datohjelper(datagrunnlag.periode, datagrunnlag.ytelse)
+    private val datohjelper = Datohjelper(periode, ytelse)
     private val kontrollPeriodeForPersonhistorikk = datohjelper.kontrollPeriodeForPersonhistorikk()
     private val kontrollPeriodeForArbeidsforhold = datohjelper.kontrollPeriodeForArbeidsforhold()
 
@@ -77,7 +81,7 @@ class ReglerForLovvalg(val datagrunnlag: Datagrunnlag) : Regler() {
 
     private fun sjekkOmBrukerHarJobbetUtenforNorge(): Resultat =
             when {
-                datagrunnlag.brukerinput.arbeidUtenforNorge -> ja()
+                arbeidUtenforNorge -> ja()
                 else -> nei()
             }
 
@@ -99,13 +103,21 @@ class ReglerForLovvalg(val datagrunnlag: Datagrunnlag) : Regler() {
 
     private fun sjekkOmBrukerHarJobbet25ProsentEllerMer(): Resultat =
             when {
-                 arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollPeriodeForArbeidsforhold) -> ja()
+                arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollPeriodeForArbeidsforhold) -> ja()
                 else -> nei("Bruker har ikke jobbet 25% eller mer i løpet av periode.")
             }
 
     fun sjekkBrukersPostadresseOgBostedsadresseLandskode(): Boolean {
-        val harIngenPostadresse = datagrunnlag.personhistorikk.postadresser.isEmpty()
-        return (datagrunnlag.personhistorikk.postadresser.harBrukerNorskAdresseInnenforSiste12Mnd(kontrollPeriodeForPersonhistorikk) || harIngenPostadresse) &&
-                datagrunnlag.personhistorikk.bostedsadresser.harBrukerNorskAdresseInnenforSiste12Mnd(kontrollPeriodeForPersonhistorikk)
+        val harIngenPostadresse = postadresser.isEmpty()
+        return (postadresser.harBrukerNorskAdresseInnenforSiste12Mnd(kontrollPeriodeForPersonhistorikk) || harIngenPostadresse) &&
+                bostedsadresser.harBrukerNorskAdresseInnenforSiste12Mnd(kontrollPeriodeForPersonhistorikk)
+    }
+
+    companion object {
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForLovvalg {
+            with(datagrunnlag) {
+                return ReglerForLovvalg(personhistorikk, arbeidsforhold, periode, ytelse, brukerinput.arbeidUtenforNorge)
+            }
+        }
     }
 }

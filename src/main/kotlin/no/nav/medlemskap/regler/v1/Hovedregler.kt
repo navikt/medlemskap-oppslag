@@ -13,8 +13,7 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
 
     private val reglerForRegistrerteOpplysningerIMedl = ReglerForMedl(datagrunnlag)
     private val reglerForGrunnforordningen = ReglerForGrunnforordningen.fraDatagrunnlag(datagrunnlag)
-    private val reglerForArbeidsforhold = ReglerForArbeidsforhold(datagrunnlag)
-
+    private val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag)
 
     fun hentHovedRegel() =
 
