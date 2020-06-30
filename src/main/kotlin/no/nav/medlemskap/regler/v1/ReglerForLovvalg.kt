@@ -63,7 +63,7 @@ class ReglerForLovvalg(val datagrunnlag: Datagrunnlag) : Regler() {
             identifikator = "10",
             avklaring = "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
             beskrivelse = "",
-            operasjon = { sjekkLandekodePaaAdresser() }
+            operasjon = { sjekkLandekode() }
     )
 
     private val harBrukerNorskStatsborgerskap = Regel(
@@ -96,15 +96,15 @@ class ReglerForLovvalg(val datagrunnlag: Datagrunnlag) : Regler() {
         }
     }
 
-    private fun sjekkLandekodePaaAdresser(): Resultat {
-        val bostedsadresseSiste12Mnd = bostedsadresser.adresserSiste12Mnd(kontrollPeriodeForPersonhistorikk)
-        val postAdresseLandekodeSiste12Mnd = postadresser.landekodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk)
-        val midlertidigAdresseLandekodeSiste12Mnd = midlertidigAdresser.landekodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk)
+    private fun sjekkLandekode(): Resultat {
+        val bostedsadresser = bostedsadresser.adresserSiste12Mnd(kontrollPeriodeForPersonhistorikk)
+        val postadresserLandekoder = postadresser.landekodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk)
+        val midlertidigadresserLandekoder = midlertidigAdresser.landekodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk)
 
         return when {
-            bostedsadresseSiste12Mnd.erIkkeTom()
-                    && (postAdresseLandekodeSiste12Mnd alleEr "NOR" || postAdresseLandekodeSiste12Mnd.erTom())
-                    && (midlertidigAdresseLandekodeSiste12Mnd alleEr "NOR" || midlertidigAdresseLandekodeSiste12Mnd.erTom())-> ja()
+            bostedsadresser.erIkkeTom()
+                    && (postadresserLandekoder alleEr "NOR" || postadresserLandekoder.erTom())
+                    && (midlertidigadresserLandekoder alleEr "NOR" || midlertidigadresserLandekoder.erTom())-> ja()
             else -> nei("Ikke alle adressene til bruker er norske, eller bruker mangler bostedsadresse")
         }
     }
