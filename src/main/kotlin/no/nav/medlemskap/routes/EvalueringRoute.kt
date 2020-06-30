@@ -161,7 +161,8 @@ private suspend fun hentPersonhistorikkFraPdl(services: Services, fnr: String, c
     return try {
         services.pdlService.hentPersonHistorikk(fnr, callId)
     } catch (e: Exception) {
-        logger.error("hentPersonHistorikk feiler", e)
+        logger.error("hentPersonHistorikk feiler: " + e.message)
+        secureLogger.error("hentPersonHistorikk feiler for fnr {}", fnr, e)
         null
     }
 }
