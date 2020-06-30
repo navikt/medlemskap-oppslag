@@ -118,7 +118,7 @@ class RegelSteps : No {
 
         val sykemeldingsperiode = medlemskapsparametre.inputPeriode
         val harHattArbeidUtenforNorge = medlemskapsparametre.harHattArbeidUtenforNorge
-        val ytelse = if (medlemskapsparametre.ytelse != null) medlemskapsparametre.ytelse else Ytelse.SYKEPENGER
+        val ytelse = medlemskapsparametre.ytelse ?: Ytelse.SYKEPENGER
 
         return Datagrunnlag(
                 periode = sykemeldingsperiode,
