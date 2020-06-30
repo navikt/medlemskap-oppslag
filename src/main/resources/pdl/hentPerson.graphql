@@ -37,7 +37,12 @@ query($ident: ID!, $bostedHistorikk: Boolean!){
         coAdressenavn,
         ukjentBosted { bostedskommune },
         vegadresse { postnummer },
-        matrikkeladresse { postnummer }
+        matrikkeladresse { postnummer },
+        folkeregistermetadata {
+            ajourholdstidspunkt
+            gyldighetstidspunkt
+            opphoerstidspunkt
+        }
     }
     kontaktadresse(historikk: $bostedHistorikk){
           utenlandskAdresse{ landkode }
