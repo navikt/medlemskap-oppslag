@@ -63,7 +63,7 @@ class ReglerForLovvalg(val datagrunnlag: Datagrunnlag) : Regler() {
             identifikator = "10",
             avklaring = "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
             beskrivelse = "",
-            operasjon = { sjekkLandekode() }
+            operasjon = { sjekkLandkode() }
     )
 
     private val harBrukerNorskStatsborgerskap = Regel(
@@ -96,7 +96,7 @@ class ReglerForLovvalg(val datagrunnlag: Datagrunnlag) : Regler() {
         }
     }
 
-    private fun sjekkLandekode(): Resultat {
+    private fun sjekkLandkode(): Resultat {
         val bostedsadresser = bostedsadresser.adresserSiste12Mnd(kontrollPeriodeForPersonhistorikk)
         val postadresserLandkoder = postadresser.landekodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk)
         val midlertidigadresserLandkoder = midlertidigAdresser.landekodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk)
