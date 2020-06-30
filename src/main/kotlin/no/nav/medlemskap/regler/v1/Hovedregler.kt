@@ -11,7 +11,7 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
     private val resultatliste: MutableList<Resultat> = mutableListOf()
     private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
 
-    private val reglerForRegistrerteOpplysningerIMedl = ReglerForMedl(datagrunnlag)
+    private val reglerForRegistrerteOpplysningerIMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag)
     private val reglerForGrunnforordningen = ReglerForGrunnforordningen.fraDatagrunnlag(datagrunnlag)
     private val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag)
 
