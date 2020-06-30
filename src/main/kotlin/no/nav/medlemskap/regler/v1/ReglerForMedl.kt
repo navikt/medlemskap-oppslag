@@ -1,26 +1,29 @@
 package no.nav.medlemskap.regler.v1
 
-import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Arbeidsforhold
+import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.Dekning
+import no.nav.medlemskap.domene.Dekning.Companion.gjelderForYtelse
+import no.nav.medlemskap.domene.Medlemskap
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.harSammeAdressePaaGitteDatoer
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.arbeidsforholdForDato
 import no.nav.medlemskap.regler.funksjoner.GsakFunksjoner.finnesAapneOppgaver
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.erMedlemskapsperioderOver12Mnd
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.finnesPersonIMedlForKontrollPeriode
+import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.gjeldendeDekning
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.harGyldigeMedlemskapsperioder
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.harMedlPeriodeMedOgUtenMedlemskap
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.harPeriodeMedMedlemskap
-import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.medlemskapsPerioderOver12MndPeriodeDekning
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.tidligsteFraOgMedDatoForMedl
 
 class ReglerForMedl(val datagrunnlag: Datagrunnlag) : Regler() {
 
-    private val gyldigeDekningerForSykepenger = Dekning.dekningForSykepenger()
     private val medlemskap: List<Medlemskap> = datagrunnlag.medlemskap
     private val arbeidsforhold: List<Arbeidsforhold> = datagrunnlag.arbeidsforhold
     private val kontrollPeriodeForMedl = Datohjelper(datagrunnlag.periode, datagrunnlag.ytelse).kontrollPeriodeForMedl()
     private val datohjelper = Datohjelper(datagrunnlag.periode, datagrunnlag.ytelse)
+    private val ytelse = datagrunnlag.ytelse
 
     override fun hentHovedRegel(): Regel =
             sjekkRegel {
@@ -162,9 +165,9 @@ class ReglerForMedl(val datagrunnlag: Datagrunnlag) : Regler() {
 
     private val harBrukerDekningIMedl = Regel(
             identifikator = "1.6",
-            avklaring = "Har bruker et medlemskap som omfatter sykepenger? (Dekning i MEDL)",
+            avklaring = "Har bruker et medlemskap som omfatter ytelse? (Dekning i MEDL)",
             beskrivelse = "",
-            operasjon = { harBrukerMedlemskapSomOmfatterSykepenger() }
+            operasjon = { harBrukerMedlemskapSomOmfatterYtelse() }
     )
 
     private fun harBrukerPerioderIMedl(): Resultat =
@@ -212,11 +215,12 @@ class ReglerForMedl(val datagrunnlag: Datagrunnlag) : Regler() {
                 else -> nei()
             }
 
-    private fun harBrukerMedlemskapSomOmfatterSykepenger(): Resultat {
-        val dekninger = medlemskap medlemskapsPerioderOver12MndPeriodeDekning kontrollPeriodeForMedl
+    private fun harBrukerMedlemskapSomOmfatterYtelse(): Resultat {
+        val dekning = medlemskap gjeldendeDekning kontrollPeriodeForMedl
+
         return when {
-            dekninger alleEr gyldigeDekningerForSykepenger.map { it.dekningKodeverdi } -> ja(dekninger)
-            else -> nei(dekninger)
+            Dekning.from(dekning).gjelderForYtelse(ytelse) -> ja("Bruker har dekning", dekning)
+            else -> nei("Bruker har ikke dekning", dekning)
         }
     }
 

@@ -46,13 +46,15 @@ fun ja(begrunnelse: String) = Resultat(
 
 fun ja() = Resultat(svar = Svar.JA)
 
-fun ja(dekning: List<String>) = Resultat(
+fun ja(begrunnelse: String, dekning: String) = Resultat(
+        begrunnelse = begrunnelse,
         svar = Svar.JA,
         harDekning = Svar.JA,
         dekning = dekning
 )
 
-fun nei(dekning: List<String>) = Resultat(
+fun nei(begrunnelse: String, dekning: String) = Resultat(
+        begrunnelse = begrunnelse,
         svar = Svar.NEI,
         harDekning = Svar.NEI,
         dekning = dekning
