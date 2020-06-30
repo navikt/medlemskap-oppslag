@@ -14,10 +14,10 @@ Egenskap: Borgere som har dobbelt statsborgerskap i hele perioden, der det ene e
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge | Ytelse     |
       | 30.01.2020      | 30.01.2021      | Nei                           | SYKEPENGER |
 
-    Så skal svaret på hovedregelen være <Svar>
+    Så skal svaret på hovedregelen være "<Svar>"
 
     Eksempler:
       | Land | Svar |
-      | POL  | "Ja" |
-      | FRA  | "Ja" |
-      | USA  | "Ja" |
+      | POL  | Ja   |
+      | FRA  | Ja   |
+      | USA  | Ja   |

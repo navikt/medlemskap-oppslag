@@ -14,10 +14,10 @@ Egenskap: Borgere som har flere EØS statsborgerskap i perioden får "Ja"
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
-    Så skal svaret på hovedregelen være <Svar>
+    Så skal svaret på hovedregelen være "<Svar>"
 
     Eksempler:
-      | Land | Svar  |
-      | POL  | "Ja"  |
-      | FRA  | "Ja"  |
-      | USA  | "Nei" |
+      | Land | Svar |
+      | POL  | Ja   |
+      | FRA  | Ja   |
+      | USA  | Nei  |

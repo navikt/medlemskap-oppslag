@@ -13,13 +13,13 @@ Egenskap: Borgere i EØS omfattes av grunnforordningen
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge | Ytelse     |
       | 15.01.2020      | 30.01.2020      | Nei                           | SYKEPENGER |
 
-    Så skal svaret på hovedregelen være <Svar>
+    Så skal svaret på hovedregelen være "<Svar>"
 
     Eksempler:
-      | Land | Svar  |
-      | NOR  | "Ja"  |
-      | FRA  | "Ja"  |
-      | USA  | "Nei" |
+      | Land | Svar |
+      | NOR  | Ja   |
+      | FRA  | Ja   |
+      | USA  | Nei  |
 
   Scenario: Person med bare amerikansk statsborgerskap omfattes ikke av grunnforordningen
     Gitt følgende statsborgerskap i personhistorikken
