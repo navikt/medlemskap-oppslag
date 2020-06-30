@@ -1,15 +1,19 @@
 package no.nav.medlemskap.services.pdl
+
 import java.time.LocalDate
 import java.time.LocalDateTime
 
 
-data class HentPdlPersonResponse (val data: HentPerson?, val errors: List<PdlError>?)
+data class HentPdlPersonResponse(val data: HentPerson?, val errors: List<PdlError>?)
 
 data class HentPerson(val hentPerson: Person)
+
 data class Person(
         val adressebeskyttelse: List<Adressebeskyttelse>,
         val kjoenn: List<Kjoenn>,
+        val familierelasjoner: List<Familierelasjon>,
         val navn: List<Navn>,
+        val sivilstand: List<Sivilstand>,
         val statsborgerskap: List<Statsborgerskap>,
         val bostedsadresse: List<Bostedsadresse>)
 
@@ -28,12 +32,25 @@ data class Kjoenn(
         val kjoenn: KjoennType
 )
 
-enum class KjoennType{
+enum class KjoennType {
     MANN,
     KVINNE,
     UKJENT,
 }
 
+data class Familierelasjon(
+        val relatertPersonsIdent: String,
+        val relatertPersonsRolle: Familierelasjonsrolle,
+        val minRolleForPerson: Familierelasjonsrolle?,
+        val folkeregisterMetadata: Folkeregistermetadata?
+)
+
+enum class Familierelasjonsrolle {
+    BARN,
+    MOR,
+    FAR,
+    MEDMOR
+}
 
 enum class AdressebeskyttelseGradering {
     STRENGT_FORTROLIG,
@@ -42,19 +59,39 @@ enum class AdressebeskyttelseGradering {
 }
 
 
-data class Navn (
+data class Navn(
         val fornavn: String,
         val mellomnavn: String?,
-        val etternavn: String? )
+        val etternavn: String?
+)
+
+data class Sivilstand(
+        val type: Sivilstandstype,
+        val gyldigFraOgMed: LocalDate?,
+        val relatertVedSivilstand: String?,
+        val folkeregisterMetadata: Folkeregistermetadata?
+)
+
+enum class Sivilstandstype {
+    UOPPGITT,
+    UGIFT,
+    GIFT,
+    ENKE_ELLER_ENKEMANN,
+    SKILT,
+    SEPARERT,
+    REGISTRERT_PARTNER,
+    SEPARERT_PARTNER,
+    SKILT_PARTNER,
+    GJENLEVENDE_PARTNER
+}
 
 data class Bostedsadresse(
         val angittFlyttedato: LocalDate?,
         val coAdressenavn: String?,
         val vegAdresse: VegAdresse?,
-        val adresse: String?,
         val matrikkeladresse: Matrikkeladresse?,
         val ukjentBosted: UkjentBosted?,
-        val folkeregisterMetadata: Folkeregistermetadata,
+        val folkeregistermetadata: Folkeregistermetadata,
         val metadata: Metadata)
 
 
@@ -81,9 +118,9 @@ data class Folkeregistermetadata(
         val ajourholdstidspunkt: LocalDateTime?,
         val gyldighetstidspunkt: LocalDateTime?,
         val opphoerstidspunkt: LocalDateTime?,
-        val kilde:  String?,
+        val kilde: String?,
         val aarsak: String?,
-        val sekvens:  Int?
+        val sekvens: Int?
 )
 
 data class Matrikkeladresse(

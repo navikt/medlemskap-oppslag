@@ -17,7 +17,6 @@
     "personstatuser": [],
     "bostedsadresser": [
       {
-        "adresselinje": "Oslo",
         "landkode": "NOR",
         "fom": "2019-11-01",
         "tom": null
@@ -53,13 +52,15 @@
       ]
     }
   ],
-  "medlemskap" : [ {
-    "fraOgMed" : "2019-01-01",
-    "tilOgMed" : "2020-02-28",
-    "erMedlem" : false,
-    "lovvalgsland": "NOR",
-    "lovvalg": "UAVK"
-  } ],
+  "medlemskap": [
+    {
+      "fraOgMed": "2019-01-01",
+      "tilOgMed": "2020-02-28",
+      "erMedlem": false,
+      "lovvalgsland": "NOR",
+      "lovvalg": "UAVK"
+    }
+  ],
   "inntekt": [],
   "oppgaver": [],
   "dokument": [],

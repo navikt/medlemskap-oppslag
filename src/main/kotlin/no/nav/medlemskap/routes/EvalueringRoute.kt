@@ -10,6 +10,7 @@ import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.routing.post
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
@@ -35,7 +36,6 @@ fun Routing.evalueringRoute(
         configuration: Configuration) {
 
     if (useAuthentication) {
-        logger.info("autentiserer kallet")
         authenticate {
             post("/") {
                 apiCounter().increment()
@@ -125,36 +125,60 @@ private suspend fun createDatagrunnlag(
         clientId: String?): Datagrunnlag = coroutineScope {
 
     val aktorIder = services.pdlService.hentAlleAktorIder(fnr, callId)
-    // val pdlHistorikkRequest = async { services.pdlService.hentPersonHistorikk(fnr, callId) }
+    val personHistorikkFraPdl = hentPersonhistorikkFraPdl(services, fnr, callId)
     val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr, periode.fom) }
     val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(fnr, callId) }
     val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr, callId, fraOgMedDatoForArbeidsforhold(periode), periode.tom) }
     val journalPosterRequest = async { services.safService.hentJournaldata(fnr, callId) }
     val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktorIder, callId) }
 
-    //  val pdlHistorikk = pdlHistorikkRequest.await()
+    val personhistorikkForFamilie = hentPersonhistorikkForFamilieAsync(personHistorikkFraPdl, services, periode)
+
     val historikkFraTps = historikkFraTpsRequest.await()
     val medlemskap = medlemskapsunntakRequest.await()
     val arbeidsforhold = arbeidsforholdRequest.await()
     val journalPoster = journalPosterRequest.await()
     val oppgaver = gosysOppgaver.await()
-
-    //  logger.info { pdlHistorikk }
-
-    val ytelse = Ytelse.fromClientId(clientId) ?: throw KonsumentIkkeFunnet("Fant ikke clientId i mapping til ytelse. Ta kontakt med medlemskap-teamet for tilgang til tjenesten.")
+    val ytelse = Ytelse.fromClientId(clientId)
+            ?: throw KonsumentIkkeFunnet("Fant ikke clientId i mapping til ytelse. Ta kontakt med medlemskap-teamet for tilgang til tjenesten.")
 
     Datagrunnlag(
             periode = periode,
             brukerinput = brukerinput,
             personhistorikk = historikkFraTps,
+            pdlpersonhistorikk = personHistorikkFraPdl,
             medlemskap = medlemskap,
             arbeidsforhold = arbeidsforhold,
             oppgaver = oppgaver,
             dokument = journalPoster,
-            ytelse = ytelse
+            ytelse = ytelse,
+            personHistorikkRelatertePersoner = personhistorikkForFamilie
     )
-
 }
+
+//Midlertidig kode, ekstra feilhåndtering fordi integrasjonen vår mot PDL ikke er helt 100% ennå..
+private suspend fun hentPersonhistorikkFraPdl(services: Services, fnr: String, callId: String): Personhistorikk? {
+    return try {
+        services.pdlService.hentPersonHistorikk(fnr, callId)
+    } catch (e: Exception) {
+        logger.error("hentPersonHistorikk feiler", e)
+        null
+    }
+}
+
+//Midlertidig kode, ekstra feilhåndtering fordi integrasjonen vår mot PDL ikke er helt 100% ennå..
+private suspend fun CoroutineScope.hentPersonhistorikkForFamilieAsync(personHistorikkFraPdl: Personhistorikk?, services: Services, periode: InputPeriode): List<PersonhistorikkRelatertPerson> {
+    return personHistorikkFraPdl?.let {
+        val personhistorikkForFamilieRequest = async { services.personService.hentPersonhistorikkForRelevantFamilie(it, periode) }
+        try {
+            personhistorikkForFamilieRequest.await()
+        } catch (e: Exception) {
+            logger.error("Feilet under henting av personhistorikk for familie", e)
+            emptyList<PersonhistorikkRelatertPerson>()
+        }
+    } ?: emptyList<PersonhistorikkRelatertPerson>()
+}
+
 
 private fun fraOgMedDatoForArbeidsforhold(periode: InputPeriode) = periode.fom.minusYears(1).minusDays(1)
 
@@ -167,3 +191,4 @@ private fun Resultat.sisteRegel() =
         } else {
             this.delresultat.last()
         }
+
