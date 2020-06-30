@@ -7,7 +7,7 @@ import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Funksjoner.erTom
 import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserSiste12Mnd
-import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landekodeTilAdresseSiste12Mnd
+import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresseSiste12Mnd
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedSluttAvKontrollperiode
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedStartAvKontrollperiode
@@ -98,8 +98,8 @@ class ReglerForLovvalg(val datagrunnlag: Datagrunnlag) : Regler() {
 
     private fun sjekkLandkode(): Resultat {
         val bostedsadresser = bostedsadresser.adresserSiste12Mnd(kontrollPeriodeForPersonhistorikk)
-        val postadresserLandkoder = postadresser.landekodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk)
-        val midlertidigadresserLandkoder = midlertidigAdresser.landekodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk)
+        val postadresserLandkoder = postadresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk)
+        val midlertidigadresserLandkoder = midlertidigAdresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk)
 
         return when {
             bostedsadresser.erIkkeTom()

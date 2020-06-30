@@ -14,7 +14,7 @@ object AdresseFunksjoner {
     fun List<Adresse>.adresserSiste12Mnd(kontrollPeriode: Periode): List<Adresse> =
             this.filter {it.adressensPeriodeOverlapperKontrollPerioden(kontrollPeriode) }
 
-    fun List<Adresse>.landekodeTilAdresseSiste12Mnd(kontrollPeriode: Periode): List<String> =
+    fun List<Adresse>.landkodeTilAdresseSiste12Mnd(kontrollPeriode: Periode): List<String> =
             this.adresserSiste12Mnd(kontrollPeriode).map {it.landkode }
 
     fun List<Adresse>.harSammeAdressePaaGitteDatoer(dato1: LocalDate, dato2: LocalDate): Boolean =
