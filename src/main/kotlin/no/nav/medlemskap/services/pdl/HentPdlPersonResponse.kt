@@ -91,8 +91,7 @@ data class Bostedsadresse(
         val vegAdresse: VegAdresse?,
         val matrikkeladresse: Matrikkeladresse?,
         val ukjentBosted: UkjentBosted?,
-        val folkeregistermetadata: Folkeregistermetadata,
-        val metadata: Metadata
+        val folkeregistermetadata: Folkeregistermetadata
 )
 
 
