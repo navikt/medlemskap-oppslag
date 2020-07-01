@@ -10,7 +10,7 @@ data class Regel(
         val hvisJa: Regel? = null,
         val hvisNei: Regel? = null
 ) {
-    fun utfør(resultatliste: MutableList<Resultat>, harDekning: Svar? = null, dekning: List<String> = listOf()): Resultat {
+    fun utfør(resultatliste: MutableList<Resultat>, harDekning: Svar? = null, dekning: String = ""): Resultat {
         val resultat = operasjon.invoke().apply {
             regelCounter(this@Regel.identifikator + ". " + this@Regel.avklaring.replace("?", ""), this.svar.name).increment()
         }.copy(

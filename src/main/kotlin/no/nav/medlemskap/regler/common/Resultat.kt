@@ -10,6 +10,6 @@ data class Resultat(
         val begrunnelse: String = "",
         val svar: Svar,
         var harDekning: Svar? = null,
-        var dekning: List<String> = listOf(),
+        var dekning: String = "",
         val delresultat: List<Resultat> = listOf()
 )
