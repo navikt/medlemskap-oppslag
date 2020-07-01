@@ -37,7 +37,7 @@ fun mapTilPersonHistorikk(person: HentPdlPersonResponse): Personhistorikk {
                 Sivilstand(
                         type = mapSivilstandType(it.type),
                         gyldigFraOgMed = it.gyldigFraOgMed,
-                        relatertVedSivilstand = it.relatertVedSivilstand!!,
+                        relatertVedSivilstand = it.relatertVedSivilstand,
                         folkeregistermetadata = mapFolkeregisterMetadata(it.folkeregistermetadata)
                 )
             }

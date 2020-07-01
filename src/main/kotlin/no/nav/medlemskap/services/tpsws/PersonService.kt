@@ -34,7 +34,9 @@ class PersonService(private val personClient: PersonClient, private val pdlServi
     }
 
     private suspend fun hentPersonhistorikkSivilstand(sivilstand: List<Sivilstand>, fom: LocalDate): List<PersonhistorikkRelatertPerson> =
-            sivilstand.map { personhistorikkRelatertPerson(it.relatertVedSivilstand, fom) }
+            sivilstand
+                    .filter { it.relatertVedSivilstand != null }
+                    .map { personhistorikkRelatertPerson(it.relatertVedSivilstand!!, fom) }
 
     private suspend fun hentPersonhistorikkBarn(familierelasjoner: List<Familierelasjon>, periode: InputPeriode): List<PersonhistorikkRelatertPerson> {
         return familierelasjoner
