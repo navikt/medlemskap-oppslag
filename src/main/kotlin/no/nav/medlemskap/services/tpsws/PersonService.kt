@@ -36,8 +36,9 @@ class PersonService(private val personClient: PersonClient, private val pdlServi
 
     private suspend fun hentPersonhistorikkSivilstand(sivilstand: List<Sivilstand>, fom: LocalDate): List<PersonhistorikkRelatertPerson> =
             sivilstand
+                    .filter { it.relatertVedSivilstand != null }
                     .filter { FodselsnummerValidator.isValid(it.relatertVedSivilstand) }
-                    .map { personhistorikkRelatertPerson(it.relatertVedSivilstand, fom) }
+                    .map { personhistorikkRelatertPerson(it.relatertVedSivilstand!!, fom) }
 
     private suspend fun hentPersonhistorikkBarn(familierelasjoner: List<Familierelasjon>, periode: InputPeriode): List<PersonhistorikkRelatertPerson> {
         return familierelasjoner
