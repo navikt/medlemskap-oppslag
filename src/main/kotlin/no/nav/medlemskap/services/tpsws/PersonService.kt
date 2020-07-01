@@ -1,6 +1,7 @@
 package no.nav.medlemskap.services.tpsws
 
 import mu.KotlinLogging
+import no.bekk.bekkopen.person.FodselsnummerValidator
 import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
 import no.nav.medlemskap.common.exceptions.Sikkerhetsbegrensing
 import no.nav.medlemskap.domene.*
@@ -19,7 +20,7 @@ class PersonService(private val personClient: PersonClient, private val pdlServi
             } catch (err: Exception) {
                 when (err) {
                     is HentPersonhistorikkPersonIkkeFunnet -> {
-                        Companion.secureLogger.info("Fikk HentPersonhistorikkPersonIkkeFunnet med fnr {} og fom {}", fnr, fom)
+                        secureLogger.info("Fikk HentPersonhistorikkPersonIkkeFunnet med fnr {} og fom {}", fnr, fom)
                         throw PersonIkkeFunnet(err, "TPS")
                     }
                     is HentPersonhistorikkSikkerhetsbegrensning -> throw Sikkerhetsbegrensing(err, "TPS")
@@ -37,10 +38,12 @@ class PersonService(private val personClient: PersonClient, private val pdlServi
     private suspend fun hentPersonhistorikkSivilstand(sivilstand: List<Sivilstand>, fom: LocalDate): List<PersonhistorikkRelatertPerson> =
             sivilstand
                     .filter { it.relatertVedSivilstand != null }
+                    .filter { FodselsnummerValidator.isValid(it.relatertVedSivilstand) }
                     .mapNotNull { personhistorikkRelatertPerson(it.relatertVedSivilstand!!, fom) }
 
     private suspend fun hentPersonhistorikkBarn(familierelasjoner: List<Familierelasjon>, periode: InputPeriode): List<PersonhistorikkRelatertPerson> {
         return familierelasjoner
+                .filter { FodselsnummerValidator.isValid(it.relatertPersonsIdent) }
                 .filter { it.erBarn() }
                 .filter { it.erUnder18aar(periode.tom.year) }
                 .mapNotNull { personhistorikkRelatertPerson(it.relatertPersonsIdent, periode.fom) }
@@ -48,7 +51,7 @@ class PersonService(private val personClient: PersonClient, private val pdlServi
 
     private suspend fun personhistorikkRelatertPerson(fnr: String, fom: LocalDate): PersonhistorikkRelatertPerson? =
             try {
-                mapPersonhistorikkRelatertPersonResultat(personClient.hentPersonHistorikk(fnr, fom))
+                mapPersonhistorikkRelatertPersonResultat(fnr, personClient.hentPersonHistorikk(fnr, fom))
             } catch (err: Exception) {
                 if ((err is HentPersonhistorikkPersonIkkeFunnet || err is SOAPFaultException) && err.message != null && err.message!!.contains("S016007F")) {
                     //javax.xml.ws.soap.SOAPFaultException: TPS svarte med FEIL, folgende status: S016007F og folgende melding: FØDSELSNR ER IKKE ENTYDIG
