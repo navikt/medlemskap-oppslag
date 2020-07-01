@@ -9,6 +9,7 @@ import no.nav.tjeneste.virksomhet.person.v3.binding.HentPersonhistorikkPersonIkk
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentPersonhistorikkSikkerhetsbegrensning
 import java.time.LocalDate
 import java.util.*
+import javax.xml.ws.soap.SOAPFaultException
 
 class PersonService(private val personClient: PersonClient, private val pdlService: PdlService) {
 
@@ -36,36 +37,44 @@ class PersonService(private val personClient: PersonClient, private val pdlServi
     private suspend fun hentPersonhistorikkSivilstand(sivilstand: List<Sivilstand>, fom: LocalDate): List<PersonhistorikkRelatertPerson> =
             sivilstand
                     .filter { it.relatertVedSivilstand != null }
-                    .map { personhistorikkRelatertPerson(it.relatertVedSivilstand!!, fom) }
+                    .mapNotNull { personhistorikkRelatertPerson(it.relatertVedSivilstand!!, fom) }
 
     private suspend fun hentPersonhistorikkBarn(familierelasjoner: List<Familierelasjon>, periode: InputPeriode): List<PersonhistorikkRelatertPerson> {
         return familierelasjoner
                 .filter { it.erBarn() }
                 .filter { it.erUnder18aar(periode.tom.year) }
-                .map { personhistorikkRelatertPerson(it.relatertPersonsIdent, periode.fom) }
+                .mapNotNull { personhistorikkRelatertPerson(it.relatertPersonsIdent, periode.fom) }
     }
 
-    private suspend fun personhistorikkRelatertPerson(fnr: String, fom: LocalDate) =
+    private suspend fun personhistorikkRelatertPerson(fnr: String, fom: LocalDate): PersonhistorikkRelatertPerson? =
             try {
                 mapPersonhistorikkRelatertPersonResultat(personClient.hentPersonHistorikk(fnr, fom))
             } catch (err: Exception) {
-                throw when (err) {
-                    is HentPersonhistorikkPersonIkkeFunnet -> PersonIkkeFunnet(err, "TPS")
-                    is HentPersonhistorikkSikkerhetsbegrensning -> Sikkerhetsbegrensing(err, "TPS")
-                    else -> err
+                if ((err is HentPersonhistorikkPersonIkkeFunnet || err is SOAPFaultException) && err.message != null && err.message!!.contains("S016007F")) {
+                    //javax.xml.ws.soap.SOAPFaultException: TPS svarte med FEIL, folgende status: S016007F og folgende melding: FØDSELSNR ER IKKE ENTYDIG
+                    logger.warn("Fikk en feil med ikke entydig fnr, de skal helst ikke komme!")
+                    secureLogger.warn("Fnr {} er visst ikke entydig i TPS", fnr)
+                    null
+                } else {
+                    throw when (err) {
+                        is HentPersonhistorikkPersonIkkeFunnet -> PersonIkkeFunnet(err, "TPS")
+                        is HentPersonhistorikkSikkerhetsbegrensning -> Sikkerhetsbegrensing(err, "TPS")
+                        else -> err
+                    }
                 }
             }
 
     private suspend fun Familierelasjon.erUnder18aar(aarstallAlderSkalVurderes: Int): Boolean {
 
         val foedselsaarTilRelatertPerson = pdlService.hentFoedselsaar(relatertPersonsIdent, UUID.randomUUID().toString())
-        return (aarstallAlderSkalVurderes - foedselsaarTilRelatertPerson) < aldersGrense
+        return (aarstallAlderSkalVurderes - foedselsaarTilRelatertPerson) < ALDERSGRENSE
     }
 
     private fun Familierelasjon.erBarn() = this.relatertPersonsRolle == Familierelasjonsrolle.BARN
 
     companion object {
-        val aldersGrense = 26
+        const val ALDERSGRENSE = 26
+        private val logger = KotlinLogging.logger { }
         private val secureLogger = KotlinLogging.logger("tjenestekall")
     }
 }
