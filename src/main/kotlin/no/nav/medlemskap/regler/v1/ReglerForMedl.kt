@@ -1,6 +1,7 @@
 package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Dekning.Companion.gjelderForYtelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.harSammeAdressePaaGitteDatoer
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.arbeidsforholdForDato
@@ -234,4 +235,12 @@ class ReglerForMedl(
             (arbeidsforhold.arbeidsforholdForDato(medlemskap.tidligsteFraOgMedDatoForMedl(datohjelper.kontrollPeriodeForMedl())) != arbeidsforhold.arbeidsforholdForDato(datohjelper.tilOgMedDag()) &&
                     arbeidsforhold.arbeidsforholdForDato(medlemskap.tidligsteFraOgMedDatoForMedl(datohjelper.kontrollPeriodeForMedl())).map { it.arbeidsgiver.identifikator } ==
                     arbeidsforhold.arbeidsforholdForDato(datohjelper.tilOgMedDag()).map { it.arbeidsgiver.identifikator })
+
+    companion object {
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForMedl {
+            with(datagrunnlag) {
+                return ReglerForMedl(medlemskap, arbeidsforhold, periode, ytelse, oppgaver, personhistorikk.bostedsadresser)
+            }
+        }
+    }
 }
