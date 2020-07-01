@@ -23,12 +23,12 @@ Egenskap: Hovedregel "Finnes det registrerte opplysninger på bruker?"
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 15.01.2020      | 30.01.2020      | Nei                           |
 
-    Så skal svaret på hovedregelen være <Svar>
+    Så skal svaret på hovedregelen være "<Svar>"
 
     Eksempler:
-      | Tema              | Svar  |
-      | MED               | "Ja"  |
-      | Ikke tillatt tema | "Nei" |
+      | Tema              | Svar |
+      | MED               | Ja   |
+      | Ikke tillatt tema | Nei  |
 
   Scenariomal: Det finnes opplysninger i Gosys
     Gitt følgende oppgaver fra Gosys
@@ -39,13 +39,13 @@ Egenskap: Hovedregel "Finnes det registrerte opplysninger på bruker?"
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 01.01.2020      | 30.01.2020      | Nei                           |
 
-    Så skal svaret på hovedregelen være <Svar>
+    Så skal svaret på hovedregelen være "<Svar>"
 
     Eksempler:
-      | Status      | Tema          | Svar  |
-      | AAPNET      | MED           | "Ja"  |
-      | FERDIGSTILT | MED           | "Nei" |
-      | AAPNET      | Ikke godkjent | "Nei" |
+      | Status      | Tema          | Svar |
+      | AAPNET      | MED           | Ja   |
+      | FERDIGSTILT | MED           | Nei  |
+      | AAPNET      | Ikke godkjent | Nei  |
 
   Scenario: Det finnes ikke opplysninger på bruker i MEDL, Joark eller Gosys
     Når hovedregel med avklaring "Finnes det registrerte opplysninger på bruker?" kjøres med følgende parametre

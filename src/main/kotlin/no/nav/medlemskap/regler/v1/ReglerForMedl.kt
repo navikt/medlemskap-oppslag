@@ -14,13 +14,17 @@ import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.harPeriodeMedMedlemska
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.medlemskapsPerioderOver12MndPeriodeDekning
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.tidligsteFraOgMedDatoForMedl
 
-class ReglerForMedl(val datagrunnlag: Datagrunnlag) : Regler() {
-
+class ReglerForMedl(
+        val medlemskap: List<Medlemskap>,
+        val arbeidsforhold: List<Arbeidsforhold>,
+        val periode: InputPeriode,
+        val ytelse: Ytelse,
+        val oppgaver: List<Oppgave>,
+        val bostedsadresser: List<Adresse>
+) : Regler() {
     private val gyldigeDekningerForSykepenger = Dekning.dekningForSykepenger()
-    private val medlemskap: List<Medlemskap> = datagrunnlag.medlemskap
-    private val arbeidsforhold: List<Arbeidsforhold> = datagrunnlag.arbeidsforhold
-    private val kontrollPeriodeForMedl = Datohjelper(datagrunnlag.periode, datagrunnlag.ytelse).kontrollPeriodeForMedl()
-    private val datohjelper = Datohjelper(datagrunnlag.periode, datagrunnlag.ytelse)
+    private val kontrollPeriodeForMedl = Datohjelper(periode, ytelse).kontrollPeriodeForMedl()
+    private val datohjelper = Datohjelper(periode, ytelse)
 
     override fun hentHovedRegel(): Regel =
             sjekkRegel {
@@ -175,7 +179,7 @@ class ReglerForMedl(val datagrunnlag: Datagrunnlag) : Regler() {
 
     private fun harBrukerAapneOppgaverIGsak(): Resultat =
             when {
-                datagrunnlag.oppgaver.finnesAapneOppgaver() -> ja()
+                oppgaver.finnesAapneOppgaver() -> ja()
                 else -> nei()
             }
 
@@ -187,7 +191,7 @@ class ReglerForMedl(val datagrunnlag: Datagrunnlag) : Regler() {
 
     private fun erBrukersAdresseUendret(): Resultat =
             when {
-                datagrunnlag.personhistorikk.bostedsadresser.harSammeAdressePaaGitteDatoer(
+                bostedsadresser.harSammeAdressePaaGitteDatoer(
                         medlemskap.tidligsteFraOgMedDatoForMedl(kontrollPeriodeForMedl), kontrollPeriodeForMedl.tom!!) -> ja()
                 else -> nei()
             }
@@ -230,4 +234,12 @@ class ReglerForMedl(val datagrunnlag: Datagrunnlag) : Regler() {
             (arbeidsforhold.arbeidsforholdForDato(medlemskap.tidligsteFraOgMedDatoForMedl(datohjelper.kontrollPeriodeForMedl())) != arbeidsforhold.arbeidsforholdForDato(datohjelper.tilOgMedDag()) &&
                     arbeidsforhold.arbeidsforholdForDato(medlemskap.tidligsteFraOgMedDatoForMedl(datohjelper.kontrollPeriodeForMedl())).map { it.arbeidsgiver.identifikator } ==
                     arbeidsforhold.arbeidsforholdForDato(datohjelper.tilOgMedDag()).map { it.arbeidsgiver.identifikator })
+
+    companion object {
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForMedl {
+            with(datagrunnlag) {
+                return ReglerForMedl(medlemskap, arbeidsforhold, periode, ytelse, oppgaver, personhistorikk.bostedsadresser)
+            }
+        }
+    }
 }
