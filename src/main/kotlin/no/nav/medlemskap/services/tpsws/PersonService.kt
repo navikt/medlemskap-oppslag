@@ -35,10 +35,13 @@ class PersonService(private val personClient: PersonClient, private val pdlServi
     }
 
     private suspend fun hentPersonhistorikkSivilstand(sivilstand: List<Sivilstand>, fom: LocalDate): List<PersonhistorikkRelatertPerson> =
-            sivilstand.map { personhistorikkRelatertPerson(it.relatertVedSivilstand, fom) }
+            sivilstand
+                    .filter { FodselsnummerValidator.isValid(it.relatertVedSivilstand) }
+                    .map { personhistorikkRelatertPerson(it.relatertVedSivilstand, fom) }
 
     private suspend fun hentPersonhistorikkBarn(familierelasjoner: List<Familierelasjon>, periode: InputPeriode): List<PersonhistorikkRelatertPerson> {
         return familierelasjoner
+                .filter { FodselsnummerValidator.isValid(it.relatertPersonsIdent) }
                 .filter { it.erBarn() }
                 .filter { it.erUnder18aar(periode.tom.year) }
                 .map { personhistorikkRelatertPerson(it.relatertPersonsIdent, periode.fom) }
@@ -46,12 +49,7 @@ class PersonService(private val personClient: PersonClient, private val pdlServi
 
     private suspend fun personhistorikkRelatertPerson(fnr: String, fom: LocalDate) =
             try {
-                if (!FodselsnummerValidator.isValid(fnr)) {
-                    secureLogger.info("{} er ikke et gyldig fnr, så vi henter ikke personhistorikk for dette", fnr)
-                    PersonhistorikkRelatertPerson(fnr, emptyList(), emptyList(), emptyList(), emptyList())
-                } else {
-                    mapPersonhistorikkRelatertPersonResultat(fnr, personClient.hentPersonHistorikk(fnr, fom))
-                }
+                mapPersonhistorikkRelatertPersonResultat(fnr, personClient.hentPersonHistorikk(fnr, fom))
             } catch (err: Exception) {
                 throw when (err) {
                     is HentPersonhistorikkPersonIkkeFunnet -> PersonIkkeFunnet(err, "TPS")
