@@ -55,7 +55,8 @@ fun Routing.evalueringRoute(
                         periode = request.periode,
                         brukerinput = request.brukerinput,
                         services = services,
-                        clientId = azp)
+                        clientId = azp,
+                        ytelseFraRequest = request.ytelse)
                 val resultat = evaluerData(datagrunnlag)
                 val response = Response(
                         tidspunkt = LocalDateTime.now(),
@@ -84,7 +85,8 @@ fun Routing.evalueringRoute(
                     periode = request.periode,
                     brukerinput = request.brukerinput,
                     services = services,
-                    clientId = null)
+                    clientId = null,
+                    ytelseFraRequest = request.ytelse)
             val resultat = evaluerData(datagrunnlag)
             val response = Response(
                     tidspunkt = LocalDateTime.now(),
@@ -123,7 +125,8 @@ private suspend fun createDatagrunnlag(
         periode: InputPeriode,
         brukerinput: Brukerinput,
         services: Services,
-        clientId: String?): Datagrunnlag = coroutineScope {
+        clientId: String?,
+        ytelseFraRequest: Ytelse?): Datagrunnlag = coroutineScope {
 
     val aktorIder = services.pdlService.hentAlleAktorIder(fnr, callId)
     val personHistorikkFraPdl = hentPersonhistorikkFraPdl(services, fnr, callId)
@@ -140,8 +143,7 @@ private suspend fun createDatagrunnlag(
     val arbeidsforhold = arbeidsforholdRequest.await()
     val journalPoster = journalPosterRequest.await()
     val oppgaver = gosysOppgaver.await()
-    val ytelse = Ytelse.fromClientId(clientId)
-            ?: throw KonsumentIkkeFunnet("Fant ikke clientId i mapping til ytelse. Ta kontakt med medlemskap-teamet for tilgang til tjenesten.")
+    val ytelse: Ytelse = finnYtelse(ytelseFraRequest, clientId)
 
     Datagrunnlag(
             periode = periode,
@@ -156,6 +158,10 @@ private suspend fun createDatagrunnlag(
             personHistorikkRelatertePersoner = personhistorikkForFamilie
     )
 }
+
+fun finnYtelse(ytelseFraRequest: Ytelse?, clientId: String?) =
+        (ytelseFraRequest ?: Ytelse.fromClientId(clientId))
+                ?: throw KonsumentIkkeFunnet("Fant ikke clientId i mapping til ytelse. Ta kontakt med medlemskap-teamet for tilgang til tjenesten.")
 
 //Midlertidig kode, ekstra feilhåndtering fordi integrasjonen vår mot PDL ikke er helt 100% ennå..
 private suspend fun hentPersonhistorikkFraPdl(services: Services, fnr: String, callId: String): Personhistorikk? {
