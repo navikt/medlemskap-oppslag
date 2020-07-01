@@ -1,6 +1,5 @@
 package no.nav.medlemskap.regler.funksjoner
 
-import no.nav.medlemskap.common.dekningKoderCounter
 import no.nav.medlemskap.domene.Medlemskap
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.regler.common.Funksjoner.er
@@ -28,12 +27,8 @@ object MedlFunksjoner {
             this.brukerensPerioderIMedlSiste12Mnd(kontrollPeriode).filter { it.erMedlem == erMedlem && it.lovvalg er "ENDL" }
                     .harSammenhengendeMedlemskapIHeleGittPeriode(kontrollPeriode)
 
-
-    infix fun List<Medlemskap>.medlemskapsPerioderOver12MndPeriodeDekning(kontrollPeriode: Periode): List<String> =
-            this.medlemskapsPerioderOver12MndPeriode(true, kontrollPeriode).map {
-                dekningKoderCounter(it.dekning ?: "Uten kodeverdi i dekning")
-                it.dekning.orEmpty()
-            }
+    infix fun List<Medlemskap>.gjeldendeDekning(kontrollPeriode: Periode): String =
+            this.medlemskapsPerioderOver12MndPeriode(true, kontrollPeriode).sorted().last { it.dekning != null }.dekning!!
 
     private fun List<Medlemskap>.harSammenhengendeMedlemskapIHeleGittPeriode(kontrollPeriode: Periode) =
             this.any { it.fraOgMed.isBefore(kontrollPeriode.fom?.plusDays(1)) }
