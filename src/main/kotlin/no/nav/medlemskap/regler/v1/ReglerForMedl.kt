@@ -1,5 +1,6 @@
 package no.nav.medlemskap.regler.v1
 
+import no.nav.medlemskap.common.dekningCounter
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Dekning.Companion.gjelderForYtelse
 import no.nav.medlemskap.regler.common.*
@@ -218,6 +219,7 @@ class ReglerForMedl(
 
     private fun harBrukerMedlemskapSomOmfatterYtelse(): Resultat {
         val dekning = medlemskap gjeldendeDekning kontrollPeriodeForMedl
+        dekningCounter(dekning)
 
         return when {
             Dekning.from(dekning).gjelderForYtelse(ytelse) -> ja("Bruker har dekning", dekning)

@@ -60,24 +60,19 @@ private fun getenv(env: String, defaultValue: String): String {
 
 fun regelCounter(regel: String, status: String): Counter = Counter
         .builder("regel_calls_total")
-        .tags("regel", regel, "status", status)
+        .tags("regel", regel, "status", status, "ytelse", YtelseSingleton.ytelse)
         .description("counter for ja, nei, uavklart for regel calls")
         .register(Metrics.globalRegistry)
-
-fun konsumentCounter(konsument: String): Counter =
-        Counter.builder("konsument")
-                .tags("konsument", konsument)
-                .description("teller hvilke konsumenter som gjør kall")
-                .register(Metrics.globalRegistry)
 
 fun stillingsprosentCounter(stillingsprosent: Double): Counter =
         if (stillingsprosent < 100.0) {
             Counter.builder("stillingsprosent_deltid")
-                    .tags("stillingsprosent", getStillingsprosentIntervall(stillingsprosent))
+                    .tags("stillingsprosent", getStillingsprosentIntervall(stillingsprosent), "ytelse", YtelseSingleton.ytelse)
                     .description("counter for fordeling av stillingsprosenter")
                     .register(Metrics.globalRegistry)
         } else {
             Counter.builder("stillingsprosent_heltid")
+                    .tags("ytelse", YtelseSingleton.ytelse)
                     .description("counter for antall brukere med heltidsstilling")
                     .register(Metrics.globalRegistry)
         }
@@ -85,22 +80,25 @@ fun stillingsprosentCounter(stillingsprosent: Double): Counter =
 
 fun merEnn10ArbeidsforholdCounter(): Counter = Counter
         .builder("over_10_arbeidsforhold")
+        .tags("ytelse", YtelseSingleton.ytelse)
         .description("counter for brukere med flere enn 10 arbeidsforhold")
         .register(Metrics.globalRegistry)
 
 fun usammenhengendeArbeidsforholdCounter(): Counter = Counter
         .builder("usammenhengende_arbeidsforhold")
+        .tags("ytelse", YtelseSingleton.ytelse)
         .description("counter for usammenhengende arbeidsforhold")
         .register(Metrics.globalRegistry)
 
 fun harIkkeArbeidsforhold12MndTilbakeCounter(): Counter = Counter
         .builder("ingen_arbeidsforhold_fra_12_mnd_tilbake")
+        .tags("ytelse", YtelseSingleton.ytelse)
         .description("counter for brukere som ikke har arbeidsforhold som starter 12 mnd tilbake")
         .register(Metrics.globalRegistry)
 
-fun dekningKoderCounter(dekning: String): Counter = Counter
+fun dekningCounter(dekning: String): Counter = Counter
         .builder("dekningstyper")
-        .tags( "dekningstyper", dekning)
+        .tags( "dekningstyper", dekning, "ytelse", YtelseSingleton.ytelse)
         .description("Ulike dekningskoder til brukere som har spurt tjenesten")
         .register(Metrics.globalRegistry)
 
@@ -156,3 +154,7 @@ fun totalGauge(): AtomicInteger =
                     .description("Indikerer applikasjonens helsestatus. 0 er OK, 1 indikerer feil.")
                     .register(Metrics.globalRegistry)
         }
+
+object YtelseSingleton {
+    var ytelse: String = ""
+}

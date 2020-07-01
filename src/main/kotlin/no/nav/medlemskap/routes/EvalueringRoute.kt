@@ -14,6 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
+import no.nav.medlemskap.common.YtelseSingleton
 import no.nav.medlemskap.common.apiCounter
 import no.nav.medlemskap.common.exceptions.KonsumentIkkeFunnet
 import no.nav.medlemskap.config.Configuration
@@ -47,7 +48,6 @@ fun Routing.evalueringRoute(
 
                 val request = validerRequest(call.receive())
                 val callId = call.callId ?: UUID.randomUUID().toString()
-                //konsumentCounter(subject).increment()
 
                 val datagrunnlag = createDatagrunnlag(
                         fnr = request.fnr,
@@ -142,8 +142,9 @@ private suspend fun createDatagrunnlag(
     val oppgaver = gosysOppgaver.await()
     val ytelse = Ytelse.fromClientId(clientId)
             ?: throw KonsumentIkkeFunnet("Fant ikke clientId i mapping til ytelse. Ta kontakt med medlemskap-teamet for tilgang til tjenesten.")
+    YtelseSingleton.ytelse = ytelse.name.toLowerCase().capitalize()
 
-    Datagrunnlag(
+            Datagrunnlag(
             periode = periode,
             brukerinput = brukerinput,
             personhistorikk = historikkFraTps,
