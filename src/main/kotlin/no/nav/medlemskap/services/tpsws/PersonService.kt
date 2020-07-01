@@ -1,6 +1,7 @@
 package no.nav.medlemskap.services.tpsws
 
 import mu.KotlinLogging
+import no.bekk.bekkopen.person.FodselsnummerValidator
 import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
 import no.nav.medlemskap.common.exceptions.Sikkerhetsbegrensing
 import no.nav.medlemskap.domene.*
@@ -18,7 +19,7 @@ class PersonService(private val personClient: PersonClient, private val pdlServi
             } catch (err: Exception) {
                 when (err) {
                     is HentPersonhistorikkPersonIkkeFunnet -> {
-                        Companion.secureLogger.info("Fikk HentPersonhistorikkPersonIkkeFunnet med fnr {} og fom {}", fnr, fom)
+                        secureLogger.info("Fikk HentPersonhistorikkPersonIkkeFunnet med fnr {} og fom {}", fnr, fom)
                         throw PersonIkkeFunnet(err, "TPS")
                     }
                     is HentPersonhistorikkSikkerhetsbegrensning -> throw Sikkerhetsbegrensing(err, "TPS")
@@ -45,7 +46,12 @@ class PersonService(private val personClient: PersonClient, private val pdlServi
 
     private suspend fun personhistorikkRelatertPerson(fnr: String, fom: LocalDate) =
             try {
-                mapPersonhistorikkRelatertPersonResultat(personClient.hentPersonHistorikk(fnr, fom))
+                if (!FodselsnummerValidator.isValid(fnr)) {
+                    secureLogger.info("{} er ikke et gyldig fnr, så vi henter ikke personhistorikk for dette", fnr)
+                    PersonhistorikkRelatertPerson(fnr, emptyList(), emptyList(), emptyList(), emptyList())
+                } else {
+                    mapPersonhistorikkRelatertPersonResultat(fnr, personClient.hentPersonHistorikk(fnr, fom))
+                }
             } catch (err: Exception) {
                 throw when (err) {
                     is HentPersonhistorikkPersonIkkeFunnet -> PersonIkkeFunnet(err, "TPS")

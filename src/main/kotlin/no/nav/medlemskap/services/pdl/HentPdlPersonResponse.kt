@@ -27,7 +27,6 @@ data class Adressebeskyttelse(
         val gradering: AdressebeskyttelseGradering
 )
 
-
 data class Kjoenn(
         val kjoenn: KjoennType
 )

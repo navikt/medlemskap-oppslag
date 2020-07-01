@@ -24,6 +24,7 @@ import no.nav.medlemskap.services.Services
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
+import javax.xml.ws.soap.SOAPFaultException
 
 private val logger = KotlinLogging.logger { }
 
@@ -161,7 +162,7 @@ private suspend fun hentPersonhistorikkFraPdl(services: Services, fnr: String, c
     return try {
         services.pdlService.hentPersonHistorikk(fnr, callId)
     } catch (e: Exception) {
-        logger.error("hentPersonHistorikk feiler: " + e.message)
+        logger.error("hentPersonHistorikk feiler", e)
         secureLogger.error("hentPersonHistorikk feiler for fnr {}", fnr, e)
         null
     }
@@ -172,6 +173,11 @@ private suspend fun CoroutineScope.hentPersonhistorikkForFamilieAsync(personHist
     return personHistorikkFraPdl?.let {
         try {
             services.personService.hentPersonhistorikkForRelevantFamilie(it, periode)
+        } catch (sfe: SOAPFaultException) {
+            logger.error("SoapFault under henting av personhistorikk for familie", sfe)
+            //Må forstå mer av TPS svarte med FEIL, folgende status: S016007F og folgende melding: FØDSELSNR ER IKKE ENTYDIG
+            secureLogger.error("SoapFault mot TPS for familierelasjoner {} og sivilstand {}", it.familierelasjoner, it.sivilstand, sfe)
+            emptyList<PersonhistorikkRelatertPerson>()
         } catch (e: Exception) {
             logger.error("Feilet under henting av personhistorikk for familie", e)
             emptyList<PersonhistorikkRelatertPerson>()

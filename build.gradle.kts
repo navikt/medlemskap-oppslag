@@ -20,6 +20,7 @@ val restAssuredVersion = "4.3.0"
 val resilience4jVersion = "1.5.0"
 val threetenVersion = "1.5.0"
 val cucumberVersion = "5.6.0"
+val nocommonsVersion = "0.9.0"
 
 //Temporary to fix high severity Snyk vulernabilities:
 //val nettyCodecVersion = "4.1.46.Final"
@@ -92,6 +93,7 @@ dependencies {
     implementation(tjenestespesifikasjon("person-v3-tjenestespesifikasjon"))
     implementation("io.github.resilience4j:resilience4j-retry:$resilience4jVersion")
     implementation("io.github.resilience4j:resilience4j-kotlin:$resilience4jVersion")
+    implementation("no.bekk.bekkopen:nocommons:$nocommonsVersion")
 
     //Temporary to fix high severity Snyk vulernabilities:
     //implementation("io.netty:netty-codec:$nettyCodecVersion")
