@@ -1,5 +1,6 @@
 package no.nav.medlemskap.regler.v1
 
+import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Journalpost
 import no.nav.medlemskap.domene.Medlemskap
 import no.nav.medlemskap.domene.Oppgave
@@ -65,4 +66,14 @@ class ReglerForRegistrerteOpplysninger(
                 oppgaver.finnesAapneOppgaver() -> ja()
                 else -> nei()
             }
+
+    companion object {
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForRegistrerteOpplysninger {
+            return ReglerForRegistrerteOpplysninger(
+                    medlemskap = datagrunnlag.medlemskap,
+                    oppgaver = datagrunnlag.oppgaver,
+                    dokument = datagrunnlag.dokument
+            )
+        }
+    }
 }

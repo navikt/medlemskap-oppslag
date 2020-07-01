@@ -15,10 +15,13 @@ import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.konkursStatu
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.sisteArbeidsforholdSkipsregister
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.sisteArbeidsforholdYrkeskode
 
-class ReglerForArbeidsforhold(val datagrunnlag: Datagrunnlag) : Regler() {
-
-    private val arbeidsforhold: List<Arbeidsforhold> = datagrunnlag.arbeidsforhold
-    private val kontrollPeriodeForArbeidsforhold = Datohjelper(datagrunnlag.periode, datagrunnlag.ytelse).kontrollPeriodeForArbeidsforhold()
+class ReglerForArbeidsforhold(
+        val arbeidsforhold: List<Arbeidsforhold>,
+        val periode: InputPeriode,
+        val ytelse: Ytelse,
+        val reglerForLovvalg: ReglerForLovvalg
+) : Regler() {
+    private val kontrollPeriodeForArbeidsforhold = Datohjelper(periode, ytelse).kontrollPeriodeForArbeidsforhold()
 
     override fun hentHovedRegel() =
             sjekkRegel {
@@ -68,8 +71,6 @@ class ReglerForArbeidsforhold(val datagrunnlag: Datagrunnlag) : Regler() {
                     }
                 }
             }
-
-    private val reglerForLovvalg = ReglerForLovvalg(datagrunnlag)
 
     private val harBrukerSammenhengendeArbeidsforholdSiste12Mnd = Regel(
             identifikator = "3",
@@ -172,4 +173,12 @@ class ReglerForArbeidsforhold(val datagrunnlag: Datagrunnlag) : Regler() {
                 arbeidsforhold.konkursStatuserArbeidsgivere(kontrollPeriodeForArbeidsforhold).finnes() -> nei("Arbeidstaker har hatt arbeidsforhold til arbeidsgiver som har konkurs-status satt")
                 else -> ja()
             }
+
+    companion object {
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForArbeidsforhold {
+            val reglerForLovvalg = ReglerForLovvalg.fraDatagrunnlag(datagrunnlag)
+
+            return ReglerForArbeidsforhold(datagrunnlag.arbeidsforhold, datagrunnlag.periode, datagrunnlag.ytelse, reglerForLovvalg)
+        }
+    }
 }

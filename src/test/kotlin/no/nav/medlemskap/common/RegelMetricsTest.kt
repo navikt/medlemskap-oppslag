@@ -48,7 +48,7 @@ class RegelMetricsTest {
         gjørNoeMagiJegIkkeForstår()
 
         //ReglerForGrunnforordningen(initialiserFakta(personleser.enkelAmerikansk())).hentHovedRegel().utfør(mutableListOf())
-        ReglerForArbeidsforhold(personleser.norskMedEttArbeidsforholdMedArbeidsavtaleUnder25ProsentStillingIPeriode()).hentHovedRegel().utfør(mutableListOf())
+        ReglerForArbeidsforhold.fraDatagrunnlag(personleser.norskMedEttArbeidsforholdMedArbeidsavtaleUnder25ProsentStillingIPeriode()).hentHovedRegel().utfør(mutableListOf())
 
         gjørNoeMagiJegIkkeForstår()
 

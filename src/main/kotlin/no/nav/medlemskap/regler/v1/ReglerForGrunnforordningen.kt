@@ -1,15 +1,16 @@
 package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.InputPeriode
+import no.nav.medlemskap.domene.Statsborgerskap
+import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.finnesI
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedSluttAvKontrollperiode
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedStartAvKontrollperiode
 
-class ReglerForGrunnforordningen(val datagrunnlag: Datagrunnlag) : Regler() {
-
-    val statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap
-    val kontrollPeriodeForStatsborgerskap = Datohjelper(datagrunnlag.periode, datagrunnlag.ytelse).kontrollPeriodeForPersonhistorikk()
+class ReglerForGrunnforordningen(val ytelse: Ytelse, val periode: InputPeriode, val statsborgerskap: List<Statsborgerskap>) : Regler() {
+    val kontrollPeriodeForStatsborgerskap = Datohjelper(periode, ytelse).kontrollPeriodeForPersonhistorikk()
 
     override fun hentHovedRegel() =
             sjekkRegel {
@@ -64,4 +65,13 @@ class ReglerForGrunnforordningen(val datagrunnlag: Datagrunnlag) : Regler() {
             "HUN" to "UNGARN",
             "AUT" to "ØSTERRIKE"
     )
+
+    companion object {
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForGrunnforordningen {
+            return ReglerForGrunnforordningen(
+                    ytelse = datagrunnlag.ytelse,
+                    periode = datagrunnlag.periode,
+                    statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap)
+        }
+    }
 }
