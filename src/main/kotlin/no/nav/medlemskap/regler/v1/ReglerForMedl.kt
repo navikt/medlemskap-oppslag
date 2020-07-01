@@ -1,10 +1,6 @@
 package no.nav.medlemskap.regler.v1
 
-import no.nav.medlemskap.domene.Arbeidsforhold
-import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.Dekning
-import no.nav.medlemskap.domene.Dekning.Companion.gjelderForYtelse
-import no.nav.medlemskap.domene.Medlemskap
+import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.harSammeAdressePaaGitteDatoer
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.arbeidsforholdForDato
@@ -17,13 +13,17 @@ import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.harMedlPeriodeMedOgUte
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.harPeriodeMedMedlemskap
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.tidligsteFraOgMedDatoForMedl
 
-class ReglerForMedl(val datagrunnlag: Datagrunnlag) : Regler() {
+class ReglerForMedl(
+        val medlemskap: List<Medlemskap>,
+        val arbeidsforhold: List<Arbeidsforhold>,
+        val periode: InputPeriode,
+        val ytelse: Ytelse,
+        val oppgaver: List<Oppgave>,
+        val bostedsadresser: List<Adresse>
+) : Regler() {
 
-    private val medlemskap: List<Medlemskap> = datagrunnlag.medlemskap
-    private val arbeidsforhold: List<Arbeidsforhold> = datagrunnlag.arbeidsforhold
-    private val kontrollPeriodeForMedl = Datohjelper(datagrunnlag.periode, datagrunnlag.ytelse).kontrollPeriodeForMedl()
-    private val datohjelper = Datohjelper(datagrunnlag.periode, datagrunnlag.ytelse)
-    private val ytelse = datagrunnlag.ytelse
+    private val kontrollPeriodeForMedl = Datohjelper(periode, ytelse).kontrollPeriodeForMedl()
+    private val datohjelper = Datohjelper(periode, ytelse)
 
     override fun hentHovedRegel(): Regel =
             sjekkRegel {
@@ -178,7 +178,7 @@ class ReglerForMedl(val datagrunnlag: Datagrunnlag) : Regler() {
 
     private fun harBrukerAapneOppgaverIGsak(): Resultat =
             when {
-                datagrunnlag.oppgaver.finnesAapneOppgaver() -> ja()
+                oppgaver.finnesAapneOppgaver() -> ja()
                 else -> nei()
             }
 
@@ -190,7 +190,7 @@ class ReglerForMedl(val datagrunnlag: Datagrunnlag) : Regler() {
 
     private fun erBrukersAdresseUendret(): Resultat =
             when {
-                datagrunnlag.personhistorikk.bostedsadresser.harSammeAdressePaaGitteDatoer(
+                bostedsadresser.harSammeAdressePaaGitteDatoer(
                         medlemskap.tidligsteFraOgMedDatoForMedl(kontrollPeriodeForMedl), kontrollPeriodeForMedl.tom!!) -> ja()
                 else -> nei()
             }
