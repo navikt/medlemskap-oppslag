@@ -52,7 +52,7 @@ fun createHttpServer(
     }
 
     install(CallLogging) {
-        level = Level.DEBUG
+        level = Level.INFO
         callIdMdc(MDC_CALL_ID)
     }
 
