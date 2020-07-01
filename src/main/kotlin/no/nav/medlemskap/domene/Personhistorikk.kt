@@ -50,7 +50,7 @@ data class Adresse(
 data class Sivilstand(
         val type: Sivilstandstype,
         val gyldigFraOgMed: LocalDate?,
-        val relatertVedSivilstand: String,
+        val relatertVedSivilstand: String?,
         val folkeregistermetadata: Folkeregistermetadata?
 )
 
