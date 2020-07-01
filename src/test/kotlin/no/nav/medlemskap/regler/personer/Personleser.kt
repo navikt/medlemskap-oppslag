@@ -23,7 +23,7 @@ class Personleser {
     fun enkelNorskPilot() = lesDatagrunnlag("$norsk/norsk_jobb_ikke_maritim_men_pilot.json")
     fun enkelNorskUtenlandskSkip() = lesDatagrunnlag("$norsk/norsk_jobb_maritim_utenlandsk_skip.json")
     fun norskDobbeltStatsborgerskap() = lesDatagrunnlag("$norsk/dobbelt_statsborgerskap.json")
-    fun norskUtenBostedsadresse() = lesDatagrunnlag("$norsk/norsk_bosatt_i_utland.json")
+    fun norskUtenBostedsadresse() = lesDatagrunnlag("$norsk/ingen_bosteds_adresse.json")
     fun postadresseIUtland() = lesDatagrunnlag("$norsk/norsk_postadresse_i_utland.json")
     fun norskMedOpplysningerIMedl() = lesDatagrunnlag("$norsk/norsk_med_opplysninger_i_medl.json")
     fun norskUtenMedlemskapIMedl() = lesDatagrunnlag("$norsk/norsk_uten_medlemskap_i_medl.json")
