@@ -10,7 +10,7 @@ val logstashVersion = "6.4"
 val konfigVersion = "1.6.10.0"
 val kotlinLoggerVersion = "1.7.9"
 val tjenestespesifikasjonerVersion = "1.2019.12.18-12.22-ce897c4eb2c1"
-val cxfVersion = "3.3.6"
+val cxfVersion = "3.2.2"
 val coroutinesVersion = "1.3.3"
 val wireMockVersion = "2.26.3"
 val mockkVersion = "1.9.3"
@@ -22,9 +22,8 @@ val threetenVersion = "1.5.0"
 val cucumberVersion = "5.6.0"
 val nocommonsVersion = "0.9.0"
 
-//Temporary to fix high severity Snyk vulernabilities:
-//val nettyCodecVersion = "4.1.46.Final"
-//val commonsCodecVersion = "3.2.2"
+val nettyCodecVersion = "4.1.44.Final"
+val commonsCodecVersion = "3.2.2"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
@@ -96,8 +95,8 @@ dependencies {
     implementation("no.bekk.bekkopen:nocommons:$nocommonsVersion")
 
     //Temporary to fix high severity Snyk vulernabilities:
-    //implementation("io.netty:netty-codec:$nettyCodecVersion")
-    //implementation("commons-collections:commons-collections:$commonsCodecVersion")
+    implementation("io.netty:netty-codec:$nettyCodecVersion")
+    implementation("commons-collections:commons-collections:$commonsCodecVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
