@@ -3,17 +3,8 @@
 
 Egenskap: Regel 10: Er bruker folkeregistert i Norge?
 
-  Scenario: Norsk postadresse
-
-    Gitt følgende bostedsadresser i personhistorikken
-      | Adresse | Landkode | Fra og med dato | Til og med dato |
-      | Oslo    | NOR      | 01.01.2000      |                 |
-
-    Gitt følgende postadresser i personhistorikken
-      | Adresse | Landkode | Fra og med dato | Til og med dato |
-      | Oslo    | NOR      | 01.01.2000      |                 |
-
-    Og følgende personstatuser i personhistorikken
+  Bakgrunn:
+    Gitt følgende personstatuser i personhistorikken
       | Personstatus | Fra og med dato | Til og med dato |
       | FØDR         | 01.01.2000      |                 |
 
@@ -29,9 +20,41 @@ Egenskap: Regel 10: Er bruker folkeregistert i Norge?
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
       | 1             | BEDR             | NOR      | 9              |
 
+  Scenariomal: Bruker har folkeregistrert postadresse og bostedsadresse
+
+    Gitt følgende bostedsadresser i personhistorikken
+      | Adresse | Landkode     | Fra og med dato | Til og med dato |
+      | Oslo    | <Bor i land> | 01.01.2000      |                 |
+
+    Gitt følgende postadresser i personhistorikken
+      | Adresse | Landkode    | Fra og med dato | Til og med dato |
+      | Oslo    | <Post land> | 01.01.2000      |                 |
+
     Når hovedregel med avklaring "Er lovvalget norsk lov?" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | <Arbeid utenfor Norge>        |
 
-    Så skal regel "10" gi svaret "Ja"
+    Så skal regel "10" gi svaret "<Svar>"
 
+    Eksempler:
+    | Bor i land | Post land | Svar |
+    | NOR        | NOR       | Ja   |
+    | NOR        | FRA       | Nei  |
+    | FRA        | FRA       | Nei  |
+
+  Scenariomal: Ingen postadresse, men bostedsadresse
+
+    Gitt følgende bostedsadresser i personhistorikken
+      | Adresse | Landkode | Fra og med dato | Til og med dato |
+      | XXX     | <Land>   | 01.01.2000      |                 |
+
+    Når hovedregel med avklaring "Er lovvalget norsk lov?" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | <Arbeid utenfor Norge>        |
+
+    Så skal regel "10" gi svaret "<Svar>"
+
+    Eksempler:
+      | Land | Svar |
+      | NOR  | Ja   |
+      | FRA  | Nei  |
