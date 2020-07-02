@@ -4,9 +4,10 @@ import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
 import no.nav.medlemskap.cucumber.*
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.regler.assertDelresultat
 import no.nav.medlemskap.regler.common.Resultat
+import no.nav.medlemskap.regler.evaluer
 import no.nav.medlemskap.regler.v1.ReglerForGrunnforordningen
-import no.nav.medlemskap.regler.v1.ReglerForLovvalg
 import no.nav.medlemskap.regler.v1.ReglerForRegistrerteOpplysninger
 import no.nav.medlemskap.regler.v1.ReglerService
 import no.nav.medlemskap.services.ereg.Ansatte
@@ -111,6 +112,10 @@ class RegelSteps : No {
 
             assertEquals(forventetSvar, resultat!!.svar)
         }
+
+        Så("skal regel {string} gi svaret {string}") { regelIdentifikator: String?, forventetSvar: String? ->
+            assertDelresultat(regelIdentifikator!!, domenespråkParser.parseSvar(forventetSvar!!), resultat!!)
+        }
     }
 
     private fun byggDatagrunnlag(medlemskapsparametre: Medlemskapsparametre? = null): Datagrunnlag {
@@ -174,7 +179,9 @@ class RegelSteps : No {
     }
 
     private fun evaluerLovvalg(datagrunnlag: Datagrunnlag): Resultat {
-        val regelsett = ReglerForLovvalg.fraDatagrunnlag(datagrunnlag)
-        return regelsett.hentHovedRegel().utfør(mutableListOf())
+//        val regelsett = ReglerForLovvalg.fraDatagrunnlag(datagrunnlag)
+//        return regelsett.hentHovedRegel().utfør(mutableListOf())
+
+        return evaluer(datagrunnlag)
     }
 }
