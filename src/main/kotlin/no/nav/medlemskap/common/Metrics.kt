@@ -64,6 +64,12 @@ fun regelCounter(regel: String, status: String, ytelse: String): Counter = Count
         .description("counter for ja, nei, uavklart for regel calls")
         .register(Metrics.globalRegistry)
 
+fun ytelseCounter(ytelse: String): Counter = Counter
+        .builder("ytelse_total")
+        .tags("ytelse", ytelse)
+        .description("counter for ytelser")
+        .register(Metrics.globalRegistry)
+
 fun stillingsprosentCounter(stillingsprosent: Double, ytelse: String): Counter =
         if (stillingsprosent < 100.0) {
             Counter.builder("stillingsprosent_deltid")

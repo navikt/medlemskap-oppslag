@@ -16,8 +16,10 @@ import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
 import no.nav.medlemskap.common.apiCounter
 import no.nav.medlemskap.common.exceptions.KonsumentIkkeFunnet
+import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
 import no.nav.medlemskap.services.Services
@@ -143,6 +145,7 @@ private suspend fun createDatagrunnlag(
     val journalPoster = journalPosterRequest.await()
     val oppgaver = gosysOppgaver.await()
     val ytelse: Ytelse = finnYtelse(ytelseFraRequest, clientId)
+    ytelseCounter(ytelse.metricName()).increment()
 
             Datagrunnlag(
             periode = periode,
