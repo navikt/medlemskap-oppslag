@@ -37,7 +37,7 @@ Kallet er en POST på `/`
     "fnr": "123456789",
     "periode": {
         "fom": "2019-01-01", 
-        "tom": "2019-12-31", 
+        "tom": "2019-12-31"
     }, 
     "brukerinput": {
         "arbeidUtenforNorge": false

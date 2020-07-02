@@ -31,6 +31,8 @@ object Funksjoner {
 
     fun List<Any>?.erTom() = this == null || this.isNullOrEmpty()
 
+    fun List<Any>?.erIkkeTom() = !erTom()
+
     fun List<String?>?.finnes() = this != null && this.isNotEmpty()
 
     infix fun List<Int?>.finnesMindreEnn(tall: Int) = this.stream().anyMatch { p -> p == null || p < tall }
