@@ -2,7 +2,6 @@ package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 import org.threeten.extra.Interval
 
 object Funksjoner {
@@ -84,7 +83,7 @@ fun uavklartKonklusjon(ytelse: Ytelse) = Regel(
         identifikator = konklusjonIdentifikator,
         avklaring = "Er bruker medlem?",
         beskrivelse = "",
-        ytelse = ytelse.metricName(),
+        ytelse = ytelse,
         operasjon = { uavklart("Kan ikke konkludere med medlemskap") }
 )
 
@@ -92,7 +91,7 @@ fun jaKonklusjon(ytelse: Ytelse) = Regel(
         identifikator = konklusjonIdentifikator,
         avklaring = "Er bruker medlem?",
         beskrivelse = "",
-        ytelse = ytelse.metricName(),
+        ytelse = ytelse,
         operasjon = { ja("Bruker er medlem") }
 )
 
@@ -100,7 +99,7 @@ fun neiKonklusjon(ytelse: Ytelse) = Regel(
         identifikator = konklusjonIdentifikator,
         avklaring = "Er bruker medlem?",
         beskrivelse = "",
-        ytelse = ytelse.metricName(),
+        ytelse = ytelse,
         operasjon = { nei("Bruker er ikke medlem") }
 )
 

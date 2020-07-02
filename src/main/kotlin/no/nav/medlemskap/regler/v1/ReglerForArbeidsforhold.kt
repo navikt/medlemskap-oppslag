@@ -76,7 +76,7 @@ class ReglerForArbeidsforhold(
             identifikator = "3",
             avklaring = "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?",
             beskrivelse = "",
-            ytelse = ytelse.name,
+            ytelse = ytelse,
             operasjon = { sjekkSammenhengendeArbeidsforhold() }
     )
 
@@ -84,7 +84,7 @@ class ReglerForArbeidsforhold(
             identifikator = "4",
             avklaring = "Er foretaket registrert i foretaksregisteret?",
             beskrivelse = "",
-            ytelse = ytelse.name,
+            ytelse = ytelse,
             operasjon = { sjekkArbeidsgiver() }
     )
 
@@ -92,7 +92,7 @@ class ReglerForArbeidsforhold(
             identifikator = "5",
             avklaring = "Har arbeidsgiver sin hovedaktivitet i Norge?",
             beskrivelse = "",
-            ytelse = ytelse.name,
+            ytelse = ytelse,
             operasjon = { sjekkOmForetakMerEnn5Ansatte() }
     )
 
@@ -100,7 +100,7 @@ class ReglerForArbeidsforhold(
             identifikator = "6",
             avklaring = "Er foretaket aktivt?",
             beskrivelse = "",
-            ytelse = ytelse.name,
+            ytelse = ytelse,
             operasjon = { sjekKonkursstatus() }
     )
 
@@ -108,7 +108,7 @@ class ReglerForArbeidsforhold(
             identifikator = "7",
             avklaring = "Er arbeidsforholdet maritimt?",
             beskrivelse = "",
-            ytelse = ytelse.name,
+            ytelse = ytelse,
             operasjon = { sjekkMaritim() }
     )
 
@@ -116,7 +116,7 @@ class ReglerForArbeidsforhold(
             identifikator = "7.1",
             avklaring = "Er bruker ansatt på et NOR-skip?",
             beskrivelse = "",
-            ytelse = ytelse.name,
+            ytelse = ytelse,
             operasjon = { sjekkSkipsregister() }
     )
 
@@ -124,7 +124,7 @@ class ReglerForArbeidsforhold(
             identifikator = "8",
             avklaring = "Er bruker pilot eller kabinansatt?",
             beskrivelse = "",
-            ytelse = ytelse.name,
+            ytelse = ytelse,
             operasjon = { sjekkYrkeskodeLuftfart() }
     )
 

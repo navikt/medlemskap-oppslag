@@ -1,19 +1,21 @@
 package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.common.regelCounter
+import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 
 data class Regel(
         val identifikator: String,
         val avklaring: String,
         val beskrivelse: String,
-        val ytelse: String,
+        val ytelse: Ytelse,
         val operasjon: () -> Resultat,
         val hvisJa: Regel? = null,
         val hvisNei: Regel? = null
 ) {
     fun utfør(resultatliste: MutableList<Resultat>, harDekning: Svar? = null, dekning: String = ""): Resultat {
         val resultat = operasjon.invoke().apply {
-            regelCounter(this@Regel.identifikator + ". " + this@Regel.avklaring.replace("?", ""), this.svar.name, ytelse).increment()
+            regelCounter(this@Regel.identifikator + ". " + this@Regel.avklaring.replace("?", ""), this.svar.name, ytelse.metricName()).increment()
         }.copy(
                 identifikator = identifikator,
                 avklaring = avklaring
@@ -35,7 +37,7 @@ data class Regel(
     }
 
     fun utfør(): Resultat = operasjon.invoke().apply {
-        regelCounter(this@Regel.identifikator + ". " + this@Regel.avklaring.replace("?", ""), this.svar.name, ytelse).increment()
+        regelCounter(this@Regel.identifikator + ". " + this@Regel.avklaring.replace("?", ""), this.svar.name, ytelse.metricName()).increment()
     }.copy(
             identifikator = identifikator,
             avklaring = avklaring

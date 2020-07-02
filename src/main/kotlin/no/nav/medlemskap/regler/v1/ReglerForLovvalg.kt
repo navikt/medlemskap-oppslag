@@ -55,7 +55,7 @@ class ReglerForLovvalg(
             identifikator = "9",
             avklaring = "Har bruker utført arbeid utenfor Norge?",
             beskrivelse = "",
-            ytelse = ytelse.name,
+            ytelse = ytelse,
             operasjon = { sjekkOmBrukerHarJobbetUtenforNorge() }
     )
 
@@ -63,7 +63,7 @@ class ReglerForLovvalg(
             identifikator = "10",
             avklaring = "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
             beskrivelse = "",
-            ytelse = ytelse.name,
+            ytelse = ytelse,
             operasjon = { sjekkLandskode() }
     )
 
@@ -71,7 +71,7 @@ class ReglerForLovvalg(
             identifikator = "11",
             avklaring = "Er bruker norsk statsborger?",
             beskrivelse = "",
-            ytelse = ytelse.name,
+            ytelse = ytelse,
             operasjon = { sjekkOmBrukerErNorskStatsborger() }
     )
 
@@ -79,7 +79,7 @@ class ReglerForLovvalg(
             identifikator = "12",
             avklaring = "Har bruker vært i minst 25% stilling de siste 12 mnd?",
             beskrivelse = "",
-            ytelse = ytelse.name,
+            ytelse = ytelse,
             operasjon = { sjekkOmBrukerHarJobbet25ProsentEllerMer() }
     )
 

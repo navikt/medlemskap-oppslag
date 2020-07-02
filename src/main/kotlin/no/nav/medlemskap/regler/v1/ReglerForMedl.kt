@@ -99,7 +99,7 @@ class ReglerForMedl(
             identifikator = "A",
             avklaring = "Finnes det noe på personen i MEDL?",
             beskrivelse = "",
-            ytelse = ytelse.name,
+            ytelse = ytelse,
             operasjon = { harBrukerPerioderIMedl() }
     )
 
@@ -107,7 +107,7 @@ class ReglerForMedl(
             identifikator = "B",
             avklaring = "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?",
             beskrivelse = "",
-            ytelse = ytelse.name,
+            ytelse = ytelse,
             operasjon = { harBrukerAapneOppgaverIGsak() }
     )
 
@@ -115,7 +115,7 @@ class ReglerForMedl(
             identifikator = "1.1",
             avklaring = "Er det periode både med og uten medlemskap innenfor 12 mnd?",
             beskrivelse = "",
-            ytelse = ytelse.name,
+            ytelse = ytelse,
             operasjon = { harPeriodeMedOgUtenMedlemskap() }
     )
 
@@ -123,7 +123,7 @@ class ReglerForMedl(
             identifikator = "1.2",
             avklaring = "Er det en periode med medlemskap?",
             beskrivelse = "",
-            ytelse = ytelse.name,
+            ytelse = ytelse,
             operasjon = { periodeMedMedlemskap() }
     )
 
@@ -131,7 +131,7 @@ class ReglerForMedl(
             identifikator = "1.2.1",
             avklaring = "Er hele perioden uten medlemskap innenfor 12-måneders perioden?",
             beskrivelse = "",
-            ytelse = ytelse.name,
+            ytelse = ytelse,
             operasjon = { erMedlemskapPeriodeOver12MndPeriode(false) }
     )
 
@@ -139,7 +139,7 @@ class ReglerForMedl(
             identifikator = "1.3",
             avklaring = "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
             beskrivelse = "",
-            ytelse = ytelse.name,
+            ytelse = ytelse,
             operasjon = { erMedlemskapPeriodeOver12MndPeriode(true) }
     )
 
@@ -148,7 +148,7 @@ class ReglerForMedl(
             identifikator = "1.2.2",
             avklaring = "Er bruker uten medlemskap sin situasjon uendret?",
             beskrivelse = "",
-            ytelse = ytelse.name,
+            ytelse = ytelse,
             operasjon = { erBrukersArbeidsforholdUendret() }
     )
 
@@ -156,7 +156,7 @@ class ReglerForMedl(
             identifikator = "1.2.3",
             avklaring = "Er bruker uten medlemskap sin situasjon uendret?",
             beskrivelse = "",
-            ytelse = ytelse.name,
+            ytelse = ytelse,
             operasjon = { erBrukersAdresseUendret() }
     )
 
@@ -164,7 +164,7 @@ class ReglerForMedl(
             identifikator = "1.4",
             avklaring = "Er brukers situasjon uendret?",
             beskrivelse = "",
-            ytelse = ytelse.name,
+            ytelse = ytelse,
             operasjon = { erBrukersArbeidsforholdUendret() }
     )
 
@@ -172,7 +172,7 @@ class ReglerForMedl(
             identifikator = "1.5",
             avklaring = "Er brukers situasjon uendret?",
             beskrivelse = "",
-            ytelse = ytelse.name,
+            ytelse = ytelse,
             operasjon = { erBrukersAdresseUendret() }
     )
 
@@ -180,7 +180,7 @@ class ReglerForMedl(
             identifikator = "1.6",
             avklaring = "Har bruker et medlemskap som omfatter ytelse? (Dekning i MEDL)",
             beskrivelse = "",
-            ytelse = ytelse.name,
+            ytelse = ytelse,
             operasjon = { harBrukerMedlemskapSomOmfatterYtelse() }
     )
 
