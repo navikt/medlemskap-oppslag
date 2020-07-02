@@ -21,6 +21,7 @@ class ReglerForGrunnforordningen(val ytelse: Ytelse, val periode: InputPeriode, 
             identifikator = "2",
             avklaring = "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?",
             beskrivelse = "",
+            ytelse = ytelse.name,
             operasjon = { sjekkStatsborgerskap() }
     )
 

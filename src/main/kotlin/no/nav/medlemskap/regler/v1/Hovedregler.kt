@@ -9,8 +9,8 @@ import no.nav.medlemskap.regler.common.uavklartKonklusjon
 class Hovedregler(datagrunnlag: Datagrunnlag) {
 
     private val resultatliste: MutableList<Resultat> = mutableListOf()
+    private val ytelse = datagrunnlag.ytelse
     private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
-
     private val reglerForRegistrerteOpplysningerIMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag)
     private val reglerForGrunnforordningen = ReglerForGrunnforordningen.fraDatagrunnlag(datagrunnlag)
     private val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag)
@@ -23,12 +23,12 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
             sjekkRegelsett {
                 reglerForRegistrerteOpplysninger
             } hvisJa {
-                uavklartKonklusjon
+                uavklartKonklusjon(ytelse)
             } hvisNei {
                 sjekkRegelsett {
                     reglerForGrunnforordningen
                 } hvisNei {
-                    uavklartKonklusjon
+                    uavklartKonklusjon(ytelse)
                 } hvisJa {
                     sjekkRegelsett {
                         reglerForArbeidsforhold

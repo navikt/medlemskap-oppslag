@@ -1,6 +1,8 @@
 package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.Periode
+import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 import org.threeten.extra.Interval
 
 object Funksjoner {
@@ -78,24 +80,27 @@ fun sjekkRegelsett(metode: () -> Regler): Regel = metode.invoke().hentHovedRegel
 
 const val konklusjonIdentifikator = "LOVME"
 
-val uavklartKonklusjon = Regel(
+fun uavklartKonklusjon(ytelse: Ytelse) = Regel(
         identifikator = konklusjonIdentifikator,
         avklaring = "Er bruker medlem?",
         beskrivelse = "",
+        ytelse = ytelse.metricName(),
         operasjon = { uavklart("Kan ikke konkludere med medlemskap") }
 )
 
-val jaKonklusjon = Regel(
+fun jaKonklusjon(ytelse: Ytelse) = Regel(
         identifikator = konklusjonIdentifikator,
         avklaring = "Er bruker medlem?",
         beskrivelse = "",
+        ytelse = ytelse.metricName(),
         operasjon = { ja("Bruker er medlem") }
 )
 
-val neiKonklusjon = Regel(
+fun neiKonklusjon(ytelse: Ytelse) = Regel(
         identifikator = konklusjonIdentifikator,
         avklaring = "Er bruker medlem?",
         beskrivelse = "",
+        ytelse = ytelse.metricName(),
         operasjon = { nei("Bruker er ikke medlem") }
 )
 
