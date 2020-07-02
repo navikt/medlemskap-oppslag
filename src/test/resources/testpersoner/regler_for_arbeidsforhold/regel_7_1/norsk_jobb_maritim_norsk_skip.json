@@ -1,7 +1,7 @@
 {
   "periode": {
     "fom": "2020-01-30",
-    "tom": "2021-01-30"
+    "tom": "2020-01-30"
   },
   "brukerinput": {
     "arbeidUtenforNorge": false
@@ -10,11 +10,28 @@
     "statsborgerskap": [
       {
         "landkode": "NOR",
-        "fom": "1991-06-30",
-        "tom": null
+        "fom": "2016-01-30",
+        "tom": "2020-01-30"
       }
     ],
     "personstatuser": [],
+    "sivilstand": [],
+    "familierelasjoner": [],
+    "bostedsadresser": [
+      {
+        "landkode": "NOR",
+        "fom": "2019-11-01",
+        "tom": null
+      }
+    ],
+    "postadresser": [],
+    "midlertidigAdresser": []
+  },
+  "pdlpersonhistorikk": {
+    "statsborgerskap": [],
+    "personstatuser": [],
+    "sivilstand": [],
+    "familierelasjoner": [],
     "bostedsadresser": [],
     "postadresser": [],
     "midlertidigAdresser": []
@@ -23,8 +40,8 @@
   "arbeidsforhold": [
     {
       "periode": {
-        "fom": "2018-01-01",
-        "tom": "2022-06-30"
+        "fom": "2018-01-30",
+        "tom": "2020-01-30"
       },
       "utenlandsopphold": [],
       "arbeidsgivertype": "Organisasjon",
@@ -33,36 +50,15 @@
         "identifikator": "1",
         "landkode": "NOR"
       },
-      "arbeidsfolholdstype": "NORMALT",
+      "arbeidsfolholdstype": "MARITIM",
       "arbeidsavtaler": [
         {
           "periode": {
             "fom": "2020-01-30",
-            "tom": "2020-06-30"
+            "tom": "2020-01-30"
           },
-          "yrkeskode": "0001"
-        }
-      ]
-    },
-    {
-      "periode": {
-        "fom": "2018-01-01",
-        "tom": "2022-06-30"
-      },
-      "utenlandsopphold": [],
-      "arbeidsgiver": {
-        "type": "Organisasjon",
-        "identifikator": "1",
-        "landkode": "NOR"
-      },
-      "arbeidsfolholdstype": "NORMALT",
-      "arbeidsavtaler": [
-        {
-          "periode": {
-            "fom": "2020-01-30",
-            "tom": "2020-06-30"
-          },
-          "yrkeskode": "0001"
+          "yrkeskode": "0001",
+          "skipsregister": "nor"
         }
       ]
     }

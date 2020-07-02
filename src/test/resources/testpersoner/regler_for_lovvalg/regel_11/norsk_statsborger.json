@@ -1,7 +1,7 @@
 {
   "periode": {
-    "fom": "2020-01-30",
-    "tom": "2021-01-30"
+    "fom": "2019-01-30",
+    "tom": "2020-01-30"
   },
   "brukerinput": {
     "arbeidUtenforNorge": false
@@ -10,27 +10,38 @@
     "statsborgerskap": [
       {
         "landkode": "NOR",
-        "fom": "1991-06-30",
-        "tom": null
+        "fom": "2000-01-30",
+        "tom": "2020-01-30"
       }
     ],
     "personstatuser": [],
+    "sivilstand": [],
+    "familierelasjoner": [],
     "bostedsadresser": [
       {
         "landkode": "NOR",
-        "fom": "2020-01-01",
+        "fom": "2018-11-01",
         "tom": null
       }
     ],
     "postadresser": [],
     "midlertidigAdresser": []
   },
-  "medlemskap": [],
+  "pdlpersonhistorikk": {
+    "statsborgerskap": [],
+    "personstatuser": [],
+    "sivilstand": [],
+    "familierelasjoner": [],
+    "bostedsadresser": [],
+    "postadresser": [],
+    "midlertidigAdresser": []
+  },
+  "medlemskapsunntak": [],
   "arbeidsforhold": [
     {
       "periode": {
-        "fom": "2018-01-01",
-        "tom": "2022-06-30"
+        "fom": "2018-01-29",
+        "tom": "2020-01-30"
       },
       "utenlandsopphold": [],
       "arbeidsgivertype": "Organisasjon",
@@ -45,7 +56,7 @@
         {
           "periode": {
             "fom": "2020-01-30",
-            "tom": "2020-06-30"
+            "tom": "2020-01-30"
           },
           "yrkeskode": "0001"
         }
@@ -55,5 +66,5 @@
   "inntekt": [],
   "oppgaver": [],
   "dokument": [],
-  "ytelse" : "SYKEPENGER"
+  "ytelse": "SYKEPENGER"
 }

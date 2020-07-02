@@ -4,7 +4,7 @@
     "tom": "2020-01-30"
   },
   "brukerinput": {
-    "arbeidUtenforNorge": false
+    "arbeidUtenforNorge": true
   },
   "personhistorikk": {
     "statsborgerskap": [
@@ -24,13 +24,7 @@
         "tom": null
       }
     ],
-    "postadresser": [
-      {
-        "landkode": "NOR",
-        "fom": "2018-11-01",
-        "tom": null
-      }
-    ],
+    "postadresser": [],
     "midlertidigAdresser": []
   },
   "pdlpersonhistorikk": {
@@ -42,7 +36,7 @@
     "postadresser": [],
     "midlertidigAdresser": []
   },
-  "medlemskap": [],
+  "medlemskapsunntak": [],
   "arbeidsforhold": [
     {
       "periode": {
