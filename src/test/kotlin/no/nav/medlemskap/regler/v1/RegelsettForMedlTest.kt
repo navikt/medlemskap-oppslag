@@ -36,7 +36,7 @@ class RegelsettForMedlTest {
 
     @Test
     fun `amerikansk person med periode med medlemskap`() {
-        assertSvar("1.2", Svar.JA, evaluer(personleser.amerikanskMedl()), Svar.UAVKLART)
+        assertSvar("1.2", Svar.JA, evaluer(personleser.brukerHarPeriodeMedMedlemskap()), Svar.UAVKLART)
     }
 
     @Test

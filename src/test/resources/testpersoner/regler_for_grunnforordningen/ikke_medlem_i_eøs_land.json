@@ -1,6 +1,6 @@
 {
   "periode": {
-    "fom": "2019-01-30",
+    "fom": "2020-01-29",
     "tom": "2020-01-30"
   },
   "brukerinput": {
@@ -9,62 +9,64 @@
   "personhistorikk": {
     "statsborgerskap": [
       {
-        "landkode": "NOR",
-        "fom": "2000-01-30",
+        "landkode": "USA",
+        "fom": "2016-01-30",
         "tom": "2020-01-30"
       }
     ],
     "personstatuser": [],
-    "sivilstand": [],
-    "familierelasjoner": [],
     "bostedsadresser": [
       {
-        "landkode": "SWE",
-        "fom": "2018-11-01",
+        "adresselinje": "Oslo",
+        "landkode": "NOR",
+        "fom": "2019-11-01",
         "tom": null
       }
     ],
     "postadresser": [],
-    "midlertidigAdresser": []
+    "midlertidigAdresser": [],
+    "sivilstand": [],
+    "familierelasjoner": []
   },
   "pdlpersonhistorikk": {
     "statsborgerskap": [],
     "personstatuser": [],
-    "sivilstand": [],
-    "familierelasjoner": [],
     "bostedsadresser": [],
     "postadresser": [],
-    "midlertidigAdresser": []
+    "midlertidigAdresser": [],
+    "sivilstand": [],
+    "familierelasjoner": []
   },
   "medlemskapsunntak": [],
   "arbeidsforhold": [
     {
       "periode": {
-        "fom": "2018-01-29",
-        "tom": "2020-01-30"
+        "fom": "2018-01-30",
+        "tom": null
       },
       "utenlandsopphold": [],
       "arbeidsgivertype": "Organisasjon",
       "arbeidsgiver": {
         "type": "BEDR",
         "identifikator": "1",
-        "landkode": "NOR",
-        "antallAnsatte": "6"
+        "landkode": "NOR"
       },
       "arbeidsfolholdstype": "NORMALT",
       "arbeidsavtaler": [
         {
           "periode": {
             "fom": "2020-01-30",
-            "tom": "2020-01-30"
+            "tom": null
           },
-          "yrkeskode": "0001"
+          "yrkeskode": "0001",
+          "skipsregister": "utl"
         }
       ]
     }
   ],
+  "medlemskap": [],
   "inntekt": [],
   "oppgaver": [],
   "dokument": [],
-  "ytelse": "SYKEPENGER"
+  "ytelse" : "SYKEPENGER"
 }

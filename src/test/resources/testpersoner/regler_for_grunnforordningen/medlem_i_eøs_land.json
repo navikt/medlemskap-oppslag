@@ -1,7 +1,7 @@
 {
   "periode": {
-    "fom": "2020-01-30",
-    "tom": "2021-01-30"
+    "fom": "2020-01-29",
+    "tom": "2020-01-30"
   },
   "brukerinput": {
     "arbeidUtenforNorge": false
@@ -9,43 +9,62 @@
   "personhistorikk": {
     "statsborgerskap": [
       {
-        "landkode": "NOR",
-        "fom": "1991-06-30",
-        "tom": null
+        "landkode": "BEL",
+        "fom": "2016-01-30",
+        "tom": "2020-01-30"
       }
     ],
     "personstatuser": [],
+    "bostedsadresser": [
+      {
+        "adresselinje": "Oslo",
+        "landkode": "NOR",
+        "fom": "2019-11-01",
+        "tom": null
+      }
+    ],
+    "postadresser": [],
+    "midlertidigAdresser": [],
+    "sivilstand": [],
+    "familierelasjoner": []
+  },
+  "pdlpersonhistorikk": {
+    "statsborgerskap": [],
+    "personstatuser": [],
     "bostedsadresser": [],
     "postadresser": [],
-    "midlertidigAdresser": []
+    "midlertidigAdresser": [],
+    "sivilstand": [],
+    "familierelasjoner": []
   },
-  "medlemskap": [],
+  "medlemskapsunntak": [],
   "arbeidsforhold": [
     {
       "periode": {
-        "fom": "2018-01-01",
-        "tom": "2022-06-30"
+        "fom": "2018-01-30",
+        "tom": null
       },
       "utenlandsopphold": [],
       "arbeidsgivertype": "Organisasjon",
       "arbeidsgiver": {
         "type": "BEDR",
         "identifikator": "1",
-        "landkode": "NOR",
-        "antallAnsatte": "5"
+        "landkode": "NOR"
       },
       "arbeidsfolholdstype": "NORMALT",
       "arbeidsavtaler": [
         {
           "periode": {
             "fom": "2020-01-30",
-            "tom": "2020-06-30"
+            "tom": null
           },
-          "yrkeskode": "0001"
+          "yrkeskode": "0001",
+          "skipsregister": "utl"
         }
       ]
     }
   ],
+  "medlemskap": [],
   "inntekt": [],
   "oppgaver": [],
   "dokument": [],
