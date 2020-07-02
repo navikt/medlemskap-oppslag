@@ -47,7 +47,6 @@ fun Routing.evalueringRoute(
 
                 val request = validerRequest(call.receive())
                 val callId = call.callId ?: UUID.randomUUID().toString()
-                //konsumentCounter(subject).increment()
 
                 val datagrunnlag = createDatagrunnlag(
                         fnr = request.fnr,
@@ -145,7 +144,7 @@ private suspend fun createDatagrunnlag(
     val oppgaver = gosysOppgaver.await()
     val ytelse: Ytelse = finnYtelse(ytelseFraRequest, clientId)
 
-    Datagrunnlag(
+            Datagrunnlag(
             periode = periode,
             brukerinput = brukerinput,
             personhistorikk = historikkFraTps,

@@ -2,13 +2,12 @@ package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.common.Funksjoner.inneholder
+import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Funksjoner.erTom
-import no.nav.medlemskap.regler.common.Funksjoner.alleEr
+import no.nav.medlemskap.regler.common.Funksjoner.inneholder
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserSiste12Mnd
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresseSiste12Mnd
-import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeErNorsk
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedSluttAvKontrollperiode
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedStartAvKontrollperiode
@@ -36,7 +35,7 @@ class ReglerForLovvalg(
                 sjekkRegel {
                     erBrukerBosattINorge
                 } hvisNei {
-                    uavklartKonklusjon
+                    uavklartKonklusjon(ytelse)
                 } hvisJa {
                     sjekkRegel {
                         harBrukerNorskStatsborgerskap
@@ -44,16 +43,16 @@ class ReglerForLovvalg(
                         sjekkRegel {
                             harBrukerJobbet25ProsentEllerMer
                         } hvisJa {
-                            jaKonklusjon
+                            jaKonklusjon(ytelse)
                         } hvisNei {
-                            uavklartKonklusjon
+                            uavklartKonklusjon(ytelse)
                         }
                     } hvisNei {
-                        uavklartKonklusjon
+                        uavklartKonklusjon(ytelse)
                     }
                 }
             } hvisJa {
-                neiKonklusjon
+                neiKonklusjon(ytelse)
             }
 
 
@@ -61,6 +60,7 @@ class ReglerForLovvalg(
             identifikator = "9",
             avklaring = "Har bruker utført arbeid utenfor Norge?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { sjekkOmBrukerHarJobbetUtenforNorge() }
     )
 
@@ -68,6 +68,7 @@ class ReglerForLovvalg(
             identifikator = "10",
             avklaring = "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { sjekkLandkode() }
     )
 
@@ -75,6 +76,7 @@ class ReglerForLovvalg(
             identifikator = "11",
             avklaring = "Er bruker norsk statsborger?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { sjekkOmBrukerErNorskStatsborger() }
     )
 
@@ -82,6 +84,7 @@ class ReglerForLovvalg(
             identifikator = "12",
             avklaring = "Har bruker vært i minst 25% stilling de siste 12 mnd?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { sjekkOmBrukerHarJobbet25ProsentEllerMer() }
     )
 
@@ -105,7 +108,7 @@ class ReglerForLovvalg(
 
     private fun sjekkOmBrukerHarJobbet25ProsentEllerMer(): Resultat =
             when {
-                arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollPeriodeForArbeidsforhold) -> ja()
+                arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollPeriodeForArbeidsforhold, ytelse) -> ja()
                 else -> nei("Bruker har ikke jobbet 25% eller mer i løpet av periode.")
             }
 

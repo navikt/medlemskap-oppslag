@@ -58,49 +58,47 @@ private fun getenv(env: String, defaultValue: String): String {
     return if (System.getenv(env) != null) System.getenv(env) else defaultValue
 }
 
-fun regelCounter(regel: String, status: String): Counter = Counter
+fun regelCounter(regel: String, status: String, ytelse: String): Counter = Counter
         .builder("regel_calls_total")
-        .tags("regel", regel, "status", status)
+        .tags("regel", regel, "status", status, "ytelse", ytelse)
         .description("counter for ja, nei, uavklart for regel calls")
         .register(Metrics.globalRegistry)
 
-fun konsumentCounter(konsument: String): Counter =
-        Counter.builder("konsument")
-                .tags("konsument", konsument)
-                .description("teller hvilke konsumenter som gjør kall")
-                .register(Metrics.globalRegistry)
-
-fun stillingsprosentCounter(stillingsprosent: Double): Counter =
+fun stillingsprosentCounter(stillingsprosent: Double, ytelse: String): Counter =
         if (stillingsprosent < 100.0) {
             Counter.builder("stillingsprosent_deltid")
-                    .tags("stillingsprosent", getStillingsprosentIntervall(stillingsprosent))
+                    .tags("stillingsprosent", getStillingsprosentIntervall(stillingsprosent), "ytelse", ytelse)
                     .description("counter for fordeling av stillingsprosenter")
                     .register(Metrics.globalRegistry)
         } else {
             Counter.builder("stillingsprosent_heltid")
+                    .tags("ytelse", ytelse)
                     .description("counter for antall brukere med heltidsstilling")
                     .register(Metrics.globalRegistry)
         }
 
 
-fun merEnn10ArbeidsforholdCounter(): Counter = Counter
+fun merEnn10ArbeidsforholdCounter(ytelse: String): Counter = Counter
         .builder("over_10_arbeidsforhold")
+        .tags("ytelse", ytelse)
         .description("counter for brukere med flere enn 10 arbeidsforhold")
         .register(Metrics.globalRegistry)
 
-fun usammenhengendeArbeidsforholdCounter(): Counter = Counter
+fun usammenhengendeArbeidsforholdCounter(ytelse: String): Counter = Counter
         .builder("usammenhengende_arbeidsforhold")
+        .tags("ytelse", ytelse)
         .description("counter for usammenhengende arbeidsforhold")
         .register(Metrics.globalRegistry)
 
-fun harIkkeArbeidsforhold12MndTilbakeCounter(): Counter = Counter
+fun harIkkeArbeidsforhold12MndTilbakeCounter(ytelse: String): Counter = Counter
         .builder("ingen_arbeidsforhold_fra_12_mnd_tilbake")
+        .tags("ytelse", ytelse)
         .description("counter for brukere som ikke har arbeidsforhold som starter 12 mnd tilbake")
         .register(Metrics.globalRegistry)
 
-fun dekningKoderCounter(dekning: String): Counter = Counter
+fun dekningCounter(dekning: String, ytelse: String): Counter = Counter
         .builder("dekningstyper")
-        .tags( "dekningstyper", dekning)
+        .tags( "dekningstyper", dekning, "ytelse", ytelse)
         .description("Ulike dekningskoder til brukere som har spurt tjenesten")
         .register(Metrics.globalRegistry)
 

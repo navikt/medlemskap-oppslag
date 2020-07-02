@@ -7,6 +7,8 @@ import no.nav.medlemskap.common.usammenhengendeArbeidsforholdCounter
 import no.nav.medlemskap.domene.Arbeidsforhold
 import no.nav.medlemskap.domene.Arbeidsgiver
 import no.nav.medlemskap.domene.Periode
+import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 import no.nav.medlemskap.regler.common.Funksjoner
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
 import no.nav.medlemskap.regler.common.interval
@@ -52,26 +54,26 @@ object ArbeidsforholdFunksjoner {
      * På dette tidspunktet er det kjent at bruker er i et aktivt arbeidsforhold.
      * Trenger derfor kun å sjekke at bruker har et arbeidsforhold minumum 12 mnd tilbake og at påfølgende arbeidsforholdene er sammenhengende.
      */
-    infix fun List<Arbeidsforhold>.erSammenhengendeIKontrollPeriode(kontrollPeriode: Periode): Boolean {
+    fun List<Arbeidsforhold>.erSammenhengendeIKontrollPeriode(kontrollPeriode: Periode, ytelse: Ytelse): Boolean {
 
         var forrigeTilDato: LocalDate? = null
         val arbeidsforholdForNorskArbeidsgiver = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
 
         if (arbeidsforholdForNorskArbeidsgiver.size > 10) {
-            merEnn10ArbeidsforholdCounter().increment()
+            merEnn10ArbeidsforholdCounter(ytelse.metricName()).increment()
             return false
         }
 
         val harArbeidsforhold12MndTilbake = arbeidsforholdForNorskArbeidsgiver.stream().anyMatch { it.periode.fom?.isBefore(kontrollPeriode.fom?.plusDays(1))!! }
         if (!harArbeidsforhold12MndTilbake) {
-            harIkkeArbeidsforhold12MndTilbakeCounter().increment()
+            harIkkeArbeidsforhold12MndTilbakeCounter(ytelse.metricName()).increment()
             return false
         }
 
         val sortertArbeidsforholdEtterPeriode = arbeidsforholdForNorskArbeidsgiver.stream().sorted().collect(Collectors.toList())
         for (arbeidsforhold in sortertArbeidsforholdEtterPeriode) { //Sjekker at alle påfølgende arbeidsforhold er sammenhengende
             if (forrigeTilDato != null && !erDatoerSammenhengende(forrigeTilDato, arbeidsforhold.periode.fom)) {
-                usammenhengendeArbeidsforholdCounter().increment()
+                usammenhengendeArbeidsforholdCounter(ytelse.metricName()).increment()
                 return false
             }
             forrigeTilDato = arbeidsforhold.periode.tom
@@ -87,7 +89,7 @@ object ArbeidsforholdFunksjoner {
             }.sorted()
 
 
-    fun List<Arbeidsforhold>.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(gittStillingsprosent: Double, kontrollPeriode: Periode): Boolean {
+    fun List<Arbeidsforhold>.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(gittStillingsprosent: Double, kontrollPeriode: Periode, ytelse: Ytelse): Boolean {
 
         val arbeidsforholdForKontrollPeriode = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
 
@@ -99,7 +101,7 @@ object ArbeidsforholdFunksjoner {
                 return false
             }
 
-            stillingsprosentCounter(vektetStillingsprosentForArbeidsforhold).increment()
+            stillingsprosentCounter(vektetStillingsprosentForArbeidsforhold, ytelse.metricName()).increment()
         }
 
         return true

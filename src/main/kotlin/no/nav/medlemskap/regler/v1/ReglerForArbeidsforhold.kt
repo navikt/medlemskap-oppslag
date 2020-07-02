@@ -27,22 +27,22 @@ class ReglerForArbeidsforhold(
             sjekkRegel {
                 harBrukerSammenhengendeArbeidsforholdSiste12Mnd
             } hvisNei {
-                uavklartKonklusjon
+                uavklartKonklusjon(ytelse)
             } hvisJa {
                 sjekkRegel {
                     erArbeidsgiverOrganisasjon
                 } hvisNei {
-                    uavklartKonklusjon
+                    uavklartKonklusjon(ytelse)
                 } hvisJa {
                     sjekkRegel {
                         harForetakMerEnn5Ansatte
                     } hvisNei {
-                        uavklartKonklusjon
+                        uavklartKonklusjon(ytelse)
                     } hvisJa {
                         sjekkRegel {
                             erForetakAktivt
                         } hvisNei {
-                            uavklartKonklusjon
+                            uavklartKonklusjon(ytelse)
                         } hvisJa {
                             sjekkRegel {
                                 erArbeidsforholdetMaritimt
@@ -50,7 +50,7 @@ class ReglerForArbeidsforhold(
                                 sjekkRegel {
                                     erBrukerPilotEllerKabinansatt
                                 } hvisJa {
-                                    uavklartKonklusjon
+                                    uavklartKonklusjon(ytelse)
                                 } hvisNei {
                                     sjekkRegelsett {
                                         reglerForLovvalg
@@ -60,7 +60,7 @@ class ReglerForArbeidsforhold(
                                 sjekkRegel {
                                     jobberBrukerPaaNorskSkip
                                 } hvisNei {
-                                    uavklartKonklusjon
+                                    uavklartKonklusjon(ytelse)
                                 } hvisJa {
                                     sjekkRegelsett {
                                         reglerForLovvalg
@@ -76,6 +76,7 @@ class ReglerForArbeidsforhold(
             identifikator = "3",
             avklaring = "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { sjekkSammenhengendeArbeidsforhold() }
     )
 
@@ -83,6 +84,7 @@ class ReglerForArbeidsforhold(
             identifikator = "4",
             avklaring = "Er foretaket registrert i foretaksregisteret?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { sjekkArbeidsgiver() }
     )
 
@@ -90,6 +92,7 @@ class ReglerForArbeidsforhold(
             identifikator = "5",
             avklaring = "Har arbeidsgiver sin hovedaktivitet i Norge?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { sjekkOmForetakMerEnn5Ansatte() }
     )
 
@@ -97,6 +100,7 @@ class ReglerForArbeidsforhold(
             identifikator = "6",
             avklaring = "Er foretaket aktivt?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { sjekKonkursstatus() }
     )
 
@@ -104,6 +108,7 @@ class ReglerForArbeidsforhold(
             identifikator = "7",
             avklaring = "Er arbeidsforholdet maritimt?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { sjekkMaritim() }
     )
 
@@ -111,6 +116,7 @@ class ReglerForArbeidsforhold(
             identifikator = "7.1",
             avklaring = "Er bruker ansatt på et NOR-skip?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { sjekkSkipsregister() }
     )
 
@@ -118,6 +124,7 @@ class ReglerForArbeidsforhold(
             identifikator = "8",
             avklaring = "Er bruker pilot eller kabinansatt?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { sjekkYrkeskodeLuftfart() }
     )
 
@@ -126,7 +133,7 @@ class ReglerForArbeidsforhold(
 
     private fun sjekkSammenhengendeArbeidsforhold(): Resultat =
             when {
-                !arbeidsforhold.erSammenhengendeIKontrollPeriode(kontrollPeriodeForArbeidsforhold) -> nei("Arbeidstaker har ikke sammenhengende arbeidsforhold siste 12 mnd")
+                !arbeidsforhold.erSammenhengendeIKontrollPeriode(kontrollPeriodeForArbeidsforhold, ytelse) -> nei("Arbeidstaker har ikke sammenhengende arbeidsforhold siste 12 mnd")
                 else -> ja()
                 //Denne skal flyttes til senere i løpet og skal modifiseres til å kunne ha flere parallelle arbeidsforhold
                 //if (personfakta.arbeidsforholdIOpptjeningsperiode() antallErIkke 1)

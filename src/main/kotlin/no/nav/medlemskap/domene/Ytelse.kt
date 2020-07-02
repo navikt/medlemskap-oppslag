@@ -17,5 +17,7 @@ enum class Ytelse {
         )
 
         fun fromClientId(clientId: String?): Ytelse? = clientIdToYtelseMap[clientId]
+
+        fun Ytelse.metricName(): String = this.name.toLowerCase().capitalize()
     }
 }
