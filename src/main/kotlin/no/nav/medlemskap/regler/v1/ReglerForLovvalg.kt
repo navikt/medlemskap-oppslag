@@ -96,7 +96,8 @@ class ReglerForLovvalg(
         val sisteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedSluttAvKontrollperiode(kontrollPeriodeForPersonhistorikk)
 
         return when {
-            førsteStatsborgerskap inneholder "NOR" && sisteStatsborgerskap inneholder "NOR" -> ja()
+            førsteStatsborgerskap inneholder NorskLandkode.NOR.name
+                    && sisteStatsborgerskap inneholder NorskLandkode.NOR.name -> ja()
             else -> nei("Brukeren er ikke norsk statsborger")
         }
     }
@@ -116,10 +117,14 @@ class ReglerForLovvalg(
 
         return when {
             bostedsadresser.erIkkeTom()
-                    && (postadresserLandkoder alleEr "NOR" || postadresserLandkoder.erTom())
-                    && (midlertidigadresserLandkoder alleEr "NOR" || midlertidigadresserLandkoder.erTom())-> ja()
+                    && (postadresserLandkoder alleEr NorskLandkode.NOR.name || postadresserLandkoder.erTom())
+                    && (midlertidigadresserLandkoder alleEr NorskLandkode.NOR.name || midlertidigadresserLandkoder.erTom())-> ja()
             else -> nei("Ikke alle adressene til bruker er norske, eller bruker mangler bostedsadresse")
         }
+    }
+
+    enum class NorskLandkode {
+        NOR
     }
 
 
