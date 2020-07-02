@@ -14,8 +14,8 @@ class Personleser {
     private val grunnforordningen = "/testpersoner/regler_for_grunnforordningen"
     private val medl = "/testpersoner/regler_for_medl"
 
-
     /*Hovedregler*/
+
     fun norskMedMedlOpplysninger() = lesDatagrunnlag("$hovedregler/norsk_med_medl_opplysninger.json")
     fun amerikanskUtenMedlOpplysninger() = lesDatagrunnlag("$hovedregler/amerikansk_uten_medl_opplysninger.json")
 
@@ -69,16 +69,11 @@ class Personleser {
     fun amerikanskMedMedlemskapMedDekningIMedl() = lesDatagrunnlag("$medl/regel_1_6/amerikansk_med_medlemskap_med_dekning_i_medl.json")
     fun amerikanskMedMedlemskapUtenDekningIMedl() = lesDatagrunnlag("$medl/regel_1_6/amerikansk_med_medlemskap_uten_dekning_i_medl.json")
 
-
-
     /*  Regler for grunnforodningen*/
 
     //Regel 2 - "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?"
     fun brukerErStatsborgerIEØSLand() = lesDatagrunnlag("$grunnforordningen/medlem_i_eøs_land.json")
     fun brukerErIkkeStatsborgerIEØSLand() = lesDatagrunnlag("$grunnforordningen/ikke_medlem_i_eøs_land.json")
-
-
-
 
    /* Regelsett for arbeidsforhold*/
 
@@ -111,7 +106,6 @@ class Personleser {
     fun norskMedFlereYrkeskoderIPeriode() = lesDatagrunnlag("$arbeidsforhold/regel_8/norsk_med_flere_yrkestyper_i_periode.json")
     fun brukerErPilot() = lesDatagrunnlag("$arbeidsforhold/regel_8/norsk_jobb_ikke_maritim_men_pilot.json")
 
-
     /*  Regelsett norsk lovvalg */
 
     //Regel 9 - "Har bruker utført arbeid utenfor Norge?"
@@ -138,13 +132,6 @@ class Personleser {
     fun norskMedToDelvisOverlappendeArbeidsforholdHvoravEnLavStillingsprosent() = lesDatagrunnlag("$norskLovvalg/regel_12/norsk_med_to_delvis_overlappende_arbeidsforhold_hvorav_en_lav_stillingsprosent.json")
     fun norskMedToSammenhengendeArbeidsforholdIPeriode() = lesDatagrunnlag("$norskLovvalg/regel_12/norsk_med_to_sammenhengende_arbeidsforhold_i_periode.json")
 
-
-
-
-
-
-
-
     private fun lesDatagrunnlag(filnavn: String): Datagrunnlag {
         val res = Personleser::class.java.getResource(filnavn)
         return objectMapper.readValue(res, Datagrunnlag::class.java)
@@ -163,7 +150,6 @@ class Personleser {
         val norsk = "/testpersoner/norske"
         val ikkeEøs = "/testpersoner/ikke_eos"
     }
-
 }
 
 enum class DatagrunnlagFil(val filnavn: String) {
