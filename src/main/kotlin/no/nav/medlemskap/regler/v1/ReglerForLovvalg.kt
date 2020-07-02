@@ -2,13 +2,12 @@ package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.common.Funksjoner.inneholder
+import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Funksjoner.erTom
-import no.nav.medlemskap.regler.common.Funksjoner.alleEr
+import no.nav.medlemskap.regler.common.Funksjoner.inneholder
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserSiste12Mnd
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresseSiste12Mnd
-import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeErNorsk
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedSluttAvKontrollperiode
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedStartAvKontrollperiode
@@ -61,6 +60,7 @@ class ReglerForLovvalg(
             identifikator = "9",
             avklaring = "Har bruker utført arbeid utenfor Norge?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { sjekkOmBrukerHarJobbetUtenforNorge() }
     )
 
