@@ -6,6 +6,7 @@ import no.nav.medlemskap.cucumber.*
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.ReglerForGrunnforordningen
+import no.nav.medlemskap.regler.v1.ReglerForLovvalg
 import no.nav.medlemskap.regler.v1.ReglerForRegistrerteOpplysninger
 import no.nav.medlemskap.regler.v1.ReglerService
 import no.nav.medlemskap.services.ereg.Ansatte
@@ -94,6 +95,7 @@ class RegelSteps : No {
             resultat = when (avklaring) {
                 "Finnes det registrerte opplysninger på bruker?" -> evaluerReglerForMedlemsopplysninger(datagrunnlag!!)
                 "Er bruker omfattet av grunnforordningen?" -> evaluerGrunnforordningen(datagrunnlag!!)
+                "Er lovvalget norsk lov?" -> evaluerLovvalg(datagrunnlag!!)
                 else -> throw java.lang.RuntimeException("Fant ikke hovedregel med avklaring = $avklaring")
             }
         }
@@ -168,6 +170,11 @@ class RegelSteps : No {
 
     private fun evaluerReglerForMedlemsopplysninger(datagrunnlag: Datagrunnlag): Resultat {
         val regelsett = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
+        return regelsett.hentHovedRegel().utfør(mutableListOf())
+    }
+
+    private fun evaluerLovvalg(datagrunnlag: Datagrunnlag): Resultat {
+        val regelsett = ReglerForLovvalg.fraDatagrunnlag(datagrunnlag)
         return regelsett.hentHovedRegel().utfør(mutableListOf())
     }
 }
