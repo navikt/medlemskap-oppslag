@@ -8,6 +8,8 @@ import io.micrometer.prometheus.PrometheusMeterRegistry
 import io.micrometer.prometheus.PrometheusRenameFilter
 import no.nav.medlemskap.common.influx.SensuInfluxConfig
 import no.nav.medlemskap.common.influx.SensuInfluxMeterRegistry
+import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 import java.time.Duration
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.truncate
@@ -84,22 +86,36 @@ fun stillingsprosentCounter(stillingsprosent: Double, ytelse: String): Counter =
         }
 
 
-fun merEnn10ArbeidsforholdCounter(ytelse: String): Counter = Counter
+fun merEnn10ArbeidsforholdCounter(ytelse: Ytelse): Counter = Counter
         .builder("over_10_arbeidsforhold")
-        .tags("ytelse", ytelse)
+        .tags("ytelse", ytelse.metricName())
         .description("counter for brukere med flere enn 10 arbeidsforhold")
         .register(Metrics.globalRegistry)
 
-fun usammenhengendeArbeidsforholdCounter(ytelse: String): Counter = Counter
+fun usammenhengendeArbeidsforholdCounter(ytelse: Ytelse): Counter = Counter
         .builder("usammenhengende_arbeidsforhold")
-        .tags("ytelse", ytelse)
+        .tags("ytelse", ytelse.metricName())
         .description("counter for usammenhengende arbeidsforhold")
         .register(Metrics.globalRegistry)
 
-fun harIkkeArbeidsforhold12MndTilbakeCounter(ytelse: String): Counter = Counter
+fun harIkkeArbeidsforhold12MndTilbakeCounter(ytelse: Ytelse): Counter = Counter
         .builder("ingen_arbeidsforhold_fra_12_mnd_tilbake")
-        .tags("ytelse", ytelse)
+        .tags("ytelse", ytelse.metricName())
         .description("counter for brukere som ikke har arbeidsforhold som starter 12 mnd tilbake")
+        .register(Metrics.globalRegistry)
+
+fun antallDagerUtenArbeidsforhold(ytelse: Ytelse): DistributionSummary = DistributionSummary
+        .builder("antall_dager_uten_arbeidsforhold")
+        .publishPercentileHistogram()
+        .tags("ytelse", ytelse.metricName())
+        .description("")
+        .register(Metrics.globalRegistry)
+
+fun antallDagerMellomArbeidsforhold(ytelse: Ytelse): DistributionSummary = DistributionSummary
+        .builder("antall_dager_mellom_arbeidsforhold")
+        .publishPercentileHistogram()
+        .tags("ytelse", ytelse.metricName())
+        .description("")
         .register(Metrics.globalRegistry)
 
 fun dekningCounter(dekning: String, ytelse: String): Counter = Counter

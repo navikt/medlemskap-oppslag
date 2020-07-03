@@ -1,9 +1,6 @@
 package no.nav.medlemskap.regler.funksjoner
 
-import no.nav.medlemskap.common.harIkkeArbeidsforhold12MndTilbakeCounter
-import no.nav.medlemskap.common.merEnn10ArbeidsforholdCounter
-import no.nav.medlemskap.common.stillingsprosentCounter
-import no.nav.medlemskap.common.usammenhengendeArbeidsforholdCounter
+import no.nav.medlemskap.common.*
 import no.nav.medlemskap.domene.Arbeidsforhold
 import no.nav.medlemskap.domene.Arbeidsgiver
 import no.nav.medlemskap.domene.Periode
@@ -60,20 +57,27 @@ object ArbeidsforholdFunksjoner {
         val arbeidsforholdForNorskArbeidsgiver = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
 
         if (arbeidsforholdForNorskArbeidsgiver.size > 10) {
-            merEnn10ArbeidsforholdCounter(ytelse.metricName()).increment()
+            merEnn10ArbeidsforholdCounter(ytelse).increment()
             return false
         }
 
-        val harArbeidsforhold12MndTilbake = arbeidsforholdForNorskArbeidsgiver.stream().anyMatch { it.periode.fom?.isBefore(kontrollPeriode.fom?.plusDays(1))!! }
-        if (!harArbeidsforhold12MndTilbake) {
-            harIkkeArbeidsforhold12MndTilbakeCounter(ytelse.metricName()).increment()
+        if (arbeidsforholdForNorskArbeidsgiver.none { it.periode.fom?.isBefore(kontrollPeriode.fom?.plusDays(1))!! }) {
+            harIkkeArbeidsforhold12MndTilbakeCounter(ytelse).increment()
+
+            if (arbeidsforholdForNorskArbeidsgiver.isNotEmpty()) {
+                val antallDagerDiff = ChronoUnit.DAYS.between(kontrollPeriode.fom, arbeidsforholdForNorskArbeidsgiver.min()!!.periode.fom)
+                antallDagerUtenArbeidsforhold(ytelse).record(antallDagerDiff.toDouble())
+            }
+
             return false
         }
 
         val sortertArbeidsforholdEtterPeriode = arbeidsforholdForNorskArbeidsgiver.stream().sorted().collect(Collectors.toList())
         for (arbeidsforhold in sortertArbeidsforholdEtterPeriode) { //Sjekker at alle påfølgende arbeidsforhold er sammenhengende
             if (forrigeTilDato != null && !erDatoerSammenhengende(forrigeTilDato, arbeidsforhold.periode.fom)) {
-                usammenhengendeArbeidsforholdCounter(ytelse.metricName()).increment()
+                val antallDagerDiff = ChronoUnit.DAYS.between(kontrollPeriode.fom, arbeidsforholdForNorskArbeidsgiver.min()!!.periode.fom)
+                antallDagerMellomArbeidsforhold(ytelse).record(antallDagerDiff.toDouble())
+                usammenhengendeArbeidsforholdCounter(ytelse).increment()
                 return false
             }
             forrigeTilDato = arbeidsforhold.periode.tom
