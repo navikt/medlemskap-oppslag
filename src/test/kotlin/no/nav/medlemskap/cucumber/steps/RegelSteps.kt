@@ -8,6 +8,7 @@ import no.nav.medlemskap.regler.assertDelresultat
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.evaluer
 import no.nav.medlemskap.regler.v1.ReglerForGrunnforordningen
+import no.nav.medlemskap.regler.v1.ReglerForLovvalg
 import no.nav.medlemskap.regler.v1.ReglerForRegistrerteOpplysninger
 import no.nav.medlemskap.regler.v1.ReglerService
 import no.nav.medlemskap.services.ereg.Ansatte
@@ -89,6 +90,23 @@ class RegelSteps : No {
             resultat = ReglerService.kjørRegler(datagrunnlag!!)
         }
 
+        Når<String, DataTable>("regel {string} kjøres med følgende parametre") { regelId: String?, dataTable: DataTable? ->
+            val medlemskapsparametre = domenespråkParser.mapDataTable(dataTable, MedlemskapsparametreMapper()).get(0)
+            datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
+
+            val reglerForLovvalg = ReglerForLovvalg.fraDatagrunnlag(datagrunnlag!!)
+
+            val regel = when(regelId!!) {
+                "9" -> reglerForLovvalg.harBrukerJobbetUtenforNorge
+                "10" -> reglerForLovvalg.erBrukerBosattINorge
+                "11" -> reglerForLovvalg.harBrukerNorskStatsborgerskap
+                "12" -> reglerForLovvalg.harBrukerJobbet25ProsentEllerMer
+                else -> throw java.lang.RuntimeException("Ukjent regel")
+            }
+
+            resultat = regel.utfør()
+        }
+
         Når("hovedregel med avklaring {string} kjøres med følgende parametre") { avklaring: String, dataTable: DataTable? ->
             val medlemskapsparametre = domenespråkParser.mapDataTable(dataTable, MedlemskapsparametreMapper()).get(0)
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
@@ -108,6 +126,12 @@ class RegelSteps : No {
         }
 
         Så("skal svaret på hovedregelen være {string}") { forventetVerdi: String ->
+            val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
+
+            assertEquals(forventetSvar, resultat!!.svar)
+        }
+
+        Så("skal regelen gi svaret {string}") { forventetVerdi: String ->
             val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
 
             assertEquals(forventetSvar, resultat!!.svar)

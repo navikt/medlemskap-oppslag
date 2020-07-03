@@ -51,28 +51,28 @@ class ReglerForLovvalg(
             }
 
 
-    private val harBrukerJobbetUtenforNorge = Regel(
+    val harBrukerJobbetUtenforNorge = Regel(
             identifikator = "9",
             avklaring = "Har bruker utført arbeid utenfor Norge?",
             beskrivelse = "",
             operasjon = { sjekkOmBrukerHarJobbetUtenforNorge() }
     )
 
-    private val erBrukerBosattINorge = Regel(
+    val erBrukerBosattINorge = Regel(
             identifikator = "10",
             avklaring = "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
             beskrivelse = "",
             operasjon = { sjekkLandskode() }
     )
 
-    private val harBrukerNorskStatsborgerskap = Regel(
+    val harBrukerNorskStatsborgerskap = Regel(
             identifikator = "11",
             avklaring = "Er bruker norsk statsborger?",
             beskrivelse = "",
             operasjon = { sjekkOmBrukerErNorskStatsborger() }
     )
 
-    private val harBrukerJobbet25ProsentEllerMer = Regel(
+    val harBrukerJobbet25ProsentEllerMer = Regel(
             identifikator = "12",
             avklaring = "Har bruker vært i minst 25% stilling de siste 12 mnd?",
             beskrivelse = "",
