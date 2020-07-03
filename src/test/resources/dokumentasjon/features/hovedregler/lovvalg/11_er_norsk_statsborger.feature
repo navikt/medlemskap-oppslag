@@ -10,7 +10,7 @@ Egenskap: Regel 11: Er bruker norsk statborger?
 
     Når regel "11" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-      | 30.01.2020      | 30.01.2021      | <Arbeid utenfor Norge>        |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal regelen gi svaret "<Svar>"
 
@@ -28,7 +28,7 @@ Egenskap: Regel 11: Er bruker norsk statborger?
 
     Når regel "11" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-      | 01.01.2020      | 30.01.2021      | <Arbeid utenfor Norge>        |
+      | 01.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal regelen gi svaret "<Svar>"
 
@@ -39,13 +39,13 @@ Egenskap: Regel 11: Er bruker norsk statborger?
 
   Scenario: Parallelle statsborgerskap siste 12 måneder
     Gitt følgende statsborgerskap i personhistorikken
-      | Landkode          | Fra og med dato | Til og med dato |
-      | FRA               | 01.01.2000      |                 |
-      | NOR               | 01.12.2005      |                 |
+      | Landkode | Fra og med dato | Til og med dato |
+      | FRA      | 01.01.2000      |                 |
+      | NOR      | 01.12.2005      |                 |
 
     Når regel "11" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-      | 01.01.2020      | 30.01.2021      | <Arbeid utenfor Norge>        |
+      | 01.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal regelen gi svaret "Ja"
 

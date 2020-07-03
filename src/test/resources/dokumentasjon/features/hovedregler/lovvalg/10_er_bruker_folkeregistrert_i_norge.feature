@@ -15,7 +15,7 @@ Egenskap: Regel 10: Er bruker folkeregistert i Norge?
 
     Når regel "10" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-      | 30.01.2020      | 30.01.2021      | <Arbeid utenfor Norge>        |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal regelen gi svaret "<Svar>"
 
@@ -33,7 +33,7 @@ Egenskap: Regel 10: Er bruker folkeregistert i Norge?
 
     Når regel "10" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-      | 30.01.2020      | 30.01.2021      | <Arbeid utenfor Norge>        |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal regelen gi svaret "<Svar>"
 
@@ -50,7 +50,7 @@ Egenskap: Regel 10: Er bruker folkeregistert i Norge?
 
     Når regel "10" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-      | 30.01.2020      | 30.01.2021      | <Arbeid utenfor Norge>        |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal regelen gi svaret "<Svar>"
 
