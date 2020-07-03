@@ -1,9 +1,6 @@
 package no.nav.medlemskap.regler.v1
 
-import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.Journalpost
-import no.nav.medlemskap.domene.Medlemskap
-import no.nav.medlemskap.domene.Oppgave
+import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.funksjoner.GsakFunksjoner.finnesAapneOppgaver
 import no.nav.medlemskap.regler.funksjoner.JoarkFunksjoner.finnesDokumenterMedTillatteTeamer
@@ -11,7 +8,8 @@ import no.nav.medlemskap.regler.funksjoner.JoarkFunksjoner.finnesDokumenterMedTi
 class ReglerForRegistrerteOpplysninger(
         val medlemskap: List<Medlemskap> = emptyList(),
         val oppgaver: List<Oppgave> = emptyList(),
-        val dokument: List<Journalpost> = emptyList()
+        val dokument: List<Journalpost> = emptyList(),
+        val ytelse: Ytelse
 ) : Regler() {
 
     override fun hentHovedRegel() =
@@ -23,6 +21,7 @@ class ReglerForRegistrerteOpplysninger(
             identifikator = "OPPLYSNINGER",
             avklaring = "Finnes det registrerte opplysninger på bruker?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { minstEnAvDisse(medl, joark, gsak) }
     )
 
@@ -30,6 +29,7 @@ class ReglerForRegistrerteOpplysninger(
             identifikator = "OPPLYSNINGER-MEDL",
             avklaring = "Finnes det registrerte opplysninger i MEDL?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { sjekkPerioderIMedl() }
     )
 
@@ -37,6 +37,7 @@ class ReglerForRegistrerteOpplysninger(
             identifikator = "OPPLYSNINGER-JOARK",
             avklaring = "Finnes det dokumenter i JOARK på medlemskapsområdet?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { tellDokumenter() }
     )
 
@@ -44,6 +45,7 @@ class ReglerForRegistrerteOpplysninger(
             identifikator = "OPPLYSNINGER-GOSYS",
             avklaring = "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { tellÅpneOppgaver() }
     )
 
@@ -72,7 +74,8 @@ class ReglerForRegistrerteOpplysninger(
             return ReglerForRegistrerteOpplysninger(
                     medlemskap = datagrunnlag.medlemskap,
                     oppgaver = datagrunnlag.oppgaver,
-                    dokument = datagrunnlag.dokument
+                    dokument = datagrunnlag.dokument,
+                    ytelse = datagrunnlag.ytelse
             )
         }
     }

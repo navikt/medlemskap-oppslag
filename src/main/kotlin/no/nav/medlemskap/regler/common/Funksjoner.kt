@@ -1,6 +1,7 @@
 package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.Periode
+import no.nav.medlemskap.domene.Ytelse
 import org.threeten.extra.Interval
 
 object Funksjoner {
@@ -30,6 +31,8 @@ object Funksjoner {
 
     fun List<Any>?.erTom() = this == null || this.isNullOrEmpty()
 
+    fun List<Any>?.erIkkeTom() = !erTom()
+
     fun List<String?>?.finnes() = this != null && this.isNotEmpty()
 
     infix fun List<Int?>.finnesMindreEnn(tall: Int) = this.stream().anyMatch { p -> p == null || p < tall }
@@ -46,13 +49,15 @@ fun ja(begrunnelse: String) = Resultat(
 
 fun ja() = Resultat(svar = Svar.JA)
 
-fun ja(dekning: List<String>) = Resultat(
+fun ja(begrunnelse: String, dekning: String) = Resultat(
+        begrunnelse = begrunnelse,
         svar = Svar.JA,
         harDekning = Svar.JA,
         dekning = dekning
 )
 
-fun nei(dekning: List<String>) = Resultat(
+fun nei(begrunnelse: String, dekning: String) = Resultat(
+        begrunnelse = begrunnelse,
         svar = Svar.NEI,
         harDekning = Svar.NEI,
         dekning = dekning
@@ -76,24 +81,27 @@ fun sjekkRegelsett(metode: () -> Regler): Regel = metode.invoke().hentHovedRegel
 
 const val konklusjonIdentifikator = "LOVME"
 
-val uavklartKonklusjon = Regel(
+fun uavklartKonklusjon(ytelse: Ytelse) = Regel(
         identifikator = konklusjonIdentifikator,
         avklaring = "Er bruker medlem?",
         beskrivelse = "",
+        ytelse = ytelse,
         operasjon = { uavklart("Kan ikke konkludere med medlemskap") }
 )
 
-val jaKonklusjon = Regel(
+fun jaKonklusjon(ytelse: Ytelse) = Regel(
         identifikator = konklusjonIdentifikator,
         avklaring = "Er bruker medlem?",
         beskrivelse = "",
+        ytelse = ytelse,
         operasjon = { ja("Bruker er medlem") }
 )
 
-val neiKonklusjon = Regel(
+fun neiKonklusjon(ytelse: Ytelse) = Regel(
         identifikator = konklusjonIdentifikator,
         avklaring = "Er bruker medlem?",
         beskrivelse = "",
+        ytelse = ytelse,
         operasjon = { nei("Bruker er ikke medlem") }
 )
 

@@ -16,14 +16,17 @@ import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
 import no.nav.medlemskap.common.apiCounter
 import no.nav.medlemskap.common.exceptions.KonsumentIkkeFunnet
+import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
 import no.nav.medlemskap.services.Services
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
+import javax.xml.ws.soap.SOAPFaultException
 
 private val logger = KotlinLogging.logger { }
 
@@ -46,7 +49,6 @@ fun Routing.evalueringRoute(
 
                 val request = validerRequest(call.receive())
                 val callId = call.callId ?: UUID.randomUUID().toString()
-                //konsumentCounter(subject).increment()
 
                 val datagrunnlag = createDatagrunnlag(
                         fnr = request.fnr,
@@ -54,7 +56,8 @@ fun Routing.evalueringRoute(
                         periode = request.periode,
                         brukerinput = request.brukerinput,
                         services = services,
-                        clientId = azp)
+                        clientId = azp,
+                        ytelseFraRequest = request.ytelse)
                 val resultat = evaluerData(datagrunnlag)
                 val response = Response(
                         tidspunkt = LocalDateTime.now(),
@@ -83,7 +86,8 @@ fun Routing.evalueringRoute(
                     periode = request.periode,
                     brukerinput = request.brukerinput,
                     services = services,
-                    clientId = null)
+                    clientId = null,
+                    ytelseFraRequest = request.ytelse)
             val resultat = evaluerData(datagrunnlag)
             val response = Response(
                     tidspunkt = LocalDateTime.now(),
@@ -122,7 +126,8 @@ private suspend fun createDatagrunnlag(
         periode: InputPeriode,
         brukerinput: Brukerinput,
         services: Services,
-        clientId: String?): Datagrunnlag = coroutineScope {
+        clientId: String?,
+        ytelseFraRequest: Ytelse?): Datagrunnlag = coroutineScope {
 
     val aktorIder = services.pdlService.hentAlleAktorIder(fnr, callId)
     val personHistorikkFraPdl = hentPersonhistorikkFraPdl(services, fnr, callId)
@@ -139,10 +144,10 @@ private suspend fun createDatagrunnlag(
     val arbeidsforhold = arbeidsforholdRequest.await()
     val journalPoster = journalPosterRequest.await()
     val oppgaver = gosysOppgaver.await()
-    val ytelse = Ytelse.fromClientId(clientId)
-            ?: throw KonsumentIkkeFunnet("Fant ikke clientId i mapping til ytelse. Ta kontakt med medlemskap-teamet for tilgang til tjenesten.")
+    val ytelse: Ytelse = finnYtelse(ytelseFraRequest, clientId)
+    ytelseCounter(ytelse.metricName()).increment()
 
-    Datagrunnlag(
+            Datagrunnlag(
             periode = periode,
             brukerinput = brukerinput,
             personhistorikk = historikkFraTps,
@@ -156,12 +161,16 @@ private suspend fun createDatagrunnlag(
     )
 }
 
+fun finnYtelse(ytelseFraRequest: Ytelse?, clientId: String?) =
+        (ytelseFraRequest ?: Ytelse.fromClientId(clientId))
+                ?: throw KonsumentIkkeFunnet("Fant ikke clientId i mapping til ytelse. Ta kontakt med medlemskap-teamet for tilgang til tjenesten.")
+
 //Midlertidig kode, ekstra feilhåndtering fordi integrasjonen vår mot PDL ikke er helt 100% ennå..
 private suspend fun hentPersonhistorikkFraPdl(services: Services, fnr: String, callId: String): Personhistorikk? {
     return try {
         services.pdlService.hentPersonHistorikk(fnr, callId)
     } catch (e: Exception) {
-        logger.error("hentPersonHistorikk feiler: " + e.message)
+        logger.error("hentPersonHistorikk feiler", e)
         secureLogger.error("hentPersonHistorikk feiler for fnr {}", fnr, e)
         null
     }
@@ -172,6 +181,11 @@ private suspend fun CoroutineScope.hentPersonhistorikkForFamilieAsync(personHist
     return personHistorikkFraPdl?.let {
         try {
             services.personService.hentPersonhistorikkForRelevantFamilie(it, periode)
+        } catch (sfe: SOAPFaultException) {
+            logger.error("SoapFault under henting av personhistorikk for familie", sfe)
+            //Må forstå mer av TPS svarte med FEIL, folgende status: S016007F og folgende melding: FØDSELSNR ER IKKE ENTYDIG
+            secureLogger.error("SoapFault mot TPS for familierelasjoner {} og sivilstand {}", it.familierelasjoner, it.sivilstand, sfe)
+            emptyList<PersonhistorikkRelatertPerson>()
         } catch (e: Exception) {
             logger.error("Feilet under henting av personhistorikk for familie", e)
             emptyList<PersonhistorikkRelatertPerson>()

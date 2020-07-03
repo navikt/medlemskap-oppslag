@@ -40,7 +40,7 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
     return Personhistorikk(statsborgerskap, personstatuser, bostedsadresser, postadresser, midlertidigAdresser, sivilstand, familierelasjoner)
 }
 
-fun mapPersonhistorikkRelatertPersonResultat(personhistorikkRelatertPerson: HentPersonhistorikkResponse): PersonhistorikkRelatertPerson {
+fun mapPersonhistorikkRelatertPersonResultat(ident: String, personhistorikkRelatertPerson: HentPersonhistorikkResponse): PersonhistorikkRelatertPerson {
 
     val personstatuser: List<FolkeregisterPersonstatus> = personhistorikkRelatertPerson.personstatusListe.map {
         mapPersonstatusPeriode(it)
@@ -58,7 +58,7 @@ fun mapPersonhistorikkRelatertPersonResultat(personhistorikkRelatertPerson: Hent
         mapMidlertidigPostadresse(it)
     }
 
-    return PersonhistorikkRelatertPerson(personstatuser, bostedsadresser, postadresser, midlertidigAdresser)
+    return PersonhistorikkRelatertPerson(ident, personstatuser, bostedsadresser, postadresser, midlertidigAdresser)
 }
 
 fun mapMidlertidigPostadresse(it: MidlertidigPostadresse?): Adresse {

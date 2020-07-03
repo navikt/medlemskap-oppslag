@@ -36,14 +36,34 @@ enum class Dekning(val dekningKodeverdi: String) {
     UNNTATT("Unntatt");
 
     companion object {
-        fun dekningForSykepenger(): List<Dekning> =
+
+        private val dekningForYtelseMap: Map<Ytelse, List<Dekning>> = hashMapOf(
+                Ytelse.SYKEPENGER to dekningForSykepenger(),
+                Ytelse.DAGPENGER to dekningForDagpenger(),
+                Ytelse.ENSLIG_FORSORGER to dekningForEnsligForsorger()
+        )
+
+        private fun dekningForSykepenger(): List<Dekning> =
                 listOf(FOLKETRYGDLOVEN2_6,
                         FOLKETRYGDLOVEN2_7A_2B,
                         FOLKETRYGDLOVEN2_7_3A,
                         FOLKETRYGDLOVEN2_9_2_1A,
                         FOLKETRYGDLOVEN2_9_2_1C)
 
-        fun dekningForDagpenger(): List<Dekning> = listOf(FOLKETRYGDLOVEN2_6, FOLKETRYGDLOVEN2_7A_2B)
+        private fun dekningForDagpenger(): List<Dekning> =
+                listOf(FOLKETRYGDLOVEN2_6,
+                        FOLKETRYGDLOVEN2_7A_2B
+                )
+
+        private fun dekningForEnsligForsorger(): List<Dekning> =
+                listOf(FOLKETRYGDLOVEN2_6,
+                        FOLKETRYGDLOVEN2_7A_2B
+                )
+
+        fun Dekning.gjelderForYtelse(ytelse: Ytelse): Boolean = dekningForYtelseMap[ytelse]?.contains(this) ?: false
+
+        fun from(kodeverdi: String) : Dekning = values().first { it.dekningKodeverdi == kodeverdi }
+
     }
 
 }

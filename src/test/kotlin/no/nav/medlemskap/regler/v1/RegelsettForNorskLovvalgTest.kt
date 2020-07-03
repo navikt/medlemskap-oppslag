@@ -11,43 +11,54 @@ class RegelsettForNorskLovvalgTest {
     private val personleser = Personleser()
 
     @Test
-    fun `person bosatt i Norge siste 12 mnd, får ja`() {
-        assertSvar("10", Svar.JA, evaluer(personleser.enkelNorskArbeid()), Svar.JA)
+    fun `person har svart ja på jobb utenfor Norge, får NEI`() {
+        assertSvar("9", Svar.JA, evaluer(personleser.brukerHarJobbetUtenforNorge()), Svar.NEI)
     }
 
     @Test
-    fun `person ikke bosatt i Norge siste 12 mnd, får uavklart`() {
-        assertSvar("10", Svar.NEI, evaluer(personleser.norskBosattIUtland()), Svar.UAVKLART)
+    fun `person har svart nei på jobb utenfor Norge, får JA`() {
+        assertSvar("9", Svar.NEI, evaluer(personleser.brukerHarIkkeJobbetUtenforNorge()), Svar.JA)
     }
 
     @Test
-    fun `person med norsk bostedsadresse og postadresse, får ja`() {
-        assertSvar("10", Svar.JA, evaluer(personleser.enkelNorskMedNorskBostedsadresseOgPostadresse()), Svar.JA)
+    fun `norsk person kun bostedsadresse siste 12 mnd får JA`() {
+        assertSvar("10", Svar.JA, evaluer(personleser.brukerHarKunBostedsadresse()), Svar.JA)
     }
 
     @Test
-    fun `norsk person med utenlandsk bostedsadresse, får uavklart`() {
-        assertSvar("10", Svar.NEI, evaluer(personleser.norskBosattIUtland()), Svar.UAVKLART)
+    fun `person uten bostedsadresse, får uavklart`() {
+        assertSvar("10", Svar.NEI, evaluer(personleser.brukerHarIngenBostedsadresse()), Svar.UAVKLART)
     }
 
     @Test
-    fun `norsk person med utenlandsk postadresse, får uavklart`() {
-        assertSvar("10", Svar.NEI, evaluer(personleser.norskPostadresseIUtland()), Svar.UAVKLART)
+    fun `person med alle adresser med norsk landkode, får ja`() {
+        assertSvar("10", Svar.JA, evaluer(personleser.brukerHarAlleAdresserNorsk()), Svar.JA)
+    }
+
+
+    @Test
+    fun `person med utenlandsk postadresse, får uavklart`() {
+        assertSvar("10", Svar.NEI, evaluer(personleser.brukerHarPostadresseIUtland()), Svar.UAVKLART)
     }
 
     @Test
-    fun `norsk person med med norsk bostedsadresse, men ingen postadresse JA`() {
-        assertSvar("10", Svar.JA, evaluer(personleser.norskMedNorskBostedsadresseUtenPostadresse()), Svar.JA)
+    fun `person med utenlandsk midlertidig adresse, får uavklart`() {
+        assertSvar("10", Svar.NEI, evaluer(personleser.brukerHarMidlertidigAdresseIUtland()), Svar.UAVKLART)
     }
 
     @Test
-    fun `person med norsk statsborgerskap, kun arbeid i Norge, får ja`() {
-        assertSvar("11", Svar.JA, evaluer(personleser.enkelNorskArbeid()), Svar.JA)
+    fun `person med norsk statsborgerskap, får ja`() {
+        assertSvar("11", Svar.JA, evaluer(personleser.brukerErNorskStatsborger()), Svar.JA)
+    }
+
+    @Test
+    fun `person med utenlandsk statsborgerskap, får nei`() {
+        assertSvar("11", Svar.NEI, evaluer(personleser.brukerErIkkeNorskStatsborger()), Svar.UAVKLART)
     }
 
     @Test
     fun `person med ett arbeidsforhold med to overlappende arbeidsavtaler som til sammen utgjør mer enn 25% i stillingsprosent, får ja`() {
-        assertSvar("11", Svar.JA, evaluer(personleser.norskMedToOverlappendeArbeidsavtalerSomTilSammenErOver25ProsentIPeriode()), Svar.JA)
+        assertSvar("12", Svar.JA, evaluer(personleser.norskMedToOverlappendeArbeidsavtalerSomTilSammenErOver25ProsentIPeriode()), Svar.JA)
     }
 
     @Test
@@ -73,6 +84,11 @@ class RegelsettForNorskLovvalgTest {
     @Test
     fun `person med to delvis overlappende arbeidsforhold, hvor ene har for lav stillingsprosent`() {
         assertSvar("12", Svar.NEI, evaluer(personleser.norskMedToDelvisOverlappendeArbeidsforholdHvoravEnLavStillingsprosent()), Svar.UAVKLART)
+    }
+
+    @Test
+    fun `person med to sammenhengende arbeidsforhold innenfor kontrollperiode, får ja`() {
+        assertSvar("12", Svar.JA, evaluer(personleser.norskMedToSammenhengendeArbeidsforholdIPeriode()), Svar.JA)
     }
 
 }

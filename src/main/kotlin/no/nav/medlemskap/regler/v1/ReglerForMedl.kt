@@ -1,17 +1,19 @@
 package no.nav.medlemskap.regler.v1
 
+import no.nav.medlemskap.common.dekningCounter
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Dekning.Companion.gjelderForYtelse
+import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.harSammeAdressePaaGitteDatoer
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.arbeidsforholdForDato
 import no.nav.medlemskap.regler.funksjoner.GsakFunksjoner.finnesAapneOppgaver
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.erMedlemskapsperioderOver12Mnd
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.finnesPersonIMedlForKontrollPeriode
+import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.gjeldendeDekning
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.harGyldigeMedlemskapsperioder
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.harMedlPeriodeMedOgUtenMedlemskap
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.harPeriodeMedMedlemskap
-import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.medlemskapsPerioderOver12MndPeriodeDekning
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.tidligsteFraOgMedDatoForMedl
 
 class ReglerForMedl(
@@ -22,7 +24,7 @@ class ReglerForMedl(
         val oppgaver: List<Oppgave>,
         val bostedsadresser: List<Adresse>
 ) : Regler() {
-    private val gyldigeDekningerForSykepenger = Dekning.dekningForSykepenger()
+
     private val kontrollPeriodeForMedl = Datohjelper(periode, ytelse).kontrollPeriodeForMedl()
     private val datohjelper = Datohjelper(periode, ytelse)
 
@@ -36,7 +38,7 @@ class ReglerForMedl(
                     sjekkRegel {
                         periodeMedOgUtenMedlemskap
                     } hvisJa {
-                        uavklartKonklusjon
+                        uavklartKonklusjon(ytelse)
                     } hvisNei {
                         sjekkRegel {
                             periodeMedMedlemskap
@@ -44,7 +46,7 @@ class ReglerForMedl(
                             sjekkRegel {
                                 erPeriodeUtenMedlemskapInnenfor12MndPeriode
                             } hvisNei {
-                                uavklartKonklusjon
+                                uavklartKonklusjon(ytelse)
                             } hvisJa {
                                 sjekkRegel {
                                     erArbeidsforholdUendretForBrukerUtenMedlemskap
@@ -52,12 +54,12 @@ class ReglerForMedl(
                                     sjekkRegel {
                                         erAdresseUendretForBrukerUtenMedlemskap
                                     } hvisJa {
-                                        neiKonklusjon
+                                        neiKonklusjon(ytelse)
                                     } hvisNei {
-                                        uavklartKonklusjon
+                                        uavklartKonklusjon(ytelse)
                                     }
                                 } hvisNei {
-                                    uavklartKonklusjon
+                                    uavklartKonklusjon(ytelse)
                                 }
                             }
                         } hvisJa {
@@ -73,23 +75,23 @@ class ReglerForMedl(
                                         sjekkRegel {
                                             harBrukerDekningIMedl
                                         } hvisJa {
-                                            jaKonklusjon
+                                            jaKonklusjon(ytelse)
                                         } hvisNei {
-                                            jaKonklusjon
+                                            jaKonklusjon(ytelse)
                                         }
                                     } hvisNei {
-                                        uavklartKonklusjon
+                                        uavklartKonklusjon(ytelse)
                                     }
                                 } hvisNei {
-                                    uavklartKonklusjon
+                                    uavklartKonklusjon(ytelse)
                                 }
                             } hvisNei {
-                                uavklartKonklusjon
+                                uavklartKonklusjon(ytelse)
                             }
                         }
                     }
                 } hvisJa {
-                    uavklartKonklusjon
+                    uavklartKonklusjon(ytelse)
                 }
             }
 
@@ -97,6 +99,7 @@ class ReglerForMedl(
             identifikator = "A",
             avklaring = "Finnes det noe på personen i MEDL?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { harBrukerPerioderIMedl() }
     )
 
@@ -104,6 +107,7 @@ class ReglerForMedl(
             identifikator = "B",
             avklaring = "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { harBrukerAapneOppgaverIGsak() }
     )
 
@@ -111,6 +115,7 @@ class ReglerForMedl(
             identifikator = "1.1",
             avklaring = "Er det periode både med og uten medlemskap innenfor 12 mnd?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { harPeriodeMedOgUtenMedlemskap() }
     )
 
@@ -118,6 +123,7 @@ class ReglerForMedl(
             identifikator = "1.2",
             avklaring = "Er det en periode med medlemskap?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { periodeMedMedlemskap() }
     )
 
@@ -125,6 +131,7 @@ class ReglerForMedl(
             identifikator = "1.2.1",
             avklaring = "Er hele perioden uten medlemskap innenfor 12-måneders perioden?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { erMedlemskapPeriodeOver12MndPeriode(false) }
     )
 
@@ -132,6 +139,7 @@ class ReglerForMedl(
             identifikator = "1.3",
             avklaring = "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { erMedlemskapPeriodeOver12MndPeriode(true) }
     )
 
@@ -140,6 +148,7 @@ class ReglerForMedl(
             identifikator = "1.2.2",
             avklaring = "Er bruker uten medlemskap sin situasjon uendret?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { erBrukersArbeidsforholdUendret() }
     )
 
@@ -147,6 +156,7 @@ class ReglerForMedl(
             identifikator = "1.2.3",
             avklaring = "Er bruker uten medlemskap sin situasjon uendret?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { erBrukersAdresseUendret() }
     )
 
@@ -154,6 +164,7 @@ class ReglerForMedl(
             identifikator = "1.4",
             avklaring = "Er brukers situasjon uendret?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { erBrukersArbeidsforholdUendret() }
     )
 
@@ -161,14 +172,16 @@ class ReglerForMedl(
             identifikator = "1.5",
             avklaring = "Er brukers situasjon uendret?",
             beskrivelse = "",
+            ytelse = ytelse,
             operasjon = { erBrukersAdresseUendret() }
     )
 
     private val harBrukerDekningIMedl = Regel(
             identifikator = "1.6",
-            avklaring = "Har bruker et medlemskap som omfatter sykepenger? (Dekning i MEDL)",
+            avklaring = "Har bruker et medlemskap som omfatter ytelse? (Dekning i MEDL)",
             beskrivelse = "",
-            operasjon = { harBrukerMedlemskapSomOmfatterSykepenger() }
+            ytelse = ytelse,
+            operasjon = { harBrukerMedlemskapSomOmfatterYtelse() }
     )
 
     private fun harBrukerPerioderIMedl(): Resultat =
@@ -216,11 +229,13 @@ class ReglerForMedl(
                 else -> nei()
             }
 
-    private fun harBrukerMedlemskapSomOmfatterSykepenger(): Resultat {
-        val dekninger = medlemskap medlemskapsPerioderOver12MndPeriodeDekning kontrollPeriodeForMedl
+    private fun harBrukerMedlemskapSomOmfatterYtelse(): Resultat {
+        val dekning = medlemskap gjeldendeDekning kontrollPeriodeForMedl
+        dekningCounter(dekning, ytelse.metricName())
+
         return when {
-            dekninger alleEr gyldigeDekningerForSykepenger.map { it.dekningKodeverdi } -> ja(dekninger)
-            else -> nei(dekninger)
+            Dekning.from(dekning).gjelderForYtelse(ytelse) -> ja("Bruker har dekning", dekning)
+            else -> nei("Bruker har ikke dekning", dekning)
         }
     }
 

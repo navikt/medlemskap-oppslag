@@ -1,0 +1,72 @@
+{
+  "periode": {
+    "fom": "2020-01-29",
+    "tom": "2020-01-30"
+  },
+  "brukerinput": {
+    "arbeidUtenforNorge": false
+  },
+  "personhistorikk": {
+    "statsborgerskap": [
+      {
+        "landkode": "BEL",
+        "fom": "2016-01-30",
+        "tom": "2020-01-30"
+      }
+    ],
+    "personstatuser": [],
+    "bostedsadresser": [
+      {
+        "adresselinje": "Oslo",
+        "landkode": "NOR",
+        "fom": "2019-11-01",
+        "tom": null
+      }
+    ],
+    "postadresser": [],
+    "midlertidigAdresser": [],
+    "sivilstand": [],
+    "familierelasjoner": []
+  },
+  "pdlpersonhistorikk": {
+    "statsborgerskap": [],
+    "personstatuser": [],
+    "bostedsadresser": [],
+    "postadresser": [],
+    "midlertidigAdresser": [],
+    "sivilstand": [],
+    "familierelasjoner": []
+  },
+  "medlemskapsunntak": [],
+  "arbeidsforhold": [
+    {
+      "periode": {
+        "fom": "2018-01-30",
+        "tom": null
+      },
+      "utenlandsopphold": [],
+      "arbeidsgivertype": "Organisasjon",
+      "arbeidsgiver": {
+        "type": "BEDR",
+        "identifikator": "1",
+        "landkode": "NOR"
+      },
+      "arbeidsfolholdstype": "NORMALT",
+      "arbeidsavtaler": [
+        {
+          "periode": {
+            "fom": "2020-01-30",
+            "tom": null
+          },
+          "yrkeskode": "0001",
+          "skipsregister": "utl"
+        }
+      ]
+    }
+  ],
+  "medlemskap": [],
+  "inntekt": [],
+  "oppgaver": [],
+  "dokument": [],
+  "ytelse" : "SYKEPENGER"
+}

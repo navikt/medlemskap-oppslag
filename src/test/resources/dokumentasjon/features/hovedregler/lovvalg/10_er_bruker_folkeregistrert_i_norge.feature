@@ -20,9 +20,9 @@ Egenskap: Regel 10: Er bruker folkeregistert i Norge?
     Så skal regelen gi svaret "<Svar>"
 
     Eksempler:
-    | Bor i land | Post land | Svar |
-    | NOR        | NOR       | Ja   |
-    | NOR        | FRA       | Nei  |
+      | Bor i land | Post land | Svar |
+      | NOR        | NOR       | Ja   |
+      | NOR        | FRA       | Nei  |
 
 
   Scenariomal: Ingen postadresse, men bostedsadresse
@@ -40,7 +40,7 @@ Egenskap: Regel 10: Er bruker folkeregistert i Norge?
     Eksempler:
       | Land | Svar |
       | NOR  | Ja   |
-      | FRA  | Nei  |
+      | FRA  | Ja   |
 
   Scenariomal: Postadresse, men ikke bostedsadresse
 

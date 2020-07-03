@@ -33,6 +33,7 @@
     </logger>
 
     <logger name="org.apache.cxf" level="WARN"/>
+    <logger name="org.apache.cxf.phase.PhaseInterceptorChain" level="ERROR"/>
     <logger name="io.ktor.auth.jwt" level="TRACE"/>
     <logger name="no.nav.medlemskap.common.influx" level="DEBUG"/>
 
