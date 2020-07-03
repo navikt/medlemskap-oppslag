@@ -75,7 +75,7 @@ object ArbeidsforholdFunksjoner {
         val sortertArbeidsforholdEtterPeriode = arbeidsforholdForNorskArbeidsgiver.stream().sorted().collect(Collectors.toList())
         for (arbeidsforhold in sortertArbeidsforholdEtterPeriode) { //Sjekker at alle påfølgende arbeidsforhold er sammenhengende
             if (forrigeTilDato != null && !erDatoerSammenhengende(forrigeTilDato, arbeidsforhold.periode.fom)) {
-                val antallDagerDiff = ChronoUnit.DAYS.between(kontrollPeriode.fom, arbeidsforholdForNorskArbeidsgiver.min()!!.periode.fom)
+                val antallDagerDiff = ChronoUnit.DAYS.between(forrigeTilDato, arbeidsforhold.periode.fom)
                 antallDagerMellomArbeidsforhold(ytelse).record(antallDagerDiff.toDouble())
                 usammenhengendeArbeidsforholdCounter(ytelse).increment()
                 return false
