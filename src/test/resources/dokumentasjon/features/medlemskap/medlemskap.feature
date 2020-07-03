@@ -26,12 +26,16 @@ Egenskap: Man er medlem hvis man er norsk statsborger som bor i Norge, og som ha
       | <Statsborgerskap> | 30.01.2000      |                 |
 
     Og følgende arbeidsforhold fra AAReg
-      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Yrkeskode | Stillingsprosent | Skipsregister |
-      | 01.01.2018      |                 | Organisasjon     | NORMALT             | 001       | 100              | NIS           |
+      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
+      | 01.01.2018      |                 | Organisasjon     | NORMALT             |
 
     Og følgende arbeidsgiver i arbeidsforholdet
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
       | 1             | BEDR             | NOR      | 9              |
+
+    Og følgende arbeidsavtaler i arbeidsforholdet
+      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister |
+      | 01.01.2018      |                 | 001       | 100              |               |
 
     Og følgende utenlandsopphold i arbeidsforholdet
       | Landkode | Fra og med dato | Til og med dato | Rapporteringsperiode |

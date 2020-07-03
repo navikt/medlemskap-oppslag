@@ -31,8 +31,12 @@ Egenskap: Reglene 9 til 12
 
   Scenariomal: Regel 12: Bruker får ja på spørsmålet om medlemskap, hvis stillingsprosent er over 25 %, uavklart ellers
     Gitt følgende arbeidsforhold fra AAReg
-      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Yrkeskode | Stillingsprosent   | Skipsregister |
-      | 01.01.2018      |                 | Organisasjon     | NORMALT             | 001       | <Stillingsprosent> |               |
+      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Arbeidsgiver Id |
+      | 01.01.2018      |                 | Organisasjon     | NORMALT             | 1               |
+
+    Og følgende arbeidsavtaler i arbeidsforholdet
+      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   | Skipsregister |
+      | 01.01.2018      |                 | 001        | <Stillingsprosent> |               |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
@@ -48,8 +52,12 @@ Egenskap: Reglene 9 til 12
   Scenario: Regel 9: Bruker som har svart ja på spørsmålet "Har hatt arbeid utenfor Norge"
 
     Gitt følgende arbeidsforhold fra AAReg
-      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Yrkeskode | Stillingsprosent   | Skipsregister |
-      | 01.01.2018      |                 | Organisasjon     | NORMALT             | 001       | 100                |               |
+      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
+      | 01.01.2018      |                 | Organisasjon     | NORMALT             |
+
+    Og følgende arbeidsavtaler i arbeidsforholdet
+      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister |
+      | 01.01.2018      |                 | 001        | 100              |               |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |

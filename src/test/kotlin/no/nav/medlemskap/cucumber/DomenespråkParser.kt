@@ -2,6 +2,7 @@ package no.nav.medlemskap.cucumber
 
 import io.cucumber.datatable.DataTable
 import no.nav.medlemskap.cucumber.Domenebegrep.*
+import no.nav.medlemskap.cucumber.DomenespråkParser.Companion.VANLIG_NORSK_ARBEIDSGIVER
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Datohjelper
 import no.nav.medlemskap.regler.common.Svar
@@ -83,12 +84,12 @@ class DomenespråkParser {
         return dataTable.asMaps().map { radMapper.mapRad(this, it) }
     }
 
-    fun mapArbeidsforhold(dataTable: DataTable?, utenlandsopphold: List<Utenlandsopphold>, arbeidsgiver: Arbeidsgiver): List<Arbeidsforhold> {
+    fun mapArbeidsforhold(dataTable: DataTable?, utenlandsopphold: List<Utenlandsopphold>, arbeidsgivere: List<Arbeidsgiver>): List<Arbeidsforhold> {
         if (dataTable == null) {
             return emptyList()
         }
 
-        return dataTable.asMaps().map { ArbeidsforholdMapper().mapRad(this, it, utenlandsopphold, arbeidsgiver) }
+        return dataTable.asMaps().map { ArbeidsforholdMapper().mapRad(this, it, utenlandsopphold, arbeidsgivere) }
     }
 
     fun parseAarMaaned(domenebegrep: Domenebegrep, rad: Map<String, String>): YearMonth {
@@ -137,6 +138,12 @@ class DomenespråkParser {
         val verdi = verdi(domenebegrep.nøkkel, rad)
 
         return Status.valueOf(verdi)
+    }
+
+    companion object {
+        val ANSATTE_9 = listOf(Ansatte(9, null, null))
+        val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", identifikator = "1", landkode = "NOR", ansatte = ANSATTE_9, konkursStatus = null)
+
     }
 
 }
@@ -230,15 +237,21 @@ class ArbeidsforholdMapper {
     fun mapRad(domenespråkParser: DomenespråkParser,
                rad: Map<String, String>,
                utenlandsopphold: List<Utenlandsopphold> = emptyList(),
-               arbeidsgiver: Arbeidsgiver
+               arbeidsgivere: List<Arbeidsgiver>
     ): Arbeidsforhold {
         val periode = Periode(
                 domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
                 domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad))
+        val arbeidsgiverId = domenespråkParser.parseValgfriString(ARBEIDSGIVER_ID, rad)
 
-        val yrkeskode = domenespråkParser.parseString(YRKESKODE, rad)
-        val stillingsprosent = domenespråkParser.parseDouble(STILLINGSPROSENT, rad)
-        val skipsregister = domenespråkParser.parseSkipsregister(rad)
+        val arbeidsgiver = VANLIG_NORSK_ARBEIDSGIVER
+/*
+        val arbeidsgiver = (if (arbeidsgiverId == null) {
+            arbeidsgivere[0]
+        } else {
+            arbeidsgivere.find{it.identifikator == arbeidsgiverId}
+        }) ?: throw RuntimeException("Fant ikke arbeidsgiver med id = " + arbeidsgiverId)
+ */
 
         return Arbeidsforhold(
                 periode = periode,
@@ -246,7 +259,20 @@ class ArbeidsforholdMapper {
                 arbeidsgivertype = AaRegOpplysningspliktigArbeidsgiverType.valueOf(domenespråkParser.parseString(ARBEIDSGIVERTYPE, rad)),
                 arbeidsgiver = arbeidsgiver,
                 arbeidsfolholdstype = domenespråkParser.parseArbeidsforholdstype(rad),
-                arbeidsavtaler = listOf(Arbeidsavtale(periode, yrkeskode, skipsregister, stillingsprosent))
+                arbeidsavtaler = emptyList()
+        )
+    }
+}
+
+class ArbeidsavtaleMapper: RadMapper<Arbeidsavtale> {
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Arbeidsavtale {
+        return Arbeidsavtale(
+                Periode(
+                        domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
+                        domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)),
+                domenespråkParser.parseString(YRKESKODE, rad),
+                domenespråkParser.parseSkipsregister(rad),
+                domenespråkParser.parseDouble(STILLINGSPROSENT, rad)
         )
     }
 }
@@ -297,6 +323,7 @@ enum class Domenebegrep(val nøkkel: String) {
     AKTIV_DATO("Aktiv dato"),
     ANTALL_ANSATTE("Antall ansatte"),
     ARBEIDSFORHOLDSTYPE("Arbeidsforholdstype"),
+    ARBEIDSGIVER_ID("Arbeidsgiver Id"),
     ARBEIDSGIVERTYPE("Arbeidsgivertype"),
     DEKNING("Dekning"),
     ER_MEDLEM("Er medlem"),

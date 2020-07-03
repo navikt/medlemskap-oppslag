@@ -28,6 +28,7 @@ class RegelSteps : No {
 
     private var arbeidsgivere: List<Arbeidsgiver> = emptyList()
     private var arbeidsforhold: List<Arbeidsforhold> = emptyList()
+    private var arbeidsavtaler: List<Arbeidsavtale> = emptyList()
     private var utenlandsopphold: List<Utenlandsopphold> = emptyList()
     private var resultat: Resultat? = null
     private var oppgaverFraGosys: List<Oppgave> = emptyList()
@@ -63,11 +64,15 @@ class RegelSteps : No {
         }
 
         Gitt("følgende arbeidsforhold fra AAReg") { dataTable: DataTable? ->
-            arbeidsforhold = domenespråkParser.mapArbeidsforhold(dataTable, utenlandsopphold, VANLIG_NORSK_ARBEIDSGIVER)
+            arbeidsforhold = domenespråkParser.mapArbeidsforhold(dataTable, utenlandsopphold, arbeidsgivere)
         }
 
         Gitt("følgende arbeidsgiver i arbeidsforholdet") { dataTable: DataTable? ->
             arbeidsgivere = domenespråkParser.mapDataTable(dataTable, ArbeidsgiverMapper())
+        }
+
+        Gitt("følgende arbeidsavtaler i arbeidsforholdet") { dataTable: DataTable? ->
+            arbeidsavtaler = domenespråkParser.mapDataTable(dataTable, ArbeidsavtaleMapper())
         }
 
         Gitt("følgende utenlandsopphold i arbeidsforholdet") { dataTable: DataTable? ->
@@ -178,7 +183,7 @@ class RegelSteps : No {
                         sivilstand = emptyList()
                 ),
                 medlemskap = medlemskap,
-                arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgivere, utenlandsopphold),
+                arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgivere, arbeidsavtaler, utenlandsopphold),
                 oppgaver = oppgaverFraGosys,
                 dokument = journalPosterFraJoArk,
                 ytelse = ytelse,
@@ -186,14 +191,14 @@ class RegelSteps : No {
         )
     }
 
-    private fun byggArbeidsforhold(arbeidsforhold: List<Arbeidsforhold>, arbeidsgivere: List<Arbeidsgiver>, utenlandsopphold: List<Utenlandsopphold>): List<Arbeidsforhold> {
+    private fun byggArbeidsforhold(arbeidsforhold: List<Arbeidsforhold>, arbeidsgivere: List<Arbeidsgiver>, arbeidsavtaler: List<Arbeidsavtale>, utenlandsopphold: List<Utenlandsopphold>): List<Arbeidsforhold> {
         val arbeidsgiver = if (arbeidsgivere.isEmpty()) {
             VANLIG_NORSK_ARBEIDSGIVER
         } else {
             arbeidsgivere[0]
         }
 
-        return arbeidsforhold.map { it.copy(utenlandsopphold = utenlandsopphold, arbeidsgiver = arbeidsgiver) }
+        return arbeidsforhold.map { it.copy(utenlandsopphold = utenlandsopphold, arbeidsgiver = arbeidsgiver, arbeidsavtaler = arbeidsavtaler) }
     }
 
     private fun evaluerGrunnforordningen(datagrunnlag: Datagrunnlag): Resultat {
