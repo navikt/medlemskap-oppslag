@@ -43,7 +43,6 @@ Egenskap: Regel 10: Er bruker folkeregistert i Norge?
       | FRA  | Ja   |
 
   Scenariomal: Postadresse, men ikke bostedsadresse
-
     Gitt følgende postadresser i personhistorikken
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | XXX     | <Land>   | 01.01.2000      |                 |

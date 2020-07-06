@@ -163,7 +163,7 @@ class RegelSteps : No {
         val arbeidsforholdIndeks = if (radnummer == null) {
             0
         } else {
-            radnummer + 1
+            radnummer - 1
         }
 
         return arbeidsforholdIndeks
@@ -219,7 +219,7 @@ class RegelSteps : No {
                     arbeidsforhold.copy(
                             utenlandsopphold = utenlandsoppholdMap[index]?: emptyList(),
                             arbeidsgiver = arbeidsgiverMap[index]?: VANLIG_NORSK_ARBEIDSGIVER,
-                            arbeidsavtaler = arbeidsavtaleMap[index]?: listOf(ARBEIDSAVTALE_VANLIG)
+                            arbeidsavtaler = arbeidsavtaleMap[index]?: emptyList()
                     )
                 }
     }
