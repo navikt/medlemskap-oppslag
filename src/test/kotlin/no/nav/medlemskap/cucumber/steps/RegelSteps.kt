@@ -148,25 +148,7 @@ class RegelSteps : No {
             }
         }
 
-        Så("skal medlemskap være {string}") { forventetVerdi: String ->
-            val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
-
-            assertEquals(forventetSvar, resultat!!.svar)
-        }
-
-        Så("skal svaret på hovedregelen være {string}") { forventetVerdi: String ->
-            val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
-
-            assertEquals(forventetSvar, resultat!!.svar)
-        }
-
         Så("skal svaret være {string}") { forventetVerdi: String ->
-            val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
-
-            assertEquals(forventetSvar, resultat!!.svar)
-        }
-
-        Så("skal regelen gi svaret {string}") { forventetVerdi: String ->
             val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
 
             assertEquals(forventetSvar, resultat!!.svar)

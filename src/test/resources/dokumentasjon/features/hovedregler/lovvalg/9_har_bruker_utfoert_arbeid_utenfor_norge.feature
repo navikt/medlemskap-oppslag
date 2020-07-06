@@ -9,9 +9,7 @@ Egenskap: Regel 9: Har bruker utført arbeid utenfor Norge?
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | <Arbeid utenfor Norge>        |
 
-    Så skal regelen gi svaret "<Svar>"
-
-    Og skal svaret på hovedregelen være "<Svar>"
+    Så skal svaret være "<Svar>"
 
     Eksempler:
       | Arbeid utenfor Norge | Svar |

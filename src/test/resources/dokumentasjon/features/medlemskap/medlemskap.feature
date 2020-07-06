@@ -45,9 +45,9 @@ Egenskap: Man er medlem hvis man er norsk statsborger som bor i Norge, og som ha
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 15.01.2020      | 30.01.2020      | Nei                           |
 
-    Så skal medlemskap være <medlemskap>
+    Så skal svaret være "<medlemskap>"
 
     Eksempler:
       | Statsborgerskap | medlemskap |
-      | NOR             | "Ja"       |
-      | FRA             | "UAVKLART" |
+      | NOR             | Ja         |
+      | FRA             | UAVKLART   |

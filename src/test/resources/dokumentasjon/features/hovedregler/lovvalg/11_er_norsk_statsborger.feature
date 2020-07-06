@@ -12,7 +12,7 @@ Egenskap: Regel 11: Er bruker norsk statborger?
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
-    Så skal regelen gi svaret "<Svar>"
+    Så skal svaret være "<Svar>"
 
     Eksempler:
       | Statsborgerskap | Svar |
@@ -30,7 +30,7 @@ Egenskap: Regel 11: Er bruker norsk statborger?
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 01.01.2020      | 30.01.2021      | Nei                           |
 
-    Så skal regelen gi svaret "<Svar>"
+    Så skal svaret være "<Svar>"
 
     Eksempler:
       | Statsborgerskap | Svar |
@@ -47,6 +47,4 @@ Egenskap: Regel 11: Er bruker norsk statborger?
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 01.01.2020      | 30.01.2021      | Nei                           |
 
-    Så skal regelen gi svaret "Ja"
-
-
+    Så skal svaret være "Ja"

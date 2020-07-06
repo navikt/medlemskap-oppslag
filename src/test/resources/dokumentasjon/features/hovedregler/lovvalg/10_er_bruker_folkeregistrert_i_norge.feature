@@ -17,7 +17,7 @@ Egenskap: Regel 10: Er bruker folkeregistert i Norge?
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
-    Så skal regelen gi svaret "<Svar>"
+    Så skal svaret være "<Svar>"
 
     Eksempler:
       | Bor i land | Post land | Svar |
@@ -35,7 +35,7 @@ Egenskap: Regel 10: Er bruker folkeregistert i Norge?
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
-    Så skal regelen gi svaret "<Svar>"
+    Så skal svaret være "<Svar>"
 
     Eksempler:
       | Land | Svar |
@@ -52,7 +52,7 @@ Egenskap: Regel 10: Er bruker folkeregistert i Norge?
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
-    Så skal regelen gi svaret "<Svar>"
+    Så skal svaret være "<Svar>"
 
     Eksempler:
       | Land | Svar |

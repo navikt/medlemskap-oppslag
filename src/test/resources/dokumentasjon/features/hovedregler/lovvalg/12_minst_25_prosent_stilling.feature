@@ -22,7 +22,7 @@ Egenskap: Regel 12: Har bruker vært i minst 25 % stilling siste 12 måneder?
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
-    Så skal regelen gi svaret "Nei"
+    Så skal svaret være "Nei"
 
   Scenario: Stilling med mer enn 25 %
     Gitt følgende arbeidsavtaler i arbeidsforholdet
@@ -33,4 +33,4 @@ Egenskap: Regel 12: Har bruker vært i minst 25 % stilling siste 12 måneder?
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
-    Så skal regelen gi svaret "Ja"
+    Så skal svaret være "Ja"

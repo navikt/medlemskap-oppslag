@@ -38,7 +38,7 @@ Egenskap: Uavklart hvis man har medlemsunntak fra MEDL
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 15.01.2020      | 30.01.2020      | Nei                           |
 
-    Så skal svaret på hovedregelen være "UAVKLART"
+    Så skal svaret være "UAVKLART"
 
   Scenario: Uavklart hvis man har medlemsunntak
 
@@ -50,4 +50,4 @@ Egenskap: Uavklart hvis man har medlemsunntak fra MEDL
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 15.01.2020      | 30.01.2020      | Nei                           |
 
-    Så skal medlemskap være "UAVKLART"
+    Så skal svaret være "UAVKLART"

@@ -14,7 +14,7 @@ Egenskap: Borgere som har flere statsborgerskap i perioden får "Nei"
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge | Ytelse     |
       | 30.01.2020      | 30.01.2021      | Nei                           | SYKEPENGER |
 
-    Så skal svaret på hovedregelen være "<Svar>"
+    Så skal svaret være "<Svar>"
 
     Eksempler:
       | Land | Svar |
