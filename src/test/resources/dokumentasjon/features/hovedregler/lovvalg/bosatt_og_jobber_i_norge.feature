@@ -54,10 +54,15 @@ Egenskap: Reglene 9 til 12
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
       | 01.01.2018      |                 | Organisasjon     | NORMALT             |
+      | 01.01.2018      |                 | Organisasjon     | NORMALT             |
 
-    Og følgende arbeidsavtaler i arbeidsforholdet
+    Og følgende arbeidsavtaler i arbeidsforhold 1
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister |
-      | 01.01.2018      |                 | 001        | 100              |               |
+      | 01.01.2018      |                 | 001        | 100             |               |
+
+    Og følgende arbeidsavtaler i arbeidsforhold 2
+      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister |
+      | 01.01.2018      |                 | 001        | 100             |               |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |

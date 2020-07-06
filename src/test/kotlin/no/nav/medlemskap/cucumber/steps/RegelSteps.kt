@@ -12,11 +12,15 @@ import no.nav.medlemskap.regler.v1.ReglerForRegistrerteOpplysninger
 import no.nav.medlemskap.regler.v1.ReglerService
 import no.nav.medlemskap.services.ereg.Ansatte
 import org.junit.jupiter.api.Assertions.assertEquals
+import java.time.LocalDate
 
 
 class RegelSteps : No {
     private val ANSATTE_9 = listOf(Ansatte(9, null, null))
     private val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", identifikator = "1", landkode = "NOR", ansatte = ANSATTE_9, konkursStatus = null)
+    private val PERIODE_VANLIG = Periode(LocalDate.of(1999, 1, 1), null)
+
+    private val ARBEIDSAVTALE_VANLIG = Arbeidsavtale(PERIODE_VANLIG, "001", null,100.0)
 
     private var statsborgerskap: List<Statsborgerskap> = emptyList()
     private var bostedsadresser: List<Adresse> = emptyList()
@@ -26,14 +30,14 @@ class RegelSteps : No {
 
     private var medlemskap: List<Medlemskap> = emptyList()
 
-    private var arbeidsgivere: List<Arbeidsgiver> = emptyList()
     private var arbeidsforhold: List<Arbeidsforhold> = emptyList()
-    private var arbeidsavtaler: List<Arbeidsavtale> = emptyList()
-    private var utenlandsopphold: List<Utenlandsopphold> = emptyList()
+    private var arbeidsavtaleMap = hashMapOf<Int, List<Arbeidsavtale>>()
+    private var utenlandsoppholdMap = hashMapOf<Int, List<Utenlandsopphold>>()
+    private var arbeidsgiverMap = hashMapOf<Int, Arbeidsgiver>()
+
     private var resultat: Resultat? = null
     private var oppgaverFraGosys: List<Oppgave> = emptyList()
     private var journalPosterFraJoArk: List<Journalpost> = emptyList()
-
     private val domenespråkParser = DomenespråkParser()
 
     private var datagrunnlag: Datagrunnlag? = null
@@ -64,19 +68,41 @@ class RegelSteps : No {
         }
 
         Gitt("følgende arbeidsforhold fra AAReg") { dataTable: DataTable? ->
-            arbeidsforhold = domenespråkParser.mapArbeidsforhold(dataTable, utenlandsopphold, arbeidsgivere)
+            arbeidsforhold = domenespråkParser.mapArbeidsforhold(dataTable)
         }
 
         Gitt("følgende arbeidsgiver i arbeidsforholdet") { dataTable: DataTable? ->
-            arbeidsgivere = domenespråkParser.mapDataTable(dataTable, ArbeidsgiverMapper())
+            val arbeidsgivere = domenespråkParser.mapDataTable(dataTable, ArbeidsgiverMapper())
+
+            arbeidsgiverMap[0] = arbeidsgivere[0]
+        }
+
+        Gitt("følgende arbeidsgiver i arbeidsforhold {int}") { arbeidsforholdRad: Int?, dataTable: DataTable? ->
+            val arbeidsgivere = domenespråkParser.mapDataTable(dataTable, ArbeidsgiverMapper())
+            val arbeidsforholdIndeks = arbeidsforholdIndeks(arbeidsforholdRad)
+
+            arbeidsgiverMap[arbeidsforholdIndeks] = arbeidsgivere[0]
         }
 
         Gitt("følgende arbeidsavtaler i arbeidsforholdet") { dataTable: DataTable? ->
-            arbeidsavtaler = domenespråkParser.mapDataTable(dataTable, ArbeidsavtaleMapper())
+            arbeidsavtaleMap[0] = domenespråkParser.mapDataTable(dataTable, ArbeidsavtaleMapper())
+        }
+
+        Gitt("følgende arbeidsavtaler i arbeidsforhold {int}") { arbeidsforholdRad: Int?, dataTable: DataTable? ->
+            val arbeidsavtaler = domenespråkParser.mapDataTable(dataTable, ArbeidsavtaleMapper())
+            val arbeidsforholdIndeks = arbeidsforholdIndeks(arbeidsforholdRad)
+
+            arbeidsavtaleMap[arbeidsforholdIndeks] = arbeidsavtaler
         }
 
         Gitt("følgende utenlandsopphold i arbeidsforholdet") { dataTable: DataTable? ->
-            utenlandsopphold = domenespråkParser.mapDataTable(dataTable, UtenlandsoppholdMapper())
+            utenlandsoppholdMap[0] = domenespråkParser.mapDataTable(dataTable, UtenlandsoppholdMapper())
+        }
+
+        Gitt("følgende utenlandsopphold i arbeidsforhold {int}") { arbeidsforholdRad: Int?, dataTable: DataTable? ->
+            val arbeidsforholdIndeks = arbeidsforholdIndeks(arbeidsforholdRad)
+
+            utenlandsoppholdMap[arbeidsforholdIndeks] = domenespråkParser.mapDataTable(dataTable, UtenlandsoppholdMapper())
         }
 
         Gitt("følgende oppgaver fra Gosys") { dataTable: DataTable? ->
@@ -151,6 +177,16 @@ class RegelSteps : No {
         }
     }
 
+    private fun arbeidsforholdIndeks(radnummer: Int?): Int {
+        val arbeidsforholdIndeks = if (radnummer == null) {
+            0
+        } else {
+            radnummer + 1
+        }
+
+        return arbeidsforholdIndeks
+    }
+
     private fun byggDatagrunnlag(medlemskapsparametre: Medlemskapsparametre? = null): Datagrunnlag {
         if (medlemskapsparametre == null) {
             throw RuntimeException("medlemskapsparametre må være satt for å bygge Datagrunnlag")
@@ -183,7 +219,7 @@ class RegelSteps : No {
                         sivilstand = emptyList()
                 ),
                 medlemskap = medlemskap,
-                arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgivere, arbeidsavtaler, utenlandsopphold),
+                arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgiverMap, arbeidsavtaleMap, utenlandsoppholdMap),
                 oppgaver = oppgaverFraGosys,
                 dokument = journalPosterFraJoArk,
                 ytelse = ytelse,
@@ -191,14 +227,19 @@ class RegelSteps : No {
         )
     }
 
-    private fun byggArbeidsforhold(arbeidsforhold: List<Arbeidsforhold>, arbeidsgivere: List<Arbeidsgiver>, arbeidsavtaler: List<Arbeidsavtale>, utenlandsopphold: List<Utenlandsopphold>): List<Arbeidsforhold> {
-        val arbeidsgiver = if (arbeidsgivere.isEmpty()) {
-            VANLIG_NORSK_ARBEIDSGIVER
-        } else {
-            arbeidsgivere[0]
-        }
-
-        return arbeidsforhold.map { it.copy(utenlandsopphold = utenlandsopphold, arbeidsgiver = arbeidsgiver, arbeidsavtaler = arbeidsavtaler) }
+    private fun byggArbeidsforhold(
+            arbeidsforholdListe: List<Arbeidsforhold>,
+            arbeidsgiverMap: Map<Int, Arbeidsgiver>,
+            arbeidsavtaleMap: Map<Int, List<Arbeidsavtale>>,
+            utenlandsoppholdMap: Map<Int, List<Utenlandsopphold>>): List<Arbeidsforhold> {
+        return arbeidsforholdListe
+                .mapIndexed { index, arbeidsforhold ->
+                    arbeidsforhold.copy(
+                            utenlandsopphold = utenlandsoppholdMap[index]?: emptyList(),
+                            arbeidsgiver = arbeidsgiverMap[index]?: VANLIG_NORSK_ARBEIDSGIVER,
+                            arbeidsavtaler = arbeidsavtaleMap[index]?: listOf(ARBEIDSAVTALE_VANLIG)
+                    )
+                }
     }
 
     private fun evaluerGrunnforordningen(datagrunnlag: Datagrunnlag): Resultat {

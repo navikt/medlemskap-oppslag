@@ -84,12 +84,15 @@ class DomenespråkParser {
         return dataTable.asMaps().map { radMapper.mapRad(this, it) }
     }
 
-    fun mapArbeidsforhold(dataTable: DataTable?, utenlandsopphold: List<Utenlandsopphold>, arbeidsgivere: List<Arbeidsgiver>): List<Arbeidsforhold> {
+    fun mapArbeidsforhold(
+            dataTable: DataTable?,
+            utenlandsopphold: List<Utenlandsopphold> = emptyList(),
+            arbeidsgiver: Arbeidsgiver = VANLIG_NORSK_ARBEIDSGIVER): List<Arbeidsforhold> {
         if (dataTable == null) {
             return emptyList()
         }
 
-        return dataTable.asMaps().map { ArbeidsforholdMapper().mapRad(this, it, utenlandsopphold, arbeidsgivere) }
+        return dataTable.asMaps().map { ArbeidsforholdMapper().mapRad(this, it, utenlandsopphold, arbeidsgiver) }
     }
 
     fun parseAarMaaned(domenebegrep: Domenebegrep, rad: Map<String, String>): YearMonth {
@@ -237,27 +240,16 @@ class ArbeidsforholdMapper {
     fun mapRad(domenespråkParser: DomenespråkParser,
                rad: Map<String, String>,
                utenlandsopphold: List<Utenlandsopphold> = emptyList(),
-               arbeidsgivere: List<Arbeidsgiver>
+               arbeidsgiver: Arbeidsgiver?
     ): Arbeidsforhold {
         val periode = Periode(
                 domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
                 domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad))
-        val arbeidsgiverId = domenespråkParser.parseValgfriString(ARBEIDSGIVER_ID, rad)
-
-        val arbeidsgiver = VANLIG_NORSK_ARBEIDSGIVER
-/*
-        val arbeidsgiver = (if (arbeidsgiverId == null) {
-            arbeidsgivere[0]
-        } else {
-            arbeidsgivere.find{it.identifikator == arbeidsgiverId}
-        }) ?: throw RuntimeException("Fant ikke arbeidsgiver med id = " + arbeidsgiverId)
- */
-
         return Arbeidsforhold(
                 periode = periode,
                 utenlandsopphold = utenlandsopphold,
                 arbeidsgivertype = AaRegOpplysningspliktigArbeidsgiverType.valueOf(domenespråkParser.parseString(ARBEIDSGIVERTYPE, rad)),
-                arbeidsgiver = arbeidsgiver,
+                arbeidsgiver = arbeidsgiver?: VANLIG_NORSK_ARBEIDSGIVER,
                 arbeidsfolholdstype = domenespråkParser.parseArbeidsforholdstype(rad),
                 arbeidsavtaler = emptyList()
         )
