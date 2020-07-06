@@ -57,3 +57,19 @@ Egenskap: Regel 10: Er bruker folkeregistert i Norge?
       | Land | Svar |
       | NOR  | Nei  |
       | FRA  | Nei  |
+
+  Scenario: Norsk bostedsadresse, men midlertidig utenlandsadresse
+
+    Gitt følgende bostedsadresser i personhistorikken
+      | Adresse | Landkode | Fra og med dato | Til og med dato |
+      | XXX     | NOR      | 01.01.2000      |                 |
+
+    Og følgende midlertidige adresser i personhistorikken
+      | Adresse | Landkode | Fra og med dato | Til og med dato |
+      | XXX     | FRA      | 01.01.2000      |                 |
+
+    Når regel "10" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
+
+    Så skal svaret være "Nei"

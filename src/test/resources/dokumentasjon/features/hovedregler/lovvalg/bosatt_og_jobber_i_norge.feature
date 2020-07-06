@@ -50,7 +50,6 @@ Egenskap: Reglene 9 til 12
       | 20               | UAVKLART |
 
   Scenario: Regel 9: Bruker som har svart ja på spørsmålet "Har hatt arbeid utenfor Norge"
-
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
       | 01.01.2018      |                 | Organisasjon     | NORMALT             |
