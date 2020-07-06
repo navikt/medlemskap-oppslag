@@ -68,7 +68,7 @@ Egenskap: Regel 12: Har bruker vært i minst 25 % stilling siste 12 måneder?
       | 15               | Ja   |
       | 20               | Ja   |
 
-  @ignored
+
   Scenariomal: To stillinger hos forskjellige arbeidsgivere
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |

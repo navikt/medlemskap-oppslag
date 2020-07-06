@@ -97,6 +97,8 @@ object ArbeidsforholdFunksjoner {
 
         val arbeidsforholdForKontrollPeriode = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
 
+        var samletStillingsprosent = 0.0
+
         for (arbeidsforhold in arbeidsforholdForKontrollPeriode) {
             val vektetStillingsprosentForArbeidsforhold = arbeidsforhold.vektetStillingsprosentForArbeidsforhold(kontrollPeriode)
 
@@ -105,12 +107,12 @@ object ArbeidsforholdFunksjoner {
                 return false
             }
 
+            samletStillingsprosent += vektetStillingsprosentForArbeidsforhold
             stillingsprosentCounter(vektetStillingsprosentForArbeidsforhold, ytelse.metricName()).increment()
         }
 
-        return true
+        return samletStillingsprosent >= gittStillingsprosent
     }
-
 
     private fun Arbeidsforhold.vektetStillingsprosentForArbeidsforhold(kontrollPeriode: Periode): Double {
         val totaltAntallDager = kontrollPeriode.fom!!.until(kontrollPeriode.tom!!, ChronoUnit.DAYS).toDouble()
