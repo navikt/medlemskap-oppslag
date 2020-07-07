@@ -13,10 +13,6 @@ Egenskap: Reglene 9 til 12
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | Oslo    | NOR      | 01.01.2000      |                 |
 
-    Og følgende midlertidige adresser i personhistorikken
-      | Adresse | Landkode | Fra og med dato | Til og med dato |
-      | Oslo    | NOR      | 01.01.2000      |                 |
-
     Og følgende personstatuser i personhistorikken
       | Personstatus | Fra og med dato | Til og med dato |
       | FØDR         | 01.01.2000      |                 |
@@ -36,36 +32,39 @@ Egenskap: Reglene 9 til 12
 
     Og følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   | Skipsregister |
-      | 01.01.2018      |                 | 001        | <Stillingsprosent> |               |
+      | 01.01.2018      |                 | 001       | <Stillingsprosent> |               |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Svar>"
+    Og skal regel "10" gi svaret "Ja"
+    Og skal regel "12" gi svaret "<Regel 12>"
 
     Eksempler:
-      | Stillingsprosent | Svar     |
-      | 100              | Ja       |
-      | 20               | UAVKLART |
+      | Stillingsprosent | Svar     | Regel 12 |
+      | 100              | Ja       | Ja       |
+      | 20               | UAVKLART | Nei      |
 
-  Scenario: Regel 9: Bruker som har svart ja på spørsmålet "Har hatt arbeid utenfor Norge"
+  Scenariomal: Regel 9: Bruker som svarer ja på spørsmålet "Har hatt arbeid utenfor Norge" skal få "Nei"
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
       | 01.01.2018      |                 | Organisasjon     | NORMALT             |
       | 01.01.2018      |                 | Organisasjon     | NORMALT             |
 
-    Og følgende arbeidsavtaler i arbeidsforhold 1
+    Og følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister |
-      | 01.01.2018      |                 | 001        | 100             |               |
-
-    Og følgende arbeidsavtaler i arbeidsforhold 2
-      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister |
-      | 01.01.2018      |                 | 001        | 100             |               |
+      | 01.01.2018      |                 | 001       | 100              |               |
 
     Når medlemskap beregnes med følgende parametre
-      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-      | 30.01.2020      | 30.01.2021      | Ja                            |
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge   |
+      | 30.01.2020      | 30.01.2021      | <Har hatt arbeid utenfor Norge> |
 
-    Så skal svaret være "Nei"
+    Så skal svaret være "<Svar>"
+    Og skal regel "9" gi svaret "<Regel 9>"
 
+    Eksempler:
+      | Har hatt arbeid utenfor Norge | Svar     | Regel 9 |
+      | Nei                           | Ja       | Nei     |
+      | Ja                            | Nei      | Ja      |
