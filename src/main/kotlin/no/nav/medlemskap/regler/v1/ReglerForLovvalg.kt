@@ -121,14 +121,14 @@ class ReglerForLovvalg(
 //    datagrunnlag har også et felt personHistorikkRelatertePersoner,
 //    som er personhistorikk fra TPS for de vi fant gjennom sivilstand og familierelasjoner.
     private fun sjekkOmBrukersEktefelleErBosattINorge(): Resultat {
-        // Data fra PDL omgjort til datagrunnlaget
-        // Vi henter nå data om sivilstand og familierelasjoner fra PDL.
-        // Dette lagres i datagrunnlag under pdlpersonhistorikk.
-        // Det er bare feltene sivilstand og familierelasjoner som kan brukes derfra.
-        val ektefelle = sivilstand.hentFnrTilEktefellerEllerPartnerIPeriode(kontrollPeriodeForPersonhistorikk)
-        val barn = familierelasjon.hentFnrTilBarnUnder25()
+    // Data fra PDL omgjort til datagrunnlaget
+    // Vi henter nå data om sivilstand og familierelasjoner fra PDL.
+    // Dette lagres i datagrunnlag under pdlpersonhistorikk.
+    // Det er bare feltene sivilstand og familierelasjoner som kan brukes derfra.
+    val ektefelle = sivilstand.hentFnrTilEktefellerEllerPartnerIPeriode(kontrollPeriodeForPersonhistorikk)
+    val barn = familierelasjon.hentFnrTilBarnUnder25()
 
-        //Sjekk om disse har adresser i TPS
+    //Sjekk om disse har adresser i TPS
     /* (pdlPersonhistorikk har også adresse-felter, men enn så lenge så bruker vi de fra TPS!)
         datagrunnlag har også et felt personHistorikkRelatertePersoner,
         som er personhistorikk fra TPS for de vi fant gjennom sivilstand og familierelasjoner.
@@ -141,22 +141,30 @@ class ReglerForLovvalg(
         De har heller ikke et korresponderende innslag i personHistorikkRelatertePersoner.
         For å løse denne oppgaven og sjekke brukers ektefelle og barn og deres bosatt-status,
         må man mao bruke alle disse datastrukturene jeg nå har nevnt.*/
-        val ektefellerITps = personhistorikkRelatertPerson.hentRelatertSomFinnesITPS(ektefelle)
-        val barnITps = personhistorikkRelatertPerson.hentRelatertSomFinnesITPS(barn)
+    val ektefellerITps = personhistorikkRelatertPerson.hentRelatertSomFinnesITPS(ektefelle)
+    val barnITps = personhistorikkRelatertPerson.hentRelatertSomFinnesITPS(barn)
 
-        //Hente ut adresser til ektefeller
+    //Hente ut adresser til ektefeller
+    val bostedsadresserTilEktefelle = ektefellerITps.flatMap { it.bostedsadresser.adresserSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
+    val postAdresseTilEktefelle = ektefellerITps.flatMap { it.postadresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
+    val midlertidigPostadresseTilEktefelle = ektefellerITps.flatMap { it.midlertidigAdresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
 
-        //Hente ut adresser til barn
+    //Hente ut adresser til barn
+    val bostedsadresseTilBarn = barnITps.flatMap { it.bostedsadresser.adresserSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
+    val postAdresseTilBarn = barnITps.flatMap { it.postadresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
+    val midlertidigPostadresseTilBarn = barnITps.flatMap { it.midlertidigAdresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
 
 
-
-        return when {
-            return when {
-                ektefellerITps-> ja()
-                else -> nei("Brukeren er ikke norsk statsborger")
-            }
-        }
+    return when {
+        bostedsadresserTilEktefelle.brukerHarNorskBostedsadresse()
+                && bostedsadresseTilBarn.brukerHarNorskBostedsadresse()
+                && personHarIngenEllerNorskPostadresse(postAdresseTilEktefelle)
+                && personHarIngenEllerNorskPostadresse(postAdresseTilBarn)
+                && personHarIngenEllerNorskMidlertidigadresse(midlertidigPostadresseTilEktefelle)
+                && personHarIngenEllerNorskMidlertidigadresse(midlertidigPostadresseTilBarn) -> ja()
+        else -> nei("Brukeren er ikke norsk statsborger")
     }
+}
 
 
     private fun sjekkOmBrukerHarJobbetUtenforNorge(): Resultat =
@@ -203,11 +211,24 @@ class ReglerForLovvalg(
         val midlertidigadresserLandkoder = midlertidigAdresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk)
 
         return when {
-            bostedsadresser.erIkkeTom()
-                    && (postadresserLandkoder alleEr NorskLandkode.NOR.name || postadresserLandkoder.erTom())
-                    && (midlertidigadresserLandkoder alleEr NorskLandkode.NOR.name || midlertidigadresserLandkoder.erTom())-> ja()
+            bostedsadresser.brukerHarNorskBostedsadresse()
+                    && personHarIngenEllerNorskPostadresse(postadresserLandkoder)
+                    && personHarIngenEllerNorskMidlertidigadresse(midlertidigadresserLandkoder) -> ja()
             else -> nei("Ikke alle adressene til bruker er norske, eller bruker mangler bostedsadresse")
         }
+    }
+
+
+    private fun List<Adresse>.brukerHarNorskBostedsadresse() : Boolean {
+        return this.erIkkeTom()
+    }
+
+    private fun personHarIngenEllerNorskPostadresse(postadresseLandkode: List<String>): Boolean {
+        return postadresseLandkode alleEr NorskLandkode.NOR.name || postadresseLandkode.erTom()
+    }
+
+    private fun personHarIngenEllerNorskMidlertidigadresse(midlertidigadresserLandkoder: List<String>): Boolean {
+        return midlertidigadresserLandkoder alleEr NorskLandkode.NOR.name || midlertidigadresserLandkoder.erTom()
     }
 
     enum class NorskLandkode {
@@ -229,7 +250,7 @@ class ReglerForLovvalg(
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForLovvalg {
             with(datagrunnlag) {
-                return ReglerForLovvalg(personhistorikk, arbeidsforhold, periode, ytelse, brukerinput.arbeidUtenforNorge)
+                return ReglerForLovvalg(personhistorikk, arbeidsforhold, periode, ytelse, brukerinput.arbeidUtenforNorge, personHistorikkRelatertePersoner)
             }
         }
     }
