@@ -27,8 +27,8 @@ object MedlFunksjoner {
             this.brukerensPerioderIMedlSiste12Mnd(kontrollPeriode).filter { it.erMedlem == erMedlem && it.lovvalg er "ENDL" }
                     .harSammenhengendeMedlemskapIHeleGittPeriode(kontrollPeriode)
 
-    infix fun List<Medlemskap>.gjeldendeDekning(kontrollPeriode: Periode): String =
-            this.medlemskapsPerioderOver12MndPeriode(true, kontrollPeriode).sorted().last { it.dekning != null }.dekning!!
+    infix fun List<Medlemskap>.gjeldendeDekning(kontrollPeriode: Periode): String? =
+            this.medlemskapsPerioderOver12MndPeriode(true, kontrollPeriode).sorted().last().dekning
 
     private fun List<Medlemskap>.harSammenhengendeMedlemskapIHeleGittPeriode(kontrollPeriode: Periode) =
             this.any { it.fraOgMed.isBefore(kontrollPeriode.fom?.plusDays(1)) }

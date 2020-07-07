@@ -20,7 +20,7 @@ class RegelsettForMedlTest {
 
     @Test
     fun `norsk person med opplysninger i medl`() {
-        assertSvar("A", Svar.JA, evaluer(personleser.norskMedOpplysningerIMedl()), Svar.UAVKLART)
+        assertSvar("A", Svar.JA, evaluer(personleser.norskMedOpplysningerIMedl()), Svar.JA)
     }
 
     @Test
@@ -61,22 +61,12 @@ class RegelsettForMedlTest {
 
     @Test
     fun `amerikansk person uten medlemskap med endret arbeidsforhold, men med samme arbeidsgiver`() {
-        assertSvar("1.2.2", Svar.JA, evaluer(personleser.amerikanskUtenMedlemskapEndretArbeidsforholdSammeArbeidsgiver()), Svar.UAVKLART)
+        assertSvar("1.2.2", Svar.JA, evaluer(personleser.amerikanskUtenMedlemskapEndretArbeidsforholdSammeArbeidsgiver()), Svar.NEI)
     }
 
     @Test
     fun `amerikansk person uten medlemskap uten arbeidsforhold`() {
         assertSvar("1.2.2", Svar.NEI, evaluer(personleser.amerikanskUtenMedlemskapUtenArbeidsforhold()), Svar.UAVKLART)
-    }
-
-    @Test
-    fun `amerikansk person uten medlemskap med endret adresse`() {
-        assertSvar("1.2.3", Svar.NEI, evaluer(personleser.amerikanskUtenMedlemskapEndretAdresse()), Svar.UAVKLART)
-    }
-
-    @Test
-    fun `amerikansk person uten medlemskap med uendret adresse og arbeidsforhold`() {
-        assertSvar("1.2.3", Svar.JA, evaluer(personleser.amerikanskUtenMedlemskapSammeArbeidsforholdOgAdresse()), Svar.NEI)
     }
 
     @Test
@@ -125,13 +115,13 @@ class RegelsettForMedlTest {
     }
 
     @Test
-    fun `amerikansk person med medlemskap med endret adresse`() {
-        assertSvar("1.5", Svar.NEI, evaluer(personleser.amerikanskMedMedlemskapEndretAdresse()), Svar.UAVKLART)
+    fun `amerikansk person med medlemskap med uavklart dekning`() {
+        assertSvar("1.5", Svar.JA, evaluer(personleser.amerikanskMedMedlemskapUavklartDekning()), Svar.UAVKLART)
     }
 
     @Test
-    fun `amerikansk person med medlemskap med uendret adresse og arbeidsforhold`() {
-        assertSvar("1.5", Svar.JA, evaluer(personleser.amerikanskMedMedlemskapSammeArbeidsforholdOgAdresse()), Svar.JA)
+    fun `amerikansk person med medlemskap med dekning null`() {
+        assertSvar("1.5", Svar.JA, evaluer(personleser.amerikanskMedMedlemskapNullDekning()), Svar.UAVKLART)
     }
 
     @Test
