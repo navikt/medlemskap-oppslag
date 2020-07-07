@@ -5,15 +5,15 @@ import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Funksjoner.erTom
-import no.nav.medlemskap.regler.common.Funksjoner.finnesI
 import no.nav.medlemskap.regler.common.Funksjoner.inneholder
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserSiste12Mnd
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresseSiste12Mnd
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedSluttAvKontrollperiode
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedStartAvKontrollperiode
-import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentEktefellerEllerPartnereIKontrollPeriode
-import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarn
+import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilEktefellerEllerPartnerIPeriode
+import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarnUnder25
+import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentRelatertSomFinnesITPS
 
 
 class ReglerForLovvalg(
@@ -55,19 +55,15 @@ class ReglerForLovvalg(
                             uavklartKonklusjon(ytelse)
                         }
                     } hvisNei {
-                        sjekkRegel {
-                           harBrukerNorsdiskStatsborgerskap
-                        } hvisJa {
                            sjekkRegel {
-                              harBrukerEktefelleEventuellebarn
+                              harBrukerEktefelleFolkeregistrertAdresse
                            } hvisJa {
                                jaKonklusjon(ytelse)
                            } hvisNei {
                                uavklartKonklusjon(ytelse)
                            }
-                        } hvisNei {
+                    } hvisJa {
                             uavklartKonklusjon(ytelse)
-                        }
                     }
                 }
             } hvisJa {
@@ -107,51 +103,61 @@ class ReglerForLovvalg(
             operasjon = { sjekkOmBrukerHarJobbet25ProsentEllerMer() }
     )
 
-    private val harBrukerNorsdiskStatsborgerskap = Regel (
+    /*private val harBrukerNorsdiskStatsborgerskap = Regel (
             identifikator = "",
             avklaring = "Har bruker nordisk statsborgerskap?",
             beskrivelse = "",
             ytelse = ytelse,
             operasjon = {sjekkOmBrukerHarNordiskStatsborgerskap() }
-    )
+    )*/
 
-    private val harBrukerEktefelleEventuellebarn = Regel (
+    private val harBrukerEktefelleFolkeregistrertAdresse = Regel (
             identifikator = "",
             avklaring = "Er brukers ektefelle og eventuelle barn folkeregistrert som bosatt i Norge?",
             beskrivelse = "",
             ytelse = ytelse,
-            operasjon = {sjekkOmBrukersBarnEventuelleEktefelleErBosattINorge()}
+            operasjon = {sjekkOmBrukersEktefelleErBosattINorge()}
     )
 //    datagrunnlag har også et felt personHistorikkRelatertePersoner,
 //    som er personhistorikk fra TPS for de vi fant gjennom sivilstand og familierelasjoner.
-    private fun sjekkOmBrukersBarnEventuelleEktefelleErBosattINorge(): Resultat {
-  /*  Hvem skal vi ta med som "ektefelle"?
-    Ektefelle
-    Registrerte partnere*/
-    //    val ektefeller = personhistorikkRelatertPerson.hentEkte
-      //  val sivilstander = sivilstand.hentEktefellerEllerPartnereIKontrollPeriode(kontrollPeriodeForPersonhistorikk)
-        val fnrTilBarn = familierelasjon.hentFnrTilBarn()
-        val relatertePersoner = personhistorikkRelatertPerson
-        return when {
+    private fun sjekkOmBrukersEktefelleErBosattINorge(): Resultat {
+        // Data fra PDL omgjort til datagrunnlaget
+        // Vi henter nå data om sivilstand og familierelasjoner fra PDL.
+        // Dette lagres i datagrunnlag under pdlpersonhistorikk.
+        // Det er bare feltene sivilstand og familierelasjoner som kan brukes derfra.
+        val ektefelle = sivilstand.hentFnrTilEktefellerEllerPartnerIPeriode(kontrollPeriodeForPersonhistorikk)
+        val barn = familierelasjon.hentFnrTilBarnUnder25()
 
+        //Sjekk om disse har adresser i TPS
+    /* (pdlPersonhistorikk har også adresse-felter, men enn så lenge så bruker vi de fra TPS!)
+        datagrunnlag har også et felt personHistorikkRelatertePersoner,
+        som er personhistorikk fra TPS for de vi fant gjennom sivilstand og familierelasjoner.
+        Det er mulig å ha registrert en sivilstand,
+        men uten at det er registrert hvem sivilstanden er med.
+        Da vil vi ha et innslag i sivilstand,
+        men ikke et korresponderende innslag i personHistorikkRelatertePersoner.
+        Det er også mulig å ha sivilstand og/eller familierelasjoner til noen som ikke har et ekte fnr.
+        Dette kan gjelde dødfødte barn, barn født i utlandet og ektefeller i utlandet.
+        De har heller ikke et korresponderende innslag i personHistorikkRelatertePersoner.
+        For å løse denne oppgaven og sjekke brukers ektefelle og barn og deres bosatt-status,
+        må man mao bruke alle disse datastrukturene jeg nå har nevnt.*/
+        val ektefellerITps = personhistorikkRelatertPerson.hentRelatertSomFinnesITPS(ektefelle)
+        val barnITps = personhistorikkRelatertPerson.hentRelatertSomFinnesITPS(barn)
+
+        //Hente ut adresser til ektefeller
+
+        //Hente ut adresser til barn
+
+
+
+        return when {
+            return when {
+                ektefellerITps-> ja()
+                else -> nei("Brukeren er ikke norsk statsborger")
+            }
         }
     }
-    /*
-    Vi henter nå data om sivilstand og familierelasjoner fra PDL.
-    Dette lagres i datagrunnlag under pdlpersonhistorikk.
-    Det er bare feltene sivilstand og familierelasjoner som kan brukes derfra.
-    (pdlPersonhistorikk har også adresse-felter, men enn så lenge så bruker vi de fra TPS!)
-    datagrunnlag har også et felt personHistorikkRelatertePersoner,
-    som er personhistorikk fra TPS for de vi fant gjennom sivilstand og familierelasjoner.
-    Det er mulig å ha registrert en sivilstand,
-    men uten at det er registrert hvem sivilstanden er med.
-    Da vil vi ha et innslag i sivilstand,
-    men ikke et korresponderende innslag i personHistorikkRelatertePersoner.
-    Det er også mulig å ha sivilstand og/eller familierelasjoner til noen som ikke har et ekte fnr.
-    Dette kan gjelde dødfødte barn, barn født i utlandet og ektefeller i utlandet.
-    De har heller ikke et korresponderende innslag i personHistorikkRelatertePersoner.
-    For å løse denne oppgaven og sjekke brukers ektefelle og barn og deres bosatt-status,
-    må man mao bruke alle disse datastrukturene jeg nå har nevnt.*/
+
 
     private fun sjekkOmBrukerHarJobbetUtenforNorge(): Resultat =
             when {
@@ -172,8 +178,7 @@ class ReglerForLovvalg(
         }
     }
 
-    // Norden består av Danmark, Norge, Sverige, Finland og Island samt Færøyene, Grønland og Åland.
-    // Her finner du nyttig informasjon om Norden og de enkelte nordiske landene.
+/*    //Føreløpig fjernet fra prosesstegning til vi får inn registreringsbevis
     private fun sjekkOmBrukerHarNordiskStatsborgerskap(): Resultat {
         val førsteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedStartAvKontrollperiode(kontrollPeriodeForPersonhistorikk)
         val sisteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedSluttAvKontrollperiode(kontrollPeriodeForPersonhistorikk)
@@ -182,7 +187,7 @@ class ReglerForLovvalg(
             else -> nei("Brukeren er ikke statsborger i et nordisk land.")
         }
 
-    }
+    }*/
 
 
     private fun sjekkOmBrukerHarJobbet25ProsentEllerMer(): Resultat =

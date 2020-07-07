@@ -21,6 +21,7 @@ object Funksjoner {
 
     infix fun List<String>.alleEr(strings: List<String>) = this.stream().allMatch { strings.contains(it) }
 
+
     infix fun List<String>.kunInneholder(string: String) = this.contains(string) && this.size == 1
 
     infix fun String?.er(string: String) = this != null && this == string
