@@ -160,13 +160,7 @@ class RegelSteps : No {
     }
 
     private fun arbeidsforholdIndeks(radnummer: Int?): Int {
-        val arbeidsforholdIndeks = if (radnummer == null) {
-            0
-        } else {
-            radnummer - 1
-        }
-
-        return arbeidsforholdIndeks
+        return (radnummer ?: 1) - 1
     }
 
     private fun byggDatagrunnlag(medlemskapsparametre: Medlemskapsparametre? = null): Datagrunnlag {
