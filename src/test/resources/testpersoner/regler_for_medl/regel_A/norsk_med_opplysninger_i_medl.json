@@ -69,7 +69,8 @@
       "tilOgMed": "2020-02-28",
       "erMedlem": true,
       "lovvalgsland": "NOR",
-      "lovvalg": "ENDL"
+      "lovvalg": "ENDL",
+      "dekning": "FTL_2-6"
     }
   ],
   "inntekt": [],

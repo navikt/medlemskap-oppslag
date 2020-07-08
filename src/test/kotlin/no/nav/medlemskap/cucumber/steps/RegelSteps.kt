@@ -6,10 +6,7 @@ import no.nav.medlemskap.cucumber.*
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.assertDelresultat
 import no.nav.medlemskap.regler.common.Resultat
-import no.nav.medlemskap.regler.v1.ReglerForGrunnforordningen
-import no.nav.medlemskap.regler.v1.ReglerForLovvalg
-import no.nav.medlemskap.regler.v1.ReglerForRegistrerteOpplysninger
-import no.nav.medlemskap.regler.v1.ReglerService
+import no.nav.medlemskap.regler.v1.*
 import no.nav.medlemskap.services.ereg.Ansatte
 import org.junit.jupiter.api.Assertions.assertEquals
 import java.time.LocalDate
@@ -20,7 +17,7 @@ class RegelSteps : No {
     private val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", identifikator = "1", landkode = "NOR", ansatte = ANSATTE_9, konkursStatus = null)
     private val PERIODE_VANLIG = Periode(LocalDate.of(1999, 1, 1), null)
 
-    private val ARBEIDSAVTALE_VANLIG = Arbeidsavtale(PERIODE_VANLIG, "001", null,100.0)
+    private val ARBEIDSAVTALE_VANLIG = Arbeidsavtale(PERIODE_VANLIG, "001", null, 100.0)
 
     private var statsborgerskap: List<Statsborgerskap> = emptyList()
     private var bostedsadresser: List<Adresse> = emptyList()
@@ -125,8 +122,17 @@ class RegelSteps : No {
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
 
             val reglerForLovvalg = ReglerForLovvalg.fraDatagrunnlag(datagrunnlag!!)
+            val reglerForMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag!!)
 
-            val regel = when(regelId!!) {
+            val regel = when (regelId!!) {
+                "1.1" -> reglerForMedl.periodeMedOgUtenMedlemskap
+                "1.2" -> reglerForMedl.periodeMedMedlemskap
+                "1.2.1" -> reglerForMedl.erPeriodeUtenMedlemskapInnenfor12MndPeriode
+                "1.2.2" -> reglerForMedl.erArbeidsforholdUendretForBrukerUtenMedlemskap
+                "1.3" -> reglerForMedl.erPeriodeMedMedlemskapInnenfor12MndPeriode
+                "1.4" -> reglerForMedl.erArbeidsforholdUendretForBrukerMedMedlemskap
+                "1.5" -> reglerForMedl.erDekningUavklart
+                "1.6" -> reglerForMedl.harBrukerDekningIMedl
                 "9" -> reglerForLovvalg.harBrukerJobbetUtenforNorge
                 "10" -> reglerForLovvalg.erBrukerBosattINorge
                 "11" -> reglerForLovvalg.harBrukerNorskStatsborgerskap
@@ -211,9 +217,9 @@ class RegelSteps : No {
         return arbeidsforholdListe
                 .mapIndexed { index, arbeidsforhold ->
                     arbeidsforhold.copy(
-                            utenlandsopphold = utenlandsoppholdMap[index]?: emptyList(),
-                            arbeidsgiver = arbeidsgiverMap[index]?: VANLIG_NORSK_ARBEIDSGIVER,
-                            arbeidsavtaler = arbeidsavtaleMap[index]?: emptyList()
+                            utenlandsopphold = utenlandsoppholdMap[index] ?: emptyList(),
+                            arbeidsgiver = arbeidsgiverMap[index] ?: VANLIG_NORSK_ARBEIDSGIVER,
+                            arbeidsavtaler = arbeidsavtaleMap[index] ?: emptyList()
                     )
                 }
     }

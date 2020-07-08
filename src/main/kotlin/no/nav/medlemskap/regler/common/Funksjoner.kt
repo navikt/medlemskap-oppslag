@@ -9,7 +9,7 @@ object Funksjoner {
     val List<Any>.antall: Number
         get() = size
 
-    infix fun List<Any>.inneholder(objekt: Any?) = this.contains(objekt)
+    infix fun List<Any>.inneholder(objekt: Any?): Boolean = this.contains(objekt)
 
     infix fun Map<String, String>.inneholder(key: String?) = this.containsKey(key)
 
