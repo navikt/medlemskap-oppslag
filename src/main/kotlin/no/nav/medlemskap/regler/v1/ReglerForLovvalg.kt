@@ -1,5 +1,6 @@
 package no.nav.medlemskap.regler.v1
 
+import no.bekk.bekkopen.person.FodselsnummerValidator
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.alleEr
@@ -128,6 +129,7 @@ class ReglerForLovvalg(
     val ektefelle = sivilstand.hentFnrTilEktefellerEllerPartnerIPeriode(kontrollPeriodeForPersonhistorikk)
     val barn = familierelasjon.hentFnrTilBarnUnder25()
 
+
     //Sjekk om disse har adresser i TPS
     /* (pdlPersonhistorikk har også adresse-felter, men enn så lenge så bruker vi de fra TPS!)
         datagrunnlag har også et felt personHistorikkRelatertePersoner,
@@ -141,6 +143,15 @@ class ReglerForLovvalg(
         De har heller ikke et korresponderende innslag i personHistorikkRelatertePersoner.
         For å løse denne oppgaven og sjekke brukers ektefelle og barn og deres bosatt-status,
         må man mao bruke alle disse datastrukturene jeg nå har nevnt.*/
+
+//    TODO(--> bruke)
+//    Jeg har dratt inn et hjelpeprosjekt Bekk har laget og som brukes mye ellers i Nav også.
+//    Det kan validere fnr for oss. FodselsnummerValidator.isValid(fnr)
+//    Det kan brukes for å validere fnr vi får fra Sivilstand og Familierelasjoner,
+//    for å se om det skal finnes et korresponderende personHistorikkRelatertePersoner
+    FodselsnummerValidator.isValid("111")
+
+
     val ektefellerITps = personhistorikkRelatertPerson.hentRelatertSomFinnesITPS(ektefelle)
     val barnITps = personhistorikkRelatertPerson.hentRelatertSomFinnesITPS(barn)
 

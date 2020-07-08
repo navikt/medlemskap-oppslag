@@ -1,14 +1,9 @@
 package no.nav.medlemskap.regler.funksjoner
 
+import no.bekk.bekkopen.person.FodselsnummerValidator
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Funksjoner
-import no.nav.medlemskap.regler.common.interval
-import no.nav.medlemskap.regler.common.lagInstantStartOfDay
 import no.nav.medlemskap.regler.common.lagInterval
-import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adressensPeriodeOverlapperKontrollPerioden
-import org.threeten.extra.Interval
-import java.time.LocalDate
-import javax.xml.validation.Validator
 
 object RelasjonFunksjoner {
 
