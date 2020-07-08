@@ -91,7 +91,7 @@ class ReglerForMedl(
                 }
             }
 
-    private val harBrukerMedlOpplysninger = Regel(
+    val harBrukerMedlOpplysninger = Regel(
             identifikator = "A",
             avklaring = "Finnes det noe på personen i MEDL?",
             beskrivelse = "",
@@ -99,7 +99,7 @@ class ReglerForMedl(
             operasjon = { harBrukerPerioderIMedl() }
     )
 
-    private val harBrukerGosysOpplysninger = Regel(
+    val harBrukerGosysOpplysninger = Regel(
             identifikator = "B",
             avklaring = "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?",
             beskrivelse = "",
@@ -107,7 +107,7 @@ class ReglerForMedl(
             operasjon = { harBrukerAapneOppgaverIGsak() }
     )
 
-    private val periodeMedOgUtenMedlemskap = Regel(
+    val periodeMedOgUtenMedlemskap = Regel(
             identifikator = "1.1",
             avklaring = "Er det periode både med og uten medlemskap innenfor 12 mnd?",
             beskrivelse = "",
@@ -115,7 +115,7 @@ class ReglerForMedl(
             operasjon = { harPeriodeMedOgUtenMedlemskap() }
     )
 
-    private val periodeMedMedlemskap = Regel(
+    val periodeMedMedlemskap = Regel(
             identifikator = "1.2",
             avklaring = "Er det en periode med medlemskap?",
             beskrivelse = "",
@@ -123,7 +123,7 @@ class ReglerForMedl(
             operasjon = { periodeMedMedlemskap() }
     )
 
-    private val erPeriodeUtenMedlemskapInnenfor12MndPeriode = Regel(
+    val erPeriodeUtenMedlemskapInnenfor12MndPeriode = Regel(
             identifikator = "1.2.1",
             avklaring = "Er hele perioden uten medlemskap innenfor 12-måneders perioden?",
             beskrivelse = "",
@@ -131,7 +131,7 @@ class ReglerForMedl(
             operasjon = { erMedlemskapPeriodeOver12MndPeriode(false) }
     )
 
-    private val erPeriodeMedMedlemskapInnenfor12MndPeriode = Regel(
+    val erPeriodeMedMedlemskapInnenfor12MndPeriode = Regel(
             identifikator = "1.3",
             avklaring = "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
             beskrivelse = "",
@@ -140,7 +140,7 @@ class ReglerForMedl(
     )
 
 
-    private val erArbeidsforholdUendretForBrukerUtenMedlemskap = Regel(
+    val erArbeidsforholdUendretForBrukerUtenMedlemskap = Regel(
             identifikator = "1.2.2",
             avklaring = "Er bruker uten medlemskap sin situasjon uendret?",
             beskrivelse = "",
@@ -148,7 +148,7 @@ class ReglerForMedl(
             operasjon = { erBrukersArbeidsforholdUendret() }
     )
 
-    private val erArbeidsforholdUendretForBrukerMedMedlemskap = Regel(
+    val erArbeidsforholdUendretForBrukerMedMedlemskap = Regel(
             identifikator = "1.4",
             avklaring = "Er brukers arbeidsforhold uendret?",
             beskrivelse = "",
@@ -156,7 +156,7 @@ class ReglerForMedl(
             operasjon = { erBrukersArbeidsforholdUendret() }
     )
 
-    private val erDekningUavklart = Regel(
+    val erDekningUavklart = Regel(
             identifikator = "1.5",
             avklaring = "Er brukers dekning uavklart?",
             beskrivelse = "",
@@ -164,7 +164,7 @@ class ReglerForMedl(
             operasjon = { erBrukersDekningUavklart() }
     )
 
-    private val harBrukerDekningIMedl = Regel(
+    val harBrukerDekningIMedl = Regel(
             identifikator = "1.6",
             avklaring = "Har bruker et medlemskap som omfatter ytelse? (Dekning i MEDL)",
             beskrivelse = "",
