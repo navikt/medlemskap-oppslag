@@ -66,7 +66,7 @@ object ArbeidsforholdFunksjoner {
             harIkkeArbeidsforhold12MndTilbakeCounter(ytelse).increment()
 
             if (arbeidsforholdForNorskArbeidsgiver.isNotEmpty()) {
-                val antallDagerDiff = ChronoUnit.DAYS.between(kontrollPeriode.fom, arbeidsforholdForNorskArbeidsgiver.min()!!.periode.fom)
+                val antallDagerDiff = abs(ChronoUnit.DAYS.between(kontrollPeriode.fom, arbeidsforholdForNorskArbeidsgiver.min()!!.periode.fom))
                 antallDagerUtenArbeidsforhold(ytelse).record(antallDagerDiff.toDouble())
             }
 
