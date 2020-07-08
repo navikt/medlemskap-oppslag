@@ -2,12 +2,7 @@ package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.common.Funksjoner.alleEr
-import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
-import no.nav.medlemskap.regler.common.Funksjoner.erTom
 import no.nav.medlemskap.regler.common.Funksjoner.inneholder
-import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserSiste12Mnd
-import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresseSiste12Mnd
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedSluttAvKontrollperiode
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedStartAvKontrollperiode
@@ -64,13 +59,13 @@ class ReglerForLovvalg(
             operasjon = { sjekkOmBrukerHarJobbetUtenforNorge() }
     )
 
-    val erBrukerBosattINorge = Regel(
-            identifikator = "10",
-            avklaring = "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
-            beskrivelse = "",
+    val erBrukerBosattINorge = ErBrukerBosattINorgeRegel(
+            postadresser = postadresser,
+            bostedsadresser = bostedsadresser,
+            midlertidigAdresser = midlertidigAdresser,
             ytelse = ytelse,
-            operasjon = { sjekkLandkode() }
-    )
+            periode = periode
+    ).regel
 
     val harBrukerNorskStatsborgerskap = Regel(
             identifikator = "11",
@@ -105,31 +100,15 @@ class ReglerForLovvalg(
         }
     }
 
-
     private fun sjekkOmBrukerHarJobbet25ProsentEllerMer(): Resultat =
             when {
                 arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollPeriodeForArbeidsforhold, ytelse) -> ja()
                 else -> nei("Bruker har ikke jobbet 25% eller mer i løpet av periode.")
             }
 
-
-    private fun sjekkLandkode(): Resultat {
-        val bostedsadresser = bostedsadresser.adresserSiste12Mnd(kontrollPeriodeForPersonhistorikk)
-        val postadresserLandkoder = postadresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk)
-        val midlertidigadresserLandkoder = midlertidigAdresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk)
-
-        return when {
-            bostedsadresser.erIkkeTom()
-                    && (postadresserLandkoder alleEr NorskLandkode.NOR.name || postadresserLandkoder.erTom())
-                    && (midlertidigadresserLandkoder alleEr NorskLandkode.NOR.name || midlertidigadresserLandkoder.erTom())-> ja()
-            else -> nei("Ikke alle adressene til bruker er norske, eller bruker mangler bostedsadresse")
-        }
-    }
-
     enum class NorskLandkode {
         NOR
     }
-
 
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForLovvalg {

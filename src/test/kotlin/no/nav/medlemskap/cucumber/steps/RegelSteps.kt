@@ -6,21 +6,14 @@ import no.nav.medlemskap.cucumber.*
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.assertDelresultat
 import no.nav.medlemskap.regler.common.Resultat
-import no.nav.medlemskap.regler.v1.ReglerForGrunnforordningen
-import no.nav.medlemskap.regler.v1.ReglerForLovvalg
-import no.nav.medlemskap.regler.v1.ReglerForRegistrerteOpplysninger
-import no.nav.medlemskap.regler.v1.ReglerService
+import no.nav.medlemskap.regler.v1.*
 import no.nav.medlemskap.services.ereg.Ansatte
 import org.junit.jupiter.api.Assertions.assertEquals
-import java.time.LocalDate
 
 
 class RegelSteps : No {
     private val ANSATTE_9 = listOf(Ansatte(9, null, null))
     private val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", identifikator = "1", landkode = "NOR", ansatte = ANSATTE_9, konkursStatus = null)
-    private val PERIODE_VANLIG = Periode(LocalDate.of(1999, 1, 1), null)
-
-    private val ARBEIDSAVTALE_VANLIG = Arbeidsavtale(PERIODE_VANLIG, "001", null,100.0)
 
     private var statsborgerskap: List<Statsborgerskap> = emptyList()
     private var bostedsadresser: List<Adresse> = emptyList()
@@ -128,7 +121,9 @@ class RegelSteps : No {
 
             val regel = when(regelId!!) {
                 "9" -> reglerForLovvalg.harBrukerJobbetUtenforNorge
-                "10" -> reglerForLovvalg.erBrukerBosattINorge
+                "10" -> {
+                    ErBrukerBosattINorgeRegel.fraDatagrunnlag(datagrunnlag!!).regel
+                }
                 "11" -> reglerForLovvalg.harBrukerNorskStatsborgerskap
                 "12" -> reglerForLovvalg.harBrukerJobbet25ProsentEllerMer
                 else -> throw java.lang.RuntimeException("Ukjent regel")
