@@ -16,6 +16,7 @@ import org.threeten.extra.Interval
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import java.util.stream.Collectors
+import kotlin.math.abs
 
 object ArbeidsforholdFunksjoner {
 
@@ -65,7 +66,7 @@ object ArbeidsforholdFunksjoner {
             harIkkeArbeidsforhold12MndTilbakeCounter(ytelse).increment()
 
             if (arbeidsforholdForNorskArbeidsgiver.isNotEmpty()) {
-                val antallDagerDiff = ChronoUnit.DAYS.between(kontrollPeriode.fom, arbeidsforholdForNorskArbeidsgiver.min()!!.periode.fom)
+                val antallDagerDiff = abs(ChronoUnit.DAYS.between(kontrollPeriode.fom, arbeidsforholdForNorskArbeidsgiver.min()!!.periode.fom))
                 antallDagerUtenArbeidsforhold(ytelse).record(antallDagerDiff.toDouble())
             }
 
@@ -75,7 +76,7 @@ object ArbeidsforholdFunksjoner {
         val sortertArbeidsforholdEtterPeriode = arbeidsforholdForNorskArbeidsgiver.stream().sorted().collect(Collectors.toList())
         for (arbeidsforhold in sortertArbeidsforholdEtterPeriode) { //Sjekker at alle påfølgende arbeidsforhold er sammenhengende
             if (forrigeTilDato != null && !erDatoerSammenhengende(forrigeTilDato, arbeidsforhold.periode.fom)) {
-                val antallDagerDiff = ChronoUnit.DAYS.between(forrigeTilDato, arbeidsforhold.periode.fom)
+                val antallDagerDiff = abs(ChronoUnit.DAYS.between(forrigeTilDato, arbeidsforhold.periode.fom))
                 antallDagerMellomArbeidsforhold(ytelse).record(antallDagerDiff.toDouble())
                 usammenhengendeArbeidsforholdCounter(ytelse).increment()
                 return false

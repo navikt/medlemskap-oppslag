@@ -118,6 +118,12 @@ fun antallDagerMellomArbeidsforhold(ytelse: Ytelse): DistributionSummary = Distr
         .description("")
         .register(Metrics.globalRegistry)
 
+fun statsborgerskapUavklartRegel5(statsborgerskap: String, ytelse: Ytelse): Counter = Counter
+        .builder("statsborgerskap_uavklarte_regel5")
+        .tags("statsborgerskap", statsborgerskap, "ytelse", ytelse.metricName())
+        .description("")
+        .register(Metrics.globalRegistry)
+
 fun dekningCounter(dekning: String, ytelse: String): Counter = Counter
         .builder("dekningstyper")
         .tags( "dekningstyper", dekning, "ytelse", ytelse)

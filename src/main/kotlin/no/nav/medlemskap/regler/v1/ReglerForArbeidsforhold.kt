@@ -1,5 +1,6 @@
 package no.nav.medlemskap.regler.v1
 
+import no.nav.medlemskap.common.statsborgerskapUavklartRegel5
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.alleEr
@@ -14,6 +15,7 @@ import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.erSammenheng
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.konkursStatuserArbeidsgivere
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.sisteArbeidsforholdSkipsregister
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.sisteArbeidsforholdYrkeskode
+import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapFor
 
 class ReglerForArbeidsforhold(
         val arbeidsforhold: List<Arbeidsforhold>,
@@ -147,11 +149,15 @@ class ReglerForArbeidsforhold(
             }
 
 
-    private fun sjekkOmForetakMerEnn5Ansatte(): Resultat =
-            when {
-                arbeidsforhold.antallAnsatteHosArbeidsgivere(kontrollPeriodeForArbeidsforhold) finnesMindreEnn 6 -> nei("Ikke alle arbeidsgivere har 6 ansatte eller flere")
-                else -> ja()
-            }
+    private fun sjekkOmForetakMerEnn5Ansatte(): Resultat {
+
+        if (arbeidsforhold.antallAnsatteHosArbeidsgivere(kontrollPeriodeForArbeidsforhold) finnesMindreEnn 6) {
+            reglerForLovvalg.personhistorikk.statsborgerskap.hentStatsborgerskapFor(kontrollPeriodeForArbeidsforhold.tom!!).forEach { statsborgerskapUavklartRegel5(it, ytelse) }
+            return nei("Ikke alle arbeidsgivere har 6 ansatte eller flere")
+        }
+
+        return ja()
+    }
 
 
     private fun sjekkMaritim(): Resultat =
