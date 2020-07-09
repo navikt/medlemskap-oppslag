@@ -118,8 +118,17 @@ class RegelSteps : No {
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
 
             val reglerForLovvalg = ReglerForLovvalg.fraDatagrunnlag(datagrunnlag!!)
+            val reglerForMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag!!)
 
-            val regel = when(regelId!!) {
+            val regel = when (regelId!!) {
+                "1.1" -> reglerForMedl.periodeMedOgUtenMedlemskap
+                "1.2" -> reglerForMedl.periodeMedMedlemskap
+                "1.2.1" -> reglerForMedl.erPeriodeUtenMedlemskapInnenfor12MndPeriode
+                "1.2.2" -> reglerForMedl.erArbeidsforholdUendretForBrukerUtenMedlemskap
+                "1.3" -> reglerForMedl.erPeriodeMedMedlemskapInnenfor12MndPeriode
+                "1.4" -> reglerForMedl.erArbeidsforholdUendretForBrukerMedMedlemskap
+                "1.5" -> reglerForMedl.erDekningUavklart
+                "1.6" -> reglerForMedl.harBrukerDekningIMedl
                 "9" -> reglerForLovvalg.harBrukerJobbetUtenforNorge
                 "10" -> {
                     ErBrukerBosattINorgeRegel.fraDatagrunnlag(datagrunnlag!!).regel
@@ -206,9 +215,9 @@ class RegelSteps : No {
         return arbeidsforholdListe
                 .mapIndexed { index, arbeidsforhold ->
                     arbeidsforhold.copy(
-                            utenlandsopphold = utenlandsoppholdMap[index]?: emptyList(),
-                            arbeidsgiver = arbeidsgiverMap[index]?: VANLIG_NORSK_ARBEIDSGIVER,
-                            arbeidsavtaler = arbeidsavtaleMap[index]?: emptyList()
+                            utenlandsopphold = utenlandsoppholdMap[index] ?: emptyList(),
+                            arbeidsgiver = arbeidsgiverMap[index] ?: VANLIG_NORSK_ARBEIDSGIVER,
+                            arbeidsavtaler = arbeidsavtaleMap[index] ?: emptyList()
                     )
                 }
     }
