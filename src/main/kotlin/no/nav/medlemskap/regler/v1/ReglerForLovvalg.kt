@@ -65,13 +65,76 @@ class ReglerForLovvalg(
                                sjekkRegel {
                                    harBrukerBarn
                                } hvisJa {
-                                   erBrukersEktefelleBosattINorge
+                                   sjekkRegel {
+                                       erBrukersEktefelleBosattINorge
+                                   } hvisJa {
+                                       sjekkRegel {
+                                         erBrukersBarnBosattINorge
+                                       } hvisJa {
+                                           sjekkRegel {
+                                             harBrukerJobbet80ProsentEllerMer
+                                           }  hvisJa {
+                                               jaKonklusjon(ytelse)
+                                           }  hvisNei {
+                                               uavklartKonklusjon(ytelse)
+                                           }
+
+                                       } hvisNei {
+                                           uavklartKonklusjon(ytelse)
+                                       }
+
+                                   } hvisNei {
+                                       sjekkRegel {
+                                           erBrukersBarnBosattINorge
+                                       } hvisJa {
+                                           uavklartKonklusjon(ytelse)
+                                       } hvisNei {
+                                           sjekkRegel {
+                                               harBrukerJobbet100ProsentEllerMer
+                                           } hvisJa {
+                                               jaKonklusjon(ytelse)
+                                           } hvisNei {
+                                               uavklartKonklusjon(ytelse)
+                                           }
+                                       }
+
+                                   }
                                } hvisNei {
                                    erBrukersEktefelleBosattINorge
+                                   sjekkRegel {
+                                       harBrukerJobbet100ProsentEllerMer
+                                   } hvisJa {
+                                       jaKonklusjon(ytelse)
+                                   } hvisNei {
+                                       uavklartKonklusjon(ytelse)
+                                   }
                                }
                            } hvisNei {
                                sjekkRegel {
                                  harBrukerBarn
+                               } hvisJa {
+                                   sjekkRegel {
+                                       erBrukersBarnBosattINorge
+                                   }hvisJa {
+                                       sjekkRegel {
+                                           harBrukerJobbet80ProsentEllerMer
+                                       } hvisJa {
+                                           jaKonklusjon(ytelse)
+                                       } hvisNei {
+                                           uavklartKonklusjon(ytelse)
+                                       }
+
+                                   }hvisNei {
+                                       sjekkRegel {
+                                           harBrukerJobbet100ProsentEllerMer
+                                       } hvisJa {
+                                           jaKonklusjon(ytelse)
+                                       } hvisNei {
+                                          uavklartKonklusjon(ytelse)
+                                       }
+
+                                   }
+
                                }
 
                            }
@@ -92,12 +155,36 @@ class ReglerForLovvalg(
             operasjon = { sjekkOmBrukerHarJobbetUtenforNorge() }
     )
 
+    private val harBrukerJobbet80ProsentEllerMer = Regel(
+            identifikator = "",
+            avklaring = "",
+            beskrivelse = "",
+            ytelse = ytelse,
+            operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(80.0)}
+    )
+
+    private val harBrukerJobbet100ProsentEllerMer= Regel(
+            identifikator = "",
+            avklaring = "",
+            beskrivelse = "",
+            ytelse = ytelse,
+            operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(100.0)}
+    )
+
     private val erBrukerBosattINorge = Regel(
             identifikator = "10",
             avklaring = "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
             beskrivelse = "",
             ytelse = ytelse,
             operasjon = { sjekkLandkode() }
+    )
+
+    private val erBrukersBarnBosattINorge = Regel (
+            identifikator = "",
+            avklaring = "Er brukers barn bosatt i Norge",
+            beskrivelse = "",
+            ytelse = ytelse,
+            operasjon = {sjekkOmBrukersBarnErBosattINorge()}
     )
 
     private val harBrukerNorskStatsborgerskap = Regel(
@@ -113,16 +200,18 @@ class ReglerForLovvalg(
             avklaring = "Har bruker vært i minst 25% stilling de siste 12 mnd?",
             beskrivelse = "",
             ytelse = ytelse,
-            operasjon = { sjekkOmBrukerHarJobbet25ProsentEllerMer() }
+            operasjon = { sjekkOmBrukersStillingsprosentErMerEnn(25.0) }
     )
 
-    /*private val harBrukerNorsdiskStatsborgerskap = Regel (
+    /*
+    private val harBrukerNorsdiskStatsborgerskap = Regel (
             identifikator = "",
             avklaring = "Har bruker nordisk statsborgerskap?",
             beskrivelse = "",
             ytelse = ytelse,
             operasjon = {sjekkOmBrukerHarNordiskStatsborgerskap() }
-    )*/
+    )
+    */
 
     private val harBrukerEktefelle = Regel (
             identifikator = "11.2",
@@ -148,63 +237,45 @@ class ReglerForLovvalg(
             operasjon = {sjekkOmBrukersEktefelleErBosattINorge()}
     )
 
-
     private fun sjekkOmBrukerHarBarn(): Resultat {
-
         return when {
             barnITps.erIkkeTom() -> ja()
             else -> nei("Bruker har ikke barn i tps")
         }
-
      }
 
-//    datagrunnlag har også et felt personHistorikkRelatertePersoner,
-//    som er personhistorikk fra TPS for de vi fant gjennom sivilstand og familierelasjoner.
     private fun sjekkOmBrukerHarEktefelle(): Resultat {
-
-
       return when {
         ektefellerITps.erIkkeTom() -> ja()
         else -> nei("Bruker har ikke ektefelle i tps")
      }
-
     }
 
     private fun sjekkOmBrukersEktefelleErBosattINorge(): Resultat {
         val bostedsadresserTilEktefelle = ektefellerITps.flatMap { it.bostedsadresser.adresserSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
         val postAdresseTilEktefelle = ektefellerITps.flatMap { it.postadresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
         val midlertidigPostadresseTilEktefelle = ektefellerITps.flatMap { it.midlertidigAdresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
-        return when {
-            erPersonBosattINorge(bostedsadresserTilEktefelle, postAdresseTilEktefelle, midlertidigPostadresseTilEktefelle)
-            -> ja()
-            else -> nei("Ikke alle adressene til ektefelle er norske, eller ektefelle mangler bostedsadresse")
+             return when {
+                erPersonBosattINorge(bostedsadresserTilEktefelle, postAdresseTilEktefelle, midlertidigPostadresseTilEktefelle) -> ja()
+                else -> nei("Ikke alle adressene til ektefelle er norske, eller ektefelle mangler bostedsadresse")
         }
     }
 
-    private fun erPersonBosattINorge(boadadresse: List<Adresse>, postadresseLandkoder: List<String>, midlertidigAdresseLandkoder: List<String>): Boolean {
-        return boadadresse.brukerHarNorskBostedsadresse()
-                && personHarIngenEllerNorskPostadresse(postadresseLandkoder)
-                && personHarIngenEllerNorskMidlertidigadresse(midlertidigAdresseLandkoder)
+    private fun sjekkOmBrukersBarnErBosattINorge(): Resultat {
+        val bostedsadresseTilBarn = barnITps.flatMap { it.bostedsadresser.adresserSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
+        val postAdresseTilBarn = barnITps.flatMap { it.postadresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
+        val midlertidigPostadresseTilBarn = barnITps.flatMap { it.midlertidigAdresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
+             return when {
+                erPersonBosattINorge(bostedsadresseTilBarn, postAdresseTilBarn, midlertidigPostadresseTilBarn) -> ja()
+                 else -> nei("Ikke alle adressene til ektefelle er norske, eller ektefelle mangler bostedsadresse")
+              }
     }
-
 
     private fun sjekkOmBrukerHarJobbetUtenforNorge(): Resultat =
             when {
                 arbeidUtenforNorge -> ja()
                 else -> nei()
             }
-
-/*
-
-    //Hente ut adresser til ektefeller
-
-    //Hente ut adresser til barn
-    val bostedsadresseTilBarn = barnITps.flatMap { it.bostedsadresser.adresserSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
-    val postAdresseTilBarn = barnITps.flatMap { it.postadresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
-    val midlertidigPostadresseTilBarn = barnITps.flatMap { it.midlertidigAdresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
-
-
-*/
 
     private fun sjekkOmBrukerErNorskStatsborger(): Resultat {
         val førsteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedStartAvKontrollperiode(kontrollPeriodeForPersonhistorikk)
@@ -217,7 +288,7 @@ class ReglerForLovvalg(
         }
     }
 
-/*    //Føreløpig fjernet fra prosesstegning til vi får inn registreringsbevis
+    /*
     private fun sjekkOmBrukerHarNordiskStatsborgerskap(): Resultat {
         val førsteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedStartAvKontrollperiode(kontrollPeriodeForPersonhistorikk)
         val sisteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedSluttAvKontrollperiode(kontrollPeriodeForPersonhistorikk)
@@ -226,15 +297,14 @@ class ReglerForLovvalg(
             else -> nei("Brukeren er ikke statsborger i et nordisk land.")
         }
 
-    }*/
+    }
+    */
 
-
-    private fun sjekkOmBrukerHarJobbet25ProsentEllerMer(): Resultat =
+    private fun sjekkOmBrukersStillingsprosentErMerEnn(stillingsprosent: Double): Resultat =
             when {
-                arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollPeriodeForArbeidsforhold, ytelse) -> ja()
+                arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(stillingsprosent, kontrollPeriodeForArbeidsforhold, ytelse) -> ja()
                 else -> nei("Bruker har ikke jobbet 25% eller mer i løpet av periode.")
             }
-
 
     private fun sjekkLandkode(): Resultat {
         val bostedsadresser = bostedsadresser.adresserSiste12Mnd(kontrollPeriodeForPersonhistorikk)
@@ -247,7 +317,6 @@ class ReglerForLovvalg(
         }
     }
 
-
     private fun List<Adresse>.brukerHarNorskBostedsadresse() : Boolean {
         return this.erIkkeTom()
     }
@@ -259,6 +328,13 @@ class ReglerForLovvalg(
     private fun personHarIngenEllerNorskMidlertidigadresse(midlertidigadresserLandkoder: List<String>): Boolean {
         return midlertidigadresserLandkoder alleEr NorskLandkode.NOR.name || midlertidigadresserLandkoder.erTom()
     }
+
+    private fun erPersonBosattINorge(boadadresse: List<Adresse>, postadresseLandkoder: List<String>, midlertidigAdresseLandkoder: List<String>): Boolean {
+        return boadadresse.brukerHarNorskBostedsadresse()
+                && personHarIngenEllerNorskPostadresse(postadresseLandkoder)
+                && personHarIngenEllerNorskMidlertidigadresse(midlertidigAdresseLandkoder)
+    }
+
 
     enum class NorskLandkode {
         NOR
