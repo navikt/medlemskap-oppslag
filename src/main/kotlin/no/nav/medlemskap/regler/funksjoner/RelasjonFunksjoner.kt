@@ -14,12 +14,12 @@ object RelasjonFunksjoner {
 
     //Todo --> Barn hele perioden, er adoptivbarn registrert med annen type
     fun List<Familierelasjon>.hentFnrTilBarnUnder25(): List<String?> =
-            this.filter { it.relatertPersonsRolle == Familierelasjonsrolle.BARN }.map {
+            this.filter { it.relatertPersonsRolle == Familierelasjonsrolle.BARN && FodselsnummerValidator.isValid(it.relatertPersonsIdent)}.map {
                 it.relatertPersonsIdent.filtrerBarnUnder25Aar() }
 
     fun List<PersonhistorikkRelatertPerson>.hentRelatertSomFinnesITPS(relatert: List<String?>):
             List<PersonhistorikkRelatertPerson> =
-            this.filter { relatert.contains(it.ident) }
+            this.filter { relatert.contains(it.ident) && FodselsnummerValidator.isValid(it.ident)}
 
 
 }

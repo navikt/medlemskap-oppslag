@@ -1,6 +1,5 @@
 package no.nav.medlemskap.regler.v1
 
-import no.bekk.bekkopen.person.FodselsnummerValidator
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.alleEr
@@ -35,6 +34,10 @@ class ReglerForLovvalg(
     private val datohjelper = Datohjelper(periode, ytelse)
     private val kontrollPeriodeForPersonhistorikk = datohjelper.kontrollPeriodeForPersonhistorikk()
     private val kontrollPeriodeForArbeidsforhold = datohjelper.kontrollPeriodeForArbeidsforhold()
+    private val ektefelle = sivilstand.hentFnrTilEktefellerEllerPartnerIPeriode(kontrollPeriodeForPersonhistorikk)
+    private val ektefellerITps = personhistorikkRelatertPerson.hentRelatertSomFinnesITPS(ektefelle)
+    private val barn = familierelasjon.hentFnrTilBarnUnder25()
+    private val barnITps = personhistorikkRelatertPerson.hentRelatertSomFinnesITPS(barn)
 
     override fun hentHovedRegel() =
             sjekkRegel {
@@ -57,11 +60,20 @@ class ReglerForLovvalg(
                         }
                     } hvisNei {
                            sjekkRegel {
-                              harBrukerEktefelleFolkeregistrertAdresse
+                              harBrukerEktefelle
                            } hvisJa {
-                               jaKonklusjon(ytelse)
+                               sjekkRegel {
+                                   harBrukerBarn
+                               } hvisJa {
+                                   erBrukersEktefelleBosattINorge
+                               } hvisNei {
+                                   erBrukersEktefelleBosattINorge
+                               }
                            } hvisNei {
-                               uavklartKonklusjon(ytelse)
+                               sjekkRegel {
+                                 harBrukerBarn
+                               }
+
                            }
                     } hvisJa {
                             uavklartKonklusjon(ytelse)
@@ -112,70 +124,68 @@ class ReglerForLovvalg(
             operasjon = {sjekkOmBrukerHarNordiskStatsborgerskap() }
     )*/
 
-    private val harBrukerEktefelleFolkeregistrertAdresse = Regel (
-            identifikator = "",
-            avklaring = "Er brukers ektefelle og eventuelle barn folkeregistrert som bosatt i Norge?",
+    private val harBrukerEktefelle = Regel (
+            identifikator = "11.2",
+            avklaring = "Har bruker ektefelle i tps?",
+            beskrivelse = "",
+            ytelse = ytelse,
+            operasjon = {sjekkOmBrukerHarEktefelle()}
+    )
+
+    private val harBrukerBarn = Regel (
+            identifikator = "11.2.1",
+            avklaring = "Har bruker barn registrert i TPS?",
+            beskrivelse = "",
+            ytelse = ytelse,
+            operasjon = {sjekkOmBrukerHarBarn()}
+    )
+
+    private val erBrukersEktefelleBosattINorge = Regel (
+            identifikator = "11.3.1",
+            avklaring = "Er brukers ektefelle folkeregistrert som bosatt i Norge?",
             beskrivelse = "",
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersEktefelleErBosattINorge()}
     )
+
+
+    private fun sjekkOmBrukerHarBarn(): Resultat {
+
+        return when {
+            barnITps.erIkkeTom() -> ja()
+            else -> nei("Bruker har ikke barn i tps")
+        }
+
+     }
+
 //    datagrunnlag har også et felt personHistorikkRelatertePersoner,
 //    som er personhistorikk fra TPS for de vi fant gjennom sivilstand og familierelasjoner.
-    private fun sjekkOmBrukersEktefelleErBosattINorge(): Resultat {
-    // Data fra PDL omgjort til datagrunnlaget
-    // Vi henter nå data om sivilstand og familierelasjoner fra PDL.
-    // Dette lagres i datagrunnlag under pdlpersonhistorikk.
-    // Det er bare feltene sivilstand og familierelasjoner som kan brukes derfra.
-    val ektefelle = sivilstand.hentFnrTilEktefellerEllerPartnerIPeriode(kontrollPeriodeForPersonhistorikk)
-    val barn = familierelasjon.hentFnrTilBarnUnder25()
+    private fun sjekkOmBrukerHarEktefelle(): Resultat {
 
 
-    //Sjekk om disse har adresser i TPS
-    /* (pdlPersonhistorikk har også adresse-felter, men enn så lenge så bruker vi de fra TPS!)
-        datagrunnlag har også et felt personHistorikkRelatertePersoner,
-        som er personhistorikk fra TPS for de vi fant gjennom sivilstand og familierelasjoner.
-        Det er mulig å ha registrert en sivilstand,
-        men uten at det er registrert hvem sivilstanden er med.
-        Da vil vi ha et innslag i sivilstand,
-        men ikke et korresponderende innslag i personHistorikkRelatertePersoner.
-        Det er også mulig å ha sivilstand og/eller familierelasjoner til noen som ikke har et ekte fnr.
-        Dette kan gjelde dødfødte barn, barn født i utlandet og ektefeller i utlandet.
-        De har heller ikke et korresponderende innslag i personHistorikkRelatertePersoner.
-        For å løse denne oppgaven og sjekke brukers ektefelle og barn og deres bosatt-status,
-        må man mao bruke alle disse datastrukturene jeg nå har nevnt.*/
+      return when {
+        ektefellerITps.erIkkeTom() -> ja()
+        else -> nei("Bruker har ikke ektefelle i tps")
+     }
 
-//    TODO(--> bruke)
-//    Jeg har dratt inn et hjelpeprosjekt Bekk har laget og som brukes mye ellers i Nav også.
-//    Det kan validere fnr for oss. FodselsnummerValidator.isValid(fnr)
-//    Det kan brukes for å validere fnr vi får fra Sivilstand og Familierelasjoner,
-//    for å se om det skal finnes et korresponderende personHistorikkRelatertePersoner
-    FodselsnummerValidator.isValid("111")
-
-
-    val ektefellerITps = personhistorikkRelatertPerson.hentRelatertSomFinnesITPS(ektefelle)
-    val barnITps = personhistorikkRelatertPerson.hentRelatertSomFinnesITPS(barn)
-
-    //Hente ut adresser til ektefeller
-    val bostedsadresserTilEktefelle = ektefellerITps.flatMap { it.bostedsadresser.adresserSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
-    val postAdresseTilEktefelle = ektefellerITps.flatMap { it.postadresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
-    val midlertidigPostadresseTilEktefelle = ektefellerITps.flatMap { it.midlertidigAdresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
-
-    //Hente ut adresser til barn
-    val bostedsadresseTilBarn = barnITps.flatMap { it.bostedsadresser.adresserSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
-    val postAdresseTilBarn = barnITps.flatMap { it.postadresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
-    val midlertidigPostadresseTilBarn = barnITps.flatMap { it.midlertidigAdresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
-
-
-    return when {
-        bostedsadresserTilEktefelle.brukerHarNorskBostedsadresse()
-                && bostedsadresseTilBarn.brukerHarNorskBostedsadresse()
-                && personHarIngenEllerNorskPostadresse(postAdresseTilEktefelle)
-                && personHarIngenEllerNorskPostadresse(postAdresseTilBarn)
-                && personHarIngenEllerNorskMidlertidigadresse(midlertidigPostadresseTilEktefelle)
-                && personHarIngenEllerNorskMidlertidigadresse(midlertidigPostadresseTilBarn) -> ja()
-        else -> nei("Brukeren er ikke norsk statsborger")
     }
-}
+
+    private fun sjekkOmBrukersEktefelleErBosattINorge(): Resultat {
+        val bostedsadresserTilEktefelle = ektefellerITps.flatMap { it.bostedsadresser.adresserSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
+        val postAdresseTilEktefelle = ektefellerITps.flatMap { it.postadresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
+        val midlertidigPostadresseTilEktefelle = ektefellerITps.flatMap { it.midlertidigAdresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
+        return when {
+            erPersonBosattINorge(bostedsadresserTilEktefelle, postAdresseTilEktefelle, midlertidigPostadresseTilEktefelle)
+            -> ja()
+            else -> nei("Ikke alle adressene til ektefelle er norske, eller ektefelle mangler bostedsadresse")
+        }
+    }
+
+    private fun erPersonBosattINorge(boadadresse: List<Adresse>, postadresseLandkoder: List<String>, midlertidigAdresseLandkoder: List<String>): Boolean {
+        return boadadresse.brukerHarNorskBostedsadresse()
+                && personHarIngenEllerNorskPostadresse(postadresseLandkoder)
+                && personHarIngenEllerNorskMidlertidigadresse(midlertidigAdresseLandkoder)
+    }
 
 
     private fun sjekkOmBrukerHarJobbetUtenforNorge(): Resultat =
@@ -184,7 +194,17 @@ class ReglerForLovvalg(
                 else -> nei()
             }
 
+/*
 
+    //Hente ut adresser til ektefeller
+
+    //Hente ut adresser til barn
+    val bostedsadresseTilBarn = barnITps.flatMap { it.bostedsadresser.adresserSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
+    val postAdresseTilBarn = barnITps.flatMap { it.postadresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
+    val midlertidigPostadresseTilBarn = barnITps.flatMap { it.midlertidigAdresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
+
+
+*/
 
     private fun sjekkOmBrukerErNorskStatsborger(): Resultat {
         val førsteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedStartAvKontrollperiode(kontrollPeriodeForPersonhistorikk)
@@ -222,9 +242,7 @@ class ReglerForLovvalg(
         val midlertidigadresserLandkoder = midlertidigAdresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk)
 
         return when {
-            bostedsadresser.brukerHarNorskBostedsadresse()
-                    && personHarIngenEllerNorskPostadresse(postadresserLandkoder)
-                    && personHarIngenEllerNorskMidlertidigadresse(midlertidigadresserLandkoder) -> ja()
+            erPersonBosattINorge(bostedsadresser, postadresserLandkoder, midlertidigadresserLandkoder) -> ja()
             else -> nei("Ikke alle adressene til bruker er norske, eller bruker mangler bostedsadresse")
         }
     }
