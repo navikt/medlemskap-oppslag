@@ -17,8 +17,6 @@ class RegelSteps : No {
     private val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", identifikator = "1", landkode = "NOR", ansatte = ANSATTE_9, konkursStatus = null)
     private val PERIODE_VANLIG = Periode(LocalDate.of(1999, 1, 1), null)
 
-    private val ARBEIDSAVTALE_VANLIG = Arbeidsavtale(PERIODE_VANLIG, "001", null, 100.0)
-
     private var statsborgerskap: List<Statsborgerskap> = emptyList()
     private var bostedsadresser: List<Adresse> = emptyList()
     private var postadresser: List<Adresse> = emptyList()
