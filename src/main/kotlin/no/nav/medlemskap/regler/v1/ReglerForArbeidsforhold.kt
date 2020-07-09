@@ -152,7 +152,7 @@ class ReglerForArbeidsforhold(
     private fun sjekkOmForetakMerEnn5Ansatte(): Resultat {
 
         if (arbeidsforhold.antallAnsatteHosArbeidsgivere(kontrollPeriodeForArbeidsforhold) finnesMindreEnn 6) {
-            reglerForLovvalg.personhistorikk.statsborgerskap.hentStatsborgerskapFor(kontrollPeriodeForArbeidsforhold.tom!!).forEach { statsborgerskapUavklartRegel5(it, ytelse) }
+            reglerForLovvalg.personhistorikk.statsborgerskap.hentStatsborgerskapFor(kontrollPeriodeForArbeidsforhold.tom!!).forEach { statsborgerskapUavklartRegel5(it, ytelse).increment() }
             return nei("Ikke alle arbeidsgivere har 6 ansatte eller flere")
         }
 

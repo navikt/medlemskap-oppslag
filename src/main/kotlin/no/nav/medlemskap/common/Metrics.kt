@@ -43,7 +43,7 @@ fun configureSensuInfluxMeterRegistry(): SensuInfluxMeterRegistry {
                 || it.name.startsWith("stillingsprosent")
                 || it.name.startsWith("dekningstyper")
                 || it.name.contains("arbeidsforhold")
-
+                || it.name.startsWith("statsborgerskap")
     })
     influxMeterRegistry.config().commonTags(defaultInfluxTags())
     Metrics.globalRegistry.add(influxMeterRegistry)
