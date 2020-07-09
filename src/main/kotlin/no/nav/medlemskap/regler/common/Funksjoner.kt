@@ -80,8 +80,6 @@ fun uavklart() = Resultat(svar = Svar.UAVKLART)
 
 fun sjekkRegelsett(metode: () -> Regler): Regel = metode.invoke().hentHovedRegel()
 
-const val konklusjonIdentifikator = "LOVME"
-
 fun uavklartKonklusjon(ytelse: Ytelse) = Regel(
         regelId = REGEL_MEDLEM_KONKLUSJON,
         ytelse = ytelse,

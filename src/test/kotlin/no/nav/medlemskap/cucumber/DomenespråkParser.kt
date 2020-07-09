@@ -5,6 +5,7 @@ import no.nav.medlemskap.cucumber.Domenebegrep.*
 import no.nav.medlemskap.cucumber.DomenespråkParser.Companion.VANLIG_NORSK_ARBEIDSGIVER
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Datohjelper
+import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.services.aareg.AaRegOpplysningspliktigArbeidsgiverType
 import no.nav.medlemskap.services.ereg.Ansatte
@@ -50,6 +51,15 @@ class DomenespråkParser {
         } else {
             Ytelse.valueOf(valgfriVerdi)
         }
+    }
+
+    fun parseRegelId(regelIdStr: String): RegelId {
+        val regelId = RegelId.fraRegelIdString(regelIdStr)
+        if (regelId == null) {
+            throw RuntimeException("Fant ikke regel med id = {regelIdStr}")
+        }
+
+        return regelId
     }
 
     fun parseSvar(verdi: String): Svar {

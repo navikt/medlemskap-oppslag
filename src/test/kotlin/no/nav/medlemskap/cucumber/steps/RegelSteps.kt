@@ -160,8 +160,10 @@ class RegelSteps : No {
             assertEquals(forventetSvar, resultat!!.svar)
         }
 
-        Så("skal regel {string} gi svaret {string}") { regelIdentifikator: String?, forventetSvar: String? ->
-            assertDelresultat(regelIdentifikator!!, domenespråkParser.parseSvar(forventetSvar!!), resultat!!)
+        Så("skal regel {string} gi svaret {string}") { regelIdStr: String?, forventetSvar: String? ->
+            val regelId = domenespråkParser.parseRegelId(regelIdStr!!)
+
+            assertDelresultat(regelId, domenespråkParser.parseSvar(forventetSvar!!), resultat!!)
         }
     }
 

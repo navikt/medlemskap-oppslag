@@ -21,14 +21,17 @@ enum class RegelId(val identifikator: String, val avklaring: String) {
     REGEL_10("10", "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?"),
     REGEL_11("11", "Er bruker norsk statsborger?"),
     REGEL_12("12", "Har bruker vært i minst 25% stilling de siste 12 mnd?"),
-
     REGEL_A("A","Finnes det noe på personen i MEDL?"),
     REGEL_B("B", "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?"),
-
     REGEL_OPPLYSNINGER("OPPLYSNINGER", "Finnes det registrerte opplysninger på bruker?"),
     REGEL_OPPLYSNINGER_MEDL("OPPLYSNINGER-MEDL", "Finnes det registrerte opplysninger i MEDL?"),
     REGEL_OPPLYSNINGER_JOARK("OPPLYSNINGER-JOARK", "Finnes det dokumenter i JOARK på medlemskapsområdet?"),
     REGEL_OPPLYSNINGER_GOSYS("OPPLYSNINGER-GOSYS", "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?"),
+    REGEL_MEDLEM_KONKLUSJON("LOVME", "Er bruker medlem?");
 
-    REGEL_MEDLEM_KONKLUSJON("LOVME", "Er bruker medlem?")
+    companion object {
+        fun fraRegelIdString(regelIdStr: String): RegelId? {
+            return values().first { it.identifikator == regelIdStr }
+        }
+    }
 }

@@ -15,7 +15,7 @@ data class Regel(
         val resultat = operasjon.invoke().apply {
             regelCounter(this@Regel.regelId.identifikator + ". " + this@Regel.regelId.avklaring.replace("?", ""), this.svar.name, ytelse.metricName()).increment()
         }.copy(
-                identifikator = regelId.identifikator,
+                regelId = regelId,
                 avklaring = regelId.avklaring
         )
 
@@ -37,7 +37,7 @@ data class Regel(
     fun utfør(): Resultat = operasjon.invoke().apply {
         regelCounter(this@Regel.regelId.identifikator + ". " + this@Regel.regelId.avklaring.replace("?", ""), this.svar.name, ytelse.metricName()).increment()
     }.copy(
-            identifikator = regelId.identifikator,
+            regelId = regelId,
             avklaring = regelId.avklaring
     )
 

@@ -5,7 +5,7 @@ enum class Svar {
 }
 
 data class Resultat(
-        val identifikator: String = "",
+        val regelId: RegelId? = null,
         val avklaring: String = "",
         val begrunnelse: String = "",
         val svar: Svar,
