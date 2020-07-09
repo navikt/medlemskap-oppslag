@@ -6,6 +6,7 @@ import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Funksjoner.erTom
 import no.nav.medlemskap.regler.common.Funksjoner.inneholder
+import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserForKontrollPeriode
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresserForKontrollPeriode
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
@@ -57,33 +58,25 @@ class ReglerForLovvalg(
 
 
     val harBrukerJobbetUtenforNorge = Regel(
-            identifikator = "9",
-            avklaring = "Har bruker utført arbeid utenfor Norge?",
-            beskrivelse = "",
+            regelId = REGEL_9,
             ytelse = ytelse,
             operasjon = { sjekkOmBrukerHarJobbetUtenforNorge() }
     )
 
     val erBrukerBosattINorge = Regel(
-            identifikator = "10",
-            avklaring = "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
-            beskrivelse = "",
+            REGEL_10,
             ytelse = ytelse,
             operasjon = { sjekkLandkode() }
     )
 
     val harBrukerNorskStatsborgerskap = Regel(
-            identifikator = "11",
-            avklaring = "Er bruker norsk statsborger?",
-            beskrivelse = "",
+            REGEL_11,
             ytelse = ytelse,
             operasjon = { sjekkOmBrukerErNorskStatsborger() }
     )
 
     val harBrukerJobbet25ProsentEllerMer = Regel(
-            identifikator = "12",
-            avklaring = "Har bruker vært i minst 25% stilling de siste 12 mnd?",
-            beskrivelse = "",
+            REGEL_12,
             ytelse = ytelse,
             operasjon = { sjekkOmBrukerHarJobbet25ProsentEllerMer() }
     )

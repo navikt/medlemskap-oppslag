@@ -2,6 +2,7 @@ package no.nav.medlemskap.regler
 
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.v1.Hovedregler
@@ -12,20 +13,20 @@ fun evaluer(datagrunnlag: Datagrunnlag): Resultat {
     return regelsett.kjørHovedregler()
 }
 
-fun assertSvar(regelIdentifikator: String, forventetSvarFraRegel: Svar, resultat: Resultat, konklusjon: Svar) {
+fun assertSvar(regelId: RegelId, forventetSvarFraRegel: Svar, resultat: Resultat, konklusjon: Svar) {
     println(objectMapper.writeValueAsString(resultat))
-    val find = resultat.delresultat.find { it.identifikator == regelIdentifikator }
+    val find = resultat.delresultat.find { it.regelId == regelId }
 
-    Assertions.assertNotNull(find, "Fant ikke regel $regelIdentifikator i delsvar i Resultat. Regel det testes på ble ikke kjørt. Følgende regler ble kjørt: " + resultat.delresultat.map { it.identifikator })
-    Assertions.assertEquals(forventetSvarFraRegel, find!!.svar,"Fikk feil svar regel: $regelIdentifikator")
+    Assertions.assertNotNull(find, "Fant ikke regel $regelId i delsvar i Resultat. Regel det testes på ble ikke kjørt. Følgende regler ble kjørt: " + resultat.delresultat.map { it.regelId })
+    Assertions.assertEquals(forventetSvarFraRegel, find!!.svar,"Fikk feil svar regel: $regelId")
     Assertions.assertEquals(konklusjon, resultat.svar)
 }
 
-fun assertDelresultat(regelIdentifikator: String, forventetSvarFraRegel: Svar, resultat: Resultat) {
+fun assertDelresultat(regelId: RegelId, forventetSvarFraRegel: Svar, resultat: Resultat) {
     println(objectMapper.writeValueAsString(resultat))
-    val find = resultat.delresultat.find { it.identifikator == regelIdentifikator }
+    val find = resultat.delresultat.find { it.regelId == regelId }
 
-    Assertions.assertNotNull(find, "Fant ikke regel $regelIdentifikator i delsvar i Resultat. Regel det testes på ble ikke kjørt. Følgende regler ble kjørt: " + resultat.delresultat.map { it.identifikator })
-    Assertions.assertEquals(forventetSvarFraRegel, find!!.svar,"Fikk feil svar regel: $regelIdentifikator")
+    Assertions.assertNotNull(find, "Fant ikke regel $regelId i delsvar i Resultat. Regel det testes på ble ikke kjørt. Følgende regler ble kjørt: " + resultat.delresultat.map { it.regelId })
+    Assertions.assertEquals(forventetSvarFraRegel, find!!.svar,"Fikk feil svar regel: $regelId")
 }
 
