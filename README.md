@@ -44,18 +44,21 @@ Kallet er en POST på `/`
     }
 }
 ```
-### Inputperiode
-Periode brukeren søker sykepenger for
+
+### Inn-parametre
+* fnr: Fødselsnummer, identifiserer brukeren
+* periode: 
+    * For ytelsen sykepenger er dette perioden brukeren søker sykepenger for
+    * For ytelsen sykepenger brukes dagen før start på perioden som første sykemeldingsdag
+* brukerinput: Input fra bruker som må fylles ut i søknadsdialogen og er nødvendig for å avgjøre medlemskap
+    * arbeidUtenforNorge: Har brukeren jobbet utenfor Norge siste 12 måneder?
+* ytelse
+    * Utledes fra request, ved å se på callerId
 
 ## Eksempel på kall med CURL, gitt at port-forwarding er satt opp på port 8080:
 ```
 curl -X POST -H "Authorization: Bearer <AAD_TOKEN>" -H "Content-Type: application/json" -d '{ "fnr": "123456789", "periode": { "fom": "2019-01-01", "tom": "2019-12-31" }, "brukerinput": { "arbeidUtenforNorge": false } }' localhost:8080
 ```
-
-### Brukerinput
-Input fra bruker som må fylles ut i søknadsdialogen og er nødvendig for å avgjøre medlemskap
-
-* `arbeidUtenforNorge` Om de har jobbet utenfor Norge siste 12 måneder
 
 ## Eksempel på svar
 ```
