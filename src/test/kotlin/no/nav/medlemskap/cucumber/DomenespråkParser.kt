@@ -216,8 +216,9 @@ class MedlemskapMapper : RadMapper<Medlemskap> {
                 domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
                 domenespråkParser.parseDato(TIL_OG_MED_DATO, rad),
                 domenespråkParser.parseBoolean(ER_MEDLEM, rad),
-                domenespråkParser.parseString(LOVVALG, rad),
-                domenespråkParser.parseValgfriString(LOVVALGSLAND, rad)
+                domenespråkParser.parseValgfriString(LOVVALG, rad),
+                domenespråkParser.parseValgfriString(LOVVALGSLAND, rad),
+                domenespråkParser.parseValgfriString(PERIODESTATUS, rad)
         )
     }
 }
@@ -339,6 +340,7 @@ enum class Domenebegrep(val nøkkel: String) {
     LANDKODE("Landkode"),
     LOVVALG("Lovvalg"),
     LOVVALGSLAND("Lovvalgsland"),
+    PERIODESTATUS("Periodestatus"),
     PERSONSTATUS("Personstatus"),
     PRIORITET("Prioritet"),
     RAPPORTERINGSPERIODE("Rapporteringsperiode"),

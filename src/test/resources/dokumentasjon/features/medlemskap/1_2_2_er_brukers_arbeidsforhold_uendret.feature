@@ -1,13 +1,13 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regel 1.2.2: Er brukers arbeidsforhold uendret
+Egenskap: Regel 1.2.2: Er brukers arbeidsforhold uendret?
 
-  Scenariomal: Ett arbeidsforhold
+  Scenariomal: Regel 1.2.2: Er brukers arbeidsforhold uendret? Ett arbeidsforhold
 
     Gitt følgende medlemsunntak fra MEDL
-      | Dekning | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland |
-      |         | 01.01.2019      | 01.01.2021      | Nei       | ENDL    | NOR          |
+      | Dekning | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland | Periodestatus |
+      |         | 01.01.2019      | 01.01.2021      | Nei       | ENDL    | NOR          | GYLD          |
 
     Og følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato   | Arbeidsgivertype | Arbeidsforholdstype | Arbeidsgiver Id |
@@ -24,12 +24,14 @@ Egenskap: Regel 1.2.2: Er brukers arbeidsforhold uendret
       |                 | Ja   |
       | 08.02.2020      | Ja   |
       | 28.01.2020      | Nei  |
+      | 29.01.2020      | Nei  |
+      | 30.01.2020      | Ja   |
 
-  Scenariomal: Flere arbeidsforhold
+  Scenariomal: Regel 1.2.2: Er brukers arbeidsforhold uendret - flere arbeidsforhold
 
     Gitt følgende medlemsunntak fra MEDL
-      | Dekning | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland |
-      |         | 01.01.2019      | 01.01.2021      | Nei        | ENDL    | NOR          |
+      | Dekning | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland | Periodestatus |
+      |         | 01.01.2019      | 01.01.2021      | Nei       | ENDL    | NOR          | GYLD          |
 
     Og følgende arbeidsforhold fra AAReg
       | Fra og med dato   | Til og med dato   | Arbeidsgivertype | Arbeidsforholdstype |
@@ -52,11 +54,12 @@ Egenskap: Regel 1.2.2: Er brukers arbeidsforhold uendret
     Så skal svaret være "<Svar>"
 
     Eksempler:
-      | Til og med dato | Fra og med dato | Identifikator | Svar |
-      | 01.02.2020      | 30.03.2020      | 2             | Ja   |
-      |                 | 01.01.2018      | 2             | Ja   |
-      | 01.01.2019      | 02.01.2019      | 2             | Nei  |
-      | 31.05.2019      | 01.06.2019      | 2             | Nei  |
-      | 28.01.2020      | 01.01.2018      | 2             | Nei  |
-      |                 | 01.08.2019      | 2             | Nei  |
-      | 31.05.2019      | 01.06.2019      | 1             | Ja   |
+      | Til og med dato | Fra og med dato | Identifikator | Svar | Kommentar                                                                   |
+      | 01.02.2020      | 30.03.2020      | 2             | Ja   | Ny arbeidsgiver etter inputperioden                                         |
+      | 01.02.2020      | 30.01.2020      | 2             | Nei  | Ny arbeidsgiver før inputperioden og før første arbeidsforhold er avsluttet |
+      |                 | 01.01.2018      | 2             | Ja   | To parallelle arbeidsforhold                                                |
+      | 01.01.2019      | 02.01.2019      | 2             | Nei  | Ny arbeidsgiver dagen etter utsending                                       |
+      | 31.05.2019      | 01.06.2019      | 2             | Nei  | Ny arbeidsgiver midt i perioden                                             |
+      | 31.05.2019      | 01.06.2019      | 1             | Ja   | Nytt arbeidsforhold med samme arbeidsgiver                                  |
+      | 28.01.2020      | 01.01.2018      | 2             | Nei  | Ny arbeidsgiver rett før inputperiode                                       |
+      |                 | 01.08.2019      | 2             | Nei  | Nytt parallelt arbeidsforhold                                               |

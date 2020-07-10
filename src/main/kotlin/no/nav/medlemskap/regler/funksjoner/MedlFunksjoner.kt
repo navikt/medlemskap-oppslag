@@ -43,12 +43,12 @@ object MedlFunksjoner {
 
     private fun List<Medlemskap>.medlemskapsPerioderOver12MndPeriode(erMedlem: Boolean, kontrollPeriode: Periode): List<Medlemskap> =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).filter {
-                it.erMedlem == erMedlem && it.lovvalg er "ENDL"
+                it.erMedlem == erMedlem
             }
 
-
     private infix fun List<Medlemskap>.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode: Periode): List<Medlemskap> =
-            this.filter { lagInterval(Periode(it.fraOgMed, it.tilOgMed)).overlaps(kontrollPeriode.interval()) }
-
-
+            this.filter { lagInterval(Periode(it.fraOgMed, it.tilOgMed)).overlaps(kontrollPeriode.interval())
+                    && !it.lovvalg.isNullOrEmpty() &&  it.lovvalg er "ENDL"
+                    && !it.periodeStatus.isNullOrEmpty() && it.periodeStatus er "GYLD"
+            }
 }
