@@ -2,6 +2,9 @@ package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.*
+import no.nav.medlemskap.regler.common.Funksjoner.alleEr
+import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
+import no.nav.medlemskap.regler.common.Funksjoner.erTom
 import no.nav.medlemskap.regler.common.Funksjoner.inneholder
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserForKontrollPeriode
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresserForKontrollPeriode
