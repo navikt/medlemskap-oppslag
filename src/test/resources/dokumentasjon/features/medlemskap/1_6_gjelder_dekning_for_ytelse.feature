@@ -1,13 +1,13 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regel 1.6: Er dekning uavklart?
+Egenskap: Regel 1.6: Er det dekning for gjeldende ytelse?
 
-  Scenariomal: Sjekk en periode fra MEDL
+  Scenariomal: Regel 1.6: Er det dekning for gjeldende ytelse? Sjekk en periode fra MEDL
 
     Gitt følgende medlemsunntak fra MEDL
-      | Dekning   | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland |
-      | <Dekning> | 01.01.2019      | 01.06.2020      | Ja        | ENDL    | NOR          |
+      | Dekning   | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland | Periodestatus |
+      | <Dekning> | 01.01.2019      | 01.06.2020      | Ja        | ENDL    | NOR          | GYLD          |
 
     Når regel "1.6" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge | Ytelse   |
@@ -26,12 +26,12 @@ Egenskap: Regel 1.6: Er dekning uavklart?
       | FTL_2-9_1_ledd_a  | DAGPENGER        | Nei  |
       | FTL_2-9_1_ledd_a  | ENSLIG_FORSORGER | Nei  |
 
-  Scenariomal: Flere perioder fra MEDL
+  Scenariomal: Regel 1.6: Er det dekning for gjeldende ytelse? Flere perioder fra MEDL
 
     Gitt følgende medlemsunntak fra MEDL
-      | Dekning   | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland |
-      | Full      | 01.01.2019      | 01.06.2019      | Ja        | ENDL    | NOR          |
-      | <Dekning> | 02.06.2019      | 31.12.2022      | Ja        | ENDL    | NOR          |
+      | Dekning          | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland | Periodestatus |
+      | FTL_2-9_1_ledd_a | 01.01.2019      | 01.06.2019      | Ja        | ENDL    | NOR          | GYLD          |
+      | <Dekning>        | 02.06.2019      | 31.12.2022      | Ja        | ENDL    | NOR          | GYLD          |
 
     Når regel "1.6" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge | Ytelse   |
