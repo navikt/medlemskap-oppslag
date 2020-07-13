@@ -1,6 +1,5 @@
 package no.nav.medlemskap.regler.v1
 
-import no.nav.medlemskap.common.statsborgerskapUavklartRegel5
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.alleEr
@@ -16,7 +15,7 @@ import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.erSammenheng
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.konkursStatuserArbeidsgivere
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.sisteArbeidsforholdSkipsregister
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.sisteArbeidsforholdYrkeskode
-import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapFor
+import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.registrerStatsborgerskapGrafana
 
 class ReglerForArbeidsforhold(
         val arbeidsforhold: List<Arbeidsforhold>,
@@ -121,12 +120,11 @@ class ReglerForArbeidsforhold(
 
 
     private fun sjekkSammenhengendeArbeidsforhold(): Resultat =
-            when {
-                !arbeidsforhold.erSammenhengendeIKontrollPeriode(kontrollPeriodeForArbeidsforhold, ytelse) -> nei("Arbeidstaker har ikke sammenhengende arbeidsforhold siste 12 mnd")
-                else -> ja()
-                //Denne skal flyttes til senere i løpet og skal modifiseres til å kunne ha flere parallelle arbeidsforhold
-                //if (personfakta.arbeidsforholdIOpptjeningsperiode() antallErIkke 1)
-                //    return nei("Bruker må ha ett arbeidsforhold i hele opptjeningsperioden")
+            if (!arbeidsforhold.erSammenhengendeIKontrollPeriode(kontrollPeriodeForArbeidsforhold, ytelse)) {
+                reglerForLovvalg.personhistorikk.statsborgerskap.registrerStatsborgerskapGrafana(kontrollPeriodeForArbeidsforhold, ytelse, REGEL_3)
+                nei("Arbeidstaker har ikke sammenhengende arbeidsforhold siste 12 mnd")
+            } else {
+                ja()
             }
 
     private fun sjekkArbeidsgiver(): Resultat =
@@ -139,7 +137,7 @@ class ReglerForArbeidsforhold(
     private fun sjekkOmForetakMerEnn5Ansatte(): Resultat {
 
         if (arbeidsforhold.antallAnsatteHosArbeidsgivere(kontrollPeriodeForArbeidsforhold) finnesMindreEnn 6) {
-            reglerForLovvalg.personhistorikk.statsborgerskap.hentStatsborgerskapFor(kontrollPeriodeForArbeidsforhold.tom!!).forEach { statsborgerskapUavklartRegel5(it, ytelse).increment() }
+            reglerForLovvalg.personhistorikk.statsborgerskap.registrerStatsborgerskapGrafana(kontrollPeriodeForArbeidsforhold, ytelse, REGEL_5)
             return nei("Ikke alle arbeidsgivere har 6 ansatte eller flere")
         }
 

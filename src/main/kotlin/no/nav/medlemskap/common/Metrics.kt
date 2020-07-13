@@ -10,6 +10,7 @@ import no.nav.medlemskap.common.influx.SensuInfluxConfig
 import no.nav.medlemskap.common.influx.SensuInfluxMeterRegistry
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
+import no.nav.medlemskap.regler.common.RegelId
 import java.time.Duration
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.truncate
@@ -118,9 +119,9 @@ fun antallDagerMellomArbeidsforhold(ytelse: Ytelse): DistributionSummary = Distr
         .description("")
         .register(Metrics.globalRegistry)
 
-fun statsborgerskapUavklartRegel5(statsborgerskap: String, ytelse: Ytelse): Counter = Counter
-        .builder("statsborgerskap_uavklarte_regel5")
-        .tags("statsborgerskap", statsborgerskap, "ytelse", ytelse.metricName())
+fun statsborgerskapUavklartForRegel(statsborgerskap: String, ytelse: Ytelse, regel: RegelId): Counter = Counter
+        .builder("statsborgerskap_uavklart_for_regel")
+        .tags("statsborgerskap", statsborgerskap, "ytelse", ytelse.metricName(), "regel", regel.identifikator)
         .description("")
         .register(Metrics.globalRegistry)
 
