@@ -8,6 +8,7 @@ import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Funksjoner.erTom
+import no.nav.medlemskap.regler.common.RegelId.REGEL_10
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserForKontrollPeriode
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresserForKontrollPeriode
 
@@ -19,9 +20,7 @@ class ErBrukerBosattINorgeRegel(
         val periode: InputPeriode
 ) {
     val regel = Regel(
-            identifikator = "10",
-            avklaring = "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
-            beskrivelse = "",
+            regelId = REGEL_10,
             ytelse = ytelse,
             operasjon = { sjekkLandkode() }
     )
