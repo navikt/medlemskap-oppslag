@@ -60,7 +60,8 @@
       "tilOgMed": "2020-02-28",
       "erMedlem": false,
       "lovvalgsland": "NOR",
-      "lovvalg": "UAVK"
+      "lovvalg": "ENDL",
+      "periodeStatus": "GYLD"
     }
   ],
   "inntekt": [],

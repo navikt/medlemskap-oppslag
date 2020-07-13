@@ -1,14 +1,15 @@
 package no.nav.medlemskap.regler.common
 
 enum class RegelId(val identifikator: String, val avklaring: String) {
-    REGEL_1_1("1.1", "Er det periode både med og uten medlemskap innenfor 12 mnd?"),
-    REGEL_1_2("1.2", "Er det en periode med medlemskap?"),
-    REGEL_1_2_1("1.2.1","Er hele perioden uten medlemskap innenfor 12-måneders perioden?"),
-    REGEL_1_2_2("1.2.2", "Er bruker uten medlemskap sin situasjon uendret?"),
-    REGEL_1_3("1.3", "Er hele perioden med medlemskap innenfor 12-måneders perioden?"),
-    REGEL_1_4("1.4", "Er brukers arbeidsforhold uendret?"),
-    REGEL_1_5("1.5", "Er brukers dekning uavklart?"),
-    REGEL_1_6("1.6", "Har bruker et medlemskap som omfatter ytelse? (Dekning i MEDL)"),
+    REGEL_1_1("1.1", "Er alle perioder siste 12 mnd avklart (endelig/gyldig)?"),
+    REGEL_1_2("1.2", "Er det periode både med og uten medlemskap innenfor 12 mnd?"),
+    REGEL_1_3("1.3", "Er det en periode med medlemskap?"),
+    REGEL_1_3_1("1.3.1","Er hele perioden uten medlemskap innenfor 12-måneders perioden?"),
+    REGEL_1_3_2("1.3.2", "Er bruker uten medlemskap sin situasjon uendret?"),
+    REGEL_1_4("1.4", "Er hele perioden med medlemskap innenfor 12-måneders perioden?"),
+    REGEL_1_5("1.5", "Er brukers arbeidsforhold uendret?"),
+    REGEL_1_6("1.6", "Er brukers dekning uavklart?"),
+    REGEL_1_7("1.7", "Har bruker et medlemskap som omfatter ytelse? (Dekning i MEDL)"),
     REGEL_2("2", "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?"),
     REGEL_3("3", "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?"),
     REGEL_4("4", "Er foretaket registrert i foretaksregisteret?"),

@@ -36,7 +36,8 @@
       "tilOgMed": "2020-01-12",
       "erMedlem": true,
       "lovvalgsland": "NOR",
-      "lovvalg": "ENDL"
+      "lovvalg": "ENDL",
+      "periodeStatus": "GYLD"
     }
   ],
   "arbeidsforhold": [],

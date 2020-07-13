@@ -16,7 +16,7 @@
     ],
     "personstatuser": [],
     "sivilstand": [],
-    "familierelasjoner" : [],
+    "familierelasjoner": [],
     "bostedsadresser": [
       {
         "landkode": "NOR",
@@ -39,7 +39,8 @@
       "erMedlem": true,
       "lovvalgsland": "NOR",
       "lovvalg": "ENDL",
-      "dekning":  "Full"
+      "periodeStatus": "GYLD",
+      "dekning": "Full"
     }
   ],
   "arbeidsforhold": [
@@ -71,5 +72,5 @@
   "inntekt": [],
   "oppgaver": [],
   "dokument": [],
-  "ytelse" : "SYKEPENGER"
+  "ytelse": "SYKEPENGER"
 }

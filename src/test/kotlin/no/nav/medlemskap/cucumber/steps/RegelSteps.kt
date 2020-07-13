@@ -123,14 +123,15 @@ class RegelSteps : No {
             val reglerForMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag!!)
 
             val regel = when (regelId!!) {
-                "1.1" -> reglerForMedl.periodeMedOgUtenMedlemskap
-                "1.2" -> reglerForMedl.periodeMedMedlemskap
-                "1.2.1" -> reglerForMedl.erPeriodeUtenMedlemskapInnenfor12MndPeriode
-                "1.2.2" -> reglerForMedl.erArbeidsforholdUendretForBrukerUtenMedlemskap
-                "1.3" -> reglerForMedl.erPeriodeMedMedlemskapInnenfor12MndPeriode
-                "1.4" -> reglerForMedl.erArbeidsforholdUendretForBrukerMedMedlemskap
-                "1.5" -> reglerForMedl.erDekningUavklart
-                "1.6" -> reglerForMedl.harBrukerDekningIMedl
+                "1.1" -> reglerForMedl.erPerioderAvklart
+                "1.2" -> reglerForMedl.periodeMedOgUtenMedlemskap
+                "1.3" -> reglerForMedl.periodeMedMedlemskap
+                "1.3.1" -> reglerForMedl.erPeriodeUtenMedlemskapInnenfor12MndPeriode
+                "1.3.2" -> reglerForMedl.erArbeidsforholdUendretForBrukerUtenMedlemskap
+                "1.4" -> reglerForMedl.erPeriodeMedMedlemskapInnenfor12MndPeriode
+                "1.5" -> reglerForMedl.erArbeidsforholdUendretForBrukerMedMedlemskap
+                "1.6" -> reglerForMedl.erDekningUavklart
+                "1.7" -> reglerForMedl.harBrukerDekningIMedl
                 "9" -> reglerForLovvalg.harBrukerJobbetUtenforNorge
                 "10" -> reglerForLovvalg.erBrukerBosattINorge
                 "11" -> reglerForLovvalg.harBrukerNorskStatsborgerskap
