@@ -33,7 +33,8 @@
       "tilOgMed": "2021-05-05",
       "erMedlem": false,
       "lovvalgsland": "NOR",
-      "lovvalg": "UAVK"
+      "lovvalg": "UAVK",
+      "periodeStatus": "GYLD"
     }
   ],
   "arbeidsforhold": [

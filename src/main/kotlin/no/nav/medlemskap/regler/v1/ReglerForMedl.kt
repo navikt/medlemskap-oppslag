@@ -11,6 +11,7 @@ import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.arbeidsforho
 import no.nav.medlemskap.regler.funksjoner.GsakFunksjoner.finnesAapneOppgaver
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.erMedlemskapsperioderOver12Mnd
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.finnesPersonIMedlForKontrollPeriode
+import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.finnesUavklartePerioder
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.gjeldendeDekning
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.harGyldigeMedlemskapsperioder
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.harMedlPeriodeMedOgUtenMedlemskap
@@ -44,47 +45,53 @@ class ReglerForMedl(
                         uavklartKonklusjon(ytelse)
                     } hvisNei {
                         sjekkRegel {
-                            periodeMedMedlemskap
-                        } hvisNei {
-                            sjekkRegel {
-                                erPeriodeUtenMedlemskapInnenfor12MndPeriode
-                            } hvisNei {
-                                uavklartKonklusjon(ytelse)
-                            } hvisJa {
-                                sjekkRegel {
-                                    erArbeidsforholdUendretForBrukerUtenMedlemskap
-                                } hvisJa {
-                                    neiKonklusjon(ytelse)
-                                } hvisNei {
-                                    uavklartKonklusjon(ytelse)
-                                }
-                            }
+                            erPerioderAvklart
                         } hvisJa {
                             sjekkRegel {
-                                erPeriodeMedMedlemskapInnenfor12MndPeriode
-                            } hvisJa {
+                                periodeMedMedlemskap
+                            } hvisNei {
                                 sjekkRegel {
-                                    erArbeidsforholdUendretForBrukerMedMedlemskap
+                                    erPeriodeUtenMedlemskapInnenfor12MndPeriode
+                                } hvisNei {
+                                    uavklartKonklusjon(ytelse)
                                 } hvisJa {
                                     sjekkRegel {
-                                        erDekningUavklart
+                                        erArbeidsforholdUendretForBrukerUtenMedlemskap
                                     } hvisJa {
-                                        uavklartKonklusjon(ytelse)
+                                        neiKonklusjon(ytelse)
                                     } hvisNei {
+                                        uavklartKonklusjon(ytelse)
+                                    }
+                                }
+                            } hvisJa {
+                                sjekkRegel {
+                                    erPeriodeMedMedlemskapInnenfor12MndPeriode
+                                } hvisJa {
+                                    sjekkRegel {
+                                        erArbeidsforholdUendretForBrukerMedMedlemskap
+                                    } hvisJa {
                                         sjekkRegel {
-                                            harBrukerDekningIMedl
+                                            erDekningUavklart
                                         } hvisJa {
-                                            jaKonklusjon(ytelse)
+                                            uavklartKonklusjon(ytelse)
                                         } hvisNei {
-                                            jaKonklusjon(ytelse)
+                                            sjekkRegel {
+                                                harBrukerDekningIMedl
+                                            } hvisJa {
+                                                jaKonklusjon(ytelse)
+                                            } hvisNei {
+                                                jaKonklusjon(ytelse)
+                                            }
                                         }
+                                    } hvisNei {
+                                        uavklartKonklusjon(ytelse)
                                     }
                                 } hvisNei {
                                     uavklartKonklusjon(ytelse)
                                 }
-                            } hvisNei {
-                                uavklartKonklusjon(ytelse)
                             }
+                        } hvisNei {
+                            uavklartKonklusjon(ytelse)
                         }
                     }
                 } hvisJa {
@@ -104,50 +111,56 @@ class ReglerForMedl(
             operasjon = { harBrukerAapneOppgaverIGsak() }
     )
 
-    val periodeMedOgUtenMedlemskap = Regel(
+    val erPerioderAvklart = Regel(
             regelId = REGEL_1_1,
+            ytelse = ytelse,
+            operasjon = { erPerioderAvklart() }
+    )
+
+    val periodeMedOgUtenMedlemskap = Regel(
+            regelId = REGEL_1_2,
             ytelse = ytelse,
             operasjon = { harPeriodeMedOgUtenMedlemskap() }
     )
 
     val periodeMedMedlemskap = Regel(
-            regelId = REGEL_1_2,
+            regelId = REGEL_1_3,
             ytelse = ytelse,
             operasjon = { periodeMedMedlemskap() }
     )
 
     val erPeriodeUtenMedlemskapInnenfor12MndPeriode = Regel(
-            regelId = REGEL_1_2_1,
+            regelId = REGEL_1_3_1,
             ytelse = ytelse,
             operasjon = { erMedlemskapPeriodeOver12MndPeriode(false) }
     )
 
     val erPeriodeMedMedlemskapInnenfor12MndPeriode = Regel(
-            REGEL_1_3,
+            REGEL_1_4,
             ytelse = ytelse,
             operasjon = { erMedlemskapPeriodeOver12MndPeriode(true) }
     )
 
     val erArbeidsforholdUendretForBrukerUtenMedlemskap = Regel(
-            REGEL_1_2_2,
+            REGEL_1_3_2,
             ytelse = ytelse,
             operasjon = { erBrukersArbeidsforholdUendret() }
     )
 
     val erArbeidsforholdUendretForBrukerMedMedlemskap = Regel(
-            REGEL_1_4,
+            REGEL_1_5,
             ytelse = ytelse,
             operasjon = { erBrukersArbeidsforholdUendret() }
     )
 
     val erDekningUavklart = Regel(
-            REGEL_1_5,
+            REGEL_1_6,
             ytelse = ytelse,
             operasjon = { erBrukersDekningUavklart() }
     )
 
     val harBrukerDekningIMedl = Regel(
-            REGEL_1_6,
+            REGEL_1_7,
             ytelse = ytelse,
             operasjon = { harBrukerMedlemskapSomOmfatterYtelse() }
     )
@@ -162,6 +175,12 @@ class ReglerForMedl(
             when {
                 oppgaver.finnesAapneOppgaver() -> ja()
                 else -> nei()
+            }
+
+    private fun erPerioderAvklart(): Resultat =
+            when {
+                medlemskap finnesUavklartePerioder kontrollPeriodeForMedl -> nei()
+                else -> ja()
             }
 
     private fun harPeriodeMedOgUtenMedlemskap(): Resultat =

@@ -1,19 +1,19 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regel 1.2.2: Er brukers arbeidsforhold uendret?
+Egenskap: Regel 1.5: Er brukers arbeidsforhold uendret?
 
-  Scenariomal: Regel 1.2.2: Er brukers arbeidsforhold uendret? Ett arbeidsforhold
+  Scenariomal: Regel 1.5: Er brukers arbeidsforhold uendret? Ett arbeidsforhold
 
     Gitt følgende medlemsunntak fra MEDL
-      | Dekning | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland | Periodestatus |
-      |         | 01.01.2019      | 01.01.2021      | Nei       | ENDL    | NOR          | GYLD          |
+      | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland | Periodestatus |
+      | 01.01.2019      | 01.01.2021      | Ja        | ENDL    | NOR          | GYLD          |
 
     Og følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato   | Arbeidsgivertype | Arbeidsforholdstype | Arbeidsgiver Id |
       | 01.01.2018      | <Til og med dato> | Organisasjon     | NORMALT             | 1               |
 
-    Når regel "1.2.2" kjøres med følgende parametre
+    Når regel "1.5" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 10.02.2020      | Nei                           |
 
@@ -27,11 +27,11 @@ Egenskap: Regel 1.2.2: Er brukers arbeidsforhold uendret?
       | 29.01.2020      | Nei  |
       | 30.01.2020      | Ja   |
 
-  Scenariomal: Regel 1.2.2: Er brukers arbeidsforhold uendret - flere arbeidsforhold
+  Scenariomal: Regel 1.5: Er brukers arbeidsforhold uendret? Flere arbeidsforhold
 
     Gitt følgende medlemsunntak fra MEDL
       | Dekning | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland | Periodestatus |
-      |         | 01.01.2019      | 01.01.2021      | Nei       | ENDL    | NOR          | GYLD          |
+      |         | 01.01.2019      | 01.01.2021      | Ja        | ENDL    | NOR          | GYLD          |
 
     Og følgende arbeidsforhold fra AAReg
       | Fra og med dato   | Til og med dato   | Arbeidsgivertype | Arbeidsforholdstype |
@@ -47,7 +47,7 @@ Egenskap: Regel 1.2.2: Er brukers arbeidsforhold uendret?
       | <Identifikator> | BEDR             | NOR      | 9              |
 
 
-    Når regel "1.2.2" kjøres med følgende parametre
+    Når regel "1.5" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 10.02.2020      | Nei                           |
 
