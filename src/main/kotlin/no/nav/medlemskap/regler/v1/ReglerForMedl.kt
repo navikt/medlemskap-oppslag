@@ -6,10 +6,12 @@ import no.nav.medlemskap.domene.Dekning.Companion.gjelderForYtelse
 import no.nav.medlemskap.domene.Dekning.Companion.uavklartForYtelse
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 import no.nav.medlemskap.regler.common.*
+import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.arbeidsforholdForDato
 import no.nav.medlemskap.regler.funksjoner.GsakFunksjoner.finnesAapneOppgaver
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.erMedlemskapsperioderOver12Mnd
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.finnesPersonIMedlForKontrollPeriode
+import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.finnesUavklartePerioder
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.gjeldendeDekning
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.harGyldigeMedlemskapsperioder
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.harMedlPeriodeMedOgUtenMedlemskap
@@ -43,47 +45,53 @@ class ReglerForMedl(
                         uavklartKonklusjon(ytelse)
                     } hvisNei {
                         sjekkRegel {
-                            periodeMedMedlemskap
-                        } hvisNei {
-                            sjekkRegel {
-                                erPeriodeUtenMedlemskapInnenfor12MndPeriode
-                            } hvisNei {
-                                uavklartKonklusjon(ytelse)
-                            } hvisJa {
-                                sjekkRegel {
-                                    erArbeidsforholdUendretForBrukerUtenMedlemskap
-                                } hvisJa {
-                                    neiKonklusjon(ytelse)
-                                } hvisNei {
-                                    uavklartKonklusjon(ytelse)
-                                }
-                            }
+                            erPerioderAvklart
                         } hvisJa {
                             sjekkRegel {
-                                erPeriodeMedMedlemskapInnenfor12MndPeriode
-                            } hvisJa {
+                                periodeMedMedlemskap
+                            } hvisNei {
                                 sjekkRegel {
-                                    erArbeidsforholdUendretForBrukerMedMedlemskap
+                                    erPeriodeUtenMedlemskapInnenfor12MndPeriode
+                                } hvisNei {
+                                    uavklartKonklusjon(ytelse)
                                 } hvisJa {
                                     sjekkRegel {
-                                        erDekningUavklart
+                                        erArbeidsforholdUendretForBrukerUtenMedlemskap
                                     } hvisJa {
-                                        uavklartKonklusjon(ytelse)
+                                        neiKonklusjon(ytelse)
                                     } hvisNei {
+                                        uavklartKonklusjon(ytelse)
+                                    }
+                                }
+                            } hvisJa {
+                                sjekkRegel {
+                                    erPeriodeMedMedlemskapInnenfor12MndPeriode
+                                } hvisJa {
+                                    sjekkRegel {
+                                        erArbeidsforholdUendretForBrukerMedMedlemskap
+                                    } hvisJa {
                                         sjekkRegel {
-                                            harBrukerDekningIMedl
+                                            erDekningUavklart
                                         } hvisJa {
-                                            jaKonklusjon(ytelse)
+                                            uavklartKonklusjon(ytelse)
                                         } hvisNei {
-                                            jaKonklusjon(ytelse)
+                                            sjekkRegel {
+                                                harBrukerDekningIMedl
+                                            } hvisJa {
+                                                jaKonklusjon(ytelse)
+                                            } hvisNei {
+                                                jaKonklusjon(ytelse)
+                                            }
                                         }
+                                    } hvisNei {
+                                        uavklartKonklusjon(ytelse)
                                     }
                                 } hvisNei {
                                     uavklartKonklusjon(ytelse)
                                 }
-                            } hvisNei {
-                                uavklartKonklusjon(ytelse)
                             }
+                        } hvisNei {
+                            uavklartKonklusjon(ytelse)
                         }
                     }
                 } hvisJa {
@@ -92,82 +100,67 @@ class ReglerForMedl(
             }
 
     val harBrukerMedlOpplysninger = Regel(
-            identifikator = "A",
-            avklaring = "Finnes det noe på personen i MEDL?",
-            beskrivelse = "",
+            regelId = REGEL_A,
             ytelse = ytelse,
             operasjon = { harBrukerPerioderIMedl() }
     )
 
     val harBrukerGosysOpplysninger = Regel(
-            identifikator = "B",
-            avklaring = "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?",
-            beskrivelse = "",
+            regelId = REGEL_B,
             ytelse = ytelse,
             operasjon = { harBrukerAapneOppgaverIGsak() }
     )
 
+    val erPerioderAvklart = Regel(
+            regelId = REGEL_1_1,
+            ytelse = ytelse,
+            operasjon = { erPerioderAvklart() }
+    )
+
     val periodeMedOgUtenMedlemskap = Regel(
-            identifikator = "1.1",
-            avklaring = "Er det periode både med og uten medlemskap innenfor 12 mnd?",
-            beskrivelse = "",
+            regelId = REGEL_1_2,
             ytelse = ytelse,
             operasjon = { harPeriodeMedOgUtenMedlemskap() }
     )
 
     val periodeMedMedlemskap = Regel(
-            identifikator = "1.2",
-            avklaring = "Er det en periode med medlemskap?",
-            beskrivelse = "",
+            regelId = REGEL_1_3,
             ytelse = ytelse,
             operasjon = { periodeMedMedlemskap() }
     )
 
     val erPeriodeUtenMedlemskapInnenfor12MndPeriode = Regel(
-            identifikator = "1.2.1",
-            avklaring = "Er hele perioden uten medlemskap innenfor 12-måneders perioden?",
-            beskrivelse = "",
+            regelId = REGEL_1_3_1,
             ytelse = ytelse,
             operasjon = { erMedlemskapPeriodeOver12MndPeriode(false) }
     )
 
     val erPeriodeMedMedlemskapInnenfor12MndPeriode = Regel(
-            identifikator = "1.3",
-            avklaring = "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
-            beskrivelse = "",
+            REGEL_1_4,
             ytelse = ytelse,
             operasjon = { erMedlemskapPeriodeOver12MndPeriode(true) }
     )
 
-
     val erArbeidsforholdUendretForBrukerUtenMedlemskap = Regel(
-            identifikator = "1.2.2",
-            avklaring = "Er bruker uten medlemskap sin situasjon uendret?",
-            beskrivelse = "",
+            REGEL_1_3_2,
             ytelse = ytelse,
             operasjon = { erBrukersArbeidsforholdUendret() }
     )
 
     val erArbeidsforholdUendretForBrukerMedMedlemskap = Regel(
-            identifikator = "1.4",
-            avklaring = "Er brukers arbeidsforhold uendret?",
-            beskrivelse = "",
+            REGEL_1_5,
             ytelse = ytelse,
             operasjon = { erBrukersArbeidsforholdUendret() }
     )
 
     val erDekningUavklart = Regel(
-            identifikator = "1.5",
-            avklaring = "Er brukers dekning uavklart?",
-            beskrivelse = "",
+            REGEL_1_6,
             ytelse = ytelse,
             operasjon = { erBrukersDekningUavklart() }
     )
 
     val harBrukerDekningIMedl = Regel(
-            identifikator = "1.6",
-            avklaring = "Har bruker et medlemskap som omfatter ytelse? (Dekning i MEDL)",
-            beskrivelse = "",
+            REGEL_1_7,
             ytelse = ytelse,
             operasjon = { harBrukerMedlemskapSomOmfatterYtelse() }
     )
@@ -182,6 +175,12 @@ class ReglerForMedl(
             when {
                 oppgaver.finnesAapneOppgaver() -> ja()
                 else -> nei()
+            }
+
+    private fun erPerioderAvklart(): Resultat =
+            when {
+                medlemskap finnesUavklartePerioder kontrollPeriodeForMedl -> nei()
+                else -> ja()
             }
 
     private fun harPeriodeMedOgUtenMedlemskap(): Resultat =
@@ -236,12 +235,12 @@ class ReglerForMedl(
             arbeidsforhold.arbeidsforholdForDato(medlemskap.tidligsteFraOgMedDatoForMedl(datohjelper.kontrollPeriodeForMedl())).isNotEmpty() &&
                     (ulikeArbeidsforholdMenSammeArbeidsgiver() ||
                             arbeidsforhold.arbeidsforholdForDato(medlemskap.tidligsteFraOgMedDatoForMedl(datohjelper.kontrollPeriodeForMedl())) ==
-                            arbeidsforhold.arbeidsforholdForDato(datohjelper.tilOgMedDag()))
+                            arbeidsforhold.arbeidsforholdForDato(datohjelper.tilOgMedDag().plusDays(1)))
 
     private fun ulikeArbeidsforholdMenSammeArbeidsgiver() =
             (arbeidsforhold.arbeidsforholdForDato(medlemskap.tidligsteFraOgMedDatoForMedl(datohjelper.kontrollPeriodeForMedl())) != arbeidsforhold.arbeidsforholdForDato(datohjelper.tilOgMedDag()) &&
                     arbeidsforhold.arbeidsforholdForDato(medlemskap.tidligsteFraOgMedDatoForMedl(datohjelper.kontrollPeriodeForMedl())).map { it.arbeidsgiver.identifikator } ==
-                    arbeidsforhold.arbeidsforholdForDato(datohjelper.tilOgMedDag()).map { it.arbeidsgiver.identifikator })
+                    arbeidsforhold.arbeidsforholdForDato(datohjelper.tilOgMedDag().plusDays(1)).map { it.arbeidsgiver.identifikator })
 
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForMedl {

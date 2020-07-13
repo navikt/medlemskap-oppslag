@@ -27,7 +27,8 @@
       "tilOgMed": "2021-05-05",
       "erMedlem": false,
       "lovvalgsland": "NOR",
-      "lovvalg": "ENDL"
+      "lovvalg": "ENDL",
+      "periodeStatus": "GYLD"
     }
   ],
   "arbeidsforhold": [],

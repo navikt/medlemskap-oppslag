@@ -6,6 +6,7 @@ import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.finnesI
+import no.nav.medlemskap.regler.common.RegelId.REGEL_2
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedSluttAvKontrollperiode
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedStartAvKontrollperiode
 
@@ -18,9 +19,7 @@ class ReglerForGrunnforordningen(val ytelse: Ytelse, val periode: InputPeriode, 
             }
 
     private val erBrukerEØSborger = Regel(
-            identifikator = "2",
-            avklaring = "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?",
-            beskrivelse = "",
+            regelId = REGEL_2,
             ytelse = ytelse,
             operasjon = { sjekkStatsborgerskap() }
     )

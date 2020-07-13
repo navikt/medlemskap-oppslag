@@ -13,6 +13,13 @@ object MedlFunksjoner {
     infix fun List<Medlemskap>.finnesPersonIMedlForKontrollPeriode(kontrollPeriode: Periode): Boolean =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).isNotEmpty()
 
+    infix fun List<Medlemskap>.finnesUavklartePerioder(kontrollPeriode: Periode): Boolean =
+            this.filter {
+                lagInterval(Periode(it.fraOgMed, it.tilOgMed)).overlaps(kontrollPeriode.interval())
+                        && ((!it.lovvalg.isNullOrEmpty() && it.lovvalg != "ENDL")
+                        || (!it.periodeStatus.isNullOrEmpty() && it.periodeStatus != "GYLD"))
+            }.isNotEmpty()
+
     infix fun List<Medlemskap>.harMedlPeriodeMedOgUtenMedlemskap(kontrollPeriode: Periode): Boolean =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).any { it.erMedlem }
                     && this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).any { !it.erMedlem }
@@ -43,12 +50,13 @@ object MedlFunksjoner {
 
     private fun List<Medlemskap>.medlemskapsPerioderOver12MndPeriode(erMedlem: Boolean, kontrollPeriode: Periode): List<Medlemskap> =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).filter {
-                it.erMedlem == erMedlem && it.lovvalg er "ENDL"
+                it.erMedlem == erMedlem
             }
 
-
     private infix fun List<Medlemskap>.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode: Periode): List<Medlemskap> =
-            this.filter { lagInterval(Periode(it.fraOgMed, it.tilOgMed)).overlaps(kontrollPeriode.interval()) }
-
-
+            this.filter {
+                lagInterval(Periode(it.fraOgMed, it.tilOgMed)).overlaps(kontrollPeriode.interval())
+                        && !it.lovvalg.isNullOrEmpty() && it.lovvalg er "ENDL"
+                        && !it.periodeStatus.isNullOrEmpty() && it.periodeStatus er "GYLD"
+            }
 }

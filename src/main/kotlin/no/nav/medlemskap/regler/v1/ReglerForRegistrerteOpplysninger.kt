@@ -2,6 +2,7 @@ package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.*
+import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.funksjoner.GsakFunksjoner.finnesAapneOppgaver
 import no.nav.medlemskap.regler.funksjoner.JoarkFunksjoner.finnesDokumenterMedTillatteTeamer
 
@@ -18,33 +19,25 @@ class ReglerForRegistrerteOpplysninger(
             }
 
     private val harBrukerRegistrerteOpplysninger = Regel(
-            identifikator = "OPPLYSNINGER",
-            avklaring = "Finnes det registrerte opplysninger på bruker?",
-            beskrivelse = "",
+            regelId = REGEL_OPPLYSNINGER,
             ytelse = ytelse,
             operasjon = { minstEnAvDisse(medl, joark, gsak) }
     )
 
     private val medl = Regel(
-            identifikator = "OPPLYSNINGER-MEDL",
-            avklaring = "Finnes det registrerte opplysninger i MEDL?",
-            beskrivelse = "",
+            REGEL_OPPLYSNINGER_MEDL,
             ytelse = ytelse,
             operasjon = { sjekkPerioderIMedl() }
     )
 
     private val joark = Regel(
-            identifikator = "OPPLYSNINGER-JOARK",
-            avklaring = "Finnes det dokumenter i JOARK på medlemskapsområdet?",
-            beskrivelse = "",
+            regelId = REGEL_OPPLYSNINGER_JOARK,
             ytelse = ytelse,
             operasjon = { tellDokumenter() }
     )
 
     private val gsak = Regel(
-            identifikator = "OPPLYSNINGER-GOSYS",
-            avklaring = "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?",
-            beskrivelse = "",
+            regelId = REGEL_OPPLYSNINGER_GOSYS,
             ytelse = ytelse,
             operasjon = { tellÅpneOppgaver() }
     )

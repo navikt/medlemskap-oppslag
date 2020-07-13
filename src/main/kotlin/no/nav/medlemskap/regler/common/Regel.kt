@@ -5,9 +5,7 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 
 data class Regel(
-        val identifikator: String,
-        val avklaring: String,
-        val beskrivelse: String,
+        val regelId: RegelId,
         val ytelse: Ytelse,
         val operasjon: () -> Resultat,
         val hvisJa: Regel? = null,
@@ -15,10 +13,10 @@ data class Regel(
 ) {
     fun utfør(resultatliste: MutableList<Resultat>, harDekning: Svar? = null, dekning: String = ""): Resultat {
         val resultat = operasjon.invoke().apply {
-            regelCounter(this@Regel.identifikator + ". " + this@Regel.avklaring.replace("?", ""), this.svar.name, ytelse.metricName()).increment()
+            regelCounter(this@Regel.regelId.identifikator + ". " + this@Regel.regelId.avklaring.replace("?", ""), this.svar.name, ytelse.metricName()).increment()
         }.copy(
-                identifikator = identifikator,
-                avklaring = avklaring
+                regelId = regelId,
+                avklaring = regelId.avklaring
         )
 
         resultatliste.add(resultat)
@@ -37,10 +35,10 @@ data class Regel(
     }
 
     fun utfør(): Resultat = operasjon.invoke().apply {
-        regelCounter(this@Regel.identifikator + ". " + this@Regel.avklaring.replace("?", ""), this.svar.name, ytelse.metricName()).increment()
+        regelCounter(this@Regel.regelId.identifikator + ". " + this@Regel.regelId.avklaring.replace("?", ""), this.svar.name, ytelse.metricName()).increment()
     }.copy(
-            identifikator = identifikator,
-            avklaring = avklaring
+            regelId = regelId,
+            avklaring = regelId.avklaring
     )
 
     infix fun hvisJa(regel: () -> Regel) = this.copy(hvisJa = regel.invoke())

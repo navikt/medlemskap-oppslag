@@ -43,7 +43,7 @@ fun configureSensuInfluxMeterRegistry(): SensuInfluxMeterRegistry {
                 || it.name.startsWith("stillingsprosent")
                 || it.name.startsWith("dekningstyper")
                 || it.name.contains("arbeidsforhold")
-
+                || it.name.startsWith("statsborgerskap")
     })
     influxMeterRegistry.config().commonTags(defaultInfluxTags())
     Metrics.globalRegistry.add(influxMeterRegistry)
@@ -115,6 +115,12 @@ fun antallDagerMellomArbeidsforhold(ytelse: Ytelse): DistributionSummary = Distr
         .builder("antall_dager_mellom_arbeidsforhold")
         .publishPercentileHistogram()
         .tags("ytelse", ytelse.metricName())
+        .description("")
+        .register(Metrics.globalRegistry)
+
+fun statsborgerskapUavklartRegel5(statsborgerskap: String, ytelse: Ytelse): Counter = Counter
+        .builder("statsborgerskap_uavklarte_regel5")
+        .tags("statsborgerskap", statsborgerskap, "ytelse", ytelse.metricName())
         .description("")
         .register(Metrics.globalRegistry)
 
