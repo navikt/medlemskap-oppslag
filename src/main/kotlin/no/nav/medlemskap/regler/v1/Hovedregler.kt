@@ -17,9 +17,9 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
 
     fun hentHovedRegel() =
 
-    //sjekk Regelsett {
-    //    reglerForRegistrerteOpplysningerIMedl
-            //} hvisNei {
+    sjekkRegelsett {
+        reglerForRegistrerteOpplysningerIMedl
+            } hvisNei {
             sjekkRegelsett {
                 reglerForRegistrerteOpplysninger
             } hvisJa {
@@ -35,7 +35,7 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
                     }
                 }
             }
-    //}
+    }
 
     fun kjørHovedregler(): Resultat {
 
