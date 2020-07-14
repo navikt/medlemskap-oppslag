@@ -77,6 +77,36 @@ class RegelsettForNorskLovvalgTest {
     }
 
     @Test
+    fun `person har ikke ektefelle men har folkeregistrerte barn får ja`() {
+        assertSvar("11.2.2", Svar.JA, evaluer(personleser.brukerHarIkkeEktefelleMenFolkeregistrerteBarn()), Svar.JA)
+    }
+
+    @Test
+    fun `person har ikke ektefelle og ikke folkeregistrerte barn får nei`() {
+        assertSvar("11.2.2", Svar.NEI, evaluer(personleser.brukerHarIkkeEktefelleOgIkkeFolkeregistrerteBarn()), Svar.JA)
+    }
+
+    @Test
+    fun `person har ikke ektefelle men har folkeregistrerte barn og har jobbet mer enn 80 prosent får ja`() {
+        assertSvar("11.2.3", Svar.JA, evaluer(personleser.brukerHarIkkeEktefelleMenMedFolkeregistrerteBarnHarJobbetMerEnn80rosent()), Svar.JA)
+    }
+
+    @Test
+    fun  `person har ikke ektefelle men har folkeregistrerte barn og har ikke jobbet mer enn 80 prosent får nei`() {
+        assertSvar("11.2.3", Svar.NEI, evaluer(personleser.brukerHarIkkeEktefelleMenMedFolkeregistrerteBarnHarIkkeJobbetMerEnn80Prosent()), Svar.UAVKLART)
+    }
+
+    @Test
+    fun `person har ikke ektefelle men og ikke folkeregistrerte barn har jobbet mer enn 100% får ja`() {
+        assertSvar("11.2.2.1", Svar.JA, evaluer(personleser.brukerHarIkkeEktefelleOgIkkeFolkeregistrerteBarnHarJobbetMerEnn100rosent()), Svar.JA)
+    }
+
+    @Test
+    fun `person har ikke ektefelle men og ikke folkeregistrerte barn har ikke jobbet mer enn 100% får nei`() {
+        assertSvar("11.2.2.1", Svar.NEI, evaluer(personleser.brukerHarIkkeEktefelleOgIkkeFolkeregistrerteBarnHarIkkeJobbetMerEnn100Prosent()), Svar.UAVKLART)
+    }
+
+    @Test
     fun `person med ektefelle og barn får ja`() {
         assertSvar("11.3", Svar.JA, evaluer(personleser.brukerHarEktefelleOgBarn()), Svar.JA)
     }

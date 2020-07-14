@@ -131,6 +131,18 @@ class Personleser {
     fun brukerHarIkkeEktefelleMenBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_2_1/bruker_har_ikke_ektefelle_men_barn.json")
     fun brukerHarIkkeEktefelleOgIkkeBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_2_1/bruker_har_ikke_ektefelle_og_ikke_barn.json")
 
+    //Regel 11.2.2 "Har bruker uten ektefelle folkeregistrerte barn?"
+    fun brukerHarIkkeEktefelleMenFolkeregistrerteBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_2_2/bruker_har_ikke_ektefelle_men_folkeregistrerte_barn.json")
+    fun brukerHarIkkeEktefelleOgIkkeFolkeregistrerteBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_2_2/bruker_har_ikke_ektefelle_og_ikke_folkeregistrerte_barn.json")
+
+    //Regel 11.2.2.1 "Har bruker uten ektefelle og uten folkeregistrerte barn jobbet mer enn 100 prosent?"
+    fun brukerHarIkkeEktefelleOgIkkeFolkeregistrerteBarnHarJobbetMerEnn100rosent() = lesDatagrunnlag("$norskLovvalg/regel_11_2_2_1/bruker_har_ikke_folkeregistrerte_barn_men_jobbet_mer_enn_100_prosent.json")
+    fun brukerHarIkkeEktefelleOgIkkeFolkeregistrerteBarnHarIkkeJobbetMerEnn100Prosent() = lesDatagrunnlag("$norskLovvalg/regel_11_2_2_1/bruker_har_ikke_folkeregistrerte_barn_og_har_ikke_jobbet_mer_enn_100_prosent.json")
+
+    //Regel 11.2.3 "Har bruker uten ektefelle men med folkeregistrerte barn jobbet mer enn 80 prosent?"
+    fun brukerHarIkkeEktefelleMenMedFolkeregistrerteBarnHarJobbetMerEnn80rosent() = lesDatagrunnlag("$norskLovvalg/regel_11_2_3/bruker_uten_ektefelle_og_folkeregistrerte_barn_har_jobbet_mer_enn_80_prosent.json")
+    fun brukerHarIkkeEktefelleMenMedFolkeregistrerteBarnHarIkkeJobbetMerEnn80Prosent() = lesDatagrunnlag("$norskLovvalg/regel_11_2_3/bruker_uten_ektefelle_og_folkeregistrerte_barn_har_ikke_jobbet_mer_enn_80_prosent.json")
+
     //Regel 11.3 "Har bruker ektefelle og barn registrert i TPS?"
     fun brukerHarEktefelleOgBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_3/bruker_har_ektefelle_og_barn.json")
     fun brukerHarEktefelleMenIkkeBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_3/bruker_har_ektefelle_men_ikke_barn.json")
