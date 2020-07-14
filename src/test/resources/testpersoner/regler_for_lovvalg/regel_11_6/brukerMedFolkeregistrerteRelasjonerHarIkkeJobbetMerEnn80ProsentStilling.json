@@ -101,7 +101,7 @@
           },
           "yrkeskode": "7217102",
           "skipsregister": "UKJENT",
-          "stillingsprosent": 100.0
+          "stillingsprosent": 70.0
         }
       ]
     }
@@ -119,7 +119,13 @@
           "tom": null
         }
       ],
-      "bostedsadresser": [],
+      "bostedsadresser": [
+        {
+          "landkode": "NOR",
+          "fom": "1975-02-23",
+          "tom": null
+        }
+      ],
       "postadresser": [],
       "midlertidigAdresser": []
     },

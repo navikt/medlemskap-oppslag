@@ -87,6 +87,56 @@ class RegelsettForNorskLovvalgTest {
     }
 
     @Test
+    fun `person med folkeregistrert ektefelle uten barn får ja`() {
+        assertSvar("11.3.1", Svar.JA, evaluer(personleser.brukerUtenBarnHarFolkeregistrertEktefelle()), Svar.JA)
+    }
+
+    @Test
+    fun `person uten barn med ektefelle som ikke er folkeregistrert får nei`() {
+        assertSvar("11.3.1", Svar.NEI, evaluer(personleser.brukerUtenBarnHarIkkeFolkeregistrertEktefelle()), Svar.JA)
+    }
+
+    @Test
+    fun `barnløs bruker barn uten folkeregistrert ektefelle, men har jobbet 100% får ja`() {
+        assertSvar("11.3.1.1", Svar.JA, evaluer(personleser.brukerUtenBarnOgUtenFolkeregistrertEktefelleHarVeartI100prosent()), Svar.JA)
+    }
+
+    @Test
+    fun `barnløs bruker barn uten folkeregistrert ektefelle, men har ikke jobbet 100% får nei`() {
+        assertSvar("11.3.1.1", Svar.NEI, evaluer(personleser.brukerUtenBarnOgUtenFolkeregistrertEktefelleHarIkkeVeartI100prosent()), Svar.UAVKLART)
+    }
+
+    @Test
+    fun `person med barn har ektefelle registrert i Norge får ja`() {
+        assertSvar("11.4", Svar.JA, evaluer(personleser.brukerHarBarnOgEktefelleErRegistrertINorge()), Svar.JA)
+    }
+
+    @Test
+    fun `person med barn har ektefelle registrert i Norge får nei`() {
+        assertSvar("11.4", Svar.NEI, evaluer(personleser.brukerHarBarnOgEktefelleErIkkeRegistrertINorge()), Svar.UAVKLART)
+    }
+
+    @Test
+    fun `person med barn og ektefelle registrert i Norge får ja`() {
+        assertSvar("11.5", Svar.JA, evaluer(personleser.brukerHarFolkeregistrertEktefelleOgBarn()), Svar.JA)
+    }
+
+    @Test
+    fun `person med ektefelle registrert, men barn er ikke registrert i Norge får nei`() {
+        assertSvar("11.5", Svar.NEI, evaluer(personleser.brukerHarFolkeregistrertEktefelleMenBarnErIkkeFolkeregistrert()), Svar.UAVKLART)
+    }
+
+    @Test
+    fun `person med folkeregistrerte relasjoner har jobbet mer enn 80 prosent`() {
+        assertSvar("11.6", Svar.JA, evaluer(personleser.brukermedFolkeregistrertRelasjonerHarJobbetMerEnn80Prosent()), Svar.JA)
+    }
+
+    @Test
+    fun `person med folkeregistrerte relasjoner har ikke jobbet mer enn 80 prosent`() {
+        assertSvar("11.6", Svar.NEI, evaluer(personleser.brukermedFolkeregistrertRelasjonerHarIkkeJobbetMerEnn80Prosent()), Svar.UAVKLART)
+    }
+
+    @Test
     fun `person med ett arbeidsforhold med to overlappende arbeidsavtaler som til sammen utgjør mer enn 25% i stillingsprosent, får ja`() {
         assertSvar("12", Svar.JA, evaluer(personleser.norskMedToOverlappendeArbeidsavtalerSomTilSammenErOver25ProsentIPeriode()), Svar.JA)
     }
