@@ -123,6 +123,18 @@ class Personleser {
     fun brukerErNorskStatsborger() = lesDatagrunnlag("$norskLovvalg/regel_11/norsk_statsborger.json")
     fun brukerErIkkeNorskStatsborger() = lesDatagrunnlag("$norskLovvalg/regel_11/utenlands_statsborger.json")
 
+    //Regel 11_2 "Har bruker ektefelle?"
+    fun brukerHarEktefelle() = lesDatagrunnlag("$norskLovvalg/regel_11_2/bruker_har_ektefelle_i_tps.json")
+    fun brukerHarIkkeEktefelle() = lesDatagrunnlag("$norskLovvalg/regel_11_2/bruker_har_ikke_ektefelle_i_tps.json")
+
+    //Regel 11_2_1 "Har bruker barn, men ikke ektefelle registrert i TPS?
+    fun brukerHarIkkeEktefelleMenBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_2_1/bruker_har_ikke_ektefelle_men_barn.json")
+    fun brukerHarIkkeEktefelleOgIkkeBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_2_1/bruker_har_ikke_ektefelle_og_ikke_barn.json")
+
+    //Regel 11_3 "Har bruker ektefelle og barn registrert i TPS?"
+    fun brukerHarEktefelleOgBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_3/bruker_har_ektefelle_og_barn.json")
+    fun brukerHarEktefelleMenIkkeBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_3/bruker_har_ektefelle_men_ikke_barn.json")
+
     //Regel 12 - "Har bruker vært i minst 25% stilling de siste 12 mnd?"
     fun norskMedToOverlappendeArbeidsavtalerSomTilSammenErOver25ProsentIPeriode() = lesDatagrunnlag("$norskLovvalg/regel_12/norsk_med_to_overlappende_arbeidsavtaler_til_sammen_er_over_25_stillingsprosent_i_periode.json")
     fun norskMedEttArbeidsforholdMedArbeidsavtaleUnder25ProsentStillingIPeriode() = lesDatagrunnlag("$norskLovvalg/regel_12/norsk_med_ett_arbeidsforhold_under_25_stillingsprosent_i_periode.json")

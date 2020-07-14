@@ -7,7 +7,6 @@ import no.nav.medlemskap.regler.common.lagInterval
 
 object RelasjonFunksjoner {
 
-
     fun List<Sivilstand>.hentFnrTilEktefellerEllerPartnerIPeriode(kontrollPeriode: Periode): List<String?> =
             this.sivilstandSiste12Mnd(kontrollPeriode).filter {
              it.type == Sivilstandstype.GIFT || it.type == Sivilstandstype.REGISTRERT_PARTNER}.map { it.relatertVedSivilstand }
@@ -17,9 +16,9 @@ object RelasjonFunksjoner {
             this.filter { it.relatertPersonsRolle == Familierelasjonsrolle.BARN && FodselsnummerValidator.isValid(it.relatertPersonsIdent)}.map {
                 it.relatertPersonsIdent.filtrerBarnUnder25Aar() }
 
-    fun List<PersonhistorikkRelatertPerson>.hentRelatertSomFinnesITPS(relatert: List<String?>):
+    fun List<PersonhistorikkRelatertPerson>.hentRelatertSomFinnesITPS(relatert: List<String?>?):
             List<PersonhistorikkRelatertPerson> =
-            this.filter { relatert.contains(it.ident) && FodselsnummerValidator.isValid(it.ident)}
+            this.filter { relatert?.contains(it.ident) ?: false && FodselsnummerValidator.isValid(it.ident)}
 
 
 }

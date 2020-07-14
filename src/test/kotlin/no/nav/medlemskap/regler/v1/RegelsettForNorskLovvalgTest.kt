@@ -53,7 +53,37 @@ class RegelsettForNorskLovvalgTest {
 
     @Test
     fun `person med utenlandsk statsborgerskap, får nei`() {
-        assertSvar("11", Svar.NEI, evaluer(personleser.brukerErIkkeNorskStatsborger()), Svar.UAVKLART)
+        assertSvar("11", Svar.NEI, evaluer(personleser.brukerErIkkeNorskStatsborger()), Svar.JA)
+    }
+
+    @Test
+    fun `person med ektefelle får ja`() {
+        assertSvar("11.2", Svar.JA, evaluer(personleser.brukerHarEktefelle()), Svar.JA)
+    }
+
+    @Test
+    fun `person uten ektefelle får nei`() {
+        assertSvar("11.2", Svar.NEI, evaluer(personleser.brukerHarIkkeEktefelle()), Svar.JA)
+    }
+
+    @Test
+    fun `person har ikke ektefelle men barn får ja`() {
+        assertSvar("11.2.1", Svar.JA, evaluer(personleser.brukerHarIkkeEktefelleMenBarn()), Svar.JA)
+    }
+
+    @Test
+    fun `person har ikke ektefelle og ikke barn får nei`() {
+        assertSvar("11.2.1", Svar.NEI, evaluer(personleser.brukerHarIkkeEktefelleOgIkkeBarn()), Svar.JA)
+    }
+
+    @Test
+    fun `person med ektefelle og barn får ja`() {
+        assertSvar("11.3", Svar.JA, evaluer(personleser.brukerHarEktefelleOgBarn()), Svar.JA)
+    }
+
+    @Test
+    fun `person med ektefelle og ikke barn får nei`() {
+        assertSvar("11.3", Svar.NEI, evaluer(personleser.brukerHarEktefelleMenIkkeBarn()), Svar.JA)
     }
 
     @Test

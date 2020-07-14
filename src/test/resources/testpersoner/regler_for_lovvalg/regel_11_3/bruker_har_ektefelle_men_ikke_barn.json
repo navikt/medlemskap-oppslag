@@ -128,25 +128,6 @@
       ],
       "postadresser": [],
       "midlertidigAdresser": []
-    },
-    {
-      "ident": "18071076276",
-      "personstatuser": [
-        {
-          "personstatus": "BOSA",
-          "fom": "1961-10-31",
-          "tom": null
-        }
-      ],
-      "bostedsadresser": [
-        {
-          "landkode": "NOR",
-          "fom": "1975-02-23",
-          "tom": null
-        }
-      ],
-      "postadresser": [],
-      "midlertidigAdresser": []
     }
   ]
 }

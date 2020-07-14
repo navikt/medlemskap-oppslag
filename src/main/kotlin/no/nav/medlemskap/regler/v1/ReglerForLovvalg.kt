@@ -22,21 +22,22 @@ class ReglerForLovvalg(
         val periode: InputPeriode,
         val ytelse: Ytelse,
         val arbeidUtenforNorge: Boolean,
-        val personhistorikkRelatertPerson: List<PersonhistorikkRelatertPerson>
+        val personhistorikkRelatertPerson: List<PersonhistorikkRelatertPerson>,
+        val pdlPersonhistorikk: Personhistorikk?
 ) : Regler() {
     val statsborgerskap = personhistorikk.statsborgerskap
     val postadresser = personhistorikk.postadresser
     val bostedsadresser = personhistorikk.bostedsadresser
     val midlertidigAdresser = personhistorikk.midlertidigAdresser
-    val sivilstand = personhistorikk.sivilstand
-    val familierelasjon = personhistorikk.familierelasjoner
+    val sivilstand = pdlPersonhistorikk?.sivilstand
+    val familierelasjon = pdlPersonhistorikk?.familierelasjoner
 
     private val datohjelper = Datohjelper(periode, ytelse)
     private val kontrollPeriodeForPersonhistorikk = datohjelper.kontrollPeriodeForPersonhistorikk()
     private val kontrollPeriodeForArbeidsforhold = datohjelper.kontrollPeriodeForArbeidsforhold()
-    private val ektefelle = sivilstand.hentFnrTilEktefellerEllerPartnerIPeriode(kontrollPeriodeForPersonhistorikk)
+    private val ektefelle = sivilstand?.hentFnrTilEktefellerEllerPartnerIPeriode(kontrollPeriodeForPersonhistorikk)
     private val ektefellerITps = personhistorikkRelatertPerson.hentRelatertSomFinnesITPS(ektefelle)
-    private val barn = familierelasjon.hentFnrTilBarnUnder25()
+    private val barn = familierelasjon?.hentFnrTilBarnUnder25()
     private val barnITps = personhistorikkRelatertPerson.hentRelatertSomFinnesITPS(barn)
 
     override fun hentHovedRegel() =
@@ -59,87 +60,89 @@ class ReglerForLovvalg(
                             uavklartKonklusjon(ytelse)
                         }
                     } hvisNei {
-                           sjekkRegel {
-                              harBrukerEktefelle
-                           } hvisJa {
-                               sjekkRegel {
-                                   harBrukerBarn
-                               } hvisJa {
-                                   sjekkRegel {
-                                       erBrukersEktefelleBosattINorge
-                                   } hvisJa {
-                                       sjekkRegel {
-                                         erBrukersBarnBosattINorge
-                                       } hvisJa {
-                                           sjekkRegel {
-                                             harBrukerJobbet80ProsentEllerMer
-                                           }  hvisJa {
-                                               jaKonklusjon(ytelse)
-                                           }  hvisNei {
-                                               uavklartKonklusjon(ytelse)
-                                           }
+                        sjekkRegel {
+                            harBrukerEktefelle
+                        } hvisJa {
+                            sjekkRegel {
+                                harBrukerEktefelleOgBarn
+                            } hvisJa {
+                                sjekkRegel {
+                                    erBrukersEktefelleBosattINorge
+                                } hvisJa {
+                                    sjekkRegel {
+                                        erBrukersBarnBosattINorge
+                                    } hvisJa {
+                                        sjekkRegel {
+                                            harBrukerJobbet80ProsentEllerMer
+                                        } hvisJa {
+                                            jaKonklusjon(ytelse)
+                                        } hvisNei {
+                                            uavklartKonklusjon(ytelse)
+                                        }
 
-                                       } hvisNei {
-                                           uavklartKonklusjon(ytelse)
-                                       }
+                                    } hvisNei {
+                                        uavklartKonklusjon(ytelse)
+                                    }
 
-                                   } hvisNei {
-                                       sjekkRegel {
-                                           erBrukersBarnBosattINorge
-                                       } hvisJa {
-                                           uavklartKonklusjon(ytelse)
-                                       } hvisNei {
-                                           sjekkRegel {
-                                               harBrukerJobbet100ProsentEllerMer
-                                           } hvisJa {
-                                               jaKonklusjon(ytelse)
-                                           } hvisNei {
-                                               uavklartKonklusjon(ytelse)
-                                           }
-                                       }
+                                } hvisNei {
+                                    sjekkRegel {
+                                        erBrukersBarnBosattINorge
+                                    } hvisJa {
+                                        uavklartKonklusjon(ytelse)
+                                    } hvisNei {
+                                        sjekkRegel {
+                                            harBrukerJobbet100ProsentEllerMer
+                                        } hvisJa {
+                                            jaKonklusjon(ytelse)
+                                        } hvisNei {
+                                            uavklartKonklusjon(ytelse)
+                                        }
+                                    }
 
-                                   }
-                               } hvisNei {
-                                   erBrukersEktefelleBosattINorge
-                                   sjekkRegel {
-                                       harBrukerJobbet100ProsentEllerMer
-                                   } hvisJa {
-                                       jaKonklusjon(ytelse)
-                                   } hvisNei {
-                                       uavklartKonklusjon(ytelse)
-                                   }
-                               }
-                           } hvisNei {
-                               sjekkRegel {
-                                 harBrukerBarn
-                               } hvisJa {
-                                   sjekkRegel {
-                                       erBrukersBarnBosattINorge
-                                   }hvisJa {
-                                       sjekkRegel {
-                                           harBrukerJobbet80ProsentEllerMer
-                                       } hvisJa {
-                                           jaKonklusjon(ytelse)
-                                       } hvisNei {
-                                           uavklartKonklusjon(ytelse)
-                                       }
-
-                                   }hvisNei {
-                                       sjekkRegel {
-                                           harBrukerJobbet100ProsentEllerMer
-                                       } hvisJa {
-                                           jaKonklusjon(ytelse)
-                                       } hvisNei {
-                                          uavklartKonklusjon(ytelse)
-                                       }
-
-                                   }
-
-                               }
-
-                           }
-                    } hvisJa {
-                            uavklartKonklusjon(ytelse)
+                                }
+                            } hvisNei {
+                                erBrukersEktefelleBosattINorge
+                                sjekkRegel {
+                                    harBrukerJobbet100ProsentEllerMer
+                                } hvisJa {
+                                    jaKonklusjon(ytelse)
+                                } hvisNei {
+                                    uavklartKonklusjon(ytelse)
+                                }
+                            }
+                        } hvisNei {
+                            sjekkRegel {
+                                harBrukerBarnUtenEktefelle
+                            } hvisJa {
+                                sjekkRegel {
+                                    erBrukersBarnBosattINorge
+                                } hvisJa {
+                                    sjekkRegel {
+                                        harBrukerJobbet80ProsentEllerMer
+                                    } hvisJa {
+                                        jaKonklusjon(ytelse)
+                                    } hvisNei {
+                                        uavklartKonklusjon(ytelse)
+                                    }
+                                } hvisNei {
+                                        sjekkRegel {
+                                            harBrukerJobbet100ProsentEllerMer
+                                        } hvisJa {
+                                            jaKonklusjon(ytelse)
+                                        } hvisNei {
+                                            uavklartKonklusjon(ytelse)
+                                        }
+                                }
+                            } hvisNei {
+                                    sjekkRegel {
+                                        harBrukerJobbet100ProsentEllerMer
+                                    } hvisJa {
+                                        jaKonklusjon(ytelse)
+                                    } hvisNei {
+                                        uavklartKonklusjon(ytelse)
+                                    }
+                                }
+                        }
                     }
                 }
             } hvisJa {
@@ -153,6 +156,38 @@ class ReglerForLovvalg(
             beskrivelse = "",
             ytelse = ytelse,
             operasjon = { sjekkOmBrukerHarJobbetUtenforNorge() }
+    )
+
+    private val erBrukerBosattINorge = Regel(
+            identifikator = "10",
+            avklaring = "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
+            beskrivelse = "",
+            ytelse = ytelse,
+            operasjon = { sjekkLandkode() }
+    )
+
+    private val harBrukerNorskStatsborgerskap = Regel(
+            identifikator = "11",
+            avklaring = "Er bruker norsk statsborger?",
+            beskrivelse = "",
+            ytelse = ytelse,
+            operasjon = { sjekkOmBrukerErNorskStatsborger() }
+    )
+
+    private val harBrukerEktefelle = Regel (
+            identifikator = "11.2",
+            avklaring = "Har bruker ektefelle i tps?",
+            beskrivelse = "",
+            ytelse = ytelse,
+            operasjon = {sjekkOmBrukerHarEktefelle()}
+    )
+
+    private val erBrukersBarnBosattINorge = Regel (
+            identifikator = "",
+            avklaring = "Er brukers barn bosatt i Norge",
+            beskrivelse = "",
+            ytelse = ytelse,
+            operasjon = {sjekkOmBrukersBarnErBosattINorge()}
     )
 
     private val harBrukerJobbet80ProsentEllerMer = Regel(
@@ -169,30 +204,6 @@ class ReglerForLovvalg(
             beskrivelse = "",
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(100.0)}
-    )
-
-    private val erBrukerBosattINorge = Regel(
-            identifikator = "10",
-            avklaring = "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
-            beskrivelse = "",
-            ytelse = ytelse,
-            operasjon = { sjekkLandkode() }
-    )
-
-    private val erBrukersBarnBosattINorge = Regel (
-            identifikator = "",
-            avklaring = "Er brukers barn bosatt i Norge",
-            beskrivelse = "",
-            ytelse = ytelse,
-            operasjon = {sjekkOmBrukersBarnErBosattINorge()}
-    )
-
-    private val harBrukerNorskStatsborgerskap = Regel(
-            identifikator = "11",
-            avklaring = "Er bruker norsk statsborger?",
-            beskrivelse = "",
-            ytelse = ytelse,
-            operasjon = { sjekkOmBrukerErNorskStatsborger() }
     )
 
     private val harBrukerJobbet25ProsentEllerMer = Regel(
@@ -213,15 +224,16 @@ class ReglerForLovvalg(
     )
     */
 
-    private val harBrukerEktefelle = Regel (
-            identifikator = "11.2",
-            avklaring = "Har bruker ektefelle i tps?",
+    //Duplikate metoder pga forskjellige identifikatorer, kan kanskje håndteres forskjellig
+    private val harBrukerEktefelleOgBarn = Regel (
+            identifikator = "11.3",
+            avklaring = "Har bruker barn registrert i TPS?",
             beskrivelse = "",
             ytelse = ytelse,
-            operasjon = {sjekkOmBrukerHarEktefelle()}
+            operasjon = {sjekkOmBrukerHarBarn()}
     )
 
-    private val harBrukerBarn = Regel (
+    private val harBrukerBarnUtenEktefelle = Regel (
             identifikator = "11.2.1",
             avklaring = "Har bruker barn registrert i TPS?",
             beskrivelse = "",
@@ -355,7 +367,7 @@ class ReglerForLovvalg(
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForLovvalg {
             with(datagrunnlag) {
-                return ReglerForLovvalg(personhistorikk, arbeidsforhold, periode, ytelse, brukerinput.arbeidUtenforNorge, personHistorikkRelatertePersoner)
+                return ReglerForLovvalg(personhistorikk, arbeidsforhold, periode, ytelse, brukerinput.arbeidUtenforNorge, personHistorikkRelatertePersoner, pdlpersonhistorikk)
             }
         }
     }
