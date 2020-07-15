@@ -84,12 +84,12 @@ class ReglerForLovvalg(
                                     }
                                 } hvisNei {
                                     sjekkRegel {
-                                        erBrukersBarnMedFolkeregistrertEktefelleFolkeregistrert
+                                        erBrukerUtenFolkeregistrertEktefelleSittBarnFolkeregistrert
                                     } hvisJa {
                                         uavklartKonklusjon(ytelse)
                                     } hvisNei {
                                         sjekkRegel {
-                                            harBrukerMedFolkeregistrertEktefelleOgFolkeregistrertBarnJobbetMerEnn100Prosent
+                                            harBrukerMedRelasjonerUtenFolkeregistreringJobbetMerEnn100Prosent
                                         } hvisJa {
                                             jaKonklusjon(ytelse)
                                         } hvisNei {
@@ -99,7 +99,7 @@ class ReglerForLovvalg(
                                 }
                             } hvisNei {
                                 sjekkRegel {
-                                    erBarnløsBrukersEktefelleBosattINorge
+                                    erBarnloesBrukersEktefelleBosattINorge
                                 } hvisJa {
                                     sjekkRegel {
                                         harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn80Prosent
@@ -143,7 +143,7 @@ class ReglerForLovvalg(
                                 }
                             } hvisNei {
                                     sjekkRegel {
-                                        harBrukerJobbet100ProsentEllerMer
+                                        harBrukerUtenEktefelleOgBarnJobbetMerEnn100Prosent
                                     } hvisJa {
                                         jaKonklusjon(ytelse)
                                     } hvisNei {
@@ -207,6 +207,22 @@ class ReglerForLovvalg(
             operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(100.0)}
     )
 
+    private val harBrukerMedRelasjonerUtenFolkeregistreringJobbetMerEnn100Prosent = Regel(
+            identifikator = "11.2.2.1",
+            avklaring = "Har bruker uten ektefelle med folkeregistrerte barn jobbet mer enn 80 prosent?",
+            beskrivelse = "",
+            ytelse = ytelse,
+            operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(100.0)}
+    )
+
+    private val harBrukerUtenEktefelleOgBarnJobbetMerEnn100Prosent = Regel(
+            identifikator = "11.2.2.1",
+            avklaring = "Har bruker uten ektefelle med folkeregistrerte barn jobbet mer enn 80 prosent?",
+            beskrivelse = "",
+            ytelse = ytelse,
+            operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(100.0)}
+    )
+
     private val harBrukerUtenEktefelleBarnSomErFolkeregistrert = Regel (
             identifikator = "11.2.2",
             avklaring = "Har bruker uten ektefelle folkeregistrerte barn?",
@@ -215,12 +231,28 @@ class ReglerForLovvalg(
             operasjon = {sjekkOmBrukersBarnErBosattINorge()}
     )
 
+    private val harBrukerBarnUtenEktefelle = Regel (
+            identifikator = "11.2.1",
+            avklaring = "Har bruker uten ektefelle barn registrert i TPS?",
+            beskrivelse = "",
+            ytelse = ytelse,
+            operasjon = {sjekkOmBrukerHarBarn()}
+    )
+
     private val harBrukerEktefelleOgBarn = Regel (
             identifikator = "11.3",
             avklaring = "Har bruker barn registrert i TPS?",
             beskrivelse = "",
             ytelse = ytelse,
             operasjon = {sjekkOmBrukerHarBarn()}
+    )
+
+    private val erBarnloesBrukersEktefelleBosattINorge = Regel (
+            identifikator = "11.3.1",
+            avklaring = "Er brukers ektefelle folkeregistrert som bosatt i Norge?",
+            beskrivelse = "",
+            ytelse = ytelse,
+            operasjon = {sjekkOmBrukersEktefelleErBosattINorge()}
     )
 
     private val harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn80Prosent= Regel(
@@ -239,16 +271,17 @@ class ReglerForLovvalg(
             operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(100.0)}
     )
 
-    private val harBrukerMedFolkeregistrertEktefelleOgFolkeregistrertBarnJobbetMerEnn100Prosent = Regel(
-            identifikator = "11.3.1.1",
-            avklaring = "Har barnløs bruker med folkeregistrert ektefelle jobbet mer enn 100 prosent",
-            beskrivelse = "",
-            ytelse = ytelse,
-            operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(100.0)}
-    )
 
     private val erBrukerMedBarnSittEktefelleBosattINorge = Regel (
             identifikator = "11.4",
+            avklaring = "Er brukers (med barn) sitt ektefelle folkeregistrert som bosatt i Norge?",
+            beskrivelse = "",
+            ytelse = ytelse,
+            operasjon = {sjekkOmBrukersEktefelleErBosattINorge()}
+    )
+
+    private val erBrukerUtenFolkeregistrertEktefelleSittBarnFolkeregistrert = Regel (
+            identifikator = "11.4.1",
             avklaring = "Er brukers (med barn) sitt ektefelle folkeregistrert som bosatt i Norge?",
             beskrivelse = "",
             ytelse = ytelse,
@@ -271,21 +304,6 @@ class ReglerForLovvalg(
             operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(80.0)}
     )
 
-    private val erBrukersBarnMedFolkeregistrertEktefelleFolkeregistrert = Regel (
-            identifikator = "11.4.1",
-            avklaring = "Har bruker med folkeregistrert ektefelle folkeregistrert barn?",
-            beskrivelse = "",
-            ytelse = ytelse,
-            operasjon = {sjekkOmBrukersBarnErBosattINorge()}
-    )
-
-    private val harBrukerJobbet100ProsentEllerMer= Regel(
-            identifikator = "",
-            avklaring = "",
-            beskrivelse = "",
-            ytelse = ytelse,
-            operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(100.0)}
-    )
 
     private val harBrukerJobbet25ProsentEllerMer = Regel(
             identifikator = "12",
@@ -295,32 +313,14 @@ class ReglerForLovvalg(
             operasjon = { sjekkOmBrukersStillingsprosentErMerEnn(25.0) }
     )
 
-    /*
-    private val harBrukerNorsdiskStatsborgerskap = Regel (
-            identifikator = "",
-            avklaring = "Har bruker nordisk statsborgerskap?",
-            beskrivelse = "",
-            ytelse = ytelse,
-            operasjon = {sjekkOmBrukerHarNordiskStatsborgerskap() }
-    )
+    /* private val harBrukerNorsdiskStatsborgerskap = Regel (
+        identifikator = "",
+        avklaring = "Har bruker nordisk statsborgerskap?",
+        beskrivelse = "",
+        ytelse = ytelse,
+        operasjon = {sjekkOmBrukerHarNordiskStatsborgerskap() }
+        )
     */
-
-
-    private val harBrukerBarnUtenEktefelle = Regel (
-            identifikator = "11.2.1",
-            avklaring = "Har bruker uten ektefelle barn registrert i TPS?",
-            beskrivelse = "",
-            ytelse = ytelse,
-            operasjon = {sjekkOmBrukerHarBarn()}
-    )
-
-    private val erBarnløsBrukersEktefelleBosattINorge = Regel (
-            identifikator = "11.3.1",
-            avklaring = "Er brukers ektefelle folkeregistrert som bosatt i Norge?",
-            beskrivelse = "",
-            ytelse = ytelse,
-            operasjon = {sjekkOmBrukersEktefelleErBosattINorge()}
-    )
 
     private fun sjekkOmBrukerHarBarn(): Resultat {
         return when {
@@ -420,7 +420,6 @@ class ReglerForLovvalg(
                 && personHarIngenEllerNorskMidlertidigadresse(midlertidigAdresseLandkoder)
     }
 
-
     enum class NorskLandkode {
         NOR
     }
@@ -435,7 +434,6 @@ class ReglerForLovvalg(
             "GRL" to "GRØNNLAND",
             "ALA" to "ÅLAND"
     )
-
 
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForLovvalg {

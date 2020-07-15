@@ -143,7 +143,7 @@ class RegelsettForNorskLovvalgTest {
 
     @Test
     fun `person med barn har ektefelle registrert i Norge får nei`() {
-        assertSvar("11.4", Svar.NEI, evaluer(personleser.brukerHarBarnOgEktefelleErIkkeRegistrertINorge()), Svar.UAVKLART)
+        assertSvar("11.4", Svar.NEI, evaluer(personleser.brukerHarBarnOgEktefelleErIkkeRegistrertINorge()), Svar.JA)
     }
 
     @Test

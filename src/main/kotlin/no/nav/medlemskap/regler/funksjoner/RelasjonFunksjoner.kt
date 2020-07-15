@@ -24,12 +24,14 @@ object RelasjonFunksjoner {
             List<PersonhistorikkRelatertPerson> =
             this.filter { relatert?.contains(it.ident) ?: false && FodselsnummerValidator.isValid(it.ident)}}
 
+
+// Denne blir feil, litt usikker på hvordan jeg skal finne alder, ser vi henter fødselsår også
     fun String.filtrerBarnUnder25Aar(): Boolean {
         val aar = Calendar.getInstance().get(Calendar.YEAR)
         val foedselsaar = this.substring(3, 5).toInt()
          val alder = aar - foedselsaar
-        println(alder)
-        return alder >= 25
+         alder <= 25
+        return true
     }
 
 //Todo sjekke tom på sivilstand
