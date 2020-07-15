@@ -17,25 +17,25 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
 
     fun hentHovedRegel() =
 
-    sjekkRegelsett {
-        reglerForRegistrerteOpplysningerIMedl
-            } hvisNei {
             sjekkRegelsett {
-                reglerForRegistrerteOpplysninger
-            } hvisJa {
-                uavklartKonklusjon(ytelse)
+                reglerForRegistrerteOpplysningerIMedl
             } hvisNei {
                 sjekkRegelsett {
-                    reglerForGrunnforordningen
-                } hvisNei {
-                    uavklartKonklusjon(ytelse)
+                    reglerForRegistrerteOpplysninger
                 } hvisJa {
+                    uavklartKonklusjon(ytelse)
+                } hvisNei {
                     sjekkRegelsett {
-                        reglerForArbeidsforhold
+                        reglerForGrunnforordningen
+                    } hvisNei {
+                        uavklartKonklusjon(ytelse)
+                    } hvisJa {
+                        sjekkRegelsett {
+                            reglerForArbeidsforhold
+                        }
                     }
                 }
             }
-    }
 
     fun kjørHovedregler(): Resultat {
 

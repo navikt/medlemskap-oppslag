@@ -6,11 +6,14 @@ import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.evaluer
 import no.nav.medlemskap.regler.personer.Personleser
 import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-@Disabled
-class RegelsettForMedlTest {
+/**
+ * MIDLERTIDIG KLASSE
+ * Dette er en testklasse som er lagd for MEDL-endring uten
+ * Opprettet en ny fil for tester relatert til MEDL-fordi
+ */
+class RegelsettForMedlTestMidlertidig {
 
     private val personleser = Personleser()
 
@@ -42,7 +45,7 @@ class RegelsettForMedlTest {
 
     @Test
     fun `norsk person med periode uten medlemskap`() {
-        assertSvar(REGEL_1_3_1, Svar.JA, evaluer(personleser.norskUtenMedlemskapIMedl()), Svar.NEI)
+        assertSvar(REGEL_1_3_1, Svar.JA, evaluer(personleser.norskUtenMedlemskapIMedl()), Svar.UAVKLART)
     }
 
     @Test
@@ -62,7 +65,7 @@ class RegelsettForMedlTest {
 
     @Test
     fun `amerikansk person uten medlemskap med endret arbeidsforhold, men med samme arbeidsgiver`() {
-        assertSvar(REGEL_1_3_2, Svar.JA, evaluer(personleser.amerikanskUtenMedlemskapEndretArbeidsforholdSammeArbeidsgiver()), Svar.NEI)
+        assertSvar(REGEL_1_3_2, Svar.JA, evaluer(personleser.amerikanskUtenMedlemskapEndretArbeidsforholdSammeArbeidsgiver()), Svar.UAVKLART)
     }
 
     @Test
@@ -135,7 +138,7 @@ class RegelsettForMedlTest {
     @Test
     fun `amerikansk person med medlemskap uten dekning i medl`() {
         val amerikanskMedMedlemskapUtenDekningIMedl = evaluer(personleser.amerikanskMedMedlemskapUtenDekningIMedl())
-        assertSvar(REGEL_1_7, Svar.NEI, amerikanskMedMedlemskapUtenDekningIMedl, Svar.JA)
+        assertSvar(REGEL_1_7, Svar.NEI, amerikanskMedMedlemskapUtenDekningIMedl, Svar.UAVKLART)
         Assertions.assertEquals(Svar.NEI, amerikanskMedMedlemskapUtenDekningIMedl.harDekning!!)
     }
 }

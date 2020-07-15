@@ -1,6 +1,6 @@
 # language: no
 # encoding: UTF-8
-@ignored
+
 Egenskap: Regel 1 konklusjon for brukere uten medlemskap
 
   Scenariomal: Regel 1 konklusjon for brukere uten medlemskap
@@ -21,13 +21,13 @@ Egenskap: Regel 1 konklusjon for brukere uten medlemskap
 
     Eksempler:
       | Til og med dato | Ytelse           | medlemskap |
-      |                 | SYKEPENGER       | Nei        |
+      |                 | SYKEPENGER       | Uavklart   |
       | 01.05.2019      | ENSLIG_FORSORGER | Uavklart   |
-      |                 | DAGPENGER        | Nei        |
-      |                 | ENSLIG_FORSORGER | Nei        |
+      |                 | DAGPENGER        | Uavklart   |
+      |                 | ENSLIG_FORSORGER | Uavklart   |
       | 01.05.2019      | DAGPENGER        | Uavklart   |
-      |                 | SYKEPENGER       | Nei        |
-      |                 | DAGPENGER        | Nei        |
+      |                 | SYKEPENGER       | Uavklart   |
+      |                 | DAGPENGER        | Uavklart   |
       | 01.05.2019      | ENSLIG_FORSORGER | Uavklart   |
 
   Scenariomal: Regel 1 konklusjon for brukere med medlemskap: Er det dekning for gjeldende ytelse med flere perioder?
@@ -49,5 +49,5 @@ Egenskap: Regel 1 konklusjon for brukere uten medlemskap
 
     Eksempler:
       | Til og med dato | Ytelse     | medlemskap |
-      |                 | SYKEPENGER | Nei        |
+      |                 | SYKEPENGER | Uavklart   |
       | 01.05.2019      | SYKEPENGER | Uavklart   |

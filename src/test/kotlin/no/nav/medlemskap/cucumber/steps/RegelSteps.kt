@@ -166,6 +166,13 @@ class RegelSteps : No {
             assertEquals(forventetSvar, resultat!!.harDekning)
         }
 
+        Så("skal svaret være {string} på medlemskap og {string} på harDekning") { forventetMedlemskap: String, forventetVerdi: String ->
+            val forventetSvarMedlemskap = domenespråkParser.parseSvar(forventetMedlemskap)
+            assertEquals(forventetSvarMedlemskap, resultat!!.svar)
+            val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
+            assertEquals(forventetSvar, resultat!!.harDekning)
+        }
+
         Så("skal regel {string} gi svaret {string}") { regelIdStr: String?, forventetSvar: String? ->
             val regelId = domenespråkParser.parseRegelId(regelIdStr!!)
 
