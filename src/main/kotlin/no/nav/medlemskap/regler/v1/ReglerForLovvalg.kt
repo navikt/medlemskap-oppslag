@@ -157,7 +157,6 @@ class ReglerForLovvalg(
                 neiKonklusjon(ytelse)
             }
 
-
     private val harBrukerJobbetUtenforNorge = Regel(
             identifikator = "9",
             avklaring = "Har bruker utført arbeid utenfor Norge?",
@@ -197,7 +196,6 @@ class ReglerForLovvalg(
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(80.0)}
     )
-
 
     private val harBrukerUtenFolkeregistrerteBarnJobbetMerEnn100Prosent = Regel(
             identifikator = "11.2.2.1",
@@ -256,7 +254,7 @@ class ReglerForLovvalg(
     )
 
     private val harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn80Prosent= Regel(
-            identifikator = "11.3.1.2",
+            identifikator = "11.6",
             avklaring = "Har barnløs bruker med folkeregistrert ektefelle jobbet mer enn 80 prosent",
             beskrivelse = "",
             ytelse = ytelse,
@@ -270,7 +268,6 @@ class ReglerForLovvalg(
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(100.0)}
     )
-
 
     private val erBrukerMedBarnSittEktefelleBosattINorge = Regel (
             identifikator = "11.4",
@@ -303,7 +300,6 @@ class ReglerForLovvalg(
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(80.0)}
     )
-
 
     private val harBrukerJobbet25ProsentEllerMer = Regel(
             identifikator = "12",
