@@ -28,6 +28,7 @@ object RelasjonFunksjoner {
         val aar = Calendar.getInstance().get(Calendar.YEAR)
         val foedselsaar = this.substring(3, 5).toInt()
          val alder = aar - foedselsaar
+        println(alder)
         return alder >= 25
     }
 
