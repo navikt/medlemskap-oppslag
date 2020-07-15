@@ -159,6 +159,11 @@ class Personleser {
     fun brukerHarBarnOgEktefelleErRegistrertINorge() = lesDatagrunnlag("$norskLovvalg/regel_11_4/brukers_ektefelle_er_folkeregistrert_i_Norge.json")
     fun brukerHarBarnOgEktefelleErIkkeRegistrertINorge() = lesDatagrunnlag("$norskLovvalg/regel_11_4/brukers_ektefelle_er_ikke_folkeregistrert_i_Norge.json")
 
+    //Regel 11.4.1 Er bruker uten folkeregistrert ektefelle sitt barn folkeregistrert?
+    fun brukerHarIkkeFolkeregistrertEktefelleMenFolkeregistrertBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_4_1/bruker_uten_folkeregistrert_ektefelle_har_folkeregistrert_barn.json")
+    fun brukerHarIkkeFolkeregistrertEktefelleOgIkkeFolkeregisrertBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_4_1/bruker_uten_folkeregistrert_ektefelle_har_ikke_folkeregistrert_barn.json")
+
+
     //Regel 11.5 Er bruker med folkeregistrert ektefelle sitt barn også folkeregistrert?
     fun brukerHarFolkeregistrertEktefelleMenBarnErIkkeFolkeregistrert()= lesDatagrunnlag("$norskLovvalg/regel_11_5/bruker_har_folkeregistrert_ektefelle_men_ikke_barn.json")
     fun brukerHarFolkeregistrertEktefelleOgBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_5/bruker_har_folkeregistrert_ektefelle_og_barn.json")

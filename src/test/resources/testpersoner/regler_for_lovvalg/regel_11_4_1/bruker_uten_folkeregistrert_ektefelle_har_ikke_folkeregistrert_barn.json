@@ -125,14 +125,8 @@
     },
     {
       "ident": "18071076276",
-      "personstatuser": [
-        {
-          "personstatus": "BOSA",
-          "fom": "1961-10-31",
-          "tom": null
-        }
-      ],
       "bostedsadresser": [],
+      "personstatuser": [],
       "postadresser": [],
       "midlertidigAdresser": []
     }

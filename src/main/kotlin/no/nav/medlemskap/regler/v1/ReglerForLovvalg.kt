@@ -282,10 +282,10 @@ class ReglerForLovvalg(
 
     private val erBrukerUtenFolkeregistrertEktefelleSittBarnFolkeregistrert = Regel (
             identifikator = "11.4.1",
-            avklaring = "Er brukers (med barn) sitt ektefelle folkeregistrert som bosatt i Norge?",
+            avklaring = "Er brukers barn (uten folkeregistrert ektefelle) folkeregistrert i Norge?",
             beskrivelse = "",
             ytelse = ytelse,
-            operasjon = {sjekkOmBrukersEktefelleErBosattINorge()}
+            operasjon = {sjekkOmBrukersBarnErBosattINorge()}
     )
 
     private val erBrukerMedFolkeregistrertEktefelleSittBarnFolkeregistrert = Regel (

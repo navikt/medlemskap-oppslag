@@ -147,6 +147,15 @@ class RegelsettForNorskLovvalgTest {
     }
 
     @Test
+    fun `person uten folkeregistrert ektefelle som har folkeregistrert barn får ja`() {
+        assertSvar("11.4.1", Svar.JA, evaluer(personleser.brukerHarIkkeFolkeregistrertEktefelleMenFolkeregistrertBarn()), Svar.UAVKLART)
+    }
+
+    @Test
+    fun `person uten folkeregistrert ektefelle som ikke folkeregistrert barn får nei`() {
+        assertSvar("11.4.1", Svar.NEI, evaluer(personleser.brukerHarIkkeFolkeregistrertEktefelleOgIkkeFolkeregisrertBarn()), Svar.JA)
+    }
+    @Test
     fun `person med barn og ektefelle registrert i Norge får ja`() {
         assertSvar("11.5", Svar.JA, evaluer(personleser.brukerHarFolkeregistrertEktefelleOgBarn()), Svar.JA)
     }

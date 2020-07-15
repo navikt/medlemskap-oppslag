@@ -132,7 +132,13 @@
           "tom": null
         }
       ],
-      "bostedsadresser": [],
+      "bostedsadresser": [
+        {
+          "landkode": "NOR",
+          "fom": "1975-02-23",
+          "tom": null
+        }
+      ],
       "postadresser": [],
       "midlertidigAdresser": []
     }
