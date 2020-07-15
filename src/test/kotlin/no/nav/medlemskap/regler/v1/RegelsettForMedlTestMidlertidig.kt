@@ -75,7 +75,7 @@ class RegelsettForMedlTestMidlertidig {
 
     @Test
     fun `amerikansk person med UAVK (uavklart) statuskode i lovvalg fra medl`() {
-        assertSvar(REGEL_A, Svar.NEI, evaluer(personleser.amerikanskUtenMedlemskapLovvalgStatuskodeUavklart()), Svar.UAVKLART)
+        assertSvar(REGEL_A, Svar.JA, evaluer(personleser.amerikanskUtenMedlemskapLovvalgStatuskodeUavklart()), Svar.UAVKLART)
     }
 
     @Test
