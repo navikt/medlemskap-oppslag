@@ -1,6 +1,7 @@
 package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.common.dekningCounter
+import no.nav.medlemskap.common.regelUendretCounterMidlertidig
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Dekning.Companion.gjelderForYtelse
 import no.nav.medlemskap.domene.Dekning.Companion.uavklartForYtelse
@@ -58,7 +59,7 @@ class ReglerForMedl(
                                     sjekkRegel {
                                         erArbeidsforholdUendretForBrukerUtenMedlemskap
                                     } hvisJa {
-                                        neiKonklusjon(ytelse)
+                                        uavklartKonklusjon(ytelse)
                                     } hvisNei {
                                         uavklartKonklusjon(ytelse)
                                     }
@@ -80,7 +81,7 @@ class ReglerForMedl(
                                             } hvisJa {
                                                 jaKonklusjon(ytelse)
                                             } hvisNei {
-                                                jaKonklusjon(ytelse)
+                                                uavklartKonklusjon(ytelse)
                                             }
                                         }
                                     } hvisNei {
@@ -144,13 +145,13 @@ class ReglerForMedl(
     val erArbeidsforholdUendretForBrukerUtenMedlemskap = Regel(
             REGEL_1_3_2,
             ytelse = ytelse,
-            operasjon = { erBrukersArbeidsforholdUendret() }
+            operasjon = { erBrukersArbeidsforholdUendret(REGEL_1_3_2) }
     )
 
     val erArbeidsforholdUendretForBrukerMedMedlemskap = Regel(
             REGEL_1_5,
             ytelse = ytelse,
-            operasjon = { erBrukersArbeidsforholdUendret() }
+            operasjon = { erBrukersArbeidsforholdUendret(REGEL_1_5) }
     )
 
     val erDekningUavklart = Regel(
@@ -200,11 +201,21 @@ class ReglerForMedl(
         }
     }
 
-    private fun erBrukersArbeidsforholdUendret(): Resultat =
+    private fun erBrukersArbeidsforholdUendret(regelId: RegelId): Resultat {
+        if (harSammeArbeidsforholdSidenFomDatoFraMedl()) {
+            regelUendretCounterMidlertidig(regelId, Svar.JA, ytelse).increment()
+            return ja()
+        } else {
+            regelUendretCounterMidlertidig(regelId, Svar.NEI, ytelse).increment()
+            return nei()
+        }
+            /* Tas inn igjen når man ikke lenger trenger egen Grafana-counter for denne (når dekning kan gis i response)
             when {
                 harSammeArbeidsforholdSidenFomDatoFraMedl() -> ja()
                 else -> nei()
             }
+             */
+    }
 
     private fun periodeMedMedlemskap(): Resultat =
             when {

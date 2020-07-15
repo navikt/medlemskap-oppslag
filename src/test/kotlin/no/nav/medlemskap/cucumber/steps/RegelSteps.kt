@@ -6,6 +6,7 @@ import no.nav.medlemskap.cucumber.*
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.assertDelresultat
 import no.nav.medlemskap.regler.common.Resultat
+import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.v1.*
 import no.nav.medlemskap.services.ereg.Ansatte
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -157,6 +158,19 @@ class RegelSteps : No {
             val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
 
             assertEquals(forventetSvar, resultat!!.svar)
+        }
+
+        Så("skal svaret være Ja på medlemskap og {string} på harDekning") { forventetVerdi: String ->
+            val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
+            assertEquals(Svar.JA, resultat!!.svar)
+            assertEquals(forventetSvar, resultat!!.harDekning)
+        }
+
+        Så("skal svaret være {string} på medlemskap og {string} på harDekning") { forventetMedlemskap: String, forventetVerdi: String ->
+            val forventetSvarMedlemskap = domenespråkParser.parseSvar(forventetMedlemskap)
+            assertEquals(forventetSvarMedlemskap, resultat!!.svar)
+            val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
+            assertEquals(forventetSvar, resultat!!.harDekning)
         }
 
         Så("skal regel {string} gi svaret {string}") { regelIdStr: String?, forventetSvar: String? ->

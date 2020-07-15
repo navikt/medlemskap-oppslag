@@ -55,6 +55,25 @@ Kallet er en POST på `/`
 * ytelse
     * Utledes fra request, ved å se på callerId
 
+### Ut-parametere
+        val tidspunkt: LocalDateTime,
+        val versjonTjeneste: String,
+        val versjonRegler: String,
+        val datagrunnlag: Datagrunnlag,
+        val resultat: Resultat
+Resultat inneholder:
+
+        val regelId: RegelId? = null,
+        val avklaring: String = "",
+        val begrunnelse: String = "",
+        val svar: Svar,
+        var harDekning: Svar? = null,
+        var dekning: String = "",
+        val delresultat: List<Resultat> = listOf()
+
+Feltene harDekning og dekning er ikke i bruk inntil konsumenter kan håndtere dekning funksjonelt. Dekning sier noe om brukeren har rett på ytelse.
+Inntil videre vil alle som ikke har dekning gå til uavklart.
+
 ## Eksempel på kall med CURL, gitt at port-forwarding er satt opp på port 8080:
 ```
 curl -X POST -H "Authorization: Bearer <AAD_TOKEN>" -H "Content-Type: application/json" -d '{ "fnr": "123456789", "periode": { "fom": "2019-01-01", "tom": "2019-12-31" }, "brukerinput": { "arbeidUtenforNorge": false } }' localhost:8080
@@ -136,6 +155,8 @@ curl -X POST -H "Authorization: Bearer <AAD_TOKEN>" -H "Content-Type: applicatio
     "avklaring": "Er bruker medlem?",
     "begrunnelse": "Bruker er medlem",
     "svar": "JA",
+    "harDekning": "JA",
+    "dekning": "FTL_2_6",
     "delresultat": [
       {
         "identifikator": "OPPLYSNINGER",
@@ -219,7 +240,7 @@ curl -X POST -H "Authorization: Bearer <AAD_TOKEN>" -H "Content-Type: applicatio
 * `kubectl port-forward <pod-navn> 8080:7070`
 * Endepunktet er nå tilgjengelig på `localhost:8080
 
-## Hvordan skaffe token`til preprod
+## Hvordan skaffe token i preprod
 ```
 curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d 'client_id=<clientid>>&scope=api://<clientid>/.default&client_secret=<clientsecret>&grant_type=client_credentials' 'https://login.microsoftonline.com/966ac572-f5b7-4bbe-aa88-c76419c0f851/oauth2/v2.0/token'
 ```

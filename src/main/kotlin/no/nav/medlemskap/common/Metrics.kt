@@ -11,6 +11,7 @@ import no.nav.medlemskap.common.influx.SensuInfluxMeterRegistry
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 import no.nav.medlemskap.regler.common.RegelId
+import no.nav.medlemskap.regler.common.Svar
 import java.time.Duration
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.truncate
@@ -71,6 +72,12 @@ fun ytelseCounter(ytelse: String): Counter = Counter
         .builder("ytelse_total")
         .tags("ytelse", ytelse)
         .description("counter for ytelser")
+        .register(Metrics.globalRegistry)
+
+fun regelUendretCounterMidlertidig(regelId: RegelId, svar: Svar, ytelse: Ytelse): Counter = Counter //Når dekning kan returneres av tjenesten kan denne fjernes.
+        .builder("regel_uendret_arbeidsforhold")
+        .tags("regel", regelId.identifikator, "svar", svar.name, "ytelse", ytelse.metricName())
+        .description("counter for ja eller nei for regel 1.4")
         .register(Metrics.globalRegistry)
 
 fun stillingsprosentCounter(stillingsprosent: Double, ytelse: String): Counter =
