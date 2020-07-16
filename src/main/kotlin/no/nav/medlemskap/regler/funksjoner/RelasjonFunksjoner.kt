@@ -26,15 +26,14 @@ object RelasjonFunksjoner {
     fun String.filtrerBarnUnder25Aar() =
             (Calendar.getInstance().get(Calendar.YEAR) - this.hentBursdagsAar().toInt()) <= 25
 
-
     fun String.hentBursdagsAar(): String {
       return this.hentAaHundre() + this.hent2DigitBursdagsAar()
     }
 
     fun String.hentAaHundre(): String? {
       var resultat: String? = null
-      val individnummer: Int = getIndividnummer()!!.toInt()
-      val birthYear: Int = hent2DigitBursdagsAar()!!.toInt()
+      val individnummer: Int = getIndividnummer().toInt()
+      val birthYear: Int = hent2DigitBursdagsAar().toInt()
 
         if (individnummer <= 499) {
             resultat = "19"

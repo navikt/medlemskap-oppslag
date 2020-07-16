@@ -15,7 +15,6 @@ import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilEktefell
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarnUnder25
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentRelatertSomFinnesITPS
 
-
 class ReglerForLovvalg(
         val personhistorikk: Personhistorikk,
         val arbeidsforhold: List<Arbeidsforhold>,

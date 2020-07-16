@@ -4,7 +4,6 @@ import no.nav.medlemskap.regler.assertSvar
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.evaluer
 import no.nav.medlemskap.regler.personer.Personleser
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class RegelsettForNorskLovvalgTest {
