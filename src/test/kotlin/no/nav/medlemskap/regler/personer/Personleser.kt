@@ -131,6 +131,9 @@ class Personleser {
     fun brukerHarIkkeEktefelleMenBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_2_1/bruker_har_ikke_ektefelle_men_barn.json")
     fun brukerHarIkkeEktefelleOgIkkeBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_2_1/bruker_har_ikke_ektefelle_og_ikke_barn.json")
 
+    //Må finne et fnr å denne, brukte mitt eget og testen gikk gjennom. Har fjernet dette nå
+    //fun brukerHarBarnOver25RegnesIkkeSomBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_2_1/bruker_med_barn_over_25_registreres_ikke_som_barn.json")
+
     //Regel 11.2.2 "Har bruker uten ektefelle folkeregistrerte barn?"
     fun brukerHarIkkeEktefelleMenFolkeregistrerteBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_2_2/bruker_har_ikke_ektefelle_men_folkeregistrerte_barn.json")
     fun brukerHarIkkeEktefelleOgIkkeFolkeregistrerteBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_2_2/bruker_har_ikke_ektefelle_og_ikke_folkeregistrerte_barn.json")

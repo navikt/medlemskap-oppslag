@@ -4,6 +4,7 @@ import no.nav.medlemskap.regler.assertSvar
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.evaluer
 import no.nav.medlemskap.regler.personer.Personleser
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 class RegelsettForNorskLovvalgTest {
@@ -76,7 +77,10 @@ class RegelsettForNorskLovvalgTest {
         assertSvar("11.2.1", Svar.NEI, evaluer(personleser.brukerHarIkkeEktefelleOgIkkeBarn()), Svar.JA)
     }
 
-    @Test
+   /* fun `Bruker over 25 regnes ikke som barn`() {
+        assertSvar("11.2.1", Svar.NEI, evaluer(personleser.brukerHarBarnOver25RegnesIkkeSomBarn()), Svar.JA)
+    }*/
+
     fun `person har ikke ektefelle men har folkeregistrerte barn får ja`() {
         assertSvar("11.2.2", Svar.JA, evaluer(personleser.brukerHarIkkeEktefelleMenFolkeregistrerteBarn()), Svar.JA)
     }
