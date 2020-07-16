@@ -42,14 +42,14 @@ Egenskap: Regel 1.2: Er det periode både med og uten medlemskap innenfor 12 mnd
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 10.02.2020      | Nei                           |
 
-    Så skal svaret være "Nei"
+    Så skal svaret være "Ja"
 
   Scenario: Periode både med medlemskap og uten medlemskap med uavklart status innenfor 12 mnd skal gi nei
 
     Gitt følgende medlemsunntak fra MEDL
-      | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland | Status |
-      | 01.05.2019      | 01.08.2019      | Ja        | ENDL    | NOR          | GYLD   |
-      | 02.08.2019      | 31.12.2019      | Nei       | ENDL    | NOR          | UAVKL  |
+      | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland | Periodestatus |
+      | 01.05.2019      | 01.08.2019      | Ja        | ENDL    | NOR          | GYLD          |
+      | 02.08.2019      | 31.12.2019      | Nei       | ENDL    | NOR          | UAVKL         |
 
     Når regel "1.2" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
