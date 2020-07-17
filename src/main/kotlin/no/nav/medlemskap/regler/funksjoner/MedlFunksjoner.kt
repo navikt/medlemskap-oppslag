@@ -27,13 +27,13 @@ object MedlFunksjoner {
                     && this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).any { !it.erMedlem }
 
     infix fun List<Medlemskap>.harPeriodeMedMedlemskap(kontrollPeriode: Periode): Boolean =
-            this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).any { it.erMedlem && it.lovvalgsland er "NOR" && it.lovvalg er "ENDL" }
+            this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).any { it.erMedlem && it.lovvalgsland er "NOR" }
 
     infix fun List<Medlemskap>.harGyldigeMedlemskapsperioder(kontrollPeriode: Periode): Boolean =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).none { it.tilOgMed.isAfter(it.fraOgMed.plusYears(5)) }
 
     fun List<Medlemskap>.erMedlemskapsperioderOver12Mnd(erMedlem: Boolean, kontrollPeriode: Periode): Boolean =
-            this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).filter { it.erMedlem == erMedlem && it.lovvalg er "ENDL" }
+            this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).filter { it.erMedlem == erMedlem }
                     .harSammenhengendeMedlemskapIHeleGittPeriode(kontrollPeriode)
 
     infix fun List<Medlemskap>.gjeldendeDekning(kontrollPeriode: Periode): String? =
