@@ -10,6 +10,8 @@ import no.nav.medlemskap.common.influx.SensuInfluxConfig
 import no.nav.medlemskap.common.influx.SensuInfluxMeterRegistry
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
+import no.nav.medlemskap.regler.common.RegelId
+import no.nav.medlemskap.regler.common.Svar
 import java.time.Duration
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.truncate
@@ -72,6 +74,12 @@ fun ytelseCounter(ytelse: String): Counter = Counter
         .description("counter for ytelser")
         .register(Metrics.globalRegistry)
 
+fun regelUendretCounterMidlertidig(regelId: RegelId, svar: Svar, ytelse: Ytelse): Counter = Counter //Når dekning kan returneres av tjenesten kan denne fjernes.
+        .builder("regel_uendret_arbeidsforhold")
+        .tags("regel", regelId.identifikator, "svar", svar.name, "ytelse", ytelse.metricName())
+        .description("counter for ja eller nei for regel 1.4")
+        .register(Metrics.globalRegistry)
+
 fun stillingsprosentCounter(stillingsprosent: Double, ytelse: String): Counter =
         if (stillingsprosent < 100.0) {
             Counter.builder("stillingsprosent_deltid")
@@ -118,9 +126,9 @@ fun antallDagerMellomArbeidsforhold(ytelse: Ytelse): DistributionSummary = Distr
         .description("")
         .register(Metrics.globalRegistry)
 
-fun statsborgerskapUavklartRegel5(statsborgerskap: String, ytelse: Ytelse): Counter = Counter
-        .builder("statsborgerskap_uavklarte_regel5")
-        .tags("statsborgerskap", statsborgerskap, "ytelse", ytelse.metricName())
+fun statsborgerskapUavklartForRegel(statsborgerskap: String, ytelse: Ytelse, regel: RegelId): Counter = Counter
+        .builder("statsborgerskap_uavklart_for_regel")
+        .tags("statsborgerskap", statsborgerskap, "ytelse", ytelse.metricName(), "regel", regel.identifikator)
         .description("")
         .register(Metrics.globalRegistry)
 

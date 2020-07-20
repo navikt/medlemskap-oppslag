@@ -11,7 +11,9 @@ object MedlFunksjoner {
 
 
     infix fun List<Medlemskap>.finnesPersonIMedlForKontrollPeriode(kontrollPeriode: Periode): Boolean =
-            this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).isNotEmpty()
+            this.filter {
+                lagInterval(Periode(it.fraOgMed, it.tilOgMed)).overlaps(kontrollPeriode.interval())
+            }.isNotEmpty()
 
     infix fun List<Medlemskap>.finnesUavklartePerioder(kontrollPeriode: Periode): Boolean =
             this.filter {
@@ -25,13 +27,13 @@ object MedlFunksjoner {
                     && this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).any { !it.erMedlem }
 
     infix fun List<Medlemskap>.harPeriodeMedMedlemskap(kontrollPeriode: Periode): Boolean =
-            this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).any { it.erMedlem && it.lovvalgsland er "NOR" && it.lovvalg er "ENDL" }
+            this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).any { it.erMedlem && it.lovvalgsland er "NOR" }
 
     infix fun List<Medlemskap>.harGyldigeMedlemskapsperioder(kontrollPeriode: Periode): Boolean =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).none { it.tilOgMed.isAfter(it.fraOgMed.plusYears(5)) }
 
     fun List<Medlemskap>.erMedlemskapsperioderOver12Mnd(erMedlem: Boolean, kontrollPeriode: Periode): Boolean =
-            this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).filter { it.erMedlem == erMedlem && it.lovvalg er "ENDL" }
+            this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).filter { it.erMedlem == erMedlem }
                     .harSammenhengendeMedlemskapIHeleGittPeriode(kontrollPeriode)
 
     infix fun List<Medlemskap>.gjeldendeDekning(kontrollPeriode: Periode): String? =
@@ -56,7 +58,7 @@ object MedlFunksjoner {
     private infix fun List<Medlemskap>.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode: Periode): List<Medlemskap> =
             this.filter {
                 lagInterval(Periode(it.fraOgMed, it.tilOgMed)).overlaps(kontrollPeriode.interval())
-                        && !it.lovvalg.isNullOrEmpty() && it.lovvalg er "ENDL"
-                        && !it.periodeStatus.isNullOrEmpty() && it.periodeStatus er "GYLD"
+                        && (it.lovvalg.isNullOrEmpty() || it.lovvalg er "ENDL")
+                        && (it.periodeStatus.isNullOrEmpty() || it.periodeStatus er "GYLD")
             }
 }
