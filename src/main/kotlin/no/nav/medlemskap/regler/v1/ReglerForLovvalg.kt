@@ -10,11 +10,11 @@ import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserForKontrollPeriode
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresserForKontrollPeriode
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
+import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarnUnder25
+import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilEktefellerEllerPartnerIPeriode
+import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentRelatertSomFinnesITPS
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedSluttAvKontrollperiode
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedStartAvKontrollperiode
-import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilEktefellerEllerPartnerIPeriode
-import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarnUnder25
-import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentRelatertSomFinnesITPS
 
 class ReglerForLovvalg(
         val personhistorikk: Personhistorikk,
@@ -165,151 +165,112 @@ class ReglerForLovvalg(
     )
 
     val erBrukerBosattINorge = Regel(
-            REGEL_10,
+            regelId = REGEL_10,
             ytelse = ytelse,
             operasjon = { sjekkLandkode() }
     )
 
     val harBrukerNorskStatsborgerskap = Regel(
-            REGEL_11,
+            regelId = REGEL_11,
             ytelse = ytelse,
             operasjon = { sjekkOmBrukerErNorskStatsborger() }
     )
 
     val harBrukerJobbet25ProsentEllerMer = Regel(
-            REGEL_12,
+            regelId = REGEL_12,
             ytelse = ytelse,
-            operasjon = { sjekkOmBrukerHarJobbet25ProsentEllerMer() }
+            operasjon = { sjekkOmBrukersStillingsprosentErMerEnn(25.0) }
     )
 
     private val harBrukerEktefelle = Regel (
-            identifikator = "11.2",
-            avklaring = "Har bruker ektefelle i TPS/PDL?",
-            beskrivelse = "",
+            regelId = REGEL_11_2,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukerHarEktefelle()}
     )
 
     private val harBrukerMedFolkeregistrerteBarnJobbetMerEnn80Prosent = Regel(
-            identifikator = "11.2.3",
-            avklaring = "Har bruker vært i minst 80 % stilling de siste 12 mnd?",
-            beskrivelse = "",
+            regelId = REGEL_11_2_3,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(80.0)}
     )
 
-    private val harBrukerUtenFolkeregistrerteBarnJobbetMerEnn100Prosent = Regel(
-            identifikator = "11.2.2.1",
-            avklaring = "Har bruker vært i 100 % stilling eller mer de siste 12 mnd?",
-            beskrivelse = "",
+    private val harBrukerMedRelasjonerUtenFolkeregistreringJobbetMerEnn100Prosent = Regel(
+            regelId = REGEL_11_2_2_1,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(100.0)}
     )
 
-    private val harBrukerMedRelasjonerUtenFolkeregistreringJobbetMerEnn100Prosent = Regel(
-            identifikator = "11.2.2.1",
-            avklaring = "Har bruker uten ektefelle med folkeregistrerte barn jobbet mer enn 80 prosent?",
-            beskrivelse = "",
+    private val harBrukerUtenFolkeregistrerteBarnJobbetMerEnn100Prosent = Regel(
+            regelId = REGEL_11_2_2_1,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(100.0)}
     )
 
     private val harBrukerUtenEktefelleOgBarnJobbetMerEnn100Prosent = Regel(
-            identifikator = "11.2.2.1",
-            avklaring = "Har bruker uten ektefelle med folkeregistrerte barn jobbet mer enn 80 prosent?",
-            beskrivelse = "",
+            regelId = REGEL_11_2_2_1,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(100.0)}
     )
 
     private val harBrukerUtenEktefelleBarnSomErFolkeregistrert = Regel (
-            identifikator = "11.2.2",
-            avklaring = "Er brukers barn folkeregistrert som bosatt i Norge?",
-            beskrivelse = "",
+            regelId = REGEL_11_2_2,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersBarnErBosattINorge()}
     )
 
     private val harBrukerBarnUtenEktefelle = Regel (
-            identifikator = "11.2.1",
-            avklaring = "Har bruker barn i TPS/PDL?",
-            beskrivelse = "",
+            regelId = REGEL_11_2_1,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukerHarBarn()}
     )
 
     private val harBrukerEktefelleOgBarn = Regel (
-            identifikator = "11.3",
-            avklaring = "Har bruker barn i TPS/PDL?",
-            beskrivelse = "",
+            regelId = REGEL_11_3,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukerHarBarn()}
     )
 
     private val erBarnloesBrukersEktefelleBosattINorge = Regel (
-            identifikator = "11.3.1",
-            avklaring = "Er brukers ektefelle folkeregistrert som bosatt i Norge?",
-            beskrivelse = "",
+            regelId = REGEL_11_3_1,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersEktefelleErBosattINorge()}
     )
 
     private val harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn80Prosent= Regel(
-            identifikator = "11.6",
-            avklaring = "Har barnløs bruker med folkeregistrert ektefelle jobbet mer enn 80 prosent",
-            beskrivelse = "",
+            regelId = REGEL_11_6,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(80.0)}
     )
 
     private val harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn100Prosent= Regel(
-            identifikator = "11.3.1.1",
-            avklaring = "Har bruker vært i 100 % stilling eller mer de siste 12 mnd?",
-            beskrivelse = "",
+            regelId = REGEL_11_3_1_1,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(100.0)}
     )
 
     private val erBrukerMedBarnSittEktefelleBosattINorge = Regel (
-            identifikator = "11.4",
-            avklaring = "Er brukers ektefelle folkeregistrert som bosatt i Norge?",
-            beskrivelse = "",
+            regelId = REGEL_11_4,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersEktefelleErBosattINorge()}
     )
 
     private val erBrukerUtenFolkeregistrertEktefelleSittBarnFolkeregistrert = Regel (
-            identifikator = "11.4.1",
-            avklaring = "Er brukers barn folkeregistrert som bosatt i Norge?",
-            beskrivelse = "",
+            regelId = REGEL_11_4_1,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersBarnErBosattINorge()}
     )
 
     private val erBrukerMedFolkeregistrertEktefelleSittBarnFolkeregistrert = Regel (
-            identifikator = "11.5",
-            avklaring = "Er brukers barn folkeregistrert som bosatt i Norge?",
-            beskrivelse = "",
+            regelId = REGEL_11_5,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersBarnErBosattINorge()}
     )
 
     private val harBrukerMedFolkeregistrerteRelasjonerJobbetMerEnn80Prosent = Regel(
-            identifikator = "11.6",
-            avklaring = "Har bruker vært i minst 80 % stilling de siste 12 mnd?",
-            beskrivelse = "",
+            regelId = REGEL_11_6,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(80.0)}
     )
-
-    private val harBrukerJobbet25ProsentEllerMer = Regel(
-            identifikator = "12",
-            avklaring = "Har bruker vært i minst 25% stilling de siste 12 mnd?",
-            beskrivelse = "",
-            ytelse = ytelse,
-            operasjon = { sjekkOmBrukersStillingsprosentErMerEnn(25.0) }
-    )
-
 
     /* private val harBrukerNorsdiskStatsborgerskap = Regel (
         identifikator = "",
@@ -335,9 +296,9 @@ class ReglerForLovvalg(
     }
 
     private fun sjekkOmBrukersEktefelleErBosattINorge(): Resultat {
-        val bostedsadresserTilEktefelle = ektefellerITps.flatMap { it.bostedsadresser.adresserSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
-        val postAdresseTilEktefelle = ektefellerITps.flatMap { it.postadresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
-        val midlertidigPostadresseTilEktefelle = ektefellerITps.flatMap { it.midlertidigAdresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
+        val bostedsadresserTilEktefelle = ektefellerITps.flatMap { it.bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk) }
+        val postAdresseTilEktefelle = ektefellerITps.flatMap { it.postadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk) }
+        val midlertidigPostadresseTilEktefelle = ektefellerITps.flatMap { it.midlertidigAdresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk) }
              return when {
                 erPersonBosattINorge(bostedsadresserTilEktefelle, postAdresseTilEktefelle, midlertidigPostadresseTilEktefelle) -> ja()
                 else -> nei("Ikke alle adressene til ektefelle er norske, eller ektefelle mangler bostedsadresse")
@@ -345,9 +306,9 @@ class ReglerForLovvalg(
     }
 
     private fun sjekkOmBrukersBarnErBosattINorge(): Resultat {
-        val bostedsadresseTilBarn = barnITps.flatMap { it.bostedsadresser.adresserSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
-        val postAdresseTilBarn = barnITps.flatMap { it.postadresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
-        val midlertidigPostadresseTilBarn = barnITps.flatMap { it.midlertidigAdresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk) }
+        val bostedsadresseTilBarn = barnITps.flatMap { it.bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk) }
+        val postAdresseTilBarn = barnITps.flatMap { it.postadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk) }
+        val midlertidigPostadresseTilBarn = barnITps.flatMap { it.midlertidigAdresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk) }
              return when {
                 erPersonBosattINorge(bostedsadresseTilBarn, postAdresseTilBarn, midlertidigPostadresseTilBarn) -> ja()
                  else -> nei("Ikke alle adressene til ektefelle er norske, eller ektefelle mangler bostedsadresse")

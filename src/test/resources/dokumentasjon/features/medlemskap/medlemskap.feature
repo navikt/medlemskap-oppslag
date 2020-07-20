@@ -1,7 +1,7 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Man er medlem hvis man er norsk statsborger som bor i Norge, og som har jobbet i Norge siste 12 måneder
+Egenskap: Man er medlem hvis man er EØS-borger som bor i Norge, og som har jobbet i Norge siste 12 måneder
 
   Scenariomal: Statsborgerskap avgjør om en som bor i Norge og jobber i Norge er medlem
 
@@ -50,4 +50,5 @@ Egenskap: Man er medlem hvis man er norsk statsborger som bor i Norge, og som ha
     Eksempler:
       | Statsborgerskap | medlemskap |
       | NOR             | Ja         |
-      | FRA             | UAVKLART   |
+      | FRA             | Ja         |
+      | USA             | UAVKLART   |
