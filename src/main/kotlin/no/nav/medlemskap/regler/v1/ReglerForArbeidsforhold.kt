@@ -7,6 +7,7 @@ import no.nav.medlemskap.regler.common.Funksjoner.finnes
 import no.nav.medlemskap.regler.common.Funksjoner.finnesMindreEnn
 import no.nav.medlemskap.regler.common.Funksjoner.inneholderNoe
 import no.nav.medlemskap.regler.common.Funksjoner.kunInneholder
+import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.antallAnsatteHosArbeidsgivere
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.arbeidsforholdForYrkestype
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.erAlleArbeidsgivereOrganisasjon
@@ -14,6 +15,7 @@ import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.erSammenheng
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.konkursStatuserArbeidsgivere
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.sisteArbeidsforholdSkipsregister
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.sisteArbeidsforholdYrkeskode
+import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.registrerStatsborgerskapGrafana
 
 class ReglerForArbeidsforhold(
         val arbeidsforhold: List<Arbeidsforhold>,
@@ -73,57 +75,43 @@ class ReglerForArbeidsforhold(
             }
 
     private val harBrukerSammenhengendeArbeidsforholdSiste12Mnd = Regel(
-            identifikator = "3",
-            avklaring = "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?",
-            beskrivelse = "",
+            regelId = REGEL_3,
             ytelse = ytelse,
             operasjon = { sjekkSammenhengendeArbeidsforhold() }
     )
 
     private val erArbeidsgiverOrganisasjon = Regel(
-            identifikator = "4",
-            avklaring = "Er foretaket registrert i foretaksregisteret?",
-            beskrivelse = "",
+            regelId = REGEL_4,
             ytelse = ytelse,
             operasjon = { sjekkArbeidsgiver() }
     )
 
     private val harForetakMerEnn5Ansatte = Regel(
-            identifikator = "5",
-            avklaring = "Har arbeidsgiver sin hovedaktivitet i Norge?",
-            beskrivelse = "",
+            regelId = REGEL_5,
             ytelse = ytelse,
             operasjon = { sjekkOmForetakMerEnn5Ansatte() }
     )
 
     private val erForetakAktivt = Regel(
-            identifikator = "6",
-            avklaring = "Er foretaket aktivt?",
-            beskrivelse = "",
+            regelId = REGEL_6,
             ytelse = ytelse,
             operasjon = { sjekKonkursstatus() }
     )
 
     private val erArbeidsforholdetMaritimt = Regel(
-            identifikator = "7",
-            avklaring = "Er arbeidsforholdet maritimt?",
-            beskrivelse = "",
+            regelId = REGEL_7,
             ytelse = ytelse,
             operasjon = { sjekkMaritim() }
     )
 
     private val jobberBrukerPaaNorskSkip = Regel(
-            identifikator = "7.1",
-            avklaring = "Er bruker ansatt på et NOR-skip?",
-            beskrivelse = "",
+            regelId = REGEL_7_1,
             ytelse = ytelse,
             operasjon = { sjekkSkipsregister() }
     )
 
     private val erBrukerPilotEllerKabinansatt = Regel(
-            identifikator = "8",
-            avklaring = "Er bruker pilot eller kabinansatt?",
-            beskrivelse = "",
+            regelId = REGEL_8,
             ytelse = ytelse,
             operasjon = { sjekkYrkeskodeLuftfart() }
     )
@@ -132,12 +120,11 @@ class ReglerForArbeidsforhold(
 
 
     private fun sjekkSammenhengendeArbeidsforhold(): Resultat =
-            when {
-                !arbeidsforhold.erSammenhengendeIKontrollPeriode(kontrollPeriodeForArbeidsforhold, ytelse) -> nei("Arbeidstaker har ikke sammenhengende arbeidsforhold siste 12 mnd")
-                else -> ja()
-                //Denne skal flyttes til senere i løpet og skal modifiseres til å kunne ha flere parallelle arbeidsforhold
-                //if (personfakta.arbeidsforholdIOpptjeningsperiode() antallErIkke 1)
-                //    return nei("Bruker må ha ett arbeidsforhold i hele opptjeningsperioden")
+            if (!arbeidsforhold.erSammenhengendeIKontrollPeriode(kontrollPeriodeForArbeidsforhold, ytelse)) {
+                reglerForLovvalg.personhistorikk.statsborgerskap.registrerStatsborgerskapGrafana(kontrollPeriodeForArbeidsforhold, ytelse, REGEL_3)
+                nei("Arbeidstaker har ikke sammenhengende arbeidsforhold siste 12 mnd")
+            } else {
+                ja()
             }
 
     private fun sjekkArbeidsgiver(): Resultat =
@@ -147,11 +134,15 @@ class ReglerForArbeidsforhold(
             }
 
 
-    private fun sjekkOmForetakMerEnn5Ansatte(): Resultat =
-            when {
-                arbeidsforhold.antallAnsatteHosArbeidsgivere(kontrollPeriodeForArbeidsforhold) finnesMindreEnn 6 -> nei("Ikke alle arbeidsgivere har 6 ansatte eller flere")
-                else -> ja()
-            }
+    private fun sjekkOmForetakMerEnn5Ansatte(): Resultat {
+
+        if (arbeidsforhold.antallAnsatteHosArbeidsgivere(kontrollPeriodeForArbeidsforhold) finnesMindreEnn 6) {
+            reglerForLovvalg.personhistorikk.statsborgerskap.registrerStatsborgerskapGrafana(kontrollPeriodeForArbeidsforhold, ytelse, REGEL_5)
+            return nei("Ikke alle arbeidsgivere har 6 ansatte eller flere")
+        }
+
+        return ja()
+    }
 
 
     private fun sjekkMaritim(): Resultat =

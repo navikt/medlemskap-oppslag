@@ -2,6 +2,7 @@ package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.regler.common.RegelId.REGEL_MEDLEM_KONKLUSJON
 import org.threeten.extra.Interval
 
 object Funksjoner {
@@ -9,7 +10,7 @@ object Funksjoner {
     val List<Any>.antall: Number
         get() = size
 
-    infix fun List<Any>.inneholder(objekt: Any?) = this.contains(objekt)
+    infix fun List<Any>.inneholder(objekt: Any?): Boolean = this.contains(objekt)
 
     infix fun Map<String, String>.inneholder(key: String?) = this.containsKey(key)
 
@@ -79,28 +80,20 @@ fun uavklart() = Resultat(svar = Svar.UAVKLART)
 
 fun sjekkRegelsett(metode: () -> Regler): Regel = metode.invoke().hentHovedRegel()
 
-const val konklusjonIdentifikator = "LOVME"
-
 fun uavklartKonklusjon(ytelse: Ytelse) = Regel(
-        identifikator = konklusjonIdentifikator,
-        avklaring = "Er bruker medlem?",
-        beskrivelse = "",
+        regelId = REGEL_MEDLEM_KONKLUSJON,
         ytelse = ytelse,
         operasjon = { uavklart("Kan ikke konkludere med medlemskap") }
 )
 
 fun jaKonklusjon(ytelse: Ytelse) = Regel(
-        identifikator = konklusjonIdentifikator,
-        avklaring = "Er bruker medlem?",
-        beskrivelse = "",
+        regelId = REGEL_MEDLEM_KONKLUSJON,
         ytelse = ytelse,
         operasjon = { ja("Bruker er medlem") }
 )
 
 fun neiKonklusjon(ytelse: Ytelse) = Regel(
-        identifikator = konklusjonIdentifikator,
-        avklaring = "Er bruker medlem?",
-        beskrivelse = "",
+        regelId = REGEL_MEDLEM_KONKLUSJON,
         ytelse = ytelse,
         operasjon = { nei("Bruker er ikke medlem") }
 )

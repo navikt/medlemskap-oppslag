@@ -16,7 +16,7 @@
     ],
     "personstatuser": [],
     "sivilstand": [],
-    "familierelasjoner" : [],
+    "familierelasjoner": [],
     "bostedsadresser": [],
     "postadresser": [],
     "midlertidigAdresser": []
@@ -27,12 +27,13 @@
       "tilOgMed": "2021-05-05",
       "erMedlem": true,
       "lovvalgsland": "NOR",
-      "lovvalg": "ENDL"
+      "lovvalg": "ENDL",
+      "periodeStatus": "GYLD"
     }
   ],
   "arbeidsforhold": [],
   "inntekt": [],
   "oppgaver": [],
   "dokument": [],
-  "ytelse" : "SYKEPENGER"
+  "ytelse": "SYKEPENGER"
 }

@@ -27,7 +27,7 @@ class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
         return when (ytelse) {
             Ytelse.SYKEPENGER -> Periode(
                     fom = førsteSykedag().minusMonths(12),
-                    tom = periode.tom
+                    tom = førsteSykedag()
             )
             Ytelse.DAGPENGER -> defaultDagpengePeriode()
             Ytelse.ENSLIG_FORSORGER -> defaultEnsligForsørgerPeriode()

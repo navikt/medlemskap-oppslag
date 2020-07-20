@@ -2,11 +2,12 @@
 
 Dette er en tjeneste som finner ut lovvalg og medlemskap.
 
-## Input til tjenesten
+## Inn-parametre
 * Fødselsnummer: Identifiserer en person, brukes til oppslag mot andre tjenester
-* Sykemeldingsperiode (fra og med dato, til og med dato)
-* arbeid utenfor Norge (Ja/Nei)
-* Eksempel: Utlede første sykemeldingsdag fra sykemeldingsperiode
+* Periode (fra og med dato, til og med dato)
+* Brukerinput
+    * arbeid utenfor Norge (Ja/Nei)
+* Ytelse utledes fra request
 
 ## Datagrunnlag
 * Personhistorikk hentes fra TPS/PDL
@@ -15,6 +16,22 @@ Dette er en tjeneste som finner ut lovvalg og medlemskap.
 * InntektListe hentes fra InntektService
 * Journalposter hentes fra JOARK
 * Oppgaver hentes fra GOSYS
+
+## Regelsett
+
+Reglene er gruppert i forskjellige regelsett.
+
+### Regelsett Grunnforordningen
+* [Grunnforordningen](features/hovedregler/grunnforordningen/README.md)
+
+### Regelsett Lovvalg
+* [Lovvalg](features/hovedregler/lovvalg/README.md)
+
+### Regelsett Medlemsopplysninger
+* [Medlemsopplysninger](features/hovedregler/medlemsopplysninger/README.md)
+
+### Regelsett Medlemskap 
+* [Medlemskap](features/medlemskap/README.md)
 
 ## Lovvalg og medlemskap for ytelsen sykepenger
 * [Lovvalg og medlemskap for ytelsen sykepenger](features/ytelse/sykepenger/README.md)

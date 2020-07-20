@@ -13,7 +13,7 @@ Egenskap: Borgere i EØS omfattes av grunnforordningen
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge | Ytelse     |
       | 15.01.2020      | 30.01.2020      | Nei                           | SYKEPENGER |
 
-    Så skal svaret på hovedregelen være "<Svar>"
+    Så skal svaret være "<Svar>"
 
     Eksempler:
       | Land | Svar |
@@ -30,4 +30,4 @@ Egenskap: Borgere i EØS omfattes av grunnforordningen
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 15.01.2020      | 30.01.2020      | Nei                           |
 
-    Så skal svaret på hovedregelen være "Nei"
+    Så skal svaret være "Nei"

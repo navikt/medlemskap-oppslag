@@ -25,14 +25,16 @@
     "tilOgMed" : "2019-05-05",
     "erMedlem" : true,
     "lovvalgsland": "NOR",
-    "lovvalg": "ENDL"
+    "lovvalg": "ENDL",
+    "periodeStatus": "GYLD"
   },
   {
     "fraOgMed" : "2019-05-06",
     "tilOgMed" : "2021-08-01",
     "erMedlem" : true,
     "lovvalgsland": "NOR",
-    "lovvalg": "ENDL"
+    "lovvalg": "ENDL",
+    "periodeStatus": "GYLD"
   }],
   "arbeidsforhold" : [ ],
   "inntekt" : [ ],

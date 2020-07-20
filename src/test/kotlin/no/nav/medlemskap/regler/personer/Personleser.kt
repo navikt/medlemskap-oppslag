@@ -2,7 +2,6 @@ package no.nav.medlemskap.regler.personer
 
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.personer.Personleser.Companion.ikkeEøs
 import no.nav.medlemskap.regler.personer.Personleser.Companion.norsk
 
@@ -61,9 +60,9 @@ class Personleser {
     //Regel 1.4 - "Er brukers situasjon uendret?"
     fun amerikanskMedMedlemskapEndretArbeidsforhold() = lesDatagrunnlag("$medl/regel_1_4/amerikansk_med_medlemskap_endret_arbeidsforhold.json")
 
-    //Regel 1.5 -  "Er brukers situasjon uendret?"
-    fun amerikanskMedMedlemskapEndretAdresse() = lesDatagrunnlag("$medl/regel_1_5/amerikansk_med_medlemskap_endret_adresse.json")
-    fun amerikanskMedMedlemskapSammeArbeidsforholdOgAdresse() = lesDatagrunnlag("$medl/regel_1_5/amerikansk_med_medlemskap_samme_arbeidsforhold_og_adresse.json")
+    //Regel 1.5 -  "Er brukers dekning uavklart?"
+    fun amerikanskMedMedlemskapUavklartDekning() = lesDatagrunnlag("$medl/regel_1_5/amerikansk_med_medlemskap_uavklart_dekning.json")
+    fun amerikanskMedMedlemskapNullDekning() = lesDatagrunnlag("$medl/regel_1_5/amerikansk_med_medlemskap_null_dekning.json")
 
     //Regel 1.6 - "Har bruker et medlemskap som omfatter ytelse? (Dekning i MEDL)"
     fun amerikanskMedMedlemskapMedDekningIMedl() = lesDatagrunnlag("$medl/regel_1_6/amerikansk_med_medlemskap_med_dekning_i_medl.json")

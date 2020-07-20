@@ -12,7 +12,7 @@ Egenskap: Hovedregel "Finnes det registrerte opplysninger på bruker?"
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 15.01.2020      | 30.01.2020      | Nei                           |
 
-    Så skal svaret på hovedregelen være "Ja"
+    Så skal svaret være "Ja"
 
   Scenariomal: Det finnes opplysninger i Joark
     Gitt følgende journalposter fra Joark
@@ -23,7 +23,7 @@ Egenskap: Hovedregel "Finnes det registrerte opplysninger på bruker?"
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 15.01.2020      | 30.01.2020      | Nei                           |
 
-    Så skal svaret på hovedregelen være "<Svar>"
+    Så skal svaret være "<Svar>"
 
     Eksempler:
       | Tema              | Svar |
@@ -39,7 +39,7 @@ Egenskap: Hovedregel "Finnes det registrerte opplysninger på bruker?"
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 01.01.2020      | 30.01.2020      | Nei                           |
 
-    Så skal svaret på hovedregelen være "<Svar>"
+    Så skal svaret være "<Svar>"
 
     Eksempler:
       | Status      | Tema          | Svar |
@@ -52,4 +52,4 @@ Egenskap: Hovedregel "Finnes det registrerte opplysninger på bruker?"
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 15.01.2020      | 30.01.2020      | Nei                           |
 
-    Så skal svaret på hovedregelen være "Nei"
+    Så skal svaret være "Nei"

@@ -6,8 +6,9 @@ import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Funksjoner.erTom
 import no.nav.medlemskap.regler.common.Funksjoner.inneholder
-import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserSiste12Mnd
-import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresseSiste12Mnd
+import no.nav.medlemskap.regler.common.RegelId.*
+import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserForKontrollPeriode
+import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresserForKontrollPeriode
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedSluttAvKontrollperiode
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedStartAvKontrollperiode
@@ -156,28 +157,29 @@ class ReglerForLovvalg(
                 neiKonklusjon(ytelse)
             }
 
-    private val harBrukerJobbetUtenforNorge = Regel(
-            identifikator = "9",
-            avklaring = "Har bruker utført arbeid utenfor Norge?",
-            beskrivelse = "",
+
+    val harBrukerJobbetUtenforNorge = Regel(
+            regelId = REGEL_9,
             ytelse = ytelse,
             operasjon = { sjekkOmBrukerHarJobbetUtenforNorge() }
     )
 
-    private val erBrukerBosattINorge = Regel(
-            identifikator = "10",
-            avklaring = "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
-            beskrivelse = "",
+    val erBrukerBosattINorge = Regel(
+            REGEL_10,
             ytelse = ytelse,
             operasjon = { sjekkLandkode() }
     )
 
-    private val harBrukerNorskStatsborgerskap = Regel(
-            identifikator = "11",
-            avklaring = "Er bruker norsk statsborger?",
-            beskrivelse = "",
+    val harBrukerNorskStatsborgerskap = Regel(
+            REGEL_11,
             ytelse = ytelse,
             operasjon = { sjekkOmBrukerErNorskStatsborger() }
+    )
+
+    val harBrukerJobbet25ProsentEllerMer = Regel(
+            REGEL_12,
+            ytelse = ytelse,
+            operasjon = { sjekkOmBrukerHarJobbet25ProsentEllerMer() }
     )
 
     private val harBrukerEktefelle = Regel (
@@ -388,11 +390,14 @@ class ReglerForLovvalg(
             }
 
     private fun sjekkLandkode(): Resultat {
-        val bostedsadresser = bostedsadresser.adresserSiste12Mnd(kontrollPeriodeForPersonhistorikk)
-        val postadresserLandkoder = postadresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk)
-        val midlertidigadresserLandkoder = midlertidigAdresser.landkodeTilAdresseSiste12Mnd(kontrollPeriodeForPersonhistorikk)
+        val bostedsadresser = bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
+        val postadresserLandkoder = postadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
+        val midlertidigadresserLandkoder = midlertidigAdresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
 
         return when {
+            bostedsadresser.erIkkeTom()
+                    && (postadresserLandkoder alleEr NorskLandkode.NOR.name || postadresserLandkoder.erTom())
+                    && (midlertidigadresserLandkoder alleEr NorskLandkode.NOR.name || midlertidigadresserLandkoder.erTom()) -> ja()
             erPersonBosattINorge(bostedsadresser, postadresserLandkoder, midlertidigadresserLandkoder) -> ja()
             else -> nei("Ikke alle adressene til bruker er norske, eller bruker mangler bostedsadresse")
         }

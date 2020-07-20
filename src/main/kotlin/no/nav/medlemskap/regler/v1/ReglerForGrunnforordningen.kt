@@ -6,8 +6,10 @@ import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.finnesI
+import no.nav.medlemskap.regler.common.RegelId.REGEL_2
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedSluttAvKontrollperiode
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedStartAvKontrollperiode
+import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.registrerStatsborgerskapGrafana
 
 class ReglerForGrunnforordningen(val ytelse: Ytelse, val periode: InputPeriode, val statsborgerskap: List<Statsborgerskap>) : Regler() {
     val kontrollPeriodeForStatsborgerskap = Datohjelper(periode, ytelse).kontrollPeriodeForPersonhistorikk()
@@ -18,9 +20,7 @@ class ReglerForGrunnforordningen(val ytelse: Ytelse, val periode: InputPeriode, 
             }
 
     private val erBrukerEØSborger = Regel(
-            identifikator = "2",
-            avklaring = "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?",
-            beskrivelse = "",
+            regelId = REGEL_2,
             ytelse = ytelse,
             operasjon = { sjekkStatsborgerskap() }
     )
@@ -28,9 +28,12 @@ class ReglerForGrunnforordningen(val ytelse: Ytelse, val periode: InputPeriode, 
     private fun sjekkStatsborgerskap(): Resultat {
         val førsteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedStartAvKontrollperiode(kontrollPeriodeForStatsborgerskap)
         val sisteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedSluttAvKontrollperiode(kontrollPeriodeForStatsborgerskap)
-        return when {
-            eøsLand finnesI førsteStatsborgerskap && eøsLand finnesI sisteStatsborgerskap -> ja()
-            else -> nei("Brukeren er ikke statsborger i et EØS-land.")
+
+        if (eøsLand finnesI førsteStatsborgerskap && eøsLand finnesI sisteStatsborgerskap) {
+            return ja()
+        } else {
+            statsborgerskap.registrerStatsborgerskapGrafana(kontrollPeriodeForStatsborgerskap, ytelse, REGEL_2)
+            return nei("Brukeren er ikke statsborger i et EØS-land.")
         }
     }
 

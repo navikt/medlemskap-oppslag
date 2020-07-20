@@ -1,8 +1,8 @@
 package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
-import no.nav.medlemskap.regler.common.konklusjonIdentifikator
 import no.nav.medlemskap.regler.common.sjekkRegelsett
 import no.nav.medlemskap.regler.common.uavklartKonklusjon
 
@@ -17,25 +17,25 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
 
     fun hentHovedRegel() =
 
-    //sjekk Regelsett {
-    //    reglerForRegistrerteOpplysningerIMedl
-            //} hvisNei {
             sjekkRegelsett {
-                reglerForRegistrerteOpplysninger
-            } hvisJa {
-                uavklartKonklusjon(ytelse)
+                reglerForRegistrerteOpplysningerIMedl
             } hvisNei {
                 sjekkRegelsett {
-                    reglerForGrunnforordningen
-                } hvisNei {
-                    uavklartKonklusjon(ytelse)
+                    reglerForRegistrerteOpplysninger
                 } hvisJa {
+                    uavklartKonklusjon(ytelse)
+                } hvisNei {
                     sjekkRegelsett {
-                        reglerForArbeidsforhold
+                        reglerForGrunnforordningen
+                    } hvisNei {
+                        uavklartKonklusjon(ytelse)
+                    } hvisJa {
+                        sjekkRegelsett {
+                            reglerForArbeidsforhold
+                        }
                     }
                 }
             }
-    //}
 
     fun kjørHovedregler(): Resultat {
 
@@ -45,11 +45,11 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
     }
 
     private fun List<Resultat>.utenKonklusjon(): List<Resultat> {
-        return this.filter { it.identifikator != konklusjonIdentifikator }
+        return this.filter { it.regelId != RegelId.REGEL_MEDLEM_KONKLUSJON }
     }
 
     private fun List<Resultat>.hentUtKonklusjon(): Resultat {
-        return this.find { it.identifikator == konklusjonIdentifikator }
+        return this.find { it.regelId == RegelId.REGEL_MEDLEM_KONKLUSJON }
                 ?: throw RuntimeException("Klarte ikke finne konklusjon")
     }
 }
