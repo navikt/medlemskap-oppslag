@@ -159,6 +159,22 @@ class DomenespråkParser {
         return Status.valueOf(verdi)
     }
 
+    fun parseRolle(domenebegrep: Domenebegrep, rad: Map<String, String>): Familierelasjonsrolle {
+        val verdi = verdi(domenebegrep.nøkkel, rad)
+
+        return Familierelasjonsrolle.valueOf(verdi)
+    }
+
+    fun parseValgfriRolle(domenebegrep: Domenebegrep, rad: Map<String, String>): Familierelasjonsrolle? {
+        val verdi = valgfriVerdi(domenebegrep.nøkkel, rad)
+
+        if (verdi == null) {
+            return null
+        }
+
+        return Familierelasjonsrolle.valueOf(verdi)
+    }
+
     companion object {
         val ANSATTE_9 = listOf(Ansatte(9, null, null))
         val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", identifikator = "1", landkode = "NOR", ansatte = ANSATTE_9, konkursStatus = null)
@@ -350,6 +366,17 @@ class SivilstandMapper: RadMapper<Sivilstand> {
     }
 }
 
+class FamilieRelasjonMapper: RadMapper<Familierelasjon> {
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Familierelasjon {
+        return Familierelasjon(
+                relatertPersonsIdent = domenespråkParser.parseString(RELATERT_PERSONS_IDENT, rad),
+                relatertPersonsRolle = domenespråkParser.parseRolle(RELATERT_PERSONS_ROLLE, rad),
+                minRolleForPerson = domenespråkParser.parseValgfriRolle(MIN_ROLLE_FOR_PERSON, rad),
+                folkeregistermetadata = null
+        )
+    }
+}
+
 enum class Domenebegrep(val nøkkel: String) {
     ADRESSE("Adresse"),
     AKTIV_DATO("Aktiv dato"),
@@ -371,9 +398,12 @@ enum class Domenebegrep(val nøkkel: String) {
     LANDKODE("Landkode"),
     LOVVALG("Lovvalg"),
     LOVVALGSLAND("Lovvalgsland"),
+    MIN_ROLLE_FOR_PERSON("Min rolle for person"),
     PERIODESTATUS("Periodestatus"),
     PERSONSTATUS("Personstatus"),
     PRIORITET("Prioritet"),
+    RELATERT_PERSONS_IDENT("Relatert persons ident"),
+    RELATERT_PERSONS_ROLLE("Relatert persons rolle"),
     RELATERT_VED_SIVILSTAND("Relatert ved sivilstand"),
     RAPPORTERINGSPERIODE("Rapporteringsperiode"),
     SIVILSTANDSTYPE("Sivilstandstype"),

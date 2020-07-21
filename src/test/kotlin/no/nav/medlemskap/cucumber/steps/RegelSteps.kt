@@ -65,6 +65,11 @@ class RegelSteps : No {
             pdlPersonhistorikkBuilder.sivilstand.addAll(sivilstand)
         }
 
+        Gitt<DataTable>("følgende familerelasjoner i personhistorikk fra TPS\\/PDL") { dataTable: DataTable? ->
+            val familierelasjoner = domenespråkParser.mapDataTable(dataTable, FamilieRelasjonMapper())
+            pdlPersonhistorikkBuilder.familierelasjoner.addAll(familierelasjoner)
+        }
+
         Gitt<DataTable>("følgende personhistorikk for relaterte personer fra TPS") { dataTable: DataTable? ->
             val relatertePersoner = domenespråkParser.mapDataTable(dataTable, PersonhistorikkRelatertePersonerMapper())
             personHistorikkRelatertePersoner.addAll(relatertePersoner)
@@ -148,6 +153,7 @@ class RegelSteps : No {
                 "10" -> reglerForLovvalg.erBrukerBosattINorge
                 "11" -> reglerForLovvalg.harBrukerNorskStatsborgerskap
                 "11.2" -> reglerForLovvalg.harBrukerEktefelle
+                "11.2.1" -> reglerForLovvalg.harBrukerBarnUtenEktefelle
                 "12" -> reglerForLovvalg.harBrukerJobbet25ProsentEllerMer
                 else -> throw java.lang.RuntimeException("Ukjent regel")
             }
