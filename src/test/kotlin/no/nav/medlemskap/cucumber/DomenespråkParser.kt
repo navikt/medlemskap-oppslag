@@ -132,6 +132,12 @@ class DomenespråkParser {
         return Arbeidsforholdstype.valueOf(verdi)
     }
 
+    fun parseSivilstandstype(domenebegrep: Domenebegrep, rad: Map<String, String>): Sivilstandstype {
+        val verdi = verdi(domenebegrep.nøkkel, rad)
+
+        return Sivilstandstype.valueOf(verdi)
+    }
+
     fun parseValgfriInt(domenebegrep: Domenebegrep, rad: Map<String, String>): Int? {
         val verdi = valgfriVerdi(domenebegrep.nøkkel, rad)
         if (verdi == null) {
@@ -260,14 +266,14 @@ class ArbeidsforholdMapper {
                 periode = periode,
                 utenlandsopphold = utenlandsopphold,
                 arbeidsgivertype = AaRegOpplysningspliktigArbeidsgiverType.valueOf(domenespråkParser.parseString(ARBEIDSGIVERTYPE, rad)),
-                arbeidsgiver = arbeidsgiver?: VANLIG_NORSK_ARBEIDSGIVER,
+                arbeidsgiver = arbeidsgiver ?: VANLIG_NORSK_ARBEIDSGIVER,
                 arbeidsfolholdstype = domenespråkParser.parseArbeidsforholdstype(rad),
                 arbeidsavtaler = emptyList()
         )
     }
 }
 
-class ArbeidsavtaleMapper: RadMapper<Arbeidsavtale> {
+class ArbeidsavtaleMapper : RadMapper<Arbeidsavtale> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Arbeidsavtale {
         return Arbeidsavtale(
                 Periode(
@@ -321,6 +327,29 @@ class PersonstatusMapper : RadMapper<FolkeregisterPersonstatus> {
     }
 }
 
+class PersonhistorikkRelatertePersonerMapper : RadMapper<PersonhistorikkRelatertPerson> {
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): PersonhistorikkRelatertPerson {
+        return PersonhistorikkRelatertPerson(
+                ident = domenespråkParser.parseString(IDENT, rad),
+                personstatuser = emptyList(),
+                bostedsadresser = emptyList(),
+                postadresser = emptyList(),
+                midlertidigAdresser = emptyList()
+        )
+    }
+}
+
+class SivilstandMapper: RadMapper<Sivilstand> {
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Sivilstand {
+        return Sivilstand(
+                type = domenespråkParser.parseSivilstandstype(SIVILSTANDSTYPE, rad),
+                gyldigFraOgMed = domenespråkParser.parseValgfriDato(GYLDIG_FRA_OG_MED, rad),
+                relatertVedSivilstand = domenespråkParser.parseValgfriString(RELATERT_VED_SIVILSTAND, rad),
+                folkeregistermetadata = null
+        )
+    }
+}
+
 enum class Domenebegrep(val nøkkel: String) {
     ADRESSE("Adresse"),
     AKTIV_DATO("Aktiv dato"),
@@ -331,7 +360,9 @@ enum class Domenebegrep(val nøkkel: String) {
     DEKNING("Dekning"),
     ER_MEDLEM("Er medlem"),
     FRA_OG_MED_DATO("Fra og med dato"),
+    GYLDIG_FRA_OG_MED("Gyldig fra og med dato"),
     HAR_HATT_ARBEID_UTENFOR_NORGE("Har hatt arbeid utenfor Norge"),
+    IDENT("Ident"),
     IDENTIFIKATOR("Identifikator"),
     JOURNAL_STATUS("Journalstatus"),
     JOURNALPOST_ID("JournalpostId"),
@@ -343,7 +374,9 @@ enum class Domenebegrep(val nøkkel: String) {
     PERIODESTATUS("Periodestatus"),
     PERSONSTATUS("Personstatus"),
     PRIORITET("Prioritet"),
+    RELATERT_VED_SIVILSTAND("Relatert ved sivilstand"),
     RAPPORTERINGSPERIODE("Rapporteringsperiode"),
+    SIVILSTANDSTYPE("Sivilstandstype"),
     SKIPSREGISTER("Skipsregister"),
     STATUS("Status"),
     STILLINGSPROSENT("Stillingsprosent"),

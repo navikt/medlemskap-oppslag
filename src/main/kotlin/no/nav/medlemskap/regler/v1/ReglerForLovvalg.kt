@@ -182,91 +182,91 @@ class ReglerForLovvalg(
             operasjon = { sjekkOmBrukersStillingsprosentErMerEnn(25.0) }
     )
 
-    private val harBrukerEktefelle = Regel (
+    val harBrukerEktefelle = Regel (
             regelId = REGEL_11_2,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukerHarEktefelle()}
     )
 
-    private val harBrukerMedFolkeregistrerteBarnJobbetMerEnn80Prosent = Regel(
+    val harBrukerMedFolkeregistrerteBarnJobbetMerEnn80Prosent = Regel(
             regelId = REGEL_11_2_3,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(80.0)}
     )
 
-    private val harBrukerMedRelasjonerUtenFolkeregistreringJobbetMerEnn100Prosent = Regel(
+    val harBrukerMedRelasjonerUtenFolkeregistreringJobbetMerEnn100Prosent = Regel(
             regelId = REGEL_11_2_2_1,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(100.0)}
     )
 
-    private val harBrukerUtenFolkeregistrerteBarnJobbetMerEnn100Prosent = Regel(
+    val harBrukerUtenFolkeregistrerteBarnJobbetMerEnn100Prosent = Regel(
             regelId = REGEL_11_2_2_1,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(100.0)}
     )
 
-    private val harBrukerUtenEktefelleOgBarnJobbetMerEnn100Prosent = Regel(
+    val harBrukerUtenEktefelleOgBarnJobbetMerEnn100Prosent = Regel(
             regelId = REGEL_11_2_2_1,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(100.0)}
     )
 
-    private val harBrukerUtenEktefelleBarnSomErFolkeregistrert = Regel (
+    val harBrukerUtenEktefelleBarnSomErFolkeregistrert = Regel (
             regelId = REGEL_11_2_2,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersBarnErBosattINorge()}
     )
 
-    private val harBrukerBarnUtenEktefelle = Regel (
+    val harBrukerBarnUtenEktefelle = Regel (
             regelId = REGEL_11_2_1,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukerHarBarn()}
     )
 
-    private val harBrukerEktefelleOgBarn = Regel (
+    val harBrukerEktefelleOgBarn = Regel (
             regelId = REGEL_11_3,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukerHarBarn()}
     )
 
-    private val erBarnloesBrukersEktefelleBosattINorge = Regel (
+    val erBarnloesBrukersEktefelleBosattINorge = Regel (
             regelId = REGEL_11_3_1,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersEktefelleErBosattINorge()}
     )
 
-    private val harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn80Prosent= Regel(
+    val harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn80Prosent= Regel(
             regelId = REGEL_11_6,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(80.0)}
     )
 
-    private val harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn100Prosent= Regel(
+    val harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn100Prosent= Regel(
             regelId = REGEL_11_3_1_1,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(100.0)}
     )
 
-    private val erBrukerMedBarnSittEktefelleBosattINorge = Regel (
+    val erBrukerMedBarnSittEktefelleBosattINorge = Regel (
             regelId = REGEL_11_4,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersEktefelleErBosattINorge()}
     )
 
-    private val erBrukerUtenFolkeregistrertEktefelleSittBarnFolkeregistrert = Regel (
+    val erBrukerUtenFolkeregistrertEktefelleSittBarnFolkeregistrert = Regel (
             regelId = REGEL_11_4_1,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersBarnErBosattINorge()}
     )
 
-    private val erBrukerMedFolkeregistrertEktefelleSittBarnFolkeregistrert = Regel (
+    val erBrukerMedFolkeregistrertEktefelleSittBarnFolkeregistrert = Regel (
             regelId = REGEL_11_5,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersBarnErBosattINorge()}
     )
 
-    private val harBrukerMedFolkeregistrerteRelasjonerJobbetMerEnn80Prosent = Regel(
+    val harBrukerMedFolkeregistrerteRelasjonerJobbetMerEnn80Prosent = Regel(
             regelId = REGEL_11_6,
             ytelse = ytelse,
             operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(80.0)}
