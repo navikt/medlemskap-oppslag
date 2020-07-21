@@ -154,6 +154,7 @@ class RegelSteps : No {
                 "11" -> reglerForLovvalg.harBrukerNorskStatsborgerskap
                 "11.2" -> reglerForLovvalg.harBrukerEktefelle
                 "11.2.1" -> reglerForLovvalg.harBrukerBarnUtenEktefelle
+                "11.2.2" -> reglerForLovvalg.harBrukerUtenEktefelleBarnSomErFolkeregistrert
                 "12" -> reglerForLovvalg.harBrukerJobbet25ProsentEllerMer
                 else -> throw java.lang.RuntimeException("Ukjent regel")
             }

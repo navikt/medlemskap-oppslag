@@ -345,12 +345,33 @@ class PersonstatusMapper : RadMapper<FolkeregisterPersonstatus> {
 
 class PersonhistorikkRelatertePersonerMapper : RadMapper<PersonhistorikkRelatertPerson> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): PersonhistorikkRelatertPerson {
+        val fraOgMedDato = domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad)
+        val tilOgMedDato = domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
+
+        val bostedsadresser = mutableListOf<Adresse>()
+        val bostedsadresse = domenespråkParser.parseValgfriString(BOSTED, rad)
+        if (bostedsadresse != null) {
+            bostedsadresser.add(Adresse(bostedsadresse, fraOgMedDato, tilOgMedDato))
+        }
+
+        val postadresser = mutableListOf<Adresse>()
+        val postadresse = domenespråkParser.parseValgfriString(POSTADRESSE, rad)
+        if (postadresse != null) {
+            postadresser.add(Adresse(postadresse, fraOgMedDato, tilOgMedDato))
+        }
+
+        val midlertidigAdresser = mutableListOf<Adresse>()
+        val midlertidigAdresse = domenespråkParser.parseValgfriString(MIDLERTIDIG_ADRESSE, rad)
+        if (midlertidigAdresse != null) {
+            midlertidigAdresser.add(Adresse(midlertidigAdresse, fraOgMedDato, tilOgMedDato))
+        }
+
         return PersonhistorikkRelatertPerson(
                 ident = domenespråkParser.parseString(IDENT, rad),
                 personstatuser = emptyList(),
-                bostedsadresser = emptyList(),
-                postadresser = emptyList(),
-                midlertidigAdresser = emptyList()
+                bostedsadresser = bostedsadresser,
+                postadresser = postadresser,
+                midlertidigAdresser = midlertidigAdresser
         )
     }
 }
@@ -379,6 +400,7 @@ class FamilieRelasjonMapper: RadMapper<Familierelasjon> {
 
 enum class Domenebegrep(val nøkkel: String) {
     ADRESSE("Adresse"),
+    BOSTED("Bosted"),
     AKTIV_DATO("Aktiv dato"),
     ANTALL_ANSATTE("Antall ansatte"),
     ARBEIDSFORHOLDSTYPE("Arbeidsforholdstype"),
@@ -398,9 +420,11 @@ enum class Domenebegrep(val nøkkel: String) {
     LANDKODE("Landkode"),
     LOVVALG("Lovvalg"),
     LOVVALGSLAND("Lovvalgsland"),
+    MIDLERTIDIG_ADRESSE("Midlertidig adresse"),
     MIN_ROLLE_FOR_PERSON("Min rolle for person"),
     PERIODESTATUS("Periodestatus"),
     PERSONSTATUS("Personstatus"),
+    POSTADRESSE("Postadresse"),
     PRIORITET("Prioritet"),
     RELATERT_PERSONS_IDENT("Relatert persons ident"),
     RELATERT_PERSONS_ROLLE("Relatert persons rolle"),
