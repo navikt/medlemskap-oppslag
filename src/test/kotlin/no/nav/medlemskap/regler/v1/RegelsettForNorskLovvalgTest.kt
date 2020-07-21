@@ -141,6 +141,7 @@ class RegelsettForNorskLovvalgTest {
     }
 
     @Test
+    @Ignore
     fun `person med folkeregistrerte relasjoner har ikke jobbet mer enn 80 prosent`() {
         assertSvar(REGEL_11_6, Svar.NEI, evaluer(personleser.brukermedFolkeregistrertRelasjonerHarIkkeJobbetMerEnn80Prosent()), Svar.UAVKLART)
     }
