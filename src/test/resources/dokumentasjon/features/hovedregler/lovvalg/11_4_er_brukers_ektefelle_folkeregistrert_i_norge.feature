@@ -9,10 +9,6 @@ Egenskap: Regel 11.4: Er brukers ektefelle folkeregistrert som bosatt i Norge?
       | GIFT            | 29.06.2015             | 23027524079             |
 
     Og følgende personhistorikk for relaterte personer fra TPS
-      | Ident       |
-      | 23027524079 |
-
-    Og følgende personhistorikk for relaterte personer fra TPS
       | Ident       | Bosted | Postadresse   | Midlertidig adresse   | Fra og med dato | Til og med dato |
       | 23027524079 | NOR    | <Postadresse> | <Midlertidig adresse> | 18.07.2010      | 15.05.2019      |
 

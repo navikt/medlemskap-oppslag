@@ -24,6 +24,7 @@ Egenskap: Regel 11.2.3: Har bruker vært i minst 80 % stilling de siste 12 mnd?
 
     Eksempler:
       | Stillingsprosent | Svar |
-      | 70               | Nei  |
+      | 0                | Nei  |
+      | 79               | Nei  |
       | 80               | Ja   |
-      | 90               | Ja   |
+      | 81               | Ja   |

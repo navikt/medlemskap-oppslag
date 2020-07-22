@@ -155,6 +155,7 @@ class RegelSteps : No {
                 "11.2" -> reglerForLovvalg.harBrukerEktefelle
                 "11.2.1" -> reglerForLovvalg.harBrukerBarnUtenEktefelle
                 "11.2.2" -> reglerForLovvalg.harBrukerUtenEktefelleBarnSomErFolkeregistrert
+                "11.2.2.1" -> reglerForLovvalg.harBrukerUtenEktefelleOgBarnJobbetMerEnn100Prosent
                 "11.2.3" -> reglerForLovvalg.harBrukerMedFolkeregistrerteBarnJobbetMerEnn80Prosent
                 "11.3" -> reglerForLovvalg.harBrukerEktefelleOgBarn
                 "11.4" -> reglerForLovvalg.erBrukerMedBarnSittEktefelleBosattINorge

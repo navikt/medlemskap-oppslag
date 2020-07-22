@@ -19,7 +19,9 @@ Egenskap: Regel 11.2: Har bruker ektefelle i TPS/PDL?
     Så skal svaret være "<Svar>"
 
     Eksempler:
-      | Sivilstandstype    | Svar |
-      | GIFT               | Ja   |
-      | REGISTRERT_PARTNER | Ja   |
-      | SKILT              | Nei  |
+      | Sivilstandstype     | Svar |
+      | GIFT                | Ja   |
+      | REGISTRERT_PARTNER  | Ja   |
+      | SKILT               | Nei  |
+      | SEPARERT            | Nei  |
+      | ENKE_ELLER_ENKEMANN | Nei  |

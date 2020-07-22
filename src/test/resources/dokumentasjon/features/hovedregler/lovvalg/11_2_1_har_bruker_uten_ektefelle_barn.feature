@@ -20,8 +20,10 @@ Egenskap: Regel 11.2.1: Har bruker barn i TPS/PDL?
 
     Eksempler:
       | Relatert persons ident | Svar |
-      | 18071076276            | Ja   |
-      | 23027524079            | Nei  |
+      | 25079528660            | Ja   |
+      | 26079447659            | Nei  |
+      | 01029431171            | Nei  |
+      | 10019448164            | Nei  |
 
   Scenario: Hvis bruker ikke har barn skal svaret være "Nei"
     Når regel "11.2.1" kjøres med følgende parametre

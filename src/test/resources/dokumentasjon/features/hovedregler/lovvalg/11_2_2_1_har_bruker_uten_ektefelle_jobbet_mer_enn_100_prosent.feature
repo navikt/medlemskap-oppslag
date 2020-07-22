@@ -1,7 +1,7 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regel 11.6: Har bruker vært i minst 80 % stilling de siste 12 mnd?
+Egenskap: Regel 11.2.2.1: Har bruker uten ektefelle med folkeregistrerte barn jobbet mer enn 80 prosent?
 
   Scenariomal:
     Gitt følgende arbeidsforhold fra AAReg
@@ -16,7 +16,7 @@ Egenskap: Regel 11.6: Har bruker vært i minst 80 % stilling de siste 12 mnd?
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   |
       | 01.01.2018      |                 | 001       | <Stillingsprosent> |
 
-    Når regel "11.6" kjøres med følgende parametre
+    Når regel "11.2.2.1" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
@@ -24,7 +24,6 @@ Egenskap: Regel 11.6: Har bruker vært i minst 80 % stilling de siste 12 mnd?
 
     Eksempler:
       | Stillingsprosent | Svar |
-      | 0                | Nei  |
-      | 79               | Nei  |
-      | 80               | Ja   |
-      | 81               | Ja   |
+      | 90               | Nei  |
+      | 100              | Ja   |
+      | 110              | Ja   |
