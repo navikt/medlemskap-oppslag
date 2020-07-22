@@ -6,11 +6,11 @@ Egenskap: Regel 11.2: Har bruker ektefelle i TPS/PDL?
   Scenariomal: Hvis sivilstand er gift eller registrert partner, skal svaret være "Ja"
     Gitt følgende sivilstand i personhistorikk fra TPS/PDL
       | Sivilstandstype   | Gyldig fra og med dato | Relatert ved sivilstand |
-      | <Sivilstandstype> | 29.06.2015             | 23027524079             |
+      | <Sivilstandstype> | 29.06.2015             | 10108000398             |
 
     Og følgende personhistorikk for relaterte personer fra TPS
       | Ident       |
-      | 23027524079 |
+      | 10108000398 |
 
     Når regel "11.2" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |

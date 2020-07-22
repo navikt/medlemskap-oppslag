@@ -21,6 +21,7 @@ Egenskap: Regel 11.3: Har bruker barn i TPS/PDL?
     Eksempler:
       | Relatert persons ident | Svar |
       | 25079528660            | Ja   |
+      | 09069534888            | Ja   |
       | 26079447659            | Nei  |
       | 01029431171            | Nei  |
       | 10019448164            | Nei  |
