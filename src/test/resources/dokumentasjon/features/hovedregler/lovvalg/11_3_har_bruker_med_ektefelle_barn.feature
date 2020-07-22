@@ -1,7 +1,7 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regel 11.2.1: Har bruker barn i TPS/PDL?
+Egenskap: Regel 11.3: Har bruker barn i TPS/PDL?
 
   Scenariomal: Hvis barnets alder er under 25 år skal svaret være "Ja"
     Gitt følgende familerelasjoner i personhistorikk fra TPS/PDL
@@ -12,7 +12,7 @@ Egenskap: Regel 11.2.1: Har bruker barn i TPS/PDL?
       | Ident                    |
       | <Relatert persons ident> |
 
-    Når regel "11.2.1" kjøres med følgende parametre
+    Når regel "11.3" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
@@ -22,3 +22,10 @@ Egenskap: Regel 11.2.1: Har bruker barn i TPS/PDL?
       | Relatert persons ident | Svar |
       | 18071076276            | Ja   |
       | 23027524079            | Nei  |
+
+  Scenario: Hvis bruker ikke har barn skal svaret være "Nei"
+    Når regel "11.3" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
+
+    Så skal svaret være "Nei"
