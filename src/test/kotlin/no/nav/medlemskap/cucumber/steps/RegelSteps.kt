@@ -158,7 +158,10 @@ class RegelSteps : No {
                 "11.2.2.1" -> reglerForLovvalg.harBrukerUtenEktefelleOgBarnJobbetMerEnn100Prosent
                 "11.2.3" -> reglerForLovvalg.harBrukerMedFolkeregistrerteBarnJobbetMerEnn80Prosent
                 "11.3" -> reglerForLovvalg.harBrukerEktefelleOgBarn
+                "11.3.1" -> reglerForLovvalg.erBarnloesBrukersEktefelleBosattINorge
+                "11.3.1.1" -> reglerForLovvalg.harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn100Prosent
                 "11.4" -> reglerForLovvalg.erBrukerMedBarnSittEktefelleBosattINorge
+                "11.4.1" -> reglerForLovvalg.erBrukerUtenFolkeregistrertEktefelleSittBarnFolkeregistrert
                 "11.5" -> reglerForLovvalg.erBrukerMedFolkeregistrertEktefelleSittBarnFolkeregistrert
                 "11.6" -> reglerForLovvalg.harBrukerMedFolkeregistrerteRelasjonerJobbetMerEnn80Prosent
                 "12" -> reglerForLovvalg.harBrukerJobbet25ProsentEllerMer
