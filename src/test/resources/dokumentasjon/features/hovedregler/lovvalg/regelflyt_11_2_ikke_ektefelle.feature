@@ -1,0 +1,121 @@
+# language: no
+# encoding: UTF-8
+
+Egenskap: Regelflyt for reglene 11.2.x for bruker som ikke har ektefelle i TPS/PDL
+
+  Bakgrunn: Belgisk statsborger som er bosatt i Norge
+    Gitt følgende bostedsadresser i personhistorikken
+      | Adresse | Landkode | Fra og med dato | Til og med dato |
+      | Oslo    | NOR      | 01.01.2000      |                 |
+
+    Og følgende personstatuser i personhistorikken
+      | Personstatus | Fra og med dato | Til og med dato |
+      | BOSA         | 01.01.2000      |                 |
+
+    Og følgende statsborgerskap i personhistorikken
+      | Landkode | Fra og med dato | Til og med dato |
+      | BEL      | 01.01.2000      |                 |
+
+  Scenariomal: Bruker uten ektefelle må ha stillingsprosent 100 eller mer for å få "Ja"
+    Gitt følgende arbeidsforhold fra AAReg
+      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
+      | 01.01.2018      |                 | Organisasjon     | NORMALT             |
+
+    Og følgende arbeidsgiver i arbeidsforholdet
+      | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
+      | 1             | BEDR             | NOR      | 9              |
+
+    Og følgende arbeidsavtaler i arbeidsforholdet
+      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   |
+      | 01.01.2018      |                 | 001       | <Stillingsprosent> |
+
+    Når medlemskap beregnes med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
+
+    Så skal svaret være "<Medlemskap>"
+    Og skal regel "11" gi svaret "Nei"
+    Og skal regel "11.2" gi svaret "Nei"
+    Og skal regel "11.2.1" gi svaret "Nei"
+    Og skal regel "11.2.2.1" gi svaret "<Regel 11.2.2.1>"
+
+    Eksempler:
+      | Stillingsprosent | Regel 11.2.2.1 | Medlemskap |
+      | 85               | Nei            | UAVKLART   |
+      | 100              | Ja             | Ja         |
+      | 120              | Ja             | Ja         |
+
+  Scenariomal: Bruker uten ektefelle med barn må ha minst 80 % stilling for å få "Ja"
+    Gitt følgende familerelasjoner i personhistorikk fra TPS/PDL
+      | Relatert persons ident | Relatert persons rolle | Min rolle for person |
+      | 09069534888            | BARN                   | FAR                  |
+
+    Og følgende personhistorikk for relaterte personer fra TPS
+      | Ident       | Bosted | Fra og med dato | Til og med dato |
+      | 09069534888 | NOR    | 18.07.2010      |                 |
+
+    Og følgende arbeidsforhold fra AAReg
+      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
+      | 01.01.2018      |                 | Organisasjon     | NORMALT             |
+
+    Og følgende arbeidsgiver i arbeidsforholdet
+      | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
+      | 1             | BEDR             | NOR      | 9              |
+
+    Og følgende arbeidsavtaler i arbeidsforholdet
+      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   |
+      | 01.01.2018      |                 | 001       | <Stillingsprosent> |
+
+    Når medlemskap beregnes med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
+
+    Så skal svaret være "<Medlemskap>"
+    Og skal regel "11" gi svaret "Nei"
+    Og skal regel "11.2" gi svaret "Nei"
+    Og skal regel "11.2.1" gi svaret "Ja"
+    Og skal regel "11.2.2" gi svaret "Ja"
+    Og skal regel "11.2.3" gi svaret "<Regel 11.2.3>"
+
+    Eksempler:
+      | Stillingsprosent | Regel 11.2.3 | Medlemskap |
+      | 79               | Nei          | UAVKLART   |
+      | 81               | Ja           | Ja         |
+
+  Scenariomal: Bruker uten ektefelle og med barn som ikke bor i Norge må ha minst 1000 % stilling for å få "Ja"
+    Gitt følgende familerelasjoner i personhistorikk fra TPS/PDL
+      | Relatert persons ident | Relatert persons rolle | Min rolle for person |
+      | 09069534888            | BARN                   | FAR                  |
+
+    Og følgende personhistorikk for relaterte personer fra TPS
+      | Ident       | Fra og med dato | Til og med dato |
+      | 09069534888 | 18.07.2010      |                 |
+
+    Og følgende arbeidsforhold fra AAReg
+      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
+      | 01.01.2018      |                 | Organisasjon     | NORMALT             |
+
+    Og følgende arbeidsgiver i arbeidsforholdet
+      | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
+      | 1             | BEDR             | NOR      | 9              |
+
+    Og følgende arbeidsavtaler i arbeidsforholdet
+      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   |
+      | 01.01.2018      |                 | 001       | <Stillingsprosent> |
+
+    Når medlemskap beregnes med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
+
+    Så skal svaret være "<Medlemskap>"
+    Og skal regel "11" gi svaret "Nei"
+    Og skal regel "11.2" gi svaret "Nei"
+    Og skal regel "11.2.1" gi svaret "Ja"
+    Og skal regel "11.2.2" gi svaret "Nei"
+    Og skal regel "11.2.2.1" gi svaret "<Regel 11.2.2.1>"
+
+    Eksempler:
+      | Stillingsprosent | Regel 11.2.2.1 | Medlemskap |
+      | 99               | Nei            | UAVKLART   |
+      | 100              | Ja             | Ja         |
+

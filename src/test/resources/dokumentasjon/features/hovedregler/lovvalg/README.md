@@ -9,6 +9,6 @@
 ## Sammensatte scenarier
 * [Bosatt og jobber i Norge](bosatt_og_jobber_i_norge.feature)
 * [Mangler bostedsadresse](Ikke_bostedsadresse.feature)
-* [Statsborgerskap](statsborgerskap.feature)
+* [Statsborgerskap](regelflyt_11_statsborgerskap.feature)
 * [Utenlandsk adresse](utenlandsk__adresse_skal_gi_uavklart.feature)
 
