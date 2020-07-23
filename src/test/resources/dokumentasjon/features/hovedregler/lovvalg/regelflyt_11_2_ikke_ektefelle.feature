@@ -16,8 +16,7 @@ Egenskap: Regelflyt for reglene 11.2.x for bruker som ikke har ektefelle i TPS/P
       | Landkode | Fra og med dato | Til og med dato |
       | BEL      | 01.01.2000      |                 |
 
-  Scenariomal: Bruker uten ektefelle må ha stillingsprosent 100 eller mer for å få "Ja"
-    Gitt følgende arbeidsforhold fra AAReg
+    Og følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
       | 01.01.2018      |                 | Organisasjon     | NORMALT             |
 
@@ -25,7 +24,8 @@ Egenskap: Regelflyt for reglene 11.2.x for bruker som ikke har ektefelle i TPS/P
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
       | 1             | BEDR             | NOR      | 9              |
 
-    Og følgende arbeidsavtaler i arbeidsforholdet
+  Scenariomal: Bruker uten ektefelle må ha stillingsprosent 100 eller mer for å få "Ja"
+    Gitt følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   |
       | 01.01.2018      |                 | 001       | <Stillingsprosent> |
 
@@ -53,14 +53,6 @@ Egenskap: Regelflyt for reglene 11.2.x for bruker som ikke har ektefelle i TPS/P
     Og følgende personhistorikk for relaterte personer fra TPS
       | Ident       | Bosted | Fra og med dato | Til og med dato |
       | 09069534888 | NOR    | 18.07.2010      |                 |
-
-    Og følgende arbeidsforhold fra AAReg
-      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
-      | 01.01.2018      |                 | Organisasjon     | NORMALT             |
-
-    Og følgende arbeidsgiver i arbeidsforholdet
-      | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
-      | 1             | BEDR             | NOR      | 9              |
 
     Og følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   |
@@ -90,14 +82,6 @@ Egenskap: Regelflyt for reglene 11.2.x for bruker som ikke har ektefelle i TPS/P
     Og følgende personhistorikk for relaterte personer fra TPS
       | Ident       | Fra og med dato | Til og med dato |
       | 09069534888 | 18.07.2010      |                 |
-
-    Og følgende arbeidsforhold fra AAReg
-      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
-      | 01.01.2018      |                 | Organisasjon     | NORMALT             |
-
-    Og følgende arbeidsgiver i arbeidsforholdet
-      | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
-      | 1             | BEDR             | NOR      | 9              |
 
     Og følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   |

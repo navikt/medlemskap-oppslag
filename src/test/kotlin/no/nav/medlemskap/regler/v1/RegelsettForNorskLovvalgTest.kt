@@ -34,26 +34,6 @@ class RegelsettForNorskLovvalgTest {
     }
 
     @Test
-    fun `person med folkeregistrert ektefelle uten barn får ja`() {
-        assertSvar(REGEL_11_3_1, Svar.JA, evaluer(personleser.brukerUtenBarnHarFolkeregistrertEktefelle()), Svar.JA)
-    }
-
-    @Test
-    fun `person uten barn med ektefelle som ikke er folkeregistrert får nei`() {
-        assertSvar(REGEL_11_3_1, Svar.NEI, evaluer(personleser.brukerUtenBarnHarIkkeFolkeregistrertEktefelle()), Svar.JA)
-    }
-
-    @Test
-    fun `barnløs bruker barn uten folkeregistrert ektefelle, men har jobbet 100% får ja`() {
-        assertSvar(REGEL_11_3_1_1, Svar.JA, evaluer(personleser.brukerUtenBarnOgUtenFolkeregistrertEktefelleHarVeartI100prosent()), Svar.JA)
-    }
-
-    @Test
-    fun `barnløs bruker barn uten folkeregistrert ektefelle, men har ikke jobbet 100% får nei`() {
-        assertSvar(REGEL_11_3_1_1, Svar.NEI, evaluer(personleser.brukerUtenBarnOgUtenFolkeregistrertEktefelleHarIkkeVeartI100prosent()), Svar.UAVKLART)
-    }
-
-    @Test
     fun `person med barn har ektefelle registrert i Norge får ja`() {
         assertSvar(REGEL_11_4, Svar.JA, evaluer(personleser.brukerHarBarnOgEktefelleErRegistrertINorge()), Svar.JA)
     }
