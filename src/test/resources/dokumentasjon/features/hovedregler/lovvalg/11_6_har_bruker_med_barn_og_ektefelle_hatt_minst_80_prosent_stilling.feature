@@ -3,7 +3,7 @@
 
 Egenskap: Regel 11.6: Har bruker vært i minst 80 % stilling de siste 12 mnd?
 
-  Scenariomal:
+  Scenariomal: Regel 11.6
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
       | 01.01.2018      |                 | Organisasjon     | NORMALT             |

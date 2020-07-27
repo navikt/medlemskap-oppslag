@@ -3,7 +3,7 @@
 
 Egenskap: Regel 11.2.3: Har bruker vært i minst 80 % stilling de siste 12 mnd?
 
-  Scenariomal: Stillingsprosent på 80 % eller mer gir "Ja"
+  Scenariomal: Regel 11.2.3 - Stillingsprosent på 80 % eller mer gir "Ja"
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
       | 01.01.2018      |                 | Organisasjon     | NORMALT             |

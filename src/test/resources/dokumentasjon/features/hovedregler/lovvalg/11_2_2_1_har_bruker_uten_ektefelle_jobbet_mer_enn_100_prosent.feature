@@ -3,7 +3,7 @@
 
 Egenskap: Regel 11.2.2.1: Har bruker uten ektefelle med folkeregistrerte barn jobbet mer enn 100 prosent?
 
-  Scenariomal:
+  Scenariomal: Regel 11.2.2.1
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
       | 01.01.2018      |                 | Organisasjon     | NORMALT             |

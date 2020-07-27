@@ -3,7 +3,7 @@
 
 Egenskap: Regel 11.2: Har bruker ektefelle i TPS/PDL?
 
-  Scenariomal: Hvis sivilstand er gift eller registrert partner, skal svaret være "Ja"
+  Scenariomal: Regel 11.2 - Hvis sivilstand er gift eller registrert partner, skal svaret være "Ja"
     Gitt følgende sivilstand i personhistorikk fra TPS/PDL
       | Sivilstandstype   | Gyldig fra og med dato | Relatert ved sivilstand |
       | <Sivilstandstype> | 29.06.2015             | 10108000398             |

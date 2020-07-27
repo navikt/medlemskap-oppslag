@@ -81,6 +81,8 @@ class ReglerForLovvalg(
                                         }
                                     } hvisNei {
                                         uavklartKonklusjon(ytelse)
+                                    } hvisUavklart {
+                                        uavklartKonklusjon(ytelse)
                                     }
                                 } hvisNei {
                                     sjekkRegel {
@@ -95,6 +97,8 @@ class ReglerForLovvalg(
                                         } hvisNei {
                                             uavklartKonklusjon(ytelse)
                                         }
+                                    } hvisUavklart {
+                                        uavklartKonklusjon(ytelse)
                                     }
                                 }
                             } hvisNei {
@@ -108,7 +112,7 @@ class ReglerForLovvalg(
                                     } hvisNei {
                                         uavklartKonklusjon(ytelse)
                                     }
-                                }hvisNei {
+                                } hvisNei {
                                     sjekkRegel {
                                         harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn100Prosent
                                     } hvisJa {
@@ -122,7 +126,7 @@ class ReglerForLovvalg(
                             sjekkRegel {
                                 harBrukerBarnUtenEktefelle
                             } hvisJa {
-                                sjekkRegel{
+                                sjekkRegel {
                                     harBrukerUtenEktefelleBarnSomErFolkeregistrert
                                 } hvisJa {
                                     sjekkRegel {
@@ -136,20 +140,22 @@ class ReglerForLovvalg(
                                     sjekkRegel {
                                         harBrukerUtenFolkeregistrerteBarnJobbetMerEnn100Prosent
                                     } hvisJa {
-                                         jaKonklusjon(ytelse)
-                                    } hvisNei {
-                                         uavklartKonklusjon(ytelse)
-                                    }
-                                }
-                            } hvisNei {
-                                    sjekkRegel {
-                                        harBrukerUtenEktefelleOgBarnJobbetMerEnn100Prosent
-                                    } hvisJa {
                                         jaKonklusjon(ytelse)
                                     } hvisNei {
                                         uavklartKonklusjon(ytelse)
                                     }
+                                } hvisUavklart {
+                                    uavklartKonklusjon(ytelse)
                                 }
+                            } hvisNei {
+                                sjekkRegel {
+                                    harBrukerUtenEktefelleOgBarnJobbetMerEnn100Prosent
+                                } hvisJa {
+                                    jaKonklusjon(ytelse)
+                                } hvisNei {
+                                    uavklartKonklusjon(ytelse)
+                                }
+                            }
                         }
                     }
                 }
@@ -182,94 +188,94 @@ class ReglerForLovvalg(
             operasjon = { sjekkOmBrukersStillingsprosentErMerEnn(25.0) }
     )
 
-    val harBrukerEktefelle = Regel (
+    val harBrukerEktefelle = Regel(
             regelId = REGEL_11_2,
             ytelse = ytelse,
-            operasjon = {sjekkOmBrukerHarEktefelle()}
+            operasjon = { sjekkOmBrukerHarEktefelle() }
     )
 
     val harBrukerMedFolkeregistrerteBarnJobbetMerEnn80Prosent = Regel(
             regelId = REGEL_11_2_3,
             ytelse = ytelse,
-            operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(80.0)}
+            operasjon = { sjekkOmBrukersStillingsprosentErMerEnn(80.0) }
     )
 
     val harBrukerMedRelasjonerUtenFolkeregistreringJobbetMerEnn100Prosent = Regel(
             regelId = REGEL_11_2_2_1,
             ytelse = ytelse,
-            operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(100.0)}
+            operasjon = { sjekkOmBrukersStillingsprosentErMerEnn(100.0) }
     )
 
     val harBrukerUtenFolkeregistrerteBarnJobbetMerEnn100Prosent = Regel(
             regelId = REGEL_11_2_2_1,
             ytelse = ytelse,
-            operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(100.0)}
+            operasjon = { sjekkOmBrukersStillingsprosentErMerEnn(100.0) }
     )
 
     val harBrukerUtenEktefelleOgBarnJobbetMerEnn100Prosent = Regel(
             regelId = REGEL_11_2_2_1,
             ytelse = ytelse,
-            operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(100.0)}
+            operasjon = { sjekkOmBrukersStillingsprosentErMerEnn(100.0) }
     )
 
-    val harBrukerUtenEktefelleBarnSomErFolkeregistrert = Regel (
+    val harBrukerUtenEktefelleBarnSomErFolkeregistrert = Regel(
             regelId = REGEL_11_2_2,
             ytelse = ytelse,
-            operasjon = {sjekkOmBrukersBarnErBosattINorge()}
+            operasjon = { sjekkOmBrukersBarnErBosattINorge() }
     )
 
-    val harBrukerBarnUtenEktefelle = Regel (
+    val harBrukerBarnUtenEktefelle = Regel(
             regelId = REGEL_11_2_1,
             ytelse = ytelse,
-            operasjon = {sjekkOmBrukerHarBarn()}
+            operasjon = { sjekkOmBrukerHarBarn() }
     )
 
-    val harBrukerEktefelleOgBarn = Regel (
+    val harBrukerEktefelleOgBarn = Regel(
             regelId = REGEL_11_3,
             ytelse = ytelse,
-            operasjon = {sjekkOmBrukerHarBarn()}
+            operasjon = { sjekkOmBrukerHarBarn() }
     )
 
-    val erBarnloesBrukersEktefelleBosattINorge = Regel (
+    val erBarnloesBrukersEktefelleBosattINorge = Regel(
             regelId = REGEL_11_3_1,
             ytelse = ytelse,
-            operasjon = {sjekkOmBrukersEktefelleErBosattINorge()}
+            operasjon = { sjekkOmBrukersEktefelleErBosattINorge() }
     )
 
-    val harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn80Prosent= Regel(
+    val harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn80Prosent = Regel(
             regelId = REGEL_11_6,
             ytelse = ytelse,
-            operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(80.0)}
+            operasjon = { sjekkOmBrukersStillingsprosentErMerEnn(80.0) }
     )
 
-    val harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn100Prosent= Regel(
+    val harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn100Prosent = Regel(
             regelId = REGEL_11_3_1_1,
             ytelse = ytelse,
-            operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(100.0)}
+            operasjon = { sjekkOmBrukersStillingsprosentErMerEnn(100.0) }
     )
 
-    val erBrukerMedBarnSittEktefelleBosattINorge = Regel (
+    val erBrukerMedBarnSittEktefelleBosattINorge = Regel(
             regelId = REGEL_11_4,
             ytelse = ytelse,
-            operasjon = {sjekkOmBrukersEktefelleErBosattINorge()}
+            operasjon = { sjekkOmBrukersEktefelleErBosattINorge() }
     )
 
-    val erBrukerUtenFolkeregistrertEktefelleSittBarnFolkeregistrert = Regel (
+    val erBrukerUtenFolkeregistrertEktefelleSittBarnFolkeregistrert = Regel(
             regelId = REGEL_11_4_1,
             ytelse = ytelse,
-            operasjon = {sjekkOmBrukersBarnErBosattINorge()}
+            operasjon = { sjekkOmBrukersBarnErBosattINorge() }
     )
 
-    val erBrukerMedFolkeregistrertEktefelleSittBarnFolkeregistrert = Regel (
+    val erBrukerMedFolkeregistrertEktefelleSittBarnFolkeregistrert = Regel(
             regelId = REGEL_11_5,
             ytelse = ytelse,
-            operasjon = {sjekkOmBrukersBarnErBosattINorge()}
+            operasjon = { sjekkOmBrukersBarnErBosattINorge() }
     )
 
     val harBrukerMedFolkeregistrerteRelasjonerJobbetMerEnn80Prosent = Regel(
             regelId = REGEL_11_6,
             ytelse = ytelse,
-            operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(80.0)}
+            operasjon = { sjekkOmBrukersStillingsprosentErMerEnn(80.0) }
     )
 
     /* private val harBrukerNorsdiskStatsborgerskap = Regel (
@@ -286,33 +292,49 @@ class ReglerForLovvalg(
             barnITps.erIkkeTom() -> ja()
             else -> nei("Bruker har ikke barn i tps")
         }
-     }
+    }
 
     private fun sjekkOmBrukerHarEktefelle(): Resultat {
-      return when {
-        ektefellerITps.erIkkeTom() -> ja()
-        else -> nei("Bruker har ikke ektefelle i tps")
-     }
+        return when {
+            ektefellerITps.erIkkeTom() -> ja()
+            else -> nei("Bruker har ikke ektefelle i tps")
+        }
     }
 
     private fun sjekkOmBrukersEktefelleErBosattINorge(): Resultat {
         val bostedsadresserTilEktefelle = ektefellerITps.flatMap { it.bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk) }
         val postAdresseTilEktefelle = ektefellerITps.flatMap { it.postadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk) }
         val midlertidigPostadresseTilEktefelle = ektefellerITps.flatMap { it.midlertidigAdresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk) }
-             return when {
-                erPersonBosattINorge(bostedsadresserTilEktefelle, postAdresseTilEktefelle, midlertidigPostadresseTilEktefelle) -> ja()
-                else -> nei("Ikke alle adressene til ektefelle er norske, eller ektefelle mangler bostedsadresse")
+        return when {
+            erPersonBosattINorge(bostedsadresserTilEktefelle, postAdresseTilEktefelle, midlertidigPostadresseTilEktefelle) -> ja()
+            else -> nei("Ikke alle adressene til ektefelle er norske, eller ektefelle mangler bostedsadresse")
         }
     }
 
     private fun sjekkOmBrukersBarnErBosattINorge(): Resultat {
-        val bostedsadresseTilBarn = barnITps.flatMap { it.bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk) }
-        val postAdresseTilBarn = barnITps.flatMap { it.postadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk) }
-        val midlertidigPostadresseTilBarn = barnITps.flatMap { it.midlertidigAdresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk) }
-             return when {
-                erPersonBosattINorge(bostedsadresseTilBarn, postAdresseTilBarn, midlertidigPostadresseTilBarn) -> ja()
-                 else -> nei("Ikke alle adressene til ektefelle er norske, eller ektefelle mangler bostedsadresse")
-              }
+        val harBarnBosattINorge = barnITps.any {
+            erPersonBosattINorge(
+                    it.bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
+                    it.postadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
+                    it.midlertidigAdresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk))
+        }
+
+        val harBarnSomIkkeErBosattINorge = barnITps.filterNot {
+            erPersonBosattINorge(
+                    it.bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
+                    it.postadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
+                    it.midlertidigAdresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk))
+        }.any()
+
+        if (harBarnBosattINorge && harBarnSomIkkeErBosattINorge) {
+            return uavklart("Noen barn med norsk adresse og noen barn med utenlandsk adresse")
+        }
+
+        if (harBarnBosattINorge) {
+            return ja()
+        } else {
+            return nei("Ikke alle adressene til barna er norske, eller barn som mangler bostedsadresse")
+        }
     }
 
     private fun sjekkOmBrukerHarJobbetUtenforNorge(): Resultat =
@@ -364,7 +386,7 @@ class ReglerForLovvalg(
         }
     }
 
-    private fun List<Adresse>.brukerHarNorskBostedsadresse() : Boolean {
+    private fun List<Adresse>.brukerHarNorskBostedsadresse(): Boolean {
         return this.erIkkeTom()
     }
 

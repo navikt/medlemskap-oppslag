@@ -3,7 +3,7 @@
 
 Egenskap: Regel 11.3.1: Er brukers ektefelle folkeregistrert som bosatt i Norge?
 
-  Scenariomal: Ja hvis folkeregistrert bosatt i Norge og eventuell postadresse og midlertidig adresse er norsk
+  Scenariomal: Regel 11.3.1 - Ja hvis folkeregistrert bosatt i Norge og eventuell postadresse og midlertidig adresse er norsk
     Gitt følgende sivilstand i personhistorikk fra TPS/PDL
       | Sivilstandstype | Gyldig fra og med dato | Relatert ved sivilstand |
       | GIFT            | 29.06.2015             | 10108000398             |

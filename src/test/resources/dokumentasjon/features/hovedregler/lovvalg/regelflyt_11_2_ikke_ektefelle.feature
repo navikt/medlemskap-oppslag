@@ -74,6 +74,31 @@ Egenskap: Regelflyt for reglene 11.2.x for bruker som ikke har ektefelle i TPS/P
       | 79               | Nei          | UAVKLART   |
       | 81               | Ja           | Ja         |
 
+  Scenario: Bruker med ett barn som bor i Norge og ett barn som ikke bor i Norge skal få "UAVKLART"
+    Gitt følgende familerelasjoner i personhistorikk fra TPS/PDL
+      | Relatert persons ident | Relatert persons rolle | Min rolle for person |
+      | 09069534888            | BARN                   | FAR                  |
+      | 10079541651            | BARN                   | FAR                  |
+
+    Og følgende personhistorikk for relaterte personer fra TPS
+      | Ident       | Bosted | Fra og med dato |
+      | 09069534888 | NOR    | 18.07.2010      |
+      | 10079541651 |        | 18.07.2010      |
+
+    Og følgende arbeidsavtaler i arbeidsforholdet
+      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
+      | 01.01.2018      |                 | 001       | 100              |
+
+    Når medlemskap beregnes med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
+
+    Så skal svaret være "UAVKLART"
+    Og skal regel "11" gi svaret "Nei"
+    Og skal regel "11.2" gi svaret "Nei"
+    Og skal regel "11.2.1" gi svaret "Ja"
+    Og skal regel "11.2.2" gi svaret "UAVKLART"
+
   Scenariomal: Bruker uten ektefelle og med barn som ikke bor i Norge må ha minst 1000 % stilling for å få "Ja"
     Gitt følgende familerelasjoner i personhistorikk fra TPS/PDL
       | Relatert persons ident | Relatert persons rolle | Min rolle for person |
