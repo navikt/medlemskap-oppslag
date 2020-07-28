@@ -9,7 +9,7 @@ import java.util.*
 object RelasjonFunksjoner {
 
     fun List<Sivilstand>.hentFnrTilEktefellerEllerPartnerIPeriode(kontrollPeriode: Periode): List<String?> =
-            this.sivilstandSiste12Mnd(kontrollPeriode).filter {
+            this.sivilstandForKontrollperiode(kontrollPeriode).filter {
              it.type == Sivilstandstype.GIFT || it.type == Sivilstandstype.REGISTRERT_PARTNER}.map { it.relatertVedSivilstand }
 
     fun List<Familierelasjon>.hentFnrTilBarnUnder25(): List<String?> =
@@ -51,7 +51,7 @@ object RelasjonFunksjoner {
     fun Sivilstand.sivilstandPeriodeOverlapperKontrollPerioden(kontrollPeriode: Periode) =
         Funksjoner.periodefilter(lagInterval(Periode(this.gyldigFraOgMed, kontrollPeriode.tom)), kontrollPeriode)
 
-    fun List<Sivilstand>.sivilstandSiste12Mnd(kontrollPeriode: Periode): List<Sivilstand> =
+    fun List<Sivilstand>.sivilstandForKontrollperiode(kontrollPeriode: Periode): List<Sivilstand> =
         this.filter {it.sivilstandPeriodeOverlapperKontrollPerioden(kontrollPeriode) }
 
 
