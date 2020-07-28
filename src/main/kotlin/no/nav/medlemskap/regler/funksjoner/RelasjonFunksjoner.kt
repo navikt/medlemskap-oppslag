@@ -27,10 +27,10 @@ object RelasjonFunksjoner {
             (Calendar.getInstance().get(Calendar.YEAR) - this.hentBursdagsAar().toInt()) <= 25
 
     fun String.hentBursdagsAar(): String {
-      return this.hentAaHundre() + this.hent2DigitBursdagsAar()
+      return this.hentAarHundre() + this.hent2DigitBursdagsAar()
     }
 
-    fun String.hentAaHundre(): String? {
+    fun String.hentAarHundre(): String? {
       var resultat: String? = null
       val individnummer: Int = getIndividnummer().toInt()
       val birthYear: Int = hent2DigitBursdagsAar().toInt()
