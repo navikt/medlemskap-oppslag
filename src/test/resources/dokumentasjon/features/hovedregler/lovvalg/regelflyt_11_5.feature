@@ -24,10 +24,10 @@ Egenskap: Regelflyt for reglene 11.5 for bruker som har ektefelle og barn. Ektef
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
       | 1             | BEDR             | NOR      | 9              |
 
-  Scenario: Barnet er ikke bosatt i Norge
+  Scenariomal: Barnet er ikke bosatt i Norge
     Gitt følgende arbeidsavtaler i arbeidsforholdet
-      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
-      | 01.01.2018      |                 | 001       | 100              |
+      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   |
+      | 01.01.2018      |                 | 001       | <Stillingsprosent> |
 
     Og følgende familerelasjoner i personhistorikk fra TPS/PDL
       | Relatert persons ident | Relatert persons rolle | Min rolle for person |

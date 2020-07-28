@@ -99,7 +99,7 @@ Egenskap: Regelflyt for reglene 11.2.x for bruker som ikke har ektefelle i TPS/P
     Og skal regel "11.2.1" gi svaret "Ja"
     Og skal regel "11.2.2" gi svaret "UAVKLART"
 
-  Scenariomal: Bruker uten ektefelle og med barn som ikke bor i Norge må ha minst 1000 % stilling for å få "Ja"
+  Scenariomal: Bruker uten ektefelle og med barn som ikke bor i Norge må ha minst 100 % stilling for å få "Ja"
     Gitt følgende familerelasjoner i personhistorikk fra TPS/PDL
       | Relatert persons ident | Relatert persons rolle | Min rolle for person |
       | 09069534888            | BARN                   | FAR                  |

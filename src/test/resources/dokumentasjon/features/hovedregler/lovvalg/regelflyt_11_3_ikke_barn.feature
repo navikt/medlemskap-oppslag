@@ -24,10 +24,10 @@ Egenskap: Regelflyt for reglene 11.3.x for bruker som har ektefelle, men ikke ba
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
       | 1             | BEDR             | NOR      | 9              |
 
-  Scenario: Bruker med ektefelle bosatt i Norge får "Ja"
+  Scenariomal: Bruker med ektefelle bosatt i Norge får "Ja"
     Gitt følgende arbeidsavtaler i arbeidsforholdet
-      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
-      | 01.01.2018      |                 | 001       | 85               |
+      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   |
+      | 01.01.2018      |                 | 001       | <Stillingsprosent> |
 
     Og følgende sivilstand i personhistorikk fra TPS/PDL
       | Sivilstandstype | Gyldig fra og med dato | Relatert ved sivilstand |
@@ -41,12 +41,18 @@ Egenskap: Regelflyt for reglene 11.3.x for bruker som har ektefelle, men ikke ba
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
-    Så skal svaret være "Ja"
+    Så skal svaret være "<Medlemskap>"
     Og skal regel "11" gi svaret "Nei"
     Og skal regel "11.2" gi svaret "Ja"
     Og skal regel "11.3" gi svaret "Nei"
     Og skal regel "11.3.1" gi svaret "Ja"
-    Og skal regel "11.6" gi svaret "Ja"
+    Og skal regel "11.6" gi svaret "<Regel 11.6>"
+
+    Eksempler:
+      | Stillingsprosent | Regel 11.6 | Medlemskap |
+      | 79               | Nei        | UAVKLART   |
+      | 80               | Ja         | Ja         |
+      | 85               | Ja         | Ja         |
 
   Scenariomal: Bruker med ektefelle som ikke er bosatt i Norge
     Gitt følgende arbeidsavtaler i arbeidsforholdet
@@ -73,7 +79,7 @@ Egenskap: Regelflyt for reglene 11.3.x for bruker som har ektefelle, men ikke ba
     Og skal regel "11.3.1.1" gi svaret "<Regel 11.3.1.1>"
 
     Eksempler:
-    | Stillingsprosent | Regel 11.3.1.1 | Medlemskap |
-    | 99               | Nei            | UAVKLART   |
-    | 100              | Ja             | Ja         |
-    | 105              | Ja             | Ja         |
+      | Stillingsprosent | Regel 11.3.1.1 | Medlemskap |
+      | 99               | Nei            | UAVKLART   |
+      | 100              | Ja             | Ja         |
+      | 105              | Ja             | Ja         |
