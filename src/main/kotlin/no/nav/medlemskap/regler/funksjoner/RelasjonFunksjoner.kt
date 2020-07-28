@@ -31,20 +31,16 @@ object RelasjonFunksjoner {
     }
 
     fun String.hentAarHundre(): String? {
-      var resultat: String? = null
       val individnummer: Int = getIndividnummer().toInt()
       val birthYear: Int = hent2DigitBursdagsAar().toInt()
 
-        if (individnummer <= 499) {
-            resultat = "19"
-        } else if (individnummer >= 500 && birthYear < 40) {
-            resultat = "20"
-        } else if (individnummer >= 500 && individnummer <= 749 && birthYear >= 54) {
-            resultat = "18"
-        } else if (individnummer >= 900 && birthYear > 39) {
-            resultat = "19"
+        return when {
+            individnummer <= 499 -> "19"
+            individnummer >= 500 && birthYear < 40 -> "20"
+            individnummer in 500..749 && birthYear >= 54 -> "18"
+            individnummer >= 900 && birthYear > 39 -> "19"
+            else -> null
         }
-          return resultat
     }
 
     fun String.hent2DigitBursdagsAar() = this.substring(4, 6)
