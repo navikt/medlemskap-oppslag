@@ -58,6 +58,11 @@ object ArbeidsforholdFunksjoner {
             return false
         }
 
+        if (arbeidsforholdForNorskArbeidsgiver.any {it.periode.fom == null }) {
+            harIkkeArbeidsforhold12MndTilbakeCounter(ytelse).increment()
+            return false
+        }
+
         if (arbeidsforholdForNorskArbeidsgiver.none { it.periode.fom?.isBefore(kontrollPeriode.fom.plusDays(1))!! }) {
             harIkkeArbeidsforhold12MndTilbakeCounter(ytelse).increment()
 

@@ -40,9 +40,8 @@ Egenskap: Regelflyt for regel 3
 
     Eksempler:
       | Fra og med dato | Regel 3 | Medlemskap |
-#      |                 | Ja      | Ja         |
       | 01.01.2018      | Ja      | Ja         |
       | 29.01.2019      | Ja      | Ja         |
       | 30.01.2019      | Nei     | UAVKLART   |
       | 05.02.2019      | Nei     | UAVKLART   |
-
+      |                 | Nei     | UAVKLART   |
