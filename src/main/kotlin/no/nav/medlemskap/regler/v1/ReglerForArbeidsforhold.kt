@@ -74,43 +74,43 @@ class ReglerForArbeidsforhold(
                 }
             }
 
-    private val harBrukerSammenhengendeArbeidsforholdSiste12Mnd = Regel(
+    val harBrukerSammenhengendeArbeidsforholdSiste12Mnd = Regel(
             regelId = REGEL_3,
             ytelse = ytelse,
             operasjon = { sjekkSammenhengendeArbeidsforhold() }
     )
 
-    private val erArbeidsgiverOrganisasjon = Regel(
+    val erArbeidsgiverOrganisasjon = Regel(
             regelId = REGEL_4,
             ytelse = ytelse,
             operasjon = { sjekkArbeidsgiver() }
     )
 
-    private val harForetakMerEnn5Ansatte = Regel(
+    val harForetakMerEnn5Ansatte = Regel(
             regelId = REGEL_5,
             ytelse = ytelse,
             operasjon = { sjekkOmForetakMerEnn5Ansatte() }
     )
 
-    private val erForetakAktivt = Regel(
+    val erForetakAktivt = Regel(
             regelId = REGEL_6,
             ytelse = ytelse,
             operasjon = { sjekKonkursstatus() }
     )
 
-    private val erArbeidsforholdetMaritimt = Regel(
+    val erArbeidsforholdetMaritimt = Regel(
             regelId = REGEL_7,
             ytelse = ytelse,
             operasjon = { sjekkMaritim() }
     )
 
-    private val jobberBrukerPaaNorskSkip = Regel(
+    val jobberBrukerPaaNorskSkip = Regel(
             regelId = REGEL_7_1,
             ytelse = ytelse,
             operasjon = { sjekkSkipsregister() }
     )
 
-    private val erBrukerPilotEllerKabinansatt = Regel(
+    val erBrukerPilotEllerKabinansatt = Regel(
             regelId = REGEL_8,
             ytelse = ytelse,
             operasjon = { sjekkYrkeskodeLuftfart() }
