@@ -49,8 +49,7 @@ object ArbeidsforholdFunksjoner {
     }
 
     /**
-     * På dette tidspunktet er det kjent at bruker er i et aktivt arbeidsforhold.
-     * Trenger derfor kun å sjekke at bruker har et arbeidsforhold minumum 12 mnd tilbake og at påfølgende arbeidsforholdene er sammenhengende.
+     * Sjekk om arbeidsfoholdet er sammenhengende i kontrollperioden
      */
     fun List<Arbeidsforhold>.erSammenhengendeIKontrollPeriode(kontrollPeriode: Periode, ytelse: Ytelse): Boolean {
 
@@ -82,6 +81,12 @@ object ArbeidsforholdFunksjoner {
                 return false
             }
             forrigeTilDato = arbeidsforhold.periode.tom
+        }
+
+        if (forrigeTilDato != null) {
+           if (forrigeTilDato.isBefore(kontrollPeriode.tom)) {
+               return false
+           }
         }
 
         return true
