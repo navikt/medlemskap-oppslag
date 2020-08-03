@@ -84,9 +84,7 @@ object ArbeidsforholdFunksjoner {
         }
 
         if (forrigeTilDato != null) {
-           if (forrigeTilDato.isBefore(kontrollPeriode.tom)) {
-               return false
-           }
+           return !forrigeTilDato.isBefore(kontrollPeriode.tom)
         }
 
         return true
