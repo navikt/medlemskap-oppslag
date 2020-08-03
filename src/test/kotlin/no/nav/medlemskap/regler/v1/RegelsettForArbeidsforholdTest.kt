@@ -11,32 +11,6 @@ class RegelsettForArbeidsforholdTest {
 
         private val personleser = Personleser()
 
-
-        @Test
-        fun `person med overlappende arbeidsforhold innenfor kontrollperiode, får ja`() {
-            assertSvar(REGEL_3, Svar.JA, evaluer(personleser.norskMedOverlappendeArbeidsforholdIPeriode()), Svar.JA)
-        }
-
-        @Test
-        fun `person med ett arbeidsforhold under 12 mnd innenfor kontrollperiode, får uavklart`() {
-            assertSvar(REGEL_3, Svar.NEI, evaluer(personleser.norskMedEttArbeidsforholdUnder12MndIPeriode()), Svar.UAVKLART)
-        }
-
-        @Test
-        fun `person med to sammenhengende arbeidsforhold under 12 mnd innenfor kontrollperiode, får uavklart`() {
-            assertSvar(REGEL_3, Svar.NEI, evaluer(personleser.norskMedToSammenhengendeArbeidsforholdUnder12MndIPeriode()), Svar.UAVKLART)
-        }
-
-        @Test
-        fun `person med to usammenhengende arbeidsforhold innenfor kontrollperiode, får uavklart`() {
-            assertSvar(REGEL_3, Svar.NEI, evaluer(personleser.norskMedToUsammenhengendeArbeidsforholdIPeriode()), Svar.UAVKLART)
-        }
-
-        @Test
-        fun `person med over 10 arbeidsforhold innenfor kontrollperiode, får uavklart`() {
-            assertSvar(REGEL_3, Svar.NEI, evaluer(personleser.norskMedOverTiArbeidsforhold()), Svar.UAVKLART)
-        }
-
         @Test
         fun `person med ett arbeidsforhold med arbeidsgiver som privatperson innenfor kontrollperiode, får uavklart`() {
             assertSvar(REGEL_4, Svar.NEI, evaluer(personleser.norskMedEttArbeidsforholdMedPrivatpersonSomArbeidsgiverIPeriode()), Svar.UAVKLART)
