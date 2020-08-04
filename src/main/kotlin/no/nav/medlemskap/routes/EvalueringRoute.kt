@@ -35,50 +35,18 @@ private val secureLogger = KotlinLogging.logger("tjenestekall")
 
 fun Routing.evalueringRoute(
         services: Services,
-        useAuthentication: Boolean,
         configuration: Configuration) {
 
-    if (useAuthentication) {
-        authenticate {
-            post("/") {
-                apiCounter().increment()
-
-                val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
-                val azp = callerPrincipal.payload.getClaim("azp").asString()
-                secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
-
-                val request = validerRequest(call.receive())
-                val callId = call.callId ?: UUID.randomUUID().toString()
-
-                val datagrunnlag = createDatagrunnlag(
-                        fnr = request.fnr,
-                        callId = callId,
-                        periode = request.periode,
-                        brukerinput = request.brukerinput,
-                        services = services,
-                        clientId = azp,
-                        ytelseFraRequest = request.ytelse)
-                val resultat = evaluerData(datagrunnlag)
-                val response = Response(
-                        tidspunkt = LocalDateTime.now(),
-                        versjonRegler = "v1",
-                        versjonTjeneste = configuration.commitSha,
-                        datagrunnlag = datagrunnlag,
-                        resultat = resultat
-                )
-                secureLogger.info("{} konklusjon gitt for bruker {} på regel {}", resultat.svar.name, request.fnr, resultat.sisteRegel())
-                secureLogger.info("For bruker {} er responsen {}", request.fnr, response)
-
-                call.respond(response)
-            }
-        }
-    } else {
-        logger.info("autentiserer IKKE kallet")
+    authenticate {
         post("/") {
             apiCounter().increment()
+
+            val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
+            val azp = callerPrincipal.payload.getClaim("azp").asString()
+            secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
+
             val request = validerRequest(call.receive())
             val callId = call.callId ?: UUID.randomUUID().toString()
-            //konsumentCounter(subject).increment()
 
             val datagrunnlag = createDatagrunnlag(
                     fnr = request.fnr,
@@ -86,7 +54,7 @@ fun Routing.evalueringRoute(
                     periode = request.periode,
                     brukerinput = request.brukerinput,
                     services = services,
-                    clientId = null,
+                    clientId = azp,
                     ytelseFraRequest = request.ytelse)
             val resultat = evaluerData(datagrunnlag)
             val response = Response(
@@ -101,6 +69,38 @@ fun Routing.evalueringRoute(
 
             call.respond(response)
         }
+    }
+}
+
+fun Routing.evalueringTestRoute(
+        services: Services,
+        configuration: Configuration) {
+    logger.info("autentiserer IKKE kallet")
+    post("/") {
+        apiCounter().increment()
+        val request = validerRequest(call.receive())
+        val callId = call.callId ?: UUID.randomUUID().toString()
+
+        val datagrunnlag = createDatagrunnlag(
+                fnr = request.fnr,
+                callId = callId,
+                periode = request.periode,
+                brukerinput = request.brukerinput,
+                services = services,
+                clientId = null,
+                ytelseFraRequest = request.ytelse)
+        val resultat = evaluerData(datagrunnlag)
+        val response = Response(
+                tidspunkt = LocalDateTime.now(),
+                versjonRegler = "v1",
+                versjonTjeneste = configuration.commitSha,
+                datagrunnlag = datagrunnlag,
+                resultat = resultat
+        )
+        secureLogger.info("{} konklusjon gitt for bruker {} på regel {}", resultat.svar.name, request.fnr, resultat.sisteRegel())
+        secureLogger.info("For bruker {} er responsen {}", request.fnr, response)
+
+        call.respond(response)
     }
 }
 
@@ -147,7 +147,7 @@ private suspend fun createDatagrunnlag(
     val ytelse: Ytelse = finnYtelse(ytelseFraRequest, clientId)
     ytelseCounter(ytelse.metricName()).increment()
 
-            Datagrunnlag(
+    Datagrunnlag(
             periode = periode,
             brukerinput = brukerinput,
             personhistorikk = historikkFraTps,
