@@ -1,6 +1,7 @@
 package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.InputPeriode
+import no.nav.medlemskap.domene.Kontrollperiode
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Ytelse
 import org.threeten.extra.Interval
@@ -12,9 +13,9 @@ import java.time.format.DateTimeFormatter
 
 class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
 
-    fun kontrollPeriodeForPersonhistorikk(): Periode {
+    fun kontrollPeriodeForPersonhistorikk(): Kontrollperiode {
         return when (ytelse) {
-            Ytelse.SYKEPENGER -> Periode(
+            Ytelse.SYKEPENGER -> Kontrollperiode(
                     fom = førsteSykedag().minusMonths(12),
                     tom = førsteSykedag()
             )
@@ -23,9 +24,9 @@ class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
         }
     }
 
-    fun kontrollPeriodeForMedl(): Periode {
+    fun kontrollPeriodeForMedl(): Kontrollperiode {
         return when (ytelse) {
-            Ytelse.SYKEPENGER -> Periode(
+            Ytelse.SYKEPENGER -> Kontrollperiode(
                     fom = førsteSykedag().minusMonths(12),
                     tom = førsteSykedag()
             )
@@ -38,8 +39,8 @@ class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
     fun førsteDagpengedag() = periode.fom.minusDays(1)
     fun førsteEnsligForsørgerdag() = periode.fom.minusDays(1)
 
-    private fun defaultDagpengePeriode(): Periode = Periode(førsteDagpengedag().minusMonths(12), førsteDagpengedag())
-    private fun defaultEnsligForsørgerPeriode(): Periode = Periode(førsteEnsligForsørgerdag().minusMonths(12), førsteEnsligForsørgerdag())
+    private fun defaultDagpengePeriode() = Kontrollperiode(førsteDagpengedag().minusMonths(12), førsteDagpengedag())
+    private fun defaultEnsligForsørgerPeriode() = Kontrollperiode(førsteEnsligForsørgerdag().minusMonths(12), førsteEnsligForsørgerdag())
 
     fun tilOgMedDag(): LocalDate {
         return when (ytelse) {
@@ -49,9 +50,9 @@ class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
         }
     }
 
-    fun kontrollPeriodeForArbeidsforhold(): Periode {
+    fun kontrollPeriodeForArbeidsforhold(): Kontrollperiode {
         return when (ytelse) {
-            Ytelse.SYKEPENGER -> Periode(
+            Ytelse.SYKEPENGER -> Kontrollperiode(
                     fom = førsteSykedag().minusMonths(12),
                     tom = førsteSykedag()
             )
