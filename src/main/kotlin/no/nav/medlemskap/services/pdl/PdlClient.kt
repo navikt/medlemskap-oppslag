@@ -60,9 +60,9 @@ class PdlClient(
 
     }
 
-    suspend fun hentNasjonalitet(fnr: String, callId: String): String {
+    suspend fun hentNasjonalitet(fnr: String, callId: String): HentNasjonalitetResponse {
         return runWithRetryAndMetrics("PDL", "HentNasjonalitet", retry) {
-            httpClient.post<String> {
+            httpClient.post<HentNasjonalitetResponse> {
                 url("$baseUrl")
                 header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)

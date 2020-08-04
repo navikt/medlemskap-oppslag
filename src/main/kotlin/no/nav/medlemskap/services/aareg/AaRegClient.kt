@@ -139,6 +139,6 @@ class AaRegService(
     }
 
     private suspend fun hentArbeidsgiversLand(identifikator: String, callId: String): String? {
-        return pdlClient.hentNasjonalitet(identifikator, callId)
+        return pdlClient.hentNasjonalitet(identifikator, callId).data?.hentNasjonalitet?.last()?.land
     }
 }
