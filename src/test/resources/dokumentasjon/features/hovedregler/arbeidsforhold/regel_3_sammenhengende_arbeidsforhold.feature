@@ -39,9 +39,9 @@ Egenskap: Regel 3: Har bruker sammenhengende arbeidsforhold siste 12 måneder?
 
   Scenariomal: Person med to arbeidsforhold i perioden
     Gitt følgende arbeidsforhold fra AAReg
-      | Fra og med dato     | Til og med dato     | Arbeidsgivertype | Arbeidsforholdstype |
-      | <Fra og med dato>   | 15.03.2019          | Organisasjon     | NORMALT             |
-      | <Fra og med dato 2> | <Til og med dato 2> | Organisasjon     | NORMALT             |
+      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
+      | <Fom>           | <Tom>           | Organisasjon     | NORMALT             |
+      | <Fom 2>         | <Tom 2>         | Organisasjon     | NORMALT             |
 
     Når regel "3" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
@@ -50,14 +50,15 @@ Egenskap: Regel 3: Har bruker sammenhengende arbeidsforhold siste 12 måneder?
     Så skal svaret være "<Svar>"
 
     Eksempler:
-      | Fra og med dato | Fra og med dato 2 | Til og med dato 2 | Svar | Kommentar                                                      |
-      | 01.01.2019      | 01.02.2019        |                   | Ja   | To Overlappende arbeidsfohold                                  |
-      | 01.01.2019      | 16.03.2019        |                   | Ja   | To arbeidsforhold som er sammenhengende                        |
-      | 01.01.2019      | 17.03.2019        |                   | Ja   | To arbeidsforhold med en dags opphold                          |
-#      | 01.01.2019      | 18.03.2019        |                   | Ja   | To arbeidsforhold med to dagers opphold         |
-      | 01.01.2019      | 19.03.2019        |                   | Nei  | To arbeidsforhold med tre dagers opphold                       |
-      | 01.01.2019      | 17.04.2019        |                   | Nei  | To arbeidsforhold som ikke er sammenhengende                   |
-      | 01.01.2016      | 16.03.2019        | 29.05.2019        | Nei  | To arbeidsforhold, mangler arbeidsforhold i bakkant            |
-      | 01.03.2019      | 16.03.2019        | 29.05.2019        | Nei  | To arbeidsforhold, mangler arbeidsforhold i forkant og bakkant |
-      | 01.03.2019      | 16.03.2019        |                   | Nei  | To arbeidsforhold, mangler arbeidsforhold i forkant            |
+      | Fom        | Tom        | Fom 2      | Tom 2      | Svar | Kommentar                                   |
+      | 01.01.2019 | 15.03.2019 | 01.02.2019 |            | Ja   | Overlappende arbeidsfohold                  |
+      | 01.01.2019 | 15.03.2019 | 16.03.2019 |            | Ja   | Arbeidsforhold som er sammenhengende        |
+      | 01.01.2019 | 15.03.2019 | 17.03.2019 |            | Ja   | Arbeidsforhold med en dags opphold          |
+      | 01.01.2019 |            | 17.03.2019 | 25.04.2019 | Ja   | Første arbeidsforhold uten til dato         |
+      | 01.01.2019 | 15.03.2019 | 19.03.2019 |            | Nei  | Arbeidsforhold med tre dagers opphold       |
+      | 01.01.2019 | 15.03.2019 | 17.04.2019 |            | Nei  | Arbeidsforhold som ikke er sammenhengende   |
+      | 01.01.2016 | 15.03.2019 | 16.03.2019 | 29.05.2019 | Nei  | Mangler arbeidsforhold i bakkant            |
+      | 01.03.2019 | 15.03.2019 | 16.03.2019 | 29.05.2019 | Nei  | Mangler arbeidsforhold i forkant og bakkant |
+      | 01.03.2019 | 15.03.2019 | 16.03.2019 |            | Nei  | Mangler arbeidsforhold i forkant            |
+#      | 01.01.2019     |15.03.2019 | 18.03.2019        |                   | Ja   | Arbeidsforhold med to dagers opphold         |
 

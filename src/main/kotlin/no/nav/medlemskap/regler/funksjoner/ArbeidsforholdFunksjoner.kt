@@ -74,12 +74,7 @@ object ArbeidsforholdFunksjoner {
             return false
         }
 
-        /**
-        if (arbeidsforholdForNorskArbeidsgiver.any{it.periode.tom == null && it.periode.fom!!.isBefore(kontrollPeriode.tomNotNull())}) {
-            return true
-        }
-**/
-        val sortertArbeidsforholdEtterPeriode = arbeidsforholdForNorskArbeidsgiver.stream().sorted().collect(Collectors.toList())
+        val sortertArbeidsforholdEtterPeriode = arbeidsforholdForNorskArbeidsgiver.sorted()
         for (arbeidsforhold in sortertArbeidsforholdEtterPeriode) { //Sjekker at alle påfølgende arbeidsforhold er sammenhengende
             if (forrigeTilDato != null && !erDatoerSammenhengende(forrigeTilDato, arbeidsforhold.periode.fom)) {
                 val antallDagerDiff = abs(ChronoUnit.DAYS.between(forrigeTilDato, arbeidsforhold.periode.fom))
