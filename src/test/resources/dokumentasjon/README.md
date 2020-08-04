@@ -33,7 +33,11 @@ Reglene er gruppert i forskjellige regelsett.
 ### Regelsett Medlemskap 
 * [Medlemskap](features/medlemskap/README.md)
 
+### Regelsett for arbeidsforhold
+* [Arbeidsforhold](features/arbeidsforhold/README.md)
+
 ## Lovvalg og medlemskap for ytelsen sykepenger
 * [Lovvalg og medlemskap for ytelsen sykepenger](features/ytelse/sykepenger/README.md)
+
 
 

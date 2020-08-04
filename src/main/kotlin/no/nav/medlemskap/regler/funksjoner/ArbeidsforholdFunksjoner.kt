@@ -1,10 +1,7 @@
 package no.nav.medlemskap.regler.funksjoner
 
 import no.nav.medlemskap.common.*
-import no.nav.medlemskap.domene.Arbeidsforhold
-import no.nav.medlemskap.domene.Arbeidsgiver
-import no.nav.medlemskap.domene.Periode
-import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 import no.nav.medlemskap.regler.common.Funksjoner
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
@@ -20,39 +17,38 @@ import kotlin.math.abs
 
 object ArbeidsforholdFunksjoner {
 
-    infix fun List<Arbeidsforhold>.erAlleArbeidsgivereOrganisasjon(kontrollPeriode: Periode): Boolean {
+    infix fun List<Arbeidsforhold>.erAlleArbeidsgivereOrganisasjon(kontrollPeriode: Kontrollperiode): Boolean {
         return arbeidsforholdForKontrollPeriode(kontrollPeriode).stream().allMatch { it.arbeidsgivertype == AaRegOpplysningspliktigArbeidsgiverType.Organisasjon }
     }
 
-    infix fun List<Arbeidsforhold>.antallAnsatteHosArbeidsgivere(kontrollPeriode: Periode): List<Int?> =
+    infix fun List<Arbeidsforhold>.antallAnsatteHosArbeidsgivere(kontrollPeriode: Kontrollperiode): List<Int?> =
             ansatteHosArbeidsgivere(kontrollPeriode).map { it.antall }
 
-    infix fun List<Arbeidsforhold>.arbeidsforholdForYrkestype(kontrollPeriode: Periode): List<String> =
+    infix fun List<Arbeidsforhold>.arbeidsforholdForYrkestype(kontrollPeriode: Kontrollperiode): List<String> =
             this.filter {
-                periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)), kontrollPeriode)
+                periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)), kontrollPeriode.tilPeriode())
             }.map { it.arbeidsfolholdstype.navn }
 
 
-    infix fun List<Arbeidsforhold>.sisteArbeidsforholdYrkeskode(kontrollPeriode: Periode): List<String> =
+    infix fun List<Arbeidsforhold>.sisteArbeidsforholdYrkeskode(kontrollPeriode: Kontrollperiode): List<String> =
             this.filter {
-                periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)), kontrollPeriode)
+                periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)), kontrollPeriode.tilPeriode())
             }.flatMap { it.arbeidsavtaler }.map { it.yrkeskode }
 
 
-    infix fun List<Arbeidsforhold>.sisteArbeidsforholdSkipsregister(kontrollPeriode: Periode): List<String> =
+    infix fun List<Arbeidsforhold>.sisteArbeidsforholdSkipsregister(kontrollPeriode: Kontrollperiode): List<String> =
             this.filter {
-                periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)), kontrollPeriode)
+                periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)), kontrollPeriode.tilPeriode())
             }.flatMap { it -> it.arbeidsavtaler.map { it.skipsregister?.name ?: "" } }
 
-    infix fun List<Arbeidsforhold>.konkursStatuserArbeidsgivere(kontrollPeriode: Periode): List<String?>? {
+    infix fun List<Arbeidsforhold>.konkursStatuserArbeidsgivere(kontrollPeriode: Kontrollperiode): List<String?>? {
         return arbeidsforholdForKontrollPeriode(kontrollPeriode).flatMap { it.arbeidsgiver.konkursStatus.orEmpty() }
     }
 
     /**
-     * På dette tidspunktet er det kjent at bruker er i et aktivt arbeidsforhold.
-     * Trenger derfor kun å sjekke at bruker har et arbeidsforhold minumum 12 mnd tilbake og at påfølgende arbeidsforholdene er sammenhengende.
+     * Sjekk om arbeidsfoholdet er sammenhengende i kontrollperioden
      */
-    fun List<Arbeidsforhold>.erSammenhengendeIKontrollPeriode(kontrollPeriode: Periode, ytelse: Ytelse): Boolean {
+    fun List<Arbeidsforhold>.erSammenhengendeIKontrollPeriode(kontrollPeriode: Kontrollperiode, ytelse: Ytelse): Boolean {
 
         var forrigeTilDato: LocalDate? = null
         val arbeidsforholdForNorskArbeidsgiver = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
@@ -62,7 +58,12 @@ object ArbeidsforholdFunksjoner {
             return false
         }
 
-        if (arbeidsforholdForNorskArbeidsgiver.none { it.periode.fom?.isBefore(kontrollPeriode.fom?.plusDays(1))!! }) {
+        if (arbeidsforholdForNorskArbeidsgiver.any {it.periode.fom == null }) {
+            harIkkeArbeidsforhold12MndTilbakeCounter(ytelse).increment()
+            return false
+        }
+
+        if (arbeidsforholdForNorskArbeidsgiver.none { it.periode.fom?.isBefore(kontrollPeriode.fom.plusDays(1))!! }) {
             harIkkeArbeidsforhold12MndTilbakeCounter(ytelse).increment()
 
             if (arbeidsforholdForNorskArbeidsgiver.isNotEmpty()) {
@@ -73,7 +74,7 @@ object ArbeidsforholdFunksjoner {
             return false
         }
 
-        val sortertArbeidsforholdEtterPeriode = arbeidsforholdForNorskArbeidsgiver.stream().sorted().collect(Collectors.toList())
+        val sortertArbeidsforholdEtterPeriode = arbeidsforholdForNorskArbeidsgiver.sorted()
         for (arbeidsforhold in sortertArbeidsforholdEtterPeriode) { //Sjekker at alle påfølgende arbeidsforhold er sammenhengende
             if (forrigeTilDato != null && !erDatoerSammenhengende(forrigeTilDato, arbeidsforhold.periode.fom)) {
                 val antallDagerDiff = abs(ChronoUnit.DAYS.between(forrigeTilDato, arbeidsforhold.periode.fom))
@@ -82,6 +83,10 @@ object ArbeidsforholdFunksjoner {
                 return false
             }
             forrigeTilDato = arbeidsforhold.periode.tom
+        }
+
+        if (forrigeTilDato != null) {
+           return !forrigeTilDato.isBefore(kontrollPeriode.tom)
         }
 
         return true
@@ -94,7 +99,7 @@ object ArbeidsforholdFunksjoner {
             }.sorted()
 
 
-    fun List<Arbeidsforhold>.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(gittStillingsprosent: Double, kontrollPeriode: Periode, ytelse: Ytelse): Boolean {
+    fun List<Arbeidsforhold>.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(gittStillingsprosent: Double, kontrollPeriode: Kontrollperiode, ytelse: Ytelse): Boolean {
 
         val arbeidsforholdForKontrollPeriode = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
 
@@ -115,8 +120,8 @@ object ArbeidsforholdFunksjoner {
         return samletStillingsprosent >= gittStillingsprosent
     }
 
-    private fun Arbeidsforhold.vektetStillingsprosentForArbeidsforhold(kontrollPeriode: Periode): Double {
-        val totaltAntallDager = kontrollPeriode.fom!!.until(kontrollPeriode.tom!!, ChronoUnit.DAYS).toDouble()
+    private fun Arbeidsforhold.vektetStillingsprosentForArbeidsforhold(kontrollPeriode: Kontrollperiode): Double {
+        val totaltAntallDager = kontrollPeriode.fom.until(kontrollPeriode.tom, ChronoUnit.DAYS).toDouble()
         var vektetStillingsprosentForArbeidsforhold = 0.0
         for (arbeidsavtale in this.arbeidsavtaler) {
             val stillingsprosent = arbeidsavtale.stillingsprosent ?: 100.0
@@ -135,18 +140,18 @@ object ArbeidsforholdFunksjoner {
     private fun List<Arbeidsforhold>.ingenAndreParallelleArbeidsforhold(arbeidsforhold: Arbeidsforhold): Boolean =
         this.none { it.periode.interval().encloses(arbeidsforhold.periode.interval()) && it != arbeidsforhold }
 
-    private infix fun List<Arbeidsforhold>.ansatteHosArbeidsgivere(kontrollPeriode: Periode): List<Ansatte> =
+    private infix fun List<Arbeidsforhold>.ansatteHosArbeidsgivere(kontrollPeriode: Kontrollperiode): List<Ansatte> =
             arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(kontrollPeriode).mapNotNull { it.ansatte }.flatten()
 
 
-    private infix fun List<Arbeidsforhold>.arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(kontrollPeriode: Periode): List<Arbeidsgiver> {
+    private infix fun List<Arbeidsforhold>.arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(kontrollPeriode: Kontrollperiode): List<Arbeidsgiver> {
         return arbeidsforholdForKontrollPeriode(kontrollPeriode).stream().map { it.arbeidsgiver }.collect(Collectors.toList())
     }
 
-    private fun List<Arbeidsforhold>.arbeidsforholdForKontrollPeriode(kontrollPeriode: Periode) =
+    private fun List<Arbeidsforhold>.arbeidsforholdForKontrollPeriode(kontrollPeriode: Kontrollperiode) =
             this.filter {
                 periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)),
-                        kontrollPeriode)
+                        kontrollPeriode.tilPeriode())
             }
 
     private fun periodefilter(periodeDatagrunnlag: Interval, periode: Periode): Boolean {

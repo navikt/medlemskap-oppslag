@@ -122,6 +122,7 @@ class RegelSteps : No {
 
             val reglerForLovvalg = ReglerForLovvalg.fraDatagrunnlag(datagrunnlag!!)
             val reglerForMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag!!)
+            val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag!!)
 
             val regel = when (regelId!!) {
                 "1.1" -> reglerForMedl.erPerioderAvklart
@@ -133,6 +134,7 @@ class RegelSteps : No {
                 "1.5" -> reglerForMedl.erArbeidsforholdUendretForBrukerMedMedlemskap
                 "1.6" -> reglerForMedl.erDekningUavklart
                 "1.7" -> reglerForMedl.harBrukerDekningIMedl
+                "3" -> reglerForArbeidsforhold.harBrukerSammenhengendeArbeidsforholdSiste12Mnd
                 "9" -> reglerForLovvalg.harBrukerJobbetUtenforNorge
                 "10" -> reglerForLovvalg.erBrukerBosattINorge
                 "11" -> reglerForLovvalg.harBrukerNorskStatsborgerskap

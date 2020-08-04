@@ -254,7 +254,7 @@ class ArbeidsforholdMapper {
                arbeidsgiver: Arbeidsgiver?
     ): Arbeidsforhold {
         val periode = Periode(
-                domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
+                domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad),
                 domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad))
         return Arbeidsforhold(
                 periode = periode,
