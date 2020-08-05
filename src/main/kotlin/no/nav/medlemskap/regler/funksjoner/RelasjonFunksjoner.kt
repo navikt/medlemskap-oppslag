@@ -1,17 +1,17 @@
 package no.nav.medlemskap.regler.funksjoner
 
 import no.bekk.bekkopen.person.FodselsnummerValidator
-import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.regler.common.Funksjoner
-import no.nav.medlemskap.regler.common.lagInterval
+import no.nav.medlemskap.domene.Familierelasjon
+import no.nav.medlemskap.domene.Familierelasjonsrolle
+import no.nav.medlemskap.domene.PersonhistorikkRelatertPerson
+import no.nav.medlemskap.domene.Sivilstand
+import java.time.LocalDate
 import java.util.*
 
 object RelasjonFunksjoner {
 
-    fun List<Sivilstand>.hentFnrTilEktefellerEllerPartnerIPeriode(kontrollPeriode: Kontrollperiode): List<String?> =
-            this.sivilstandForKontrollperiode(kontrollPeriode).filter {
-                it.type == Sivilstandstype.GIFT || it.type == Sivilstandstype.REGISTRERT_PARTNER
-            }.map { it.relatertVedSivilstand }
+    fun List<Sivilstand>.hentFnrTilEktefellerEllerPartnerForDato(dato: LocalDate): List<String?> =
+            this.filter { it.giftEllerRegistrertPartner() && it.overlapper(dato) }.map { it.relatertVedSivilstand }
 
     fun List<Familierelasjon>.hentFnrTilBarnUnder25(): List<String?> =
             this.filter {
@@ -49,8 +49,3 @@ fun String.hent2DigitBursdagsAar() = this.substring(4, 6)
 
 fun String.getIndividnummer() = this.substring(6, 9)
 
-fun Sivilstand.sivilstandPeriodeOverlapperKontrollPerioden(kontrollPeriode: Kontrollperiode) =
-        Funksjoner.periodefilter(lagInterval(Periode(this.gyldigFraOgMed, this.gyldigTilOgMed)), kontrollPeriode.tilPeriode())
-
-fun List<Sivilstand>.sivilstandForKontrollperiode(kontrollPeriode: Kontrollperiode): List<Sivilstand> =
-        this.filter { it.sivilstandPeriodeOverlapperKontrollPerioden(kontrollPeriode) }
