@@ -39,15 +39,19 @@ class ReglerForMedl(
             } hvisJa {
                 sjekkRegel {
                     harBrukerGosysOpplysninger
+                } hvisJa {
+                    uavklartKonklusjon(ytelse)
                 } hvisNei {
                     sjekkRegel {
-                        periodeMedOgUtenMedlemskap
-                    } hvisJa {
-                        uavklartKonklusjon(ytelse)
+                        erPerioderAvklart
                     } hvisNei {
+                        uavklartKonklusjon(ytelse)
+                    } hvisJa {
                         sjekkRegel {
-                            erPerioderAvklart
+                            periodeMedOgUtenMedlemskap
                         } hvisJa {
+                            uavklartKonklusjon(ytelse)
+                        } hvisNei {
                             sjekkRegel {
                                 periodeMedMedlemskap
                             } hvisNei {
@@ -91,12 +95,8 @@ class ReglerForMedl(
                                     uavklartKonklusjon(ytelse)
                                 }
                             }
-                        } hvisNei {
-                            uavklartKonklusjon(ytelse)
                         }
                     }
-                } hvisJa {
-                    uavklartKonklusjon(ytelse)
                 }
             }
 
@@ -209,12 +209,12 @@ class ReglerForMedl(
             regelUendretCounterMidlertidig(regelId, Svar.NEI, ytelse).increment()
             return nei()
         }
-            /* Tas inn igjen når man ikke lenger trenger egen Grafana-counter for denne (når dekning kan gis i response)
-            when {
-                harSammeArbeidsforholdSidenFomDatoFraMedl() -> ja()
-                else -> nei()
-            }
-             */
+        /* Tas inn igjen når man ikke lenger trenger egen Grafana-counter for denne (når dekning kan gis i response)
+        when {
+            harSammeArbeidsforholdSidenFomDatoFraMedl() -> ja()
+            else -> nei()
+        }
+         */
     }
 
     private fun periodeMedMedlemskap(): Resultat =
