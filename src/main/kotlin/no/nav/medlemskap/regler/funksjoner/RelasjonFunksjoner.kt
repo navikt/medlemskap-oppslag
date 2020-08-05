@@ -47,14 +47,8 @@ object RelasjonFunksjoner {
 
     fun String.getIndividnummer() = this.substring(6, 9)
 
-    //Todo sjekke tom på sivilstand
     fun Sivilstand.sivilstandPeriodeOverlapperKontrollPerioden(kontrollPeriode: Kontrollperiode) =
-        Funksjoner.periodefilter(lagInterval(Periode(this.gyldigFraOgMed, kontrollPeriode.tom)), kontrollPeriode.tilPeriode())
+        Funksjoner.periodefilter(lagInterval(Periode(this.gyldigFraOgMed, this.gyldigTilOgMed)), kontrollPeriode.tilPeriode())
 
     fun List<Sivilstand>.sivilstandForKontrollperiode(kontrollPeriode: Kontrollperiode): List<Sivilstand> =
         this.filter {it.sivilstandPeriodeOverlapperKontrollPerioden(kontrollPeriode) }
-
-
-
-
-

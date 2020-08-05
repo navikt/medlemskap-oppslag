@@ -381,6 +381,7 @@ class SivilstandMapper: RadMapper<Sivilstand> {
         return Sivilstand(
                 type = domenespråkParser.parseSivilstandstype(SIVILSTANDSTYPE, rad),
                 gyldigFraOgMed = domenespråkParser.parseValgfriDato(GYLDIG_FRA_OG_MED, rad),
+                gyldigTilOgMed = domenespråkParser.parseValgfriDato(GYLDIG_TIL_OG_MED, rad),
                 relatertVedSivilstand = domenespråkParser.parseValgfriString(RELATERT_VED_SIVILSTAND, rad),
                 folkeregistermetadata = null
         )
@@ -410,6 +411,7 @@ enum class Domenebegrep(val nøkkel: String) {
     ER_MEDLEM("Er medlem"),
     FRA_OG_MED_DATO("Fra og med dato"),
     GYLDIG_FRA_OG_MED("Gyldig fra og med dato"),
+    GYLDIG_TIL_OG_MED("Gyldig til og med dato"),
     HAR_HATT_ARBEID_UTENFOR_NORGE("Har hatt arbeid utenfor Norge"),
     IDENT("Ident"),
     IDENTIFIKATOR("Identifikator"),
