@@ -37,7 +37,7 @@ fun Routing.evalueringRoute(
         services: Services,
         configuration: Configuration) {
 
-    authenticate {
+    authenticate("azureAuth") {
         post("/") {
             apiCounter().increment()
 
