@@ -26,6 +26,22 @@ Egenskap: Regel 11.2.1: Har bruker barn i TPS/PDL?
       | 01029431171            | Nei  |
       | 10019448164            | Nei  |
 
+  Scenario: Regel 11.2.1 - Barn som har fødselsnummer med 5 nuller
+    Gitt følgende familerelasjoner i personhistorikk fra TPS/PDL
+      | Relatert persons ident | Relatert persons rolle | Min rolle for person |
+      | 2507900000             | BARN                   | FAR                  |
+
+    Og følgende personhistorikk for relaterte personer fra TPS
+      | Ident      |
+      | 2507900000 |
+
+    Når regel "11.2.1" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
+
+    Så skal svaret være "Nei"
+
+
   Scenario: Regel 11.2.1 - Hvis bruker ikke har barn skal svaret være "Nei"
     Når regel "11.2.1" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |

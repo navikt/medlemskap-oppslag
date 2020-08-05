@@ -44,6 +44,7 @@ Egenskap: Regel 11.2: Har bruker ektefelle i TPS/PDL?
 
     Så skal svaret være "Nei"
 
+
   Scenario: Regel 11.2 - Sivilstatus bestemmes av sivilstatus dagen før inputperiodens fra og med dato
     Gitt følgende sivilstand i personhistorikk fra TPS/PDL
       | Sivilstandstype | Gyldig fra og med dato | Gyldig til og med dato | Relatert ved sivilstand |
@@ -60,3 +61,18 @@ Egenskap: Regel 11.2: Har bruker ektefelle i TPS/PDL?
 
     Så skal svaret være "Nei"
 
+
+  Scenario: Regel 11.2 - Fødselsnummer med fem nuller
+    Gitt følgende sivilstand i personhistorikk fra TPS/PDL
+      | Sivilstandstype | Gyldig fra og med dato | Gyldig til og med dato | Relatert ved sivilstand |
+      | GIFT            | 29.06.2015             |                        | 10108000000             |
+
+    Og følgende personhistorikk for relaterte personer fra TPS
+      | Ident       |
+      | 10108000000 |
+
+    Når regel "11.2" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
+
+    Så skal svaret være "Nei"
