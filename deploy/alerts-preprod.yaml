@@ -26,11 +26,11 @@ spec:
       action: "Sjekk app {{ $labels.app }} i namespace {{ $labels.kubernetes_namespace }} sine selftest for å se hva som er galt"
     - alert: Høy andel HTTP serverfeil (5xx responser)
       severity: danger
-      expr:  floor(increase(ktor_http_server_requests_seconds_count{app="medlemskap-oppslag",method="POST",route=~"/.authenticate azureAuth.",status=~"5.*"}[3m]))
+      expr:  floor(increase(ktor_http_server_requests_seconds_count{app="medlemskap-oppslag",method="POST",route=~"/.authenticate azureAuth.",status=~"5.*"}[3m])) > 1
       for: 3m
       action: "Sjekk loggene for å se hvorfor {{ $labels.backend }} returnerer HTTP feilresponser"
     - alert: Høy andel HTTP klientfeil (4xx responser)
       severity: warning
-      expr:  floor(increase(ktor_http_server_requests_seconds_count{app="medlemskap-oppslag",method="POST",route=~"/.authenticate azureAuth.",status=~"4.*"}[3m]))
+      expr:  floor(increase(ktor_http_server_requests_seconds_count{app="medlemskap-oppslag",method="POST",route=~"/.authenticate azureAuth.",status=~"4.*"}[3m])) > 1
       for: 3m
       action: "Sjekk loggene for å se hvorfor {{ $labels.backend }} returnerer HTTP feilresponser"
