@@ -76,3 +76,14 @@ Egenskap: Regel 11.2: Har bruker ektefelle i TPS/PDL?
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "Nei"
+
+  Scenario: Regel 11.2 - Bruker er gift, men "Relatert ved sivilstand" mangler
+    Gitt følgende sivilstand i personhistorikk fra TPS/PDL
+      | Sivilstandstype | Gyldig fra og med dato | Gyldig til og med dato | Relatert ved sivilstand |
+      | GIFT            | 29.06.2015             |                        |                         |
+
+    Når regel "11.2" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
+
+    Så skal svaret være "Nei"
