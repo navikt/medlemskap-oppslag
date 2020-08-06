@@ -19,17 +19,17 @@ class RegelsettForMedlTestMidlertidig {
 
     @Test
     fun `amerikansk person med vedtak i medl får uavklart på manuelle vedtak`() {
-        assertSvar(REGEL_A, Svar.JA, evaluer(personleser.amerikanskMedl()), Svar.UAVKLART)
+        assertSvar(REGEL_OPPLYSNINGER, Svar.JA, evaluer(personleser.amerikanskMedl()), Svar.UAVKLART)
     }
 
     @Test
     fun `norsk person med opplysninger i medl`() {
-        assertSvar(REGEL_A, Svar.JA, evaluer(personleser.norskMedOpplysningerIMedl()), Svar.JA)
+        assertSvar(REGEL_OPPLYSNINGER, Svar.JA, evaluer(personleser.norskMedOpplysningerIMedl()), Svar.JA)
     }
 
     @Test
     fun `amerikansk person med vedtak i medl og gosys får uavklart på manuelle vedtak`() {
-        assertSvar(REGEL_B, Svar.JA, evaluer(personleser.amerikanskGosys()), Svar.UAVKLART)
+        assertSvar(REGEL_OPPLYSNINGER, Svar.UAVKLART, evaluer(personleser.amerikanskGosys()), Svar.UAVKLART)
     }
 
 
@@ -75,7 +75,7 @@ class RegelsettForMedlTestMidlertidig {
 
     @Test
     fun `amerikansk person med UAVK (uavklart) statuskode i lovvalg fra medl`() {
-        assertSvar(REGEL_A, Svar.JA, evaluer(personleser.amerikanskUtenMedlemskapLovvalgStatuskodeUavklart()), Svar.UAVKLART)
+        assertSvar(REGEL_OPPLYSNINGER, Svar.JA, evaluer(personleser.amerikanskUtenMedlemskapLovvalgStatuskodeUavklart()), Svar.UAVKLART)
     }
 
     @Test

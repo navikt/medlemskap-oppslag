@@ -5,21 +5,21 @@ abstract class Regler {
     abstract fun hentHovedRegel(): Regel
 
     protected fun minstEnAvDisse(vararg regler: Regel): Resultat {
-        val delresultat = regler.map { it.utfør() }
+        val delresultatMap = regler.map { it.regelId to it.utfør() }.toMap()
 
-        return utledResultat(delresultat).copy(
-                delresultat = delresultat
+        return utledResultat(delresultatMap).copy(
+                delresultat = delresultatMap.values.toList()
         )
     }
 
     protected fun sjekkRegel(metode: () -> Regel) = metode.invoke()
 
-    private fun utledResultat(resultater: List<Resultat>): Resultat {
+    private fun utledResultat(resultater: Map<RegelId, Resultat>): Resultat {
+
         return when {
-            resultater.any { it.svar == Svar.UAVKLART } -> uavklart("Minst en av de følgende ble UAVKLART")
-            resultater.any { it.svar == Svar.JA } -> ja("Minst en av de følgende ble JA")
+            resultater[RegelId.REGEL_A]?.svar == Svar.JA && resultater[RegelId.REGEL_B]?.svar == Svar.NEI -> ja()
+            resultater.values.any { it.svar == Svar.JA } -> uavklart()
             else -> nei("Alle de følgende ble NEI")
         }
     }
-
 }
