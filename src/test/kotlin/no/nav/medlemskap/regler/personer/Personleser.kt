@@ -122,6 +122,58 @@ class Personleser {
     fun brukerErNorskStatsborger() = lesDatagrunnlag("$norskLovvalg/regel_11/norsk_statsborger.json")
     fun brukerErIkkeNorskStatsborger() = lesDatagrunnlag("$norskLovvalg/regel_11/utenlands_statsborger.json")
 
+    //Regel 11.2 "Har bruker ektefelle?"
+    fun brukerHarEktefelle() = lesDatagrunnlag("$norskLovvalg/regel_11_2/bruker_har_ektefelle_i_tps.json")
+    fun brukerHarIkkeEktefelle() = lesDatagrunnlag("$norskLovvalg/regel_11_2/bruker_har_ikke_ektefelle_i_tps.json")
+
+    //Regel 11.2.1 "Har bruker barn, men ikke ektefelle registrert i TPS?
+    fun brukerHarIkkeEktefelleMenBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_2_1/bruker_har_ikke_ektefelle_men_barn.json")
+    fun brukerHarIkkeEktefelleOgIkkeBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_2_1/bruker_har_ikke_ektefelle_og_ikke_barn.json")
+
+    //Må finne et fnr å denne, brukte mitt eget og testen gikk gjennom. Har fjernet dette nå
+    //fun brukerHarBarnOver25RegnesIkkeSomBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_2_1/bruker_med_barn_over_25_registreres_ikke_som_barn.json")
+
+    //Regel 11.2.2 "Har bruker uten ektefelle folkeregistrerte barn?"
+    fun brukerHarIkkeEktefelleMenFolkeregistrerteBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_2_2/bruker_har_ikke_ektefelle_men_folkeregistrerte_barn.json")
+    fun brukerHarIkkeEktefelleOgIkkeFolkeregistrerteBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_2_2/bruker_har_ikke_ektefelle_og_ikke_folkeregistrerte_barn.json")
+
+    //Regel 11.2.2.1 "Har bruker uten ektefelle og uten folkeregistrerte barn jobbet mer enn 100 prosent?"
+    fun brukerHarIkkeEktefelleOgIkkeFolkeregistrerteBarnHarJobbetMerEnn100rosent() = lesDatagrunnlag("$norskLovvalg/regel_11_2_2_1/bruker_har_ikke_folkeregistrerte_barn_men_jobbet_mer_enn_100_prosent.json")
+    fun brukerHarIkkeEktefelleOgIkkeFolkeregistrerteBarnHarIkkeJobbetMerEnn100Prosent() = lesDatagrunnlag("$norskLovvalg/regel_11_2_2_1/bruker_har_ikke_folkeregistrerte_barn_og_har_ikke_jobbet_mer_enn_100_prosent.json")
+
+    //Regel 11.2.3 "Har bruker uten ektefelle men med folkeregistrerte barn jobbet mer enn 80 prosent?"
+    fun brukerHarIkkeEktefelleMenMedFolkeregistrerteBarnHarJobbetMerEnn80rosent() = lesDatagrunnlag("$norskLovvalg/regel_11_2_3/bruker_uten_ektefelle_og_folkeregistrerte_barn_har_jobbet_mer_enn_80_prosent.json")
+    fun brukerHarIkkeEktefelleMenMedFolkeregistrerteBarnHarIkkeJobbetMerEnn80Prosent() = lesDatagrunnlag("$norskLovvalg/regel_11_2_3/bruker_uten_ektefelle_og_folkeregistrerte_barn_har_ikke_jobbet_mer_enn_80_prosent.json")
+
+    //Regel 11.3 "Har bruker ektefelle og barn registrert i TPS?"
+    fun brukerHarEktefelleOgBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_3/bruker_har_ektefelle_og_barn.json")
+    fun brukerHarEktefelleMenIkkeBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_3/bruker_har_ektefelle_men_ikke_barn.json")
+
+   //Regel 11.3.1 "Har barnløs brukers ektefelle folkeregistrert adresse?"
+    fun brukerUtenBarnHarFolkeregistrertEktefelle() = lesDatagrunnlag("$norskLovvalg/regel_11_3_1/bruker_uten_barn_har_folkeregistrert_ektefelle.json")
+    fun brukerUtenBarnHarIkkeFolkeregistrertEktefelle() = lesDatagrunnlag("$norskLovvalg/regel_11_3_1/bruker_uten_barn_har_ikke_folkeregistrert_ektefelle.json")
+
+    //Regel 11.3.1.1 "Har bruker uten barn og uten folkeregistrert ektefelle vært i 100% stilling?
+    fun brukerUtenBarnOgUtenFolkeregistrertEktefelleHarVeartI100prosent() = lesDatagrunnlag("$norskLovvalg/regel_11_3_1_1/barnloes_bruker_uten_folkeregistrert_ektefelle_har_jobbet_100_prosent.json")
+    fun brukerUtenBarnOgUtenFolkeregistrertEktefelleHarIkkeVeartI100prosent() = lesDatagrunnlag("$norskLovvalg/regel_11_3_1_1/barnloes_bruker_uten_folkeregistrert_ektefelle_har_ikke_jobbet_100_prosent.json")
+
+    //Regel 11.4 Er brukers (bruker med barn) ektefelle folkeregistrert som bosatt i Norge?
+    fun brukerHarBarnOgEktefelleErRegistrertINorge() = lesDatagrunnlag("$norskLovvalg/regel_11_4/brukers_ektefelle_er_folkeregistrert_i_Norge.json")
+    fun brukerHarBarnOgEktefelleErIkkeRegistrertINorge() = lesDatagrunnlag("$norskLovvalg/regel_11_4/brukers_ektefelle_er_ikke_folkeregistrert_i_Norge.json")
+
+    //Regel 11.4.1 Er bruker uten folkeregistrert ektefelle sitt barn folkeregistrert?
+    fun brukerHarIkkeFolkeregistrertEktefelleMenFolkeregistrertBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_4_1/bruker_uten_folkeregistrert_ektefelle_har_folkeregistrert_barn.json")
+    fun brukerHarIkkeFolkeregistrertEktefelleOgIkkeFolkeregisrertBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_4_1/bruker_uten_folkeregistrert_ektefelle_har_ikke_folkeregistrert_barn.json")
+
+
+    //Regel 11.5 Er bruker med folkeregistrert ektefelle sitt barn også folkeregistrert?
+    fun brukerHarFolkeregistrertEktefelleMenBarnErIkkeFolkeregistrert()= lesDatagrunnlag("$norskLovvalg/regel_11_5/bruker_har_folkeregistrert_ektefelle_men_ikke_barn.json")
+    fun brukerHarFolkeregistrertEktefelleOgBarn() = lesDatagrunnlag("$norskLovvalg/regel_11_5/bruker_har_folkeregistrert_ektefelle_og_barn.json")
+
+    //Regel 11.6 Har med folkeregistrerte relasjoner bruker jobbet mer enn 80 prosent?
+    fun brukermedFolkeregistrertRelasjonerHarJobbetMerEnn80Prosent()= lesDatagrunnlag("$norskLovvalg/regel_11_6/brukerMedFolkeregistrerteRelasjonerHarJobbetMerEnn80ProsentStilling.json")
+    fun brukermedFolkeregistrertRelasjonerHarIkkeJobbetMerEnn80Prosent()= lesDatagrunnlag("$norskLovvalg/regel_11_6/brukerMedFolkeregistrerteRelasjonerHarIkkeJobbetMerEnn80ProsentStilling.json")
+
     //Regel 12 - "Har bruker vært i minst 25% stilling de siste 12 mnd?"
     fun norskMedToOverlappendeArbeidsavtalerSomTilSammenErOver25ProsentIPeriode() = lesDatagrunnlag("$norskLovvalg/regel_12/norsk_med_to_overlappende_arbeidsavtaler_til_sammen_er_over_25_stillingsprosent_i_periode.json")
     fun norskMedEttArbeidsforholdMedArbeidsavtaleUnder25ProsentStillingIPeriode() = lesDatagrunnlag("$norskLovvalg/regel_12/norsk_med_ett_arbeidsforhold_under_25_stillingsprosent_i_periode.json")

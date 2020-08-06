@@ -13,7 +13,7 @@ class ReglerForGrunnforordningenTest {
 
     @Test
     fun `person som er statsborger i et EØS-land `() {
-        assertSvar(REGEL_2, Svar.JA, evaluer(personleser.brukerErStatsborgerIEØSLand()), Svar.UAVKLART)
+        assertSvar(REGEL_2, Svar.JA, evaluer(personleser.brukerErStatsborgerIEØSLand()), Svar.JA)
     }
 
     @Test

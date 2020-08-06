@@ -3,7 +3,7 @@
 
 Egenskap: Regel 12: Har bruker vært i minst 25 % stilling siste 12 måneder?
 
-  Scenario: Stilling med mindre enn 25 %
+  Scenario: Regel 12 - Stilling med mindre enn 25 %
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
       | 01.01.2018      |                 | Organisasjon     | NORMALT             |
@@ -23,7 +23,7 @@ Egenskap: Regel 12: Har bruker vært i minst 25 % stilling siste 12 måneder?
     Så skal svaret være "Nei"
 
 
-  Scenario: En stilling med mer enn 25 %
+  Scenario: Regel 12 - En stilling med mer enn 25 %
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
       | 01.01.2018      |                 | Organisasjon     | NORMALT             |
@@ -42,7 +42,7 @@ Egenskap: Regel 12: Har bruker vært i minst 25 % stilling siste 12 måneder?
 
     Så skal svaret være "Ja"
 
-  Scenariomal: To stillinger hos samme arbeidsgiver
+  Scenariomal: Regel 12 - To stillinger hos samme arbeidsgiver
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
       | 01.01.2018      |                 | Organisasjon     | NORMALT             |
@@ -69,7 +69,7 @@ Egenskap: Regel 12: Har bruker vært i minst 25 % stilling siste 12 måneder?
       | 20               | Ja   |
 
 
-  Scenariomal: To stillinger etter hverandre hos samme arbeidsgiver, siste 12 måneder
+  Scenariomal: Regel 12 - To stillinger etter hverandre hos samme arbeidsgiver, siste 12 måneder
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
       | 01.01.2018      |                 | Organisasjon     | NORMALT             |
@@ -96,7 +96,7 @@ Egenskap: Regel 12: Har bruker vært i minst 25 % stilling siste 12 måneder?
       | 20               | Ja   |
 
 
-  Scenariomal: To parallelle stillinger hos forskjellige arbeidsgivere
+  Scenariomal: Regel 12 - To parallelle stillinger hos forskjellige arbeidsgivere
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
       | 01.01.2018      |                 | Organisasjon     | NORMALT             |
@@ -130,7 +130,7 @@ Egenskap: Regel 12: Har bruker vært i minst 25 % stilling siste 12 måneder?
       | 15               | Ja   |
       | 20               | Ja   |
 
-  Scenariomal: To stillinger etter hverandre siste 12 måneder hos forskjellige arbeidsgivere
+  Scenariomal: Regel 12 - To stillinger etter hverandre siste 12 måneder hos forskjellige arbeidsgivere
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
       | 01.01.2018      | 30.12.2019      | Organisasjon     | NORMALT             |

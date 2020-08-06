@@ -16,11 +16,9 @@ class RegelSteps : No {
     private val ANSATTE_9 = listOf(Ansatte(9, null, null))
     private val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", identifikator = "1", landkode = "NOR", ansatte = ANSATTE_9, konkursStatus = null)
 
-    private var statsborgerskap: List<Statsborgerskap> = emptyList()
-    private var bostedsadresser: List<Adresse> = emptyList()
-    private var postadresser: List<Adresse> = emptyList()
-    private var midlertidigAdresser: List<Adresse> = emptyList()
-    private var personstatuser: List<FolkeregisterPersonstatus> = emptyList()
+    private val personhistorikkBuilder = PersonhistorikkBuilder()
+    private val pdlPersonhistorikkBuilder = PersonhistorikkBuilder()
+    private val personHistorikkRelatertePersoner = mutableListOf<PersonhistorikkRelatertPerson>()
 
     private var medlemskap: List<Medlemskap> = emptyList()
 
@@ -38,23 +36,43 @@ class RegelSteps : No {
 
     init {
         Gitt("følgende statsborgerskap i personhistorikken") { dataTable: DataTable? ->
-            statsborgerskap = domenespråkParser.mapDataTable(dataTable, StatsborgerskapMapper())
+            val statsborgerskap = domenespråkParser.mapDataTable(dataTable, StatsborgerskapMapper())
+            personhistorikkBuilder.statsborgerskap.addAll(statsborgerskap)
         }
 
         Gitt("følgende bostedsadresser i personhistorikken") { dataTable: DataTable? ->
-            bostedsadresser = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
+            val bostedsadresser = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
+            personhistorikkBuilder.bostedsadresser.addAll(bostedsadresser)
         }
 
         Gitt("følgende postadresser i personhistorikken") { dataTable: DataTable? ->
-            postadresser = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
+            val postadresser = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
+            personhistorikkBuilder.postadresser.addAll(postadresser)
         }
 
         Gitt("følgende midlertidige adresser i personhistorikken") { dataTable: DataTable? ->
-            midlertidigAdresser = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
+            val midlertidigAdresser = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
+            personhistorikkBuilder.midlertidigAdresser.addAll(midlertidigAdresser)
         }
 
         Gitt("følgende personstatuser i personhistorikken") { dataTable: DataTable? ->
-            personstatuser = domenespråkParser.mapDataTable(dataTable, PersonstatusMapper())
+            val personstatuser = domenespråkParser.mapDataTable(dataTable, PersonstatusMapper())
+            personhistorikkBuilder.personstatuser.addAll(personstatuser)
+        }
+
+        Gitt<DataTable>("følgende sivilstand i personhistorikk fra TPS\\/PDL") { dataTable: DataTable? ->
+            val sivilstand = domenespråkParser.mapDataTable(dataTable, SivilstandMapper())
+            pdlPersonhistorikkBuilder.sivilstand.addAll(sivilstand)
+        }
+
+        Gitt<DataTable>("følgende familerelasjoner i personhistorikk fra TPS\\/PDL") { dataTable: DataTable? ->
+            val familierelasjoner = domenespråkParser.mapDataTable(dataTable, FamilieRelasjonMapper())
+            pdlPersonhistorikkBuilder.familierelasjoner.addAll(familierelasjoner)
+        }
+
+        Gitt<DataTable>("følgende personhistorikk for relaterte personer fra TPS") { dataTable: DataTable? ->
+            val relatertePersoner = domenespråkParser.mapDataTable(dataTable, PersonhistorikkRelatertePersonerMapper())
+            personHistorikkRelatertePersoner.addAll(relatertePersoner)
         }
 
         Gitt("følgende medlemsunntak fra MEDL") { dataTable: DataTable? ->
@@ -120,6 +138,7 @@ class RegelSteps : No {
 
             val reglerForLovvalg = ReglerForLovvalg.fraDatagrunnlag(datagrunnlag!!)
             val reglerForMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag!!)
+            val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag!!)
 
             val regel = when (regelId!!) {
                 "1.1" -> reglerForMedl.erPerioderAvklart
@@ -131,11 +150,24 @@ class RegelSteps : No {
                 "1.5" -> reglerForMedl.erArbeidsforholdUendretForBrukerMedMedlemskap
                 "1.6" -> reglerForMedl.erDekningUavklart
                 "1.7" -> reglerForMedl.harBrukerDekningIMedl
+                "3" -> reglerForArbeidsforhold.harBrukerSammenhengendeArbeidsforholdSiste12Mnd
                 "9" -> reglerForLovvalg.harBrukerJobbetUtenforNorge
                 "10" -> {
                     ErBrukerBosattINorgeRegel.fraDatagrunnlag(datagrunnlag!!).regel
                 }
                 "11" -> reglerForLovvalg.harBrukerNorskStatsborgerskap
+                "11.2" -> reglerForLovvalg.harBrukerEktefelle
+                "11.2.1" -> reglerForLovvalg.harBrukerBarnUtenEktefelle
+                "11.2.2" -> reglerForLovvalg.harBrukerUtenEktefelleBarnSomErFolkeregistrert
+                "11.2.2.1" -> reglerForLovvalg.harBrukerUtenEktefelleOgBarnJobbetMerEnn100Prosent
+                "11.2.3" -> reglerForLovvalg.harBrukerMedFolkeregistrerteBarnJobbetMerEnn80Prosent
+                "11.3" -> reglerForLovvalg.harBrukerEktefelleOgBarn
+                "11.3.1" -> reglerForLovvalg.erBarnloesBrukersEktefelleBosattINorge
+                "11.3.1.1" -> reglerForLovvalg.harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn100Prosent
+                "11.4" -> reglerForLovvalg.erBrukerMedBarnSittEktefelleBosattINorge
+                "11.4.1" -> reglerForLovvalg.erBrukerUtenFolkeregistrertEktefelleSittBarnFolkeregistrert
+                "11.5" -> reglerForLovvalg.erBrukerMedFolkeregistrertEktefelleSittBarnFolkeregistrert
+                "11.6" -> reglerForLovvalg.harBrukerMedFolkeregistrerteRelasjonerJobbetMerEnn80Prosent
                 "12" -> reglerForLovvalg.harBrukerJobbet25ProsentEllerMer
                 else -> throw java.lang.RuntimeException("Ukjent regel")
             }
@@ -196,31 +228,14 @@ class RegelSteps : No {
         return Datagrunnlag(
                 periode = sykemeldingsperiode,
                 brukerinput = Brukerinput(harHattArbeidUtenforNorge),
-                personhistorikk = Personhistorikk(
-                        statsborgerskap = statsborgerskap,
-                        personstatuser = personstatuser,
-                        bostedsadresser = bostedsadresser,
-
-                        postadresser = postadresser,
-                        midlertidigAdresser = midlertidigAdresser,
-                        familierelasjoner = emptyList(),
-                        sivilstand = emptyList()
-                ),
-                pdlpersonhistorikk = Personhistorikk(
-                        statsborgerskap = statsborgerskap,
-                        personstatuser = emptyList(),
-                        bostedsadresser = bostedsadresser,
-                        postadresser = emptyList(),
-                        midlertidigAdresser = emptyList(),
-                        familierelasjoner = emptyList(),
-                        sivilstand = emptyList()
-                ),
+                personhistorikk = personhistorikkBuilder.build(),
+                pdlpersonhistorikk = pdlPersonhistorikkBuilder.build(),
                 medlemskap = medlemskap,
                 arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgiverMap, arbeidsavtaleMap, utenlandsoppholdMap),
                 oppgaver = oppgaverFraGosys,
                 dokument = journalPosterFraJoArk,
                 ytelse = ytelse,
-                personHistorikkRelatertePersoner = emptyList()
+                personHistorikkRelatertePersoner = personHistorikkRelatertePersoner
         )
     }
 

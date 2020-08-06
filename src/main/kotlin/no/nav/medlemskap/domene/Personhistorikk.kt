@@ -50,9 +50,27 @@ data class Adresse(
 data class Sivilstand(
         val type: Sivilstandstype,
         val gyldigFraOgMed: LocalDate?,
+        val gyldigTilOgMed: LocalDate?,
         val relatertVedSivilstand: String?,
         val folkeregistermetadata: Folkeregistermetadata?
-)
+) {
+    fun overlapper(dato: LocalDate): Boolean {
+        return !fraOgMedEllerMinDato().isAfter(dato) && !tilOgMedEllerMaksDato().isBefore(dato)
+    }
+
+    fun fraOgMedEllerMinDato(): LocalDate {
+        return gyldigFraOgMed ?: LocalDate.MIN
+    }
+
+    fun tilOgMedEllerMaksDato(): LocalDate {
+        return gyldigTilOgMed ?: LocalDate.MAX
+    }
+
+    fun giftEllerRegistrertPartner(): Boolean {
+        return type == Sivilstandstype.GIFT || type == Sivilstandstype.REGISTRERT_PARTNER
+    }
+
+}
 
 enum class Sivilstandstype {
     GIFT,
