@@ -51,30 +51,8 @@
     ],
     "postadresser": [],
     "midlertidigAdresser": [],
-    "sivilstand": [
-      {
-        "type": "GIFT",
-        "gyldigFraOgMed": "2015-06-29",
-        "relatertVedSivilstand": "23027524079",
-        "folkeregistermetadata": {
-          "ajourholdstidspunkt": "2020-07-07T10:41:59",
-          "gyldighetstidspunkt": "2020-07-07T10:41:59",
-          "opphoerstidspunkt": null
-        }
-      }
-    ],
-    "familierelasjoner": [
-      {
-        "relatertPersonsIdent": "18071076276",
-        "relatertPersonsRolle": "BARN",
-        "minRolleForPerson": "FAR",
-        "folkeregistermetadata": {
-          "ajourholdstidspunkt": "2020-07-07T10:41:58",
-          "gyldighetstidspunkt": "2020-07-07T10:41:58",
-          "opphoerstidspunkt": null
-        }
-      }
-    ]
+    "sivilstand": [],
+    "familierelasjoner": []
   },
   "medlemskap": [],
   "arbeidsforhold": [
@@ -109,44 +87,5 @@
   "oppgaver": [],
   "dokument": [],
   "ytelse": "SYKEPENGER",
-  "personHistorikkRelatertePersoner": [
-    {
-      "ident": "23027524079",
-      "personstatuser": [
-        {
-          "personstatus": "BOSA",
-          "fom": "1961-10-31",
-          "tom": null
-        }
-      ],
-      "bostedsadresser": [
-        {
-          "landkode": "NOR",
-          "fom": "1975-02-23",
-          "tom": null
-        }
-      ],
-      "postadresser": [],
-      "midlertidigAdresser": []
-    },
-    {
-      "ident": "18071076276",
-      "personstatuser": [
-        {
-          "personstatus": "BOSA",
-          "fom": "1961-10-31",
-          "tom": null
-        }
-      ],
-      "bostedsadresser": [
-        {
-          "landkode": "NOR",
-          "fom": "1975-02-23",
-          "tom": null
-        }
-      ],
-      "postadresser": [],
-      "midlertidigAdresser": []
-    }
-  ]
+  "personHistorikkRelatertePersoner": []
 }
