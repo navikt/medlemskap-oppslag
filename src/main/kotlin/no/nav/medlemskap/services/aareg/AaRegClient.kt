@@ -14,9 +14,10 @@ import mu.KotlinLogging
 import no.nav.medlemskap.domene.Arbeidsforhold
 import no.nav.medlemskap.domene.ArbeidsgiverOrg
 import no.nav.medlemskap.domene.ArbeidsgiverPerson
+import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.services.ereg.Ansatte
 import no.nav.medlemskap.services.ereg.EregClient
-import no.nav.medlemskap.services.pdl.PdlClient
+import no.nav.medlemskap.services.pdl.PdlService
 import no.nav.medlemskap.services.runWithRetryAndMetrics
 import no.nav.medlemskap.services.sts.StsRestClient
 import java.time.LocalDate
@@ -90,7 +91,7 @@ class AaRegClient(
 class AaRegService(
         private val aaRegClient: AaRegClient,
         private val eregClient: EregClient,
-        private val pdlClient: PdlClient
+        private val pdlService: PdlService
 ) {
 
     suspend fun hentArbeidsforhold(fnr: String, callId: String, fraOgMed: LocalDate, tilOgMed: LocalDate): List<Arbeidsforhold> {
@@ -100,7 +101,7 @@ class AaRegService(
         val arbeidsforhold = aaRegClient.hentArbeidsforhold(fnr, callId, fraOgMed, tilOgMed)
 
         val dataOmArbeidsgiver = mutableMapOf<String, ArbeidsgiverInfo>()
-        val dataOmPerson = mutableMapOf<String, String?>()
+        val dataOmPerson = mutableMapOf<String, List<no.nav.medlemskap.domene.Statsborgerskap>>()
         val orgnummere = arbeidsgiverOrg.getOrg(fnr, callId, fraOgMed, tilOgMed)
         val personIdentifikatorer = arbeidsgiverPerson.getIdent(fnr, callId, fraOgMed, tilOgMed)
 
@@ -138,7 +139,7 @@ class AaRegService(
         return eregClient.hentEnhetstype(orgnummer, callId)
     }
 
-    private suspend fun hentArbeidsgiversLand(identifikator: String, callId: String): String? {
-        return pdlClient.hentNasjonalitet(identifikator, callId).data?.hentNasjonalitet?.last()?.land
+    private suspend fun hentArbeidsgiversLand(identifikator: String, callId: String): List<Statsborgerskap> {
+        return pdlService.hentStatsborgerskap(identifikator, callId)
     }
 }

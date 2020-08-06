@@ -80,7 +80,7 @@ class Services(val configuration: Configuration) {
         personService = PersonService(personClient, pdlService)
         eregClient = restClients.ereg(configuration.register.eregBaseUrl)
         aaRegClient = restClients.aaReg(configuration.register.aaRegBaseUrl)
-        aaRegService = AaRegService(aaRegClient, eregClient, pdlClient)
+        aaRegService = AaRegService(aaRegClient, eregClient, pdlService)
         safClient = restClients.saf(configuration.register.safBaseUrl)
         safService = SafService(safClient)
         oppgaveClient = restClients.oppgaver(configuration.register.oppgaveBaseUrl)

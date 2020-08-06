@@ -18,7 +18,7 @@ import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class PdlClientHentNasjonalitetTest {
+class PdlClientStatsborgerskapDataTest {
 
     companion object {
         val server: WireMockServer = WireMockServer(WireMockConfiguration.options().dynamicPort())
@@ -42,9 +42,9 @@ class PdlClientHentNasjonalitetTest {
     }
 
     @Test
-    fun `henter nasjonalitetskode`() {
+    fun `henter nasjonalitet`() {
         val callId = "123456"
-        val username = "Hatsune Miku"
+        val username = "whatever"
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
@@ -58,9 +58,9 @@ class PdlClientHentNasjonalitetTest {
 
         val pdlClient = PdlClient(server.baseUrl(), stsClient, username, cioHttpClient)
 
-        val pdlResponse = runBlocking { pdlClient.hentNasjonalitet("12345678910", callId) }
+        val pdlResponse = runBlocking { pdlClient.hentNasjonalitet("1234567890", callId) }
 
-        assertEquals("NOR", pdlResponse)
+        assertEquals("NOR", pdlResponse.data?.hentPerson?.statsborgerskap?.last()?.land)
     }
 
 
@@ -71,9 +71,18 @@ class PdlClientHentNasjonalitetTest {
 //.withRequestBody()
 
     val pdlResponse =
-            """{"data": {
+            """{
+                "data": {
                 "hentPerson": {
-                "statsborgerskap": [{"land": "NOR","gyldigFraOgMed": "2010-10-21","gyldigTilOgMed": null}]
-    }}}""".trimIndent()
+                "statsborgerskap": [
+                {
+                    "land": "NOR",
+                    "gyldigFraOgMed": "2010-10-21",
+                    "gyldigTilOgMed": null
+                }
+                ]
+            }
+            }
+            }""".trimIndent()
 
 }

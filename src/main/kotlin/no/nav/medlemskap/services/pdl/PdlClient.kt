@@ -14,6 +14,7 @@ import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Personhistorikk
+import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.services.runWithRetryAndMetrics
 import no.nav.medlemskap.services.sts.StsRestClient
 
@@ -60,9 +61,9 @@ class PdlClient(
 
     }
 
-    suspend fun hentNasjonalitet(fnr: String, callId: String): HentNasjonalitetResponse {
+    suspend fun hentNasjonalitet(fnr: String, callId: String): HentStatsborgerskapResponse {
         return runWithRetryAndMetrics("PDL", "HentNasjonalitet", retry) {
-            httpClient.post<HentNasjonalitetResponse> {
+            httpClient.post<HentStatsborgerskapResponse> {
                 url("$baseUrl")
                 header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
@@ -160,7 +161,10 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
         return mapTilFoedselsaar(pdlClient.hentFoedselsaar(fnr, callId))
     }
 
-
+    // TODO: feilhåndtering; hva vil vi gjøre dersom det ikke finnes arbeidsgiver?
+    suspend fun hentStatsborgerskap(fnr: String, callId: String): List<Statsborgerskap> {
+        return pdlClient.hentNasjonalitet(fnr, callId).data?.hentPerson?.statsborgerskap?.map { mapStatsborgerskap(it) } ?: emptyList()
+    }
 }
 
 

@@ -18,9 +18,9 @@ Egenskap: Borgere som ikke er EØS-borgere skal ha uavklart medlemskap i MVP
   "personhistorikk": {
     "statsborgerskap": [
       {
-        "landkode": "USA",
-        "fom": "1991-06-30",
-        "tom": null
+        "land": "USA",
+        "gyldigFraOgMed": "1991-06-30",
+        "gyldigTilOgMed": null
       }
     ],
     "personstatuser": [],

@@ -10,11 +10,7 @@ import no.nav.medlemskap.domene.Statsborgerskap
 
 fun mapTilPersonHistorikk(person: HentPdlPersonResponse): Personhistorikk {
     val statsborgerskap: List<Statsborgerskap> = person.data?.hentPerson?.statsborgerskap?.map {
-        Statsborgerskap(
-                landkode = it.land,
-                fom = it.gyldigFraOgMed,
-                tom = it.gyldigTilOgMed
-        )
+        mapStatsborgerskap(it)
     } ?: throw PersonIkkeFunnet("PDL")
 
     val personstatuser: List<FolkeregisterPersonstatus> = emptyList()
@@ -53,6 +49,14 @@ fun mapTilPersonHistorikk(person: HentPdlPersonResponse): Personhistorikk {
             }
 
     return Personhistorikk(statsborgerskap, personstatuser, bostedsadresser, postadresser, midlertidigAdresser, sivilstand, familierelasjoner)
+}
+
+fun mapStatsborgerskap(it: no.nav.medlemskap.services.pdl.Statsborgerskap): Statsborgerskap {
+    return Statsborgerskap(
+            landkode = it.land,
+            fom = it.gyldigFraOgMed,
+            tom = it.gyldigTilOgMed
+    )
 }
 
 private fun mapFamileRelasjonsrolle(rolle: Familierelasjonsrolle?): no.nav.medlemskap.domene.Familierelasjonsrolle? {
