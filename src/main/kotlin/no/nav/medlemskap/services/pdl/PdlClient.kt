@@ -162,12 +162,12 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
     }
 
     // TODO: feilhåndtering; hva vil vi gjøre dersom det ikke finnes arbeidsgiver?
-    suspend fun hentStatsborgerskap(fnr: String, callId: String): List<Statsborgerskap> {
-        return pdlClient.hentNasjonalitet(fnr, callId).data?.hentPerson?.statsborgerskap?.map { PdlMapper.mapStatsborgerskap(it) }
-                .let {
-                    logger.warn("PDL fant ikke person")
-                    emptyList()
-                }
+    suspend fun hentStatsborgerskap(fnr: String, callId: String): List<Statsborgerskap>? {
+        val statsborgerskap = pdlClient.hentNasjonalitet(fnr, callId).data?.hentPerson?.statsborgerskap?.ifEmpty {
+            logger.warn("PDL fant ikke person")
+            emptyList()
+        }
+        return statsborgerskap?.map { PdlMapper.mapStatsborgerskap(it) }
     }
 }
 

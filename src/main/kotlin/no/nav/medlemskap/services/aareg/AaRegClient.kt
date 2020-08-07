@@ -101,7 +101,7 @@ class AaRegService(
         val arbeidsforhold = aaRegClient.hentArbeidsforhold(fnr, callId, fraOgMed, tilOgMed)
 
         val dataOmArbeidsgiver = mutableMapOf<String, ArbeidsgiverInfo>()
-        val dataOmPerson = mutableMapOf<String, List<no.nav.medlemskap.domene.Statsborgerskap>>()
+        val dataOmPerson = mutableMapOf<String, List<no.nav.medlemskap.domene.Statsborgerskap>?>()
         val orgnummere = arbeidsgiverOrg.getOrg(fnr, callId, fraOgMed, tilOgMed)
         val personIdentifikatorer = arbeidsgiverPerson.getIdent(fnr, callId, fraOgMed, tilOgMed)
 
@@ -139,7 +139,7 @@ class AaRegService(
         return eregClient.hentEnhetstype(orgnummer, callId)
     }
 
-    private suspend fun hentArbeidsgiversLand(identifikator: String, callId: String): List<Statsborgerskap> {
+    private suspend fun hentArbeidsgiversLand(identifikator: String, callId: String): List<Statsborgerskap>? {
         return pdlService.hentStatsborgerskap(identifikator, callId)
     }
 }

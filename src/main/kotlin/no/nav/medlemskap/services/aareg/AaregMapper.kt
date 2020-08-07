@@ -6,7 +6,7 @@ import no.nav.medlemskap.domene.*
 
 private val logger = KotlinLogging.logger { }
 
-fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, dataOmArbeidsgiver: MutableMap<String, AaRegService.ArbeidsgiverInfo>, dataOmPerson: MutableMap<String, List<Statsborgerskap>>): List<Arbeidsforhold> {
+fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, dataOmArbeidsgiver: MutableMap<String, AaRegService.ArbeidsgiverInfo>, dataOmPerson: MutableMap<String, List<Statsborgerskap>?>): List<Arbeidsforhold> {
     return arbeidsforhold.map {
         Arbeidsforhold(
                 periode = mapPeriodeTilArbeidsforhold(it),
@@ -63,7 +63,7 @@ fun mapArbeidsForholdType(arbeidsforhold: AaRegArbeidsforhold): Arbeidsforholdst
     }
 }
 
-fun mapArbeidsgiver(arbeidsforhold: AaRegArbeidsforhold, dataOmArbeidsgiver: MutableMap<String, AaRegService.ArbeidsgiverInfo>, dataOmPerson: MutableMap<String, List<Statsborgerskap>>): Arbeidsgiver {
+fun mapArbeidsgiver(arbeidsforhold: AaRegArbeidsforhold, dataOmArbeidsgiver: MutableMap<String, AaRegService.ArbeidsgiverInfo>, dataOmPerson: MutableMap<String, List<Statsborgerskap>?>): Arbeidsgiver {
     val enhetstype = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.arbeidsgiverEnhetstype
     val orgnummer = arbeidsforhold.arbeidsgiver.organisasjonsnummer
     val ansatte = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.ansatte
