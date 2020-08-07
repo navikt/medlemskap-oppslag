@@ -156,6 +156,11 @@ private fun getStillingsprosentIntervall(stillingsprosent: Double): String {
     return "N/A"
 }
 
+fun medlCounter(): Counter = Counter
+        .builder("medl_counter")
+        .description("Registrerer dersom det finnes en periode i medl")
+        .register(Metrics.globalRegistry)
+
 fun apiCounter(): Counter = Counter
         .builder("api_hit_counter")
         .description("Registers a counter for each hit to the api")

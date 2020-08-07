@@ -34,67 +34,58 @@ class ReglerForMedl(
     private val datohjelper = Datohjelper(periode, ytelse)
 
     override fun hentHovedRegel(): Regel =
+
             sjekkRegel {
-                harBrukerMedlOpplysninger
+                erPerioderAvklart
+            } hvisNei {
+                uavklartKonklusjon(ytelse)
             } hvisJa {
                 sjekkRegel {
-                    harBrukerGosysOpplysninger
+                    periodeMedOgUtenMedlemskap
                 } hvisJa {
                     uavklartKonklusjon(ytelse)
                 } hvisNei {
                     sjekkRegel {
-                        erPerioderAvklart
+                        periodeMedMedlemskap
                     } hvisNei {
-                        uavklartKonklusjon(ytelse)
+                        sjekkRegel {
+                            erPeriodeUtenMedlemskapInnenfor12MndPeriode
+                        } hvisNei {
+                            uavklartKonklusjon(ytelse)
+                        } hvisJa {
+                            sjekkRegel {
+                                erArbeidsforholdUendretForBrukerUtenMedlemskap
+                            } hvisJa {
+                                uavklartKonklusjon(ytelse)
+                            } hvisNei {
+                                uavklartKonklusjon(ytelse)
+                            }
+                        }
                     } hvisJa {
                         sjekkRegel {
-                            periodeMedOgUtenMedlemskap
+                            erPeriodeMedMedlemskapInnenfor12MndPeriode
                         } hvisJa {
-                            uavklartKonklusjon(ytelse)
-                        } hvisNei {
                             sjekkRegel {
-                                periodeMedMedlemskap
-                            } hvisNei {
-                                sjekkRegel {
-                                    erPeriodeUtenMedlemskapInnenfor12MndPeriode
-                                } hvisNei {
-                                    uavklartKonklusjon(ytelse)
-                                } hvisJa {
-                                    sjekkRegel {
-                                        erArbeidsforholdUendretForBrukerUtenMedlemskap
-                                    } hvisJa {
-                                        uavklartKonklusjon(ytelse)
-                                    } hvisNei {
-                                        uavklartKonklusjon(ytelse)
-                                    }
-                                }
+                                erArbeidsforholdUendretForBrukerMedMedlemskap
                             } hvisJa {
                                 sjekkRegel {
-                                    erPeriodeMedMedlemskapInnenfor12MndPeriode
+                                    erDekningUavklart
                                 } hvisJa {
+                                    uavklartKonklusjon(ytelse)
+                                } hvisNei {
                                     sjekkRegel {
-                                        erArbeidsforholdUendretForBrukerMedMedlemskap
+                                        harBrukerDekningIMedl
                                     } hvisJa {
-                                        sjekkRegel {
-                                            erDekningUavklart
-                                        } hvisJa {
-                                            uavklartKonklusjon(ytelse)
-                                        } hvisNei {
-                                            sjekkRegel {
-                                                harBrukerDekningIMedl
-                                            } hvisJa {
-                                                jaKonklusjon(ytelse)
-                                            } hvisNei {
-                                                uavklartKonklusjon(ytelse)
-                                            }
-                                        }
+                                        jaKonklusjon(ytelse)
                                     } hvisNei {
                                         uavklartKonklusjon(ytelse)
                                     }
-                                } hvisNei {
-                                    uavklartKonklusjon(ytelse)
                                 }
+                            } hvisNei {
+                                uavklartKonklusjon(ytelse)
                             }
+                        } hvisNei {
+                            uavklartKonklusjon(ytelse)
                         }
                     }
                 }
