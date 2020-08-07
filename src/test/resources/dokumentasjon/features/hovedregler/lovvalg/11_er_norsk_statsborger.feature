@@ -3,7 +3,7 @@
 
 Egenskap: Regel 11: Er bruker norsk statborger?
 
-  Scenariomal: Samme statsborgerskap siste 12 måneder
+  Scenariomal: Regel 11 - Samme statsborgerskap siste 12 måneder
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode          | Fra og med dato | Til og med dato |
       | <Statsborgerskap> | 01.01.2000      |                 |
@@ -19,7 +19,7 @@ Egenskap: Regel 11: Er bruker norsk statborger?
       | NOR             | Ja   |
       | FRA             | Nei  |
 
-  Scenariomal: Forskjellige statsborgerskap siste 12 måneder
+  Scenariomal: Regel 11 - Forskjellige statsborgerskap siste 12 måneder
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode          | Fra og med dato | Til og med dato |
       | <Statsborgerskap> | 01.01.1995      | 31.10.2019      |
@@ -37,7 +37,7 @@ Egenskap: Regel 11: Er bruker norsk statborger?
       | NOR             | Ja   |
       | FRA             | Nei  |
 
-  Scenario: Parallelle statsborgerskap siste 12 måneder
+  Scenario: Regel 11 - Parallelle statsborgerskap siste 12 måneder
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
       | FRA      | 01.01.2000      |                 |

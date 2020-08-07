@@ -143,7 +143,7 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
     }
 
     suspend fun hentPersonHistorikk(fnr: String, callId: String): Personhistorikk {
-        return mapTilPersonHistorikk(pdlClient.hentPerson(fnr, callId))
+        return PdlMapper.mapTilPersonHistorikk(pdlClient.hentPerson(fnr, callId))
 
 /*        // Hack for å overleve manglende aktørID i ikke-konsistente data i Q2
         if (pdlResponse.errors != null && clusterName == "dev-fss") {
@@ -158,12 +158,12 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
     }
 
     suspend fun hentFoedselsaar(fnr: String, callId: String): Int {
-        return mapTilFoedselsaar(pdlClient.hentFoedselsaar(fnr, callId))
+        return PdlMapper.mapTilFoedselsaar(pdlClient.hentFoedselsaar(fnr, callId))
     }
 
     // TODO: feilhåndtering; hva vil vi gjøre dersom det ikke finnes arbeidsgiver?
     suspend fun hentStatsborgerskap(fnr: String, callId: String): List<Statsborgerskap> {
-        return pdlClient.hentNasjonalitet(fnr, callId).data?.hentPerson?.statsborgerskap?.map { mapStatsborgerskap(it) }
+        return pdlClient.hentNasjonalitet(fnr, callId).data?.hentPerson?.statsborgerskap?.map { PdlMapper.mapStatsborgerskap(it) }
                 .let {
                     logger.warn("PDL fant ikke person")
                     emptyList()

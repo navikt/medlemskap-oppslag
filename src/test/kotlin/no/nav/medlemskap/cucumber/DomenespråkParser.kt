@@ -132,6 +132,12 @@ class DomenespråkParser {
         return Arbeidsforholdstype.valueOf(verdi)
     }
 
+    fun parseSivilstandstype(domenebegrep: Domenebegrep, rad: Map<String, String>): Sivilstandstype {
+        val verdi = verdi(domenebegrep.nøkkel, rad)
+
+        return Sivilstandstype.valueOf(verdi)
+    }
+
     fun parseValgfriInt(domenebegrep: Domenebegrep, rad: Map<String, String>): Int? {
         val verdi = valgfriVerdi(domenebegrep.nøkkel, rad)
         if (verdi == null) {
@@ -151,6 +157,22 @@ class DomenespråkParser {
         val verdi = verdi(domenebegrep.nøkkel, rad)
 
         return Status.valueOf(verdi)
+    }
+
+    fun parseRolle(domenebegrep: Domenebegrep, rad: Map<String, String>): Familierelasjonsrolle {
+        val verdi = verdi(domenebegrep.nøkkel, rad)
+
+        return Familierelasjonsrolle.valueOf(verdi)
+    }
+
+    fun parseValgfriRolle(domenebegrep: Domenebegrep, rad: Map<String, String>): Familierelasjonsrolle? {
+        val verdi = valgfriVerdi(domenebegrep.nøkkel, rad)
+
+        if (verdi == null) {
+            return null
+        }
+
+        return Familierelasjonsrolle.valueOf(verdi)
     }
 
     companion object {
@@ -261,14 +283,14 @@ class ArbeidsforholdMapper {
                 periode = periode,
                 utenlandsopphold = utenlandsopphold,
                 arbeidsgivertype = AaRegOpplysningspliktigArbeidsgiverType.valueOf(domenespråkParser.parseString(ARBEIDSGIVERTYPE, rad)),
-                arbeidsgiver = arbeidsgiver?: VANLIG_NORSK_ARBEIDSGIVER,
+                arbeidsgiver = arbeidsgiver ?: VANLIG_NORSK_ARBEIDSGIVER,
                 arbeidsfolholdstype = domenespråkParser.parseArbeidsforholdstype(rad),
                 arbeidsavtaler = emptyList()
         )
     }
 }
 
-class ArbeidsavtaleMapper: RadMapper<Arbeidsavtale> {
+class ArbeidsavtaleMapper : RadMapper<Arbeidsavtale> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Arbeidsavtale {
         return Arbeidsavtale(
                 Periode(
@@ -322,8 +344,65 @@ class PersonstatusMapper : RadMapper<FolkeregisterPersonstatus> {
     }
 }
 
+class PersonhistorikkRelatertePersonerMapper : RadMapper<PersonhistorikkRelatertPerson> {
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): PersonhistorikkRelatertPerson {
+        val fraOgMedDato = domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad)
+        val tilOgMedDato = domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
+
+        val bostedsadresser = mutableListOf<Adresse>()
+        val bostedsadresse = domenespråkParser.parseValgfriString(BOSTED, rad)
+        if (bostedsadresse != null) {
+            bostedsadresser.add(Adresse(bostedsadresse, fraOgMedDato, tilOgMedDato))
+        }
+
+        val postadresser = mutableListOf<Adresse>()
+        val postadresse = domenespråkParser.parseValgfriString(POSTADRESSE, rad)
+        if (postadresse != null) {
+            postadresser.add(Adresse(postadresse, fraOgMedDato, tilOgMedDato))
+        }
+
+        val midlertidigAdresser = mutableListOf<Adresse>()
+        val midlertidigAdresse = domenespråkParser.parseValgfriString(MIDLERTIDIG_ADRESSE, rad)
+        if (midlertidigAdresse != null) {
+            midlertidigAdresser.add(Adresse(midlertidigAdresse, fraOgMedDato, tilOgMedDato))
+        }
+
+        return PersonhistorikkRelatertPerson(
+                ident = domenespråkParser.parseString(IDENT, rad),
+                personstatuser = emptyList(),
+                bostedsadresser = bostedsadresser,
+                postadresser = postadresser,
+                midlertidigAdresser = midlertidigAdresser
+        )
+    }
+}
+
+class SivilstandMapper: RadMapper<Sivilstand> {
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Sivilstand {
+        return Sivilstand(
+                type = domenespråkParser.parseSivilstandstype(SIVILSTANDSTYPE, rad),
+                gyldigFraOgMed = domenespråkParser.parseValgfriDato(GYLDIG_FRA_OG_MED, rad),
+                gyldigTilOgMed = domenespråkParser.parseValgfriDato(GYLDIG_TIL_OG_MED, rad),
+                relatertVedSivilstand = domenespråkParser.parseValgfriString(RELATERT_VED_SIVILSTAND, rad),
+                folkeregistermetadata = null
+        )
+    }
+}
+
+class FamilieRelasjonMapper: RadMapper<Familierelasjon> {
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Familierelasjon {
+        return Familierelasjon(
+                relatertPersonsIdent = domenespråkParser.parseString(RELATERT_PERSONS_IDENT, rad),
+                relatertPersonsRolle = domenespråkParser.parseRolle(RELATERT_PERSONS_ROLLE, rad),
+                minRolleForPerson = domenespråkParser.parseValgfriRolle(MIN_ROLLE_FOR_PERSON, rad),
+                folkeregistermetadata = null
+        )
+    }
+}
+
 enum class Domenebegrep(val nøkkel: String) {
     ADRESSE("Adresse"),
+    BOSTED("Bosted"),
     AKTIV_DATO("Aktiv dato"),
     ANTALL_ANSATTE("Antall ansatte"),
     ARBEIDSFORHOLDSTYPE("Arbeidsforholdstype"),
@@ -332,7 +411,10 @@ enum class Domenebegrep(val nøkkel: String) {
     DEKNING("Dekning"),
     ER_MEDLEM("Er medlem"),
     FRA_OG_MED_DATO("Fra og med dato"),
+    GYLDIG_FRA_OG_MED("Gyldig fra og med dato"),
+    GYLDIG_TIL_OG_MED("Gyldig til og med dato"),
     HAR_HATT_ARBEID_UTENFOR_NORGE("Har hatt arbeid utenfor Norge"),
+    IDENT("Ident"),
     IDENTIFIKATOR("Identifikator"),
     JOURNAL_STATUS("Journalstatus"),
     JOURNALPOST_ID("JournalpostId"),
@@ -341,10 +423,17 @@ enum class Domenebegrep(val nøkkel: String) {
     LANDKODE("Landkode"),
     LOVVALG("Lovvalg"),
     LOVVALGSLAND("Lovvalgsland"),
+    MIDLERTIDIG_ADRESSE("Midlertidig adresse"),
+    MIN_ROLLE_FOR_PERSON("Min rolle for person"),
     PERIODESTATUS("Periodestatus"),
     PERSONSTATUS("Personstatus"),
+    POSTADRESSE("Postadresse"),
     PRIORITET("Prioritet"),
+    RELATERT_PERSONS_IDENT("Relatert persons ident"),
+    RELATERT_PERSONS_ROLLE("Relatert persons rolle"),
+    RELATERT_VED_SIVILSTAND("Relatert ved sivilstand"),
     RAPPORTERINGSPERIODE("Rapporteringsperiode"),
+    SIVILSTANDSTYPE("Sivilstandstype"),
     SKIPSREGISTER("Skipsregister"),
     STATUS("Status"),
     STILLINGSPROSENT("Stillingsprosent"),

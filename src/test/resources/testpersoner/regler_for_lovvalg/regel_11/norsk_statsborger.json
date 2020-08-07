@@ -11,7 +11,7 @@
       {
         "landkode": "NOR",
         "fom": "2000-01-30",
-        "tom": "2020-01-30"
+        "tom": null
       }
     ],
     "personstatuser": [],
@@ -55,10 +55,11 @@
       "arbeidsavtaler": [
         {
           "periode": {
-            "fom": "2020-01-30",
-            "tom": "2020-01-30"
+            "fom": "2010-01-30",
+            "tom": "2030-01-30"
           },
-          "yrkeskode": "0001"
+          "yrkeskode": "0001",
+          "stillingsprosent": 100.0
         }
       ]
     }

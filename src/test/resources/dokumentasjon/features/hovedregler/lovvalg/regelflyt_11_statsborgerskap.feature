@@ -21,9 +21,8 @@ Egenskap: Regel 11: Statsborgerskap
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
       | 1             | BEDR             | NOR      | 9              |
 
-  Scenariomal: Regel 11: Statsborgerskap skal være uavklart hvis det ikke er norsk statsborgerskap
-
-    Og følgende personstatuser i personhistorikken
+  Scenariomal: Regel 11: EØS-borgere som bor og jobber i Norge er medlem
+    Gitt følgende personstatuser i personhistorikken
       | Personstatus | Fra og med dato | Til og med dato |
       | FØDR         | 01.01.2000      |                 |
 
@@ -41,4 +40,4 @@ Egenskap: Regel 11: Statsborgerskap
     Eksempler:
       | Statsborgerskap | Svar     | Regel 11 |
       | NOR             | Ja       | Ja       |
-      | FRA             | UAVKLART | Nei      |
+      | FRA             | Ja       | Nei      |

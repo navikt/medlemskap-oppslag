@@ -30,6 +30,7 @@ import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.config.getAadConfig
 import no.nav.medlemskap.routes.evalueringRoute
+import no.nav.medlemskap.routes.evalueringTestRoute
 import no.nav.medlemskap.routes.naisRoutes
 import no.nav.medlemskap.routes.reglerRoute
 import no.nav.medlemskap.services.Services
@@ -69,7 +70,7 @@ fun createHttpServer(
     if (useAuthentication) {
         logger.info { "Installerer authentication" }
         install(Authentication) {
-            jwt {
+            jwt("azureAuth") {
                 val jwtConfig = JwtConfig(configuration, azureAdOpenIdConfiguration)
                 realm = REALM
                 verifier(jwtConfig.jwkProvider, azureAdOpenIdConfiguration.issuer)
@@ -94,11 +95,20 @@ fun createHttpServer(
         )
     }
 
-    routing {
-        naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = prometheusRegistry.prometheusRegistry)
-        evalueringRoute(services, useAuthentication, configuration)
-        reglerRoute()
-        healthRoute("/healthCheck", services.healthService)
+    if (useAuthentication) {
+        routing {
+            naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = prometheusRegistry.prometheusRegistry)
+            evalueringRoute(services, configuration)
+            reglerRoute()
+            healthRoute("/healthCheck", services.healthService)
+        }
+    } else {
+        routing {
+            naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = prometheusRegistry.prometheusRegistry)
+            evalueringTestRoute(services, configuration)
+            reglerRoute()
+            healthRoute("/healthCheck", services.healthService)
+        }
     }
 
     applicationState.initialized = true
