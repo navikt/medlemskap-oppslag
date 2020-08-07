@@ -18,9 +18,9 @@ Egenskap: Borgere som ikke er EØS-borgere skal ha uavklart medlemskap i MVP
   "personhistorikk": {
     "statsborgerskap": [
       {
-        "land": "USA",
-        "gyldigFraOgMed": "1991-06-30",
-        "gyldigTilOgMed": null
+        "landkode": "USA",
+        "fom": "1991-06-30",
+        "tom": null
       }
     ],
     "personstatuser": [],
@@ -57,7 +57,7 @@ Egenskap: Borgere som ikke er EØS-borgere skal ha uavklart medlemskap i MVP
       "arbeidsgiver": {
         "type": "BEDR",
         "identifikator": "1",
-        "landkode": "NOR",
+        "statsborgerskap": [],
         "antallAnsatte": "6"
       },
       "arbeidsfolholdstype": "NORMALT",

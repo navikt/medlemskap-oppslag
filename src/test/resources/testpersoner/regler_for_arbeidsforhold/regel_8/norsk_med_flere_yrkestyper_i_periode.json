@@ -42,7 +42,7 @@
       "arbeidsgiver": {
         "type": "BEDR",
         "identifikator": "1",
-        "landkode": "SWE"
+        "statsborgerskap": []
       },
       "arbeidsfolholdstype": "NORMALT",
       "arbeidsavtaler": [
@@ -65,7 +65,7 @@
       "arbeidsgiver": {
         "type": "BEDR",
         "identifikator": "1",
-        "landkode": "NOR"
+        "statsborgerskap": []
       },
       "arbeidsfolholdstype": "NORMALT",
       "arbeidsavtaler": [

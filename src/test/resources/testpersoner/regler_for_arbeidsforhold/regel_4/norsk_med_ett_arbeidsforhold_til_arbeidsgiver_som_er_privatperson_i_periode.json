@@ -42,7 +42,13 @@
       "arbeidsgiver": {
         "type": "Person",
         "identifikator": "1",
-        "landkode": "NOR"
+        "statsborgerskap": [
+          {
+            "landkode": "NOR",
+            "fom": "2018-01-30",
+            "tom": null
+          }
+        ]
       },
       "arbeidsfolholdstype": "NORMALT",
       "arbeidsavtaler": [

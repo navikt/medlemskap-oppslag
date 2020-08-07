@@ -57,7 +57,7 @@ Egenskap: Man er medlem i Folketrygden hvis man er EØS-borger og bor og jobber 
       "arbeidsgiver": {
         "type": "BEDR",
         "identifikator": "1",
-        "landkode": "NOR",
+        "statsborgerskap": [],
         "antallAnsatte": "6"
       },
       "arbeidsfolholdstype": "NORMALT",
