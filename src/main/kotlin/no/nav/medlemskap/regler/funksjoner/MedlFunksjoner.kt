@@ -1,8 +1,6 @@
 package no.nav.medlemskap.regler.funksjoner
 
-import no.nav.medlemskap.domene.Kontrollperiode
-import no.nav.medlemskap.domene.Medlemskap
-import no.nav.medlemskap.domene.Periode
+import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Funksjoner.er
 import no.nav.medlemskap.regler.common.interval
 import no.nav.medlemskap.regler.common.lagInterval
@@ -19,8 +17,8 @@ object MedlFunksjoner {
     infix fun List<Medlemskap>.finnesUavklartePerioder(kontrollPeriode: Kontrollperiode): Boolean =
             this.filter {
                 lagInterval(Periode(it.fraOgMed, it.tilOgMed)).overlaps(kontrollPeriode.tilPeriode().interval())
-                        && ((!it.lovvalg.isNullOrEmpty() && it.lovvalg != "ENDL")
-                        || (!it.periodeStatus.isNullOrEmpty() && it.periodeStatus != "GYLD"))
+                        && ((it.lovvalg != null && it.lovvalg != Lovvalg.ENDELIG)
+                        || (it.periodeStatus != null && it.periodeStatus != PeriodeStatus.GYLDIG))
             }.isNotEmpty()
 
     infix fun List<Medlemskap>.harMedlPeriodeMedOgUtenMedlemskap(kontrollPeriode: Kontrollperiode): Boolean =
@@ -59,7 +57,7 @@ object MedlFunksjoner {
     private infix fun List<Medlemskap>.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode: Kontrollperiode): List<Medlemskap> =
             this.filter {
                 lagInterval(Periode(it.fraOgMed, it.tilOgMed)).overlaps(kontrollPeriode.tilPeriode().interval())
-                        && (it.lovvalg.isNullOrEmpty() || it.lovvalg er "ENDL")
-                        && (it.periodeStatus.isNullOrEmpty() || it.periodeStatus er "GYLD")
+                        && (it.lovvalg == null || it.lovvalg == Lovvalg.ENDELIG)
+                        && (it.periodeStatus == null || it.periodeStatus == PeriodeStatus.GYLDIG)
             }
 }

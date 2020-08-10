@@ -49,7 +49,7 @@ Egenskap: Regel 1.2: Er det periode både med og uten medlemskap innenfor 12 mnd
     Gitt følgende medlemsunntak fra MEDL
       | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland | Periodestatus |
       | 01.05.2019      | 01.08.2019      | Ja        | ENDL    | NOR          | GYLD          |
-      | 02.08.2019      | 31.12.2019      | Nei       | ENDL    | NOR          | UAVKL         |
+      | 02.08.2019      | 31.12.2019      | Nei       | ENDL    | NOR          | UAVK          |
 
     Når regel "1.2" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |

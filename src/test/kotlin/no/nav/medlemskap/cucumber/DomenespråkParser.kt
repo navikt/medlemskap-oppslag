@@ -53,6 +53,26 @@ class DomenespråkParser {
         }
     }
 
+    fun parseValgfriPeriodeStatus(domenebegrep: Domenebegrep, rad: Map<String, String>): PeriodeStatus? {
+        val valgfriVerdi = valgfriVerdi(domenebegrep.nøkkel, rad)
+
+        return if (valgfriVerdi == null) {
+            null
+        } else {
+            PeriodeStatus.from(valgfriVerdi)
+        }
+    }
+
+    fun parseValgfriLovvalg(domenebegrep: Domenebegrep, rad: Map<String, String>): Lovvalg? {
+        val valgfriVerdi = valgfriVerdi(domenebegrep.nøkkel, rad)
+
+        return if (valgfriVerdi == null) {
+            null
+        } else {
+            Lovvalg.from(valgfriVerdi)
+        }
+    }
+
     fun parseRegelId(regelIdStr: String): RegelId {
         val regelId = RegelId.fraRegelIdString(regelIdStr)
         if (regelId == null) {
@@ -238,9 +258,9 @@ class MedlemskapMapper : RadMapper<Medlemskap> {
                 domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
                 domenespråkParser.parseDato(TIL_OG_MED_DATO, rad),
                 domenespråkParser.parseBoolean(ER_MEDLEM, rad),
-                domenespråkParser.parseValgfriString(LOVVALG, rad),
+                domenespråkParser.parseValgfriLovvalg(LOVVALG, rad),
                 domenespråkParser.parseValgfriString(LOVVALGSLAND, rad),
-                domenespråkParser.parseValgfriString(PERIODESTATUS, rad)
+                domenespråkParser.parseValgfriPeriodeStatus(PERIODESTATUS, rad)
         )
     }
 }
