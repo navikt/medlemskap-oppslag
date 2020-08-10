@@ -42,7 +42,6 @@
       "arbeidsgiver": {
         "type": "BEDR",
         "identifikator": "1",
-        "statsborgerskap": [],
         "ansatte": [
           {
             "antall": 10

@@ -16,7 +16,7 @@ import java.time.LocalDate
 class RegelSteps : No {
     private val ANSATTE_9 = listOf(Ansatte(9, null, null))
     private val STATSBORGERSKAP_NOR = listOf(Statsborgerskap("NOR",LocalDate.MIN , null))
-    private val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", identifikator = "1", statsborgerskap = STATSBORGERSKAP_NOR, ansatte = ANSATTE_9, konkursStatus = null)
+    private val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", identifikator = "1", ansatte = ANSATTE_9, konkursStatus = null)
 
     private val personhistorikkBuilder = PersonhistorikkBuilder()
     private val pdlPersonhistorikkBuilder = PersonhistorikkBuilder()

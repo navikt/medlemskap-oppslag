@@ -42,7 +42,6 @@
       "arbeidsgiver": {
         "type": "BEDR",
         "identifikator": "1",
-        "statsborgerskap": [],
         "antallAnsatte": "9"
       },
       "arbeidsfolholdstype": "NORMALT",
@@ -66,7 +65,6 @@
       "arbeidsgiver": {
         "type": "BEDR",
         "identifikator": "2",
-        "statsborgerskap": [],
         "ansatte": [
           {
             "antall": 4

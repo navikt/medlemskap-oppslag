@@ -48,14 +48,7 @@
       "arbeidsgivertype": "Organisasjon",
       "arbeidsgiver": {
         "type": "BEDR",
-        "identifikator": "1",
-        "statsborgerskap": [
-          {
-          "landkode": "NOR",
-          "fom": "2018-01-30",
-            "tom": null
-        }
-        ]
+        "identifikator": "1"
       },
       "arbeidsfolholdstype": "MARITIM",
       "arbeidsavtaler": [

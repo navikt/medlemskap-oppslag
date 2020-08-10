@@ -101,9 +101,7 @@ class AaRegService(
         val arbeidsforhold = aaRegClient.hentArbeidsforhold(fnr, callId, fraOgMed, tilOgMed)
 
         val dataOmArbeidsgiver = mutableMapOf<String, ArbeidsgiverInfo>()
-        val dataOmPerson = mutableMapOf<String, List<no.nav.medlemskap.domene.Statsborgerskap>?>()
         val orgnummere = arbeidsgiverOrg.getOrg(fnr, callId, fraOgMed, tilOgMed)
-        val personIdentifikatorer = arbeidsgiverPerson.getIdent(fnr, callId, fraOgMed, tilOgMed)
 
         orgnummere.forEach { orgnummer ->
             val logger = KotlinLogging.logger { }
@@ -122,11 +120,7 @@ class AaRegService(
 
         }
 
-        personIdentifikatorer.forEach{ personIdentifikator ->
-            dataOmPerson[personIdentifikator] = hentArbeidsgiversLand(personIdentifikator, callId)
-        }
-
-        return mapAaregResultat(arbeidsforhold, dataOmArbeidsgiver, dataOmPerson)
+        return mapAaregResultat(arbeidsforhold, dataOmArbeidsgiver)
     }
 
     data class ArbeidsgiverInfo(val arbeidsgiverEnhetstype: String?,

@@ -41,14 +41,7 @@
       "arbeidsgivertype" : "Person",
       "arbeidsgiver": {
         "type": "Person",
-        "identifikator": "1",
-        "statsborgerskap": [
-          {
-            "landkode": "NOR",
-            "fom": "2018-01-30",
-            "tom": null
-          }
-        ]
+        "identifikator": "1"
       },
       "arbeidsfolholdstype": "NORMALT",
       "arbeidsavtaler": [

@@ -41,8 +41,7 @@
       "arbeidsgivertype": "Organisasjon",
       "arbeidsgiver": {
         "type": "BEDR",
-        "identifikator": "1",
-        "statsborgerskap": []
+        "identifikator": "1"
       },
       "arbeidsfolholdstype": "NORMALT",
       "arbeidsavtaler": [
@@ -64,8 +63,7 @@
       "arbeidsgivertype": "Organisasjon",
       "arbeidsgiver": {
         "type": "BEDR",
-        "identifikator": "1",
-        "statsborgerskap": []
+        "identifikator": "1"
       },
       "arbeidsfolholdstype": "NORMALT",
       "arbeidsavtaler": [
