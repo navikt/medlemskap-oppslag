@@ -16,25 +16,24 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
     private val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag)
 
     fun hentHovedRegel() =
-
             sjekkRegelsett {
-                reglerForRegistrerteOpplysningerIMedl
+                reglerForRegistrerteOpplysninger
+            } hvisJa {
+                sjekkRegelsett {
+                    reglerForRegistrerteOpplysningerIMedl
+                }
             } hvisNei {
                 sjekkRegelsett {
-                    reglerForRegistrerteOpplysninger
-                } hvisJa {
-                    uavklartKonklusjon(ytelse)
+                    reglerForGrunnforordningen
                 } hvisNei {
+                    uavklartKonklusjon(ytelse)
+                } hvisJa {
                     sjekkRegelsett {
-                        reglerForGrunnforordningen
-                    } hvisNei {
-                        uavklartKonklusjon(ytelse)
-                    } hvisJa {
-                        sjekkRegelsett {
-                            reglerForArbeidsforhold
-                        }
+                        reglerForArbeidsforhold
                     }
                 }
+            } hvisUavklart {
+                uavklartKonklusjon(ytelse)
             }
 
     fun kjørHovedregler(): Resultat {

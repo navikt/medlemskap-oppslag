@@ -18,56 +18,6 @@ class Personleser {
     fun norskMedMedlOpplysninger() = lesDatagrunnlag("$hovedregler/norsk_med_medl_opplysninger.json")
     fun amerikanskUtenMedlOpplysninger() = lesDatagrunnlag("$hovedregler/amerikansk_uten_medl_opplysninger.json")
 
-    /*Regelsett for medl (utkommentert versjon)*/
-
-    //Regel A -  "Finnes det noe på personen i MEDL?"
-    fun amerikanskMedl() = lesDatagrunnlag("$medl/regel_A/amerikansk_med_vedtak_i_medl.json")
-    fun norskMedOpplysningerIMedl() = lesDatagrunnlag("$medl/regel_A/norsk_med_opplysninger_i_medl.json")
-
-    //Regel B - "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?"
-    fun amerikanskGosys() = lesDatagrunnlag("$medl/regel_B/amerikansk_med_oppgave_i_gosys.json")
-
-    //Regel 1.1 -  "Er det periode både med og uten medlemskap innenfor 12 mnd?"
-    fun amerikanskMedOgUtenMedlemskap() = lesDatagrunnlag("$medl/regel_1_1/amerikansk_med_og_uten_medlemskap_innenfor_periode.json")
-
-    //Regel 1.2 "Er det en periode med medlemskap?"
-    fun brukerHarPeriodeMedMedlemskap() = lesDatagrunnlag("$medl/regel_1_2/perioder_i_medl.json")
-    fun amerikanskUtenMedlemskapLovvalgStatuskodeUavklart() = lesDatagrunnlag("$medl/regel_1_2/amerikansk_uten_medlemskap_lovvalg_statuskode_uavk.json")
-
-    //Regel 1.2.1 - "Er hele perioden uten medlemskap innenfor 12-måneders perioden?"
-    fun norskUtenMedlemskapIMedl() = lesDatagrunnlag("$medl/regel_1_2_1/norsk_uten_medlemskap_i_medl.json")
-    fun amerikanskUtenMedlemskapOver12MndPeriode() = lesDatagrunnlag("$medl/regel_1_2_1/amerikansk_uten_medlemskap_over_12_mnd_periode.json")
-    fun norskUtenMedlemskapDelvisInnenfor12MndPeriode() = lesDatagrunnlag("$medl/regel_1_2_1/norsk_uten_medlemskap_medl_delvis_innenfor_12_mnd_periode.json")
-
-    //Regel 1.2.2 - "Er bruker uten medlemskap sin situasjon uendret?"
-    fun amerikanskUtenMedlemskapEndretArbeidsforhold() = lesDatagrunnlag("$medl/regel_1_2_2/amerikansk_uten_medlemskap_endret_arbeidsforhold.json")
-    fun amerikanskUtenMedlemskapEndretArbeidsforholdSammeArbeidsgiver() = lesDatagrunnlag("$medl/regel_1_2_2/amerikansk_uten_medlemskap_endret_arbeidsforhold_samme_arbeidsgiver.json")
-    fun amerikanskUtenMedlemskapUtenArbeidsforhold() = lesDatagrunnlag("$medl/regel_1_2_2/amerikansk_uten_medlemskap_uten_arbeidsforhold.json")
-
-    //Regel 1.2.3 - "Er bruker uten medlemskap sin situasjon uendret?"
-    fun amerikanskUtenMedlemskapEndretAdresse() = lesDatagrunnlag("$medl/regel_1_2_3/amerikansk_uten_medlemskap_endret_adresse.json")
-    fun amerikanskUtenMedlemskapSammeArbeidsforholdOgAdresse() = lesDatagrunnlag("$medl/regel_1_2_3/amerikansk_uten_medlemskap_samme_arbeidsforhold_og_adresse.json")
-
-    //Regel 1.3 - "Er hele perioden med medlemskap innenfor 12-måneders perioden?"
-    fun amerikanskMedMedlemskapOver12MndPeriode() = lesDatagrunnlag("$medl/regel_1_3/amerikansk_med_medlemskap_over_12_mnd_periode.json")
-    fun amerikanskMedMedlemskapUgyldigDato() = lesDatagrunnlag("$medl/regel_1_3/amerikansk_med_ugyldig_medlemskapsdato.json")
-    fun amerikanskMedMedlemskapToOverlappendePerioder() = lesDatagrunnlag("$medl/regel_1_3/amerikansk_med_medlemskap_to_overlappende_perioder.json")
-    fun amerikanskMedMedlemskapToUsammenhengendePerioder() = lesDatagrunnlag("$medl/regel_1_3/amerikansk_med_medlemskap_to_usammenhengende_perioder.json")
-    fun amerikanskMedMedlemskapAvsluttetIGittInputPeriode() = lesDatagrunnlag("$medl/regel_1_3/amerikansk_med_medlemskap_avsluttet_i_gitt_input_periode.json")
-    fun amerikanskMedMedlemskapToSammenhengendePerioder() = lesDatagrunnlag("$medl/regel_1_3/amerikansk_med_medlemskap_to_sammenhengende_perioder.json")
-    fun norskMedMedlemskapDelvisInnenfor12MndPeriode() = lesDatagrunnlag("$medl/regel_1_3/norsk_med_medlemskap_medl_delvis_innenfor_12_mnd_periode.json")
-
-    //Regel 1.4 - "Er brukers situasjon uendret?"
-    fun amerikanskMedMedlemskapEndretArbeidsforhold() = lesDatagrunnlag("$medl/regel_1_4/amerikansk_med_medlemskap_endret_arbeidsforhold.json")
-
-    //Regel 1.5 -  "Er brukers dekning uavklart?"
-    fun amerikanskMedMedlemskapUavklartDekning() = lesDatagrunnlag("$medl/regel_1_5/amerikansk_med_medlemskap_uavklart_dekning.json")
-    fun amerikanskMedMedlemskapNullDekning() = lesDatagrunnlag("$medl/regel_1_5/amerikansk_med_medlemskap_null_dekning.json")
-
-    //Regel 1.6 - "Har bruker et medlemskap som omfatter ytelse? (Dekning i MEDL)"
-    fun amerikanskMedMedlemskapMedDekningIMedl() = lesDatagrunnlag("$medl/regel_1_6/amerikansk_med_medlemskap_med_dekning_i_medl.json")
-    fun amerikanskMedMedlemskapUtenDekningIMedl() = lesDatagrunnlag("$medl/regel_1_6/amerikansk_med_medlemskap_uten_dekning_i_medl.json")
-
     /*  Regler for grunnforodningen*/
 
     //Regel 2 - "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?"
