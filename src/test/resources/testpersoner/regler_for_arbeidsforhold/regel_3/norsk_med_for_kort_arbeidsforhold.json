@@ -47,7 +47,6 @@
       "arbeidsgivertype": "Organisasjon",
       "arbeidsgiver": {
         "type": "BEDR",
-        "landkode": null,
         "ansatte": [
           {
             "antall": 10,
