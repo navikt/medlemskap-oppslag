@@ -14,7 +14,6 @@ import mu.KotlinLogging
 import no.nav.medlemskap.domene.Arbeidsforhold
 import no.nav.medlemskap.domene.ArbeidsgiverOrg
 import no.nav.medlemskap.domene.ArbeidsgiverPerson
-import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.services.ereg.Ansatte
 import no.nav.medlemskap.services.ereg.EregClient
 import no.nav.medlemskap.services.pdl.PdlService
@@ -133,7 +132,4 @@ class AaRegService(
         return eregClient.hentEnhetstype(orgnummer, callId)
     }
 
-    private suspend fun hentArbeidsgiversLand(identifikator: String, callId: String): List<Statsborgerskap>? {
-        return pdlService.hentStatsborgerskap(identifikator, callId)
-    }
 }
