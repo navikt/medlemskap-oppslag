@@ -42,7 +42,6 @@
       "arbeidsgiver": {
         "type": "BEDR",
         "identifikator": "1",
-        "landkode": "NOR",
         "antallAnsatte": "9"
       },
       "arbeidsfolholdstype": "NORMALT",
@@ -66,7 +65,6 @@
       "arbeidsgiver": {
         "type": "BEDR",
         "identifikator": "2",
-        "landkode": "NOR",
         "antallAnsatte": "6"
       },
       "arbeidsfolholdstype": "NORMALT",

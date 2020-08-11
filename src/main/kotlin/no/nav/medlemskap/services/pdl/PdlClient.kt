@@ -14,6 +14,7 @@ import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Personhistorikk
+import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.services.runWithRetryAndMetrics
 import no.nav.medlemskap.services.sts.StsRestClient
 
@@ -60,9 +61,9 @@ class PdlClient(
 
     }
 
-    suspend fun hentNasjonalitet(fnr: String, callId: String): String {
+    suspend fun hentNasjonalitet(fnr: String, callId: String): HentStatsborgerskapResponse {
         return runWithRetryAndMetrics("PDL", "HentNasjonalitet", retry) {
-            httpClient.post<String> {
+            httpClient.post<HentStatsborgerskapResponse> {
                 url("$baseUrl")
                 header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
@@ -160,6 +161,12 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
         return PdlMapper.mapTilFoedselsaar(pdlClient.hentFoedselsaar(fnr, callId))
     }
 
+    suspend fun hentStatsborgerskap(fnr: String, callId: String): List<Statsborgerskap>? {
+        val statsborgerskap = pdlClient.hentNasjonalitet(fnr, callId).data?.hentPerson?.statsborgerskap?.ifEmpty {
+            logger.warn("PDL fant ikke person")
+            emptyList()
+        }
+        return statsborgerskap?.map { PdlMapper.mapStatsborgerskap(it) }
+    }
 }
-
 

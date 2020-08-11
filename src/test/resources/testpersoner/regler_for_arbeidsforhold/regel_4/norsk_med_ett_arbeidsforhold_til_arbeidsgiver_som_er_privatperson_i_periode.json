@@ -41,8 +41,7 @@
       "arbeidsgivertype" : "Person",
       "arbeidsgiver": {
         "type": "Person",
-        "identifikator": "1",
-        "landkode": "NOR"
+        "identifikator": "1"
       },
       "arbeidsfolholdstype": "NORMALT",
       "arbeidsavtaler": [

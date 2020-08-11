@@ -41,7 +41,6 @@ data class Arbeidsavtale(
 data class Arbeidsgiver(
         val type: String?,
         val identifikator: String?,
-        val landkode: String?,
         val ansatte: List<Ansatte>?,
         val konkursStatus: List<String?>?
 )
