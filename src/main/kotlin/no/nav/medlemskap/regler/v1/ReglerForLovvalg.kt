@@ -88,7 +88,20 @@ class ReglerForLovvalg(
                                     sjekkRegel {
                                         erBrukerUtenFolkeregistrertEktefelleSittBarnFolkeregistrert
                                     } hvisJa {
-                                        uavklartKonklusjon(ytelse)
+                                        sjekkRegel {
+                                           erBrukersEktefelleOgBarnasMorSammePerson
+                                        } hvisJa{
+                                            uavklartKonklusjon(ytelse)
+                                        } hvisNei {
+                                            sjekkRegel {
+                                                harBrukerMedBarnOgEktefelleUtenTilknytningJobbetMerEnn100Prosent
+                                            } hvisJa {
+                                                jaKonklusjon(ytelse)
+                                            } hvisNei {
+                                                uavklartKonklusjon(ytelse)
+                                            }
+                                        }
+
                                     } hvisNei {
                                         sjekkRegel {
                                             harBrukerMedRelasjonerUtenFolkeregistreringJobbetMerEnn100Prosent
@@ -200,6 +213,12 @@ class ReglerForLovvalg(
             operasjon = { sjekkOmBrukersStillingsprosentErMerEnn(80.0) }
     )
 
+    val harBrukerMedBarnOgEktefelleUtenTilknytningJobbetMerEnn100Prosent = Regel(
+            regelId = REGEL_11_2_2_1,
+            ytelse = ytelse,
+            operasjon = {sjekkOmBrukersStillingsprosentErMerEnn(100.0)}
+    )
+
     val harBrukerMedRelasjonerUtenFolkeregistreringJobbetMerEnn100Prosent = Regel(
             regelId = REGEL_11_2_2_1,
             ytelse = ytelse,
@@ -272,6 +291,14 @@ class ReglerForLovvalg(
             operasjon = { sjekkOmBrukersBarnErBosattINorge() }
     )
 
+    val erBrukersEktefelleOgBarnasMorSammePerson = Regel(
+            regelId = REGEL_11_5_1,
+            ytelse =  ytelse,
+            operasjon = { sjekkOmBrukersEktefelleOgBarnasMorErSammePerson()}
+    )
+
+
+
     val harBrukerMedFolkeregistrerteRelasjonerJobbetMerEnn80Prosent = Regel(
             regelId = REGEL_11_6,
             ytelse = ytelse,
@@ -309,6 +336,10 @@ class ReglerForLovvalg(
             erPersonBosattINorge(bostedsadresserTilEktefelle, postAdresseTilEktefelle, midlertidigPostadresseTilEktefelle) -> ja()
             else -> nei("Ikke alle adressene til ektefelle er norske, eller ektefelle mangler bostedsadresse")
         }
+    }
+
+    private fun sjekkOmBrukersEktefelleOgBarnasMorErSammePerson(): Resultat {
+        return nei()
     }
 
     private fun sjekkOmBrukersBarnErBosattINorge(): Resultat {
