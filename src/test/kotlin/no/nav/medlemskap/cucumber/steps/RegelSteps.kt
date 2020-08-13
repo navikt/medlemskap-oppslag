@@ -153,6 +153,7 @@ class RegelSteps : No {
                 "1.6" -> reglerForMedl.erDekningUavklart
                 "1.7" -> reglerForMedl.harBrukerDekningIMedl
                 "3" -> reglerForArbeidsforhold.harBrukerSammenhengendeArbeidsforholdSiste12Mnd
+                "5" -> reglerForArbeidsforhold.harForetakMerEnn5Ansatte
                 "9" -> reglerForLovvalg.harBrukerJobbetUtenforNorge
                 "10" -> reglerForLovvalg.erBrukerBosattINorge
                 "11" -> reglerForLovvalg.harBrukerNorskStatsborgerskap

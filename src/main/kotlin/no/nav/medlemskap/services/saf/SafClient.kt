@@ -14,7 +14,6 @@ import mu.KotlinLogging
 import no.nav.medlemskap.client.generated.Dokumenter
 import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.objectMapper
-import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.services.runWithRetryAndMetrics
 import no.nav.medlemskap.services.sts.StsRestClient
 import java.net.URL
@@ -22,7 +21,7 @@ import java.net.URL
 class SafClient(
         private val baseUrl: String,
         private val stsClient: StsRestClient,
-        private val configuration: Configuration,
+        private val username: String,
         private val httpClient: HttpClient,
         private val retry: Retry? = null
 ) {
@@ -49,7 +48,7 @@ class SafClient(
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
                 header("Nav-Callid", callId)
-                header("Nav-Consumer-Id", configuration.sts.username)
+                header("Nav-Consumer-Id", username)
             }
 
             response.errors?.let { errors ->
@@ -65,7 +64,7 @@ class SafClient(
             url(baseUrl)
             header(HttpHeaders.ContentType, ContentType.Application.Json)
             header(HttpHeaders.Accept, ContentType.Application.Json)
-            header("Nav-Consumer-Id", configuration.sts.username)
+            header("Nav-Consumer-Id", username)
         }
     }
 }

@@ -28,7 +28,7 @@ class RestClients(private val stsClientRest: StsRestClient,
     fun aaReg(endpointUrl: String) = AaRegClient(endpointUrl, stsClientRest, httpClient, aaRegRetry)
     fun medl2(endpointBaseUrl: String) = MedlClient(endpointBaseUrl, stsClientRest, configuration, httpClient, medlRetry)
     fun inntektskomponenten(endpointBaseUrl: String) = InntektClient(endpointBaseUrl, stsClientRest, configuration, httpClient, inntektRetry)
-    fun saf(endpointBaseUrl: String) = SafClient(endpointBaseUrl, stsClientRest, configuration, httpClient, safRetry)
+    fun saf(endpointBaseUrl: String) = SafClient(endpointBaseUrl, stsClientRest, configuration.sts.username, httpClient, safRetry)
     fun oppgaver(endpointBaseUrl: String) = OppgaveClient(endpointBaseUrl, stsClientRest, httpClient, oppgaveRetry)
     fun pdl(endpointBaseURl: String) = PdlClient(endpointBaseURl, stsClientRest, configuration.sts.username, httpClient, pdlRetry)
     fun ereg(endpointBaseUrl: String) = EregClient(endpointBaseUrl, httpClient, configuration, eregRetry)
