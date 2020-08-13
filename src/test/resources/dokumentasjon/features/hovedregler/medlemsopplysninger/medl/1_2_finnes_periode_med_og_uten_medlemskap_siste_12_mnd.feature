@@ -33,10 +33,10 @@ Egenskap: Regel 1.2: Er det periode både med og uten medlemskap innenfor 12 mnd
   Scenario: Periode både med medlemskap og tomt lovvalg(type) og uten medlemskap innenfor 12 mnd?
 
     Gitt følgende medlemsunntak fra MEDL
-      | Fra og med dato | Til og med dato | Er medlem | Lovvalg   | Lovvalgsland |
-      | 01.05.2017      | 01.08.2019      | Ja        |           | NOR          |
-      | 01.09.2019      | 01.10.2019      | Ja        | Foreløpig | NOR          |
-      | 02.08.2019      | 31.12.2019      | Nei       | ENDL      | NOR          |
+      | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland |
+      | 01.05.2017      | 01.08.2019      | Ja        |         | NOR          |
+      | 01.09.2019      | 01.10.2019      | Ja        | FORL    | NOR          |
+      | 02.08.2019      | 31.12.2019      | Nei       | ENDL    | NOR          |
 
     Når regel "1.2" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |

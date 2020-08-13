@@ -18,24 +18,12 @@ data class Medlemskap(
 
 }
 
-enum class Lovvalg(val lovvalgKodeverdi: String) {
-    ENDELIG("ENDL"),
-    FORELOPIG("FORL"),
-    UNDER_AVKLARING("UAVK");
-
-    companion object {
-        fun from(kodeverdi: String?): Lovvalg? = Lovvalg.values().firstOrNull { it.lovvalgKodeverdi == kodeverdi }
-    }
+enum class Lovvalg() {
+    ENDL, FORL, UAVK
 }
 
-enum class PeriodeStatus(val periodeStatusKodeverdi: String) {
-    GYLDIG("GYLD"),
-    AVVIST("AVST"),
-    UAVKLART("UAVK");
-
-    companion object {
-        fun from(kodeverdi: String?): PeriodeStatus? = values().firstOrNull { it.periodeStatusKodeverdi == kodeverdi }
-    }
+enum class PeriodeStatus() {
+    GYLD, AVST, UAVK
 }
 
 enum class Dekning(val dekningKodeverdi: String) {

@@ -28,7 +28,7 @@ class MedlMapperTest {
         assertTrue(medlemskapsperiode.erMedlem)
         assertEquals("lovvalgsland", medlemskapsperiode.lovvalgsland)
         assertEquals(Dekning.FULL.dekningKodeverdi, medlemskapsperiode.dekning)
-        assertEquals(Lovvalg.ENDELIG, medlemskapsperiode.lovvalg)
-        assertEquals(PeriodeStatus.GYLDIG, medlemskapsperiode.periodeStatus)
+        assertEquals(Lovvalg.ENDL, medlemskapsperiode.lovvalg)
+        assertEquals(PeriodeStatus.GYLD, medlemskapsperiode.periodeStatus)
     }
 }

@@ -59,7 +59,7 @@ class DomenespråkParser {
         return if (valgfriVerdi == null) {
             null
         } else {
-            PeriodeStatus.from(valgfriVerdi)
+            PeriodeStatus.valueOf(valgfriVerdi)
         }
     }
 
@@ -69,7 +69,7 @@ class DomenespråkParser {
         return if (valgfriVerdi == null) {
             null
         } else {
-            Lovvalg.from(valgfriVerdi)
+            Lovvalg.valueOf(valgfriVerdi)
         }
     }
 

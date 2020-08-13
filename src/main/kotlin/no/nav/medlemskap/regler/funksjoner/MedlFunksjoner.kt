@@ -17,8 +17,8 @@ object MedlFunksjoner {
     infix fun List<Medlemskap>.finnesUavklartePerioder(kontrollPeriode: Kontrollperiode): Boolean =
             this.filter {
                 lagInterval(Periode(it.fraOgMed, it.tilOgMed)).overlaps(kontrollPeriode.tilPeriode().interval())
-                        && ((it.lovvalg != null && it.lovvalg != Lovvalg.ENDELIG)
-                        || (it.periodeStatus != null && it.periodeStatus != PeriodeStatus.GYLDIG))
+                        && ((it.lovvalg != null && it.lovvalg != Lovvalg.ENDL)
+                        || (it.periodeStatus != null && it.periodeStatus != PeriodeStatus.GYLD))
             }.isNotEmpty()
 
     infix fun List<Medlemskap>.harMedlPeriodeMedOgUtenMedlemskap(kontrollPeriode: Kontrollperiode): Boolean =
@@ -57,7 +57,7 @@ object MedlFunksjoner {
     private infix fun List<Medlemskap>.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode: Kontrollperiode): List<Medlemskap> =
             this.filter {
                 lagInterval(Periode(it.fraOgMed, it.tilOgMed)).overlaps(kontrollPeriode.tilPeriode().interval())
-                        && (it.lovvalg == null || it.lovvalg == Lovvalg.ENDELIG)
-                        && (it.periodeStatus == null || it.periodeStatus == PeriodeStatus.GYLDIG)
+                        && (it.lovvalg == null || it.lovvalg == Lovvalg.ENDL)
+                        && (it.periodeStatus == null || it.periodeStatus == PeriodeStatus.GYLD)
             }
 }
