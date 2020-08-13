@@ -259,5 +259,5 @@ jmeter/apache-jmeter-5.2.1/bin/jmeter -JAAD_TOKEN=<AAD_TOKEN> -t jmeter/Medlemsk
 ```
 
 # Autentisere klienter
-Klienter som ønsker å kalle oss må generere et token med vår klientid som scope.
+Klienter som ønsker å kalle oss må generere et token med vår klientid som scope
 
