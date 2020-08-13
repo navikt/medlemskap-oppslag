@@ -1,10 +1,7 @@
 package no.nav.medlemskap.regler.funksjoner
 
 import no.bekk.bekkopen.person.FodselsnummerValidator
-import no.nav.medlemskap.domene.Familierelasjon
-import no.nav.medlemskap.domene.Familierelasjonsrolle
-import no.nav.medlemskap.domene.PersonhistorikkRelatertPerson
-import no.nav.medlemskap.domene.Sivilstand
+import no.nav.medlemskap.domene.*
 import java.time.LocalDate
 import java.util.*
 
@@ -23,7 +20,19 @@ object RelasjonFunksjoner {
     fun List<PersonhistorikkRelatertPerson>.hentRelatertSomFinnesITPS(relatert: List<String?>?):
             List<PersonhistorikkRelatertPerson> =
             this.filter { relatert?.contains(it.ident) ?: false && FodselsnummerValidator.isValid(it.ident) }
+
+    fun List<Personhistorikk?>.hentPersonHistorikkTilAlleBarn(barnITps: List<PersonhistorikkRelatertPerson>): List<Personhistorikk?> =
+            this.filter { barn -> barnITps
+                    .map { it.ident }.contains(barn?.ident) }
+
+    fun List<Personhistorikk?>.hentFnrTilMorForAlleBarn(): List<String> =
+            (this as List<Personhistorikk>).hentFamilieRelasjoner()
+                    .filter { it.relatertPersonsRolle == Familierelasjonsrolle.MOR }
+                    .map { it.relatertPersonsIdent }
 }
+
+fun List<Personhistorikk>.hentFamilieRelasjoner(): List<Familierelasjon> =
+        this.flatMap { it.familierelasjoner }
 
 fun String.filtrerBarnUnder25Aar() =
         (Calendar.getInstance().get(Calendar.YEAR) - this.hentBursdagsAar().toInt()) <= 25

@@ -138,6 +138,8 @@ private suspend fun createDatagrunnlag(
     val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktorIder, callId) }
 
     val personhistorikkForFamilie = hentPersonhistorikkForFamilieAsync(personHistorikkFraPdl, services, periode)
+    val personHistorikkForFamilieFraPDL = hentPDLPersonhistorikkForFamilieListe(personhistorikkForFamilie, services, callId)
+
 
     val historikkFraTps = historikkFraTpsRequest.await()
     val medlemskap = medlemskapsunntakRequest.await()
@@ -157,7 +159,8 @@ private suspend fun createDatagrunnlag(
             oppgaver = oppgaver,
             dokument = journalPoster,
             ytelse = ytelse,
-            personHistorikkRelatertePersoner = personhistorikkForFamilie
+            personHistorikkRelatertePersoner = personhistorikkForFamilie,
+            personHistorikkRelatertePersonerFraPdl = personHistorikkForFamilieFraPDL
     )
 }
 
@@ -174,6 +177,14 @@ private suspend fun hentPersonhistorikkFraPdl(services: Services, fnr: String, c
         secureLogger.error("hentPersonHistorikk feiler for fnr {}", fnr, e)
         null
     }
+}
+
+private suspend fun hentPDLPersonhistorikkForFamilieListe(personhistorikkRelatertPerson: List<PersonhistorikkRelatertPerson>, services: Services, callId: String) : List<Personhistorikk?> {
+    val personhistorikkRelatertePersonerFraPDL = emptyList<Personhistorikk?>().toMutableList()
+    personhistorikkRelatertPerson.forEach {
+        personhistorikkRelatertePersonerFraPDL += hentPersonhistorikkFraPdl(services, it.ident, callId)
+    }
+    return personhistorikkRelatertePersonerFraPDL
 }
 
 //Midlertidig kode, ekstra feilhåndtering fordi integrasjonen vår mot PDL ikke er helt 100% ennå..

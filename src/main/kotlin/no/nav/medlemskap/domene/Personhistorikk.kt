@@ -4,6 +4,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class Personhistorikk(
+        val ident: String,
         val statsborgerskap: List<Statsborgerskap>,
         val personstatuser: List<FolkeregisterPersonstatus>,
         val bostedsadresser: List<Adresse>,

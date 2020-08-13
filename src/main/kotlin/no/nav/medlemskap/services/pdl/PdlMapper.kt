@@ -9,7 +9,8 @@ import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
 
 object PdlMapper {
-    fun mapTilPersonHistorikk(person: HentPdlPersonResponse): Personhistorikk {
+    fun mapTilPersonHistorikk(fnr: String, person: HentPdlPersonResponse): Personhistorikk {
+
         val statsborgerskap: List<Statsborgerskap> = person.data?.hentPerson?.statsborgerskap?.map {
             mapStatsborgerskap(it)
         } ?: throw PersonIkkeFunnet("PDL")
@@ -38,8 +39,9 @@ object PdlMapper {
                     )
                 }
 
-        return Personhistorikk(statsborgerskap, personstatuser, bostedsadresser, postadresser, midlertidigAdresser, sivilstand, familierelasjoner)
+        return Personhistorikk(fnr, statsborgerskap, personstatuser, bostedsadresser, postadresser, midlertidigAdresser, sivilstand, familierelasjoner)
     }
+
 
     fun mapStatsborgerskap(it: no.nav.medlemskap.services.pdl.Statsborgerskap): Statsborgerskap {
         return Statsborgerskap(

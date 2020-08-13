@@ -13,8 +13,11 @@ import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJob
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarnUnder25
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilEktefellerEllerPartnerForDato
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentRelatertSomFinnesITPS
+import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentPersonHistorikkTilAlleBarn
+import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilMorForAlleBarn
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedSluttAvKontrollperiode
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedStartAvKontrollperiode
+
 
 class ReglerForLovvalg(
         val personhistorikk: Personhistorikk,
@@ -23,7 +26,8 @@ class ReglerForLovvalg(
         val ytelse: Ytelse,
         val arbeidUtenforNorge: Boolean,
         val personhistorikkRelatertPerson: List<PersonhistorikkRelatertPerson>,
-        val pdlPersonhistorikk: Personhistorikk?
+        val pdlPersonhistorikk: Personhistorikk?,
+        val personHistorikkRelatertePersonerFraPdl: List<Personhistorikk?>
 ) : Regler() {
     val statsborgerskap = personhistorikk.statsborgerskap
     val postadresser = personhistorikk.postadresser
@@ -339,7 +343,13 @@ class ReglerForLovvalg(
     }
 
     private fun sjekkOmBrukersEktefelleOgBarnasMorErSammePerson(): Resultat {
-        return nei()
+        val fnrEktefelle = ektefellerITps[0].ident // Tar høyde for at det alltid finnes en ektefelle?
+        val personhistorikkTilBarn = personHistorikkRelatertePersonerFraPdl.hentPersonHistorikkTilAlleBarn(barnITps)
+        val fnrTilMorForAlleBarn = personhistorikkTilBarn.hentFnrTilMorForAlleBarn()
+        return when {
+            fnrTilMorForAlleBarn alleEr fnrEktefelle -> ja()
+            else -> nei(" Ektefelle er ikke barn/barnas mor")
+        }
     }
 
     private fun sjekkOmBrukersBarnErBosattINorge(): Resultat {
@@ -453,7 +463,7 @@ class ReglerForLovvalg(
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForLovvalg {
             with(datagrunnlag) {
-                return ReglerForLovvalg(personhistorikk, arbeidsforhold, periode, ytelse, brukerinput.arbeidUtenforNorge, personHistorikkRelatertePersoner, pdlpersonhistorikk)
+                return ReglerForLovvalg(personhistorikk, arbeidsforhold, periode, ytelse, brukerinput.arbeidUtenforNorge, personHistorikkRelatertePersoner, pdlpersonhistorikk, personHistorikkRelatertePersonerFraPdl)
             }
         }
     }
