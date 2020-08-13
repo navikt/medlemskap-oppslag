@@ -22,5 +22,7 @@ Egenskap: Regel 5: Har arbeidsgiver sin hovedaktivitet i Norge?
     Eksempler:
       | Antall ansatte | Svar |
       | 4              | Nei  |
+      | 5              | Nei  |
+      | 6              | Ja   |
       | 9              | Ja   |
       |                | Nei  |
