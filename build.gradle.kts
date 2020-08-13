@@ -1,3 +1,4 @@
+import com.expediagroup.graphql.plugin.gradle.graphql
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -21,6 +22,7 @@ val resilience4jVersion = "1.5.0"
 val threetenVersion = "1.5.0"
 val cucumberVersion = "5.6.0"
 val nocommonsVersion = "0.9.0"
+val graphqlKotlinClientVersion = "3.5.0"
 
 //Temporary to fix high severity Snyk vulernabilities:
 val nettyCodecVersion = "4.1.46.Final"
@@ -33,6 +35,7 @@ fun tjenestespesifikasjon(name: String) = "no.nav.tjenestespesifikasjoner:$name:
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.3.72"
     id("com.github.johnrengelman.shadow") version "5.1.0"
+    id("com.expediagroup.graphql") version "3.5.0"
 }
 
 val githubUser: String by project
@@ -94,6 +97,7 @@ dependencies {
     implementation("io.github.resilience4j:resilience4j-retry:$resilience4jVersion")
     implementation("io.github.resilience4j:resilience4j-kotlin:$resilience4jVersion")
     implementation("no.bekk.bekkopen:nocommons:$nocommonsVersion")
+    implementation("com.expediagroup:graphql-kotlin-client:$graphqlKotlinClientVersion")
 
     //Temporary to fix high severity Snyk vulernabilities:
     implementation("io.netty:netty-codec:$nettyCodecVersion")
@@ -113,6 +117,15 @@ dependencies {
     testImplementation("io.cucumber:cucumber-java8:${cucumberVersion}")
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:${junitJupiterVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}")
+}
+
+graphql {
+    client {
+        sdlEndpoint = "https://navikt.github.io/saf/saf-api-sdl.graphqls"
+        packageName = "no.nav.medlemskap.client.generated"
+        allowDeprecatedFields = false
+        queryFiles.add(file("${project.projectDir}/src/main/resources/saf/dokumenter.graphql"))
+    }
 }
 
 java {
