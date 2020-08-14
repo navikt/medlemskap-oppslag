@@ -29,10 +29,11 @@ import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.config.getAadConfig
-import no.nav.medlemskap.routes.evalueringRoute
-import no.nav.medlemskap.routes.evalueringTestRoute
-import no.nav.medlemskap.routes.naisRoutes
-import no.nav.medlemskap.routes.reglerRoute
+import no.nav.medlemskap.domene.Brukerinput
+import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.InputPeriode
+import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.routes.*
 import no.nav.medlemskap.services.Services
 import org.slf4j.event.Level
 import java.util.*
@@ -45,7 +46,8 @@ fun createHttpServer(
         configuration: Configuration = Configuration(),
         azureAdOpenIdConfiguration: AzureAdOpenIdConfiguration = getAadConfig(configuration.azureAd),
         services: Services = Services(configuration),
-        prometheusRegistry: PrometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
+        prometheusRegistry: PrometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT),
+        createDatagrunnlag: suspend (fnr: String, callId: String, periode: InputPeriode, brukerinput: Brukerinput, services: Services, clientId: String?, ytelseFraRequest: Ytelse?) -> Datagrunnlag = ::defaultCreateDatagrunnlag
 ): ApplicationEngine = embeddedServer(Netty, 7070) {
 
     install(StatusPages) {
@@ -98,14 +100,14 @@ fun createHttpServer(
     if (useAuthentication) {
         routing {
             naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = prometheusRegistry.prometheusRegistry)
-            evalueringRoute(services, configuration)
+            evalueringRoute(services, configuration, createDatagrunnlag)
             reglerRoute()
             healthRoute("/healthCheck", services.healthService)
         }
     } else {
         routing {
             naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = prometheusRegistry.prometheusRegistry)
-            evalueringTestRoute(services, configuration)
+            evalueringTestRoute(services, configuration, createDatagrunnlag)
             reglerRoute()
             healthRoute("/healthCheck", services.healthService)
         }
