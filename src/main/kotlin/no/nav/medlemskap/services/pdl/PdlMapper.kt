@@ -9,7 +9,7 @@ import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
 
 object PdlMapper {
-    fun mapTilPersonHistorikk(fnr: String, person: HentPdlPersonResponse): Personhistorikk {
+    fun mapTilPersonHistorikk(person: HentPdlPersonResponse): Personhistorikk {
 
         val statsborgerskap: List<Statsborgerskap> = person.data?.hentPerson?.statsborgerskap?.map {
             mapStatsborgerskap(it)
@@ -39,7 +39,13 @@ object PdlMapper {
                     )
                 }
 
-        return Personhistorikk(fnr, statsborgerskap, personstatuser, bostedsadresser, postadresser, midlertidigAdresser, sivilstand, familierelasjoner)
+        return Personhistorikk(statsborgerskap, personstatuser, bostedsadresser, postadresser, midlertidigAdresser, sivilstand, familierelasjoner)
+    }
+    
+    fun mapPersonhistorikkTilEktefelle(fnr: String, person: HentPdlPersonResponse): PersonhistorikkEktefelle{
+        val barn = person.data?.hentPerson?.familierelasjoner?.filter { it.minRolleForPerson == Familierelasjonsrolle.BARN }?.map { it.relatertPersonsIdent }
+        return PersonhistorikkEktefelle(fnr, barn)
+
     }
 
 

@@ -13,7 +13,7 @@ data class Datagrunnlag(
         val dokument: List<Journalpost> = listOf(),
         val ytelse: Ytelse,
         val personHistorikkRelatertePersoner: List<PersonhistorikkRelatertPerson> = listOf(),
-        val personHistorikkRelatertePersonerFraPdl: List<Personhistorikk?> = listOf()
+        val personhistorikkEktefelle: PersonhistorikkEktefelle?
 )
 
 data class Periode(

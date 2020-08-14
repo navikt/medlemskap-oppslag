@@ -21,6 +21,7 @@ class RegelSteps : No {
     private val personhistorikkBuilder = PersonhistorikkBuilder()
     private val pdlPersonhistorikkBuilder = PersonhistorikkBuilder()
     private val personHistorikkRelatertePersoner = mutableListOf<PersonhistorikkRelatertPerson>()
+    private val personhistorikkEktefelle = PersonhistorikkEktefelleBuilder()
 
     private var medlemskap: List<Medlemskap> = emptyList()
 
@@ -235,7 +236,8 @@ class RegelSteps : No {
                 oppgaver = oppgaverFraGosys,
                 dokument = journalPosterFraJoArk,
                 ytelse = ytelse,
-                personHistorikkRelatertePersoner = personHistorikkRelatertePersoner
+                personHistorikkRelatertePersoner = personHistorikkRelatertePersoner,
+                personhistorikkEktefelle = personhistorikkEktefelle.build()
         )
     }
 

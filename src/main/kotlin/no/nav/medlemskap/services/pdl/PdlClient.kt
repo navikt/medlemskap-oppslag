@@ -14,6 +14,7 @@ import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Personhistorikk
+import no.nav.medlemskap.domene.PersonhistorikkEktefelle
 import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.services.runWithRetryAndMetrics
 import no.nav.medlemskap.services.sts.StsRestClient
@@ -143,7 +144,7 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
     }
 
     suspend fun hentPersonHistorikk(fnr: String, callId: String): Personhistorikk {
-        return PdlMapper.mapTilPersonHistorikk(fnr, pdlClient.hentPerson(fnr, callId))
+        return PdlMapper.mapTilPersonHistorikk(pdlClient.hentPerson(fnr, callId))
 
 
 /*        // Hack for å overleve manglende aktørID i ikke-konsistente data i Q2
@@ -168,6 +169,11 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
             emptyList()
         }
         return statsborgerskap?.map { PdlMapper.mapStatsborgerskap(it) }
+    }
+
+    suspend fun hentPersonHistorikkTilEktefelle(fnrTilEktefelle: String, callId: String): PersonhistorikkEktefelle {
+        return PdlMapper.mapPersonhistorikkTilEktefelle(fnrTilEktefelle, pdlClient.hentPerson(fnrTilEktefelle, callId))
+
     }
 
 }

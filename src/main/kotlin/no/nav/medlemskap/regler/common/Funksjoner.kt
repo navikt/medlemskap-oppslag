@@ -20,7 +20,7 @@ object Funksjoner {
 
     infix fun List<String>.alleEr(string: String) = this.stream().allMatch { m -> m.equals(string) }
 
-    infix fun List<String>.alleEr(strings: List<String>) = this.stream().allMatch { strings.contains(it) }
+    infix fun List<String>.harAlle(strings: List<String>) = this.stream().allMatch { strings.contains(it) }
 
     infix fun List<String>.kunInneholder(string: String) = this.contains(string) && this.size == 1
 

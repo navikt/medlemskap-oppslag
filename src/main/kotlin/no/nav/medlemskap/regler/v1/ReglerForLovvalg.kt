@@ -6,6 +6,7 @@ import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Funksjoner.erTom
 import no.nav.medlemskap.regler.common.Funksjoner.inneholder
+import no.nav.medlemskap.regler.common.Funksjoner.harAlle
 import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserForKontrollPeriode
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresserForKontrollPeriode
@@ -13,8 +14,7 @@ import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJob
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarnUnder25
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilEktefellerEllerPartnerForDato
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentRelatertSomFinnesITPS
-import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentPersonHistorikkTilAlleBarn
-import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilMorForAlleBarn
+import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentBarnSomFinnesITPS
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedSluttAvKontrollperiode
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedStartAvKontrollperiode
 
@@ -27,7 +27,7 @@ class ReglerForLovvalg(
         val arbeidUtenforNorge: Boolean,
         val personhistorikkRelatertPerson: List<PersonhistorikkRelatertPerson>,
         val pdlPersonhistorikk: Personhistorikk?,
-        val personHistorikkRelatertePersonerFraPdl: List<Personhistorikk?>
+        val personhistorikkEktefelle: PersonhistorikkEktefelle?
 ) : Regler() {
     val statsborgerskap = personhistorikk.statsborgerskap
     val postadresser = personhistorikk.postadresser
@@ -39,10 +39,10 @@ class ReglerForLovvalg(
     private val datohjelper = Datohjelper(periode, ytelse)
     private val kontrollPeriodeForPersonhistorikk = datohjelper.kontrollPeriodeForPersonhistorikk()
     private val kontrollPeriodeForArbeidsforhold = datohjelper.kontrollPeriodeForArbeidsforhold()
-    private val ektefelle = sivilstand?.hentFnrTilEktefellerEllerPartnerForDato(kontrollPeriodeForPersonhistorikk.tom)
-    private val ektefellerITps = personhistorikkRelatertPerson.hentRelatertSomFinnesITPS(ektefelle)
+    private val ektefelle = personhistorikkEktefelle?.ident
+    private val ektefelleITps = personhistorikkRelatertPerson.hentRelatertSomFinnesITPS(ektefelle)
     private val barn = familierelasjon?.hentFnrTilBarnUnder25()
-    private val barnITps = personhistorikkRelatertPerson.hentRelatertSomFinnesITPS(barn)
+    private val barnITps = personhistorikkRelatertPerson.hentBarnSomFinnesITPS(barn)
 
     override fun hentHovedRegel() =
             sjekkRegel {
@@ -327,15 +327,15 @@ class ReglerForLovvalg(
 
     private fun sjekkOmBrukerHarEktefelle(): Resultat {
         return when {
-            ektefellerITps.erIkkeTom() -> ja()
+            ektefelleITps.erIkkeTom() -> ja()
             else -> nei("Bruker har ikke ektefelle i tps")
         }
     }
 
     private fun sjekkOmBrukersEktefelleErBosattINorge(): Resultat {
-        val bostedsadresserTilEktefelle = ektefellerITps.flatMap { it.bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk) }
-        val postAdresseTilEktefelle = ektefellerITps.flatMap { it.postadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk) }
-        val midlertidigPostadresseTilEktefelle = ektefellerITps.flatMap { it.midlertidigAdresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk) }
+        val bostedsadresserTilEktefelle = ektefelleITps.flatMap { it.bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk) }
+        val postAdresseTilEktefelle = ektefelleITps.flatMap { it.postadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk) }
+        val midlertidigPostadresseTilEktefelle = ektefelleITps.flatMap { it.midlertidigAdresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk) }
         return when {
             erPersonBosattINorge(bostedsadresserTilEktefelle, postAdresseTilEktefelle, midlertidigPostadresseTilEktefelle) -> ja()
             else -> nei("Ikke alle adressene til ektefelle er norske, eller ektefelle mangler bostedsadresse")
@@ -343,13 +343,14 @@ class ReglerForLovvalg(
     }
 
     private fun sjekkOmBrukersEktefelleOgBarnasMorErSammePerson(): Resultat {
-        val fnrEktefelle = ektefellerITps[0].ident // Tar høyde for at det alltid finnes en ektefelle?
-        val personhistorikkTilBarn = personHistorikkRelatertePersonerFraPdl.hentPersonHistorikkTilAlleBarn(barnITps)
-        val fnrTilMorForAlleBarn = personhistorikkTilBarn.hentFnrTilMorForAlleBarn()
-        return when {
-            fnrTilMorForAlleBarn alleEr fnrEktefelle -> ja()
-            else -> nei(" Ektefelle er ikke barn/barnas mor")
+        if (personhistorikkEktefelle != null) {
+            return when {
+                personhistorikkEktefelle.barn?.harAlle(barnITps.map { it.ident })!! -> ja()
+                else -> nei(" Ektefelle er ikke barn/barnas mor")
+            }
         }
+
+        return nei()
     }
 
     private fun sjekkOmBrukersBarnErBosattINorge(): Resultat {
@@ -463,7 +464,7 @@ class ReglerForLovvalg(
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForLovvalg {
             with(datagrunnlag) {
-                return ReglerForLovvalg(personhistorikk, arbeidsforhold, periode, ytelse, brukerinput.arbeidUtenforNorge, personHistorikkRelatertePersoner, pdlpersonhistorikk, personHistorikkRelatertePersonerFraPdl)
+                return ReglerForLovvalg(personhistorikk, arbeidsforhold, periode, ytelse, brukerinput.arbeidUtenforNorge, personHistorikkRelatertePersoner, pdlpersonhistorikk, personhistorikkEktefelle)
             }
         }
     }

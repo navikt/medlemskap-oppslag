@@ -129,6 +129,7 @@ private suspend fun createDatagrunnlag(
         clientId: String?,
         ytelseFraRequest: Ytelse?): Datagrunnlag = coroutineScope {
 
+    val personhistorikkEktefelle : PersonhistorikkEktefelle?
     val aktorIder = services.pdlService.hentAlleAktorIder(fnr, callId)
     val personHistorikkFraPdl = hentPersonhistorikkFraPdl(services, fnr, callId)
     val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr, periode.fom) }
@@ -138,7 +139,16 @@ private suspend fun createDatagrunnlag(
     val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktorIder, callId) }
 
     val personhistorikkForFamilie = hentPersonhistorikkForFamilieAsync(personHistorikkFraPdl, services, periode)
-    val personHistorikkForFamilieFraPDL = hentPDLPersonhistorikkForFamilieListe(personhistorikkForFamilie, services, callId)
+
+    val fnrTilEktefelle = hentFnrTilEktefelle(personHistorikkFraPdl)
+
+    if(fnrTilEktefelle != null) {
+        personhistorikkEktefelle = hentPersonHistorikkForEktefelle(fnrTilEktefelle, services,  callId)
+    }else {
+        personhistorikkEktefelle = null
+    }
+
+   // val personHistorikkForFamilieFraPDL = hentPDLPersonhistorikkForFamilieListe(personhistorikkForFamilie, services, callId)
 
 
     val historikkFraTps = historikkFraTpsRequest.await()
@@ -160,8 +170,28 @@ private suspend fun createDatagrunnlag(
             dokument = journalPoster,
             ytelse = ytelse,
             personHistorikkRelatertePersoner = personhistorikkForFamilie,
-            personHistorikkRelatertePersonerFraPdl = personHistorikkForFamilieFraPDL
+            personhistorikkEktefelle = personhistorikkEktefelle
     )
+}
+
+suspend fun hentPersonHistorikkForEktefelle(fnrTilEktefelle: String, services: Services, callId: String): PersonhistorikkEktefelle? {
+    return try {
+        services.pdlService.hentPersonHistorikkTilEktefelle(fnrTilEktefelle, callId)
+    } catch (e: Exception) {
+        logger.error("hentPersonHistorikk feiler", e)
+        secureLogger.error("hentPersonHistorikk feiler for fnr {}", fnrTilEktefelle, e)
+        null
+    }
+
+
+}
+
+private fun hentFnrTilEktefelle(personHistorikkFraPdl: Personhistorikk?): String? {
+    val fnrTilEktefelle =
+            personHistorikkFraPdl?.sivilstand
+                    ?.filter { it.type == Sivilstandstype.GIFT || it.type == Sivilstandstype.REGISTRERT_PARTNER }
+                    ?.map { it.relatertVedSivilstand }?.lastOrNull()
+    return fnrTilEktefelle
 }
 
 fun finnYtelse(ytelseFraRequest: Ytelse?, clientId: String?) =
