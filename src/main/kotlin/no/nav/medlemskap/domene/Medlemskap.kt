@@ -7,15 +7,23 @@ data class Medlemskap(
         val fraOgMed: LocalDate,
         val tilOgMed: LocalDate,
         val erMedlem: Boolean,
-        val lovvalg: String?,
+        val lovvalg: Lovvalg?,
         val lovvalgsland: String?,
-        val periodeStatus: String?
+        val periodeStatus: PeriodeStatus?
 ) : Comparable<Medlemskap> {
 
     override fun compareTo(other: Medlemskap): Int {
         return this.tilOgMed.compareTo(other.tilOgMed)
     }
 
+}
+
+enum class Lovvalg() {
+    ENDL, FORL, UAVK
+}
+
+enum class PeriodeStatus() {
+    GYLD, AVST, UAVK
 }
 
 enum class Dekning(val dekningKodeverdi: String) {
