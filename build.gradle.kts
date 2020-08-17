@@ -38,7 +38,7 @@ val mainClass = "no.nav.medlemskap.ApplicationKt"
 fun tjenestespesifikasjon(name: String) = "no.nav.tjenestespesifikasjoner:$name:$tjenestespesifikasjonerVersion"
 
 plugins {
-    kotlin("jvm") version "1.3.70"
+    kotlin("jvm") version "1.3.72"
     id("com.github.johnrengelman.shadow") version "6.0.0"
     id("com.expediagroup.graphql") version "3.6.1"
     id("com.github.ben-manes.versions") version "0.29.0"
@@ -107,7 +107,7 @@ dependencies {
     //Temporary to fix high severity Snyk vulernabilities:
     implementation("io.netty:netty-codec:$nettyCodecVersion")
     implementation("commons-collections:commons-collections:$commonsCodecVersion")
-    
+
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
