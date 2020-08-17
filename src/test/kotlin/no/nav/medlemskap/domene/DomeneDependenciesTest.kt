@@ -10,12 +10,11 @@ class DomeneDependenciesTest {
     @ArchTest
     val `klasser i domenet skal ikke importere eksterne klasser fra baksystemene` =
             noClasses().that().resideInAPackage("no.nav.medlemskap.domene")
-                    .should().dependOnClassesThat().resideInAPackage("no.nav.medlemskap.clients..")
+                    .and().haveNameNotMatching(".*Test.*").should().dependOnClassesThat().resideInAPackage("no.nav.medlemskap.clients..")
 
     @ArchTest
     val `ingen regler skal resonnere over eksterne klasser fra baksystemene` =
             noClasses().that().resideInAPackage("no.nav.medlemskap.regler..")
                     .should().dependOnClassesThat().resideInAPackage("no.nav.medlemskap.clients..")
-
 
 }
