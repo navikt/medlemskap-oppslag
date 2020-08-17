@@ -20,3 +20,4 @@ fun main() {
 
     applicationServer.start(wait = true)
 }
+

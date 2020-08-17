@@ -12,7 +12,6 @@ import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.createHttpServer
 import no.nav.medlemskap.services.Services
 import org.junit.jupiter.api.BeforeAll
-import java.util.concurrent.TimeUnit
 
 open class ServerTest {
 
