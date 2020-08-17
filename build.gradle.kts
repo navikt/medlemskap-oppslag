@@ -23,7 +23,9 @@ val threetenVersion = "1.5.0"
 val cucumberVersion = "5.6.0"
 val nocommonsVersion = "0.9.0"
 val graphqlKotlinClientVersion = "3.5.0"
+val archUnitVersion = "0.14.1"
 val jsonassertVersion = "1.5.0"
+
 
 //Temporary to fix high severity Snyk vulernabilities:
 val nettyCodecVersion = "4.1.46.Final"
@@ -115,7 +117,10 @@ dependencies {
 
     testImplementation("io.cucumber:cucumber-junit:${cucumberVersion}")
     testImplementation("io.cucumber:cucumber-java8:${cucumberVersion}")
+    testImplementation("com.tngtech.archunit:archunit:${archUnitVersion}")
+    testImplementation("com.tngtech.archunit:archunit-junit5:${archUnitVersion}")
     testImplementation("org.skyscreamer:jsonassert:${jsonassertVersion}")
+
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:${junitJupiterVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}")
 }
