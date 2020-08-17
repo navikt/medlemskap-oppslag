@@ -1,7 +1,5 @@
 package no.nav.medlemskap.regler.funksjoner
 
-import no.nav.medlemskap.clients.aareg.AaRegOpplysningspliktigArbeidsgiverType
-import no.nav.medlemskap.clients.ereg.Ansatte
 import no.nav.medlemskap.common.*
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
@@ -18,7 +16,7 @@ import kotlin.math.abs
 object ArbeidsforholdFunksjoner {
 
     infix fun List<Arbeidsforhold>.erAlleArbeidsgivereOrganisasjon(kontrollPeriode: Kontrollperiode): Boolean {
-        return arbeidsforholdForKontrollPeriode(kontrollPeriode).stream().allMatch { it.arbeidsgivertype == AaRegOpplysningspliktigArbeidsgiverType.Organisasjon }
+        return arbeidsforholdForKontrollPeriode(kontrollPeriode).stream().allMatch { it.arbeidsgivertype == OpplysningspliktigArbeidsgiverType.Organisasjon }
     }
 
     infix fun List<Arbeidsforhold>.antallAnsatteHosArbeidsgivere(kontrollPeriode: Kontrollperiode): List<Int?> =

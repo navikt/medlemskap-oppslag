@@ -1,13 +1,11 @@
 package no.nav.medlemskap.domene
 
-import no.nav.medlemskap.clients.aareg.AaRegOpplysningspliktigArbeidsgiverType
-import no.nav.medlemskap.clients.ereg.Ansatte
 import java.time.YearMonth
 
 data class Arbeidsforhold(
         val periode: Periode,
         val utenlandsopphold: List<Utenlandsopphold>?,
-        val arbeidsgivertype: AaRegOpplysningspliktigArbeidsgiverType,
+        val arbeidsgivertype: OpplysningspliktigArbeidsgiverType,
         val arbeidsgiver: Arbeidsgiver,
         val arbeidsfolholdstype: Arbeidsforholdstype,
         val arbeidsavtaler: List<Arbeidsavtale>

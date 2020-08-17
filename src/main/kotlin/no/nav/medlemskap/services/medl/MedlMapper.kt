@@ -1,5 +1,6 @@
-package no.nav.medlemskap.clients.medl
+package no.nav.medlemskap.services.medl
 
+import no.nav.medlemskap.clients.medl.MedlMedlemskapsunntak
 import no.nav.medlemskap.domene.Lovvalg
 import no.nav.medlemskap.domene.Medlemskap
 import no.nav.medlemskap.domene.PeriodeStatus

@@ -69,9 +69,4 @@ class SafClient(
     }
 }
 
-class SafService(private val safClient: SafClient) {
-    suspend fun hentJournaldata(fnr: String, callId: String) =
-            mapDokumentoversiktBrukerResponse(safClient.hentJournaldata(fnr, callId))
-}
-
 

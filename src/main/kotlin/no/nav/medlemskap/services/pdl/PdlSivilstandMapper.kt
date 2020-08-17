@@ -1,8 +1,9 @@
-package no.nav.medlemskap.clients.pdl
+package no.nav.medlemskap.services.pdl
 
-import no.nav.medlemskap.clients.pdl.PdlMapper.mapFolkeregisterMetadata
+import no.nav.medlemskap.clients.pdl.Sivilstandstype
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.domene.Sivilstand
+import no.nav.medlemskap.services.pdl.PdlMapper.mapFolkeregisterMetadata
 import java.time.LocalDate
 import no.nav.medlemskap.clients.pdl.Sivilstand as PdlSivilstand
 

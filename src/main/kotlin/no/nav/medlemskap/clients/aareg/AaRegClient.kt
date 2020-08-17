@@ -11,14 +11,8 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
-import no.nav.medlemskap.clients.ereg.Ansatte
-import no.nav.medlemskap.clients.ereg.EregClient
-import no.nav.medlemskap.clients.pdl.PdlService
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
 import no.nav.medlemskap.clients.sts.StsRestClient
-import no.nav.medlemskap.domene.Arbeidsforhold
-import no.nav.medlemskap.domene.ArbeidsgiverOrg
-import no.nav.medlemskap.domene.ArbeidsgiverPerson
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -87,49 +81,3 @@ class AaRegClient(
     private fun LocalDate.tilIsoFormat() = this.format(DateTimeFormatter.ISO_LOCAL_DATE)
 }
 
-class AaRegService(
-        private val aaRegClient: AaRegClient,
-        private val eregClient: EregClient,
-        private val pdlService: PdlService
-) {
-
-    suspend fun hentArbeidsforhold(fnr: String, callId: String, fraOgMed: LocalDate, tilOgMed: LocalDate): List<Arbeidsforhold> {
-        val arbeidsgiverOrg = ArbeidsgiverOrg(aaRegClient)
-        val arbeidsgiverPerson = ArbeidsgiverPerson(aaRegClient)
-
-        val arbeidsforhold = aaRegClient.hentArbeidsforhold(fnr, callId, fraOgMed, tilOgMed)
-
-        val dataOmArbeidsgiver = mutableMapOf<String, ArbeidsgiverInfo>()
-        val orgnummere = arbeidsgiverOrg.getOrg(fnr, callId, fraOgMed, tilOgMed)
-
-        orgnummere.forEach { orgnummer ->
-            val logger = KotlinLogging.logger { }
-            val organisasjon = eregClient.hentOrganisasjon(orgnummer, callId)
-
-            logger.info { organisasjon }
-
-            dataOmArbeidsgiver[orgnummer] = ArbeidsgiverInfo(
-                    arbeidsgiverEnhetstype = hentArbeidsgiverEnhetstype(orgnummer, callId),
-                    ansatte = organisasjon.organisasjonDetaljer?.ansatte,
-                    opphoersdato = organisasjon.organisasjonDetaljer?.opphoersdato,
-                    konkursStatus = organisasjon.organisasjonDetaljer?.statuser?.map { it -> it?.kode }
-
-            )
-            logger.info { dataOmArbeidsgiver[orgnummer] }
-
-        }
-
-        return mapAaregResultat(arbeidsforhold, dataOmArbeidsgiver)
-    }
-
-    data class ArbeidsgiverInfo(val arbeidsgiverEnhetstype: String?,
-                                val ansatte: List<Ansatte>?,
-                                val opphoersdato: LocalDate?,
-                                val konkursStatus: List<String?>?)
-
-
-    private suspend fun hentArbeidsgiverEnhetstype(orgnummer: String, callId: String): String? {
-        return eregClient.hentEnhetstype(orgnummer, callId)
-    }
-
-}

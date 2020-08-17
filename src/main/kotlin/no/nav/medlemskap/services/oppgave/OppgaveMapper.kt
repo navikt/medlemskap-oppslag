@@ -1,5 +1,8 @@
-package no.nav.medlemskap.clients.oppgave
+package no.nav.medlemskap.services.oppgave
 
+import no.nav.medlemskap.clients.oppgave.OppgOppgave
+import no.nav.medlemskap.clients.oppgave.OppgPrioritet
+import no.nav.medlemskap.clients.oppgave.OppgStatus
 import no.nav.medlemskap.domene.Oppgave
 import no.nav.medlemskap.domene.Prioritet
 import no.nav.medlemskap.domene.Status

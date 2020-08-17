@@ -1,4 +1,4 @@
-package no.nav.medlemskap.clients.tpsws
+package no.nav.medlemskap.services.tps
 
 import mu.KotlinLogging
 import no.nav.medlemskap.domene.*

@@ -82,13 +82,6 @@ class InntektClient(
     }
 }
 
-class InntektService(private val inntektClient: InntektClient) {
-
-    suspend fun hentInntektListe(ident: String, callId: String, fraOgMed: LocalDate?, tilOgMed: LocalDate?) =
-            mapInntektResultat(inntektClient.hentInntektListe(ident, callId, fraOgMed, tilOgMed))
-
-}
-
 
 
 

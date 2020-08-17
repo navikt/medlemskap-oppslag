@@ -2,7 +2,6 @@ package no.nav.medlemskap.cucumber.steps
 
 import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
-import no.nav.medlemskap.clients.ereg.Ansatte
 import no.nav.medlemskap.cucumber.*
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.assertDelresultat

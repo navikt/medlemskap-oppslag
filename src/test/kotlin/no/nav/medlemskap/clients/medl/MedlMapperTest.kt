@@ -3,6 +3,7 @@ package no.nav.medlemskap.clients.medl
 import no.nav.medlemskap.domene.Dekning
 import no.nav.medlemskap.domene.Lovvalg
 import no.nav.medlemskap.domene.PeriodeStatus
+import no.nav.medlemskap.services.medl.mapMedlemskapResultat
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue

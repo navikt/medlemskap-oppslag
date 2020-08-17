@@ -1,12 +1,11 @@
-package no.nav.medlemskap.clients.pdl
+package no.nav.medlemskap.services.pdl
 
-import no.nav.medlemskap.clients.pdl.PdlSivilstandMapper.mapSivilstander
+import no.nav.medlemskap.clients.pdl.Familierelasjonsrolle
+import no.nav.medlemskap.clients.pdl.HentFoedselsaarResponse
+import no.nav.medlemskap.clients.pdl.HentPdlPersonResponse
 import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.domene.Familierelasjon
-import no.nav.medlemskap.domene.Folkeregistermetadata
-import no.nav.medlemskap.domene.Sivilstand
-import no.nav.medlemskap.domene.Statsborgerskap
+import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
 
 object PdlMapper {
     fun mapTilPersonHistorikk(person: HentPdlPersonResponse): Personhistorikk {

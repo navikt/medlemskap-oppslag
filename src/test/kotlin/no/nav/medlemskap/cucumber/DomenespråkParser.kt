@@ -1,8 +1,6 @@
 package no.nav.medlemskap.cucumber
 
 import io.cucumber.datatable.DataTable
-import no.nav.medlemskap.clients.aareg.AaRegOpplysningspliktigArbeidsgiverType
-import no.nav.medlemskap.clients.ereg.Ansatte
 import no.nav.medlemskap.cucumber.Domenebegrep.*
 import no.nav.medlemskap.cucumber.DomenespråkParser.Companion.VANLIG_NORSK_ARBEIDSGIVER
 import no.nav.medlemskap.domene.*
@@ -302,7 +300,7 @@ class ArbeidsforholdMapper {
         return Arbeidsforhold(
                 periode = periode,
                 utenlandsopphold = utenlandsopphold,
-                arbeidsgivertype = AaRegOpplysningspliktigArbeidsgiverType.valueOf(domenespråkParser.parseString(ARBEIDSGIVERTYPE, rad)),
+                arbeidsgivertype = OpplysningspliktigArbeidsgiverType.valueOf(domenespråkParser.parseString(ARBEIDSGIVERTYPE, rad)),
                 arbeidsgiver = arbeidsgiver ?: VANLIG_NORSK_ARBEIDSGIVER,
                 arbeidsfolholdstype = domenespråkParser.parseArbeidsforholdstype(rad),
                 arbeidsavtaler = emptyList()

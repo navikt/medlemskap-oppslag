@@ -1,4 +1,4 @@
-package no.nav.medlemskap.domene
+package no.nav.medlemskap.services.aareg
 
 import no.nav.medlemskap.clients.aareg.AaRegClient
 import java.time.LocalDate
