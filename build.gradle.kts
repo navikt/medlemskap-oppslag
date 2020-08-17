@@ -23,12 +23,11 @@ val threetenVersion = "1.5.0"
 val cucumberVersion = "6.5.0"
 val nocommonsVersion = "0.9.0"
 val graphqlKotlinClientVersion = "3.6.1"
+val archUnitVersion = "0.14.1"
 val jsonassertVersion = "1.5.0"
 val xmlSchemaVersion = "2.2.5"
 val jaxwsToolsVersion = "2.3.1"
 val activationVersion = "1.1.1"
-//Ble bedt om dette av Gradle, det er ulike transitive versjoner av denne:
-val kotlinReflectVersion = "1.3.70"
 
 //Temporary to fix high severity Snyk vulernabilities:
 val nettyCodecVersion = "4.1.46.Final"
@@ -108,10 +107,7 @@ dependencies {
     //Temporary to fix high severity Snyk vulernabilities:
     implementation("io.netty:netty-codec:$nettyCodecVersion")
     implementation("commons-collections:commons-collections:$commonsCodecVersion")
-
-    //Ble bedt om dette av Gradle pga ulike transitive versjoner:
-    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinReflectVersion")
-
+    
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
@@ -124,7 +120,10 @@ dependencies {
 
     testImplementation("io.cucumber:cucumber-junit:${cucumberVersion}")
     testImplementation("io.cucumber:cucumber-java8:${cucumberVersion}")
+    testImplementation("com.tngtech.archunit:archunit:${archUnitVersion}")
+    testImplementation("com.tngtech.archunit:archunit-junit5:${archUnitVersion}")
     testImplementation("org.skyscreamer:jsonassert:${jsonassertVersion}")
+
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:${junitJupiterVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}")
 }

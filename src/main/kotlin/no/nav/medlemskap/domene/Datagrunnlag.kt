@@ -24,7 +24,25 @@ data class Kontrollperiode(
         val fom: LocalDate,
         val tom: LocalDate
 ) {
-    fun tilPeriode() : Periode {
+    fun tilPeriode(): Periode {
+        return Periode(fom, tom)
+    }
+}
+
+data class Bruksperiode(
+        val fom: LocalDate?,
+        val tom: LocalDate?
+) {
+    fun tilPeriode(): Periode {
+        return Periode(fom, tom)
+    }
+}
+
+data class Gyldighetsperiode(
+        val fom: LocalDate?,
+        val tom: LocalDate?
+) {
+    fun tilPeriode(): Periode {
         return Periode(fom, tom)
     }
 }

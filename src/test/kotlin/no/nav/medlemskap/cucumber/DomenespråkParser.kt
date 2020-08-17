@@ -7,8 +7,6 @@ import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Datohjelper
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Svar
-import no.nav.medlemskap.services.aareg.AaRegOpplysningspliktigArbeidsgiverType
-import no.nav.medlemskap.services.ereg.Ansatte
 import java.time.LocalDate
 import java.time.YearMonth
 
@@ -197,7 +195,7 @@ class DomenespråkParser {
 
     companion object {
         val ANSATTE_9 = listOf(Ansatte(9, null, null))
-        val STATSBORGERSKAP_NOR = listOf(Statsborgerskap("NOR",LocalDate.MIN , null))
+        val STATSBORGERSKAP_NOR = listOf(Statsborgerskap("NOR", LocalDate.MIN, null))
         val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", identifikator = "1", ansatte = ANSATTE_9, konkursStatus = null)
 
     }
@@ -302,7 +300,7 @@ class ArbeidsforholdMapper {
         return Arbeidsforhold(
                 periode = periode,
                 utenlandsopphold = utenlandsopphold,
-                arbeidsgivertype = AaRegOpplysningspliktigArbeidsgiverType.valueOf(domenespråkParser.parseString(ARBEIDSGIVERTYPE, rad)),
+                arbeidsgivertype = OpplysningspliktigArbeidsgiverType.valueOf(domenespråkParser.parseString(ARBEIDSGIVERTYPE, rad)),
                 arbeidsgiver = arbeidsgiver ?: VANLIG_NORSK_ARBEIDSGIVER,
                 arbeidsfolholdstype = domenespråkParser.parseArbeidsforholdstype(rad),
                 arbeidsavtaler = emptyList()
@@ -396,7 +394,7 @@ class PersonhistorikkRelatertePersonerMapper : RadMapper<PersonhistorikkRelatert
     }
 }
 
-class SivilstandMapper: RadMapper<Sivilstand> {
+class SivilstandMapper : RadMapper<Sivilstand> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Sivilstand {
         return Sivilstand(
                 type = domenespråkParser.parseSivilstandstype(SIVILSTANDSTYPE, rad),
@@ -408,7 +406,7 @@ class SivilstandMapper: RadMapper<Sivilstand> {
     }
 }
 
-class FamilieRelasjonMapper: RadMapper<Familierelasjon> {
+class FamilieRelasjonMapper : RadMapper<Familierelasjon> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Familierelasjon {
         return Familierelasjon(
                 relatertPersonsIdent = domenespråkParser.parseString(RELATERT_PERSONS_IDENT, rad),

@@ -10,15 +10,11 @@ import io.restassured.response.ResponseBodyExtractionOptions
 import io.restassured.specification.RequestSpecification
 import kotlinx.coroutines.runBlocking
 import no.nav.medlemskap.ApplicationState
+import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.createHttpServer
-import no.nav.medlemskap.services.Services
-import no.nav.medlemskap.services.aareg.AaRegOpplysningspliktigArbeidsgiverType
-import no.nav.medlemskap.services.ereg.Ansatte
-import no.nav.medlemskap.services.ereg.Bruksperiode
-import no.nav.medlemskap.services.ereg.Gyldighetsperiode
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.skyscreamer.jsonassert.Customization
@@ -139,7 +135,7 @@ private fun arbeidsforhold(): Arbeidsforhold {
     return Arbeidsforhold(
             Periode(enDato(), enAnnenDato()),
             listOf(Utenlandsopphold("SWE", Periode(enDato(), enAnnenDato()), YearMonth.of(2010, 1))),
-            AaRegOpplysningspliktigArbeidsgiverType.Organisasjon, //TODO: Denne er ikke mappet til domene-namespacet!
+            OpplysningspliktigArbeidsgiverType.Organisasjon,
             Arbeidsgiver("type", "identifikator", listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus")),
             Arbeidsforholdstype.NORMALT,
             listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble()))

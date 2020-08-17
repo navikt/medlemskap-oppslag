@@ -11,13 +11,13 @@ import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.routing.post
 import mu.KotlinLogging
+import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.apiCounter
 import no.nav.medlemskap.common.exceptions.KonsumentIkkeFunnet
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
-import no.nav.medlemskap.services.Services
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*

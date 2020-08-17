@@ -4,10 +4,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
+import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
-import no.nav.medlemskap.services.Services
 import javax.xml.ws.soap.SOAPFaultException
 
 

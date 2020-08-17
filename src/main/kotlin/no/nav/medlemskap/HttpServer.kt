@@ -20,6 +20,7 @@ import io.micrometer.core.instrument.binder.system.ProcessorMetrics
 import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
 import mu.KotlinLogging
+import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.JwtConfig
 import no.nav.medlemskap.common.JwtConfig.Companion.REALM
 import no.nav.medlemskap.common.MDC_CALL_ID
@@ -34,7 +35,6 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.routes.*
-import no.nav.medlemskap.services.Services
 import org.slf4j.event.Level
 import java.util.*
 
