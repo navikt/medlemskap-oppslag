@@ -40,15 +40,17 @@ import java.util.*
 
 private val logger = KotlinLogging.logger { }
 
-fun createHttpServer(
+fun
+        createHttpServer(
         applicationState: ApplicationState,
         useAuthentication: Boolean = true,
         configuration: Configuration = Configuration(),
         azureAdOpenIdConfiguration: AzureAdOpenIdConfiguration = getAadConfig(configuration.azureAd),
         services: Services = Services(configuration),
+        port: Int = 7070,
         prometheusRegistry: PrometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT),
         createDatagrunnlag: suspend (fnr: String, callId: String, periode: InputPeriode, brukerinput: Brukerinput, services: Services, clientId: String?, ytelseFraRequest: Ytelse?) -> Datagrunnlag = ::defaultCreateDatagrunnlag
-): ApplicationEngine = embeddedServer(Netty, 7070) {
+): ApplicationEngine = embeddedServer(Netty, port) {
 
     install(StatusPages) {
         exceptionHandler()

@@ -58,11 +58,12 @@ class BakoverkompatibelTest {
 
             if (!applicationState.running) {
                 val applicationServer = createHttpServer(
-                        applicationState,
-                        false,
-                        configuration,
-                        openIdConfiguration,
-                        services,
+                        applicationState = applicationState,
+                        useAuthentication = false,
+                        configuration = configuration,
+                        azureAdOpenIdConfiguration = openIdConfiguration,
+                        services = services,
+                        port = 7071,
                         createDatagrunnlag = ::mockCreateDatagrunnlag
                 )
 
@@ -77,7 +78,7 @@ class BakoverkompatibelTest {
 
                 RestAssured.baseURI = "http://localhost"
                 RestAssured.basePath = "/"
-                RestAssured.port = 7070
+                RestAssured.port = 7071
                 RestAssured.config = RestAssuredConfig.config().objectMapperConfig(ObjectMapperConfig.objectMapperConfig()
                         .jackson2ObjectMapperFactory { _, _ -> objectMapper })
             }
