@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services.oppgave
+package no.nav.medlemskap.clients.oppgave
 
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.HttpClient
@@ -9,8 +9,8 @@ import io.ktor.client.request.url
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
-import no.nav.medlemskap.services.runWithRetryAndMetrics
-import no.nav.medlemskap.services.sts.StsRestClient
+import no.nav.medlemskap.clients.runWithRetryAndMetrics
+import no.nav.medlemskap.clients.sts.StsRestClient
 
 private const val TEMA_MEDLEMSKAP = "MED"
 private const val TEMA_UNNTAK_FRA_MEDLEMSKAP = "UFM"

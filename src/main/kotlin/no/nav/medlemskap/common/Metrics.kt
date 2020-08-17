@@ -134,7 +134,7 @@ fun statsborgerskapUavklartForRegel(statsborgerskap: String, ytelse: Ytelse, reg
 
 fun dekningCounter(dekning: String, ytelse: String): Counter = Counter
         .builder("dekningstyper")
-        .tags( "dekningstyper", dekning, "ytelse", ytelse)
+        .tags("dekningstyper", dekning, "ytelse", ytelse)
         .description("Ulike dekningskoder til brukere som har spurt tjenesten")
         .register(Metrics.globalRegistry)
 
@@ -170,14 +170,14 @@ fun apiCounter(): Counter = Counter
 fun clientTimer(service: String?, operation: String?): Timer =
         Timer.builder("client_calls_latency")
                 .tags("service", service ?: "UKJENT", "operation", operation ?: "UKJENT")
-                .description("latency for calls to other services")
+                .description("latency for calls to other clients")
                 .publishPercentileHistogram()
                 .register(Metrics.globalRegistry)
 
 fun clientCounter(service: String?, operation: String?, status: String): Counter = Counter
         .builder("client_calls_total")
         .tags("service", service ?: "UKJENT", "operation", operation ?: "UKJENT", "status", status)
-        .description("counter for failed or successful calls to other services")
+        .description("counter for failed or successful calls to other clients")
         .register(Metrics.globalRegistry)
 
 fun clientsGauge(client: String): AtomicInteger =

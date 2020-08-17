@@ -1,16 +1,16 @@
-package no.nav.medlemskap.services
+package no.nav.medlemskap.clients
 
+import no.nav.medlemskap.clients.aareg.AaRegClient
+import no.nav.medlemskap.clients.ereg.EregClient
+import no.nav.medlemskap.clients.inntekt.InntektClient
+import no.nav.medlemskap.clients.medl.MedlClient
+import no.nav.medlemskap.clients.oppgave.OppgaveClient
+import no.nav.medlemskap.clients.pdl.PdlClient
+import no.nav.medlemskap.clients.saf.SafClient
+import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.config.retryRegistry
-import no.nav.medlemskap.services.aareg.AaRegClient
-import no.nav.medlemskap.services.ereg.EregClient
-import no.nav.medlemskap.services.inntekt.InntektClient
-import no.nav.medlemskap.services.medl.MedlClient
-import no.nav.medlemskap.services.oppgave.OppgaveClient
-import no.nav.medlemskap.services.pdl.PdlClient
-import no.nav.medlemskap.services.saf.SafClient
-import no.nav.medlemskap.services.sts.StsRestClient
 
 class RestClients(private val stsClientRest: StsRestClient,
                   private val configuration: Configuration) {

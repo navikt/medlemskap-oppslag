@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services.pdl
+package no.nav.medlemskap.clients.pdl
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo

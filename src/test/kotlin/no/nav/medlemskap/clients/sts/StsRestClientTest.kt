@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services.sts
+package no.nav.medlemskap.clients.sts
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.MappingBuilder

@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services
+package no.nav.medlemskap.clients
 
 import mu.KotlinLogging
 import org.apache.cxf.binding.soap.SoapHeader

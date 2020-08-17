@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services.aareg
+package no.nav.medlemskap.clients.aareg
 
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.HttpClient
@@ -11,14 +11,14 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
+import no.nav.medlemskap.clients.ereg.Ansatte
+import no.nav.medlemskap.clients.ereg.EregClient
+import no.nav.medlemskap.clients.pdl.PdlService
+import no.nav.medlemskap.clients.runWithRetryAndMetrics
+import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.domene.Arbeidsforhold
 import no.nav.medlemskap.domene.ArbeidsgiverOrg
 import no.nav.medlemskap.domene.ArbeidsgiverPerson
-import no.nav.medlemskap.services.ereg.Ansatte
-import no.nav.medlemskap.services.ereg.EregClient
-import no.nav.medlemskap.services.pdl.PdlService
-import no.nav.medlemskap.services.runWithRetryAndMetrics
-import no.nav.medlemskap.services.sts.StsRestClient
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -112,7 +112,7 @@ class AaRegService(
                     arbeidsgiverEnhetstype = hentArbeidsgiverEnhetstype(orgnummer, callId),
                     ansatte = organisasjon.organisasjonDetaljer?.ansatte,
                     opphoersdato = organisasjon.organisasjonDetaljer?.opphoersdato,
-                    konkursStatus = organisasjon.organisasjonDetaljer?.statuser?.map{ it -> it?.kode }
+                    konkursStatus = organisasjon.organisasjonDetaljer?.statuser?.map { it -> it?.kode }
 
             )
             logger.info { dataOmArbeidsgiver[orgnummer] }

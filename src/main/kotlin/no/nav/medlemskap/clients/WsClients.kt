@@ -1,10 +1,10 @@
-package no.nav.medlemskap.services
+package no.nav.medlemskap.clients
 
 import io.github.resilience4j.retry.Retry
+import no.nav.medlemskap.clients.sts.configureFor
+import no.nav.medlemskap.clients.tpsws.PersonClient
+import no.nav.medlemskap.clients.tpsws.PersonFactory
 import no.nav.medlemskap.common.MetricFeature
-import no.nav.medlemskap.services.sts.configureFor
-import no.nav.medlemskap.services.tpsws.PersonClient
-import no.nav.medlemskap.services.tpsws.PersonFactory
 import org.apache.cxf.ext.logging.LoggingFeature
 import org.apache.cxf.ws.addressing.WSAddressingFeature
 import org.apache.cxf.ws.security.trust.STSClient

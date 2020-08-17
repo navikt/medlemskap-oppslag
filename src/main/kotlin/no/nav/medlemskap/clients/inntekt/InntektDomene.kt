@@ -1,4 +1,5 @@
-package no.nav.medlemskap.services.inntekt
+package no.nav.medlemskap.clients.inntekt
+
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -12,13 +13,13 @@ data class HentInntektListeRequest(
         val formaal: String
 )
 
-data class InntektskomponentResponse (
+data class InntektskomponentResponse(
         val arbeidsInntektMaaned: List<ArbeidsinntektMaaned>?,
 
         val ident: Ident?
 )
 
-data class ArbeidsinntektMaaned (
+data class ArbeidsinntektMaaned(
         val aarMaaned: YearMonth?,
         val avvikListe: List<Avvik>?,
         val arbeidsInntektInformasjon: ArbeidsInntektInformasjon?
@@ -47,7 +48,7 @@ data class ArbeidsInntektInformasjon(
 
 )
 
-data class ArbeidsforholdFrilanser (
+data class ArbeidsforholdFrilanser(
         val antallTimerPerUkeSomEnFullStillingTilsvarer: Double?,
         val arbeidstidsordning: String?,
         val avloenningstype: String?,
@@ -64,7 +65,7 @@ data class ArbeidsforholdFrilanser (
         val arbeidstaker: Ident?
 )
 
-data class Arbeidsforhold (
+data class Arbeidsforhold(
         val antallTimerPerUkeSomEnFullStillingTilsvarer: Double?,
         val arbeidstidsordning: String?,
         val avloenningstype: String?,

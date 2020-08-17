@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services.tpsws
+package no.nav.medlemskap.clients.tpsws
 
 import no.nav.tjeneste.virksomhet.person.v3.binding.PersonV3
 import org.apache.cxf.feature.Feature

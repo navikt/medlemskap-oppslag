@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services.pdl
+package no.nav.medlemskap.clients.pdl
 
 
 data class HentFoedselsaarResponse(val data: HentFoedselsaar?, val errors: List<PdlError>?)

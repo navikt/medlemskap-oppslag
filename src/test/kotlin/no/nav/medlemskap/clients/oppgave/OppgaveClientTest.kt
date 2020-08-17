@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services.oppgave
+package no.nav.medlemskap.clients.oppgave
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.MappingBuilder
@@ -12,8 +12,8 @@ import io.ktor.http.HttpStatusCode
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.cioHttpClient
-import no.nav.medlemskap.services.sts.StsRestClient
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 

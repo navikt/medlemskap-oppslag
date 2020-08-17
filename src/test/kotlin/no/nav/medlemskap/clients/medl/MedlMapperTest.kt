@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services.medl
+package no.nav.medlemskap.clients.medl
 
 import no.nav.medlemskap.domene.Dekning
 import no.nav.medlemskap.domene.Lovvalg

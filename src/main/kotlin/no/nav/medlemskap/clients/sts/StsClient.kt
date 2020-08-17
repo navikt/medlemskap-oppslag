@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services.sts
+package no.nav.medlemskap.clients.sts
 
 import org.apache.cxf.Bus
 import org.apache.cxf.BusFactory

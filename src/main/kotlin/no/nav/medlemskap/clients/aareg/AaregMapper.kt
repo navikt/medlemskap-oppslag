@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services.aareg
+package no.nav.medlemskap.clients.aareg
 
 import mu.KotlinLogging
 import no.nav.medlemskap.domene.*

@@ -1,7 +1,7 @@
 package no.nav.medlemskap.domene
 
-import no.nav.medlemskap.services.aareg.AaRegOpplysningspliktigArbeidsgiverType
-import no.nav.medlemskap.services.ereg.Ansatte
+import no.nav.medlemskap.clients.aareg.AaRegOpplysningspliktigArbeidsgiverType
+import no.nav.medlemskap.clients.ereg.Ansatte
 import java.time.YearMonth
 
 data class Arbeidsforhold(

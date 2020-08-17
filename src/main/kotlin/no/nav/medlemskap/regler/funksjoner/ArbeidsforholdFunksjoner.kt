@@ -1,5 +1,7 @@
 package no.nav.medlemskap.regler.funksjoner
 
+import no.nav.medlemskap.clients.aareg.AaRegOpplysningspliktigArbeidsgiverType
+import no.nav.medlemskap.clients.ereg.Ansatte
 import no.nav.medlemskap.common.*
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
@@ -7,8 +9,6 @@ import no.nav.medlemskap.regler.common.Funksjoner
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
 import no.nav.medlemskap.regler.common.interval
 import no.nav.medlemskap.regler.common.lagInterval
-import no.nav.medlemskap.services.aareg.AaRegOpplysningspliktigArbeidsgiverType
-import no.nav.medlemskap.services.ereg.Ansatte
 import org.threeten.extra.Interval
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -58,7 +58,7 @@ object ArbeidsforholdFunksjoner {
             return false
         }
 
-        if (arbeidsforholdForNorskArbeidsgiver.any {it.periode.fom == null }) {
+        if (arbeidsforholdForNorskArbeidsgiver.any { it.periode.fom == null }) {
             harIkkeArbeidsforhold12MndTilbakeCounter(ytelse).increment()
             return false
         }
@@ -86,7 +86,7 @@ object ArbeidsforholdFunksjoner {
         }
 
         if (forrigeTilDato != null) {
-           return !forrigeTilDato.isBefore(kontrollPeriode.tom)
+            return !forrigeTilDato.isBefore(kontrollPeriode.tom)
         }
 
         return true
@@ -138,7 +138,7 @@ object ArbeidsforholdFunksjoner {
 
 
     private fun List<Arbeidsforhold>.ingenAndreParallelleArbeidsforhold(arbeidsforhold: Arbeidsforhold): Boolean =
-        this.none { it.periode.interval().encloses(arbeidsforhold.periode.interval()) && it != arbeidsforhold }
+            this.none { it.periode.interval().encloses(arbeidsforhold.periode.interval()) && it != arbeidsforhold }
 
     private infix fun List<Arbeidsforhold>.ansatteHosArbeidsgivere(kontrollPeriode: Kontrollperiode): List<Ansatte> =
             arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(kontrollPeriode).mapNotNull { it.ansatte }.flatten()

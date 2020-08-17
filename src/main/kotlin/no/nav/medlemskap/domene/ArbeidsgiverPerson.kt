@@ -1,6 +1,6 @@
 package no.nav.medlemskap.domene
 
-import no.nav.medlemskap.services.aareg.AaRegClient
+import no.nav.medlemskap.clients.aareg.AaRegClient
 import java.time.LocalDate
 
 class ArbeidsgiverPerson(val aaRegClient: AaRegClient) {

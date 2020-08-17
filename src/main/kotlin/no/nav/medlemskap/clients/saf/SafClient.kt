@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services.saf
+package no.nav.medlemskap.clients.saf
 
 import com.expediagroup.graphql.client.GraphQLClient
 import com.expediagroup.graphql.types.GraphQLResponse
@@ -12,10 +12,10 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
 import no.nav.medlemskap.client.generated.Dokumenter
+import no.nav.medlemskap.clients.runWithRetryAndMetrics
+import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.objectMapper
-import no.nav.medlemskap.services.runWithRetryAndMetrics
-import no.nav.medlemskap.services.sts.StsRestClient
 import java.net.URL
 
 class SafClient(

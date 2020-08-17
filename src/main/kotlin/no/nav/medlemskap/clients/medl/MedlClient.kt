@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services.medl
+package no.nav.medlemskap.clients.medl
 
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.HttpClient
@@ -10,9 +10,9 @@ import io.ktor.client.request.url
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import no.nav.medlemskap.clients.runWithRetryAndMetrics
+import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.config.Configuration
-import no.nav.medlemskap.services.runWithRetryAndMetrics
-import no.nav.medlemskap.services.sts.StsRestClient
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 

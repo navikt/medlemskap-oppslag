@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services.pdl
+package no.nav.medlemskap.clients.pdl
 
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.HttpClient
@@ -10,13 +10,13 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
+import no.nav.medlemskap.clients.runWithRetryAndMetrics
+import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Personhistorikk
 import no.nav.medlemskap.domene.Statsborgerskap
-import no.nav.medlemskap.services.runWithRetryAndMetrics
-import no.nav.medlemskap.services.sts.StsRestClient
 
 private val logger = KotlinLogging.logger { }
 

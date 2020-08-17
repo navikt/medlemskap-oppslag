@@ -1,5 +1,5 @@
-package no.nav.medlemskap.services.ereg
-import no.nav.medlemskap.domene.Periode
+package no.nav.medlemskap.clients.ereg
+
 import java.time.LocalDate
 
 data class OrganisasjonNøkkelinfo(val enhetstype: String?)
@@ -91,10 +91,7 @@ data class Postadresse(val adresselinje1: String?,
                        val landkode: String?,
                        val postnummer: String?,
                        val poststed: String?
-                       )
-
-
-
+)
 
 
 data class ForretningsAdresser(
@@ -113,8 +110,6 @@ data class ForretningsAdresser(
 data class Formaal(val bruksperiode: Bruksperiode?,
                    val formaal: String?,
                    val gyldighetsperiode: Gyldighetsperiode?)
-
-
 
 
 data class Epostadresse(val adresse: String?,
@@ -152,12 +147,12 @@ data class Navn(val bruksperiode: Bruksperiode?,
 )
 
 
-    enum class Organisasjonstype{
-        VIRKSOMHET,
-        JURDISKENHET,
-        ORGANISASJONSLEDD
+enum class Organisasjonstype {
+    VIRKSOMHET,
+    JURDISKENHET,
+    ORGANISASJONSLEDD
 
-    }
+}
 
 
 

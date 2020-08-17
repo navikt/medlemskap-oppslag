@@ -1,16 +1,16 @@
-package no.nav.medlemskap.services.oppgave
+package no.nav.medlemskap.clients.oppgave
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import java.time.LocalDate
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class FinnOppgaverResponse (
-    val antallTreffTotalt: Int,
-    val oppgaver: List<OppgOppgave>
+data class FinnOppgaverResponse(
+        val antallTreffTotalt: Int,
+        val oppgaver: List<OppgOppgave>
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class OppgOppgave (
+data class OppgOppgave(
         val aktivDato: LocalDate,
         val prioritet: OppgPrioritet,
         val status: OppgStatus,

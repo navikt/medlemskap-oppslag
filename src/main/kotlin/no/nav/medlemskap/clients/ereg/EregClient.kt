@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services.ereg
+package no.nav.medlemskap.clients.ereg
 
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.HttpClient
@@ -8,16 +8,16 @@ import io.ktor.client.request.header
 import io.ktor.client.request.url
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import no.nav.medlemskap.clients.runWithRetryAndMetrics
 import no.nav.medlemskap.config.Configuration
-import no.nav.medlemskap.services.runWithRetryAndMetrics
 
-class EregClient (
+class EregClient(
         private val baseUrl: String,
         private val httpClient: HttpClient,
         private val configuration: Configuration,
         private val retry: Retry? = null
 ) {
-    suspend fun hentEnhetstype(orgnummer:String, callId: String): String? {
+    suspend fun hentEnhetstype(orgnummer: String, callId: String): String? {
         val organisasjon = runCatching {
             runWithRetryAndMetrics("Ereg", "noekkelinfo", retry) {
                 httpClient.get<OrganisasjonNøkkelinfo> {

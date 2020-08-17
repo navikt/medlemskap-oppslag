@@ -1,14 +1,14 @@
 package no.nav.medlemskap.cucumber
 
 import io.cucumber.datatable.DataTable
+import no.nav.medlemskap.clients.aareg.AaRegOpplysningspliktigArbeidsgiverType
+import no.nav.medlemskap.clients.ereg.Ansatte
 import no.nav.medlemskap.cucumber.Domenebegrep.*
 import no.nav.medlemskap.cucumber.DomenespråkParser.Companion.VANLIG_NORSK_ARBEIDSGIVER
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Datohjelper
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Svar
-import no.nav.medlemskap.services.aareg.AaRegOpplysningspliktigArbeidsgiverType
-import no.nav.medlemskap.services.ereg.Ansatte
 import java.time.LocalDate
 import java.time.YearMonth
 
@@ -197,7 +197,7 @@ class DomenespråkParser {
 
     companion object {
         val ANSATTE_9 = listOf(Ansatte(9, null, null))
-        val STATSBORGERSKAP_NOR = listOf(Statsborgerskap("NOR",LocalDate.MIN , null))
+        val STATSBORGERSKAP_NOR = listOf(Statsborgerskap("NOR", LocalDate.MIN, null))
         val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", identifikator = "1", ansatte = ANSATTE_9, konkursStatus = null)
 
     }
@@ -396,7 +396,7 @@ class PersonhistorikkRelatertePersonerMapper : RadMapper<PersonhistorikkRelatert
     }
 }
 
-class SivilstandMapper: RadMapper<Sivilstand> {
+class SivilstandMapper : RadMapper<Sivilstand> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Sivilstand {
         return Sivilstand(
                 type = domenespråkParser.parseSivilstandstype(SIVILSTANDSTYPE, rad),
@@ -408,7 +408,7 @@ class SivilstandMapper: RadMapper<Sivilstand> {
     }
 }
 
-class FamilieRelasjonMapper: RadMapper<Familierelasjon> {
+class FamilieRelasjonMapper : RadMapper<Familierelasjon> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Familierelasjon {
         return Familierelasjon(
                 relatertPersonsIdent = domenespråkParser.parseString(RELATERT_PERSONS_IDENT, rad),

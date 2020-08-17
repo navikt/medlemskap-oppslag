@@ -61,7 +61,7 @@ spec:
     - name: MEDL2_BASE_URL
       value: https://app-q2.adeo.no/medl2
     - name: AAREG_BASE_URL
-      value: https://modapp-q2.adeo.no/aareg-services/api
+      value: https://modapp-q2.adeo.no/aareg-clients/api
     - name: SAF_BASE_URL
       value: http://saf.q1.svc.nais.local/graphql
     - name: OPPGAVE_BASE_URL

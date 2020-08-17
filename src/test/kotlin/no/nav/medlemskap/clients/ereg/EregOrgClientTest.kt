@@ -1,20 +1,18 @@
-package no.nav.medlemskap.services.ereg
+package no.nav.medlemskap.clients.ereg
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
-import io.ktor.client.features.ClientRequestException
-import io.ktor.client.features.ServerResponseException
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.config.Configuration
-import no.nav.medlemskap.services.sts.StsRestClient
 import org.junit.jupiter.api.*
 
 class EregOrgClientTest {
@@ -63,7 +61,6 @@ class EregOrgClientTest {
         Assertions.assertEquals(response.navn?.navnelinje1, "NAV FAMILIE- OG PENSJONSYTELSER")
 
     }
-
 
 
     private val config = Configuration()

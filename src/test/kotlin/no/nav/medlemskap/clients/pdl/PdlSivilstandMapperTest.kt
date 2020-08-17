@@ -1,12 +1,12 @@
-package no.nav.medlemskap.services.pdl
+package no.nav.medlemskap.clients.pdl
 
 import no.nav.medlemskap.domene.Sivilstandstype
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
-import no.nav.medlemskap.services.pdl.Sivilstand as PdlSivilstand
-import no.nav.medlemskap.services.pdl.Sivilstandstype as PdlSivilstandstype
+import no.nav.medlemskap.clients.pdl.Sivilstand as PdlSivilstand
+import no.nav.medlemskap.clients.pdl.Sivilstandstype as PdlSivilstandstype
 
 class PdlSivilstandMapperTest {
 
@@ -65,16 +65,15 @@ class PdlSivilstandMapperTest {
     }
 
 
-
-    private fun pdlSivilstandGift(gyldigFraOgMed: LocalDate, relatertVedSivilstand: String) : PdlSivilstand {
+    private fun pdlSivilstandGift(gyldigFraOgMed: LocalDate, relatertVedSivilstand: String): PdlSivilstand {
         return PdlSivilstand(PdlSivilstandstype.GIFT, gyldigFraOgMed, relatertVedSivilstand, null)
     }
 
-    private fun pdlSivilstandSeparert(gyldigFraOgMed: LocalDate, relatertVedSivilstand: String) : PdlSivilstand {
+    private fun pdlSivilstandSeparert(gyldigFraOgMed: LocalDate, relatertVedSivilstand: String): PdlSivilstand {
         return PdlSivilstand(PdlSivilstandstype.SEPARERT, gyldigFraOgMed, relatertVedSivilstand, null)
     }
 
-    private fun pdlSivilstandSkilt(gyldigFraOgMed: LocalDate, relatertVedSivilstand: String) : PdlSivilstand {
+    private fun pdlSivilstandSkilt(gyldigFraOgMed: LocalDate, relatertVedSivilstand: String): PdlSivilstand {
         return PdlSivilstand(PdlSivilstandstype.SKILT, gyldigFraOgMed, relatertVedSivilstand, null)
     }
 

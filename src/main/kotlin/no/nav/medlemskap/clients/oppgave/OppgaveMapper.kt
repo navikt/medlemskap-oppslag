@@ -1,15 +1,17 @@
-package no.nav.medlemskap.services.oppgave
+package no.nav.medlemskap.clients.oppgave
 
 import no.nav.medlemskap.domene.Oppgave
 import no.nav.medlemskap.domene.Prioritet
 import no.nav.medlemskap.domene.Status
 
 fun mapOppgaveResultat(oppgaver: List<OppgOppgave>): List<Oppgave> {
-    return  oppgaver.map { Oppgave(
-            aktivDato = it.aktivDato,
-            prioritet = mapPrioritert(it),
-            status = mapStatus(it),
-            tema = it.tema)}
+    return oppgaver.map {
+        Oppgave(
+                aktivDato = it.aktivDato,
+                prioritet = mapPrioritert(it),
+                status = mapStatus(it),
+                tema = it.tema)
+    }
 
 }
 

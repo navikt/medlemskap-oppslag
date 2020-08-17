@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services.tpsws
+package no.nav.medlemskap.clients.tpsws
 
 import io.github.resilience4j.kotlin.retry.executeSuspendFunction
 import io.github.resilience4j.retry.Retry

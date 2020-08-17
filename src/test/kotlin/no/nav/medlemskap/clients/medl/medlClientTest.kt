@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services.aareg
+package no.nav.medlemskap.clients.aareg
 
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.MappingBuilder
@@ -13,10 +13,10 @@ import io.ktor.http.HttpStatusCode
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import no.nav.medlemskap.clients.medl.MedlClient
+import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.config.Configuration
-import no.nav.medlemskap.services.medl.MedlClient
-import no.nav.medlemskap.services.sts.StsRestClient
 import org.junit.jupiter.api.*
 import java.time.LocalDate
 

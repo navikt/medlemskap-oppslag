@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services.inntekt
+package no.nav.medlemskap.clients.inntekt
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
@@ -15,9 +15,9 @@ import io.ktor.http.HttpStatusCode
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.config.Configuration
-import no.nav.medlemskap.services.sts.StsRestClient
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import java.time.LocalDate

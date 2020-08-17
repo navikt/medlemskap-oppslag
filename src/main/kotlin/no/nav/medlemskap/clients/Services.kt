@@ -1,5 +1,20 @@
-package no.nav.medlemskap.services
+package no.nav.medlemskap.clients
 
+import no.nav.medlemskap.clients.aareg.AaRegClient
+import no.nav.medlemskap.clients.aareg.AaRegService
+import no.nav.medlemskap.clients.ereg.EregClient
+import no.nav.medlemskap.clients.medl.MedlClient
+import no.nav.medlemskap.clients.medl.MedlService
+import no.nav.medlemskap.clients.oppgave.OppgaveClient
+import no.nav.medlemskap.clients.oppgave.OppgaveService
+import no.nav.medlemskap.clients.pdl.PdlClient
+import no.nav.medlemskap.clients.pdl.PdlService
+import no.nav.medlemskap.clients.saf.SafClient
+import no.nav.medlemskap.clients.saf.SafService
+import no.nav.medlemskap.clients.sts.StsRestClient
+import no.nav.medlemskap.clients.sts.stsClient
+import no.nav.medlemskap.clients.tpsws.PersonClient
+import no.nav.medlemskap.clients.tpsws.PersonService
 import no.nav.medlemskap.common.callIdGenerator
 import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.common.healthcheck.HealthReporter
@@ -8,21 +23,6 @@ import no.nav.medlemskap.common.healthcheck.HttpResponseHealthCheck
 import no.nav.medlemskap.common.healthcheck.TryCatchHealthCheck
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.config.retryRegistry
-import no.nav.medlemskap.services.aareg.AaRegClient
-import no.nav.medlemskap.services.aareg.AaRegService
-import no.nav.medlemskap.services.ereg.EregClient
-import no.nav.medlemskap.services.medl.MedlClient
-import no.nav.medlemskap.services.medl.MedlService
-import no.nav.medlemskap.services.oppgave.OppgaveClient
-import no.nav.medlemskap.services.oppgave.OppgaveService
-import no.nav.medlemskap.services.pdl.PdlClient
-import no.nav.medlemskap.services.pdl.PdlService
-import no.nav.medlemskap.services.saf.SafClient
-import no.nav.medlemskap.services.saf.SafService
-import no.nav.medlemskap.services.sts.StsRestClient
-import no.nav.medlemskap.services.sts.stsClient
-import no.nav.medlemskap.services.tpsws.PersonClient
-import no.nav.medlemskap.services.tpsws.PersonService
 
 class Services(val configuration: Configuration) {
 

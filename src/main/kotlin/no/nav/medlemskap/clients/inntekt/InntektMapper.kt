@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services.inntekt
+package no.nav.medlemskap.clients.inntekt
 
 import no.nav.medlemskap.domene.Inntekt
 import no.nav.medlemskap.domene.InntektArbeidsforhold

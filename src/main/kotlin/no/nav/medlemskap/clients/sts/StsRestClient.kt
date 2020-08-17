@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services.sts
+package no.nav.medlemskap.clients.sts
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.github.resilience4j.retry.Retry
@@ -6,7 +6,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.*
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpHeaders
-import no.nav.medlemskap.services.runWithRetryAndMetrics
+import no.nav.medlemskap.clients.runWithRetryAndMetrics
 import java.time.LocalDateTime
 import java.util.*
 

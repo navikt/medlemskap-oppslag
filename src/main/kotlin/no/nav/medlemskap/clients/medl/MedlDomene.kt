@@ -1,9 +1,9 @@
-package no.nav.medlemskap.services.medl
+package no.nav.medlemskap.clients.medl
 
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-data class MedlMedlemskapsunntak (
+data class MedlMedlemskapsunntak(
         val dekning: String?,
         val fraOgMed: LocalDate,
         val grunnlag: String,
@@ -20,7 +20,7 @@ data class MedlMedlemskapsunntak (
         val studieinformasjon: MedlStudieinformasjon?
 )
 
-data class MedlSporingsinformasjon (
+data class MedlSporingsinformasjon(
         val besluttet: LocalDate?,
         val kilde: String,
         val kildedokument: String?,
@@ -32,7 +32,7 @@ data class MedlSporingsinformasjon (
         val versjon: String
 )
 
-data class MedlStudieinformasjon (
+data class MedlStudieinformasjon(
         val delstudie: Boolean,
         val soeknadInnvilget: Boolean,
         val statsborgerland: String,

@@ -1,4 +1,4 @@
-package no.nav.medlemskap.services.saf
+package no.nav.medlemskap.clients.saf
 
 import no.nav.medlemskap.client.generated.Dokumenter
 import no.nav.medlemskap.domene.Dokument

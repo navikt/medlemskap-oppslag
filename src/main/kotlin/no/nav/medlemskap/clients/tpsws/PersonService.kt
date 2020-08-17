@@ -1,11 +1,11 @@
-package no.nav.medlemskap.services.tpsws
+package no.nav.medlemskap.clients.tpsws
 
 import mu.KotlinLogging
 import no.bekk.bekkopen.person.FodselsnummerValidator
+import no.nav.medlemskap.clients.pdl.PdlService
 import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
 import no.nav.medlemskap.common.exceptions.Sikkerhetsbegrensing
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.services.pdl.PdlService
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentPersonhistorikkPersonIkkeFunnet
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentPersonhistorikkSikkerhetsbegrensning
 import java.time.LocalDate
