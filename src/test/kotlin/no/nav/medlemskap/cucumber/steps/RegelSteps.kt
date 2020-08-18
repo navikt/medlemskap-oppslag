@@ -138,10 +138,13 @@ class RegelSteps : No {
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
 
             val reglerForLovvalg = ReglerForLovvalg.fraDatagrunnlag(datagrunnlag!!)
+            val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag!!)
             val reglerForMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag!!)
             val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag!!)
+            val reglerForGrunnforordningen = ReglerForGrunnforordningen.fraDatagrunnlag(datagrunnlag!!)
 
             val regel = when (regelId!!) {
+                "OPPLYSNINGER" -> reglerForRegistrerteOpplysninger.harBrukerRegistrerteOpplysninger
                 "1.1" -> reglerForMedl.erPerioderAvklart
                 "1.2" -> reglerForMedl.periodeMedOgUtenMedlemskap
                 "1.3" -> reglerForMedl.periodeMedMedlemskap
@@ -151,10 +154,13 @@ class RegelSteps : No {
                 "1.5" -> reglerForMedl.erArbeidsforholdUendretForBrukerMedMedlemskap
                 "1.6" -> reglerForMedl.erDekningUavklart
                 "1.7" -> reglerForMedl.harBrukerDekningIMedl
+                "2" -> reglerForGrunnforordningen.erBrukerEØSborger
                 "3" -> reglerForArbeidsforhold.harBrukerSammenhengendeArbeidsforholdSiste12Mnd
                 "5" -> reglerForArbeidsforhold.harForetakMerEnn5Ansatte
                 "9" -> reglerForLovvalg.harBrukerJobbetUtenforNorge
-                "10" -> reglerForLovvalg.erBrukerBosattINorge
+                "10" -> {
+                    ErBrukerBosattINorgeRegel.fraDatagrunnlag(datagrunnlag!!).regel
+                }
                 "11" -> reglerForLovvalg.harBrukerNorskStatsborgerskap
                 "11.2" -> reglerForLovvalg.harBrukerEktefelle
                 "11.2.1" -> reglerForLovvalg.harBrukerBarnUtenEktefelle
@@ -173,17 +179,6 @@ class RegelSteps : No {
             }
 
             resultat = regel.utfør()
-        }
-
-        Når("hovedregel med avklaring {string} kjøres med følgende parametre") { avklaring: String, dataTable: DataTable? ->
-            val medlemskapsparametre = domenespråkParser.mapDataTable(dataTable, MedlemskapsparametreMapper()).get(0)
-            datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
-
-            resultat = when (avklaring) {
-                "Finnes det registrerte opplysninger på bruker?" -> evaluerReglerForMedlemsopplysninger(datagrunnlag!!)
-                "Er bruker omfattet av grunnforordningen?" -> evaluerGrunnforordningen(datagrunnlag!!)
-                else -> throw java.lang.RuntimeException("Fant ikke hovedregel med avklaring = $avklaring")
-            }
         }
 
         Så("skal svaret være {string}") { forventetVerdi: String ->
@@ -256,12 +251,14 @@ class RegelSteps : No {
 
     private fun evaluerGrunnforordningen(datagrunnlag: Datagrunnlag): Resultat {
         val regelsett = ReglerForGrunnforordningen.fraDatagrunnlag(datagrunnlag)
-        return regelsett.hentHovedRegel().utfør(mutableListOf())
+        return regelsett.kjørRegelflyt()
     }
 
     private fun evaluerReglerForMedlemsopplysninger(datagrunnlag: Datagrunnlag): Resultat {
+        val resultatListe = mutableListOf<Resultat>()
         val regelsett = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
-        return regelsett.hentHovedRegel().utfør(mutableListOf())
-    }
+        val resultat = regelsett.kjørRegelflyt(resultatListe)
 
+        return resultat
+    }
 }

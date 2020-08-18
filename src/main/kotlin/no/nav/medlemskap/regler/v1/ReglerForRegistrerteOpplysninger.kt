@@ -12,16 +12,13 @@ class ReglerForRegistrerteOpplysninger(
         val medlemskap: List<Medlemskap> = emptyList(),
         val oppgaver: List<Oppgave> = emptyList(),
         val dokument: List<Journalpost> = emptyList(),
-        val ytelse: Ytelse,
-        val periode: InputPeriode
-) : Regler() {
+        ytelse: Ytelse,
+        val periode: InputPeriode,
+        val reglerForGrunnforordningen: ReglerForGrunnforordningen,
+        val reglerForMedl: ReglerForMedl
+) : Regler(ytelse) {
 
-    override fun hentHovedRegel() =
-            sjekkRegel {
-                harBrukerRegistrerteOpplysninger
-            }
-
-    private val harBrukerRegistrerteOpplysninger = Regel(
+    val harBrukerRegistrerteOpplysninger = Regel(
             regelId = REGEL_OPPLYSNINGER,
             ytelse = ytelse,
             operasjon = { minstEnAvDisse(medl, joark, gsak) }
@@ -67,6 +64,17 @@ class ReglerForRegistrerteOpplysninger(
                 else -> nei()
             }
 
+    override fun hentRegelflyt(): Regelflyt {
+        val harBrukerRegistrerteOpplysninger = lagRegelflyt(
+                regel = harBrukerRegistrerteOpplysninger,
+                hvisJa = reglerForMedl.hentRegelflyt(),
+                hvisNei = reglerForGrunnforordningen.hentRegelflyt(),
+                hvisUavklart = regelFlytUavklart(ytelse)
+        )
+
+        return harBrukerRegistrerteOpplysninger
+    }
+
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForRegistrerteOpplysninger {
             return ReglerForRegistrerteOpplysninger(
@@ -74,7 +82,9 @@ class ReglerForRegistrerteOpplysninger(
                     oppgaver = datagrunnlag.oppgaver,
                     dokument = datagrunnlag.dokument,
                     ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode
+                    periode = datagrunnlag.periode,
+                    reglerForGrunnforordningen = ReglerForGrunnforordningen.fraDatagrunnlag(datagrunnlag),
+                    reglerForMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag)
             )
         }
     }
