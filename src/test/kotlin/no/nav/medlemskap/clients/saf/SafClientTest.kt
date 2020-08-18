@@ -60,7 +60,7 @@ class SafClientTest {
 
         val safResponse = runBlocking { safClient.hentJournaldata("1234567890", callId) }
 
-        assertEquals("439560100", safResponse?.dokumentoversiktBruker?.journalposter?.first()?.journalpostId)
+        assertEquals("439560100", safResponse.dokumentoversiktBruker.journalposter.first()?.journalpostId)
     }
 
 
