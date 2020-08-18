@@ -24,7 +24,7 @@ class RegelsettForHovedreglerTest {
 
     private fun evaluer(datagrunnlag: Datagrunnlag): Svar {
         val regelsett = Hovedregler(datagrunnlag)
-        return regelsett.hentHovedRegel().utfør(mutableListOf()).svar
+        return regelsett.kjørHovedregler().svar
     }
 
 }

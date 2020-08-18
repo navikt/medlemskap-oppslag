@@ -23,82 +23,87 @@ class ReglerForMedl(
         val medlemskap: List<Medlemskap>,
         val arbeidsforhold: List<Arbeidsforhold>,
         val periode: InputPeriode,
-        val ytelse: Ytelse,
+        ytelse: Ytelse,
         val oppgaver: List<Oppgave>,
         val bostedsadresser: List<Adresse>,
         val postadresser: List<Adresse>,
-        val midlertidigAdresser: List<Adresse>
-) : Regler() {
+        val midlertidigAdresser: List<Adresse>,
+        val reglerForRegistrerteOpplysninger: ReglerForRegistrerteOpplysninger
+) : Regler(ytelse) {
 
     private val kontrollPeriodeForMedl = Datohjelper(periode, ytelse).kontrollPeriodeForMedl()
     private val datohjelper = Datohjelper(periode, ytelse)
 
-    override fun hentHovedRegel(): Regel =
-            sjekkRegel {
-                harBrukerMedlOpplysninger
-            } hvisJa {
-                sjekkRegel {
-                    harBrukerGosysOpplysninger
-                } hvisJa {
-                    uavklartKonklusjon(ytelse)
-                } hvisNei {
-                    sjekkRegel {
-                        erPerioderAvklart
-                    } hvisNei {
-                        uavklartKonklusjon(ytelse)
-                    } hvisJa {
-                        sjekkRegel {
-                            periodeMedOgUtenMedlemskap
-                        } hvisJa {
-                            uavklartKonklusjon(ytelse)
-                        } hvisNei {
-                            sjekkRegel {
-                                periodeMedMedlemskap
-                            } hvisNei {
-                                sjekkRegel {
-                                    erPeriodeUtenMedlemskapInnenfor12MndPeriode
-                                } hvisNei {
-                                    uavklartKonklusjon(ytelse)
-                                } hvisJa {
-                                    sjekkRegel {
-                                        erArbeidsforholdUendretForBrukerUtenMedlemskap
-                                    } hvisJa {
-                                        uavklartKonklusjon(ytelse)
-                                    } hvisNei {
-                                        uavklartKonklusjon(ytelse)
-                                    }
-                                }
-                            } hvisJa {
-                                sjekkRegel {
-                                    erPeriodeMedMedlemskapInnenfor12MndPeriode
-                                } hvisJa {
-                                    sjekkRegel {
-                                        erArbeidsforholdUendretForBrukerMedMedlemskap
-                                    } hvisJa {
-                                        sjekkRegel {
-                                            erDekningUavklart
-                                        } hvisJa {
-                                            uavklartKonklusjon(ytelse)
-                                        } hvisNei {
-                                            sjekkRegel {
-                                                harBrukerDekningIMedl
-                                            } hvisJa {
-                                                jaKonklusjon(ytelse)
-                                            } hvisNei {
-                                                uavklartKonklusjon(ytelse)
-                                            }
-                                        }
-                                    } hvisNei {
-                                        uavklartKonklusjon(ytelse)
-                                    }
-                                } hvisNei {
-                                    uavklartKonklusjon(ytelse)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+    override fun hentRegelflyt(): Regelflyt {
+        val harBrukerDekningIMedlFlyt = lagRegelflyt(
+                regel = harBrukerDekningIMedl,
+                hvisJa = regelFlytJa(ytelse),
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+
+        val erDekningUavklartFlyt = lagRegelflyt(
+                regel = erDekningUavklart,
+                hvisJa = regelFlytUavklart(ytelse),
+                hvisNei = harBrukerDekningIMedlFlyt
+        )
+
+        val erArbeidsforholdUendretForBrukerMedMedlemskapFlyt = lagRegelflyt(
+                erArbeidsforholdUendretForBrukerMedMedlemskap,
+                hvisJa = erDekningUavklartFlyt,
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+
+        val erPeriodeMedMedlemskapInnenfor12MndPeriodeFlyt = lagRegelflyt(
+                erPeriodeMedMedlemskapInnenfor12MndPeriode,
+                hvisJa = erArbeidsforholdUendretForBrukerMedMedlemskapFlyt,
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+
+        val erArbeidsforholdUendretForBrukerUtenMedlemskapFlyt = lagRegelflyt(
+                regel = erArbeidsforholdUendretForBrukerUtenMedlemskap,
+                hvisJa = regelFlytUavklart(ytelse),
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+
+        val erPeriodeUtenMedlemskapInnenfor12MndPeriodeFlyt = lagRegelflyt(
+                regel = erPeriodeUtenMedlemskapInnenfor12MndPeriode,
+                hvisJa = erArbeidsforholdUendretForBrukerUtenMedlemskapFlyt,
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+
+        val periodeMedMedlemskapFlyt = lagRegelflyt(
+                regel = periodeMedMedlemskap,
+                hvisJa = erPeriodeMedMedlemskapInnenfor12MndPeriodeFlyt,
+                hvisNei = erPeriodeUtenMedlemskapInnenfor12MndPeriodeFlyt
+        )
+
+        val periodeMedOgUtenMedlemskapFlyt = lagRegelflyt(
+                regel = periodeMedOgUtenMedlemskap,
+                hvisJa = regelFlytUavklart(ytelse),
+                hvisNei = periodeMedMedlemskapFlyt
+        )
+
+        val erPerioderAvklartFlyt = lagRegelflyt(
+                regel = erPerioderAvklart,
+                hvisJa = periodeMedOgUtenMedlemskapFlyt,
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+
+        val harBrukerGosysOpplysningerFlyt = lagRegelflyt(
+                regel = harBrukerGosysOpplysninger,
+                hvisJa = regelFlytUavklart(ytelse),
+                hvisNei = erPerioderAvklartFlyt
+        )
+
+        val harBrukerMedlOpplysningerFlyt = lagRegelflyt(
+                regel = harBrukerMedlOpplysninger,
+                hvisJa = harBrukerGosysOpplysningerFlyt,
+                hvisNei = reglerForRegistrerteOpplysninger.hentRegelflyt()
+        )
+
+        return harBrukerMedlOpplysningerFlyt
+    }
+
 
     val harBrukerMedlOpplysninger = Regel(
             regelId = REGEL_A,
@@ -256,7 +261,17 @@ class ReglerForMedl(
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForMedl {
             with(datagrunnlag) {
-                return ReglerForMedl(medlemskap, arbeidsforhold, periode, ytelse, oppgaver, personhistorikk.bostedsadresser, personhistorikk.postadresser, personhistorikk.midlertidigAdresser)
+                return ReglerForMedl(
+                        medlemskap = medlemskap,
+                        arbeidsforhold = arbeidsforhold,
+                        periode = periode,
+                        ytelse = ytelse,
+                        oppgaver = oppgaver,
+                        bostedsadresser = personhistorikk.bostedsadresser,
+                        postadresser = personhistorikk.postadresser,
+                        midlertidigAdresser = personhistorikk.midlertidigAdresser,
+                        reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
+                )
             }
         }
     }

@@ -11,15 +11,26 @@ import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsbo
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedStartAvKontrollperiode
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.registrerStatsborgerskapGrafana
 
-class ReglerForGrunnforordningen(val ytelse: Ytelse, val periode: InputPeriode, val statsborgerskap: List<Statsborgerskap>) : Regler() {
+class ReglerForGrunnforordningen(
+        ytelse: Ytelse,
+        val periode: InputPeriode,
+        val statsborgerskap: List<Statsborgerskap>,
+        val reglerForArbeidsForhold: ReglerForArbeidsforhold
+) : Regler(ytelse) {
     val kontrollPeriodeForStatsborgerskap = Datohjelper(periode, ytelse).kontrollPeriodeForPersonhistorikk()
 
-    override fun hentHovedRegel() =
-            sjekkRegel {
-                erBrukerEØSborger
-            }
+    override fun hentRegelflyt(): Regelflyt {
 
-    private val erBrukerEØSborger = Regel(
+        val erBrukerEØSborgerFlyt = lagRegelflyt(
+                regel = erBrukerEØSborger,
+                hvisJa = reglerForArbeidsForhold.hentRegelflyt(),
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+
+        return erBrukerEØSborgerFlyt
+    }
+
+    val erBrukerEØSborger = Regel(
             regelId = REGEL_2,
             ytelse = ytelse,
             operasjon = { sjekkStatsborgerskap() }
@@ -75,7 +86,9 @@ class ReglerForGrunnforordningen(val ytelse: Ytelse, val periode: InputPeriode, 
             return ReglerForGrunnforordningen(
                     ytelse = datagrunnlag.ytelse,
                     periode = datagrunnlag.periode,
-                    statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap)
+                    statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap,
+                    reglerForArbeidsForhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag)
+            )
         }
     }
 }

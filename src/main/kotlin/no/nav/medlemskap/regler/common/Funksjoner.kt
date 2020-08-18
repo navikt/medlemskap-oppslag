@@ -78,8 +78,6 @@ fun uavklart(begrunnelse: String) = Resultat(
 
 fun uavklart() = Resultat(svar = Svar.UAVKLART)
 
-fun sjekkRegelsett(metode: () -> Regler): Regel = metode.invoke().hentHovedRegel()
-
 fun uavklartKonklusjon(ytelse: Ytelse) = Regel(
         regelId = REGEL_MEDLEM_KONKLUSJON,
         ytelse = ytelse,
@@ -97,4 +95,24 @@ fun neiKonklusjon(ytelse: Ytelse) = Regel(
         ytelse = ytelse,
         operasjon = { nei("Bruker er ikke medlem") }
 )
+
+
+fun regelFlytJa(ytelse: Ytelse): Regelflyt {
+    return Regelflyt(jaKonklusjon(ytelse), ytelse)
+}
+
+fun regelFlytNei(ytelse: Ytelse): Regelflyt {
+    return Regelflyt(neiKonklusjon(ytelse), ytelse)
+}
+
+fun regelFlytUavklart(ytelse: Ytelse): Regelflyt {
+    return Regelflyt(uavklartKonklusjon(ytelse), ytelse)
+}
+
+
+
+private fun List<Resultat>.hentUtKonklusjon(): Resultat {
+    return this.find { it.regelId == RegelId.REGEL_MEDLEM_KONKLUSJON }
+            ?: throw RuntimeException("Klarte ikke finne konklusjon")
+}
 

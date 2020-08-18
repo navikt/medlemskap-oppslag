@@ -20,11 +20,11 @@ class ReglerForLovvalg(
         val personhistorikk: Personhistorikk,
         val arbeidsforhold: List<Arbeidsforhold>,
         val periode: InputPeriode,
-        val ytelse: Ytelse,
+        ytelse: Ytelse,
         val arbeidUtenforNorge: Boolean,
         val personhistorikkRelatertPerson: List<PersonhistorikkRelatertPerson>,
         val pdlPersonhistorikk: Personhistorikk?
-) : Regler() {
+) : Regler(ytelse) {
     val statsborgerskap = personhistorikk.statsborgerskap
     val postadresser = personhistorikk.postadresser
     val bostedsadresser = personhistorikk.bostedsadresser
@@ -40,129 +40,118 @@ class ReglerForLovvalg(
     private val barn = familierelasjon?.hentFnrTilBarnUnder25()
     private val barnITps = personhistorikkRelatertPerson.hentRelatertSomFinnesITPS(barn)
 
-    override fun hentHovedRegel() =
-            sjekkRegel {
-                harBrukerJobbetUtenforNorge
-            } hvisNei {
-                sjekkRegel {
-                    erBrukerBosattINorge
-                } hvisNei {
-                    uavklartKonklusjon(ytelse)
-                } hvisJa {
-                    sjekkRegel {
-                        harBrukerNorskStatsborgerskap
-                    } hvisJa {
-                        sjekkRegel {
-                            harBrukerJobbet25ProsentEllerMer
-                        } hvisJa {
-                            jaKonklusjon(ytelse)
-                        } hvisNei {
-                            uavklartKonklusjon(ytelse)
-                        }
-                    } hvisNei {
-                        sjekkRegel {
-                            harBrukerEktefelle
-                        } hvisJa {
-                            sjekkRegel {
-                                harBrukerEktefelleOgBarn
-                            } hvisJa {
-                                sjekkRegel {
-                                    erBrukerMedBarnSittEktefelleBosattINorge
-                                } hvisJa {
-                                    sjekkRegel {
-                                        erBrukerMedFolkeregistrertEktefelleSittBarnFolkeregistrert
-                                    } hvisJa {
-                                        sjekkRegel {
-                                            harBrukerMedFolkeregistrerteRelasjonerJobbetMerEnn80Prosent
-                                        } hvisJa {
-                                            jaKonklusjon(ytelse)
-                                        } hvisNei {
-                                            uavklartKonklusjon(ytelse)
-                                        }
-                                    } hvisNei {
-                                        uavklartKonklusjon(ytelse)
-                                    } hvisUavklart {
-                                        uavklartKonklusjon(ytelse)
-                                    }
-                                } hvisNei {
-                                    sjekkRegel {
-                                        erBrukerUtenFolkeregistrertEktefelleSittBarnFolkeregistrert
-                                    } hvisJa {
-                                        uavklartKonklusjon(ytelse)
-                                    } hvisNei {
-                                        sjekkRegel {
-                                            harBrukerMedRelasjonerUtenFolkeregistreringJobbetMerEnn100Prosent
-                                        } hvisJa {
-                                            jaKonklusjon(ytelse)
-                                        } hvisNei {
-                                            uavklartKonklusjon(ytelse)
-                                        }
-                                    } hvisUavklart {
-                                        uavklartKonklusjon(ytelse)
-                                    }
-                                }
-                            } hvisNei {
-                                sjekkRegel {
-                                    erBarnloesBrukersEktefelleBosattINorge
-                                } hvisJa {
-                                    sjekkRegel {
-                                        harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn80Prosent
-                                    } hvisJa {
-                                        jaKonklusjon(ytelse)
-                                    } hvisNei {
-                                        uavklartKonklusjon(ytelse)
-                                    }
-                                } hvisNei {
-                                    sjekkRegel {
-                                        harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn100Prosent
-                                    } hvisJa {
-                                        jaKonklusjon(ytelse)
-                                    } hvisNei {
-                                        uavklartKonklusjon(ytelse)
-                                    }
-                                }
-                            }
-                        } hvisNei {
-                            sjekkRegel {
-                                harBrukerBarnUtenEktefelle
-                            } hvisJa {
-                                sjekkRegel {
-                                    harBrukerUtenEktefelleBarnSomErFolkeregistrert
-                                } hvisJa {
-                                    sjekkRegel {
-                                        harBrukerMedFolkeregistrerteBarnJobbetMerEnn80Prosent
-                                    } hvisJa {
-                                        jaKonklusjon(ytelse)
-                                    } hvisNei {
-                                        uavklartKonklusjon(ytelse)
-                                    }
-                                } hvisNei {
-                                    sjekkRegel {
-                                        harBrukerUtenFolkeregistrerteBarnJobbetMerEnn100Prosent
-                                    } hvisJa {
-                                        jaKonklusjon(ytelse)
-                                    } hvisNei {
-                                        uavklartKonklusjon(ytelse)
-                                    }
-                                } hvisUavklart {
-                                    uavklartKonklusjon(ytelse)
-                                }
-                            } hvisNei {
-                                sjekkRegel {
-                                    harBrukerUtenEktefelleOgBarnJobbetMerEnn100Prosent
-                                } hvisJa {
-                                    jaKonklusjon(ytelse)
-                                } hvisNei {
-                                    uavklartKonklusjon(ytelse)
-                                }
-                            }
-                        }
-                    }
-                }
-            } hvisJa {
-                neiKonklusjon(ytelse)
-            }
 
+    override fun hentRegelflyt(): Regelflyt {
+        val harBrukerMedFolkeregistrerteBarnJobbetMerEnn80ProsentFlyt = lagRegelflyt(
+                regel = harBrukerMedFolkeregistrerteBarnJobbetMerEnn80Prosent,
+                hvisJa = regelFlytJa(ytelse),
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+
+        val harBrukerUtenFolkeregistrerteBarnJobbetMerEnn100ProsentFlyt = lagRegelflyt(
+                regel = harBrukerUtenFolkeregistrerteBarnJobbetMerEnn100Prosent,
+                hvisJa = regelFlytJa(ytelse),
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+
+        val harBrukerUtenEktefelleBarnSomErFolkeregistrertFlyt = lagRegelflyt(
+                regel = harBrukerUtenEktefelleBarnSomErFolkeregistrert,
+                hvisJa = harBrukerMedFolkeregistrerteBarnJobbetMerEnn80ProsentFlyt,
+                hvisNei = harBrukerUtenFolkeregistrerteBarnJobbetMerEnn100ProsentFlyt
+        )
+
+        val harBrukerBarnUtenEktefelleFlyt = lagRegelflyt(
+                regel = harBrukerBarnUtenEktefelle,
+                hvisJa = harBrukerUtenEktefelleBarnSomErFolkeregistrertFlyt,
+                hvisNei = harBrukerUtenFolkeregistrerteBarnJobbetMerEnn100ProsentFlyt
+        )
+
+        val harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn100ProsentFlyt = lagRegelflyt(
+                regel = harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn100Prosent,
+                hvisJa = regelFlytJa(ytelse),
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+
+        val harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn80ProsentFlyt = lagRegelflyt(
+                regel = harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn80Prosent,
+                hvisJa = regelFlytJa(ytelse),
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+
+        val erBarnloesBrukersEktefelleBosattINorgeFlyt = lagRegelflyt(
+                regel = erBarnloesBrukersEktefelleBosattINorge,
+                hvisJa = harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn80ProsentFlyt,
+                hvisNei = harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn100ProsentFlyt
+        )
+
+        val harBrukerMedRelasjonerUtenFolkeregistreringJobbetMerEnn100ProsentFlyt = lagRegelflyt(
+                regel = harBrukerMedRelasjonerUtenFolkeregistreringJobbetMerEnn100Prosent,
+                hvisJa = regelFlytJa(ytelse),
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+
+        val erBrukerUtenFolkeregistrertEktefelleSittBarnFolkeregistrertFlyt = lagRegelflyt(
+                regel = erBrukerUtenFolkeregistrertEktefelleSittBarnFolkeregistrert,
+                hvisJa = regelFlytUavklart(ytelse),
+                hvisNei = harBrukerMedRelasjonerUtenFolkeregistreringJobbetMerEnn100ProsentFlyt
+        )
+
+        val harBrukerMedFolkeregistrerteRelasjonerJobbetMerEnn80ProsentFlyt = lagRegelflyt(
+                regel = harBrukerMedFolkeregistrerteRelasjonerJobbetMerEnn80Prosent,
+                hvisJa = regelFlytJa(ytelse),
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+
+        val erBrukerMedFolkeregistrertEktefelleSittBarnFolkeregistrertFlyt = lagRegelflyt(
+                regel = erBrukerMedFolkeregistrertEktefelleSittBarnFolkeregistrert,
+                hvisJa = harBrukerMedFolkeregistrerteRelasjonerJobbetMerEnn80ProsentFlyt,
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+
+        val erBrukerMedBarnSittEktefelleBosattINorgeFlyt = lagRegelflyt(
+                regel = erBrukerMedBarnSittEktefelleBosattINorge,
+                hvisJa = erBrukerMedFolkeregistrertEktefelleSittBarnFolkeregistrertFlyt,
+                hvisNei = erBrukerUtenFolkeregistrertEktefelleSittBarnFolkeregistrertFlyt
+        )
+
+        val harBrukerEktefelleOgBarnFlyt = lagRegelflyt(
+                regel = harBrukerEktefelleOgBarn,
+                hvisJa = erBrukerMedBarnSittEktefelleBosattINorgeFlyt,
+                hvisNei = erBarnloesBrukersEktefelleBosattINorgeFlyt
+        )
+
+        val harBrukerEktefelleFlyt = lagRegelflyt(
+                regel = harBrukerEktefelle,
+                hvisJa = harBrukerEktefelleOgBarnFlyt,
+                hvisNei = harBrukerBarnUtenEktefelleFlyt
+        )
+
+        val harBrukerJobbet25ProsentEllerMerFlyt = lagRegelflyt(
+                regel = harBrukerJobbet25ProsentEllerMer,
+                hvisJa = regelFlytJa(ytelse),
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+
+        val harBrukerNorskStatsborgerskapFlyt = lagRegelflyt(
+                regel = harBrukerNorskStatsborgerskap,
+                hvisJa = harBrukerJobbet25ProsentEllerMerFlyt,
+                hvisNei = harBrukerEktefelleFlyt
+        )
+
+        val erBrukerBosattINorgeFlyt = lagRegelflyt(
+                regel = erBrukerBosattINorge,
+                hvisJa = harBrukerNorskStatsborgerskapFlyt,
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+
+        val harBrukerJobbetUtenforNorgeFlyt = lagRegelflyt(
+                regel = harBrukerJobbetUtenforNorge,
+                hvisJa = regelFlytNei(ytelse),
+                hvisNei = erBrukerBosattINorgeFlyt
+        )
+
+        return harBrukerJobbetUtenforNorgeFlyt
+    }
 
     val harBrukerJobbetUtenforNorge = Regel(
             regelId = REGEL_9,

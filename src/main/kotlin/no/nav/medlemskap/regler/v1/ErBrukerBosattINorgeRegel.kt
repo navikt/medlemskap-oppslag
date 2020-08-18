@@ -16,16 +16,11 @@ class ErBrukerBosattINorgeRegel(
         val postadresser: List<Adresse>,
         val bostedsadresser: List<Adresse>,
         val midlertidigAdresser: List<Adresse>,
-        val ytelse: Ytelse,
+        ytelse: Ytelse,
         val periode: InputPeriode
-) {
-    val regel = Regel(
-            regelId = REGEL_10,
-            ytelse = ytelse,
-            operasjon = { sjekkLandkode() }
-    )
+): BasisRegel(REGEL_10, ytelse) {
 
-    private fun sjekkLandkode(): Resultat {
+    override fun operasjon(): Resultat {
         val datohjelper = Datohjelper(periode, ytelse)
         val kontrollPeriodeForPersonhistorikk = datohjelper.kontrollPeriodeForPersonhistorikk()
         val bostedsadresser = bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
@@ -50,5 +45,4 @@ class ErBrukerBosattINorgeRegel(
                     periode = datagrunnlag.periode)
         }
     }
-
 }

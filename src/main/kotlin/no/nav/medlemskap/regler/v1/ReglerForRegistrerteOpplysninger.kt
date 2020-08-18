@@ -10,15 +10,10 @@ class ReglerForRegistrerteOpplysninger(
         val medlemskap: List<Medlemskap> = emptyList(),
         val oppgaver: List<Oppgave> = emptyList(),
         val dokument: List<Journalpost> = emptyList(),
-        val ytelse: Ytelse
-) : Regler() {
-
-    override fun hentHovedRegel() =
-            sjekkRegel {
-                harBrukerRegistrerteOpplysninger
-            }
-
-    private val harBrukerRegistrerteOpplysninger = Regel(
+        ytelse: Ytelse,
+        val reglerForGrunnforordningen: ReglerForGrunnforordningen
+) : Regler(ytelse) {
+    val harBrukerRegistrerteOpplysninger = Regel(
             regelId = REGEL_OPPLYSNINGER,
             ytelse = ytelse,
             operasjon = { minstEnAvDisse(medl, joark, gsak) }
@@ -62,13 +57,24 @@ class ReglerForRegistrerteOpplysninger(
                 else -> nei()
             }
 
+    override fun hentRegelflyt(): Regelflyt {
+        val harBrukerRegistrerteOpplysninger = lagRegelflyt(
+                regel = harBrukerRegistrerteOpplysninger,
+                hvisJa = regelFlytUavklart(ytelse),
+                hvisNei = reglerForGrunnforordningen.hentRegelflyt()
+        )
+
+        return harBrukerRegistrerteOpplysninger
+    }
+
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForRegistrerteOpplysninger {
             return ReglerForRegistrerteOpplysninger(
                     medlemskap = datagrunnlag.medlemskap,
                     oppgaver = datagrunnlag.oppgaver,
                     dokument = datagrunnlag.dokument,
-                    ytelse = datagrunnlag.ytelse
+                    ytelse = datagrunnlag.ytelse,
+                    reglerForGrunnforordningen = ReglerForGrunnforordningen.fraDatagrunnlag(datagrunnlag)
             )
         }
     }

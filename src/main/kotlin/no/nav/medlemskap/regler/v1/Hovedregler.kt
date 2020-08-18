@@ -3,43 +3,18 @@ package no.nav.medlemskap.regler.v1
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
-import no.nav.medlemskap.regler.common.sjekkRegelsett
-import no.nav.medlemskap.regler.common.uavklartKonklusjon
 
 class Hovedregler(datagrunnlag: Datagrunnlag) {
 
     private val resultatliste: MutableList<Resultat> = mutableListOf()
-    private val ytelse = datagrunnlag.ytelse
-    private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
     private val reglerForRegistrerteOpplysningerIMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag)
-    private val reglerForGrunnforordningen = ReglerForGrunnforordningen.fraDatagrunnlag(datagrunnlag)
-    private val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag)
-
-    fun hentHovedRegel() =
-
-            sjekkRegelsett {
-                reglerForRegistrerteOpplysningerIMedl
-            } hvisNei {
-                sjekkRegelsett {
-                    reglerForRegistrerteOpplysninger
-                } hvisJa {
-                    uavklartKonklusjon(ytelse)
-                } hvisNei {
-                    sjekkRegelsett {
-                        reglerForGrunnforordningen
-                    } hvisNei {
-                        uavklartKonklusjon(ytelse)
-                    } hvisJa {
-                        sjekkRegelsett {
-                            reglerForArbeidsforhold
-                        }
-                    }
-                }
-            }
 
     fun kjørHovedregler(): Resultat {
+        return kjørRegelflyt()
+    }
 
-        hentHovedRegel().utfør(resultatliste)
+    fun kjørRegelflyt(): Resultat {
+        reglerForRegistrerteOpplysningerIMedl.hentRegelflyt().utfør(resultatliste)
         val konklusjon = resultatliste.hentUtKonklusjon()
         return konklusjon.copy(delresultat = resultatliste.utenKonklusjon())
     }
