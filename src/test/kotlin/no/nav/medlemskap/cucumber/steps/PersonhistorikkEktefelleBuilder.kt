@@ -4,8 +4,8 @@ import no.nav.medlemskap.domene.*
 
 class PersonhistorikkEktefelleBuilder {
 
-    val ident = String()
-    val barn = mutableListOf<String>()
+    var ident = String()
+    var barn = mutableListOf<PersonhistorikkBarn>()
 
     fun build(): PersonhistorikkEktefelle {
         return PersonhistorikkEktefelle(

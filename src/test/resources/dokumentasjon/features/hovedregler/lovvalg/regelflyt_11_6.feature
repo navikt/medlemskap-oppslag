@@ -37,6 +37,14 @@ Egenskap: Regelflyt for reglene fra 11.6 for bruker som har ektefelle og barn so
       | Sivilstandstype | Gyldig fra og med dato | Relatert ved sivilstand |
       | GIFT            | 29.06.2015             | 10108000398             |
 
+    Og følgende personhistorikk for ektefelle fra PDL
+      | Ident       |
+      | 10108000398 |
+
+    Og følgende barn i personhistorikk for ektefelle fra PDL
+      | Ident       |
+      | 09069534888 |
+
     Og følgende personhistorikk for relaterte personer fra TPS
       | Ident       | Bosted | Fra og med dato |
       | 10108000398 | NOR    | 29.06.2015      |

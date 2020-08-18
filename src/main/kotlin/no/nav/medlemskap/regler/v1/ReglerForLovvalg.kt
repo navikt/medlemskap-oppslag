@@ -345,7 +345,7 @@ class ReglerForLovvalg(
     private fun sjekkOmBrukersEktefelleOgBarnasMorErSammePerson(): Resultat {
         if (personhistorikkEktefelle != null) {
             return when {
-                personhistorikkEktefelle.barn?.harAlle(barnITps.map { it.ident })!! -> ja()
+                personhistorikkEktefelle.barn?.map { it.ident}?.harAlle(barnITps.map { it.ident })!! -> ja()
                 else -> nei(" Ektefelle er ikke barn/barnas mor")
             }
         }

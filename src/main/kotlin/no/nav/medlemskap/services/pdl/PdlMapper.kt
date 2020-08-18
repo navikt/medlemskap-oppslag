@@ -43,7 +43,13 @@ object PdlMapper {
     }
     
     fun mapPersonhistorikkTilEktefelle(fnr: String, person: HentPdlPersonResponse): PersonhistorikkEktefelle{
-        val barn = person.data?.hentPerson?.familierelasjoner?.filter { it.minRolleForPerson == Familierelasjonsrolle.BARN }?.map { it.relatertPersonsIdent }
+        val barn = person.data?.hentPerson?.familierelasjoner
+                ?.filter { it.minRolleForPerson == Familierelasjonsrolle.BARN }
+                ?.map {
+                      PersonhistorikkBarn(
+                              it.relatertPersonsIdent)
+                }
+
         return PersonhistorikkEktefelle(fnr, barn)
 
     }

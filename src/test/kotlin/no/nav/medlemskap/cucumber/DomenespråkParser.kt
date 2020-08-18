@@ -3,6 +3,7 @@ package no.nav.medlemskap.cucumber
 import io.cucumber.datatable.DataTable
 import no.nav.medlemskap.cucumber.Domenebegrep.*
 import no.nav.medlemskap.cucumber.DomenespråkParser.Companion.VANLIG_NORSK_ARBEIDSGIVER
+import no.nav.medlemskap.cucumber.steps.PersonhistorikkEktefelleBuilder
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Datohjelper
 import no.nav.medlemskap.regler.common.RegelId
@@ -343,6 +344,18 @@ class PersonstatusMapper : RadMapper<FolkeregisterPersonstatus> {
     }
 }
 
+class PersonhistorikkEktefelleMapper : RadMapper<PersonhistorikkEktefelleBuilder> {
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): PersonhistorikkEktefelleBuilder {
+        val ident = domenespråkParser.parseString(IDENT, rad)
+        val barn = mutableListOf<PersonhistorikkBarn>()
+        val personhistorikkEktefelleBuilder = PersonhistorikkEktefelleBuilder()
+        personhistorikkEktefelleBuilder.barn =  barn
+        personhistorikkEktefelleBuilder.ident = ident
+        return personhistorikkEktefelleBuilder
+
+    }
+}
+
 class PersonhistorikkRelatertePersonerMapper : RadMapper<PersonhistorikkRelatertPerson> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): PersonhistorikkRelatertPerson {
         val fraOgMedDato = domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad)
@@ -395,6 +408,15 @@ class FamilieRelasjonMapper: RadMapper<Familierelasjon> {
                 relatertPersonsRolle = domenespråkParser.parseRolle(RELATERT_PERSONS_ROLLE, rad),
                 minRolleForPerson = domenespråkParser.parseValgfriRolle(MIN_ROLLE_FOR_PERSON, rad),
                 folkeregistermetadata = null
+        )
+    }
+}
+
+
+class BarnTilEktefelleMapper: RadMapper<PersonhistorikkBarn> {
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): PersonhistorikkBarn{
+        return PersonhistorikkBarn(
+                ident = domenespråkParser.parseString(IDENT, rad)
         )
     }
 }
