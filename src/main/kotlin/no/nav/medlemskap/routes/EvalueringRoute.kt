@@ -10,32 +10,26 @@ import io.ktor.request.receive
 import io.ktor.response.respond
 import io.ktor.routing.Routing
 import io.ktor.routing.post
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
+import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.apiCounter
 import no.nav.medlemskap.common.exceptions.KonsumentIkkeFunnet
-import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
-import no.nav.medlemskap.services.Services
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
-import javax.xml.ws.soap.SOAPFaultException
 
 private val logger = KotlinLogging.logger { }
 
 private val secureLogger = KotlinLogging.logger("tjenestekall")
 
-
 fun Routing.evalueringRoute(
         services: Services,
-        configuration: Configuration) {
+        configuration: Configuration,
+        createDatagrunnlag: suspend (fnr: String, callId: String, periode: InputPeriode, brukerinput: Brukerinput, services: Services, clientId: String?, ytelseFraRequest: Ytelse?) -> Datagrunnlag) {
 
     authenticate("azureAuth") {
         post("/") {
@@ -48,14 +42,14 @@ fun Routing.evalueringRoute(
             val request = validerRequest(call.receive())
             val callId = call.callId ?: UUID.randomUUID().toString()
 
-            val datagrunnlag = createDatagrunnlag(
-                    fnr = request.fnr,
-                    callId = callId,
-                    periode = request.periode,
-                    brukerinput = request.brukerinput,
-                    services = services,
-                    clientId = azp,
-                    ytelseFraRequest = request.ytelse)
+            val datagrunnlag = createDatagrunnlag.invoke(
+                    request.fnr,
+                    callId,
+                    request.periode,
+                    request.brukerinput,
+                    services,
+                    azp,
+                    request.ytelse)
             val resultat = evaluerData(datagrunnlag)
             val response = Response(
                     tidspunkt = LocalDateTime.now(),
@@ -74,21 +68,22 @@ fun Routing.evalueringRoute(
 
 fun Routing.evalueringTestRoute(
         services: Services,
-        configuration: Configuration) {
+        configuration: Configuration,
+        createDatagrunnlag: suspend (fnr: String, callId: String, periode: InputPeriode, brukerinput: Brukerinput, services: Services, clientId: String?, ytelseFraRequest: Ytelse?) -> Datagrunnlag) {
     logger.info("autentiserer IKKE kallet")
     post("/") {
         apiCounter().increment()
         val request = validerRequest(call.receive())
         val callId = call.callId ?: UUID.randomUUID().toString()
 
-        val datagrunnlag = createDatagrunnlag(
-                fnr = request.fnr,
-                callId = callId,
-                periode = request.periode,
-                brukerinput = request.brukerinput,
-                services = services,
-                clientId = null,
-                ytelseFraRequest = request.ytelse)
+        val datagrunnlag = createDatagrunnlag.invoke(
+                request.fnr,
+                callId,
+                request.periode,
+                request.brukerinput,
+                services,
+                null,
+                request.ytelse)
         val resultat = evaluerData(datagrunnlag)
         val response = Response(
                 tidspunkt = LocalDateTime.now(),
@@ -120,81 +115,11 @@ private fun validerRequest(request: Request): Request {
     return request
 }
 
-private suspend fun createDatagrunnlag(
-        fnr: String,
-        callId: String,
-        periode: InputPeriode,
-        brukerinput: Brukerinput,
-        services: Services,
-        clientId: String?,
-        ytelseFraRequest: Ytelse?): Datagrunnlag = coroutineScope {
-
-    val aktorIder = services.pdlService.hentAlleAktorIder(fnr, callId)
-    val personHistorikkFraPdl = hentPersonhistorikkFraPdl(services, fnr, callId)
-    val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr, periode.fom) }
-    val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(fnr, callId) }
-    val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr, callId, fraOgMedDatoForArbeidsforhold(periode), periode.tom) }
-    val journalPosterRequest = async { services.safService.hentJournaldata(fnr, callId) }
-    val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktorIder, callId) }
-
-    val personhistorikkForFamilie = hentPersonhistorikkForFamilieAsync(personHistorikkFraPdl, services, periode)
-
-    val historikkFraTps = historikkFraTpsRequest.await()
-    val medlemskap = medlemskapsunntakRequest.await()
-    val arbeidsforhold = arbeidsforholdRequest.await()
-    val journalPoster = journalPosterRequest.await()
-    val oppgaver = gosysOppgaver.await()
-    val ytelse: Ytelse = finnYtelse(ytelseFraRequest, clientId)
-    ytelseCounter(ytelse.metricName()).increment()
-
-    Datagrunnlag(
-            periode = periode,
-            brukerinput = brukerinput,
-            personhistorikk = historikkFraTps,
-            pdlpersonhistorikk = personHistorikkFraPdl,
-            medlemskap = medlemskap,
-            arbeidsforhold = arbeidsforhold,
-            oppgaver = oppgaver,
-            dokument = journalPoster,
-            ytelse = ytelse,
-            personHistorikkRelatertePersoner = personhistorikkForFamilie
-    )
-}
 
 fun finnYtelse(ytelseFraRequest: Ytelse?, clientId: String?) =
         (ytelseFraRequest ?: Ytelse.fromClientId(clientId))
                 ?: throw KonsumentIkkeFunnet("Fant ikke clientId i mapping til ytelse. Ta kontakt med medlemskap-teamet for tilgang til tjenesten.")
 
-//Midlertidig kode, ekstra feilhåndtering fordi integrasjonen vår mot PDL ikke er helt 100% ennå..
-private suspend fun hentPersonhistorikkFraPdl(services: Services, fnr: String, callId: String): Personhistorikk? {
-    return try {
-        services.pdlService.hentPersonHistorikk(fnr, callId)
-    } catch (e: Exception) {
-        logger.error("hentPersonHistorikk feiler", e)
-        secureLogger.error("hentPersonHistorikk feiler for fnr {}", fnr, e)
-        null
-    }
-}
-
-//Midlertidig kode, ekstra feilhåndtering fordi integrasjonen vår mot PDL ikke er helt 100% ennå..
-private suspend fun CoroutineScope.hentPersonhistorikkForFamilieAsync(personHistorikkFraPdl: Personhistorikk?, services: Services, periode: InputPeriode): List<PersonhistorikkRelatertPerson> {
-    return personHistorikkFraPdl?.let {
-        try {
-            services.personService.hentPersonhistorikkForRelevantFamilie(it, periode)
-        } catch (sfe: SOAPFaultException) {
-            logger.error("SoapFault under henting av personhistorikk for familie", sfe)
-            //Må forstå mer av TPS svarte med FEIL, folgende status: S016007F og folgende melding: FØDSELSNR ER IKKE ENTYDIG
-            secureLogger.error("SoapFault mot TPS for familierelasjoner {} og sivilstand {}", it.familierelasjoner, it.sivilstand, sfe)
-            emptyList<PersonhistorikkRelatertPerson>()
-        } catch (e: Exception) {
-            logger.error("Feilet under henting av personhistorikk for familie", e)
-            emptyList<PersonhistorikkRelatertPerson>()
-        }
-    } ?: emptyList<PersonhistorikkRelatertPerson>()
-}
-
-
-private fun fraOgMedDatoForArbeidsforhold(periode: InputPeriode) = periode.fom.minusYears(1).minusDays(1)
 
 private fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =
         Hovedregler(datagrunnlag).kjørHovedregler()

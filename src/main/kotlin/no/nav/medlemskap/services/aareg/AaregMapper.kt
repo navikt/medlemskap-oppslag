@@ -1,23 +1,32 @@
 package no.nav.medlemskap.services.aareg
 
 import mu.KotlinLogging
+import no.nav.medlemskap.clients.aareg.AaRegArbeidsavtale
+import no.nav.medlemskap.clients.aareg.AaRegArbeidsforhold
+import no.nav.medlemskap.clients.aareg.AaRegOpplysningspliktigArbeidsgiverType
+import no.nav.medlemskap.clients.aareg.AaRegUtenlandsopphold
 import no.nav.medlemskap.domene.*
-
 
 private val logger = KotlinLogging.logger { }
 
-fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, dataOmArbeidsgiver: MutableMap<String, AaRegService.ArbeidsgiverInfo>, dataOmPerson: MutableMap<String, String?>): List<Arbeidsforhold> {
+fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, dataOmArbeidsgiver: MutableMap<String, AaRegService.ArbeidsgiverInfo>): List<Arbeidsforhold> {
     return arbeidsforhold.map {
         Arbeidsforhold(
                 periode = mapPeriodeTilArbeidsforhold(it),
                 utenlandsopphold = mapUtenLandsopphold(it),
                 arbeidsfolholdstype = mapArbeidsForholdType(it),
-                arbeidsgivertype = it.arbeidsgiver.type,
-                arbeidsgiver = mapArbeidsgiver(it, dataOmArbeidsgiver, dataOmPerson),
+                arbeidsgivertype = mapArbeidsgiverType(it.arbeidsgiver.type),
+                arbeidsgiver = mapArbeidsgiver(it, dataOmArbeidsgiver),
                 arbeidsavtaler = mapArbeidsAvtaler(it)
         )
     }
 }
+
+fun mapArbeidsgiverType(type: AaRegOpplysningspliktigArbeidsgiverType): OpplysningspliktigArbeidsgiverType =
+        when (type) {
+            AaRegOpplysningspliktigArbeidsgiverType.Person -> OpplysningspliktigArbeidsgiverType.Person
+            AaRegOpplysningspliktigArbeidsgiverType.Organisasjon -> OpplysningspliktigArbeidsgiverType.Organisasjon
+        }
 
 fun mapPeriodeTilArbeidsforhold(arbeidsforhold: AaRegArbeidsforhold): Periode {
     return Periode(
@@ -63,20 +72,32 @@ fun mapArbeidsForholdType(arbeidsforhold: AaRegArbeidsforhold): Arbeidsforholdst
     }
 }
 
-fun mapArbeidsgiver(arbeidsforhold: AaRegArbeidsforhold, dataOmArbeidsgiver: MutableMap<String, AaRegService.ArbeidsgiverInfo>, dataOmPerson: MutableMap<String, String?>): Arbeidsgiver {
+fun mapArbeidsgiver(arbeidsforhold: AaRegArbeidsforhold, dataOmArbeidsgiver: MutableMap<String, AaRegService.ArbeidsgiverInfo>): Arbeidsgiver {
     val enhetstype = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.arbeidsgiverEnhetstype
     val orgnummer = arbeidsforhold.arbeidsgiver.organisasjonsnummer
     val ansatte = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.ansatte
-    val arbeidsgiversLand = dataOmPerson[arbeidsforhold.arbeidsgiver.offentligIdent
-            ?: arbeidsforhold.arbeidsgiver.aktoerId]
     val konkursStatus = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.konkursStatus
     return Arbeidsgiver(
             type = enhetstype,
             identifikator = orgnummer,
-            landkode = arbeidsgiversLand,
-            ansatte = ansatte,
+            ansatte = mapAnsatte(ansatte),
             konkursStatus = konkursStatus)
 }
+
+fun mapAnsatte(ansatte: List<no.nav.medlemskap.clients.ereg.Ansatte>?): List<Ansatte>? =
+        ansatte?.map {
+            Ansatte(
+                    antall = it.antall,
+                    bruksperiode = mapBruksperiode(it.bruksperiode),
+                    gyldighetsperiode = mapGyldighetsperiode(it.gyldighetsperiode)
+            )
+        }
+
+fun mapGyldighetsperiode(gyldighetsperiode: no.nav.medlemskap.clients.ereg.Gyldighetsperiode?): Gyldighetsperiode? =
+        gyldighetsperiode?.let { Gyldighetsperiode(fom = it.fom, tom = it.tom) }
+
+fun mapBruksperiode(bruksperiode: no.nav.medlemskap.clients.ereg.Bruksperiode?): Bruksperiode? =
+        bruksperiode?.let { Bruksperiode(fom = it.fom, tom = it.tom) }
 
 fun mapPeriodeTilArbeidsavtale(arbeidsavtale: AaRegArbeidsavtale): Periode {
     return Periode(

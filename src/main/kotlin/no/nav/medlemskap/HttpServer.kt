@@ -20,6 +20,7 @@ import io.micrometer.core.instrument.binder.system.ProcessorMetrics
 import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
 import mu.KotlinLogging
+import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.JwtConfig
 import no.nav.medlemskap.common.JwtConfig.Companion.REALM
 import no.nav.medlemskap.common.MDC_CALL_ID
@@ -29,24 +30,27 @@ import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.config.getAadConfig
-import no.nav.medlemskap.routes.evalueringRoute
-import no.nav.medlemskap.routes.evalueringTestRoute
-import no.nav.medlemskap.routes.naisRoutes
-import no.nav.medlemskap.routes.reglerRoute
-import no.nav.medlemskap.services.Services
+import no.nav.medlemskap.domene.Brukerinput
+import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.InputPeriode
+import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.routes.*
 import org.slf4j.event.Level
 import java.util.*
 
 private val logger = KotlinLogging.logger { }
 
-fun createHttpServer(
+fun
+        createHttpServer(
         applicationState: ApplicationState,
         useAuthentication: Boolean = true,
         configuration: Configuration = Configuration(),
         azureAdOpenIdConfiguration: AzureAdOpenIdConfiguration = getAadConfig(configuration.azureAd),
         services: Services = Services(configuration),
-        prometheusRegistry: PrometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
-): ApplicationEngine = embeddedServer(Netty, 7070) {
+        port: Int = 7070,
+        prometheusRegistry: PrometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT),
+        createDatagrunnlag: suspend (fnr: String, callId: String, periode: InputPeriode, brukerinput: Brukerinput, services: Services, clientId: String?, ytelseFraRequest: Ytelse?) -> Datagrunnlag = ::defaultCreateDatagrunnlag
+): ApplicationEngine = embeddedServer(Netty, port) {
 
     install(StatusPages) {
         exceptionHandler()
@@ -98,14 +102,14 @@ fun createHttpServer(
     if (useAuthentication) {
         routing {
             naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = prometheusRegistry.prometheusRegistry)
-            evalueringRoute(services, configuration)
+            evalueringRoute(services, configuration, createDatagrunnlag)
             reglerRoute()
             healthRoute("/healthCheck", services.healthService)
         }
     } else {
         routing {
             naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = prometheusRegistry.prometheusRegistry)
-            evalueringTestRoute(services, configuration)
+            evalueringTestRoute(services, configuration, createDatagrunnlag)
             reglerRoute()
             healthRoute("/healthCheck", services.healthService)
         }

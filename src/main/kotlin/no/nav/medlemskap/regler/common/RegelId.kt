@@ -34,12 +34,10 @@ enum class RegelId(val identifikator: String, val avklaring: String) {
     REGEL_11_5("11.5", "Er brukers barn folkeregistrert som bosatt i Norge?"),
     REGEL_11_6("11.6", "Har bruker vært i minst 80 % stilling de siste 12 mnd?"),
     REGEL_12("12", "Har bruker vært i minst 25% stilling de siste 12 mnd?"),
-    REGEL_A("A","Finnes det noe på personen i MEDL?"),
-    REGEL_B("B", "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?"),
     REGEL_OPPLYSNINGER("OPPLYSNINGER", "Finnes det registrerte opplysninger på bruker?"),
-    REGEL_OPPLYSNINGER_MEDL("OPPLYSNINGER-MEDL", "Finnes det registrerte opplysninger i MEDL?"),
-    REGEL_OPPLYSNINGER_JOARK("OPPLYSNINGER-JOARK", "Finnes det dokumenter i JOARK på medlemskapsområdet?"),
-    REGEL_OPPLYSNINGER_GOSYS("OPPLYSNINGER-GOSYS", "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?"),
+    REGEL_A("OPPLYSNINGER-MEDL", "Finnes det registrerte opplysninger i MEDL?"),
+    REGEL_B("OPPLYSNINGER-GOSYS", "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?"),
+    REGEL_C("OPPLYSNINGER-JOARK", "Finnes det dokumenter i JOARK på medlemskapsområdet?"),
     REGEL_MEDLEM_KONKLUSJON("LOVME", "Er bruker medlem?")
     ;
 

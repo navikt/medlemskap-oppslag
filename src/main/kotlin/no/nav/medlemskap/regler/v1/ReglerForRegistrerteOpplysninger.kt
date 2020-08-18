@@ -1,18 +1,23 @@
 package no.nav.medlemskap.regler.v1
 
+import no.nav.medlemskap.common.medlCounter
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.funksjoner.GsakFunksjoner.finnesAapneOppgaver
 import no.nav.medlemskap.regler.funksjoner.JoarkFunksjoner.finnesDokumenterMedTillatteTeamer
+import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.finnesPersonIMedlForKontrollPeriode
 
 class ReglerForRegistrerteOpplysninger(
         val medlemskap: List<Medlemskap> = emptyList(),
         val oppgaver: List<Oppgave> = emptyList(),
         val dokument: List<Journalpost> = emptyList(),
         ytelse: Ytelse,
-        val reglerForGrunnforordningen: ReglerForGrunnforordningen
+        val periode: InputPeriode,
+        val reglerForGrunnforordningen: ReglerForGrunnforordningen,
+        val reglerForMedl: ReglerForMedl
 ) : Regler(ytelse) {
+
     val harBrukerRegistrerteOpplysninger = Regel(
             regelId = REGEL_OPPLYSNINGER,
             ytelse = ytelse,
@@ -20,29 +25,31 @@ class ReglerForRegistrerteOpplysninger(
     )
 
     private val medl = Regel(
-            REGEL_OPPLYSNINGER_MEDL,
+            REGEL_A,
             ytelse = ytelse,
             operasjon = { sjekkPerioderIMedl() }
     )
 
-    private val joark = Regel(
-            regelId = REGEL_OPPLYSNINGER_JOARK,
-            ytelse = ytelse,
-            operasjon = { tellDokumenter() }
-    )
-
     private val gsak = Regel(
-            regelId = REGEL_OPPLYSNINGER_GOSYS,
+            regelId = REGEL_B,
             ytelse = ytelse,
             operasjon = { tellÅpneOppgaver() }
     )
 
+    private val joark = Regel(
+            regelId = REGEL_C,
+            ytelse = ytelse,
+            operasjon = { tellDokumenter() }
+    )
 
-    private fun sjekkPerioderIMedl(): Resultat =
-            when {
-                medlemskap.isNotEmpty() -> ja()
-                else -> nei()
-            }
+    private fun sjekkPerioderIMedl(): Resultat {
+        val kontrollPeriodeForMedl = Datohjelper(periode, ytelse).kontrollPeriodeForMedl()
+        if (medlemskap.isNotEmpty()) medlCounter().increment()
+        return when {
+            medlemskap finnesPersonIMedlForKontrollPeriode kontrollPeriodeForMedl -> ja()
+            else -> nei()
+        }
+    }
 
     private fun tellDokumenter(): Resultat =
             when {
@@ -60,8 +67,9 @@ class ReglerForRegistrerteOpplysninger(
     override fun hentRegelflyt(): Regelflyt {
         val harBrukerRegistrerteOpplysninger = lagRegelflyt(
                 regel = harBrukerRegistrerteOpplysninger,
-                hvisJa = regelFlytUavklart(ytelse),
-                hvisNei = reglerForGrunnforordningen.hentRegelflyt()
+                hvisJa = reglerForMedl.hentRegelflyt(),
+                hvisNei = reglerForGrunnforordningen.hentRegelflyt(),
+                hvisUavklart = regelFlytUavklart(ytelse)
         )
 
         return harBrukerRegistrerteOpplysninger
@@ -74,7 +82,9 @@ class ReglerForRegistrerteOpplysninger(
                     oppgaver = datagrunnlag.oppgaver,
                     dokument = datagrunnlag.dokument,
                     ytelse = datagrunnlag.ytelse,
-                    reglerForGrunnforordningen = ReglerForGrunnforordningen.fraDatagrunnlag(datagrunnlag)
+                    periode = datagrunnlag.periode,
+                    reglerForGrunnforordningen = ReglerForGrunnforordningen.fraDatagrunnlag(datagrunnlag),
+                    reglerForMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag)
             )
         }
     }

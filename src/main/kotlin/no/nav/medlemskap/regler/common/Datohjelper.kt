@@ -21,6 +21,7 @@ class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
             )
             Ytelse.DAGPENGER -> defaultDagpengePeriode()
             Ytelse.ENSLIG_FORSORGER -> defaultEnsligForsørgerPeriode()
+            Ytelse.LOVME -> defaultPeriode()
         }
     }
 
@@ -32,6 +33,7 @@ class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
             )
             Ytelse.DAGPENGER -> defaultDagpengePeriode()
             Ytelse.ENSLIG_FORSORGER -> defaultEnsligForsørgerPeriode()
+            Ytelse.LOVME -> defaultPeriode()
         }
     }
 
@@ -41,12 +43,14 @@ class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
 
     private fun defaultDagpengePeriode() = Kontrollperiode(førsteDagpengedag().minusMonths(12), førsteDagpengedag())
     private fun defaultEnsligForsørgerPeriode() = Kontrollperiode(førsteEnsligForsørgerdag().minusMonths(12), førsteEnsligForsørgerdag())
+    private fun defaultPeriode() = Kontrollperiode(periode.fom.minusDays(1).minusMonths(12), periode.fom.minusDays(1))
 
     fun tilOgMedDag(): LocalDate {
         return when (ytelse) {
             Ytelse.SYKEPENGER -> førsteSykedag()
             Ytelse.DAGPENGER -> førsteDagpengedag()
             Ytelse.ENSLIG_FORSORGER -> førsteEnsligForsørgerdag()
+            Ytelse.LOVME -> periode.fom.minusDays(1)
         }
     }
 
@@ -58,6 +62,7 @@ class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
             )
             Ytelse.DAGPENGER -> defaultDagpengePeriode()
             Ytelse.ENSLIG_FORSORGER -> defaultEnsligForsørgerPeriode()
+            Ytelse.LOVME -> defaultPeriode()
         }
     }
 

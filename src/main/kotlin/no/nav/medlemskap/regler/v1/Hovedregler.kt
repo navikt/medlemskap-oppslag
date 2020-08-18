@@ -5,16 +5,17 @@ import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 
 class Hovedregler(datagrunnlag: Datagrunnlag) {
-
     private val resultatliste: MutableList<Resultat> = mutableListOf()
-    private val reglerForRegistrerteOpplysningerIMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag)
+    private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
+
 
     fun kjørHovedregler(): Resultat {
         return kjørRegelflyt()
     }
 
     fun kjørRegelflyt(): Resultat {
-        reglerForRegistrerteOpplysningerIMedl.hentRegelflyt().utfør(resultatliste)
+        reglerForRegistrerteOpplysninger.hentRegelflyt().utfør(resultatliste)
+
         val konklusjon = resultatliste.hentUtKonklusjon()
         return konklusjon.copy(delresultat = resultatliste.utenKonklusjon())
     }

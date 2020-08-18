@@ -7,12 +7,11 @@ import io.restassured.config.RestAssuredConfig
 import io.restassured.response.ResponseBodyExtractionOptions
 import io.restassured.specification.RequestSpecification
 import no.nav.medlemskap.ApplicationState
+import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.createHttpServer
-import no.nav.medlemskap.services.Services
 import org.junit.jupiter.api.BeforeAll
-import java.util.concurrent.TimeUnit
 
 open class ServerTest {
 

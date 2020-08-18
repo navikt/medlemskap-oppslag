@@ -18,7 +18,7 @@ class RegelsettForHovedreglerTest {
     }
 
     @Test
-    fun `person uten noe i medl, men amerikansk får uvaklart`() {
+    fun `person uten noe i medl, men amerikansk får uavklart`() {
         assertEquals(Svar.UAVKLART, evaluer(personleser.amerikanskUtenMedlOpplysninger()))
     }
 
@@ -26,5 +26,4 @@ class RegelsettForHovedreglerTest {
         val regelsett = Hovedregler(datagrunnlag)
         return regelsett.kjørHovedregler().svar
     }
-
 }

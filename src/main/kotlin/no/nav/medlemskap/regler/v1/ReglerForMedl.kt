@@ -9,9 +9,7 @@ import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.arbeidsforholdForDato
-import no.nav.medlemskap.regler.funksjoner.GsakFunksjoner.finnesAapneOppgaver
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.erMedlemskapsperioderOver12Mnd
-import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.finnesPersonIMedlForKontrollPeriode
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.finnesUavklartePerioder
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.gjeldendeDekning
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.harGyldigeMedlemskapsperioder
@@ -27,8 +25,7 @@ class ReglerForMedl(
         val oppgaver: List<Oppgave>,
         val bostedsadresser: List<Adresse>,
         val postadresser: List<Adresse>,
-        val midlertidigAdresser: List<Adresse>,
-        val reglerForRegistrerteOpplysninger: ReglerForRegistrerteOpplysninger
+        val midlertidigAdresser: List<Adresse>
 ) : Regler(ytelse) {
 
     private val kontrollPeriodeForMedl = Datohjelper(periode, ytelse).kontrollPeriodeForMedl()
@@ -89,33 +86,8 @@ class ReglerForMedl(
                 hvisNei = regelFlytUavklart(ytelse)
         )
 
-        val harBrukerGosysOpplysningerFlyt = lagRegelflyt(
-                regel = harBrukerGosysOpplysninger,
-                hvisJa = regelFlytUavklart(ytelse),
-                hvisNei = erPerioderAvklartFlyt
-        )
-
-        val harBrukerMedlOpplysningerFlyt = lagRegelflyt(
-                regel = harBrukerMedlOpplysninger,
-                hvisJa = harBrukerGosysOpplysningerFlyt,
-                hvisNei = reglerForRegistrerteOpplysninger.hentRegelflyt()
-        )
-
-        return harBrukerMedlOpplysningerFlyt
+        return erPerioderAvklartFlyt
     }
-
-
-    val harBrukerMedlOpplysninger = Regel(
-            regelId = REGEL_A,
-            ytelse = ytelse,
-            operasjon = { harBrukerPerioderIMedl() }
-    )
-
-    val harBrukerGosysOpplysninger = Regel(
-            regelId = REGEL_B,
-            ytelse = ytelse,
-            operasjon = { harBrukerAapneOppgaverIGsak() }
-    )
 
     val erPerioderAvklart = Regel(
             regelId = REGEL_1_1,
@@ -170,18 +142,6 @@ class ReglerForMedl(
             ytelse = ytelse,
             operasjon = { harBrukerMedlemskapSomOmfatterYtelse() }
     )
-
-    private fun harBrukerPerioderIMedl(): Resultat =
-            when {
-                medlemskap finnesPersonIMedlForKontrollPeriode kontrollPeriodeForMedl -> ja()
-                else -> nei()
-            }
-
-    private fun harBrukerAapneOppgaverIGsak(): Resultat =
-            when {
-                oppgaver.finnesAapneOppgaver() -> ja()
-                else -> nei()
-            }
 
     private fun erPerioderAvklart(): Resultat =
             when {
@@ -269,8 +229,7 @@ class ReglerForMedl(
                         oppgaver = oppgaver,
                         bostedsadresser = personhistorikk.bostedsadresser,
                         postadresser = personhistorikk.postadresser,
-                        midlertidigAdresser = personhistorikk.midlertidigAdresser,
-                        reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
+                        midlertidigAdresser = personhistorikk.midlertidigAdresser
                 )
             }
         }

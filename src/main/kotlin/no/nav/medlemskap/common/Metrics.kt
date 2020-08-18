@@ -134,7 +134,7 @@ fun statsborgerskapUavklartForRegel(statsborgerskap: String, ytelse: Ytelse, reg
 
 fun dekningCounter(dekning: String, ytelse: String): Counter = Counter
         .builder("dekningstyper")
-        .tags( "dekningstyper", dekning, "ytelse", ytelse)
+        .tags("dekningstyper", dekning, "ytelse", ytelse)
         .description("Ulike dekningskoder til brukere som har spurt tjenesten")
         .register(Metrics.globalRegistry)
 
@@ -155,6 +155,11 @@ private fun getStillingsprosentIntervall(stillingsprosent: Double): String {
     }
     return "N/A"
 }
+
+fun medlCounter(): Counter = Counter
+        .builder("medl_counter")
+        .description("Registrerer dersom det finnes en periode i medl")
+        .register(Metrics.globalRegistry)
 
 fun apiCounter(): Counter = Counter
         .builder("api_hit_counter")

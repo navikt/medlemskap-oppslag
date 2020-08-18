@@ -7,8 +7,6 @@ import no.nav.medlemskap.regler.common.Funksjoner
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
 import no.nav.medlemskap.regler.common.interval
 import no.nav.medlemskap.regler.common.lagInterval
-import no.nav.medlemskap.services.aareg.AaRegOpplysningspliktigArbeidsgiverType
-import no.nav.medlemskap.services.ereg.Ansatte
 import org.threeten.extra.Interval
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -18,7 +16,7 @@ import kotlin.math.abs
 object ArbeidsforholdFunksjoner {
 
     infix fun List<Arbeidsforhold>.erAlleArbeidsgivereOrganisasjon(kontrollPeriode: Kontrollperiode): Boolean {
-        return arbeidsforholdForKontrollPeriode(kontrollPeriode).stream().allMatch { it.arbeidsgivertype == AaRegOpplysningspliktigArbeidsgiverType.Organisasjon }
+        return arbeidsforholdForKontrollPeriode(kontrollPeriode).stream().allMatch { it.arbeidsgivertype == OpplysningspliktigArbeidsgiverType.Organisasjon }
     }
 
     infix fun List<Arbeidsforhold>.antallAnsatteHosArbeidsgivere(kontrollPeriode: Kontrollperiode): List<Int?> =
@@ -58,7 +56,7 @@ object ArbeidsforholdFunksjoner {
             return false
         }
 
-        if (arbeidsforholdForNorskArbeidsgiver.any {it.periode.fom == null }) {
+        if (arbeidsforholdForNorskArbeidsgiver.any { it.periode.fom == null }) {
             harIkkeArbeidsforhold12MndTilbakeCounter(ytelse).increment()
             return false
         }
@@ -86,7 +84,7 @@ object ArbeidsforholdFunksjoner {
         }
 
         if (forrigeTilDato != null) {
-           return !forrigeTilDato.isBefore(kontrollPeriode.tom)
+            return !forrigeTilDato.isBefore(kontrollPeriode.tom)
         }
 
         return true
@@ -138,7 +136,7 @@ object ArbeidsforholdFunksjoner {
 
 
     private fun List<Arbeidsforhold>.ingenAndreParallelleArbeidsforhold(arbeidsforhold: Arbeidsforhold): Boolean =
-        this.none { it.periode.interval().encloses(arbeidsforhold.periode.interval()) && it != arbeidsforhold }
+            this.none { it.periode.interval().encloses(arbeidsforhold.periode.interval()) && it != arbeidsforhold }
 
     private infix fun List<Arbeidsforhold>.ansatteHosArbeidsgivere(kontrollPeriode: Kontrollperiode): List<Ansatte> =
             arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(kontrollPeriode).mapNotNull { it.ansatte }.flatten()

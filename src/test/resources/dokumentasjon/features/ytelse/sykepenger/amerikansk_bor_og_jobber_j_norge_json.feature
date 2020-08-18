@@ -57,7 +57,6 @@ Egenskap: Borgere som ikke er EØS-borgere skal ha uavklart medlemskap i MVP
       "arbeidsgiver": {
         "type": "BEDR",
         "identifikator": "1",
-        "landkode": "NOR",
         "antallAnsatte": "6"
       },
       "arbeidsfolholdstype": "NORMALT",
