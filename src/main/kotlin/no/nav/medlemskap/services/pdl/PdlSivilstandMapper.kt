@@ -1,15 +1,15 @@
 package no.nav.medlemskap.services.pdl
 
+import no.nav.medlemskap.clients.pdl.Sivilstandstype
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.domene.Sivilstand
 import no.nav.medlemskap.services.pdl.PdlMapper.mapFolkeregisterMetadata
 import java.time.LocalDate
-
-import no.nav.medlemskap.services.pdl.Sivilstand as PdlSivilstand
+import no.nav.medlemskap.clients.pdl.Sivilstand as PdlSivilstand
 
 object PdlSivilstandMapper {
 
-    fun mapSivilstander(pdlSivilstander : List<PdlSivilstand>): List<Sivilstand> {
+    fun mapSivilstander(pdlSivilstander: List<PdlSivilstand>): List<Sivilstand> {
         val sivilstander = pdlSivilstander
                 .filter { it.type != Sivilstandstype.UGIFT && it.type != Sivilstandstype.UOPPGITT }
                 .sortedBy { it.gyldigFraOgMed ?: LocalDate.MIN }
@@ -26,7 +26,7 @@ object PdlSivilstandMapper {
                 }.plus(mapSivilstander(sivilstander.last()))
     }
 
-    private fun mapSivilstander(sivilstand: no.nav.medlemskap.services.pdl.Sivilstand, gyldigTilOgMed: LocalDate? = null): Sivilstand {
+    private fun mapSivilstander(sivilstand: no.nav.medlemskap.clients.pdl.Sivilstand, gyldigTilOgMed: LocalDate? = null): Sivilstand {
         return Sivilstand(
                 type = mapSivilstandType(sivilstand.type),
                 gyldigFraOgMed = sivilstand.gyldigFraOgMed,

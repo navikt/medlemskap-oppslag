@@ -20,59 +20,57 @@ import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.registrerSt
 class ReglerForArbeidsforhold(
         val arbeidsforhold: List<Arbeidsforhold>,
         val periode: InputPeriode,
-        val ytelse: Ytelse,
+        ytelse: Ytelse,
         val reglerForLovvalg: ReglerForLovvalg
-) : Regler() {
+) : Regler(ytelse) {
     private val kontrollPeriodeForArbeidsforhold = Datohjelper(periode, ytelse).kontrollPeriodeForArbeidsforhold()
 
-    override fun hentHovedRegel() =
-            sjekkRegel {
-                harBrukerSammenhengendeArbeidsforholdSiste12Mnd
-            } hvisNei {
-                uavklartKonklusjon(ytelse)
-            } hvisJa {
-                sjekkRegel {
-                    erArbeidsgiverOrganisasjon
-                } hvisNei {
-                    uavklartKonklusjon(ytelse)
-                } hvisJa {
-                    sjekkRegel {
-                        harForetakMerEnn5Ansatte
-                    } hvisNei {
-                        uavklartKonklusjon(ytelse)
-                    } hvisJa {
-                        sjekkRegel {
-                            erForetakAktivt
-                        } hvisNei {
-                            uavklartKonklusjon(ytelse)
-                        } hvisJa {
-                            sjekkRegel {
-                                erArbeidsforholdetMaritimt
-                            } hvisNei {
-                                sjekkRegel {
-                                    erBrukerPilotEllerKabinansatt
-                                } hvisJa {
-                                    uavklartKonklusjon(ytelse)
-                                } hvisNei {
-                                    sjekkRegelsett {
-                                        reglerForLovvalg
-                                    }
-                                }
-                            } hvisJa {
-                                sjekkRegel {
-                                    jobberBrukerPaaNorskSkip
-                                } hvisNei {
-                                    uavklartKonklusjon(ytelse)
-                                } hvisJa {
-                                    sjekkRegelsett {
-                                        reglerForLovvalg
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+    override fun hentRegelflyt(): Regelflyt {
+        val jobberBrukerPaaNorskSkipFlyt = lagRegelflyt(
+                regel = jobberBrukerPaaNorskSkip,
+                hvisJa = reglerForLovvalg.hentRegelflyt(),
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+
+        val erBrukerPilotEllerKabinansattFlyt = lagRegelflyt(
+                regel = erBrukerPilotEllerKabinansatt,
+                hvisJa = regelFlytUavklart(ytelse),
+                hvisNei = reglerForLovvalg.hentRegelflyt()
+        )
+
+        val erArbeidsforholdetMaritimtFlyt = lagRegelflyt(
+                regel = erArbeidsforholdetMaritimt,
+                hvisJa = jobberBrukerPaaNorskSkipFlyt,
+                hvisNei = erBrukerPilotEllerKabinansattFlyt
+        )
+
+        val erForetakAktivtFlyt = lagRegelflyt(
+                regel = erForetakAktivt,
+                hvisJa = erArbeidsforholdetMaritimtFlyt,
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+
+        val harForetakMerEnn5AnsatteFlyt = lagRegelflyt(
+                regel = harForetakMerEnn5Ansatte,
+                hvisJa = erForetakAktivtFlyt,
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+
+        val erArbeidsgiverOrganisasjonFlyt = lagRegelflyt(
+                regel = erArbeidsgiverOrganisasjon,
+                hvisJa = harForetakMerEnn5AnsatteFlyt,
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+
+        val harBrukerSammenhengendeArbeidsforholdSiste12MndFlyt = lagRegelflyt(
+                regel = harBrukerSammenhengendeArbeidsforholdSiste12Mnd,
+                hvisJa = erArbeidsgiverOrganisasjonFlyt,
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+
+        return harBrukerSammenhengendeArbeidsforholdSiste12MndFlyt
+    }
+
 
     val harBrukerSammenhengendeArbeidsforholdSiste12Mnd = Regel(
             regelId = REGEL_3,

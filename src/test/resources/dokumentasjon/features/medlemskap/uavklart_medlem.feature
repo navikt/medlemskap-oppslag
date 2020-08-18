@@ -32,7 +32,7 @@ Egenskap: Uavklart hvis man har medlemsunntak fra MEDL
 
     Gitt følgende medlemsunntak fra MEDL
       | Dekning | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland |
-      | FTL_2-6 | 01.01.2019      | 01.01.2020      | Ja        | NOR     | NOR          |
+      | FTL_2-6 | 01.01.2019      | 01.01.2020      | Ja        | ENDL    | NOR          |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
@@ -44,7 +44,7 @@ Egenskap: Uavklart hvis man har medlemsunntak fra MEDL
 
     Gitt følgende medlemsunntak fra MEDL
       | Dekning | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland |
-      | FTL_2-6 | 01.01.2019      | 01.01.2020      | Ja        | NOR     | NOR          |
+      | FTL_2-6 | 01.01.2019      | 01.01.2020      | Ja        | ENDL    | NOR          |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |

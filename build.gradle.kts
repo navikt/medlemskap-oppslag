@@ -1,26 +1,33 @@
+import com.expediagroup.graphql.plugin.gradle.graphql
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val ktorVersion = "1.3.2"
-val jacksonVersion = "2.10.4"
-val prometheusVersion = "0.7.0"
+val jacksonVersion = "2.10.5"
+val prometheusVersion = "0.9.0"
 val logbackVersion = "1.2.3"
 val logstashVersion = "6.4"
 val konfigVersion = "1.6.10.0"
-val kotlinLoggerVersion = "1.7.9"
+val kotlinLoggerVersion = "1.8.3"
 val tjenestespesifikasjonerVersion = "1.2019.12.18-12.22-ce897c4eb2c1"
-val cxfVersion = "3.3.6"
+val cxfVersion = "3.3.7"
 val coroutinesVersion = "1.3.7"
-val wireMockVersion = "2.26.3"
-val mockkVersion = "1.9.3"
+val wireMockVersion = "2.27.1"
+val mockkVersion = "1.10.0"
 val junitJupiterVersion = "5.6.2"
 val assertkVersion = "0.22"
-val restAssuredVersion = "4.3.0"
+val restAssuredVersion = "4.3.1"
 val resilience4jVersion = "1.5.0"
 val threetenVersion = "1.5.0"
-val cucumberVersion = "5.6.0"
+val cucumberVersion = "6.5.0"
 val nocommonsVersion = "0.9.0"
+val graphqlKotlinClientVersion = "3.6.1"
+val archUnitVersion = "0.14.1"
+val jsonassertVersion = "1.5.0"
+val xmlSchemaVersion = "2.2.5"
+val jaxwsToolsVersion = "2.3.1"
+val activationVersion = "1.1.1"
 
 //Temporary to fix high severity Snyk vulernabilities:
 val nettyCodecVersion = "4.1.46.Final"
@@ -31,8 +38,10 @@ val mainClass = "no.nav.medlemskap.ApplicationKt"
 fun tjenestespesifikasjon(name: String) = "no.nav.tjenestespesifikasjoner:$name:$tjenestespesifikasjonerVersion"
 
 plugins {
-    id("org.jetbrains.kotlin.jvm") version "1.3.72"
-    id("com.github.johnrengelman.shadow") version "5.1.0"
+    kotlin("jvm") version "1.3.72"
+    id("com.github.johnrengelman.shadow") version "6.0.0"
+    id("com.expediagroup.graphql") version "3.6.1"
+    id("com.github.ben-manes.versions") version "0.29.0"
 }
 
 val githubUser: String by project
@@ -56,7 +65,6 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-    implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-auth:$ktorVersion")
     implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
@@ -85,15 +93,16 @@ dependencies {
     implementation("org.apache.cxf:cxf-rt-frontend-jaxws:$cxfVersion")
     implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersion")
     implementation("org.apache.cxf:cxf-rt-transports-http:$cxfVersion")
-    implementation("javax.activation:activation:1.1.1")
-    implementation("org.apache.ws.xmlschema:xmlschema-core:2.2.4")
-    implementation("com.sun.xml.ws:jaxws-tools:2.3.1") {
+    implementation("javax.activation:activation:$activationVersion")
+    implementation("org.apache.ws.xmlschema:xmlschema-core:$xmlSchemaVersion")
+    implementation("com.sun.xml.ws:jaxws-tools:$jaxwsToolsVersion") {
         exclude(group = "com.sun.xml.ws", module = "policy")
     }
     implementation(tjenestespesifikasjon("person-v3-tjenestespesifikasjon"))
     implementation("io.github.resilience4j:resilience4j-retry:$resilience4jVersion")
     implementation("io.github.resilience4j:resilience4j-kotlin:$resilience4jVersion")
     implementation("no.bekk.bekkopen:nocommons:$nocommonsVersion")
+    implementation("com.expediagroup:graphql-kotlin-client:$graphqlKotlinClientVersion")
 
     //Temporary to fix high severity Snyk vulernabilities:
     implementation("io.netty:netty-codec:$nettyCodecVersion")
@@ -111,8 +120,21 @@ dependencies {
 
     testImplementation("io.cucumber:cucumber-junit:${cucumberVersion}")
     testImplementation("io.cucumber:cucumber-java8:${cucumberVersion}")
+    testImplementation("com.tngtech.archunit:archunit:${archUnitVersion}")
+    testImplementation("com.tngtech.archunit:archunit-junit5:${archUnitVersion}")
+    testImplementation("org.skyscreamer:jsonassert:${jsonassertVersion}")
+
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:${junitJupiterVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}")
+}
+
+graphql {
+    client {
+        sdlEndpoint = "https://navikt.github.io/saf/saf-api-sdl.graphqls"
+        packageName = "no.nav.medlemskap.client.generated"
+        allowDeprecatedFields = false
+        queryFiles.add(file("${project.projectDir}/src/main/resources/saf/dokumenter.graphql"))
+    }
 }
 
 java {
@@ -122,6 +144,7 @@ java {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+
 }
 
 tasks.withType<Test> {
@@ -132,7 +155,7 @@ tasks.withType<Test> {
 }
 
 tasks.withType<Wrapper> {
-    gradleVersion = "5.6.3"
+    gradleVersion = "6.6"
 }
 
 tasks.withType<ShadowJar> {

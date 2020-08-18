@@ -1,11 +1,10 @@
 package no.nav.medlemskap.services.pdl
 
+import no.nav.medlemskap.clients.pdl.Familierelasjonsrolle
+import no.nav.medlemskap.clients.pdl.HentFoedselsaarResponse
+import no.nav.medlemskap.clients.pdl.HentPdlPersonResponse
 import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.domene.Familierelasjon
-import no.nav.medlemskap.domene.Folkeregistermetadata
-import no.nav.medlemskap.domene.Sivilstand
-import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
 
 object PdlMapper {
@@ -55,7 +54,7 @@ object PdlMapper {
     }
 
 
-    fun mapStatsborgerskap(it: no.nav.medlemskap.services.pdl.Statsborgerskap): Statsborgerskap {
+    fun mapStatsborgerskap(it: no.nav.medlemskap.clients.pdl.Statsborgerskap): Statsborgerskap {
         return Statsborgerskap(
                 landkode = it.land,
                 fom = it.gyldigFraOgMed,
@@ -74,7 +73,7 @@ object PdlMapper {
         }
     }
 
-    fun mapFolkeregisterMetadata(folkeregistermetadata: no.nav.medlemskap.services.pdl.Folkeregistermetadata?): Folkeregistermetadata? {
+    fun mapFolkeregisterMetadata(folkeregistermetadata: no.nav.medlemskap.clients.pdl.Folkeregistermetadata?): Folkeregistermetadata? {
         return folkeregistermetadata?.let {
             Folkeregistermetadata(
                     ajourholdstidspunkt = it.ajourholdstidspunkt,
@@ -86,7 +85,8 @@ object PdlMapper {
 
     //Vi velger det høyeste årstallet, da blir personen yngst og det er mest sannsynlig at vi må vurdere bosted
     fun mapTilFoedselsaar(response: HentFoedselsaarResponse): Int =
-            response.data?.hentPerson?.foedsel?.map { it.foedselsaar }?.sorted()?.last() ?: throw PersonIkkeFunnet("PDL")
+            response.data?.hentPerson?.foedsel?.map { it.foedselsaar }?.sorted()?.last()
+                    ?: throw PersonIkkeFunnet("PDL")
 
 }
 

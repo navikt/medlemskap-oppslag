@@ -134,7 +134,7 @@ fun statsborgerskapUavklartForRegel(statsborgerskap: String, ytelse: Ytelse, reg
 
 fun dekningCounter(dekning: String, ytelse: String): Counter = Counter
         .builder("dekningstyper")
-        .tags( "dekningstyper", dekning, "ytelse", ytelse)
+        .tags("dekningstyper", dekning, "ytelse", ytelse)
         .description("Ulike dekningskoder til brukere som har spurt tjenesten")
         .register(Metrics.globalRegistry)
 

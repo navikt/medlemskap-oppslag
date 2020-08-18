@@ -1,5 +1,6 @@
 package no.nav.medlemskap.services.inntekt
 
+import no.nav.medlemskap.clients.inntekt.InntektskomponentResponse
 import no.nav.medlemskap.domene.Inntekt
 import no.nav.medlemskap.domene.InntektArbeidsforhold
 
