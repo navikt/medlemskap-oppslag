@@ -9,7 +9,8 @@ import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
 import no.nav.medlemskap.regler.assertDelresultat
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Svar
-import no.nav.medlemskap.regler.v1.*
+import no.nav.medlemskap.regler.v1.RegelFactory
+import no.nav.medlemskap.regler.v1.ReglerService
 import org.junit.jupiter.api.Assertions.assertEquals
 import java.time.LocalDate
 
@@ -152,46 +153,8 @@ class RegelSteps : No {
             val medlemskapsparametre = domenespråkParser.mapDataTable(dataTable, MedlemskapsparametreMapper()).get(0)
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
 
-            val reglerForLovvalg = ReglerForLovvalg.fraDatagrunnlag(datagrunnlag!!)
-            val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag!!)
-            val reglerForMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag!!)
-            val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag!!)
-            val reglerForGrunnforordningen = ReglerForGrunnforordningen.fraDatagrunnlag(datagrunnlag!!)
-
-            val regel = when (regelId!!) {
-                "OPPLYSNINGER" -> reglerForRegistrerteOpplysninger.harBrukerRegistrerteOpplysninger
-                "1.1" -> reglerForMedl.erPerioderAvklart
-                "1.2" -> reglerForMedl.periodeMedOgUtenMedlemskap
-                "1.3" -> reglerForMedl.periodeMedMedlemskap
-                "1.3.1" -> reglerForMedl.erPeriodeUtenMedlemskapInnenfor12MndPeriode
-                "1.3.2" -> reglerForMedl.erArbeidsforholdUendretForBrukerUtenMedlemskap
-                "1.4" -> reglerForMedl.erPeriodeMedMedlemskapInnenfor12MndPeriode
-                "1.5" -> reglerForMedl.erArbeidsforholdUendretForBrukerMedMedlemskap
-                "1.6" -> reglerForMedl.erDekningUavklart
-                "1.7" -> reglerForMedl.harBrukerDekningIMedl
-                "2" -> reglerForGrunnforordningen.erBrukerEØSborger
-                "3" -> reglerForArbeidsforhold.harBrukerSammenhengendeArbeidsforholdSiste12Mnd
-                "5" -> reglerForArbeidsforhold.harForetakMerEnn5Ansatte
-                "9" -> reglerForLovvalg.harBrukerJobbetUtenforNorge
-                "10" -> {
-                    ErBrukerBosattINorgeRegel.fraDatagrunnlag(datagrunnlag!!).regel
-                }
-                "11" -> reglerForLovvalg.harBrukerNorskStatsborgerskap
-                "11.2" -> reglerForLovvalg.harBrukerEktefelle
-                "11.2.1" -> reglerForLovvalg.harBrukerBarnUtenEktefelle
-                "11.2.2" -> reglerForLovvalg.harBrukerUtenEktefelleBarnSomErFolkeregistrert
-                "11.2.2.1" -> reglerForLovvalg.harBrukerUtenEktefelleOgBarnJobbetMerEnn100Prosent
-                "11.2.3" -> reglerForLovvalg.harBrukerMedFolkeregistrerteBarnJobbetMerEnn80Prosent
-                "11.3" -> reglerForLovvalg.harBrukerEktefelleOgBarn
-                "11.3.1" -> reglerForLovvalg.erBarnloesBrukersEktefelleBosattINorge
-                "11.3.1.1" -> reglerForLovvalg.harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn100Prosent
-                "11.4" -> reglerForLovvalg.erBrukerMedBarnSittEktefelleBosattINorge
-                "11.4.1" -> reglerForLovvalg.erBrukerUtenFolkeregistrertEktefelleSittBarnFolkeregistrert
-                "11.5" -> reglerForLovvalg.erBrukerMedFolkeregistrertEktefelleSittBarnFolkeregistrert
-                "11.6" -> reglerForLovvalg.harBrukerMedFolkeregistrerteRelasjonerJobbetMerEnn80Prosent
-                "12" -> reglerForLovvalg.harBrukerJobbet25ProsentEllerMer
-                else -> throw java.lang.RuntimeException("Ukjent regel")
-            }
+            val regelFactory = RegelFactory(datagrunnlag!!)
+            val regel = regelFactory.create(regelId!!)
 
             resultat = regel.utfør()
         }
@@ -265,16 +228,4 @@ class RegelSteps : No {
                 }
     }
 
-    private fun evaluerGrunnforordningen(datagrunnlag: Datagrunnlag): Resultat {
-        val regelsett = ReglerForGrunnforordningen.fraDatagrunnlag(datagrunnlag)
-        return regelsett.kjørRegelflyt()
-    }
-
-    private fun evaluerReglerForMedlemsopplysninger(datagrunnlag: Datagrunnlag): Resultat {
-        val resultatListe = mutableListOf<Resultat>()
-        val regelsett = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
-        val resultat = regelsett.kjørRegelflyt(resultatListe)
-
-        return resultat
-    }
 }

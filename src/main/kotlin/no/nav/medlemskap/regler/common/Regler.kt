@@ -23,8 +23,6 @@ abstract class Regler(val ytelse: Ytelse) {
         )
     }
 
-    protected fun sjekkRegel(metode: () -> Regel) = metode.invoke()
-
     private fun utledResultat(resultater: Map<RegelId, Resultat>): Resultat {
 
         return when {
