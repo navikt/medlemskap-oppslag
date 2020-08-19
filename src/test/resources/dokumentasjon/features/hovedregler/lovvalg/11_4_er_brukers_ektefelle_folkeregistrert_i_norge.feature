@@ -12,9 +12,14 @@ Egenskap: Regel 11.4: Er brukers ektefelle folkeregistrert som bosatt i Norge?
       | Ident       | Bosted | Postadresse   | Midlertidig adresse   | Fra og med dato | Til og med dato |
       | 10108000398 | NOR    | <Postadresse> | <Midlertidig adresse> | 18.07.2010      | 15.05.2019      |
 
+    Og følgende personhistorikk for ektefelle fra PDL
+      | Ident       |
+      | 10108000398 |
+
     Når regel "11.4" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
+
 
     Så skal svaret være "<Svar>"
 

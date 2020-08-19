@@ -21,8 +21,10 @@ class RegelSteps : No {
     private val personhistorikkBuilder = PersonhistorikkBuilder()
     private val pdlPersonhistorikkBuilder = PersonhistorikkBuilder()
     private val personHistorikkRelatertePersoner = mutableListOf<PersonhistorikkRelatertPerson>()
+    private var personhistorikkEktefelleBuilder = PersonhistorikkEktefelleBuilder()
 
     private var medlemskap: List<Medlemskap> = emptyList()
+    private var personhistorikkBarnTilEktefelle : List<PersonhistorikkBarn> = emptyList()
 
     private var arbeidsforhold: List<Arbeidsforhold> = emptyList()
     private var arbeidsavtaleMap = hashMapOf<Int, List<Arbeidsavtale>>()
@@ -75,6 +77,16 @@ class RegelSteps : No {
         Gitt<DataTable>("følgende personhistorikk for relaterte personer fra TPS") { dataTable: DataTable? ->
             val relatertePersoner = domenespråkParser.mapDataTable(dataTable, PersonhistorikkRelatertePersonerMapper())
             personHistorikkRelatertePersoner.addAll(relatertePersoner)
+        }
+
+        Gitt<DataTable>("følgende personhistorikk for ektefelle fra PDL") { dataTable: DataTable? ->
+            var relaterteEktefeller = domenespråkParser.mapDataTable(dataTable, PersonhistorikkEktefelleMapper())
+            personhistorikkEktefelleBuilder = relaterteEktefeller.get(0)
+        }
+
+        Gitt<DataTable>("følgende barn i personhistorikk for ektefelle fra PDL") { dataTable: DataTable? ->
+            var barnTilEktefelle= domenespråkParser.mapDataTable(dataTable, BarnTilEktefelleMapper())
+            personhistorikkEktefelleBuilder.barn.addAll(barnTilEktefelle)
         }
 
         Gitt("følgende medlemsunntak fra MEDL") { dataTable: DataTable? ->
@@ -193,7 +205,8 @@ class RegelSteps : No {
                 oppgaver = oppgaverFraGosys,
                 dokument = journalPosterFraJoArk,
                 ytelse = ytelse,
-                personHistorikkRelatertePersoner = personHistorikkRelatertePersoner
+                personHistorikkRelatertePersoner = personHistorikkRelatertePersoner,
+                personhistorikkEktefelle = personhistorikkEktefelleBuilder.build()
         )
     }
 
