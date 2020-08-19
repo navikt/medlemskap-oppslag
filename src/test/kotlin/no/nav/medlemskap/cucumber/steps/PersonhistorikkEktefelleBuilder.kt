@@ -1,6 +1,7 @@
 package no.nav.medlemskap.cucumber.steps
 
-import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
+import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 
 class PersonhistorikkEktefelleBuilder {
 

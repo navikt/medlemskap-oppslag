@@ -5,6 +5,8 @@ import no.nav.medlemskap.clients.pdl.HentFoedselsaarResponse
 import no.nav.medlemskap.clients.pdl.HentPdlPersonResponse
 import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
+import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
 
 object PdlMapper {
@@ -41,12 +43,12 @@ object PdlMapper {
         return Personhistorikk(statsborgerskap, personstatuser, bostedsadresser, postadresser, midlertidigAdresser, sivilstand, familierelasjoner)
     }
     
-    fun mapPersonhistorikkTilEktefelle(fnr: String, person: HentPdlPersonResponse): PersonhistorikkEktefelle{
+    fun mapPersonhistorikkTilEktefelle(fnr: String, person: HentPdlPersonResponse): PersonhistorikkEktefelle {
         val barn = person.data?.hentPerson?.familierelasjoner
                 ?.filter { it.minRolleForPerson == Familierelasjonsrolle.BARN }
                 ?.map {
-                      PersonhistorikkBarn(
-                              it.relatertPersonsIdent)
+                    PersonhistorikkBarn(
+                            it.relatertPersonsIdent)
                 }
 
         return PersonhistorikkEktefelle(fnr, barn)

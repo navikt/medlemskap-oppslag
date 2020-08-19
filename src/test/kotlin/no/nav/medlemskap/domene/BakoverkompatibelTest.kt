@@ -15,6 +15,9 @@ import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.createHttpServer
+import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
+import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
+import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.skyscreamer.jsonassert.Customization
@@ -128,7 +131,7 @@ suspend fun mockCreateDatagrunnlag(
             dokument = listOf(Journalpost("Id", "Tittel", "Posttype", "Status", "Tema", listOf(Dokument("Id", "Tittel")))),
             ytelse = ytelse,
             personHistorikkRelatertePersoner = listOf(personhistorikkRelatertPerson()),
-            personhistorikkEktefelle = personhistorikkEktefelle()
+            dataOmEktefelle = DataOmEktefelle(personhistorikkEktefelle(), listOf(arbeidsforhold()))
     )
 }
 
@@ -302,13 +305,56 @@ private val forventetResponse = """
             }
           } ]
         },
-        "personhistorikkEktefelle": {
-            "ident": "0101197512345",
-            "barn": [
-                {
-                    "ident": "0101201012345"
-                }
-            ]
+        "dataOmEktefelle": {
+           "personhistorikkEktefelle": {
+                    "ident": "0101197512345",
+                    "barn": [
+                        {
+                            "ident": "0101201012345"
+                        }
+                    ]
+           }, 
+            "arbeidsforholdEktefelle" : [ {
+                     "periode" : {
+                       "fom" : "1975-10-10",
+                       "tom" : "2020-08-01"
+                     },
+                     "utenlandsopphold" : [ {
+                       "landkode" : "SWE",
+                       "periode" : {
+                         "fom" : "1975-10-10",
+                         "tom" : "2020-08-01"
+                       },
+                       "rapporteringsperiode" : "2010-01"
+                     } ],
+                     "arbeidsgivertype" : "Organisasjon",
+                     "arbeidsgiver" : {
+                       "type" : "type",
+                       "identifikator" : "identifikator",
+                       "ansatte" : [ {
+                         "antall" : 10,
+                         "bruksperiode" : {
+                           "fom" : "1975-10-10",
+                           "tom" : "2020-08-01"
+                         },
+                         "gyldighetsperiode" : {
+                           "fom" : "1975-10-10",
+                           "tom" : "2020-08-01"
+                         }
+                       } ],
+                       "konkursStatus" : [ "Konkursstatus" ]
+                     },
+                     "arbeidsfolholdstype" : "NORMALT",
+                     "arbeidsavtaler" : [ {
+                       "periode" : {
+                         "fom" : "1975-10-10",
+                         "tom" : "2020-08-01"
+                       },
+                       "yrkeskode" : "yrkeskode",
+                       "skipsregister" : "NIS",
+                       "stillingsprosent" : 100.0
+                     } ]
+                   } ]
         },
         "medlemskap" : [ {
           "dekning" : "dekning",

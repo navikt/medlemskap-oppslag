@@ -8,6 +8,8 @@ import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
+import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
+import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import javax.xml.ws.soap.SOAPFaultException
 
 
@@ -24,7 +26,8 @@ suspend fun defaultCreateDatagrunnlag(
         clientId: String?,
         ytelseFraRequest: Ytelse?): Datagrunnlag = coroutineScope {
 
-    val personhistorikkEktefelle : PersonhistorikkEktefelle?
+    val dataOmEktefelle : DataOmEktefelle?
+
     val aktorIder = services.pdlService.hentAlleAktorIder(fnr, callId)
     val personHistorikkFraPdl = hentPersonhistorikkFraPdl(services, fnr, callId)
     val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr, periode.fom) }
@@ -32,15 +35,10 @@ suspend fun defaultCreateDatagrunnlag(
     val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr, callId, fraOgMedDatoForArbeidsforhold(periode), periode.tom) }
     val journalPosterRequest = async { services.safService.hentJournaldata(fnr, callId) }
     val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktorIder, callId) }
-
     val personhistorikkForFamilie = hentPersonhistorikkForFamilieAsync(personHistorikkFraPdl, services, periode)
-    val fnrTilEktefelle = hentFnrTilEktefelle(personHistorikkFraPdl)
 
-    if(fnrTilEktefelle != null) {
-        personhistorikkEktefelle = hentPersonHistorikkForEktefelle(fnrTilEktefelle, services,  callId)
-    }else {
-        personhistorikkEktefelle = null
-    }
+    val fnrTilEktefelle = hentFnrTilEktefelle(personHistorikkFraPdl)
+    dataOmEktefelle = hentDataOmEktefelle(fnrTilEktefelle, services, callId, periode)
 
     val historikkFraTps = historikkFraTpsRequest.await()
     val medlemskap = medlemskapsunntakRequest.await()
@@ -48,6 +46,9 @@ suspend fun defaultCreateDatagrunnlag(
     val journalPoster = journalPosterRequest.await()
     val oppgaver = gosysOppgaver.await()
     val ytelse: Ytelse = finnYtelse(ytelseFraRequest, clientId)
+
+
+
     ytelseCounter(ytelse.metricName()).increment()
 
     Datagrunnlag(
@@ -61,8 +62,22 @@ suspend fun defaultCreateDatagrunnlag(
             dokument = journalPoster,
             ytelse = ytelse,
             personHistorikkRelatertePersoner = personhistorikkForFamilie,
-            personhistorikkEktefelle = personhistorikkEktefelle
+            dataOmEktefelle = dataOmEktefelle
     )
+}
+
+private suspend fun CoroutineScope.hentDataOmEktefelle(fnrTilEktefelle: String?, services: Services, callId: String, periode: InputPeriode): DataOmEktefelle? {
+    if (fnrTilEktefelle != null) {
+        val personhistorikkEktefelle = hentPersonHistorikkForEktefelle(fnrTilEktefelle, services, callId)
+        val arbeidsforholdEktefelleReguest = async { services.aaRegService.hentArbeidsforhold(fnrTilEktefelle, callId, fraOgMedDatoForArbeidsforhold(periode), periode.tom) }
+        val arbeidsforholdEktefelle = arbeidsforholdEktefelleReguest.await()
+
+        return DataOmEktefelle(
+                personhistorikkEktefelle = personhistorikkEktefelle,
+                arbeidsforholdEktefelle = arbeidsforholdEktefelle)
+
+    }
+    return null
 }
 
 

@@ -3,8 +3,11 @@ package no.nav.medlemskap.cucumber
 import io.cucumber.datatable.DataTable
 import no.nav.medlemskap.cucumber.Domenebegrep.*
 import no.nav.medlemskap.cucumber.DomenespråkParser.Companion.VANLIG_NORSK_ARBEIDSGIVER
+import no.nav.medlemskap.cucumber.steps.DataOmEktefelleBuilder
 import no.nav.medlemskap.cucumber.steps.PersonhistorikkEktefelleBuilder
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
+import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.regler.common.Datohjelper
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Svar
@@ -362,15 +365,12 @@ class PersonstatusMapper : RadMapper<FolkeregisterPersonstatus> {
     }
 }
 
-class PersonhistorikkEktefelleMapper : RadMapper<PersonhistorikkEktefelleBuilder> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): PersonhistorikkEktefelleBuilder {
-        val ident = domenespråkParser.parseString(IDENT, rad)
-        val barn = mutableListOf<PersonhistorikkBarn>()
-        val personhistorikkEktefelleBuilder = PersonhistorikkEktefelleBuilder()
-        personhistorikkEktefelleBuilder.barn =  barn
-        personhistorikkEktefelleBuilder.ident = ident
-        return personhistorikkEktefelleBuilder
-
+class PersonhistorikkEktefelleMapper : RadMapper<PersonhistorikkEktefelle> {
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): PersonhistorikkEktefelle{
+        return PersonhistorikkEktefelle(
+           ident = domenespråkParser.parseString(IDENT, rad),
+           barn = mutableListOf<PersonhistorikkBarn>()
+        )
     }
 }
 
@@ -432,7 +432,7 @@ class FamilieRelasjonMapper : RadMapper<Familierelasjon> {
 
 
 class BarnTilEktefelleMapper: RadMapper<PersonhistorikkBarn> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): PersonhistorikkBarn{
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): PersonhistorikkBarn {
         return PersonhistorikkBarn(
                 ident = domenespråkParser.parseString(IDENT, rad)
         )

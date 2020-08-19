@@ -117,9 +117,9 @@ fun mapUtenLandsopphold(arbeidsforhold: AaRegArbeidsforhold): List<Utenlandsopph
 
 }
 
-
 fun mapPeriodeTilUtenlandsopphold(utenlandsopphold: AaRegUtenlandsopphold): Periode {
     return Periode(
             fom = utenlandsopphold.periode?.fom,
             tom = utenlandsopphold.periode?.tom)
 }
+
