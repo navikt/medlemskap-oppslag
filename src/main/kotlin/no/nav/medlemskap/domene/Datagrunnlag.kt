@@ -1,5 +1,7 @@
 package no.nav.medlemskap.domene
 
+import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
+import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import java.time.LocalDate
 
 data class Datagrunnlag(
@@ -13,7 +15,7 @@ data class Datagrunnlag(
         val dokument: List<Journalpost> = listOf(),
         val ytelse: Ytelse,
         val personHistorikkRelatertePersoner: List<PersonhistorikkRelatertPerson> = listOf(),
-        val personhistorikkEktefelle: PersonhistorikkEktefelle?
+        val dataOmEktefelle: DataOmEktefelle?
 )
 
 data class Periode(
