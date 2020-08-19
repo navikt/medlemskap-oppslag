@@ -2,6 +2,7 @@ package no.nav.medlemskap.cucumber.steps
 
 import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
+import io.cucumber.java8.PendingException
 import no.nav.medlemskap.cucumber.*
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.assertDelresultat
@@ -20,8 +21,10 @@ class RegelSteps : No {
     private val personhistorikkBuilder = PersonhistorikkBuilder()
     private val pdlPersonhistorikkBuilder = PersonhistorikkBuilder()
     private val personHistorikkRelatertePersoner = mutableListOf<PersonhistorikkRelatertPerson>()
+    private var personhistorikkEktefelleBuilder = PersonhistorikkEktefelleBuilder()
 
     private var medlemskap: List<Medlemskap> = emptyList()
+    private var personhistorikkBarnTilEktefelle : List<PersonhistorikkBarn> = emptyList()
 
     private var arbeidsforhold: List<Arbeidsforhold> = emptyList()
     private var arbeidsavtaleMap = hashMapOf<Int, List<Arbeidsavtale>>()
@@ -75,6 +78,18 @@ class RegelSteps : No {
             val relatertePersoner = domenespråkParser.mapDataTable(dataTable, PersonhistorikkRelatertePersonerMapper())
             personHistorikkRelatertePersoner.addAll(relatertePersoner)
         }
+
+        Gitt<DataTable>("følgende personhistorikk for ektefelle fra PDL") { dataTable: DataTable? ->
+            var relaterteEktefeller = domenespråkParser.mapDataTable(dataTable, PersonhistorikkEktefelleMapper())
+            personhistorikkEktefelleBuilder = relaterteEktefeller.get(0)
+        }
+
+        Gitt<DataTable>("følgende barn i personhistorikk for ektefelle fra PDL") { dataTable: DataTable? ->
+            var barnTilEktefelle= domenespråkParser.mapDataTable(dataTable, BarnTilEktefelleMapper())
+            personhistorikkEktefelleBuilder.barn.addAll(barnTilEktefelle)
+        }
+
+
 
         Gitt("følgende medlemsunntak fra MEDL") { dataTable: DataTable? ->
             medlemskap = domenespråkParser.mapDataTable(dataTable, MedlemskapMapper())
@@ -230,7 +245,8 @@ class RegelSteps : No {
                 oppgaver = oppgaverFraGosys,
                 dokument = journalPosterFraJoArk,
                 ytelse = ytelse,
-                personHistorikkRelatertePersoner = personHistorikkRelatertePersoner
+                personHistorikkRelatertePersoner = personHistorikkRelatertePersoner,
+                personhistorikkEktefelle = personhistorikkEktefelleBuilder.build()
         )
     }
 

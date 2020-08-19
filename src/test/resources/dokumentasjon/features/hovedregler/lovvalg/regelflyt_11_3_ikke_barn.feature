@@ -37,6 +37,10 @@ Egenskap: Regelflyt for reglene 11.3.x for bruker som har ektefelle, men ikke ba
       | Ident       | Bosted | Fra og med dato |
       | 10108000398 | NOR    | 29.06.2015      |
 
+    Og følgende personhistorikk for ektefelle fra PDL
+      | Ident       |
+      | 10108000398 |
+
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
@@ -66,6 +70,10 @@ Egenskap: Regelflyt for reglene 11.3.x for bruker som har ektefelle, men ikke ba
     Og følgende personhistorikk for relaterte personer fra TPS
       | Ident       | Fra og med dato |
       | 10108000398 | 29.06.2015      |
+
+    Og følgende personhistorikk for ektefelle fra PDL
+      | Ident       |
+      | 10108000398 |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
