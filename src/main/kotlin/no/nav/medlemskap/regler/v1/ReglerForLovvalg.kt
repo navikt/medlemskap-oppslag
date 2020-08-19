@@ -417,20 +417,6 @@ class ReglerForLovvalg(
                 else -> nei("Bruker har ikke jobbet 25% eller mer i løpet av periode.")
             }
 
-    private fun sjekkLandkode(): Resultat {
-        val bostedsadresser = bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
-        val postadresserLandkoder = postadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
-        val midlertidigadresserLandkoder = midlertidigAdresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
-
-        return when {
-            bostedsadresser.erIkkeTom()
-                    && (postadresserLandkoder alleEr NorskLandkode.NOR.name || postadresserLandkoder.erTom())
-                    && (midlertidigadresserLandkoder alleEr NorskLandkode.NOR.name || midlertidigadresserLandkoder.erTom()) -> ja()
-            erPersonBosattINorge(bostedsadresser, postadresserLandkoder, midlertidigadresserLandkoder) -> ja()
-            else -> nei("Ikke alle adressene til bruker er norske, eller bruker mangler bostedsadresse")
-        }
-    }
-
     private fun List<Adresse>.brukerHarNorskBostedsadresse(): Boolean {
         return this.erIkkeTom()
     }
