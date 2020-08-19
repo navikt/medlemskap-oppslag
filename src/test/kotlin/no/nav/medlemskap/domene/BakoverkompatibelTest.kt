@@ -302,6 +302,14 @@ private val forventetResponse = """
             }
           } ]
         },
+        "personhistorikkEktefelle": {
+            "ident": "0101197512345",
+            "barn": [
+                {
+                    "ident": "0101201012345"
+                }
+            ]
+        },
         "medlemskap" : [ {
           "dekning" : "dekning",
           "fraOgMed" : "1975-10-10",
