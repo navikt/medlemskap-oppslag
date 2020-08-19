@@ -5,11 +5,9 @@ import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.common.Funksjoner.finnesI
 import no.nav.medlemskap.regler.common.RegelId.REGEL_2
-import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedSluttAvKontrollperiode
-import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedStartAvKontrollperiode
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.registrerStatsborgerskapGrafana
+import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.sjekkStatsborgerskap
 
 class ReglerForGrunnforordningen(val ytelse: Ytelse, val periode: InputPeriode, val statsborgerskap: List<Statsborgerskap>) : Regler() {
     val kontrollPeriodeForStatsborgerskap = Datohjelper(periode, ytelse).kontrollPeriodeForPersonhistorikk()
@@ -26,10 +24,9 @@ class ReglerForGrunnforordningen(val ytelse: Ytelse, val periode: InputPeriode, 
     )
 
     private fun sjekkStatsborgerskap(): Resultat {
-        val førsteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedStartAvKontrollperiode(kontrollPeriodeForStatsborgerskap)
-        val sisteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedSluttAvKontrollperiode(kontrollPeriodeForStatsborgerskap)
+        val statsborgerskapSjekk = sjekkStatsborgerskap(statsborgerskap, kontrollPeriodeForStatsborgerskap, eøsLand)
 
-        if (eøsLand finnesI førsteStatsborgerskap && eøsLand finnesI sisteStatsborgerskap) {
+        if (statsborgerskapSjekk) {
             return ja()
         } else {
             statsborgerskap.registrerStatsborgerskapGrafana(kontrollPeriodeForStatsborgerskap, ytelse, REGEL_2)
