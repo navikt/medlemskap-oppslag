@@ -5,8 +5,6 @@ import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Funksjoner.erTom
-import no.nav.medlemskap.regler.common.Funksjoner.inneholder
-import no.nav.medlemskap.regler.common.Funksjoner.harAlle
 import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserForKontrollPeriode
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresserForKontrollPeriode
@@ -14,10 +12,7 @@ import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJob
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarnUnder25
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilEktefellerEllerPartnerForDato
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentRelatertSomFinnesITPS
-import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentBarnSomFinnesITPS
-import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedSluttAvKontrollperiode
-import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedStartAvKontrollperiode
-
+import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.sjekkStatsborgerskap
 
 class ReglerForLovvalg(
         val personhistorikk: Personhistorikk,
@@ -375,22 +370,20 @@ class ReglerForLovvalg(
             }
 
     private fun sjekkOmBrukerErNorskStatsborger(): Resultat {
-        val førsteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedStartAvKontrollperiode(kontrollPeriodeForPersonhistorikk)
-        val sisteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedSluttAvKontrollperiode(kontrollPeriodeForPersonhistorikk)
+        val sjekkStatsborgerskap = sjekkStatsborgerskap(statsborgerskap, kontrollPeriodeForPersonhistorikk, norskLandkode)
 
         return when {
-            førsteStatsborgerskap inneholder NorskLandkode.NOR.name
-                    && sisteStatsborgerskap inneholder NorskLandkode.NOR.name -> ja()
+            sjekkStatsborgerskap -> ja()
             else -> nei("Brukeren er ikke norsk statsborger")
         }
     }
 
     /*
     private fun sjekkOmBrukerHarNordiskStatsborgerskap(): Resultat {
-        val førsteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedStartAvKontrollperiode(kontrollPeriodeForPersonhistorikk)
-        val sisteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedSluttAvKontrollperiode(kontrollPeriodeForPersonhistorikk)
+        val sjekkStatsborgerskap = StatsborgerskapFunksjoner.sjekkStatsborgerskap(statsborgerskap, kontrollPeriodeForPersonhistorikk, norskLandkode)
+
         return when {
-            nordiskeLand finnesI førsteStatsborgerskap && nordiskeLand finnesI sisteStatsborgerskap -> ja()
+            sjekkStatsborgerskap -> ja()
             else -> nei("Brukeren er ikke statsborger i et nordisk land.")
         }
 
@@ -438,6 +431,10 @@ class ReglerForLovvalg(
     enum class NorskLandkode {
         NOR
     }
+
+    private val norskLandkode = mapOf(
+            "NOR" to "NORGE"
+    )
 
     private val nordiskeLand = mapOf(
             "DNK" to "DANMARK",
