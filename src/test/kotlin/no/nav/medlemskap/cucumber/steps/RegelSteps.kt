@@ -8,8 +8,6 @@ import no.nav.medlemskap.regler.assertDelresultat
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.v1.RegelFactory
-import no.nav.medlemskap.regler.v1.ReglerForGrunnforordningen
-import no.nav.medlemskap.regler.v1.ReglerForRegistrerteOpplysninger
 import no.nav.medlemskap.regler.v1.ReglerService
 import org.junit.jupiter.api.Assertions.assertEquals
 import java.time.LocalDate
@@ -214,16 +212,4 @@ class RegelSteps : No {
                 }
     }
 
-    private fun evaluerGrunnforordningen(datagrunnlag: Datagrunnlag): Resultat {
-        val regelsett = ReglerForGrunnforordningen.fraDatagrunnlag(datagrunnlag)
-        return regelsett.kjørRegelflyt()
-    }
-
-    private fun evaluerReglerForMedlemsopplysninger(datagrunnlag: Datagrunnlag): Resultat {
-        val resultatListe = mutableListOf<Resultat>()
-        val regelsett = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
-        val resultat = regelsett.kjørRegelflyt(resultatListe)
-
-        return resultat
-    }
 }
