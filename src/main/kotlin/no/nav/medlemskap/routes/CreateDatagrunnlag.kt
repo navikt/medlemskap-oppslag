@@ -24,6 +24,7 @@ suspend fun defaultCreateDatagrunnlag(
         clientId: String?,
         ytelseFraRequest: Ytelse?): Datagrunnlag = coroutineScope {
 
+    val personhistorikkEktefelle : PersonhistorikkEktefelle?
     val aktorIder = services.pdlService.hentAlleAktorIder(fnr, callId)
     val personHistorikkFraPdl = hentPersonhistorikkFraPdl(services, fnr, callId)
     val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr, periode.fom) }
@@ -33,6 +34,13 @@ suspend fun defaultCreateDatagrunnlag(
     val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktorIder, callId) }
 
     val personhistorikkForFamilie = hentPersonhistorikkForFamilieAsync(personHistorikkFraPdl, services, periode)
+    val fnrTilEktefelle = hentFnrTilEktefelle(personHistorikkFraPdl)
+
+    if(fnrTilEktefelle != null) {
+        personhistorikkEktefelle = hentPersonHistorikkForEktefelle(fnrTilEktefelle, services,  callId)
+    }else {
+        personhistorikkEktefelle = null
+    }
 
     val historikkFraTps = historikkFraTpsRequest.await()
     val medlemskap = medlemskapsunntakRequest.await()
@@ -52,12 +60,33 @@ suspend fun defaultCreateDatagrunnlag(
             oppgaver = oppgaver,
             dokument = journalPoster,
             ytelse = ytelse,
-            personHistorikkRelatertePersoner = personhistorikkForFamilie
+            personHistorikkRelatertePersoner = personhistorikkForFamilie,
+            personhistorikkEktefelle = personhistorikkEktefelle
     )
 }
 
 
 private fun fraOgMedDatoForArbeidsforhold(periode: InputPeriode) = periode.fom.minusYears(1).minusDays(1)
+
+suspend fun hentPersonHistorikkForEktefelle(fnrTilEktefelle: String, services: Services, callId: String): PersonhistorikkEktefelle? {
+    return try {
+        services.pdlService.hentPersonHistorikkTilEktefelle(fnrTilEktefelle, callId)
+    } catch (e: Exception) {
+        logger.error("hentPersonHistorikk feiler", e)
+        secureLogger.error("hentPersonHistorikk feiler for fnr {}", fnrTilEktefelle, e)
+        null
+    }
+
+
+}
+
+private fun hentFnrTilEktefelle(personHistorikkFraPdl: Personhistorikk?): String? {
+    val fnrTilEktefelle =
+            personHistorikkFraPdl?.sivilstand
+                    ?.filter { it.type == Sivilstandstype.GIFT || it.type == Sivilstandstype.REGISTRERT_PARTNER }
+                    ?.map { it.relatertVedSivilstand }?.lastOrNull()
+    return fnrTilEktefelle
+}
 
 
 //Midlertidig kode, ekstra feilhåndtering fordi integrasjonen vår mot PDL ikke er helt 100% ennå..

@@ -94,9 +94,20 @@ class ReglerForLovvalg(
                 hvisNei = regelFlytUavklart(ytelse)
         )
 
+        val harBrukerMedBarnOgEktefelleUtenTilknytningJobbetMerEnn100ProsentFlyt = lagRegelflyt(
+                regel = harBrukerMedBarnOgEktefelleUtenTilknytningJobbetMerEnn100Prosent,
+                hvisJa = regelFlytJa(ytelse),
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+        val erBrukersEktefelleOgBarnasMorSammePersonFlyt = lagRegelflyt(
+                regel = erBrukersEktefelleOgBarnasMorSammePerson,
+                hvisJa = regelFlytUavklart(ytelse),
+                hvisNei = harBrukerMedBarnOgEktefelleUtenTilknytningJobbetMerEnn100ProsentFlyt
+        )
+
         val erBrukerUtenFolkeregistrertEktefelleSittBarnFolkeregistrertFlyt = lagRegelflyt(
                 regel = erBrukerUtenFolkeregistrertEktefelleSittBarnFolkeregistrert,
-                hvisJa = regelFlytUavklart(ytelse),
+                hvisJa = erBrukersEktefelleOgBarnasMorSammePersonFlyt,
                 hvisNei = harBrukerMedRelasjonerUtenFolkeregistreringJobbetMerEnn100ProsentFlyt
         )
 
