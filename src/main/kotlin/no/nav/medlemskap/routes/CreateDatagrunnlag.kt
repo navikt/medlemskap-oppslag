@@ -76,8 +76,6 @@ suspend fun hentPersonHistorikkForEktefelle(fnrTilEktefelle: String, services: S
         secureLogger.error("hentPersonHistorikk feiler for fnr {}", fnrTilEktefelle, e)
         null
     }
-
-
 }
 
 private fun hentFnrTilEktefelle(personHistorikkFraPdl: Personhistorikk?): String? {

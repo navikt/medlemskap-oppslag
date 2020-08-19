@@ -127,7 +127,8 @@ suspend fun mockCreateDatagrunnlag(
             oppgaver = listOf(Oppgave(enDato(), Prioritet.NORM, Status.AAPNET, "Tema")),
             dokument = listOf(Journalpost("Id", "Tittel", "Posttype", "Status", "Tema", listOf(Dokument("Id", "Tittel")))),
             ytelse = ytelse,
-            personHistorikkRelatertePersoner = listOf(personhistorikkRelatertPerson())
+            personHistorikkRelatertePersoner = listOf(personhistorikkRelatertPerson()),
+            personhistorikkEktefelle = personhistorikkEktefelle()
     )
 }
 
@@ -161,6 +162,13 @@ private fun personhistorikkRelatertPerson(): PersonhistorikkRelatertPerson {
             bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
             postadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
             midlertidigAdresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
+    )
+}
+
+private fun personhistorikkEktefelle(): PersonhistorikkEktefelle {
+    return PersonhistorikkEktefelle(
+            ident = ektefelleFnr(),
+            barn = listOf(PersonhistorikkBarn(ident = barnFnr()))
     )
 }
 
