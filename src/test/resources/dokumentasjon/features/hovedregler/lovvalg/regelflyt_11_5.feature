@@ -42,6 +42,10 @@ Egenskap: Regelflyt for reglene 11.5 for bruker som har ektefelle og barn. Ektef
       | 10108000398 | NOR    | 29.06.2015      |
       | 09069534888 |        | 18.07.2010      |
 
+    Og følgende personhistorikk for ektefelle fra PDL
+      | Ident       |
+      | 10108000398 |
+
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |

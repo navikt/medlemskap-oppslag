@@ -5,6 +5,8 @@ import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Funksjoner.erTom
+import no.nav.medlemskap.regler.common.Funksjoner.inneholder
+import no.nav.medlemskap.regler.common.Funksjoner.harAlle
 import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserForKontrollPeriode
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresserForKontrollPeriode
@@ -12,6 +14,7 @@ import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJob
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarnUnder25
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilEktefellerEllerPartnerForDato
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentRelatertSomFinnesITPS
+import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentBarnSomFinnesITPS
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.sjekkStatsborgerskap
 
 class ReglerForLovvalg(
@@ -386,7 +389,6 @@ class ReglerForLovvalg(
             sjekkStatsborgerskap -> ja()
             else -> nei("Brukeren er ikke statsborger i et nordisk land.")
         }
-
     }
     */
 
