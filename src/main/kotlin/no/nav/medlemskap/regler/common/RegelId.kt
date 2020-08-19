@@ -34,6 +34,7 @@ enum class RegelId(val identifikator: String, val avklaring: String) {
     REGEL_11_5("11.5", "Er brukers barn folkeregistrert som bosatt i Norge?"),
     REGEL_11_5_1("11.5.1", "Er brukers ektefelle og barnas mor samme person?"),
     REGEL_11_6("11.6", "Har bruker vært i minst 80 % stilling de siste 12 mnd?"),
+    REGEL_11_6_1("11.6.1", "Har brukers ektefelle  vært i minst 100 % stilling de siste 12 mnd?"),
     REGEL_12("12", "Har bruker vært i minst 25% stilling de siste 12 mnd?"),
     REGEL_OPPLYSNINGER("OPPLYSNINGER", "Finnes det registrerte opplysninger på bruker?"),
     REGEL_A("OPPLYSNINGER-MEDL", "Finnes det registrerte opplysninger i MEDL?"),

@@ -1,4 +1,4 @@
-package no.nav.medlemskap.domene
+package no.nav.medlemskap.domene.barn
 
 data class PersonhistorikkBarn(
         val ident: String

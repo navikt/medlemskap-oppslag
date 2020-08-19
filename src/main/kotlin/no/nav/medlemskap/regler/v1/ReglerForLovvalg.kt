@@ -1,18 +1,18 @@
 package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
+import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Funksjoner.erTom
-import no.nav.medlemskap.regler.common.Funksjoner.inneholder
 import no.nav.medlemskap.regler.common.Funksjoner.harAlle
 import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserForKontrollPeriode
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresserForKontrollPeriode
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarnUnder25
-import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilEktefellerEllerPartnerForDato
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentRelatertSomFinnesITPS
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentBarnSomFinnesITPS
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.sjekkStatsborgerskap
@@ -25,7 +25,7 @@ class ReglerForLovvalg(
         val arbeidUtenforNorge: Boolean,
         val personhistorikkRelatertPerson: List<PersonhistorikkRelatertPerson>,
         val pdlPersonhistorikk: Personhistorikk?,
-        val personhistorikkEktefelle: PersonhistorikkEktefelle?
+        val dataOmEktefelle: DataOmEktefelle?
 ) : Regler(ytelse) {
     val statsborgerskap = personhistorikk.statsborgerskap
     val postadresser = personhistorikk.postadresser
@@ -37,7 +37,8 @@ class ReglerForLovvalg(
     private val datohjelper = Datohjelper(periode, ytelse)
     private val kontrollPeriodeForPersonhistorikk = datohjelper.kontrollPeriodeForPersonhistorikk()
     private val kontrollPeriodeForArbeidsforhold = datohjelper.kontrollPeriodeForArbeidsforhold()
-    private val ektefelle = personhistorikkEktefelle?.ident
+    private val arbeidsforholdEktefelle = dataOmEktefelle?.arbeidsforholdEktefelle
+    private val ektefelle = dataOmEktefelle?.personhistorikkEktefelle?.ident
     private val ektefelleITps = personhistorikkRelatertPerson.hentRelatertSomFinnesITPS(ektefelle)
     private val barn = familierelasjon?.hentFnrTilBarnUnder25()
     private val barnITps = personhistorikkRelatertPerson.hentBarnSomFinnesITPS(barn)
@@ -109,10 +110,16 @@ class ReglerForLovvalg(
                 hvisNei = harBrukerMedRelasjonerUtenFolkeregistreringJobbetMerEnn100ProsentFlyt
         )
 
+        val harBrukersEktefelleJobbetMinst100ProsentSiste12MndFlyt = lagRegelflyt(
+                regel = harBrukersEktefelleJobbetMinst100ProsentSiste12Mnd,
+                hvisJa = regelFlytJa(ytelse),
+                hvisNei = regelFlytUavklart(ytelse)
+        )
+
         val harBrukerMedFolkeregistrerteRelasjonerJobbetMerEnn80ProsentFlyt = lagRegelflyt(
                 regel = harBrukerMedFolkeregistrerteRelasjonerJobbetMerEnn80Prosent,
                 hvisJa = regelFlytJa(ytelse),
-                hvisNei = regelFlytUavklart(ytelse)
+                hvisNei = harBrukersEktefelleJobbetMinst100ProsentSiste12MndFlyt
         )
 
         val erBrukerMedFolkeregistrertEktefelleSittBarnFolkeregistrertFlyt = lagRegelflyt(
@@ -258,6 +265,12 @@ class ReglerForLovvalg(
             operasjon = { sjekkOmBrukersStillingsprosentErMerEnn(80.0) }
     )
 
+    val harBrukersEktefelleJobbetMinst100ProsentSiste12Mnd = Regel (
+            regelId = REGEL_11_6_1,
+            ytelse = ytelse,
+            operasjon = { sjekkOmBrukersEktefelleStillingprosenErMerEnn(100.0)}
+    )
+
     val harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn100Prosent = Regel(
             regelId = REGEL_11_3_1_1,
             ytelse = ytelse,
@@ -330,9 +343,9 @@ class ReglerForLovvalg(
     }
 
     private fun sjekkOmBrukersEktefelleOgBarnasMorErSammePerson(): Resultat {
-        if (personhistorikkEktefelle != null) {
+        if (dataOmEktefelle != null) {
             return when {
-                personhistorikkEktefelle.barn?.map { it.ident}?.harAlle(barnITps.map { it.ident })!! -> ja()
+                dataOmEktefelle.personhistorikkEktefelle?.barn?.map { it.ident}?.harAlle(barnITps.map { it.ident })!! -> ja()
                 else -> nei(" Ektefelle er ikke barn/barnas mor")
             }
         }
@@ -398,19 +411,11 @@ class ReglerForLovvalg(
                 else -> nei("Bruker har ikke jobbet 25% eller mer i løpet av periode.")
             }
 
-    private fun sjekkLandkode(): Resultat {
-        val bostedsadresser = bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
-        val postadresserLandkoder = postadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
-        val midlertidigadresserLandkoder = midlertidigAdresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
-
-        return when {
-            bostedsadresser.erIkkeTom()
-                    && (postadresserLandkoder alleEr NorskLandkode.NOR.name || postadresserLandkoder.erTom())
-                    && (midlertidigadresserLandkoder alleEr NorskLandkode.NOR.name || midlertidigadresserLandkoder.erTom()) -> ja()
-            erPersonBosattINorge(bostedsadresser, postadresserLandkoder, midlertidigadresserLandkoder) -> ja()
-            else -> nei("Ikke alle adressene til bruker er norske, eller bruker mangler bostedsadresse")
-        }
-    }
+    private fun sjekkOmBrukersEktefelleStillingprosenErMerEnn(stillingsprosent: Double): Resultat =
+            when {
+                arbeidsforholdEktefelle?.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(stillingsprosent, kontrollPeriodeForArbeidsforhold, ytelse)!! -> ja()
+                else -> nei("Bruker har ikke jobbet 25% eller mer i løpet av periode.")
+            }
 
     private fun List<Adresse>.brukerHarNorskBostedsadresse(): Boolean {
         return this.erIkkeTom()
@@ -452,7 +457,7 @@ class ReglerForLovvalg(
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForLovvalg {
             with(datagrunnlag) {
-                return ReglerForLovvalg(personhistorikk, arbeidsforhold, periode, ytelse, brukerinput.arbeidUtenforNorge, personHistorikkRelatertePersoner, pdlpersonhistorikk, personhistorikkEktefelle)
+                return ReglerForLovvalg(personhistorikk, arbeidsforhold, periode, ytelse, brukerinput.arbeidUtenforNorge, personHistorikkRelatertePersoner, pdlpersonhistorikk, dataOmEktefelle)
             }
         }
     }
