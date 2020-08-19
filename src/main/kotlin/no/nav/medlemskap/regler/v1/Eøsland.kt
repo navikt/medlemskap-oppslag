@@ -36,5 +36,24 @@ enum class Eøsland(val land: String) {
         fun erEØSland(landkode: String): Boolean {
             return values().any {it.name == landkode}
         }
+
+        fun erNorsk(landkode: String): Boolean {
+            return landkode == "NOR"
+        }
+
+        fun erNordisk(landkode: String): Boolean {
+            return nordiskeLandkoder.contains(landkode)
+        }
+
+        private val nordiskeLandkoder = setOf(
+                "DNK",
+                "FIN",
+                "ISL",
+                "SWE",
+                "NOR",
+                "FRO",
+                "GRL",
+                "ALA"
+        )
     }
 }

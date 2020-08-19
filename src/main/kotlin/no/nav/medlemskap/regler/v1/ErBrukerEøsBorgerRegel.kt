@@ -5,9 +5,8 @@ import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedSluttAvKontrollperiode
-import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.hentStatsborgerskapVedStartAvKontrollperiode
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.registrerStatsborgerskapGrafana
+import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.sjekkStatsborgerskap
 
 class ErBrukerEøsBorgerRegel(
         ytelse: Ytelse,
@@ -17,10 +16,9 @@ class ErBrukerEøsBorgerRegel(
 
     override fun operasjon(): Resultat {
         val kontrollPeriodeForStatsborgerskap = Datohjelper(periode, ytelse).kontrollPeriodeForPersonhistorikk()
-        val førsteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedStartAvKontrollperiode(kontrollPeriodeForStatsborgerskap)
-        val sisteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedSluttAvKontrollperiode(kontrollPeriodeForStatsborgerskap)
+        val erBrukerEøsBorger = sjekkStatsborgerskap(statsborgerskap, kontrollPeriodeForStatsborgerskap, {s -> Eøsland.erEØSland(s)})
 
-        if (førsteStatsborgerskap.any{ Eøsland.erEØSland(it) } && sisteStatsborgerskap.any{ Eøsland.erEØSland(it) }) {
+        if (erBrukerEøsBorger) {
             return ja()
         } else {
             statsborgerskap.registrerStatsborgerskapGrafana(kontrollPeriodeForStatsborgerskap, ytelse, RegelId.REGEL_2)

@@ -2,7 +2,6 @@ package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Funksjoner.erTom
 import no.nav.medlemskap.regler.common.Funksjoner.harAlle
@@ -371,7 +370,7 @@ class ReglerForLovvalg(
             }
 
     private fun sjekkOmBrukerErNorskStatsborger(): Resultat {
-        val sjekkStatsborgerskap = sjekkStatsborgerskap(statsborgerskap, kontrollPeriodeForPersonhistorikk, norskLandkode)
+        val sjekkStatsborgerskap = sjekkStatsborgerskap(statsborgerskap, kontrollPeriodeForPersonhistorikk, {s -> Eøsland.erNorsk(s)})
 
         return when {
             sjekkStatsborgerskap -> ja()
@@ -396,30 +395,16 @@ class ReglerForLovvalg(
                 else -> nei("Bruker har ikke jobbet 25% eller mer i løpet av periode.")
             }
 
-    private fun sjekkLandkode(): Resultat {
-        val bostedsadresser = bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
-        val postadresserLandkoder = postadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
-        val midlertidigadresserLandkoder = midlertidigAdresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
-
-        return when {
-            bostedsadresser.erIkkeTom()
-                    && (postadresserLandkoder alleEr NorskLandkode.NOR.name || postadresserLandkoder.erTom())
-                    && (midlertidigadresserLandkoder alleEr NorskLandkode.NOR.name || midlertidigadresserLandkoder.erTom()) -> ja()
-            erPersonBosattINorge(bostedsadresser, postadresserLandkoder, midlertidigadresserLandkoder) -> ja()
-            else -> nei("Ikke alle adressene til bruker er norske, eller bruker mangler bostedsadresse")
-        }
-    }
-
     private fun List<Adresse>.brukerHarNorskBostedsadresse(): Boolean {
         return this.erIkkeTom()
     }
 
-    private fun personHarIngenEllerNorskPostadresse(postadresseLandkode: List<String>): Boolean {
-        return postadresseLandkode alleEr NorskLandkode.NOR.name || postadresseLandkode.erTom()
+    private fun personHarIngenEllerNorskPostadresse(postadresseLandkoder: List<String>): Boolean {
+        return postadresseLandkoder.all { Eøsland.erNorsk(it) } || postadresseLandkoder.erTom()
     }
 
     private fun personHarIngenEllerNorskMidlertidigadresse(midlertidigadresserLandkoder: List<String>): Boolean {
-        return midlertidigadresserLandkoder alleEr NorskLandkode.NOR.name || midlertidigadresserLandkoder.erTom()
+        return midlertidigadresserLandkoder.all { Eøsland.erNorsk(it)}  || midlertidigadresserLandkoder.erTom()
     }
 
     private fun erPersonBosattINorge(boadadresse: List<Adresse>, postadresseLandkoder: List<String>, midlertidigAdresseLandkoder: List<String>): Boolean {
@@ -427,25 +412,6 @@ class ReglerForLovvalg(
                 && personHarIngenEllerNorskPostadresse(postadresseLandkoder)
                 && personHarIngenEllerNorskMidlertidigadresse(midlertidigAdresseLandkoder)
     }
-
-    enum class NorskLandkode {
-        NOR
-    }
-
-    private val norskLandkode = mapOf(
-            "NOR" to "NORGE"
-    )
-
-    private val nordiskeLand = mapOf(
-            "DNK" to "DANMARK",
-            "FIN" to "FINLAND",
-            "ISL" to "ISLAND",
-            "SWE" to "SVERIGE",
-            "NOR" to "NORGE",
-            "FRO" to "FÆRØYENE",
-            "GRL" to "GRØNNLAND",
-            "ALA" to "ÅLAND"
-    )
 
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForLovvalg {
