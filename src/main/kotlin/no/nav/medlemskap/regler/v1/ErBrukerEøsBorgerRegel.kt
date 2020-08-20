@@ -1,9 +1,6 @@
 package no.nav.medlemskap.regler.v1
 
-import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.InputPeriode
-import no.nav.medlemskap.domene.Statsborgerskap
-import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.registrerStatsborgerskapGrafana
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.sjekkStatsborgerskap
