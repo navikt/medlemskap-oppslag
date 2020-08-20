@@ -54,7 +54,7 @@ class TjenesteKallFeilmeldingerTest {
                         configuration = configuration,
                         azureAdOpenIdConfiguration = openIdConfiguration,
                         services = services,
-                        port = 7071,
+                        port = 7072,
                         createDatagrunnlag = ::mockCreateDatagrunnlag
                 )
 
@@ -69,7 +69,7 @@ class TjenesteKallFeilmeldingerTest {
 
                 RestAssured.baseURI = "http://localhost"
                 RestAssured.basePath = "/"
-                RestAssured.port = 7071
+                RestAssured.port = 7072
                 RestAssured.config = RestAssuredConfig.config().objectMapperConfig(ObjectMapperConfig.objectMapperConfig()
                         .jackson2ObjectMapperFactory { _, _ -> objectMapper })
             }
@@ -80,7 +80,7 @@ class TjenesteKallFeilmeldingerTest {
     @Test
     fun `Request body med fom som null får 400 respons`() {
         val faktiskResponse = RestAssured.given()
-                .body(input)
+                .body(inputMedFomLikeNull)
                 .header(Header("Content-Type", "application/json"))
                 .post("/")
                 .then()
@@ -102,9 +102,9 @@ class TjenesteKallFeilmeldingerTest {
     }
 
     @Test
-    fun `Request med tom før fom får 400 respons`() {
+    fun `Request med tom dato før fom dato får 400 respons`() {
         val faktiskResponse = RestAssured.given()
-                .body(input0)
+                .body(inputMedFomDatoFørTomDato)
                 .header(Header("Content-Type", "application/json"))
                 .post("/")
                 .then()
@@ -116,7 +116,7 @@ class TjenesteKallFeilmeldingerTest {
     @Test
     fun `Request med ugyldig fnr får 400 respons`() {
         val faktiskResponse = RestAssured.given()
-                .body(input1)
+                .body(inputMedUgyldigFnr)
                 .header(Header("Content-Type", "application/json"))
                 .post("/")
                 .then()
@@ -128,7 +128,31 @@ class TjenesteKallFeilmeldingerTest {
     @Test
     fun `Request med tom før 2016 får 400 respons`() {
         val faktiskResponse = RestAssured.given()
-                .body(input2)
+                .body(inputTomFør2016)
+                .header(Header("Content-Type", "application/json"))
+                .post("/")
+                .then()
+                .statusCode(400)
+                .extract().asString()
+        println("Dette er responsen: $faktiskResponse")
+    }
+
+    @Test
+    fun `Request med tom før fom i Json får 400 respons`() {
+        val faktiskResponse = RestAssured.given()
+                .body(inputMedTomFørFomIJson)
+                .header(Header("Content-Type", "application/json"))
+                .post("/")
+                .then()
+                .statusCode(400)
+                .extract().asString()
+        println("Dette er responsen: $faktiskResponse")
+    }
+
+    @Test
+    fun `Request med ugyldig body får 400 respons`() {
+        val faktiskResponse = RestAssured.given()
+                .body(ugyldigInput)
                 .header(Header("Content-Type", "application/json"))
                 .post("/")
                 .then()
@@ -205,7 +229,7 @@ class TjenesteKallFeilmeldingerTest {
     private fun enAnnenDato() = LocalDate.of(2020, 8, 1)
     private fun etTidspunkt() = LocalDateTime.of(2020, 6, 20, 10, 0)
 
-    private val input = """
+    private val inputMedFomLikeNull = """
         {
             "fnr": "15076500565",
             "periode": {
@@ -218,7 +242,7 @@ class TjenesteKallFeilmeldingerTest {
         }
 """.trimIndent()
 
-    private val input0 = """
+    private val inputMedFomDatoFørTomDato = """
         {
             "fnr": "123456789",
             "periode": {
@@ -231,7 +255,7 @@ class TjenesteKallFeilmeldingerTest {
 }
 """.trimIndent()
 
-    private val input1 = """
+    private val inputMedUgyldigFnr = """
         {
             "fnr": "1",
             "periode": {
@@ -244,7 +268,7 @@ class TjenesteKallFeilmeldingerTest {
 }
 """.trimIndent()
 
-    private val input2 = """
+    private val inputTomFør2016 = """
         {
             "fnr": "123456789",
             "periode": {
@@ -257,17 +281,19 @@ class TjenesteKallFeilmeldingerTest {
 }
 """.trimIndent()
 
-    private val input3 = """
+    private val inputMedTomFørFomIJson = """
         {
             "fødselsnummer": "123456789",
             "periode": {
-                "fom": "2015-12-31", 
-                "tom": "2019-12-31"
+                "tom": "2019-12-31", 
+                "fom": "2019-12-31"
             }, 
         "brukerinput": {
             "arbeidUtenforNorge": false
         }
 }
 """.trimIndent()
+
+    private val ugyldigInput = """{"foo": "bar"}""".trimIndent()
 
 }
