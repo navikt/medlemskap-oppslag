@@ -10,7 +10,7 @@ class DataOmEktefelleBuilder {
             ident = String(),
             barn = mutableListOf<PersonhistorikkBarn>()
     )
-    var arbeidsforholdEktefelle = mutableListOf<Arbeidsforhold>()
+    var arbeidsforholdEktefelle = listOf<Arbeidsforhold>()
 
 
     fun build(): DataOmEktefelle {

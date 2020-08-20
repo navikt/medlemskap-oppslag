@@ -2,10 +2,10 @@ package no.nav.medlemskap.cucumber.steps
 
 import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
+import io.cucumber.java8.PendingException
 import no.nav.medlemskap.cucumber.*
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
-import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
 import no.nav.medlemskap.regler.assertDelresultat
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Svar
@@ -33,6 +33,9 @@ class RegelSteps : No {
     private var arbeidsavtaleMap = hashMapOf<Int, List<Arbeidsavtale>>()
     private var utenlandsoppholdMap = hashMapOf<Int, List<Utenlandsopphold>>()
     private var arbeidsgiverMap = hashMapOf<Int, Arbeidsgiver>()
+
+    private var arbeidsforholdEktefelle: List<Arbeidsforhold> = emptyList()
+    private var arbeidsavtaleEktefelleMap = hashMapOf<Int, List<Arbeidsavtale>>()
 
     private var resultat: Resultat? = null
     private var oppgaverFraGosys: List<Oppgave> = emptyList()
@@ -140,6 +143,16 @@ class RegelSteps : No {
 
         Gitt("følgende journalposter fra Joark") { dataTable: DataTable? ->
             journalPosterFraJoArk = domenespråkParser.mapDataTable(dataTable, JournalpostMapper())
+        }
+
+        Gitt<DataTable>("følgende arbeidsforhold til ektefelle fra AAReg") { dataTable: DataTable? ->
+            val arbeidsforholdEktefelle =  domenespråkParser.mapArbeidsforhold(dataTable)
+            dataOmEktefelleBuilder.arbeidsforholdEktefelle = arbeidsforholdEktefelle
+        }
+
+        Gitt("følgende arbeidsavtaler til ektefelle i arbeidsforholdet") { dataTable: DataTable? ->
+            arbeidsavtaleEktefelleMap[0] = domenespråkParser.mapDataTable(dataTable, ArbeidsavtaleMapper())
+            dataOmEktefelleBuilder.arbeidsforholdEktefelle.get(0).arbeidsavtaler = arbeidsavtaleEktefelleMap[0]!!
         }
 
         Når("medlemskap beregnes med følgende parametre") { dataTable: DataTable? ->

@@ -54,6 +54,7 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_11_4_1 -> reglerForLovvalg.erBrukerUtenFolkeregistrertEktefelleSittBarnFolkeregistrert
             REGEL_11_5 -> reglerForLovvalg.erBrukerMedFolkeregistrertEktefelleSittBarnFolkeregistrert
             REGEL_11_6 -> reglerForLovvalg.harBrukerMedFolkeregistrerteRelasjonerJobbetMerEnn80Prosent
+            REGEL_11_6_1 -> reglerForLovvalg.harBrukersEktefelleJobbetMinst100ProsentSiste12Mnd
             REGEL_12 -> reglerForLovvalg.harBrukerJobbet25ProsentEllerMer
 
             else -> throw java.lang.RuntimeException("Ukjent regel")

@@ -97,7 +97,8 @@ private fun hentFnrTilEktefelle(personHistorikkFraPdl: Personhistorikk?): String
     val fnrTilEktefelle =
             personHistorikkFraPdl?.sivilstand
                     ?.filter { it.type == Sivilstandstype.GIFT || it.type == Sivilstandstype.REGISTRERT_PARTNER }
-                    ?.map { it.relatertVedSivilstand }?.lastOrNull()
+                    ?.map { it.relatertVedSivilstand }
+                    ?.lastOrNull()
     return fnrTilEktefelle
 }
 
