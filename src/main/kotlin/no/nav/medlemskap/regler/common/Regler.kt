@@ -2,7 +2,7 @@ package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.Ytelse
 
-abstract class Regler(val ytelse: Ytelse) {
+abstract class Regler(val ytelse: Ytelse, val regelMap: Map<RegelId, Regel> = emptyMap()) {
     private val resultatliste: MutableList<Resultat> = mutableListOf()
 
     abstract fun hentRegelflyt(): Regelflyt
@@ -36,4 +36,9 @@ abstract class Regler(val ytelse: Ytelse) {
         return Regelflyt(regel = regel, ytelse = ytelse, hvisJa = hvisJa, hvisNei = hvisNei, hvisUavklart = hvisUavklart)
     }
 
+    protected fun hentRegel(regelId: RegelId): Regel {
+        val regel = regelMap[regelId]
+
+        return regel ?: throw RuntimeException("Fant ikke regel med regelId $regelId")
+    }
 }

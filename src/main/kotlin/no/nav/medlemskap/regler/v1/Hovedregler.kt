@@ -8,7 +8,6 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
     private val resultatliste: MutableList<Resultat> = mutableListOf()
     private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
 
-
     fun kjørHovedregler(): Resultat {
         return kjørRegelflyt()
     }
