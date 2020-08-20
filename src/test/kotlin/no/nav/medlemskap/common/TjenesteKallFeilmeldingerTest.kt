@@ -20,7 +20,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.YearMonth
 
-class StatiskIkkeAutorisertServerTest {
+class TjenesteKallFeilmeldingerTest {
 
     protected fun RequestSpecification.When(): RequestSpecification {
         return this.`when`()
@@ -78,7 +78,7 @@ class StatiskIkkeAutorisertServerTest {
     }
 
     @Test
-    fun `Request uten body får 400 respons`() {
+    fun `Request body med fom som null får 400 respons`() {
         val faktiskResponse = RestAssured.given()
                 .body(input)
                 .header(Header("Content-Type", "application/json"))
@@ -89,6 +89,53 @@ class StatiskIkkeAutorisertServerTest {
         println("Dette er responsen: $faktiskResponse")
     }
 
+    @Test
+    fun `Request uten body får 400 respons`() {
+        val faktiskResponse = RestAssured.given()
+                .body("")
+                .header(Header("Content-Type", "application/json"))
+                .post("/")
+                .then()
+                .statusCode(400)
+                .extract().asString()
+        println("Dette er responsen: $faktiskResponse")
+    }
+
+    @Test
+    fun `Request med tom før fom får 400 respons`() {
+        val faktiskResponse = RestAssured.given()
+                .body(input0)
+                .header(Header("Content-Type", "application/json"))
+                .post("/")
+                .then()
+                .statusCode(400)
+                .extract().asString()
+        println("Dette er responsen: $faktiskResponse")
+    }
+
+    @Test
+    fun `Request med ugyldig fnr får 400 respons`() {
+        val faktiskResponse = RestAssured.given()
+                .body(input1)
+                .header(Header("Content-Type", "application/json"))
+                .post("/")
+                .then()
+                .statusCode(400)
+                .extract().asString()
+        println("Dette er responsen: $faktiskResponse")
+    }
+
+    @Test
+    fun `Request med tom før 2016 får 400 respons`() {
+        val faktiskResponse = RestAssured.given()
+                .body(input2)
+                .header(Header("Content-Type", "application/json"))
+                .post("/")
+                .then()
+                .statusCode(400)
+                .extract().asString()
+        println("Dette er responsen: $faktiskResponse")
+    }
 
     suspend fun mockCreateDatagrunnlag(
             fnr: String,
@@ -176,10 +223,49 @@ class StatiskIkkeAutorisertServerTest {
             "fnr": "123456789",
             "periode": {
                 "fom": "2019-01-01", 
+                "tom": "2015-12-31"
+            }, 
+        "brukerinput": {
+            "arbeidUtenforNorge": false
+        }
+}
+""".trimIndent()
+
+    private val input1 = """
+        {
+            "fnr": "1",
+            "periode": {
+                "fom": "2019-01-01", 
                 "tom": "2019-12-31"
             }, 
         "brukerinput": {
-            "arbeidUtenforNorge": "Nei"
+            "arbeidUtenforNorge": false
+        }
+}
+""".trimIndent()
+
+    private val input2 = """
+        {
+            "fnr": "123456789",
+            "periode": {
+                "fom": "2015-12-31", 
+                "tom": "2019-12-31"
+            }, 
+        "brukerinput": {
+            "arbeidUtenforNorge": false
+        }
+}
+""".trimIndent()
+
+    private val input3 = """
+        {
+            "fødselsnummer": "123456789",
+            "periode": {
+                "fom": "2015-12-31", 
+                "tom": "2019-12-31"
+            }, 
+        "brukerinput": {
+            "arbeidUtenforNorge": false
         }
 }
 """.trimIndent()
