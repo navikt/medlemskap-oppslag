@@ -1,6 +1,6 @@
 package no.nav.medlemskap.domene
 
-import io.ktor.server.engine.ApplicationEngine
+import io.ktor.server.engine.*
 import io.restassured.RestAssured
 import io.restassured.RestAssured.given
 import io.restassured.config.ObjectMapperConfig
@@ -15,6 +15,9 @@ import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.createHttpServer
+import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
+import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
+import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.skyscreamer.jsonassert.Customization
@@ -127,7 +130,8 @@ suspend fun mockCreateDatagrunnlag(
             oppgaver = listOf(Oppgave(enDato(), Prioritet.NORM, Status.AAPNET, "Tema")),
             dokument = listOf(Journalpost("Id", "Tittel", "Posttype", "Status", "Tema", listOf(Dokument("Id", "Tittel")))),
             ytelse = ytelse,
-            personHistorikkRelatertePersoner = listOf(personhistorikkRelatertPerson())
+            personHistorikkRelatertePersoner = listOf(personhistorikkRelatertPerson()),
+            dataOmEktefelle = DataOmEktefelle(personhistorikkEktefelle(), listOf(arbeidsforhold()))
     )
 }
 
@@ -161,6 +165,13 @@ private fun personhistorikkRelatertPerson(): PersonhistorikkRelatertPerson {
             bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
             postadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
             midlertidigAdresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
+    )
+}
+
+private fun personhistorikkEktefelle(): PersonhistorikkEktefelle {
+    return PersonhistorikkEktefelle(
+            ident = ektefelleFnr(),
+            barn = listOf(PersonhistorikkBarn(ident = barnFnr()))
     )
 }
 
@@ -293,6 +304,57 @@ private val forventetResponse = """
               "opphoerstidspunkt" : "2020-06-20T10:00:00"
             }
           } ]
+        },
+        "dataOmEktefelle": {
+           "personhistorikkEktefelle": {
+                    "ident": "0101197512345",
+                    "barn": [
+                        {
+                            "ident": "0101201012345"
+                        }
+                    ]
+           }, 
+            "arbeidsforholdEktefelle" : [ {
+                     "periode" : {
+                       "fom" : "1975-10-10",
+                       "tom" : "2020-08-01"
+                     },
+                     "utenlandsopphold" : [ {
+                       "landkode" : "SWE",
+                       "periode" : {
+                         "fom" : "1975-10-10",
+                         "tom" : "2020-08-01"
+                       },
+                       "rapporteringsperiode" : "2010-01"
+                     } ],
+                     "arbeidsgivertype" : "Organisasjon",
+                     "arbeidsgiver" : {
+                       "type" : "type",
+                       "identifikator" : "identifikator",
+                       "ansatte" : [ {
+                         "antall" : 10,
+                         "bruksperiode" : {
+                           "fom" : "1975-10-10",
+                           "tom" : "2020-08-01"
+                         },
+                         "gyldighetsperiode" : {
+                           "fom" : "1975-10-10",
+                           "tom" : "2020-08-01"
+                         }
+                       } ],
+                       "konkursStatus" : [ "Konkursstatus" ]
+                     },
+                     "arbeidsfolholdstype" : "NORMALT",
+                     "arbeidsavtaler" : [ {
+                       "periode" : {
+                         "fom" : "1975-10-10",
+                         "tom" : "2020-08-01"
+                       },
+                       "yrkeskode" : "yrkeskode",
+                       "skipsregister" : "NIS",
+                       "stillingsprosent" : 100.0
+                     } ]
+                   } ]
         },
         "medlemskap" : [ {
           "dekning" : "dekning",

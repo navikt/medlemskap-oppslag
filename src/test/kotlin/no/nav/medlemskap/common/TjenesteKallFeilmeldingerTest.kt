@@ -86,7 +86,6 @@ class TjenesteKallFeilmeldingerTest {
                 .then()
                 .statusCode(400)
                 .extract().asString()
-        println("Dette er responsen: $faktiskResponse")
     }
 
     @Test
@@ -98,7 +97,6 @@ class TjenesteKallFeilmeldingerTest {
                 .then()
                 .statusCode(400)
                 .extract().asString()
-        println("Dette er responsen: $faktiskResponse")
     }
 
     @Test
@@ -110,7 +108,6 @@ class TjenesteKallFeilmeldingerTest {
                 .then()
                 .statusCode(400)
                 .extract().asString()
-        println("Dette er responsen: $faktiskResponse")
     }
 
     @Test
@@ -122,7 +119,6 @@ class TjenesteKallFeilmeldingerTest {
                 .then()
                 .statusCode(400)
                 .extract().asString()
-        println("Dette er responsen: $faktiskResponse")
     }
 
     @Test
@@ -134,7 +130,6 @@ class TjenesteKallFeilmeldingerTest {
                 .then()
                 .statusCode(400)
                 .extract().asString()
-        println("Dette er responsen: $faktiskResponse")
     }
 
     @Test
@@ -146,7 +141,6 @@ class TjenesteKallFeilmeldingerTest {
                 .then()
                 .statusCode(400)
                 .extract().asString()
-        println("Dette er responsen: $faktiskResponse")
     }
 
     @Test
@@ -158,7 +152,6 @@ class TjenesteKallFeilmeldingerTest {
                 .then()
                 .statusCode(400)
                 .extract().asString()
-        println("Dette er responsen: $faktiskResponse")
     }
 
     suspend fun mockCreateDatagrunnlag(

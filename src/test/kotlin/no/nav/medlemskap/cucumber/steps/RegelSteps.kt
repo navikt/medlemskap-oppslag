@@ -4,10 +4,12 @@ import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
 import no.nav.medlemskap.cucumber.*
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.regler.assertDelresultat
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Svar
-import no.nav.medlemskap.regler.v1.*
+import no.nav.medlemskap.regler.v1.RegelFactory
+import no.nav.medlemskap.regler.v1.ReglerService
 import org.junit.jupiter.api.Assertions.assertEquals
 import java.time.LocalDate
 
@@ -20,13 +22,19 @@ class RegelSteps : No {
     private val personhistorikkBuilder = PersonhistorikkBuilder()
     private val pdlPersonhistorikkBuilder = PersonhistorikkBuilder()
     private val personHistorikkRelatertePersoner = mutableListOf<PersonhistorikkRelatertPerson>()
+    private var personhistorikkEktefelleBuilder = PersonhistorikkEktefelleBuilder()
+    private var dataOmEktefelleBuilder = DataOmEktefelleBuilder()
 
     private var medlemskap: List<Medlemskap> = emptyList()
+    private var personhistorikkBarnTilEktefelle : List<PersonhistorikkBarn> = emptyList()
 
     private var arbeidsforhold: List<Arbeidsforhold> = emptyList()
     private var arbeidsavtaleMap = hashMapOf<Int, List<Arbeidsavtale>>()
     private var utenlandsoppholdMap = hashMapOf<Int, List<Utenlandsopphold>>()
     private var arbeidsgiverMap = hashMapOf<Int, Arbeidsgiver>()
+
+    private var arbeidsforholdEktefelle: List<Arbeidsforhold> = emptyList()
+    private var arbeidsavtaleEktefelleMap = hashMapOf<Int, List<Arbeidsavtale>>()
 
     private var resultat: Resultat? = null
     private var oppgaverFraGosys: List<Oppgave> = emptyList()
@@ -74,6 +82,16 @@ class RegelSteps : No {
         Gitt<DataTable>("følgende personhistorikk for relaterte personer fra TPS") { dataTable: DataTable? ->
             val relatertePersoner = domenespråkParser.mapDataTable(dataTable, PersonhistorikkRelatertePersonerMapper())
             personHistorikkRelatertePersoner.addAll(relatertePersoner)
+        }
+
+        Gitt<DataTable>("følgende personhistorikk for ektefelle fra PDL") { dataTable: DataTable? ->
+            val relaterteEktefeller = domenespråkParser.mapDataTable(dataTable, PersonhistorikkEktefelleMapper())
+            dataOmEktefelleBuilder.personhistorikkEktefelle = relaterteEktefeller.get(0)
+        }
+
+        Gitt<DataTable>("følgende barn i personhistorikk for ektefelle fra PDL") { dataTable: DataTable? ->
+            var barnTilEktefelle= domenespråkParser.mapDataTable(dataTable, BarnTilEktefelleMapper())
+            personhistorikkEktefelleBuilder.barn.addAll(barnTilEktefelle)
         }
 
         Gitt("følgende medlemsunntak fra MEDL") { dataTable: DataTable? ->
@@ -126,6 +144,16 @@ class RegelSteps : No {
             journalPosterFraJoArk = domenespråkParser.mapDataTable(dataTable, JournalpostMapper())
         }
 
+        Gitt<DataTable>("følgende arbeidsforhold til ektefelle fra AAReg") { dataTable: DataTable? ->
+            val arbeidsforholdEktefelle =  domenespråkParser.mapArbeidsforhold(dataTable)
+            dataOmEktefelleBuilder.arbeidsforholdEktefelle = arbeidsforholdEktefelle
+        }
+
+        Gitt("følgende arbeidsavtaler til ektefelle i arbeidsforholdet") { dataTable: DataTable? ->
+            arbeidsavtaleEktefelleMap[0] = domenespråkParser.mapDataTable(dataTable, ArbeidsavtaleMapper())
+            dataOmEktefelleBuilder.arbeidsforholdEktefelle.get(0).arbeidsavtaler = arbeidsavtaleEktefelleMap[0]!!
+        }
+
         Når("medlemskap beregnes med følgende parametre") { dataTable: DataTable? ->
             val medlemskapsparametre = domenespråkParser.mapDataTable(dataTable, MedlemskapsparametreMapper()).get(0)
 
@@ -137,46 +165,8 @@ class RegelSteps : No {
             val medlemskapsparametre = domenespråkParser.mapDataTable(dataTable, MedlemskapsparametreMapper()).get(0)
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
 
-            val reglerForLovvalg = ReglerForLovvalg.fraDatagrunnlag(datagrunnlag!!)
-            val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag!!)
-            val reglerForMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag!!)
-            val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag!!)
-            val reglerForGrunnforordningen = ReglerForGrunnforordningen.fraDatagrunnlag(datagrunnlag!!)
-
-            val regel = when (regelId!!) {
-                "OPPLYSNINGER" -> reglerForRegistrerteOpplysninger.harBrukerRegistrerteOpplysninger
-                "1.1" -> reglerForMedl.erPerioderAvklart
-                "1.2" -> reglerForMedl.periodeMedOgUtenMedlemskap
-                "1.3" -> reglerForMedl.periodeMedMedlemskap
-                "1.3.1" -> reglerForMedl.erPeriodeUtenMedlemskapInnenfor12MndPeriode
-                "1.3.2" -> reglerForMedl.erArbeidsforholdUendretForBrukerUtenMedlemskap
-                "1.4" -> reglerForMedl.erPeriodeMedMedlemskapInnenfor12MndPeriode
-                "1.5" -> reglerForMedl.erArbeidsforholdUendretForBrukerMedMedlemskap
-                "1.6" -> reglerForMedl.erDekningUavklart
-                "1.7" -> reglerForMedl.harBrukerDekningIMedl
-                "2" -> reglerForGrunnforordningen.erBrukerEØSborger
-                "3" -> reglerForArbeidsforhold.harBrukerSammenhengendeArbeidsforholdSiste12Mnd
-                "5" -> reglerForArbeidsforhold.harForetakMerEnn5Ansatte
-                "9" -> reglerForLovvalg.harBrukerJobbetUtenforNorge
-                "10" -> {
-                    ErBrukerBosattINorgeRegel.fraDatagrunnlag(datagrunnlag!!).regel
-                }
-                "11" -> reglerForLovvalg.harBrukerNorskStatsborgerskap
-                "11.2" -> reglerForLovvalg.harBrukerEktefelle
-                "11.2.1" -> reglerForLovvalg.harBrukerBarnUtenEktefelle
-                "11.2.2" -> reglerForLovvalg.harBrukerUtenEktefelleBarnSomErFolkeregistrert
-                "11.2.2.1" -> reglerForLovvalg.harBrukerUtenEktefelleOgBarnJobbetMerEnn100Prosent
-                "11.2.3" -> reglerForLovvalg.harBrukerMedFolkeregistrerteBarnJobbetMerEnn80Prosent
-                "11.3" -> reglerForLovvalg.harBrukerEktefelleOgBarn
-                "11.3.1" -> reglerForLovvalg.erBarnloesBrukersEktefelleBosattINorge
-                "11.3.1.1" -> reglerForLovvalg.harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn100Prosent
-                "11.4" -> reglerForLovvalg.erBrukerMedBarnSittEktefelleBosattINorge
-                "11.4.1" -> reglerForLovvalg.erBrukerUtenFolkeregistrertEktefelleSittBarnFolkeregistrert
-                "11.5" -> reglerForLovvalg.erBrukerMedFolkeregistrertEktefelleSittBarnFolkeregistrert
-                "11.6" -> reglerForLovvalg.harBrukerMedFolkeregistrerteRelasjonerJobbetMerEnn80Prosent
-                "12" -> reglerForLovvalg.harBrukerJobbet25ProsentEllerMer
-                else -> throw java.lang.RuntimeException("Ukjent regel")
-            }
+            val regelFactory = RegelFactory(datagrunnlag!!)
+            val regel = regelFactory.create(regelId!!)
 
             resultat = regel.utfør()
         }
@@ -230,7 +220,8 @@ class RegelSteps : No {
                 oppgaver = oppgaverFraGosys,
                 dokument = journalPosterFraJoArk,
                 ytelse = ytelse,
-                personHistorikkRelatertePersoner = personHistorikkRelatertePersoner
+                personHistorikkRelatertePersoner = personHistorikkRelatertePersoner,
+                dataOmEktefelle = dataOmEktefelleBuilder.build()
         )
     }
 
@@ -249,16 +240,4 @@ class RegelSteps : No {
                 }
     }
 
-    private fun evaluerGrunnforordningen(datagrunnlag: Datagrunnlag): Resultat {
-        val regelsett = ReglerForGrunnforordningen.fraDatagrunnlag(datagrunnlag)
-        return regelsett.kjørRegelflyt()
-    }
-
-    private fun evaluerReglerForMedlemsopplysninger(datagrunnlag: Datagrunnlag): Resultat {
-        val resultatListe = mutableListOf<Resultat>()
-        val regelsett = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
-        val resultat = regelsett.kjørRegelflyt(resultatListe)
-
-        return resultat
-    }
 }

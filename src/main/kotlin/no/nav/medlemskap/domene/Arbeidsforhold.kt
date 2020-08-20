@@ -8,7 +8,7 @@ data class Arbeidsforhold(
         val arbeidsgivertype: OpplysningspliktigArbeidsgiverType,
         val arbeidsgiver: Arbeidsgiver,
         val arbeidsfolholdstype: Arbeidsforholdstype,
-        val arbeidsavtaler: List<Arbeidsavtale>
+        var arbeidsavtaler: List<Arbeidsavtale>
 ) : Comparable<Arbeidsforhold> {
 
     /**

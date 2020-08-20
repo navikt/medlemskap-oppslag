@@ -5,7 +5,6 @@ import no.nav.medlemskap.domene.Kontrollperiode
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.regler.common.Funksjoner.finnesI
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.interval
 import no.nav.medlemskap.regler.common.lagInstantStartOfDay
@@ -27,11 +26,11 @@ object StatsborgerskapFunksjoner {
     fun List<Statsborgerskap>.registrerStatsborgerskapGrafana(kontrollPeriode: Kontrollperiode, ytelse: Ytelse, regelId: RegelId) =
             this.hentStatsborgerskapFor(kontrollPeriode.tom).forEach { statsborgerskapUavklartForRegel(it, ytelse, regelId).increment() }
 
-    fun sjekkStatsborgerskap(statsborgerskap: List<Statsborgerskap>, kontrollPeriodeForStatsborgerskap: Kontrollperiode, landkoder: Map<String, String>): Boolean {
+    fun sjekkStatsborgerskap(statsborgerskap: List<Statsborgerskap>, kontrollPeriodeForStatsborgerskap: Kontrollperiode, funk: (String) -> Boolean): Boolean {
         val førsteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedStartAvKontrollperiode(kontrollPeriodeForStatsborgerskap)
         val sisteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedSluttAvKontrollperiode(kontrollPeriodeForStatsborgerskap)
 
-        return landkoder finnesI førsteStatsborgerskap && landkoder finnesI sisteStatsborgerskap
+        return førsteStatsborgerskap.any { funk(it) }  && sisteStatsborgerskap.any { funk(it) }
     }
 }
 
