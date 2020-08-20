@@ -1,14 +1,13 @@
 package no.nav.medlemskap.common
 
-import io.ktor.application.ApplicationCall
-import io.ktor.application.call
-import io.ktor.client.features.ClientRequestException
-import io.ktor.client.features.ServerResponseException
+import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
+import io.ktor.application.*
+import io.ktor.client.features.*
 import io.ktor.features.BadRequestException
 import io.ktor.features.StatusPages
-import io.ktor.http.HttpStatusCode
-import io.ktor.request.uri
-import io.ktor.response.respond
+import io.ktor.http.*
+import io.ktor.request.*
+import io.ktor.response.*
 import mu.KotlinLogging
 import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
@@ -58,6 +57,12 @@ fun StatusPages.Configuration.exceptionHandler() {
     }
 
     exception<BadRequestException> { cause ->
+        call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
+            cause.message!!
+        }
+    }
+
+    exception<MissingKotlinParameterException> { cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
             cause.message!!
         }

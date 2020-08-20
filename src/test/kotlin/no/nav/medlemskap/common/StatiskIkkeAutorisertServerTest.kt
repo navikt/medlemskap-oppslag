@@ -14,8 +14,8 @@ import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.createHttpServer
 import no.nav.medlemskap.domene.*
-import org.junit.Test
 import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.YearMonth
@@ -80,13 +80,12 @@ class StatiskIkkeAutorisertServerTest {
     @Test
     fun `Request uten body får 400 respons`() {
         val faktiskResponse = RestAssured.given()
-                .body("")
+                .body(input)
                 .header(Header("Content-Type", "application/json"))
                 .post("/")
                 .then()
-                .statusCode(200)
+                .statusCode(400)
                 .extract().asString()
-
         println("Dette er responsen: $faktiskResponse")
     }
 
@@ -159,5 +158,30 @@ class StatiskIkkeAutorisertServerTest {
     private fun enAnnenDato() = LocalDate.of(2020, 8, 1)
     private fun etTidspunkt() = LocalDateTime.of(2020, 6, 20, 10, 0)
 
+    private val input = """
+        {
+            "fnr": "15076500565",
+            "periode": {
+                "fom": null,
+                "tom": "2019-12-31"
+            },
+            "brukerinput": {
+                "arbeidUtenforNorge": false
+            }
+        }
+""".trimIndent()
+
+    private val input0 = """
+        {
+            "fnr": "123456789",
+            "periode": {
+                "fom": "2019-01-01", 
+                "tom": "2019-12-31"
+            }, 
+        "brukerinput": {
+            "arbeidUtenforNorge": "Nei"
+        }
+}
+""".trimIndent()
 
 }
