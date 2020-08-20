@@ -7,7 +7,6 @@ import no.nav.medlemskap.regler.common.RegelId.*
 
 class RegelFactory(private val datagrunnlag: Datagrunnlag) {
     private val reglerForLovvalg = ReglerForLovvalg.fraDatagrunnlag(datagrunnlag)
-    private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
     private val reglerForMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag)
     private val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag)
 
@@ -22,7 +21,7 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
 
     fun create(regelId: RegelId) : Regel {
         return when(regelId) {
-            REGEL_OPPLYSNINGER -> reglerForRegistrerteOpplysninger.harBrukerRegistrerteOpplysninger
+            REGEL_OPPLYSNINGER -> HarBrukerRegistrerteOpplysningerRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_1_1 -> reglerForMedl.erPerioderAvklart
             REGEL_1_2 -> reglerForMedl.periodeMedOgUtenMedlemskap
             REGEL_1_3 -> reglerForMedl.periodeMedMedlemskap

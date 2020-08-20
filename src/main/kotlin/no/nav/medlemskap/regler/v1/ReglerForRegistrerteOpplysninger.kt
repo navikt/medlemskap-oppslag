@@ -1,72 +1,19 @@
 package no.nav.medlemskap.regler.v1
 
-import no.nav.medlemskap.common.medlCounter
-import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.common.RegelId.*
-import no.nav.medlemskap.regler.funksjoner.GsakFunksjoner.finnesAapneOppgaver
-import no.nav.medlemskap.regler.funksjoner.JoarkFunksjoner.finnesDokumenterMedTillatteTeamer
-import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.finnesPersonIMedlForKontrollPeriode
+import no.nav.medlemskap.regler.common.RegelId.REGEL_OPPLYSNINGER
 
 class ReglerForRegistrerteOpplysninger(
-        val medlemskap: List<Medlemskap> = emptyList(),
-        val oppgaver: List<Oppgave> = emptyList(),
-        val dokument: List<Journalpost> = emptyList(),
         ytelse: Ytelse,
-        val periode: InputPeriode,
-        val reglerForGrunnforordningen: ReglerForGrunnforordningen,
-        val reglerForMedl: ReglerForMedl
-) : Regler(ytelse) {
-
-    val harBrukerRegistrerteOpplysninger = Regel(
-            regelId = REGEL_OPPLYSNINGER,
-            ytelse = ytelse,
-            operasjon = { minstEnAvDisse(medl, joark, gsak) }
-    )
-
-    private val medl = Regel(
-            REGEL_A,
-            ytelse = ytelse,
-            operasjon = { sjekkPerioderIMedl() }
-    )
-
-    private val gsak = Regel(
-            regelId = REGEL_B,
-            ytelse = ytelse,
-            operasjon = { tellÅpneOppgaver() }
-    )
-
-    private val joark = Regel(
-            regelId = REGEL_C,
-            ytelse = ytelse,
-            operasjon = { tellDokumenter() }
-    )
-
-    private fun sjekkPerioderIMedl(): Resultat {
-        val kontrollPeriodeForMedl = Datohjelper(periode, ytelse).kontrollPeriodeForMedl()
-        if (medlemskap.isNotEmpty()) medlCounter().increment()
-        return when {
-            medlemskap finnesPersonIMedlForKontrollPeriode kontrollPeriodeForMedl -> ja()
-            else -> nei()
-        }
-    }
-
-    private fun tellDokumenter(): Resultat =
-            when {
-                dokument.finnesDokumenterMedTillatteTeamer() -> ja()
-                else -> nei()
-            }
-
-
-    fun tellÅpneOppgaver(): Resultat =
-            when {
-                oppgaver.finnesAapneOppgaver() -> ja()
-                else -> nei()
-            }
-
+        regelMap: Map<RegelId, Regel>,
+        private val reglerForMedl: ReglerForMedl,
+        private val reglerForGrunnforordningen: ReglerForGrunnforordningen
+) : Regler(ytelse, regelMap) {
     override fun hentRegelflyt(): Regelflyt {
         val harBrukerRegistrerteOpplysninger = lagRegelflyt(
-                regel = harBrukerRegistrerteOpplysninger,
+                regel = hentRegel(REGEL_OPPLYSNINGER),
                 hvisJa = reglerForMedl.hentRegelflyt(),
                 hvisNei = reglerForGrunnforordningen.hentRegelflyt(),
                 hvisUavklart = regelFlytUavklart(ytelse)
@@ -78,14 +25,22 @@ class ReglerForRegistrerteOpplysninger(
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForRegistrerteOpplysninger {
             return ReglerForRegistrerteOpplysninger(
-                    medlemskap = datagrunnlag.medlemskap,
-                    oppgaver = datagrunnlag.oppgaver,
-                    dokument = datagrunnlag.dokument,
                     ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode,
+                    regelMap = lagRegelMap(datagrunnlag),
                     reglerForGrunnforordningen = ReglerForGrunnforordningen.fraDatagrunnlag(datagrunnlag),
                     reglerForMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag)
             )
+        }
+
+        private fun lagRegelMap(datagrunnlag: Datagrunnlag): Map<RegelId, Regel> {
+            val regelListe = listOf(
+                    FinnesOpplysningerIGosysRegel.fraDatagrunnlag(datagrunnlag),
+                    FinnesOpplysningerIJoarkRegel.fraDatagrunnlag(datagrunnlag),
+                    FinnesOpplysningerIMedlRegel.fraDatagrunnlag(datagrunnlag),
+                    HarBrukerRegistrerteOpplysningerRegel.fraDatagrunnlag(datagrunnlag)
+            )
+
+            return regelListe.map { it.regelId to it.regel }.toMap()
         }
     }
 }

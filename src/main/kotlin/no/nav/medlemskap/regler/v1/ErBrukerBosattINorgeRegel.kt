@@ -1,9 +1,6 @@
 package no.nav.medlemskap.regler.v1
 
-import no.nav.medlemskap.domene.Adresse
-import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.InputPeriode
-import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Funksjoner.erTom

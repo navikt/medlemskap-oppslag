@@ -1,5 +1,6 @@
 package no.nav.medlemskap.regler.v1
 
+import no.nav.medlemskap.domene.Eøsland
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.domene.Ytelse

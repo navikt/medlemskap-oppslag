@@ -1,4 +1,4 @@
-package no.nav.medlemskap.regler.v1
+package no.nav.medlemskap.domene
 
 enum class Eøsland(val land: String) {
     BEL("BELGIA"),
