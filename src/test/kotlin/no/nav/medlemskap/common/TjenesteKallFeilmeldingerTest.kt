@@ -14,6 +14,9 @@ import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.createHttpServer
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
+import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
+import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
@@ -175,7 +178,8 @@ class TjenesteKallFeilmeldingerTest {
                 oppgaver = listOf(Oppgave(enDato(), Prioritet.NORM, Status.AAPNET, "Tema")),
                 dokument = listOf(Journalpost("Id", "Tittel", "Posttype", "Status", "Tema", listOf(Dokument("Id", "Tittel")))),
                 ytelse = ytelse,
-                personHistorikkRelatertePersoner = listOf(personhistorikkRelatertPerson())
+                personHistorikkRelatertePersoner = listOf(personhistorikkRelatertPerson()),
+                dataOmEktefelle = DataOmEktefelle(personhistorikkEktefelle(), listOf(arbeidsforhold()))
         )
     }
 
@@ -213,6 +217,12 @@ class TjenesteKallFeilmeldingerTest {
         )
     }
 
+    private fun personhistorikkEktefelle(): PersonhistorikkEktefelle {
+        return PersonhistorikkEktefelle(
+                ident = ektefelleFnr(),
+                barn = listOf(PersonhistorikkBarn(ident = barnFnr()))
+        )
+    }
 
     private fun folkeregistermetadata() = Folkeregistermetadata(etTidspunkt(), etTidspunkt(), etTidspunkt())
 
