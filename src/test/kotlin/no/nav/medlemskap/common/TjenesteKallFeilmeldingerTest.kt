@@ -160,8 +160,6 @@ class TjenesteKallFeilmeldingerTest {
                 .statusCode(400)
                 .extract().asString()
 
-        println("Dette er responsen: $faktiskResponse")
-
         val forventetResponse = """
             {
                 "url" : "/",
@@ -193,8 +191,6 @@ class TjenesteKallFeilmeldingerTest {
                 .then()
                 .statusCode(400)
                 .extract().asString()
-
-        println("Dette er responsen: $faktiskResponse")
 
         val forventetResponse = """
             {
@@ -229,8 +225,6 @@ class TjenesteKallFeilmeldingerTest {
                 .statusCode(400)
                 .extract().asString()
 
-        println("Dette er responsen: $faktiskResponse")
-
         val forventetResponse = """
             {
                 "url" : "/",
@@ -264,8 +258,6 @@ class TjenesteKallFeilmeldingerTest {
                 .statusCode(400)
                 .extract().asString()
 
-        println("Dette er responsen: $faktiskResponse")
-
         val forventetResponse = """
             {
                 "url" : "/",
@@ -298,8 +290,6 @@ class TjenesteKallFeilmeldingerTest {
                 .then()
                 .statusCode(400)
                 .extract().asString()
-
-        println("Dette er responsen: $faktiskResponse")
 
         val forventetResponse = """
             {
