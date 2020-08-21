@@ -4,10 +4,11 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.regler.common.Regel
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.RegelId.*
+import no.nav.medlemskap.regler.v1.arbeidsforhold.HarBrukerSammenhengendeArbeidsforholdRegel
+import no.nav.medlemskap.regler.v1.arbeidsforhold.HarForetaketMerEnn5AnsatteRegel
 
 class RegelFactory(private val datagrunnlag: Datagrunnlag) {
     private val reglerForLovvalg = ReglerForLovvalg.fraDatagrunnlag(datagrunnlag)
-    private val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag)
 
     fun create(regelIdentifikator: String) : Regel{
         val regelId = RegelId.fraRegelIdString(regelIdentifikator)
@@ -33,8 +34,8 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
 
             REGEL_2 -> ErBrukerEøsBorgerRegel.fraDatagrunnlag(datagrunnlag).regel
 
-            REGEL_3 -> reglerForArbeidsforhold.harBrukerSammenhengendeArbeidsforholdSiste12Mnd
-            REGEL_5 -> reglerForArbeidsforhold.harForetakMerEnn5Ansatte
+            REGEL_3 -> HarBrukerSammenhengendeArbeidsforholdRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_5 -> HarForetaketMerEnn5AnsatteRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_9 -> reglerForLovvalg.harBrukerJobbetUtenforNorge
 
             REGEL_10 -> ErBrukerBosattINorgeRegel.fraDatagrunnlag(datagrunnlag).regel
