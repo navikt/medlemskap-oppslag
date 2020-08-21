@@ -19,6 +19,10 @@ import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
+import org.skyscreamer.jsonassert.Customization
+import org.skyscreamer.jsonassert.JSONAssert
+import org.skyscreamer.jsonassert.JSONCompareMode
+import org.skyscreamer.jsonassert.comparator.CustomComparator
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.YearMonth
@@ -89,6 +93,28 @@ class TjenesteKallFeilmeldingerTest {
                 .then()
                 .statusCode(400)
                 .extract().asString()
+
+        val forventetResponse = """
+            {
+              "url" : "/",
+              "message" : "Instantiation of [simple type, class no.nav.medlemskap.domene.InputPeriode] value failed for JSON property fom due to missing (therefore NULL) value for creator parameter fom which is a non-nullable type\n at [Source: (InputStreamReader); line: 6, column: 5] (through reference chain: no.nav.medlemskap.domene.Request[\"periode\"]->no.nav.medlemskap.domene.InputPeriode[\"fom\"])",
+              "cause" : "com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException: Instantiation of [simple type, class no.nav.medlemskap.domene.InputPeriode] value failed for JSON property fom due to missing (therefore NULL) value for creator parameter fom which is a non-nullable type\n at [Source: (InputStreamReader); line: 6, column: 5] (through reference chain: no.nav.medlemskap.domene.Request[\"periode\"]->no.nav.medlemskap.domene.InputPeriode[\"fom\"])",
+              "code" : {
+                "value" : 400,
+                "description" : "Bad Request"
+              },
+              "callId" : { }
+            }
+        """.trimIndent()
+
+        JSONAssert.assertEquals(
+                forventetResponse, faktiskResponse,
+                CustomComparator(
+                        JSONCompareMode.STRICT,
+                        Customization("tidspunkt") { _, _ -> true }
+                )
+        )
+
     }
 
     @Test
@@ -100,6 +126,28 @@ class TjenesteKallFeilmeldingerTest {
                 .then()
                 .statusCode(400)
                 .extract().asString()
+
+        val forventetResponse = """
+            {
+              "url" : "/",
+              "message" : "No content to map due to end-of-input\n at [Source: (InputStreamReader); line: 1, column: 0]",
+              "cause" : "com.fasterxml.jackson.databind.exc.MismatchedInputException: No content to map due to end-of-input\n at [Source: (InputStreamReader); line: 1, column: 0]",
+              "code" : {
+                "value" : 400,
+                "description" : "Bad Request"
+              },
+              "callId" : { }
+            }
+        """.trimIndent()
+
+        JSONAssert.assertEquals(
+                forventetResponse, faktiskResponse,
+                CustomComparator(
+                        JSONCompareMode.STRICT,
+                        Customization("tidspunkt") { _, _ -> true }
+                )
+        )
+
     }
 
     @Test
@@ -111,6 +159,29 @@ class TjenesteKallFeilmeldingerTest {
                 .then()
                 .statusCode(400)
                 .extract().asString()
+
+        println("Dette er responsen: $faktiskResponse")
+
+        val forventetResponse = """
+            {
+                "url" : "/",
+                "message" : "Periode tom kan ikke være før periode fom",
+                "cause" : "io.ktor.features.BadRequestException: Periode tom kan ikke være før periode fom",
+                "code" : {
+                    "value" : 400,
+                    "description" : "Bad Request"
+                },
+                "callId" : { }
+            }
+        """.trimIndent()
+
+        JSONAssert.assertEquals(
+                forventetResponse, faktiskResponse,
+                CustomComparator(
+                        JSONCompareMode.STRICT,
+                        Customization("tidspunkt") { _, _ -> true }
+                )
+        )
     }
 
     @Test
@@ -122,6 +193,30 @@ class TjenesteKallFeilmeldingerTest {
                 .then()
                 .statusCode(400)
                 .extract().asString()
+
+        println("Dette er responsen: $faktiskResponse")
+
+        val forventetResponse = """
+            {
+                "url" : "/",
+                "message" : "Ugyldig fødselsnummer",
+                "cause" : "io.ktor.features.BadRequestException: Ugyldig fødselsnummer",
+                "code" : {
+                    "value" : 400,
+                    "description" : "Bad Request"
+                },
+                "callId" : { }
+            }
+        """.trimIndent()
+
+        JSONAssert.assertEquals(
+                forventetResponse, faktiskResponse,
+                CustomComparator(
+                        JSONCompareMode.STRICT,
+                        Customization("tidspunkt") { _, _ -> true }
+                )
+        )
+
     }
 
     @Test
@@ -133,6 +228,30 @@ class TjenesteKallFeilmeldingerTest {
                 .then()
                 .statusCode(400)
                 .extract().asString()
+
+        println("Dette er responsen: $faktiskResponse")
+
+        val forventetResponse = """
+            {
+                "url" : "/",
+                "message" : "Periode fom kan ikke være før 2016-01-01",
+                "cause" : "io.ktor.features.BadRequestException: Periode fom kan ikke være før 2016-01-01",
+                "code" : {
+                    "value" : 400,
+                    "description" : "Bad Request"
+                },
+                "callId" : { }
+            }
+        """.trimIndent()
+
+        JSONAssert.assertEquals(
+                forventetResponse, faktiskResponse,
+                CustomComparator(
+                        JSONCompareMode.STRICT,
+                        Customization("tidspunkt") { _, _ -> true }
+                )
+        )
+
     }
 
     @Test
@@ -144,6 +263,30 @@ class TjenesteKallFeilmeldingerTest {
                 .then()
                 .statusCode(400)
                 .extract().asString()
+
+        println("Dette er responsen: $faktiskResponse")
+
+        val forventetResponse = """
+            {
+                "url" : "/",
+                "message" : "Instantiation of [simple type, class no.nav.medlemskap.domene.Request] value failed for JSON property fnr due to missing (therefore NULL) value for creator parameter fnr which is a non-nullable type\n at [Source: (InputStreamReader); line: 10, column: 1] (through reference chain: no.nav.medlemskap.domene.Request[\"fnr\"])",
+                "cause" : "com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException: Instantiation of [simple type, class no.nav.medlemskap.domene.Request] value failed for JSON property fnr due to missing (therefore NULL) value for creator parameter fnr which is a non-nullable type\n at [Source: (InputStreamReader); line: 10, column: 1] (through reference chain: no.nav.medlemskap.domene.Request[\"fnr\"])",
+                "code" : {
+                    "value" : 400,
+                    "description" : "Bad Request"
+                },
+                "callId" : { }
+            }
+        """.trimIndent()
+
+        JSONAssert.assertEquals(
+                forventetResponse, faktiskResponse,
+                CustomComparator(
+                        JSONCompareMode.STRICT,
+                        Customization("tidspunkt") { _, _ -> true }
+                )
+        )
+
     }
 
     @Test
@@ -155,6 +298,30 @@ class TjenesteKallFeilmeldingerTest {
                 .then()
                 .statusCode(400)
                 .extract().asString()
+
+        println("Dette er responsen: $faktiskResponse")
+
+        val forventetResponse = """
+            {
+                "url" : "/",
+                "message" : "Instantiation of [simple type, class no.nav.medlemskap.domene.Request] value failed for JSON property fnr due to missing (therefore NULL) value for creator parameter fnr which is a non-nullable type\n at [Source: (InputStreamReader); line: 1, column: 14] (through reference chain: no.nav.medlemskap.domene.Request[\"fnr\"])",
+                "cause" : "com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException: Instantiation of [simple type, class no.nav.medlemskap.domene.Request] value failed for JSON property fnr due to missing (therefore NULL) value for creator parameter fnr which is a non-nullable type\n at [Source: (InputStreamReader); line: 1, column: 14] (through reference chain: no.nav.medlemskap.domene.Request[\"fnr\"])",
+                "code" : {
+                    "value" : 400,
+                    "description" : "Bad Request"
+                },
+                "callId" : { }
+            }
+        """.trimIndent()
+
+        JSONAssert.assertEquals(
+                forventetResponse, faktiskResponse,
+                CustomComparator(
+                        JSONCompareMode.STRICT,
+                        Customization("tidspunkt") { _, _ -> true }
+                )
+        )
+
     }
 
     suspend fun mockCreateDatagrunnlag(
