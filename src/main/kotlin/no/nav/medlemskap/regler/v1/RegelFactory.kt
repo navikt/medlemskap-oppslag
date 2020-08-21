@@ -7,7 +7,6 @@ import no.nav.medlemskap.regler.common.RegelId.*
 
 class RegelFactory(private val datagrunnlag: Datagrunnlag) {
     private val reglerForLovvalg = ReglerForLovvalg.fraDatagrunnlag(datagrunnlag)
-    private val reglerForMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag)
     private val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag)
 
     fun create(regelIdentifikator: String) : Regel{
@@ -22,15 +21,15 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
     fun create(regelId: RegelId) : Regel {
         return when(regelId) {
             REGEL_OPPLYSNINGER -> HarBrukerRegistrerteOpplysningerRegel.fraDatagrunnlag(datagrunnlag).regel
-            REGEL_1_1 -> reglerForMedl.erPerioderAvklart
-            REGEL_1_2 -> reglerForMedl.periodeMedOgUtenMedlemskap
-            REGEL_1_3 -> reglerForMedl.periodeMedMedlemskap
-            REGEL_1_3_1 -> reglerForMedl.erPeriodeUtenMedlemskapInnenfor12MndPeriode
-            REGEL_1_3_2 -> reglerForMedl.erArbeidsforholdUendretForBrukerUtenMedlemskap
-            REGEL_1_4 -> reglerForMedl.erPeriodeMedMedlemskapInnenfor12MndPeriode
-            REGEL_1_5 -> reglerForMedl.erArbeidsforholdUendretForBrukerMedMedlemskap
-            REGEL_1_6 -> reglerForMedl.erDekningUavklart
-            REGEL_1_7 -> reglerForMedl.harBrukerDekningIMedl
+            REGEL_1_1 -> ErPerioderAvklartRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_1_2 -> PeriodeMedOgUtenMedlemskapRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_1_3 -> PeriodeMedMedlemskapRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_1_3_1 -> ErPeriodeUtenMedlemskapInnenfor12MndPeriodeRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_1_3_2 -> ErArbeidsforholdUendretRegel.fraDatagrunnlag(datagrunnlag, REGEL_1_3_2).regel
+            REGEL_1_4 -> ErPeriodeMedMedlemskapInnenfor12MndPeriodeRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_1_5 -> ErArbeidsforholdUendretRegel.fraDatagrunnlag(datagrunnlag, REGEL_1_5).regel
+            REGEL_1_6 -> ErBrukersDekningUavklartRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_1_7 -> HarBrukerDekningIMedlRegel.fraDatagrunnlag(datagrunnlag).regel
 
             REGEL_2 -> ErBrukerEøsBorgerRegel.fraDatagrunnlag(datagrunnlag).regel
 
