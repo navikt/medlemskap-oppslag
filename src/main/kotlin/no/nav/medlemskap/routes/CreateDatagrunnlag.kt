@@ -38,7 +38,11 @@ suspend fun defaultCreateDatagrunnlag(
     val personhistorikkForFamilie = hentPersonhistorikkForFamilieAsync(personHistorikkFraPdl, services, periode)
 
     val fnrTilEktefelle = hentFnrTilEktefelle(personHistorikkFraPdl)
-    dataOmEktefelle = hentDataOmEktefelle(fnrTilEktefelle, services, callId, periode)
+    if(fnrTilEktefelle != null && gyldigFnr(fnrTilEktefelle)) {
+             dataOmEktefelle = hentDataOmEktefelle(fnrTilEktefelle, services, callId, periode)
+    } else {
+    dataOmEktefelle = null
+    }
 
     val historikkFraTps = historikkFraTpsRequest.await()
     val medlemskap = medlemskapsunntakRequest.await()
