@@ -20,7 +20,7 @@ abstract class Regler(val ytelse: Ytelse, val regelMap: Map<RegelId, Regel> = em
         return Regelflyt(regel = regel, ytelse = ytelse, hvisJa = hvisJa, hvisNei = hvisNei, hvisUavklart = hvisUavklart)
     }
 
-    protected fun hentRegel(regelId: RegelId): Regel {
+    fun hentRegel(regelId: RegelId): Regel {
         val regel = regelMap[regelId]
 
         return regel ?: throw RuntimeException("Fant ikke regel med regelId $regelId")
