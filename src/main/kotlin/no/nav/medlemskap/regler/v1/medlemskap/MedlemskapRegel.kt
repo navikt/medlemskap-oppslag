@@ -1,4 +1,4 @@
-package no.nav.medlemskap.regler.v1
+package no.nav.medlemskap.regler.v1.medlemskap
 
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Medlemskap
@@ -7,7 +7,7 @@ import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.erMedlemskapsperioderOver12Mnd
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.harGyldigeMedlemskapsperioder
 
-abstract class MedlemRegel(
+abstract class MedlemskapRegel(
         regelId: RegelId,
         ytelse: Ytelse,
         periode: InputPeriode,

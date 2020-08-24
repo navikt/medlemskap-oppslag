@@ -1,4 +1,4 @@
-package no.nav.medlemskap.regler.v1
+package no.nav.medlemskap.regler.v1.medlemskap
 
 import no.nav.medlemskap.common.regelUendretCounterMidlertidig
 import no.nav.medlemskap.domene.*
@@ -12,7 +12,7 @@ class ErArbeidsforholdUendretRegel(
         private val medlemskap: List<Medlemskap>,
         private val arbeidsforhold: List<Arbeidsforhold>,
         regelId: RegelId
-) : MedlemRegel(regelId, ytelse, periode, medlemskap) {
+) : MedlemskapRegel(regelId, ytelse, periode, medlemskap) {
     private val datohjelper = Datohjelper(periode, ytelse)
 
     override fun operasjon(): Resultat {

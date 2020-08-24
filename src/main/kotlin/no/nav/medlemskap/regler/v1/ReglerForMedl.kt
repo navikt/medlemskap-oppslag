@@ -4,6 +4,7 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.*
+import no.nav.medlemskap.regler.v1.medlemskap.*
 
 class ReglerForMedl(
         ytelse: Ytelse,

@@ -1,4 +1,4 @@
-package no.nav.medlemskap.regler.v1
+package no.nav.medlemskap.regler.v1.medlemskap
 
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
@@ -14,7 +14,7 @@ class ErPerioderAvklartRegel(
         ytelse: Ytelse,
         val medlemskap: List<Medlemskap>,
         val periode: InputPeriode
-) : MedlemRegel(RegelId.REGEL_1_1, ytelse, periode, medlemskap) {
+) : MedlemskapRegel(RegelId.REGEL_1_1, ytelse, periode, medlemskap) {
 
     override fun operasjon(): Resultat {
         return when {

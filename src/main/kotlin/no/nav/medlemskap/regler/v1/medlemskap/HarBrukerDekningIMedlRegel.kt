@@ -1,4 +1,4 @@
-package no.nav.medlemskap.regler.v1
+package no.nav.medlemskap.regler.v1.medlemskap
 
 import no.nav.medlemskap.common.dekningCounter
 import no.nav.medlemskap.domene.*
@@ -14,7 +14,7 @@ class HarBrukerDekningIMedlRegel(
         ytelse: Ytelse,
         private val periode: InputPeriode,
         private val medlemskap: List<Medlemskap>
-) : MedlemRegel(RegelId.REGEL_1_7, ytelse, periode, medlemskap) {
+) : MedlemskapRegel(RegelId.REGEL_1_7, ytelse, periode, medlemskap) {
 
     override fun operasjon(): Resultat {
         val dekning = medlemskap gjeldendeDekning kontrollPeriodeForMedl
