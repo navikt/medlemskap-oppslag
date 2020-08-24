@@ -6,9 +6,9 @@ import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.v1.arbeidsforhold.HarBrukerSammenhengendeArbeidsforholdRegel
 import no.nav.medlemskap.regler.v1.arbeidsforhold.HarForetaketMerEnn5AnsatteRegel
+import no.nav.medlemskap.regler.v1.lovvalg.*
 
 class RegelFactory(private val datagrunnlag: Datagrunnlag) {
-    private val reglerForLovvalg = ReglerForLovvalg.fraDatagrunnlag(datagrunnlag)
 
     fun create(regelIdentifikator: String) : Regel{
         val regelId = RegelId.fraRegelIdString(regelIdentifikator)
@@ -36,25 +36,25 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
 
             REGEL_3 -> HarBrukerSammenhengendeArbeidsforholdRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_5 -> HarForetaketMerEnn5AnsatteRegel.fraDatagrunnlag(datagrunnlag).regel
-            REGEL_9 -> reglerForLovvalg.harBrukerJobbetUtenforNorge
+            REGEL_9 -> HarBrukerJobbetUtenforNorgeRegel.fraDatagrunnlag(datagrunnlag).regel
 
             REGEL_10 -> ErBrukerBosattINorgeRegel.fraDatagrunnlag(datagrunnlag).regel
 
-            REGEL_11 -> reglerForLovvalg.harBrukerNorskStatsborgerskap
-            REGEL_11_2 -> reglerForLovvalg.harBrukerEktefelle
-            REGEL_11_2_1 -> reglerForLovvalg.harBrukerBarnUtenEktefelle
-            REGEL_11_2_2 -> reglerForLovvalg.harBrukerUtenEktefelleBarnSomErFolkeregistrert
-            REGEL_11_2_2_1 -> reglerForLovvalg.harBrukerUtenEktefelleOgBarnJobbetMerEnn100Prosent
-            REGEL_11_2_3 -> reglerForLovvalg.harBrukerMedFolkeregistrerteBarnJobbetMerEnn80Prosent
-            REGEL_11_3 -> reglerForLovvalg.harBrukerEktefelleOgBarn
-            REGEL_11_3_1 -> reglerForLovvalg.erBarnloesBrukersEktefelleBosattINorge
-            REGEL_11_3_1_1 -> reglerForLovvalg.harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn100Prosent
-            REGEL_11_4 -> reglerForLovvalg.erBrukerMedBarnSittEktefelleBosattINorge
-            REGEL_11_4_1 -> reglerForLovvalg.erBrukerUtenFolkeregistrertEktefelleSittBarnFolkeregistrert
-            REGEL_11_5 -> reglerForLovvalg.erBrukerMedFolkeregistrertEktefelleSittBarnFolkeregistrert
-            REGEL_11_6 -> reglerForLovvalg.harBrukerMedFolkeregistrerteRelasjonerJobbetMerEnn80Prosent
-            REGEL_11_6_1 -> reglerForLovvalg.harBrukersEktefelleJobbetMinst100ProsentSiste12Mnd
-            REGEL_12 -> reglerForLovvalg.harBrukerJobbet25ProsentEllerMer
+            REGEL_11 -> HarBrukerNorskStatsborgerskapRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_11_2 -> HarBrukerEktefelleRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_11_2_1 -> HarBrukerBarnRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_1).regel
+            REGEL_11_2_2 -> HarBrukerBarnSomErFolkeregistrertRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_2).regel
+            REGEL_11_2_2_1 -> HarBrukerJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_2_1).regel
+            REGEL_11_2_3 -> HarBrukerJobbet80ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_3).regel
+            REGEL_11_3 -> HarBrukerBarnRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_3).regel
+            REGEL_11_3_1 -> ErBrukersEktefelleBosattINorgeRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_3_1).regel
+            REGEL_11_3_1_1 -> HarBrukerJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_3_1_1).regel
+            REGEL_11_4 -> ErBrukersEktefelleBosattINorgeRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_4).regel
+            REGEL_11_4_1 -> HarBrukerBarnSomErFolkeregistrertRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_4_1).regel
+            REGEL_11_5 -> HarBrukerBarnSomErFolkeregistrertRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_5).regel
+            REGEL_11_6 -> HarBrukerJobbet80ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_6).regel
+            REGEL_11_6_1 -> HarBrukersEktefelleJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_12 -> HarBrukerJobbet25ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag).regel
 
             else -> throw java.lang.RuntimeException("Ukjent regel")
         }
