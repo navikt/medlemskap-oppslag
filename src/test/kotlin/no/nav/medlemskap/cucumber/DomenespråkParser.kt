@@ -3,8 +3,6 @@ package no.nav.medlemskap.cucumber
 import io.cucumber.datatable.DataTable
 import no.nav.medlemskap.cucumber.Domenebegrep.*
 import no.nav.medlemskap.cucumber.DomenespråkParser.Companion.VANLIG_NORSK_ARBEIDSGIVER
-import no.nav.medlemskap.cucumber.steps.DataOmEktefelleBuilder
-import no.nav.medlemskap.cucumber.steps.PersonhistorikkEktefelleBuilder
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle

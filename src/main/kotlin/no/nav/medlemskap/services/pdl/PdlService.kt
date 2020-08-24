@@ -7,8 +7,8 @@ import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Personhistorikk
-import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.domene.Statsborgerskap
+import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 
 class PdlService(private val pdlClient: PdlClient, private val clusterName: String = "dev-fss") {
 

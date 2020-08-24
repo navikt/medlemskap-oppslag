@@ -1,6 +1,5 @@
 package no.nav.medlemskap.domene.ektefelle
 
-import no.nav.medlemskap.domene.Arbeidsforhold
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 
 data class PersonhistorikkEktefelle(

@@ -1,7 +1,10 @@
 package no.nav.medlemskap.regler.funksjoner
 
 import no.bekk.bekkopen.person.FodselsnummerValidator
-import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Familierelasjon
+import no.nav.medlemskap.domene.Familierelasjonsrolle
+import no.nav.medlemskap.domene.PersonhistorikkRelatertPerson
+import no.nav.medlemskap.domene.Sivilstand
 import java.time.LocalDate
 import java.util.*
 

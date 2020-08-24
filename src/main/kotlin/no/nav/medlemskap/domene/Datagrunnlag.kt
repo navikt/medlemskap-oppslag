@@ -1,7 +1,6 @@
 package no.nav.medlemskap.domene
 
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
-import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import java.time.LocalDate
 
 data class Datagrunnlag(

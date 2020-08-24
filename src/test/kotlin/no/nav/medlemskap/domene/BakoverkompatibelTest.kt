@@ -1,6 +1,6 @@
 package no.nav.medlemskap.domene
 
-import io.ktor.server.engine.ApplicationEngine
+import io.ktor.server.engine.*
 import io.restassured.RestAssured
 import io.restassured.RestAssured.given
 import io.restassured.config.ObjectMapperConfig
