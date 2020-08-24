@@ -1,5 +1,6 @@
 package no.nav.medlemskap.routes
 
+import io.ktor.features.BadRequestException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
@@ -37,8 +38,13 @@ suspend fun defaultCreateDatagrunnlag(
     val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktorIder, callId) }
     val personhistorikkForFamilie = hentPersonhistorikkForFamilieAsync(personHistorikkFraPdl, services, periode)
 
+
     val fnrTilEktefelle = hentFnrTilEktefelle(personHistorikkFraPdl)
-    dataOmEktefelle = hentDataOmEktefelle(fnrTilEktefelle, services, callId, periode)
+    if(fnrTilEktefelle != null && gyldigFnr(fnrTilEktefelle)) {
+        dataOmEktefelle = hentDataOmEktefelle(fnrTilEktefelle, services, callId, periode)
+    }else {
+        dataOmEktefelle = null
+    }
 
     val historikkFraTps = historikkFraTpsRequest.await()
     val medlemskap = medlemskapsunntakRequest.await()
