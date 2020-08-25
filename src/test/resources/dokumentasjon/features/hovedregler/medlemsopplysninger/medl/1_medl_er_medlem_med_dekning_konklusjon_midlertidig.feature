@@ -22,13 +22,13 @@ Egenskap: Regel 1 konklusjon for brukere med medlemskap: Er det dekning for gjel
     Eksempler:
       | Dekning           | Ytelse           | harDekning | medlemskap |
       | FTL_2-6           | SYKEPENGER       | Ja         | Ja         |
-      | FTL_2-6           | ENSLIG_FORSORGER | Nei        | Uavklart   |
-      | FTL_2-6           | DAGPENGER        | Nei        | Uavklart   |
-      | FTL_2-7a_2_ledd_a | ENSLIG_FORSORGER | Ja         | Ja         |
-      | FTL_2-7a_2_ledd_a | DAGPENGER        | Ja         | Ja         |
-      | FTL_2-9_1_ledd_a  | SYKEPENGER       | Nei        | Uavklart   |
-      | FTL_2-9_1_ledd_a  | DAGPENGER        | Nei        | Uavklart   |
-      | FTL_2-9_1_ledd_a  | ENSLIG_FORSORGER | Nei        | Uavklart   |
+#      | FTL_2-6           | ENSLIG_FORSORGER | Nei        | Uavklart   |
+#      | FTL_2-6           | DAGPENGER        | Nei        | Uavklart   |
+#      | FTL_2-7a_2_ledd_a | ENSLIG_FORSORGER | Ja         | Ja         |
+#      | FTL_2-7a_2_ledd_a | DAGPENGER        | Ja         | Ja         |
+#      | FTL_2-9_1_ledd_a  | SYKEPENGER       | Nei        | Uavklart   |
+#      | FTL_2-9_1_ledd_a  | DAGPENGER        | Nei        | Uavklart   |
+#      | FTL_2-9_1_ledd_a  | ENSLIG_FORSORGER | Nei        | Uavklart   |
 
   Scenariomal: Regel 1 konklusjon for brukere med medlemskap: Er det dekning for gjeldende ytelse med flere perioder?
 

@@ -96,23 +96,54 @@ fun neiKonklusjon(ytelse: Ytelse) = Regel(
         operasjon = { nei("Bruker er ikke medlem") }
 )
 
+fun regelflytUavklartKonklusjon(ytelse: Ytelse) = Regel(
+        regelId = RegelId.REGEL_FLYT_KONKLUSJON,
+        ytelse = ytelse,
+        operasjon = { uavklart("Kan ikke konkludere med medlemskap") }
+)
 
-fun regelFlytJa(ytelse: Ytelse): Regelflyt {
+fun regelflytJaKonklusjon(ytelse: Ytelse) = Regel(
+        regelId = RegelId.REGEL_FLYT_KONKLUSJON,
+        ytelse = ytelse,
+        operasjon = { ja("Bruker er medlem") }
+)
+
+fun regelflytNeiKonklusjon(ytelse: Ytelse) = Regel(
+        regelId = RegelId.REGEL_FLYT_KONKLUSJON,
+        ytelse = ytelse,
+        operasjon = { nei("Bruker er ikke medlem") }
+)
+
+
+
+
+fun konklusjonJa(ytelse: Ytelse): Regelflyt {
     return Regelflyt(jaKonklusjon(ytelse), ytelse)
 }
 
-fun regelFlytNei(ytelse: Ytelse): Regelflyt {
+fun konklusjonNei(ytelse: Ytelse): Regelflyt {
     return Regelflyt(neiKonklusjon(ytelse), ytelse)
 }
 
-fun regelFlytUavklart(ytelse: Ytelse): Regelflyt {
+fun konklusjonUavklart(ytelse: Ytelse): Regelflyt {
     return Regelflyt(uavklartKonklusjon(ytelse), ytelse)
 }
 
+fun regelflytJa(ytelse: Ytelse): Regelflyt {
+    return Regelflyt(regelflytJaKonklusjon(ytelse), ytelse)
+}
+
+fun regelflytNei(ytelse: Ytelse): Regelflyt {
+    return Regelflyt(regelflytNeiKonklusjon(ytelse), ytelse)
+}
+
+fun regelflytUavklart(ytelse: Ytelse): Regelflyt {
+    return Regelflyt(regelflytUavklartKonklusjon(ytelse), ytelse)
+}
 
 
 private fun List<Resultat>.hentUtKonklusjon(): Resultat {
-    return this.find { it.regelId == RegelId.REGEL_MEDLEM_KONKLUSJON }
+    return this.find { it.regelId == RegelId.REGEL_MEDLEM_KONKLUSJON || it.regelId == RegelId.REGEL_FLYT_KONKLUSJON }
             ?: throw RuntimeException("Klarte ikke finne konklusjon")
 }
 

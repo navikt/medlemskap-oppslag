@@ -40,7 +40,8 @@ enum class RegelId(val identifikator: String, val avklaring: String) {
     REGEL_A("OPPLYSNINGER-MEDL", "Finnes det registrerte opplysninger i MEDL?"),
     REGEL_B("OPPLYSNINGER-GOSYS", "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?"),
     REGEL_C("OPPLYSNINGER-JOARK", "Finnes det dokumenter i JOARK på medlemskapsområdet?"),
-    REGEL_MEDLEM_KONKLUSJON("LOVME", "Er bruker medlem?")
+    REGEL_MEDLEM_KONKLUSJON("LOVME", "Er bruker medlem?"),
+    REGEL_FLYT_KONKLUSJON("RFK", "Svar på regelflyt")
     ;
 
     companion object {

@@ -16,14 +16,14 @@ class ReglerForLovvalg(
     override fun hentRegelflyt(): Regelflyt {
         val harBrukerMedFolkeregistrerteBarnJobbetMerEnn80ProsentFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_11_2_3),
-                hvisJa = regelFlytJa(ytelse),
-                hvisNei = regelFlytUavklart(ytelse)
+                hvisJa = konklusjonJa(ytelse),
+                hvisNei = konklusjonUavklart(ytelse)
         )
 
         val harBrukerJobbetMerEnn100ProsentFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_11_2_2_1),
-                hvisJa = regelFlytJa(ytelse),
-                hvisNei = regelFlytUavklart(ytelse)
+                hvisJa = konklusjonJa(ytelse),
+                hvisNei = konklusjonUavklart(ytelse)
         )
 
         val harBrukerUtenEktefelleBarnSomErFolkeregistrertFlyt = lagRegelflyt(
@@ -40,19 +40,19 @@ class ReglerForLovvalg(
 
         val harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn100ProsentFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_11_3_1_1),
-                hvisJa = regelFlytJa(ytelse),
-                hvisNei = regelFlytUavklart(ytelse)
+                hvisJa = konklusjonJa(ytelse),
+                hvisNei = konklusjonUavklart(ytelse)
         )
 
         val harBrukersEktefelleJobbetMinst100ProsentSiste12MndFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_11_6_1),
-                hvisJa = regelFlytJa(ytelse),
-                hvisNei = regelFlytUavklart(ytelse)
+                hvisJa = konklusjonJa(ytelse),
+                hvisNei = konklusjonUavklart(ytelse)
         )
 
         val harBrukerJobbetMerEnn80ProsentFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_11_6),
-                hvisJa = regelFlytJa(ytelse),
+                hvisJa = konklusjonJa(ytelse),
                 hvisNei = harBrukersEktefelleJobbetMinst100ProsentSiste12MndFlyt
         )
 
@@ -64,7 +64,7 @@ class ReglerForLovvalg(
 
         val erBrukersEktefelleOgBarnasMorSammePersonFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_11_5_1),
-                hvisJa = regelFlytUavklart(ytelse),
+                hvisJa = konklusjonUavklart(ytelse),
                 hvisNei = harBrukerJobbetMerEnn100ProsentFlyt
         )
 
@@ -78,7 +78,7 @@ class ReglerForLovvalg(
         val erBrukerMedFolkeregistrertEktefelleSittBarnFolkeregistrertFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_11_5),
                 hvisJa = harBrukerJobbetMerEnn80ProsentFlyt,
-                hvisNei = regelFlytUavklart(ytelse)
+                hvisNei = konklusjonUavklart(ytelse)
         )
 
         val erBrukerMedBarnSittEktefelleBosattINorgeFlyt = lagRegelflyt(
@@ -101,8 +101,8 @@ class ReglerForLovvalg(
 
         val harBrukerJobbet25ProsentEllerMerFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_12),
-                hvisJa = regelFlytJa(ytelse),
-                hvisNei = regelFlytUavklart(ytelse)
+                hvisJa = konklusjonJa(ytelse),
+                hvisNei = konklusjonUavklart(ytelse)
         )
 
         val harBrukerNorskStatsborgerskapFlyt = lagRegelflyt(
@@ -114,12 +114,12 @@ class ReglerForLovvalg(
         val erBrukerBosattINorgeFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_10),
                 hvisJa = harBrukerNorskStatsborgerskapFlyt,
-                hvisNei = regelFlytUavklart(ytelse)
+                hvisNei = konklusjonUavklart(ytelse)
         )
 
         val harBrukerJobbetUtenforNorgeFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_9),
-                hvisJa = regelFlytNei(ytelse),
+                hvisJa = konklusjonNei(ytelse),
                 hvisNei = erBrukerBosattINorgeFlyt
         )
 

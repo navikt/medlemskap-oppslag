@@ -3,12 +3,12 @@ package no.nav.medlemskap.regler.common
 import no.nav.medlemskap.domene.Ytelse
 
 abstract class Regler(val ytelse: Ytelse, val regelMap: Map<RegelId, Regel> = emptyMap()) {
-    private val resultatliste: MutableList<Resultat> = mutableListOf()
+    private val resultater: MutableList<Resultat> = mutableListOf()
 
     abstract fun hentRegelflyt(): Regelflyt
 
     fun kjørRegelflyt(): Resultat {
-        return hentRegelflyt().utfør(resultatliste)
+        return hentRegelflyt().utfør(resultater)
     }
 
     fun kjørRegelflyt(resultatliste: MutableList<Resultat>): Resultat {
@@ -16,7 +16,7 @@ abstract class Regler(val ytelse: Ytelse, val regelMap: Map<RegelId, Regel> = em
     }
 
 
-    protected fun lagRegelflyt(regel: Regel, hvisJa: Regelflyt? = null, hvisNei: Regelflyt? = null, hvisUavklart: Regelflyt = regelFlytUavklart(ytelse)): Regelflyt {
+    protected fun lagRegelflyt(regel: Regel, hvisJa: Regelflyt? = null, hvisNei: Regelflyt? = null, hvisUavklart: Regelflyt = konklusjonUavklart(ytelse)): Regelflyt {
         return Regelflyt(regel = regel, ytelse = ytelse, hvisJa = hvisJa, hvisNei = hvisNei, hvisUavklart = hvisUavklart)
     }
 

@@ -9,24 +9,21 @@ import no.nav.medlemskap.regler.v1.registrerteOpplysninger.*
 class ReglerForRegistrerteOpplysninger(
         ytelse: Ytelse,
         regelMap: Map<RegelId, Regel>,
-        private val reglerForMedl: ReglerForMedl,
-        private val reglerForArbeidsforhold: ReglerForArbeidsforhold
+        private val reglerForMedl: ReglerForMedl
 ) : Regler(ytelse, regelMap) {
     override fun hentRegelflyt(): Regelflyt {
         val erBrukerEØSborgerFlyt = lagRegelflyt(
                 regel = hentRegel(RegelId.REGEL_2),
-                hvisJa = reglerForArbeidsforhold.hentRegelflyt(),
-                hvisNei = regelFlytUavklart(ytelse)
+                hvisJa = regelflytJa(ytelse),
+                hvisNei = konklusjonUavklart(ytelse)
         )
 
         val harBrukerRegistrerteOpplysningerFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_OPPLYSNINGER),
                 hvisJa = reglerForMedl.hentRegelflyt(),
                 hvisNei = erBrukerEØSborgerFlyt,
-                hvisUavklart = regelFlytUavklart(ytelse)
+                hvisUavklart = konklusjonUavklart(ytelse)
         )
-
-
 
         return harBrukerRegistrerteOpplysningerFlyt
     }
@@ -36,7 +33,6 @@ class ReglerForRegistrerteOpplysninger(
             return ReglerForRegistrerteOpplysninger(
                     ytelse = datagrunnlag.ytelse,
                     regelMap = lagRegelMap(datagrunnlag),
-                    reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag),
                     reglerForMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag)
             )
         }

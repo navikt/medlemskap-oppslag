@@ -8,21 +8,20 @@ import no.nav.medlemskap.regler.v1.arbeidsforhold.*
 
 class ReglerForArbeidsforhold(
         ytelse: Ytelse,
-        val reglerForLovvalg: ReglerForLovvalg,
         regelMap: Map<RegelId, Regel>
 ) : Regler(ytelse, regelMap) {
 
     override fun hentRegelflyt(): Regelflyt {
         val jobberBrukerPaaNorskSkipFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_7_1),
-                hvisJa = reglerForLovvalg.hentRegelflyt(),
-                hvisNei = regelFlytUavklart(ytelse)
+                hvisJa = regelflytJa(ytelse),
+                hvisNei = konklusjonUavklart(ytelse)
         )
 
         val erBrukerPilotEllerKabinansattFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_8),
-                hvisJa = regelFlytUavklart(ytelse),
-                hvisNei = reglerForLovvalg.hentRegelflyt()
+                hvisJa = konklusjonUavklart(ytelse),
+                hvisNei = regelflytJa(ytelse)
         )
 
         val erArbeidsforholdetMaritimtFlyt = lagRegelflyt(
@@ -34,25 +33,25 @@ class ReglerForArbeidsforhold(
         val erForetakAktivtFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_6),
                 hvisJa = erArbeidsforholdetMaritimtFlyt,
-                hvisNei = regelFlytUavklart(ytelse)
+                hvisNei = konklusjonUavklart(ytelse)
         )
 
         val harForetakMerEnn5AnsatteFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_5),
                 hvisJa = erForetakAktivtFlyt,
-                hvisNei = regelFlytUavklart(ytelse)
+                hvisNei = konklusjonUavklart(ytelse)
         )
 
         val erArbeidsgiverOrganisasjonFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_4),
                 hvisJa = harForetakMerEnn5AnsatteFlyt,
-                hvisNei = regelFlytUavklart(ytelse)
+                hvisNei = konklusjonUavklart(ytelse)
         )
 
         val harBrukerSammenhengendeArbeidsforholdSiste12MndFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_3),
                 hvisJa = erArbeidsgiverOrganisasjonFlyt,
-                hvisNei = regelFlytUavklart(ytelse)
+                hvisNei = konklusjonUavklart(ytelse)
         )
 
         return harBrukerSammenhengendeArbeidsforholdSiste12MndFlyt
@@ -61,11 +60,8 @@ class ReglerForArbeidsforhold(
 
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForArbeidsforhold {
-            val reglerForLovvalg = ReglerForLovvalg.fraDatagrunnlag(datagrunnlag)
-
             return ReglerForArbeidsforhold(
                     ytelse = datagrunnlag.ytelse,
-                    reglerForLovvalg = reglerForLovvalg,
                     regelMap = lagRegelMap(datagrunnlag)
             )
         }

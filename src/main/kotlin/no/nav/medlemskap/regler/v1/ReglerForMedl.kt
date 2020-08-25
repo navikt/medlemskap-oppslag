@@ -14,38 +14,38 @@ class ReglerForMedl(
     override fun hentRegelflyt(): Regelflyt {
         val harBrukerDekningIMedlFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_1_7),
-                hvisJa = regelFlytJa(ytelse),
-                hvisNei = regelFlytUavklart(ytelse)
+                hvisJa = konklusjonJa(ytelse),
+                hvisNei = konklusjonUavklart(ytelse)
         )
 
         val erDekningUavklartFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_1_6),
-                hvisJa = regelFlytUavklart(ytelse),
+                hvisJa = konklusjonUavklart(ytelse),
                 hvisNei = harBrukerDekningIMedlFlyt
         )
 
         val erArbeidsforholdUendretForBrukerMedMedlemskapFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_1_5),
                 hvisJa = erDekningUavklartFlyt,
-                hvisNei = regelFlytUavklart(ytelse)
+                hvisNei = konklusjonUavklart(ytelse)
         )
 
         val erPeriodeMedMedlemskapInnenfor12MndPeriodeFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_1_4),
                 hvisJa = erArbeidsforholdUendretForBrukerMedMedlemskapFlyt,
-                hvisNei = regelFlytUavklart(ytelse)
+                hvisNei = konklusjonUavklart(ytelse)
         )
 
         val erArbeidsforholdUendretForBrukerUtenMedlemskapFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_1_3_2),
-                hvisJa = regelFlytUavklart(ytelse),
-                hvisNei = regelFlytUavklart(ytelse)
+                hvisJa = konklusjonUavklart(ytelse),
+                hvisNei = konklusjonUavklart(ytelse)
         )
 
         val erPeriodeUtenMedlemskapInnenfor12MndPeriodeFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_1_3_1),
                 hvisJa = erArbeidsforholdUendretForBrukerUtenMedlemskapFlyt,
-                hvisNei = regelFlytUavklart(ytelse)
+                hvisNei = konklusjonUavklart(ytelse)
         )
 
         val periodeMedMedlemskapFlyt = lagRegelflyt(
@@ -56,14 +56,14 @@ class ReglerForMedl(
 
         val periodeMedOgUtenMedlemskapFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_1_2),
-                hvisJa = regelFlytUavklart(ytelse),
+                hvisJa = konklusjonUavklart(ytelse),
                 hvisNei = periodeMedMedlemskapFlyt
         )
 
         val erPerioderAvklartFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_1_1),
                 hvisJa = periodeMedOgUtenMedlemskapFlyt,
-                hvisNei = regelFlytUavklart(ytelse)
+                hvisNei = konklusjonUavklart(ytelse)
         )
 
         return erPerioderAvklartFlyt
