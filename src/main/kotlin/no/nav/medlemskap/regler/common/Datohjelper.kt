@@ -22,6 +22,7 @@ class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
             Ytelse.DAGPENGER -> defaultDagpengePeriode()
             Ytelse.ENSLIG_FORSORGER -> defaultEnsligForsørgerPeriode()
             Ytelse.LOVME -> defaultPeriode()
+            Ytelse.LOVME_FUNKSJONELLE_TESTER -> defaultPeriode()
         }
     }
 
@@ -34,6 +35,7 @@ class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
             Ytelse.DAGPENGER -> defaultDagpengePeriode()
             Ytelse.ENSLIG_FORSORGER -> defaultEnsligForsørgerPeriode()
             Ytelse.LOVME -> defaultPeriode()
+            Ytelse.LOVME_FUNKSJONELLE_TESTER -> defaultPeriode()
         }
     }
 
@@ -51,6 +53,7 @@ class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
             Ytelse.DAGPENGER -> førsteDagpengedag()
             Ytelse.ENSLIG_FORSORGER -> førsteEnsligForsørgerdag()
             Ytelse.LOVME -> periode.fom.minusDays(1)
+            Ytelse.LOVME_FUNKSJONELLE_TESTER -> periode.fom.minusDays(1)
         }
     }
 
@@ -63,6 +66,7 @@ class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
             Ytelse.DAGPENGER -> defaultDagpengePeriode()
             Ytelse.ENSLIG_FORSORGER -> defaultEnsligForsørgerPeriode()
             Ytelse.LOVME -> defaultPeriode()
+            Ytelse.LOVME_FUNKSJONELLE_TESTER -> defaultPeriode()
         }
     }
 
