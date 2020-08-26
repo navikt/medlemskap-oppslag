@@ -17,4 +17,11 @@ data class Resultat(
         return regelId == RegelId.REGEL_MEDLEM_KONKLUSJON
     }
 
+    fun erRegelflytKonklusjon(): Boolean {
+        return regelId == RegelId.REGEL_FLYT_KONKLUSJON
+    }
+
+    fun erKonklusjon(): Boolean {
+        return erMedlemskonklusjon() || erRegelflytKonklusjon()
+    }
 }
