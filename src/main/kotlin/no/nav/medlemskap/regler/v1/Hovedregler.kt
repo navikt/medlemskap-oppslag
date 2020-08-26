@@ -2,11 +2,11 @@ package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.regler.common.Regler
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Svar.NEI
 import no.nav.medlemskap.regler.common.neiKonklusjon
 import no.nav.medlemskap.regler.common.uavklartKonklusjon
+import no.nav.medlemskap.regler.common.utenKonklusjon
 
 class Hovedregler(datagrunnlag: Datagrunnlag) {
     private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
@@ -21,12 +21,13 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
                 reglerForRegistrerteOpplysninger,
                 reglerForArbeidsforhold,
                 reglerForLovvalg
-        ).map { kjørRegelflyt(it) }
+        ).map { it.kjørRegelflyt() }
 
         val resultat = utledResultat(ytelse, resultater)
 
         return resultat
     }
+
 
     private fun utledResultat(ytelse: Ytelse, resultater: List<Resultat>): Resultat {
         val medlemskonklusjon = resultater.find { it.erMedlemskonklusjon() }
@@ -42,13 +43,7 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
         return uavklartResultat(ytelse).copy(delresultat = resultater.flatMap { it.delresultat }.utenKonklusjon())
     }
 
-    fun kjørRegelflyt(regler: Regler): Resultat {
-        val resultatliste: MutableList<Resultat> = mutableListOf()
-        regler.kjørRegelflyt(resultatliste)
 
-        val konklusjon = resultatliste.hentUtKonklusjon()
-        return konklusjon.copy(delresultat = resultatliste.utenKonklusjon())
-    }
 
     private fun uavklartResultat(ytelse: Ytelse): Resultat {
         return uavklartKonklusjon(ytelse).utfør()
@@ -58,13 +53,5 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
         return neiKonklusjon(ytelse).utfør()
     }
 
-    private fun List<Resultat>.utenKonklusjon(): List<Resultat> {
-        return this.filterNot { it.erKonklusjon() }
-    }
-
-    private fun List<Resultat>.hentUtKonklusjon(): Resultat {
-        return this.find { it.erKonklusjon() }
-                ?: throw RuntimeException("Klarte ikke finne konklusjon")
-    }
 
 }

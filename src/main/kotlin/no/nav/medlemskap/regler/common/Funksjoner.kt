@@ -141,9 +141,12 @@ fun regelflytUavklart(ytelse: Ytelse): Regelflyt {
     return Regelflyt(regelflytUavklartKonklusjon(ytelse), ytelse)
 }
 
-
-private fun List<Resultat>.hentUtKonklusjon(): Resultat {
-    return this.find { it.regelId == RegelId.REGEL_MEDLEM_KONKLUSJON || it.regelId == RegelId.REGEL_FLYT_KONKLUSJON }
+fun List<Resultat>.hentUtKonklusjon(): Resultat {
+    return this.find { it.erKonklusjon() }
             ?: throw RuntimeException("Klarte ikke finne konklusjon")
+}
+
+fun List<Resultat>.utenKonklusjon(): List<Resultat> {
+    return this.filterNot { it.erKonklusjon() }
 }
 
