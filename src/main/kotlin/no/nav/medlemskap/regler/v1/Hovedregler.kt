@@ -10,7 +10,6 @@ import no.nav.medlemskap.regler.common.utenKonklusjon
 
 class Hovedregler(datagrunnlag: Datagrunnlag) {
     private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
-    private val reglerForMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag)
     private val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag)
     private val reglerForLovvalg = ReglerForLovvalg.fraDatagrunnlag(datagrunnlag)
     private val reglerForGrunnforordningen = ReglerForGrunnforordningen.fraDatagrunnlag(datagrunnlag)
