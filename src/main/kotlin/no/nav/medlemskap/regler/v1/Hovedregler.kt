@@ -44,8 +44,6 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
         return uavklartResultat(ytelse).copy(delresultat = resultater.flatMap { it.delresultat }.utenKonklusjon())
     }
 
-
-
     private fun uavklartResultat(ytelse: Ytelse): Resultat {
         return uavklartKonklusjon(ytelse).utfør()
     }
@@ -53,6 +51,5 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
     private fun neiResultat(ytelse: Ytelse): Resultat {
         return neiKonklusjon(ytelse).utfør()
     }
-
 
 }
