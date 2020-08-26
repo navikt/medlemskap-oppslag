@@ -99,21 +99,20 @@ fun neiKonklusjon(ytelse: Ytelse) = Regel(
 fun regelflytUavklartKonklusjon(ytelse: Ytelse) = Regel(
         regelId = RegelId.REGEL_FLYT_KONKLUSJON,
         ytelse = ytelse,
-        operasjon = { uavklart("Kan ikke konkludere med medlemskap") }
+        operasjon = { uavklart("Regelflyt konkluderer med UAVKLART") }
 )
 
 fun regelflytJaKonklusjon(ytelse: Ytelse) = Regel(
         regelId = RegelId.REGEL_FLYT_KONKLUSJON,
         ytelse = ytelse,
-        operasjon = { ja("Bruker er medlem") }
+        operasjon = { ja("Regelflyt konkluderer med JA") }
 )
 
 fun regelflytNeiKonklusjon(ytelse: Ytelse) = Regel(
         regelId = RegelId.REGEL_FLYT_KONKLUSJON,
         ytelse = ytelse,
-        operasjon = { nei("Bruker er ikke medlem") }
+        operasjon = { nei("Regelflyt konkluderer med NEI") }
 )
-
 
 
 
@@ -139,11 +138,6 @@ fun regelflytNei(ytelse: Ytelse): Regelflyt {
 
 fun regelflytUavklart(ytelse: Ytelse): Regelflyt {
     return Regelflyt(regelflytUavklartKonklusjon(ytelse), ytelse)
-}
-
-fun List<Resultat>.hentUtKonklusjon(): Resultat {
-    return this.find { it.erKonklusjon() }
-            ?: throw RuntimeException("Klarte ikke finne konklusjon")
 }
 
 fun List<Resultat>.utenKonklusjon(): List<Resultat> {
