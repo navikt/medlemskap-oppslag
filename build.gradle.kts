@@ -2,6 +2,10 @@ import com.expediagroup.graphql.plugin.gradle.graphql
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import com.expediagroup.graphql.plugin.config.TimeoutConfig
+import com.expediagroup.graphql.plugin.generator.ScalarConverterMapping
+import com.expediagroup.graphql.plugin.gradle.tasks.GraphQLDownloadSDLTask
+import com.expediagroup.graphql.plugin.gradle.tasks.GraphQLIntrospectSchemaTask
 
 val ktorVersion = "1.3.2"
 val jacksonVersion = "2.10.5"
@@ -46,6 +50,16 @@ plugins {
 
 val githubUser: String by project
 val githubPassword: String by project
+val filer: List<File> = listOf(file("${project.projectDir}/src/main/resources/pdl/hentFoedselsaar.graphql"),
+        file( "${project.projectDir}/src/main/resources/pdl/hentIdenter.graphql"))
+
+val graphqlGenerateClient by tasks.getting(com.expediagroup.graphql.plugin.gradle.tasks.GraphQLGenerateClientTask::class) {
+    packageName.set("com.example.generated")
+    schemaFile.set(File("${project.projectDir}/src/main/resources/pdl.graphqls"))
+    // optional
+    allowDeprecatedFields.set(true)
+    queryFiles.from(filer)
+}
 
 repositories {
     jcenter()
@@ -128,14 +142,30 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}")
 }
 
-graphql {
+/*graphql {
     client {
         sdlEndpoint = "https://navikt.github.io/saf/saf-api-sdl.graphqls"
         packageName = "no.nav.medlemskap.client.generated"
         allowDeprecatedFields = false
         queryFiles.add(file("${project.projectDir}/src/main/resources/saf/dokumenter.graphql"))
     }
+}*/
+
+
+/*
+
+graphql {
+    client {
+        sdlEndpoint = "file://${project.projectDir}/src/main/resources/pdl.graphqls"
+        packageName = "no.nav.medlemskap.client.generated.pdl"
+        allowDeprecatedFields = false
+        queryFiles.addAll(filer)
+    }
 }
+
+*/
+
+
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -144,7 +174,7 @@ java {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
-
+    dependsOn("graphqlGenerateClient")
 }
 
 tasks.withType<Test> {
