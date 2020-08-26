@@ -11,6 +11,7 @@ class ReglerForRegistrerteOpplysninger(
         regelMap: Map<RegelId, Regel>,
         private val reglerForMedl: ReglerForMedl
 ) : Regler(ytelse, regelMap) {
+
     override fun hentRegelflyt(): Regelflyt {
         val erBrukerEØSborgerFlyt = lagRegelflyt(
                 regel = hentRegel(RegelId.REGEL_2),
