@@ -1,6 +1,7 @@
 package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.Regler
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Svar.NEI
@@ -8,15 +9,10 @@ import no.nav.medlemskap.regler.common.neiKonklusjon
 import no.nav.medlemskap.regler.common.uavklartKonklusjon
 
 class Hovedregler(datagrunnlag: Datagrunnlag) {
-    //    private val resultatliste: MutableList<Resultat> = mutableListOf()
     private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
     private val reglerForMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag)
     private val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag)
     private val reglerForLovvalg = ReglerForLovvalg.fraDatagrunnlag(datagrunnlag)
-
-    fun kjørHovedregler_slettmeg(): Resultat {
-        return kjørRegelflyt(reglerForRegistrerteOpplysninger)
-    }
 
     fun kjørHovedregler(): Resultat {
         val ytelse = reglerForRegistrerteOpplysninger.ytelse
@@ -34,11 +30,10 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
 
         val førsteNei = resultater.find { it.svar == NEI }
         if (førsteNei != null) {
-            return neiKonklusjon(ytelse).utfør().copy(delresultat = resultater.flatMap { it.delresultat }.utenKonklusjon())
+            return neiResultat(ytelse).copy(delresultat = resultater.flatMap { it.delresultat }.utenKonklusjon())
         }
 
-        return uavklartKonklusjon(ytelse).utfør().copy(delresultat = resultater.flatMap { it.delresultat }.utenKonklusjon())
-
+        return uavklartResultat(ytelse).copy(delresultat = resultater.flatMap { it.delresultat }.utenKonklusjon())
     }
 
     fun kjørRegelflyt(regler: Regler): Resultat {
@@ -47,6 +42,14 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
 
         val konklusjon = resultatliste.hentUtKonklusjon()
         return konklusjon.copy(delresultat = resultatliste.utenKonklusjon())
+    }
+
+    private fun uavklartResultat(ytelse: Ytelse): Resultat {
+        return uavklartKonklusjon(ytelse).utfør()
+    }
+
+    private fun neiResultat(ytelse: Ytelse): Resultat {
+        return neiKonklusjon(ytelse).utfør()
     }
 
     private fun List<Resultat>.utenKonklusjon(): List<Resultat> {
@@ -58,7 +61,4 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
                 ?: throw RuntimeException("Klarte ikke finne konklusjon")
     }
 
-    private fun konklusjon(konklusjon: Resultat, resultatListe: List<Resultat>): Resultat {
-        return konklusjon.copy(delresultat = resultatListe.utenKonklusjon())
-    }
 }
