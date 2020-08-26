@@ -53,12 +53,29 @@ val githubPassword: String by project
 val filer: List<File> = listOf(file("${project.projectDir}/src/main/resources/pdl/hentFoedselsaar.graphql"),
         file( "${project.projectDir}/src/main/resources/pdl/hentIdenter.graphql"))
 
+val graphqlDownloadSDL by tasks.getting(com.expediagroup.graphql.plugin.gradle.tasks.GraphQLDownloadSDLTask::class) {
+    endpoint.set("https://navikt.github.io/saf/saf-api-sdl.graphqls")
+    timeoutConfig.set(com.expediagroup.graphql.plugin.config.TimeoutConfig(connect = 10_000, read = 30_000))
+}
 val graphqlGenerateClient by tasks.getting(com.expediagroup.graphql.plugin.gradle.tasks.GraphQLGenerateClientTask::class) {
-    packageName.set("com.example.generated")
-    schemaFile.set(File("${project.projectDir}/src/main/resources/pdl.graphqls"))
-    // optional
-    allowDeprecatedFields.set(true)
-    queryFiles.from(filer)
+    packageName.set("no.nav.medlemskap.client.generated")
+    schemaFile.set(graphqlDownloadSDL.outputFile)
+    queryFiles.from("${project.projectDir}/src/main/resources/saf/dokumenter.graphql")
+    dependsOn("graphqlDownloadSDL")
+}
+val downloadPdlSchemaTask = tasks.register<com.expediagroup.graphql.plugin.gradle.tasks.GraphQLDownloadSDLTask>("downloadPdlSchemaTask") {
+    endpoint.set("https://navikt.github.io/pdl/pdl-api-sdl.graphqls")
+    timeoutConfig.set(com.expediagroup.graphql.plugin.config.TimeoutConfig(connect = 10_000, read = 30_000))
+}
+val generatePdlClientTask = tasks.register<com.expediagroup.graphql.plugin.gradle.tasks.GraphQLGenerateClientTask>("generatePdlClientTask") {
+    packageName.set("no.nav.medlemskap.client.generated.pdl")
+    schemaFile.set(downloadPdlSchemaTask.get().outputFile)
+    outputDirectory.set(graphqlGenerateClient.outputDirectory)
+    queryFiles.from("${project.projectDir}/src/main/resources/pdl/hentFoedselsaar.graphql",
+            "${project.projectDir}/src/main/resources/pdl/hentIdenter.graphql",
+            "${project.projectDir}/src/main/resources/pdl/hentNasjonalitet.graphql",
+            "${project.projectDir}/src/main/resources/pdl/hentPerson.graphql")
+    dependsOn("downloadPdlSchemaTask")
 }
 
 repositories {
@@ -142,30 +159,6 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}")
 }
 
-/*graphql {
-    client {
-        sdlEndpoint = "https://navikt.github.io/saf/saf-api-sdl.graphqls"
-        packageName = "no.nav.medlemskap.client.generated"
-        allowDeprecatedFields = false
-        queryFiles.add(file("${project.projectDir}/src/main/resources/saf/dokumenter.graphql"))
-    }
-}*/
-
-
-/*
-
-graphql {
-    client {
-        sdlEndpoint = "file://${project.projectDir}/src/main/resources/pdl.graphqls"
-        packageName = "no.nav.medlemskap.client.generated.pdl"
-        allowDeprecatedFields = false
-        queryFiles.addAll(filer)
-    }
-}
-
-*/
-
-
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -174,7 +167,7 @@ java {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
-    dependsOn("graphqlGenerateClient")
+    dependsOn("generatePdlClientTask")
 }
 
 tasks.withType<Test> {
