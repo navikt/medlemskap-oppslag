@@ -1,6 +1,6 @@
 package no.nav.medlemskap.domene
 
-import io.ktor.server.engine.*
+import io.ktor.server.engine.ApplicationEngine
 import io.restassured.RestAssured
 import io.restassured.RestAssured.given
 import io.restassured.config.ObjectMapperConfig
@@ -519,7 +519,72 @@ private val forventetResponse = """
           "harDekning" : null,
           "dekning" : "",
           "delresultat" : [ ]
-        } ]
+        }, {
+          "regelId" : "REGEL_3",
+          "avklaring" : "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?",
+          "begrunnelse" : "",
+          "svar" : "JA",
+          "harDekning" : null,
+          "dekning" : "",
+          "delresultat" : [ ]
+        }, {
+          "regelId" : "REGEL_4",
+          "avklaring" : "Er foretaket registrert i foretaksregisteret?",
+          "begrunnelse" : "",
+          "svar" : "JA",
+          "harDekning" : null,
+          "dekning" : "",
+          "delresultat" : [ ]
+        }, {
+          "regelId" : "REGEL_5",
+          "avklaring" : "Har arbeidsgiver sin hovedaktivitet i Norge?",
+          "begrunnelse" : "",
+          "svar" : "JA",
+          "harDekning" : null,
+          "dekning" : "",
+          "delresultat" : [ ]
+        }, {
+          "regelId" : "REGEL_6",
+          "avklaring" : "Er foretaket aktivt?",
+          "begrunnelse" : "Arbeidstaker har hatt arbeidsforhold til arbeidsgiver som har konkurs-status satt",
+          "svar" : "NEI",
+          "harDekning" : null,
+          "dekning" : "",
+          "delresultat" : [ ]
+        }, {
+          "regelId" : "REGEL_9",
+          "avklaring" : "Har bruker utført arbeid utenfor Norge?",
+          "begrunnelse" : "",
+          "svar" : "NEI",
+          "harDekning" : null,
+          "dekning" : "",
+          "delresultat" : [ ]
+        }, {
+          "regelId" : "REGEL_10",
+          "avklaring" : "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
+          "begrunnelse" : "",
+          "svar" : "JA",
+          "harDekning" : null,
+          "dekning" : "",
+          "delresultat" : [ ]
+        }, {
+          "regelId" : "REGEL_11",
+          "avklaring" : "Er bruker norsk statsborger?",
+          "begrunnelse" : "",
+          "svar" : "JA",
+          "harDekning" : null,
+          "dekning" : "",
+          "delresultat" : [ ]
+        }, {
+          "regelId" : "REGEL_12",
+          "avklaring" : "Har bruker vært i minst 25% stilling de siste 12 mnd?",
+          "begrunnelse" : "",
+          "svar" : "JA",
+          "harDekning" : null,
+          "dekning" : "",
+          "delresultat" : [ ]
+        }                                      
+]
       }
     }
 """.trimIndent()

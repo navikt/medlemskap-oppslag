@@ -23,6 +23,12 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
                 reglerForLovvalg
         ).map { kjørRegelflyt(it) }
 
+        val resultat = utledResultat(ytelse, resultater)
+
+        return resultat
+    }
+
+    private fun utledResultat(ytelse: Ytelse, resultater: List<Resultat>): Resultat {
         val medlemskonklusjon = resultater.find { it.erMedlemskonklusjon() }
         if (medlemskonklusjon != null) {
             return medlemskonklusjon.copy(delresultat = resultater.flatMap { it.delresultat }.utenKonklusjon())
