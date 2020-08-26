@@ -13,12 +13,14 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
     private val reglerForMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag)
     private val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag)
     private val reglerForLovvalg = ReglerForLovvalg.fraDatagrunnlag(datagrunnlag)
+    private val reglerForGrunnforordningen = ReglerForGrunnforordningen.fraDatagrunnlag(datagrunnlag)
 
     fun kjørHovedregler(): Resultat {
         val ytelse = reglerForRegistrerteOpplysninger.ytelse
 
         val resultater = listOf(
                 reglerForRegistrerteOpplysninger,
+                reglerForGrunnforordningen,
                 reglerForArbeidsforhold,
                 reglerForLovvalg
         ).map { it.kjørRegelflyt() }

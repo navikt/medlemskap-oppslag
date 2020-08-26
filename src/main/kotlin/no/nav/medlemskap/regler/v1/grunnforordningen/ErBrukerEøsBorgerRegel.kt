@@ -1,4 +1,4 @@
-package no.nav.medlemskap.regler.v1.registrerteOpplysninger
+package no.nav.medlemskap.regler.v1.grunnforordningen
 
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.*

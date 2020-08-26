@@ -4,7 +4,10 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.REGEL_OPPLYSNINGER
-import no.nav.medlemskap.regler.v1.registrerteOpplysninger.*
+import no.nav.medlemskap.regler.v1.registrerteOpplysninger.FinnesOpplysningerIGosysRegel
+import no.nav.medlemskap.regler.v1.registrerteOpplysninger.FinnesOpplysningerIJoarkRegel
+import no.nav.medlemskap.regler.v1.registrerteOpplysninger.FinnesOpplysningerIMedlRegel
+import no.nav.medlemskap.regler.v1.registrerteOpplysninger.HarBrukerRegistrerteOpplysningerRegel
 
 class ReglerForRegistrerteOpplysninger(
         ytelse: Ytelse,
@@ -13,16 +16,10 @@ class ReglerForRegistrerteOpplysninger(
 ) : Regler(ytelse, regelMap) {
 
     override fun hentRegelflyt(): Regelflyt {
-        val erBrukerEØSborgerFlyt = lagRegelflyt(
-                regel = hentRegel(RegelId.REGEL_2),
-                hvisJa = regelflytJa(ytelse),
-                hvisNei = konklusjonUavklart(ytelse)
-        )
-
         val harBrukerRegistrerteOpplysningerFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_OPPLYSNINGER),
                 hvisJa = reglerForMedl.hentRegelflyt(),
-                hvisNei = erBrukerEØSborgerFlyt,
+                hvisNei = regelflytJa(ytelse),
                 hvisUavklart = konklusjonUavklart(ytelse)
         )
 
@@ -43,8 +40,7 @@ class ReglerForRegistrerteOpplysninger(
                     FinnesOpplysningerIGosysRegel.fraDatagrunnlag(datagrunnlag),
                     FinnesOpplysningerIJoarkRegel.fraDatagrunnlag(datagrunnlag),
                     FinnesOpplysningerIMedlRegel.fraDatagrunnlag(datagrunnlag),
-                    HarBrukerRegistrerteOpplysningerRegel.fraDatagrunnlag(datagrunnlag),
-                    ErBrukerEøsBorgerRegel.fraDatagrunnlag(datagrunnlag)
+                    HarBrukerRegistrerteOpplysningerRegel.fraDatagrunnlag(datagrunnlag)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()
