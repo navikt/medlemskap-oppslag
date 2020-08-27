@@ -7,6 +7,8 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.ja
 import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.antallAnsatteHosArbeidsgivere
+import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.registrerAntallAnsatte
+import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.registrerArbeidsgiver
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.registrerStatsborgerskapGrafana
 
 class HarForetaketMerEnn5AnsatteRegel(
@@ -19,11 +21,17 @@ class HarForetaketMerEnn5AnsatteRegel(
 
     override fun operasjon(): Resultat {
         if (arbeidsforhold.antallAnsatteHosArbeidsgivere(kontrollPeriodeForArbeidsforhold) finnesMindreEnn 6) {
-            statsborgerskap.registrerStatsborgerskapGrafana(kontrollPeriodeForArbeidsforhold, ytelse, regelId)
+            registrerDataForGrafana()
             return nei("Ikke alle arbeidsgivere har 6 ansatte eller flere")
         }
 
         return ja()
+    }
+
+    fun registrerDataForGrafana(){
+        statsborgerskap.registrerStatsborgerskapGrafana(kontrollPeriodeForArbeidsforhold, ytelse, regelId)
+        arbeidsforhold.registrerArbeidsgiver(kontrollPeriodeForArbeidsforhold, ytelse)
+        arbeidsforhold.registrerAntallAnsatte(ytelse)
     }
 
     companion object {
