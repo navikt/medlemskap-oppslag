@@ -7,7 +7,7 @@ on:
 
 env:
   IMAGE: docker.pkg.github.com/${{ github.repository }}/medlemskap-oppslag:${{ github.sha }}
-
+  APP: medlemskap-oppslag
 jobs:
   build:
     runs-on: ubuntu-latest
