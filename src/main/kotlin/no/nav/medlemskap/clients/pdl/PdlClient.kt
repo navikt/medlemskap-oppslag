@@ -1,5 +1,7 @@
 package no.nav.medlemskap.clients.pdl
 
+import com.expediagroup.graphql.client.GraphQLClient
+import com.expediagroup.graphql.types.GraphQLResponse
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.HttpClient
 import io.ktor.client.request.header
@@ -10,10 +12,13 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
+import no.nav.medlemskap.client.generated.pdl.HentIdenter
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
 import no.nav.medlemskap.clients.sts.StsRestClient
+import no.nav.medlemskap.common.exceptions.GraphqlError
+import no.nav.medlemskap.common.objectMapper
+import java.net.URL
 
-private val logger = KotlinLogging.logger { }
 
 class PdlClient(
         private val baseUrl: String,
@@ -21,20 +26,31 @@ class PdlClient(
         private val username: String,
         private val httpClient: HttpClient,
         private val retry: Retry? = null
+
 ) {
-    suspend fun hentIdenter(fnr: String, callId: String): HentIdenterResponse {
+    companion object {
+        private val logger = KotlinLogging.logger { }
+    }
+    suspend fun hentIdenter(fnr: String, callId: String): HentIdenter.Result {
 
         return runWithRetryAndMetrics("PDL", "HentIdenter", retry) {
-            httpClient.post<HentIdenterResponse> {
-                url("$baseUrl")
-                header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
+            val stsToken = stsClient.oidcToken()
+            val hentIdenterQuery = HentIdenter(GraphQLClient(url = URL("$baseUrl")))
+            val variables = HentIdenter.Variables(fnr, null, false)
+
+            val response: GraphQLResponse<HentIdenter.Result> = hentIdenterQuery.execute(variables){
+                header(HttpHeaders.Authorization, "Bearer $stsToken")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
                 header("Nav-Call-Id", callId)
-                header("Nav-Consumer-Token", "Bearer ${stsClient.oidcToken()}")
+                header("Nav-Consumer-Token", "Bearer $stsToken")
                 header("Nav-Consumer-Id", username)
-                body = hentIndenterQuery(fnr)
             }
+            response.errors?.let { errors ->
+                PdlClient.logger.warn { "Fikk følgende feil fra PDL hentIdenter: ${objectMapper.writeValueAsString(errors)}" }
+                throw GraphqlError(errors.first(), "PDL")
+            }
+            response.data!!
         }
     }
 
