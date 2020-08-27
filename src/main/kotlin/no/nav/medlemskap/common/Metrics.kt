@@ -150,6 +150,12 @@ fun dekningCounter(dekning: String, ytelse: String): Counter = Counter
         .description("Ulike dekningskoder til brukere som har spurt tjenesten")
         .register(Metrics.globalRegistry)
 
+fun enhetstypeCounter(enhetstype: String, ytelse: String): Counter = Counter
+        .builder("enhetstyper")
+        .tags("enhetstyper", enhetstype, "ytelse", ytelse)
+        .description("Ulike enhetstyper for arbeidsgivere")
+        .register(Metrics.globalRegistry)
+
 private fun getStillingsprosentIntervall(stillingsprosent: Double): String {
     //Fjerner desimaler fremfor å runde av fordi regelsjekken godtar ikke f.eks. 24.9% stilling som høy nok til å regnes som 25% stilling.
     val stillingsprosentHeltall = truncate(stillingsprosent).toInt()
