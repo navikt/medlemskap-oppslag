@@ -63,9 +63,30 @@ jobs:
           MESSAGE: "Deploy til preprod feilet"
           CHANNEL: "#team-p3-medlemskap-notifications"
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+  acceptance-tests:
+    name: Run acceptance tests
+    needs: deploypreprod
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          repository: navikt/medlemskap-oppslag-funksjonelle-tester
+      - id: get-sha
+        run: |
+          echo ::set-output name=sha::$( curl -u "u:${{github.token}}" https://api.github.com/repos/some-owner/some-repo/git/ref/heads/master | jq .object.sha | tr -d '"' )
+      - uses: nais/deploy/actions/deploy@v1
+        name: Run tests
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          IMAGE: docker.pkg.github.com/navikt/medlemskap-oppslag-funksjonelle-tester/medlemskap-oppslag-funksjonelle-tester:${{ steps.get-sha.outputs.sha }}
+          CLUSTER: dev-fss
+          VAR: app=$APP
+          RESOURCE: nais/tests.yml
+        timeout-minutes: 5
   deployprod:
     name: Deploy to Prod
-    needs: build
+    needs: acceptance-tests
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
