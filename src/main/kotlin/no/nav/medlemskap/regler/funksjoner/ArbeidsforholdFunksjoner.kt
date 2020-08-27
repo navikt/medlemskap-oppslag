@@ -4,6 +4,8 @@ import no.nav.medlemskap.common.*
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 import no.nav.medlemskap.regler.common.Funksjoner
+import no.nav.medlemskap.regler.common.Funksjoner.antall
+import no.nav.medlemskap.regler.common.Funksjoner.finnesMindreEnn
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
 import no.nav.medlemskap.regler.common.interval
 import no.nav.medlemskap.regler.common.lagInterval
@@ -42,6 +44,19 @@ object ArbeidsforholdFunksjoner {
     infix fun List<Arbeidsforhold>.konkursStatuserArbeidsgivere(kontrollPeriode: Kontrollperiode): List<String?>? {
         return arbeidsforholdForKontrollPeriode(kontrollPeriode).flatMap { it.arbeidsgiver.konkursStatus.orEmpty() }
     }
+
+    fun List<Arbeidsforhold>.registrerArbeidsgiver(kontrollPeriode: Kontrollperiode, ytelse: Ytelse) =
+            this.filter { antallAnsatteHosArbeidsgivere(kontrollPeriode) finnesMindreEnn 6 }
+                    .forEach { antallTreffPåArbeidsgiver(it.arbeidsgiver.identifikator, ytelse) }
+
+    fun List<Arbeidsforhold>.registrerAntallAnsatte(ytelse: Ytelse) =
+            this.forEach {
+                antallAnsatteTilUavklart(
+                        it.arbeidsgiver.ansatte?.antall.toString(),
+                        it.arbeidsgiver.identifikator,
+                        ytelse
+                )
+            }
 
     /**
      * Sjekk om arbeidsfoholdet er sammenhengende i kontrollperioden
