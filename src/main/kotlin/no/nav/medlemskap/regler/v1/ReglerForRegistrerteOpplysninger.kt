@@ -4,29 +4,24 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.REGEL_OPPLYSNINGER
-import no.nav.medlemskap.regler.v1.registrerteOpplysninger.*
+import no.nav.medlemskap.regler.v1.registrerteOpplysninger.FinnesOpplysningerIGosysRegel
+import no.nav.medlemskap.regler.v1.registrerteOpplysninger.FinnesOpplysningerIJoarkRegel
+import no.nav.medlemskap.regler.v1.registrerteOpplysninger.FinnesOpplysningerIMedlRegel
+import no.nav.medlemskap.regler.v1.registrerteOpplysninger.HarBrukerRegistrerteOpplysningerRegel
 
 class ReglerForRegistrerteOpplysninger(
         ytelse: Ytelse,
         regelMap: Map<RegelId, Regel>,
-        private val reglerForMedl: ReglerForMedl,
-        private val reglerForArbeidsforhold: ReglerForArbeidsforhold
+        private val reglerForMedl: ReglerForMedl
 ) : Regler(ytelse, regelMap) {
-    override fun hentRegelflyt(): Regelflyt {
-        val erBrukerEØSborgerFlyt = lagRegelflyt(
-                regel = hentRegel(RegelId.REGEL_2),
-                hvisJa = reglerForArbeidsforhold.hentRegelflyt(),
-                hvisNei = regelFlytUavklart(ytelse)
-        )
 
+    override fun hentRegelflyt(): Regelflyt {
         val harBrukerRegistrerteOpplysningerFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_OPPLYSNINGER),
                 hvisJa = reglerForMedl.hentRegelflyt(),
-                hvisNei = erBrukerEØSborgerFlyt,
-                hvisUavklart = regelFlytUavklart(ytelse)
+                hvisNei = regelflytJa(ytelse),
+                hvisUavklart = konklusjonUavklart(ytelse)
         )
-
-
 
         return harBrukerRegistrerteOpplysningerFlyt
     }
@@ -36,7 +31,6 @@ class ReglerForRegistrerteOpplysninger(
             return ReglerForRegistrerteOpplysninger(
                     ytelse = datagrunnlag.ytelse,
                     regelMap = lagRegelMap(datagrunnlag),
-                    reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag),
                     reglerForMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag)
             )
         }
@@ -46,8 +40,7 @@ class ReglerForRegistrerteOpplysninger(
                     FinnesOpplysningerIGosysRegel.fraDatagrunnlag(datagrunnlag),
                     FinnesOpplysningerIJoarkRegel.fraDatagrunnlag(datagrunnlag),
                     FinnesOpplysningerIMedlRegel.fraDatagrunnlag(datagrunnlag),
-                    HarBrukerRegistrerteOpplysningerRegel.fraDatagrunnlag(datagrunnlag),
-                    ErBrukerEøsBorgerRegel.fraDatagrunnlag(datagrunnlag)
+                    HarBrukerRegistrerteOpplysningerRegel.fraDatagrunnlag(datagrunnlag)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()

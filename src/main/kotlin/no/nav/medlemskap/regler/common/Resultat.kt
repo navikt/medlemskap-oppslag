@@ -12,4 +12,16 @@ data class Resultat(
         var harDekning: Svar? = null,
         var dekning: String = "",
         val delresultat: List<Resultat> = listOf()
-)
+) {
+    fun erMedlemskonklusjon(): Boolean {
+        return regelId == RegelId.REGEL_MEDLEM_KONKLUSJON
+    }
+
+    fun erRegelflytKonklusjon(): Boolean {
+        return regelId == RegelId.REGEL_FLYT_KONKLUSJON
+    }
+
+    fun erKonklusjon(): Boolean {
+        return erMedlemskonklusjon() || erRegelflytKonklusjon()
+    }
+}
