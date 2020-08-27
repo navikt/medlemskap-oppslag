@@ -101,15 +101,15 @@ fun merEnn10ArbeidsforholdCounter(ytelse: Ytelse): Counter = Counter
         .register(Metrics.globalRegistry)
 
 fun antallTreffPåArbeidsgiver(orgnummer: String?, ytelse: Ytelse): Counter = Counter
-        .builder("treff_på_arbeidsgiver")
-        .tags("orgnummer", orgnummer,"ytelse", ytelse.metricName())
+        .builder("treff_paa_arbeidsgiver")
+        .tags("orgnummer", orgnummer, "ytelse", ytelse.metricName())
         .description("counter for antall treff på en arbeidsgiver")
         .register(Metrics.globalRegistry)
 
 fun antallAnsatteTilUavklart(antall: String, orgnummer: String?, ytelse: Ytelse): Counter = Counter
-        .builder("treff_på_arbeidsgiver")
+        .builder("antall_ansatte_uavklart")
         .tags("antall", antall, "orgnummer", orgnummer, "ytelse", ytelse.metricName())
-        .description("counter for antall treff på en arbeidsgiver")
+        .description("counter for antall ansatte til uavklart for en arbeidsgiver")
         .register(Metrics.globalRegistry)
 
 fun usammenhengendeArbeidsforholdCounter(ytelse: Ytelse): Counter = Counter
