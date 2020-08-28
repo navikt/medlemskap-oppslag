@@ -13,11 +13,13 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import mu.KotlinLogging
 import no.nav.medlemskap.client.generated.pdl.HentIdenter
+import no.nav.medlemskap.client.generated.pdl.HentPerson
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
 import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.objectMapper
 import java.net.URL
+import javax.xml.ws.Response
 
 
 class PdlClient(
@@ -31,7 +33,7 @@ class PdlClient(
     companion object {
         private val logger = KotlinLogging.logger { }
     }
-    suspend fun hentIdenter(fnr: String, callId: String): HentIdenter.Result {
+    suspend fun hentIdenter(fnr: String, callId: String): GraphQLResponse<HentIdenter.Result> {
 
         return runWithRetryAndMetrics("PDL", "HentIdenter", retry) {
             val stsToken = stsClient.oidcToken()
@@ -46,28 +48,28 @@ class PdlClient(
                 header("Nav-Consumer-Token", "Bearer $stsToken")
                 header("Nav-Consumer-Id", username)
             }
-            response.errors?.let { errors ->
-                PdlClient.logger.warn { "Fikk følgende feil fra PDL hentIdenter: ${objectMapper.writeValueAsString(errors)}" }
-                throw GraphqlError(errors.first(), "PDL")
-            }
-            response.data!!
+
+            response
         }
     }
 
 
-    suspend fun hentPerson(fnr: String, callId: String): HentPdlPersonResponse {
+    suspend fun hentPerson(fnr: String, callId: String): GraphQLResponse<HentPerson.Result> {
         return runWithRetryAndMetrics("PDL", "HentPerson", retry) {
-            httpClient.post<HentPdlPersonResponse> {
-                url("$baseUrl")
-                header(HttpHeaders.Authorization, "Bearer ${stsClient.oidcToken()}")
+            val stsToken = stsClient.oidcToken()
+            val hentPersonQuery = HentPerson(GraphQLClient(url = URL("$baseUrl")))
+            val variables = HentPerson.Variables(fnr, false)
+
+            val response: GraphQLResponse<HentPerson.Result> = hentPersonQuery.execute(variables){
+                header(HttpHeaders.Authorization, "Bearer $stsToken")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
                 header("Nav-Call-Id", callId)
-                header("TEMA", "MED")
-                header("Nav-Consumer-Token", "Bearer ${stsClient.oidcToken()}")
+                header("Nav-Consumer-Token", "Bearer $stsToken")
                 header("Nav-Consumer-Id", username)
-                body = hentPersonQuery(fnr)
             }
+
+            response
         }
 
     }

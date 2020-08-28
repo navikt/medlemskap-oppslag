@@ -1,42 +1,57 @@
 package no.nav.medlemskap.services.pdl
 
+import no.nav.medlemskap.client.generated.pdl.HentPerson
 import no.nav.medlemskap.clients.pdl.Sivilstandstype
+import no.nav.medlemskap.client.generated.pdl.HentPerson.Folkeregistermetadata
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
-import no.nav.medlemskap.domene.Sivilstand
 import no.nav.medlemskap.services.pdl.PdlMapper.mapFolkeregisterMetadata
 import java.time.LocalDate
-import no.nav.medlemskap.clients.pdl.Sivilstand as PdlSivilstand
+import java.time.format.DateTimeFormatter
+
 
 object PdlSivilstandMapper {
 
-    fun mapSivilstander(pdlSivilstander: List<PdlSivilstand>): List<Sivilstand> {
-        val sivilstander = pdlSivilstander
-                .filter { it.type != Sivilstandstype.UGIFT && it.type != Sivilstandstype.UOPPGITT }
-                .sortedBy { it.gyldigFraOgMed ?: LocalDate.MIN }
+    fun mapSivilstander(pdlSivilstander: List<HentPerson.Sivilstand>): List<no.nav.medlemskap.domene.Sivilstand> {
+        val sivilstander =
+                pdlSivilstander.filter {
+                    it.type != HentPerson.Sivilstandstype.UGIFT && it.type != HentPerson.Sivilstandstype.UOPPGITT
+                }.sortedBy {
+                    convertToLocalDate(it.gyldigFraOgMed) ?: LocalDate.MIN
+                }
 
-        if (sivilstander.size < 2) {
-            return sivilstander.map {
-                mapSivilstander(it)
+
+
+            if (sivilstander.size < 2) {
+                return sivilstander.map {
+                    mapSivilstander(it)
+                }
             }
-        }
 
-        return sivilstander
-                .zipWithNext { sivilstand, neste ->
-                    mapSivilstander(sivilstand, neste.gyldigFraOgMed?.minusDays(1))
-                }.plus(mapSivilstander(sivilstander.last()))
+
+
+            return sivilstander
+                    .zipWithNext { sivilstand, neste ->
+                        mapSivilstander(sivilstand, convertToLocalDate(neste.gyldigFraOgMed)?.minusDays(1))
+                    }.plus(mapSivilstander(sivilstander.last()))
+
+
     }
 
-    private fun mapSivilstander(sivilstand: no.nav.medlemskap.clients.pdl.Sivilstand, gyldigTilOgMed: LocalDate? = null): Sivilstand {
-        return Sivilstand(
+    fun convertToLocalDate(dateToConvert: String?): LocalDate? {
+        return LocalDate.parse(dateToConvert, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
+    private fun mapSivilstander(sivilstand: HentPerson.Sivilstand, gyldigTilOgMed: LocalDate? = null): no.nav.medlemskap.domene.Sivilstand{
+        return no.nav.medlemskap.domene.Sivilstand(
                 type = mapSivilstandType(sivilstand.type),
-                gyldigFraOgMed = sivilstand.gyldigFraOgMed,
+                gyldigFraOgMed = convertToLocalDate(sivilstand.gyldigFraOgMed),
                 gyldigTilOgMed = gyldigTilOgMed,
                 relatertVedSivilstand = sivilstand.relatertVedSivilstand,
                 folkeregistermetadata = mapFolkeregisterMetadata(sivilstand.folkeregistermetadata)
         )
     }
 
-    private fun mapSivilstandType(type: Sivilstandstype): no.nav.medlemskap.domene.Sivilstandstype {
+    private fun mapSivilstandType(type: HentPerson.Sivilstandstype): no.nav.medlemskap.domene.Sivilstandstype {
         return when (type) {
             Sivilstandstype.GIFT -> no.nav.medlemskap.domene.Sivilstandstype.GIFT
             Sivilstandstype.ENKE_ELLER_ENKEMANN -> no.nav.medlemskap.domene.Sivilstandstype.ENKE_ELLER_ENKEMANN
