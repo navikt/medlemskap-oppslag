@@ -99,6 +99,19 @@ class ReglerForEøsBorgere(
                 hvisNei = harBrukerUtenEktefelleBarnFlyt
         )
 
+        val erBrukerBosattINorgeFlyt = lagRegelflyt(
+                regel = hentRegel(RegelId.REGEL_10),
+                hvisJa = harBrukerEktefelleFlyt,
+                hvisNei = konklusjonUavklart(ytelse)
+        )
+
+        val harBrukerJobbetUtenforNorgeFlyt = lagRegelflyt(
+                regel = hentRegel(RegelId.REGEL_9),
+                hvisJa = konklusjonNei(ytelse),
+                hvisNei = erBrukerBosattINorgeFlyt
+        )
+
+        return harBrukerJobbetUtenforNorgeFlyt
 
         return harBrukerEktefelleFlyt
     }
@@ -130,7 +143,9 @@ class ReglerForEøsBorgere(
                     HarBrukerJobbet80ProsentEllerMerRegel.fraDatagrunnlag (datagrunnlag, REGEL_11_6),
                     HarBrukerJobbet80ProsentEllerMerRegel.fraDatagrunnlag (datagrunnlag, REGEL_11_2_3),
                     HarBrukerJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_3_1_1),
-                    HarBrukerJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_2_1)
+                    HarBrukerJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_2_1),
+                    ErBrukerBosattINorgeRegel.fraDatagrunnlag(datagrunnlag),
+                    HarBrukerJobbetUtenforNorgeRegel.fraDatagrunnlag(datagrunnlag)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()

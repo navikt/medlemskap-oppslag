@@ -24,7 +24,7 @@ Egenskap: Regelflyt for reglene fra 11.6 for bruker som har ektefelle og barn so
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
       | 1             | BEDR             | NOR      | 9              |
 
-  Scenariomal:
+  Scenariomal: Regelflyt for regel 11.6
     Gitt følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   |
       | 01.01.2018      |                 | 001       | <Stillingsprosent> |

@@ -2,31 +2,56 @@ package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.regler.common.Resultat
+import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Svar.NEI
-import no.nav.medlemskap.regler.common.neiKonklusjon
-import no.nav.medlemskap.regler.common.uavklartKonklusjon
-import no.nav.medlemskap.regler.common.utenKonklusjon
 
-class Hovedregler(datagrunnlag: Datagrunnlag) {
+class Hovedregler(private val datagrunnlag: Datagrunnlag) {
+    private val reglerForEøsStatsborgerskap = ReglerForEøsStatsborgerskap.fraDatagrunnlag(datagrunnlag)
+    private val reglerForNorskStatsborgerskap = ReglerForNorskStatsborgerskap.fraDatagrunnlag(datagrunnlag)
     private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
+    private val reglerForNorskeStatsborgere = ReglerForNorskeStatsborgere.fraDatagrunnlag(datagrunnlag)
+    private val reglerForEøsBorgere = ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag)
+    private val reglerForAndreStatsborgere = ReglerForAndreStatsborgere.fraDatagrunnlag(datagrunnlag)
     private val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag)
-    private val reglerForLovvalg = ReglerForLovvalg.fraDatagrunnlag(datagrunnlag)
-    private val reglerForGrunnforordningen = ReglerForGrunnforordningen.fraDatagrunnlag(datagrunnlag)
 
     fun kjørHovedregler(): Resultat {
         val ytelse = reglerForRegistrerteOpplysninger.ytelse
 
+        val resultatRegistrertOpplysninger = reglerForRegistrerteOpplysninger.kjørRegelflyt()
+        val resultatNorskStatsborgerskap = reglerForNorskStatsborgerskap.kjørRegelflyt()
+        val resultatEøsStatsborgerskap = reglerForEøsStatsborgerskap.kjørRegelflyt()
+        val resultatForStatborgerskap = bestemReglerForStatsborgerskap(ytelse, resultatEøsStatsborgerskap, resultatNorskStatsborgerskap).kjørRegelflyt()
+        val resultatForArbeidsforhold = reglerForArbeidsforhold.kjørRegelflyt()
+
         val resultater = listOf(
-                reglerForRegistrerteOpplysninger,
-                reglerForGrunnforordningen,
-                reglerForArbeidsforhold,
-                reglerForLovvalg
-        ).map { it.kjørRegelflyt() }
+                resultatRegistrertOpplysninger,
+                resultatEøsStatsborgerskap,
+                resultatNorskStatsborgerskap,
+                resultatForArbeidsforhold,
+                resultatForStatborgerskap
+        )
 
         val resultat = utledResultat(ytelse, resultater)
 
         return resultat
+    }
+
+    private fun bestemReglerForStatsborgerskap(ytelse: Ytelse, resultatEøsStatsborgerskap: Resultat, resultatNorskStatsborgerskap: Resultat): Regler {
+
+
+        val erEøsBorger= resultatEøsStatsborgerskap.svar == Svar.JA
+        val erNorskstatsborger = resultatNorskStatsborgerskap.svar == Svar.JA
+
+        if (!erEøsBorger) {
+            return reglerForAndreStatsborgere
+        }
+
+        return if (erNorskstatsborger) {
+            reglerForNorskeStatsborgere
+        } else {
+            reglerForEøsBorgere
+        }
+
     }
 
 
