@@ -112,8 +112,6 @@ class ReglerForEøsBorgere(
         )
 
         return harBrukerJobbetUtenforNorgeFlyt
-
-        return harBrukerEktefelleFlyt
     }
 
 
