@@ -20,7 +20,8 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         val resultatRegistrertOpplysninger = reglerForRegistrerteOpplysninger.kjørRegelflyt()
         val resultatNorskStatsborgerskap = reglerForNorskStatsborgerskap.kjørRegelflyt()
         val resultatEøsStatsborgerskap = reglerForEøsStatsborgerskap.kjørRegelflyt()
-        val resultatForStatborgerskap = bestemReglerForStatsborgerskap(ytelse, resultatEøsStatsborgerskap, resultatNorskStatsborgerskap).kjørRegelflyt()
+        val resultatForStatborgerskap = bestemReglerForStatsborgerskap(resultatEøsStatsborgerskap, resultatNorskStatsborgerskap)
+                .kjørRegelflyt()
         val resultatForArbeidsforhold = reglerForArbeidsforhold.kjørRegelflyt()
 
         val resultater = listOf(
@@ -36,9 +37,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         return resultat
     }
 
-    private fun bestemReglerForStatsborgerskap(ytelse: Ytelse, resultatEøsStatsborgerskap: Resultat, resultatNorskStatsborgerskap: Resultat): Regler {
-
-
+    private fun bestemReglerForStatsborgerskap(resultatEøsStatsborgerskap: Resultat, resultatNorskStatsborgerskap: Resultat): Regler {
         val erEøsBorger= resultatEøsStatsborgerskap.svar == Svar.JA
         val erNorskstatsborger = resultatNorskStatsborgerskap.svar == Svar.JA
 
@@ -76,5 +75,4 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
     private fun neiResultat(ytelse: Ytelse): Resultat {
         return neiKonklusjon(ytelse).utfør()
     }
-
 }
