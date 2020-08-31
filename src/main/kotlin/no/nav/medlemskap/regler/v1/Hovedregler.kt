@@ -5,7 +5,7 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Svar.NEI
 
-class Hovedregler(private val datagrunnlag: Datagrunnlag) {
+class Hovedregler(datagrunnlag: Datagrunnlag) {
     private val reglerForEøsStatsborgerskap = ReglerForEøsStatsborgerskap.fraDatagrunnlag(datagrunnlag)
     private val reglerForNorskStatsborgerskap = ReglerForNorskStatsborgerskap.fraDatagrunnlag(datagrunnlag)
     private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
@@ -32,9 +32,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
                 resultatForStatborgerskap
         )
 
-        val resultat = utledResultat(ytelse, resultater)
-
-        return resultat
+        return utledResultat(ytelse, resultater)
     }
 
     private fun bestemReglerForStatsborgerskap(resultatEøsStatsborgerskap: Resultat, resultatNorskStatsborgerskap: Resultat): Regler {
@@ -50,9 +48,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         } else {
             reglerForEøsBorgere
         }
-
     }
-
 
     private fun utledResultat(ytelse: Ytelse, resultater: List<Resultat>): Resultat {
         val medlemskonklusjon = resultater.find { it.erMedlemskonklusjon() }
