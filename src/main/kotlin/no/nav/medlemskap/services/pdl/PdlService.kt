@@ -1,23 +1,20 @@
 package no.nav.medlemskap.services.pdl
 
 import mu.KotlinLogging
-import no.nav.medlemskap.clients.pdl.IdentGruppe
+import no.nav.medlemskap.client.generated.pdl.HentIdenter
 import no.nav.medlemskap.clients.pdl.PdlClient
 import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
 import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Personhistorikk
-import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.domene.Statsborgerskap
-import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
+import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 
 class PdlService(private val pdlClient: PdlClient, private val clusterName: String = "dev-fss") {
 
     private val logger = KotlinLogging.logger { }
 
-
-    //Todo kan denne fjernes? Er ikke i bruk
     suspend fun hentAktorId(fnr: String, callId: String): String {
         val pdlResponse = pdlClient.hentIdenter(fnr, callId)
 
@@ -32,7 +29,7 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
         }
 
         return pdlResponse.data?.hentIdenter?.identer?.first {
-            !it.historisk && it.gruppe == IdentGruppe.AKTORID
+            !it.historisk && it.gruppe == HentIdenter.IdentGruppe.AKTORID
         }?.ident ?: throw IdenterIkkeFunnet()
     }
 
@@ -50,7 +47,7 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
         }
 
         return pdlResponse.data?.hentIdenter?.identer
-                ?.filter { it.gruppe == IdentGruppe.AKTORID }
+                ?.filter { it.gruppe == HentIdenter.IdentGruppe.AKTORID }
                 ?.map { it.ident } ?: throw IdenterIkkeFunnet()
 
     }
@@ -74,21 +71,21 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
     }
 
     suspend fun hentPersonHistorikkTilEktefelle(fnrTilEktefelle: String, callId: String): PersonhistorikkEktefelle {
-
-        return PersonhistorikkEktefelle("j", null)
-
-        //PdlMapper.mapPersonhistorikkTilEktefelle(fnrTilEktefelle, pdlClient.hentPerson(fnrTilEktefelle, callId))
+        val hentPerson = pdlClient.hentPerson(fnrTilEktefelle, callId)
+        if (hentPerson.data?.hentPerson != null) {
+            return PdlMapper.mapPersonhistorikkTilEktefelle(fnrTilEktefelle, hentPerson.data?.hentPerson!!)
+        } else throw PersonIkkeFunnet("PDL")
     }
 
     suspend fun hentFoedselsaar(fnr: String, callId: String): Int {
-        return PdlMapper.mapTilFoedselsaar(pdlClient.hentFoedselsaar(fnr, callId))
+        return PdlMapper.mapTilFoedselsaar(pdlClient.hentFoedselsaar(fnr, callId).data?.hentPerson?.foedsel)
     }
 
-/*    suspend fun hentStatsborgerskap(fnr: String, callId: String): List<Statsborgerskap>? {
+  suspend fun hentStatsborgerskap(fnr: String, callId: String): List<Statsborgerskap>? {
         val statsborgerskap = pdlClient.hentNasjonalitet(fnr, callId).data?.hentPerson?.statsborgerskap?.ifEmpty {
             logger.warn("PDL fant ikke person")
             emptyList()
         }
         return statsborgerskap?.map { PdlMapper.mapStatsborgerskap(it) }
-    }*/
+    }
 }
