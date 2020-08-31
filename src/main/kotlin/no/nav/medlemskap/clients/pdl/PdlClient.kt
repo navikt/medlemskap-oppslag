@@ -86,7 +86,6 @@ class PdlClient(
             }
         }
 
-
     suspend fun hentFoedselsaar(fnr: String, callId: String): GraphQLResponse<HentFoedselsaar.Result>   {
         return runWithRetryAndMetrics("PDL", "HentFoedselsaar", retry) {
             val stsToken = stsClient.oidcToken()
