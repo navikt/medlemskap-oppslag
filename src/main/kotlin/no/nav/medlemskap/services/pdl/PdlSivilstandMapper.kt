@@ -1,10 +1,9 @@
 package no.nav.medlemskap.services.pdl
 
 import no.nav.medlemskap.client.generated.pdl.HentPerson
-import no.nav.medlemskap.clients.pdl.Sivilstandstype
-import no.nav.medlemskap.client.generated.pdl.HentPerson.Folkeregistermetadata
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.services.pdl.PdlMapper.mapFolkeregisterMetadata
+import no.nav.medlemskap.services.pdl.PdlMapper.mapFolkeregisterMetadata2
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -19,15 +18,11 @@ object PdlSivilstandMapper {
                     convertToLocalDate(it.gyldigFraOgMed) ?: LocalDate.MIN
                 }
 
-
-
             if (sivilstander.size < 2) {
                 return sivilstander.map {
                     mapSivilstander(it)
                 }
             }
-
-
 
             return sivilstander
                     .zipWithNext { sivilstand, neste ->
@@ -47,20 +42,20 @@ object PdlSivilstandMapper {
                 gyldigFraOgMed = convertToLocalDate(sivilstand.gyldigFraOgMed),
                 gyldigTilOgMed = gyldigTilOgMed,
                 relatertVedSivilstand = sivilstand.relatertVedSivilstand,
-                folkeregistermetadata = mapFolkeregisterMetadata(sivilstand.folkeregistermetadata)
+                folkeregistermetadata = mapFolkeregisterMetadata2(sivilstand.folkeregistermetadata)
         )
     }
 
     private fun mapSivilstandType(type: HentPerson.Sivilstandstype): no.nav.medlemskap.domene.Sivilstandstype {
         return when (type) {
-            Sivilstandstype.GIFT -> no.nav.medlemskap.domene.Sivilstandstype.GIFT
-            Sivilstandstype.ENKE_ELLER_ENKEMANN -> no.nav.medlemskap.domene.Sivilstandstype.ENKE_ELLER_ENKEMANN
-            Sivilstandstype.SKILT -> no.nav.medlemskap.domene.Sivilstandstype.SKILT
-            Sivilstandstype.SEPARERT -> no.nav.medlemskap.domene.Sivilstandstype.SEPARERT
-            Sivilstandstype.REGISTRERT_PARTNER -> no.nav.medlemskap.domene.Sivilstandstype.REGISTRERT_PARTNER
-            Sivilstandstype.SEPARERT_PARTNER -> no.nav.medlemskap.domene.Sivilstandstype.SEPARERT_PARTNER
-            Sivilstandstype.SKILT_PARTNER -> no.nav.medlemskap.domene.Sivilstandstype.SKILT_PARTNER
-            Sivilstandstype.GJENLEVENDE_PARTNER -> no.nav.medlemskap.domene.Sivilstandstype.GJENLEVENDE_PARTNER
+            HentPerson.Sivilstandstype.GIFT -> no.nav.medlemskap.domene.Sivilstandstype.GIFT
+            HentPerson.Sivilstandstype.ENKE_ELLER_ENKEMANN -> no.nav.medlemskap.domene.Sivilstandstype.ENKE_ELLER_ENKEMANN
+            HentPerson.Sivilstandstype.SKILT -> no.nav.medlemskap.domene.Sivilstandstype.SKILT
+            HentPerson.Sivilstandstype.SEPARERT -> no.nav.medlemskap.domene.Sivilstandstype.SEPARERT
+            HentPerson.Sivilstandstype.REGISTRERT_PARTNER -> no.nav.medlemskap.domene.Sivilstandstype.REGISTRERT_PARTNER
+            HentPerson.Sivilstandstype.SEPARERT_PARTNER -> no.nav.medlemskap.domene.Sivilstandstype.SEPARERT_PARTNER
+            HentPerson.Sivilstandstype.SKILT_PARTNER -> no.nav.medlemskap.domene.Sivilstandstype.SKILT_PARTNER
+            HentPerson.Sivilstandstype.GJENLEVENDE_PARTNER -> no.nav.medlemskap.domene.Sivilstandstype.GJENLEVENDE_PARTNER
             else -> throw DetteSkalAldriSkje("Denne sivilstandstypen skal være filtrert bort")
         }
     }

@@ -84,6 +84,17 @@ object PdlMapper {
         }
     }
 
+    fun mapFolkeregisterMetadata2(folkeregistermetadata: HentPerson.Folkeregistermetadata2?): Folkeregistermetadata?
+    {
+        return folkeregistermetadata?.let {
+            Folkeregistermetadata(
+                    ajourholdstidspunkt = convertToLocalDateTime(it.ajourholdstidspunkt),
+                    gyldighetstidspunkt = convertToLocalDateTime(it.gyldighetstidspunkt),
+                    opphoerstidspunkt = convertToLocalDateTime(it.opphoerstidspunkt)
+            )
+        }
+    }
+
     fun mapFolkeregisterMetadata(folkeregistermetadata: HentPerson.Folkeregistermetadata?): Folkeregistermetadata?
     {
         return folkeregistermetadata?.let {

@@ -55,15 +55,6 @@ data class PdlErrorExtension(
         val classification: String
 )
 
-fun hentIndenterQuery(fnr: String): GraphqlQuery {
-    val query = GraphqlQuery::class.java.getResource("/pdl/hentIdenter.graphql").readText().replace("[\n\r]", "")
-    return GraphqlQuery(query, Variables(fnr, false))
-}
-
-fun hentPersonQuery(fnr: String): PersonGraphqlQuery {
-    val query = GraphqlQuery::class.java.getResource("/pdl/hentPerson.graphql").readText().replace("[\n\r]", "")
-    return PersonGraphqlQuery(query, BostedVariabler(fnr, true))
-}
 
 fun hentNasjonalitetQuery(fnr: String): GraphqlQuery {
     val query = GraphqlQuery::class.java.getResource("/pdl/hentNasjonalitet.graphql").readText().replace("[\n\r]", "")
