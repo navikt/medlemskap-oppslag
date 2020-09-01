@@ -20,7 +20,7 @@ Egenskap: Regelflyt for regel 3
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
       | 1             | BEDR             | NOR      | 9              |
 
-  Scenariomal: Regel 3: Bruker får "ja" på spørsmålet om medlemskap hvis det er sammenhengende arbeidsforhold i
+  Scenariomal: Regelflyt regel 3: Bruker får "ja" på spørsmålet om medlemskap hvis det er sammenhengende arbeidsforhold i
   hele kontrollperioden ,UAVKLART ellers
 
     Gitt følgende arbeidsforhold fra AAReg

@@ -67,7 +67,7 @@ Egenskap: Regelflyt for reglene 11.4.1 for bruker som har ektefelle og barn. Ekt
       | 85               | Nei            | UAVKLART   |
       | 100              | Ja             | Ja         |
 
-  Scenario: Barnet er bosatt i Norge
+  Scenario: Regelflyt for regel 11.4: Barnet er bosatt i Norge
     Gitt følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
       | 01.01.2018      |                 | 001       | 100              |
@@ -104,7 +104,7 @@ Egenskap: Regelflyt for reglene 11.4.1 for bruker som har ektefelle og barn. Ekt
     Og skal regel "11.4" gi svaret "Nei"
     Og skal regel "11.4.1" gi svaret "Ja"
 
-  Scenario: Ett barn bosatt i Norge og ett som ikke er det
+  Scenario: Regelflyt for regel 11.4: Ett barn bosatt i Norge og ett som ikke er det
     Gitt følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
       | 01.01.2018      |                 | 001       | 100              |

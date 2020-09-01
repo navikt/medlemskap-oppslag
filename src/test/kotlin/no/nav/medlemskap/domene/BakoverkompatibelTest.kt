@@ -1,6 +1,6 @@
 package no.nav.medlemskap.domene
 
-import io.ktor.server.engine.ApplicationEngine
+import io.ktor.server.engine.*
 import io.restassured.RestAssured
 import io.restassured.RestAssured.given
 import io.restassured.config.ObjectMapperConfig
@@ -528,6 +528,14 @@ private val forventetResponse = """
           "dekning" : "",
           "delresultat" : [ ]
         }, {
+          "regelId" : "REGEL_11",
+          "avklaring" : "Er bruker norsk statsborger?",
+          "begrunnelse" : "",
+          "svar" : "JA",
+          "harDekning" : null,
+          "dekning" : "",
+          "delresultat" : [ ]
+        }, {
           "regelId" : "REGEL_3",
           "avklaring" : "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?",
           "begrunnelse" : "",
@@ -570,14 +578,6 @@ private val forventetResponse = """
         }, {
           "regelId" : "REGEL_10",
           "avklaring" : "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
-          "begrunnelse" : "",
-          "svar" : "JA",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
-        }, {
-          "regelId" : "REGEL_11",
-          "avklaring" : "Er bruker norsk statsborger?",
           "begrunnelse" : "",
           "svar" : "JA",
           "harDekning" : null,
