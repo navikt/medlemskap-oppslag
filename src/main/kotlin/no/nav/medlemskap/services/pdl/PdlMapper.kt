@@ -1,36 +1,41 @@
 package no.nav.medlemskap.services.pdl
 
-import no.nav.medlemskap.clients.pdl.Familierelasjonsrolle
-import no.nav.medlemskap.clients.pdl.HentFoedselsaarResponse
-import no.nav.medlemskap.clients.pdl.HentPdlPersonResponse
+import no.nav.medlemskap.client.generated.pdl.HentFoedselsaar
+import no.nav.medlemskap.client.generated.pdl.HentNasjonalitet
+import no.nav.medlemskap.client.generated.pdl.HentPerson
+import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 
 object PdlMapper {
-    fun mapTilPersonHistorikk(person: HentPdlPersonResponse): Personhistorikk {
+    fun mapTilPersonHistorikk(person: HentPerson.Person): Personhistorikk {
 
-        val statsborgerskap: List<Statsborgerskap> = person.data?.hentPerson?.statsborgerskap?.map {
-            mapStatsborgerskap(it)
-        } ?: throw PersonIkkeFunnet("PDL")
+        val statsborgerskap: List<Statsborgerskap> = person.statsborgerskap
+                .map { mapStatsborgerskap(it) }
 
         val personstatuser: List<FolkeregisterPersonstatus> = emptyList()
 
-        val bostedsadresser: List<Adresse> = person.data.hentPerson.bostedsadresse.map {
+        val bostedsadresser: List<Adresse> = person.bostedsadresse.map {
             Adresse(
                     landkode = "NOR",
-                    fom = it.folkeregistermetadata.gyldighetstidspunkt?.toLocalDate(),
-                    tom = it.folkeregistermetadata.opphoerstidspunkt?.toLocalDate()
+                    fom = convertToLocalDate(it.folkeregistermetadata?.gyldighetstidspunkt),
+                    tom = convertToLocalDate(it.folkeregistermetadata?.opphoerstidspunkt)
             )
         }
 
         val postadresser: List<Adresse> = emptyList()
         val midlertidigAdresser: List<Adresse> = emptyList()
-        val sivilstand: List<Sivilstand> = mapSivilstander(person.data.hentPerson.sivilstand)
+        val sivilstand: List<Sivilstand> = mapSivilstander(person.sivilstand)
 
-        val familierelasjoner: List<Familierelasjon> = person.data.hentPerson.familierelasjoner.filter { it.relatertPersonsRolle == Familierelasjonsrolle.BARN }
+        val familierelasjoner: List<Familierelasjon> = person.familierelasjoner
+                .filter { it.relatertPersonsRolle == HentPerson.Familierelasjonsrolle.BARN }
                 .map {
                     Familierelasjon(
                             relatertPersonsIdent = it.relatertPersonsIdent,
@@ -39,14 +44,13 @@ object PdlMapper {
                             folkeregistermetadata = mapFolkeregisterMetadata(it.folkeregistermetadata)
                     )
                 }
-
         return Personhistorikk(statsborgerskap, personstatuser, bostedsadresser, postadresser, midlertidigAdresser, sivilstand, familierelasjoner)
     }
     
-    fun mapPersonhistorikkTilEktefelle(fnr: String, person: HentPdlPersonResponse): PersonhistorikkEktefelle {
-        val barn = person.data?.hentPerson?.familierelasjoner
-                ?.filter { it.minRolleForPerson == Familierelasjonsrolle.BARN }
-                ?.map {
+    fun mapPersonhistorikkTilEktefelle(fnr: String, person: HentPerson.Person): PersonhistorikkEktefelle {
+        val barn = person.familierelasjoner
+                .filter { it.minRolleForPerson ==  HentPerson.Familierelasjonsrolle.BARN }
+                .map {
                     PersonhistorikkBarn(
                             it.relatertPersonsIdent)
                 }
@@ -55,41 +59,67 @@ object PdlMapper {
 
     }
 
-
-    fun mapStatsborgerskap(it: no.nav.medlemskap.clients.pdl.Statsborgerskap): Statsborgerskap {
+    fun mapStatsborgerskap(it: HentPerson.Statsborgerskap): Statsborgerskap {
         return Statsborgerskap(
                 landkode = it.land,
-                fom = it.gyldigFraOgMed,
-                tom = it.gyldigTilOgMed
+                fom = convertToLocalDate(it.gyldigFraOgMed),
+                tom = convertToLocalDate(it.gyldigTilOgMed)
         )
     }
 
-    private fun mapFamileRelasjonsrolle(rolle: Familierelasjonsrolle?): no.nav.medlemskap.domene.Familierelasjonsrolle? {
-        return rolle?.let {
+    fun mapStatsborgerskap(it: HentNasjonalitet.Statsborgerskap): Statsborgerskap {
+        return Statsborgerskap(
+                landkode = it.land,
+                fom = convertToLocalDate(it.gyldigFraOgMed),
+                tom = convertToLocalDate(it.gyldigTilOgMed)
+        )
+    }
+
+    private fun mapFamileRelasjonsrolle(rolle: HentPerson.Familierelasjonsrolle?): no.nav.medlemskap.domene.Familierelasjonsrolle? {
+        return rolle.let {
             when (it) {
-                Familierelasjonsrolle.BARN -> no.nav.medlemskap.domene.Familierelasjonsrolle.BARN
-                Familierelasjonsrolle.MOR -> no.nav.medlemskap.domene.Familierelasjonsrolle.MOR
-                Familierelasjonsrolle.FAR -> no.nav.medlemskap.domene.Familierelasjonsrolle.FAR
-                Familierelasjonsrolle.MEDMOR -> no.nav.medlemskap.domene.Familierelasjonsrolle.MEDMOR
+                HentPerson.Familierelasjonsrolle.BARN -> no.nav.medlemskap.domene.Familierelasjonsrolle.BARN
+                HentPerson.Familierelasjonsrolle.MOR -> no.nav.medlemskap.domene.Familierelasjonsrolle.MOR
+                HentPerson.Familierelasjonsrolle.FAR -> no.nav.medlemskap.domene.Familierelasjonsrolle.FAR
+                HentPerson.Familierelasjonsrolle.MEDMOR -> no.nav.medlemskap.domene.Familierelasjonsrolle.MEDMOR
+                else -> throw DetteSkalAldriSkje("Denne familierelasjonen er ikke tilgjengelig")
             }
         }
     }
 
-    fun mapFolkeregisterMetadata(folkeregistermetadata: no.nav.medlemskap.clients.pdl.Folkeregistermetadata?): Folkeregistermetadata? {
+    fun mapFolkeregisterMetadata2(folkeregistermetadata: HentPerson.Folkeregistermetadata2?): Folkeregistermetadata?
+    {
         return folkeregistermetadata?.let {
             Folkeregistermetadata(
-                    ajourholdstidspunkt = it.ajourholdstidspunkt,
-                    gyldighetstidspunkt = it.gyldighetstidspunkt,
-                    opphoerstidspunkt = it.opphoerstidspunkt
+                    ajourholdstidspunkt = convertToLocalDateTime(it.ajourholdstidspunkt),
+                    gyldighetstidspunkt = convertToLocalDateTime(it.gyldighetstidspunkt),
+                    opphoerstidspunkt = convertToLocalDateTime(it.opphoerstidspunkt)
             )
         }
     }
 
-    //Vi velger det høyeste årstallet, da blir personen yngst og det er mest sannsynlig at vi må vurdere bosted
-    fun mapTilFoedselsaar(response: HentFoedselsaarResponse): Int =
-            response.data?.hentPerson?.foedsel?.map { it.foedselsaar }?.sorted()?.last()
-                    ?: throw PersonIkkeFunnet("PDL")
+    fun mapFolkeregisterMetadata(folkeregistermetadata: HentPerson.Folkeregistermetadata?): Folkeregistermetadata?
+    {
+        return folkeregistermetadata?.let {
+            Folkeregistermetadata(
+                    ajourholdstidspunkt = convertToLocalDateTime(it.ajourholdstidspunkt),
+                    gyldighetstidspunkt = convertToLocalDateTime(it.gyldighetstidspunkt),
+                    opphoerstidspunkt = convertToLocalDateTime(it.opphoerstidspunkt)
+            )
+        }
+    }
 
+    private fun convertToLocalDateTime(dateTimeToConvert: String?): LocalDateTime? {
+        return LocalDateTime.parse(dateTimeToConvert, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    fun convertToLocalDate(dateToConvert: String?): LocalDate? {
+        return LocalDate.parse(dateToConvert, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
+
+    //Vi velger det høyeste årstallet, da blir personen yngst og det er mest sannsynlig at vi må vurdere bosted
+    fun mapTilFoedselsaar(foedsel: List<HentFoedselsaar.Foedsel>?): Int =
+            foedsel?.map { it.foedselsaar }?.sortedBy { it }?.last() ?: throw PersonIkkeFunnet("PDL")
 }
 
 

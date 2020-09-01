@@ -6,8 +6,10 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
-import no.nav.medlemskap.clients.pdl.Sivilstand as PdlSivilstand
-import no.nav.medlemskap.clients.pdl.Sivilstandstype as PdlSivilstandstype
+import java.time.format.DateTimeFormatter
+import java.util.*
+import no.nav.medlemskap.client.generated.pdl.HentPerson.Sivilstand as PdlSivilstand
+import no.nav.medlemskap.client.generated.pdl.HentPerson.Sivilstandstype as PdlSivilstandstype
 
 class PdlSivilstandMapperTest {
 
@@ -67,15 +69,15 @@ class PdlSivilstandMapperTest {
 
 
     private fun pdlSivilstandGift(gyldigFraOgMed: LocalDate, relatertVedSivilstand: String): PdlSivilstand {
-        return PdlSivilstand(PdlSivilstandstype.GIFT, gyldigFraOgMed, relatertVedSivilstand, null)
+        return PdlSivilstand(PdlSivilstandstype.GIFT, gyldigFraOgMed.toString(), relatertVedSivilstand, null)
     }
 
     private fun pdlSivilstandSeparert(gyldigFraOgMed: LocalDate, relatertVedSivilstand: String): PdlSivilstand {
-        return PdlSivilstand(PdlSivilstandstype.SEPARERT, gyldigFraOgMed, relatertVedSivilstand, null)
+        return PdlSivilstand(PdlSivilstandstype.SEPARERT, gyldigFraOgMed.toString(), relatertVedSivilstand, null)
     }
 
     private fun pdlSivilstandSkilt(gyldigFraOgMed: LocalDate, relatertVedSivilstand: String): PdlSivilstand {
-        return PdlSivilstand(PdlSivilstandstype.SKILT, gyldigFraOgMed, relatertVedSivilstand, null)
+        return PdlSivilstand(PdlSivilstandstype.SKILT, gyldigFraOgMed.toString(), relatertVedSivilstand, null)
     }
 
     companion object {
