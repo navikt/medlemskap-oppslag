@@ -11,7 +11,7 @@ class ReglerForArbeidsforhold(
         regelMap: Map<RegelId, Regel>
 ) : Regler(ytelse, regelMap) {
 
-    override fun hentRegelflyt(): Regelflyt {
+    override fun hentHovedflyt(): Regelflyt {
         val jobberBrukerPaaNorskSkipFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_7_1),
                 hvisJa = regelflytJa(ytelse),

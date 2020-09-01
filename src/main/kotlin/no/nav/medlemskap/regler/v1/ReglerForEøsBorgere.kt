@@ -13,7 +13,7 @@ class ReglerForEøsBorgere(
         regelMap: Map<RegelId, Regel>
 ) : Regler(ytelse, regelMap) {
 
-    override fun hentRegelflyt(): Regelflyt {
+    override fun hentHovedflyt(): Regelflyt {
         val harBrukerMedFolkeregistrerteBarnJobbetMerEnn80ProsentFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_11_2_3),
                 hvisJa = konklusjonJa(ytelse),

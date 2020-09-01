@@ -6,8 +6,7 @@ import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Svar.NEI
 
 class Hovedregler(datagrunnlag: Datagrunnlag) {
-    private val reglerForEøsStatsborgerskap = ReglerForEøsStatsborgerskap.fraDatagrunnlag(datagrunnlag)
-    private val reglerForNorskStatsborgerskap = ReglerForNorskStatsborgerskap.fraDatagrunnlag(datagrunnlag)
+    private val reglerForStatsborgerskap = ReglerForStatsborgerskap.fraDatagrunnlag(datagrunnlag)
     private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
     private val reglerForNorskeStatsborgere = ReglerForNorskeStatsborgere.fraDatagrunnlag(datagrunnlag)
     private val reglerForEøsBorgere = ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag)
@@ -17,26 +16,28 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
     fun kjørHovedregler(): Resultat {
         val ytelse = reglerForRegistrerteOpplysninger.ytelse
 
-        val resultatRegistrertOpplysninger = reglerForRegistrerteOpplysninger.kjørRegelflyt()
-        val resultatNorskStatsborgerskap = reglerForNorskStatsborgerskap.kjørRegelflyt()
-        val resultatEøsStatsborgerskap = reglerForEøsStatsborgerskap.kjørRegelflyt()
-        val resultatForStatborgerskap = bestemReglerForStatsborgerskap(resultatEøsStatsborgerskap, resultatNorskStatsborgerskap)
-                .kjørRegelflyt()
-        val resultatForArbeidsforhold = reglerForArbeidsforhold.kjørRegelflyt()
+        val resultater = mutableListOf<Resultat>()
 
-        val resultater = listOf(
-                resultatRegistrertOpplysninger,
-                resultatEøsStatsborgerskap,
-                resultatNorskStatsborgerskap,
-                resultatForArbeidsforhold,
-                resultatForStatborgerskap
-        )
+        resultater.addAll(reglerForRegistrerteOpplysninger.kjørRegelflyter())
+        val resultatStatsborgerskap = reglerForStatsborgerskap.kjørRegelflyter()
+
+        resultater.addAll(resultatStatsborgerskap)
+        resultater.addAll(reglerForArbeidsforhold.kjørRegelflyter())
+        resultater.addAll(bestemReglerForStatsborgerskap(resultatStatsborgerskap)
+                .kjørRegelflyter())
 
         return utledResultat(ytelse, resultater)
     }
 
-    private fun bestemReglerForStatsborgerskap(resultatEøsStatsborgerskap: Resultat, resultatNorskStatsborgerskap: Resultat): Regler {
-        val erEøsBorger= resultatEøsStatsborgerskap.svar == Svar.JA
+    private fun bestemReglerForStatsborgerskap(resultatStatsborgerskap: List<Resultat>): Regler {
+        val resultatEøsStatsborgerskap = resultatStatsborgerskap
+                .flatMap { it.delresultat }
+                .first { it.regelId == RegelId.REGEL_2 }
+        val erEøsBorger = resultatEøsStatsborgerskap.svar == Svar.JA
+
+        val resultatNorskStatsborgerskap = resultatStatsborgerskap
+                .flatMap { it.delresultat }
+                .first { it.regelId == RegelId.REGEL_11 }
         val erNorskstatsborger = resultatNorskStatsborgerskap.svar == Svar.JA
 
         if (!erEøsBorger) {

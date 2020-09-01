@@ -15,7 +15,7 @@ class ReglerForNorskeStatsborgere(
         regelMap: Map<RegelId, Regel>
 ) : Regler(ytelse, regelMap) {
 
-    override fun hentRegelflyt(): Regelflyt {
+    override fun hentHovedflyt(): Regelflyt {
         val harBrukerJobbet25ProsentEllerMerFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_12),
                 hvisJa = konklusjonJa(ytelse),

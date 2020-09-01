@@ -12,7 +12,7 @@ class ReglerForAndreStatsborgere(
         ytelse: Ytelse
 ) : Regler(ytelse) {
 
-    override fun hentRegelflyt(): Regelflyt {
+    override fun hentHovedflyt(): Regelflyt {
         return konklusjonUavklart(ytelse)
     }
 

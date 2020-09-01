@@ -15,10 +15,10 @@ class ReglerForRegistrerteOpplysninger(
         private val reglerForMedl: ReglerForMedl
 ) : Regler(ytelse, regelMap) {
 
-    override fun hentRegelflyt(): Regelflyt {
+    override fun hentHovedflyt(): Regelflyt {
         val harBrukerRegistrerteOpplysningerFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_OPPLYSNINGER),
-                hvisJa = reglerForMedl.hentRegelflyt(),
+                hvisJa = reglerForMedl.hentHovedflyt(),
                 hvisNei = regelflytJa(ytelse),
                 hvisUavklart = konklusjonUavklart(ytelse)
         )

@@ -5,28 +5,39 @@ import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.v1.grunnforordningen.ErBrukerEøsBorgerRegel
+import no.nav.medlemskap.regler.v1.lovvalg.HarBrukerNorskStatsborgerskapRegel
 
-class ReglerForEøsStatsborgerskap(
+class ReglerForStatsborgerskap(
         val periode: InputPeriode,
         ytelse: Ytelse,
         regelMap: Map<RegelId, Regel>
 ) : Regler(ytelse, regelMap) {
 
-    override fun hentRegelflyt(): Regelflyt {
+    override fun hentRegelflyter(): List<Regelflyt> {
         val erBrukerEØSborgerFlyt = lagRegelflyt(
                 regel = hentRegel(RegelId.REGEL_2),
                 hvisJa = regelflytJa(ytelse),
                 hvisNei = regelflytNei(ytelse)
         )
 
-        return erBrukerEØSborgerFlyt
+        val harBrukerNorskStatsborgerskapFlyt = lagRegelflyt(
+                regel = hentRegel(RegelId.REGEL_11),
+                hvisJa = regelflytJa(ytelse),
+                hvisNei = regelflytNei(ytelse)
+        )
+
+        return listOf(erBrukerEØSborgerFlyt, harBrukerNorskStatsborgerskapFlyt)
+    }
+
+    override fun hentHovedflyt(): Regelflyt {
+        return hentRegelflyter()[0]
     }
 
 
     companion object {
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForEøsStatsborgerskap {
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForStatsborgerskap {
             with(datagrunnlag) {
-                return ReglerForEøsStatsborgerskap(
+                return ReglerForStatsborgerskap(
                         periode = periode,
                         ytelse = ytelse,
                         regelMap = lagRegelMap(datagrunnlag)
@@ -36,7 +47,8 @@ class ReglerForEøsStatsborgerskap(
 
         private fun lagRegelMap(datagrunnlag: Datagrunnlag): Map<RegelId, Regel> {
             val regelListe = listOf(
-                    ErBrukerEøsBorgerRegel.fraDatagrunnlag(datagrunnlag)
+                    ErBrukerEøsBorgerRegel.fraDatagrunnlag(datagrunnlag),
+                    HarBrukerNorskStatsborgerskapRegel.fraDatagrunnlag(datagrunnlag)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()

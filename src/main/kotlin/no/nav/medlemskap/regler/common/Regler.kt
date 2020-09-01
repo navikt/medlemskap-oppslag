@@ -4,12 +4,20 @@ import no.nav.medlemskap.domene.Ytelse
 
 abstract class Regler(val ytelse: Ytelse, val regelMap: Map<RegelId, Regel> = emptyMap()) {
 
-    abstract fun hentRegelflyt(): Regelflyt
+    open fun hentRegelflyter(): List<Regelflyt> {
+        return listOf(hentHovedflyt())
+    }
 
-    fun kjørRegelflyt(): Resultat {
+    abstract fun hentHovedflyt(): Regelflyt
+
+    fun kjørRegelflyter(): List<Resultat> {
+        return hentRegelflyter().map {kjørRegelflyt(it)}
+    }
+
+    private fun kjørRegelflyt(regelflyt: Regelflyt): Resultat {
         val resultater: MutableList<Resultat> = mutableListOf()
 
-        val konklusjon = hentRegelflyt().utfør(resultater)
+        val konklusjon = regelflyt.utfør(resultater)
         return konklusjon.copy(delresultat = resultater.utenKonklusjon())
     }
 
