@@ -25,8 +25,8 @@ object PdlMapper {
         val bostedsadresser: List<Adresse> = person.bostedsadresse.map {
             Adresse(
                     landkode = "NOR",
-                    fom = convertToLocalDate(it.folkeregistermetadata!!.gyldighetstidspunkt),
-                    tom = convertToLocalDate(it.folkeregistermetadata.opphoerstidspunkt)
+                    fom = convertToLocalDate(it.folkeregistermetadata?.gyldighetstidspunkt),
+                    tom = convertToLocalDate(it.folkeregistermetadata?.opphoerstidspunkt)
             )
         }
 
