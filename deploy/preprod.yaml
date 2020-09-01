@@ -27,6 +27,7 @@ spec:
       memory: 128Mi
   ingresses:
     - https://medlemskap-oppslag.nais.preprod.local
+    - https://medlemskap-oppslag.dev.adeo.no
   replicas:
     min: 1
     max: 2
