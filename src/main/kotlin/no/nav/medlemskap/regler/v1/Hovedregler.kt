@@ -7,18 +7,18 @@ import no.nav.medlemskap.regler.common.Svar.NEI
 
 class Hovedregler(datagrunnlag: Datagrunnlag) {
     private val reglerForStatsborgerskap = ReglerForStatsborgerskap.fraDatagrunnlag(datagrunnlag)
-    private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
+    private val reglerForMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag)
     private val reglerForNorskeStatsborgere = ReglerForNorskeStatsborgere.fraDatagrunnlag(datagrunnlag)
     private val reglerForEøsBorgere = ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag)
     private val reglerForAndreStatsborgere = ReglerForAndreStatsborgere.fraDatagrunnlag(datagrunnlag)
     private val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag)
 
     fun kjørHovedregler(): Resultat {
-        val ytelse = reglerForRegistrerteOpplysninger.ytelse
+        val ytelse = reglerForMedl.ytelse
 
         val resultater = mutableListOf<Resultat>()
 
-        resultater.addAll(reglerForRegistrerteOpplysninger.kjørRegelflyter())
+        resultater.addAll(reglerForMedl.kjørRegelflyter())
         val resultatStatsborgerskap = reglerForStatsborgerskap.kjørRegelflyter()
         resultater.addAll(resultatStatsborgerskap)
         resultater.addAll(reglerForArbeidsforhold.kjørRegelflyter())

@@ -5,6 +5,10 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.v1.medlemskap.*
+import no.nav.medlemskap.regler.v1.registrerteOpplysninger.FinnesOpplysningerIGosysRegel
+import no.nav.medlemskap.regler.v1.registrerteOpplysninger.FinnesOpplysningerIJoarkRegel
+import no.nav.medlemskap.regler.v1.registrerteOpplysninger.FinnesOpplysningerIMedlRegel
+import no.nav.medlemskap.regler.v1.registrerteOpplysninger.HarBrukerRegistrerteOpplysningerRegel
 
 class ReglerForMedl(
         ytelse: Ytelse,
@@ -66,7 +70,15 @@ class ReglerForMedl(
                 hvisNei = konklusjonUavklart(ytelse)
         )
 
-        return erPerioderAvklartFlyt
+        val harBrukerRegistrerteOpplysningerFlyt = lagRegelflyt(
+                regel = hentRegel(REGEL_OPPLYSNINGER),
+                hvisJa = erPerioderAvklartFlyt,
+                hvisNei = regelflytJa(ytelse),
+                hvisUavklart = konklusjonUavklart(ytelse)
+        )
+
+
+        return harBrukerRegistrerteOpplysningerFlyt
     }
 
 
@@ -90,7 +102,11 @@ class ReglerForMedl(
                     ErPeriodeUtenMedlemskapInnenfor12MndPeriodeRegel.fraDatagrunnlag(datagrunnlag),
                     HarBrukerDekningIMedlRegel.fraDatagrunnlag(datagrunnlag),
                     PeriodeMedMedlemskapRegel.fraDatagrunnlag(datagrunnlag),
-                    PeriodeMedOgUtenMedlemskapRegel.fraDatagrunnlag(datagrunnlag)
+                    PeriodeMedOgUtenMedlemskapRegel.fraDatagrunnlag(datagrunnlag),
+                    FinnesOpplysningerIGosysRegel.fraDatagrunnlag(datagrunnlag),
+                    FinnesOpplysningerIJoarkRegel.fraDatagrunnlag(datagrunnlag),
+                    FinnesOpplysningerIMedlRegel.fraDatagrunnlag(datagrunnlag),
+                    HarBrukerRegistrerteOpplysningerRegel.fraDatagrunnlag(datagrunnlag)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()
