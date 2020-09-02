@@ -35,6 +35,8 @@ query($ident: ID!, $bostedHistorikk: Boolean!){
     bostedsadresse(historikk: true) {
       angittFlyttedato
       coAdressenavn
+      vegadresse { postnummer },
+      matrikkeladresse { postnummer },
       ukjentBosted {
         bostedskommune
       }
