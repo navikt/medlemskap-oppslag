@@ -33,6 +33,8 @@ Egenskap: Man er medlem i Folketrygden hvis man er EØS-borger og bor og jobber 
     ],
     "postadresser": [],
     "midlertidigAdresser": [],
+    "kontaktadresser": [],
+    "oppholdsadresser": [],
     "sivilstand": [],
     "familierelasjoner": []
   },
@@ -42,6 +44,8 @@ Egenskap: Man er medlem i Folketrygden hvis man er EØS-borger og bor og jobber 
     "bostedsadresser": [],
     "postadresser": [],
     "midlertidigAdresser": [],
+    "kontaktadresser": [],
+    "oppholdsadresser": [],
     "sivilstand": [],
     "familierelasjoner": []
   },

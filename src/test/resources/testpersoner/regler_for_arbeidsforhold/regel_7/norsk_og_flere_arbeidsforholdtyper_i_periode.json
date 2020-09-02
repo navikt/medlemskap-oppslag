@@ -17,6 +17,8 @@
     "personstatuser": [],
     "sivilstand" : [],
     "familierelasjoner" : [],
+    "kontaktadresser": [],
+    "oppholdsadresser": [],
     "bostedsadresser": [],
     "postadresser": [],
     "midlertidigAdresser": []
@@ -28,6 +30,8 @@
     "familierelasjoner" : [],
     "bostedsadresser" : [],
     "postadresser" : [],
+    "kontaktadresser": [],
+    "oppholdsadresser": [],
     "midlertidigAdresser" : []
   },
   "medlemskap": [],

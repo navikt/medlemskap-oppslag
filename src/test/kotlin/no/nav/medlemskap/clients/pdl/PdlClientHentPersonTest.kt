@@ -70,6 +70,7 @@ class PdlClientHentPersonTest {
             .withHeader("Nav-Consumer-Token", equalTo("Bearer dummytoken"))
 //.withRequestBody()
 
-    val pdlResponse = """{"data":{"hentPerson":{"adressebeskyttelse":[],"kjoenn":[{"kjoenn":"MANN"}],"familierelasjoner":[],"statsborgerskap":[{"land":"NOR","gyldigFraOgMed":"2010-10-21","gyldigTilOgMed":null}],"navn":[{"fornavn":"AREMARK","mellomnavn":null,"etternavn":"TESTFAMILIEN"}],"sivilstand":[{"type":"UGIFT","gyldigFraOgMed":"2010-02-21","relatertVedSivilstand":null,"folkeregistermetadata":{"ajourholdstidspunkt":"2020-02-19T10:36:54","gyldighetstidspunkt":"2020-02-19T10:36:54","opphoerstidspunkt":null}}],"bostedsadresse":[],"kontaktadresse":[]}}}""".trimIndent()
+    val pdlResponse = """
+            {"data": {"hentPerson":{"adressebeskyttelse":[],"kjoenn":[{"kjoenn":"MANN"}],"familierelasjoner":[],"statsborgerskap":[{"land":"NOR","gyldigFraOgMed":"2010-10-21","gyldigTilOgMed":null}],"navn":[{"fornavn":"AREMARK","mellomnavn":null,"etternavn":"TESTFAMILIEN"}],"sivilstand":[{"type":"UGIFT","gyldigFraOgMed":"2010-02-21","relatertVedSivilstand":null,"folkeregistermetadata":{"ajourholdstidspunkt":"2020-02-19T10:36:54","gyldighetstidspunkt":"2020-02-19T10:36:54","opphoerstidspunkt":null}}],"bostedsadresse":[],"kontaktadresse":[], "oppholdsadresse":[]}}}""".trimIndent()
 
 }

@@ -17,60 +17,20 @@ import java.time.format.DateTimeFormatter
 object PdlMapper {
     fun mapTilPersonHistorikk(person: HentPerson.Person): Personhistorikk {
 
-        val statsborgerskap: List<Statsborgerskap> = person.statsborgerskap
-                .map { mapStatsborgerskap(it) }
+        val statsborgerskap: List<Statsborgerskap> = person.statsborgerskap.map { mapStatsborgerskap(it) }
+        val sivilstand: List<Sivilstand> = mapSivilstander(person.sivilstand)
+        val bostedsadresser: List<Adresse> = person.bostedsadresse.map { mapBostedsadresse(it) }
 
-        val personstatuser: List<FolkeregisterPersonstatus> = emptyList()
-
-        val bostedsadresser: List<Adresse> = person.bostedsadresse.map {
-            Adresse(
-                    landkode = "NOR",
-                    fom = convertToLocalDate(it.folkeregistermetadata?.gyldighetstidspunkt),
-                    tom = convertToLocalDate(it.folkeregistermetadata?.opphoerstidspunkt)
-            )
-        }
-
-        val kontaktadresser: List<Kontaktadresse> = person.kontaktadresse.map {
-            Kontaktadresse(
-                fom = convertToLocalDate(it.gyldigFraOgMed),
-                tom = convertToLocalDate(it.gyldigTilOgMed),
-                type = mapKontaktAdressetype(it.type),
-                coAdressenavn = it.coAdressenavn,
-                utenlandskAdresse =
-                         UtenlandskAdresse(landkode = it.utenlandskAdresse?.landkode),
-                utenlandskAdresseIFrittFormat =
-                         UtenlandskAdresseIFrittFormat(landkode =
-                                it.utenlandskAdresseIFrittFormat!!.landkode),
-               folkeregistermetadata = mapFolkeregisterMetadata2(it.folkeregistermetadata)
-            )
-        }
-
-        val oppholdsadresser: List<Oppholdsadresse> = person.oppholdsadresse.map {
-            Oppholdsadresse(
-                    oppholdsadresseDato = convertToLocalDate(it.oppholdsadressedato),
-                    coAdressenavn = it.coAdressenavn,
-                    oppholdAnnetSted = it.oppholdAnnetSted,
-                    utenlandskAdresse = UtenlandskAdresse(
-                            it.utenlandskAdresse?.landkode
-                    ),
-                    folkeregistermetadata = mapFolkeregisterMetadata2(it.folkeregistermetadata)
-            )
-        }
-
+        val kontaktadresser: List<Kontaktadresse> = person.kontaktadresse.map { mapKontaktAdresse(it) }
+        val oppholdsadresser: List<Oppholdsadresse> = person.oppholdsadresse.map { mapOppholdsadresser(it) }
         val postadresser: List<Adresse> = emptyList()
         val midlertidigAdresser: List<Adresse> = emptyList()
-        val sivilstand: List<Sivilstand> = mapSivilstander(person.sivilstand)
 
         val familierelasjoner: List<Familierelasjon> = person.familierelasjoner
                 .filter { it.relatertPersonsRolle == HentPerson.Familierelasjonsrolle.BARN }
-                .map {
-                    Familierelasjon(
-                            relatertPersonsIdent = it.relatertPersonsIdent,
-                            relatertPersonsRolle = mapFamileRelasjonsrolle(it.relatertPersonsRolle)!!,
-                            minRolleForPerson = mapFamileRelasjonsrolle(it.minRolleForPerson),
-                            folkeregistermetadata = mapFolkeregisterMetadata(it.folkeregistermetadata)
-                    )
-                }
+                .map { mapFamilierelasjon(it) }
+
+        val personstatuser: List<FolkeregisterPersonstatus> = emptyList()
 
         return Personhistorikk(statsborgerskap = statsborgerskap,
                                personstatuser =  personstatuser,
@@ -82,7 +42,49 @@ object PdlMapper {
                                postadresser =  postadresser,
                                oppholdsadresser = oppholdsadresser)
     }
-    
+
+    private fun mapFamilierelasjon(familierelasjon: HentPerson.Familierelasjon): Familierelasjon {
+        return Familierelasjon(
+                relatertPersonsIdent = familierelasjon.relatertPersonsIdent,
+                relatertPersonsRolle = mapFamileRelasjonsrolle(familierelasjon.relatertPersonsRolle)!!,
+                minRolleForPerson = mapFamileRelasjonsrolle(familierelasjon.minRolleForPerson),
+                folkeregistermetadata = mapFolkeregisterMetadata(familierelasjon.folkeregistermetadata)
+        )
+    }
+
+    private fun mapOppholdsadresser(oppholdsadresse: HentPerson.Oppholdsadresse): Oppholdsadresse {
+        return Oppholdsadresse(
+                oppholdsadresseDato = convertToLocalDate(oppholdsadresse.oppholdsadressedato),
+                coAdressenavn = oppholdsadresse.coAdressenavn,
+                oppholdAnnetSted = oppholdsadresse.oppholdAnnetSted,
+                utenlandskAdresse = UtenlandskAdresse(
+                        landkode  = oppholdsadresse.utenlandskAdresse?.landkode),
+                folkeregistermetadata = mapFolkeregisterMetadata2(oppholdsadresse.folkeregistermetadata)
+        )
+    }
+
+    private fun mapKontaktAdresse(it: HentPerson.Kontaktadresse): Kontaktadresse {
+        return Kontaktadresse(
+                fom = convertToLocalDate(it.gyldigFraOgMed),
+                tom = convertToLocalDate(it.gyldigTilOgMed),
+                type = mapKontaktAdressetype(it.type),
+                coAdressenavn = it.coAdressenavn,
+                utenlandskAdresse = UtenlandskAdresse(
+                        landkode = it.utenlandskAdresse?.landkode),
+                utenlandskAdresseIFrittFormat = UtenlandskAdresseIFrittFormat(
+                        landkode = it.utenlandskAdresseIFrittFormat!!.landkode),
+                folkeregistermetadata = mapFolkeregisterMetadata2(it.folkeregistermetadata)
+        )
+    }
+
+    private fun mapBostedsadresse(bostedsadresse: HentPerson.Bostedsadresse): Adresse {
+        return Adresse(
+                landkode = "NOR",
+                fom = convertToLocalDate(bostedsadresse.folkeregistermetadata?.gyldighetstidspunkt),
+                tom = convertToLocalDate(bostedsadresse.folkeregistermetadata?.opphoerstidspunkt)
+        )
+    }
+
     fun mapPersonhistorikkTilEktefelle(fnr: String, person: HentPerson.Person): PersonhistorikkEktefelle {
         val barn = person.familierelasjoner
                 .filter { it.minRolleForPerson ==  HentPerson.Familierelasjonsrolle.BARN }
@@ -90,9 +92,7 @@ object PdlMapper {
                     PersonhistorikkBarn(
                             it.relatertPersonsIdent)
                 }
-
         return PersonhistorikkEktefelle(fnr, barn)
-
     }
 
     fun mapStatsborgerskap(it: HentPerson.Statsborgerskap): Statsborgerskap {

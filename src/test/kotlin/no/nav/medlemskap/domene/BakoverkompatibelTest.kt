@@ -316,7 +316,7 @@ private val forventetResponse = """
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
           } ],
-                   "kontaktadresser" : [ {
+         "kontaktadresser" : [ {
             "fom" : "1975-10-10",
             "tom" : "2020-08-01", 
             "type": "Innland", 

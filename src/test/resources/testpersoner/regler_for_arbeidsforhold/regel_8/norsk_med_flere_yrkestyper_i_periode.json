@@ -19,6 +19,8 @@
     "familierelasjoner" : [],
     "bostedsadresser": [],
     "postadresser": [],
+    "kontaktadresser": [],
+    "oppholdsadresser": [],
     "midlertidigAdresser": []
   },
   "pdlpersonhistorikk" : {
@@ -28,6 +30,8 @@
     "familierelasjoner" : [],
     "bostedsadresser" : [],
     "postadresser" : [],
+    "kontaktadresser": [],
+    "oppholdsadresser": [],
     "midlertidigAdresser" : []
   },
   "medlemskap": [],
