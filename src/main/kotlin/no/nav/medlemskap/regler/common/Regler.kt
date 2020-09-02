@@ -7,7 +7,7 @@ abstract class Regler(val ytelse: Ytelse, val regelMap: Map<RegelId, Regel> = em
     abstract fun hentRegelflyter(): List<Regelflyt>
 
     fun kjørRegelflyter(): List<Resultat> {
-        return hentRegelflyter().map {kjørRegelflyt(it)}
+        return hentRegelflyter().map { kjørRegelflyt(it) }
     }
 
     private fun kjørRegelflyt(regelflyt: Regelflyt): Resultat {

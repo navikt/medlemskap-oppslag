@@ -10,14 +10,6 @@ class Regelflyt(
         val hvisUavklart: Regelflyt? = null
 ) {
 
-    fun utfør(harDekning: Svar? = null, dekning: String = ""): Resultat {
-        val resultater = mutableListOf<Resultat>()
-
-        val konklusjon = utfør(resultater, harDekning, dekning)
-
-        return konklusjon.copy(delresultat = resultater.utenKonklusjon())
-    }
-
     fun utfør(resultatliste: MutableList<Resultat>, harDekning: Svar? = null, dekning: String = ""): Resultat {
         val resultat = regel.utfør()
 

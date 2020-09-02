@@ -50,25 +50,28 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
         }
     }
 
-    private fun utledResultat(ytelse: Ytelse, resultater: List<Resultat>): Resultat {
-        val medlemskonklusjon = resultater.find { it.erMedlemskonklusjon() }
-        if (medlemskonklusjon != null) {
-            return medlemskonklusjon.copy(delresultat = resultater.flatMap { it.delresultat }.utenKonklusjon())
+    companion object {
+        private fun utledResultat(ytelse: Ytelse, resultater: List<Resultat>): Resultat {
+            val medlemskonklusjon = resultater.find { it.erMedlemskonklusjon() }
+            if (medlemskonklusjon != null) {
+                return medlemskonklusjon.copy(delresultat = resultater.flatMap { it.delresultat }.utenKonklusjon())
+            }
+
+            val førsteNei = resultater.find { it.svar == NEI }
+            if (førsteNei != null) {
+                return neiResultat(ytelse).copy(delresultat = resultater.flatMap { it.delresultat }.utenKonklusjon())
+            }
+
+            return uavklartResultat(ytelse).copy(delresultat = resultater.flatMap { it.delresultat }.utenKonklusjon())
         }
 
-        val førsteNei = resultater.find { it.svar == NEI }
-        if (førsteNei != null) {
-            return neiResultat(ytelse).copy(delresultat = resultater.flatMap { it.delresultat }.utenKonklusjon())
+        private fun uavklartResultat(ytelse: Ytelse): Resultat {
+            return uavklartKonklusjon(ytelse).utfør()
         }
 
-        return uavklartResultat(ytelse).copy(delresultat = resultater.flatMap { it.delresultat }.utenKonklusjon())
-    }
+        private fun neiResultat(ytelse: Ytelse): Resultat {
+            return neiKonklusjon(ytelse).utfør()
+        }
 
-    private fun uavklartResultat(ytelse: Ytelse): Resultat {
-        return uavklartKonklusjon(ytelse).utfør()
-    }
-
-    private fun neiResultat(ytelse: Ytelse): Resultat {
-        return neiKonklusjon(ytelse).utfør()
     }
 }
