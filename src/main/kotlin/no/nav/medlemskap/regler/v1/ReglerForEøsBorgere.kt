@@ -14,13 +14,13 @@ class ReglerForEøsBorgere(
 ) : Regler(ytelse, regelMap) {
 
     override fun hentHovedflyt(): Regelflyt {
-        val harBrukerJobbetUtenforNorgeFlyt = lagRegelflyt(
-                regel = hentRegel(RegelId.REGEL_9),
-                hvisJa = konklusjonUavklart(ytelse),
-                hvisNei = regelflytJa(ytelse)
+        val erBrukerBosattINorgeFlyt = lagRegelflyt(
+                regel = hentRegel(RegelId.REGEL_10),
+                hvisJa = regelflytJa(ytelse),
+                hvisNei = konklusjonUavklart(ytelse)
         )
 
-        return harBrukerJobbetUtenforNorgeFlyt
+        return erBrukerBosattINorgeFlyt
     }
 
     override fun hentRegelflyter(): List<Regelflyt> {
@@ -108,15 +108,10 @@ class ReglerForEøsBorgere(
                 hvisNei = harBrukerUtenEktefelleBarnFlyt
         )
 
-        val erBrukerBosattINorgeFlyt = lagRegelflyt(
-                regel = hentRegel(RegelId.REGEL_10),
-                hvisJa = regelflytJa(ytelse),
-                hvisNei = konklusjonUavklart(ytelse)
-        )
+
 
         return listOf(
                 hentHovedflyt(),
-                erBrukerBosattINorgeFlyt,
                 harBrukerEktefelleFlyt
         )
     }
@@ -148,8 +143,7 @@ class ReglerForEøsBorgere(
                     HarBrukerJobbet80ProsentEllerMerRegel.fraDatagrunnlag (datagrunnlag, REGEL_11_2_3),
                     HarBrukerJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_3_1_1),
                     HarBrukerJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_2_1),
-                    ErBrukerBosattINorgeRegel.fraDatagrunnlag(datagrunnlag),
-                    HarBrukerJobbetUtenforNorgeRegel.fraDatagrunnlag(datagrunnlag)
+                    ErBrukerBosattINorgeRegel.fraDatagrunnlag(datagrunnlag)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()

@@ -568,14 +568,6 @@ private val forventetResponse = """
           "dekning" : "",
           "delresultat" : [ ]
         }, {
-          "regelId" : "REGEL_9",
-          "avklaring" : "Har bruker utført arbeid utenfor Norge?",
-          "begrunnelse" : "",
-          "svar" : "NEI",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
-        }, {
           "regelId" : "REGEL_10",
           "avklaring" : "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
           "begrunnelse" : "",

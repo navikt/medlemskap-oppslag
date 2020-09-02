@@ -61,10 +61,10 @@ Egenskap: Reglene 9 til 12
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge   |
       | 30.01.2020      | 30.01.2021      | <Har hatt arbeid utenfor Norge> |
 
-    Så skal svaret være "<Svar>"
+    Så skal svaret være "<Medlemskap>"
     Og skal regel "9" gi svaret "<Regel 9>"
 
     Eksempler:
-      | Har hatt arbeid utenfor Norge | Svar     | Regel 9 |
-      | Nei                           | Ja       | Nei     |
-      | Ja                            | Nei      | Ja      |
+      | Har hatt arbeid utenfor Norge | Medlemskap | Regel 9 |
+      | Nei                           | Ja         | Nei     |
+      | Ja                            | UAVKLART   | Ja      |
