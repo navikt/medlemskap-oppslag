@@ -14,6 +14,16 @@ class ReglerForEøsBorgere(
 ) : Regler(ytelse, regelMap) {
 
     override fun hentHovedflyt(): Regelflyt {
+        val harBrukerJobbetUtenforNorgeFlyt = lagRegelflyt(
+                regel = hentRegel(RegelId.REGEL_9),
+                hvisJa = konklusjonUavklart(ytelse),
+                hvisNei = regelflytJa(ytelse)
+        )
+
+        return harBrukerJobbetUtenforNorgeFlyt
+    }
+
+    override fun hentRegelflyter(): List<Regelflyt> {
         val harBrukerMedFolkeregistrerteBarnJobbetMerEnn80ProsentFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_11_2_3),
                 hvisJa = konklusjonJa(ytelse),
@@ -74,7 +84,6 @@ class ReglerForEøsBorgere(
                 hvisNei = harBrukerJobbetMerEnn100ProsentFlyt
         )
 
-
         val erBrukerMedFolkeregistrertEktefelleSittBarnFolkeregistrertFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_11_5),
                 hvisJa = harBrukerJobbetMerEnn80ProsentFlyt,
@@ -101,23 +110,15 @@ class ReglerForEøsBorgere(
 
         val erBrukerBosattINorgeFlyt = lagRegelflyt(
                 regel = hentRegel(RegelId.REGEL_10),
-                hvisJa = harBrukerEktefelleFlyt,
+                hvisJa = regelflytJa(ytelse),
                 hvisNei = konklusjonUavklart(ytelse)
         )
 
-        val harBrukerJobbetUtenforNorgeFlyt = lagRegelflyt(
-                regel = hentRegel(RegelId.REGEL_9),
-                hvisJa = konklusjonNei(ytelse),
-                hvisNei = erBrukerBosattINorgeFlyt
+        return listOf(
+                hentHovedflyt(),
+                erBrukerBosattINorgeFlyt,
+                harBrukerEktefelleFlyt
         )
-
-        return harBrukerJobbetUtenforNorgeFlyt
-    }
-
-    override fun hentRegelflyter(): List<Regelflyt> {
-
-
-        return listOf(hentHovedflyt())
     }
 
     companion object {
