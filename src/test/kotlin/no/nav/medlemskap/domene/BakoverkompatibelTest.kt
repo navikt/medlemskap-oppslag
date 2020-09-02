@@ -154,7 +154,9 @@ private fun personhistorikk(): Personhistorikk {
             postadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
             midlertidigAdresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
             sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr(), folkeregistermetadata())),
-            familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata()))
+            familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata())),
+            kontaktadresser = listOf(Kontaktadresse(enDato(), enAnnenDato(), KontaktadresseType.Innland, enAdresse(),  UtenlandskAdresse(landkode = "SWE"), UtenlandskAdresseIFrittFormat(landkode = "SWE"), folkeregistermetadata())),
+            oppholdsadresser = listOf(Oppholdsadresse(enDato(), enAdresse(), UtenlandskAdresse(landkode = "SWE"), "Oppholdannetsted", folkeregistermetadata()))
     )
 }
 
@@ -182,6 +184,7 @@ private fun barnFnr() = "0101201012345"
 private fun enDato() = LocalDate.of(1975, 10, 10)
 private fun enAnnenDato() = LocalDate.of(2020, 8, 1)
 private fun etTidspunkt() = LocalDateTime.of(2020, 6, 20, 10, 0)
+private fun enAdresse() = "Adresse"
 
 private val input = """
         {
@@ -214,20 +217,20 @@ private val forventetResponse = """
             "landkode" : "NOR",
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
-          } ],
+          }],
           "personstatuser" : [ {
             "personstatus" : "BOSA",
-            "fom" : "1975-10-10",
+            "fom": "1975-10-10",
             "tom" : "2020-08-01"
-          } ],
+          }],
           "bostedsadresser" : [ {
             "landkode" : "NOR",
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
-          } ],
-          "postadresser" : [ {
+          }],
+          "postadresser" : [{
             "landkode" : "NOR",
-            "fom" : "1975-10-10",
+            "fom": "1975-10-10",
             "tom" : "2020-08-01"
           } ],
           "midlertidigAdresser" : [ {
@@ -235,6 +238,36 @@ private val forventetResponse = """
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
           } ],
+          "kontaktadresser" : [ {
+            "fom" : "1975-10-10",
+            "tom" : "2020-08-01", 
+            "type": "Innland", 
+            "coAdressenavn": "Adresse", 
+            "utenlandskAdresse": {
+                "landkode" : "SWE"
+            }, 
+            "utenlandskAdresseIFrittFormat": {
+                "landkode": "SWE"
+            }, 
+            "folkeregistermetadata": {
+              "ajourholdstidspunkt": "2020-06-20T10:00:00",
+              "gyldighetstidspunkt": "2020-06-20T10:00:00",
+              "opphoerstidspunkt": "2020-06-20T10:00:00"
+            }
+          }],
+          "oppholdsadresser": [{
+            "oppholdsadresseDato": "1975-10-10", 
+            "coAdressenavn": "Adresse", 
+            "utenlandskAdresse": {
+                "landkode": "SWE"
+            }, 
+            "oppholdAnnetSted": "Oppholdannetsted", 
+            "folkeregistermetadata" : {
+              "ajourholdstidspunkt" : "2020-06-20T10:00:00",
+              "gyldighetstidspunkt" : "2020-06-20T10:00:00",
+              "opphoerstidspunkt" : "2020-06-20T10:00:00"
+            }
+          }],
           "sivilstand" : [ {
             "type" : "GIFT",
             "gyldigFraOgMed" : "1975-10-10",
@@ -283,6 +316,36 @@ private val forventetResponse = """
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
           } ],
+                   "kontaktadresser" : [ {
+            "fom" : "1975-10-10",
+            "tom" : "2020-08-01", 
+            "type": "Innland", 
+            "coAdressenavn": "Adresse", 
+            "utenlandskAdresse": {
+                "landkode" : "SWE"
+            }, 
+            "utenlandskAdresseIFrittFormat": {
+                "landkode": "SWE"
+            }, 
+            "folkeregistermetadata": {
+              "ajourholdstidspunkt": "2020-06-20T10:00:00",
+              "gyldighetstidspunkt": "2020-06-20T10:00:00",
+              "opphoerstidspunkt": "2020-06-20T10:00:00"
+            }
+          }],
+          "oppholdsadresser": [{
+            "oppholdsadresseDato": "1975-10-10", 
+            "coAdressenavn": "Adresse", 
+            "utenlandskAdresse": {
+                "landkode": "SWE"
+            }, 
+            "oppholdAnnetSted": "Oppholdannetsted", 
+            "folkeregistermetadata" : {
+              "ajourholdstidspunkt" : "2020-06-20T10:00:00",
+              "gyldighetstidspunkt" : "2020-06-20T10:00:00",
+              "opphoerstidspunkt" : "2020-06-20T10:00:00"
+            }
+          }],
           "sivilstand" : [ {
             "type" : "GIFT",
             "gyldigFraOgMed" : "1975-10-10",

@@ -40,8 +40,9 @@ suspend fun defaultCreateDatagrunnlag(
     val fnrTilEktefelle = hentFnrTilEktefelle(personHistorikkFraPdl)
     if(fnrTilEktefelle != null && gyldigFnr(fnrTilEktefelle)) {
              dataOmEktefelle = hentDataOmEktefelle(fnrTilEktefelle, services, callId, periode)
-    } else {
-    dataOmEktefelle = null
+    }
+    else {
+             dataOmEktefelle = null
     }
 
     val historikkFraTps = historikkFraTpsRequest.await()
@@ -50,8 +51,6 @@ suspend fun defaultCreateDatagrunnlag(
     val journalPoster = journalPosterRequest.await()
     val oppgaver = gosysOppgaver.await()
     val ytelse: Ytelse = finnYtelse(ytelseFraRequest, clientId)
-
-
 
     ytelseCounter(ytelse.metricName()).increment()
 

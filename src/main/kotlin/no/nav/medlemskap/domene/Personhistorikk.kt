@@ -1,5 +1,6 @@
 package no.nav.medlemskap.domene
 
+import no.nav.medlemskap.client.generated.pdl.HentPerson
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -10,7 +11,17 @@ data class Personhistorikk(
         val postadresser: List<Adresse>,
         val midlertidigAdresser: List<Adresse>,
         val sivilstand: List<Sivilstand>,
-        val familierelasjoner: List<Familierelasjon>
+        val familierelasjoner: List<Familierelasjon>,
+        val kontaktadresser: List<Kontaktadresse>,
+        val oppholdsadresser: List<Oppholdsadresse>
+)
+
+data class Oppholdsadresse(
+    val oppholdsadresseDato: LocalDate?,
+    val coAdressenavn: String?,
+    val utenlandskAdresse: UtenlandskAdresse,
+    val oppholdAnnetSted: String?,
+    val folkeregistermetadata: Folkeregistermetadata?
 )
 
 data class Statsborgerskap(
@@ -46,6 +57,29 @@ data class Adresse(
         val fom: LocalDate?,
         val tom: LocalDate?
 )
+
+data class Kontaktadresse(
+        val fom: LocalDate?,
+        val tom: LocalDate?,
+        val type: KontaktadresseType,
+        val coAdressenavn: String?,
+        val utenlandskAdresse: UtenlandskAdresse,
+        val utenlandskAdresseIFrittFormat: UtenlandskAdresseIFrittFormat,
+        val folkeregistermetadata: Folkeregistermetadata?
+)
+
+data class UtenlandskAdresse(
+        val landkode: String?
+)
+
+data class UtenlandskAdresseIFrittFormat(
+        val landkode: String
+)
+
+enum class KontaktadresseType{
+    Innland,
+    Utland
+}
 
 data class Sivilstand(
         val type: Sivilstandstype,
