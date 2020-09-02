@@ -20,7 +20,6 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
 
         resultater.addAll(reglerForRegistrerteOpplysninger.kjørRegelflyter())
         val resultatStatsborgerskap = reglerForStatsborgerskap.kjørRegelflyter()
-
         resultater.addAll(resultatStatsborgerskap)
         resultater.addAll(reglerForArbeidsforhold.kjørRegelflyter())
         resultater.addAll(bestemReglerForStatsborgerskap(resultatStatsborgerskap)

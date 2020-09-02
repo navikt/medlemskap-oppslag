@@ -114,6 +114,11 @@ class ReglerForEøsBorgere(
         return harBrukerJobbetUtenforNorgeFlyt
     }
 
+    override fun hentRegelflyter(): List<Regelflyt> {
+
+
+        return listOf(hentHovedflyt())
+    }
 
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForEøsBorgere {

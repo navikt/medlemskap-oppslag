@@ -16,15 +16,10 @@ class ReglerForNorskeStatsborgere(
 ) : Regler(ytelse, regelMap) {
 
     override fun hentHovedflyt(): Regelflyt {
-        val harBrukerJobbet25ProsentEllerMerFlyt = lagRegelflyt(
-                regel = hentRegel(REGEL_12),
-                hvisJa = konklusjonJa(ytelse),
-                hvisNei = konklusjonUavklart(ytelse)
-        )
 
         val erBrukerBosattINorgeFlyt = lagRegelflyt(
                 regel = hentRegel(RegelId.REGEL_10),
-                hvisJa = harBrukerJobbet25ProsentEllerMerFlyt,
+                hvisJa = regelflytJa(ytelse),
                 hvisNei = konklusjonUavklart(ytelse)
         )
 
@@ -37,6 +32,15 @@ class ReglerForNorskeStatsborgere(
         return harBrukerJobbetUtenforNorgeFlyt
     }
 
+    override fun hentRegelflyter(): List<Regelflyt> {
+        val harBrukerJobbet25ProsentEllerMerFlyt = lagRegelflyt(
+                regel = hentRegel(REGEL_12),
+                hvisJa = konklusjonJa(ytelse),
+                hvisNei = konklusjonUavklart(ytelse)
+        )
+
+        return listOf(hentHovedflyt(), harBrukerJobbet25ProsentEllerMerFlyt)
+    }
 
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForNorskeStatsborgere {
