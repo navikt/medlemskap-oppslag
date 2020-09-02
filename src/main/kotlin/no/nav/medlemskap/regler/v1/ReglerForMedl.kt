@@ -15,7 +15,7 @@ class ReglerForMedl(
         regelMap: Map<RegelId, Regel> = emptyMap()
 ) : Regler(ytelse, regelMap) {
 
-    override fun hentHovedflyt(): Regelflyt {
+    fun hentHovedflyt(): Regelflyt {
         val harBrukerDekningIMedlFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_1_7),
                 hvisJa = konklusjonJa(ytelse),
@@ -79,6 +79,10 @@ class ReglerForMedl(
 
 
         return harBrukerRegistrerteOpplysningerFlyt
+    }
+
+    override fun hentRegelflyter(): List<Regelflyt> {
+        return listOf(hentHovedflyt())
     }
 
 

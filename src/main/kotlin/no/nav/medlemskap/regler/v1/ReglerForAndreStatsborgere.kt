@@ -12,8 +12,8 @@ class ReglerForAndreStatsborgere(
         ytelse: Ytelse
 ) : Regler(ytelse) {
 
-    override fun hentHovedflyt(): Regelflyt {
-        return konklusjonUavklart(ytelse)
+    override fun hentRegelflyter(): List<Regelflyt> {
+        return listOf(konklusjonUavklart(ytelse))
     }
 
     companion object {

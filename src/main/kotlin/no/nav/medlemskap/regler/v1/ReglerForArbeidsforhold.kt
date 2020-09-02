@@ -12,7 +12,7 @@ class ReglerForArbeidsforhold(
         regelMap: Map<RegelId, Regel>
 ) : Regler(ytelse, regelMap) {
 
-    override fun hentHovedflyt(): Regelflyt {
+    fun hentHovedflyt(): Regelflyt {
         val harBrukerJobbetUtenforNorgeFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_9),
                 hvisJa = konklusjonUavklart(ytelse),
@@ -67,7 +67,6 @@ class ReglerForArbeidsforhold(
     override fun hentRegelflyter(): List<Regelflyt> {
         return listOf(hentHovedflyt())
     }
-
 
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForArbeidsforhold {

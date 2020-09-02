@@ -29,10 +29,6 @@ class ReglerForStatsborgerskap(
         return listOf(erBrukerEØSborgerFlyt, harBrukerNorskStatsborgerskapFlyt)
     }
 
-    override fun hentHovedflyt(): Regelflyt {
-        return hentRegelflyter()[0]
-    }
-
 
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForStatsborgerskap {

@@ -4,11 +4,7 @@ import no.nav.medlemskap.domene.Ytelse
 
 abstract class Regler(val ytelse: Ytelse, val regelMap: Map<RegelId, Regel> = emptyMap()) {
 
-    open fun hentRegelflyter(): List<Regelflyt> {
-        return listOf(hentHovedflyt())
-    }
-
-    abstract fun hentHovedflyt(): Regelflyt
+    abstract fun hentRegelflyter(): List<Regelflyt>
 
     fun kjørRegelflyter(): List<Resultat> {
         return hentRegelflyter().map {kjørRegelflyt(it)}
