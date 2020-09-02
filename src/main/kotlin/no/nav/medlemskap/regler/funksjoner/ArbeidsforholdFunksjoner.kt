@@ -47,7 +47,7 @@ object ArbeidsforholdFunksjoner {
 
     fun List<Arbeidsforhold>.registrerArbeidsgiver(kontrollPeriode: Kontrollperiode, ytelse: Ytelse) =
             this.filter { antallAnsatteHosArbeidsgivere(kontrollPeriode) finnesMindreEnn 6 }
-                    .forEach { antallTreffPåArbeidsgiver(it.arbeidsgiver.identifikator, ytelse) }
+                    .forEach { antallTreffPåArbeidsgiver(it.arbeidsgiver.identifikator, ytelse).increment() }
 
     fun List<Arbeidsforhold>.registrerAntallAnsatte(ytelse: Ytelse) =
             this.forEach {
@@ -55,7 +55,7 @@ object ArbeidsforholdFunksjoner {
                         it.arbeidsgiver.ansatte?.antall.toString(),
                         it.arbeidsgiver.identifikator,
                         ytelse
-                )
+                ).increment()
             }
 
     /**
