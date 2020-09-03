@@ -1,11 +1,6 @@
-import com.expediagroup.graphql.plugin.gradle.graphql
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import com.expediagroup.graphql.plugin.config.TimeoutConfig
-import com.expediagroup.graphql.plugin.generator.ScalarConverterMapping
-import com.expediagroup.graphql.plugin.gradle.tasks.GraphQLDownloadSDLTask
-import com.expediagroup.graphql.plugin.gradle.tasks.GraphQLIntrospectSchemaTask
 
 val ktorVersion = "1.3.2"
 val jacksonVersion = "2.10.5"
@@ -33,7 +28,7 @@ val xmlSchemaVersion = "2.2.5"
 val jaxwsToolsVersion = "2.3.1"
 val activationVersion = "1.1.1"
 
-//Temporary to fix high severity Snyk vulernabilities:
+// Temporary to fix high severity Snyk vulernabilities:
 val nettyCodecVersion = "4.1.46.Final"
 val commonsCodecVersion = "3.2.2"
 
@@ -46,12 +41,16 @@ plugins {
     id("com.github.johnrengelman.shadow") version "6.0.0"
     id("com.expediagroup.graphql") version "3.6.1"
     id("com.github.ben-manes.versions") version "0.29.0"
+    id("org.jlleitschuh.gradle.ktlint") version "9.3.0"
+    id("org.jlleitschuh.gradle.ktlint-idea") version "9.3.0"
 }
 
 val githubUser: String by project
 val githubPassword: String by project
-val filer: List<File> = listOf(file("${project.projectDir}/src/main/resources/pdl/hentFoedselsaar.graphql"),
-        file( "${project.projectDir}/src/main/resources/pdl/hentIdenter.graphql"))
+val filer: List<File> = listOf(
+    file("${project.projectDir}/src/main/resources/pdl/hentFoedselsaar.graphql"),
+    file("${project.projectDir}/src/main/resources/pdl/hentIdenter.graphql")
+)
 
 val graphqlDownloadSDL by tasks.getting(com.expediagroup.graphql.plugin.gradle.tasks.GraphQLDownloadSDLTask::class) {
     endpoint.set("https://navikt.github.io/saf/saf-api-sdl.graphqls")
@@ -71,10 +70,12 @@ val generatePdlClientTask = tasks.register<com.expediagroup.graphql.plugin.gradl
     packageName.set("no.nav.medlemskap.client.generated.pdl")
     schemaFile.set(downloadPdlSchemaTask.get().outputFile)
     outputDirectory.set(graphqlGenerateClient.outputDirectory)
-    queryFiles.from("${project.projectDir}/src/main/resources/pdl/hentFoedselsaar.graphql",
-            "${project.projectDir}/src/main/resources/pdl/hentIdenter.graphql",
-            "${project.projectDir}/src/main/resources/pdl/hentNasjonalitet.graphql",
-            "${project.projectDir}/src/main/resources/pdl/hentPerson.graphql")
+    queryFiles.from(
+        "${project.projectDir}/src/main/resources/pdl/hentFoedselsaar.graphql",
+        "${project.projectDir}/src/main/resources/pdl/hentIdenter.graphql",
+        "${project.projectDir}/src/main/resources/pdl/hentNasjonalitet.graphql",
+        "${project.projectDir}/src/main/resources/pdl/hentPerson.graphql"
+    )
     dependsOn("downloadPdlSchemaTask")
 }
 
@@ -135,7 +136,7 @@ dependencies {
     implementation("no.bekk.bekkopen:nocommons:$nocommonsVersion")
     implementation("com.expediagroup:graphql-kotlin-client:$graphqlKotlinClientVersion")
 
-    //Temporary to fix high severity Snyk vulernabilities:
+    // Temporary to fix high severity Snyk vulernabilities:
     implementation("io.netty:netty-codec:$nettyCodecVersion")
     implementation("commons-collections:commons-collections:$commonsCodecVersion")
 
@@ -149,16 +150,15 @@ dependencies {
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:$assertkVersion")
     testImplementation("io.rest-assured:rest-assured:$restAssuredVersion")
 
-    testImplementation("io.cucumber:cucumber-junit:${cucumberVersion}")
-    testImplementation("io.cucumber:cucumber-java8:${cucumberVersion}")
-    testImplementation("com.tngtech.archunit:archunit:${archUnitVersion}")
-    testImplementation("com.tngtech.archunit:archunit-junit5:${archUnitVersion}")
-    testImplementation("org.skyscreamer:jsonassert:${jsonassertVersion}")
+    testImplementation("io.cucumber:cucumber-junit:$cucumberVersion")
+    testImplementation("io.cucumber:cucumber-java8:$cucumberVersion")
+    testImplementation("com.tngtech.archunit:archunit:$archUnitVersion")
+    testImplementation("com.tngtech.archunit:archunit-junit5:$archUnitVersion")
+    testImplementation("org.skyscreamer:jsonassert:$jsonassertVersion")
 
-    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:${junitJupiterVersion}")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}")
+    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:$junitJupiterVersion")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
 }
-
 
 java {
     sourceCompatibility = JavaVersion.VERSION_11
@@ -167,7 +167,7 @@ java {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
-    dependsOn("generatePdlClientTask")
+    dependsOn("generatePdlClientTask", "ktlintFormat")
 }
 
 tasks.withType<Test> {
@@ -186,13 +186,21 @@ tasks.withType<ShadowJar> {
     archiveClassifier.set("")
     manifest {
         attributes(
-                mapOf(
-                        "Main-Class" to mainClass
-                )
+            mapOf(
+                "Main-Class" to mainClass
+            )
         )
     }
     transform(ServiceFileTransformer::class.java) {
         setPath("META-INF/cxf")
         include("bus-extensions.txt")
+    }
+}
+
+ktlint {
+    disabledRules.set(setOf("no-wildcard-imports"))
+    filter {
+        exclude("**/generated/**")
+        include("**/kotlin/**")
     }
 }
