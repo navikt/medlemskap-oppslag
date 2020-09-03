@@ -53,7 +53,6 @@ object ArbeidsforholdFunksjoner {
             this.forEach {
                 antallAnsatteTilUavklart(
                         it.arbeidsgiver.ansatte?.antall.toString(),
-                        it.arbeidsgiver.identifikator,
                         ytelse
                 ).increment()
             }
