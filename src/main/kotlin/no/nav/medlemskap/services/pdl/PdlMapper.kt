@@ -1,8 +1,8 @@
 package no.nav.medlemskap.services.pdl
 
-import no.nav.medlemskap.client.generated.pdl.HentFoedselsaar
-import no.nav.medlemskap.client.generated.pdl.HentNasjonalitet
-import no.nav.medlemskap.client.generated.pdl.HentPerson
+import no.nav.medlemskap.clients.pdl.generated.HentFoedselsaar
+import no.nav.medlemskap.clients.pdl.generated.HentNasjonalitet
+import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
 import no.nav.medlemskap.domene.*
@@ -46,10 +46,10 @@ object PdlMapper {
                 }
         return Personhistorikk(statsborgerskap, personstatuser, bostedsadresser, postadresser, midlertidigAdresser, sivilstand, familierelasjoner)
     }
-    
+
     fun mapPersonhistorikkTilEktefelle(fnr: String, person: HentPerson.Person): PersonhistorikkEktefelle {
         val barn = person.familierelasjoner
-                .filter { it.minRolleForPerson ==  HentPerson.Familierelasjonsrolle.BARN }
+                .filter { it.minRolleForPerson == HentPerson.Familierelasjonsrolle.BARN }
                 .map {
                     PersonhistorikkBarn(
                             it.relatertPersonsIdent)
@@ -87,8 +87,7 @@ object PdlMapper {
         }
     }
 
-    fun mapFolkeregisterMetadata2(folkeregistermetadata: HentPerson.Folkeregistermetadata2?): Folkeregistermetadata?
-    {
+    fun mapFolkeregisterMetadata2(folkeregistermetadata: HentPerson.Folkeregistermetadata2?): Folkeregistermetadata? {
         return folkeregistermetadata?.let {
             Folkeregistermetadata(
                     ajourholdstidspunkt = convertToLocalDateTime(it.ajourholdstidspunkt),
@@ -98,8 +97,7 @@ object PdlMapper {
         }
     }
 
-    fun mapFolkeregisterMetadata(folkeregistermetadata: HentPerson.Folkeregistermetadata?): Folkeregistermetadata?
-    {
+    fun mapFolkeregisterMetadata(folkeregistermetadata: HentPerson.Folkeregistermetadata?): Folkeregistermetadata? {
         return folkeregistermetadata?.let {
             Folkeregistermetadata(
                     ajourholdstidspunkt = convertToLocalDateTime(it.ajourholdstidspunkt),

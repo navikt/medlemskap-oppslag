@@ -6,10 +6,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.*
-import no.nav.medlemskap.client.generated.pdl.HentPerson.Sivilstand as PdlSivilstand
-import no.nav.medlemskap.client.generated.pdl.HentPerson.Sivilstandstype as PdlSivilstandstype
+import no.nav.medlemskap.clients.pdl.generated.HentPerson.Sivilstand as PdlSivilstand
+import no.nav.medlemskap.clients.pdl.generated.HentPerson.Sivilstandstype as PdlSivilstandstype
 
 class PdlSivilstandMapperTest {
 

@@ -1,8 +1,7 @@
 package no.nav.medlemskap.services.pdl
 
-import no.nav.medlemskap.client.generated.pdl.HentPerson
+import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
-import no.nav.medlemskap.services.pdl.PdlMapper.mapFolkeregisterMetadata
 import no.nav.medlemskap.services.pdl.PdlMapper.mapFolkeregisterMetadata2
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -18,16 +17,16 @@ object PdlSivilstandMapper {
                     convertToLocalDate(it.gyldigFraOgMed) ?: LocalDate.MIN
                 }
 
-            if (sivilstander.size < 2) {
-                return sivilstander.map {
-                    mapSivilstander(it)
-                }
+        if (sivilstander.size < 2) {
+            return sivilstander.map {
+                mapSivilstander(it)
             }
+        }
 
-            return sivilstander
-                    .zipWithNext { sivilstand, neste ->
-                        mapSivilstander(sivilstand, convertToLocalDate(neste.gyldigFraOgMed)?.minusDays(1))
-                    }.plus(mapSivilstander(sivilstander.last()))
+        return sivilstander
+                .zipWithNext { sivilstand, neste ->
+                    mapSivilstander(sivilstand, convertToLocalDate(neste.gyldigFraOgMed)?.minusDays(1))
+                }.plus(mapSivilstander(sivilstander.last()))
 
 
     }
@@ -36,7 +35,7 @@ object PdlSivilstandMapper {
         return LocalDate.parse(dateToConvert, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
-    private fun mapSivilstander(sivilstand: HentPerson.Sivilstand, gyldigTilOgMed: LocalDate? = null): no.nav.medlemskap.domene.Sivilstand{
+    private fun mapSivilstander(sivilstand: HentPerson.Sivilstand, gyldigTilOgMed: LocalDate? = null): no.nav.medlemskap.domene.Sivilstand {
         return no.nav.medlemskap.domene.Sivilstand(
                 type = mapSivilstandType(sivilstand.type),
                 gyldigFraOgMed = convertToLocalDate(sivilstand.gyldigFraOgMed),
