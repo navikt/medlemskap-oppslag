@@ -21,9 +21,28 @@ object PdlMapper {
         val statsborgerskap: List<Statsborgerskap> = person.statsborgerskap.map { mapStatsborgerskap(it) }
         val sivilstand: List<Sivilstand> = mapSivilstander(person.sivilstand)
         val bostedsadresser: List<Adresse> = person.bostedsadresse.map { mapBostedsadresse(it) }
-
         val kontaktadresser: List<Adresse> = person.kontaktadresse.map { mapKontaktAdresse(it) }
-        val oppholdsadresser: List<Adresse> = person.oppholdsadresse.map { mapOppholdsadresser(it) }
+
+        val pdlOppholdsadresser: List<HentPerson.Oppholdsadresse> = person.oppholdsadresse.sortedBy { it.gyldigFraOgMed }
+
+        val oppholdsadresser: List<Adresse> = pdlOppholdsadresser.mapIndexed { index, oppholdsadresse ->
+
+            val opphoerstidspunkt = convertToLocalDate(oppholdsadresse.folkeregistermetadata?.opphoerstidspunkt)
+
+            if(pdlOppholdsadresser.size < 2) {
+                mapOppholdsadresser(oppholdsadresse, opphoerstidspunkt)
+            }
+            if((pdlOppholdsadresser.size) - 1 == index) {
+                mapOppholdsadresser(oppholdsadresse, opphoerstidspunkt)
+            }
+            else {
+                val tom = convertToLocalDate(pdlOppholdsadresser.get(index + 1).gyldigFraOgMed)?.minusDays(1)
+                mapOppholdsadresser(oppholdsadresse, tom)
+            }
+        }
+
+
+
         val postadresser: List<Adresse> = emptyList()
         val midlertidigAdresser: List<Adresse> = emptyList()
 
@@ -44,6 +63,7 @@ object PdlMapper {
                 oppholdsadresser = oppholdsadresser)
     }
 
+
     private fun mapFamilierelasjon(familierelasjon: HentPerson.Familierelasjon): Familierelasjon {
         return Familierelasjon(
                 relatertPersonsIdent = familierelasjon.relatertPersonsIdent,
@@ -53,13 +73,15 @@ object PdlMapper {
         )
     }
 
-    private fun mapOppholdsadresser(oppholdsadresse: HentPerson.Oppholdsadresse): Adresse{
+    private fun mapOppholdsadresser(oppholdsadresse: HentPerson.Oppholdsadresse, tom: LocalDate?): Adresse{
+
         return Adresse(
-                fom = convertToLocalDate(oppholdsadresse.oppholdsadressedato),
+                fom = convertToLocalDate(oppholdsadresse.gyldigFraOgMed) ?: convertToLocalDate(oppholdsadresse.oppholdsadressedato),
                 tom = convertToLocalDate(oppholdsadresse.folkeregistermetadata?.opphoerstidspunkt),
                 landkode = mapLandkodeForOppholdsadresse(oppholdsadresse)
         )
     }
+
 
     private fun mapLandkodeForOppholdsadresse(oppholdsadresse: HentPerson.Oppholdsadresse): String {
         if(oppholdsadresse.utenlandskAdresse != null){
