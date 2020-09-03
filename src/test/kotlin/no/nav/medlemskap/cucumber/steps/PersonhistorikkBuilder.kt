@@ -10,8 +10,8 @@ class PersonhistorikkBuilder {
     val midlertidigAdresser= mutableListOf<Adresse>()
     val sivilstand = mutableListOf<Sivilstand>()
     val familierelasjoner = mutableListOf<Familierelasjon>()
-    val kontaktadresse = mutableListOf<Kontaktadresse>()
-    val oppholdsadresse = mutableListOf<Oppholdsadresse>()
+    val kontaktadresse = mutableListOf<Adresse>()
+    val oppholdsadresse = mutableListOf<Adresse>()
 
     fun build(): Personhistorikk {
         return Personhistorikk(

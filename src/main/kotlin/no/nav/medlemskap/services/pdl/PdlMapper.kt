@@ -9,6 +9,7 @@ import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
+import com.neovisionaries.i18n.LanguageAlpha3Code
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -21,8 +22,8 @@ object PdlMapper {
         val sivilstand: List<Sivilstand> = mapSivilstander(person.sivilstand)
         val bostedsadresser: List<Adresse> = person.bostedsadresse.map { mapBostedsadresse(it) }
 
-        val kontaktadresser: List<Kontaktadresse> = person.kontaktadresse.map { mapKontaktAdresse(it) }
-        val oppholdsadresser: List<Oppholdsadresse> = person.oppholdsadresse.map { mapOppholdsadresser(it) }
+        val kontaktadresser: List<Adresse> = person.kontaktadresse.map { mapKontaktAdresse(it) }
+        val oppholdsadresser: List<Adresse> = person.oppholdsadresse.map { mapOppholdsadresser(it) }
         val postadresser: List<Adresse> = emptyList()
         val midlertidigAdresser: List<Adresse> = emptyList()
 
@@ -33,14 +34,14 @@ object PdlMapper {
         val personstatuser: List<FolkeregisterPersonstatus> = emptyList()
 
         return Personhistorikk(statsborgerskap = statsborgerskap,
-                               personstatuser =  personstatuser,
-                               bostedsadresser = bostedsadresser,
-                               midlertidigAdresser = midlertidigAdresser,
-                               sivilstand = sivilstand,
-                               familierelasjoner = familierelasjoner,
-                               kontaktadresser = kontaktadresser,
-                               postadresser =  postadresser,
-                               oppholdsadresser = oppholdsadresser)
+                personstatuser = personstatuser,
+                bostedsadresser = bostedsadresser,
+                midlertidigAdresser = midlertidigAdresser,
+                sivilstand = sivilstand,
+                familierelasjoner = familierelasjoner,
+                kontaktadresser = kontaktadresser,
+                postadresser = postadresser,
+                oppholdsadresser = oppholdsadresser)
     }
 
     private fun mapFamilierelasjon(familierelasjon: HentPerson.Familierelasjon): Familierelasjon {
@@ -52,29 +53,38 @@ object PdlMapper {
         )
     }
 
-    private fun mapOppholdsadresser(oppholdsadresse: HentPerson.Oppholdsadresse): Oppholdsadresse {
-        return Oppholdsadresse(
-                oppholdsadresseDato = convertToLocalDate(oppholdsadresse.oppholdsadressedato),
-                coAdressenavn = oppholdsadresse.coAdressenavn,
-                oppholdAnnetSted = oppholdsadresse.oppholdAnnetSted,
-                utenlandskAdresse = UtenlandskAdresse(
-                        landkode  = oppholdsadresse.utenlandskAdresse?.landkode),
-                folkeregistermetadata = mapFolkeregisterMetadata2(oppholdsadresse.folkeregistermetadata)
+    private fun mapOppholdsadresser(oppholdsadresse: HentPerson.Oppholdsadresse): Adresse{
+        return Adresse(
+                fom = convertToLocalDate(oppholdsadresse.oppholdsadressedato),
+                tom = convertToLocalDate(oppholdsadresse.folkeregistermetadata?.opphoerstidspunkt),
+                landkode = mapLandkodeForOppholdsadresse(oppholdsadresse)
         )
     }
 
-    private fun mapKontaktAdresse(it: HentPerson.Kontaktadresse): Kontaktadresse {
-        return Kontaktadresse(
+    private fun mapLandkodeForOppholdsadresse(oppholdsadresse: HentPerson.Oppholdsadresse): String {
+        if(oppholdsadresse.utenlandskAdresse != null){
+            return LanguageAlpha3Code.getByCode(oppholdsadresse.utenlandskAdresse.landkode).name
+        }
+        return LanguageAlpha3Code.nor.name
+
+    }
+
+    private fun mapKontaktAdresse(it: HentPerson.Kontaktadresse): Adresse {
+        return Adresse(
                 fom = convertToLocalDate(it.gyldigFraOgMed),
                 tom = convertToLocalDate(it.gyldigTilOgMed),
-                type = mapKontaktAdressetype(it.type),
-                coAdressenavn = it.coAdressenavn,
-                utenlandskAdresse = UtenlandskAdresse(
-                        landkode = it.utenlandskAdresse?.landkode),
-                utenlandskAdresseIFrittFormat = UtenlandskAdresseIFrittFormat(
-                        landkode = it.utenlandskAdresseIFrittFormat!!.landkode),
-                folkeregistermetadata = mapFolkeregisterMetadata2(it.folkeregistermetadata)
+                landkode = mapLandkodeForKontaktadresse(it)
         )
+    }
+
+    private fun mapLandkodeForKontaktadresse(kontaktadresse: HentPerson.Kontaktadresse): String {
+        if (kontaktadresse.utenlandskAdresse  != null){
+            return LanguageAlpha3Code.getByCode(kontaktadresse.utenlandskAdresse.landkode).name
+        }
+        if(kontaktadresse.utenlandskAdresseIFrittFormat != null){
+            return LanguageAlpha3Code.getByCode(kontaktadresse.utenlandskAdresseIFrittFormat.landkode).name
+        }
+        return LanguageAlpha3Code.nor.name
     }
 
     private fun mapBostedsadresse(bostedsadresse: HentPerson.Bostedsadresse): Adresse {
@@ -109,16 +119,6 @@ object PdlMapper {
                 fom = convertToLocalDate(it.gyldigFraOgMed),
                 tom = convertToLocalDate(it.gyldigTilOgMed)
         )
-    }
-
-    private fun mapKontaktAdressetype(type: HentPerson.KontaktadresseType?): no.nav.medlemskap.domene.KontaktadresseType {
-        return type.let {
-            when (it) {
-                HentPerson.KontaktadresseType.Innland -> no.nav.medlemskap.domene.KontaktadresseType.Innland
-                HentPerson.KontaktadresseType.Utland-> no.nav.medlemskap.domene.KontaktadresseType.Utland
-                else -> throw DetteSkalAldriSkje("Denne kontaktadressetypen skal aldri skje")
-            }
-        }
     }
 
     private fun mapFamileRelasjonsrolle(rolle: HentPerson.Familierelasjonsrolle?): no.nav.medlemskap.domene.Familierelasjonsrolle? {

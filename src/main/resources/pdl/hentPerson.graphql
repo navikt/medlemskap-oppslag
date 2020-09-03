@@ -96,6 +96,7 @@ query($ident: ID!, $bostedHistorikk: Boolean!){
     oppholdsadresse(historikk: true) {
       oppholdsadressedato
       coAdressenavn
+      gyldigFraOgMed
       utenlandskAdresse {
         landkode
       }

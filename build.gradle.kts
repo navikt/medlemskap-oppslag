@@ -32,6 +32,7 @@ val jsonassertVersion = "1.5.0"
 val xmlSchemaVersion = "2.2.5"
 val jaxwsToolsVersion = "2.3.1"
 val activationVersion = "1.1.1"
+val nvi18nVersion = "1.27"
 
 //Temporary to fix high severity Snyk vulernabilities:
 val nettyCodecVersion = "4.1.46.Final"
@@ -134,6 +135,7 @@ dependencies {
     implementation("io.github.resilience4j:resilience4j-kotlin:$resilience4jVersion")
     implementation("no.bekk.bekkopen:nocommons:$nocommonsVersion")
     implementation("com.expediagroup:graphql-kotlin-client:$graphqlKotlinClientVersion")
+    implementation("com.neovisionaries:nv-i18n:$nvi18nVersion")
 
     //Temporary to fix high severity Snyk vulernabilities:
     implementation("io.netty:netty-codec:$nettyCodecVersion")

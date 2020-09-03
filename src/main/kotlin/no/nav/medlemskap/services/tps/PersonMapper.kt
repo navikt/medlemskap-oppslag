@@ -33,8 +33,8 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
         mapMidlertidigPostadresse(it)
     }
 
-    val kontaktadresse: List<Kontaktadresse> = emptyList()
-    val oppholdsadresse: List<Oppholdsadresse> = emptyList()
+    val kontaktadresse: List<Adresse> = emptyList()
+    val oppholdsadresse: List<Adresse> = emptyList()
     val sivilstand: List<Sivilstand> = emptyList()
 
     val familierelasjoner: List<Familierelasjon> = emptyList()
