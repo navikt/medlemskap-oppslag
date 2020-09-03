@@ -6,42 +6,42 @@ import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Svar.NEI
 
 class Hovedregler(datagrunnlag: Datagrunnlag) {
-    private val reglerForEøsStatsborgerskap = ReglerForEøsStatsborgerskap.fraDatagrunnlag(datagrunnlag)
-    private val reglerForNorskStatsborgerskap = ReglerForNorskStatsborgerskap.fraDatagrunnlag(datagrunnlag)
-    private val reglerForRegistrerteOpplysninger = ReglerForRegistrerteOpplysninger.fraDatagrunnlag(datagrunnlag)
+    private val reglerForStatsborgerskap = ReglerForStatsborgerskap.fraDatagrunnlag(datagrunnlag)
+    private val reglerForMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag)
     private val reglerForNorskeStatsborgere = ReglerForNorskeStatsborgere.fraDatagrunnlag(datagrunnlag)
     private val reglerForEøsBorgere = ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag)
     private val reglerForAndreStatsborgere = ReglerForAndreStatsborgere.fraDatagrunnlag(datagrunnlag)
     private val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag)
 
     fun kjørHovedregler(): Resultat {
-        val ytelse = reglerForRegistrerteOpplysninger.ytelse
+        val ytelse = reglerForMedl.ytelse
 
-        val resultatRegistrertOpplysninger = reglerForRegistrerteOpplysninger.kjørRegelflyt()
-        val resultatNorskStatsborgerskap = reglerForNorskStatsborgerskap.kjørRegelflyt()
-        val resultatEøsStatsborgerskap = reglerForEøsStatsborgerskap.kjørRegelflyt()
-        val resultatForStatborgerskap = bestemReglerForStatsborgerskap(resultatEøsStatsborgerskap, resultatNorskStatsborgerskap)
-                .kjørRegelflyt()
-        val resultatForArbeidsforhold = reglerForArbeidsforhold.kjørRegelflyt()
+        val resultater = mutableListOf<Resultat>()
 
-        val resultater = listOf(
-                resultatRegistrertOpplysninger,
-                resultatEøsStatsborgerskap,
-                resultatNorskStatsborgerskap,
-                resultatForArbeidsforhold,
-                resultatForStatborgerskap
-        )
+        resultater.addAll(reglerForMedl.kjørRegelflyter())
+        resultater.addAll(reglerForArbeidsforhold.kjørRegelflyter())
+
+        val resultatStatsborgerskap = reglerForStatsborgerskap.kjørRegelflyter()
+        resultater.addAll(resultatStatsborgerskap)
+        resultater.addAll(bestemReglerForStatsborgerskap(resultatStatsborgerskap)
+                .kjørRegelflyter())
 
         return utledResultat(ytelse, resultater)
     }
 
-    private fun bestemReglerForStatsborgerskap(resultatEøsStatsborgerskap: Resultat, resultatNorskStatsborgerskap: Resultat): Regler {
-        val erEøsBorger= resultatEøsStatsborgerskap.svar == Svar.JA
-        val erNorskstatsborger = resultatNorskStatsborgerskap.svar == Svar.JA
-
+    private fun bestemReglerForStatsborgerskap(resultatStatsborgerskap: List<Resultat>): Regler {
+        val resultatEøsStatsborgerskap = resultatStatsborgerskap
+                .flatMap { it.delresultat }
+                .first { it.regelId == RegelId.REGEL_2 }
+        val erEøsBorger = resultatEøsStatsborgerskap.svar == Svar.JA
         if (!erEøsBorger) {
             return reglerForAndreStatsborgere
         }
+
+        val resultatNorskStatsborgerskap = resultatStatsborgerskap
+                .flatMap { it.delresultat }
+                .first { it.regelId == RegelId.REGEL_11 }
+        val erNorskstatsborger = resultatNorskStatsborgerskap.svar == Svar.JA
 
         return if (erNorskstatsborger) {
             reglerForNorskeStatsborgere
@@ -50,25 +50,28 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
         }
     }
 
-    private fun utledResultat(ytelse: Ytelse, resultater: List<Resultat>): Resultat {
-        val medlemskonklusjon = resultater.find { it.erMedlemskonklusjon() }
-        if (medlemskonklusjon != null) {
-            return medlemskonklusjon.copy(delresultat = resultater.flatMap { it.delresultat }.utenKonklusjon())
+    companion object {
+        private fun utledResultat(ytelse: Ytelse, resultater: List<Resultat>): Resultat {
+            val medlemskonklusjon = resultater.find { it.erMedlemskonklusjon() }
+            if (medlemskonklusjon != null) {
+                return medlemskonklusjon.copy(delresultat = resultater.flatMap { it.delresultat }.utenKonklusjon())
+            }
+
+            val førsteNei = resultater.find { it.svar == NEI }
+            if (førsteNei != null) {
+                return neiResultat(ytelse).copy(delresultat = resultater.flatMap { it.delresultat }.utenKonklusjon())
+            }
+
+            return uavklartResultat(ytelse).copy(delresultat = resultater.flatMap { it.delresultat }.utenKonklusjon())
         }
 
-        val førsteNei = resultater.find { it.svar == NEI }
-        if (førsteNei != null) {
-            return neiResultat(ytelse).copy(delresultat = resultater.flatMap { it.delresultat }.utenKonklusjon())
+        private fun uavklartResultat(ytelse: Ytelse): Resultat {
+            return uavklartKonklusjon(ytelse).utfør()
         }
 
-        return uavklartResultat(ytelse).copy(delresultat = resultater.flatMap { it.delresultat }.utenKonklusjon())
-    }
+        private fun neiResultat(ytelse: Ytelse): Resultat {
+            return neiKonklusjon(ytelse).utfør()
+        }
 
-    private fun uavklartResultat(ytelse: Ytelse): Resultat {
-        return uavklartKonklusjon(ytelse).utfør()
-    }
-
-    private fun neiResultat(ytelse: Ytelse): Resultat {
-        return neiKonklusjon(ytelse).utfør()
     }
 }

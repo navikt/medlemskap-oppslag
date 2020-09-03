@@ -60,7 +60,7 @@ Egenskap: Regelflyt for reglene 11.5 for bruker som har ektefelle og barn. Ektef
   Scenario: Ett barn som er bosatt i Norge og ett som ikke er bosatt i Norge
     Gitt følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
-      | 01.01.2018      |                 | 001       | 100              |
+      | 01.01.2018      |                 | 001       | 80               |
 
     Og følgende familerelasjoner i personhistorikk fra TPS/PDL
       | Relatert persons ident | Relatert persons rolle | Min rolle for person |
@@ -96,3 +96,4 @@ Egenskap: Regelflyt for reglene 11.5 for bruker som har ektefelle og barn. Ektef
     Og skal regel "11.3" gi svaret "Ja"
     Og skal regel "11.4" gi svaret "Ja"
     Og skal regel "11.5" gi svaret "UAVKLART"
+    Og skal regel "11.5.2" gi svaret "Ja"

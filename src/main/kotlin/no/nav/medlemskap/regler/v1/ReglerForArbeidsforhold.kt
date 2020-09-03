@@ -5,23 +5,30 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.v1.arbeidsforhold.*
+import no.nav.medlemskap.regler.v1.lovvalg.HarBrukerJobbetUtenforNorgeRegel
 
 class ReglerForArbeidsforhold(
         ytelse: Ytelse,
         regelMap: Map<RegelId, Regel>
 ) : Regler(ytelse, regelMap) {
 
-    override fun hentRegelflyt(): Regelflyt {
+    fun hentHovedflyt(): Regelflyt {
+        val harBrukerJobbetUtenforNorgeFlyt = lagRegelflyt(
+                regel = hentRegel(REGEL_9),
+                hvisJa = konklusjonUavklart(ytelse),
+                hvisNei = regelflytJa(ytelse)
+        )
+
         val jobberBrukerPaaNorskSkipFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_7_1),
-                hvisJa = regelflytJa(ytelse),
+                hvisJa = harBrukerJobbetUtenforNorgeFlyt,
                 hvisNei = konklusjonUavklart(ytelse)
         )
 
         val erBrukerPilotEllerKabinansattFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_8),
                 hvisJa = konklusjonUavklart(ytelse),
-                hvisNei = regelflytJa(ytelse)
+                hvisNei = harBrukerJobbetUtenforNorgeFlyt
         )
 
         val erArbeidsforholdetMaritimtFlyt = lagRegelflyt(
@@ -57,6 +64,9 @@ class ReglerForArbeidsforhold(
         return harBrukerSammenhengendeArbeidsforholdSiste12MndFlyt
     }
 
+    override fun hentRegelflyter(): List<Regelflyt> {
+        return listOf(hentHovedflyt())
+    }
 
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForArbeidsforhold {
@@ -74,7 +84,8 @@ class ReglerForArbeidsforhold(
                     ErForetaketAktivtRegel.fraDatagrunnlag(datagrunnlag),
                     HarBrukerSammenhengendeArbeidsforholdRegel.fraDatagrunnlag(datagrunnlag),
                     HarForetaketMerEnn5AnsatteRegel.fraDatagrunnlag(datagrunnlag),
-                    JobberBrukerPaaNorskSkipRegel.fraDatagrunnlag(datagrunnlag)
+                    JobberBrukerPaaNorskSkipRegel.fraDatagrunnlag(datagrunnlag),
+                    HarBrukerJobbetUtenforNorgeRegel.fraDatagrunnlag(datagrunnlag)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()
