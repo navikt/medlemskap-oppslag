@@ -106,9 +106,9 @@ fun antallTreffPåArbeidsgiver(orgnummer: String?, ytelse: Ytelse): Counter = Co
         .description("counter for antall treff på en arbeidsgiver")
         .register(Metrics.globalRegistry)
 
-fun antallAnsatteTilUavklart(antall: String, orgnummer: String?, ytelse: Ytelse): Counter = Counter
+fun antallAnsatteTilUavklart(antall: String, ytelse: Ytelse): Counter = Counter
         .builder("antall_ansatte_uavklart")
-        .tags("antall", antall, "orgnummer", orgnummer, "ytelse", ytelse.metricName())
+        .tags("antall", antall, "ytelse", ytelse.metricName())
         .description("counter for antall ansatte til uavklart for en arbeidsgiver")
         .register(Metrics.globalRegistry)
 
