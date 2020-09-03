@@ -63,7 +63,7 @@ object PdlMapper {
 
     private fun mapLandkodeForOppholdsadresse(oppholdsadresse: HentPerson.Oppholdsadresse): String {
         if(oppholdsadresse.utenlandskAdresse != null){
-            return LanguageAlpha3Code.getByCode(oppholdsadresse.utenlandskAdresse.landkode).name
+            return LanguageAlpha3Code.getByCode(oppholdsadresse.utenlandskAdresse.landkode.toLowerCase()).name.toUpperCase()
         }
         return LanguageAlpha3Code.nor.name
 
@@ -79,12 +79,12 @@ object PdlMapper {
 
     private fun mapLandkodeForKontaktadresse(kontaktadresse: HentPerson.Kontaktadresse): String {
         if (kontaktadresse.utenlandskAdresse  != null){
-            return LanguageAlpha3Code.getByCode(kontaktadresse.utenlandskAdresse.landkode).name
+            return LanguageAlpha3Code.getByCode(kontaktadresse.utenlandskAdresse.landkode.toLowerCase()).name.toUpperCase()
         }
         if(kontaktadresse.utenlandskAdresseIFrittFormat != null){
-            return LanguageAlpha3Code.getByCode(kontaktadresse.utenlandskAdresseIFrittFormat.landkode).name
+            return LanguageAlpha3Code.getByCode(kontaktadresse.utenlandskAdresseIFrittFormat.landkode.toLowerCase()).name.toUpperCase()
         }
-        return LanguageAlpha3Code.nor.name
+        return LanguageAlpha3Code.nor.name.toUpperCase()
     }
 
     private fun mapBostedsadresse(bostedsadresse: HentPerson.Bostedsadresse): Adresse {
