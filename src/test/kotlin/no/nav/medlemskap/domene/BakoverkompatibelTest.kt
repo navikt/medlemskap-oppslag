@@ -520,22 +520,6 @@ private val forventetResponse = """
           "dekning" : "",
           "delresultat" : [ ]
         }, {
-          "regelId" : "REGEL_2",
-          "avklaring" : "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?",
-          "begrunnelse" : "",
-          "svar" : "JA",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
-        }, {
-          "regelId" : "REGEL_11",
-          "avklaring" : "Er bruker norsk statsborger?",
-          "begrunnelse" : "",
-          "svar" : "JA",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
-        }, {
           "regelId" : "REGEL_3",
           "avklaring" : "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?",
           "begrunnelse" : "",
@@ -568,10 +552,18 @@ private val forventetResponse = """
           "dekning" : "",
           "delresultat" : [ ]
         }, {
-          "regelId" : "REGEL_9",
-          "avklaring" : "Har bruker utført arbeid utenfor Norge?",
+          "regelId" : "REGEL_2",
+          "avklaring" : "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?",
           "begrunnelse" : "",
-          "svar" : "NEI",
+          "svar" : "JA",
+          "harDekning" : null,
+          "dekning" : "",
+          "delresultat" : [ ]
+        }, {
+          "regelId" : "REGEL_11",
+          "avklaring" : "Er bruker norsk statsborger?",
+          "begrunnelse" : "",
+          "svar" : "JA",
           "harDekning" : null,
           "dekning" : "",
           "delresultat" : [ ]

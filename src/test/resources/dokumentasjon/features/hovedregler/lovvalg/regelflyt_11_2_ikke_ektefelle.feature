@@ -87,7 +87,7 @@ Egenskap: Regelflyt for reglene 11.2.x for bruker som ikke har ektefelle i TPS/P
 
     Og følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
-      | 01.01.2018      |                 | 001       | 100              |
+      | 01.01.2018      |                 | 001       | 80               |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
@@ -98,6 +98,7 @@ Egenskap: Regelflyt for reglene 11.2.x for bruker som ikke har ektefelle i TPS/P
     Og skal regel "11.2" gi svaret "Nei"
     Og skal regel "11.2.1" gi svaret "Ja"
     Og skal regel "11.2.2" gi svaret "UAVKLART"
+    Og skal regel "11.2.2.2" gi svaret "Ja"
 
   Scenariomal: Bruker uten ektefelle og med barn som ikke bor i Norge må ha minst 100 % stilling for å få "Ja"
     Gitt følgende familerelasjoner i personhistorikk fra TPS/PDL

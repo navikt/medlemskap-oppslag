@@ -7,7 +7,6 @@ import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.REGEL_12
 import no.nav.medlemskap.regler.v1.lovvalg.ErBrukerBosattINorgeRegel
 import no.nav.medlemskap.regler.v1.lovvalg.HarBrukerJobbet25ProsentEllerMerRegel
-import no.nav.medlemskap.regler.v1.lovvalg.HarBrukerJobbetUtenforNorgeRegel
 
 class ReglerForNorskeStatsborgere(
         val periode: InputPeriode,
@@ -15,28 +14,25 @@ class ReglerForNorskeStatsborgere(
         regelMap: Map<RegelId, Regel>
 ) : Regler(ytelse, regelMap) {
 
-    override fun hentRegelflyt(): Regelflyt {
+    fun hentHovedflyt(): Regelflyt {
+        val erBrukerBosattINorgeFlyt = lagRegelflyt(
+                regel = hentRegel(RegelId.REGEL_10),
+                hvisJa = regelflytJa(ytelse),
+                hvisNei = konklusjonUavklart(ytelse)
+        )
+
+        return erBrukerBosattINorgeFlyt
+    }
+
+    override fun hentRegelflyter(): List<Regelflyt> {
         val harBrukerJobbet25ProsentEllerMerFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_12),
                 hvisJa = konklusjonJa(ytelse),
                 hvisNei = konklusjonUavklart(ytelse)
         )
 
-        val erBrukerBosattINorgeFlyt = lagRegelflyt(
-                regel = hentRegel(RegelId.REGEL_10),
-                hvisJa = harBrukerJobbet25ProsentEllerMerFlyt,
-                hvisNei = konklusjonUavklart(ytelse)
-        )
-
-        val harBrukerJobbetUtenforNorgeFlyt = lagRegelflyt(
-                regel = hentRegel(RegelId.REGEL_9),
-                hvisJa = konklusjonNei(ytelse),
-                hvisNei = erBrukerBosattINorgeFlyt
-        )
-
-        return harBrukerJobbetUtenforNorgeFlyt
+        return listOf(hentHovedflyt(), harBrukerJobbet25ProsentEllerMerFlyt)
     }
-
 
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForNorskeStatsborgere {
@@ -52,8 +48,7 @@ class ReglerForNorskeStatsborgere(
         private fun lagRegelMap(datagrunnlag: Datagrunnlag): Map<RegelId, Regel> {
             val regelListe = listOf(
                     HarBrukerJobbet25ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag),
-                    ErBrukerBosattINorgeRegel.fraDatagrunnlag(datagrunnlag),
-                    HarBrukerJobbetUtenforNorgeRegel.fraDatagrunnlag(datagrunnlag)
+                    ErBrukerBosattINorgeRegel.fraDatagrunnlag(datagrunnlag)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()

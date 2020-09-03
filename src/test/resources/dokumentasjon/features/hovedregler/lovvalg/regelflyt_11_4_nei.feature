@@ -152,3 +152,4 @@ Egenskap: Regelflyt for reglene 11.4.1 for bruker som har ektefelle og barn. Ekt
     Og skal regel "11.3" gi svaret "Ja"
     Og skal regel "11.4" gi svaret "Nei"
     Og skal regel "11.4.1" gi svaret "UAVKLART"
+    Og skal regel "11.4.2" gi svaret "Ja"

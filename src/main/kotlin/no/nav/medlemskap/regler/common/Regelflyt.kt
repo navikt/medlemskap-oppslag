@@ -9,6 +9,7 @@ class Regelflyt(
         val hvisNei: Regelflyt? = null,
         val hvisUavklart: Regelflyt? = null
 ) {
+
     fun utfør(resultatliste: MutableList<Resultat>, harDekning: Svar? = null, dekning: String = ""): Resultat {
         val resultat = regel.utfør()
 
