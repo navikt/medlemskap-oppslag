@@ -19,9 +19,9 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
         val resultater = mutableListOf<Resultat>()
 
         resultater.addAll(reglerForMedl.kjørRegelflyter())
-        val resultatStatsborgerskap = reglerForStatsborgerskap.kjørRegelflyter()
         resultater.addAll(reglerForArbeidsforhold.kjørRegelflyter())
 
+        val resultatStatsborgerskap = reglerForStatsborgerskap.kjørRegelflyter()
         resultater.addAll(resultatStatsborgerskap)
         resultater.addAll(bestemReglerForStatsborgerskap(resultatStatsborgerskap)
                 .kjørRegelflyter())
