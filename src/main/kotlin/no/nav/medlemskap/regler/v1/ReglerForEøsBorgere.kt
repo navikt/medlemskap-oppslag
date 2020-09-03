@@ -24,6 +24,30 @@ class ReglerForEøsBorgere(
     }
 
     override fun hentRegelflyter(): List<Regelflyt> {
+        val harBrukerMedBarn80ProsenStillingEllerMerRegelFlyt = lagRegelflyt(
+                regel = hentRegel(REGEL_11_2_2_2),
+                hvisJa = konklusjonUavklart(ytelse),
+                hvisNei = konklusjonUavklart(ytelse)
+        )
+
+        val harBrukerMedBarnOgEktefelle80ProsentStillingEllerMerRegelFlyt = lagRegelflyt(
+                regel = hentRegel(REGEL_11_5_2),
+                hvisJa = konklusjonUavklart(ytelse),
+                hvisNei = konklusjonUavklart(ytelse)
+        )
+
+        val harBrukerUtenFolkeregistrertEktefelleStillingsprosent100EllerMerRegelFlyt = lagRegelflyt(
+                regel = hentRegel(REGEL_11_4_2),
+                hvisJa = konklusjonUavklart(ytelse),
+                hvisNei = konklusjonUavklart(ytelse)
+        )
+
+        val harBrukerMedFolkeregistrertEktefelleStillingsprosent100EllerMerRegelFlyt = lagRegelflyt(
+                regel = hentRegel(REGEL_11_5_3),
+                hvisJa = konklusjonUavklart(ytelse),
+                hvisNei = konklusjonUavklart(ytelse)
+        )
+
         val harBrukerMedFolkeregistrerteBarnJobbetMerEnn80ProsentFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_11_2_3),
                 hvisJa = konklusjonJa(ytelse),
@@ -39,7 +63,8 @@ class ReglerForEøsBorgere(
         val harBrukerUtenEktefelleBarnSomErFolkeregistrertFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_11_2_2),
                 hvisJa = harBrukerMedFolkeregistrerteBarnJobbetMerEnn80ProsentFlyt,
-                hvisNei = harBrukerJobbetMerEnn100ProsentFlyt
+                hvisNei = harBrukerJobbetMerEnn100ProsentFlyt,
+                hvisUavklart = harBrukerMedBarn80ProsenStillingEllerMerRegelFlyt
         )
 
         val harBrukerUtenEktefelleBarnFlyt = lagRegelflyt(
@@ -75,19 +100,22 @@ class ReglerForEøsBorgere(
         val erBrukersEktefelleOgBarnasMorSammePersonFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_11_5_1),
                 hvisJa = konklusjonUavklart(ytelse),
-                hvisNei = harBrukerJobbetMerEnn100ProsentFlyt
+                hvisNei = harBrukerJobbetMerEnn100ProsentFlyt,
+                hvisUavklart = harBrukerMedFolkeregistrertEktefelleStillingsprosent100EllerMerRegelFlyt
         )
 
         val erBrukerUtenFolkeregistrertEktefelleSittBarnFolkeregistrertFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_11_4_1),
                 hvisJa = erBrukersEktefelleOgBarnasMorSammePersonFlyt,
-                hvisNei = harBrukerJobbetMerEnn100ProsentFlyt
+                hvisNei = harBrukerJobbetMerEnn100ProsentFlyt,
+                hvisUavklart = harBrukerUtenFolkeregistrertEktefelleStillingsprosent100EllerMerRegelFlyt
         )
 
         val erBrukerMedFolkeregistrertEktefelleSittBarnFolkeregistrertFlyt = lagRegelflyt(
                 regel = hentRegel(REGEL_11_5),
                 hvisJa = harBrukerJobbetMerEnn80ProsentFlyt,
-                hvisNei = konklusjonUavklart(ytelse)
+                hvisNei = konklusjonUavklart(ytelse),
+                hvisUavklart = harBrukerMedBarnOgEktefelle80ProsentStillingEllerMerRegelFlyt
         )
 
         val erBrukerMedBarnSittEktefelleBosattINorgeFlyt = lagRegelflyt(
@@ -143,6 +171,10 @@ class ReglerForEøsBorgere(
                     HarBrukerJobbet80ProsentEllerMerRegel.fraDatagrunnlag (datagrunnlag, REGEL_11_2_3),
                     HarBrukerJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_3_1_1),
                     HarBrukerJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_2_1),
+                    HarBrukerJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_4_2),
+                    HarBrukerJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_5_3),
+                    HarBrukerJobbet80ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_2_2),
+                    HarBrukerJobbet80ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_5_2),
                     ErBrukerBosattINorgeRegel.fraDatagrunnlag(datagrunnlag)
             )
 
