@@ -360,7 +360,10 @@ class TjenesteKallFeilmeldingerTest {
                 postadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
                 midlertidigAdresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
                 sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr(), folkeregistermetadata())),
-                familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata()))
+                familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata())),
+                kontaktadresser = emptyList(),
+                oppholdsadresser = emptyList()
+
         )
     }
 

@@ -1,5 +1,4 @@
 package no.nav.medlemskap.domene
-
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -10,7 +9,9 @@ data class Personhistorikk(
         val postadresser: List<Adresse>,
         val midlertidigAdresser: List<Adresse>,
         val sivilstand: List<Sivilstand>,
-        val familierelasjoner: List<Familierelasjon>
+        val familierelasjoner: List<Familierelasjon>,
+        val kontaktadresser: List<Adresse>,
+        val oppholdsadresser: List<Adresse>
 )
 
 data class Statsborgerskap(

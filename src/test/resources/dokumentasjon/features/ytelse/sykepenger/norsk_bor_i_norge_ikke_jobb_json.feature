@@ -33,6 +33,8 @@ Egenskap: Man er medlem i Folketrygden hvis man bor i Norge eller jobber i Norge
     ],
     "postadresser": [],
     "midlertidigAdresser": [],
+    "kontaktadresser": [],
+    "oppholdsadresser": [],
     "sivilstand": [],
     "familierelasjoner": []
   },
@@ -42,6 +44,8 @@ Egenskap: Man er medlem i Folketrygden hvis man bor i Norge eller jobber i Norge
     "bostedsadresser": [],
     "postadresser": [],
     "midlertidigAdresser": [],
+    "kontaktadresser": [],
+    "oppholdsadresser": [],
     "sivilstand": [],
     "familierelasjoner": []
   },

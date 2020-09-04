@@ -33,6 +33,8 @@ Egenskap: Borgere som ikke er EØS-borgere skal ha uavklart medlemskap i MVP
     ],
     "postadresser": [],
     "midlertidigAdresser": [],
+    "kontaktadresser": [],
+    "oppholdsadresser": [],
     "sivilstand": [],
     "familierelasjoner": []
   },
@@ -42,6 +44,8 @@ Egenskap: Borgere som ikke er EØS-borgere skal ha uavklart medlemskap i MVP
     "bostedsadresser": [],
     "postadresser": [],
     "midlertidigAdresser": [],
+    "kontaktadresser": [],
+    "oppholdsadresser": [],
     "sivilstand": [],
     "familierelasjoner": []
   },
