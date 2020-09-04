@@ -1,15 +1,15 @@
 package no.nav.medlemskap.services.pdl
 
-import no.nav.medlemskap.client.generated.pdl.HentFoedselsaar
-import no.nav.medlemskap.client.generated.pdl.HentNasjonalitet
-import no.nav.medlemskap.client.generated.pdl.HentPerson
+import com.neovisionaries.i18n.LanguageAlpha3Code
+import no.nav.medlemskap.clients.pdl.generated.HentFoedselsaar
+import no.nav.medlemskap.clients.pdl.generated.HentNasjonalitet
+import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
-import com.neovisionaries.i18n.LanguageAlpha3Code
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -29,18 +29,16 @@ object PdlMapper {
 
             val opphoerstidspunkt = convertToLocalDate(oppholdsadresse.folkeregistermetadata?.opphoerstidspunkt)
 
-            if(pdlOppholdsadresser.size < 2) {
+            if (pdlOppholdsadresser.size < 2) {
                 mapOppholdsadresser(oppholdsadresse, opphoerstidspunkt)
             }
-            if((pdlOppholdsadresser.size) - 1 == index) {
+            if ((pdlOppholdsadresser.size) - 1 == index) {
                 mapOppholdsadresser(oppholdsadresse, opphoerstidspunkt)
-            }
-            else {
+            } else {
                 val tom = convertToLocalDate(pdlOppholdsadresser.get(index + 1).gyldigFraOgMed)?.minusDays(1)
                 mapOppholdsadresser(oppholdsadresse, tom)
             }
         }
-
 
 
         val postadresser: List<Adresse> = emptyList()
@@ -63,7 +61,6 @@ object PdlMapper {
                 oppholdsadresser = oppholdsadresser)
     }
 
-
     private fun mapFamilierelasjon(familierelasjon: HentPerson.Familierelasjon): Familierelasjon {
         return Familierelasjon(
                 relatertPersonsIdent = familierelasjon.relatertPersonsIdent,
@@ -73,10 +70,11 @@ object PdlMapper {
         )
     }
 
-    private fun mapOppholdsadresser(oppholdsadresse: HentPerson.Oppholdsadresse, tom: LocalDate?): Adresse{
+    private fun mapOppholdsadresser(oppholdsadresse: HentPerson.Oppholdsadresse, tom: LocalDate?): Adresse {
 
         return Adresse(
-                fom = convertToLocalDate(oppholdsadresse.gyldigFraOgMed) ?: convertToLocalDate(oppholdsadresse.oppholdsadressedato),
+                fom = convertToLocalDate(oppholdsadresse.gyldigFraOgMed)
+                        ?: convertToLocalDate(oppholdsadresse.oppholdsadressedato),
                 tom = convertToLocalDate(oppholdsadresse.folkeregistermetadata?.opphoerstidspunkt),
                 landkode = mapLandkodeForOppholdsadresse(oppholdsadresse)
         )
@@ -84,8 +82,8 @@ object PdlMapper {
 
 
     private fun mapLandkodeForOppholdsadresse(oppholdsadresse: HentPerson.Oppholdsadresse): String {
-        if(oppholdsadresse.utenlandskAdresse != null){
-            return LanguageAlpha3Code.getByCode(oppholdsadresse.utenlandskAdresse.landkode.toLowerCase()).name.toUpperCase()
+        if (oppholdsadresse.utenlandskAdresse != null) {
+            return LanguageAlpha3Code.getByCode(oppholdsadresse.utenlandskAdresse!!.landkode.toLowerCase()).name.toUpperCase()
         }
         return LanguageAlpha3Code.nor.name
 
@@ -100,11 +98,11 @@ object PdlMapper {
     }
 
     private fun mapLandkodeForKontaktadresse(kontaktadresse: HentPerson.Kontaktadresse): String {
-        if (kontaktadresse.utenlandskAdresse  != null){
-            return LanguageAlpha3Code.getByCode(kontaktadresse.utenlandskAdresse.landkode.toLowerCase()).name.toUpperCase()
+        if (kontaktadresse.utenlandskAdresse != null) {
+            return LanguageAlpha3Code.getByCode(kontaktadresse.utenlandskAdresse!!.landkode.toLowerCase()).name.toUpperCase()
         }
-        if(kontaktadresse.utenlandskAdresseIFrittFormat != null){
-            return LanguageAlpha3Code.getByCode(kontaktadresse.utenlandskAdresseIFrittFormat.landkode.toLowerCase()).name.toUpperCase()
+        if (kontaktadresse.utenlandskAdresseIFrittFormat != null) {
+            return LanguageAlpha3Code.getByCode(kontaktadresse.utenlandskAdresseIFrittFormat!!.landkode.toLowerCase()).name.toUpperCase()
         }
         return LanguageAlpha3Code.nor.name.toUpperCase()
     }
@@ -119,7 +117,7 @@ object PdlMapper {
 
     fun mapPersonhistorikkTilEktefelle(fnr: String, person: HentPerson.Person): PersonhistorikkEktefelle {
         val barn = person.familierelasjoner
-                .filter { it.minRolleForPerson ==  HentPerson.Familierelasjonsrolle.BARN }
+                .filter { it.minRolleForPerson == HentPerson.Familierelasjonsrolle.BARN }
                 .map {
                     PersonhistorikkBarn(
                             it.relatertPersonsIdent)
@@ -155,8 +153,7 @@ object PdlMapper {
         }
     }
 
-    fun mapFolkeregisterMetadata2(folkeregistermetadata: HentPerson.Folkeregistermetadata2?): Folkeregistermetadata?
-    {
+    fun mapFolkeregisterMetadata2(folkeregistermetadata: HentPerson.Folkeregistermetadata2?): Folkeregistermetadata? {
         return folkeregistermetadata?.let {
             Folkeregistermetadata(
                     ajourholdstidspunkt = convertToLocalDateTime(it.ajourholdstidspunkt),
@@ -166,8 +163,7 @@ object PdlMapper {
         }
     }
 
-    fun mapFolkeregisterMetadata(folkeregistermetadata: HentPerson.Folkeregistermetadata?): Folkeregistermetadata?
-    {
+    fun mapFolkeregisterMetadata(folkeregistermetadata: HentPerson.Folkeregistermetadata?): Folkeregistermetadata? {
         return folkeregistermetadata?.let {
             Folkeregistermetadata(
                     ajourholdstidspunkt = convertToLocalDateTime(it.ajourholdstidspunkt),

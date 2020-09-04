@@ -1,11 +1,6 @@
-import com.expediagroup.graphql.plugin.gradle.graphql
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import com.expediagroup.graphql.plugin.config.TimeoutConfig
-import com.expediagroup.graphql.plugin.generator.ScalarConverterMapping
-import com.expediagroup.graphql.plugin.gradle.tasks.GraphQLDownloadSDLTask
-import com.expediagroup.graphql.plugin.gradle.tasks.GraphQLIntrospectSchemaTask
 
 val ktorVersion = "1.3.2"
 val jacksonVersion = "2.10.5"
@@ -45,57 +40,42 @@ fun tjenestespesifikasjon(name: String) = "no.nav.tjenestespesifikasjoner:$name:
 plugins {
     kotlin("jvm") version "1.3.72"
     id("com.github.johnrengelman.shadow") version "6.0.0"
-    id("com.expediagroup.graphql") version "3.6.1"
+    id("com.expediagroup.graphql") version "3.6.1" apply false
     id("com.github.ben-manes.versions") version "0.29.0"
 }
 
 val githubUser: String by project
 val githubPassword: String by project
-val filer: List<File> = listOf(file("${project.projectDir}/src/main/resources/pdl/hentFoedselsaar.graphql"),
-        file( "${project.projectDir}/src/main/resources/pdl/hentIdenter.graphql"))
 
-val graphqlDownloadSDL by tasks.getting(com.expediagroup.graphql.plugin.gradle.tasks.GraphQLDownloadSDLTask::class) {
-    endpoint.set("https://navikt.github.io/saf/saf-api-sdl.graphqls")
-    timeoutConfig.set(com.expediagroup.graphql.plugin.config.TimeoutConfig(connect = 10_000, read = 30_000))
-}
-val graphqlGenerateClient by tasks.getting(com.expediagroup.graphql.plugin.gradle.tasks.GraphQLGenerateClientTask::class) {
-    packageName.set("no.nav.medlemskap.client.generated")
-    schemaFile.set(graphqlDownloadSDL.outputFile)
-    queryFiles.from("${project.projectDir}/src/main/resources/saf/dokumenter.graphql")
-    dependsOn("graphqlDownloadSDL")
-}
-val downloadPdlSchemaTask = tasks.register<com.expediagroup.graphql.plugin.gradle.tasks.GraphQLDownloadSDLTask>("downloadPdlSchemaTask") {
-    endpoint.set("https://navikt.github.io/pdl/pdl-api-sdl.graphqls")
-    timeoutConfig.set(com.expediagroup.graphql.plugin.config.TimeoutConfig(connect = 10_000, read = 30_000))
-}
-val generatePdlClientTask = tasks.register<com.expediagroup.graphql.plugin.gradle.tasks.GraphQLGenerateClientTask>("generatePdlClientTask") {
-    packageName.set("no.nav.medlemskap.client.generated.pdl")
-    schemaFile.set(downloadPdlSchemaTask.get().outputFile)
-    outputDirectory.set(graphqlGenerateClient.outputDirectory)
-    queryFiles.from("${project.projectDir}/src/main/resources/pdl/hentFoedselsaar.graphql",
-            "${project.projectDir}/src/main/resources/pdl/hentIdenter.graphql",
-            "${project.projectDir}/src/main/resources/pdl/hentNasjonalitet.graphql",
-            "${project.projectDir}/src/main/resources/pdl/hentPerson.graphql")
-    dependsOn("downloadPdlSchemaTask")
-}
-
-repositories {
-    jcenter()
-    mavenCentral()
-    maven("https://dl.bintray.com/kotlin/ktor")
-    maven("https://kotlin.bintray.com/kotlinx")
-    maven("https://jitpack.io")
-    maven {
-        url = uri("https://maven.pkg.github.com/navikt/tjenestespesifikasjoner")
-        credentials {
-            username = githubUser
-            password = githubPassword
+allprojects {
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven("https://dl.bintray.com/kotlin/ktor")
+        maven("https://kotlin.bintray.com/kotlinx")
+        maven("https://jitpack.io")
+        maven {
+            url = uri("https://maven.pkg.github.com/navikt/tjenestespesifikasjoner")
+            credentials {
+                username = githubUser
+                password = githubPassword
+            }
         }
+    }
+
+    tasks.withType<KotlinCompile> {
+        kotlinOptions.jvmTarget = "1.8"
+    }
+
+    tasks.withType<Wrapper> {
+        gradleVersion = "6.6"
     }
 }
 
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation(project(path = ":pdl-client", configuration = "archives"))
+    implementation(project(path = ":saf-client", configuration = "archives"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-auth:$ktorVersion")
@@ -161,15 +141,9 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitJupiterVersion}")
 }
 
-
 java {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
-}
-
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
-    dependsOn("generatePdlClientTask")
 }
 
 tasks.withType<Test> {
@@ -177,10 +151,6 @@ tasks.withType<Test> {
     testLogging {
         events("passed", "skipped", "failed")
     }
-}
-
-tasks.withType<Wrapper> {
-    gradleVersion = "6.6"
 }
 
 tasks.withType<ShadowJar> {
