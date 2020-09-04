@@ -8,9 +8,9 @@ import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 
 class ErPeriodeUtenMedlemskapInnenfor12MndPeriodeRegel(
-        ytelse: Ytelse,
-        periode: InputPeriode,
-        medlemskap: List<Medlemskap>
+    ytelse: Ytelse,
+    periode: InputPeriode,
+    medlemskap: List<Medlemskap>
 ) : MedlemskapRegel(RegelId.REGEL_1_3_1, ytelse, periode, medlemskap) {
 
     override fun operasjon(): Resultat {
@@ -20,9 +20,9 @@ class ErPeriodeUtenMedlemskapInnenfor12MndPeriodeRegel(
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErPeriodeUtenMedlemskapInnenfor12MndPeriodeRegel {
             return ErPeriodeUtenMedlemskapInnenfor12MndPeriodeRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode,
-                    medlemskap = datagrunnlag.medlemskap
+                ytelse = datagrunnlag.ytelse,
+                periode = datagrunnlag.periode,
+                medlemskap = datagrunnlag.medlemskap
             )
         }
     }

@@ -47,13 +47,15 @@ class OppgaveClientTest {
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        stubFor(oppgaveRequestMapping
+        stubFor(
+            oppgaveRequestMapping
                 .willReturn(
-                        aResponse()
-                                .withStatus(HttpStatusCode.OK.value)
-                                .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-                                .withBody(oppgaveResponse)
-                ))
+                    aResponse()
+                        .withStatus(HttpStatusCode.OK.value)
+                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                        .withBody(oppgaveResponse)
+                )
+        )
 
         val oppgaveclient = OppgaveClient(server.baseUrl(), stsClient, cioHttpClient)
 
@@ -64,19 +66,20 @@ class OppgaveClientTest {
         assertEquals("Z000001", oppgave.tilordnetRessurs)
     }
 
-
     @Test
     fun `tester ServerResponseException`() {
         val callId = "123456"
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        stubFor(oppgaveRequestMapping.willReturn(
+        stubFor(
+            oppgaveRequestMapping.willReturn(
                 aResponse()
-                        .withStatus(HttpStatusCode.InternalServerError.value)
-                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                    .withStatus(HttpStatusCode.InternalServerError.value)
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
-        ))
+            )
+        )
 
         val oppgaveclient = OppgaveClient(server.baseUrl(), stsClient, cioHttpClient)
 
@@ -91,12 +94,14 @@ class OppgaveClientTest {
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        stubFor(oppgaveRequestMapping.willReturn(
+        stubFor(
+            oppgaveRequestMapping.willReturn(
                 aResponse()
-                        .withStatus(HttpStatusCode.Forbidden.value)
-                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                    .withStatus(HttpStatusCode.Forbidden.value)
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
-        ))
+            )
+        )
 
         val oppgaveclient = OppgaveClient(server.baseUrl(), stsClient, cioHttpClient)
 
@@ -104,20 +109,19 @@ class OppgaveClientTest {
             runBlocking { oppgaveclient.hentOppgaver(listOf("1234567890"), callId) }
         }
     }
-
-
 }
 
 val oppgaveRequestMapping: MappingBuilder = get(urlPathEqualTo("/api/v1/oppgaver"))
-        .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
-        .withHeader("Accept", equalTo("application/json"))
-        .withHeader("X-Correlation-Id", equalTo("123456"))
-        .withQueryParam("aktoerId", equalTo("1234567890"))
-        .withQueryParam("tema", equalTo("MED"))
-        .withQueryParam("tema", equalTo("UFM"))
-        .withQueryParam("tema", equalTo("TRY"))
+    .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
+    .withHeader("Accept", equalTo("application/json"))
+    .withHeader("X-Correlation-Id", equalTo("123456"))
+    .withQueryParam("aktoerId", equalTo("1234567890"))
+    .withQueryParam("tema", equalTo("MED"))
+    .withQueryParam("tema", equalTo("UFM"))
+    .withQueryParam("tema", equalTo("TRY"))
 
-val oppgaveResponse = """
+val oppgaveResponse =
+    """
     {
         "antallTreffTotalt": 1,
         "oppgaver": [
@@ -133,4 +137,4 @@ val oppgaveResponse = """
             }
         ]
     }
-""".trimIndent()
+    """.trimIndent()

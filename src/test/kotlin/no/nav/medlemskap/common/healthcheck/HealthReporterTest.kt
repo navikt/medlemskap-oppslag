@@ -6,18 +6,15 @@ import org.hamcrest.Matchers.hasItems
 import org.hamcrest.Matchers.hasSize
 import org.junit.jupiter.api.Test
 
-
 class HealthReporterTest : ServerTest() {
 
     @Test
     fun testHealthCheckResponse() {
         get("/healthCheck")
-                .then()
-                .statusCode(503)
-                .body("healthy", hasSize<Int>(0))
-                .and().body("unhealthy", hasSize<Int>(6))
-                .and().body("unhealthy.name", hasItems("Medl", "Oppg", "PDL", "SAF", "STS", "TPS"))
+            .then()
+            .statusCode(503)
+            .body("healthy", hasSize<Int>(0))
+            .and().body("unhealthy", hasSize<Int>(6))
+            .and().body("unhealthy.name", hasItems("Medl", "Oppg", "PDL", "SAF", "STS", "TPS"))
     }
-
 }
-

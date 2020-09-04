@@ -5,19 +5,19 @@ import java.time.LocalDate
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class FinnOppgaverResponse(
-        val antallTreffTotalt: Int,
-        val oppgaver: List<OppgOppgave>
+    val antallTreffTotalt: Int,
+    val oppgaver: List<OppgOppgave>
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class OppgOppgave(
-        val aktivDato: LocalDate,
-        val prioritet: OppgPrioritet,
-        val status: OppgStatus,
-        val versjon: Int,
-        val tilordnetRessurs: String?,
-        val tema: String?,
-        val beskrivelse: String?
+    val aktivDato: LocalDate,
+    val prioritet: OppgPrioritet,
+    val status: OppgStatus,
+    val versjon: Int,
+    val tilordnetRessurs: String?,
+    val tema: String?,
+    val beskrivelse: String?
 )
 
 enum class OppgPrioritet {

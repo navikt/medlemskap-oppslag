@@ -13,7 +13,8 @@ internal class RequestTest {
     @Test
     fun `request skal kunne mappes selv om ytelse ikke er angitt`() {
 
-        val json = """
+        val json =
+            """
         {
             "fnr": "123456789",
             "periode": {
@@ -24,7 +25,7 @@ internal class RequestTest {
                 "arbeidUtenforNorge": false
             }
         }    
-        """.trimIndent()
+            """.trimIndent()
 
         val objekt = objectMapper.readValue<Request>(json)
 
@@ -35,7 +36,8 @@ internal class RequestTest {
     @Test
     fun `request skal kunne mappes når ytelse er angitt`() {
 
-        val json = """
+        val json =
+            """
         {
             "fnr": "123456789",
             "periode": {
@@ -47,7 +49,7 @@ internal class RequestTest {
             },
             "ytelse": "SYKEPENGER"
         }    
-        """.trimIndent()
+            """.trimIndent()
 
         val objekt = objectMapper.readValue<Request>(json)
 
@@ -58,7 +60,8 @@ internal class RequestTest {
     @Test
     fun `mapping skal feile hvis ytelse er angitt feil`() {
 
-        val json = """
+        val json =
+            """
         {
             "fnr": "123456789",
             "periode": {
@@ -70,7 +73,7 @@ internal class RequestTest {
             },
             "ytelse": "IKKE-SYKEPENGER"
         }    
-        """.trimIndent()
+            """.trimIndent()
 
         assertThat {
             objectMapper.readValue<Request>(json)

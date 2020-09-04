@@ -10,12 +10,12 @@ import no.nav.medlemskap.domene.Status
 fun mapOppgaveResultat(oppgaver: List<OppgOppgave>): List<Oppgave> {
     return oppgaver.map {
         Oppgave(
-                aktivDato = it.aktivDato,
-                prioritet = mapPrioritert(it),
-                status = mapStatus(it),
-                tema = it.tema)
+            aktivDato = it.aktivDato,
+            prioritet = mapPrioritert(it),
+            status = mapStatus(it),
+            tema = it.tema
+        )
     }
-
 }
 
 fun mapStatus(oppgave: OppgOppgave): Status {
@@ -28,7 +28,6 @@ fun mapStatus(oppgave: OppgOppgave): Status {
             Status.FEILREGISTRERT
         }
     }
-
 }
 
 fun mapPrioritert(oppgave: OppgOppgave): Prioritet {
@@ -39,5 +38,4 @@ fun mapPrioritert(oppgave: OppgOppgave): Prioritet {
             Prioritet.NORM
         }
     }
-
 }

@@ -10,11 +10,11 @@ import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentBarnSomFinnesI
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarnUnder25
 
 class HarBrukerBarnRegel(
-        ytelse: Ytelse,
-        private val periode: InputPeriode,
-        private val pdlPersonhistorikk: Personhistorikk?,
-        private val personhistorikkRelatertPerson: List<PersonhistorikkRelatertPerson>,
-        regelId: RegelId = RegelId.REGEL_11_2_1
+    ytelse: Ytelse,
+    private val periode: InputPeriode,
+    private val pdlPersonhistorikk: Personhistorikk?,
+    private val personhistorikkRelatertPerson: List<PersonhistorikkRelatertPerson>,
+    regelId: RegelId = RegelId.REGEL_11_2_1
 ) : LovvalgRegel(regelId, ytelse, periode) {
 
     override fun operasjon(): Resultat {
@@ -32,11 +32,11 @@ class HarBrukerBarnRegel(
 
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag, regelId: RegelId): HarBrukerBarnRegel {
             return HarBrukerBarnRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode,
-                    pdlPersonhistorikk = datagrunnlag.pdlpersonhistorikk,
-                    personhistorikkRelatertPerson = datagrunnlag.personHistorikkRelatertePersoner,
-                    regelId = regelId
+                ytelse = datagrunnlag.ytelse,
+                periode = datagrunnlag.periode,
+                pdlPersonhistorikk = datagrunnlag.pdlpersonhistorikk,
+                personhistorikkRelatertPerson = datagrunnlag.personHistorikkRelatertePersoner,
+                regelId = regelId
             )
         }
     }

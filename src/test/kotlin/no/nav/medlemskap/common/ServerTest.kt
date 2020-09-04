@@ -26,9 +26,10 @@ open class ServerTest {
     companion object {
 
         private val configuration = Configuration(
-                azureAd = Configuration.AzureAd(
-                        authorityEndpoint = "http://localhost/"
-                ))
+            azureAd = Configuration.AzureAd(
+                authorityEndpoint = "http://localhost/"
+            )
+        )
         private val services = Services(configuration)
         private val openIdConfiguration = AzureAdOpenIdConfiguration("http://localhost", "", "", "")
 
@@ -43,10 +44,12 @@ open class ServerTest {
             if (!applicationState.running) {
                 val applicationServer = createHttpServer(applicationState, true, configuration, openIdConfiguration, services)
 
-                Runtime.getRuntime().addShutdownHook(Thread {
-                    applicationState.initialized = false
-                    applicationServer.stop(5000, 5000)
-                })
+                Runtime.getRuntime().addShutdownHook(
+                    Thread {
+                        applicationState.initialized = false
+                        applicationServer.stop(5000, 5000)
+                    }
+                )
 
                 applicationServer.start()
                 applicationState.initialized = true
@@ -55,10 +58,11 @@ open class ServerTest {
                 RestAssured.baseURI = "http://localhost"
                 RestAssured.basePath = "/"
                 RestAssured.port = 7070
-                RestAssured.config = RestAssuredConfig.config().objectMapperConfig(objectMapperConfig()
-                        .jackson2ObjectMapperFactory { _, _ -> objectMapper })
+                RestAssured.config = RestAssuredConfig.config().objectMapperConfig(
+                    objectMapperConfig()
+                        .jackson2ObjectMapperFactory { _, _ -> objectMapper }
+                )
             }
         }
-
     }
 }

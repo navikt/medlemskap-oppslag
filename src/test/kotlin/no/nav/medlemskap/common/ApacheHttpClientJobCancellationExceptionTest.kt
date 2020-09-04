@@ -13,7 +13,7 @@ class ApacheHttpClientJobCancellationExceptionTest {
 
     @Test
     fun `JobCancellationException kastes naar backend service ikke naas`() {
-        //Ref https://github.com/ktorio/ktor/issues/1592
+        // Ref https://github.com/ktorio/ktor/issues/1592
 
         assertThrows<CancellationException> {
             runBlocking {
@@ -24,6 +24,3 @@ class ApacheHttpClientJobCancellationExceptionTest {
         }
     }
 }
-
-
-

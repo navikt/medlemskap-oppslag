@@ -9,9 +9,9 @@ import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.gjeldendeDekning
 
 class ErBrukersDekningUavklartRegel(
-        ytelse: Ytelse,
-        val medlemskap: List<Medlemskap>,
-        val periode: InputPeriode
+    ytelse: Ytelse,
+    val medlemskap: List<Medlemskap>,
+    val periode: InputPeriode
 ) : MedlemskapRegel(RegelId.REGEL_1_6, ytelse, periode, medlemskap) {
 
     override fun operasjon(): Resultat {
@@ -28,9 +28,9 @@ class ErBrukersDekningUavklartRegel(
 
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErBrukersDekningUavklartRegel {
             return ErBrukersDekningUavklartRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    medlemskap = datagrunnlag.medlemskap,
-                    periode = datagrunnlag.periode
+                ytelse = datagrunnlag.ytelse,
+                medlemskap = datagrunnlag.medlemskap,
+                periode = datagrunnlag.periode
             )
         }
     }

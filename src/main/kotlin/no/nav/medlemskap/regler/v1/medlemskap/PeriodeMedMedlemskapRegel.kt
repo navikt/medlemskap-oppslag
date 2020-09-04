@@ -11,9 +11,9 @@ import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.harPeriodeMedMedlemskap
 
 class PeriodeMedMedlemskapRegel(
-        ytelse: Ytelse,
-        private val periode: InputPeriode,
-        private val medlemskap: List<Medlemskap>
+    ytelse: Ytelse,
+    private val periode: InputPeriode,
+    private val medlemskap: List<Medlemskap>
 ) : MedlemskapRegel(RegelId.REGEL_1_3, ytelse, periode, medlemskap) {
 
     override fun operasjon(): Resultat {
@@ -27,9 +27,9 @@ class PeriodeMedMedlemskapRegel(
 
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): PeriodeMedMedlemskapRegel {
             return PeriodeMedMedlemskapRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode,
-                    medlemskap = datagrunnlag.medlemskap
+                ytelse = datagrunnlag.ytelse,
+                periode = datagrunnlag.periode,
+                medlemskap = datagrunnlag.medlemskap
             )
         }
     }

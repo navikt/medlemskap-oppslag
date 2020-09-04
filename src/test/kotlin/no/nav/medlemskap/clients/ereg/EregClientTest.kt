@@ -19,13 +19,11 @@ import no.nav.medlemskap.config.Configuration
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 
-
 class EregClientTest {
 
     companion object {
         val server: WireMockServer = WireMockServer(WireMockConfiguration.options().dynamicPort())
         val httpClient = cioHttpClient
-
 
         @BeforeAll
         @JvmStatic
@@ -52,21 +50,21 @@ class EregClientTest {
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        WireMock.stubFor(queryMapping.willReturn(
+        WireMock.stubFor(
+            queryMapping.willReturn(
                 WireMock.aResponse()
-                        .withStatus(HttpStatusCode.OK.value)
-                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-                        .withBody(eregResponse)
-        ))
+                    .withStatus(HttpStatusCode.OK.value)
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                    .withBody(eregResponse)
+            )
+        )
 
         val client = EregClient(server.baseUrl(), httpClient, config)
 
         val response = runBlocking { client.hentEnhetstype("977074010", callId) }
         println(response)
         assertEquals(response, "NUF")
-
     }
-
 
     @Test
     fun `tester ServerResponseException`() {
@@ -74,12 +72,14 @@ class EregClientTest {
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        WireMock.stubFor(queryMapping.willReturn(
+        WireMock.stubFor(
+            queryMapping.willReturn(
                 WireMock.aResponse()
-                        .withStatus(HttpStatusCode.InternalServerError.value)
-                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                    .withStatus(HttpStatusCode.InternalServerError.value)
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
-        ))
+            )
+        )
         val client = EregClient(server.baseUrl(), httpClient, config)
 
         Assertions.assertThrows(ServerResponseException::class.java) {
@@ -93,12 +93,14 @@ class EregClientTest {
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        WireMock.stubFor(queryMapping.willReturn(
+        WireMock.stubFor(
+            queryMapping.willReturn(
                 WireMock.aResponse()
-                        .withStatus(HttpStatusCode.Forbidden.value)
-                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                    .withStatus(HttpStatusCode.Forbidden.value)
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
-        ))
+            )
+        )
 
         val client = EregClient(server.baseUrl(), httpClient, config)
 
@@ -113,12 +115,14 @@ class EregClientTest {
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        WireMock.stubFor(queryMapping.willReturn(
+        WireMock.stubFor(
+            queryMapping.willReturn(
                 WireMock.aResponse()
-                        .withStatus(HttpStatusCode.NotFound.value)
-                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                    .withStatus(HttpStatusCode.NotFound.value)
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
-        ))
+            )
+        )
 
         val client = EregClient(server.baseUrl(), httpClient, config)
         val response = runBlocking { client.hentEnhetstype("977074010", callId) }
@@ -127,7 +131,8 @@ class EregClientTest {
 
     private val config = Configuration()
 
-    private val eregResponse = """
+    private val eregResponse =
+        """
         {
           "organisasjonsnummer": "977074010",
           "navn": {
@@ -154,11 +159,10 @@ class EregClientTest {
             }
           }
         }
-    """.trimIndent()
+        """.trimIndent()
 
     private val orgnummer = "977074010"
     private val queryMapping: MappingBuilder = WireMock.get(WireMock.urlPathEqualTo("/v1/organisasjon/$orgnummer/noekkelinfo"))
-            .withHeader("Nav-Call-Id", equalTo("12345"))
-            .withHeader("Nav-Consumer-Id", equalTo("test"))
-
+        .withHeader("Nav-Call-Id", equalTo("12345"))
+        .withHeader("Nav-Consumer-Id", equalTo("test"))
 }

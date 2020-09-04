@@ -19,11 +19,11 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class InntektClient(
-        private val baseUrl: String,
-        private val stsClient: StsRestClient,
-        private val configuration: Configuration,
-        private val httpClient: HttpClient,
-        private val retry: Retry? = null
+    private val baseUrl: String,
+    private val stsClient: StsRestClient,
+    private val configuration: Configuration,
+    private val httpClient: HttpClient,
+    private val retry: Retry? = null
 ) {
 
     private val logger = KotlinLogging.logger { }
@@ -39,36 +39,36 @@ class InntektClient(
                     header("Nav-Consumer-Id", configuration.sts.username)
                     header("Nav-Call-Id", callId)
                     body = HentInntektListeRequest(
-                            ident = Ident(ident, "NATURLIG_IDENT"),
-                            ainntektsfilter = "MedlemskapA-inntekt",
-                            maanedFom = fraOgMed?.tilAarOgMnd(),
-                            maanedTom = tilOgMed?.tilAarOgMnd(),
-                            formaal = "Medlemskap") //Må diskutere med Helle om vi skal bruke Medlemskap eller sykepenger som formål
+                        ident = Ident(ident, "NATURLIG_IDENT"),
+                        ainntektsfilter = "MedlemskapA-inntekt",
+                        maanedFom = fraOgMed?.tilAarOgMnd(),
+                        maanedTom = tilOgMed?.tilAarOgMnd(),
+                        formaal = "Medlemskap"
+                    ) // Må diskutere med Helle om vi skal bruke Medlemskap eller sykepenger som formål
                 }
             }
         }.fold(
-                onSuccess = { response -> response },
-                onFailure = { error ->
-                    when (error) {
-                        is ClientRequestException -> {
-                            if (error.response.status.value == 400) {
-                                InntektskomponentResponse(listOf(), Ident(ident, ""))
-                            } else {
-                                throw error
-                            }
+            onSuccess = { response -> response },
+            onFailure = { error ->
+                when (error) {
+                    is ClientRequestException -> {
+                        if (error.response.status.value == 400) {
+                            InntektskomponentResponse(listOf(), Ident(ident, ""))
+                        } else {
+                            throw error
                         }
-                        is ServerResponseException -> {
-                            if (error.response.status.value == 500) {
-                                InntektskomponentResponse(listOf(), Ident(ident, ""))
-                            } else {
-                                throw error
-                            }
-                        }
-                        else -> throw error
                     }
+                    is ServerResponseException -> {
+                        if (error.response.status.value == 500) {
+                            InntektskomponentResponse(listOf(), Ident(ident, ""))
+                        } else {
+                            throw error
+                        }
+                    }
+                    else -> throw error
                 }
+            }
         )
-
     }
 
     private fun LocalDate.tilAarOgMnd() = this.format(DateTimeFormatter.ofPattern("yyyy-MM"))
@@ -81,10 +81,3 @@ class InntektClient(
         }
     }
 }
-
-
-
-
-
-
-

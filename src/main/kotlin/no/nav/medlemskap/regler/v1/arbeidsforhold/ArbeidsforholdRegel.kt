@@ -7,10 +7,9 @@ import no.nav.medlemskap.regler.common.Datohjelper
 import no.nav.medlemskap.regler.common.RegelId
 
 abstract class ArbeidsforholdRegel(
-        regelId: RegelId,
-        ytelse: Ytelse,
-        periode: InputPeriode
+    regelId: RegelId,
+    ytelse: Ytelse,
+    periode: InputPeriode
 ) : BasisRegel(regelId, ytelse) {
     val kontrollPeriodeForArbeidsforhold = Datohjelper(periode, ytelse).kontrollPeriodeForArbeidsforhold()
-
 }

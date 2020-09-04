@@ -11,12 +11,12 @@ import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentBarnSomFinnesI
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarnUnder25
 
 class ErBrukersEktefelleOgBarnasMorSammePersonRegel(
-        ytelse: Ytelse,
-        private val periode: InputPeriode,
-        private val dataOmEktefelle: DataOmEktefelle?,
-        private val pdlPersonhistorikk: Personhistorikk?,
-        private val personhistorikkRelatertPerson: List<PersonhistorikkRelatertPerson>,
-        regelId: RegelId = RegelId.REGEL_11_5_1
+    ytelse: Ytelse,
+    private val periode: InputPeriode,
+    private val dataOmEktefelle: DataOmEktefelle?,
+    private val pdlPersonhistorikk: Personhistorikk?,
+    private val personhistorikkRelatertPerson: List<PersonhistorikkRelatertPerson>,
+    regelId: RegelId = RegelId.REGEL_11_5_1
 ) : LovvalgRegel(regelId, ytelse, periode) {
 
     override fun operasjon(): Resultat {
@@ -26,7 +26,7 @@ class ErBrukersEktefelleOgBarnasMorSammePersonRegel(
 
         if (dataOmEktefelle != null) {
             return when {
-                dataOmEktefelle.personhistorikkEktefelle?.barn?.map { it.ident}?.harAlle(barnITps.map { it.ident })!! -> ja()
+                dataOmEktefelle.personhistorikkEktefelle?.barn?.map { it.ident }?.harAlle(barnITps.map { it.ident })!! -> ja()
                 else -> nei(" Ektefelle er ikke barn/barnas mor")
             }
         }
@@ -38,11 +38,11 @@ class ErBrukersEktefelleOgBarnasMorSammePersonRegel(
 
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErBrukersEktefelleOgBarnasMorSammePersonRegel {
             return ErBrukersEktefelleOgBarnasMorSammePersonRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode,
-                    dataOmEktefelle = datagrunnlag.dataOmEktefelle,
-                    pdlPersonhistorikk = datagrunnlag.pdlpersonhistorikk,
-                    personhistorikkRelatertPerson = datagrunnlag.personHistorikkRelatertePersoner
+                ytelse = datagrunnlag.ytelse,
+                periode = datagrunnlag.periode,
+                dataOmEktefelle = datagrunnlag.dataOmEktefelle,
+                pdlPersonhistorikk = datagrunnlag.pdlpersonhistorikk,
+                personhistorikkRelatertPerson = datagrunnlag.personHistorikkRelatertePersoner
             )
         }
     }

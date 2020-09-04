@@ -11,24 +11,24 @@ import java.util.*
 object RelasjonFunksjoner {
 
     fun List<Sivilstand>.hentFnrTilEktefellerEllerPartnerForDato(dato: LocalDate): List<String?> =
-            this.filter { it.giftEllerRegistrertPartner() && it.overlapper(dato) }.map { it.relatertVedSivilstand }
+        this.filter { it.giftEllerRegistrertPartner() && it.overlapper(dato) }.map { it.relatertVedSivilstand }
 
     fun List<Familierelasjon>.hentFnrTilBarnUnder25(): List<String?> =
-            this.filter {
-                it.relatertPersonsRolle == Familierelasjonsrolle.BARN
-                        && FodselsnummerValidator.isValid(it.relatertPersonsIdent)
-                        && it.relatertPersonsIdent.filtrerBarnUnder25Aar()
-            }.map { it.relatertPersonsIdent }
+        this.filter {
+            it.relatertPersonsRolle == Familierelasjonsrolle.BARN &&
+                FodselsnummerValidator.isValid(it.relatertPersonsIdent) &&
+                it.relatertPersonsIdent.filtrerBarnUnder25Aar()
+        }.map { it.relatertPersonsIdent }
 
     fun List<PersonhistorikkRelatertPerson>.hentRelatertSomFinnesITPS(ektefelle: String?): List<PersonhistorikkRelatertPerson> =
-            this.filter { it.ident == ektefelle && FodselsnummerValidator.isValid(it.ident) }
+        this.filter { it.ident == ektefelle && FodselsnummerValidator.isValid(it.ident) }
 
     fun List<PersonhistorikkRelatertPerson>.hentBarnSomFinnesITPS(barn: List<String?>?):
-            List<PersonhistorikkRelatertPerson> =
+        List<PersonhistorikkRelatertPerson> =
             this.filter { barn?.contains(it.ident) ?: false && FodselsnummerValidator.isValid(it.ident) }
 
     fun String.filtrerBarnUnder25Aar() =
-            (Calendar.getInstance().get(Calendar.YEAR) - this.hentBursdagsAar().toInt()) <= 25
+        (Calendar.getInstance().get(Calendar.YEAR) - this.hentBursdagsAar().toInt()) <= 25
 
     fun String.hentBursdagsAar(): String {
         return this.hentAarHundre() + this.hent2DigitBursdagsAar()
@@ -50,5 +50,4 @@ object RelasjonFunksjoner {
     fun String.hent2DigitBursdagsAar() = this.substring(4, 6)
 
     fun String.getIndividnummer() = this.substring(6, 9)
-
 }

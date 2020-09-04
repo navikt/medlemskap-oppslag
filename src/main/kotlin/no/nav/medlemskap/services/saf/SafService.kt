@@ -4,5 +4,5 @@ import no.nav.medlemskap.clients.saf.SafClient
 
 class SafService(private val safClient: SafClient) {
     suspend fun hentJournaldata(fnr: String, callId: String) =
-            mapDokumentoversiktBrukerResponse(safClient.hentJournaldata(fnr, callId))
+        mapDokumentoversiktBrukerResponse(safClient.hentJournaldata(fnr, callId))
 }
