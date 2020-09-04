@@ -7,8 +7,9 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.ja
 import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.antallAnsatteHosArbeidsgivere
+import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.filtrerUtArbeidsgivereMedFærreEnn6Ansatte
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.registrerAntallAnsatte
-import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.registrerArbeidsgiver
+import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.registrereArbeidsgivere
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.registrerStatsborgerskapGrafana
 
 class HarForetaketMerEnn5AnsatteRegel(
@@ -30,7 +31,7 @@ class HarForetaketMerEnn5AnsatteRegel(
 
     fun registrerDataForGrafana(){
         statsborgerskap.registrerStatsborgerskapGrafana(kontrollPeriodeForArbeidsforhold, ytelse, regelId)
-        arbeidsforhold.registrerArbeidsgiver(kontrollPeriodeForArbeidsforhold, ytelse)
+        arbeidsforhold.filtrerUtArbeidsgivereMedFærreEnn6Ansatte(kontrollPeriodeForArbeidsforhold).registrereArbeidsgivere(ytelse)
         arbeidsforhold.registrerAntallAnsatte(ytelse)
     }
 
