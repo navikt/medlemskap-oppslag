@@ -1,6 +1,6 @@
 package no.nav.medlemskap.services.saf
 
-import no.nav.medlemskap.client.generated.Dokumenter
+import no.nav.medlemskap.clients.saf.generated.Dokumenter
 import no.nav.medlemskap.domene.Dokument
 import no.nav.medlemskap.domene.Journalpost
 

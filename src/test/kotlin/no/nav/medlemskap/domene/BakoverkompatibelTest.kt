@@ -154,7 +154,9 @@ private fun personhistorikk(): Personhistorikk {
             postadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
             midlertidigAdresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
             sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr(), folkeregistermetadata())),
-            familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata()))
+            familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata())),
+            kontaktadresser = listOf(Adresse("SWE", enDato(), enAnnenDato())),
+            oppholdsadresser = listOf(Adresse("SWE", enDato(), enAnnenDato()))
     )
 }
 
@@ -182,6 +184,7 @@ private fun barnFnr() = "0101201012345"
 private fun enDato() = LocalDate.of(1975, 10, 10)
 private fun enAnnenDato() = LocalDate.of(2020, 8, 1)
 private fun etTidspunkt() = LocalDateTime.of(2020, 6, 20, 10, 0)
+private fun enAdresse() = "Adresse"
 
 private val input = """
         {
@@ -214,20 +217,20 @@ private val forventetResponse = """
             "landkode" : "NOR",
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
-          } ],
+          }],
           "personstatuser" : [ {
             "personstatus" : "BOSA",
-            "fom" : "1975-10-10",
+            "fom": "1975-10-10",
             "tom" : "2020-08-01"
-          } ],
+          }],
           "bostedsadresser" : [ {
             "landkode" : "NOR",
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
-          } ],
-          "postadresser" : [ {
+          }],
+          "postadresser" : [{
             "landkode" : "NOR",
-            "fom" : "1975-10-10",
+            "fom": "1975-10-10",
             "tom" : "2020-08-01"
           } ],
           "midlertidigAdresser" : [ {
@@ -235,6 +238,16 @@ private val forventetResponse = """
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
           } ],
+          "kontaktadresser" : [ {
+            "landkode" : "SWE", 
+            "fom" : "1975-10-10",
+            "tom" : "2020-08-01"
+          }],
+          "oppholdsadresser": [{
+             "landkode" : "SWE", 
+            "fom" : "1975-10-10",
+            "tom" : "2020-08-01"
+          }],
           "sivilstand" : [ {
             "type" : "GIFT",
             "gyldigFraOgMed" : "1975-10-10",
@@ -283,6 +296,16 @@ private val forventetResponse = """
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
           } ],
+          "kontaktadresser" : [ {
+            "landkode" : "SWE", 
+            "fom" : "1975-10-10",
+            "tom" : "2020-08-01"
+          }],
+          "oppholdsadresser": [{
+             "landkode" : "SWE", 
+            "fom" : "1975-10-10",
+            "tom" : "2020-08-01"
+          }],
           "sivilstand" : [ {
             "type" : "GIFT",
             "gyldigFraOgMed" : "1975-10-10",
