@@ -40,9 +40,10 @@ class TjenesteKallFeilmeldingerTest {
     companion object {
 
         private val configuration = Configuration(
-                azureAd = Configuration.AzureAd(
-                        authorityEndpoint = "http://localhost/"
-                ))
+            azureAd = Configuration.AzureAd(
+                authorityEndpoint = "http://localhost/"
+            )
+        )
         private val services = Services(configuration)
         private val openIdConfiguration = AzureAdOpenIdConfiguration("http://localhost", "", "", "")
 
@@ -56,19 +57,21 @@ class TjenesteKallFeilmeldingerTest {
 
             if (!applicationState.running) {
                 val applicationServer = createHttpServer(
-                        applicationState = applicationState,
-                        useAuthentication = false,
-                        configuration = configuration,
-                        azureAdOpenIdConfiguration = openIdConfiguration,
-                        services = services,
-                        port = 7072,
-                        createDatagrunnlag = ::mockCreateDatagrunnlag
+                    applicationState = applicationState,
+                    useAuthentication = false,
+                    configuration = configuration,
+                    azureAdOpenIdConfiguration = openIdConfiguration,
+                    services = services,
+                    port = 7072,
+                    createDatagrunnlag = ::mockCreateDatagrunnlag
                 )
 
-                Runtime.getRuntime().addShutdownHook(Thread {
-                    applicationState.initialized = false
-                    applicationServer.stop(5000, 5000)
-                })
+                Runtime.getRuntime().addShutdownHook(
+                    Thread {
+                        applicationState.initialized = false
+                        applicationServer.stop(5000, 5000)
+                    }
+                )
 
                 applicationServer.start()
                 applicationState.initialized = true
@@ -77,24 +80,26 @@ class TjenesteKallFeilmeldingerTest {
                 RestAssured.baseURI = "http://localhost"
                 RestAssured.basePath = "/"
                 RestAssured.port = 7072
-                RestAssured.config = RestAssuredConfig.config().objectMapperConfig(ObjectMapperConfig.objectMapperConfig()
-                        .jackson2ObjectMapperFactory { _, _ -> objectMapper })
+                RestAssured.config = RestAssuredConfig.config().objectMapperConfig(
+                    ObjectMapperConfig.objectMapperConfig()
+                        .jackson2ObjectMapperFactory { _, _ -> objectMapper }
+                )
             }
         }
-
     }
 
     @Test
     fun `Request body med fom som null får 400 respons`() {
         val faktiskResponse = RestAssured.given()
-                .body(inputMedFomLikeNull)
-                .header(Header("Content-Type", "application/json"))
-                .post("/")
-                .then()
-                .statusCode(400)
-                .extract().asString()
+            .body(inputMedFomLikeNull)
+            .header(Header("Content-Type", "application/json"))
+            .post("/")
+            .then()
+            .statusCode(400)
+            .extract().asString()
 
-        val forventetResponse = """
+        val forventetResponse =
+            """
             {
               "url" : "/",
               "message" : "Instantiation of [simple type, class no.nav.medlemskap.domene.InputPeriode] value failed for JSON property fom due to missing (therefore NULL) value for creator parameter fom which is a non-nullable type\n at [Source: (InputStreamReader); line: 6, column: 5] (through reference chain: no.nav.medlemskap.domene.Request[\"periode\"]->no.nav.medlemskap.domene.InputPeriode[\"fom\"])",
@@ -105,29 +110,29 @@ class TjenesteKallFeilmeldingerTest {
               },
               "callId" : { }
             }
-        """.trimIndent()
+            """.trimIndent()
 
         JSONAssert.assertEquals(
-                forventetResponse, faktiskResponse,
-                CustomComparator(
-                        JSONCompareMode.STRICT,
-                        Customization("tidspunkt") { _, _ -> true }
-                )
+            forventetResponse, faktiskResponse,
+            CustomComparator(
+                JSONCompareMode.STRICT,
+                Customization("tidspunkt") { _, _ -> true }
+            )
         )
-
     }
 
     @Test
     fun `Request uten body får 400 respons`() {
         val faktiskResponse = RestAssured.given()
-                .body("")
-                .header(Header("Content-Type", "application/json"))
-                .post("/")
-                .then()
-                .statusCode(400)
-                .extract().asString()
+            .body("")
+            .header(Header("Content-Type", "application/json"))
+            .post("/")
+            .then()
+            .statusCode(400)
+            .extract().asString()
 
-        val forventetResponse = """
+        val forventetResponse =
+            """
             {
               "url" : "/",
               "message" : "No content to map due to end-of-input\n at [Source: (InputStreamReader); line: 1, column: 0]",
@@ -138,29 +143,29 @@ class TjenesteKallFeilmeldingerTest {
               },
               "callId" : { }
             }
-        """.trimIndent()
+            """.trimIndent()
 
         JSONAssert.assertEquals(
-                forventetResponse, faktiskResponse,
-                CustomComparator(
-                        JSONCompareMode.STRICT,
-                        Customization("tidspunkt") { _, _ -> true }
-                )
+            forventetResponse, faktiskResponse,
+            CustomComparator(
+                JSONCompareMode.STRICT,
+                Customization("tidspunkt") { _, _ -> true }
+            )
         )
-
     }
 
     @Test
     fun `Request med tom dato før fom dato får 400 respons`() {
         val faktiskResponse = RestAssured.given()
-                .body(inputMedFomDatoFørTomDato)
-                .header(Header("Content-Type", "application/json"))
-                .post("/")
-                .then()
-                .statusCode(400)
-                .extract().asString()
+            .body(inputMedFomDatoFørTomDato)
+            .header(Header("Content-Type", "application/json"))
+            .post("/")
+            .then()
+            .statusCode(400)
+            .extract().asString()
 
-        val forventetResponse = """
+        val forventetResponse =
+            """
             {
                 "url" : "/",
                 "message" : "Periode tom kan ikke være før periode fom",
@@ -171,28 +176,29 @@ class TjenesteKallFeilmeldingerTest {
                 },
                 "callId" : { }
             }
-        """.trimIndent()
+            """.trimIndent()
 
         JSONAssert.assertEquals(
-                forventetResponse, faktiskResponse,
-                CustomComparator(
-                        JSONCompareMode.STRICT,
-                        Customization("tidspunkt") { _, _ -> true }
-                )
+            forventetResponse, faktiskResponse,
+            CustomComparator(
+                JSONCompareMode.STRICT,
+                Customization("tidspunkt") { _, _ -> true }
+            )
         )
     }
 
     @Test
     fun `Request med ugyldig fnr får 400 respons`() {
         val faktiskResponse = RestAssured.given()
-                .body(inputMedUgyldigFnr)
-                .header(Header("Content-Type", "application/json"))
-                .post("/")
-                .then()
-                .statusCode(400)
-                .extract().asString()
+            .body(inputMedUgyldigFnr)
+            .header(Header("Content-Type", "application/json"))
+            .post("/")
+            .then()
+            .statusCode(400)
+            .extract().asString()
 
-        val forventetResponse = """
+        val forventetResponse =
+            """
             {
                 "url" : "/",
                 "message" : "Ugyldig fødselsnummer",
@@ -203,29 +209,29 @@ class TjenesteKallFeilmeldingerTest {
                 },
                 "callId" : { }
             }
-        """.trimIndent()
+            """.trimIndent()
 
         JSONAssert.assertEquals(
-                forventetResponse, faktiskResponse,
-                CustomComparator(
-                        JSONCompareMode.STRICT,
-                        Customization("tidspunkt") { _, _ -> true }
-                )
+            forventetResponse, faktiskResponse,
+            CustomComparator(
+                JSONCompareMode.STRICT,
+                Customization("tidspunkt") { _, _ -> true }
+            )
         )
-
     }
 
     @Test
     fun `Request med tom før 2016 får 400 respons`() {
         val faktiskResponse = RestAssured.given()
-                .body(inputTomFør2016)
-                .header(Header("Content-Type", "application/json"))
-                .post("/")
-                .then()
-                .statusCode(400)
-                .extract().asString()
+            .body(inputTomFør2016)
+            .header(Header("Content-Type", "application/json"))
+            .post("/")
+            .then()
+            .statusCode(400)
+            .extract().asString()
 
-        val forventetResponse = """
+        val forventetResponse =
+            """
             {
                 "url" : "/",
                 "message" : "Periode fom kan ikke være før 2016-01-01",
@@ -236,29 +242,29 @@ class TjenesteKallFeilmeldingerTest {
                 },
                 "callId" : { }
             }
-        """.trimIndent()
+            """.trimIndent()
 
         JSONAssert.assertEquals(
-                forventetResponse, faktiskResponse,
-                CustomComparator(
-                        JSONCompareMode.STRICT,
-                        Customization("tidspunkt") { _, _ -> true }
-                )
+            forventetResponse, faktiskResponse,
+            CustomComparator(
+                JSONCompareMode.STRICT,
+                Customization("tidspunkt") { _, _ -> true }
+            )
         )
-
     }
 
     @Test
     fun `Request med tom før fom i Json får 400 respons`() {
         val faktiskResponse = RestAssured.given()
-                .body(inputMedTomFørFomIJson)
-                .header(Header("Content-Type", "application/json"))
-                .post("/")
-                .then()
-                .statusCode(400)
-                .extract().asString()
+            .body(inputMedTomFørFomIJson)
+            .header(Header("Content-Type", "application/json"))
+            .post("/")
+            .then()
+            .statusCode(400)
+            .extract().asString()
 
-        val forventetResponse = """
+        val forventetResponse =
+            """
             {
                 "url" : "/",
                 "message" : "Instantiation of [simple type, class no.nav.medlemskap.domene.Request] value failed for JSON property fnr due to missing (therefore NULL) value for creator parameter fnr which is a non-nullable type\n at [Source: (InputStreamReader); line: 10, column: 1] (through reference chain: no.nav.medlemskap.domene.Request[\"fnr\"])",
@@ -269,29 +275,29 @@ class TjenesteKallFeilmeldingerTest {
                 },
                 "callId" : { }
             }
-        """.trimIndent()
+            """.trimIndent()
 
         JSONAssert.assertEquals(
-                forventetResponse, faktiskResponse,
-                CustomComparator(
-                        JSONCompareMode.STRICT,
-                        Customization("tidspunkt") { _, _ -> true }
-                )
+            forventetResponse, faktiskResponse,
+            CustomComparator(
+                JSONCompareMode.STRICT,
+                Customization("tidspunkt") { _, _ -> true }
+            )
         )
-
     }
 
     @Test
     fun `Request med ugyldig body får 400 respons`() {
         val faktiskResponse = RestAssured.given()
-                .body(ugyldigInput)
-                .header(Header("Content-Type", "application/json"))
-                .post("/")
-                .then()
-                .statusCode(400)
-                .extract().asString()
+            .body(ugyldigInput)
+            .header(Header("Content-Type", "application/json"))
+            .post("/")
+            .then()
+            .statusCode(400)
+            .extract().asString()
 
-        val forventetResponse = """
+        val forventetResponse =
+            """
             {
                 "url" : "/",
                 "message" : "Instantiation of [simple type, class no.nav.medlemskap.domene.Request] value failed for JSON property fnr due to missing (therefore NULL) value for creator parameter fnr which is a non-nullable type\n at [Source: (InputStreamReader); line: 1, column: 14] (through reference chain: no.nav.medlemskap.domene.Request[\"fnr\"])",
@@ -302,85 +308,84 @@ class TjenesteKallFeilmeldingerTest {
                 },
                 "callId" : { }
             }
-        """.trimIndent()
+            """.trimIndent()
 
         JSONAssert.assertEquals(
-                forventetResponse, faktiskResponse,
-                CustomComparator(
-                        JSONCompareMode.STRICT,
-                        Customization("tidspunkt") { _, _ -> true }
-                )
+            forventetResponse, faktiskResponse,
+            CustomComparator(
+                JSONCompareMode.STRICT,
+                Customization("tidspunkt") { _, _ -> true }
+            )
         )
-
     }
 
     suspend fun mockCreateDatagrunnlag(
-            fnr: String,
-            callId: String,
-            periode: InputPeriode,
-            brukerinput: Brukerinput,
-            services: Services,
-            clientId: String?,
-            ytelseFraRequest: Ytelse?): Datagrunnlag = runBlocking {
+        fnr: String,
+        callId: String,
+        periode: InputPeriode,
+        brukerinput: Brukerinput,
+        services: Services,
+        clientId: String?,
+        ytelseFraRequest: Ytelse?
+    ): Datagrunnlag = runBlocking {
 
         val ytelse = Ytelse.SYKEPENGER
 
         Datagrunnlag(
-                periode = periode,
-                brukerinput = brukerinput,
-                personhistorikk = personhistorikk(),
-                pdlpersonhistorikk = personhistorikk(),
-                medlemskap = listOf(Medlemskap("dekning", enDato(), enAnnenDato(), true, Lovvalg.ENDL, "NOR", PeriodeStatus.GYLD)),
-                arbeidsforhold = listOf(arbeidsforhold()),
-                oppgaver = listOf(Oppgave(enDato(), Prioritet.NORM, Status.AAPNET, "Tema")),
-                dokument = listOf(Journalpost("Id", "Tittel", "Posttype", "Status", "Tema", listOf(Dokument("Id", "Tittel")))),
-                ytelse = ytelse,
-                personHistorikkRelatertePersoner = listOf(personhistorikkRelatertPerson()),
-                dataOmEktefelle = DataOmEktefelle(personhistorikkEktefelle(), listOf(arbeidsforhold()))
+            periode = periode,
+            brukerinput = brukerinput,
+            personhistorikk = personhistorikk(),
+            pdlpersonhistorikk = personhistorikk(),
+            medlemskap = listOf(Medlemskap("dekning", enDato(), enAnnenDato(), true, Lovvalg.ENDL, "NOR", PeriodeStatus.GYLD)),
+            arbeidsforhold = listOf(arbeidsforhold()),
+            oppgaver = listOf(Oppgave(enDato(), Prioritet.NORM, Status.AAPNET, "Tema")),
+            dokument = listOf(Journalpost("Id", "Tittel", "Posttype", "Status", "Tema", listOf(Dokument("Id", "Tittel")))),
+            ytelse = ytelse,
+            personHistorikkRelatertePersoner = listOf(personhistorikkRelatertPerson()),
+            dataOmEktefelle = DataOmEktefelle(personhistorikkEktefelle(), listOf(arbeidsforhold()))
         )
     }
 
-
     private fun arbeidsforhold(): Arbeidsforhold {
         return Arbeidsforhold(
-                Periode(enDato(), enAnnenDato()),
-                listOf(Utenlandsopphold("SWE", Periode(enDato(), enAnnenDato()), YearMonth.of(2010, 1))),
-                OpplysningspliktigArbeidsgiverType.Organisasjon,
-                Arbeidsgiver("type", "identifikator", listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus")),
-                Arbeidsforholdstype.NORMALT,
-                listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble()))
+            Periode(enDato(), enAnnenDato()),
+            listOf(Utenlandsopphold("SWE", Periode(enDato(), enAnnenDato()), YearMonth.of(2010, 1))),
+            OpplysningspliktigArbeidsgiverType.Organisasjon,
+            Arbeidsgiver("type", "identifikator", listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus")),
+            Arbeidsforholdstype.NORMALT,
+            listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble()))
         )
     }
 
     private fun personhistorikk(): Personhistorikk {
         return Personhistorikk(
-                statsborgerskap = listOf(Statsborgerskap("NOR", enDato(), enAnnenDato())),
-                personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSA, enDato(), enAnnenDato())),
-                bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-                postadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-                midlertidigAdresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-                sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr(), folkeregistermetadata())),
-                familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata())),
-                kontaktadresser = emptyList(),
-                oppholdsadresser = emptyList()
+            statsborgerskap = listOf(Statsborgerskap("NOR", enDato(), enAnnenDato())),
+            personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSA, enDato(), enAnnenDato())),
+            bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+            postadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+            midlertidigAdresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+            sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr(), folkeregistermetadata())),
+            familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata())),
+            kontaktadresser = emptyList(),
+            oppholdsadresser = emptyList()
 
         )
     }
 
     private fun personhistorikkRelatertPerson(): PersonhistorikkRelatertPerson {
         return PersonhistorikkRelatertPerson(
-                ident = ektefelleFnr(),
-                personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSA, enDato(), enAnnenDato())),
-                bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-                postadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-                midlertidigAdresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
+            ident = ektefelleFnr(),
+            personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSA, enDato(), enAnnenDato())),
+            bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+            postadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+            midlertidigAdresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
         )
     }
 
     private fun personhistorikkEktefelle(): PersonhistorikkEktefelle {
         return PersonhistorikkEktefelle(
-                ident = ektefelleFnr(),
-                barn = listOf(PersonhistorikkBarn(ident = barnFnr()))
+            ident = ektefelleFnr(),
+            barn = listOf(PersonhistorikkBarn(ident = barnFnr()))
         )
     }
 
@@ -392,7 +397,8 @@ class TjenesteKallFeilmeldingerTest {
     private fun enAnnenDato() = LocalDate.of(2020, 8, 1)
     private fun etTidspunkt() = LocalDateTime.of(2020, 6, 20, 10, 0)
 
-    private val inputMedFomLikeNull = """
+    private val inputMedFomLikeNull =
+        """
         {
             "fnr": "15076500565",
             "periode": {
@@ -403,9 +409,10 @@ class TjenesteKallFeilmeldingerTest {
                 "arbeidUtenforNorge": false
             }
         }
-""".trimIndent()
+        """.trimIndent()
 
-    private val inputMedFomDatoFørTomDato = """
+    private val inputMedFomDatoFørTomDato =
+        """
         {
             "fnr": "123456789",
             "periode": {
@@ -416,9 +423,10 @@ class TjenesteKallFeilmeldingerTest {
             "arbeidUtenforNorge": false
         }
 }
-""".trimIndent()
+        """.trimIndent()
 
-    private val inputMedUgyldigFnr = """
+    private val inputMedUgyldigFnr =
+        """
         {
             "fnr": "1",
             "periode": {
@@ -429,9 +437,10 @@ class TjenesteKallFeilmeldingerTest {
             "arbeidUtenforNorge": false
         }
 }
-""".trimIndent()
+        """.trimIndent()
 
-    private val inputTomFør2016 = """
+    private val inputTomFør2016 =
+        """
         {
             "fnr": "123456789",
             "periode": {
@@ -442,9 +451,10 @@ class TjenesteKallFeilmeldingerTest {
             "arbeidUtenforNorge": false
         }
 }
-""".trimIndent()
+        """.trimIndent()
 
-    private val inputMedTomFørFomIJson = """
+    private val inputMedTomFørFomIJson =
+        """
         {
             "fødselsnummer": "123456789",
             "periode": {
@@ -455,8 +465,8 @@ class TjenesteKallFeilmeldingerTest {
             "arbeidUtenforNorge": false
         }
 }
-""".trimIndent()
+        """.trimIndent()
 
-    private val ugyldigInput = """{"foo": "bar"}""".trimIndent()
-
+    private val ugyldigInput =
+        """{"foo": "bar"}""".trimIndent()
 }

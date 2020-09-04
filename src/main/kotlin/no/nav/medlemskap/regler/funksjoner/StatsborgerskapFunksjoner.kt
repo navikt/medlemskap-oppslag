@@ -13,24 +13,23 @@ import java.time.LocalDate
 object StatsborgerskapFunksjoner {
 
     infix fun List<Statsborgerskap>.hentStatsborgerskapFor(dato: LocalDate): List<String> =
-            this.filter {
-                Periode(it.fom, it.tom).interval().contains(lagInstantStartOfDay(dato))
-            }.map { it.landkode }
+        this.filter {
+            Periode(it.fom, it.tom).interval().contains(lagInstantStartOfDay(dato))
+        }.map { it.landkode }
 
     infix fun List<Statsborgerskap>.hentStatsborgerskapVedStartAvKontrollperiode(kontrollPeriode: Kontrollperiode): List<String> =
-            this.hentStatsborgerskapFor(kontrollPeriode.fom)
+        this.hentStatsborgerskapFor(kontrollPeriode.fom)
 
     infix fun List<Statsborgerskap>.hentStatsborgerskapVedSluttAvKontrollperiode(kontrollPeriode: Kontrollperiode): List<String> =
-            this.hentStatsborgerskapFor(kontrollPeriode.tom)
+        this.hentStatsborgerskapFor(kontrollPeriode.tom)
 
     fun List<Statsborgerskap>.registrerStatsborgerskapGrafana(kontrollPeriode: Kontrollperiode, ytelse: Ytelse, regelId: RegelId) =
-            this.hentStatsborgerskapFor(kontrollPeriode.tom).forEach { statsborgerskapUavklartForRegel(it, ytelse, regelId).increment() }
+        this.hentStatsborgerskapFor(kontrollPeriode.tom).forEach { statsborgerskapUavklartForRegel(it, ytelse, regelId).increment() }
 
     fun sjekkStatsborgerskap(statsborgerskap: List<Statsborgerskap>, kontrollPeriodeForStatsborgerskap: Kontrollperiode, funk: (String) -> Boolean): Boolean {
         val førsteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedStartAvKontrollperiode(kontrollPeriodeForStatsborgerskap)
         val sisteStatsborgerskap = statsborgerskap.hentStatsborgerskapVedSluttAvKontrollperiode(kontrollPeriodeForStatsborgerskap)
 
-        return førsteStatsborgerskap.any { funk(it) }  && sisteStatsborgerskap.any { funk(it) }
+        return førsteStatsborgerskap.any { funk(it) } && sisteStatsborgerskap.any { funk(it) }
     }
 }
-

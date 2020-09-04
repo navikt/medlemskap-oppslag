@@ -16,11 +16,11 @@ import no.nav.medlemskap.common.objectMapper
 import java.net.URL
 
 class SafClient(
-        private val baseUrl: String,
-        private val stsClient: StsRestClient,
-        private val username: String,
-        private val httpClient: HttpClient,
-        private val retry: Retry? = null
+    private val baseUrl: String,
+    private val stsClient: StsRestClient,
+    private val username: String,
+    private val httpClient: HttpClient,
+    private val retry: Retry? = null
 ) {
     companion object {
         private val logger = KotlinLogging.logger { }
@@ -34,10 +34,10 @@ class SafClient(
 
             val stsToken = stsClient.oidcToken()
             val variables = Dokumenter.Variables(
-                    brukerId = Dokumenter.BrukerIdInput(id = fnr, type = Dokumenter.BrukerIdType.FNR),
-                    foerste = ANTALL_JOURNALPOSTER,
-                    tema = listOf(Dokumenter.Tema.MED, Dokumenter.Tema.UFM, Dokumenter.Tema.TRY),
-                    journalstatuser = listOf(Dokumenter.Journalstatus.MOTTATT, Dokumenter.Journalstatus.JOURNALFOERT, Dokumenter.Journalstatus.FERDIGSTILT, Dokumenter.Journalstatus.EKSPEDERT, Dokumenter.Journalstatus.UNDER_ARBEID, Dokumenter.Journalstatus.RESERVERT, Dokumenter.Journalstatus.OPPLASTING_DOKUMENT, Dokumenter.Journalstatus.UKJENT)
+                brukerId = Dokumenter.BrukerIdInput(id = fnr, type = Dokumenter.BrukerIdType.FNR),
+                foerste = ANTALL_JOURNALPOSTER,
+                tema = listOf(Dokumenter.Tema.MED, Dokumenter.Tema.UFM, Dokumenter.Tema.TRY),
+                journalstatuser = listOf(Dokumenter.Journalstatus.MOTTATT, Dokumenter.Journalstatus.JOURNALFOERT, Dokumenter.Journalstatus.FERDIGSTILT, Dokumenter.Journalstatus.EKSPEDERT, Dokumenter.Journalstatus.UNDER_ARBEID, Dokumenter.Journalstatus.RESERVERT, Dokumenter.Journalstatus.OPPLASTING_DOKUMENT, Dokumenter.Journalstatus.UKJENT)
             )
 
             val response: GraphQLResponse<Dokumenter.Result> = dokumenterQuery.execute(variables) {
@@ -65,5 +65,3 @@ class SafClient(
         }
     }
 }
-
-

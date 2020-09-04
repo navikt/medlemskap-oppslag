@@ -11,9 +11,9 @@ import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.finnesUavklartePerioder
 
 class ErPerioderAvklartRegel(
-        ytelse: Ytelse,
-        val medlemskap: List<Medlemskap>,
-        val periode: InputPeriode
+    ytelse: Ytelse,
+    val medlemskap: List<Medlemskap>,
+    val periode: InputPeriode
 ) : MedlemskapRegel(RegelId.REGEL_1_1, ytelse, periode, medlemskap) {
 
     override fun operasjon(): Resultat {
@@ -27,9 +27,9 @@ class ErPerioderAvklartRegel(
 
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErPerioderAvklartRegel {
             return ErPerioderAvklartRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    medlemskap = datagrunnlag.medlemskap,
-                    periode = datagrunnlag.periode
+                ytelse = datagrunnlag.ytelse,
+                medlemskap = datagrunnlag.medlemskap,
+                periode = datagrunnlag.periode
             )
         }
     }

@@ -16,13 +16,13 @@ object PersonFactory {
     private val EndpointName = QName(Namespace, "Person_v3Port")
 
     fun create(endpointUrl: String, features: List<Feature> = emptyList(), outInterceptors: List<Interceptor<Message>> = emptyList()) =
-            JaxWsProxyFactoryBean().apply {
-                address = endpointUrl
-                wsdlURL = Wsdl
-                serviceName = ServiceName
-                endpointName = EndpointName
-                serviceClass = ServiceClass
-                this.features.addAll(features)
-                this.outInterceptors.addAll(outInterceptors)
-            }.create(ServiceClass)
+        JaxWsProxyFactoryBean().apply {
+            address = endpointUrl
+            wsdlURL = Wsdl
+            serviceName = ServiceName
+            endpointName = EndpointName
+            serviceClass = ServiceClass
+            this.features.addAll(features)
+            this.outInterceptors.addAll(outInterceptors)
+        }.create(ServiceClass)
 }

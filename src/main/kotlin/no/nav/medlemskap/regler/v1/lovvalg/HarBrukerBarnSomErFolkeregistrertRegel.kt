@@ -8,11 +8,11 @@ import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentBarnSomFinnesI
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarnUnder25
 
 class HarBrukerBarnSomErFolkeregistrertRegel(
-        ytelse: Ytelse,
-        private val periode: InputPeriode,
-        private val pdlPersonhistorikk: Personhistorikk?,
-        private val personhistorikkRelatertPerson: List<PersonhistorikkRelatertPerson>,
-        regelId: RegelId = RegelId.REGEL_11_2_2
+    ytelse: Ytelse,
+    private val periode: InputPeriode,
+    private val pdlPersonhistorikk: Personhistorikk?,
+    private val personhistorikkRelatertPerson: List<PersonhistorikkRelatertPerson>,
+    regelId: RegelId = RegelId.REGEL_11_2_2
 ) : LovvalgRegel(regelId, ytelse, periode) {
 
     override fun operasjon(): Resultat {
@@ -22,16 +22,18 @@ class HarBrukerBarnSomErFolkeregistrertRegel(
 
         val harBarnBosattINorge = barnITps.any {
             erPersonBosattINorge(
-                    it.bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
-                    it.postadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
-                    it.midlertidigAdresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk))
+                it.bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
+                it.postadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
+                it.midlertidigAdresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
+            )
         }
 
         val harBarnSomIkkeErBosattINorge = barnITps.filterNot {
             erPersonBosattINorge(
-                    it.bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
-                    it.postadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
-                    it.midlertidigAdresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk))
+                it.bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
+                it.postadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
+                it.midlertidigAdresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
+            )
         }.any()
 
         if (harBarnBosattINorge && harBarnSomIkkeErBosattINorge) {
@@ -49,11 +51,11 @@ class HarBrukerBarnSomErFolkeregistrertRegel(
 
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag, regelId: RegelId): HarBrukerBarnSomErFolkeregistrertRegel {
             return HarBrukerBarnSomErFolkeregistrertRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode,
-                    pdlPersonhistorikk = datagrunnlag.pdlpersonhistorikk,
-                    personhistorikkRelatertPerson = datagrunnlag.personHistorikkRelatertePersoner,
-                    regelId = regelId
+                ytelse = datagrunnlag.ytelse,
+                periode = datagrunnlag.periode,
+                pdlPersonhistorikk = datagrunnlag.pdlpersonhistorikk,
+                personhistorikkRelatertPerson = datagrunnlag.personHistorikkRelatertePersoner,
+                regelId = regelId
             )
         }
     }

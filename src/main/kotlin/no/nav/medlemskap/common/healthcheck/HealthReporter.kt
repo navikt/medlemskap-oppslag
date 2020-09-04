@@ -8,10 +8,9 @@ import java.util.*
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.concurrent.fixedRateTimer
 
-
 class HealthReporter(
-        private val healthService: HealthService,
-        frequency: Duration = Duration.ofSeconds(30)
+    private val healthService: HealthService,
+    frequency: Duration = Duration.ofSeconds(30)
 ) {
 
     private companion object {
@@ -26,17 +25,20 @@ class HealthReporter(
 
     init {
         timer = fixedRateTimer(
-                name = "health_reporter",
-                initialDelay = Duration.ofMinutes(1).toMillis(),
-                period = frequency.toMillis()) {
+            name = "health_reporter",
+            initialDelay = Duration.ofMinutes(1).toMillis(),
+            period = frequency.toMillis()
+        ) {
             val results = runBlocking { healthService.check() }
             results.setTotalStatus(totalGauge)
             results.setClientStatus(clientGauges)
         }
 
-        Runtime.getRuntime().addShutdownHook(Thread {
-            timer.cancel()
-        })
+        Runtime.getRuntime().addShutdownHook(
+            Thread {
+                timer.cancel()
+            }
+        )
     }
 
     private fun List<Result>.setTotalStatus(totalGauge: AtomicInteger) {

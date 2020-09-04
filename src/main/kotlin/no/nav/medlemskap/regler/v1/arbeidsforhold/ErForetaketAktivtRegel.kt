@@ -12,10 +12,10 @@ import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.konkursStatuserArbeidsgivere
 
 class ErForetaketAktivtRegel(
-        ytelse: Ytelse,
-        private val periode: InputPeriode,
-        private val arbeidsforhold: List<Arbeidsforhold>,
-        regelId: RegelId = RegelId.REGEL_6
+    ytelse: Ytelse,
+    private val periode: InputPeriode,
+    private val arbeidsforhold: List<Arbeidsforhold>,
+    regelId: RegelId = RegelId.REGEL_6
 ) : ArbeidsforholdRegel(regelId, ytelse, periode) {
 
     override fun operasjon(): Resultat {
@@ -29,9 +29,9 @@ class ErForetaketAktivtRegel(
 
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErForetaketAktivtRegel {
             return ErForetaketAktivtRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode,
-                    arbeidsforhold = datagrunnlag.arbeidsforhold
+                ytelse = datagrunnlag.ytelse,
+                periode = datagrunnlag.periode,
+                arbeidsforhold = datagrunnlag.arbeidsforhold
             )
         }
     }

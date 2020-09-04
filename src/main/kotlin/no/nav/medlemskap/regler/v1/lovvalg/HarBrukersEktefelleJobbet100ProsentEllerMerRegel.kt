@@ -11,10 +11,10 @@ import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
 
 class HarBrukersEktefelleJobbet100ProsentEllerMerRegel(
-        ytelse: Ytelse,
-        private val periode: InputPeriode,
-        private val arbeidsforholdEktefelle: List<Arbeidsforhold>,
-        regelId: RegelId = RegelId.REGEL_11_6_1
+    ytelse: Ytelse,
+    private val periode: InputPeriode,
+    private val arbeidsforholdEktefelle: List<Arbeidsforhold>,
+    regelId: RegelId = RegelId.REGEL_11_6_1
 ) : LovvalgRegel(regelId, ytelse, periode) {
 
     override fun operasjon(): Resultat {
@@ -28,9 +28,9 @@ class HarBrukersEktefelleJobbet100ProsentEllerMerRegel(
 
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukersEktefelleJobbet100ProsentEllerMerRegel {
             return HarBrukersEktefelleJobbet100ProsentEllerMerRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode,
-                    arbeidsforholdEktefelle = datagrunnlag.dataOmEktefelle?.arbeidsforholdEktefelle ?: emptyList()
+                ytelse = datagrunnlag.ytelse,
+                periode = datagrunnlag.periode,
+                arbeidsforholdEktefelle = datagrunnlag.dataOmEktefelle?.arbeidsforholdEktefelle ?: emptyList()
             )
         }
     }

@@ -9,10 +9,10 @@ import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.sisteArbeidsforholdSkipsregister
 
 class JobberBrukerPaaNorskSkipRegel(
-        ytelse: Ytelse,
-        private val periode: InputPeriode,
-        private val arbeidsforhold: List<Arbeidsforhold>,
-        regelId: RegelId = RegelId.REGEL_7_1
+    ytelse: Ytelse,
+    private val periode: InputPeriode,
+    private val arbeidsforhold: List<Arbeidsforhold>,
+    regelId: RegelId = RegelId.REGEL_7_1
 ) : ArbeidsforholdRegel(regelId, ytelse, periode) {
 
     override fun operasjon(): Resultat {
@@ -26,9 +26,9 @@ class JobberBrukerPaaNorskSkipRegel(
 
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): JobberBrukerPaaNorskSkipRegel {
             return JobberBrukerPaaNorskSkipRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode,
-                    arbeidsforhold = datagrunnlag.arbeidsforhold
+                ytelse = datagrunnlag.ytelse,
+                periode = datagrunnlag.periode,
+                arbeidsforhold = datagrunnlag.arbeidsforhold
             )
         }
     }

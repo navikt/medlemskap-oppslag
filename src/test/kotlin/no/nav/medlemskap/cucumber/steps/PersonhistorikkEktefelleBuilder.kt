@@ -10,8 +10,8 @@ class PersonhistorikkEktefelleBuilder {
 
     fun build(): PersonhistorikkEktefelle {
         return PersonhistorikkEktefelle(
-                ident,
-                barn
+            ident,
+            barn
         )
     }
 }

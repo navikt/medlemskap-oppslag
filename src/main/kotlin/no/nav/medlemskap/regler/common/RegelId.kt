@@ -4,7 +4,7 @@ enum class RegelId(val identifikator: String, val avklaring: String) {
     REGEL_1_1("1.1", "Er alle perioder siste 12 mnd avklart (endelig/gyldig)?"),
     REGEL_1_2("1.2", "Er det periode både med og uten medlemskap innenfor 12 mnd?"),
     REGEL_1_3("1.3", "Er det en periode med medlemskap?"),
-    REGEL_1_3_1("1.3.1","Er hele perioden uten medlemskap innenfor 12-måneders perioden?"),
+    REGEL_1_3_1("1.3.1", "Er hele perioden uten medlemskap innenfor 12-måneders perioden?"),
     REGEL_1_3_2("1.3.2", "Er bruker uten medlemskap sin situasjon uendret?"),
     REGEL_1_4("1.4", "Er hele perioden med medlemskap innenfor 12-måneders perioden?"),
     REGEL_1_5("1.5", "Er brukers arbeidsforhold uendret?"),

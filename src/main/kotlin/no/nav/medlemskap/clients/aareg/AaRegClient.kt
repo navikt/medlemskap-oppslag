@@ -17,12 +17,11 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-
 class AaRegClient(
-        private val baseUrl: String,
-        private val stsClient: StsRestClient,
-        private val httpClient: HttpClient,
-        private val retry: Retry? = null
+    private val baseUrl: String,
+    private val stsClient: StsRestClient,
+    private val httpClient: HttpClient,
+    private val retry: Retry? = null
 ) {
 
     companion object {
@@ -36,11 +35,11 @@ class AaRegClient(
             runWithRetryAndMetrics("AaReg", "ArbeidsforholdV1", retry) {
                 httpClient.get<List<AaRegArbeidsforhold>> {
                     url("$baseUrl/v1/arbeidstaker/arbeidsforhold")
-                    header(HttpHeaders.Authorization, "Bearer ${oidcToken}")
+                    header(HttpHeaders.Authorization, "Bearer $oidcToken")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
                     header("Nav-Call-Id", callId)
                     header("Nav-Personident", fnr)
-                    header("Nav-Consumer-Token", "Bearer ${oidcToken}")
+                    header("Nav-Consumer-Token", "Bearer $oidcToken")
                     fraOgMed?.let { parameter("ansettelsesperiodeFom", fraOgMed.tilIsoFormat()) }
                     tilOgMed?.let { parameter("ansettelsesperiodeTom", tilOgMed.tilIsoFormat()) }
                     parameter("historikk", "true")
@@ -48,19 +47,19 @@ class AaRegClient(
                 }
             }
         }.fold(
-                onSuccess = { liste -> liste },
-                onFailure = { error ->
-                    when (error) {
-                        is ClientRequestException -> {
-                            if (error.response.status.value == 404) {
-                                listOf()
-                            } else {
-                                throw error
-                            }
+            onSuccess = { liste -> liste },
+            onFailure = { error ->
+                when (error) {
+                    is ClientRequestException -> {
+                        if (error.response.status.value == 404) {
+                            listOf()
+                        } else {
+                            throw error
                         }
-                        else -> throw error
                     }
+                    else -> throw error
                 }
+            }
         )
     }
 
@@ -68,11 +67,11 @@ class AaRegClient(
         val oidcToken = stsClient.oidcToken()
         return httpClient.get {
             url("$baseUrl/v1/arbeidstaker/arbeidsforhold")
-            header(HttpHeaders.Authorization, "Bearer ${oidcToken}")
+            header(HttpHeaders.Authorization, "Bearer $oidcToken")
             header(HttpHeaders.Accept, ContentType.Application.Json)
             header("Nav-Call-Id", UUID.randomUUID().toString())
             header("Nav-Personident", IKKE_EKSISTERENDE_FNR)
-            header("Nav-Consumer-Token", "Bearer ${oidcToken}")
+            header("Nav-Consumer-Token", "Bearer $oidcToken")
             parameter("historikk", "false")
             parameter("regelverk", "ALLE")
         }
@@ -80,4 +79,3 @@ class AaRegClient(
 
     private fun LocalDate.tilIsoFormat() = this.format(DateTimeFormatter.ISO_LOCAL_DATE)
 }
-

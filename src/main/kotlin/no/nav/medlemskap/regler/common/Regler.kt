@@ -41,7 +41,7 @@ abstract class Regler(val ytelse: Ytelse, val regelMap: Map<RegelId, Regel> = em
             val delresultatMap = regler.map { it.regelId to it.utfør() }.toMap()
 
             return utledResultat(delresultatMap).copy(
-                    delresultat = delresultatMap.values.toList()
+                delresultat = delresultatMap.values.toList()
             )
         }
     }

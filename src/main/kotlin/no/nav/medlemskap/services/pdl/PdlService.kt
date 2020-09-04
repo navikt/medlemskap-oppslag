@@ -47,9 +47,8 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
         }
 
         return pdlResponse.data?.hentIdenter?.identer
-                ?.filter { it.gruppe == HentIdenter.IdentGruppe.AKTORID }
-                ?.map { it.ident } ?: throw IdenterIkkeFunnet()
-
+            ?.filter { it.gruppe == HentIdenter.IdentGruppe.AKTORID }
+            ?.map { it.ident } ?: throw IdenterIkkeFunnet()
     }
 
     suspend fun hentPersonHistorikk(fnr: String, callId: String): Personhistorikk {
@@ -67,7 +66,6 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
             logger.warn { "Fikk følgende feil fra PDL: ${objectMapper.writeValueAsString(errors)}" }
             throw GraphqlError(errors.first(), "PDL")
         }*/
-
     }
 
     suspend fun hentPersonHistorikkTilEktefelle(fnrTilEktefelle: String, callId: String): PersonhistorikkEktefelle {

@@ -20,5 +20,4 @@ class ReglerForGrunnforordningenTest {
     fun `person som ikke er statsborger i et EØS-land `() {
         assertSvar(REGEL_2, Svar.NEI, evaluer(personleser.brukerErIkkeStatsborgerIEØSLand()), Svar.UAVKLART)
     }
-
 }

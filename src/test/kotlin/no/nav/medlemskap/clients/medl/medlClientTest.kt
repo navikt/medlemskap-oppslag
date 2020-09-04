@@ -20,7 +20,6 @@ import no.nav.medlemskap.config.Configuration
 import org.junit.jupiter.api.*
 import java.time.LocalDate
 
-
 class medlClientTest {
 
     companion object {
@@ -51,12 +50,14 @@ class medlClientTest {
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        WireMock.stubFor(queryMapping.willReturn(
+        WireMock.stubFor(
+            queryMapping.willReturn(
                 WireMock.aResponse()
-                        .withStatus(HttpStatusCode.OK.value)
-                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-                        .withBody(medlResponse)
-        ))
+                    .withStatus(HttpStatusCode.OK.value)
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                    .withBody(medlResponse)
+            )
+        )
 
         val client = MedlClient(server.baseUrl(), stsClient, config, cioHttpClient)
         val response = runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
@@ -70,12 +71,14 @@ class medlClientTest {
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        WireMock.stubFor(queryMapping.willReturn(
+        WireMock.stubFor(
+            queryMapping.willReturn(
                 WireMock.aResponse()
-                        .withStatus(HttpStatusCode.InternalServerError.value)
-                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                    .withStatus(HttpStatusCode.InternalServerError.value)
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
-        ))
+            )
+        )
 
         val client = MedlClient(server.baseUrl(), stsClient, config, cioHttpClient)
 
@@ -91,12 +94,14 @@ class medlClientTest {
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        WireMock.stubFor(queryMapping.willReturn(
+        WireMock.stubFor(
+            queryMapping.willReturn(
                 WireMock.aResponse()
-                        .withStatus(HttpStatusCode.Forbidden.value)
-                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                    .withStatus(HttpStatusCode.Forbidden.value)
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
-        ))
+            )
+        )
 
         val client = MedlClient(server.baseUrl(), stsClient, config, cioHttpClient)
 
@@ -111,12 +116,14 @@ class medlClientTest {
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        WireMock.stubFor(queryMapping.willReturn(
+        WireMock.stubFor(
+            queryMapping.willReturn(
                 WireMock.aResponse()
-                        .withStatus(HttpStatusCode.NotFound.value)
-                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                    .withStatus(HttpStatusCode.NotFound.value)
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
-        ))
+            )
+        )
 
         val client = MedlClient(server.baseUrl(), stsClient, config, cioHttpClient)
         val response = runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
@@ -125,15 +132,15 @@ class medlClientTest {
     }
 
     private val queryMapping: MappingBuilder = WireMock.get(WireMock.urlPathEqualTo("/api/v1/medlemskapsunntak"))
-            .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
-            .withHeader("Nav-Personident", equalTo("10109000398"))
-            .withHeader("Nav-Call-Id", equalTo("12345"))
-            .withHeader("Nav-Consumer-Id", equalTo("test"))
-            .withQueryParam("fraOgMed", equalTo("2010-01-01"))
-            .withQueryParam("fraOgMed", equalTo("2010-01-01"))
+        .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
+        .withHeader("Nav-Personident", equalTo("10109000398"))
+        .withHeader("Nav-Call-Id", equalTo("12345"))
+        .withHeader("Nav-Consumer-Id", equalTo("test"))
+        .withQueryParam("fraOgMed", equalTo("2010-01-01"))
+        .withQueryParam("fraOgMed", equalTo("2010-01-01"))
 
-
-    private val medlResponse = """
+    private val medlResponse =
+        """
 [
   {
     "unntakId": 100064642,
@@ -166,8 +173,5 @@ class medlClientTest {
     }
   }
 ]
-""".trimIndent()
-
+        """.trimIndent()
 }
-
-

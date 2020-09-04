@@ -17,11 +17,11 @@ import no.nav.medlemskap.clients.sts.StsRestClient
 import java.net.URL
 
 class PdlClient(
-        private val baseUrl: String,
-        private val stsClient: StsRestClient,
-        private val username: String,
-        private val httpClient: HttpClient,
-        private val retry: Retry? = null
+    private val baseUrl: String,
+    private val stsClient: StsRestClient,
+    private val username: String,
+    private val httpClient: HttpClient,
+    private val retry: Retry? = null
 ) {
     companion object {
         private val logger = KotlinLogging.logger { }
@@ -45,7 +45,6 @@ class PdlClient(
         }
     }
 
-
     suspend fun hentPerson(fnr: String, callId: String): GraphQLResponse<HentPerson.Result> {
         return runWithRetryAndMetrics("PDL", "HentPerson", retry) {
             val stsToken = stsClient.oidcToken()
@@ -62,7 +61,6 @@ class PdlClient(
             }
             response
         }
-
     }
 
     suspend fun hentNasjonalitet(fnr: String, callId: String): GraphQLResponse<HentNasjonalitet.Result> {
@@ -109,4 +107,3 @@ class PdlClient(
         }
     }
 }
-

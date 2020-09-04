@@ -12,21 +12,21 @@ import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import javax.xml.ws.soap.SOAPFaultException
 
-
 private val logger = KotlinLogging.logger { }
 
 private val secureLogger = KotlinLogging.logger("tjenestekall")
 
 suspend fun defaultCreateDatagrunnlag(
-        fnr: String,
-        callId: String,
-        periode: InputPeriode,
-        brukerinput: Brukerinput,
-        services: Services,
-        clientId: String?,
-        ytelseFraRequest: Ytelse?): Datagrunnlag = coroutineScope {
+    fnr: String,
+    callId: String,
+    periode: InputPeriode,
+    brukerinput: Brukerinput,
+    services: Services,
+    clientId: String?,
+    ytelseFraRequest: Ytelse?
+): Datagrunnlag = coroutineScope {
 
-    val dataOmEktefelle : DataOmEktefelle?
+    val dataOmEktefelle: DataOmEktefelle?
 
     val aktorIder = services.pdlService.hentAlleAktorIder(fnr, callId)
     val personHistorikkFraPdl = hentPersonhistorikkFraPdl(services, fnr, callId)
@@ -38,11 +38,10 @@ suspend fun defaultCreateDatagrunnlag(
     val personhistorikkForFamilie = hentPersonhistorikkForFamilieAsync(personHistorikkFraPdl, services, periode)
 
     val fnrTilEktefelle = hentFnrTilEktefelle(personHistorikkFraPdl)
-    if(fnrTilEktefelle != null && gyldigFnr(fnrTilEktefelle)) {
-             dataOmEktefelle = hentDataOmEktefelle(fnrTilEktefelle, services, callId, periode)
-    }
-    else {
-             dataOmEktefelle = null
+    if (fnrTilEktefelle != null && gyldigFnr(fnrTilEktefelle)) {
+        dataOmEktefelle = hentDataOmEktefelle(fnrTilEktefelle, services, callId, periode)
+    } else {
+        dataOmEktefelle = null
     }
 
     val historikkFraTps = historikkFraTpsRequest.await()
@@ -55,17 +54,17 @@ suspend fun defaultCreateDatagrunnlag(
     ytelseCounter(ytelse.metricName()).increment()
 
     Datagrunnlag(
-            periode = periode,
-            brukerinput = brukerinput,
-            personhistorikk = historikkFraTps,
-            pdlpersonhistorikk = personHistorikkFraPdl,
-            medlemskap = medlemskap,
-            arbeidsforhold = arbeidsforhold,
-            oppgaver = oppgaver,
-            dokument = journalPoster,
-            ytelse = ytelse,
-            personHistorikkRelatertePersoner = personhistorikkForFamilie,
-            dataOmEktefelle = dataOmEktefelle
+        periode = periode,
+        brukerinput = brukerinput,
+        personhistorikk = historikkFraTps,
+        pdlpersonhistorikk = personHistorikkFraPdl,
+        medlemskap = medlemskap,
+        arbeidsforhold = arbeidsforhold,
+        oppgaver = oppgaver,
+        dokument = journalPoster,
+        ytelse = ytelse,
+        personHistorikkRelatertePersoner = personhistorikkForFamilie,
+        dataOmEktefelle = dataOmEktefelle
     )
 }
 
@@ -76,13 +75,12 @@ private suspend fun CoroutineScope.hentDataOmEktefelle(fnrTilEktefelle: String?,
         val arbeidsforholdEktefelle = arbeidsforholdEktefelleReguest.await()
 
         return DataOmEktefelle(
-                personhistorikkEktefelle = personhistorikkEktefelle,
-                arbeidsforholdEktefelle = arbeidsforholdEktefelle)
-
+            personhistorikkEktefelle = personhistorikkEktefelle,
+            arbeidsforholdEktefelle = arbeidsforholdEktefelle
+        )
     }
     return null
 }
-
 
 private fun fraOgMedDatoForArbeidsforhold(periode: InputPeriode) = periode.fom.minusYears(1).minusDays(1)
 
@@ -98,15 +96,14 @@ suspend fun hentPersonHistorikkForEktefelle(fnrTilEktefelle: String, services: S
 
 private fun hentFnrTilEktefelle(personHistorikkFraPdl: Personhistorikk?): String? {
     val fnrTilEktefelle =
-            personHistorikkFraPdl?.sivilstand
-                    ?.filter { it.type == Sivilstandstype.GIFT || it.type == Sivilstandstype.REGISTRERT_PARTNER }
-                    ?.map { it.relatertVedSivilstand }
-                    ?.lastOrNull()
+        personHistorikkFraPdl?.sivilstand
+            ?.filter { it.type == Sivilstandstype.GIFT || it.type == Sivilstandstype.REGISTRERT_PARTNER }
+            ?.map { it.relatertVedSivilstand }
+            ?.lastOrNull()
     return fnrTilEktefelle
 }
 
-
-//Midlertidig kode, ekstra feilhåndtering fordi integrasjonen vår mot PDL ikke er helt 100% ennå..
+// Midlertidig kode, ekstra feilhåndtering fordi integrasjonen vår mot PDL ikke er helt 100% ennå..
 private suspend fun hentPersonhistorikkFraPdl(services: Services, fnr: String, callId: String): Personhistorikk? {
     return try {
         services.pdlService.hentPersonHistorikk(fnr, callId)
@@ -117,14 +114,14 @@ private suspend fun hentPersonhistorikkFraPdl(services: Services, fnr: String, c
     }
 }
 
-//Midlertidig kode, ekstra feilhåndtering fordi integrasjonen vår mot PDL ikke er helt 100% ennå..
+// Midlertidig kode, ekstra feilhåndtering fordi integrasjonen vår mot PDL ikke er helt 100% ennå..
 private suspend fun CoroutineScope.hentPersonhistorikkForFamilieAsync(personHistorikkFraPdl: Personhistorikk?, services: Services, periode: InputPeriode): List<PersonhistorikkRelatertPerson> {
     return personHistorikkFraPdl?.let {
         try {
             services.personService.hentPersonhistorikkForRelevantFamilie(it, periode)
         } catch (sfe: SOAPFaultException) {
             logger.error("SoapFault under henting av personhistorikk for familie", sfe)
-            //Må forstå mer av TPS svarte med FEIL, folgende status: S016007F og folgende melding: FØDSELSNR ER IKKE ENTYDIG
+            // Må forstå mer av TPS svarte med FEIL, folgende status: S016007F og folgende melding: FØDSELSNR ER IKKE ENTYDIG
             secureLogger.error("SoapFault mot TPS for familierelasjoner {} og sivilstand {}", it.familierelasjoner, it.sivilstand, sfe)
             emptyList<PersonhistorikkRelatertPerson>()
         } catch (e: Exception) {

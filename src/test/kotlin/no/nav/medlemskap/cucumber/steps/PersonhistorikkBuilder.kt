@@ -7,7 +7,7 @@ class PersonhistorikkBuilder {
     val personstatuser = mutableListOf<FolkeregisterPersonstatus>()
     val bostedsadresser = mutableListOf<Adresse>()
     val postadresser = mutableListOf<Adresse>()
-    val midlertidigAdresser= mutableListOf<Adresse>()
+    val midlertidigAdresser = mutableListOf<Adresse>()
     val sivilstand = mutableListOf<Sivilstand>()
     val familierelasjoner = mutableListOf<Familierelasjon>()
     val kontaktadresse = mutableListOf<Adresse>()
@@ -15,15 +15,15 @@ class PersonhistorikkBuilder {
 
     fun build(): Personhistorikk {
         return Personhistorikk(
-                statsborgerskap,
-                personstatuser,
-                bostedsadresser,
-                postadresser,
-                midlertidigAdresser,
-                sivilstand,
-                familierelasjoner,
-                kontaktadresse,
-                oppholdsadresse
+            statsborgerskap,
+            personstatuser,
+            bostedsadresser,
+            postadresser,
+            midlertidigAdresser,
+            sivilstand,
+            familierelasjoner,
+            kontaktadresse,
+            oppholdsadresse
         )
     }
 }

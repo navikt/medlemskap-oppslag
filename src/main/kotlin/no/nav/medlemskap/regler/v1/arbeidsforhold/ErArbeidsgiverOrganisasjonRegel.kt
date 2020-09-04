@@ -13,10 +13,10 @@ import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.erAlleArbeidsgivereOrganisasjon
 
 class ErArbeidsgiverOrganisasjonRegel(
-        ytelse: Ytelse,
-        private val periode: InputPeriode,
-        private val arbeidsforhold: List<Arbeidsforhold>,
-        regelId: RegelId = RegelId.REGEL_4
+    ytelse: Ytelse,
+    private val periode: InputPeriode,
+    private val arbeidsforhold: List<Arbeidsforhold>,
+    regelId: RegelId = RegelId.REGEL_4
 ) : ArbeidsforholdRegel(regelId, ytelse, periode) {
 
     override fun operasjon(): Resultat {
@@ -32,9 +32,9 @@ class ErArbeidsgiverOrganisasjonRegel(
 
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErArbeidsgiverOrganisasjonRegel {
             return ErArbeidsgiverOrganisasjonRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode,
-                    arbeidsforhold = datagrunnlag.arbeidsforhold
+                ytelse = datagrunnlag.ytelse,
+                periode = datagrunnlag.periode,
+                arbeidsforhold = datagrunnlag.arbeidsforhold
             )
         }
     }

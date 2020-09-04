@@ -28,8 +28,8 @@ fun stsClient(stsUrl: String, username: String, password: String): STSClient {
         features = listOf(LoggingFeature())
 
         properties = mapOf(
-                SecurityConstants.USERNAME to username,
-                SecurityConstants.PASSWORD to password
+            SecurityConstants.USERNAME to username,
+            SecurityConstants.PASSWORD to password
         )
         setPolicy(bus.resolvePolicy(STS_CLIENT_AUTHENTICATION_POLICY))
     }
@@ -42,7 +42,6 @@ fun STSClient.configureFor(servicePort: Any) {
 fun STSClient.configureFor(servicePort: Any, policyUri: String) {
     val client = ClientProxy.getClient(servicePort)
     client.configureSTS(this, policyUri)
-
 }
 
 fun Client.configureSTS(stsClient: STSClient, policyUri: String = STS_SAML_POLICY) {

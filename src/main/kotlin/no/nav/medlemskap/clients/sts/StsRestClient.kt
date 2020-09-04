@@ -11,11 +11,11 @@ import java.time.LocalDateTime
 import java.util.*
 
 class StsRestClient(
-        private val baseUrl: String,
-        private val username: String,
-        private val password: String,
-        private val httpClient: HttpClient,
-        private val retry: Retry? = null
+    private val baseUrl: String,
+    private val username: String,
+    private val password: String,
+    private val httpClient: HttpClient,
+    private val retry: Retry? = null
 ) {
     private var cachedOidcToken: Token? = null
     private var cachedSamlToken: Token? = null
@@ -53,25 +53,25 @@ class StsRestClient(
         }
 
         val urldecodedBase64 = cachedSamlToken!!.token
-                .replace('-', '+')
-                .replace('_', '/')
-                .plus("=".repeat(cachedSamlToken!!.token.length % 4))
+            .replace('-', '+')
+            .replace('_', '/')
+            .plus("=".repeat(cachedSamlToken!!.token.length % 4))
 
         return String(Base64.getDecoder().decode(urldecodedBase64))
     }
 
-
-    private fun credentials() = Base64.getEncoder().encodeToString("${username}:${password}".toByteArray(Charsets.UTF_8))
+    private fun credentials() = Base64.getEncoder().encodeToString("$username:$password".toByteArray(Charsets.UTF_8))
 
     private fun Token?.shouldBeRenewed(): Boolean = this?.hasExpired() ?: true
 
     data class Token(
-            @JsonProperty(value = "access_token", required = true)
-            val token: String,
-            @JsonProperty(value = "token_type", required = true)
-            val type: String,
-            @JsonProperty(value = "expires_in", required = true)
-            val expiresIn: Int) {
+        @JsonProperty(value = "access_token", required = true)
+        val token: String,
+        @JsonProperty(value = "token_type", required = true)
+        val type: String,
+        @JsonProperty(value = "expires_in", required = true)
+        val expiresIn: Int
+    ) {
 
         private val expirationTime: LocalDateTime = LocalDateTime.now().plusSeconds(expiresIn - 20L)
 

@@ -6,16 +6,15 @@ import no.nav.medlemskap.services.pdl.PdlMapper.mapFolkeregisterMetadata2
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-
 object PdlSivilstandMapper {
 
     fun mapSivilstander(pdlSivilstander: List<HentPerson.Sivilstand>): List<no.nav.medlemskap.domene.Sivilstand> {
         val sivilstander =
-                pdlSivilstander.filter {
-                    it.type != HentPerson.Sivilstandstype.UGIFT && it.type != HentPerson.Sivilstandstype.UOPPGITT
-                }.sortedBy {
-                    convertToLocalDate(it.gyldigFraOgMed) ?: LocalDate.MIN
-                }
+            pdlSivilstander.filter {
+                it.type != HentPerson.Sivilstandstype.UGIFT && it.type != HentPerson.Sivilstandstype.UOPPGITT
+            }.sortedBy {
+                convertToLocalDate(it.gyldigFraOgMed) ?: LocalDate.MIN
+            }
 
         if (sivilstander.size < 2) {
             return sivilstander.map {
@@ -24,24 +23,22 @@ object PdlSivilstandMapper {
         }
 
         return sivilstander
-                .zipWithNext { sivilstand, neste ->
-                    mapSivilstander(sivilstand, convertToLocalDate(neste.gyldigFraOgMed)?.minusDays(1))
-                }.plus(mapSivilstander(sivilstander.last()))
-
-
+            .zipWithNext { sivilstand, neste ->
+                mapSivilstander(sivilstand, convertToLocalDate(neste.gyldigFraOgMed)?.minusDays(1))
+            }.plus(mapSivilstander(sivilstander.last()))
     }
 
     fun convertToLocalDate(dateToConvert: String?): LocalDate? {
-        return LocalDate.parse(dateToConvert, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return LocalDate.parse(dateToConvert, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
     }
 
     private fun mapSivilstander(sivilstand: HentPerson.Sivilstand, gyldigTilOgMed: LocalDate? = null): no.nav.medlemskap.domene.Sivilstand {
         return no.nav.medlemskap.domene.Sivilstand(
-                type = mapSivilstandType(sivilstand.type),
-                gyldigFraOgMed = convertToLocalDate(sivilstand.gyldigFraOgMed),
-                gyldigTilOgMed = gyldigTilOgMed,
-                relatertVedSivilstand = sivilstand.relatertVedSivilstand,
-                folkeregistermetadata = mapFolkeregisterMetadata2(sivilstand.folkeregistermetadata)
+            type = mapSivilstandType(sivilstand.type),
+            gyldigFraOgMed = convertToLocalDate(sivilstand.gyldigFraOgMed),
+            gyldigTilOgMed = gyldigTilOgMed,
+            relatertVedSivilstand = sivilstand.relatertVedSivilstand,
+            folkeregistermetadata = mapFolkeregisterMetadata2(sivilstand.folkeregistermetadata)
         )
     }
 
