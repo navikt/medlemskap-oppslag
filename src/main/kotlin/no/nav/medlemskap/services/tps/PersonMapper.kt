@@ -33,11 +33,13 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
         mapMidlertidigPostadresse(it)
     }
 
+    val kontaktadresse: List<Adresse> = emptyList()
+    val oppholdsadresse: List<Adresse> = emptyList()
     val sivilstand: List<Sivilstand> = emptyList()
 
     val familierelasjoner: List<Familierelasjon> = emptyList()
 
-    return Personhistorikk(statsborgerskap, personstatuser, bostedsadresser, postadresser, midlertidigAdresser, sivilstand, familierelasjoner)
+    return Personhistorikk(statsborgerskap, personstatuser, bostedsadresser, postadresser, midlertidigAdresser, sivilstand, familierelasjoner, kontaktadresse, oppholdsadresse)
 }
 
 fun mapPersonhistorikkRelatertPersonResultat(ident: String, personhistorikkRelatertPerson: HentPersonhistorikkResponse): PersonhistorikkRelatertPerson {
