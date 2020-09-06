@@ -4,9 +4,7 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.regler.common.Regel
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.RegelId.*
-import no.nav.medlemskap.regler.v1.arbeidsforhold.ErArbeidsgiverOrganisasjonRegel
-import no.nav.medlemskap.regler.v1.arbeidsforhold.HarBrukerSammenhengendeArbeidsforholdRegel
-import no.nav.medlemskap.regler.v1.arbeidsforhold.HarForetaketMerEnn5AnsatteRegel
+import no.nav.medlemskap.regler.v1.arbeidsforhold.*
 import no.nav.medlemskap.regler.v1.grunnforordningen.ErBrukerEøsBorgerRegel
 import no.nav.medlemskap.regler.v1.lovvalg.*
 import no.nav.medlemskap.regler.v1.medlemskap.*
@@ -41,6 +39,10 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_3 -> HarBrukerSammenhengendeArbeidsforholdRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_4 -> ErArbeidsgiverOrganisasjonRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_5 -> HarForetaketMerEnn5AnsatteRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_6 -> ErForetaketAktivtRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_7 -> ErArbeidsforholdetMaritimtRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_7_1 -> JobberBrukerPaaNorskSkipRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_8 -> ErBrukerPilotEllerKabinansattRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_9 -> HarBrukerJobbetUtenforNorgeRegel.fraDatagrunnlag(datagrunnlag).regel
 
             REGEL_10 -> ErBrukerBosattINorgeRegel.fraDatagrunnlag(datagrunnlag).regel
