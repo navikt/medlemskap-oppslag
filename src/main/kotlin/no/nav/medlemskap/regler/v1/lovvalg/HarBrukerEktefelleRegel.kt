@@ -13,11 +13,11 @@ import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentRelatertSomFinnesITPS
 
 class HarBrukerEktefelleRegel(
-        ytelse: Ytelse,
-        private val periode: InputPeriode,
-        private val dataOmEktefelle: DataOmEktefelle?,
-        private val personhistorikkRelatertPerson: List<PersonhistorikkRelatertPerson>,
-        regelId: RegelId = RegelId.REGEL_11_2
+    ytelse: Ytelse,
+    private val periode: InputPeriode,
+    private val dataOmEktefelle: DataOmEktefelle?,
+    private val personhistorikkRelatertPerson: List<PersonhistorikkRelatertPerson>,
+    regelId: RegelId = RegelId.REGEL_11_2
 ) : LovvalgRegel(regelId, ytelse, periode) {
 
     override fun operasjon(): Resultat {
@@ -34,10 +34,10 @@ class HarBrukerEktefelleRegel(
 
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerEktefelleRegel {
             return HarBrukerEktefelleRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode,
-                    dataOmEktefelle = datagrunnlag.dataOmEktefelle,
-                    personhistorikkRelatertPerson = datagrunnlag.personHistorikkRelatertePersoner
+                ytelse = datagrunnlag.ytelse,
+                periode = datagrunnlag.periode,
+                dataOmEktefelle = datagrunnlag.dataOmEktefelle,
+                personhistorikkRelatertPerson = datagrunnlag.personHistorikkRelatertePersoner
             )
         }
     }

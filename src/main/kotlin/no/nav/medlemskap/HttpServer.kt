@@ -41,15 +41,15 @@ import java.util.*
 private val logger = KotlinLogging.logger { }
 
 fun
-        createHttpServer(
-        applicationState: ApplicationState,
-        useAuthentication: Boolean = true,
-        configuration: Configuration = Configuration(),
-        azureAdOpenIdConfiguration: AzureAdOpenIdConfiguration = getAadConfig(configuration.azureAd),
-        services: Services = Services(configuration),
-        port: Int = 7070,
-        prometheusRegistry: PrometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT),
-        createDatagrunnlag: suspend (fnr: String, callId: String, periode: InputPeriode, brukerinput: Brukerinput, services: Services, clientId: String?, ytelseFraRequest: Ytelse?) -> Datagrunnlag = ::defaultCreateDatagrunnlag
+createHttpServer(
+    applicationState: ApplicationState,
+    useAuthentication: Boolean = true,
+    configuration: Configuration = Configuration(),
+    azureAdOpenIdConfiguration: AzureAdOpenIdConfiguration = getAadConfig(configuration.azureAd),
+    services: Services = Services(configuration),
+    port: Int = 7070,
+    prometheusRegistry: PrometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT),
+    createDatagrunnlag: suspend (fnr: String, callId: String, periode: InputPeriode, brukerinput: Brukerinput, services: Services, clientId: String?, ytelseFraRequest: Ytelse?) -> Datagrunnlag = ::defaultCreateDatagrunnlag
 ): ApplicationEngine = embeddedServer(Netty, port) {
 
     install(StatusPages) {
@@ -90,12 +90,12 @@ fun
     install(MicrometerMetrics) {
         registry = prometheusRegistry
         meterBinders = listOf(
-                ClassLoaderMetrics(),
-                JvmMemoryMetrics(),
-                JvmGcMetrics(),
-                ProcessorMetrics(),
-                JvmThreadMetrics(),
-                FileDescriptorMetrics()
+            ClassLoaderMetrics(),
+            JvmMemoryMetrics(),
+            JvmGcMetrics(),
+            ProcessorMetrics(),
+            JvmThreadMetrics(),
+            FileDescriptorMetrics()
         )
     }
 

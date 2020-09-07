@@ -45,5 +45,4 @@ class TpsClientRetryTest {
         }
         verify(exactly = 1) { mockPersonV3.hentPersonhistorikk(any()) }
     }
-
 }

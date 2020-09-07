@@ -8,10 +8,10 @@ import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.sjekkStatsborgerskap
 
 class HarBrukerNorskStatsborgerskapRegel(
-        ytelse: Ytelse,
-        private val periode: InputPeriode,
-        private val statsborgerskap: List<Statsborgerskap>,
-        regelId: RegelId = RegelId.REGEL_11
+    ytelse: Ytelse,
+    private val periode: InputPeriode,
+    private val statsborgerskap: List<Statsborgerskap>,
+    regelId: RegelId = RegelId.REGEL_11
 ) : LovvalgRegel(regelId, ytelse, periode) {
 
     override fun operasjon(): Resultat {
@@ -21,16 +21,15 @@ class HarBrukerNorskStatsborgerskapRegel(
             erNorskStatsborger -> ja()
             else -> nei("Brukeren er ikke norsk statsborger")
         }
-
     }
 
     companion object {
 
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerNorskStatsborgerskapRegel {
             return HarBrukerNorskStatsborgerskapRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode,
-                    statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap
+                ytelse = datagrunnlag.ytelse,
+                periode = datagrunnlag.periode,
+                statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap
             )
         }
     }

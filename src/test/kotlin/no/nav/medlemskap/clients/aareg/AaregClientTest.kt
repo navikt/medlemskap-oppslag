@@ -48,24 +48,22 @@ class AaregClientTest {
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        WireMock.stubFor(queryMapping.willReturn(
+        WireMock.stubFor(
+            queryMapping.willReturn(
                 WireMock.aResponse()
-                        .withStatus(HttpStatusCode.OK.value)
-                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-                        .withBody(aaRegResponse)
-        ))
+                    .withStatus(HttpStatusCode.OK.value)
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                    .withBody(aaRegResponse)
+            )
+        )
 
         val client = AaRegClient(server.baseUrl(), stsClient, cioHttpClient)
 
         val response = runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
         println(response)
 
-
         Assertions.assertEquals(null, response[0].ansettelsesperiode.varslingskode)
-
-
     }
-
 
     @Test
     fun `tester ServerResponseException`() {
@@ -73,12 +71,14 @@ class AaregClientTest {
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        WireMock.stubFor(queryMapping.willReturn(
+        WireMock.stubFor(
+            queryMapping.willReturn(
                 WireMock.aResponse()
-                        .withStatus(HttpStatusCode.InternalServerError.value)
-                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                    .withStatus(HttpStatusCode.InternalServerError.value)
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
-        ))
+            )
+        )
         val client = AaRegClient(server.baseUrl(), stsClient, cioHttpClient)
 
         Assertions.assertThrows(ServerResponseException::class.java) {
@@ -92,12 +92,14 @@ class AaregClientTest {
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        WireMock.stubFor(queryMapping.willReturn(
+        WireMock.stubFor(
+            queryMapping.willReturn(
                 WireMock.aResponse()
-                        .withStatus(HttpStatusCode.Forbidden.value)
-                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                    .withStatus(HttpStatusCode.Forbidden.value)
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
-        ))
+            )
+        )
 
         val client = AaRegClient(server.baseUrl(), stsClient, cioHttpClient)
 
@@ -112,12 +114,14 @@ class AaregClientTest {
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        WireMock.stubFor(queryMapping.willReturn(
+        WireMock.stubFor(
+            queryMapping.willReturn(
                 WireMock.aResponse()
-                        .withStatus(HttpStatusCode.NotFound.value)
-                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                    .withStatus(HttpStatusCode.NotFound.value)
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
-        ))
+            )
+        )
 
         val client = AaRegClient(server.baseUrl(), stsClient, cioHttpClient)
         val response = runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
@@ -125,8 +129,8 @@ class AaregClientTest {
         Assertions.assertEquals(0, response.size)
     }
 
-
-    private val aaRegResponse = """
+    private val aaRegResponse =
+        """
 [
   {
     "navArbeidsforholdId": 33536256,
@@ -688,20 +692,15 @@ class AaregClientTest {
     }
   }
 ]
-""".trimIndent()
-
+        """.trimIndent()
 
     private val queryMapping: MappingBuilder = WireMock.get(WireMock.urlPathEqualTo("/v1/arbeidstaker/arbeidsforhold"))
-            .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
-            .withHeader("Nav-Consumer-Token", equalTo("Bearer dummytoken"))
-            .withHeader("Nav-Personident", equalTo("26104635775"))
-            .withHeader("Nav-Call-Id", equalTo("12345"))
-            .withQueryParam("ansettelsesperiodeFom", equalTo("2010-01-01"))
-            .withQueryParam("ansettelsesperiodeTom", equalTo("2016-01-01"))
-            .withQueryParam("historikk", equalTo("true"))
-            .withQueryParam("regelverk", equalTo("ALLE"))
-
-
+        .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
+        .withHeader("Nav-Consumer-Token", equalTo("Bearer dummytoken"))
+        .withHeader("Nav-Personident", equalTo("26104635775"))
+        .withHeader("Nav-Call-Id", equalTo("12345"))
+        .withQueryParam("ansettelsesperiodeFom", equalTo("2010-01-01"))
+        .withQueryParam("ansettelsesperiodeTom", equalTo("2016-01-01"))
+        .withQueryParam("historikk", equalTo("true"))
+        .withQueryParam("regelverk", equalTo("ALLE"))
 }
-
-

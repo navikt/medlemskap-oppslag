@@ -7,11 +7,9 @@ object JoarkFunksjoner {
 
     private val tillatteTemaer = listOf("MED", "UFM", "TRY")
 
-
     fun List<Journalpost>.finnesDokumenterMedTillatteTeamer(): Boolean =
-            this.dokumenterMedTillatteTemaer().isNotEmpty()
+        this.dokumenterMedTillatteTemaer().isNotEmpty()
 
     fun List<Journalpost>.dokumenterMedTillatteTemaer(): List<Journalpost> =
         this.filter { it.tema erDelAv tillatteTemaer }
-
 }

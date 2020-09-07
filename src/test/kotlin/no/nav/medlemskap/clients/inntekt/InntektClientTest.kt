@@ -53,12 +53,14 @@ class InntektClientTest {
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        stubFor(queryMapping.willReturn(
+        stubFor(
+            queryMapping.willReturn(
                 aResponse()
-                        .withStatus(HttpStatusCode.OK.value)
-                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-                        .withBody(inntektResponse)
-        ))
+                    .withStatus(HttpStatusCode.OK.value)
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                    .withBody(inntektResponse)
+            )
+        )
 
         val client = InntektClient(server.baseUrl(), stsClient, config, cioHttpClient)
 
@@ -78,17 +80,19 @@ class InntektClientTest {
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        WireMock.stubFor(queryMapping.willReturn(
+        WireMock.stubFor(
+            queryMapping.willReturn(
                 WireMock.aResponse()
-                        .withStatus(HttpStatusCode.InternalServerError.value)
-                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                    .withStatus(HttpStatusCode.InternalServerError.value)
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
-        ))
+            )
+        )
         val client = InntektClient(server.baseUrl(), stsClient, config, cioHttpClient)
 
 //        Assertions.assertThrows(ServerResponseException::class.java) {
-////            runBlocking { client.hentInntektListe("10108000398", callId, LocalDate.of(2016, 1, 1), LocalDate.of(2016, 8, 1)) }
-////        }
+// //            runBlocking { client.hentInntektListe("10108000398", callId, LocalDate.of(2016, 1, 1), LocalDate.of(2016, 8, 1)) }
+// //        }
 
         val response = runBlocking { client.hentInntektListe("10108000398", callId, LocalDate.of(2016, 1, 1), LocalDate.of(2016, 8, 1)) }
         assertThat(response.arbeidsInntektMaaned).isNotNull()
@@ -101,24 +105,26 @@ class InntektClientTest {
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        WireMock.stubFor(queryMapping.willReturn(
+        WireMock.stubFor(
+            queryMapping.willReturn(
                 WireMock.aResponse()
-                        .withStatus(HttpStatusCode.Forbidden.value)
-                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                    .withStatus(HttpStatusCode.Forbidden.value)
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
 
-        ))
+            )
+        )
 
         val client = InntektClient(server.baseUrl(), stsClient, config, cioHttpClient)
 
         Assertions.assertThrows(ClientRequestException::class.java) {
             runBlocking { client.hentInntektListe("10108000398", callId, LocalDate.of(2016, 1, 1), LocalDate.of(2016, 8, 1)) }
         }
-
     }
 
     private val config = Configuration()
 
-    private val inntektRequest = """
+    private val inntektRequest =
+        """
     {
         "ident": {
             "identifikator": "10108000398",
@@ -129,18 +135,18 @@ class InntektClientTest {
         "maanedTom": "2016-08",
         "formaal": "Medlemskap"
     }
-""".trimIndent()
+        """.trimIndent()
 
     private val queryMapping: MappingBuilder = post(urlPathEqualTo("/rs/api/v1/hentinntektliste"))
-            .withHeader(HttpHeaders.Accept, equalTo("application/json"))
-            .withHeader(HttpHeaders.ContentType, equalTo("application/json"))
-            .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
-            .withHeader("Nav-Consumer-Id", equalTo("test"))
-            .withHeader("Nav-Call-Id", equalTo("12345"))
-            .withRequestBody(equalToJson(inntektRequest))
+        .withHeader(HttpHeaders.Accept, equalTo("application/json"))
+        .withHeader(HttpHeaders.ContentType, equalTo("application/json"))
+        .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
+        .withHeader("Nav-Consumer-Id", equalTo("test"))
+        .withHeader("Nav-Call-Id", equalTo("12345"))
+        .withRequestBody(equalToJson(inntektRequest))
 
-
-    private val inntektResponse = """
+    private val inntektResponse =
+        """
     {
         "arbeidsInntektMaaned": [
             {
@@ -209,6 +215,5 @@ class InntektClientTest {
             "aktoerType": "NATURLIG_IDENT"
         }
     }
-""".trimIndent()
-
+        """.trimIndent()
 }

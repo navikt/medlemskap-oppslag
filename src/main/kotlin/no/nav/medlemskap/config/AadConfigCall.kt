@@ -9,14 +9,14 @@ import no.nav.medlemskap.common.apacheHttpClient
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class AzureAdOpenIdConfiguration(
-        @JsonProperty("jwks_uri")
-        val jwksUri: String,
-        @JsonProperty("issuer")
-        val issuer: String,
-        @JsonProperty("token_endpoint")
-        val tokenEndpoint: String,
-        @JsonProperty("authorization_endpoint")
-        val authorizationEndpoint: String
+    @JsonProperty("jwks_uri")
+    val jwksUri: String,
+    @JsonProperty("issuer")
+    val issuer: String,
+    @JsonProperty("token_endpoint")
+    val tokenEndpoint: String,
+    @JsonProperty("authorization_endpoint")
+    val authorizationEndpoint: String
 )
 
 private val logger = KotlinLogging.logger { }

@@ -3,27 +3,24 @@ package no.nav.medlemskap.clients.saf
 import com.expediagroup.graphql.client.GraphQLClient
 import com.expediagroup.graphql.types.GraphQLResponse
 import io.github.resilience4j.retry.Retry
-import io.ktor.client.HttpClient
-import io.ktor.client.request.header
-import io.ktor.client.request.options
-import io.ktor.client.request.url
-import io.ktor.client.statement.HttpResponse
-import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
+import io.ktor.client.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
 import mu.KotlinLogging
-import no.nav.medlemskap.client.generated.Dokumenter
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
+import no.nav.medlemskap.clients.saf.generated.Dokumenter
 import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.objectMapper
 import java.net.URL
 
 class SafClient(
-        private val baseUrl: String,
-        private val stsClient: StsRestClient,
-        private val username: String,
-        private val httpClient: HttpClient,
-        private val retry: Retry? = null
+    private val baseUrl: String,
+    private val stsClient: StsRestClient,
+    private val username: String,
+    private val httpClient: HttpClient,
+    private val retry: Retry? = null
 ) {
     companion object {
         private val logger = KotlinLogging.logger { }
@@ -37,10 +34,10 @@ class SafClient(
 
             val stsToken = stsClient.oidcToken()
             val variables = Dokumenter.Variables(
-                    brukerId = Dokumenter.BrukerIdInput(id = fnr, type = Dokumenter.BrukerIdType.FNR),
-                    foerste = ANTALL_JOURNALPOSTER,
-                    tema = listOf(Dokumenter.Tema.MED, Dokumenter.Tema.UFM, Dokumenter.Tema.TRY),
-                    journalstatuser = listOf(Dokumenter.Journalstatus.MOTTATT, Dokumenter.Journalstatus.JOURNALFOERT, Dokumenter.Journalstatus.FERDIGSTILT, Dokumenter.Journalstatus.EKSPEDERT, Dokumenter.Journalstatus.UNDER_ARBEID, Dokumenter.Journalstatus.RESERVERT, Dokumenter.Journalstatus.OPPLASTING_DOKUMENT, Dokumenter.Journalstatus.UKJENT)
+                brukerId = Dokumenter.BrukerIdInput(id = fnr, type = Dokumenter.BrukerIdType.FNR),
+                foerste = ANTALL_JOURNALPOSTER,
+                tema = listOf(Dokumenter.Tema.MED, Dokumenter.Tema.UFM, Dokumenter.Tema.TRY),
+                journalstatuser = listOf(Dokumenter.Journalstatus.MOTTATT, Dokumenter.Journalstatus.JOURNALFOERT, Dokumenter.Journalstatus.FERDIGSTILT, Dokumenter.Journalstatus.EKSPEDERT, Dokumenter.Journalstatus.UNDER_ARBEID, Dokumenter.Journalstatus.RESERVERT, Dokumenter.Journalstatus.OPPLASTING_DOKUMENT, Dokumenter.Journalstatus.UKJENT)
             )
 
             val response: GraphQLResponse<Dokumenter.Result> = dokumenterQuery.execute(variables) {
@@ -68,5 +65,3 @@ class SafClient(
         }
     }
 }
-
-

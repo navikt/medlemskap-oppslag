@@ -11,15 +11,15 @@ import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.gjeldendeDekning
 
 class HarBrukerDekningIMedlRegel(
-        ytelse: Ytelse,
-        private val periode: InputPeriode,
-        private val medlemskap: List<Medlemskap>
+    ytelse: Ytelse,
+    private val periode: InputPeriode,
+    private val medlemskap: List<Medlemskap>
 ) : MedlemskapRegel(RegelId.REGEL_1_7, ytelse, periode, medlemskap) {
 
     override fun operasjon(): Resultat {
         val dekning = medlemskap gjeldendeDekning kontrollPeriodeForMedl
 
-        dekningCounter(dekning!!, ytelse.metricName()) //Dekning er ikke null, regel 1.5 filtrerer ut dekning som er null
+        dekningCounter(dekning!!, ytelse.metricName()) // Dekning er ikke null, regel 1.5 filtrerer ut dekning som er null
 
         return when {
             Dekning.from(dekning)!!.gjelderForYtelse(ytelse) -> ja("Bruker har dekning", dekning)
@@ -31,9 +31,9 @@ class HarBrukerDekningIMedlRegel(
 
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerDekningIMedlRegel {
             return HarBrukerDekningIMedlRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode,
-                    medlemskap = datagrunnlag.medlemskap
+                ytelse = datagrunnlag.ytelse,
+                periode = datagrunnlag.periode,
+                medlemskap = datagrunnlag.medlemskap
             )
         }
     }

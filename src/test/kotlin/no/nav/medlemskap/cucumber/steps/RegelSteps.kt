@@ -13,7 +13,6 @@ import no.nav.medlemskap.regler.v1.ReglerService
 import org.junit.jupiter.api.Assertions.assertEquals
 import java.time.LocalDate
 
-
 class RegelSteps : No {
     private val ANSATTE_9 = listOf(Ansatte(9, null, null))
     private val STATSBORGERSKAP_NOR = listOf(Statsborgerskap("NOR", LocalDate.MIN, null))
@@ -26,7 +25,7 @@ class RegelSteps : No {
     private var dataOmEktefelleBuilder = DataOmEktefelleBuilder()
 
     private var medlemskap: List<Medlemskap> = emptyList()
-    private var personhistorikkBarnTilEktefelle : List<PersonhistorikkBarn> = emptyList()
+    private var personhistorikkBarnTilEktefelle: List<PersonhistorikkBarn> = emptyList()
 
     private var arbeidsforhold: List<Arbeidsforhold> = emptyList()
     private var arbeidsavtaleMap = hashMapOf<Int, List<Arbeidsavtale>>()
@@ -90,7 +89,7 @@ class RegelSteps : No {
         }
 
         Gitt<DataTable>("følgende barn i personhistorikk for ektefelle fra PDL") { dataTable: DataTable? ->
-            var barnTilEktefelle= domenespråkParser.mapDataTable(dataTable, BarnTilEktefelleMapper())
+            var barnTilEktefelle = domenespråkParser.mapDataTable(dataTable, BarnTilEktefelleMapper())
             personhistorikkEktefelleBuilder.barn.addAll(barnTilEktefelle)
         }
 
@@ -145,7 +144,7 @@ class RegelSteps : No {
         }
 
         Gitt<DataTable>("følgende arbeidsforhold til ektefelle fra AAReg") { dataTable: DataTable? ->
-            val arbeidsforholdEktefelle =  domenespråkParser.mapArbeidsforhold(dataTable)
+            val arbeidsforholdEktefelle = domenespråkParser.mapArbeidsforhold(dataTable)
             dataOmEktefelleBuilder.arbeidsforholdEktefelle = arbeidsforholdEktefelle
         }
 
@@ -211,33 +210,33 @@ class RegelSteps : No {
         val ytelse = medlemskapsparametre.ytelse ?: Ytelse.SYKEPENGER
 
         return Datagrunnlag(
-                periode = sykemeldingsperiode,
-                brukerinput = Brukerinput(harHattArbeidUtenforNorge),
-                personhistorikk = personhistorikkBuilder.build(),
-                pdlpersonhistorikk = pdlPersonhistorikkBuilder.build(),
-                medlemskap = medlemskap,
-                arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgiverMap, arbeidsavtaleMap, utenlandsoppholdMap),
-                oppgaver = oppgaverFraGosys,
-                dokument = journalPosterFraJoArk,
-                ytelse = ytelse,
-                personHistorikkRelatertePersoner = personHistorikkRelatertePersoner,
-                dataOmEktefelle = dataOmEktefelleBuilder.build()
+            periode = sykemeldingsperiode,
+            brukerinput = Brukerinput(harHattArbeidUtenforNorge),
+            personhistorikk = personhistorikkBuilder.build(),
+            pdlpersonhistorikk = pdlPersonhistorikkBuilder.build(),
+            medlemskap = medlemskap,
+            arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgiverMap, arbeidsavtaleMap, utenlandsoppholdMap),
+            oppgaver = oppgaverFraGosys,
+            dokument = journalPosterFraJoArk,
+            ytelse = ytelse,
+            personHistorikkRelatertePersoner = personHistorikkRelatertePersoner,
+            dataOmEktefelle = dataOmEktefelleBuilder.build()
         )
     }
 
     private fun byggArbeidsforhold(
-            arbeidsforholdListe: List<Arbeidsforhold>,
-            arbeidsgiverMap: Map<Int, Arbeidsgiver>,
-            arbeidsavtaleMap: Map<Int, List<Arbeidsavtale>>,
-            utenlandsoppholdMap: Map<Int, List<Utenlandsopphold>>): List<Arbeidsforhold> {
+        arbeidsforholdListe: List<Arbeidsforhold>,
+        arbeidsgiverMap: Map<Int, Arbeidsgiver>,
+        arbeidsavtaleMap: Map<Int, List<Arbeidsavtale>>,
+        utenlandsoppholdMap: Map<Int, List<Utenlandsopphold>>
+    ): List<Arbeidsforhold> {
         return arbeidsforholdListe
-                .mapIndexed { index, arbeidsforhold ->
-                    arbeidsforhold.copy(
-                            utenlandsopphold = utenlandsoppholdMap[index] ?: emptyList(),
-                            arbeidsgiver = arbeidsgiverMap[index] ?: VANLIG_NORSK_ARBEIDSGIVER,
-                            arbeidsavtaler = arbeidsavtaleMap[index] ?: emptyList()
-                    )
-                }
+            .mapIndexed { index, arbeidsforhold ->
+                arbeidsforhold.copy(
+                    utenlandsopphold = utenlandsoppholdMap[index] ?: emptyList(),
+                    arbeidsgiver = arbeidsgiverMap[index] ?: VANLIG_NORSK_ARBEIDSGIVER,
+                    arbeidsavtaler = arbeidsavtaleMap[index] ?: emptyList()
+                )
+            }
     }
-
 }

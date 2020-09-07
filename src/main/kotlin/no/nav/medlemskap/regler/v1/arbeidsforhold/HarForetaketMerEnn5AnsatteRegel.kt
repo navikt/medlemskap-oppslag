@@ -13,11 +13,11 @@ import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.registrereAr
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.registrerStatsborgerskapGrafana
 
 class HarForetaketMerEnn5AnsatteRegel(
-        ytelse: Ytelse,
-        private val periode: InputPeriode,
-        private val arbeidsforhold: List<Arbeidsforhold>,
-        private val statsborgerskap: List<Statsborgerskap>,
-        regelId: RegelId = RegelId.REGEL_5
+    ytelse: Ytelse,
+    private val periode: InputPeriode,
+    private val arbeidsforhold: List<Arbeidsforhold>,
+    private val statsborgerskap: List<Statsborgerskap>,
+    regelId: RegelId = RegelId.REGEL_5
 ) : ArbeidsforholdRegel(regelId, ytelse, periode) {
 
     override fun operasjon(): Resultat {
@@ -29,7 +29,7 @@ class HarForetaketMerEnn5AnsatteRegel(
         return ja()
     }
 
-    fun registrerDataForGrafana(){
+    fun registrerDataForGrafana() {
         statsborgerskap.registrerStatsborgerskapGrafana(kontrollPeriodeForArbeidsforhold, ytelse, regelId)
         arbeidsforhold.filtrerUtArbeidsgivereMedFærreEnn6Ansatte(kontrollPeriodeForArbeidsforhold).registrereArbeidsgivere(ytelse)
         arbeidsforhold.registrerAntallAnsatte(ytelse)
@@ -39,10 +39,10 @@ class HarForetaketMerEnn5AnsatteRegel(
 
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarForetaketMerEnn5AnsatteRegel {
             return HarForetaketMerEnn5AnsatteRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode,
-                    arbeidsforhold = datagrunnlag.arbeidsforhold,
-                    statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap
+                ytelse = datagrunnlag.ytelse,
+                periode = datagrunnlag.periode,
+                arbeidsforhold = datagrunnlag.arbeidsforhold,
+                statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap
             )
         }
     }

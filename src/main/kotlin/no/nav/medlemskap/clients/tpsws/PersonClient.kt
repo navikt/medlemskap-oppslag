@@ -19,8 +19,8 @@ import javax.xml.datatype.DatatypeFactory
 import javax.xml.datatype.XMLGregorianCalendar
 
 class PersonClient(
-        private val personV3: PersonV3,
-        private val retry: Retry? = null
+    private val personV3: PersonV3,
+    private val retry: Retry? = null
 ) {
 
     companion object {
@@ -46,19 +46,19 @@ class PersonClient(
     }
 
     private fun lagHentPersonHistorikkRequest(
-            fnr: String,
-            fraOgMed: XMLGregorianCalendar
+        fnr: String,
+        fraOgMed: XMLGregorianCalendar
     ): HentPersonhistorikkRequest =
-            HentPersonhistorikkRequest().apply {
-                this.aktoer = PersonIdent().withIdent(
-                        NorskIdent()
-                                .withIdent(fnr)
-                                .withType(Personidenter().withValue("FNR"))
-                )
-                this.periode = Periode().apply {
-                    fom = fraOgMed
-                }
+        HentPersonhistorikkRequest().apply {
+            this.aktoer = PersonIdent().withIdent(
+                NorskIdent()
+                    .withIdent(fnr)
+                    .withType(Personidenter().withValue("FNR"))
+            )
+            this.periode = Periode().apply {
+                fom = fraOgMed
             }
+        }
 
     suspend fun healthCheck() {
         withContext(Dispatchers.Default) {

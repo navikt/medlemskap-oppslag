@@ -25,7 +25,9 @@
       }
     ],
     "postadresser": [],
-    "midlertidigAdresser": []
+    "midlertidigAdresser": [],
+    "kontaktadresser": [],
+    "oppholdsadresser": []
   },
   "pdlpersonhistorikk": {
     "statsborgerskap": [],
@@ -33,6 +35,8 @@
     "sivilstand": [],
     "familierelasjoner": [],
     "bostedsadresser": [],
+    "kontaktadresser": [],
+    "oppholdsadresser": [],
     "postadresser": [],
     "midlertidigAdresser": []
   },

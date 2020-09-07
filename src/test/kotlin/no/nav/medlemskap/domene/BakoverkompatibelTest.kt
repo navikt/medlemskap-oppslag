@@ -28,7 +28,6 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.YearMonth
 
-
 class BakoverkompatibelTest {
     protected fun RequestSpecification.When(): RequestSpecification {
         return this.`when`()
@@ -41,9 +40,10 @@ class BakoverkompatibelTest {
     companion object {
 
         private val configuration = Configuration(
-                azureAd = Configuration.AzureAd(
-                        authorityEndpoint = "http://localhost/"
-                ))
+            azureAd = Configuration.AzureAd(
+                authorityEndpoint = "http://localhost/"
+            )
+        )
         private val services = Services(configuration)
         private val openIdConfiguration = AzureAdOpenIdConfiguration("http://localhost", "", "", "")
 
@@ -57,19 +57,21 @@ class BakoverkompatibelTest {
 
             if (!applicationState.running) {
                 val applicationServer = createHttpServer(
-                        applicationState = applicationState,
-                        useAuthentication = false,
-                        configuration = configuration,
-                        azureAdOpenIdConfiguration = openIdConfiguration,
-                        services = services,
-                        port = 7071,
-                        createDatagrunnlag = ::mockCreateDatagrunnlag
+                    applicationState = applicationState,
+                    useAuthentication = false,
+                    configuration = configuration,
+                    azureAdOpenIdConfiguration = openIdConfiguration,
+                    services = services,
+                    port = 7071,
+                    createDatagrunnlag = ::mockCreateDatagrunnlag
                 )
 
-                Runtime.getRuntime().addShutdownHook(Thread {
-                    applicationState.initialized = false
-                    applicationServer.stop(5000, 5000)
-                })
+                Runtime.getRuntime().addShutdownHook(
+                    Thread {
+                        applicationState.initialized = false
+                        applicationServer.stop(5000, 5000)
+                    }
+                )
 
                 applicationServer.start()
                 applicationState.initialized = true
@@ -78,100 +80,102 @@ class BakoverkompatibelTest {
                 RestAssured.baseURI = "http://localhost"
                 RestAssured.basePath = "/"
                 RestAssured.port = 7071
-                RestAssured.config = RestAssuredConfig.config().objectMapperConfig(ObjectMapperConfig.objectMapperConfig()
-                        .jackson2ObjectMapperFactory { _, _ -> objectMapper })
+                RestAssured.config = RestAssuredConfig.config().objectMapperConfig(
+                    ObjectMapperConfig.objectMapperConfig()
+                        .jackson2ObjectMapperFactory { _, _ -> objectMapper }
+                )
             }
         }
-
     }
 
     @Test
     fun testBakoverkompatibilitet() {
 
-        //Fnr er Roland Gundersen fra https://www.nhn.no/media/2606/testaktoerer-v46.pdf
+        // Fnr er Roland Gundersen fra https://www.nhn.no/media/2606/testaktoerer-v46.pdf
         val faktiskResponse = given()
-                .body(input)
-                .header(Header("Content-Type", "application/json"))
-                .post("/")
-                .then()
-                .statusCode(200)
-                .extract().asString()
+            .body(input)
+            .header(Header("Content-Type", "application/json"))
+            .post("/")
+            .then()
+            .statusCode(200)
+            .extract().asString()
 
         JSONAssert.assertEquals(
-                forventetResponse, faktiskResponse,
-                CustomComparator(
-                        JSONCompareMode.STRICT,
-                        Customization("tidspunkt") { _, _ -> true }
-                )
+            forventetResponse, faktiskResponse,
+            CustomComparator(
+                JSONCompareMode.STRICT,
+                Customization("tidspunkt") { _, _ -> true }
+            )
         )
     }
-
 }
 
-
 suspend fun mockCreateDatagrunnlag(
-        fnr: String,
-        callId: String,
-        periode: InputPeriode,
-        brukerinput: Brukerinput,
-        services: Services,
-        clientId: String?,
-        ytelseFraRequest: Ytelse?): Datagrunnlag = runBlocking {
+    fnr: String,
+    callId: String,
+    periode: InputPeriode,
+    brukerinput: Brukerinput,
+    services: Services,
+    clientId: String?,
+    ytelseFraRequest: Ytelse?
+): Datagrunnlag = runBlocking {
 
     val ytelse = Ytelse.SYKEPENGER
 
     Datagrunnlag(
-            periode = periode,
-            brukerinput = brukerinput,
-            personhistorikk = personhistorikk(),
-            pdlpersonhistorikk = personhistorikk(),
-            medlemskap = listOf(Medlemskap("dekning", enDato(), enAnnenDato(), true, Lovvalg.ENDL, "NOR", PeriodeStatus.GYLD)),
-            arbeidsforhold = listOf(arbeidsforhold()),
-            oppgaver = listOf(Oppgave(enDato(), Prioritet.NORM, Status.AAPNET, "Tema")),
-            dokument = listOf(Journalpost("Id", "Tittel", "Posttype", "Status", "Tema", listOf(Dokument("Id", "Tittel")))),
-            ytelse = ytelse,
-            personHistorikkRelatertePersoner = listOf(personhistorikkRelatertPerson()),
-            dataOmEktefelle = DataOmEktefelle(personhistorikkEktefelle(), listOf(arbeidsforhold()))
+        periode = periode,
+        brukerinput = brukerinput,
+        personhistorikk = personhistorikk(),
+        pdlpersonhistorikk = personhistorikk(),
+        medlemskap = listOf(Medlemskap("dekning", enDato(), enAnnenDato(), true, Lovvalg.ENDL, "NOR", PeriodeStatus.GYLD)),
+        arbeidsforhold = listOf(arbeidsforhold()),
+        oppgaver = listOf(Oppgave(enDato(), Prioritet.NORM, Status.AAPNET, "Tema")),
+        dokument = listOf(Journalpost("Id", "Tittel", "Posttype", "Status", "Tema", listOf(Dokument("Id", "Tittel")))),
+        ytelse = ytelse,
+        personHistorikkRelatertePersoner = listOf(personhistorikkRelatertPerson()),
+        dataOmEktefelle = DataOmEktefelle(personhistorikkEktefelle(), listOf(arbeidsforhold()))
     )
 }
 
 private fun arbeidsforhold(): Arbeidsforhold {
     return Arbeidsforhold(
-            Periode(enDato(), enAnnenDato()),
-            listOf(Utenlandsopphold("SWE", Periode(enDato(), enAnnenDato()), YearMonth.of(2010, 1))),
-            OpplysningspliktigArbeidsgiverType.Organisasjon,
-            Arbeidsgiver("type", "identifikator", listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus")),
-            Arbeidsforholdstype.NORMALT,
-            listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble()))
+        Periode(enDato(), enAnnenDato()),
+        listOf(Utenlandsopphold("SWE", Periode(enDato(), enAnnenDato()), YearMonth.of(2010, 1))),
+        OpplysningspliktigArbeidsgiverType.Organisasjon,
+        Arbeidsgiver("type", "identifikator", listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus")),
+        Arbeidsforholdstype.NORMALT,
+        listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble()))
     )
 }
 
 private fun personhistorikk(): Personhistorikk {
     return Personhistorikk(
-            statsborgerskap = listOf(Statsborgerskap("NOR", enDato(), enAnnenDato())),
-            personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSA, enDato(), enAnnenDato())),
-            bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            postadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            midlertidigAdresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr(), folkeregistermetadata())),
-            familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata()))
+        statsborgerskap = listOf(Statsborgerskap("NOR", enDato(), enAnnenDato())),
+        personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSA, enDato(), enAnnenDato())),
+        bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        postadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        midlertidigAdresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr(), folkeregistermetadata())),
+        familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata())),
+        kontaktadresser = listOf(Adresse("SWE", enDato(), enAnnenDato())),
+        oppholdsadresser = listOf(Adresse("SWE", enDato(), enAnnenDato()))
     )
 }
 
 private fun personhistorikkRelatertPerson(): PersonhistorikkRelatertPerson {
     return PersonhistorikkRelatertPerson(
-            ident = ektefelleFnr(),
-            personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSA, enDato(), enAnnenDato())),
-            bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            postadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            midlertidigAdresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
+        ident = ektefelleFnr(),
+        personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSA, enDato(), enAnnenDato())),
+        bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        postadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        midlertidigAdresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
     )
 }
 
 private fun personhistorikkEktefelle(): PersonhistorikkEktefelle {
     return PersonhistorikkEktefelle(
-            ident = ektefelleFnr(),
-            barn = listOf(PersonhistorikkBarn(ident = barnFnr()))
+        ident = ektefelleFnr(),
+        barn = listOf(PersonhistorikkBarn(ident = barnFnr()))
     )
 }
 
@@ -182,8 +186,10 @@ private fun barnFnr() = "0101201012345"
 private fun enDato() = LocalDate.of(1975, 10, 10)
 private fun enAnnenDato() = LocalDate.of(2020, 8, 1)
 private fun etTidspunkt() = LocalDateTime.of(2020, 6, 20, 10, 0)
+private fun enAdresse() = "Adresse"
 
-private val input = """
+private val input =
+    """
         {
             "fnr": "15076500565",
             "periode": {
@@ -194,9 +200,10 @@ private val input = """
                 "arbeidUtenforNorge": false
             }
         }
-""".trimIndent()
+    """.trimIndent()
 
-private val forventetResponse = """
+private val forventetResponse =
+    """
     {
       "tidspunkt" : "2020-08-14T17:43:18.273719",
       "versjonTjeneste" : "",
@@ -214,20 +221,20 @@ private val forventetResponse = """
             "landkode" : "NOR",
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
-          } ],
+          }],
           "personstatuser" : [ {
             "personstatus" : "BOSA",
-            "fom" : "1975-10-10",
+            "fom": "1975-10-10",
             "tom" : "2020-08-01"
-          } ],
+          }],
           "bostedsadresser" : [ {
             "landkode" : "NOR",
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
-          } ],
-          "postadresser" : [ {
+          }],
+          "postadresser" : [{
             "landkode" : "NOR",
-            "fom" : "1975-10-10",
+            "fom": "1975-10-10",
             "tom" : "2020-08-01"
           } ],
           "midlertidigAdresser" : [ {
@@ -235,6 +242,16 @@ private val forventetResponse = """
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
           } ],
+          "kontaktadresser" : [ {
+            "landkode" : "SWE", 
+            "fom" : "1975-10-10",
+            "tom" : "2020-08-01"
+          }],
+          "oppholdsadresser": [{
+             "landkode" : "SWE", 
+            "fom" : "1975-10-10",
+            "tom" : "2020-08-01"
+          }],
           "sivilstand" : [ {
             "type" : "GIFT",
             "gyldigFraOgMed" : "1975-10-10",
@@ -283,6 +300,16 @@ private val forventetResponse = """
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
           } ],
+          "kontaktadresser" : [ {
+            "landkode" : "SWE", 
+            "fom" : "1975-10-10",
+            "tom" : "2020-08-01"
+          }],
+          "oppholdsadresser": [{
+             "landkode" : "SWE", 
+            "fom" : "1975-10-10",
+            "tom" : "2020-08-01"
+          }],
           "sivilstand" : [ {
             "type" : "GIFT",
             "gyldigFraOgMed" : "1975-10-10",
@@ -587,4 +614,4 @@ private val forventetResponse = """
 ]
       }
     }
-""".trimIndent()
+    """.trimIndent()

@@ -7,16 +7,15 @@ import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 
 class DataOmEktefelleBuilder {
     var personhistorikkEktefelle = PersonhistorikkEktefelle(
-            ident = String(),
-            barn = mutableListOf<PersonhistorikkBarn>()
+        ident = String(),
+        barn = mutableListOf<PersonhistorikkBarn>()
     )
     var arbeidsforholdEktefelle = listOf<Arbeidsforhold>()
 
-
     fun build(): DataOmEktefelle {
         return DataOmEktefelle(
-                personhistorikkEktefelle,
-                arbeidsforholdEktefelle
+            personhistorikkEktefelle,
+            arbeidsforholdEktefelle
         )
     }
 }

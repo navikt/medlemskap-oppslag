@@ -23,24 +23,26 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
 
         val resultatStatsborgerskap = reglerForStatsborgerskap.kjørRegelflyter()
         resultater.addAll(resultatStatsborgerskap)
-        resultater.addAll(bestemReglerForStatsborgerskap(resultatStatsborgerskap)
-                .kjørRegelflyter())
+        resultater.addAll(
+            bestemReglerForStatsborgerskap(resultatStatsborgerskap)
+                .kjørRegelflyter()
+        )
 
         return utledResultat(ytelse, resultater)
     }
 
     private fun bestemReglerForStatsborgerskap(resultatStatsborgerskap: List<Resultat>): Regler {
         val resultatEøsStatsborgerskap = resultatStatsborgerskap
-                .flatMap { it.delresultat }
-                .first { it.regelId == RegelId.REGEL_2 }
+            .flatMap { it.delresultat }
+            .first { it.regelId == RegelId.REGEL_2 }
         val erEøsBorger = resultatEøsStatsborgerskap.svar == Svar.JA
         if (!erEøsBorger) {
             return reglerForAndreStatsborgere
         }
 
         val resultatNorskStatsborgerskap = resultatStatsborgerskap
-                .flatMap { it.delresultat }
-                .first { it.regelId == RegelId.REGEL_11 }
+            .flatMap { it.delresultat }
+            .first { it.regelId == RegelId.REGEL_11 }
         val erNorskstatsborger = resultatNorskStatsborgerskap.svar == Svar.JA
 
         return if (erNorskstatsborger) {
@@ -72,6 +74,5 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
         private fun neiResultat(ytelse: Ytelse): Resultat {
             return neiKonklusjon(ytelse).utfør()
         }
-
     }
 }

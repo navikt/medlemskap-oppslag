@@ -7,8 +7,8 @@ import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.funksjoner.GsakFunksjoner.finnesAapneOppgaver
 
 class FinnesOpplysningerIGosysRegel(
-        ytelse: Ytelse,
-        val oppgaver: List<Oppgave> = emptyList()
+    ytelse: Ytelse,
+    val oppgaver: List<Oppgave> = emptyList()
 ) : BasisRegel(RegelId.REGEL_B, ytelse) {
     override fun operasjon(): Resultat {
         return when {
@@ -21,8 +21,8 @@ class FinnesOpplysningerIGosysRegel(
 
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): FinnesOpplysningerIGosysRegel {
             return FinnesOpplysningerIGosysRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    oppgaver = datagrunnlag.oppgaver
+                ytelse = datagrunnlag.ytelse,
+                oppgaver = datagrunnlag.oppgaver
             )
         }
     }

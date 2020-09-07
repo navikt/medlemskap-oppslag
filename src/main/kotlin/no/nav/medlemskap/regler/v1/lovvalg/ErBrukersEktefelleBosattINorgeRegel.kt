@@ -14,11 +14,11 @@ import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresser
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentRelatertSomFinnesITPS
 
 class ErBrukersEktefelleBosattINorgeRegel(
-        ytelse: Ytelse,
-        private val periode: InputPeriode,
-        private val dataOmEktefelle: DataOmEktefelle?,
-        private val personhistorikkRelatertPerson: List<PersonhistorikkRelatertPerson>,
-        regelId: RegelId = RegelId.REGEL_11_3_1
+    ytelse: Ytelse,
+    private val periode: InputPeriode,
+    private val dataOmEktefelle: DataOmEktefelle?,
+    private val personhistorikkRelatertPerson: List<PersonhistorikkRelatertPerson>,
+    regelId: RegelId = RegelId.REGEL_11_3_1
 ) : LovvalgRegel(regelId, ytelse, periode) {
 
     override fun operasjon(): Resultat {
@@ -38,11 +38,11 @@ class ErBrukersEktefelleBosattINorgeRegel(
 
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag, regelId: RegelId): ErBrukersEktefelleBosattINorgeRegel {
             return ErBrukersEktefelleBosattINorgeRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode,
-                    dataOmEktefelle = datagrunnlag.dataOmEktefelle,
-                    personhistorikkRelatertPerson = datagrunnlag.personHistorikkRelatertePersoner,
-                    regelId = regelId
+                ytelse = datagrunnlag.ytelse,
+                periode = datagrunnlag.periode,
+                dataOmEktefelle = datagrunnlag.dataOmEktefelle,
+                personhistorikkRelatertPerson = datagrunnlag.personHistorikkRelatertePersoner,
+                regelId = regelId
             )
         }
     }

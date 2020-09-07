@@ -47,7 +47,6 @@ fun StatusPages.Configuration.exceptionHandler() {
             val url = cause.response.call.request.url
             "Kall mot $url feilet"
         }
-
     }
 
     exception<ServerResponseException> { cause ->
@@ -83,26 +82,26 @@ fun StatusPages.Configuration.exceptionHandler() {
 }
 
 private suspend inline fun ApplicationCall.logErrorAndRespond(
-        cause: Throwable,
-        status: HttpStatusCode = HttpStatusCode.InternalServerError,
-        lazyMessage: () -> String
+    cause: Throwable,
+    status: HttpStatusCode = HttpStatusCode.InternalServerError,
+    lazyMessage: () -> String
 ) {
     val message = lazyMessage()
     logger.error(cause) { message }
     val response = HttpErrorResponse(
-            url = this.request.uri,
-            cause = cause.toString(),
-            message = message,
-            code = status,
-            callId = getCorrelationId()
+        url = this.request.uri,
+        cause = cause.toString(),
+        message = message,
+        code = status,
+        callId = getCorrelationId()
     )
     this.respond(status, response)
 }
 
 internal data class HttpErrorResponse(
-        val url: String,
-        val message: String? = null,
-        val cause: String? = null,
-        val code: HttpStatusCode = HttpStatusCode.InternalServerError,
-        val callId: CorrelationId? = null
+    val url: String,
+    val message: String? = null,
+    val cause: String? = null,
+    val code: HttpStatusCode = HttpStatusCode.InternalServerError,
+    val callId: CorrelationId? = null
 )
