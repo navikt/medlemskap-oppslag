@@ -8,12 +8,11 @@ import no.nav.medlemskap.regler.v1.arbeidsforhold.*
 import no.nav.medlemskap.regler.v1.grunnforordningen.ErBrukerEøsBorgerRegel
 import no.nav.medlemskap.regler.v1.lovvalg.*
 import no.nav.medlemskap.regler.v1.medlemskap.*
-import no.nav.medlemskap.regler.v1.grunnforordningen.ErBrukerEøsBorgerRegel
 import no.nav.medlemskap.regler.v1.registrerteOpplysninger.HarBrukerRegistrerteOpplysningerRegel
 
 class RegelFactory(private val datagrunnlag: Datagrunnlag) {
 
-    fun create(regelIdentifikator: String) : Regel{
+    fun create(regelIdentifikator: String): Regel {
         val regelId = RegelId.fraRegelIdString(regelIdentifikator)
         if (regelId == null) {
             throw java.lang.RuntimeException("Ukjent regel")
@@ -22,8 +21,8 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
         return create(regelId)
     }
 
-    fun create(regelId: RegelId) : Regel {
-        return when(regelId) {
+    fun create(regelId: RegelId): Regel {
+        return when (regelId) {
             REGEL_OPPLYSNINGER -> HarBrukerRegistrerteOpplysningerRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_1_1 -> ErPerioderAvklartRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_1_2 -> PeriodeMedOgUtenMedlemskapRegel.fraDatagrunnlag(datagrunnlag).regel
