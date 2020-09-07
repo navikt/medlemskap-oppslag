@@ -5,7 +5,6 @@ import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 import no.nav.medlemskap.regler.common.Funksjoner
 import no.nav.medlemskap.regler.common.Funksjoner.antall
-import no.nav.medlemskap.regler.common.Funksjoner.finnesMindreEnn
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
 import no.nav.medlemskap.regler.common.interval
 import no.nav.medlemskap.regler.common.lagInterval
@@ -44,10 +43,10 @@ object ArbeidsforholdFunksjoner {
     }
 
     fun List<Arbeidsforhold>.filtrerUtArbeidsgivereMedFærreEnn6Ansatte(kontrollPeriode: Kontrollperiode) =
-            arbeidsforholdForKontrollPeriode(kontrollPeriode).stream().map { it.arbeidsgiver }.collect(Collectors.toList())
-                    .filter { !it.ansatte?.finnesMindreEnn(6).isNullOrEmpty() }
+        arbeidsforholdForKontrollPeriode(kontrollPeriode).stream().map { it.arbeidsgiver }.collect(Collectors.toList())
+            .filter { !it.ansatte?.finnesMindreEnn(6).isNullOrEmpty() }
 
-    //this.filter { antallAnsatteHosArbeidsgivere(kontrollPeriode) finnesMindreEnn 6 }
+    // this.filter { antallAnsatteHosArbeidsgivere(kontrollPeriode) finnesMindreEnn 6 }
     fun List<Arbeidsgiver>.registrereArbeidsgivere(ytelse: Ytelse) {
         this.forEach { antallTreffPåArbeidsgiver(it.identifikator, ytelse).increment() }
     }

@@ -12,8 +12,8 @@ class ArbeidsforholdFunksjonerTest {
     fun `Filtrerer ut arbeidsgiver med flere enn 6 ansatte der arbeidsgiver med flest ansatte ligger sist`() {
         val arbeidsforhold = listOf(arbeidsforholdMedMindreEnn6Ansatte, arbeidsforholdMedFlerEnn6Ansatte)
         val kontrollperiode = Kontrollperiode(
-                fom = LocalDate.of(2016, 1, 1),
-                tom = LocalDate.of(2016, 12, 31)
+            fom = LocalDate.of(2016, 1, 1),
+            tom = LocalDate.of(2016, 12, 31)
         )
         val filtrertArbeidsforhold = arbeidsforhold.filtrerUtArbeidsgivereMedFærreEnn6Ansatte(kontrollperiode)
         assertEquals(2, arbeidsforhold.size)
@@ -24,8 +24,8 @@ class ArbeidsforholdFunksjonerTest {
     fun `Filtrerer ut arbeidsgiver med flere enn 6 ansatte der arbeidsgiver med flest ansatte ligger først`() {
         val arbeidsforhold = listOf(arbeidsforholdMedFlerEnn6Ansatte, arbeidsforholdMedMindreEnn6Ansatte)
         val kontrollperiode = Kontrollperiode(
-                fom = LocalDate.of(2016, 1, 1),
-                tom = LocalDate.of(2016, 12, 31)
+            fom = LocalDate.of(2016, 1, 1),
+            tom = LocalDate.of(2016, 12, 31)
         )
         val filtrertArbeidsforhold = arbeidsforhold.filtrerUtArbeidsgivereMedFærreEnn6Ansatte(kontrollperiode)
         assertEquals(2, arbeidsforhold.size)
@@ -36,8 +36,8 @@ class ArbeidsforholdFunksjonerTest {
     fun `Sjekker grenseverdien`() {
         val arbeidsforhold = listOf(arbeidsforholdMedAkkurat6Ansatte, arbeidsforholdMed5Ansatte)
         val kontrollperiode = Kontrollperiode(
-                fom = LocalDate.of(2016, 1, 1),
-                tom = LocalDate.of(2016, 12, 31)
+            fom = LocalDate.of(2016, 1, 1),
+            tom = LocalDate.of(2016, 12, 31)
         )
         val filtrertArbeidsforhold = arbeidsforhold.filtrerUtArbeidsgivereMedFærreEnn6Ansatte(kontrollperiode)
         assertEquals(2, arbeidsforhold.size)
@@ -51,25 +51,27 @@ class ArbeidsforholdFunksjonerTest {
 
     fun lagArbeidsforhold(antall: Int): Arbeidsforhold {
         return Arbeidsforhold(
-                periode = Periode(
-                        fom = LocalDate.of(2016, 1, 1),
-                        tom = LocalDate.of(2017, 12, 31)
-                ),
-                utenlandsopphold = null,
-                arbeidsgivertype = OpplysningspliktigArbeidsgiverType.Organisasjon,
-                arbeidsgiver = Arbeidsgiver(
-                        type = null,
-                        identifikator = null,
-                        ansatte = listOf(Ansatte(antall = antall, bruksperiode = null, gyldighetsperiode = null)),
-                        konkursStatus = null
-                ),
-                arbeidsfolholdstype = Arbeidsforholdstype.NORMALT,
-                arbeidsavtaler = listOf(Arbeidsavtale(
-                        periode = Periode(fom = null, tom = null),
-                        yrkeskode = "Yrkeskode",
-                        skipsregister = null,
-                        stillingsprosent = null))
+            periode = Periode(
+                fom = LocalDate.of(2016, 1, 1),
+                tom = LocalDate.of(2017, 12, 31)
+            ),
+            utenlandsopphold = null,
+            arbeidsgivertype = OpplysningspliktigArbeidsgiverType.Organisasjon,
+            arbeidsgiver = Arbeidsgiver(
+                type = null,
+                identifikator = null,
+                ansatte = listOf(Ansatte(antall = antall, bruksperiode = null, gyldighetsperiode = null)),
+                konkursStatus = null
+            ),
+            arbeidsfolholdstype = Arbeidsforholdstype.NORMALT,
+            arbeidsavtaler = listOf(
+                Arbeidsavtale(
+                    periode = Periode(fom = null, tom = null),
+                    yrkeskode = "Yrkeskode",
+                    skipsregister = null,
+                    stillingsprosent = null
+                )
+            )
         )
-
     }
 }
