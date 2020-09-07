@@ -85,7 +85,7 @@ class RegelSteps : No {
         }
 
         Gitt<DataTable>("følgende barn i personhistorikk for ektefelle fra PDL") { dataTable: DataTable? ->
-            var barnTilEktefelle= domenespråkParser.mapDataTable(dataTable, BarnTilEktefelleMapper())
+            var barnTilEktefelle = domenespråkParser.mapDataTable(dataTable, BarnTilEktefelleMapper())
             personhistorikkEktefelleBuilder.barn.addAll(barnTilEktefelle)
         }
 
@@ -140,7 +140,7 @@ class RegelSteps : No {
         }
 
         Gitt<DataTable>("følgende arbeidsforhold til ektefelle fra AAReg") { dataTable: DataTable? ->
-            val arbeidsforholdEktefelle =  domenespråkParser.mapArbeidsforhold(dataTable)
+            val arbeidsforholdEktefelle = domenespråkParser.mapArbeidsforhold(dataTable)
             dataOmEktefelleBuilder.arbeidsforholdEktefelle = arbeidsforholdEktefelle
         }
 
@@ -206,33 +206,33 @@ class RegelSteps : No {
         val ytelse = medlemskapsparametre.ytelse ?: Ytelse.SYKEPENGER
 
         return Datagrunnlag(
-                periode = sykemeldingsperiode,
-                brukerinput = Brukerinput(harHattArbeidUtenforNorge),
-                personhistorikk = personhistorikkBuilder.build(),
-                pdlpersonhistorikk = pdlPersonhistorikkBuilder.build(),
-                medlemskap = medlemskap,
-                arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgiverMap, arbeidsavtaleMap, utenlandsoppholdMap),
-                oppgaver = oppgaverFraGosys,
-                dokument = journalPosterFraJoArk,
-                ytelse = ytelse,
-                personHistorikkRelatertePersoner = personHistorikkRelatertePersoner,
-                dataOmEktefelle = dataOmEktefelleBuilder.build()
+            periode = sykemeldingsperiode,
+            brukerinput = Brukerinput(harHattArbeidUtenforNorge),
+            personhistorikk = personhistorikkBuilder.build(),
+            pdlpersonhistorikk = pdlPersonhistorikkBuilder.build(),
+            medlemskap = medlemskap,
+            arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgiverMap, arbeidsavtaleMap, utenlandsoppholdMap),
+            oppgaver = oppgaverFraGosys,
+            dokument = journalPosterFraJoArk,
+            ytelse = ytelse,
+            personHistorikkRelatertePersoner = personHistorikkRelatertePersoner,
+            dataOmEktefelle = dataOmEktefelleBuilder.build()
         )
     }
 
     private fun byggArbeidsforhold(
-            arbeidsforholdListe: List<Arbeidsforhold>,
-            arbeidsgiverMap: Map<Int, Arbeidsgiver>,
-            arbeidsavtaleMap: Map<Int, List<Arbeidsavtale>>,
-            utenlandsoppholdMap: Map<Int, List<Utenlandsopphold>>): List<Arbeidsforhold> {
+        arbeidsforholdListe: List<Arbeidsforhold>,
+        arbeidsgiverMap: Map<Int, Arbeidsgiver>,
+        arbeidsavtaleMap: Map<Int, List<Arbeidsavtale>>,
+        utenlandsoppholdMap: Map<Int, List<Utenlandsopphold>>
+    ): List<Arbeidsforhold> {
         return arbeidsforholdListe
-                .mapIndexed { index, arbeidsforhold ->
-                    arbeidsforhold.copy(
-                            utenlandsopphold = utenlandsoppholdMap[index] ?: emptyList(),
-                            arbeidsgiver = arbeidsgiverMap[index] ?: VANLIG_NORSK_ARBEIDSGIVER,
-                            arbeidsavtaler = arbeidsavtaleMap[index] ?: emptyList()
-                    )
-                }
+            .mapIndexed { index, arbeidsforhold ->
+                arbeidsforhold.copy(
+                    utenlandsopphold = utenlandsoppholdMap[index] ?: emptyList(),
+                    arbeidsgiver = arbeidsgiverMap[index] ?: VANLIG_NORSK_ARBEIDSGIVER,
+                    arbeidsavtaler = arbeidsavtaleMap[index] ?: emptyList()
+                )
+            }
     }
-
 }

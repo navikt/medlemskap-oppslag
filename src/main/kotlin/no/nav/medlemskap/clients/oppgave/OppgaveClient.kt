@@ -17,10 +17,10 @@ private const val TEMA_UNNTAK_FRA_MEDLEMSKAP = "UFM"
 private const val TEMA_TRYGDEAVGIFT = "TRY"
 
 class OppgaveClient(
-        private val baseUrl: String,
-        private val stsClient: StsRestClient,
-        private val httpClient: HttpClient,
-        private val retry: Retry? = null
+    private val baseUrl: String,
+    private val stsClient: StsRestClient,
+    private val httpClient: HttpClient,
+    private val retry: Retry? = null
 ) {
 
     companion object {
@@ -49,6 +49,4 @@ class OppgaveClient(
             header(HttpHeaders.Authorization, "Bearer $token")
         }
     }
-
 }
-

@@ -2,11 +2,11 @@ package no.nav.medlemskap.domene
 
 import java.time.LocalDate
 
-data class Oppgave (
-        val aktivDato: LocalDate,
-        val prioritet: Prioritet,
-        val status: Status,
-        val tema: String?
+data class Oppgave(
+    val aktivDato: LocalDate,
+    val prioritet: Prioritet,
+    val status: Status,
+    val tema: String?
 )
 
 enum class Prioritet {

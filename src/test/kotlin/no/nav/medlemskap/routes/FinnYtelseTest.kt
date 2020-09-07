@@ -14,7 +14,7 @@ internal class FinnYtelseTest {
     fun `ytelse skal hentes fra request når den er satt`() {
 
         val ytelseFraRequest = Ytelse.DAGPENGER
-        val clientId = "a16f1075-4482-4577-baab-d2a7323655fa" //=SYKEPENGER
+        val clientId = "a16f1075-4482-4577-baab-d2a7323655fa" // =SYKEPENGER
 
         val ytelse = finnYtelse(ytelseFraRequest, clientId)
         assertThat(ytelse).isEqualTo(Ytelse.DAGPENGER)
@@ -24,7 +24,7 @@ internal class FinnYtelseTest {
     fun `ytelse skal hentes fra clientId når den ikke er satt i request`() {
 
         val ytelseFraRequest = null
-        val clientId = "a16f1075-4482-4577-baab-d2a7323655fa" //=SYKEPENGER
+        val clientId = "a16f1075-4482-4577-baab-d2a7323655fa" // =SYKEPENGER
 
         val ytelse = finnYtelse(ytelseFraRequest, clientId)
         assertThat(ytelse).isEqualTo(Ytelse.SYKEPENGER)

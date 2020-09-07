@@ -12,8 +12,10 @@ import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.config.retryRegistry
 
-class RestClients(private val stsClientRest: StsRestClient,
-                  private val configuration: Configuration) {
+class RestClients(
+    private val stsClientRest: StsRestClient,
+    private val configuration: Configuration
+) {
 
     private val aaRegRetry = retryRegistry.retry("AaReg")
     private val inntektRetry = retryRegistry.retry("Inntekt")

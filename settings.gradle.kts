@@ -8,3 +8,4 @@
  */
 
 rootProject.name = "medlemskap-oppslag"
+include("pdl-client", "saf-client")

@@ -21,7 +21,6 @@ class EregOrgClientTest {
         val server: WireMockServer = WireMockServer(WireMockConfiguration.options().dynamicPort())
         val httpClient = cioHttpClient
 
-
         @BeforeAll
         @JvmStatic
         fun start() {
@@ -47,25 +46,26 @@ class EregOrgClientTest {
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        WireMock.stubFor(queryMapping.willReturn(
+        WireMock.stubFor(
+            queryMapping.willReturn(
                 WireMock.aResponse()
-                        .withStatus(HttpStatusCode.OK.value)
-                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-                        .withBody(eregResponse)
-        ))
+                    .withStatus(HttpStatusCode.OK.value)
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                    .withBody(eregResponse)
+            )
+        )
 
         val client = EregClient(server.baseUrl(), httpClient, config)
 
         val response = runBlocking { client.hentOrganisasjon("977074010", callId) }
         println(response)
         Assertions.assertEquals(response.navn?.navnelinje1, "NAV FAMILIE- OG PENSJONSYTELSER")
-
     }
-
 
     private val config = Configuration()
 
-    private val eregResponse = """
+    private val eregResponse =
+        """
        {
   "navn": {
     "bruksperiode": {
@@ -359,10 +359,10 @@ class EregOrgClientTest {
   "organisasjonsnummer": 990983666,
   "type": "Virksomhet"
 }
-    """.trimIndent()
+        """.trimIndent()
 
     private val orgnummer = "977074010"
     private val queryMapping: MappingBuilder = WireMock.get(WireMock.urlPathEqualTo("/v1/organisasjon/$orgnummer"))
-            .withHeader("Nav-Call-Id", WireMock.equalTo("12345"))
-            .withHeader("Nav-Consumer-Id", WireMock.equalTo("test"))
+        .withHeader("Nav-Call-Id", WireMock.equalTo("12345"))
+        .withHeader("Nav-Consumer-Id", WireMock.equalTo("test"))
 }

@@ -10,11 +10,9 @@ class AuthorizationTest : ServerTest() {
     @Test
     fun `Gitt kall uten Authorization-header når tjeneste kalles så gis det 401 unauthorized`() {
         given()
-                .body("test")
+            .body("test")
         RestAssured.post("/")
-                .then()
-                .statusCode(401)
+            .then()
+            .statusCode(401)
     }
-
 }
-

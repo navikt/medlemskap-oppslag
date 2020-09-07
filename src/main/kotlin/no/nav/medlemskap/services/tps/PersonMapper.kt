@@ -33,11 +33,13 @@ fun mapPersonhistorikkResultat(personhistorikkResponse: HentPersonhistorikkRespo
         mapMidlertidigPostadresse(it)
     }
 
+    val kontaktadresse: List<Adresse> = emptyList()
+    val oppholdsadresse: List<Adresse> = emptyList()
     val sivilstand: List<Sivilstand> = emptyList()
 
     val familierelasjoner: List<Familierelasjon> = emptyList()
 
-    return Personhistorikk(statsborgerskap, personstatuser, bostedsadresser, postadresser, midlertidigAdresser, sivilstand, familierelasjoner)
+    return Personhistorikk(statsborgerskap, personstatuser, bostedsadresser, postadresser, midlertidigAdresser, sivilstand, familierelasjoner, kontaktadresse, oppholdsadresse)
 }
 
 fun mapPersonhistorikkRelatertPersonResultat(ident: String, personhistorikkRelatertPerson: HentPersonhistorikkResponse): PersonhistorikkRelatertPerson {
@@ -64,14 +66,14 @@ fun mapPersonhistorikkRelatertPersonResultat(ident: String, personhistorikkRelat
 fun mapMidlertidigPostadresse(it: MidlertidigPostadresse?): Adresse {
     return when (it) {
         is MidlertidigPostadresseNorge -> Adresse(
-                landkode = it.strukturertAdresse.landkode.value,
-                fom = it.postleveringsPeriode.fom.asDate(),
-                tom = it.postleveringsPeriode.tom.asDate()
+            landkode = it.strukturertAdresse.landkode.value,
+            fom = it.postleveringsPeriode.fom.asDate(),
+            tom = it.postleveringsPeriode.tom.asDate()
         )
         is MidlertidigPostadresseUtland -> Adresse(
-                landkode = it.ustrukturertAdresse.landkode.value,
-                fom = it.postleveringsPeriode.fom.asDate(),
-                tom = it.postleveringsPeriode.tom.asDate()
+            landkode = it.ustrukturertAdresse.landkode.value,
+            fom = it.postleveringsPeriode.fom.asDate(),
+            tom = it.postleveringsPeriode.tom.asDate()
         )
         else -> throw Exception("Ukjent adressetype")
     }
@@ -79,33 +81,33 @@ fun mapMidlertidigPostadresse(it: MidlertidigPostadresse?): Adresse {
 
 fun mapStatsborgerskapPeriode(it: StatsborgerskapPeriode): Statsborgerskap {
     return Statsborgerskap(
-            landkode = it.statsborgerskap.land.value,
-            fom = it.periode.fom.asDate(),
-            tom = it.periode.tom.asDate()
+        landkode = it.statsborgerskap.land.value,
+        fom = it.periode.fom.asDate(),
+        tom = it.periode.tom.asDate()
     )
 }
 
 fun mapPostadressePeriode(it: PostadressePeriode): Adresse {
     return Adresse(
-            landkode = it.postadresse.ustrukturertAdresse.landkode.value,
-            fom = it.periode.fom.asDate(),
-            tom = it.periode.tom.asDate()
+        landkode = it.postadresse.ustrukturertAdresse.landkode.value,
+        fom = it.periode.fom.asDate(),
+        tom = it.periode.tom.asDate()
     )
 }
 
 fun mapBostedsadressePeriode(it: BostedsadressePeriode): Adresse {
     return Adresse(
-            landkode = it.bostedsadresse.strukturertAdresse.landkode.value,
-            fom = it.periode.fom.asDate(),
-            tom = it.periode.tom.asDate()
+        landkode = it.bostedsadresse.strukturertAdresse.landkode.value,
+        fom = it.periode.fom.asDate(),
+        tom = it.periode.tom.asDate()
     )
 }
 
 fun mapPersonstatusPeriode(it: PersonstatusPeriode): FolkeregisterPersonstatus {
     return FolkeregisterPersonstatus(
-            personstatus = mapPersonstatus(it.personstatus),
-            fom = it.periode.fom.asDate(),
-            tom = it.periode.tom.asDate()
+        personstatus = mapPersonstatus(it.personstatus),
+        fom = it.periode.fom.asDate(),
+        tom = it.periode.tom.asDate()
     )
 }
 
@@ -119,5 +121,3 @@ fun mapPersonstatus(status: Personstatuser): PersonStatus {
 }
 
 private fun XMLGregorianCalendar?.asDate(): LocalDate? = this?.toGregorianCalendar()?.toZonedDateTime()?.toLocalDate()
-
-

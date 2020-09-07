@@ -9,9 +9,9 @@ import no.nav.medlemskap.services.pdl.PdlService
 import java.time.LocalDate
 
 class AaRegService(
-        private val aaRegClient: AaRegClient,
-        private val eregClient: EregClient,
-        private val pdlService: PdlService
+    private val aaRegClient: AaRegClient,
+    private val eregClient: EregClient,
+    private val pdlService: PdlService
 ) {
 
     suspend fun hentArbeidsforhold(fnr: String, callId: String, fraOgMed: LocalDate, tilOgMed: LocalDate): List<Arbeidsforhold> {
@@ -30,27 +30,26 @@ class AaRegService(
             logger.info { organisasjon }
 
             dataOmArbeidsgiver[orgnummer] = ArbeidsgiverInfo(
-                    arbeidsgiverEnhetstype = hentArbeidsgiverEnhetstype(orgnummer, callId),
-                    ansatte = organisasjon.organisasjonDetaljer?.ansatte,
-                    opphoersdato = organisasjon.organisasjonDetaljer?.opphoersdato,
-                    konkursStatus = organisasjon.organisasjonDetaljer?.statuser?.map { it -> it?.kode }
+                arbeidsgiverEnhetstype = hentArbeidsgiverEnhetstype(orgnummer, callId),
+                ansatte = organisasjon.organisasjonDetaljer?.ansatte,
+                opphoersdato = organisasjon.organisasjonDetaljer?.opphoersdato,
+                konkursStatus = organisasjon.organisasjonDetaljer?.statuser?.map { it -> it?.kode }
 
             )
             logger.info { dataOmArbeidsgiver[orgnummer] }
-
         }
 
         return mapAaregResultat(arbeidsforhold, dataOmArbeidsgiver)
     }
 
-    data class ArbeidsgiverInfo(val arbeidsgiverEnhetstype: String?,
-                                val ansatte: List<Ansatte>?,
-                                val opphoersdato: LocalDate?,
-                                val konkursStatus: List<String?>?)
-
+    data class ArbeidsgiverInfo(
+        val arbeidsgiverEnhetstype: String?,
+        val ansatte: List<Ansatte>?,
+        val opphoersdato: LocalDate?,
+        val konkursStatus: List<String?>?
+    )
 
     private suspend fun hentArbeidsgiverEnhetstype(orgnummer: String, callId: String): String? {
         return eregClient.hentEnhetstype(orgnummer, callId)
     }
-
 }

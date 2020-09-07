@@ -41,24 +41,26 @@ class StsRestClientTest {
 
     @Test
     fun `should cache tokens`() {
-        stubFor(stsRequestMapping
+        stubFor(
+            stsRequestMapping
                 .willReturn(
-                        aResponse()
-                                .withStatus(HttpStatusCode.OK.value)
-                                .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-                                .withBody(default_token)
+                    aResponse()
+                        .withStatus(HttpStatusCode.OK.value)
+                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                        .withBody(default_token)
                 )
                 .inScenario("caching")
                 .whenScenarioStateIs(STARTED)
                 .willSetStateTo("token acquired")
         )
 
-        stubFor(stsRequestMapping
+        stubFor(
+            stsRequestMapping
                 .willReturn(
-                        aResponse()
-                                .withStatus(HttpStatusCode.OK.value)
-                                .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-                                .withBody(bad_token)
+                    aResponse()
+                        .withStatus(HttpStatusCode.OK.value)
+                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                        .withBody(bad_token)
                 )
                 .inScenario("caching")
                 .whenScenarioStateIs("token acquired")
@@ -74,29 +76,34 @@ class StsRestClientTest {
         assertEquals(first, second)
         assertEquals("default access token", second)
     }
-
 }
 
 private val stsRequestMapping: MappingBuilder = get(urlPathEqualTo("/rest/v1/sts/token"))
-        .withQueryParam("grant_type", equalTo("client_credentials"))
-        .withQueryParam("scope", equalTo("openid"))
-        .withBasicAuth("foo", "bar")
-        .withHeader("Accept", equalTo("application/json"))
+    .withQueryParam("grant_type", equalTo("client_credentials"))
+    .withQueryParam("scope", equalTo("openid"))
+    .withBasicAuth("foo", "bar")
+    .withHeader("Accept", equalTo("application/json"))
 
-private val default_token = """{
+private val default_token =
+    """{
   "access_token": "default access token",
   "token_type": "Bearer",
   "expires_in": 3600
-}""".trimIndent()
+}
+    """.trimIndent()
 
-private val short_lived_token = """{
+private val short_lived_token =
+    """{
   "access_token": "short lived token",
   "token_type": "Bearer",
   "expires_in": 1
-}""".trimIndent()
+}
+    """.trimIndent()
 
-private val bad_token = """{
+private val bad_token =
+    """{
   "access_token": "this token shouldn't be requested",
   "token_type": "Bearer",
   "expires_in": 1000000000000
-}""".trimIndent()
+}
+    """.trimIndent()

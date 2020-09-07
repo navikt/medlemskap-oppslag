@@ -13,11 +13,12 @@ fun main() {
 
     val applicationServer = createHttpServer(applicationState = applicationState, prometheusRegistry = prometheusMeterRegistry)
 
-    Runtime.getRuntime().addShutdownHook(Thread {
-        applicationState.initialized = false
-        applicationServer.stop(5000, 5000)
-    })
+    Runtime.getRuntime().addShutdownHook(
+        Thread {
+            applicationState.initialized = false
+            applicationServer.stop(5000, 5000)
+        }
+    )
 
     applicationServer.start(wait = true)
 }
-

@@ -3,28 +3,25 @@ package no.nav.medlemskap.clients.pdl
 import com.expediagroup.graphql.client.GraphQLClient
 import com.expediagroup.graphql.types.GraphQLResponse
 import io.github.resilience4j.retry.Retry
-import io.ktor.client.HttpClient
-import io.ktor.client.request.header
-import io.ktor.client.request.options
-import io.ktor.client.request.url
-import io.ktor.client.statement.HttpResponse
-import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
+import io.ktor.client.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
 import mu.KotlinLogging
-import no.nav.medlemskap.client.generated.pdl.HentFoedselsaar
-import no.nav.medlemskap.client.generated.pdl.HentIdenter
-import no.nav.medlemskap.client.generated.pdl.HentNasjonalitet
-import no.nav.medlemskap.client.generated.pdl.HentPerson
+import no.nav.medlemskap.clients.pdl.generated.HentFoedselsaar
+import no.nav.medlemskap.clients.pdl.generated.HentIdenter
+import no.nav.medlemskap.clients.pdl.generated.HentNasjonalitet
+import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
 import no.nav.medlemskap.clients.sts.StsRestClient
 import java.net.URL
 
 class PdlClient(
-        private val baseUrl: String,
-        private val stsClient: StsRestClient,
-        private val username: String,
-        private val httpClient: HttpClient,
-        private val retry: Retry? = null
+    private val baseUrl: String,
+    private val stsClient: StsRestClient,
+    private val username: String,
+    private val httpClient: HttpClient,
+    private val retry: Retry? = null
 ) {
     companion object {
         private val logger = KotlinLogging.logger { }
@@ -36,7 +33,7 @@ class PdlClient(
             val hentIdenterQuery = HentIdenter(GraphQLClient(url = URL("$baseUrl")))
             val variables = HentIdenter.Variables(fnr, null, false)
 
-            val response: GraphQLResponse<HentIdenter.Result> = hentIdenterQuery.execute(variables){
+            val response: GraphQLResponse<HentIdenter.Result> = hentIdenterQuery.execute(variables) {
                 header(HttpHeaders.Authorization, "Bearer $stsToken")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
@@ -47,7 +44,6 @@ class PdlClient(
             response
         }
     }
-
 
     suspend fun hentPerson(fnr: String, callId: String): GraphQLResponse<HentPerson.Result> {
         return runWithRetryAndMetrics("PDL", "HentPerson", retry) {
@@ -55,7 +51,7 @@ class PdlClient(
             val hentPersonQuery = HentPerson(GraphQLClient(url = URL("$baseUrl")))
             val variables = HentPerson.Variables(fnr, false)
 
-            val response: GraphQLResponse<HentPerson.Result> = hentPersonQuery.execute(variables){
+            val response: GraphQLResponse<HentPerson.Result> = hentPersonQuery.execute(variables) {
                 header(HttpHeaders.Authorization, "Bearer $stsToken")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
@@ -65,10 +61,9 @@ class PdlClient(
             }
             response
         }
-
     }
 
-    suspend fun hentNasjonalitet(fnr: String, callId: String): GraphQLResponse<HentNasjonalitet.Result>  {
+    suspend fun hentNasjonalitet(fnr: String, callId: String): GraphQLResponse<HentNasjonalitet.Result> {
         return runWithRetryAndMetrics("PDL", "HentNasjonalitet", retry) {
             val stsToken = stsClient.oidcToken()
             val hentNasjonalitetQuery = HentNasjonalitet(GraphQLClient(url = URL("$baseUrl")))
@@ -83,10 +78,10 @@ class PdlClient(
                 header("Nav-Consumer-Id", username)
             }
             response
-            }
         }
+    }
 
-    suspend fun hentFoedselsaar(fnr: String, callId: String): GraphQLResponse<HentFoedselsaar.Result>   {
+    suspend fun hentFoedselsaar(fnr: String, callId: String): GraphQLResponse<HentFoedselsaar.Result> {
         return runWithRetryAndMetrics("PDL", "HentFoedselsaar", retry) {
             val stsToken = stsClient.oidcToken()
             val hentFoedselsaarQuery = HentFoedselsaar(GraphQLClient(url = URL("$baseUrl")))
@@ -112,4 +107,3 @@ class PdlClient(
         }
     }
 }
-

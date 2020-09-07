@@ -8,6 +8,7 @@ import no.nav.medlemskap.regler.v1.arbeidsforhold.*
 import no.nav.medlemskap.regler.v1.grunnforordningen.ErBrukerEøsBorgerRegel
 import no.nav.medlemskap.regler.v1.lovvalg.*
 import no.nav.medlemskap.regler.v1.medlemskap.*
+import no.nav.medlemskap.regler.v1.grunnforordningen.ErBrukerEøsBorgerRegel
 import no.nav.medlemskap.regler.v1.registrerteOpplysninger.HarBrukerRegistrerteOpplysningerRegel
 
 class RegelFactory(private val datagrunnlag: Datagrunnlag) {

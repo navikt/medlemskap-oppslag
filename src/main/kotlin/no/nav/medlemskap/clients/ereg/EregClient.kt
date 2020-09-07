@@ -12,10 +12,10 @@ import no.nav.medlemskap.clients.runWithRetryAndMetrics
 import no.nav.medlemskap.config.Configuration
 
 class EregClient(
-        private val baseUrl: String,
-        private val httpClient: HttpClient,
-        private val configuration: Configuration,
-        private val retry: Retry? = null
+    private val baseUrl: String,
+    private val httpClient: HttpClient,
+    private val configuration: Configuration,
+    private val retry: Retry? = null
 ) {
     suspend fun hentEnhetstype(orgnummer: String, callId: String): String? {
         val organisasjon = runCatching {
@@ -28,24 +28,23 @@ class EregClient(
                 }
             }
         }.fold(
-                onSuccess = { it },
-                onFailure = { error ->
-                    when (error) {
-                        is ClientRequestException -> {
-                            if (error.response.status.value == 404) {
-                                OrganisasjonNøkkelinfo(null)
-                            } else {
-                                throw error
-                            }
+            onSuccess = { it },
+            onFailure = { error ->
+                when (error) {
+                    is ClientRequestException -> {
+                        if (error.response.status.value == 404) {
+                            OrganisasjonNøkkelinfo(null)
+                        } else {
+                            throw error
                         }
-                        else -> throw error
                     }
+                    else -> throw error
                 }
+            }
 
         )
         return organisasjon.enhetstype
     }
-
 
     suspend fun hentOrganisasjon(orgnummer: String?, callId: String): Organisasjon {
         val organisasjonsInfo = kotlin.runCatching {
@@ -58,26 +57,26 @@ class EregClient(
                 }
             }
         }.fold(
-                onSuccess = { it },
-                onFailure = { error ->
-                    when (error) {
-                        is ClientRequestException -> {
-                            if (error.response.status.value == 404) {
-                                Organisasjon(null,
-                                        null,
-                                        null,
-                                        null)
-                            } else {
-                                throw error
-                            }
+            onSuccess = { it },
+            onFailure = { error ->
+                when (error) {
+                    is ClientRequestException -> {
+                        if (error.response.status.value == 404) {
+                            Organisasjon(
+                                null,
+                                null,
+                                null,
+                                null
+                            )
+                        } else {
+                            throw error
                         }
-                        else -> throw error
                     }
+                    else -> throw error
                 }
+            }
 
         )
         return organisasjonsInfo
-
     }
-
 }

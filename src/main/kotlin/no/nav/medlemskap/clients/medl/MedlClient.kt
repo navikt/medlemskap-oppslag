@@ -17,11 +17,11 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class MedlClient(
-        private val baseUrl: String,
-        private val stsClient: StsRestClient,
-        private val configuration: Configuration,
-        private val httpClient: HttpClient,
-        private val retry: Retry? = null
+    private val baseUrl: String,
+    private val stsClient: StsRestClient,
+    private val configuration: Configuration,
+    private val httpClient: HttpClient,
+    private val retry: Retry? = null
 ) {
 
     suspend fun hentMedlemskapsunntak(ident: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<MedlMedlemskapsunntak> {
@@ -40,19 +40,19 @@ class MedlClient(
                 }
             }
         }.fold(
-                onSuccess = { liste -> liste },
-                onFailure = { error ->
-                    when (error) {
-                        is ClientRequestException -> {
-                            if (error.response.status.value == 404) {
-                                listOf()
-                            } else {
-                                throw error
-                            }
+            onSuccess = { liste -> liste },
+            onFailure = { error ->
+                when (error) {
+                    is ClientRequestException -> {
+                        if (error.response.status.value == 404) {
+                            listOf()
+                        } else {
+                            throw error
                         }
-                        else -> throw error
                     }
+                    else -> throw error
                 }
+            }
         )
     }
 
@@ -65,6 +65,4 @@ class MedlClient(
             header(HttpHeaders.Accept, ContentType.Application.Json)
         }
     }
-
 }
-

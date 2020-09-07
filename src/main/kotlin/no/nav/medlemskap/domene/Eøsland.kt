@@ -16,7 +16,7 @@ enum class Eøsland(val land: String) {
     LVA("LATVIA"),
     LIE("LIECHTENSTEIN"),
     LTU("LITAUEN"),
-    LUX("LUXENBURG"),
+    LUX("LUXEMBOURG"),
     MLT("MALTA"),
     NLD("NEDERLAND"),
     NOR("NORGE"),
@@ -28,13 +28,14 @@ enum class Eøsland(val land: String) {
     ESP("SPANIA"),
     SWE("SVERIGE"),
     CZE("TSJEKKIA"),
-    DEU("TYSKAND"),
+    DEU("TYSKLAND"),
     HUN("UNGARN"),
-    AUT("ØSTERRIKE");
-
+    AUT("ØSTERRIKE"),
+    CHE("SVEITS"),
+    GBR("STORBRITANNIA");
     companion object {
         fun erEØSland(landkode: String): Boolean {
-            return values().any {it.name == landkode}
+            return values().any { it.name == landkode }
         }
 
         fun erNorsk(landkode: String): Boolean {
@@ -46,14 +47,14 @@ enum class Eøsland(val land: String) {
         }
 
         private val nordiskeLandkoder = setOf(
-                "DNK",
-                "FIN",
-                "ISL",
-                "SWE",
-                "NOR",
-                "FRO",
-                "GRL",
-                "ALA"
+            "DNK",
+            "FIN",
+            "ISL",
+            "SWE",
+            "NOR",
+            "FRO",
+            "GRL",
+            "ALA"
         )
     }
 }

@@ -8,8 +8,8 @@ import no.nav.medlemskap.regler.common.Regler
 import no.nav.medlemskap.regler.common.konklusjonUavklart
 
 class ReglerForAndreStatsborgere(
-        val periode: InputPeriode,
-        ytelse: Ytelse
+    val periode: InputPeriode,
+    ytelse: Ytelse
 ) : Regler(ytelse) {
 
     override fun hentRegelflyter(): List<Regelflyt> {
@@ -20,11 +20,10 @@ class ReglerForAndreStatsborgere(
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForAndreStatsborgere {
             with(datagrunnlag) {
                 return ReglerForAndreStatsborgere(
-                        periode = periode,
-                        ytelse = ytelse
+                    periode = periode,
+                    ytelse = ytelse
                 )
             }
         }
     }
-
 }

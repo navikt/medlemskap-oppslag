@@ -49,27 +49,27 @@ class Services(val configuration: Configuration) {
 
     init {
         val stsWsClient = stsClient(
-                stsUrl = configuration.sts.endpointUrl,
-                username = configuration.sts.username,
-                password = configuration.sts.password
+            stsUrl = configuration.sts.endpointUrl,
+            username = configuration.sts.username,
+            password = configuration.sts.password
         )
 
         val stsRestClient = StsRestClient(
-                baseUrl = configuration.sts.restUrl,
-                username = configuration.sts.username,
-                password = configuration.sts.password,
-                retry = stsRetry,
-                httpClient = cioHttpClient
+            baseUrl = configuration.sts.restUrl,
+            username = configuration.sts.username,
+            password = configuration.sts.password,
+            retry = stsRetry,
+            httpClient = cioHttpClient
         )
 
         val wsClients = WsClients(
-                stsClientWs = stsWsClient,
-                callIdGenerator = callIdGenerator::get
+            stsClientWs = stsWsClient,
+            callIdGenerator = callIdGenerator::get
         )
 
         val restClients = RestClients(
-                stsClientRest = stsRestClient,
-                configuration = configuration
+            stsClientRest = stsRestClient,
+            configuration = configuration
         )
 
         personClient = wsClients.person(configuration.register.tpsUrl, tpsRetry)
@@ -86,17 +86,18 @@ class Services(val configuration: Configuration) {
         oppgaveClient = restClients.oppgaver(configuration.register.oppgaveBaseUrl)
         oppgaveService = OppgaveService(oppgaveClient)
 
-        healthService = HealthService(setOf(
-                //HttpResponseHealthCheck("AaReg", { aaRegClient.healthCheck() }),
+        healthService = HealthService(
+            setOf(
+                // HttpResponseHealthCheck("AaReg", { aaRegClient.healthCheck() }),
                 HttpResponseHealthCheck("Medl", { medlClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("Oppg", { oppgaveClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("PDL", { pdlClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("SAF", { safClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("STS", { stsRestClient.healthCheck() }, healthRetry),
                 TryCatchHealthCheck("TPS", { personClient.healthCheck() }, healthRetry)
-        ))
+            )
+        )
 
         healthReporter = HealthReporter(healthService)
     }
-
 }

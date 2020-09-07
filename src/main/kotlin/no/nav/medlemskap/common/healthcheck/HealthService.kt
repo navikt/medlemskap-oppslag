@@ -7,7 +7,7 @@ import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
 
 class HealthService(
-        private val healthChecks: Set<HealthCheck>
+    private val healthChecks: Set<HealthCheck>
 ) {
     private companion object {
         private val logger = KotlinLogging.logger { }
@@ -17,16 +17,20 @@ class HealthService(
         val results = coroutineScope {
             val futures = mutableListOf<Deferred<Result>>()
             healthChecks.forEach { healthCheck ->
-                futures.add(async {
-                    try {
-                        healthCheck.check()
-                    } catch (cause: Throwable) {
-                        logger.error("Feil ved eksekvering av helsesjekk.", cause)
-                        UnHealthy(name = healthCheck.name, result = cause.message
-                                ?: "Feil ved eksekvering av helsesjekk.")
+                futures.add(
+                    async {
+                        try {
+                            healthCheck.check()
+                        } catch (cause: Throwable) {
+                            logger.error("Feil ved eksekvering av helsesjekk.", cause)
+                            UnHealthy(
+                                name = healthCheck.name,
+                                result = cause.message
+                                    ?: "Feil ved eksekvering av helsesjekk."
+                            )
+                        }
                     }
-                })
-
+                )
             }
             futures.awaitAll()
         }
