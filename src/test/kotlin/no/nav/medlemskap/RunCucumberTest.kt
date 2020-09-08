@@ -8,7 +8,7 @@ import org.junit.runner.RunWith
 @CucumberOptions(
     features = ["src/test/resources/dokumentasjon/features"],
     glue = ["no.nav.medlemskap.cucumber.steps"],
-    plugin = ["pretty", "html:build/cucumber"],
+    plugin = ["pretty", "html:build/cucumber.html"],
     tags = "not @ignored",
     strict = true,
     monochrome = false

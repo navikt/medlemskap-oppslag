@@ -4,18 +4,15 @@ import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
 import no.nav.medlemskap.cucumber.*
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.regler.assertDelresultat
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.v1.RegelFactory
 import no.nav.medlemskap.regler.v1.ReglerService
 import org.junit.jupiter.api.Assertions.assertEquals
-import java.time.LocalDate
 
 class RegelSteps : No {
     private val ANSATTE_9 = listOf(Ansatte(9, null, null))
-    private val STATSBORGERSKAP_NOR = listOf(Statsborgerskap("NOR", LocalDate.MIN, null))
     private val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", identifikator = "1", ansatte = ANSATTE_9, konkursStatus = null)
 
     private val personhistorikkBuilder = PersonhistorikkBuilder()
@@ -25,14 +22,12 @@ class RegelSteps : No {
     private var dataOmEktefelleBuilder = DataOmEktefelleBuilder()
 
     private var medlemskap: List<Medlemskap> = emptyList()
-    private var personhistorikkBarnTilEktefelle: List<PersonhistorikkBarn> = emptyList()
 
     private var arbeidsforhold: List<Arbeidsforhold> = emptyList()
     private var arbeidsavtaleMap = hashMapOf<Int, List<Arbeidsavtale>>()
     private var utenlandsoppholdMap = hashMapOf<Int, List<Utenlandsopphold>>()
     private var arbeidsgiverMap = hashMapOf<Int, Arbeidsgiver>()
 
-    private var arbeidsforholdEktefelle: List<Arbeidsforhold> = emptyList()
     private var arbeidsavtaleEktefelleMap = hashMapOf<Int, List<Arbeidsavtale>>()
 
     private var resultat: Resultat? = null
