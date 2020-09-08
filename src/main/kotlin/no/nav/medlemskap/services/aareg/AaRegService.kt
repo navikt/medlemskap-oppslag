@@ -16,7 +16,7 @@ class AaRegService(
 
     suspend fun hentArbeidsforhold(fnr: String, callId: String, fraOgMed: LocalDate, tilOgMed: LocalDate): List<Arbeidsforhold> {
         val arbeidsgiverOrg = ArbeidsgiverOrg(aaRegClient)
-        val arbeidsgiverPerson = ArbeidsgiverPerson(aaRegClient)
+        // val arbeidsgiverPerson = ArbeidsgiverPerson(aaRegClient) - Tar ikke hensyn til person-arbeidsgivere inntil videre
 
         val arbeidsforhold = aaRegClient.hentArbeidsforhold(fnr, callId, fraOgMed, tilOgMed)
 
