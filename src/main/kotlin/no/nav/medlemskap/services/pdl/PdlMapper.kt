@@ -73,8 +73,7 @@ object PdlMapper {
     private fun mapOppholdsadresser(oppholdsadresse: HentPerson.Oppholdsadresse, tom: LocalDate?): Adresse {
 
         return Adresse(
-            fom = convertToLocalDate(oppholdsadresse.gyldigFraOgMed)
-                ?: convertToLocalDate(oppholdsadresse.oppholdsadressedato),
+            fom = convertToLocalDate(oppholdsadresse.gyldigFraOgMed),
             tom = convertToLocalDate(oppholdsadresse.folkeregistermetadata?.opphoerstidspunkt),
             landkode = mapLandkodeForOppholdsadresse(oppholdsadresse)
         )
