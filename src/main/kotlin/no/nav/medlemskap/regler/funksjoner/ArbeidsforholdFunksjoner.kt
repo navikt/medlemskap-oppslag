@@ -52,13 +52,8 @@ object ArbeidsforholdFunksjoner {
 
     fun List<Ansatte>.finnesMindreEnn(tall: Int) = this.filter { it.antall ?: 0 < tall }
 
-    fun List<Arbeidsforhold>.registrerAntallAnsatte(ytelse: Ytelse) =
-        this.forEach {
-            antallAnsatteTilUavklart(
-                it.arbeidsgiver.ansatte?.antall.toString(),
-                ytelse
-            ).increment()
-        }
+    fun List<Arbeidsgiver>.registrerAntallAnsatte(ytelse: Ytelse) =
+        this.forEach { antallAnsatteTilUavklart(it.ansatte?.antall.toString(), ytelse).increment() }
 
     /**
      * Sjekk om arbeidsfoholdet er sammenhengende i kontrollperioden

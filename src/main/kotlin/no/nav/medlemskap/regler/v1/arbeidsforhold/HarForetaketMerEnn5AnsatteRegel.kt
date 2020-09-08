@@ -32,7 +32,7 @@ class HarForetaketMerEnn5AnsatteRegel(
     fun registrerDataForGrafana() {
         statsborgerskap.registrerStatsborgerskapGrafana(kontrollPeriodeForArbeidsforhold, ytelse, regelId)
         arbeidsforhold.filtrerUtArbeidsgivereMedFærreEnn6Ansatte(kontrollPeriodeForArbeidsforhold).registrereArbeidsgivere(ytelse)
-        arbeidsforhold.registrerAntallAnsatte(ytelse)
+        arbeidsforhold.filtrerUtArbeidsgivereMedFærreEnn6Ansatte(kontrollPeriodeForArbeidsforhold).registrerAntallAnsatte(ytelse)
     }
 
     companion object {
