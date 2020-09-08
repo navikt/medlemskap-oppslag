@@ -5,7 +5,6 @@ import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 import no.nav.medlemskap.regler.common.Funksjoner
 import no.nav.medlemskap.regler.common.Funksjoner.antall
-import no.nav.medlemskap.regler.common.Funksjoner.finnesMindreEnn
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
 import no.nav.medlemskap.regler.common.interval
 import no.nav.medlemskap.regler.common.lagInterval
@@ -21,8 +20,8 @@ object ArbeidsforholdFunksjoner {
         return arbeidsforholdForKontrollPeriode(kontrollPeriode).stream().allMatch { it.arbeidsgivertype == OpplysningspliktigArbeidsgiverType.Organisasjon }
     }
 
-    infix fun List<Arbeidsforhold>.antallAnsatteHosArbeidsgivere(kontrollPeriode: Kontrollperiode): List<Int?> =
-        ansatteHosArbeidsgivere(kontrollPeriode).map { it.antall }
+    infix fun List<Arbeidsforhold>.antallAnsatteHosArbeidsgivere(kontrollPeriode: Kontrollperiode): List<Int> =
+        ansatteHosArbeidsgivere(kontrollPeriode).map { it.antall ?: 0 }
 
     infix fun List<Arbeidsforhold>.arbeidsforholdForYrkestype(kontrollPeriode: Kontrollperiode): List<String> =
         this.filter {
@@ -43,9 +42,15 @@ object ArbeidsforholdFunksjoner {
         return arbeidsforholdForKontrollPeriode(kontrollPeriode).flatMap { it.arbeidsgiver.konkursStatus.orEmpty() }
     }
 
-    fun List<Arbeidsforhold>.registrerArbeidsgiver(kontrollPeriode: Kontrollperiode, ytelse: Ytelse) =
-        this.filter { antallAnsatteHosArbeidsgivere(kontrollPeriode) finnesMindreEnn 6 }
-            .forEach { antallTreffPåArbeidsgiver(it.arbeidsgiver.identifikator, ytelse).increment() }
+    fun List<Arbeidsforhold>.filtrerUtArbeidsgivereMedFærreEnn6Ansatte(kontrollPeriode: Kontrollperiode) =
+        arbeidsforholdForKontrollPeriode(kontrollPeriode).stream().map { it.arbeidsgiver }.collect(Collectors.toList())
+            .filter { !it.ansatte?.finnesMindreEnn(6).isNullOrEmpty() }
+
+    fun List<Arbeidsgiver>.registrereArbeidsgivere(ytelse: Ytelse) {
+        this.forEach { antallTreffPåArbeidsgiver(it.identifikator, ytelse).increment() }
+    }
+
+    fun List<Ansatte>.finnesMindreEnn(tall: Int) = this.filter { it.antall ?: 0 < tall }
 
     fun List<Arbeidsforhold>.registrerAntallAnsatte(ytelse: Ytelse) =
         this.forEach {
