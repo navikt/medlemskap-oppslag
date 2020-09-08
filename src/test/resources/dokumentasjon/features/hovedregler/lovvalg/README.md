@@ -3,7 +3,7 @@
 ## Scenarier på enkeltregler
 
 ### Regel 9
-* [Regel 9: Har bruker utført arbeid utenfor Norge](9_har_bruker_utfoert_arbeid_utenfor_norge.feature)
+* [Regel 9: Har bruker utført arbeid utenfor Norge](../arbeidsforhold/9_har_bruker_utfoert_arbeid_utenfor_norge.feature)
 
 ### Regel 10
 * [Regel 10: Er bruker folkeregistrert i Norge?](10_er_bruker_folkeregistrert_i_norge.feature)

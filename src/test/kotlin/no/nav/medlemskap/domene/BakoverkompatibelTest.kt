@@ -588,6 +588,14 @@ private val forventetResponse =
           "dekning" : "",
           "delresultat" : [ ]
         }, {
+            "regelId" : "REGEL_9",
+            "avklaring" : "Har bruker utført arbeid utenfor Norge?",
+            "begrunnelse" : "",
+            "svar" : "NEI",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
+          }, {
           "regelId" : "REGEL_2",
           "avklaring" : "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?",
           "begrunnelse" : "",
