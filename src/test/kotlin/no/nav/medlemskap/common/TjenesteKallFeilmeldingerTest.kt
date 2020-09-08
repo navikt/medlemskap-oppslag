@@ -351,7 +351,7 @@ class TjenesteKallFeilmeldingerTest {
             Periode(enDato(), enAnnenDato()),
             listOf(Utenlandsopphold("SWE", Periode(enDato(), enAnnenDato()), YearMonth.of(2010, 1))),
             OpplysningspliktigArbeidsgiverType.Organisasjon,
-            Arbeidsgiver("type", "identifikator", listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus")),
+            Arbeidsgiver("type", "identifikator", listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus"), null),
             Arbeidsforholdstype.NORMALT,
             listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble()))
         )

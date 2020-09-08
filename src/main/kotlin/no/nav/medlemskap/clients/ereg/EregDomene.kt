@@ -4,7 +4,7 @@ import java.time.LocalDate
 
 data class OrganisasjonNøkkelinfo(val enhetstype: String?)
 
-data class OrganiasjonsDetaljer(
+data class Organisasjonsdetaljer(
     val ansatte: List<Ansatte>?,
     val dublettAv: Organisasjon?,
     val dubletter: List<Organisasjon>?,
@@ -150,9 +150,43 @@ data class Gyldighetsperiode(
 
 data class Organisasjon(
     val navn: Navn?,
-    val organisasjonDetaljer: OrganiasjonsDetaljer?,
+    val organisasjonDetaljer: Organisasjonsdetaljer?,
     val organisasjonsNummer: String?,
-    val organisasjonstype: String?
+    val organisasjonstype: String?,
+    val bestaarAvOrganisasjonsledd: List<BestaarAvOrganisasjonsledd?>?
+) {
+    fun getOrganisasjonsnumreJuridiskeEnheter(): List<String> {
+
+        val orgnumre = ArrayList<String>()
+        bestaarAvOrganisasjonsledd?.forEach { p ->
+            p?.organisasjonsledd?.organisasjonsleddOver?.forEach { r ->
+                r?.organisasjonsledd?.inngaarIJuridiskEnheter?.forEach { s ->
+                    s != null && !s.organisasjonsnummer.isNullOrBlank() && orgnumre.add(s.organisasjonsnummer)
+                }
+            }
+        }
+        return orgnumre
+    }
+}
+
+data class BestaarAvOrganisasjonsledd(
+    val organisasjonsledd: Organisasjonsledd?
+)
+
+data class Organisasjonsledd(
+    val organisasjonsleddOver: List<OrganisasjonsleddOver?>?
+)
+
+data class OrganisasjonsleddOver(
+    val organisasjonsledd: OrganisasjonsleddOverOrganisasjon?
+)
+
+data class OrganisasjonsleddOverOrganisasjon(
+    val inngaarIJuridiskEnheter: List<JuridiskEnhet?>?
+)
+
+data class JuridiskEnhet(
+    val organisasjonsnummer: String?
 )
 
 data class Navn(

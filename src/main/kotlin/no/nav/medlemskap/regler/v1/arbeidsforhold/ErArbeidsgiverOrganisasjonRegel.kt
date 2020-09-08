@@ -1,6 +1,7 @@
 package no.nav.medlemskap.regler.v1.arbeidsforhold
 
 import no.nav.medlemskap.common.enhetstypeCounter
+import no.nav.medlemskap.common.enhetstypeForJuridiskEnhet
 import no.nav.medlemskap.domene.Arbeidsforhold
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
@@ -21,11 +22,19 @@ class ErArbeidsgiverOrganisasjonRegel(
 
     override fun operasjon(): Resultat {
 
-        arbeidsforhold.forEach { enhetstypeCounter(it.arbeidsgiver.type ?: "N/A", ytelse.metricName()).increment() }
+        registrerArbeidsgiverMetrics()
+
         return when {
             !arbeidsforhold.erAlleArbeidsgivereOrganisasjon(kontrollPeriodeForArbeidsforhold) -> nei("Ikke alle arbeidsgivere er av typen organisasjon")
             else -> ja()
         }
+    }
+
+    private fun registrerArbeidsgiverMetrics() {
+        arbeidsforhold.forEach { enhetstypeCounter(it.arbeidsgiver.type ?: "N/A", ytelse.metricName()).increment() }
+        val unikeOrgnumre = HashSet<String>()
+        arbeidsforhold.forEach { unikeOrgnumre.addAll(it.arbeidsgiver.juridiskEnhetEnhetstypeMap?.keys ?: HashSet()) }
+        unikeOrgnumre.forEach { p -> arbeidsforhold.forEach { r -> enhetstypeForJuridiskEnhet(r.arbeidsgiver.juridiskEnhetEnhetstypeMap?.get(p), ytelse.metricName()) } }
     }
 
     companion object {

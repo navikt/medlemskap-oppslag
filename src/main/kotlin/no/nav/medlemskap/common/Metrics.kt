@@ -155,6 +155,12 @@ fun enhetstypeCounter(enhetstype: String, ytelse: String): Counter = Counter
     .description("Ulike enhetstyper for arbeidsgivere")
     .register(Metrics.globalRegistry)
 
+fun enhetstypeForJuridiskEnhet(enhetstype: String?, ytelse: String): Counter = Counter
+    .builder("enhetstype_juridisk_enhet")
+    .tags("enhetstype", enhetstype ?: "N/A", "ytelse", ytelse)
+    .description("Ulike enhetstyper for juridiske enheter")
+    .register(Metrics.globalRegistry)
+
 private fun getStillingsprosentIntervall(stillingsprosent: Double): String {
     // Fjerner desimaler fremfor å runde av fordi regelsjekken godtar ikke f.eks. 24.9% stilling som høy nok til å regnes som 25% stilling.
     val stillingsprosentHeltall = truncate(stillingsprosent).toInt()

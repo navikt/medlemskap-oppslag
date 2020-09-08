@@ -27,14 +27,20 @@ class AaRegService(
             val logger = KotlinLogging.logger { }
             val organisasjon = eregClient.hentOrganisasjon(orgnummer, callId)
 
+            val juridiskEnhetOrgnummerEnhetstype = HashMap<String, String?>()
+
+            organisasjon.getOrganisasjonsnumreJuridiskeEnheter().forEach {
+                val enhetstypeForOrganisasjonsnummer = eregClient.hentEnhetstype(it, callId)
+                juridiskEnhetOrgnummerEnhetstype[it] = enhetstypeForOrganisasjonsnummer
+            }
             logger.info { organisasjon }
 
             dataOmArbeidsgiver[orgnummer] = ArbeidsgiverInfo(
                 arbeidsgiverEnhetstype = hentArbeidsgiverEnhetstype(orgnummer, callId),
                 ansatte = organisasjon.organisasjonDetaljer?.ansatte,
                 opphoersdato = organisasjon.organisasjonDetaljer?.opphoersdato,
-                konkursStatus = organisasjon.organisasjonDetaljer?.statuser?.map { it -> it?.kode }
-
+                konkursStatus = organisasjon.organisasjonDetaljer?.statuser?.map { it -> it?.kode },
+                juridiskEnhetOrgnummerEnhetstype = juridiskEnhetOrgnummerEnhetstype
             )
             logger.info { dataOmArbeidsgiver[orgnummer] }
         }
@@ -46,7 +52,8 @@ class AaRegService(
         val arbeidsgiverEnhetstype: String?,
         val ansatte: List<Ansatte>?,
         val opphoersdato: LocalDate?,
-        val konkursStatus: List<String?>?
+        val konkursStatus: List<String?>?,
+        val juridiskEnhetOrgnummerEnhetstype: Map<String, String?>
     )
 
     private suspend fun hentArbeidsgiverEnhetstype(orgnummer: String, callId: String): String? {
