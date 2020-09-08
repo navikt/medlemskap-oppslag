@@ -1,4 +1,4 @@
-package no.nav.medlemskap.common
+package no.nav.medlemskap.regler.funksjoner
 
 import junit.framework.Assert.assertEquals
 import no.nav.medlemskap.domene.*
