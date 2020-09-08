@@ -7,7 +7,7 @@ Egenskap: Eøs-land
 
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato |
-      | <Land>   | 30.06.2020      |
+      | <Land>   | 30.01.2000      |
 
     Når regel "2" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
