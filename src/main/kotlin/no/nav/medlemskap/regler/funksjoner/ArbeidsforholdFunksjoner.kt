@@ -46,7 +46,6 @@ object ArbeidsforholdFunksjoner {
         arbeidsforholdForKontrollPeriode(kontrollPeriode).stream().map { it.arbeidsgiver }.collect(Collectors.toList())
             .filter { !it.ansatte?.finnesMindreEnn(6).isNullOrEmpty() }
 
-    // this.filter { antallAnsatteHosArbeidsgivere(kontrollPeriode) finnesMindreEnn 6 }
     fun List<Arbeidsgiver>.registrereArbeidsgivere(ytelse: Ytelse) {
         this.forEach { antallTreffPåArbeidsgiver(it.identifikator, ytelse).increment() }
     }
