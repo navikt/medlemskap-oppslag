@@ -1,6 +1,5 @@
 package no.nav.medlemskap.services.aareg
 
-import mu.KotlinLogging
 import no.nav.medlemskap.clients.aareg.AaRegClient
 import no.nav.medlemskap.clients.ereg.Ansatte
 import no.nav.medlemskap.clients.ereg.EregClient
@@ -24,7 +23,6 @@ class AaRegService(
         val orgnummere = arbeidsgiverOrg.getOrg(fnr, callId, fraOgMed, tilOgMed)
 
         orgnummere.forEach { orgnummer ->
-            val logger = KotlinLogging.logger { }
             val organisasjon = eregClient.hentOrganisasjon(orgnummer, callId)
 
             val juridiskEnhetOrgnummerEnhetstype = HashMap<String, String?>()
@@ -33,7 +31,6 @@ class AaRegService(
                 val enhetstypeForOrganisasjonsnummer = eregClient.hentEnhetstype(it, callId)
                 juridiskEnhetOrgnummerEnhetstype[it] = enhetstypeForOrganisasjonsnummer
             }
-            logger.info { organisasjon }
 
             dataOmArbeidsgiver[orgnummer] = ArbeidsgiverInfo(
                 arbeidsgiverEnhetstype = hentArbeidsgiverEnhetstype(orgnummer, callId),
@@ -42,7 +39,6 @@ class AaRegService(
                 konkursStatus = organisasjon.organisasjonDetaljer?.statuser?.map { it -> it?.kode },
                 juridiskEnhetOrgnummerEnhetstype = juridiskEnhetOrgnummerEnhetstype
             )
-            logger.info { dataOmArbeidsgiver[orgnummer] }
         }
 
         return mapAaregResultat(arbeidsforhold, dataOmArbeidsgiver)
