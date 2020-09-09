@@ -138,11 +138,14 @@ suspend fun mockCreateDatagrunnlag(
 }
 
 private fun arbeidsforhold(): Arbeidsforhold {
+
+    val juridiskEnhetstypeMap = HashMap<String, String?>()
+    juridiskEnhetstypeMap["juridiskOrgnummer"] = "juridiskEnhetstype"
     return Arbeidsforhold(
         Periode(enDato(), enAnnenDato()),
         listOf(Utenlandsopphold("SWE", Periode(enDato(), enAnnenDato()), YearMonth.of(2010, 1))),
         OpplysningspliktigArbeidsgiverType.Organisasjon,
-        Arbeidsgiver("type", "identifikator", listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus")),
+        Arbeidsgiver("type", "identifikator", listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus"), juridiskEnhetstypeMap),
         Arbeidsforholdstype.NORMALT,
         listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble()))
     )
@@ -369,7 +372,10 @@ private val forventetResponse =
                            "tom" : "2020-08-01"
                          }
                        } ],
-                       "konkursStatus" : [ "Konkursstatus" ]
+                       "konkursStatus" : [ "Konkursstatus" ],
+                       "juridiskEnhetEnhetstypeMap" : {
+                         "juridiskOrgnummer" : "juridiskEnhetstype"
+                       }
                      },
                      "arbeidsfolholdstype" : "NORMALT",
                      "arbeidsavtaler" : [ {
@@ -420,7 +426,10 @@ private val forventetResponse =
                 "tom" : "2020-08-01"
               }
             } ],
-            "konkursStatus" : [ "Konkursstatus" ]
+            "konkursStatus" : [ "Konkursstatus" ],
+            "juridiskEnhetEnhetstypeMap" : {
+              "juridiskOrgnummer" : "juridiskEnhetstype"
+            }
           },
           "arbeidsfolholdstype" : "NORMALT",
           "arbeidsavtaler" : [ {

@@ -28,11 +28,11 @@ suspend fun defaultCreateDatagrunnlag(
 
     val dataOmEktefelle: DataOmEktefelle?
 
+    val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr, callId, fraOgMedDatoForArbeidsforhold(periode), periode.tom) }
     val aktorIder = services.pdlService.hentAlleAktorIder(fnr, callId)
     val personHistorikkFraPdl = hentPersonhistorikkFraPdl(services, fnr, callId)
     val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr, periode.fom) }
     val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(fnr, callId) }
-    val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr, callId, fraOgMedDatoForArbeidsforhold(periode), periode.tom) }
     val journalPosterRequest = async { services.safService.hentJournaldata(fnr, callId) }
     val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktorIder, callId) }
     val personhistorikkForFamilie = hentPersonhistorikkForFamilieAsync(personHistorikkFraPdl, services, periode)

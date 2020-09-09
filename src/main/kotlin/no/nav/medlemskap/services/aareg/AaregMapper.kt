@@ -13,8 +13,8 @@ fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, dataOmArbeidsgiv
     return arbeidsforhold.map {
         Arbeidsforhold(
             periode = mapPeriodeTilArbeidsforhold(it),
-            utenlandsopphold = mapUtenLandsopphold(it),
-            arbeidsfolholdstype = mapArbeidsForholdType(it),
+            utenlandsopphold = mapUtenlandsopphold(it),
+            arbeidsfolholdstype = mapArbeidsforholdType(it),
             arbeidsgivertype = mapArbeidsgiverType(it.arbeidsgiver.type),
             arbeidsgiver = mapArbeidsgiver(it, dataOmArbeidsgiver),
             arbeidsavtaler = mapArbeidsAvtaler(it)
@@ -61,28 +61,30 @@ fun mapSkipsregister(arbeidsavtale: AaRegArbeidsavtale): Skipsregister {
     }
 }
 
-fun mapArbeidsForholdType(arbeidsforhold: AaRegArbeidsforhold): Arbeidsforholdstype {
-    when (arbeidsforhold.type) {
-        "maritimtArbeidsforhold" -> return Arbeidsforholdstype.MARITIM
-        "forenkletOppgjoersordning" -> return Arbeidsforholdstype.FORENKLET
-        "frilanserOppdragstakerHonorarPersonerMm" -> return Arbeidsforholdstype.FRILANSER
-        "ordinaertArbeidsforhold" -> return Arbeidsforholdstype.NORMALT
+fun mapArbeidsforholdType(arbeidsforhold: AaRegArbeidsforhold): Arbeidsforholdstype {
+    return when (arbeidsforhold.type) {
+        "maritimtArbeidsforhold" -> Arbeidsforholdstype.MARITIM
+        "forenkletOppgjoersordning" -> Arbeidsforholdstype.FORENKLET
+        "frilanserOppdragstakerHonorarPersonerMm" -> Arbeidsforholdstype.FRILANSER
+        "ordinaertArbeidsforhold" -> Arbeidsforholdstype.NORMALT
         else -> {
-            return Arbeidsforholdstype.ANDRE
+            Arbeidsforholdstype.ANDRE
         }
     }
 }
 
 fun mapArbeidsgiver(arbeidsforhold: AaRegArbeidsforhold, dataOmArbeidsgiver: MutableMap<String, AaRegService.ArbeidsgiverInfo>): Arbeidsgiver {
-    val enhetstype = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.arbeidsgiverEnhetstype
     val orgnummer = arbeidsforhold.arbeidsgiver.organisasjonsnummer
-    val ansatte = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.ansatte
-    val konkursStatus = dataOmArbeidsgiver[arbeidsforhold.arbeidsgiver.organisasjonsnummer]?.konkursStatus
+    val enhetstype = dataOmArbeidsgiver[orgnummer]?.arbeidsgiverEnhetstype
+    val ansatte = dataOmArbeidsgiver[orgnummer]?.ansatte
+    val konkursStatus = dataOmArbeidsgiver[orgnummer]?.konkursStatus
+    val juridiskEnhetEnhetstypeMap = dataOmArbeidsgiver[orgnummer]?.juridiskEnhetOrgnummerEnhetstype
     return Arbeidsgiver(
         type = enhetstype,
         identifikator = orgnummer,
         ansatte = mapAnsatte(ansatte),
-        konkursStatus = konkursStatus
+        konkursStatus = konkursStatus,
+        juridiskEnhetEnhetstypeMap = juridiskEnhetEnhetstypeMap
     )
 }
 
@@ -108,7 +110,7 @@ fun mapPeriodeTilArbeidsavtale(arbeidsavtale: AaRegArbeidsavtale): Periode {
     )
 }
 
-fun mapUtenLandsopphold(arbeidsforhold: AaRegArbeidsforhold): List<Utenlandsopphold>? {
+fun mapUtenlandsopphold(arbeidsforhold: AaRegArbeidsforhold): List<Utenlandsopphold>? {
     return arbeidsforhold.utenlandsopphold?.map {
         Utenlandsopphold(
             landkode = it.landkode,

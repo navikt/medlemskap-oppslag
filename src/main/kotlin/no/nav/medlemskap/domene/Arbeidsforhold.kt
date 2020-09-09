@@ -39,7 +39,8 @@ data class Arbeidsgiver(
     val type: String?,
     val identifikator: String?,
     val ansatte: List<Ansatte>?,
-    val konkursStatus: List<String?>?
+    val konkursStatus: List<String?>?,
+    val juridiskEnhetEnhetstypeMap: Map<String, String?>?
 )
 
 data class Utenlandsopphold(

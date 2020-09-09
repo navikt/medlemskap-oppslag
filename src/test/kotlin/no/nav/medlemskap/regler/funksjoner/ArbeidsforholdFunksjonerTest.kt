@@ -61,7 +61,8 @@ class ArbeidsforholdFunksjonerTest {
                 type = null,
                 identifikator = null,
                 ansatte = listOf(Ansatte(antall = antall, bruksperiode = null, gyldighetsperiode = null)),
-                konkursStatus = null
+                konkursStatus = null,
+                juridiskEnhetEnhetstypeMap = null
             ),
             arbeidsfolholdstype = Arbeidsforholdstype.NORMALT,
             arbeidsavtaler = listOf(
