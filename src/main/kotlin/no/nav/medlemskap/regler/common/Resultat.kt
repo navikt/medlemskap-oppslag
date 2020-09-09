@@ -18,7 +18,7 @@ data class Resultat(
     }
 
     fun erRegelflytKonklusjon(): Boolean {
-        return regelId == RegelId.REGEL_FLYT_KONKLUSJON
+        return regelId?.erRegelflytkonklusjon ?: false
     }
 
     fun erKonklusjon(): Boolean {

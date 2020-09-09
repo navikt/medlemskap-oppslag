@@ -10,7 +10,7 @@ abstract class Regler(val ytelse: Ytelse, val regelMap: Map<RegelId, Regel> = em
         return hentRegelflyter().map { kjørRegelflyt(it) }
     }
 
-    private fun kjørRegelflyt(regelflyt: Regelflyt): Resultat {
+    protected fun kjørRegelflyt(regelflyt: Regelflyt): Resultat {
         val resultater: MutableList<Resultat> = mutableListOf()
 
         val konklusjon = regelflyt.utfør(resultater)

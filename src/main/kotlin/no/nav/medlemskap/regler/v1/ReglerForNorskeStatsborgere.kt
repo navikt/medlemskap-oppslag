@@ -18,7 +18,7 @@ class ReglerForNorskeStatsborgere(
         val erBrukerBosattINorgeFlyt = lagRegelflyt(
             regel = hentRegel(RegelId.REGEL_10),
             hvisJa = regelflytJa(ytelse),
-            hvisNei = konklusjonUavklart(ytelse)
+            hvisNei = regelflytUavklart(ytelse)
         )
 
         return erBrukerBosattINorgeFlyt
@@ -27,8 +27,8 @@ class ReglerForNorskeStatsborgere(
     override fun hentRegelflyter(): List<Regelflyt> {
         val harBrukerJobbet25ProsentEllerMerFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_12),
-            hvisJa = konklusjonJa(ytelse),
-            hvisNei = konklusjonUavklart(ytelse)
+            hvisJa = regelflytJa(ytelse),
+            hvisNei = regelflytUavklart(ytelse)
         )
 
         return listOf(hentHovedflyt(), harBrukerJobbet25ProsentEllerMerFlyt)
