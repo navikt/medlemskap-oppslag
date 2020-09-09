@@ -1,6 +1,6 @@
 package no.nav.medlemskap.regler.common
 
-enum class RegelId(val identifikator: String, val avklaring: String) {
+enum class RegelId(val identifikator: String, val avklaring: String, val erRegelflytKonklusjon: Boolean = false) {
     REGEL_1_1("1.1", "Er alle perioder siste 12 mnd avklart (endelig/gyldig)?"),
     REGEL_1_2("1.2", "Er det periode både med og uten medlemskap innenfor 12 mnd?"),
     REGEL_1_3("1.3", "Er det en periode med medlemskap?"),
@@ -45,9 +45,9 @@ enum class RegelId(val identifikator: String, val avklaring: String) {
     REGEL_B("OPPLYSNINGER-GOSYS", "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?"),
     REGEL_C("OPPLYSNINGER-JOARK", "Finnes det dokumenter i JOARK på medlemskapsområdet?"),
     REGEL_MEDLEM_KONKLUSJON("LOVME", "Er bruker medlem?"),
-    REGEL_FLYT_KONKLUSJON("RFK", "Svar på regelflyt"),
-    REGEL_ARBEIDSFORHOLD("REGEL_ARBEIDSFORHOLD", "Er arbeidsforhold avklart?"),
-    REGEL_EØS_BOSATT("REGEL_EØS_BOSATT", "Er EØS-borger bosatt i Norge?"),
+    REGEL_FLYT_KONKLUSJON("RFK", "Svar på regelflyt", true),
+    REGEL_ARBEIDSFORHOLD("REGEL_ARBEIDSFORHOLD", "Er arbeidsforhold avklart?", true),
+    REGEL_EØS_BOSATT("REGEL_EØS_BOSATT", "Er EØS-borger bosatt i Norge?", true),
     ;
 
     companion object {

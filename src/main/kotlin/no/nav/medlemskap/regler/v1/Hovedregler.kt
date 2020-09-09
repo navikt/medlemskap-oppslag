@@ -57,23 +57,23 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
 
             val medlemskonklusjon = resultater.find { it.erMedlemskonklusjon() }
             if (medlemskonklusjon != null) {
-                return medlemskonklusjon.copy(delresultat = lagDelResultater(resultater))
+                return medlemskonklusjon.copy(delresultat = lagDelresultat(resultater))
             }
 
             if (resultater.all { it.svar == Svar.JA }) {
-                return jaResultat(ytelse).copy(delresultat = lagDelResultater(resultater))
+                return jaResultat(ytelse).copy(delresultat = lagDelresultat(resultater))
             }
 
             val førsteNei = resultater.find { it.svar == NEI }
             if (førsteNei != null) {
-                return neiResultat(ytelse).copy(delresultat = lagDelResultater(resultater))
+                return neiResultat(ytelse).copy(delresultat = lagDelresultat(resultater))
             }
 
-            return uavklartResultat(ytelse).copy(delresultat = lagDelResultater(resultater))
+            return uavklartResultat(ytelse).copy(delresultat = lagDelresultat(resultater))
         }
 
-        private fun lagDelResultater(resultater: List<Resultat>): List<Resultat> {
-            return resultater.map { if (it.erRegelflytKonklusjon()) it.delresultat.filterNot { delresultat -> delresultat.erRegelflytKonklusjon() }.first() else it }
+        private fun lagDelresultat(resultater: List<Resultat>): List<Resultat> {
+            return resultater.map { if (it.regelId == RegelId.REGEL_FLYT_KONKLUSJON) it.delresultat.first() else it }
         }
 
         private fun uavklartResultat(ytelse: Ytelse): Resultat {
