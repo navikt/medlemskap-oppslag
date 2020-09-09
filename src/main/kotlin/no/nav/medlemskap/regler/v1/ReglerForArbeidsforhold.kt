@@ -62,7 +62,7 @@ class ReglerForArbeidsforhold(
         val harBrukerJobbetUtenforNorgeFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_9),
             hvisJa = konklusjonUavklart(ytelse),
-            hvisNei = regelflytJa(ytelse)
+            hvisNei = regelflytJa(ytelse, REGEL_9)
         )
 
         return listOf(hentHovedflyt(), harBrukerJobbetUtenforNorgeFlyt)

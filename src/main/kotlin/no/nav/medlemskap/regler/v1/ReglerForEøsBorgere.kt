@@ -16,7 +16,7 @@ class ReglerForEøsBorgere(
     fun hentHovedflyt(): Regelflyt {
         val erBrukerBosattINorgeFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_10),
-            hvisJa = regelflytJa(ytelse),
+            hvisJa = regelflytJa(ytelse, REGEL_10),
             hvisNei = konklusjonUavklart(ytelse)
         )
 
