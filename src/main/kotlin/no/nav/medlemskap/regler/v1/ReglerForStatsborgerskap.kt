@@ -17,7 +17,7 @@ class ReglerForStatsborgerskap(
         val harBrukerNorskStatsborgerskapFlyt = lagRegelflyt(
             regel = hentRegel(RegelId.REGEL_11),
             hvisJa = regelflytJa(ytelse),
-            hvisNei = regelflytNei(ytelse)
+            hvisNei = regelflytJa(ytelse)
         )
 
         val erBrukerEØSborgerFlyt = lagRegelflyt(

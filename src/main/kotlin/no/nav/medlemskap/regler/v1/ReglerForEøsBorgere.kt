@@ -15,7 +15,7 @@ class ReglerForEøsBorgere(
 
     fun hentHovedflyt(): Regelflyt {
         val erBrukerBosattINorgeFlyt = lagRegelflyt(
-            regel = hentRegel(RegelId.REGEL_10),
+            regel = hentRegel(REGEL_10),
             hvisJa = regelflytJa(ytelse),
             hvisNei = konklusjonUavklart(ytelse)
         )
@@ -26,38 +26,38 @@ class ReglerForEøsBorgere(
     override fun hentRegelflyter(): List<Regelflyt> {
         val harBrukerMedBarn80ProsenStillingEllerMerRegelFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_2_2_2),
-            hvisJa = konklusjonUavklart(ytelse),
-            hvisNei = konklusjonUavklart(ytelse)
+            hvisJa = regelflytUavklart(ytelse, REGEL_EØS_BOSATT),
+            hvisNei = regelflytUavklart(ytelse, REGEL_EØS_BOSATT)
         )
 
         val harBrukerMedBarnOgEktefelle80ProsentStillingEllerMerRegelFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_5_2),
-            hvisJa = konklusjonUavklart(ytelse),
-            hvisNei = konklusjonUavklart(ytelse)
+            hvisJa = regelflytUavklart(ytelse, REGEL_EØS_BOSATT),
+            hvisNei = regelflytUavklart(ytelse, REGEL_EØS_BOSATT)
         )
 
         val harBrukerUtenFolkeregistrertEktefelleStillingsprosent100EllerMerRegelFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_4_2),
-            hvisJa = konklusjonUavklart(ytelse),
-            hvisNei = konklusjonUavklart(ytelse)
+            hvisJa = regelflytUavklart(ytelse, REGEL_EØS_BOSATT),
+            hvisNei = regelflytUavklart(ytelse, REGEL_EØS_BOSATT)
         )
 
         val harBrukerMedFolkeregistrertEktefelleStillingsprosent100EllerMerRegelFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_5_3),
-            hvisJa = konklusjonUavklart(ytelse),
-            hvisNei = konklusjonUavklart(ytelse)
+            hvisJa = regelflytUavklart(ytelse, REGEL_EØS_BOSATT),
+            hvisNei = regelflytUavklart(ytelse, REGEL_EØS_BOSATT)
         )
 
         val harBrukerMedFolkeregistrerteBarnJobbetMerEnn80ProsentFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_2_3),
-            hvisJa = konklusjonJa(ytelse),
-            hvisNei = konklusjonUavklart(ytelse)
+            hvisJa = regelflytJa(ytelse, REGEL_EØS_BOSATT),
+            hvisNei = regelflytUavklart(ytelse, REGEL_EØS_BOSATT)
         )
 
         val harBrukerJobbetMerEnn100ProsentFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_2_2_1),
-            hvisJa = konklusjonJa(ytelse),
-            hvisNei = konklusjonUavklart(ytelse)
+            hvisJa = regelflytJa(ytelse, REGEL_EØS_BOSATT),
+            hvisNei = regelflytUavklart(ytelse, REGEL_EØS_BOSATT)
         )
 
         val harBrukerUtenEktefelleBarnSomErFolkeregistrertFlyt = lagRegelflyt(
@@ -75,19 +75,19 @@ class ReglerForEøsBorgere(
 
         val harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn100ProsentFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_3_1_1),
-            hvisJa = konklusjonJa(ytelse),
-            hvisNei = konklusjonUavklart(ytelse)
+            hvisJa = regelflytJa(ytelse, REGEL_EØS_BOSATT),
+            hvisNei = regelflytUavklart(ytelse, REGEL_EØS_BOSATT)
         )
 
         val harBrukersEktefelleJobbetMinst100ProsentSiste12MndFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_6_1),
-            hvisJa = konklusjonJa(ytelse),
-            hvisNei = konklusjonUavklart(ytelse)
+            hvisJa = regelflytJa(ytelse, REGEL_EØS_BOSATT),
+            hvisNei = regelflytUavklart(ytelse, REGEL_EØS_BOSATT)
         )
 
         val harBrukerJobbetMerEnn80ProsentFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_6),
-            hvisJa = konklusjonJa(ytelse),
+            hvisJa = regelflytJa(ytelse, REGEL_EØS_BOSATT),
             hvisNei = harBrukersEktefelleJobbetMinst100ProsentSiste12MndFlyt
         )
 
@@ -99,7 +99,7 @@ class ReglerForEøsBorgere(
 
         val erBrukersEktefelleOgBarnasMorSammePersonFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_5_1),
-            hvisJa = konklusjonUavklart(ytelse),
+            hvisJa = regelflytUavklart(ytelse, REGEL_EØS_BOSATT),
             hvisNei = harBrukerJobbetMerEnn100ProsentFlyt,
             hvisUavklart = harBrukerMedFolkeregistrertEktefelleStillingsprosent100EllerMerRegelFlyt
         )
@@ -114,7 +114,7 @@ class ReglerForEøsBorgere(
         val erBrukerMedFolkeregistrertEktefelleSittBarnFolkeregistrertFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_5),
             hvisJa = harBrukerJobbetMerEnn80ProsentFlyt,
-            hvisNei = konklusjonUavklart(ytelse),
+            hvisNei = regelflytUavklart(ytelse, REGEL_EØS_BOSATT),
             hvisUavklart = harBrukerMedBarnOgEktefelle80ProsentStillingEllerMerRegelFlyt
         )
 
