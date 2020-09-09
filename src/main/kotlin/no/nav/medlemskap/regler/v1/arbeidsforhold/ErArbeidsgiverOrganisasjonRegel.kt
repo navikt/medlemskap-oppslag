@@ -34,7 +34,7 @@ class ErArbeidsgiverOrganisasjonRegel(
         arbeidsforhold.forEach { enhetstypeCounter(it.arbeidsgiver.type ?: "N/A", ytelse.metricName()).increment() }
         val unikeOrgnumre = HashSet<String>()
         arbeidsforhold.forEach { unikeOrgnumre.addAll(it.arbeidsgiver.juridiskEnhetEnhetstypeMap?.keys ?: HashSet()) }
-        unikeOrgnumre.forEach { p -> arbeidsforhold.forEach { r -> enhetstypeForJuridiskEnhet(r.arbeidsgiver.juridiskEnhetEnhetstypeMap?.get(p), ytelse.metricName()) } }
+        unikeOrgnumre.forEach { p -> arbeidsforhold.forEach { r -> enhetstypeForJuridiskEnhet(r.arbeidsgiver.juridiskEnhetEnhetstypeMap?.get(p), ytelse.metricName()).increment() } }
     }
 
     companion object {
