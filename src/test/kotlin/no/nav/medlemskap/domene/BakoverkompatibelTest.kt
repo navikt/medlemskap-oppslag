@@ -475,7 +475,7 @@ private val forventetResponse =
           } ]
         } ]
       },
-      "resultat" : {
+     "resultat" : {
         "regelId" : "REGEL_MEDLEM_KONKLUSJON",
         "avklaring" : "Er bruker medlem?",
         "begrunnelse" : "Kan ikke konkludere med medlemskap",
@@ -483,31 +483,71 @@ private val forventetResponse =
         "harDekning" : null,
         "dekning" : "",
         "delresultat" : [ {
-          "regelId" : "REGEL_OPPLYSNINGER",
-          "avklaring" : "Finnes det registrerte opplysninger på bruker?",
-          "begrunnelse" : "",
-          "svar" : "JA",
+          "regelId" : "REGEL_MEDLEM_KONKLUSJON",
+          "avklaring" : "Er bruker medlem?",
+          "begrunnelse" : "Kan ikke konkludere med medlemskap",
+          "svar" : "UAVKLART",
           "harDekning" : null,
           "dekning" : "",
           "delresultat" : [ {
-            "regelId" : "REGEL_A",
-            "avklaring" : "Finnes det registrerte opplysninger i MEDL?",
+            "regelId" : "REGEL_OPPLYSNINGER",
+            "avklaring" : "Finnes det registrerte opplysninger på bruker?",
+            "begrunnelse" : "",
+            "svar" : "JA",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ {
+              "regelId" : "REGEL_A",
+              "avklaring" : "Finnes det registrerte opplysninger i MEDL?",
+              "begrunnelse" : "",
+              "svar" : "JA",
+              "harDekning" : null,
+              "dekning" : "",
+              "delresultat" : [ ]
+            }, {
+              "regelId" : "REGEL_C",
+              "avklaring" : "Finnes det dokumenter i JOARK på medlemskapsområdet?",
+              "begrunnelse" : "",
+              "svar" : "NEI",
+              "harDekning" : null,
+              "dekning" : "",
+              "delresultat" : [ ]
+            }, {
+              "regelId" : "REGEL_B",
+              "avklaring" : "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?",
+              "begrunnelse" : "",
+              "svar" : "NEI",
+              "harDekning" : null,
+              "dekning" : "",
+              "delresultat" : [ ]
+            } ]
+          }, {
+            "regelId" : "REGEL_1_1",
+            "avklaring" : "Er alle perioder siste 12 mnd avklart (endelig/gyldig)?",
             "begrunnelse" : "",
             "svar" : "JA",
             "harDekning" : null,
             "dekning" : "",
             "delresultat" : [ ]
           }, {
-            "regelId" : "REGEL_C",
-            "avklaring" : "Finnes det dokumenter i JOARK på medlemskapsområdet?",
+            "regelId" : "REGEL_1_2",
+            "avklaring" : "Er det periode både med og uten medlemskap innenfor 12 mnd?",
             "begrunnelse" : "",
             "svar" : "NEI",
             "harDekning" : null,
             "dekning" : "",
             "delresultat" : [ ]
           }, {
-            "regelId" : "REGEL_B",
-            "avklaring" : "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?",
+            "regelId" : "REGEL_1_3",
+            "avklaring" : "Er det en periode med medlemskap?",
+            "begrunnelse" : "",
+            "svar" : "JA",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
+          }, {
+            "regelId" : "REGEL_1_4",
+            "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
             "begrunnelse" : "",
             "svar" : "NEI",
             "harDekning" : null,
@@ -515,93 +555,101 @@ private val forventetResponse =
             "delresultat" : [ ]
           } ]
         }, {
-          "regelId" : "REGEL_1_1",
-          "avklaring" : "Er alle perioder siste 12 mnd avklart (endelig/gyldig)?",
-          "begrunnelse" : "",
-          "svar" : "JA",
+          "regelId" : "REGEL_ARBEIDSFORHOLD",
+          "avklaring" : "Er arbeidsforhold avklart?",
+          "begrunnelse" : "Regelflyt konkluderer med UAVKLART",
+          "svar" : "UAVKLART",
           "harDekning" : null,
           "dekning" : "",
-          "delresultat" : [ ]
-        }, {
-          "regelId" : "REGEL_1_2",
-          "avklaring" : "Er det periode både med og uten medlemskap innenfor 12 mnd?",
-          "begrunnelse" : "",
-          "svar" : "NEI",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
-        }, {
-          "regelId" : "REGEL_1_3",
-          "avklaring" : "Er det en periode med medlemskap?",
-          "begrunnelse" : "",
-          "svar" : "JA",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
-        }, {
-          "regelId" : "REGEL_1_4",
-          "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
-          "begrunnelse" : "",
-          "svar" : "NEI",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
-        }, {
-          "regelId" : "REGEL_3",
-          "avklaring" : "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?",
-          "begrunnelse" : "",
-          "svar" : "JA",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
-        }, {
-          "regelId" : "REGEL_4",
-          "avklaring" : "Er foretaket registrert i foretaksregisteret?",
-          "begrunnelse" : "",
-          "svar" : "JA",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
-        }, {
-          "regelId" : "REGEL_5",
-          "avklaring" : "Har arbeidsgiver sin hovedaktivitet i Norge?",
-          "begrunnelse" : "",
-          "svar" : "JA",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
-        }, {
-          "regelId" : "REGEL_6",
-          "avklaring" : "Er foretaket aktivt?",
-          "begrunnelse" : "Arbeidstaker har hatt arbeidsforhold til arbeidsgiver som har konkurs-status satt",
-          "svar" : "NEI",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
-        }, {
-            "regelId" : "REGEL_9",
-            "avklaring" : "Har bruker utført arbeid utenfor Norge?",
+          "delresultat" : [ {
+            "regelId" : "REGEL_3",
+            "avklaring" : "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?",
             "begrunnelse" : "",
-            "svar" : "NEI",
+            "svar" : "JA",
             "harDekning" : null,
             "dekning" : "",
             "delresultat" : [ ]
           }, {
-          "regelId" : "REGEL_2",
-          "avklaring" : "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?",
+            "regelId" : "REGEL_4",
+            "avklaring" : "Er foretaket registrert i foretaksregisteret?",
+            "begrunnelse" : "",
+            "svar" : "JA",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
+          }, {
+            "regelId" : "REGEL_5",
+            "avklaring" : "Har arbeidsgiver sin hovedaktivitet i Norge?",
+            "begrunnelse" : "",
+            "svar" : "JA",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
+          }, {
+            "regelId" : "REGEL_6",
+            "avklaring" : "Er foretaket aktivt?",
+            "begrunnelse" : "Arbeidstaker har hatt arbeidsforhold til arbeidsgiver som har konkurs-status satt",
+            "svar" : "NEI",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
+          } ]
+        }, {
+          "regelId" : "REGEL_9",
+          "avklaring" : "Har bruker utført arbeid utenfor Norge?",
           "begrunnelse" : "",
-          "svar" : "JA",
+          "svar" : "NEI",
           "harDekning" : null,
           "dekning" : "",
           "delresultat" : [ ]
         }, {
-          "regelId" : "REGEL_11",
-          "avklaring" : "Er bruker norsk statsborger?",
-          "begrunnelse" : "",
+          "regelId" : "REGEL_2",
+          "avklaring" : "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?",
+          "begrunnelse" : "Regelflyt konkluderer med JA",
           "svar" : "JA",
           "harDekning" : null,
           "dekning" : "",
-          "delresultat" : [ ]
+          "delresultat" : [ {
+            "regelId" : "REGEL_2",
+            "avklaring" : "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?",
+            "begrunnelse" : "",
+            "svar" : "JA",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
+          }, {
+            "regelId" : "REGEL_2",
+            "avklaring" : "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?",
+            "begrunnelse" : "Regelflyt konkluderer med JA",
+            "svar" : "JA",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
+          } ]
+        }, {
+          "regelId" : "REGEL_11",
+          "avklaring" : "Er bruker norsk statsborger?",
+          "begrunnelse" : "Regelflyt konkluderer med JA",
+          "svar" : "JA",
+          "harDekning" : null,
+          "dekning" : "",
+          "delresultat" : [ {
+            "regelId" : "REGEL_11",
+            "avklaring" : "Er bruker norsk statsborger?",
+            "begrunnelse" : "",
+            "svar" : "JA",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
+          }, {
+            "regelId" : "REGEL_11",
+            "avklaring" : "Er bruker norsk statsborger?",
+            "begrunnelse" : "Regelflyt konkluderer med JA",
+            "svar" : "JA",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
+          } ]
         }, {
           "regelId" : "REGEL_10",
           "avklaring" : "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
@@ -618,8 +666,7 @@ private val forventetResponse =
           "harDekning" : null,
           "dekning" : "",
           "delresultat" : [ ]
-        }                                      
-]
+        } ]
       }
     }
     """.trimIndent()
