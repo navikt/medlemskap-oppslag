@@ -144,7 +144,7 @@ fun statsborgerskapUavklartForRegel(statsborgerskap: String, ytelse: Ytelse, reg
     .register(Metrics.globalRegistry)
 
 fun FlereStatsborgerskapCounter(antallStatsborgerskap: String, ytelse: Ytelse): Counter = Counter
-    .builder("Statsborgerskap")
+    .builder("flere_statsborgerskap")
     .tags("statsborgerskap", antallStatsborgerskap, "ytelse", ytelse.metricName())
     .description("")
     .register(Metrics.globalRegistry)
