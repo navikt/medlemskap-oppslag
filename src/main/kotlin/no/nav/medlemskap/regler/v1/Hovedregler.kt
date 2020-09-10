@@ -15,7 +15,6 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
 
     fun kjørHovedregler(): Resultat {
         val ytelse = reglerForMedl.ytelse
-
         val resultater = mutableListOf<Resultat>()
 
         resultater.addAll(reglerForMedl.kjørRegelflyter())
@@ -57,19 +56,23 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
 
             val medlemskonklusjon = resultater.find { it.erMedlemskonklusjon() }
             if (medlemskonklusjon != null) {
-                return medlemskonklusjon.copy(delresultat = lagDelresultat(resultater))
+                return lagKonklusjon(medlemskonklusjon, resultater)
             }
 
             if (resultater.all { it.svar == Svar.JA }) {
-                return jaResultat(ytelse).copy(delresultat = lagDelresultat(resultater))
+                return lagKonklusjon(jaResultat(ytelse), resultater)
             }
 
             val førsteNei = resultater.find { it.svar == NEI }
             if (førsteNei != null) {
-                return neiResultat(ytelse).copy(delresultat = lagDelresultat(resultater))
+                return lagKonklusjon(neiResultat(ytelse), resultater)
             }
 
-            return uavklartResultat(ytelse).copy(delresultat = lagDelresultat(resultater))
+            return lagKonklusjon(uavklartResultat(ytelse), resultater)
+        }
+
+        private fun lagKonklusjon(konklusjon: Resultat, resultater: List<Resultat>): Resultat {
+            return konklusjon.copy(delresultat = lagDelresultat(resultater))
         }
 
         private fun lagDelresultat(resultater: List<Resultat>): List<Resultat> {
