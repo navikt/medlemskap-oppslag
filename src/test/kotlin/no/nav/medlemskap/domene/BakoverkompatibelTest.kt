@@ -475,7 +475,7 @@ private val forventetResponse =
           } ]
         } ]
       },
-     "resultat" : {
+      "resultat" : {
         "regelId" : "REGEL_MEDLEM_KONKLUSJON",
         "avklaring" : "Er bruker medlem?",
         "begrunnelse" : "Kan ikke konkludere med medlemskap",
@@ -605,51 +605,19 @@ private val forventetResponse =
         }, {
           "regelId" : "REGEL_2",
           "avklaring" : "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?",
-          "begrunnelse" : "Regelflyt konkluderer med JA",
+          "begrunnelse" : "",
           "svar" : "JA",
           "harDekning" : null,
           "dekning" : "",
-          "delresultat" : [ {
-            "regelId" : "REGEL_2",
-            "avklaring" : "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?",
-            "begrunnelse" : "",
-            "svar" : "JA",
-            "harDekning" : null,
-            "dekning" : "",
-            "delresultat" : [ ]
-          }, {
-            "regelId" : "REGEL_2",
-            "avklaring" : "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?",
-            "begrunnelse" : "Regelflyt konkluderer med JA",
-            "svar" : "JA",
-            "harDekning" : null,
-            "dekning" : "",
-            "delresultat" : [ ]
-          } ]
+          "delresultat" : [ ]
         }, {
           "regelId" : "REGEL_11",
           "avklaring" : "Er bruker norsk statsborger?",
-          "begrunnelse" : "Regelflyt konkluderer med JA",
+          "begrunnelse" : "",
           "svar" : "JA",
           "harDekning" : null,
           "dekning" : "",
-          "delresultat" : [ {
-            "regelId" : "REGEL_11",
-            "avklaring" : "Er bruker norsk statsborger?",
-            "begrunnelse" : "",
-            "svar" : "JA",
-            "harDekning" : null,
-            "dekning" : "",
-            "delresultat" : [ ]
-          }, {
-            "regelId" : "REGEL_11",
-            "avklaring" : "Er bruker norsk statsborger?",
-            "begrunnelse" : "Regelflyt konkluderer med JA",
-            "svar" : "JA",
-            "harDekning" : null,
-            "dekning" : "",
-            "delresultat" : [ ]
-          } ]
+          "delresultat" : [ ]
         }, {
           "regelId" : "REGEL_10",
           "avklaring" : "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",

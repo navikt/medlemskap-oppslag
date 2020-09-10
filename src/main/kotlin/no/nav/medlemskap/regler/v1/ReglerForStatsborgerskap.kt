@@ -16,14 +16,14 @@ class ReglerForStatsborgerskap(
     override fun hentRegelflyter(): List<Regelflyt> {
         val harBrukerNorskStatsborgerskapFlyt = lagRegelflyt(
             regel = hentRegel(RegelId.REGEL_11),
-            hvisJa = regelflytJa(ytelse, RegelId.REGEL_11),
-            hvisNei = regelflytJa(ytelse, RegelId.REGEL_11)
+            hvisJa = regelflytJa(ytelse),
+            hvisNei = regelflytJa(ytelse)
         )
 
         val erBrukerEØSborgerFlyt = lagRegelflyt(
             regel = hentRegel(RegelId.REGEL_2),
-            hvisJa = regelflytJa(ytelse, RegelId.REGEL_2),
-            hvisNei = regelflytNei(ytelse, RegelId.REGEL_2)
+            hvisJa = regelflytJa(ytelse),
+            hvisNei = regelflytNei(ytelse)
         )
 
         return listOf(erBrukerEØSborgerFlyt, harBrukerNorskStatsborgerskapFlyt)
