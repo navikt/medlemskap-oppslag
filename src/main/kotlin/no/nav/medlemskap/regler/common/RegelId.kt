@@ -48,6 +48,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val erRegel
     REGEL_FLYT_KONKLUSJON("RFK", "Svar på regelflyt", true),
     REGEL_ARBEIDSFORHOLD("REGEL_ARBEIDSFORHOLD", "Er arbeidsforhold avklart?", true),
     REGEL_EØS_BOSATT("REGEL_EØS_BOSATT", "Er EØS-borger bosatt i Norge?", true),
+    REGEL_NORSK("REGEL_NORSK_BORGER", "Er regler for norsk borgere avklart?", true)
     ;
 
     companion object {

@@ -24,6 +24,10 @@ class ReglerForNorskeStatsborgere(
         return erBrukerBosattINorgeFlyt
     }
 
+    override fun kjørRegelflyter(): List<Resultat> {
+        return listOf(kjørUavhengigeRegelflyterMedEttResultat(RegelId.REGEL_NORSK))
+    }
+
     override fun hentRegelflyter(): List<Regelflyt> {
         val harBrukerJobbet25ProsentEllerMerFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_12),
