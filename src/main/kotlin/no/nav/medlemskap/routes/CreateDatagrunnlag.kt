@@ -5,7 +5,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.Services
-import no.nav.medlemskap.common.FlereStatsborgerskapCounter
+import no.nav.medlemskap.common.flereStatsborgerskapCounter
 import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
@@ -55,7 +55,7 @@ suspend fun defaultCreateDatagrunnlag(
     ytelseCounter(ytelse.metricName()).increment()
 
     if (personHistorikkFraPdl?.statsborgerskap?.size!! > 1)
-        FlereStatsborgerskapCounter(personHistorikkFraPdl.statsborgerskap.size.toString(), ytelse).increment()
+        flereStatsborgerskapCounter(personHistorikkFraPdl.statsborgerskap.size.toString(), ytelse).increment()
 
     Datagrunnlag(
         periode = periode,
