@@ -4,6 +4,7 @@ import io.cucumber.datatable.DataTable
 import no.nav.medlemskap.cucumber.Domenebegrep.*
 import no.nav.medlemskap.cucumber.DomenespråkParser.Companion.VANLIG_NORSK_ARBEIDSGIVER
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.regler.common.Datohjelper
@@ -195,6 +196,8 @@ class DomenespråkParser {
         return Familierelasjonsrolle.valueOf(verdi)
     }
 
+
+
     companion object {
         val ANSATTE_9 = listOf(Ansatte(9, null, null))
         val STATSBORGERSKAP_NOR = listOf(Statsborgerskap("NOR", LocalDate.MIN, null))
@@ -365,15 +368,6 @@ class PersonstatusMapper : RadMapper<FolkeregisterPersonstatus> {
 
 class PersonhistorikkEktefelleMapper : RadMapper<PersonhistorikkEktefelle> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): PersonhistorikkEktefelle{
-        return PersonhistorikkEktefelle(
-           ident = domenespråkParser.parseString(IDENT, rad),
-           barn = mutableListOf<PersonhistorikkBarn>()
-        )
-    }
-}
-
-class PersonhistorikkRelatertePersonerMapper : RadMapper<PersonhistorikkRelatertPerson> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): PersonhistorikkRelatertPerson {
         val fraOgMedDato = domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad)
         val tilOgMedDato = domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
 
@@ -383,26 +377,62 @@ class PersonhistorikkRelatertePersonerMapper : RadMapper<PersonhistorikkRelatert
             bostedsadresser.add(Adresse(bostedsadresse, fraOgMedDato, tilOgMedDato))
         }
 
-        val postadresser = mutableListOf<Adresse>()
-        val postadresse = domenespråkParser.parseValgfriString(POSTADRESSE, rad)
-        if (postadresse != null) {
-            postadresser.add(Adresse(postadresse, fraOgMedDato, tilOgMedDato))
+        val kontaktadresser = mutableListOf<Adresse>()
+        val kontaktadresse= domenespråkParser.parseValgfriString(KONTAKTADRESSE, rad)
+        if (kontaktadresse != null) {
+            kontaktadresser.add(Adresse(kontaktadresse, fraOgMedDato, tilOgMedDato))
         }
 
-        val midlertidigAdresser = mutableListOf<Adresse>()
-        val midlertidigAdresse = domenespråkParser.parseValgfriString(MIDLERTIDIG_ADRESSE, rad)
-        if (midlertidigAdresse != null) {
-            midlertidigAdresser.add(Adresse(midlertidigAdresse, fraOgMedDato, tilOgMedDato))
+        val oppholdsadresser = mutableListOf<Adresse>()
+        val oppholdsadresse = domenespråkParser.parseValgfriString(OPPHOLDSADRESSE, rad)
+        if (oppholdsadresse != null) {
+            oppholdsadresser.add(Adresse(oppholdsadresse, fraOgMedDato, tilOgMedDato))
         }
 
-        return PersonhistorikkRelatertPerson(
-                ident = domenespråkParser.parseString(IDENT, rad),
-                personstatuser = emptyList(),
-                bostedsadresser = bostedsadresser,
-                postadresser = postadresser,
-                midlertidigAdresser = midlertidigAdresser
+        return PersonhistorikkEktefelle(
+           ident = domenespråkParser.parseString(IDENT, rad),
+           barn = mutableListOf<String>(),
+           bostedsadresser = bostedsadresser,
+           kontaktadresser = kontaktadresser,
+           oppholdsadresser = oppholdsadresser
+
         )
     }
+}
+
+class PersonhistorikkBarnMapper : RadMapper<DataOmBarn>{
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): DataOmBarn{
+        val fraOgMedDato = domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad)
+        val tilOgMedDato = domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
+
+        val bostedsadresser = mutableListOf<Adresse>()
+        val bostedsadresse = domenespråkParser.parseValgfriString(BOSTED, rad)
+        if (bostedsadresse != null) {
+            bostedsadresser.add(Adresse(bostedsadresse, fraOgMedDato, tilOgMedDato))
+        }
+
+        val kontaktadresser = mutableListOf<Adresse>()
+        val kontaktadresse= domenespråkParser.parseValgfriString(KONTAKTADRESSE, rad)
+        if (kontaktadresse != null) {
+            kontaktadresser.add(Adresse(kontaktadresse, fraOgMedDato, tilOgMedDato))
+        }
+
+        val oppholdsadresser = mutableListOf<Adresse>()
+        val oppholdsadresse = domenespråkParser.parseValgfriString(OPPHOLDSADRESSE, rad)
+        if (oppholdsadresse != null) {
+            oppholdsadresser.add(Adresse(oppholdsadresse, fraOgMedDato, tilOgMedDato))
+        }
+
+        return DataOmBarn(PersonhistorikkBarn(
+                ident = domenespråkParser.parseString(IDENT, rad),
+                familierelasjoner = mutableListOf<Familierelasjon>(),
+                bostedsadresser = bostedsadresser,
+                kontaktadresser = kontaktadresser,
+                oppholdsadresser = oppholdsadresser
+
+        ))
+    }
+
 }
 
 class SivilstandMapper : RadMapper<Sivilstand> {
@@ -429,11 +459,9 @@ class FamilieRelasjonMapper : RadMapper<Familierelasjon> {
 }
 
 
-class BarnTilEktefelleMapper: RadMapper<PersonhistorikkBarn> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): PersonhistorikkBarn {
-        return PersonhistorikkBarn(
-                ident = domenespråkParser.parseString(IDENT, rad)
-        )
+class BarnTilEktefelleMapper: RadMapper<String> {
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): String {
+        return String()
     }
 }
 
@@ -457,14 +485,14 @@ enum class Domenebegrep(val nøkkel: String) {
     JOURNALPOST_ID("JournalpostId"),
     JOURNALPOST_TYPE("JournalpostType"),
     KONKURSSTATUS("Konkursstatus"),
+    KONTAKTADRESSE("Kontaktadresse"),
     LANDKODE("Landkode"),
     LOVVALG("Lovvalg"),
     LOVVALGSLAND("Lovvalgsland"),
-    MIDLERTIDIG_ADRESSE("Midlertidig adresse"),
     MIN_ROLLE_FOR_PERSON("Min rolle for person"),
+    OPPHOLDSADRESSE("Oppholdsadresse"),
     PERIODESTATUS("Periodestatus"),
     PERSONSTATUS("Personstatus"),
-    POSTADRESSE("Postadresse"),
     PRIORITET("Prioritet"),
     RELATERT_PERSONS_IDENT("Relatert persons ident"),
     RELATERT_PERSONS_ROLLE("Relatert persons rolle"),

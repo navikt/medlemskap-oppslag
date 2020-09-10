@@ -4,6 +4,7 @@ import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
 import no.nav.medlemskap.cucumber.*
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.regler.assertDelresultat
 import no.nav.medlemskap.regler.common.Resultat
@@ -19,14 +20,18 @@ class RegelSteps : No {
     private val STATSBORGERSKAP_NOR = listOf(Statsborgerskap("NOR", LocalDate.MIN, null))
     private val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", identifikator = "1", ansatte = ANSATTE_9, konkursStatus = null)
 
-    private val personhistorikkBuilder = PersonhistorikkBuilder()
     private val pdlPersonhistorikkBuilder = PersonhistorikkBuilder()
     private val personHistorikkRelatertePersoner = mutableListOf<PersonhistorikkRelatertPerson>()
+
     private var personhistorikkEktefelleBuilder = PersonhistorikkEktefelleBuilder()
     private var dataOmEktefelleBuilder = DataOmEktefelleBuilder()
 
+    private val personhistorikkBarn = PersonhistorikkBarnBuilder()
+    private val dataOmBarnBuilder = mutableListOf<DataOmBarnBuilder>()
     private var medlemskap: List<Medlemskap> = emptyList()
     private var personhistorikkBarnTilEktefelle : List<PersonhistorikkBarn> = emptyList()
+
+    private var dataOmBarn: List<DataOmBarn> = emptyList()
 
     private var arbeidsforhold: List<Arbeidsforhold> = emptyList()
     private var arbeidsavtaleMap = hashMapOf<Int, List<Arbeidsavtale>>()
@@ -46,53 +51,55 @@ class RegelSteps : No {
     init {
         Gitt("følgende statsborgerskap i personhistorikken") { dataTable: DataTable? ->
             val statsborgerskap = domenespråkParser.mapDataTable(dataTable, StatsborgerskapMapper())
-            personhistorikkBuilder.statsborgerskap.addAll(statsborgerskap)
+            pdlPersonhistorikkBuilder.statsborgerskap.addAll(statsborgerskap)
         }
 
         Gitt("følgende bostedsadresser i personhistorikken") { dataTable: DataTable? ->
             val bostedsadresser = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
-            personhistorikkBuilder.bostedsadresser.addAll(bostedsadresser)
+            pdlPersonhistorikkBuilder.bostedsadresser.addAll(bostedsadresser)
         }
 
-        Gitt("følgende postadresser i personhistorikken") { dataTable: DataTable? ->
-            val postadresser = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
-            personhistorikkBuilder.postadresser.addAll(postadresser)
+        Gitt("følgende kontaktadresser i personhistorikken") { dataTable: DataTable? ->
+            val kontaktadresser = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
+            pdlPersonhistorikkBuilder.kontaktadresse.addAll(kontaktadresser)
         }
 
-        Gitt("følgende midlertidige adresser i personhistorikken") { dataTable: DataTable? ->
-            val midlertidigAdresser = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
-            personhistorikkBuilder.midlertidigAdresser.addAll(midlertidigAdresser)
+        Gitt("følgende oppholdsadresser i personhistorikken") { dataTable: DataTable? ->
+            val oppholdsadresse = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
+            pdlPersonhistorikkBuilder.oppholdsadresse.addAll(oppholdsadresse)
         }
 
         Gitt("følgende personstatuser i personhistorikken") { dataTable: DataTable? ->
             val personstatuser = domenespråkParser.mapDataTable(dataTable, PersonstatusMapper())
-            personhistorikkBuilder.personstatuser.addAll(personstatuser)
+            pdlPersonhistorikkBuilder.personstatuser.addAll(personstatuser)
         }
 
-        Gitt<DataTable>("følgende sivilstand i personhistorikk fra TPS\\/PDL") { dataTable: DataTable? ->
+        Gitt<DataTable>("følgende sivilstand i personhistorikk fra PDL") { dataTable: DataTable? ->
             val sivilstand = domenespråkParser.mapDataTable(dataTable, SivilstandMapper())
             pdlPersonhistorikkBuilder.sivilstand.addAll(sivilstand)
         }
 
-        Gitt<DataTable>("følgende familerelasjoner i personhistorikk fra TPS\\/PDL") { dataTable: DataTable? ->
+        Gitt<DataTable>("følgende familerelasjoner i personhistorikk fra PDL") { dataTable: DataTable? ->
             val familierelasjoner = domenespråkParser.mapDataTable(dataTable, FamilieRelasjonMapper())
             pdlPersonhistorikkBuilder.familierelasjoner.addAll(familierelasjoner)
         }
 
-        Gitt<DataTable>("følgende personhistorikk for relaterte personer fra TPS") { dataTable: DataTable? ->
-            val relatertePersoner = domenespråkParser.mapDataTable(dataTable, PersonhistorikkRelatertePersonerMapper())
-            personHistorikkRelatertePersoner.addAll(relatertePersoner)
-        }
 
         Gitt<DataTable>("følgende personhistorikk for ektefelle fra PDL") { dataTable: DataTable? ->
-            val relaterteEktefeller = domenespråkParser.mapDataTable(dataTable, PersonhistorikkEktefelleMapper())
-            dataOmEktefelleBuilder.personhistorikkEktefelle = relaterteEktefeller.get(0)
+            val ektefelle = domenespråkParser.mapDataTable(dataTable, PersonhistorikkEktefelleMapper())
+            dataOmEktefelleBuilder.personhistorikkEktefelle = ektefelle[0]
         }
 
         Gitt<DataTable>("følgende barn i personhistorikk for ektefelle fra PDL") { dataTable: DataTable? ->
-            var barnTilEktefelle= domenespråkParser.mapDataTable(dataTable, BarnTilEktefelleMapper())
+            val barnTilEktefelle= domenespråkParser.mapDataTable(dataTable, BarnTilEktefelleMapper())
             personhistorikkEktefelleBuilder.barn.addAll(barnTilEktefelle)
         }
+
+        Gitt<DataTable>("følgende personhistorikk for barn fra PDL") { dataTable: DataTable? ->
+            val barnTilBruker = domenespråkParser.mapDataTable(dataTable, PersonhistorikkBarnMapper())
+            dataOmBarn = barnTilBruker
+        }
+
 
         Gitt("følgende medlemsunntak fra MEDL") { dataTable: DataTable? ->
             medlemskap = domenespråkParser.mapDataTable(dataTable, MedlemskapMapper())
@@ -213,14 +220,13 @@ class RegelSteps : No {
         return Datagrunnlag(
                 periode = sykemeldingsperiode,
                 brukerinput = Brukerinput(harHattArbeidUtenforNorge),
-                personhistorikk = personhistorikkBuilder.build(),
                 pdlpersonhistorikk = pdlPersonhistorikkBuilder.build(),
                 medlemskap = medlemskap,
                 arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgiverMap, arbeidsavtaleMap, utenlandsoppholdMap),
                 oppgaver = oppgaverFraGosys,
                 dokument = journalPosterFraJoArk,
                 ytelse = ytelse,
-                personHistorikkRelatertePersoner = personHistorikkRelatertePersoner,
+                dataOmBarn = dataOmBarn,
                 dataOmEktefelle = dataOmEktefelleBuilder.build()
         )
     }

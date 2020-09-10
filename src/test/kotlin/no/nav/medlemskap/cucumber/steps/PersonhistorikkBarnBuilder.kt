@@ -1,25 +1,26 @@
 package no.nav.medlemskap.cucumber.steps
 
 import no.nav.medlemskap.domene.Adresse
+import no.nav.medlemskap.domene.Familierelasjon
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 
-class PersonhistorikkEktefelleBuilder {
+class PersonhistorikkBarnBuilder {
 
     var ident = String()
-    var barn = mutableListOf<String>()
     val bostedsadresse = mutableListOf<Adresse>()
     val kontaktadresse = mutableListOf<Adresse>()
     val oppholdsadresse = mutableListOf<Adresse>()
+    val familierelasjon = mutableListOf<Familierelasjon>()
 
 
-    fun build(): PersonhistorikkEktefelle {
-        return PersonhistorikkEktefelle(
+    fun build(): PersonhistorikkBarn{
+        return PersonhistorikkBarn(
                 ident = ident,
-                barn = barn,
                 bostedsadresser = bostedsadresse,
                 kontaktadresser = kontaktadresse,
-                oppholdsadresser = oppholdsadresse
+                oppholdsadresser = oppholdsadresse,
+                familierelasjoner = familierelasjon
         )
     }
 }

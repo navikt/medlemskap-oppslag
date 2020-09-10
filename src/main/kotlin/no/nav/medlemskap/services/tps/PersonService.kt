@@ -1,3 +1,4 @@
+/*
 package no.nav.medlemskap.services.tps
 
 import mu.KotlinLogging
@@ -6,6 +7,7 @@ import no.nav.medlemskap.clients.tpsws.PersonClient
 import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
 import no.nav.medlemskap.common.exceptions.Sikkerhetsbegrensing
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.services.pdl.PdlService
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentPersonhistorikkPersonIkkeFunnet
 import no.nav.tjeneste.virksomhet.person.v3.binding.HentPersonhistorikkSikkerhetsbegrensning
@@ -28,6 +30,10 @@ class PersonService(private val personClient: PersonClient, private val pdlServi
                     else -> throw err
                 }
             }
+
+    suspend fun hentPersonhistorikkForBarn(personHistorikkFraPdl: Personhistorikk, periode: InputPeriode): List<PersonhistorikkBarn> {
+        return hentPersonhistorikkBarn(personHistorikkFraPdl.familierelasjoner, periode)
+    }
 
     suspend fun hentPersonhistorikkForRelevantFamilie(personHistorikkFraPdl: Personhistorikk, periode: InputPeriode): List<PersonhistorikkRelatertPerson> {
         val personHistorikkForBarn = hentPersonhistorikkBarn(personHistorikkFraPdl.familierelasjoner, periode)
@@ -83,3 +89,4 @@ class PersonService(private val personClient: PersonClient, private val pdlServi
     }
 }
 
+*/

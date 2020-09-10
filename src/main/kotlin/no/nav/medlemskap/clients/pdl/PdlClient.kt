@@ -68,24 +68,6 @@ class PdlClient(
 
     }
 
-    suspend fun hentNasjonalitet(fnr: String, callId: String): GraphQLResponse<HentNasjonalitet.Result>  {
-        return runWithRetryAndMetrics("PDL", "HentNasjonalitet", retry) {
-            val stsToken = stsClient.oidcToken()
-            val hentNasjonalitetQuery = HentNasjonalitet(GraphQLClient(url = URL("$baseUrl")))
-            val variables = HentNasjonalitet.Variables(fnr, false)
-
-            val response: GraphQLResponse<HentNasjonalitet.Result> = hentNasjonalitetQuery.execute(variables) {
-                header(HttpHeaders.Authorization, "Bearer $stsToken")
-                header(HttpHeaders.ContentType, ContentType.Application.Json)
-                header(HttpHeaders.Accept, ContentType.Application.Json)
-                header("Nav-Call-Id", callId)
-                header("Nav-Consumer-Token", "Bearer $stsToken")
-                header("Nav-Consumer-Id", username)
-            }
-            response
-            }
-        }
-
     suspend fun hentFoedselsaar(fnr: String, callId: String): GraphQLResponse<HentFoedselsaar.Result>   {
         return runWithRetryAndMetrics("PDL", "HentFoedselsaar", retry) {
             val stsToken = stsClient.oidcToken()

@@ -12,8 +12,8 @@ query($ident: ID!, $bostedHistorikk: Boolean!){
             opphoerstidspunkt
           }
     },
-    statsborgerskap {
-        land,
+    statsborgerskap(historikk: $statsborgerskapHistorikk) {
+    	land,
         gyldigFraOgMed,
         gyldigTilOgMed
     },
@@ -94,7 +94,6 @@ query($ident: ID!, $bostedHistorikk: Boolean!){
       }
     }
     oppholdsadresse(historikk: true) {
-      oppholdsadressedato
       coAdressenavn
       gyldigFraOgMed
       utenlandskAdresse {

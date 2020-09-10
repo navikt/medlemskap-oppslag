@@ -16,18 +16,19 @@ class HarBrukerEktefelleRegel(
         ytelse: Ytelse,
         private val periode: InputPeriode,
         private val dataOmEktefelle: DataOmEktefelle?,
-        private val personhistorikkRelatertPerson: List<PersonhistorikkRelatertPerson>,
         regelId: RegelId = RegelId.REGEL_11_2
 ) : LovvalgRegel(regelId, ytelse, periode) {
 
     override fun operasjon(): Resultat {
-        val ektefelle = dataOmEktefelle?.personhistorikkEktefelle?.ident
-        val ektefelleITps = personhistorikkRelatertPerson.hentRelatertSomFinnesITPS(ektefelle)
+        val ektefelle = dataOmEktefelle?.personhistorikkEktefelle
 
-        return when {
-            ektefelleITps.erIkkeTom() -> ja()
-            else -> nei("Bruker har ikke ektefelle i tps")
+        if (ektefelle != null) {
+            return when {
+                !ektefelle.ident.isNullOrEmpty()  -> ja()
+                else -> nei("Bruker har ikke ektefelle i tps")
+            }
         }
+        return nei("Bruker har ikke ektefelle i tps")
     }
 
     companion object {
@@ -36,8 +37,7 @@ class HarBrukerEktefelleRegel(
             return HarBrukerEktefelleRegel(
                     ytelse = datagrunnlag.ytelse,
                     periode = datagrunnlag.periode,
-                    dataOmEktefelle = datagrunnlag.dataOmEktefelle,
-                    personhistorikkRelatertPerson = datagrunnlag.personHistorikkRelatertePersoner
+                    dataOmEktefelle = datagrunnlag.dataOmEktefelle
             )
         }
     }

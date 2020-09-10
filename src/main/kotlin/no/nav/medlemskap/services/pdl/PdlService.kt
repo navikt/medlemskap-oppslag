@@ -9,6 +9,7 @@ import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Personhistorikk
 import no.nav.medlemskap.domene.Statsborgerskap
+import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 
 class PdlService(private val pdlClient: PdlClient, private val clusterName: String = "dev-fss") {
@@ -77,15 +78,15 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
         } else throw PersonIkkeFunnet("PDL")
     }
 
+    suspend fun hentPersonHistorikkTilBarn(fnrTilEktefelle: String, callId: String): PersonhistorikkBarn {
+        val hentPerson = pdlClient.hentPerson(fnrTilEktefelle, callId)
+        if (hentPerson.data?.hentPerson != null) {
+            return PdlMapper.mapPersonhistorikkTilBarn(fnrTilEktefelle, hentPerson.data?.hentPerson!!)
+        } else throw PersonIkkeFunnet("PDL")
+    }
+
     suspend fun hentFoedselsaar(fnr: String, callId: String): Int {
         return PdlMapper.mapTilFoedselsaar(pdlClient.hentFoedselsaar(fnr, callId).data?.hentPerson?.foedsel)
     }
 
-  suspend fun hentStatsborgerskap(fnr: String, callId: String): List<Statsborgerskap>? {
-        val statsborgerskap = pdlClient.hentNasjonalitet(fnr, callId).data?.hentPerson?.statsborgerskap?.ifEmpty {
-            logger.warn("PDL fant ikke person")
-            emptyList()
-        }
-        return statsborgerskap?.map { PdlMapper.mapStatsborgerskap(it) }
-    }
 }

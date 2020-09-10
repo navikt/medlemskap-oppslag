@@ -12,14 +12,13 @@ import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.cioHttpClient
-import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
 
+@Disabled
 class PdlClientStatsborgerskapDataTest {
 
+    //Todo brukes denne?
     companion object {
         val server: WireMockServer = WireMockServer(WireMockConfiguration.options().dynamicPort())
 
@@ -58,7 +57,7 @@ class PdlClientStatsborgerskapDataTest {
 
         val pdlClient = PdlClient(server.baseUrl(), stsClient, username, cioHttpClient)
 
-        val pdlResponse = runBlocking { pdlClient.hentNasjonalitet("1234567890", callId) }
+        val pdlResponse = runBlocking { pdlClient.hentPerson("1234567890", callId) }
 
         assertEquals("NOR", pdlResponse.data?.hentPerson?.statsborgerskap?.last()?.land)
     }

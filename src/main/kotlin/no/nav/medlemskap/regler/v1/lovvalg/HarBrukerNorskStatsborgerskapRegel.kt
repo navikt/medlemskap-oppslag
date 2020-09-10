@@ -30,7 +30,7 @@ class HarBrukerNorskStatsborgerskapRegel(
             return HarBrukerNorskStatsborgerskapRegel(
                     ytelse = datagrunnlag.ytelse,
                     periode = datagrunnlag.periode,
-                    statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap
+                    statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap
             )
         }
     }
