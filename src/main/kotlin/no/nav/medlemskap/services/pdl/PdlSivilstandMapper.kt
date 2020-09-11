@@ -2,8 +2,7 @@ package no.nav.medlemskap.services.pdl
 
 import no.nav.medlemskap.client.generated.pdl.HentPerson
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
-import no.nav.medlemskap.services.pdl.PdlMapper.mapFolkeregisterMetadata
-import no.nav.medlemskap.services.pdl.PdlMapper.mapFolkeregisterMetadata2
+import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapFolkeregisterMetadata2
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 

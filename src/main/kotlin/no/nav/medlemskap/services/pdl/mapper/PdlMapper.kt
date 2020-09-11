@@ -1,7 +1,6 @@
-package no.nav.medlemskap.services.pdl
+package no.nav.medlemskap.services.pdl.mapper
 
 import no.nav.medlemskap.client.generated.pdl.HentFoedselsaar
-import no.nav.medlemskap.client.generated.pdl.HentNasjonalitet
 import no.nav.medlemskap.client.generated.pdl.HentPerson
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
@@ -18,14 +17,13 @@ import java.time.format.DateTimeFormatter
 
 
 object PdlMapper {
-    fun mapTilPersonHistorikk(person: HentPerson.Person): Personhistorikk {
+
+    fun mapTilPersonHistorikkTilBruker(person: HentPerson.Person): Personhistorikk {
 
         val statsborgerskap: List<Statsborgerskap> = person.statsborgerskap.map { mapStatsborgerskap(it) }
-
         val bostedsadresser: List<Adresse> = person.bostedsadresse.map { mapBostedsadresse(it) }
         val kontaktadresser: List<Adresse> = person.kontaktadresse.map { mapKontaktAdresse(it) }
         val oppholdsadresser: List<Adresse> = mapOppholdsAdresse(person.oppholdsadresse)
-
         val sivilstand: List<Sivilstand> = mapSivilstander(person.sivilstand)
         val familierelasjoner: List<Familierelasjon> = person.familierelasjoner.map { mapFamilierelasjon(it) }
         val personstatuser: List<FolkeregisterPersonstatus> = emptyList()
@@ -40,13 +38,12 @@ object PdlMapper {
     }
 
     fun mapOppholdsAdresse(oppholdsadresser: List<HentPerson.Oppholdsadresse>): List<Adresse>{
-
         val pdlOppholdsadresser: List<HentPerson.Oppholdsadresse> = oppholdsadresser.sortedBy { it.gyldigFraOgMed }
-        return pdlOppholdsadresser.map{ mapOppholdsadresser(it)}
+        return pdlOppholdsadresser.map{ mapOppholdsadresser(it) }
     }
 
 
-    private fun mapFamilierelasjon(familierelasjon: HentPerson.Familierelasjon): Familierelasjon {
+    fun mapFamilierelasjon(familierelasjon: HentPerson.Familierelasjon): Familierelasjon {
         return Familierelasjon(
                 relatertPersonsIdent = familierelasjon.relatertPersonsIdent,
                 relatertPersonsRolle = mapFamileRelasjonsrolle(familierelasjon.relatertPersonsRolle)!!,
@@ -55,8 +52,7 @@ object PdlMapper {
         )
     }
 
-    private fun mapOppholdsadresser(oppholdsadresse: HentPerson.Oppholdsadresse): Adresse{
-
+    fun mapOppholdsadresser(oppholdsadresse: HentPerson.Oppholdsadresse): Adresse{
         return Adresse(
                 fom = convertToLocalDate(oppholdsadresse.gyldigFraOgMed),
                 tom = convertToLocalDate(oppholdsadresse.folkeregistermetadata?.opphoerstidspunkt),
@@ -64,16 +60,14 @@ object PdlMapper {
         )
     }
 
-
-    private fun mapLandkodeForOppholdsadresse(oppholdsadresse: HentPerson.Oppholdsadresse): String {
+    fun mapLandkodeForOppholdsadresse(oppholdsadresse: HentPerson.Oppholdsadresse): String {
         if(oppholdsadresse.utenlandskAdresse != null){
             return LanguageAlpha3Code.getByCode(oppholdsadresse.utenlandskAdresse.landkode.toLowerCase()).name.toUpperCase()
         }
         return LanguageAlpha3Code.nor.name
-
     }
 
-    private fun mapKontaktAdresse(it: HentPerson.Kontaktadresse): Adresse {
+    fun mapKontaktAdresse(it: HentPerson.Kontaktadresse): Adresse {
         return Adresse(
                 fom = convertToLocalDate(it.gyldigFraOgMed),
                 tom = convertToLocalDate(it.gyldigTilOgMed),
@@ -81,7 +75,7 @@ object PdlMapper {
         )
     }
 
-    private fun mapLandkodeForKontaktadresse(kontaktadresse: HentPerson.Kontaktadresse): String {
+    fun mapLandkodeForKontaktadresse(kontaktadresse: HentPerson.Kontaktadresse): String {
         if (kontaktadresse.utenlandskAdresse  != null){
             return LanguageAlpha3Code.getByCode(kontaktadresse.utenlandskAdresse.landkode.toLowerCase()).name.toUpperCase()
         }
@@ -91,7 +85,7 @@ object PdlMapper {
         return LanguageAlpha3Code.nor.name.toUpperCase()
     }
 
-    private fun mapBostedsadresse(bostedsadresse: HentPerson.Bostedsadresse): Adresse {
+    fun mapBostedsadresse(bostedsadresse: HentPerson.Bostedsadresse): Adresse {
         return Adresse(
                 landkode = "NOR",
                 fom = convertToLocalDate(bostedsadresse.folkeregistermetadata?.gyldighetstidspunkt),
@@ -99,49 +93,7 @@ object PdlMapper {
         )
     }
 
-    fun mapPersonhistorikkTilEktefelle(fnr: String, person: HentPerson.Person): PersonhistorikkEktefelle {
-        val barn = person.familierelasjoner
-                .filter { it.relatertPersonsRolle == HentPerson.Familierelasjonsrolle.BARN}
-                .filter { FodselsnummerValidator.isValid(it.relatertPersonsIdent) }
-                .filter { it.relatertPersonsIdent.filtrerBarnUnder25Aar() }
-                .map { it.relatertPersonsIdent }
-
-        val oppholdsadresse = mapOppholdsAdresse(person.oppholdsadresse)
-        val bostedsadresser: List<Adresse> = person.bostedsadresse.map { mapBostedsadresse(it) }
-        val kontaktadresser: List<Adresse> = person.kontaktadresse.map { mapKontaktAdresse(it) }
-
-        return PersonhistorikkEktefelle(
-                ident = fnr,
-                barn =  barn,
-                oppholdsadresser = oppholdsadresse,
-                bostedsadresser = bostedsadresser,
-                kontaktadresser = kontaktadresser)
-    }
-
-    fun mapPersonhistorikkTilBarn(fnr: String, person: HentPerson.Person): PersonhistorikkBarn{
-        val oppholdsadresse = mapOppholdsAdresse(person.oppholdsadresse)
-        val bostedsadresser: List<Adresse> = person.bostedsadresse.map { mapBostedsadresse(it) }
-        val kontaktadresser: List<Adresse> = person.kontaktadresse.map { mapKontaktAdresse(it) }
-        val familierelasjoner: List<Familierelasjon> = person.familierelasjoner.map { mapFamilierelasjon(it) }
-
-        return PersonhistorikkBarn(
-                ident = fnr,
-                familierelasjoner = familierelasjoner,
-                oppholdsadresser = oppholdsadresse,
-                bostedsadresser = bostedsadresser,
-                kontaktadresser = kontaktadresser
-        )
-    }
-
     fun mapStatsborgerskap(it: HentPerson.Statsborgerskap): Statsborgerskap {
-        return Statsborgerskap(
-                landkode = it.land,
-                fom = convertToLocalDate(it.gyldigFraOgMed),
-                tom = convertToLocalDate(it.gyldigTilOgMed)
-        )
-    }
-
-    fun mapStatsborgerskap(it: HentNasjonalitet.Statsborgerskap): Statsborgerskap {
         return Statsborgerskap(
                 landkode = it.land,
                 fom = convertToLocalDate(it.gyldigFraOgMed),
@@ -161,8 +113,7 @@ object PdlMapper {
         }
     }
 
-    fun mapFolkeregisterMetadata2(folkeregistermetadata: HentPerson.Folkeregistermetadata2?): Folkeregistermetadata?
-    {
+    fun mapFolkeregisterMetadata2(folkeregistermetadata: HentPerson.Folkeregistermetadata2?): Folkeregistermetadata? {
         return folkeregistermetadata?.let {
             Folkeregistermetadata(
                     ajourholdstidspunkt = convertToLocalDateTime(it.ajourholdstidspunkt),
@@ -172,8 +123,7 @@ object PdlMapper {
         }
     }
 
-    fun mapFolkeregisterMetadata(folkeregistermetadata: HentPerson.Folkeregistermetadata?): Folkeregistermetadata?
-    {
+    fun mapFolkeregisterMetadata(folkeregistermetadata: HentPerson.Folkeregistermetadata?): Folkeregistermetadata? {
         return folkeregistermetadata?.let {
             Folkeregistermetadata(
                     ajourholdstidspunkt = convertToLocalDateTime(it.ajourholdstidspunkt),
@@ -184,11 +134,11 @@ object PdlMapper {
     }
 
     private fun convertToLocalDateTime(dateTimeToConvert: String?): LocalDateTime? {
-        return LocalDateTime.parse(dateTimeToConvert, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        return LocalDateTime.parse(dateTimeToConvert, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
     }
 
     fun convertToLocalDate(dateToConvert: String?): LocalDate? {
-        return LocalDate.parse(dateToConvert, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        return LocalDate.parse(dateToConvert, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
     }
 
     //Vi velger det høyeste årstallet, da blir personen yngst og det er mest sannsynlig at vi må vurdere bosted
