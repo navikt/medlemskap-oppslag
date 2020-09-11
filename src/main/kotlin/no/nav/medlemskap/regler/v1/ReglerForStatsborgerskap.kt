@@ -17,16 +17,16 @@ class ReglerForStatsborgerskap(
         val harBrukerNorskStatsborgerskapFlyt = lagRegelflyt(
             regel = hentRegel(RegelId.REGEL_11),
             hvisJa = regelflytJa(ytelse),
-            hvisNei = regelflytNei(ytelse)
+            hvisNei = regelflytJa(ytelse)
         )
 
         val erBrukerEØSborgerFlyt = lagRegelflyt(
             regel = hentRegel(RegelId.REGEL_2),
-            hvisJa = harBrukerNorskStatsborgerskapFlyt,
+            hvisJa = regelflytJa(ytelse),
             hvisNei = regelflytNei(ytelse)
         )
 
-        return listOf(erBrukerEØSborgerFlyt)
+        return listOf(erBrukerEØSborgerFlyt, harBrukerNorskStatsborgerskapFlyt)
     }
 
     companion object {

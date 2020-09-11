@@ -96,20 +96,20 @@ fun neiKonklusjon(ytelse: Ytelse) = Regel(
     operasjon = { nei("Bruker er ikke medlem") }
 )
 
-fun regelflytUavklartKonklusjon(ytelse: Ytelse) = Regel(
-    regelId = RegelId.REGEL_FLYT_KONKLUSJON,
+fun regelflytUavklartKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(
+    regelId = regelId,
     ytelse = ytelse,
     operasjon = { uavklart("Regelflyt konkluderer med UAVKLART") }
 )
 
-fun regelflytJaKonklusjon(ytelse: Ytelse) = Regel(
-    regelId = RegelId.REGEL_FLYT_KONKLUSJON,
+fun regelflytJaKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(
+    regelId = regelId,
     ytelse = ytelse,
     operasjon = { ja("Regelflyt konkluderer med JA") }
 )
 
-fun regelflytNeiKonklusjon(ytelse: Ytelse) = Regel(
-    regelId = RegelId.REGEL_FLYT_KONKLUSJON,
+fun regelflytNeiKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(
+    regelId = regelId,
     ytelse = ytelse,
     operasjon = { nei("Regelflyt konkluderer med NEI") }
 )
@@ -126,16 +126,16 @@ fun konklusjonUavklart(ytelse: Ytelse): Regelflyt {
     return Regelflyt(uavklartKonklusjon(ytelse), ytelse)
 }
 
-fun regelflytJa(ytelse: Ytelse): Regelflyt {
-    return Regelflyt(regelflytJaKonklusjon(ytelse), ytelse)
+fun regelflytJa(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
+    return Regelflyt(regelflytJaKonklusjon(ytelse, regelId), ytelse)
 }
 
-fun regelflytNei(ytelse: Ytelse): Regelflyt {
-    return Regelflyt(regelflytNeiKonklusjon(ytelse), ytelse)
+fun regelflytNei(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
+    return Regelflyt(regelflytNeiKonklusjon(ytelse, regelId), ytelse)
 }
 
-fun regelflytUavklart(ytelse: Ytelse): Regelflyt {
-    return Regelflyt(regelflytUavklartKonklusjon(ytelse), ytelse)
+fun regelflytUavklart(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
+    return Regelflyt(regelflytUavklartKonklusjon(ytelse, regelId), ytelse)
 }
 
 fun List<Resultat>.utenKonklusjon(): List<Resultat> {
