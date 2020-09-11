@@ -6,13 +6,7 @@ import java.util.*
 
 object RelasjonFunksjoner {
 
-    fun hentFnrTilBarn(familierelasjoner: List<Familierelasjon>): List<String> {
-        return familierelasjoner
-                .filter { FodselsnummerValidator.isValid(it.relatertPersonsIdent) }
-                .filter { it.erBarn() }
-                .filter { it.relatertPersonsIdent.filtrerBarnUnder25Aar()}
-                .map { it.relatertPersonsIdent }
-    }
+
 
     fun String.filtrerBarnUnder25Aar() =
             (Calendar.getInstance().get(Calendar.YEAR) - this.hentBursdagsAar().toInt()) <= 25
@@ -47,6 +41,14 @@ object RelasjonFunksjoner {
                         ?.map { it.relatertVedSivilstand }
                         ?.lastOrNull()
         return fnrTilEktefelle
+    }
+
+    fun hentFnrTilBarn(familierelasjoner: List<Familierelasjon>): List<String> {
+        return familierelasjoner
+                .filter { FodselsnummerValidator.isValid(it.relatertPersonsIdent) }
+                .filter { it.erBarn() }
+                .filter { it.relatertPersonsIdent.filtrerBarnUnder25Aar()}
+                .map { it.relatertPersonsIdent }
     }
 
     fun Familierelasjon.erBarn() = this.relatertPersonsRolle == Familierelasjonsrolle.BARN

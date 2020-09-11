@@ -39,10 +39,10 @@ suspend fun defaultCreateDatagrunnlag(
     val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktorIder, callId) }
 
     val fnrTilBarn = hentFnrTilBarn(personHistorikkFraPdl.familierelasjoner)
-    dataOmBrukersBarn = if (fnr.isNotEmpty()) hentDataOmBarn(fnrTilBarn, services, callId) else null
+    dataOmBrukersBarn = if (!fnrTilBarn.isNullOrEmpty()) hentDataOmBarn(fnrTilBarn, services, callId) else null
 
     val fnrTilEktefelle = hentFnrTilEktefelle(personHistorikkFraPdl)
-    dataOmEktefelle = if (fnrTilEktefelle.isNullOrEmpty()) hentDataOmEktefelle(fnrTilEktefelle, services, callId, periode) else null
+    dataOmEktefelle = if (!fnrTilEktefelle.isNullOrEmpty()) hentDataOmEktefelle(fnrTilEktefelle, services, callId, periode) else null
 
     val medlemskap = medlemskapsunntakRequest.await()
     val arbeidsforhold = arbeidsforholdRequest.await()

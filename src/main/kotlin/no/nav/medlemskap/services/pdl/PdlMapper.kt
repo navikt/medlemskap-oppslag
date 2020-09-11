@@ -21,14 +21,14 @@ object PdlMapper {
     fun mapTilPersonHistorikk(person: HentPerson.Person): Personhistorikk {
 
         val statsborgerskap: List<Statsborgerskap> = person.statsborgerskap.map { mapStatsborgerskap(it) }
-        val sivilstand: List<Sivilstand> = mapSivilstander(person.sivilstand)
+
         val bostedsadresser: List<Adresse> = person.bostedsadresse.map { mapBostedsadresse(it) }
         val kontaktadresser: List<Adresse> = person.kontaktadresse.map { mapKontaktAdresse(it) }
-
         val oppholdsadresser: List<Adresse> = mapOppholdsAdresse(person.oppholdsadresse)
+
+        val sivilstand: List<Sivilstand> = mapSivilstander(person.sivilstand)
         val familierelasjoner: List<Familierelasjon> = person.familierelasjoner.map { mapFamilierelasjon(it) }
         val personstatuser: List<FolkeregisterPersonstatus> = emptyList()
-
 
         return Personhistorikk(statsborgerskap = statsborgerskap,
                 personstatuser = personstatuser,
