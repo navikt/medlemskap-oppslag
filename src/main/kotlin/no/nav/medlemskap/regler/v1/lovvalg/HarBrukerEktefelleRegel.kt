@@ -2,15 +2,12 @@ package no.nav.medlemskap.regler.v1.lovvalg
 
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
-import no.nav.medlemskap.domene.PersonhistorikkRelatertPerson
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
-import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.ja
 import no.nav.medlemskap.regler.common.nei
-import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentRelatertSomFinnesITPS
 
 class HarBrukerEktefelleRegel(
         ytelse: Ytelse,
@@ -24,11 +21,11 @@ class HarBrukerEktefelleRegel(
 
         if (ektefelle != null) {
             return when {
-                !ektefelle.ident.isNullOrEmpty()  -> ja()
-                else -> nei("Bruker har ikke ektefelle i tps")
+                !ektefelle.ident.isEmpty()  -> ja()
+                else -> nei("Bruker har ikke ektefelle i PDL")
             }
         }
-        return nei("Bruker har ikke ektefelle i tps")
+        return nei("Bruker har ikke ektefelle i PDL")
     }
 
     companion object {

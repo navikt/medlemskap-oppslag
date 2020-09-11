@@ -166,6 +166,8 @@ object ArbeidsforholdFunksjoner {
                         kontrollPeriode.tilPeriode())
             }
 
+    fun fraOgMedDatoForArbeidsforhold(periode: InputPeriode) = periode.fom.minusYears(1).minusDays(1)
+
     private fun periodefilter(periodeDatagrunnlag: Interval, periode: Periode): Boolean {
         return periodeDatagrunnlag.overlaps(lagInterval(periode)) || periodeDatagrunnlag.encloses(lagInterval(periode))
     }

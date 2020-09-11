@@ -5,8 +5,6 @@ import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserForKontrollPeriode
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresserForKontrollPeriode
-import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentBarnSomFinnesITPS
-import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarnUnder25
 
 class HarBrukerBarnSomErFolkeregistrertRegel(
         ytelse: Ytelse,

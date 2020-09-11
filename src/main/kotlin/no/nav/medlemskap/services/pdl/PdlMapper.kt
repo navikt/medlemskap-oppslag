@@ -43,23 +43,10 @@ object PdlMapper {
                 oppholdsadresser = oppholdsadresser)
     }
 
-    private fun mapOppholdsAdresse(oppholdsadresser: List<HentPerson.Oppholdsadresse>): List<Adresse>{
+    fun mapOppholdsAdresse(oppholdsadresser: List<HentPerson.Oppholdsadresse>): List<Adresse>{
 
         val pdlOppholdsadresser: List<HentPerson.Oppholdsadresse> = oppholdsadresser.sortedBy { it.gyldigFraOgMed }
-        return pdlOppholdsadresser.mapIndexed { index, oppholdsadresse ->
-
-            val opphoerstidspunkt = convertToLocalDate(oppholdsadresse.folkeregistermetadata?.opphoerstidspunkt)
-
-            if (pdlOppholdsadresser.size < 2) {
-                mapOppholdsadresser(oppholdsadresse, opphoerstidspunkt)
-            }
-            if ((pdlOppholdsadresser.size) - 1 == index) {
-                mapOppholdsadresser(oppholdsadresse, opphoerstidspunkt)
-            } else {
-                val tom = convertToLocalDate(pdlOppholdsadresser.get(index + 1).gyldigFraOgMed)?.minusDays(1)
-                mapOppholdsadresser(oppholdsadresse, tom)
-            }
-        }
+        return pdlOppholdsadresser.map{ mapOppholdsadresser(it)}
     }
 
 
@@ -72,7 +59,7 @@ object PdlMapper {
         )
     }
 
-    private fun mapOppholdsadresser(oppholdsadresse: HentPerson.Oppholdsadresse, tom: LocalDate?): Adresse{
+    private fun mapOppholdsadresser(oppholdsadresse: HentPerson.Oppholdsadresse): Adresse{
 
         return Adresse(
                 fom = convertToLocalDate(oppholdsadresse.gyldigFraOgMed),
