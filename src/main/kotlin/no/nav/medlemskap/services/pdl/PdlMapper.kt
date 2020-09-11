@@ -26,11 +26,7 @@ object PdlMapper {
         val kontaktadresser: List<Adresse> = person.kontaktadresse.map { mapKontaktAdresse(it) }
 
         val oppholdsadresser: List<Adresse> = mapOppholdsAdresse(person.oppholdsadresse)
-
-        val familierelasjoner: List<Familierelasjon> = person.familierelasjoner
-                .filter { it.relatertPersonsRolle == HentPerson.Familierelasjonsrolle.BARN }
-                .map { mapFamilierelasjon(it) }
-
+        val familierelasjoner: List<Familierelasjon> = person.familierelasjoner.map { mapFamilierelasjon(it) }
         val personstatuser: List<FolkeregisterPersonstatus> = emptyList()
 
 
@@ -105,7 +101,7 @@ object PdlMapper {
 
     fun mapPersonhistorikkTilEktefelle(fnr: String, person: HentPerson.Person): PersonhistorikkEktefelle {
         val barn = person.familierelasjoner
-                .filter { it.minRolleForPerson ==  HentPerson.Familierelasjonsrolle.BARN}
+                .filter { it.relatertPersonsRolle == HentPerson.Familierelasjonsrolle.BARN}
                 .filter { FodselsnummerValidator.isValid(it.relatertPersonsIdent) }
                 .filter { it.relatertPersonsIdent.filtrerBarnUnder25Aar() }
                 .map { it.relatertPersonsIdent }
