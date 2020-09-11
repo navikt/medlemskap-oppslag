@@ -44,7 +44,8 @@ fun configureSensuInfluxMeterRegistry(): SensuInfluxMeterRegistry {
                 it.name.startsWith("stillingsprosent") ||
                 it.name.startsWith("dekningstyper") ||
                 it.name.contains("arbeidsforhold") ||
-                it.name.startsWith("statsborgerskap")
+                it.name.startsWith("statsborgerskap") ||
+                it.name.startsWith("enhetstype_juridisk_enhet")
         }
     )
     influxMeterRegistry.config().commonTags(defaultInfluxTags())
@@ -163,7 +164,7 @@ fun enhetstypeCounter(enhetstype: String, ytelse: String): Counter = Counter
 
 fun enhetstypeForJuridiskEnhet(enhetstype: String?, ytelse: String): Counter = Counter
     .builder("enhetstype_juridisk_enhet")
-    .tags("enhetstype", enhetstype ?: "N/A", "ytelse", ytelse)
+    .tags("juridiskEnhetstype", enhetstype ?: "N/A", "ytelse", ytelse)
     .description("Ulike enhetstyper for juridiske enheter")
     .register(Metrics.globalRegistry)
 
