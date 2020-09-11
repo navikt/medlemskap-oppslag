@@ -4,7 +4,6 @@ import no.nav.medlemskap.client.generated.pdl.HentPerson
 import no.nav.medlemskap.domene.Adresse
 import no.nav.medlemskap.domene.Familierelasjon
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
-import no.nav.medlemskap.services.pdl.PdlService
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapKontaktAdresse
 
 object PdlMapperBarn {

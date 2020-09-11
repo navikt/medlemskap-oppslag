@@ -5,12 +5,8 @@ import no.nav.medlemskap.client.generated.pdl.HentPerson
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
-import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
 import com.neovisionaries.i18n.LanguageAlpha3Code
-import no.bekk.bekkopen.person.FodselsnummerValidator
-import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.filtrerBarnUnder25Aar
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
