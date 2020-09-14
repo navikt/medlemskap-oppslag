@@ -1,11 +1,9 @@
 package no.nav.medlemskap.common
 
-import io.ktor.server.engine.ApplicationEngine
 import io.restassured.RestAssured
 import io.restassured.config.ObjectMapperConfig.objectMapperConfig
 import io.restassured.config.RestAssuredConfig
 import io.restassured.response.ResponseBodyExtractionOptions
-import io.restassured.specification.RequestSpecification
 import no.nav.medlemskap.ApplicationState
 import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
@@ -14,10 +12,6 @@ import no.nav.medlemskap.createHttpServer
 import org.junit.jupiter.api.BeforeAll
 
 open class ServerTest {
-
-    protected fun RequestSpecification.When(): RequestSpecification {
-        return this.`when`()
-    }
 
     protected inline fun <reified T> ResponseBodyExtractionOptions.to(): T {
         return this.`as`(T::class.java)
@@ -33,9 +27,7 @@ open class ServerTest {
         private val services = Services(configuration)
         private val openIdConfiguration = AzureAdOpenIdConfiguration("http://localhost", "", "", "")
 
-        private var applicationState = ApplicationState(false, false)
-
-        private lateinit var server: ApplicationEngine
+        private var applicationState = ApplicationState(running = false, initialized = false)
 
         @BeforeAll
         @JvmStatic
