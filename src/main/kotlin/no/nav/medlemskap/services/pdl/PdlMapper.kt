@@ -1,6 +1,6 @@
 package no.nav.medlemskap.services.pdl
 
-import com.neovisionaries.i18n.LanguageAlpha3Code
+import com.neovisionaries.i18n.CountryCode
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.pdl.generated.HentFoedselsaar
 import no.nav.medlemskap.clients.pdl.generated.HentNasjonalitet
@@ -87,7 +87,7 @@ object PdlMapper {
         if (oppholdsadresse.utenlandskAdresse != null) {
             return mapLandkode(oppholdsadresse.utenlandskAdresse!!.landkode)
         }
-        return LanguageAlpha3Code.nor.name
+        return CountryCode.NO.alpha3
     }
 
     private fun mapKontaktAdresse(it: HentPerson.Kontaktadresse): Adresse {
@@ -105,12 +105,12 @@ object PdlMapper {
         if (kontaktadresse.utenlandskAdresseIFrittFormat != null) {
             return mapLandkode(kontaktadresse.utenlandskAdresseIFrittFormat!!.landkode)
         }
-        return LanguageAlpha3Code.nor.name.toUpperCase()
+        return CountryCode.NO.alpha3
     }
 
     private fun mapLandkode(landkode: String): String {
         return try {
-            LanguageAlpha3Code.getByCode(landkode.toLowerCase()).name.toUpperCase()
+            CountryCode.getByCode(landkode.toUpperCase()).alpha3
         } catch (e: Exception) {
             logger.warn("Klarte ikke å mappe {}", landkode, e)
             "UKJENT"
