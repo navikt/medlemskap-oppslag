@@ -8,19 +8,18 @@ import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.erMedlemskapsperioderO
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.harGyldigeMedlemskapsperioder
 
 abstract class MedlemskapRegel(
-        regelId: RegelId,
-        ytelse: Ytelse,
-        periode: InputPeriode,
-        private val medlemskap: List<Medlemskap>
+    regelId: RegelId,
+    ytelse: Ytelse,
+    periode: InputPeriode,
+    private val medlemskap: List<Medlemskap>
 ) : BasisRegel(regelId, ytelse) {
     val kontrollPeriodeForMedl = Datohjelper(periode, ytelse).kontrollPeriodeForMedl()
 
     protected fun erMedlemskapPeriodeOver12MndPeriode(finnPeriodeMedMedlemskap: Boolean): Resultat {
         return when {
             medlemskap.erMedlemskapsperioderOver12Mnd(finnPeriodeMedMedlemskap, kontrollPeriodeForMedl)
-                    && medlemskap harGyldigeMedlemskapsperioder kontrollPeriodeForMedl -> ja()
+                && medlemskap harGyldigeMedlemskapsperioder kontrollPeriodeForMedl -> ja()
             else -> nei()
         }
     }
-
 }

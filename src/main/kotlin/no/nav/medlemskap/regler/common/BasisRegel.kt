@@ -9,5 +9,5 @@ abstract class BasisRegel(val regelId: RegelId, val ytelse: Ytelse) {
         return regel.utfør()
     }
 
-    abstract fun operasjon() : Resultat
+    abstract fun operasjon(): Resultat
 }

@@ -33,7 +33,10 @@
       "arbeidsgiver": {
         "type": "BEDR",
         "identifikator": "1",
-        "antallAnsatte": "9"
+        "antallAnsatte": "9",
+        "juridiskEnhetEnhetstypeMap" : {
+          "juridiskOrgnummer" : "juridiskEnhetstype"
+        }
       },
       "arbeidsfolholdstype": "NORMALT",
       "arbeidsavtaler": [

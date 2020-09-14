@@ -21,9 +21,11 @@ interface HealthCheck {
     suspend fun check(): Result
 }
 
-class TryCatchHealthCheck(override val name: String,
-                          private val block: suspend () -> Unit,
-                          private val retry: Retry? = null) : HealthCheck {
+class TryCatchHealthCheck(
+    override val name: String,
+    private val block: suspend () -> Unit,
+    private val retry: Retry? = null
+) : HealthCheck {
     override suspend fun check(): Result {
         return try {
             if (retry != null) {
@@ -42,9 +44,11 @@ class TryCatchHealthCheck(override val name: String,
     }
 }
 
-class HttpResponseHealthCheck(override val name: String,
-                              private val block: suspend () -> HttpResponse,
-                              private val retry: Retry? = null) : HealthCheck {
+class HttpResponseHealthCheck(
+    override val name: String,
+    private val block: suspend () -> HttpResponse,
+    private val retry: Retry? = null
+) : HealthCheck {
     override suspend fun check(): Result {
         return try {
             val httpResponse = if (retry != null) {

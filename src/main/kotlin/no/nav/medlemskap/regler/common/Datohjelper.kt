@@ -10,14 +10,13 @@ import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-
 class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
 
     fun kontrollPeriodeForPersonhistorikk(): Kontrollperiode {
         return when (ytelse) {
             Ytelse.SYKEPENGER -> Kontrollperiode(
-                    fom = førsteSykedag().minusMonths(12),
-                    tom = førsteSykedag()
+                fom = førsteSykedag().minusMonths(12),
+                tom = førsteSykedag()
             )
             Ytelse.DAGPENGER -> defaultDagpengePeriode()
             Ytelse.ENSLIG_FORSORGER -> defaultEnsligForsørgerPeriode()
@@ -29,8 +28,8 @@ class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
     fun kontrollPeriodeForMedl(): Kontrollperiode {
         return when (ytelse) {
             Ytelse.SYKEPENGER -> Kontrollperiode(
-                    fom = førsteSykedag().minusMonths(12),
-                    tom = førsteSykedag()
+                fom = førsteSykedag().minusMonths(12),
+                tom = førsteSykedag()
             )
             Ytelse.DAGPENGER -> defaultDagpengePeriode()
             Ytelse.ENSLIG_FORSORGER -> defaultEnsligForsørgerPeriode()
@@ -60,8 +59,8 @@ class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
     fun kontrollPeriodeForArbeidsforhold(): Kontrollperiode {
         return when (ytelse) {
             Ytelse.SYKEPENGER -> Kontrollperiode(
-                    fom = førsteSykedag().minusMonths(12),
-                    tom = førsteSykedag()
+                fom = førsteSykedag().minusMonths(12),
+                tom = førsteSykedag()
             )
             Ytelse.DAGPENGER -> defaultDagpengePeriode()
             Ytelse.ENSLIG_FORSORGER -> defaultEnsligForsørgerPeriode()

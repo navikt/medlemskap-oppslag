@@ -3,11 +3,11 @@ package no.nav.medlemskap.regler.common
 import no.nav.medlemskap.domene.Ytelse
 
 class Regelflyt(
-        val regel: Regel,
-        val ytelse: Ytelse,
-        val hvisJa: Regelflyt? = null,
-        val hvisNei: Regelflyt? = null,
-        val hvisUavklart: Regelflyt? = null
+    val regel: Regel,
+    val ytelse: Ytelse,
+    val hvisJa: Regelflyt? = null,
+    val hvisNei: Regelflyt? = null,
+    val hvisUavklart: Regelflyt? = null
 ) {
 
     fun utfør(resultatliste: MutableList<Resultat>, harDekning: Svar? = null, dekning: String = ""): Resultat {

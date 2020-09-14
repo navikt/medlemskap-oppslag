@@ -15,7 +15,6 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
 
     fun kjørHovedregler(): Resultat {
         val ytelse = reglerForMedl.ytelse
-
         val resultater = mutableListOf<Resultat>()
 
         resultater.addAll(reglerForMedl.kjørRegelflyter())
@@ -23,24 +22,26 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
 
         val resultatStatsborgerskap = reglerForStatsborgerskap.kjørRegelflyter()
         resultater.addAll(resultatStatsborgerskap)
-        resultater.addAll(bestemReglerForStatsborgerskap(resultatStatsborgerskap)
-                .kjørRegelflyter())
+        resultater.addAll(
+            bestemReglerForStatsborgerskap(resultatStatsborgerskap)
+                .kjørRegelflyter()
+        )
 
         return utledResultat(ytelse, resultater)
     }
 
     private fun bestemReglerForStatsborgerskap(resultatStatsborgerskap: List<Resultat>): Regler {
         val resultatEøsStatsborgerskap = resultatStatsborgerskap
-                .flatMap { it.delresultat }
-                .first { it.regelId == RegelId.REGEL_2 }
+            .flatMap { it.delresultat }
+            .first { it.regelId == RegelId.REGEL_2 }
         val erEøsBorger = resultatEøsStatsborgerskap.svar == Svar.JA
         if (!erEøsBorger) {
             return reglerForAndreStatsborgere
         }
 
         val resultatNorskStatsborgerskap = resultatStatsborgerskap
-                .flatMap { it.delresultat }
-                .first { it.regelId == RegelId.REGEL_11 }
+            .flatMap { it.delresultat }
+            .first { it.regelId == RegelId.REGEL_11 }
         val erNorskstatsborger = resultatNorskStatsborgerskap.svar == Svar.JA
 
         return if (erNorskstatsborger) {
@@ -52,17 +53,30 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
 
     companion object {
         private fun utledResultat(ytelse: Ytelse, resultater: List<Resultat>): Resultat {
+
             val medlemskonklusjon = resultater.find { it.erMedlemskonklusjon() }
             if (medlemskonklusjon != null) {
-                return medlemskonklusjon.copy(delresultat = resultater.flatMap { it.delresultat }.utenKonklusjon())
+                return lagKonklusjon(medlemskonklusjon, resultater)
+            }
+
+            if (resultater.all { it.svar == Svar.JA }) {
+                return lagKonklusjon(jaResultat(ytelse), resultater)
             }
 
             val førsteNei = resultater.find { it.svar == NEI }
             if (førsteNei != null) {
-                return neiResultat(ytelse).copy(delresultat = resultater.flatMap { it.delresultat }.utenKonklusjon())
+                return lagKonklusjon(neiResultat(ytelse), resultater)
             }
 
-            return uavklartResultat(ytelse).copy(delresultat = resultater.flatMap { it.delresultat }.utenKonklusjon())
+            return lagKonklusjon(uavklartResultat(ytelse), resultater)
+        }
+
+        private fun lagKonklusjon(konklusjon: Resultat, resultater: List<Resultat>): Resultat {
+            return konklusjon.copy(delresultat = lagDelresultat(resultater))
+        }
+
+        private fun lagDelresultat(resultater: List<Resultat>): List<Resultat> {
+            return resultater.map { if (it.regelId == RegelId.REGEL_FLYT_KONKLUSJON) it.delresultat.first() else it }
         }
 
         private fun uavklartResultat(ytelse: Ytelse): Resultat {
@@ -73,5 +87,8 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
             return neiKonklusjon(ytelse).utfør()
         }
 
+        private fun jaResultat(ytelse: Ytelse): Resultat {
+            return jaKonklusjon(ytelse).utfør()
+        }
     }
 }

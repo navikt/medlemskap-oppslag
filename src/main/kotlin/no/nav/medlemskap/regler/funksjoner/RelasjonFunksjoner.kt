@@ -9,7 +9,7 @@ object RelasjonFunksjoner {
 
 
     fun String.filtrerBarnUnder25Aar() =
-            (Calendar.getInstance().get(Calendar.YEAR) - this.hentBursdagsAar().toInt()) <= 25
+        (Calendar.getInstance().get(Calendar.YEAR) - this.hentBursdagsAar().toInt()) <= 25
 
     fun String.hentBursdagsAar(): String {
         return this.hentAarHundre() + this.hent2DigitBursdagsAar()

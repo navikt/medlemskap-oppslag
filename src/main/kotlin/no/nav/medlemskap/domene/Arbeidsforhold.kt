@@ -3,12 +3,12 @@ package no.nav.medlemskap.domene
 import java.time.YearMonth
 
 data class Arbeidsforhold(
-        val periode: Periode,
-        val utenlandsopphold: List<Utenlandsopphold>?,
-        val arbeidsgivertype: OpplysningspliktigArbeidsgiverType,
-        val arbeidsgiver: Arbeidsgiver,
-        val arbeidsfolholdstype: Arbeidsforholdstype,
-        var arbeidsavtaler: List<Arbeidsavtale>
+    val periode: Periode,
+    val utenlandsopphold: List<Utenlandsopphold>?,
+    val arbeidsgivertype: OpplysningspliktigArbeidsgiverType,
+    val arbeidsgiver: Arbeidsgiver,
+    val arbeidsfolholdstype: Arbeidsforholdstype,
+    var arbeidsavtaler: List<Arbeidsavtale>
 ) : Comparable<Arbeidsforhold> {
 
     /**
@@ -18,7 +18,7 @@ data class Arbeidsforhold(
     override fun compareTo(other: Arbeidsforhold): Int {
 
         if (this.periode.tom == null && other.periode.tom == null) {
-            return this.periode.fom?.compareTo(other.periode.fom)!! //En gyldig periode har alltid minst én dato
+            return this.periode.fom?.compareTo(other.periode.fom)!! // En gyldig periode har alltid minst én dato
         }
 
         if (this.periode.tom == null) return 1
@@ -26,27 +26,27 @@ data class Arbeidsforhold(
 
         return this.periode.tom.compareTo(other.periode.tom)
     }
-
 }
 
 data class Arbeidsavtale(
-        val periode: Periode,
-        val yrkeskode: String,
-        val skipsregister: Skipsregister?,
-        val stillingsprosent: Double?
+    val periode: Periode,
+    val yrkeskode: String,
+    val skipsregister: Skipsregister?,
+    val stillingsprosent: Double?
 )
 
 data class Arbeidsgiver(
-        val type: String?,
-        val identifikator: String?,
-        val ansatte: List<Ansatte>?,
-        val konkursStatus: List<String?>?
+    val type: String?,
+    val identifikator: String?,
+    val ansatte: List<Ansatte>?,
+    val konkursStatus: List<String?>?,
+    val juridiskEnhetEnhetstypeMap: Map<String, String?>?
 )
 
 data class Utenlandsopphold(
-        val landkode: String,
-        val periode: Periode?,
-        val rapporteringsperiode: YearMonth
+    val landkode: String,
+    val periode: Periode?,
+    val rapporteringsperiode: YearMonth
 )
 
 enum class Arbeidsforholdstype(val navn: String) {
@@ -65,7 +65,7 @@ enum class Skipsregister(val beskrivelse: String) {
 }
 
 enum class YrkeskoderForLuftFart(val styrk: String) {
-    //5111-rangen:
+    // 5111-rangen:
     DAGLIG_LEDER_VERTER_VERTINNER_PÅ_FLY("5111013"),
     FLY_OG_TOGVERT("5111100"),
     FLYVERT("5111103"),
@@ -84,7 +84,7 @@ enum class YrkeskoderForLuftFart(val styrk: String) {
     HOSTESS_LUFTFARTØY("5111122"),
     FLYVERTLÆRLING("5111124"),
 
-    //3143-rangen:
+    // 3143-rangen:
     FLYGER_OVERORDNET("3143100"),
     LEDER_FLYGERE("3143001"),
     DAGLIG_LEDER_FLYGERE("3143013"),
@@ -98,8 +98,4 @@ enum class YrkeskoderForLuftFart(val styrk: String) {
     FLYKAPTEIN("3143108"),
     FLYSTYRMANN("3143109"),
     TRAFIKKFLYGER("3143110")
-
 }
-
-
-

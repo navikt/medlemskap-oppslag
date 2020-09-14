@@ -18,13 +18,13 @@ data class Datagrunnlag(
 )
 
 data class Periode(
-        val fom: LocalDate?,
-        val tom: LocalDate?
+    val fom: LocalDate?,
+    val tom: LocalDate?
 )
 
 data class Kontrollperiode(
-        val fom: LocalDate,
-        val tom: LocalDate
+    val fom: LocalDate,
+    val tom: LocalDate
 ) {
     fun tilPeriode(): Periode {
         return Periode(fom, tom)
@@ -32,8 +32,8 @@ data class Kontrollperiode(
 }
 
 data class Bruksperiode(
-        val fom: LocalDate?,
-        val tom: LocalDate?
+    val fom: LocalDate?,
+    val tom: LocalDate?
 ) {
     fun tilPeriode(): Periode {
         return Periode(fom, tom)
@@ -41,13 +41,10 @@ data class Bruksperiode(
 }
 
 data class Gyldighetsperiode(
-        val fom: LocalDate?,
-        val tom: LocalDate?
+    val fom: LocalDate?,
+    val tom: LocalDate?
 ) {
     fun tilPeriode(): Periode {
         return Periode(fom, tom)
     }
 }
-
-
-

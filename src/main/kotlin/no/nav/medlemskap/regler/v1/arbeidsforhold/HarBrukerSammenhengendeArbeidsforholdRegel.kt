@@ -9,11 +9,11 @@ import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.erSammenheng
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.registrerStatsborgerskapGrafana
 
 class HarBrukerSammenhengendeArbeidsforholdRegel(
-        ytelse: Ytelse,
-        private val periode: InputPeriode,
-        private val arbeidsforhold: List<Arbeidsforhold>,
-        private val statsborgerskap: List<Statsborgerskap>,
-        regelId: RegelId = RegelId.REGEL_3
+    ytelse: Ytelse,
+    private val periode: InputPeriode,
+    private val arbeidsforhold: List<Arbeidsforhold>,
+    private val statsborgerskap: List<Statsborgerskap>,
+    regelId: RegelId = RegelId.REGEL_3
 ) : ArbeidsforholdRegel(regelId, ytelse, periode) {
 
     override fun operasjon(): Resultat {

@@ -13,15 +13,15 @@ data class Personhistorikk(
 )
 
 data class Statsborgerskap(
-        val landkode: String,
-        val fom: LocalDate?,
-        val tom: LocalDate?
+    val landkode: String,
+    val fom: LocalDate?,
+    val tom: LocalDate?
 )
 
 data class FolkeregisterPersonstatus(
-        val personstatus: PersonStatus,
-        val fom: LocalDate?,
-        val tom: LocalDate?
+    val personstatus: PersonStatus,
+    val fom: LocalDate?,
+    val tom: LocalDate?
 )
 
 enum class PersonStatus(s: String) {
@@ -41,17 +41,17 @@ enum class PersonStatus(s: String) {
 }
 
 data class Adresse(
-        val landkode: String,
-        val fom: LocalDate?,
-        val tom: LocalDate?
+    val landkode: String,
+    val fom: LocalDate?,
+    val tom: LocalDate?
 )
 
 data class Sivilstand(
-        val type: Sivilstandstype,
-        val gyldigFraOgMed: LocalDate?,
-        val gyldigTilOgMed: LocalDate?,
-        val relatertVedSivilstand: String?,
-        val folkeregistermetadata: Folkeregistermetadata?
+    val type: Sivilstandstype,
+    val gyldigFraOgMed: LocalDate?,
+    val gyldigTilOgMed: LocalDate?,
+    val relatertVedSivilstand: String?,
+    val folkeregistermetadata: Folkeregistermetadata?
 ) {
     fun overlapper(dato: LocalDate): Boolean {
         return !fraOgMedEllerMinDato().isAfter(dato) && !tilOgMedEllerMaksDato().isBefore(dato)
@@ -68,7 +68,6 @@ data class Sivilstand(
     fun giftEllerRegistrertPartner(): Boolean {
         return type == Sivilstandstype.GIFT || type == Sivilstandstype.REGISTRERT_PARTNER
     }
-
 }
 
 enum class Sivilstandstype {
@@ -83,10 +82,10 @@ enum class Sivilstandstype {
 }
 
 data class Familierelasjon(
-        val relatertPersonsIdent: String,
-        val relatertPersonsRolle: Familierelasjonsrolle,
-        val minRolleForPerson: Familierelasjonsrolle?,
-        val folkeregistermetadata: Folkeregistermetadata?
+    val relatertPersonsIdent: String,
+    val relatertPersonsRolle: Familierelasjonsrolle,
+    val minRolleForPerson: Familierelasjonsrolle?,
+    val folkeregistermetadata: Folkeregistermetadata?
 )
 
 enum class Familierelasjonsrolle {
@@ -94,8 +93,7 @@ enum class Familierelasjonsrolle {
 }
 
 data class Folkeregistermetadata(
-        val ajourholdstidspunkt: LocalDateTime?,
-        val gyldighetstidspunkt: LocalDateTime?,
-        val opphoerstidspunkt: LocalDateTime?
+    val ajourholdstidspunkt: LocalDateTime?,
+    val gyldighetstidspunkt: LocalDateTime?,
+    val opphoerstidspunkt: LocalDateTime?
 )
-

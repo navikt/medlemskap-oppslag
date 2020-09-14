@@ -10,7 +10,7 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.personer.Personleser
 import no.nav.medlemskap.regler.v1.ReglerService
 
-class RegelFraDatagrunnlagJsonSteps: No {
+class RegelFraDatagrunnlagJsonSteps : No {
     private var resultat: Resultat? = null
     private var datagrunnlag: Datagrunnlag? = null
     private val domenespråkParser = DomenespråkParser()
@@ -41,5 +41,4 @@ class RegelFraDatagrunnlagJsonSteps: No {
             assertEquals(forventetSvar, resultat!!.svar)
         }
     }
-
 }

@@ -116,9 +116,10 @@ class DomenespråkParser {
     }
 
     fun mapArbeidsforhold(
-            dataTable: DataTable?,
-            utenlandsopphold: List<Utenlandsopphold> = emptyList(),
-            arbeidsgiver: Arbeidsgiver = VANLIG_NORSK_ARBEIDSGIVER): List<Arbeidsforhold> {
+        dataTable: DataTable?,
+        utenlandsopphold: List<Utenlandsopphold> = emptyList(),
+        arbeidsgiver: Arbeidsgiver = VANLIG_NORSK_ARBEIDSGIVER
+    ): List<Arbeidsforhold> {
         if (dataTable == null) {
             return emptyList()
         }
@@ -196,28 +197,23 @@ class DomenespråkParser {
         return Familierelasjonsrolle.valueOf(verdi)
     }
 
-
-
     companion object {
         val ANSATTE_9 = listOf(Ansatte(9, null, null))
         val STATSBORGERSKAP_NOR = listOf(Statsborgerskap("NOR", LocalDate.MIN, null))
-        val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", identifikator = "1", ansatte = ANSATTE_9, konkursStatus = null)
-
+        val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", identifikator = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskEnhetEnhetstypeMap = null)
     }
-
 }
 
 interface RadMapper<T> {
     fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): T
-
 }
 
 class StatsborgerskapMapper : RadMapper<Statsborgerskap> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Statsborgerskap {
         return Statsborgerskap(
-                domenespråkParser.parseString(LANDKODE, rad),
-                domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
-                domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
+            domenespråkParser.parseString(LANDKODE, rad),
+            domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
+            domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
         )
     }
 }
@@ -225,8 +221,8 @@ class StatsborgerskapMapper : RadMapper<Statsborgerskap> {
 class InputPeriodeMapper : RadMapper<InputPeriode> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): InputPeriode {
         return InputPeriode(
-                domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
-                domenespråkParser.parseDato(TIL_OG_MED_DATO, rad)
+            domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
+            domenespråkParser.parseDato(TIL_OG_MED_DATO, rad)
         )
     }
 }
@@ -234,12 +230,12 @@ class InputPeriodeMapper : RadMapper<InputPeriode> {
 class MedlemskapsparametreMapper : RadMapper<Medlemskapsparametre> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Medlemskapsparametre {
         return Medlemskapsparametre(
-                InputPeriode(
-                        domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
-                        domenespråkParser.parseDato(TIL_OG_MED_DATO, rad)
-                ),
-                domenespråkParser.parseBoolean(HAR_HATT_ARBEID_UTENFOR_NORGE, rad),
-                domenespråkParser.parseValgfriYtelse(YTELSE, rad)
+            InputPeriode(
+                domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
+                domenespråkParser.parseDato(TIL_OG_MED_DATO, rad)
+            ),
+            domenespråkParser.parseBoolean(HAR_HATT_ARBEID_UTENFOR_NORGE, rad),
+            domenespråkParser.parseValgfriYtelse(YTELSE, rad)
         )
     }
 }
@@ -247,24 +243,23 @@ class MedlemskapsparametreMapper : RadMapper<Medlemskapsparametre> {
 class AdresseMapper : RadMapper<Adresse> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Adresse {
         return Adresse(
-                domenespråkParser.parseString(LANDKODE, rad),
-                domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad),
-                domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
+            domenespråkParser.parseString(LANDKODE, rad),
+            domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad),
+            domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
         )
     }
 }
 
-
 class MedlemskapMapper : RadMapper<Medlemskap> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Medlemskap {
         return Medlemskap(
-                domenespråkParser.parseValgfriString(DEKNING, rad),
-                domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
-                domenespråkParser.parseDato(TIL_OG_MED_DATO, rad),
-                domenespråkParser.parseBoolean(ER_MEDLEM, rad),
-                domenespråkParser.parseValgfriLovvalg(LOVVALG, rad),
-                domenespråkParser.parseValgfriString(LOVVALGSLAND, rad),
-                domenespråkParser.parseValgfriPeriodeStatus(PERIODESTATUS, rad)
+            domenespråkParser.parseValgfriString(DEKNING, rad),
+            domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
+            domenespråkParser.parseDato(TIL_OG_MED_DATO, rad),
+            domenespråkParser.parseBoolean(ER_MEDLEM, rad),
+            domenespråkParser.parseValgfriLovvalg(LOVVALG, rad),
+            domenespråkParser.parseValgfriString(LOVVALGSLAND, rad),
+            domenespråkParser.parseValgfriPeriodeStatus(PERIODESTATUS, rad)
         )
     }
 }
@@ -272,10 +267,10 @@ class MedlemskapMapper : RadMapper<Medlemskap> {
 class OppgaveMapper : RadMapper<Oppgave> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Oppgave {
         return Oppgave(
-                aktivDato = domenespråkParser.parseDato(AKTIV_DATO, rad),
-                prioritet = domenespråkParser.parsePrioritet(PRIORITET, rad),
-                status = domenespråkParser.parseStatus(STATUS, rad),
-                tema = domenespråkParser.parseValgfriString(TEMA, rad)
+            aktivDato = domenespråkParser.parseDato(AKTIV_DATO, rad),
+            prioritet = domenespråkParser.parsePrioritet(PRIORITET, rad),
+            status = domenespråkParser.parseStatus(STATUS, rad),
+            tema = domenespråkParser.parseValgfriString(TEMA, rad)
         )
     }
 }
@@ -283,32 +278,34 @@ class OppgaveMapper : RadMapper<Oppgave> {
 class JournalpostMapper : RadMapper<Journalpost> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Journalpost {
         return Journalpost(
-                domenespråkParser.parseString(JOURNALPOST_ID, rad),
-                domenespråkParser.parseValgfriString(TITTEL, rad),
-                domenespråkParser.parseValgfriString(JOURNALPOST_TYPE, rad),
-                domenespråkParser.parseValgfriString(JOURNAL_STATUS, rad),
-                domenespråkParser.parseValgfriString(TEMA, rad),
-                null
+            domenespråkParser.parseString(JOURNALPOST_ID, rad),
+            domenespråkParser.parseValgfriString(TITTEL, rad),
+            domenespråkParser.parseValgfriString(JOURNALPOST_TYPE, rad),
+            domenespråkParser.parseValgfriString(JOURNAL_STATUS, rad),
+            domenespråkParser.parseValgfriString(TEMA, rad),
+            null
         )
     }
 }
 
 class ArbeidsforholdMapper {
-    fun mapRad(domenespråkParser: DomenespråkParser,
-               rad: Map<String, String>,
-               utenlandsopphold: List<Utenlandsopphold> = emptyList(),
-               arbeidsgiver: Arbeidsgiver?
+    fun mapRad(
+        domenespråkParser: DomenespråkParser,
+        rad: Map<String, String>,
+        utenlandsopphold: List<Utenlandsopphold> = emptyList(),
+        arbeidsgiver: Arbeidsgiver?
     ): Arbeidsforhold {
         val periode = Periode(
-                domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad),
-                domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad))
+            domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad),
+            domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
+        )
         return Arbeidsforhold(
-                periode = periode,
-                utenlandsopphold = utenlandsopphold,
-                arbeidsgivertype = OpplysningspliktigArbeidsgiverType.valueOf(domenespråkParser.parseString(ARBEIDSGIVERTYPE, rad)),
-                arbeidsgiver = arbeidsgiver ?: VANLIG_NORSK_ARBEIDSGIVER,
-                arbeidsfolholdstype = domenespråkParser.parseArbeidsforholdstype(rad),
-                arbeidsavtaler = emptyList()
+            periode = periode,
+            utenlandsopphold = utenlandsopphold,
+            arbeidsgivertype = OpplysningspliktigArbeidsgiverType.valueOf(domenespråkParser.parseString(ARBEIDSGIVERTYPE, rad)),
+            arbeidsgiver = arbeidsgiver ?: VANLIG_NORSK_ARBEIDSGIVER,
+            arbeidsfolholdstype = domenespråkParser.parseArbeidsforholdstype(rad),
+            arbeidsavtaler = emptyList()
         )
     }
 }
@@ -316,12 +313,13 @@ class ArbeidsforholdMapper {
 class ArbeidsavtaleMapper : RadMapper<Arbeidsavtale> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Arbeidsavtale {
         return Arbeidsavtale(
-                Periode(
-                        domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
-                        domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)),
-                domenespråkParser.parseString(YRKESKODE, rad),
-                domenespråkParser.parseSkipsregister(rad),
-                domenespråkParser.parseDouble(STILLINGSPROSENT, rad)
+            Periode(
+                domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
+                domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
+            ),
+            domenespråkParser.parseString(YRKESKODE, rad),
+            domenespråkParser.parseSkipsregister(rad),
+            domenespråkParser.parseDouble(STILLINGSPROSENT, rad)
         )
     }
 }
@@ -336,10 +334,11 @@ class ArbeidsgiverMapper : RadMapper<Arbeidsgiver> {
         }
 
         return Arbeidsgiver(
-                identifikator = domenespråkParser.parseValgfriString(IDENTIFIKATOR, rad),
-                type = domenespråkParser.parseValgfriString(ARBEIDSGIVERTYPE, rad),
-                ansatte = listOf(Ansatte(domenespråkParser.parseValgfriInt(ANTALL_ANSATTE, rad), null, null)),
-                konkursStatus = konkursStatuser
+            identifikator = domenespråkParser.parseValgfriString(IDENTIFIKATOR, rad),
+            type = domenespråkParser.parseValgfriString(ARBEIDSGIVERTYPE, rad),
+            ansatte = listOf(Ansatte(domenespråkParser.parseValgfriInt(ANTALL_ANSATTE, rad), null, null)),
+            konkursStatus = konkursStatuser,
+            juridiskEnhetEnhetstypeMap = null
         )
     }
 }
@@ -347,11 +346,12 @@ class ArbeidsgiverMapper : RadMapper<Arbeidsgiver> {
 class UtenlandsoppholdMapper : RadMapper<Utenlandsopphold> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Utenlandsopphold {
         return Utenlandsopphold(
-                landkode = domenespråkParser.parseString(LANDKODE, rad),
-                periode = Periode(
-                        domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
-                        domenespråkParser.parseDato(TIL_OG_MED_DATO, rad)),
-                rapporteringsperiode = domenespråkParser.parseAarMaaned(RAPPORTERINGSPERIODE, rad)
+            landkode = domenespråkParser.parseString(LANDKODE, rad),
+            periode = Periode(
+                domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
+                domenespråkParser.parseDato(TIL_OG_MED_DATO, rad)
+            ),
+            rapporteringsperiode = domenespråkParser.parseAarMaaned(RAPPORTERINGSPERIODE, rad)
         )
     }
 }
@@ -359,9 +359,9 @@ class UtenlandsoppholdMapper : RadMapper<Utenlandsopphold> {
 class PersonstatusMapper : RadMapper<FolkeregisterPersonstatus> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): FolkeregisterPersonstatus {
         return FolkeregisterPersonstatus(
-                personstatus = PersonStatus.valueOf(domenespråkParser.parseString(PERSONSTATUS, rad)),
-                fom = domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad),
-                tom = domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
+            personstatus = PersonStatus.valueOf(domenespråkParser.parseString(PERSONSTATUS, rad)),
+            fom = domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad),
+            tom = domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
         )
     }
 }
@@ -438,11 +438,11 @@ class PersonhistorikkBarnMapper : RadMapper<DataOmBarn>{
 class SivilstandMapper : RadMapper<Sivilstand> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Sivilstand {
         return Sivilstand(
-                type = domenespråkParser.parseSivilstandstype(SIVILSTANDSTYPE, rad),
-                gyldigFraOgMed = domenespråkParser.parseValgfriDato(GYLDIG_FRA_OG_MED, rad),
-                gyldigTilOgMed = domenespråkParser.parseValgfriDato(GYLDIG_TIL_OG_MED, rad),
-                relatertVedSivilstand = domenespråkParser.parseValgfriString(RELATERT_VED_SIVILSTAND, rad),
-                folkeregistermetadata = null
+            type = domenespråkParser.parseSivilstandstype(SIVILSTANDSTYPE, rad),
+            gyldigFraOgMed = domenespråkParser.parseValgfriDato(GYLDIG_FRA_OG_MED, rad),
+            gyldigTilOgMed = domenespråkParser.parseValgfriDato(GYLDIG_TIL_OG_MED, rad),
+            relatertVedSivilstand = domenespråkParser.parseValgfriString(RELATERT_VED_SIVILSTAND, rad),
+            folkeregistermetadata = null
         )
     }
 }
@@ -450,10 +450,10 @@ class SivilstandMapper : RadMapper<Sivilstand> {
 class FamilieRelasjonMapper : RadMapper<Familierelasjon> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Familierelasjon {
         return Familierelasjon(
-                relatertPersonsIdent = domenespråkParser.parseString(RELATERT_PERSONS_IDENT, rad),
-                relatertPersonsRolle = domenespråkParser.parseRolle(RELATERT_PERSONS_ROLLE, rad),
-                minRolleForPerson = domenespråkParser.parseValgfriRolle(MIN_ROLLE_FOR_PERSON, rad),
-                folkeregistermetadata = null
+            relatertPersonsIdent = domenespråkParser.parseString(RELATERT_PERSONS_IDENT, rad),
+            relatertPersonsRolle = domenespråkParser.parseRolle(RELATERT_PERSONS_ROLLE, rad),
+            minRolleForPerson = domenespråkParser.parseValgfriRolle(MIN_ROLLE_FOR_PERSON, rad),
+            folkeregistermetadata = null
         )
     }
 }
@@ -509,10 +509,8 @@ enum class Domenebegrep(val nøkkel: String) {
     YTELSE("Ytelse")
 }
 
-
 data class Medlemskapsparametre(
-        val inputPeriode: InputPeriode,
-        val harHattArbeidUtenforNorge: Boolean,
-        val ytelse: Ytelse?)
-
-
+    val inputPeriode: InputPeriode,
+    val harHattArbeidUtenforNorge: Boolean,
+    val ytelse: Ytelse?
+)

@@ -29,7 +29,6 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.YearMonth
 
-
 class BakoverkompatibelTest {
     protected fun RequestSpecification.When(): RequestSpecification {
         return this.`when`()
@@ -42,9 +41,10 @@ class BakoverkompatibelTest {
     companion object {
 
         private val configuration = Configuration(
-                azureAd = Configuration.AzureAd(
-                        authorityEndpoint = "http://localhost/"
-                ))
+            azureAd = Configuration.AzureAd(
+                authorityEndpoint = "http://localhost/"
+            )
+        )
         private val services = Services(configuration)
         private val openIdConfiguration = AzureAdOpenIdConfiguration("http://localhost", "", "", "")
 
@@ -58,19 +58,21 @@ class BakoverkompatibelTest {
 
             if (!applicationState.running) {
                 val applicationServer = createHttpServer(
-                        applicationState = applicationState,
-                        useAuthentication = false,
-                        configuration = configuration,
-                        azureAdOpenIdConfiguration = openIdConfiguration,
-                        services = services,
-                        port = 7071,
-                        createDatagrunnlag = ::mockCreateDatagrunnlag
+                    applicationState = applicationState,
+                    useAuthentication = false,
+                    configuration = configuration,
+                    azureAdOpenIdConfiguration = openIdConfiguration,
+                    services = services,
+                    port = 7071,
+                    createDatagrunnlag = ::mockCreateDatagrunnlag
                 )
 
-                Runtime.getRuntime().addShutdownHook(Thread {
-                    applicationState.initialized = false
-                    applicationServer.stop(5000, 5000)
-                })
+                Runtime.getRuntime().addShutdownHook(
+                    Thread {
+                        applicationState.initialized = false
+                        applicationServer.stop(5000, 5000)
+                    }
+                )
 
                 applicationServer.start()
                 applicationState.initialized = true
@@ -79,45 +81,45 @@ class BakoverkompatibelTest {
                 RestAssured.baseURI = "http://localhost"
                 RestAssured.basePath = "/"
                 RestAssured.port = 7071
-                RestAssured.config = RestAssuredConfig.config().objectMapperConfig(ObjectMapperConfig.objectMapperConfig()
-                        .jackson2ObjectMapperFactory { _, _ -> objectMapper })
+                RestAssured.config = RestAssuredConfig.config().objectMapperConfig(
+                    ObjectMapperConfig.objectMapperConfig()
+                        .jackson2ObjectMapperFactory { _, _ -> objectMapper }
+                )
             }
         }
-
     }
 
     @Test
     fun testBakoverkompatibilitet() {
 
-        //Fnr er Roland Gundersen fra https://www.nhn.no/media/2606/testaktoerer-v46.pdf
+        // Fnr er Roland Gundersen fra https://www.nhn.no/media/2606/testaktoerer-v46.pdf
         val faktiskResponse = given()
-                .body(input)
-                .header(Header("Content-Type", "application/json"))
-                .post("/")
-                .then()
-                .statusCode(200)
-                .extract().asString()
+            .body(input)
+            .header(Header("Content-Type", "application/json"))
+            .post("/")
+            .then()
+            .statusCode(200)
+            .extract().asString()
 
         JSONAssert.assertEquals(
-                forventetResponse, faktiskResponse,
-                CustomComparator(
-                        JSONCompareMode.STRICT,
-                        Customization("tidspunkt") { _, _ -> true }
-                )
+            forventetResponse, faktiskResponse,
+            CustomComparator(
+                JSONCompareMode.STRICT,
+                Customization("tidspunkt") { _, _ -> true }
+            )
         )
     }
-
 }
 
-
 suspend fun mockCreateDatagrunnlag(
-        fnr: String,
-        callId: String,
-        periode: InputPeriode,
-        brukerinput: Brukerinput,
-        services: Services,
-        clientId: String?,
-        ytelseFraRequest: Ytelse?): Datagrunnlag = runBlocking {
+    fnr: String,
+    callId: String,
+    periode: InputPeriode,
+    brukerinput: Brukerinput,
+    services: Services,
+    clientId: String?,
+    ytelseFraRequest: Ytelse?
+): Datagrunnlag = runBlocking {
 
     val ytelse = Ytelse.SYKEPENGER
 
@@ -136,13 +138,16 @@ suspend fun mockCreateDatagrunnlag(
 }
 
 private fun arbeidsforhold(): Arbeidsforhold {
+
+    val juridiskEnhetstypeMap = HashMap<String, String?>()
+    juridiskEnhetstypeMap["juridiskOrgnummer"] = "juridiskEnhetstype"
     return Arbeidsforhold(
-            Periode(enDato(), enAnnenDato()),
-            listOf(Utenlandsopphold("SWE", Periode(enDato(), enAnnenDato()), YearMonth.of(2010, 1))),
-            OpplysningspliktigArbeidsgiverType.Organisasjon,
-            Arbeidsgiver("type", "identifikator", listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus")),
-            Arbeidsforholdstype.NORMALT,
-            listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble()))
+        Periode(enDato(), enAnnenDato()),
+        listOf(Utenlandsopphold("SWE", Periode(enDato(), enAnnenDato()), YearMonth.of(2010, 1))),
+        OpplysningspliktigArbeidsgiverType.Organisasjon,
+        Arbeidsgiver("type", "identifikator", listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus"), juridiskEnhetstypeMap),
+        Arbeidsforholdstype.NORMALT,
+        listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble()))
     )
 }
 
@@ -198,7 +203,8 @@ private fun enAnnenDato() = LocalDate.of(2020, 8, 1)
 private fun etTidspunkt() = LocalDateTime.of(2020, 6, 20, 10, 0)
 private fun enAdresse() = "Adresse"
 
-private val input = """
+private val input =
+    """
         {
             "fnr": "15076500565",
             "periode": {
@@ -209,9 +215,10 @@ private val input = """
                 "arbeidUtenforNorge": false
             }
         }
-""".trimIndent()
+    """.trimIndent()
 
-private val forventetResponse = """
+private val forventetResponse =
+    """
     {
       "tidspunkt" : "2020-08-14T17:43:18.273719",
       "versjonTjeneste" : "",
@@ -320,7 +327,10 @@ private val forventetResponse = """
                            "tom" : "2020-08-01"
                          }
                        } ],
-                       "konkursStatus" : [ "Konkursstatus" ]
+                       "konkursStatus" : [ "Konkursstatus" ],
+                       "juridiskEnhetEnhetstypeMap" : {
+                         "juridiskOrgnummer" : "juridiskEnhetstype"
+                       }
                      },
                      "arbeidsfolholdstype" : "NORMALT",
                      "arbeidsavtaler" : [ {
@@ -401,7 +411,10 @@ private val forventetResponse = """
                 "tom" : "2020-08-01"
               }
             } ],
-            "konkursStatus" : [ "Konkursstatus" ]
+            "konkursStatus" : [ "Konkursstatus" ],
+            "juridiskEnhetEnhetstypeMap" : {
+              "juridiskOrgnummer" : "juridiskEnhetstype"
+            }
           },
           "arbeidsfolholdstype" : "NORMALT",
           "arbeidsavtaler" : [ {
@@ -441,31 +454,71 @@ private val forventetResponse = """
         "harDekning" : null,
         "dekning" : "",
         "delresultat" : [ {
-          "regelId" : "REGEL_OPPLYSNINGER",
-          "avklaring" : "Finnes det registrerte opplysninger på bruker?",
-          "begrunnelse" : "",
-          "svar" : "JA",
+          "regelId" : "REGEL_MEDLEM_KONKLUSJON",
+          "avklaring" : "Er bruker medlem?",
+          "begrunnelse" : "Kan ikke konkludere med medlemskap",
+          "svar" : "UAVKLART",
           "harDekning" : null,
           "dekning" : "",
           "delresultat" : [ {
-            "regelId" : "REGEL_A",
-            "avklaring" : "Finnes det registrerte opplysninger i MEDL?",
+            "regelId" : "REGEL_OPPLYSNINGER",
+            "avklaring" : "Finnes det registrerte opplysninger på bruker?",
+            "begrunnelse" : "",
+            "svar" : "JA",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ {
+              "regelId" : "REGEL_A",
+              "avklaring" : "Finnes det registrerte opplysninger i MEDL?",
+              "begrunnelse" : "",
+              "svar" : "JA",
+              "harDekning" : null,
+              "dekning" : "",
+              "delresultat" : [ ]
+            }, {
+              "regelId" : "REGEL_C",
+              "avklaring" : "Finnes det dokumenter i JOARK på medlemskapsområdet?",
+              "begrunnelse" : "",
+              "svar" : "NEI",
+              "harDekning" : null,
+              "dekning" : "",
+              "delresultat" : [ ]
+            }, {
+              "regelId" : "REGEL_B",
+              "avklaring" : "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?",
+              "begrunnelse" : "",
+              "svar" : "NEI",
+              "harDekning" : null,
+              "dekning" : "",
+              "delresultat" : [ ]
+            } ]
+          }, {
+            "regelId" : "REGEL_1_1",
+            "avklaring" : "Er alle perioder siste 12 mnd avklart (endelig/gyldig)?",
             "begrunnelse" : "",
             "svar" : "JA",
             "harDekning" : null,
             "dekning" : "",
             "delresultat" : [ ]
           }, {
-            "regelId" : "REGEL_C",
-            "avklaring" : "Finnes det dokumenter i JOARK på medlemskapsområdet?",
+            "regelId" : "REGEL_1_2",
+            "avklaring" : "Er det periode både med og uten medlemskap innenfor 12 mnd?",
             "begrunnelse" : "",
             "svar" : "NEI",
             "harDekning" : null,
             "dekning" : "",
             "delresultat" : [ ]
           }, {
-            "regelId" : "REGEL_B",
-            "avklaring" : "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?",
+            "regelId" : "REGEL_1_3",
+            "avklaring" : "Er det en periode med medlemskap?",
+            "begrunnelse" : "",
+            "svar" : "JA",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
+          }, {
+            "regelId" : "REGEL_1_4",
+            "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
             "begrunnelse" : "",
             "svar" : "NEI",
             "harDekning" : null,
@@ -473,65 +526,49 @@ private val forventetResponse = """
             "delresultat" : [ ]
           } ]
         }, {
-          "regelId" : "REGEL_1_1",
-          "avklaring" : "Er alle perioder siste 12 mnd avklart (endelig/gyldig)?",
-          "begrunnelse" : "",
-          "svar" : "JA",
+          "regelId" : "REGEL_ARBEIDSFORHOLD",
+          "avklaring" : "Er arbeidsforhold avklart?",
+          "begrunnelse" : "Regelflyt konkluderer med UAVKLART",
+          "svar" : "UAVKLART",
           "harDekning" : null,
           "dekning" : "",
-          "delresultat" : [ ]
+          "delresultat" : [ {
+            "regelId" : "REGEL_3",
+            "avklaring" : "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?",
+            "begrunnelse" : "",
+            "svar" : "JA",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
+          }, {
+            "regelId" : "REGEL_4",
+            "avklaring" : "Er foretaket registrert i foretaksregisteret?",
+            "begrunnelse" : "",
+            "svar" : "JA",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
+          }, {
+            "regelId" : "REGEL_5",
+            "avklaring" : "Har arbeidsgiver sin hovedaktivitet i Norge?",
+            "begrunnelse" : "",
+            "svar" : "JA",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
+          }, {
+            "regelId" : "REGEL_6",
+            "avklaring" : "Er foretaket aktivt?",
+            "begrunnelse" : "Arbeidstaker har hatt arbeidsforhold til arbeidsgiver som har konkurs-status satt",
+            "svar" : "NEI",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
+          } ]
         }, {
-          "regelId" : "REGEL_1_2",
-          "avklaring" : "Er det periode både med og uten medlemskap innenfor 12 mnd?",
+          "regelId" : "REGEL_9",
+          "avklaring" : "Har bruker utført arbeid utenfor Norge?",
           "begrunnelse" : "",
-          "svar" : "NEI",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
-        }, {
-          "regelId" : "REGEL_1_3",
-          "avklaring" : "Er det en periode med medlemskap?",
-          "begrunnelse" : "",
-          "svar" : "JA",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
-        }, {
-          "regelId" : "REGEL_1_4",
-          "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
-          "begrunnelse" : "",
-          "svar" : "NEI",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
-        }, {
-          "regelId" : "REGEL_3",
-          "avklaring" : "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?",
-          "begrunnelse" : "",
-          "svar" : "JA",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
-        }, {
-          "regelId" : "REGEL_4",
-          "avklaring" : "Er foretaket registrert i foretaksregisteret?",
-          "begrunnelse" : "",
-          "svar" : "JA",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
-        }, {
-          "regelId" : "REGEL_5",
-          "avklaring" : "Har arbeidsgiver sin hovedaktivitet i Norge?",
-          "begrunnelse" : "",
-          "svar" : "JA",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
-        }, {
-          "regelId" : "REGEL_6",
-          "avklaring" : "Er foretaket aktivt?",
-          "begrunnelse" : "Arbeidstaker har hatt arbeidsforhold til arbeidsgiver som har konkurs-status satt",
           "svar" : "NEI",
           "harDekning" : null,
           "dekning" : "",
@@ -553,23 +590,30 @@ private val forventetResponse = """
           "dekning" : "",
           "delresultat" : [ ]
         }, {
-          "regelId" : "REGEL_10",
-          "avklaring" : "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
-          "begrunnelse" : "",
+          "regelId" : "REGEL_NORSK",
+          "avklaring" : "Er regler for norsk borgere avklart?",
+          "begrunnelse" : "Regelflyt konkluderer med JA",
           "svar" : "JA",
           "harDekning" : null,
           "dekning" : "",
-          "delresultat" : [ ]
-        }, {
-          "regelId" : "REGEL_12",
-          "avklaring" : "Har bruker vært i minst 25% stilling de siste 12 mnd?",
-          "begrunnelse" : "",
-          "svar" : "JA",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
-        }                                      
-]
+          "delresultat" : [ {
+            "regelId" : "REGEL_10",
+            "avklaring" : "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
+            "begrunnelse" : "",
+            "svar" : "JA",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
+          }, {
+            "regelId" : "REGEL_12",
+            "avklaring" : "Har bruker vært i minst 25% stilling de siste 12 mnd?",
+            "begrunnelse" : "",
+            "svar" : "JA",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
+          } ]
+        } ]
       }
     }
-""".trimIndent()
+    """.trimIndent()

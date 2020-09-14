@@ -7,16 +7,17 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.ja
 import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.antallAnsatteHosArbeidsgivere
+import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.filtrerUtArbeidsgivereMedFærreEnn6Ansatte
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.registrerAntallAnsatte
-import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.registrerArbeidsgiver
+import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.registrereArbeidsgivere
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.registrerStatsborgerskapGrafana
 
 class HarForetaketMerEnn5AnsatteRegel(
-        ytelse: Ytelse,
-        private val periode: InputPeriode,
-        private val arbeidsforhold: List<Arbeidsforhold>,
-        private val statsborgerskap: List<Statsborgerskap>,
-        regelId: RegelId = RegelId.REGEL_5
+    ytelse: Ytelse,
+    private val periode: InputPeriode,
+    private val arbeidsforhold: List<Arbeidsforhold>,
+    private val statsborgerskap: List<Statsborgerskap>,
+    regelId: RegelId = RegelId.REGEL_5
 ) : ArbeidsforholdRegel(regelId, ytelse, periode) {
 
     override fun operasjon(): Resultat {
@@ -28,10 +29,10 @@ class HarForetaketMerEnn5AnsatteRegel(
         return ja()
     }
 
-    fun registrerDataForGrafana(){
+    fun registrerDataForGrafana() {
         statsborgerskap.registrerStatsborgerskapGrafana(kontrollPeriodeForArbeidsforhold, ytelse, regelId)
-        arbeidsforhold.registrerArbeidsgiver(kontrollPeriodeForArbeidsforhold, ytelse)
-        arbeidsforhold.registrerAntallAnsatte(ytelse)
+        arbeidsforhold.filtrerUtArbeidsgivereMedFærreEnn6Ansatte(kontrollPeriodeForArbeidsforhold).registrereArbeidsgivere(ytelse)
+        arbeidsforhold.filtrerUtArbeidsgivereMedFærreEnn6Ansatte(kontrollPeriodeForArbeidsforhold).registrerAntallAnsatte(ytelse)
     }
 
     companion object {

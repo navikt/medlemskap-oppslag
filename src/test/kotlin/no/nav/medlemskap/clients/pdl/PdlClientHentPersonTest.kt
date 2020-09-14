@@ -48,13 +48,15 @@ class PdlClientHentPersonTest {
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        stubFor(pdlRequestMapping
+        stubFor(
+            pdlRequestMapping
                 .willReturn(
-                        aResponse()
-                                .withStatus(HttpStatusCode.OK.value)
-                                .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-                                .withBody(pdlResponse)
-                ))
+                    aResponse()
+                        .withStatus(HttpStatusCode.OK.value)
+                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                        .withBody(pdlResponse)
+                )
+        )
 
         val pdlClient = PdlClient(server.baseUrl(), stsClient, username, cioHttpClient)
 
@@ -63,14 +65,14 @@ class PdlClientHentPersonTest {
         assertEquals("TESTFAMILIEN", pdlResponse.data?.hentPerson?.navn?.first()?.etternavn)
     }
 
-
     val pdlRequestMapping: MappingBuilder = post(urlPathEqualTo("/"))
-            .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
-            .withHeader("Accept", containing("application/json"))
-            .withHeader("Nav-Consumer-Token", equalTo("Bearer dummytoken"))
-//.withRequestBody()
+        .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
+        .withHeader("Accept", containing("application/json"))
+        .withHeader("Nav-Consumer-Token", equalTo("Bearer dummytoken"))
+// .withRequestBody()
 
-    val pdlResponse = """
-            {"data": {"hentPerson":{"adressebeskyttelse":[],"kjoenn":[{"kjoenn":"MANN"}],"familierelasjoner":[],"statsborgerskap":[{"land":"NOR","gyldigFraOgMed":"2010-10-21","gyldigTilOgMed":null}],"navn":[{"fornavn":"AREMARK","mellomnavn":null,"etternavn":"TESTFAMILIEN"}],"sivilstand":[{"type":"UGIFT","gyldigFraOgMed":"2010-02-21","relatertVedSivilstand":null,"folkeregistermetadata":{"ajourholdstidspunkt":"2020-02-19T10:36:54","gyldighetstidspunkt":"2020-02-19T10:36:54","opphoerstidspunkt":null}}],"bostedsadresse":[],"kontaktadresse":[], "oppholdsadresse":[]}}}""".trimIndent()
-
+    val pdlResponse =
+        """
+            {"data": {"hentPerson":{"adressebeskyttelse":[],"kjoenn":[{"kjoenn":"MANN"}],"familierelasjoner":[],"statsborgerskap":[{"land":"NOR","gyldigFraOgMed":"2010-10-21","gyldigTilOgMed":null}],"navn":[{"fornavn":"AREMARK","mellomnavn":null,"etternavn":"TESTFAMILIEN"}],"sivilstand":[{"type":"UGIFT","gyldigFraOgMed":"2010-02-21","relatertVedSivilstand":null,"folkeregistermetadata":{"ajourholdstidspunkt":"2020-02-19T10:36:54","gyldighetstidspunkt":"2020-02-19T10:36:54","opphoerstidspunkt":null}}],"bostedsadresse":[],"kontaktadresse":[], "oppholdsadresse":[]}}}
+        """.trimIndent()
 }

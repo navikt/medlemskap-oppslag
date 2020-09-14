@@ -20,9 +20,9 @@ class JwtConfig(val configuration: Configuration, azureAdOpenIdConfiguration: Az
     }
 
     val jwkProvider: JwkProvider = JwkProviderBuilder(URL(azureAdOpenIdConfiguration.jwksUri))
-            .cached(10, 24, TimeUnit.HOURS)
-            .rateLimited(10, 1, TimeUnit.MINUTES)
-            .build()
+        .cached(10, 24, TimeUnit.HOURS)
+        .rateLimited(10, 1, TimeUnit.MINUTES)
+        .build()
 
     fun validate(credentials: JWTCredential): Principal? {
         logger.info { "Validerer JWT Credential" }
@@ -35,5 +35,4 @@ class JwtConfig(val configuration: Configuration, azureAdOpenIdConfiguration: Az
             null
         }
     }
-
 }

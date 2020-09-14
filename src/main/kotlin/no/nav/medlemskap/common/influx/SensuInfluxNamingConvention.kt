@@ -66,5 +66,4 @@ class SensuInfluxNamingConvention
         // https://docs.influxdata.com/influxdb/v1.3/write_protocols/line_protocol_reference/#special-characters
         private val PATTERN_SPECIAL_CHARACTERS = Pattern.compile("([, =\"])")
     }
-
 }

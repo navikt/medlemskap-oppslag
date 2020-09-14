@@ -9,9 +9,9 @@ import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.finnesPersonIMedlForKontrollPeriode
 
 class FinnesOpplysningerIMedlRegel(
-        ytelse: Ytelse,
-        val periode: InputPeriode,
-        val medlemskap: List<Medlemskap> = emptyList()
+    ytelse: Ytelse,
+    val periode: InputPeriode,
+    val medlemskap: List<Medlemskap> = emptyList()
 ) : BasisRegel(RegelId.REGEL_A, ytelse) {
 
     override fun operasjon(): Resultat {
@@ -26,9 +26,9 @@ class FinnesOpplysningerIMedlRegel(
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): FinnesOpplysningerIMedlRegel {
             return FinnesOpplysningerIMedlRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode,
-                    medlemskap = datagrunnlag.medlemskap
+                ytelse = datagrunnlag.ytelse,
+                periode = datagrunnlag.periode,
+                medlemskap = datagrunnlag.medlemskap
             )
         }
     }

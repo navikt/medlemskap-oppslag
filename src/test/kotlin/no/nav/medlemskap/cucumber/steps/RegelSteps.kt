@@ -12,13 +12,10 @@ import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.v1.RegelFactory
 import no.nav.medlemskap.regler.v1.ReglerService
 import org.junit.jupiter.api.Assertions.assertEquals
-import java.time.LocalDate
-
 
 class RegelSteps : No {
     private val ANSATTE_9 = listOf(Ansatte(9, null, null))
-    private val STATSBORGERSKAP_NOR = listOf(Statsborgerskap("NOR", LocalDate.MIN, null))
-    private val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", identifikator = "1", ansatte = ANSATTE_9, konkursStatus = null)
+    private val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", identifikator = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskEnhetEnhetstypeMap = null)
 
     private val pdlPersonhistorikkBuilder = PersonhistorikkBuilder()
     private val personHistorikkRelatertePersoner = mutableListOf<PersonhistorikkRelatertPerson>()
@@ -29,7 +26,6 @@ class RegelSteps : No {
     private val personhistorikkBarn = PersonhistorikkBarnBuilder()
     private val dataOmBarnBuilder = mutableListOf<DataOmBarnBuilder>()
     private var medlemskap: List<Medlemskap> = emptyList()
-    private var personhistorikkBarnTilEktefelle : List<PersonhistorikkBarn> = emptyList()
 
     private var dataOmBarn: List<DataOmBarn> = emptyList()
 
@@ -38,7 +34,6 @@ class RegelSteps : No {
     private var utenlandsoppholdMap = hashMapOf<Int, List<Utenlandsopphold>>()
     private var arbeidsgiverMap = hashMapOf<Int, Arbeidsgiver>()
 
-    private var arbeidsforholdEktefelle: List<Arbeidsforhold> = emptyList()
     private var arbeidsavtaleEktefelleMap = hashMapOf<Int, List<Arbeidsavtale>>()
 
     private var resultat: Resultat? = null
@@ -152,7 +147,7 @@ class RegelSteps : No {
         }
 
         Gitt<DataTable>("følgende arbeidsforhold til ektefelle fra AAReg") { dataTable: DataTable? ->
-            val arbeidsforholdEktefelle =  domenespråkParser.mapArbeidsforhold(dataTable)
+            val arbeidsforholdEktefelle = domenespråkParser.mapArbeidsforhold(dataTable)
             dataOmEktefelleBuilder.arbeidsforholdEktefelle = arbeidsforholdEktefelle
         }
 
@@ -232,18 +227,18 @@ class RegelSteps : No {
     }
 
     private fun byggArbeidsforhold(
-            arbeidsforholdListe: List<Arbeidsforhold>,
-            arbeidsgiverMap: Map<Int, Arbeidsgiver>,
-            arbeidsavtaleMap: Map<Int, List<Arbeidsavtale>>,
-            utenlandsoppholdMap: Map<Int, List<Utenlandsopphold>>): List<Arbeidsforhold> {
+        arbeidsforholdListe: List<Arbeidsforhold>,
+        arbeidsgiverMap: Map<Int, Arbeidsgiver>,
+        arbeidsavtaleMap: Map<Int, List<Arbeidsavtale>>,
+        utenlandsoppholdMap: Map<Int, List<Utenlandsopphold>>
+    ): List<Arbeidsforhold> {
         return arbeidsforholdListe
-                .mapIndexed { index, arbeidsforhold ->
-                    arbeidsforhold.copy(
-                            utenlandsopphold = utenlandsoppholdMap[index] ?: emptyList(),
-                            arbeidsgiver = arbeidsgiverMap[index] ?: VANLIG_NORSK_ARBEIDSGIVER,
-                            arbeidsavtaler = arbeidsavtaleMap[index] ?: emptyList()
-                    )
-                }
+            .mapIndexed { index, arbeidsforhold ->
+                arbeidsforhold.copy(
+                    utenlandsopphold = utenlandsoppholdMap[index] ?: emptyList(),
+                    arbeidsgiver = arbeidsgiverMap[index] ?: VANLIG_NORSK_ARBEIDSGIVER,
+                    arbeidsavtaler = arbeidsavtaleMap[index] ?: emptyList()
+                )
+            }
     }
-
 }

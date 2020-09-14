@@ -17,8 +17,10 @@ class MedlMapperTest {
         val dato = LocalDate.now()
         val medlSporingsinformasjon = MedlSporingsinformasjon(dato, "kilde", "kildedokument", LocalDateTime.now(), "opprettetAv", dato, LocalDateTime.now(), "sistEndretAv", "versjon")
         val medlStudieinformasjon = MedlStudieinformasjon(false, true, "statsborgerland", "studieland")
-        val medlMedlemskapsunntak = MedlMedlemskapsunntak("Full", dato, "grunnlag", true, "ident",
-                "ENDL", "lovvalgsland", true, "GYLD", "statusaarsak", dato, 123, medlSporingsinformasjon, medlStudieinformasjon)
+        val medlMedlemskapsunntak = MedlMedlemskapsunntak(
+            "Full", dato, "grunnlag", true, "ident",
+            "ENDL", "lovvalgsland", true, "GYLD", "statusaarsak", dato, 123, medlSporingsinformasjon, medlStudieinformasjon
+        )
 
         val mappedTilMedlemskap = mapMedlemskapResultat(listOf(medlMedlemskapsunntak))
         assertEquals(1, mappedTilMedlemskap.size)

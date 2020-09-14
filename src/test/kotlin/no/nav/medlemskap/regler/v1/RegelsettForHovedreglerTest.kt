@@ -6,11 +6,9 @@ import no.nav.medlemskap.regler.personer.Personleser
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
-
 class RegelsettForHovedreglerTest {
 
     private val personleser = Personleser()
-
 
     @Test
     fun `person med noe i medl får uavklart konklusjon`() {

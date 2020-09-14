@@ -47,13 +47,15 @@ class PdlClientStatsborgerskapDataTest {
         val stsClient: StsRestClient = mockk()
         coEvery { stsClient.oidcToken() } returns "dummytoken"
 
-        stubFor(pdlRequestMapping
+        stubFor(
+            pdlRequestMapping
                 .willReturn(
-                        aResponse()
-                                .withStatus(HttpStatusCode.OK.value)
-                                .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-                                .withBody(pdlResponse)
-                ))
+                    aResponse()
+                        .withStatus(HttpStatusCode.OK.value)
+                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                        .withBody(pdlResponse)
+                )
+        )
 
         val pdlClient = PdlClient(server.baseUrl(), stsClient, username, cioHttpClient)
 
@@ -62,15 +64,14 @@ class PdlClientStatsborgerskapDataTest {
         assertEquals("NOR", pdlResponse.data?.hentPerson?.statsborgerskap?.last()?.land)
     }
 
-
     val pdlRequestMapping: MappingBuilder = post(urlPathEqualTo("/"))
-            .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
-            .withHeader("Accept", containing("application/json"))
-            .withHeader("Nav-Consumer-Token", equalTo("Bearer dummytoken"))
-//.withRequestBody()
+        .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
+        .withHeader("Accept", containing("application/json"))
+        .withHeader("Nav-Consumer-Token", equalTo("Bearer dummytoken"))
+// .withRequestBody()
 
     val pdlResponse =
-            """{
+        """{
                 "data": {
                 "hentPerson": {
                 "statsborgerskap": [
@@ -82,6 +83,6 @@ class PdlClientStatsborgerskapDataTest {
                 ]
             }
             }
-            }""".trimIndent()
-
+            }
+        """.trimIndent()
 }

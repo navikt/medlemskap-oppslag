@@ -10,5 +10,4 @@ class Testutils {
         val aremark = "30117942593"
         Assertions.assertEquals(true, gyldigFnr(aremark))
     }
-
 }

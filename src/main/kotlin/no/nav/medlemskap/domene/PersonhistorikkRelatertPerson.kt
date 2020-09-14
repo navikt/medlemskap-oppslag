@@ -8,5 +8,3 @@ data class PersonhistorikkRelatertPerson(
         val oppholdsadresser: List<Adresse>
 
 )
-
-

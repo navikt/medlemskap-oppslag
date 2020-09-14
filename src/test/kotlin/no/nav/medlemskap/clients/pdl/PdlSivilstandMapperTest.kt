@@ -6,10 +6,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.*
-import no.nav.medlemskap.client.generated.pdl.HentPerson.Sivilstand as PdlSivilstand
-import no.nav.medlemskap.client.generated.pdl.HentPerson.Sivilstandstype as PdlSivilstandstype
+import no.nav.medlemskap.clients.pdl.generated.HentPerson.Sivilstand as PdlSivilstand
+import no.nav.medlemskap.clients.pdl.generated.HentPerson.Sivilstandstype as PdlSivilstandstype
 
 class PdlSivilstandMapperTest {
 
@@ -30,8 +28,8 @@ class PdlSivilstandMapperTest {
     @Test
     fun mapSivilstander_med_to_sivilstander_skal_gi_to_rader() {
         val pdlSivilstander: List<PdlSivilstand> = listOf(
-                pdlSivilstandGift(DATO_1, RELATERT_VED_SIVILSTAND_1),
-                pdlSivilstandSeparert(DATO_2, RELATERT_VED_SIVILSTAND_1)
+            pdlSivilstandGift(DATO_1, RELATERT_VED_SIVILSTAND_1),
+            pdlSivilstandSeparert(DATO_2, RELATERT_VED_SIVILSTAND_1)
         )
 
         val sivilstander = PdlSivilstandMapper.mapSivilstander(pdlSivilstander)
@@ -41,9 +39,9 @@ class PdlSivilstandMapperTest {
     @Test
     fun mapSivilstander_med_tre_sivilstander_skal_gi_tre_rader() {
         val pdlSivilstander: List<PdlSivilstand> = listOf(
-                pdlSivilstandGift(DATO_1, RELATERT_VED_SIVILSTAND_1),
-                pdlSivilstandSeparert(DATO_2, RELATERT_VED_SIVILSTAND_1),
-                pdlSivilstandSkilt(DATO_3, RELATERT_VED_SIVILSTAND_1)
+            pdlSivilstandGift(DATO_1, RELATERT_VED_SIVILSTAND_1),
+            pdlSivilstandSeparert(DATO_2, RELATERT_VED_SIVILSTAND_1),
+            pdlSivilstandSkilt(DATO_3, RELATERT_VED_SIVILSTAND_1)
         )
 
         val sivilstander = PdlSivilstandMapper.mapSivilstander(pdlSivilstander)
@@ -53,8 +51,8 @@ class PdlSivilstandMapperTest {
     @Test
     fun mapSivilstander_gyldig_til_dato_settes_til_neste_fra_og_med_dato_minus_en_dag() {
         val pdlSivilstander: List<PdlSivilstand> = listOf(
-                pdlSivilstandGift(DATO_1, RELATERT_VED_SIVILSTAND_1),
-                pdlSivilstandSeparert(DATO_2, RELATERT_VED_SIVILSTAND_1)
+            pdlSivilstandGift(DATO_1, RELATERT_VED_SIVILSTAND_1),
+            pdlSivilstandSeparert(DATO_2, RELATERT_VED_SIVILSTAND_1)
         )
 
         val sivilstander = PdlSivilstandMapper.mapSivilstander(pdlSivilstander)
@@ -66,7 +64,6 @@ class PdlSivilstandMapperTest {
         val sivilstand2 = sivilstander[1]
         assertNull(sivilstand2.gyldigTilOgMed)
     }
-
 
     private fun pdlSivilstandGift(gyldigFraOgMed: LocalDate, relatertVedSivilstand: String): PdlSivilstand {
         return PdlSivilstand(PdlSivilstandstype.GIFT, gyldigFraOgMed.toString(), relatertVedSivilstand, null)
@@ -87,5 +84,4 @@ class PdlSivilstandMapperTest {
 
         val RELATERT_VED_SIVILSTAND_1 = "123"
     }
-
 }

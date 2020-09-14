@@ -5,6 +5,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.Services
+import no.nav.medlemskap.common.flereStatsborgerskapCounter
 import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
@@ -20,19 +21,22 @@ private val logger = KotlinLogging.logger { }
 private val secureLogger = KotlinLogging.logger("tjenestekall")
 
 suspend fun defaultCreateDatagrunnlag(
-        fnr: String,
-        callId: String,
-        periode: InputPeriode,
-        brukerinput: Brukerinput,
-        services: Services,
-        clientId: String?,
-        ytelseFraRequest: Ytelse?): Datagrunnlag = coroutineScope {
+    fnr: String,
+    callId: String,
+    periode: InputPeriode,
+    brukerinput: Brukerinput,
+    services: Services,
+    clientId: String?,
+    ytelseFraRequest: Ytelse?
+): Datagrunnlag = coroutineScope {
 
     val dataOmEktefelle : DataOmEktefelle?
     val dataOmBrukersBarn: List<DataOmBarn>?
 
+    val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr, callId, fraOgMedDatoForArbeidsforhold(periode), periode.tom) }
     val aktorIder = services.pdlService.hentAlleAktorIder(fnr, callId)
     val personHistorikkFraPdl = hentPersonhistorikkFraPdl(services, fnr, callId)
+    val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr, periode.fom) }
     val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(fnr, callId) }
     val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr, callId, fraOgMedDatoForArbeidsforhold(periode), periode.tom) }
     val journalPosterRequest = async { services.safService.hentJournaldata(fnr, callId) }
@@ -51,6 +55,9 @@ suspend fun defaultCreateDatagrunnlag(
     val ytelse: Ytelse = finnYtelse(ytelseFraRequest, clientId)
 
     ytelseCounter(ytelse.metricName()).increment()
+
+    if (personHistorikkFraPdl?.statsborgerskap?.size!! > 1)
+        flereStatsborgerskapCounter(personHistorikkFraPdl.statsborgerskap.size.toString(), ytelse).increment()
 
     Datagrunnlag(
             periode = periode,

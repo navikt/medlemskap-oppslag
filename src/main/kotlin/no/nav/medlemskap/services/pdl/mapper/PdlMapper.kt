@@ -11,7 +11,6 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-
 object PdlMapper {
 
     fun mapTilPersonHistorikkTilBruker(person: HentPerson.Person): Personhistorikk {
@@ -41,10 +40,10 @@ object PdlMapper {
 
     fun mapFamilierelasjon(familierelasjon: HentPerson.Familierelasjon): Familierelasjon {
         return Familierelasjon(
-                relatertPersonsIdent = familierelasjon.relatertPersonsIdent,
-                relatertPersonsRolle = mapFamileRelasjonsrolle(familierelasjon.relatertPersonsRolle)!!,
-                minRolleForPerson = mapFamileRelasjonsrolle(familierelasjon.minRolleForPerson),
-                folkeregistermetadata = mapFolkeregisterMetadata(familierelasjon.folkeregistermetadata)
+            relatertPersonsIdent = familierelasjon.relatertPersonsIdent,
+            relatertPersonsRolle = mapFamileRelasjonsrolle(familierelasjon.relatertPersonsRolle)!!,
+            minRolleForPerson = mapFamileRelasjonsrolle(familierelasjon.minRolleForPerson),
+            folkeregistermetadata = mapFolkeregisterMetadata(familierelasjon.folkeregistermetadata)
         )
     }
 
@@ -65,9 +64,9 @@ object PdlMapper {
 
     fun mapKontaktAdresse(it: HentPerson.Kontaktadresse): Adresse {
         return Adresse(
-                fom = convertToLocalDate(it.gyldigFraOgMed),
-                tom = convertToLocalDate(it.gyldigTilOgMed),
-                landkode = mapLandkodeForKontaktadresse(it)
+            fom = convertToLocalDate(it.gyldigFraOgMed),
+            tom = convertToLocalDate(it.gyldigTilOgMed),
+            landkode = mapLandkodeForKontaktadresse(it)
         )
     }
 
@@ -119,7 +118,8 @@ object PdlMapper {
         }
     }
 
-    fun mapFolkeregisterMetadata(folkeregistermetadata: HentPerson.Folkeregistermetadata?): Folkeregistermetadata? {
+    fun mapFolkeregisterMetadata(folkeregistermetadata: HentPerson.Folkeregistermetadata?): Folkeregistermetadata?
+    {
         return folkeregistermetadata?.let {
             Folkeregistermetadata(
                     ajourholdstidspunkt = convertToLocalDateTime(it.ajourholdstidspunkt),
@@ -141,7 +141,3 @@ object PdlMapper {
     fun mapTilFoedselsaar(foedsel: List<HentFoedselsaar.Foedsel>?): Int =
             foedsel?.map { it.foedselsaar }?.sortedBy { it }?.last() ?: throw PersonIkkeFunnet("PDL")
 }
-
-
-
-

@@ -27,9 +27,10 @@ private val logger = KotlinLogging.logger { }
 private val secureLogger = KotlinLogging.logger("tjenestekall")
 
 fun Routing.evalueringRoute(
-        services: Services,
-        configuration: Configuration,
-        createDatagrunnlag: suspend (fnr: String, callId: String, periode: InputPeriode, brukerinput: Brukerinput, services: Services, clientId: String?, ytelseFraRequest: Ytelse?) -> Datagrunnlag) {
+    services: Services,
+    configuration: Configuration,
+    createDatagrunnlag: suspend (fnr: String, callId: String, periode: InputPeriode, brukerinput: Brukerinput, services: Services, clientId: String?, ytelseFraRequest: Ytelse?) -> Datagrunnlag
+) {
 
     authenticate("azureAuth") {
         post("/") {
@@ -43,20 +44,21 @@ fun Routing.evalueringRoute(
             val callId = call.callId ?: UUID.randomUUID().toString()
 
             val datagrunnlag = createDatagrunnlag.invoke(
-                    request.fnr,
-                    callId,
-                    request.periode,
-                    request.brukerinput,
-                    services,
-                    azp,
-                    request.ytelse)
+                request.fnr,
+                callId,
+                request.periode,
+                request.brukerinput,
+                services,
+                azp,
+                request.ytelse
+            )
             val resultat = evaluerData(datagrunnlag)
             val response = Response(
-                    tidspunkt = LocalDateTime.now(),
-                    versjonRegler = "v1",
-                    versjonTjeneste = configuration.commitSha,
-                    datagrunnlag = datagrunnlag,
-                    resultat = resultat
+                tidspunkt = LocalDateTime.now(),
+                versjonRegler = "v1",
+                versjonTjeneste = configuration.commitSha,
+                datagrunnlag = datagrunnlag,
+                resultat = resultat
             )
             secureLogger.info("{} konklusjon gitt for bruker {} på regel {}", resultat.svar.name, request.fnr, resultat.sisteRegel())
             secureLogger.info("For bruker {} er responsen {}", request.fnr, response)
@@ -67,9 +69,10 @@ fun Routing.evalueringRoute(
 }
 
 fun Routing.evalueringTestRoute(
-        services: Services,
-        configuration: Configuration,
-        createDatagrunnlag: suspend (fnr: String, callId: String, periode: InputPeriode, brukerinput: Brukerinput, services: Services, clientId: String?, ytelseFraRequest: Ytelse?) -> Datagrunnlag) {
+    services: Services,
+    configuration: Configuration,
+    createDatagrunnlag: suspend (fnr: String, callId: String, periode: InputPeriode, brukerinput: Brukerinput, services: Services, clientId: String?, ytelseFraRequest: Ytelse?) -> Datagrunnlag
+) {
     logger.info("autentiserer IKKE kallet")
     post("/") {
         apiCounter().increment()
@@ -77,20 +80,21 @@ fun Routing.evalueringTestRoute(
         val callId = call.callId ?: UUID.randomUUID().toString()
 
         val datagrunnlag = createDatagrunnlag.invoke(
-                request.fnr,
-                callId,
-                request.periode,
-                request.brukerinput,
-                services,
-                null,
-                request.ytelse)
+            request.fnr,
+            callId,
+            request.periode,
+            request.brukerinput,
+            services,
+            null,
+            request.ytelse
+        )
         val resultat = evaluerData(datagrunnlag)
         val response = Response(
-                tidspunkt = LocalDateTime.now(),
-                versjonRegler = "v1",
-                versjonTjeneste = configuration.commitSha,
-                datagrunnlag = datagrunnlag,
-                resultat = resultat
+            tidspunkt = LocalDateTime.now(),
+            versjonRegler = "v1",
+            versjonTjeneste = configuration.commitSha,
+            datagrunnlag = datagrunnlag,
+            resultat = resultat
         )
         secureLogger.info("{} konklusjon gitt for bruker {} på regel {}", resultat.svar.name, request.fnr, resultat.sisteRegel())
         secureLogger.info("For bruker {} er responsen {}", request.fnr, response)
@@ -115,19 +119,16 @@ private fun validerRequest(request: Request): Request {
     return request
 }
 
-
 fun finnYtelse(ytelseFraRequest: Ytelse?, clientId: String?) =
-        (ytelseFraRequest ?: Ytelse.fromClientId(clientId))
-                ?: throw KonsumentIkkeFunnet("Fant ikke clientId i mapping til ytelse. Ta kontakt med medlemskap-teamet for tilgang til tjenesten.")
-
+    (ytelseFraRequest ?: Ytelse.fromClientId(clientId))
+        ?: throw KonsumentIkkeFunnet("Fant ikke clientId i mapping til ytelse. Ta kontakt med medlemskap-teamet for tilgang til tjenesten.")
 
 private fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =
-        Hovedregler(datagrunnlag).kjørHovedregler()
+    Hovedregler(datagrunnlag).kjørHovedregler()
 
 private fun Resultat.sisteRegel() =
-        if (this.delresultat.isEmpty()) {
-            this
-        } else {
-            this.delresultat.last()
-        }
-
+    if (this.delresultat.isEmpty()) {
+        this
+    } else {
+        this.delresultat.last()
+    }

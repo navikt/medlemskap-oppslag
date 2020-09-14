@@ -6,14 +6,14 @@ import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.registrerSt
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.sjekkStatsborgerskap
 
 class ErBrukerEøsBorgerRegel(
-        ytelse: Ytelse,
-        val periode: InputPeriode,
-        val statsborgerskap: List<Statsborgerskap>
-): BasisRegel(RegelId.REGEL_2, ytelse) {
+    ytelse: Ytelse,
+    val periode: InputPeriode,
+    val statsborgerskap: List<Statsborgerskap>
+) : BasisRegel(RegelId.REGEL_2, ytelse) {
 
     override fun operasjon(): Resultat {
         val kontrollPeriodeForStatsborgerskap = Datohjelper(periode, ytelse).kontrollPeriodeForPersonhistorikk()
-        val erBrukerEøsBorger = sjekkStatsborgerskap(statsborgerskap, kontrollPeriodeForStatsborgerskap, {s -> Eøsland.erEØSland(s)})
+        val erBrukerEøsBorger = sjekkStatsborgerskap(statsborgerskap, kontrollPeriodeForStatsborgerskap, { s -> Eøsland.erEØSland(s) })
 
         if (erBrukerEøsBorger) {
             return ja()
@@ -31,6 +31,5 @@ class ErBrukerEøsBorgerRegel(
                     statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap
             )
         }
-
     }
 }

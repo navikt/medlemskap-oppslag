@@ -7,8 +7,8 @@ import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.funksjoner.JoarkFunksjoner.finnesDokumenterMedTillatteTeamer
 
 class FinnesOpplysningerIJoarkRegel(
-        ytelse: Ytelse,
-        private val dokument: List<Journalpost> = emptyList()
+    ytelse: Ytelse,
+    private val dokument: List<Journalpost> = emptyList()
 ) : BasisRegel(RegelId.REGEL_C, ytelse) {
 
     override fun operasjon(): Resultat {
@@ -22,8 +22,8 @@ class FinnesOpplysningerIJoarkRegel(
 
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): FinnesOpplysningerIJoarkRegel {
             return FinnesOpplysningerIJoarkRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    dokument = datagrunnlag.dokument
+                ytelse = datagrunnlag.ytelse,
+                dokument = datagrunnlag.dokument
             )
         }
     }

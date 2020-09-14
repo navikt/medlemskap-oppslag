@@ -3,19 +3,18 @@ package no.nav.medlemskap.domene
 import java.time.LocalDate
 
 data class Medlemskap(
-        val dekning: String?,
-        val fraOgMed: LocalDate,
-        val tilOgMed: LocalDate,
-        val erMedlem: Boolean,
-        val lovvalg: Lovvalg?,
-        val lovvalgsland: String?,
-        val periodeStatus: PeriodeStatus?
+    val dekning: String?,
+    val fraOgMed: LocalDate,
+    val tilOgMed: LocalDate,
+    val erMedlem: Boolean,
+    val lovvalg: Lovvalg?,
+    val lovvalgsland: String?,
+    val periodeStatus: PeriodeStatus?
 ) : Comparable<Medlemskap> {
 
     override fun compareTo(other: Medlemskap): Int {
         return this.tilOgMed.compareTo(other.tilOgMed)
     }
-
 }
 
 enum class Lovvalg() {
@@ -47,57 +46,60 @@ enum class Dekning(val dekningKodeverdi: String) {
     companion object {
 
         private val dekningForYtelseMap: Map<Ytelse, List<Dekning>> = hashMapOf(
-                Ytelse.SYKEPENGER to dekningForSykepenger(),
-                Ytelse.DAGPENGER to dekningForDagpenger(),
-                Ytelse.ENSLIG_FORSORGER to dekningForEnsligForsorger()
+            Ytelse.SYKEPENGER to dekningForSykepenger(),
+            Ytelse.DAGPENGER to dekningForDagpenger(),
+            Ytelse.ENSLIG_FORSORGER to dekningForEnsligForsorger()
         )
 
         private val uavklarteDekningerForYtelseMap: Map<Ytelse, List<Dekning>> = hashMapOf(
-                Ytelse.SYKEPENGER to uavklarteDekningerForSykepenger(),
-                Ytelse.DAGPENGER to fellesUavklarteDekninger(),
-                Ytelse.ENSLIG_FORSORGER to fellesUavklarteDekninger()
+            Ytelse.SYKEPENGER to uavklarteDekningerForSykepenger(),
+            Ytelse.DAGPENGER to fellesUavklarteDekninger(),
+            Ytelse.ENSLIG_FORSORGER to fellesUavklarteDekninger()
         )
 
         private fun dekningForSykepenger(): List<Dekning> =
-                listOf(FOLKETRYGDLOVEN2_6,
-                        FOLKETRYGDLOVEN2_7_3A,
-                        FOLKETRYGDLOVEN2_9_2_1A,
-                        FOLKETRYGDLOVEN2_9_2_1C)
+            listOf(
+                FOLKETRYGDLOVEN2_6,
+                FOLKETRYGDLOVEN2_7_3A,
+                FOLKETRYGDLOVEN2_9_2_1A,
+                FOLKETRYGDLOVEN2_9_2_1C
+            )
 
         private fun dekningForDagpenger(): List<Dekning> =
-                listOf(FOLKETRYGDLOVEN2_7_3A,
-                        FOLKETRYGDLOVEN2_7A_2A,
-                        FOLKETRYGDLOVEN2_9_1B,
-                        FOLKETRYGDLOVEN2_9_1C,
-                        FOLKETRYGDLOVEN2_9_2_1A,
-                        FOLKETRYGDLOVEN2_9_2_1C
-                )
+            listOf(
+                FOLKETRYGDLOVEN2_7_3A,
+                FOLKETRYGDLOVEN2_7A_2A,
+                FOLKETRYGDLOVEN2_9_1B,
+                FOLKETRYGDLOVEN2_9_1C,
+                FOLKETRYGDLOVEN2_9_2_1A,
+                FOLKETRYGDLOVEN2_9_2_1C
+            )
 
         private fun dekningForEnsligForsorger(): List<Dekning> =
-                listOf(FOLKETRYGDLOVEN2_7_3A,
-                        FOLKETRYGDLOVEN2_7A_2A,
-                        FOLKETRYGDLOVEN2_9_1B,
-                        FOLKETRYGDLOVEN2_9_1C,
-                        FOLKETRYGDLOVEN2_9_2_1A,
-                        FOLKETRYGDLOVEN2_9_2_1C
-                )
+            listOf(
+                FOLKETRYGDLOVEN2_7_3A,
+                FOLKETRYGDLOVEN2_7A_2A,
+                FOLKETRYGDLOVEN2_9_1B,
+                FOLKETRYGDLOVEN2_9_1C,
+                FOLKETRYGDLOVEN2_9_2_1A,
+                FOLKETRYGDLOVEN2_9_2_1C
+            )
 
         private fun uavklarteDekningerForSykepenger(): List<Dekning> = listOf(FOLKETRYGDLOVEN2_7A_2A, FOLKETRYGDLOVEN2_7A_2B) + fellesUavklarteDekninger()
 
         fun fellesUavklarteDekninger(): List<Dekning> =
-                listOf(FULL,
-                        IHT_AVTALE,
-                        IKKEPENDEL,
-                        PENDEL,
-                        OPPHOR
-                )
+            listOf(
+                FULL,
+                IHT_AVTALE,
+                IKKEPENDEL,
+                PENDEL,
+                OPPHOR
+            )
 
         fun Dekning.uavklartForYtelse(ytelse: Ytelse): Boolean = uavklarteDekningerForYtelseMap[ytelse]?.contains(this) ?: false
 
         fun Dekning.gjelderForYtelse(ytelse: Ytelse): Boolean = dekningForYtelseMap[ytelse]?.contains(this) ?: false
 
         fun from(kodeverdi: String?): Dekning? = values().firstOrNull { it.dekningKodeverdi == kodeverdi }
-
     }
-
 }
