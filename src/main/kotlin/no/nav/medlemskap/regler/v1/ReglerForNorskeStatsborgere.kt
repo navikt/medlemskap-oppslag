@@ -5,6 +5,7 @@ import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.REGEL_12
+import no.nav.medlemskap.regler.common.RegelId.REGEL_NORSK
 import no.nav.medlemskap.regler.v1.lovvalg.ErBrukerBosattINorgeRegel
 import no.nav.medlemskap.regler.v1.lovvalg.HarBrukerJobbet25ProsentEllerMerRegel
 
@@ -24,15 +25,11 @@ class ReglerForNorskeStatsborgere(
         return erBrukerBosattINorgeFlyt
     }
 
-    override fun kjørRegelflyter(): List<Resultat> {
-        return listOf(kjørUavhengigeRegelflyterMedEttResultat(RegelId.REGEL_NORSK))
-    }
-
     override fun hentRegelflyter(): List<Regelflyt> {
         val harBrukerJobbet25ProsentEllerMerFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_12),
-            hvisJa = regelflytJa(ytelse),
-            hvisNei = regelflytUavklart(ytelse)
+            hvisJa = regelflytJa(ytelse, REGEL_NORSK),
+            hvisNei = regelflytUavklart(ytelse, REGEL_NORSK)
         )
 
         return listOf(hentHovedflyt(), harBrukerJobbet25ProsentEllerMerFlyt)

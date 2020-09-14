@@ -26,27 +26,28 @@ data class Resultat(
     }
 
     fun finnRegelResultat(regelId: RegelId): Resultat? {
-        val regelResultat = delresultat.find { it.regelId == regelId }
-        if (regelResultat != null) {
-            return regelResultat
-        }
-
-        return regelResultat
+        return finnRegelResultat(this, regelId)
     }
 
-    private fun finnRegelResultat(resultat: Resultat, regelId: RegelId): Resultat? {
-        var regelResultat = resultat.delresultat.find { it.regelId == regelId }
-        if (regelResultat != null) {
-            return regelResultat
-        }
-
-        resultat.delresultat.forEach{ delresultat ->
-            regelResultat = delresultat.delresultat.find { it.regelId == regelId }
+    companion object {
+        private fun finnRegelResultat(resultat: Resultat, regelId: RegelId): Resultat? {
+            var regelResultat = finnDelresultat(resultat, regelId)
             if (regelResultat != null) {
                 return regelResultat
             }
+
+            resultat.delresultat.forEach { delresultat ->
+                regelResultat = finnRegelResultat(delresultat, regelId)
+                if (regelResultat != null) {
+                    return regelResultat
+                }
+            }
+
+            return regelResultat
         }
 
-        return regelResultat
+        fun finnDelresultat(resultat: Resultat, regelId: RegelId): Resultat? {
+            return resultat.delresultat.find { it.regelId == regelId }
+        }
     }
 }

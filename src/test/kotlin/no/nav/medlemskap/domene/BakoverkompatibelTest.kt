@@ -492,7 +492,7 @@ private val forventetResponse =
         "harDekning" : null,
         "dekning" : "",
         "delresultat" : [ {
-          "regelId" : "REGEL_MEDLEM_KONKLUSJON",
+          "regelId" : "REGEL_MEDL",
           "avklaring" : "Er bruker medlem?",
           "begrunnelse" : "Kan ikke konkludere med medlemskap",
           "svar" : "UAVKLART",
@@ -628,6 +628,14 @@ private val forventetResponse =
           "dekning" : "",
           "delresultat" : [ ]
         }, {
+          "regelId" : "REGEL_10",
+          "avklaring" : "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
+          "begrunnelse" : "",
+          "svar" : "JA",
+          "harDekning" : null,
+          "dekning" : "",
+          "delresultat" : [ ]
+        }, {
           "regelId" : "REGEL_NORSK",
           "avklaring" : "Er regler for norsk borgere avklart?",
           "begrunnelse" : "Regelflyt konkluderer med JA",
@@ -635,14 +643,6 @@ private val forventetResponse =
           "harDekning" : null,
           "dekning" : "",
           "delresultat" : [ {
-            "regelId" : "REGEL_10",
-            "avklaring" : "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
-            "begrunnelse" : "",
-            "svar" : "JA",
-            "harDekning" : null,
-            "dekning" : "",
-            "delresultat" : [ ]
-          }, {
             "regelId" : "REGEL_12",
             "avklaring" : "Har bruker vært i minst 25% stilling de siste 12 mnd?",
             "begrunnelse" : "",

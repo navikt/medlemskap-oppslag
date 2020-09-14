@@ -21,7 +21,7 @@ class ReglerForArbeidsforhold(
 
         val erBrukerPilotEllerKabinansattFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_8),
-            hvisJa = konklusjonUavklart(ytelse),
+            hvisJa = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD),
             hvisNei = regelflytJa(ytelse, REGEL_ARBEIDSFORHOLD)
         )
 

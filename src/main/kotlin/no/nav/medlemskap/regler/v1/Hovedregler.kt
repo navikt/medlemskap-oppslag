@@ -76,7 +76,7 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
         }
 
         private fun lagDelresultat(resultater: List<Resultat>): List<Resultat> {
-            return resultater.map { if (it.regelId == RegelId.REGEL_FLYT_KONKLUSJON) it.delresultat.first() else it }
+            return resultater.map { if (it.regelId == RegelId.REGEL_FLYT_KONKLUSJON || it.erMedlemskonklusjon() && it.delresultat.isNotEmpty()) it.delresultat.first() else it }
         }
 
         private fun uavklartResultat(ytelse: Ytelse): Resultat {

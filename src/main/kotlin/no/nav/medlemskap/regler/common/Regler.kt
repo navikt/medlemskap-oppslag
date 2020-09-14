@@ -29,7 +29,8 @@ abstract class Regler(val ytelse: Ytelse, val regelMap: Map<RegelId, Regel> = em
         val resultater: MutableList<Resultat> = mutableListOf()
 
         val konklusjon = regelflyt.utfør(resultater)
-        return konklusjon.copy(delresultat = resultater.utenKonklusjon())
+        val delresultater = if (konklusjon.delresultat.isNotEmpty()) konklusjon.delresultat else resultater.utenKonklusjon()
+        return konklusjon.copy(delresultat = delresultater)
     }
 
     protected fun lagRegelflyt(regel: Regel, hvisJa: Regelflyt? = null, hvisNei: Regelflyt? = null, hvisUavklart: Regelflyt = konklusjonUavklart(ytelse)): Regelflyt {
