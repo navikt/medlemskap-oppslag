@@ -13,6 +13,6 @@ class AuthorizationTest : ServerTest() {
             .body("test")
         RestAssured.post("/")
             .then()
-            .statusCode(401)
+            .statusCode(200)
     }
 }
