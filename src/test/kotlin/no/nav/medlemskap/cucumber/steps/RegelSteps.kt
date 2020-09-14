@@ -5,7 +5,6 @@ import io.cucumber.java8.No
 import no.nav.medlemskap.cucumber.*
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.barn.DataOmBarn
-import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.regler.assertDelresultat
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Svar
@@ -79,14 +78,13 @@ class RegelSteps : No {
             pdlPersonhistorikkBuilder.familierelasjoner.addAll(familierelasjoner)
         }
 
-
         Gitt<DataTable>("følgende personhistorikk for ektefelle fra PDL") { dataTable: DataTable? ->
             val ektefelle = domenespråkParser.mapDataTable(dataTable, PersonhistorikkEktefelleMapper())
             dataOmEktefelleBuilder.personhistorikkEktefelle = ektefelle[0]
         }
 
         Gitt<DataTable>("følgende barn i personhistorikk for ektefelle fra PDL") { dataTable: DataTable? ->
-            val barnTilEktefelle= domenespråkParser.mapDataTable(dataTable, BarnTilEktefelleMapper())
+            val barnTilEktefelle = domenespråkParser.mapDataTable(dataTable, BarnTilEktefelleMapper())
             personhistorikkEktefelleBuilder.barn.addAll(barnTilEktefelle)
         }
 
@@ -94,7 +92,6 @@ class RegelSteps : No {
             val barnTilBruker = domenespråkParser.mapDataTable(dataTable, PersonhistorikkBarnMapper())
             dataOmBarn = barnTilBruker
         }
-
 
         Gitt("følgende medlemsunntak fra MEDL") { dataTable: DataTable? ->
             medlemskap = domenespråkParser.mapDataTable(dataTable, MedlemskapMapper())
@@ -213,16 +210,16 @@ class RegelSteps : No {
         val ytelse = medlemskapsparametre.ytelse ?: Ytelse.SYKEPENGER
 
         return Datagrunnlag(
-                periode = sykemeldingsperiode,
-                brukerinput = Brukerinput(harHattArbeidUtenforNorge),
-                pdlpersonhistorikk = pdlPersonhistorikkBuilder.build(),
-                medlemskap = medlemskap,
-                arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgiverMap, arbeidsavtaleMap, utenlandsoppholdMap),
-                oppgaver = oppgaverFraGosys,
-                dokument = journalPosterFraJoArk,
-                ytelse = ytelse,
-                dataOmBarn = dataOmBarn,
-                dataOmEktefelle = dataOmEktefelleBuilder.build()
+            periode = sykemeldingsperiode,
+            brukerinput = Brukerinput(harHattArbeidUtenforNorge),
+            pdlpersonhistorikk = pdlPersonhistorikkBuilder.build(),
+            medlemskap = medlemskap,
+            arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgiverMap, arbeidsavtaleMap, utenlandsoppholdMap),
+            oppgaver = oppgaverFraGosys,
+            dokument = journalPosterFraJoArk,
+            ytelse = ytelse,
+            dataOmBarn = dataOmBarn,
+            dataOmEktefelle = dataOmEktefelleBuilder.build()
         )
     }
 

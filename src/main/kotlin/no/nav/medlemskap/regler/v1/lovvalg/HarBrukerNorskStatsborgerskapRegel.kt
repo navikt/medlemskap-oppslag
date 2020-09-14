@@ -27,9 +27,9 @@ class HarBrukerNorskStatsborgerskapRegel(
 
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerNorskStatsborgerskapRegel {
             return HarBrukerNorskStatsborgerskapRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode,
-                    statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap
+                ytelse = datagrunnlag.ytelse,
+                periode = datagrunnlag.periode,
+                statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap
             )
         }
     }

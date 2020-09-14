@@ -10,10 +10,10 @@ import no.nav.medlemskap.regler.common.ja
 import no.nav.medlemskap.regler.common.nei
 
 class HarBrukerEktefelleRegel(
-        ytelse: Ytelse,
-        private val periode: InputPeriode,
-        private val dataOmEktefelle: DataOmEktefelle?,
-        regelId: RegelId = RegelId.REGEL_11_2
+    ytelse: Ytelse,
+    private val periode: InputPeriode,
+    private val dataOmEktefelle: DataOmEktefelle?,
+    regelId: RegelId = RegelId.REGEL_11_2
 ) : LovvalgRegel(regelId, ytelse, periode) {
 
     override fun operasjon(): Resultat {
@@ -21,7 +21,7 @@ class HarBrukerEktefelleRegel(
 
         if (ektefelle != null) {
             return when {
-                !ektefelle.ident.isEmpty()  -> ja()
+                !ektefelle.ident.isEmpty() -> ja()
                 else -> nei("Bruker har ikke ektefelle i PDL")
             }
         }
@@ -32,9 +32,9 @@ class HarBrukerEktefelleRegel(
 
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerEktefelleRegel {
             return HarBrukerEktefelleRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode,
-                    dataOmEktefelle = datagrunnlag.dataOmEktefelle
+                ytelse = datagrunnlag.ytelse,
+                periode = datagrunnlag.periode,
+                dataOmEktefelle = datagrunnlag.dataOmEktefelle
             )
         }
     }

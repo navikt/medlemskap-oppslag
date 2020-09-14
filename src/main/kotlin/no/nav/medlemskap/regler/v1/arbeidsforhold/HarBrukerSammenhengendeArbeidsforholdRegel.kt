@@ -29,10 +29,10 @@ class HarBrukerSammenhengendeArbeidsforholdRegel(
 
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerSammenhengendeArbeidsforholdRegel {
             return HarBrukerSammenhengendeArbeidsforholdRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode,
-                    arbeidsforhold = datagrunnlag.arbeidsforhold,
-                    statsborgerskap = datagrunnlag.pdlpersonhistorikk?.statsborgerskap
+                ytelse = datagrunnlag.ytelse,
+                periode = datagrunnlag.periode,
+                arbeidsforhold = datagrunnlag.arbeidsforhold,
+                statsborgerskap = datagrunnlag.pdlpersonhistorikk?.statsborgerskap
             )
         }
     }

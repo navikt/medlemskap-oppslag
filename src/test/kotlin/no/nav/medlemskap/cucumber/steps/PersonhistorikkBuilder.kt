@@ -13,13 +13,13 @@ class PersonhistorikkBuilder {
 
     fun build(): Personhistorikk {
         return Personhistorikk(
-                statsborgerskap = statsborgerskap,
-                personstatuser = personstatuser,
-                bostedsadresser = bostedsadresser,
-                kontaktadresser = kontaktadresse,
-                oppholdsadresser = oppholdsadresse,
-                sivilstand = sivilstand,
-                familierelasjoner = familierelasjoner
+            statsborgerskap = statsborgerskap,
+            personstatuser = personstatuser,
+            bostedsadresser = bostedsadresser,
+            kontaktadresser = kontaktadresse,
+            oppholdsadresser = oppholdsadresse,
+            sivilstand = sivilstand,
+            familierelasjoner = familierelasjoner
         )
     }
 }

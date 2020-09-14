@@ -3,13 +3,13 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class Personhistorikk(
-        val statsborgerskap: List<Statsborgerskap>,
-        val personstatuser: List<FolkeregisterPersonstatus>,
-        val bostedsadresser: List<Adresse>,
-        val kontaktadresser: List<Adresse>,
-        val oppholdsadresser: List<Adresse>,
-        val sivilstand: List<Sivilstand>,
-        val familierelasjoner: List<Familierelasjon>
+    val statsborgerskap: List<Statsborgerskap>,
+    val personstatuser: List<FolkeregisterPersonstatus>,
+    val bostedsadresser: List<Adresse>,
+    val kontaktadresser: List<Adresse>,
+    val oppholdsadresser: List<Adresse>,
+    val sivilstand: List<Sivilstand>,
+    val familierelasjoner: List<Familierelasjon>
 )
 
 data class Statsborgerskap(

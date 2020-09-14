@@ -2,6 +2,7 @@ package no.nav.medlemskap.services.pdl
 
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.pdl.PdlClient
+import no.nav.medlemskap.clients.pdl.generated.HentIdenter
 import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
 import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
@@ -55,7 +56,7 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
 
     suspend fun hentPersonHistorikkTilBruker(fnr: String, callId: String): Personhistorikk {
         val hentPerson = pdlClient.hentPerson(fnr, callId)
-        if(hentPerson.data?.hentPerson != null){
+        if (hentPerson.data?.hentPerson != null) {
             return PdlMapper.mapTilPersonHistorikkTilBruker(hentPerson.data?.hentPerson!!)
         } else throw PersonIkkeFunnet("PDL")
 
@@ -86,13 +87,5 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
 
     suspend fun hentFoedselsaar(fnr: String, callId: String): Int {
         return PdlMapper.mapTilFoedselsaar(pdlClient.hentFoedselsaar(fnr, callId).data?.hentPerson?.foedsel)
-    }
-
-    suspend fun hentStatsborgerskap(fnr: String, callId: String): List<Statsborgerskap>? {
-        val statsborgerskap = pdlClient.hentNasjonalitet(fnr, callId).data?.hentPerson?.statsborgerskap?.ifEmpty {
-            logger.warn("PDL fant ikke person")
-            emptyList()
-        }
-        return statsborgerskap?.map { PdlMapper.mapStatsborgerskap(it) }
     }
 }

@@ -11,8 +11,6 @@ object AdresseFunksjoner {
 
     fun String.landkodeErNorsk() = this == "NOR"
 
-
-
     fun Adresse.adressensPeriodeOverlapperKontrollPerioden(kontrollPeriode: Kontrollperiode) =
         Funksjoner.periodefilter(lagInterval(Periode(this.fom, this.tom)), kontrollPeriode.tilPeriode())
 

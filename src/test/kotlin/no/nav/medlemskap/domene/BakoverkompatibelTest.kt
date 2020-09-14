@@ -124,16 +124,16 @@ suspend fun mockCreateDatagrunnlag(
     val ytelse = Ytelse.SYKEPENGER
 
     Datagrunnlag(
-            periode = periode,
-            brukerinput = brukerinput,
-            pdlpersonhistorikk = personhistorikk(),
-            medlemskap = listOf(Medlemskap("dekning", enDato(), enAnnenDato(), true, Lovvalg.ENDL, "NOR", PeriodeStatus.GYLD)),
-            arbeidsforhold = listOf(arbeidsforhold()),
-            oppgaver = listOf(Oppgave(enDato(), Prioritet.NORM, Status.AAPNET, "Tema")),
-            dokument = listOf(Journalpost("Id", "Tittel", "Posttype", "Status", "Tema", listOf(Dokument("Id", "Tittel")))),
-            ytelse = ytelse,
-            dataOmBarn = listOf(DataOmBarn(personhistorikkBarn = personhistorikkForBarn())),
-            dataOmEktefelle = DataOmEktefelle(personhistorikkEktefelle(), listOf(arbeidsforhold()))
+        periode = periode,
+        brukerinput = brukerinput,
+        pdlpersonhistorikk = personhistorikk(),
+        medlemskap = listOf(Medlemskap("dekning", enDato(), enAnnenDato(), true, Lovvalg.ENDL, "NOR", PeriodeStatus.GYLD)),
+        arbeidsforhold = listOf(arbeidsforhold()),
+        oppgaver = listOf(Oppgave(enDato(), Prioritet.NORM, Status.AAPNET, "Tema")),
+        dokument = listOf(Journalpost("Id", "Tittel", "Posttype", "Status", "Tema", listOf(Dokument("Id", "Tittel")))),
+        ytelse = ytelse,
+        dataOmBarn = listOf(DataOmBarn(personhistorikkBarn = personhistorikkForBarn())),
+        dataOmEktefelle = DataOmEktefelle(personhistorikkEktefelle(), listOf(arbeidsforhold()))
     )
 }
 
@@ -153,44 +153,44 @@ private fun arbeidsforhold(): Arbeidsforhold {
 
 private fun personhistorikk(): Personhistorikk {
     return Personhistorikk(
-            statsborgerskap = listOf(Statsborgerskap("NOR", enDato(), enAnnenDato())),
-            personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSA, enDato(), enAnnenDato())),
-            bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr(), folkeregistermetadata())),
-            familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata())),
-            kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
+        statsborgerskap = listOf(Statsborgerskap("NOR", enDato(), enAnnenDato())),
+        personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSA, enDato(), enAnnenDato())),
+        bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr(), folkeregistermetadata())),
+        familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata())),
+        kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
     )
 }
 
 private fun personhistorikkRelatertPerson(): PersonhistorikkRelatertPerson {
     return PersonhistorikkRelatertPerson(
-            ident = ektefelleFnr(),
-            personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSA, enDato(), enAnnenDato())),
-            bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
+        ident = ektefelleFnr(),
+        personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSA, enDato(), enAnnenDato())),
+        bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
     )
 }
 
 private fun personhistorikkForBarn(): PersonhistorikkBarn {
     return PersonhistorikkBarn(
-            ident = barnFnr(),
-            bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            familierelasjoner = listOf(Familierelasjon(brukerFnr(), Familierelasjonsrolle.FAR, Familierelasjonsrolle.BARN, folkeregistermetadata()))
+        ident = barnFnr(),
+        bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        familierelasjoner = listOf(Familierelasjon(brukerFnr(), Familierelasjonsrolle.FAR, Familierelasjonsrolle.BARN, folkeregistermetadata()))
 
     )
 }
 
 private fun personhistorikkEktefelle(): PersonhistorikkEktefelle {
     return PersonhistorikkEktefelle(
-            ident = ektefelleFnr(),
-            barn = listOf(barnFnr()),
-            bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
+        ident = ektefelleFnr(),
+        barn = listOf(barnFnr()),
+        bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
     )
 }
 

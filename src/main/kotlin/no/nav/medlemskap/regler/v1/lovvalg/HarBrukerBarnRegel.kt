@@ -9,10 +9,10 @@ import no.nav.medlemskap.regler.common.ja
 import no.nav.medlemskap.regler.common.nei
 
 class HarBrukerBarnRegel(
-        ytelse: Ytelse,
-        private val periode: InputPeriode,
-        private val dataOmBarn: List<DataOmBarn>?,
-        regelId: RegelId = RegelId.REGEL_11_2_1
+    ytelse: Ytelse,
+    private val periode: InputPeriode,
+    private val dataOmBarn: List<DataOmBarn>?,
+    regelId: RegelId = RegelId.REGEL_11_2_1
 ) : LovvalgRegel(regelId, ytelse, periode) {
 
     override fun operasjon(): Resultat {
@@ -28,10 +28,10 @@ class HarBrukerBarnRegel(
 
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag, regelId: RegelId): HarBrukerBarnRegel {
             return HarBrukerBarnRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode,
-                    dataOmBarn= datagrunnlag.dataOmBarn,
-                    regelId = regelId
+                ytelse = datagrunnlag.ytelse,
+                periode = datagrunnlag.periode,
+                dataOmBarn = datagrunnlag.dataOmBarn,
+                regelId = regelId
             )
         }
     }

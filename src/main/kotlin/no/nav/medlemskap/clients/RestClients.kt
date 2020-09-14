@@ -2,7 +2,6 @@ package no.nav.medlemskap.clients
 
 import no.nav.medlemskap.clients.aareg.AaRegClient
 import no.nav.medlemskap.clients.ereg.EregClient
-import no.nav.medlemskap.clients.inntekt.InntektClient
 import no.nav.medlemskap.clients.medl.MedlClient
 import no.nav.medlemskap.clients.oppgave.OppgaveClient
 import no.nav.medlemskap.clients.pdl.PdlClient

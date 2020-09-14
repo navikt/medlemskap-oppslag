@@ -18,7 +18,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 @Disabled
 class PdlClientStatsborgerskapDataTest {
 
-    //Todo brukes denne?
+    // Todo brukes denne?
     companion object {
         val server: WireMockServer = WireMockServer(WireMockConfiguration.options().dynamicPort())
 

@@ -6,8 +6,6 @@ import java.util.*
 
 object RelasjonFunksjoner {
 
-
-
     fun String.filtrerBarnUnder25Aar() =
         (Calendar.getInstance().get(Calendar.YEAR) - this.hentBursdagsAar().toInt()) <= 25
 
@@ -34,26 +32,22 @@ object RelasjonFunksjoner {
 
     fun hentFnrTilEktefelle(personHistorikkFraPdl: Personhistorikk?): String? {
         val fnrTilEktefelle =
-                personHistorikkFraPdl?.sivilstand
-                        ?.filter { it.relatertVedSivilstand != null }
-                        ?.filter { FodselsnummerValidator.isValid(it.relatertVedSivilstand) }
-                        ?.filter { it.type == Sivilstandstype.GIFT || it.type == Sivilstandstype.REGISTRERT_PARTNER }
-                        ?.map { it.relatertVedSivilstand }
-                        ?.lastOrNull()
+            personHistorikkFraPdl?.sivilstand
+                ?.filter { it.relatertVedSivilstand != null }
+                ?.filter { FodselsnummerValidator.isValid(it.relatertVedSivilstand) }
+                ?.filter { it.type == Sivilstandstype.GIFT || it.type == Sivilstandstype.REGISTRERT_PARTNER }
+                ?.map { it.relatertVedSivilstand }
+                ?.lastOrNull()
         return fnrTilEktefelle
     }
 
     fun hentFnrTilBarn(familierelasjoner: List<Familierelasjon>): List<String> {
         return familierelasjoner
-                .filter { FodselsnummerValidator.isValid(it.relatertPersonsIdent) }
-                .filter { it.erBarn() }
-                .filter { it.relatertPersonsIdent.filtrerBarnUnder25Aar()}
-                .map { it.relatertPersonsIdent }
+            .filter { FodselsnummerValidator.isValid(it.relatertPersonsIdent) }
+            .filter { it.erBarn() }
+            .filter { it.relatertPersonsIdent.filtrerBarnUnder25Aar() }
+            .map { it.relatertPersonsIdent }
     }
 
     fun Familierelasjon.erBarn() = this.relatertPersonsRolle == Familierelasjonsrolle.BARN
-
-
-
-
 }

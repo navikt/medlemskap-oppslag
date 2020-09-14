@@ -3,7 +3,6 @@ package no.nav.medlemskap.cucumber.steps
 import no.nav.medlemskap.domene.Adresse
 import no.nav.medlemskap.domene.Familierelasjon
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
-import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 
 class PersonhistorikkBarnBuilder {
 
@@ -13,14 +12,13 @@ class PersonhistorikkBarnBuilder {
     val oppholdsadresse = mutableListOf<Adresse>()
     val familierelasjon = mutableListOf<Familierelasjon>()
 
-
-    fun build(): PersonhistorikkBarn{
+    fun build(): PersonhistorikkBarn {
         return PersonhistorikkBarn(
-                ident = ident,
-                bostedsadresser = bostedsadresse,
-                kontaktadresser = kontaktadresse,
-                oppholdsadresser = oppholdsadresse,
-                familierelasjoner = familierelasjon
+            ident = ident,
+            bostedsadresser = bostedsadresse,
+            kontaktadresser = kontaktadresse,
+            oppholdsadresser = oppholdsadresse,
+            familierelasjoner = familierelasjon
         )
     }
 }

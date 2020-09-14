@@ -7,19 +7,17 @@ import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 
 class DataOmBarnBuilder {
     var personhistorikkBarn = PersonhistorikkBarn(
-            ident = String(),
-            bostedsadresser = mutableListOf<Adresse>(),
-            kontaktadresser = mutableListOf<Adresse>(),
-            oppholdsadresser = mutableListOf<Adresse>(),
-            familierelasjoner = mutableListOf<Familierelasjon>()
+        ident = String(),
+        bostedsadresser = mutableListOf<Adresse>(),
+        kontaktadresser = mutableListOf<Adresse>(),
+        oppholdsadresser = mutableListOf<Adresse>(),
+        familierelasjoner = mutableListOf<Familierelasjon>()
 
     )
 
-
     fun build(): DataOmBarn {
         return DataOmBarn(
-                personhistorikkBarn = personhistorikkBarn
+            personhistorikkBarn = personhistorikkBarn
         )
     }
 }
-

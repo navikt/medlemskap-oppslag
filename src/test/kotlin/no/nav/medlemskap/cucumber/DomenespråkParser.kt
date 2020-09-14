@@ -367,7 +367,7 @@ class PersonstatusMapper : RadMapper<FolkeregisterPersonstatus> {
 }
 
 class PersonhistorikkEktefelleMapper : RadMapper<PersonhistorikkEktefelle> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): PersonhistorikkEktefelle{
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): PersonhistorikkEktefelle {
         val fraOgMedDato = domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad)
         val tilOgMedDato = domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
 
@@ -378,7 +378,7 @@ class PersonhistorikkEktefelleMapper : RadMapper<PersonhistorikkEktefelle> {
         }
 
         val kontaktadresser = mutableListOf<Adresse>()
-        val kontaktadresse= domenespråkParser.parseValgfriString(KONTAKTADRESSE, rad)
+        val kontaktadresse = domenespråkParser.parseValgfriString(KONTAKTADRESSE, rad)
         if (kontaktadresse != null) {
             kontaktadresser.add(Adresse(kontaktadresse, fraOgMedDato, tilOgMedDato))
         }
@@ -390,18 +390,18 @@ class PersonhistorikkEktefelleMapper : RadMapper<PersonhistorikkEktefelle> {
         }
 
         return PersonhistorikkEktefelle(
-           ident = domenespråkParser.parseString(IDENT, rad),
-           barn = mutableListOf<String>(),
-           bostedsadresser = bostedsadresser,
-           kontaktadresser = kontaktadresser,
-           oppholdsadresser = oppholdsadresser
+            ident = domenespråkParser.parseString(IDENT, rad),
+            barn = mutableListOf<String>(),
+            bostedsadresser = bostedsadresser,
+            kontaktadresser = kontaktadresser,
+            oppholdsadresser = oppholdsadresser
 
         )
     }
 }
 
-class PersonhistorikkBarnMapper : RadMapper<DataOmBarn>{
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): DataOmBarn{
+class PersonhistorikkBarnMapper : RadMapper<DataOmBarn> {
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): DataOmBarn {
         val fraOgMedDato = domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad)
         val tilOgMedDato = domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
 
@@ -412,7 +412,7 @@ class PersonhistorikkBarnMapper : RadMapper<DataOmBarn>{
         }
 
         val kontaktadresser = mutableListOf<Adresse>()
-        val kontaktadresse= domenespråkParser.parseValgfriString(KONTAKTADRESSE, rad)
+        val kontaktadresse = domenespråkParser.parseValgfriString(KONTAKTADRESSE, rad)
         if (kontaktadresse != null) {
             kontaktadresser.add(Adresse(kontaktadresse, fraOgMedDato, tilOgMedDato))
         }
@@ -423,16 +423,17 @@ class PersonhistorikkBarnMapper : RadMapper<DataOmBarn>{
             oppholdsadresser.add(Adresse(oppholdsadresse, fraOgMedDato, tilOgMedDato))
         }
 
-        return DataOmBarn(PersonhistorikkBarn(
+        return DataOmBarn(
+            PersonhistorikkBarn(
                 ident = domenespråkParser.parseString(IDENT, rad),
                 familierelasjoner = mutableListOf<Familierelasjon>(),
                 bostedsadresser = bostedsadresser,
                 kontaktadresser = kontaktadresser,
                 oppholdsadresser = oppholdsadresser
 
-        ))
+            )
+        )
     }
-
 }
 
 class SivilstandMapper : RadMapper<Sivilstand> {
@@ -458,8 +459,7 @@ class FamilieRelasjonMapper : RadMapper<Familierelasjon> {
     }
 }
 
-
-class BarnTilEktefelleMapper: RadMapper<String> {
+class BarnTilEktefelleMapper : RadMapper<String> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): String {
         return String()
     }

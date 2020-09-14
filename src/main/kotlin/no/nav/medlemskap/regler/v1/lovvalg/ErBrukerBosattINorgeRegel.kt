@@ -11,12 +11,12 @@ import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserForKontroll
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresserForKontrollPeriode
 
 class ErBrukerBosattINorgeRegel(
-        val kontaktadresser: List<Adresse>,
-        val bostedsadresser: List<Adresse>,
-        val oppholdsadresser: List<Adresse>,
-        ytelse: Ytelse,
-        val periode: InputPeriode
-): LovvalgRegel(REGEL_10, ytelse, periode) {
+    val kontaktadresser: List<Adresse>,
+    val bostedsadresser: List<Adresse>,
+    val oppholdsadresser: List<Adresse>,
+    ytelse: Ytelse,
+    val periode: InputPeriode
+) : LovvalgRegel(REGEL_10, ytelse, periode) {
 
     override fun operasjon(): Resultat {
         val bostedsadresser = bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
@@ -24,9 +24,9 @@ class ErBrukerBosattINorgeRegel(
         val oppholsadresserLandkoder = oppholdsadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
 
         return when {
-            bostedsadresser.erIkkeTom()
-                    && (kontaktadresserLandkoder.all { Eøsland.erNorsk(it)} || kontaktadresserLandkoder.erTom())
-                    && (oppholsadresserLandkoder.all { Eøsland.erNorsk(it)} || oppholsadresserLandkoder.erTom()) -> ja()
+            bostedsadresser.erIkkeTom() &&
+                (kontaktadresserLandkoder.all { Eøsland.erNorsk(it) } || kontaktadresserLandkoder.erTom())
+                && (oppholsadresserLandkoder.all { Eøsland.erNorsk(it) } || oppholsadresserLandkoder.erTom()) -> ja()
             else -> nei("Ikke alle adressene til bruker er norske, eller bruker mangler bostedsadresse")
         }
     }
@@ -34,11 +34,12 @@ class ErBrukerBosattINorgeRegel(
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErBrukerBosattINorgeRegel {
             return ErBrukerBosattINorgeRegel(
-                    kontaktadresser =datagrunnlag.pdlpersonhistorikk.kontaktadresser,
-                    bostedsadresser = datagrunnlag.pdlpersonhistorikk.bostedsadresser,
-                    oppholdsadresser = datagrunnlag.pdlpersonhistorikk.oppholdsadresser,
-                    ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode)
+                kontaktadresser = datagrunnlag.pdlpersonhistorikk.kontaktadresser,
+                bostedsadresser = datagrunnlag.pdlpersonhistorikk.bostedsadresser,
+                oppholdsadresser = datagrunnlag.pdlpersonhistorikk.oppholdsadresser,
+                ytelse = datagrunnlag.ytelse,
+                periode = datagrunnlag.periode
+            )
         }
     }
 }

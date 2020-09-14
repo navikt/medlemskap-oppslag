@@ -12,15 +12,15 @@ import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserForKontroll
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresserForKontrollPeriode
 
 class ErBrukersEktefelleBosattINorgeRegel(
-        ytelse: Ytelse,
-        private val periode: InputPeriode,
-        private val dataOmEktefelle: DataOmEktefelle?,
-        regelId: RegelId = RegelId.REGEL_11_3_1
+    ytelse: Ytelse,
+    private val periode: InputPeriode,
+    private val dataOmEktefelle: DataOmEktefelle?,
+    regelId: RegelId = RegelId.REGEL_11_3_1
 ) : LovvalgRegel(regelId, ytelse, periode) {
 
     override fun operasjon(): Resultat {
 
-        if(dataOmEktefelle != null) {
+        if (dataOmEktefelle != null) {
             val ektefelle = dataOmEktefelle.personhistorikkEktefelle
 
             val bostedsadresserTilEktefelle = ektefelle.bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
@@ -40,10 +40,10 @@ class ErBrukersEktefelleBosattINorgeRegel(
 
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag, regelId: RegelId): ErBrukersEktefelleBosattINorgeRegel {
             return ErBrukersEktefelleBosattINorgeRegel(
-                    ytelse = datagrunnlag.ytelse,
-                    periode = datagrunnlag.periode,
-                    dataOmEktefelle = datagrunnlag.dataOmEktefelle,
-                    regelId = regelId
+                ytelse = datagrunnlag.ytelse,
+                periode = datagrunnlag.periode,
+                dataOmEktefelle = datagrunnlag.dataOmEktefelle,
+                regelId = regelId
             )
         }
     }

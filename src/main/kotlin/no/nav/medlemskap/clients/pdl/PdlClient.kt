@@ -61,7 +61,6 @@ class PdlClient(
             }
             response
         }
-
     }
 
     suspend fun hentNasjonalitet(fnr: String, callId: String): GraphQLResponse<HentNasjonalitet.Result> {

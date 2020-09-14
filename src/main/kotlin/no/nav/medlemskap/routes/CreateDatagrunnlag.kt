@@ -30,15 +30,13 @@ suspend fun defaultCreateDatagrunnlag(
     ytelseFraRequest: Ytelse?
 ): Datagrunnlag = coroutineScope {
 
-    val dataOmEktefelle : DataOmEktefelle?
+    val dataOmEktefelle: DataOmEktefelle?
     val dataOmBrukersBarn: List<DataOmBarn>?
 
     val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr, callId, fraOgMedDatoForArbeidsforhold(periode), periode.tom) }
     val aktorIder = services.pdlService.hentAlleAktorIder(fnr, callId)
     val personHistorikkFraPdl = hentPersonhistorikkFraPdl(services, fnr, callId)
-    val historikkFraTpsRequest = async { services.personService.personhistorikk(fnr, periode.fom) }
     val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(fnr, callId) }
-    val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr, callId, fraOgMedDatoForArbeidsforhold(periode), periode.tom) }
     val journalPosterRequest = async { services.safService.hentJournaldata(fnr, callId) }
     val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktorIder, callId) }
 
@@ -60,16 +58,16 @@ suspend fun defaultCreateDatagrunnlag(
         flereStatsborgerskapCounter(personHistorikkFraPdl.statsborgerskap.size.toString(), ytelse).increment()
 
     Datagrunnlag(
-            periode = periode,
-            brukerinput = brukerinput,
-            pdlpersonhistorikk = personHistorikkFraPdl,
-            medlemskap = medlemskap,
-            arbeidsforhold = arbeidsforhold,
-            oppgaver = oppgaver,
-            dokument = journalPoster,
-            ytelse = ytelse,
-            dataOmBarn = dataOmBrukersBarn,
-            dataOmEktefelle = dataOmEktefelle
+        periode = periode,
+        brukerinput = brukerinput,
+        pdlpersonhistorikk = personHistorikkFraPdl,
+        medlemskap = medlemskap,
+        arbeidsforhold = arbeidsforhold,
+        oppgaver = oppgaver,
+        dokument = journalPoster,
+        ytelse = ytelse,
+        dataOmBarn = dataOmBrukersBarn,
+        dataOmEktefelle = dataOmEktefelle
     )
 }
 
@@ -84,8 +82,9 @@ private suspend fun CoroutineScope.hentDataOmEktefelle(fnrTilEktefelle: String?,
         val arbeidsforholdEktefelle = arbeidsforholdEktefelleReguest.await()
 
         return DataOmEktefelle(
-                personhistorikkEktefelle = personhistorikkEktefelle,
-                arbeidsforholdEktefelle = arbeidsforholdEktefelle)
+            personhistorikkEktefelle = personhistorikkEktefelle,
+            arbeidsforholdEktefelle = arbeidsforholdEktefelle
+        )
     }
     return null
 }
@@ -96,15 +95,9 @@ suspend fun hentPersonHistorikkForEktefelle(fnrTilEktefelle: String, services: S
 
 suspend fun hentPersonHistorikkForBarn(fnrTilBarn: String, services: Services, callId: String): PersonhistorikkBarn {
     return services.pdlService.hentPersonHistorikkTilBarn(fnrTilBarn, callId)
-
 }
 
-//Midlertidig kode, ekstra feilhåndtering fordi integrasjonen vår mot PDL ikke er helt 100% ennå..
+// Midlertidig kode, ekstra feilhåndtering fordi integrasjonen vår mot PDL ikke er helt 100% ennå..
 private suspend fun hentPersonhistorikkFraPdl(services: Services, fnr: String, callId: String): Personhistorikk {
     return services.pdlService.hentPersonHistorikkTilBruker(fnr, callId)
 }
-
-
-
-
-
