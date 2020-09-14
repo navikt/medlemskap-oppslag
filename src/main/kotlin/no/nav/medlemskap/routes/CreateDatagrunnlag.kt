@@ -54,7 +54,7 @@ suspend fun defaultCreateDatagrunnlag(
 
     ytelseCounter(ytelse.metricName()).increment()
 
-    if (personHistorikkFraPdl?.statsborgerskap?.size!! > 1)
+    if (personHistorikkFraPdl?.statsborgerskap?.size != null && personHistorikkFraPdl.statsborgerskap.size > 1)
         flereStatsborgerskapCounter(personHistorikkFraPdl.statsborgerskap.size.toString(), ytelse).increment()
 
     Datagrunnlag(
