@@ -1,6 +1,7 @@
 package no.nav.medlemskap.services.pdl
 
 import com.neovisionaries.i18n.LanguageAlpha3Code
+import mu.KotlinLogging
 import no.nav.medlemskap.clients.pdl.generated.HentFoedselsaar
 import no.nav.medlemskap.clients.pdl.generated.HentNasjonalitet
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
@@ -15,6 +16,9 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 object PdlMapper {
+
+    private val logger = KotlinLogging.logger { }
+
     fun mapTilPersonHistorikk(person: HentPerson.Person): Personhistorikk {
 
         val statsborgerskap: List<Statsborgerskap> = person.statsborgerskap.map { mapStatsborgerskap(it) }
@@ -81,7 +85,7 @@ object PdlMapper {
 
     private fun mapLandkodeForOppholdsadresse(oppholdsadresse: HentPerson.Oppholdsadresse): String {
         if (oppholdsadresse.utenlandskAdresse != null) {
-            return LanguageAlpha3Code.getByCode(oppholdsadresse.utenlandskAdresse!!.landkode.toLowerCase()).name.toUpperCase()
+            return mapLandkode(oppholdsadresse.utenlandskAdresse!!.landkode)
         }
         return LanguageAlpha3Code.nor.name
     }
@@ -96,12 +100,21 @@ object PdlMapper {
 
     private fun mapLandkodeForKontaktadresse(kontaktadresse: HentPerson.Kontaktadresse): String {
         if (kontaktadresse.utenlandskAdresse != null) {
-            return LanguageAlpha3Code.getByCode(kontaktadresse.utenlandskAdresse!!.landkode.toLowerCase()).name.toUpperCase()
+            return mapLandkode(kontaktadresse.utenlandskAdresse!!.landkode)
         }
         if (kontaktadresse.utenlandskAdresseIFrittFormat != null) {
-            return LanguageAlpha3Code.getByCode(kontaktadresse.utenlandskAdresseIFrittFormat!!.landkode.toLowerCase()).name.toUpperCase()
+            return mapLandkode(kontaktadresse.utenlandskAdresseIFrittFormat!!.landkode)
         }
         return LanguageAlpha3Code.nor.name.toUpperCase()
+    }
+
+    private fun mapLandkode(landkode: String): String {
+        return try {
+            LanguageAlpha3Code.getByCode(landkode.toLowerCase()).name.toUpperCase()
+        } catch (e: Exception) {
+            logger.warn("Klarte ikke å mappe {}", landkode, e)
+            "UKJENT"
+        }
     }
 
     private fun mapBostedsadresse(bostedsadresse: HentPerson.Bostedsadresse): Adresse {
