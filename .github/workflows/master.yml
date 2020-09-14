@@ -85,7 +85,7 @@ jobs:
 #        timeout-minutes: 5
   deployprod:
     name: Deploy to Prod
-    needs: acceptance-tests
+    needs: deploypreprod
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
