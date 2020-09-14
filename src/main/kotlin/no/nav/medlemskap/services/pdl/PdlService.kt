@@ -52,10 +52,15 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
     }
 
     suspend fun hentPersonHistorikk(fnr: String, callId: String): Personhistorikk {
-        val hentPerson = pdlClient.hentPerson(fnr, callId)
-        if (hentPerson.data?.hentPerson != null) {
-            return PdlMapper.mapTilPersonHistorikk(hentPerson.data?.hentPerson!!)
-        } else throw PersonIkkeFunnet("PDL")
+        val response = pdlClient.hentPerson(fnr, callId)
+        response.errors?.let { errors ->
+            logger.warn { "Fikk følgende feil fra PDL: ${objectMapper.writeValueAsString(errors)}" }
+        }
+        if (response.data?.hentPerson != null) {
+            return PdlMapper.mapTilPersonHistorikk(response.data?.hentPerson!!)
+        } else {
+            throw PersonIkkeFunnet("PDL")
+        }
 
 /*        // Hack for å overleve manglende aktørID i ikke-konsistente data i Q2
         if (pdlResponse.errors != null && clusterName == "dev-fss") {
