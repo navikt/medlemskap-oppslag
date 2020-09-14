@@ -172,11 +172,19 @@ object PdlMapper {
     }
 
     private fun convertToLocalDateTime(dateTimeToConvert: String?): LocalDateTime? {
-        return dateTimeToConvert?.let { LocalDateTime.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")) }
+        return dateTimeToConvert?.let { parseLocalDateTime(it) }
+    }
+
+    private fun parseLocalDateTime(string: String): LocalDateTime? {
+        return try {
+            LocalDateTime.parse(string, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        } catch (e: Exception) {
+            LocalDateTime.parse(string, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+        }
     }
 
     fun convertToLocalDate(dateToConvert: String?): LocalDate? {
-        return dateToConvert?.let { LocalDate.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd")) }
+        return dateToConvert?.let { LocalDate.parse(it, DateTimeFormatter.ISO_LOCAL_DATE) }
     }
 
     // Vi velger det høyeste årstallet, da blir personen yngst og det er mest sannsynlig at vi må vurdere bosted
