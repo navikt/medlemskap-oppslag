@@ -26,7 +26,7 @@ object PdlMapper {
 
         val oppholdsadresser: List<Adresse> = pdlOppholdsadresser.mapIndexed { index, oppholdsadresse ->
 
-            val opphoerstidspunkt = convertToLocalDate(oppholdsadresse.folkeregistermetadata?.opphoerstidspunkt)
+            val opphoerstidspunkt = convertToLocalDateTime(oppholdsadresse.folkeregistermetadata?.opphoerstidspunkt)?.toLocalDate()
 
             if (pdlOppholdsadresser.size < 2) {
                 mapOppholdsadresser(oppholdsadresse, opphoerstidspunkt)
@@ -34,7 +34,7 @@ object PdlMapper {
             if ((pdlOppholdsadresser.size) - 1 == index) {
                 mapOppholdsadresser(oppholdsadresse, opphoerstidspunkt)
             } else {
-                val tom = convertToLocalDate(pdlOppholdsadresser.get(index + 1).gyldigFraOgMed)?.minusDays(1)
+                val tom = convertToLocalDateTime(pdlOppholdsadresser.get(index + 1).gyldigFraOgMed)?.toLocalDate()?.minusDays(1)
                 mapOppholdsadresser(oppholdsadresse, tom)
             }
         }
@@ -73,8 +73,8 @@ object PdlMapper {
     private fun mapOppholdsadresser(oppholdsadresse: HentPerson.Oppholdsadresse, tom: LocalDate?): Adresse {
 
         return Adresse(
-            fom = convertToLocalDate(oppholdsadresse.gyldigFraOgMed),
-            tom = convertToLocalDate(oppholdsadresse.folkeregistermetadata?.opphoerstidspunkt),
+            fom = convertToLocalDateTime(oppholdsadresse.gyldigFraOgMed)?.toLocalDate(),
+            tom = convertToLocalDateTime(oppholdsadresse.folkeregistermetadata?.opphoerstidspunkt)?.toLocalDate(),
             landkode = mapLandkodeForOppholdsadresse(oppholdsadresse)
         )
     }
@@ -88,8 +88,8 @@ object PdlMapper {
 
     private fun mapKontaktAdresse(it: HentPerson.Kontaktadresse): Adresse {
         return Adresse(
-            fom = convertToLocalDate(it.gyldigFraOgMed),
-            tom = convertToLocalDate(it.gyldigTilOgMed),
+            fom = convertToLocalDateTime(it.gyldigFraOgMed)?.toLocalDate(),
+            tom = convertToLocalDateTime(it.gyldigTilOgMed)?.toLocalDate(),
             landkode = mapLandkodeForKontaktadresse(it)
         )
     }
@@ -107,8 +107,8 @@ object PdlMapper {
     private fun mapBostedsadresse(bostedsadresse: HentPerson.Bostedsadresse): Adresse {
         return Adresse(
             landkode = "NOR",
-            fom = convertToLocalDate(bostedsadresse.folkeregistermetadata?.gyldighetstidspunkt),
-            tom = convertToLocalDate(bostedsadresse.folkeregistermetadata?.opphoerstidspunkt)
+            fom = convertToLocalDateTime(bostedsadresse.folkeregistermetadata?.gyldighetstidspunkt)?.toLocalDate(),
+            tom = convertToLocalDateTime(bostedsadresse.folkeregistermetadata?.opphoerstidspunkt)?.toLocalDate()
         )
     }
 
