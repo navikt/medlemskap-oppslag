@@ -14,6 +14,8 @@ import java.time.format.DateTimeFormatter
 
 object PdlMapper {
 
+    private val logger = KotlinLogging.logger { }
+
     fun mapTilPersonHistorikkTilBruker(person: HentPerson.Person): Personhistorikk {
 
         val statsborgerskap: List<Statsborgerskap> = person.statsborgerskap.map { mapStatsborgerskap(it) }

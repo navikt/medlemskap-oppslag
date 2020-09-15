@@ -9,7 +9,7 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.ja
 import no.nav.medlemskap.regler.common.nei
 
-class ErBrukersEktefelleOgBarnasMorSammePersonRegel(
+class ErBrukersEktefelleOgBarnasForelderSammePersonRegel(
     ytelse: Ytelse,
     private val periode: InputPeriode,
     private val dataOmEktefelle: DataOmEktefelle?,
@@ -24,7 +24,7 @@ class ErBrukersEktefelleOgBarnasMorSammePersonRegel(
         if (ektefellesBarn != null && brukersBarn != null) {
             return when {
                 ektefellesBarn.map { it }.harAlle(brukersBarn.map { it.personhistorikkBarn.ident }) -> ja()
-                else -> nei(" Ektefelle er ikke barn/barnas mor")
+                else -> nei(" Ektefelle er ikke barn/barnas foreldre")
             }
         }
         return nei()
@@ -32,8 +32,8 @@ class ErBrukersEktefelleOgBarnasMorSammePersonRegel(
 
     companion object {
 
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErBrukersEktefelleOgBarnasMorSammePersonRegel {
-            return ErBrukersEktefelleOgBarnasMorSammePersonRegel(
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErBrukersEktefelleOgBarnasForelderSammePersonRegel {
+            return ErBrukersEktefelleOgBarnasForelderSammePersonRegel(
                 ytelse = datagrunnlag.ytelse,
                 periode = datagrunnlag.periode,
                 dataOmEktefelle = datagrunnlag.dataOmEktefelle,
