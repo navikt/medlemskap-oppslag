@@ -12,6 +12,7 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
     private val reglerForEøsBorgere = ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag)
     private val reglerForAndreStatsborgere = ReglerForAndreStatsborgere.fraDatagrunnlag(datagrunnlag)
     private val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag)
+    private val reglerForBosatt = ReglerForBosatt.fraDatagrunnlag(datagrunnlag)
 
     fun kjørHovedregler(): Resultat {
         val ytelse = reglerForMedl.ytelse
@@ -19,6 +20,7 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
 
         resultater.addAll(reglerForMedl.kjørRegelflyter())
         resultater.addAll(reglerForArbeidsforhold.kjørRegelflyter())
+        resultater.addAll(reglerForBosatt.kjørRegelflyter())
 
         val resultatStatsborgerskap = reglerForStatsborgerskap.kjørRegelflyter()
         resultater.addAll(resultatStatsborgerskap)
