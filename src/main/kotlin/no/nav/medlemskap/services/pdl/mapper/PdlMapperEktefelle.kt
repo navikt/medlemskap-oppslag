@@ -4,7 +4,7 @@ import no.bekk.bekkopen.person.FodselsnummerValidator
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.domene.Adresse
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
-import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.filtrerBarnUnder25Aar
+import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.erBarnUnder25Aar
 
 object PdlMapperEktefelle {
 
@@ -27,7 +27,7 @@ object PdlMapperEktefelle {
         return familierelasjoner
             .filter { it.relatertPersonsRolle == HentPerson.Familierelasjonsrolle.BARN }
             .filter { FodselsnummerValidator.isValid(it.relatertPersonsIdent) }
-            .filter { it.relatertPersonsIdent.filtrerBarnUnder25Aar() }
+            .filter { it.relatertPersonsIdent.erBarnUnder25Aar() }
             .map { it.relatertPersonsIdent }
     }
 }

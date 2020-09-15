@@ -101,7 +101,7 @@ object PdlMapper {
         )
     }
 
-    fun mapStatsborgerskap(it: HentPerson.Statsborgerskap): no.nav.medlemskap.domene.Statsborgerskap {
+    fun mapStatsborgerskap(it: HentPerson.Statsborgerskap): Statsborgerskap {
         return Statsborgerskap(
             landkode = it.land,
             fom = convertToLocalDate(it.gyldigFraOgMed),
@@ -112,10 +112,10 @@ object PdlMapper {
     private fun mapFamileRelasjonsrolle(rolle: HentPerson.Familierelasjonsrolle?): no.nav.medlemskap.domene.Familierelasjonsrolle? {
         return rolle.let {
             when (it) {
-                HentPerson.Familierelasjonsrolle.BARN -> no.nav.medlemskap.domene.Familierelasjonsrolle.BARN
-                HentPerson.Familierelasjonsrolle.MOR -> no.nav.medlemskap.domene.Familierelasjonsrolle.MOR
-                HentPerson.Familierelasjonsrolle.FAR -> no.nav.medlemskap.domene.Familierelasjonsrolle.FAR
-                HentPerson.Familierelasjonsrolle.MEDMOR -> no.nav.medlemskap.domene.Familierelasjonsrolle.MEDMOR
+                HentPerson.Familierelasjonsrolle.BARN -> Familierelasjonsrolle.BARN
+                HentPerson.Familierelasjonsrolle.MOR -> Familierelasjonsrolle.MOR
+                HentPerson.Familierelasjonsrolle.FAR -> Familierelasjonsrolle.FAR
+                HentPerson.Familierelasjonsrolle.MEDMOR -> Familierelasjonsrolle.MEDMOR
                 else -> throw DetteSkalAldriSkje("Denne familierelasjonen er ikke tilgjengelig")
             }
         }

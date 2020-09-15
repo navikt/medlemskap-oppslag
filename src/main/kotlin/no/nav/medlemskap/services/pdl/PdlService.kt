@@ -84,8 +84,4 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
             return PdlMapperBarn.mapPersonhistorikkTilBarn(fnrTilEktefelle, hentPerson.data?.hentPerson!!)
         } else throw PersonIkkeFunnet("PDL")
     }
-
-    suspend fun hentFoedselsaar(fnr: String, callId: String): Int {
-        return PdlMapper.mapTilFoedselsaar(pdlClient.hentFoedselsaar(fnr, callId).data?.hentPerson?.foedsel)
-    }
 }

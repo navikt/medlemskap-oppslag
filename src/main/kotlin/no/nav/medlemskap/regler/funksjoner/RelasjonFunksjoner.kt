@@ -6,7 +6,7 @@ import java.util.*
 
 object RelasjonFunksjoner {
 
-    fun String.filtrerBarnUnder25Aar() =
+    fun String.erBarnUnder25Aar() =
         (Calendar.getInstance().get(Calendar.YEAR) - this.hentBursdagsAar().toInt()) <= 25
 
     fun String.hentBursdagsAar(): String {
@@ -45,7 +45,7 @@ object RelasjonFunksjoner {
         return familierelasjoner
             .filter { FodselsnummerValidator.isValid(it.relatertPersonsIdent) }
             .filter { it.erBarn() }
-            .filter { it.relatertPersonsIdent.filtrerBarnUnder25Aar() }
+            .filter { it.relatertPersonsIdent.erBarnUnder25Aar() }
             .map { it.relatertPersonsIdent }
     }
 
