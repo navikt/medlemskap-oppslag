@@ -4,30 +4,32 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.common.RegelId.REGEL_12
-import no.nav.medlemskap.regler.common.RegelId.REGEL_NORSK
-import no.nav.medlemskap.regler.v1.lovvalg.HarBrukerJobbet25ProsentEllerMerRegel
+import no.nav.medlemskap.regler.v1.lovvalg.ErBrukerBosattINorgeRegel
 
-class ReglerForNorskeStatsborgere(
+class ReglerForBosatt(
     val periode: InputPeriode,
     ytelse: Ytelse,
     regelMap: Map<RegelId, Regel>
 ) : Regler(ytelse, regelMap) {
 
-    override fun hentRegelflyter(): List<Regelflyt> {
-        val harBrukerJobbet25ProsentEllerMerFlyt = lagRegelflyt(
-            regel = hentRegel(REGEL_12),
-            hvisJa = regelflytJa(ytelse, REGEL_NORSK),
-            hvisNei = regelflytUavklart(ytelse, REGEL_NORSK)
+    private fun hentHovedflyt(): Regelflyt {
+        val erBrukerBosattINorgeFlyt = lagRegelflyt(
+            regel = hentRegel(RegelId.REGEL_10),
+            hvisJa = regelflytJa(ytelse, RegelId.REGEL_BOSATT),
+            hvisNei = regelflytUavklart(ytelse, RegelId.REGEL_BOSATT)
         )
 
-        return listOf(harBrukerJobbet25ProsentEllerMerFlyt)
+        return erBrukerBosattINorgeFlyt
+    }
+
+    override fun hentRegelflyter(): List<Regelflyt> {
+        return listOf(hentHovedflyt())
     }
 
     companion object {
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForNorskeStatsborgere {
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForBosatt {
             with(datagrunnlag) {
-                return ReglerForNorskeStatsborgere(
+                return ReglerForBosatt(
                     periode = periode,
                     ytelse = ytelse,
                     regelMap = lagRegelMap(datagrunnlag)
@@ -37,7 +39,7 @@ class ReglerForNorskeStatsborgere(
 
         private fun lagRegelMap(datagrunnlag: Datagrunnlag): Map<RegelId, Regel> {
             val regelListe = listOf(
-                HarBrukerJobbet25ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag)
+                ErBrukerBosattINorgeRegel.fraDatagrunnlag(datagrunnlag)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()

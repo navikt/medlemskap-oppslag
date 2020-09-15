@@ -24,8 +24,8 @@ fun assertSvar(regelId: RegelId, forventetSvarFraRegel: Svar, resultat: Resultat
 
 fun assertDelresultat(regelId: RegelId, forventetSvarFraRegel: Svar, resultat: Resultat) {
     println(objectMapper.writeValueAsString(resultat))
-    val find = resultat.delresultat.flatMap { if (it.delresultat.isNotEmpty()) it.delresultat else listOf(it) }.find { it.regelId == regelId }
+    val funnetResultat = resultat.finnRegelResultat(regelId)
 
-    Assertions.assertNotNull(find, "Fant ikke regel $regelId i delsvar i Resultat. Regel det testes på ble ikke kjørt. Følgende regler ble kjørt: " + resultat.delresultat.map { it.regelId })
-    Assertions.assertEquals(forventetSvarFraRegel, find!!.svar, "Fikk feil svar regel: $regelId")
+    Assertions.assertNotNull(funnetResultat, "Fant ikke regel $regelId i delsvar i Resultat. Regel det testes på ble ikke kjørt. Følgende regler ble kjørt: " + resultat.delresultat.map { it.regelId })
+    Assertions.assertEquals(forventetSvarFraRegel, funnetResultat!!.svar, "Fikk feil svar regel: $regelId")
 }

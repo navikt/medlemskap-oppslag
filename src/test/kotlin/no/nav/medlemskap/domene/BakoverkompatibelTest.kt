@@ -446,7 +446,7 @@ private val forventetResponse =
         } ],
         "ytelse" : "SYKEPENGER"
       },
-      "resultat" : {
+       "resultat" : {
         "regelId" : "REGEL_MEDLEM_KONKLUSJON",
         "avklaring" : "Er bruker medlem?",
         "begrunnelse" : "Kan ikke konkludere med medlemskap",
@@ -454,9 +454,9 @@ private val forventetResponse =
         "harDekning" : null,
         "dekning" : "",
         "delresultat" : [ {
-          "regelId" : "REGEL_MEDLEM_KONKLUSJON",
-          "avklaring" : "Er bruker medlem?",
-          "begrunnelse" : "Kan ikke konkludere med medlemskap",
+          "regelId" : "REGEL_MEDL",
+          "avklaring" : "Har bruker avklarte opplysninger i MEDL?",
+          "begrunnelse" : "",
           "svar" : "UAVKLART",
           "harDekning" : null,
           "dekning" : "",
@@ -564,34 +564,18 @@ private val forventetResponse =
             "harDekning" : null,
             "dekning" : "",
             "delresultat" : [ ]
+          }, {
+            "regelId" : "REGEL_9",
+            "avklaring" : "Har bruker utført arbeid utenfor Norge?",
+            "begrunnelse" : "",
+            "svar" : "NEI",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
           } ]
         }, {
-          "regelId" : "REGEL_9",
-          "avklaring" : "Har bruker utført arbeid utenfor Norge?",
-          "begrunnelse" : "",
-          "svar" : "NEI",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
-        }, {
-          "regelId" : "REGEL_2",
-          "avklaring" : "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?",
-          "begrunnelse" : "",
-          "svar" : "JA",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
-        }, {
-          "regelId" : "REGEL_11",
-          "avklaring" : "Er bruker norsk statsborger?",
-          "begrunnelse" : "",
-          "svar" : "JA",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
-        }, {
-          "regelId" : "REGEL_NORSK",
-          "avklaring" : "Er regler for norsk borgere avklart?",
+          "regelId" : "REGEL_BOSATT",
+          "avklaring" : "Er det avklart om bruker bor i Norge?",
           "begrunnelse" : "Regelflyt konkluderer med JA",
           "svar" : "JA",
           "harDekning" : null,
@@ -604,7 +588,39 @@ private val forventetResponse =
             "harDekning" : null,
             "dekning" : "",
             "delresultat" : [ ]
+          } ]
+        }, {
+          "regelId" : "REGEL_STATSBORGERSKAP",
+          "avklaring" : "Er statsborgerskap avklart?",
+          "begrunnelse" : "Regelflyt konkluderer med JA",
+          "svar" : "JA",
+          "harDekning" : null,
+          "dekning" : "",
+          "delresultat" : [ {
+            "regelId" : "REGEL_2",
+            "avklaring" : "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?",
+            "begrunnelse" : "",
+            "svar" : "JA",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
           }, {
+            "regelId" : "REGEL_11",
+            "avklaring" : "Er bruker norsk statsborger?",
+            "begrunnelse" : "",
+            "svar" : "JA",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
+          } ]
+        }, {
+          "regelId" : "REGEL_NORSK",
+          "avklaring" : "Er regler for norsk borgere avklart?",
+          "begrunnelse" : "Regelflyt konkluderer med JA",
+          "svar" : "JA",
+          "harDekning" : null,
+          "dekning" : "",
+          "delresultat" : [ {
             "regelId" : "REGEL_12",
             "avklaring" : "Har bruker vært i minst 25% stilling de siste 12 mnd?",
             "begrunnelse" : "",

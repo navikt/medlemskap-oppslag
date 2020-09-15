@@ -13,6 +13,10 @@ class ReglerForStatsborgerskap(
     regelMap: Map<RegelId, Regel>
 ) : Regler(ytelse, regelMap) {
 
+    override fun kjørRegelflyter(): List<Resultat> {
+        return listOf(kjørUavhengigeRegelflyterMedEttResultat(RegelId.REGEL_STATSBORGERSKAP))
+    }
+
     override fun hentRegelflyter(): List<Regelflyt> {
         val harBrukerNorskStatsborgerskapFlyt = lagRegelflyt(
             regel = hentRegel(RegelId.REGEL_11),

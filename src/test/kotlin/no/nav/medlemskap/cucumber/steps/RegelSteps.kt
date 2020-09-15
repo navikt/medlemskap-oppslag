@@ -11,6 +11,7 @@ import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.v1.RegelFactory
 import no.nav.medlemskap.regler.v1.ReglerService
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertTrue
 
 class RegelSteps : No {
     private val ANSATTE_9 = listOf(Ansatte(9, null, null))
@@ -193,6 +194,23 @@ class RegelSteps : No {
             val regelId = domenespråkParser.parseRegelId(regelIdStr!!)
 
             assertDelresultat(regelId, domenespråkParser.parseSvar(forventetSvar!!), resultat!!)
+        }
+
+        Så<String, DataTable>("skal regel {string} inneholde følgende delresultater:") { regelIdStr: String?, dataTable: DataTable? ->
+            val regelIdListe = domenespråkParser.mapDataTable(dataTable, RegelIdMapper())
+            val regelId = domenespråkParser.parseRegelId(regelIdStr!!)
+
+            val regelResultat = resultat!!.finnRegelResultat(regelId)
+            if (regelResultat == null) {
+                throw java.lang.RuntimeException("Fant ikke regelresultat for regel {regelIdStr}")
+            }
+
+            assertTrue(regelResultat.delresultat.map { it.regelId }.containsAll(regelIdListe))
+        }
+
+        Så<DataTable>("skal resultat gi følgende delresultater:") { dataTable: DataTable? ->
+            val regelIdListe = domenespråkParser.mapDataTable(dataTable, RegelIdMapper())
+            assertTrue(resultat!!.delresultat.map { it.regelId }.containsAll(regelIdListe))
         }
     }
 

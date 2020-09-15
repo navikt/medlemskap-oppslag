@@ -74,6 +74,12 @@ class DomenespråkParser {
         }
     }
 
+    fun parseRegelId(domenebegrep: Domenebegrep, rad: Map<String, String>): RegelId {
+        val verdi = verdi(domenebegrep.nøkkel, rad)
+
+        return parseRegelId(verdi)
+    }
+
     fun parseRegelId(regelIdStr: String): RegelId {
         val regelId = RegelId.fraRegelIdString(regelIdStr)
         if (regelId == null) {
@@ -206,6 +212,13 @@ class DomenespråkParser {
 
 interface RadMapper<T> {
     fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): T
+}
+
+class RegelIdMapper : RadMapper<RegelId> {
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): RegelId {
+
+        return domenespråkParser.parseRegelId(REGEL, rad)
+    }
 }
 
 class StatsborgerskapMapper : RadMapper<Statsborgerskap> {
@@ -494,6 +507,7 @@ enum class Domenebegrep(val nøkkel: String) {
     PERIODESTATUS("Periodestatus"),
     PERSONSTATUS("Personstatus"),
     PRIORITET("Prioritet"),
+    REGEL("Regel"),
     RELATERT_PERSONS_IDENT("Relatert persons ident"),
     RELATERT_PERSONS_ROLLE("Relatert persons rolle"),
     RELATERT_VED_SIVILSTAND("Relatert ved sivilstand"),
