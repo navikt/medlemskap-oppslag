@@ -43,7 +43,7 @@ Egenskap: Resultat-struktur for norsk statsborger
       | ARBEIDSFORHOLD  |
       | NORSK           |
       | STATSBORGERSKAP |
-      | 10              |
+      | BOSATT          |
 
     Og skal regel "NORSK" inneholde følgende delresultater:
       | Regel |
@@ -74,7 +74,7 @@ Egenskap: Resultat-struktur for norsk statsborger
       | ARBEIDSFORHOLD  |
       | NORSK           |
       | STATSBORGERSKAP |
-      | 10              |
+      | BOSATT          |
 
     Og skal regel "NORSK" inneholde følgende delresultater:
       | Regel |

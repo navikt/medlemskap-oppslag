@@ -51,7 +51,8 @@ enum class RegelId(val identifikator: String, val avklaring: String, val erRegel
     REGEL_ANDRE_BORGERE("ANDRE BORGERE", "Er regler for andre borgere avklart?", true),
     REGEL_NORSK("NORSK", "Er regler for norsk borgere avklart?", true),
     REGEL_MEDL("MEDL", "Har bruker avklarte opplysninger i MEDL?", true),
-    REGEL_STATSBORGERSKAP("STATSBORGERSKAP", "Er statsborgerskap avklart?", true)
+    REGEL_STATSBORGERSKAP("STATSBORGERSKAP", "Er statsborgerskap avklart?", true),
+    REGEL_BOSATT("BOSATT", "Er det avklart om bruker bor i Norge?", true)
     ;
 
     companion object {

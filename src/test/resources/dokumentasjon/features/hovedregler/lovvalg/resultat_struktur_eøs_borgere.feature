@@ -60,7 +60,7 @@ Egenskap: Sjekk at resultat-strukturen er som forventet
       | ARBEIDSFORHOLD  |
       | EØS-BOSATT      |
       | STATSBORGERSKAP |
-      | 10              |
+      | BOSATT          |
 
     Og skal regel "EØS-BOSATT" gi svaret "Ja"
 

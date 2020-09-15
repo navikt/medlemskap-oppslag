@@ -15,8 +15,8 @@ class ReglerForBosatt(
     private fun hentHovedflyt(): Regelflyt {
         val erBrukerBosattINorgeFlyt = lagRegelflyt(
             regel = hentRegel(RegelId.REGEL_10),
-            hvisJa = regelflytJa(ytelse),
-            hvisNei = regelflytUavklart(ytelse)
+            hvisJa = regelflytJa(ytelse, RegelId.REGEL_BOSATT),
+            hvisNei = regelflytUavklart(ytelse, RegelId.REGEL_BOSATT)
         )
 
         return erBrukerBosattINorgeFlyt

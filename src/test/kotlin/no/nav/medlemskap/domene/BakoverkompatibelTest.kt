@@ -484,7 +484,7 @@ private val forventetResponse =
           } ]
         } ]
       },
-      "resultat" : {
+       "resultat" : {
         "regelId" : "REGEL_MEDLEM_KONKLUSJON",
         "avklaring" : "Er bruker medlem?",
         "begrunnelse" : "Kan ikke konkludere med medlemskap",
@@ -612,13 +612,21 @@ private val forventetResponse =
             "delresultat" : [ ]
           } ]
         }, {
-          "regelId" : "REGEL_10",
-          "avklaring" : "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
-          "begrunnelse" : "",
+          "regelId" : "REGEL_BOSATT",
+          "avklaring" : "Er det avklart om bruker bor i Norge?",
+          "begrunnelse" : "Regelflyt konkluderer med JA",
           "svar" : "JA",
           "harDekning" : null,
           "dekning" : "",
-          "delresultat" : [ ]
+          "delresultat" : [ {
+            "regelId" : "REGEL_10",
+            "avklaring" : "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
+            "begrunnelse" : "",
+            "svar" : "JA",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
+          } ]
         }, {
           "regelId" : "REGEL_STATSBORGERSKAP",
           "avklaring" : "Er statsborgerskap avklart?",

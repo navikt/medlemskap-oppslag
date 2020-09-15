@@ -41,7 +41,7 @@ Egenskap: Resultat-struktur arbeidsforhold
       | ARBEIDSFORHOLD  |
       | EØS-BOSATT      |
       | STATSBORGERSKAP |
-      | 10              |
+      | BOSATT          |
 
     Og skal regel "ARBEIDSFORHOLD" inneholde følgende delresultater:
       | Regel |
