@@ -74,12 +74,14 @@ class ReglerForMedl(
             regel = hentRegel(REGEL_OPPLYSNINGER),
             hvisJa = erPerioderAvklartFlyt,
             hvisNei = regelflytJa(ytelse),
-            hvisUavklart = konklusjonUavklart(ytelse)
+            hvisUavklart = konklusjonUavklart(ytelse),
+            regelIdForSammensattResultat = REGEL_MEDL
         )
 
         return harBrukerRegistrerteOpplysningerFlyt
     }
 
+    /*
     override fun kjørRegelflyter(): List<Resultat> {
         val resultat = kjørRegelflyt(hentHovedflyt())
 
@@ -87,6 +89,8 @@ class ReglerForMedl(
 
         return listOf(resultat.copy(delresultat = listOf(medlResultat)))
     }
+
+     */
 
     override fun hentRegelflyter(): List<Regelflyt> {
         return listOf(hentHovedflyt())
