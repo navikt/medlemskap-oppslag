@@ -66,7 +66,7 @@ spec:
     - name: SAF_BASE_URL
       value: http://saf.q1.svc.nais.local/graphql
     - name: OPPGAVE_BASE_URL
-      value: http://oppgave-q2.default.svc.nais.local
+      value: https://oppgave-q2.nais.preprod.local
     - name: PDL_BASE_URL
       value: http://pdl-api.default.svc.nais.local/graphql
     - name: EREG_BASE_URL
