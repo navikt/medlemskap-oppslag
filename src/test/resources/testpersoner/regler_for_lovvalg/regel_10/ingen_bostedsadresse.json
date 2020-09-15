@@ -6,32 +6,20 @@
   "brukerinput" : {
     "arbeidUtenforNorge" : false
   },
-  "personhistorikk" : {
-    "statsborgerskap" : [ {
-      "landkode": "NOR",
-      "fom": "2000-01-30",
-      "tom": "2020-01-30"
-    } ],
-    "personstatuser" : [ ],
-    "bostedsadresser" : [],
-    "postadresser" : [
-      {
-        "adresselinje" : "Stockholm",
-        "landkode" : "SWE",
-        "fom" : "2018-11-01",
-        "tom" : null
-      }
-    ],
-    "midlertidigAdresser" : [ ],
-    "sivilstand": [],
-    "familierelasjoner": []
-  },
   "pdlpersonhistorikk": {
     "statsborgerskap": [],
     "personstatuser": [],
     "bostedsadresser": [],
     "postadresser": [],
     "midlertidigAdresser": [],
+    "kontaktadresser" : [
+      {
+        "landkode" : "SWE",
+        "fom" : "2018-11-01",
+        "tom" : null
+      }
+    ],
+    "oppholdsadresser": [],
     "sivilstand": [],
     "familierelasjoner": []
   },

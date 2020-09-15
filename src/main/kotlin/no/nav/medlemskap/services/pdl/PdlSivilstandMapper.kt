@@ -2,7 +2,7 @@ package no.nav.medlemskap.services.pdl
 
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
-import no.nav.medlemskap.services.pdl.PdlMapper.mapFolkeregisterMetadata2
+import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapFolkeregisterMetadata2
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -29,7 +29,7 @@ object PdlSivilstandMapper {
     }
 
     fun convertToLocalDate(dateToConvert: String?): LocalDate? {
-        return LocalDate.parse(dateToConvert, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        return dateToConvert?.let { LocalDate.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd")) }
     }
 
     private fun mapSivilstander(sivilstand: HentPerson.Sivilstand, gyldigTilOgMed: LocalDate? = null): no.nav.medlemskap.domene.Sivilstand {

@@ -12,8 +12,8 @@ query($ident: ID!, $bostedHistorikk: Boolean!){
             opphoerstidspunkt
           }
     },
-    statsborgerskap {
-        land,
+    statsborgerskap(historikk: $statsborgerskapHistorikk) {
+    	land,
         gyldigFraOgMed,
         gyldigTilOgMed
     },

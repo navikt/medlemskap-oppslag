@@ -6,33 +6,6 @@
   "brukerinput": {
     "arbeidUtenforNorge": false
   },
-  "personhistorikk": {
-    "statsborgerskap": [
-      {
-        "landkode": "BEL",
-        "fom": "1961-10-31",
-        "tom": null
-      }
-    ],
-    "personstatuser": [
-      {
-        "personstatus": "BOSA",
-        "fom": "1961-10-31",
-        "tom": null
-      }
-    ],
-    "bostedsadresser": [
-      {
-        "landkode": "NOR",
-        "fom": "1961-10-31",
-        "tom": null
-      }
-    ],
-    "postadresser": [],
-    "midlertidigAdresser": [],
-    "sivilstand": [],
-    "familierelasjoner": []
-  },
   "pdlpersonhistorikk": {
     "statsborgerskap": [
       {
@@ -49,8 +22,8 @@
         "tom": null
       }
     ],
-    "postadresser": [],
-    "midlertidigAdresser": [],
+    "kontaktadresser": [],
+    "oppholdsadresser": [],
     "sivilstand": [
       {
         "type": "GIFT",
@@ -121,12 +94,12 @@
       "bostedsadresser": [
         {
           "landkode": "NOR",
-          "fom": "1975-02-23",
+          "fom": "2020-07-07",
           "tom": null
         }
       ],
-      "postadresser": [],
-      "midlertidigAdresser": []
+      "kontaktadresser": [],
+      "oppholdsadresser": []
     },
     {
       "ident": "18071076276",
