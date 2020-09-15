@@ -45,8 +45,7 @@ class Regelflyt(
                     Resultat(
                         regelId = regelIdForSammensattResultat,
                         svar = konklusjon.svar,
-                        avklaring = konklusjon.avklaring,
-                        begrunnelse = konklusjon.begrunnelse,
+                        avklaring = regelIdForSammensattResultat.avklaring,
                         delresultat = delresultater
                     )
                 )

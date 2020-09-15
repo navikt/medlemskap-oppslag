@@ -55,14 +55,12 @@ Egenskap: Sjekk at resultat-strukturen er som forventet
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Og skal resultat gi følgende delresultater:
-      | Regel          |
-      | MEDL           |
-      | ARBEIDSFORHOLD |
-      | EØS-BOSATT     |
-      | 2              |
-      | 9              |
-      | 10             |
-      | 11             |
+      | Regel           |
+      | MEDL            |
+      | ARBEIDSFORHOLD  |
+      | EØS-BOSATT      |
+      | STATSBORGERSKAP |
+      | 10              |
 
     Og skal regel "EØS-BOSATT" gi svaret "Ja"
 

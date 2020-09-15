@@ -17,12 +17,13 @@ Egenskap: Resultat-struktur for norsk statsborger
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister |
       | 01.01.2018      |                 | 001       | 100              |               |
 
-    Og følgende arbeidsgiver i arbeidsforholdet
+
+  Scenario: Resultat-struktur for norsk statsborger med avklart arbeidsforhold
+    Gitt følgende arbeidsgiver i arbeidsforholdet
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
       | 1             | BEDR             | NOR      | 9              |
 
-  Scenario: Resultat-struktur for norsk statsborger
-    Gitt følgende personstatuser i personhistorikken
+    Og følgende personstatuser i personhistorikken
       | Personstatus | Fra og med dato | Til og med dato |
       | FØDR         | 01.01.2000      |                 |
 
@@ -37,14 +38,43 @@ Egenskap: Resultat-struktur for norsk statsborger
     Så skal regel "NORSK" gi svaret "Ja"
 
     Og skal resultat gi følgende delresultater:
-      | Regel          |
-      | MEDL           |
-      | ARBEIDSFORHOLD |
-      | NORSK          |
-      | 2              |
-      | 9              |
-      | 10             |
-      | 11             |
+      | Regel           |
+      | MEDL            |
+      | ARBEIDSFORHOLD  |
+      | NORSK           |
+      | STATSBORGERSKAP |
+      | 10              |
+
+    Og skal regel "NORSK" inneholde følgende delresultater:
+      | Regel |
+      | 12    |
+
+  Scenario: Resultat-struktur for norsk statsborger med uavklart arbeidsforhold
+    Gitt følgende arbeidsgiver i arbeidsforholdet
+      | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte | Konkursstatus |
+      | 1             | BEDR             | NOR      | 9              | OSKP          |
+
+    Og følgende personstatuser i personhistorikken
+      | Personstatus | Fra og med dato | Til og med dato |
+      | FØDR         | 01.01.2000      |                 |
+
+    Og følgende statsborgerskap i personhistorikken
+      | Landkode | Fra og med dato | Til og med dato |
+      | NOR      | 01.01.2000      |                 |
+
+    Når medlemskap beregnes med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
+
+    Så skal regel "NORSK" gi svaret "Ja"
+
+    Og skal resultat gi følgende delresultater:
+      | Regel           |
+      | MEDL            |
+      | ARBEIDSFORHOLD  |
+      | NORSK           |
+      | STATSBORGERSKAP |
+      | 10              |
 
     Og skal regel "NORSK" inneholde følgende delresultater:
       | Regel |

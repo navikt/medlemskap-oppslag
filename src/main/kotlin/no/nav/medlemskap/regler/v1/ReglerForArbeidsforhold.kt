@@ -12,17 +12,21 @@ class ReglerForArbeidsforhold(
     regelMap: Map<RegelId, Regel>
 ) : Regler(ytelse, regelMap) {
 
+    override fun kjørRegelflyter(): List<Resultat> {
+        return listOf(kjørUavhengigeRegelflyterMedEttResultat(REGEL_ARBEIDSFORHOLD))
+    }
+
     fun hentHovedflyt(): Regelflyt {
         val jobberBrukerPaaNorskSkipFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_7_1),
-            hvisJa = regelflytJa(ytelse, REGEL_ARBEIDSFORHOLD),
-            hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD)
+            hvisJa = regelflytJa(ytelse),
+            hvisNei = regelflytUavklart(ytelse)
         )
 
         val erBrukerPilotEllerKabinansattFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_8),
-            hvisJa = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD),
-            hvisNei = regelflytJa(ytelse, REGEL_ARBEIDSFORHOLD)
+            hvisJa = regelflytUavklart(ytelse),
+            hvisNei = regelflytJa(ytelse)
         )
 
         val erArbeidsforholdetMaritimtFlyt = lagRegelflyt(
@@ -34,25 +38,25 @@ class ReglerForArbeidsforhold(
         val erForetakAktivtFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_6),
             hvisJa = erArbeidsforholdetMaritimtFlyt,
-            hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD)
+            hvisNei = regelflytUavklart(ytelse)
         )
 
         val harForetakMerEnn5AnsatteFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_5),
             hvisJa = erForetakAktivtFlyt,
-            hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD)
+            hvisNei = regelflytUavklart(ytelse)
         )
 
         val erArbeidsgiverOrganisasjonFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_4),
             hvisJa = harForetakMerEnn5AnsatteFlyt,
-            hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD)
+            hvisNei = regelflytUavklart(ytelse)
         )
 
         val harBrukerSammenhengendeArbeidsforholdSiste12MndFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_3),
             hvisJa = erArbeidsgiverOrganisasjonFlyt,
-            hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD)
+            hvisNei = regelflytUavklart(ytelse)
         )
 
         return harBrukerSammenhengendeArbeidsforholdSiste12MndFlyt

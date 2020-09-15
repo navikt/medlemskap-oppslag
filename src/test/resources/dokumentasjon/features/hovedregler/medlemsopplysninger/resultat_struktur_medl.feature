@@ -20,13 +20,11 @@ Egenskap: Resultat-struktur for regel MEDL
     Så skal regel "MEDL" gi svaret "Ja"
 
     Og skal resultat gi følgende delresultater:
-      | Regel          |
-      | MEDL           |
-      | ARBEIDSFORHOLD |
-      | ANDRE BORGERE  |
-      | 2              |
-      | 9              |
-      | 11             |
+      | Regel           |
+      | MEDL            |
+      | ARBEIDSFORHOLD  |
+      | ANDRE BORGERE   |
+      | STATSBORGERSKAP |
 
     Og skal regel "MEDL" inneholde følgende delresultater:
       | Regel        |

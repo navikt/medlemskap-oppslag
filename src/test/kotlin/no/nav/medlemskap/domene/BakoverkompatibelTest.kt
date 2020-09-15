@@ -493,8 +493,8 @@ private val forventetResponse =
         "dekning" : "",
         "delresultat" : [ {
           "regelId" : "REGEL_MEDL",
-          "avklaring" : "Er bruker medlem?",
-          "begrunnelse" : "Kan ikke konkludere med medlemskap",
+          "avklaring" : "Har bruker avklarte opplysninger i MEDL?",
+          "begrunnelse" : "",
           "svar" : "UAVKLART",
           "harDekning" : null,
           "dekning" : "",
@@ -602,15 +602,15 @@ private val forventetResponse =
             "harDekning" : null,
             "dekning" : "",
             "delresultat" : [ ]
+          }, {
+            "regelId" : "REGEL_9",
+            "avklaring" : "Har bruker utført arbeid utenfor Norge?",
+            "begrunnelse" : "",
+            "svar" : "NEI",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
           } ]
-        }, {
-          "regelId" : "REGEL_9",
-          "avklaring" : "Har bruker utført arbeid utenfor Norge?",
-          "begrunnelse" : "",
-          "svar" : "NEI",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
         }, {
           "regelId" : "REGEL_10",
           "avklaring" : "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
@@ -620,21 +620,29 @@ private val forventetResponse =
           "dekning" : "",
           "delresultat" : [ ]
         }, {
-          "regelId" : "REGEL_2",
-          "avklaring" : "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?",
-          "begrunnelse" : "",
+          "regelId" : "REGEL_STATSBORGERSKAP",
+          "avklaring" : "Er statsborgerskap avklart?",
+          "begrunnelse" : "Regelflyt konkluderer med JA",
           "svar" : "JA",
           "harDekning" : null,
           "dekning" : "",
-          "delresultat" : [ ]
-        }, {
-          "regelId" : "REGEL_11",
-          "avklaring" : "Er bruker norsk statsborger?",
-          "begrunnelse" : "",
-          "svar" : "JA",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ]
+          "delresultat" : [ {
+            "regelId" : "REGEL_2",
+            "avklaring" : "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?",
+            "begrunnelse" : "",
+            "svar" : "JA",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
+          }, {
+            "regelId" : "REGEL_11",
+            "avklaring" : "Er bruker norsk statsborger?",
+            "begrunnelse" : "",
+            "svar" : "JA",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
+          } ]
         }, {
           "regelId" : "REGEL_NORSK",
           "avklaring" : "Er regler for norsk borgere avklart?",

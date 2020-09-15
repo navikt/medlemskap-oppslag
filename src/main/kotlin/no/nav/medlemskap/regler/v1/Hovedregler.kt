@@ -44,9 +44,9 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
         val resultatNorskStatsborgerskap = resultatStatsborgerskap
             .flatMap { it.delresultat }
             .first { it.regelId == RegelId.REGEL_11 }
-        val erNorskstatsborger = resultatNorskStatsborgerskap.svar == Svar.JA
+        val erNorskBorger = resultatNorskStatsborgerskap.svar == Svar.JA
 
-        return if (erNorskstatsborger) {
+        return if (erNorskBorger) {
             reglerForNorskeStatsborgere
         } else {
             reglerForEøsBorgere

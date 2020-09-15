@@ -36,14 +36,12 @@ Egenskap: Resultat-struktur arbeidsforhold
     Så skal regel "ARBEIDSFORHOLD" gi svaret "Ja"
 
     Og skal resultat gi følgende delresultater:
-      | Regel          |
-      | MEDL           |
-      | ARBEIDSFORHOLD |
-      | EØS-BOSATT     |
-      | 2              |
-      | 9              |
-      | 10             |
-      | 11             |
+      | Regel           |
+      | MEDL            |
+      | ARBEIDSFORHOLD  |
+      | EØS-BOSATT      |
+      | STATSBORGERSKAP |
+      | 10              |
 
     Og skal regel "ARBEIDSFORHOLD" inneholde følgende delresultater:
       | Regel |
@@ -53,6 +51,7 @@ Egenskap: Resultat-struktur arbeidsforhold
       | 6     |
       | 7     |
       | 8     |
+      | 9     |
 
 
 

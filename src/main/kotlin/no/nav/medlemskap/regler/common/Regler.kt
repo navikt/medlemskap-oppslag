@@ -16,6 +16,21 @@ abstract class Regler(val ytelse: Ytelse, val regelMap: Map<RegelId, Regel> = em
         return regelflyt.utfør()
     }
 
+    protected fun kjørUavhengigeRegelflyterMedEttResultat(regelId: RegelId): Resultat {
+        val resultater = hentRegelflyter().map { kjørRegelflyt(it) }
+        val delresultater = resultater.flatMap { if (it.delresultat.isEmpty()) listOf(it) else it.delresultat }
+
+        if (resultater.all { it.svar == JA }) {
+            return regelflytResultat(JA, regelId, delresultater)
+        }
+
+        if (resultater.any { it.svar == NEI }) {
+            return regelflytResultat(NEI, regelId, delresultater)
+        }
+
+        return regelflytResultat(Svar.UAVKLART, regelId, delresultater)
+    }
+
     protected fun lagRegelflyt(
         regel: Regel,
         hvisJa: Regelflyt? = null,
@@ -37,6 +52,18 @@ abstract class Regler(val ytelse: Ytelse, val regelMap: Map<RegelId, Regel> = em
         val regel = regelMap[regelId]
 
         return regel ?: throw RuntimeException("Fant ikke regel med regelId $regelId")
+    }
+
+    private fun regelflytResultat(svar: Svar, regelId: RegelId, delresultater: List<Resultat>): Resultat {
+        val regel = when (svar) {
+            JA -> regelflytJaKonklusjon(ytelse, regelId)
+            NEI -> regelflytNeiKonklusjon(ytelse, regelId)
+            else -> regelflytUavklartKonklusjon(ytelse, regelId)
+        }
+
+        val resultat = regel.utfør()
+
+        return resultat.copy(delresultat = delresultater)
     }
 
     companion object {

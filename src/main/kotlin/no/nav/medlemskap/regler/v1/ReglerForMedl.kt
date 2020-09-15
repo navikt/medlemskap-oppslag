@@ -81,17 +81,6 @@ class ReglerForMedl(
         return harBrukerRegistrerteOpplysningerFlyt
     }
 
-    /*
-    override fun kjørRegelflyter(): List<Resultat> {
-        val resultat = kjørRegelflyt(hentHovedflyt())
-
-        val medlResultat = resultat.copy(regelId = REGEL_MEDL, delresultat = resultat.delresultat)
-
-        return listOf(resultat.copy(delresultat = listOf(medlResultat)))
-    }
-
-     */
-
     override fun hentRegelflyter(): List<Regelflyt> {
         return listOf(hentHovedflyt())
     }
