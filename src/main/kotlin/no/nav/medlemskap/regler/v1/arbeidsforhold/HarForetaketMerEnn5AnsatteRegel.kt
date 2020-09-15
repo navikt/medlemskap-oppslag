@@ -42,7 +42,7 @@ class HarForetaketMerEnn5AnsatteRegel(
                 ytelse = datagrunnlag.ytelse,
                 periode = datagrunnlag.periode,
                 arbeidsforhold = datagrunnlag.arbeidsforhold,
-                statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap
+                statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap
             )
         }
     }

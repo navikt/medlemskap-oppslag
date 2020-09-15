@@ -15,6 +15,7 @@ import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.createHttpServer
+import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
@@ -125,14 +126,13 @@ suspend fun mockCreateDatagrunnlag(
     Datagrunnlag(
         periode = periode,
         brukerinput = brukerinput,
-        personhistorikk = personhistorikk(),
         pdlpersonhistorikk = personhistorikk(),
         medlemskap = listOf(Medlemskap("dekning", enDato(), enAnnenDato(), true, Lovvalg.ENDL, "NOR", PeriodeStatus.GYLD)),
         arbeidsforhold = listOf(arbeidsforhold()),
         oppgaver = listOf(Oppgave(enDato(), Prioritet.NORM, Status.AAPNET, "Tema")),
         dokument = listOf(Journalpost("Id", "Tittel", "Posttype", "Status", "Tema", listOf(Dokument("Id", "Tittel")))),
         ytelse = ytelse,
-        personHistorikkRelatertePersoner = listOf(personhistorikkRelatertPerson()),
+        dataOmBarn = listOf(DataOmBarn(personhistorikkBarn = personhistorikkForBarn())),
         dataOmEktefelle = DataOmEktefelle(personhistorikkEktefelle(), listOf(arbeidsforhold()))
     )
 }
@@ -156,12 +156,10 @@ private fun personhistorikk(): Personhistorikk {
         statsborgerskap = listOf(Statsborgerskap("NOR", enDato(), enAnnenDato())),
         personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSA, enDato(), enAnnenDato())),
         bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        postadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        midlertidigAdresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
         sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr(), folkeregistermetadata())),
         familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata())),
-        kontaktadresser = listOf(Adresse("SWE", enDato(), enAnnenDato())),
-        oppholdsadresser = listOf(Adresse("SWE", enDato(), enAnnenDato()))
+        kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
     )
 }
 
@@ -170,20 +168,34 @@ private fun personhistorikkRelatertPerson(): PersonhistorikkRelatertPerson {
         ident = ektefelleFnr(),
         personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSA, enDato(), enAnnenDato())),
         bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        postadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        midlertidigAdresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
+        kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
+    )
+}
+
+private fun personhistorikkForBarn(): PersonhistorikkBarn {
+    return PersonhistorikkBarn(
+        ident = barnFnr(),
+        bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        familierelasjoner = listOf(Familierelasjon(brukerFnr(), Familierelasjonsrolle.FAR, Familierelasjonsrolle.BARN, folkeregistermetadata()))
+
     )
 }
 
 private fun personhistorikkEktefelle(): PersonhistorikkEktefelle {
     return PersonhistorikkEktefelle(
         ident = ektefelleFnr(),
-        barn = listOf(PersonhistorikkBarn(ident = barnFnr()))
+        barn = listOf(barnFnr()),
+        bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
     )
 }
 
 private fun folkeregistermetadata() = Folkeregistermetadata(etTidspunkt(), etTidspunkt(), etTidspunkt())
-
+private fun brukerFnr() = "15076500565"
 private fun ektefelleFnr() = "0101197512345"
 private fun barnFnr() = "0101201012345"
 private fun enDato() = LocalDate.of(1975, 10, 10)
@@ -219,64 +231,6 @@ private val forventetResponse =
         "brukerinput" : {
           "arbeidUtenforNorge" : false
         },
-        "personhistorikk" : {
-          "statsborgerskap" : [ {
-            "landkode" : "NOR",
-            "fom" : "1975-10-10",
-            "tom" : "2020-08-01"
-          }],
-          "personstatuser" : [ {
-            "personstatus" : "BOSA",
-            "fom": "1975-10-10",
-            "tom" : "2020-08-01"
-          }],
-          "bostedsadresser" : [ {
-            "landkode" : "NOR",
-            "fom" : "1975-10-10",
-            "tom" : "2020-08-01"
-          }],
-          "postadresser" : [{
-            "landkode" : "NOR",
-            "fom": "1975-10-10",
-            "tom" : "2020-08-01"
-          } ],
-          "midlertidigAdresser" : [ {
-            "landkode" : "NOR",
-            "fom" : "1975-10-10",
-            "tom" : "2020-08-01"
-          } ],
-          "kontaktadresser" : [ {
-            "landkode" : "SWE", 
-            "fom" : "1975-10-10",
-            "tom" : "2020-08-01"
-          }],
-          "oppholdsadresser": [{
-             "landkode" : "SWE", 
-            "fom" : "1975-10-10",
-            "tom" : "2020-08-01"
-          }],
-          "sivilstand" : [ {
-            "type" : "GIFT",
-            "gyldigFraOgMed" : "1975-10-10",
-            "gyldigTilOgMed" : "2020-08-01",
-            "relatertVedSivilstand" : "0101197512345",
-            "folkeregistermetadata" : {
-              "ajourholdstidspunkt" : "2020-06-20T10:00:00",
-              "gyldighetstidspunkt" : "2020-06-20T10:00:00",
-              "opphoerstidspunkt" : "2020-06-20T10:00:00"
-            }
-          } ],
-          "familierelasjoner" : [ {
-            "relatertPersonsIdent" : "0101201012345",
-            "relatertPersonsRolle" : "BARN",
-            "minRolleForPerson" : "FAR",
-            "folkeregistermetadata" : {
-              "ajourholdstidspunkt" : "2020-06-20T10:00:00",
-              "gyldighetstidspunkt" : "2020-06-20T10:00:00",
-              "opphoerstidspunkt" : "2020-06-20T10:00:00"
-            }
-          } ]
-        },
         "pdlpersonhistorikk" : {
           "statsborgerskap" : [ {
             "landkode" : "NOR",
@@ -293,23 +247,13 @@ private val forventetResponse =
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
           } ],
-          "postadresser" : [ {
-            "landkode" : "NOR",
-            "fom" : "1975-10-10",
-            "tom" : "2020-08-01"
-          } ],
-          "midlertidigAdresser" : [ {
-            "landkode" : "NOR",
-            "fom" : "1975-10-10",
-            "tom" : "2020-08-01"
-          } ],
           "kontaktadresser" : [ {
-            "landkode" : "SWE", 
+            "landkode" : "NOR", 
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
           }],
           "oppholdsadresser": [{
-             "landkode" : "SWE", 
+             "landkode" : "NOR", 
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
           }],
@@ -338,13 +282,24 @@ private val forventetResponse =
         "dataOmEktefelle": {
            "personhistorikkEktefelle": {
                     "ident": "0101197512345",
-                    "barn": [
-                        {
-                            "ident": "0101201012345"
-                        }
-                    ]
+                    "barn": ["0101201012345"], 
+                    "bostedsadresser" : [ {
+                         "landkode" : "NOR",
+                         "fom" : "1975-10-10",
+                         "tom" : "2020-08-01"
+                    } ],
+                    "kontaktadresser" : [ {
+                          "landkode" : "NOR", 
+                          "fom" : "1975-10-10",
+                          "tom" : "2020-08-01"
+                    }],
+                   "oppholdsadresser": [{
+                        "landkode" : "NOR", 
+                        "fom" : "1975-10-10",
+                        "tom" : "2020-08-01"
+                    }]
            }, 
-            "arbeidsforholdEktefelle" : [ {
+            "arbeidsforholdEktefelle" : [ { 
                      "periode" : {
                        "fom" : "1975-10-10",
                        "tom" : "2020-08-01"
@@ -389,6 +344,36 @@ private val forventetResponse =
                      } ]
                    } ]
         },
+        "dataOmBarn": [ {
+           "personhistorikkBarn": {
+                    "ident": "0101201012345",
+                    "bostedsadresser" : [ {
+                         "landkode" : "NOR",
+                         "fom" : "1975-10-10",
+                         "tom" : "2020-08-01"
+                    } ],
+                    "kontaktadresser" : [ {
+                          "landkode" : "NOR", 
+                          "fom" : "1975-10-10",
+                          "tom" : "2020-08-01"
+                    }],
+                   "oppholdsadresser": [{
+                        "landkode" : "NOR", 
+                        "fom" : "1975-10-10",
+                        "tom" : "2020-08-01"
+                    }],
+                    "familierelasjoner" : [ {
+                         "relatertPersonsIdent" : "15076500565",
+                         "relatertPersonsRolle" : "FAR",
+                         "minRolleForPerson" : "BARN",
+                         "folkeregistermetadata" : {
+                           "ajourholdstidspunkt" : "2020-06-20T10:00:00",
+                           "gyldighetstidspunkt" : "2020-06-20T10:00:00",
+                           "opphoerstidspunkt" : "2020-06-20T10:00:00"
+                         }
+                   }]
+            }
+         }],
         "medlemskap" : [ {
           "dekning" : "dekning",
           "fraOgMed" : "1975-10-10",
@@ -459,30 +444,7 @@ private val forventetResponse =
             "tittel" : "Tittel"
           } ]
         } ],
-        "ytelse" : "SYKEPENGER",
-        "personHistorikkRelatertePersoner" : [ {
-          "ident" : "0101197512345",
-          "personstatuser" : [ {
-            "personstatus" : "BOSA",
-            "fom" : "1975-10-10",
-            "tom" : "2020-08-01"
-          } ],
-          "bostedsadresser" : [ {
-            "landkode" : "NOR",
-            "fom" : "1975-10-10",
-            "tom" : "2020-08-01"
-          } ],
-          "postadresser" : [ {
-            "landkode" : "NOR",
-            "fom" : "1975-10-10",
-            "tom" : "2020-08-01"
-          } ],
-          "midlertidigAdresser" : [ {
-            "landkode" : "NOR",
-            "fom" : "1975-10-10",
-            "tom" : "2020-08-01"
-          } ]
-        } ]
+        "ytelse" : "SYKEPENGER"
       },
       "resultat" : {
         "regelId" : "REGEL_MEDLEM_KONKLUSJON",

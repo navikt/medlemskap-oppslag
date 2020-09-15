@@ -6,12 +6,12 @@ Egenskap: Reglene 9 til 12
 
   Bakgrunn:
     Gitt følgende bostedsadresser i personhistorikken
-      | Adresse | Landkode | Fra og med dato | Til og med dato |
-      | Oslo    | NOR      | 01.01.2000      |                 |
+     | Landkode | Fra og med dato | Til og med dato |
+     | NOR      | 01.01.2000      |                 |
 
-    Og følgende postadresser i personhistorikken
-      | Adresse | Landkode | Fra og med dato | Til og med dato |
-      | Oslo    | NOR      | 01.01.2000      |                 |
+    Og følgende kontaktadresser i personhistorikken
+     | Landkode | Fra og med dato | Til og med dato |
+     | NOR      | 01.01.2000      |                 |
 
     Og følgende personstatuser i personhistorikken
       | Personstatus | Fra og med dato | Til og med dato |
