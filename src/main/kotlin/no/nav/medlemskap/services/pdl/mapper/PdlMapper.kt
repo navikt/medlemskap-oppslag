@@ -1,6 +1,7 @@
 package no.nav.medlemskap.services.pdl.mapper
 
-import com.neovisionaries.i18n.LanguageAlpha3Code
+import com.neovisionaries.i18n.CountryCode
+import mu.KotlinLogging
 import no.nav.medlemskap.clients.pdl.generated.HentFoedselsaar
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
@@ -50,42 +51,51 @@ object PdlMapper {
 
     fun mapOppholdsadresser(oppholdsadresse: HentPerson.Oppholdsadresse): Adresse {
         return Adresse(
-            fom = convertToLocalDate(oppholdsadresse.gyldigFraOgMed),
-            tom = convertToLocalDate(oppholdsadresse.folkeregistermetadata?.opphoerstidspunkt),
+            fom = convertToLocalDateTime(oppholdsadresse.gyldigFraOgMed)?.toLocalDate(),
+            tom = convertToLocalDateTime(oppholdsadresse.folkeregistermetadata?.opphoerstidspunkt)?.toLocalDate(),
             landkode = mapLandkodeForOppholdsadresse(oppholdsadresse)
         )
     }
 
     fun mapLandkodeForOppholdsadresse(oppholdsadresse: HentPerson.Oppholdsadresse): String {
         if (oppholdsadresse.utenlandskAdresse != null) {
-            return LanguageAlpha3Code.getByCode(oppholdsadresse.utenlandskAdresse!!.landkode.toLowerCase()).name.toUpperCase()
+            return mapLandkode(oppholdsadresse.utenlandskAdresse!!.landkode)
         }
-        return LanguageAlpha3Code.nor.name
+        return CountryCode.NO.alpha3
     }
 
     fun mapKontaktAdresse(it: HentPerson.Kontaktadresse): Adresse {
         return Adresse(
-            fom = convertToLocalDate(it.gyldigFraOgMed),
-            tom = convertToLocalDate(it.gyldigTilOgMed),
+            fom = convertToLocalDateTime(it.gyldigFraOgMed)?.toLocalDate(),
+            tom = convertToLocalDateTime(it.gyldigTilOgMed)?.toLocalDate(),
             landkode = mapLandkodeForKontaktadresse(it)
         )
     }
 
     fun mapLandkodeForKontaktadresse(kontaktadresse: HentPerson.Kontaktadresse): String {
         if (kontaktadresse.utenlandskAdresse != null) {
-            return LanguageAlpha3Code.getByCode(kontaktadresse.utenlandskAdresse!!.landkode.toLowerCase()).name.toUpperCase()
+            return mapLandkode(kontaktadresse.utenlandskAdresse!!.landkode)
         }
         if (kontaktadresse.utenlandskAdresseIFrittFormat != null) {
-            return LanguageAlpha3Code.getByCode(kontaktadresse.utenlandskAdresseIFrittFormat!!.landkode.toLowerCase()).name.toUpperCase()
+            return mapLandkode(kontaktadresse.utenlandskAdresseIFrittFormat!!.landkode)
         }
-        return LanguageAlpha3Code.nor.name.toUpperCase()
+        return CountryCode.NO.alpha3
+    }
+
+    private fun mapLandkode(landkode: String): String {
+        return try {
+            CountryCode.getByCode(landkode.toUpperCase()).alpha3
+        } catch (e: Exception) {
+            logger.warn("Klarte ikke å mappe {}", landkode, e)
+            "UKJENT"
+        }
     }
 
     fun mapBostedsadresse(bostedsadresse: HentPerson.Bostedsadresse): Adresse {
         return Adresse(
             landkode = "NOR",
-            fom = convertToLocalDate(bostedsadresse.folkeregistermetadata?.gyldighetstidspunkt),
-            tom = convertToLocalDate(bostedsadresse.folkeregistermetadata?.opphoerstidspunkt)
+            fom = convertToLocalDateTime(bostedsadresse.folkeregistermetadata?.gyldighetstidspunkt)?.toLocalDate(),
+            tom = convertToLocalDateTime(bostedsadresse.folkeregistermetadata?.opphoerstidspunkt)?.toLocalDate()
         )
     }
 
@@ -130,11 +140,19 @@ object PdlMapper {
     }
 
     private fun convertToLocalDateTime(dateTimeToConvert: String?): LocalDateTime? {
-        return LocalDateTime.parse(dateTimeToConvert, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+        return dateTimeToConvert?.let { parseLocalDateTime(it) }
+    }
+
+    private fun parseLocalDateTime(string: String): LocalDateTime? {
+        return try {
+            LocalDateTime.parse(string, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        } catch (e: Exception) {
+            LocalDateTime.parse(string, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+        }
     }
 
     fun convertToLocalDate(dateToConvert: String?): LocalDate? {
-        return LocalDate.parse(dateToConvert, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        return dateToConvert?.let { LocalDate.parse(it, DateTimeFormatter.ISO_LOCAL_DATE) }
     }
 
     // Vi velger det høyeste årstallet, da blir personen yngst og det er mest sannsynlig at vi må vurdere bosted

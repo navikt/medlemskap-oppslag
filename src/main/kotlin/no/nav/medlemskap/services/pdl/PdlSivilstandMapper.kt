@@ -29,7 +29,7 @@ object PdlSivilstandMapper {
     }
 
     fun convertToLocalDate(dateToConvert: String?): LocalDate? {
-        return LocalDate.parse(dateToConvert, DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+        return dateToConvert?.let { LocalDate.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd")) }
     }
 
     private fun mapSivilstander(sivilstand: HentPerson.Sivilstand, gyldigTilOgMed: LocalDate? = null): no.nav.medlemskap.domene.Sivilstand {
