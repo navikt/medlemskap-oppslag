@@ -36,21 +36,27 @@
   "pdlpersonhistorikk": {
     "statsborgerskap": [
       {
-        "landkode": "NOR",
-        "fom": null,
+        "landkode": "BEL",
+        "fom": "1961-10-31",
         "tom": null
       }
     ],
-    "personstatuser": [],
+    "personstatuser": [
+      {
+        "personstatus": "BOSA",
+        "fom": "1961-10-31",
+        "tom": null
+      }
+    ],
     "bostedsadresser": [
       {
         "landkode": "NOR",
-        "fom": "2020-07-07",
+        "fom": "1961-10-31",
         "tom": null
       }
     ],
-    "postadresser": [],
-    "midlertidigAdresser": [],
+    "kontaktadresser": [],
+    "oppholdsadresser": [],
     "sivilstand": [],
     "familierelasjoner": []
   },

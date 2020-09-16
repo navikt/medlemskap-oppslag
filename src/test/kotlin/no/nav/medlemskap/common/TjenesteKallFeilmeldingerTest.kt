@@ -14,6 +14,7 @@ import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.createHttpServer
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
@@ -334,14 +335,13 @@ class TjenesteKallFeilmeldingerTest {
         Datagrunnlag(
             periode = periode,
             brukerinput = brukerinput,
-            personhistorikk = personhistorikk(),
             pdlpersonhistorikk = personhistorikk(),
             medlemskap = listOf(Medlemskap("dekning", enDato(), enAnnenDato(), true, Lovvalg.ENDL, "NOR", PeriodeStatus.GYLD)),
             arbeidsforhold = listOf(arbeidsforhold()),
             oppgaver = listOf(Oppgave(enDato(), Prioritet.NORM, Status.AAPNET, "Tema")),
             dokument = listOf(Journalpost("Id", "Tittel", "Posttype", "Status", "Tema", listOf(Dokument("Id", "Tittel")))),
             ytelse = ytelse,
-            personHistorikkRelatertePersoner = listOf(personhistorikkRelatertPerson()),
+            dataOmBarn = listOf(DataOmBarn(personhistorikkBarn())),
             dataOmEktefelle = DataOmEktefelle(personhistorikkEktefelle(), listOf(arbeidsforhold()))
         )
     }
@@ -362,30 +362,30 @@ class TjenesteKallFeilmeldingerTest {
             statsborgerskap = listOf(Statsborgerskap("NOR", enDato(), enAnnenDato())),
             personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSA, enDato(), enAnnenDato())),
             bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            postadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            midlertidigAdresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+            kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+            oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
             sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr(), folkeregistermetadata())),
-            familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata())),
-            kontaktadresser = emptyList(),
-            oppholdsadresser = emptyList()
-
+            familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata()))
         )
     }
 
-    private fun personhistorikkRelatertPerson(): PersonhistorikkRelatertPerson {
-        return PersonhistorikkRelatertPerson(
-            ident = ektefelleFnr(),
-            personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSA, enDato(), enAnnenDato())),
+    private fun personhistorikkBarn(): PersonhistorikkBarn {
+        return PersonhistorikkBarn(
+            ident = barnFnr(),
             bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            postadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            midlertidigAdresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
+            kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+            oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+            familierelasjoner = listOf(Familierelasjon(ektefelleFnr(), Familierelasjonsrolle.MOR, Familierelasjonsrolle.BARN, folkeregistermetadata()))
         )
     }
 
     private fun personhistorikkEktefelle(): PersonhistorikkEktefelle {
         return PersonhistorikkEktefelle(
             ident = ektefelleFnr(),
-            barn = listOf(PersonhistorikkBarn(ident = barnFnr()))
+            barn = listOf(barnFnr()),
+            bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+            kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+            oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
         )
     }
 

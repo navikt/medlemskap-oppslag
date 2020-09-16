@@ -22,7 +22,7 @@ suspend fun <T> runWithRetryAndMetrics(service: String, operation: String, retry
         logger.info("Kall mot $service:$operation kanselleres pga feil i kall mot annet baksystem", jce)
         throw jce
     } catch (t: Throwable) {
-        logger.warn("Feilet under kall mot $service:$operation : ${t.message}")
+        logger.warn("Feilet under kall mot $service:$operation : ${t.message}", t)
         throw t
     }
 }

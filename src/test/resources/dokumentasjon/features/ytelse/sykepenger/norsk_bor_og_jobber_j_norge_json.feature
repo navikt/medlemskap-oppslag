@@ -15,35 +15,22 @@ Egenskap: Man er medlem i Folketrygden hvis man er EØS-borger og bor og jobber 
   "brukerinput": {
     "arbeidUtenforNorge": false
   },
-  "personhistorikk": {
-    "statsborgerskap": [
+  "pdlpersonhistorikk": {
+     "statsborgerskap": [
       {
-        "landkode": "NOR",
-        "fom": "1991-06-30",
-        "tom": null
+        "landkode": "BEL",
+        "fom": "2016-01-30",
+        "tom": "2020-01-30"
       }
     ],
     "personstatuser": [],
     "bostedsadresser": [
-      {
+       {
         "landkode": "NOR",
         "fom": "2020-01-01",
         "tom": null
-      }
+        }
     ],
-    "postadresser": [],
-    "midlertidigAdresser": [],
-    "kontaktadresser": [],
-    "oppholdsadresser": [],
-    "sivilstand": [],
-    "familierelasjoner": []
-  },
-  "pdlpersonhistorikk": {
-    "statsborgerskap": [],
-    "personstatuser": [],
-    "bostedsadresser": [],
-    "postadresser": [],
-    "midlertidigAdresser": [],
     "kontaktadresser": [],
     "oppholdsadresser": [],
     "sivilstand": [],

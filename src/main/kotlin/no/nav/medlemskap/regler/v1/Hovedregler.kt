@@ -12,6 +12,7 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
     private val reglerForEøsBorgere = ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag)
     private val reglerForAndreStatsborgere = ReglerForAndreStatsborgere.fraDatagrunnlag(datagrunnlag)
     private val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag)
+    private val reglerForBosatt = ReglerForBosatt.fraDatagrunnlag(datagrunnlag)
 
     fun kjørHovedregler(): Resultat {
         val ytelse = reglerForMedl.ytelse
@@ -19,6 +20,7 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
 
         resultater.addAll(reglerForMedl.kjørRegelflyter())
         resultater.addAll(reglerForArbeidsforhold.kjørRegelflyter())
+        resultater.addAll(reglerForBosatt.kjørRegelflyter())
 
         val resultatStatsborgerskap = reglerForStatsborgerskap.kjørRegelflyter()
         resultater.addAll(resultatStatsborgerskap)
@@ -42,9 +44,9 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
         val resultatNorskStatsborgerskap = resultatStatsborgerskap
             .flatMap { it.delresultat }
             .first { it.regelId == RegelId.REGEL_11 }
-        val erNorskstatsborger = resultatNorskStatsborgerskap.svar == Svar.JA
+        val erNorskBorger = resultatNorskStatsborgerskap.svar == Svar.JA
 
-        return if (erNorskstatsborger) {
+        return if (erNorskBorger) {
             reglerForNorskeStatsborgere
         } else {
             reglerForEøsBorgere
@@ -76,7 +78,7 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
         }
 
         private fun lagDelresultat(resultater: List<Resultat>): List<Resultat> {
-            return resultater.map { if (it.regelId == RegelId.REGEL_FLYT_KONKLUSJON) it.delresultat.first() else it }
+            return resultater.map { if (it.regelId == RegelId.REGEL_FLYT_KONKLUSJON || it.erMedlemskonklusjon() && it.delresultat.isNotEmpty()) it.delresultat.first() else it }
         }
 
         private fun uavklartResultat(ytelse: Ytelse): Resultat {

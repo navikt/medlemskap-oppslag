@@ -21,22 +21,6 @@
         "tom" : null
       }
     ],
-    "postadresser" : [
-      {
-        "adresselinje" : "Oslo",
-        "landkode" : "NOR",
-        "fom" : "2018-11-01",
-        "tom" : null
-      }
-    ],
-    "midlertidigAdresser" : [
-      {
-        "adresselinje" : "Stockholm",
-        "landkode" : "SWE",
-        "fom" : "2018-11-01",
-        "tom" : null
-      }
-    ],
     "sivilstand": [],
     "familierelasjoner": []
   },
@@ -44,8 +28,20 @@
     "statsborgerskap": [],
     "personstatuser": [],
     "bostedsadresser": [],
-    "postadresser": [],
-    "midlertidigAdresser": [],
+    "kontaktadresser" : [
+      {
+        "landkode" : "NOR",
+        "fom" : "2018-11-01",
+        "tom" : null
+      }
+    ],
+    "oppholdsadresser": [
+      {
+        "landkode" : "SWE",
+        "fom" : "2018-11-01",
+        "tom" : null
+      }
+    ],
     "sivilstand": [],
     "familierelasjoner": []
   },

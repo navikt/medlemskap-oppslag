@@ -5,7 +5,7 @@ import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.REGEL_12
-import no.nav.medlemskap.regler.v1.lovvalg.ErBrukerBosattINorgeRegel
+import no.nav.medlemskap.regler.common.RegelId.REGEL_NORSK
 import no.nav.medlemskap.regler.v1.lovvalg.HarBrukerJobbet25ProsentEllerMerRegel
 
 class ReglerForNorskeStatsborgere(
@@ -14,28 +14,14 @@ class ReglerForNorskeStatsborgere(
     regelMap: Map<RegelId, Regel>
 ) : Regler(ytelse, regelMap) {
 
-    fun hentHovedflyt(): Regelflyt {
-        val erBrukerBosattINorgeFlyt = lagRegelflyt(
-            regel = hentRegel(RegelId.REGEL_10),
-            hvisJa = regelflytJa(ytelse),
-            hvisNei = regelflytUavklart(ytelse)
-        )
-
-        return erBrukerBosattINorgeFlyt
-    }
-
-    override fun kjørRegelflyter(): List<Resultat> {
-        return listOf(kjørUavhengigeRegelflyterMedEttResultat(RegelId.REGEL_NORSK))
-    }
-
     override fun hentRegelflyter(): List<Regelflyt> {
         val harBrukerJobbet25ProsentEllerMerFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_12),
-            hvisJa = regelflytJa(ytelse),
-            hvisNei = regelflytUavklart(ytelse)
+            hvisJa = regelflytJa(ytelse, REGEL_NORSK),
+            hvisNei = regelflytUavklart(ytelse, REGEL_NORSK)
         )
 
-        return listOf(hentHovedflyt(), harBrukerJobbet25ProsentEllerMerFlyt)
+        return listOf(harBrukerJobbet25ProsentEllerMerFlyt)
     }
 
     companion object {
@@ -51,8 +37,7 @@ class ReglerForNorskeStatsborgere(
 
         private fun lagRegelMap(datagrunnlag: Datagrunnlag): Map<RegelId, Regel> {
             val regelListe = listOf(
-                HarBrukerJobbet25ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag),
-                ErBrukerBosattINorgeRegel.fraDatagrunnlag(datagrunnlag)
+                HarBrukerJobbet25ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()

@@ -4,17 +4,13 @@
 Egenskap: Regel 11.4: Er brukers ektefelle folkeregistrert som bosatt i Norge?
 
   Scenariomal: Regel 11.4 - Ja hvis folkeregistrert bosatt i Norge og eventuell postadresse og midlertidig adresse er norsk
-    Gitt følgende sivilstand i personhistorikk fra TPS/PDL
+    Gitt følgende sivilstand i personhistorikk fra PDL
       | Sivilstandstype | Gyldig fra og med dato | Relatert ved sivilstand |
       | GIFT            | 29.06.2015             | 10108000398             |
 
-    Og følgende personhistorikk for relaterte personer fra TPS
-      | Ident       | Bosted | Postadresse   | Midlertidig adresse   | Fra og med dato | Til og med dato |
-      | 10108000398 | NOR    | <Postadresse> | <Midlertidig adresse> | 18.07.2010      | 15.05.2019      |
-
     Og følgende personhistorikk for ektefelle fra PDL
-      | Ident       |
-      | 10108000398 |
+      | Ident       | Bosted | Kontaktadresse     | Oppholdsadresse     | Fra og med dato | Til og med dato |
+      | 10108000398 | NOR    | <Kontaktadresse>   | <Oppholdsadresse>  | 18.07.2010      | 15.05.2019      |
 
     Når regel "11.4" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
@@ -24,9 +20,9 @@ Egenskap: Regel 11.4: Er brukers ektefelle folkeregistrert som bosatt i Norge?
     Så skal svaret være "<Svar>"
 
     Eksempler:
-      | Postadresse | Midlertidig adresse | Svar |
-      |             |                     | Ja   |
-      | NOR         | NOR                 | Ja   |
-      | FRA         | NOR                 | Nei  |
-      | NOR         | FRA                 | Nei  |
-      | FRA         | FRA                 | Nei  |
+      | Kontaktadresse | Oppholdsadresse     | Svar |
+      | NOR            | NOR                 | Ja   |
+      | NOR            | NOR                 | Ja   |
+      | FRA            | NOR                 | Nei  |
+      | NOR            | FRA                 | Nei  |
+      | FRA            | FRA                 | Nei  |
