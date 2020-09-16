@@ -29,22 +29,21 @@ Egenskap: Regelflyt for reglene 11.4.1 for bruker som har ektefelle og barn. Ekt
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   |
       | 01.01.2018      |                 | 001       | <Stillingsprosent> |
 
-    Og følgende familerelasjoner i personhistorikk fra TPS/PDL
+    Og følgende familerelasjoner i personhistorikk fra PDL
       | Relatert persons ident | Relatert persons rolle | Min rolle for person |
       | 09069534888            | BARN                   | FAR                  |
 
-    Og følgende sivilstand i personhistorikk fra TPS/PDL
+    Og følgende sivilstand i personhistorikk fra PDL
       | Sivilstandstype | Gyldig fra og med dato | Relatert ved sivilstand |
       | GIFT            | 29.06.2015             | 10108000398             |
 
-    Og følgende personhistorikk for relaterte personer fra TPS
+    Og følgende personhistorikk for barn fra PDL
       | Ident       | Bosted | Fra og med dato |
-      | 10108000398 |        | 29.06.2015      |
       | 09069534888 |        | 18.07.2010      |
 
     Og følgende personhistorikk for ektefelle fra PDL
-      | Ident       |
-      | 10108000398 |
+      | Ident       | Bosted | Fra og med dato |
+      | 10108000398 |        | 29.06.2015      |
 
     Og følgende barn i personhistorikk for ektefelle fra PDL
       | Ident       |
@@ -72,26 +71,25 @@ Egenskap: Regelflyt for reglene 11.4.1 for bruker som har ektefelle og barn. Ekt
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
       | 01.01.2018      |                 | 001       | 100              |
 
-    Og følgende familerelasjoner i personhistorikk fra TPS/PDL
+    Og følgende familerelasjoner i personhistorikk fra PDL
       | Relatert persons ident | Relatert persons rolle | Min rolle for person |
       | 09069534888            | BARN                   | FAR                  |
 
-    Og følgende sivilstand i personhistorikk fra TPS/PDL
+    Og følgende sivilstand i personhistorikk fra PDL
       | Sivilstandstype | Gyldig fra og med dato | Relatert ved sivilstand |
       | GIFT            | 29.06.2015             | 10108000398             |
 
-    Og følgende personhistorikk for relaterte personer fra TPS
+    Og følgende personhistorikk for ektefelle fra PDL
       | Ident       | Bosted | Fra og med dato |
       | 10108000398 |        | 29.06.2015      |
+
+    Og følgende personhistorikk for barn fra PDL
+      | Ident       | Bosted | Fra og med dato |
       | 09069534888 | NOR    | 18.07.2010      |
 
-    Og følgende personhistorikk for ektefelle fra PDL
-      | Ident       |
-      | 10108000398 |
-
     Og følgende barn i personhistorikk for ektefelle fra PDL
-      | Ident       |
-      | 09069534888 |
+      | Ident       | Bosted | Fra og med dato |
+      | 09069534888 | NOR    | 18.07.2010      |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
@@ -109,38 +107,23 @@ Egenskap: Regelflyt for reglene 11.4.1 for bruker som har ektefelle og barn. Ekt
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
       | 01.01.2018      |                 | 001       | 100              |
 
-    Og følgende familerelasjoner i personhistorikk fra TPS/PDL
+    Og følgende familerelasjoner i personhistorikk fra PDL
       | Relatert persons ident | Relatert persons rolle | Min rolle for person |
       | 09069534888            | BARN                   | FAR                  |
       | 10079541651            | BARN                   | FAR                  |
 
-    Og følgende sivilstand i personhistorikk fra TPS/PDL
+    Og følgende sivilstand i personhistorikk fra PDL
       | Sivilstandstype | Gyldig fra og med dato | Relatert ved sivilstand |
       | GIFT            | 29.06.2015             | 10108000398             |
 
     Og følgende personhistorikk for ektefelle fra PDL
-      | Ident       |
-      | 10108000398 |
-
-    Og følgende barn i personhistorikk for ektefelle fra PDL
-      | Ident       |
-      | 10108000398 |
-      | 10079541651 |
-
-    Og følgende personhistorikk for ektefelle fra PDL
-      | Ident       |
-      | 10108000398 |
-
-    Og følgende barn i personhistorikk for ektefelle fra PDL
-      | Ident       |
-      | 09069534888 |
-
-    Og følgende personhistorikk for relaterte personer fra TPS
-      | Ident       | Bosted | Fra og med dato |
+      | Ident       |Bosted | Fra og med dato |
       | 10108000398 |        | 29.06.2015      |
+
+    Og følgende personhistorikk for barn fra PDL
+      | Ident       | Bosted | Fra og med dato |
       | 09069534888 | NOR    | 18.07.2010      |
       | 10079541651 |        | 18.07.2010      |
-
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |

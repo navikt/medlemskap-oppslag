@@ -24,4 +24,30 @@ data class Resultat(
     fun erKonklusjon(): Boolean {
         return erMedlemskonklusjon() || erRegelflytKonklusjon()
     }
+
+    fun finnRegelResultat(regelId: RegelId): Resultat? {
+        return finnRegelResultat(this, regelId)
+    }
+
+    companion object {
+        private fun finnRegelResultat(resultat: Resultat, regelId: RegelId): Resultat? {
+            var regelResultat = finnDelresultat(resultat, regelId)
+            if (regelResultat != null) {
+                return regelResultat
+            }
+
+            resultat.delresultat.forEach { delresultat ->
+                regelResultat = finnRegelResultat(delresultat, regelId)
+                if (regelResultat != null) {
+                    return regelResultat
+                }
+            }
+
+            return regelResultat
+        }
+
+        fun finnDelresultat(resultat: Resultat, regelId: RegelId): Resultat? {
+            return resultat.delresultat.find { it.regelId == regelId }
+        }
+    }
 }

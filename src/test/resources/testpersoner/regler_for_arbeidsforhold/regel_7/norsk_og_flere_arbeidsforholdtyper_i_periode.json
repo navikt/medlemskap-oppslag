@@ -19,9 +19,7 @@
     "familierelasjoner" : [],
     "kontaktadresser": [],
     "oppholdsadresser": [],
-    "bostedsadresser": [],
-    "postadresser": [],
-    "midlertidigAdresser": []
+    "bostedsadresser": []
   },
   "pdlpersonhistorikk" : {
     "statsborgerskap" : [],

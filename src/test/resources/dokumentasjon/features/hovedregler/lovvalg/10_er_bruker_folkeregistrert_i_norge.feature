@@ -9,7 +9,7 @@ Egenskap: Regel 10: Er bruker folkeregistert i Norge?
       | Adresse | Landkode     | Fra og med dato | Til og med dato |
       | Oslo    | <Bor i land> | 01.01.2000      |                 |
 
-    Gitt følgende postadresser i personhistorikken
+    Gitt følgende kontaktadresser i personhistorikken
       | Adresse | Landkode    | Fra og med dato | Til og med dato |
       | Oslo    | <Post land> | 01.01.2000      |                 |
 
@@ -43,7 +43,7 @@ Egenskap: Regel 10: Er bruker folkeregistert i Norge?
       | FRA  | Ja   |
 
   Scenariomal: Postadresse, men ikke bostedsadresse
-    Gitt følgende postadresser i personhistorikken
+    Gitt følgende kontaktadresser i personhistorikken
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | XXX     | <Land>   | 01.01.2000      |                 |
 
@@ -64,7 +64,7 @@ Egenskap: Regel 10: Er bruker folkeregistert i Norge?
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | XXX     | NOR      | 01.01.2000      |                 |
 
-    Og følgende midlertidige adresser i personhistorikken
+    Og følgende oppholdsadresser i personhistorikken
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | XXX     | FRA      | 01.01.2000      |                 |
 
