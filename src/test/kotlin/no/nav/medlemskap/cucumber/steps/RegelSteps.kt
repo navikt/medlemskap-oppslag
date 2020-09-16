@@ -18,7 +18,6 @@ class RegelSteps : No {
     private val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", identifikator = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskEnhetEnhetstypeMap = null)
 
     private val pdlPersonhistorikkBuilder = PersonhistorikkBuilder()
-    private val personHistorikkRelatertePersoner = mutableListOf<PersonhistorikkRelatertPerson>()
 
     private var personhistorikkEktefelleBuilder = PersonhistorikkEktefelleBuilder()
     private var dataOmEktefelleBuilder = DataOmEktefelleBuilder()
