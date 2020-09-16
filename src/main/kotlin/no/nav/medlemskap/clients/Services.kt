@@ -22,10 +22,12 @@ import no.nav.medlemskap.services.medl.MedlService
 import no.nav.medlemskap.services.oppgave.OppgaveService
 import no.nav.medlemskap.services.pdl.PdlService
 import no.nav.medlemskap.services.saf.SafService
+import no.nav.medlemskap.services.tps.PersonService
 
 class Services(val configuration: Configuration) {
 
     private val personClient: PersonClient
+    val personService: PersonService
     private val medlClient: MedlClient
     val medlService: MedlService
     private val aaRegClient: AaRegClient
@@ -75,6 +77,7 @@ class Services(val configuration: Configuration) {
         medlService = MedlService(medlClient)
         pdlClient = restClients.pdl(configuration.register.pdlBaseUrl)
         pdlService = PdlService(pdlClient)
+        personService = PersonService(personClient, pdlService)
         eregClient = restClients.ereg(configuration.register.eregBaseUrl)
         aaRegClient = restClients.aaReg(configuration.register.aaRegBaseUrl)
         aaRegService = AaRegService(aaRegClient, eregClient, pdlService)

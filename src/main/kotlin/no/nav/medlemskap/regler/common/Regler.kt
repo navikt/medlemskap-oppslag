@@ -1,8 +1,7 @@
 package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.regler.common.Svar.JA
-import no.nav.medlemskap.regler.common.Svar.NEI
+import no.nav.medlemskap.regler.common.Svar.*
 
 abstract class Regler(val ytelse: Ytelse, val regelMap: Map<RegelId, Regel> = emptyMap()) {
 
@@ -12,40 +11,29 @@ abstract class Regler(val ytelse: Ytelse, val regelMap: Map<RegelId, Regel> = em
         return hentRegelflyter().map { kjørRegelflyt(it) }
     }
 
-    protected fun kjørRegelflyt(regelflyt: Regelflyt): Resultat {
-        return regelflyt.utfør()
-    }
-
     protected fun kjørUavhengigeRegelflyterMedEttResultat(regelId: RegelId): Resultat {
         val resultater = hentRegelflyter().map { kjørRegelflyt(it) }
-        val delresultater = resultater.flatMap { if (it.delresultat.isEmpty()) listOf(it) else it.delresultat }
 
         if (resultater.all { it.svar == JA }) {
-            return regelflytResultat(JA, regelId, delresultater)
+            return regelflytResultat(JA, regelId, resultater)
         }
 
         if (resultater.any { it.svar == NEI }) {
-            return regelflytResultat(NEI, regelId, delresultater)
+            return regelflytResultat(NEI, regelId, resultater)
         }
 
-        return regelflytResultat(Svar.UAVKLART, regelId, delresultater)
+        return regelflytResultat(UAVKLART, regelId, resultater)
     }
 
-    protected fun lagRegelflyt(
-        regel: Regel,
-        hvisJa: Regelflyt? = null,
-        hvisNei: Regelflyt? = null,
-        hvisUavklart: Regelflyt = konklusjonUavklart(ytelse),
-        regelIdForSammensattResultat: RegelId? = null
-    ): Regelflyt {
-        return Regelflyt(
-            regel = regel,
-            ytelse = ytelse,
-            hvisJa = hvisJa,
-            hvisNei = hvisNei,
-            hvisUavklart = hvisUavklart,
-            regelIdForSammensattResultat = regelIdForSammensattResultat
-        )
+    protected fun kjørRegelflyt(regelflyt: Regelflyt): Resultat {
+        val resultater: MutableList<Resultat> = mutableListOf()
+
+        val konklusjon = regelflyt.utfør(resultater)
+        return konklusjon.copy(delresultat = resultater.utenKonklusjon())
+    }
+
+    protected fun lagRegelflyt(regel: Regel, hvisJa: Regelflyt? = null, hvisNei: Regelflyt? = null, hvisUavklart: Regelflyt = konklusjonUavklart(ytelse)): Regelflyt {
+        return Regelflyt(regel = regel, ytelse = ytelse, hvisJa = hvisJa, hvisNei = hvisNei, hvisUavklart = hvisUavklart)
     }
 
     protected fun hentRegel(regelId: RegelId): Regel {
@@ -54,16 +42,14 @@ abstract class Regler(val ytelse: Ytelse, val regelMap: Map<RegelId, Regel> = em
         return regel ?: throw RuntimeException("Fant ikke regel med regelId $regelId")
     }
 
-    private fun regelflytResultat(svar: Svar, regelId: RegelId, delresultater: List<Resultat>): Resultat {
+    private fun regelflytResultat(svar: Svar, regelId: RegelId, resultater: List<Resultat>): Resultat {
         val regel = when (svar) {
             JA -> regelflytJaKonklusjon(ytelse, regelId)
             NEI -> regelflytNeiKonklusjon(ytelse, regelId)
             else -> regelflytUavklartKonklusjon(ytelse, regelId)
         }
 
-        val resultat = regel.utfør()
-
-        return resultat.copy(delresultat = delresultater)
+        return regel.utfør().copy(delresultat = resultater.flatMap { it.delresultat })
     }
 
     companion object {

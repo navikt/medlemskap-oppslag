@@ -49,8 +49,8 @@
         "tom": null
       }
     ],
-    "kontaktadresser": [],
-    "oppholdsadresser": [],
+    "postadresser": [],
+    "midlertidigAdresser": [],
     "sivilstand": [
       {
         "type": "GIFT",
@@ -125,8 +125,8 @@
           "tom": null
         }
       ],
-      "kontaktadresser": [],
-      "oppholdsadresser": []
+      "postadresser": [],
+      "midlertidigAdresser": []
     },
     {
       "ident": "18071076276",
@@ -144,8 +144,8 @@
           "tom": null
         }
       ],
-      "kontaktadresser": [],
-      "oppholdsadresser": []
+      "postadresser": [],
+      "midlertidigAdresser": []
     }
   ]
 }

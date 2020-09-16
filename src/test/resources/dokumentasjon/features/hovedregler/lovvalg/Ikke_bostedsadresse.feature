@@ -4,7 +4,7 @@
 Egenskap: Regel 10: Bruker som mangler bostedsadresse, skal få uavklart medlemsvalg
 
   Bakgrunn:
-    Gitt følgende kontaktadresser i personhistorikken
+    Gitt følgende postadresser i personhistorikken
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | Oslo    | NOR      | 01.01.2000      |                 |
 

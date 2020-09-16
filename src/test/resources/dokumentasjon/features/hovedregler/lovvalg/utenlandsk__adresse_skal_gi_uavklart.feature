@@ -30,11 +30,11 @@ Egenskap: Regel 10: Hvis postadresse eller midlertidig adresse er utenlandsk, s�
       | 1             | BEDR             | NOR      | 9              |
 
   Scenariomal: Regel 10: Hvis postadresse eller midlertidig adresse er utenlandsk, så skal medlemsvalget være uavklart
-    Gitt følgende kontaktadresser i personhistorikken
+    Gitt følgende postadresser i personhistorikken
       | Adresse | Landkode        | Fra og med dato | Til og med dato |
       | Oslo    | <Post landkode> | 01.01.2000      |                 |
 
-    Og følgende oppholdsadresser i personhistorikken
+    Og følgende midlertidige adresser i personhistorikken
       | Adresse | Landkode               | Fra og med dato | Til og med dato |
       | Oslo    | <Midlertidig landkode> | 01.01.2000      |                 |
 

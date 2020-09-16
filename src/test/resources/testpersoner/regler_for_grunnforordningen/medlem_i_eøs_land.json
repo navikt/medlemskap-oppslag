@@ -6,7 +6,7 @@
   "brukerinput": {
     "arbeidUtenforNorge": false
   },
-  "pdlpersonhistorikk": {
+  "personhistorikk": {
     "statsborgerskap": [
       {
         "landkode": "BEL",
@@ -17,13 +17,27 @@
     "personstatuser": [],
     "bostedsadresser": [
       {
+        "adresselinje": "Oslo",
         "landkode": "NOR",
         "fom": "2019-11-01",
         "tom": null
       }
     ],
+    "postadresser": [],
+    "midlertidigAdresser": [],
     "kontaktadresser": [],
     "oppholdsadresser": [],
+    "sivilstand": [],
+    "familierelasjoner": []
+  },
+  "pdlpersonhistorikk": {
+    "statsborgerskap": [],
+    "personstatuser": [],
+    "bostedsadresser": [],
+    "postadresser": [],
+    "kontaktadresser": [],
+    "oppholdsadresser": [],
+    "midlertidigAdresser": [],
     "sivilstand": [],
     "familierelasjoner": []
   },

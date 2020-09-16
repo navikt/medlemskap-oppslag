@@ -1,12 +1,33 @@
 package no.nav.medlemskap.regler.funksjoner
 
 import no.bekk.bekkopen.person.FodselsnummerValidator
-import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Familierelasjon
+import no.nav.medlemskap.domene.Familierelasjonsrolle
+import no.nav.medlemskap.domene.PersonhistorikkRelatertPerson
+import no.nav.medlemskap.domene.Sivilstand
+import java.time.LocalDate
 import java.util.*
 
 object RelasjonFunksjoner {
 
-    fun String.erBarnUnder25Aar() =
+    fun List<Sivilstand>.hentFnrTilEktefellerEllerPartnerForDato(dato: LocalDate): List<String?> =
+        this.filter { it.giftEllerRegistrertPartner() && it.overlapper(dato) }.map { it.relatertVedSivilstand }
+
+    fun List<Familierelasjon>.hentFnrTilBarnUnder25(): List<String?> =
+        this.filter {
+            it.relatertPersonsRolle == Familierelasjonsrolle.BARN &&
+                FodselsnummerValidator.isValid(it.relatertPersonsIdent) &&
+                it.relatertPersonsIdent.filtrerBarnUnder25Aar()
+        }.map { it.relatertPersonsIdent }
+
+    fun List<PersonhistorikkRelatertPerson>.hentRelatertSomFinnesITPS(ektefelle: String?): List<PersonhistorikkRelatertPerson> =
+        this.filter { it.ident == ektefelle && FodselsnummerValidator.isValid(it.ident) }
+
+    fun List<PersonhistorikkRelatertPerson>.hentBarnSomFinnesITPS(barn: List<String?>?):
+        List<PersonhistorikkRelatertPerson> =
+            this.filter { barn?.contains(it.ident) ?: false && FodselsnummerValidator.isValid(it.ident) }
+
+    fun String.filtrerBarnUnder25Aar() =
         (Calendar.getInstance().get(Calendar.YEAR) - this.hentBursdagsAar().toInt()) <= 25
 
     fun String.hentBursdagsAar(): String {
@@ -29,25 +50,4 @@ object RelasjonFunksjoner {
     fun String.hent2DigitBursdagsAar() = this.substring(4, 6)
 
     fun String.getIndividnummer() = this.substring(6, 9)
-
-    fun hentFnrTilEktefelle(personHistorikkFraPdl: Personhistorikk?): String? {
-        val fnrTilEktefelle =
-            personHistorikkFraPdl?.sivilstand
-                ?.filter { it.relatertVedSivilstand != null }
-                ?.filter { FodselsnummerValidator.isValid(it.relatertVedSivilstand) }
-                ?.filter { it.type == Sivilstandstype.GIFT || it.type == Sivilstandstype.REGISTRERT_PARTNER }
-                ?.map { it.relatertVedSivilstand }
-                ?.lastOrNull()
-        return fnrTilEktefelle
-    }
-
-    fun hentFnrTilBarn(familierelasjoner: List<Familierelasjon>): List<String> {
-        return familierelasjoner
-            .filter { FodselsnummerValidator.isValid(it.relatertPersonsIdent) }
-            .filter { it.erBarn() }
-            .filter { it.relatertPersonsIdent.erBarnUnder25Aar() }
-            .map { it.relatertPersonsIdent }
-    }
-
-    fun Familierelasjon.erBarn() = this.relatertPersonsRolle == Familierelasjonsrolle.BARN
 }

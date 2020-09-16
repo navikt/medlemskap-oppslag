@@ -6,20 +6,33 @@
   "brukerinput": {
     "arbeidUtenforNorge": false
   },
-  "pdlpersonhistorikk" : {
-    "statsborgerskap" : [
+  "personhistorikk": {
+    "statsborgerskap": [
       {
         "landkode": "NOR",
         "fom": "1991-06-30",
         "tom": null
       }
     ],
+    "personstatuser": [],
+    "sivilstand" : [],
+    "familierelasjoner" : [],
+    "bostedsadresser": [],
+    "postadresser": [],
+    "kontaktadresser": [],
+    "oppholdsadresser": [],
+    "midlertidigAdresser": []
+  },
+  "pdlpersonhistorikk" : {
+    "statsborgerskap" : [],
     "personstatuser" : [],
     "sivilstand" : [],
     "familierelasjoner" : [],
     "bostedsadresser" : [],
+    "postadresser" : [],
     "kontaktadresser": [],
-    "oppholdsadresser": []
+    "oppholdsadresser": [],
+    "midlertidigAdresser" : []
   },
   "medlemskap": [],
   "arbeidsforhold": [

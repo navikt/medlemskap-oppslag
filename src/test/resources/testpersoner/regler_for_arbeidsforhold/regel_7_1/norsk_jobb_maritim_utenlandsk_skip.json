@@ -6,7 +6,7 @@
   "brukerinput": {
     "arbeidUtenforNorge": false
   },
-  "pdlpersonhistorikk": {
+  "personhistorikk": {
     "statsborgerskap": [
       {
         "landkode": "NOR",
@@ -25,7 +25,20 @@
       }
     ],
     "kontaktadresser": [],
-    "oppholdsadresser": []
+    "oppholdsadresser": [],
+    "postadresser": [],
+    "midlertidigAdresser": []
+  },
+  "pdlpersonhistorikk": {
+    "statsborgerskap": [],
+    "personstatuser": [],
+    "sivilstand": [],
+    "familierelasjoner": [],
+    "bostedsadresser": [],
+    "postadresser": [],
+    "kontaktadresser": [],
+    "oppholdsadresser": [],
+    "midlertidigAdresser": []
   },
   "medlemskap": [],
   "arbeidsforhold": [

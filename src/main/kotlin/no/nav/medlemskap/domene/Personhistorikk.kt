@@ -6,10 +6,12 @@ data class Personhistorikk(
     val statsborgerskap: List<Statsborgerskap>,
     val personstatuser: List<FolkeregisterPersonstatus>,
     val bostedsadresser: List<Adresse>,
-    val kontaktadresser: List<Adresse>,
-    val oppholdsadresser: List<Adresse>,
+    val postadresser: List<Adresse>,
+    val midlertidigAdresser: List<Adresse>,
     val sivilstand: List<Sivilstand>,
-    val familierelasjoner: List<Familierelasjon>
+    val familierelasjoner: List<Familierelasjon>,
+    val kontaktadresser: List<Adresse>,
+    val oppholdsadresser: List<Adresse>
 )
 
 data class Statsborgerskap(

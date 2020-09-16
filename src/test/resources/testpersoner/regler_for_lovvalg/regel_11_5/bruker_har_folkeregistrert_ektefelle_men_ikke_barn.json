@@ -36,8 +36,8 @@
   "pdlpersonhistorikk": {
     "statsborgerskap": [
       {
-        "landkode": "BEL",
-        "fom": "1961-10-31",
+        "landkode": "NOR",
+        "fom": null,
         "tom": null
       }
     ],

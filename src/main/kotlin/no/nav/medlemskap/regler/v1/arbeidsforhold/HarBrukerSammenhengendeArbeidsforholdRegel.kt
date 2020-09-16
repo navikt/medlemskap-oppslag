@@ -32,7 +32,7 @@ class HarBrukerSammenhengendeArbeidsforholdRegel(
                 ytelse = datagrunnlag.ytelse,
                 periode = datagrunnlag.periode,
                 arbeidsforhold = datagrunnlag.arbeidsforhold,
-                statsborgerskap = datagrunnlag.pdlpersonhistorikk?.statsborgerskap
+                statsborgerskap = datagrunnlag.personhistorikk.statsborgerskap
             )
         }
     }

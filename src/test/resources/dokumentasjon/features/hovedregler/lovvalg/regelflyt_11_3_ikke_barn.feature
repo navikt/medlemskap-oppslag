@@ -29,13 +29,17 @@ Egenskap: Regelflyt for reglene 11.3.x for bruker som har ektefelle, men ikke ba
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   |
       | 01.01.2018      |                 | 001       | <Stillingsprosent> |
 
-    Og følgende sivilstand i personhistorikk fra PDL
+    Og følgende sivilstand i personhistorikk fra TPS/PDL
       | Sivilstandstype | Gyldig fra og med dato | Relatert ved sivilstand |
       | GIFT            | 29.06.2015             | 10108000398             |
 
-    Og følgende personhistorikk for ektefelle fra PDL
+    Og følgende personhistorikk for relaterte personer fra TPS
       | Ident       | Bosted | Fra og med dato |
       | 10108000398 | NOR    | 29.06.2015      |
+
+    Og følgende personhistorikk for ektefelle fra PDL
+      | Ident       |
+      | 10108000398 |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
@@ -59,13 +63,17 @@ Egenskap: Regelflyt for reglene 11.3.x for bruker som har ektefelle, men ikke ba
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   |
       | 01.01.2018      |                 | 001       | <Stillingsprosent> |
 
-    Og følgende sivilstand i personhistorikk fra PDL
+    Og følgende sivilstand i personhistorikk fra TPS/PDL
       | Sivilstandstype | Gyldig fra og med dato | Relatert ved sivilstand |
       | GIFT            | 29.06.2015             | 10108000398             |
 
-    Og følgende personhistorikk for ektefelle fra PDL
+    Og følgende personhistorikk for relaterte personer fra TPS
       | Ident       | Fra og med dato |
       | 10108000398 | 29.06.2015      |
+
+    Og følgende personhistorikk for ektefelle fra PDL
+      | Ident       |
+      | 10108000398 |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |

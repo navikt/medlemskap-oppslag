@@ -15,7 +15,6 @@ import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.createHttpServer
-import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
@@ -126,13 +125,14 @@ suspend fun mockCreateDatagrunnlag(
     Datagrunnlag(
         periode = periode,
         brukerinput = brukerinput,
+        personhistorikk = personhistorikk(),
         pdlpersonhistorikk = personhistorikk(),
         medlemskap = listOf(Medlemskap("dekning", enDato(), enAnnenDato(), true, Lovvalg.ENDL, "NOR", PeriodeStatus.GYLD)),
         arbeidsforhold = listOf(arbeidsforhold()),
         oppgaver = listOf(Oppgave(enDato(), Prioritet.NORM, Status.AAPNET, "Tema")),
         dokument = listOf(Journalpost("Id", "Tittel", "Posttype", "Status", "Tema", listOf(Dokument("Id", "Tittel")))),
         ytelse = ytelse,
-        dataOmBarn = listOf(DataOmBarn(personhistorikkBarn = personhistorikkForBarn())),
+        personHistorikkRelatertePersoner = listOf(personhistorikkRelatertPerson()),
         dataOmEktefelle = DataOmEktefelle(personhistorikkEktefelle(), listOf(arbeidsforhold()))
     )
 }
@@ -156,10 +156,12 @@ private fun personhistorikk(): Personhistorikk {
         statsborgerskap = listOf(Statsborgerskap("NOR", enDato(), enAnnenDato())),
         personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSA, enDato(), enAnnenDato())),
         bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        postadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        midlertidigAdresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
         sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr(), folkeregistermetadata())),
         familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata())),
-        kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
+        kontaktadresser = listOf(Adresse("SWE", enDato(), enAnnenDato())),
+        oppholdsadresser = listOf(Adresse("SWE", enDato(), enAnnenDato()))
     )
 }
 
@@ -168,34 +170,20 @@ private fun personhistorikkRelatertPerson(): PersonhistorikkRelatertPerson {
         ident = ektefelleFnr(),
         personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSA, enDato(), enAnnenDato())),
         bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
-    )
-}
-
-private fun personhistorikkForBarn(): PersonhistorikkBarn {
-    return PersonhistorikkBarn(
-        ident = barnFnr(),
-        bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        familierelasjoner = listOf(Familierelasjon(brukerFnr(), Familierelasjonsrolle.FAR, Familierelasjonsrolle.BARN, folkeregistermetadata()))
-
+        postadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        midlertidigAdresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
     )
 }
 
 private fun personhistorikkEktefelle(): PersonhistorikkEktefelle {
     return PersonhistorikkEktefelle(
         ident = ektefelleFnr(),
-        barn = listOf(barnFnr()),
-        bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
+        barn = listOf(PersonhistorikkBarn(ident = barnFnr()))
     )
 }
 
 private fun folkeregistermetadata() = Folkeregistermetadata(etTidspunkt(), etTidspunkt(), etTidspunkt())
-private fun brukerFnr() = "15076500565"
+
 private fun ektefelleFnr() = "0101197512345"
 private fun barnFnr() = "0101201012345"
 private fun enDato() = LocalDate.of(1975, 10, 10)
@@ -231,6 +219,64 @@ private val forventetResponse =
         "brukerinput" : {
           "arbeidUtenforNorge" : false
         },
+        "personhistorikk" : {
+          "statsborgerskap" : [ {
+            "landkode" : "NOR",
+            "fom" : "1975-10-10",
+            "tom" : "2020-08-01"
+          }],
+          "personstatuser" : [ {
+            "personstatus" : "BOSA",
+            "fom": "1975-10-10",
+            "tom" : "2020-08-01"
+          }],
+          "bostedsadresser" : [ {
+            "landkode" : "NOR",
+            "fom" : "1975-10-10",
+            "tom" : "2020-08-01"
+          }],
+          "postadresser" : [{
+            "landkode" : "NOR",
+            "fom": "1975-10-10",
+            "tom" : "2020-08-01"
+          } ],
+          "midlertidigAdresser" : [ {
+            "landkode" : "NOR",
+            "fom" : "1975-10-10",
+            "tom" : "2020-08-01"
+          } ],
+          "kontaktadresser" : [ {
+            "landkode" : "SWE", 
+            "fom" : "1975-10-10",
+            "tom" : "2020-08-01"
+          }],
+          "oppholdsadresser": [{
+             "landkode" : "SWE", 
+            "fom" : "1975-10-10",
+            "tom" : "2020-08-01"
+          }],
+          "sivilstand" : [ {
+            "type" : "GIFT",
+            "gyldigFraOgMed" : "1975-10-10",
+            "gyldigTilOgMed" : "2020-08-01",
+            "relatertVedSivilstand" : "0101197512345",
+            "folkeregistermetadata" : {
+              "ajourholdstidspunkt" : "2020-06-20T10:00:00",
+              "gyldighetstidspunkt" : "2020-06-20T10:00:00",
+              "opphoerstidspunkt" : "2020-06-20T10:00:00"
+            }
+          } ],
+          "familierelasjoner" : [ {
+            "relatertPersonsIdent" : "0101201012345",
+            "relatertPersonsRolle" : "BARN",
+            "minRolleForPerson" : "FAR",
+            "folkeregistermetadata" : {
+              "ajourholdstidspunkt" : "2020-06-20T10:00:00",
+              "gyldighetstidspunkt" : "2020-06-20T10:00:00",
+              "opphoerstidspunkt" : "2020-06-20T10:00:00"
+            }
+          } ]
+        },
         "pdlpersonhistorikk" : {
           "statsborgerskap" : [ {
             "landkode" : "NOR",
@@ -247,13 +293,23 @@ private val forventetResponse =
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
           } ],
+          "postadresser" : [ {
+            "landkode" : "NOR",
+            "fom" : "1975-10-10",
+            "tom" : "2020-08-01"
+          } ],
+          "midlertidigAdresser" : [ {
+            "landkode" : "NOR",
+            "fom" : "1975-10-10",
+            "tom" : "2020-08-01"
+          } ],
           "kontaktadresser" : [ {
-            "landkode" : "NOR", 
+            "landkode" : "SWE", 
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
           }],
           "oppholdsadresser": [{
-             "landkode" : "NOR", 
+             "landkode" : "SWE", 
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
           }],
@@ -282,24 +338,13 @@ private val forventetResponse =
         "dataOmEktefelle": {
            "personhistorikkEktefelle": {
                     "ident": "0101197512345",
-                    "barn": ["0101201012345"], 
-                    "bostedsadresser" : [ {
-                         "landkode" : "NOR",
-                         "fom" : "1975-10-10",
-                         "tom" : "2020-08-01"
-                    } ],
-                    "kontaktadresser" : [ {
-                          "landkode" : "NOR", 
-                          "fom" : "1975-10-10",
-                          "tom" : "2020-08-01"
-                    }],
-                   "oppholdsadresser": [{
-                        "landkode" : "NOR", 
-                        "fom" : "1975-10-10",
-                        "tom" : "2020-08-01"
-                    }]
+                    "barn": [
+                        {
+                            "ident": "0101201012345"
+                        }
+                    ]
            }, 
-            "arbeidsforholdEktefelle" : [ { 
+            "arbeidsforholdEktefelle" : [ {
                      "periode" : {
                        "fom" : "1975-10-10",
                        "tom" : "2020-08-01"
@@ -344,36 +389,6 @@ private val forventetResponse =
                      } ]
                    } ]
         },
-        "dataOmBarn": [ {
-           "personhistorikkBarn": {
-                    "ident": "0101201012345",
-                    "bostedsadresser" : [ {
-                         "landkode" : "NOR",
-                         "fom" : "1975-10-10",
-                         "tom" : "2020-08-01"
-                    } ],
-                    "kontaktadresser" : [ {
-                          "landkode" : "NOR", 
-                          "fom" : "1975-10-10",
-                          "tom" : "2020-08-01"
-                    }],
-                   "oppholdsadresser": [{
-                        "landkode" : "NOR", 
-                        "fom" : "1975-10-10",
-                        "tom" : "2020-08-01"
-                    }],
-                    "familierelasjoner" : [ {
-                         "relatertPersonsIdent" : "15076500565",
-                         "relatertPersonsRolle" : "FAR",
-                         "minRolleForPerson" : "BARN",
-                         "folkeregistermetadata" : {
-                           "ajourholdstidspunkt" : "2020-06-20T10:00:00",
-                           "gyldighetstidspunkt" : "2020-06-20T10:00:00",
-                           "opphoerstidspunkt" : "2020-06-20T10:00:00"
-                         }
-                   }]
-            }
-         }],
         "medlemskap" : [ {
           "dekning" : "dekning",
           "fraOgMed" : "1975-10-10",
@@ -444,9 +459,32 @@ private val forventetResponse =
             "tittel" : "Tittel"
           } ]
         } ],
-        "ytelse" : "SYKEPENGER"
+        "ytelse" : "SYKEPENGER",
+        "personHistorikkRelatertePersoner" : [ {
+          "ident" : "0101197512345",
+          "personstatuser" : [ {
+            "personstatus" : "BOSA",
+            "fom" : "1975-10-10",
+            "tom" : "2020-08-01"
+          } ],
+          "bostedsadresser" : [ {
+            "landkode" : "NOR",
+            "fom" : "1975-10-10",
+            "tom" : "2020-08-01"
+          } ],
+          "postadresser" : [ {
+            "landkode" : "NOR",
+            "fom" : "1975-10-10",
+            "tom" : "2020-08-01"
+          } ],
+          "midlertidigAdresser" : [ {
+            "landkode" : "NOR",
+            "fom" : "1975-10-10",
+            "tom" : "2020-08-01"
+          } ]
+        } ]
       },
-       "resultat" : {
+      "resultat" : {
         "regelId" : "REGEL_MEDLEM_KONKLUSJON",
         "avklaring" : "Er bruker medlem?",
         "begrunnelse" : "Kan ikke konkludere med medlemskap",
@@ -454,9 +492,9 @@ private val forventetResponse =
         "harDekning" : null,
         "dekning" : "",
         "delresultat" : [ {
-          "regelId" : "REGEL_MEDL",
-          "avklaring" : "Har bruker avklarte opplysninger i MEDL?",
-          "begrunnelse" : "",
+          "regelId" : "REGEL_MEDLEM_KONKLUSJON",
+          "avklaring" : "Er bruker medlem?",
+          "begrunnelse" : "Kan ikke konkludere med medlemskap",
           "svar" : "UAVKLART",
           "harDekning" : null,
           "dekning" : "",
@@ -564,18 +602,34 @@ private val forventetResponse =
             "harDekning" : null,
             "dekning" : "",
             "delresultat" : [ ]
-          }, {
-            "regelId" : "REGEL_9",
-            "avklaring" : "Har bruker utført arbeid utenfor Norge?",
-            "begrunnelse" : "",
-            "svar" : "NEI",
-            "harDekning" : null,
-            "dekning" : "",
-            "delresultat" : [ ]
           } ]
         }, {
-          "regelId" : "REGEL_BOSATT",
-          "avklaring" : "Er det avklart om bruker bor i Norge?",
+          "regelId" : "REGEL_9",
+          "avklaring" : "Har bruker utført arbeid utenfor Norge?",
+          "begrunnelse" : "",
+          "svar" : "NEI",
+          "harDekning" : null,
+          "dekning" : "",
+          "delresultat" : [ ]
+        }, {
+          "regelId" : "REGEL_2",
+          "avklaring" : "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?",
+          "begrunnelse" : "",
+          "svar" : "JA",
+          "harDekning" : null,
+          "dekning" : "",
+          "delresultat" : [ ]
+        }, {
+          "regelId" : "REGEL_11",
+          "avklaring" : "Er bruker norsk statsborger?",
+          "begrunnelse" : "",
+          "svar" : "JA",
+          "harDekning" : null,
+          "dekning" : "",
+          "delresultat" : [ ]
+        }, {
+          "regelId" : "REGEL_NORSK",
+          "avklaring" : "Er regler for norsk borgere avklart?",
           "begrunnelse" : "Regelflyt konkluderer med JA",
           "svar" : "JA",
           "harDekning" : null,
@@ -588,39 +642,7 @@ private val forventetResponse =
             "harDekning" : null,
             "dekning" : "",
             "delresultat" : [ ]
-          } ]
-        }, {
-          "regelId" : "REGEL_STATSBORGERSKAP",
-          "avklaring" : "Er statsborgerskap avklart?",
-          "begrunnelse" : "Regelflyt konkluderer med JA",
-          "svar" : "JA",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ {
-            "regelId" : "REGEL_2",
-            "avklaring" : "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?",
-            "begrunnelse" : "",
-            "svar" : "JA",
-            "harDekning" : null,
-            "dekning" : "",
-            "delresultat" : [ ]
           }, {
-            "regelId" : "REGEL_11",
-            "avklaring" : "Er bruker norsk statsborger?",
-            "begrunnelse" : "",
-            "svar" : "JA",
-            "harDekning" : null,
-            "dekning" : "",
-            "delresultat" : [ ]
-          } ]
-        }, {
-          "regelId" : "REGEL_NORSK",
-          "avklaring" : "Er regler for norsk borgere avklart?",
-          "begrunnelse" : "Regelflyt konkluderer med JA",
-          "svar" : "JA",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ {
             "regelId" : "REGEL_12",
             "avklaring" : "Har bruker vært i minst 25% stilling de siste 12 mnd?",
             "begrunnelse" : "",

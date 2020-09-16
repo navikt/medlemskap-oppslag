@@ -15,9 +15,9 @@ Egenskap: Borgere som ikke er EØS-borgere skal ha uavklart medlemskap i MVP
   "brukerinput": {
     "arbeidUtenforNorge": false
   },
-  "pdlpersonhistorikk": {
+  "personhistorikk": {
     "statsborgerskap": [
-       {
+      {
         "landkode": "USA",
         "fom": "1991-06-30",
         "tom": null
@@ -25,12 +25,25 @@ Egenskap: Borgere som ikke er EØS-borgere skal ha uavklart medlemskap i MVP
     ],
     "personstatuser": [],
     "bostedsadresser": [
-         {
+      {
         "landkode": "NOR",
         "fom": "2020-01-01",
         "tom": null
       }
     ],
+    "postadresser": [],
+    "midlertidigAdresser": [],
+    "kontaktadresser": [],
+    "oppholdsadresser": [],
+    "sivilstand": [],
+    "familierelasjoner": []
+  },
+  "pdlpersonhistorikk": {
+    "statsborgerskap": [],
+    "personstatuser": [],
+    "bostedsadresser": [],
+    "postadresser": [],
+    "midlertidigAdresser": [],
     "kontaktadresser": [],
     "oppholdsadresser": [],
     "sivilstand": [],

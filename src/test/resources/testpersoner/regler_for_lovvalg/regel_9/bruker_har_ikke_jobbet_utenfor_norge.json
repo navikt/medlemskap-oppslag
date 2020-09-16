@@ -32,7 +32,9 @@
     "personstatuser": [],
     "sivilstand": [],
     "familierelasjoner": [],
-    "bostedsadresser": []
+    "bostedsadresser": [],
+    "postadresser": [],
+    "midlertidigAdresser": []
   },
   "medlemskapsunntak": [],
   "arbeidsforhold": [

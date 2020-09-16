@@ -1,7 +1,8 @@
 package no.nav.medlemskap.regler.v1.lovvalg
 
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
+import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
+import no.nav.medlemskap.regler.common.Funksjoner.harAlle
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.ja
@@ -9,12 +10,13 @@ import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentBarnSomFinnesITPS
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarnUnder25
 
-class HarBrukerBarnRegel(
+class ErBrukersEktefelleOgBarnasMorSammePersonRegel(
     ytelse: Ytelse,
     private val periode: InputPeriode,
+    private val dataOmEktefelle: DataOmEktefelle?,
     private val pdlPersonhistorikk: Personhistorikk?,
     private val personhistorikkRelatertPerson: List<PersonhistorikkRelatertPerson>,
-    regelId: RegelId = RegelId.REGEL_11_2_1
+    regelId: RegelId = RegelId.REGEL_11_5_1
 ) : LovvalgRegel(regelId, ytelse, periode) {
 
     override fun operasjon(): Resultat {
@@ -22,21 +24,25 @@ class HarBrukerBarnRegel(
         val barn = familierelasjon?.hentFnrTilBarnUnder25()
         val barnITps = personhistorikkRelatertPerson.hentBarnSomFinnesITPS(barn)
 
-        return when {
-            barnITps.erIkkeTom() -> ja()
-            else -> nei("Bruker har ikke barn i tps")
+        if (dataOmEktefelle != null) {
+            return when {
+                dataOmEktefelle.personhistorikkEktefelle?.barn?.map { it.ident }?.harAlle(barnITps.map { it.ident })!! -> ja()
+                else -> nei(" Ektefelle er ikke barn/barnas mor")
+            }
         }
+
+        return nei()
     }
 
     companion object {
 
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag, regelId: RegelId): HarBrukerBarnRegel {
-            return HarBrukerBarnRegel(
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErBrukersEktefelleOgBarnasMorSammePersonRegel {
+            return ErBrukersEktefelleOgBarnasMorSammePersonRegel(
                 ytelse = datagrunnlag.ytelse,
                 periode = datagrunnlag.periode,
+                dataOmEktefelle = datagrunnlag.dataOmEktefelle,
                 pdlPersonhistorikk = datagrunnlag.pdlpersonhistorikk,
-                personhistorikkRelatertPerson = datagrunnlag.personHistorikkRelatertePersoner,
-                regelId = regelId
+                personhistorikkRelatertPerson = datagrunnlag.personHistorikkRelatertePersoner
             )
         }
     }

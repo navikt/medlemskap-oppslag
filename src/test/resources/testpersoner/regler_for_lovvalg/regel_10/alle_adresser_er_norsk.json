@@ -6,30 +6,46 @@
   "brukerinput" : {
     "arbeidUtenforNorge" : false
   },
+  "personhistorikk" : {
+    "statsborgerskap" : [ {
+      "landkode": "NOR",
+      "fom": "2000-01-30",
+      "tom": "2020-01-30"
+    } ],
+    "personstatuser" : [ ],
+    "bostedsadresser" : [
+      {
+        "adresselinje" : "Oslo",
+        "landkode" : "NOR",
+        "fom" : "2018-11-01",
+        "tom" : null
+      }
+    ],
+    "postadresser" : [
+      {
+        "adresselinje" : "Oslo",
+        "landkode" : "NOR",
+        "fom" : "2018-11-01",
+        "tom" : null
+      }
+    ],
+    "midlertidigAdresser" : [
+      {
+        "adresselinje" : "Oslo",
+        "landkode" : "NOR",
+        "fom" : "2018-11-01",
+        "tom" : null
+      }
+    ],
+    "sivilstand": [],
+    "familierelasjoner": []
+  },
   "pdlpersonhistorikk": {
     "statsborgerskap": [],
     "personstatuser": [],
-    "bostedsadresser": [
-      {
-        "landkode" : "NOR",
-        "fom" : "2018-11-01",
-        "tom" : null
-      }
-    ],
-    "kontaktadresser" : [
-      {
-        "landkode" : "NOR",
-        "fom" : "2018-11-01",
-        "tom" : null
-      }
-    ],
-    "oppholdsadresser": [
-      {
-        "landkode" : "NOR",
-        "fom" : "2018-11-01",
-        "tom" : null
-      }
-    ],
+    "bostedsadresser": [],
+    "postadresser": [],
+    "midlertidigAdresser": [],
     "sivilstand": [],
     "familierelasjoner": []
   },

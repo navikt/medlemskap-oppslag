@@ -1,7 +1,7 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regelflyt for reglene 11.2.x for bruker som ikke har ektefelle i PDL
+Egenskap: Regelflyt for reglene 11.2.x for bruker som ikke har ektefelle i TPS/PDL
 
   Bakgrunn: Belgisk statsborger som er bosatt i Norge
     Gitt følgende bostedsadresser i personhistorikken
@@ -46,11 +46,11 @@ Egenskap: Regelflyt for reglene 11.2.x for bruker som ikke har ektefelle i PDL
       | 120              | Ja             | Ja         |
 
   Scenariomal: Bruker uten ektefelle med barn må ha minst 80 % stilling for å få "Ja"
-    Gitt følgende familerelasjoner i personhistorikk fra PDL
+    Gitt følgende familerelasjoner i personhistorikk fra TPS/PDL
       | Relatert persons ident | Relatert persons rolle | Min rolle for person |
       | 09069534888            | BARN                   | FAR                  |
 
-    Og følgende personhistorikk for barn fra PDL
+    Og følgende personhistorikk for relaterte personer fra TPS
       | Ident       | Bosted | Fra og med dato | Til og med dato |
       | 09069534888 | NOR    | 18.07.2010      |                 |
 
@@ -75,12 +75,12 @@ Egenskap: Regelflyt for reglene 11.2.x for bruker som ikke har ektefelle i PDL
       | 81               | Ja           | Ja         |
 
   Scenario: Bruker med ett barn som bor i Norge og ett barn som ikke bor i Norge skal få "UAVKLART"
-    Gitt følgende familerelasjoner i personhistorikk fra PDL
+    Gitt følgende familerelasjoner i personhistorikk fra TPS/PDL
       | Relatert persons ident | Relatert persons rolle | Min rolle for person |
       | 09069534888            | BARN                   | FAR                  |
       | 10079541651            | BARN                   | FAR                  |
 
-    Og følgende personhistorikk for barn fra PDL
+    Og følgende personhistorikk for relaterte personer fra TPS
       | Ident       | Bosted | Fra og med dato |
       | 09069534888 | NOR    | 18.07.2010      |
       | 10079541651 |        | 18.07.2010      |
@@ -101,11 +101,11 @@ Egenskap: Regelflyt for reglene 11.2.x for bruker som ikke har ektefelle i PDL
     Og skal regel "11.2.2.2" gi svaret "Ja"
 
   Scenariomal: Bruker uten ektefelle og med barn som ikke bor i Norge må ha minst 100 % stilling for å få "Ja"
-    Gitt følgende familerelasjoner i personhistorikk fra PDL
+    Gitt følgende familerelasjoner i personhistorikk fra TPS/PDL
       | Relatert persons ident | Relatert persons rolle | Min rolle for person |
       | 09069534888            | BARN                   | FAR                  |
 
-    Og følgende personhistorikk for barn fra PDL
+    Og følgende personhistorikk for relaterte personer fra TPS
       | Ident       | Fra og med dato | Til og med dato |
       | 09069534888 | 18.07.2010      |                 |
 

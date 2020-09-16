@@ -15,8 +15,8 @@ Egenskap: Man er medlem i Folketrygden hvis man bor i Norge eller jobber i Norge
   "brukerinput": {
     "arbeidUtenforNorge": false
   },
-  "pdlpersonhistorikk": {
-      "statsborgerskap": [
+  "personhistorikk": {
+    "statsborgerskap": [
       {
         "landkode": "NOR",
         "fom": "1991-06-30",
@@ -31,6 +31,19 @@ Egenskap: Man er medlem i Folketrygden hvis man bor i Norge eller jobber i Norge
         "tom": null
       }
     ],
+    "postadresser": [],
+    "midlertidigAdresser": [],
+    "kontaktadresser": [],
+    "oppholdsadresser": [],
+    "sivilstand": [],
+    "familierelasjoner": []
+  },
+  "pdlpersonhistorikk": {
+    "statsborgerskap": [],
+    "personstatuser": [],
+    "bostedsadresser": [],
+    "postadresser": [],
+    "midlertidigAdresser": [],
     "kontaktadresser": [],
     "oppholdsadresser": [],
     "sivilstand": [],

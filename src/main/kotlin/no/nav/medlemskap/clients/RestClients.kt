@@ -2,6 +2,7 @@ package no.nav.medlemskap.clients
 
 import no.nav.medlemskap.clients.aareg.AaRegClient
 import no.nav.medlemskap.clients.ereg.EregClient
+import no.nav.medlemskap.clients.inntekt.InntektClient
 import no.nav.medlemskap.clients.medl.MedlClient
 import no.nav.medlemskap.clients.oppgave.OppgaveClient
 import no.nav.medlemskap.clients.pdl.PdlClient
@@ -28,6 +29,7 @@ class RestClients(
 
     fun aaReg(endpointUrl: String) = AaRegClient(endpointUrl, stsClientRest, httpClient, aaRegRetry)
     fun medl2(endpointBaseUrl: String) = MedlClient(endpointBaseUrl, stsClientRest, configuration, httpClient, medlRetry)
+    fun inntektskomponenten(endpointBaseUrl: String) = InntektClient(endpointBaseUrl, stsClientRest, configuration, httpClient, inntektRetry)
     fun saf(endpointBaseUrl: String) = SafClient(endpointBaseUrl, stsClientRest, configuration.sts.username, httpClient, safRetry)
     fun oppgaver(endpointBaseUrl: String) = OppgaveClient(endpointBaseUrl, stsClientRest, httpClient, oppgaveRetry)
     fun pdl(endpointBaseURl: String) = PdlClient(endpointBaseURl, stsClientRest, configuration.sts.username, httpClient, pdlRetry)

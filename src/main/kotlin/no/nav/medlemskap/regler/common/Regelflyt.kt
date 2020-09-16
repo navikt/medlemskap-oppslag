@@ -7,11 +7,10 @@ class Regelflyt(
     val ytelse: Ytelse,
     val hvisJa: Regelflyt? = null,
     val hvisNei: Regelflyt? = null,
-    val hvisUavklart: Regelflyt? = null,
-    val regelIdForSammensattResultat: RegelId? = null
+    val hvisUavklart: Regelflyt? = null
 ) {
 
-    private fun utfør(resultatliste: MutableList<Resultat>, harDekning: Svar? = null, dekning: String = ""): Resultat {
+    fun utfør(resultatliste: MutableList<Resultat>, harDekning: Svar? = null, dekning: String = ""): Resultat {
         val resultat = regel.utfør()
 
         resultatliste.add(resultat)
@@ -31,27 +30,5 @@ class Regelflyt(
         resultat.dekning = dekning
 
         return resultat
-    }
-
-    fun utfør(harDekning: Svar? = null, dekning: String = ""): Resultat {
-        val resultatliste = mutableListOf<Resultat>()
-
-        val resultat = utfør(resultatliste, harDekning, dekning)
-        val delresultater = if (resultat.delresultat.isNotEmpty()) resultat.delresultat else resultatliste.utenKonklusjon()
-        val konklusjon = resultat.copy(delresultat = delresultater)
-        if (regelIdForSammensattResultat != null) {
-            return konklusjon.copy(
-                delresultat = listOf(
-                    Resultat(
-                        regelId = regelIdForSammensattResultat,
-                        svar = konklusjon.svar,
-                        avklaring = regelIdForSammensattResultat.avklaring,
-                        delresultat = delresultater
-                    )
-                )
-            )
-        }
-
-        return konklusjon
     }
 }
