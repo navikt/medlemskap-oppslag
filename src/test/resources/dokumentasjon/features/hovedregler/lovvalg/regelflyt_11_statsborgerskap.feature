@@ -37,7 +37,11 @@ Egenskap: Regel 11: Statsborgerskap
     Så skal svaret være "<Svar>"
     Og skal regel "11" gi svaret "<Regel 11>"
 
+    Og skal JSON datagrunnlag genereres i filen "<Filnavn>"
+    Og skal JSON resultat genereres i filen "<Filnavn>_resultat"
+    Og skal JSON datagrunnlag og resultat genereres i filen "<Filnavn>_response"
+
     Eksempler:
-      | Statsborgerskap | Svar     | Regel 11 |
-      | NOR             | Ja       | Ja       |
-      | FRA             | Ja       | Nei      |
+      | Statsborgerskap | Svar | Regel 11 | Filnavn      |
+      | NOR             | Ja   | Ja       | norsk_borger |
+      | FRA             | Ja   | Nei      | eøs_borger   |
