@@ -82,7 +82,7 @@ private suspend fun CoroutineScope.hentDataOmEktefelle(fnrTilEktefelle: String?,
         val arbeidsforholdEktefelle = try {
             services.aaRegService.hentArbeidsforhold(fnrTilEktefelle, callId, fraOgMedDatoForArbeidsforhold(periode), periode.tom)
         } catch (t: Exception) {
-            listOf<Arbeidsforhold>()
+            emptyList<Arbeidsforhold>()
         }
 
         return DataOmEktefelle(
