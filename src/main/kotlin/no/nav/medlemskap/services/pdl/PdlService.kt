@@ -56,6 +56,12 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
 
     suspend fun hentPersonHistorikkTilBruker(fnr: String, callId: String): Personhistorikk {
         val hentPerson = pdlClient.hentPerson(fnr, callId)
+
+        hentPerson.errors?.let { errors ->
+            logger.warn { "Fikk følgende feil fra PDL: ${objectMapper.writeValueAsString(errors)}" }
+            throw GraphqlError(errors.first(), "PDL")
+        }
+
         if (hentPerson.data?.hentPerson != null) {
             return PdlMapper.mapTilPersonHistorikkTilBruker(hentPerson.data?.hentPerson!!)
         } else throw PersonIkkeFunnet("PDL")
@@ -73,6 +79,12 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
 
     suspend fun hentPersonHistorikkTilEktefelle(fnrTilEktefelle: String, callId: String): PersonhistorikkEktefelle {
         val hentPerson = pdlClient.hentPerson(fnrTilEktefelle, callId)
+
+        hentPerson.errors?.let { errors ->
+            logger.warn { "Fikk følgende feil fra PDL: ${objectMapper.writeValueAsString(errors)}" }
+            throw GraphqlError(errors.first(), "PDL")
+        }
+
         if (hentPerson.data?.hentPerson != null) {
             return PdlMapperEktefelle.mapPersonhistorikkTilEktefelle(fnrTilEktefelle, hentPerson.data?.hentPerson!!)
         } else throw PersonIkkeFunnet("PDL")
@@ -80,6 +92,12 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
 
     suspend fun hentPersonHistorikkTilBarn(fnrTilEktefelle: String, callId: String): PersonhistorikkBarn {
         val hentPerson = pdlClient.hentPerson(fnrTilEktefelle, callId)
+
+        hentPerson.errors?.let { errors ->
+            logger.warn { "Fikk følgende feil fra PDL: ${objectMapper.writeValueAsString(errors)}" }
+            throw GraphqlError(errors.first(), "PDL")
+        }
+
         if (hentPerson.data?.hentPerson != null) {
             return PdlMapperBarn.mapPersonhistorikkTilBarn(fnrTilEktefelle, hentPerson.data?.hentPerson!!)
         } else throw PersonIkkeFunnet("PDL")
