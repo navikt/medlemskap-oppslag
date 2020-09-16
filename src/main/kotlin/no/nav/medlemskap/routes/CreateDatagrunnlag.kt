@@ -78,8 +78,12 @@ suspend fun hentDataOmBarn(fnrBarn: List<String>, services: Services, callId: St
 private suspend fun CoroutineScope.hentDataOmEktefelle(fnrTilEktefelle: String?, services: Services, callId: String, periode: InputPeriode): DataOmEktefelle? {
     if (fnrTilEktefelle != null) {
         val personhistorikkEktefelle = hentPersonHistorikkForEktefelle(fnrTilEktefelle, services, callId)
-        val arbeidsforholdEktefelleReguest = async { services.aaRegService.hentArbeidsforhold(fnrTilEktefelle, callId, fraOgMedDatoForArbeidsforhold(periode), periode.tom) }
-        val arbeidsforholdEktefelle = arbeidsforholdEktefelleReguest.await()
+
+        val arbeidsforholdEktefelle = try {
+            services.aaRegService.hentArbeidsforhold(fnrTilEktefelle, callId, fraOgMedDatoForArbeidsforhold(periode), periode.tom)
+        } catch (t: Exception) {
+            listOf<Arbeidsforhold>()
+        }
 
         return DataOmEktefelle(
             personhistorikkEktefelle = personhistorikkEktefelle,
