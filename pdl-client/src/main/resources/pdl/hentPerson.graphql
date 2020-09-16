@@ -1,7 +1,5 @@
 query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolean!){
     hentPerson(ident: $ident) {
-        adressebeskyttelse{ gradering },
-        kjoenn{ kjoenn },
         familierelasjoner {
             relatertPersonsIdent
             relatertPersonsRolle
