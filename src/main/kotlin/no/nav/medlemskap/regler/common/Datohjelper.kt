@@ -82,9 +82,7 @@ fun erDatoerSammenhengende(sluttDato: LocalDate, startDato: LocalDate?): Boolean
 
 fun lagInterval(periode: Periode): Interval = periode.interval()
 
-fun Periode.interval(): Interval {
-    return Interval.of(this.intervalStartInclusive(), this.intervalEndExclusive())
-}
+fun Periode.interval(): Interval = Interval.of(this.intervalStartInclusive(), this.intervalEndExclusive())
 
 fun lagInstantStartOfDay(date: LocalDate) = date.atStartOfDay(ZoneId.systemDefault()).toInstant()
 
