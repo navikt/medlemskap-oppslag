@@ -5,7 +5,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.Services
-import no.nav.medlemskap.common.endretStatsborgerskapSisteÅretCounter
+import no.nav.medlemskap.common.endretStatsborgerskapSisteAaretCounter
 import no.nav.medlemskap.common.flereStatsborgerskapCounter
 import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.domene.*
@@ -119,6 +119,6 @@ private fun registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl: Person
         )
 
     if (statsborgerskapEndretSisteÅret.isNotEmpty()) {
-        endretStatsborgerskapSisteÅretCounter(ytelse).increment()
+        endretStatsborgerskapSisteAaretCounter(ytelse).increment()
     }
 }

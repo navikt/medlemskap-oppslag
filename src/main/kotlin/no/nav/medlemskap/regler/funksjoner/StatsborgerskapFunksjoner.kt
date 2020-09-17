@@ -19,11 +19,26 @@ object StatsborgerskapFunksjoner {
 
     infix fun List<Statsborgerskap>.harEndretSisteÅret(kontrollPeriode: Kontrollperiode): List<Statsborgerskap> =
         this.filter {
-            if (it.fom != null && it.tom != null) {
-                kontrollPeriode.tilPeriode().interval().contains(lagInstantStartOfDay(it.fom)) ||
-                    kontrollPeriode.tilPeriode().interval().contains(lagInstantStartOfDay(it.tom))
-            } else { false }
+            erStatsborgerskapetInnenforPerioden(it, kontrollPeriode)
         }
+
+    private fun erStatsborgerskapetInnenforPerioden(it: Statsborgerskap, kontrollPeriode: Kontrollperiode): Boolean {
+        return if (it.fom != null && it.tom != null) {
+            erFomInnenforPerioden(kontrollPeriode, it.fom) || erTomInnenforPerioden(kontrollPeriode, it.tom)
+        } else if (it.fom != null && it.tom == null) {
+            erFomInnenforPerioden(kontrollPeriode, it.fom)
+        } else if (it.fom == null && it.tom != null) {
+            erTomInnenforPerioden(kontrollPeriode, it.tom)
+        } else {
+            false
+        }
+    }
+
+    private fun erTomInnenforPerioden(kontrollPeriode: Kontrollperiode, tom: LocalDate) =
+        kontrollPeriode.tilPeriode().interval().contains(lagInstantStartOfDay(tom))
+
+    private fun erFomInnenforPerioden(kontrollPeriode: Kontrollperiode, fom: LocalDate) =
+        kontrollPeriode.tilPeriode().interval().contains(lagInstantStartOfDay(fom))
 
     infix fun List<Statsborgerskap>.hentStatsborgerskapVedStartAvKontrollperiode(kontrollPeriode: Kontrollperiode): List<String> =
         this.hentStatsborgerskapFor(kontrollPeriode.fom)

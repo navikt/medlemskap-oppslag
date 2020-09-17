@@ -35,7 +35,18 @@ class StatsborgerskapFunksjonerTest {
 
     @Test
     fun `Statsborgerskap med fom lik null blir filtrert`() {
-        val statsborgerskapListe = listOf(statsborgerskapMedFomLikNull)
+        val statsborgerskapListe = listOf(statsborgerskapMedFomLikNullOgTomInnenforPeriode)
+        val kontrollperiode = Kontrollperiode(
+            fom = LocalDate.of(2019, 1, 1),
+            tom = LocalDate.of(2019, 12, 31)
+        )
+        val filtrertListe = statsborgerskapListe.harEndretSisteÅret(kontrollperiode)
+        assertEquals(1, filtrertListe.size)
+    }
+
+    @Test
+    fun `Statsborgerskap med fom lik null og tom utenfor perioden blir filtrert`() {
+        val statsborgerskapListe = listOf(statsborgerskapMedTomLikNullOgFomUtenforPeriode)
         val kontrollperiode = Kontrollperiode(
             fom = LocalDate.of(2019, 1, 1),
             tom = LocalDate.of(2019, 12, 31)
@@ -44,7 +55,28 @@ class StatsborgerskapFunksjonerTest {
         assertEquals(0, filtrertListe.size)
     }
 
-    val statsborgerskapMedFomLikNull = Statsborgerskap(
+    @Test
+    fun `Statsborgerskap med tom lik null og fom innenfor perioden`() {
+        val statsborgerskapListe = listOf(statsborgerskapMedTomLikNullOgFomInnenforPeriode)
+        val kontrollperiode = Kontrollperiode(
+            fom = LocalDate.of(2019, 1, 1),
+            tom = LocalDate.of(2019, 12, 31)
+        )
+        val filtrertListe = statsborgerskapListe.harEndretSisteÅret(kontrollperiode)
+        assertEquals(1, filtrertListe.size)
+    }
+
+    val statsborgerskapMedTomLikNullOgFomInnenforPeriode = Statsborgerskap(
+        "NOR",
+        fom = LocalDate.of(2019, 5, 20), tom = null
+    )
+
+    val statsborgerskapMedTomLikNullOgFomUtenforPeriode = Statsborgerskap(
+        "NOR",
+        fom = null, tom = LocalDate.of(2015, 1, 1)
+    )
+
+    val statsborgerskapMedFomLikNullOgTomInnenforPeriode = Statsborgerskap(
         "SWE",
         fom = null, tom = LocalDate.of(2019, 1, 1)
     )
