@@ -1,42 +1,40 @@
 package no.nav.medlemskap.regler.v1.lovvalg
 
-import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.InputPeriode
+import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserForKontrollPeriode
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresserForKontrollPeriode
-import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentBarnSomFinnesITPS
-import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarnUnder25
 
 class HarBrukerBarnSomErFolkeregistrertRegel(
     ytelse: Ytelse,
     private val periode: InputPeriode,
-    private val pdlPersonhistorikk: Personhistorikk?,
-    private val personhistorikkRelatertPerson: List<PersonhistorikkRelatertPerson>,
+    private val dataOmbarn: List<DataOmBarn>?,
     regelId: RegelId = RegelId.REGEL_11_2_2
 ) : LovvalgRegel(regelId, ytelse, periode) {
 
     override fun operasjon(): Resultat {
-        val familierelasjon = pdlPersonhistorikk?.familierelasjoner
-        val barn = familierelasjon?.hentFnrTilBarnUnder25()
-        val barnITps = personhistorikkRelatertPerson.hentBarnSomFinnesITPS(barn)
+        val barn = dataOmbarn
 
-        val harBarnBosattINorge = barnITps.any {
+        val harBarnBosattINorge = barn?.any {
             erPersonBosattINorge(
-                it.bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
-                it.postadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
-                it.midlertidigAdresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
+                it.personhistorikkBarn.bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
+                it.personhistorikkBarn.kontaktadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
+                it.personhistorikkBarn.oppholdsadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
             )
         }
 
-        val harBarnSomIkkeErBosattINorge = barnITps.filterNot {
+        val harBarnSomIkkeErBosattINorge = barn?.filterNot {
             erPersonBosattINorge(
-                it.bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
-                it.postadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
-                it.midlertidigAdresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
+                it.personhistorikkBarn.bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
+                it.personhistorikkBarn.kontaktadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
+                it.personhistorikkBarn.oppholdsadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
             )
-        }.any()
+        }?.any()
 
-        if (harBarnBosattINorge && harBarnSomIkkeErBosattINorge) {
+        if (harBarnBosattINorge!! && harBarnSomIkkeErBosattINorge!!) {
             return uavklart("Noen barn med norsk adresse og noen barn med utenlandsk adresse")
         }
 
@@ -53,8 +51,7 @@ class HarBrukerBarnSomErFolkeregistrertRegel(
             return HarBrukerBarnSomErFolkeregistrertRegel(
                 ytelse = datagrunnlag.ytelse,
                 periode = datagrunnlag.periode,
-                pdlPersonhistorikk = datagrunnlag.pdlpersonhistorikk,
-                personhistorikkRelatertPerson = datagrunnlag.personHistorikkRelatertePersoner,
+                dataOmbarn = datagrunnlag.dataOmBarn,
                 regelId = regelId
             )
         }

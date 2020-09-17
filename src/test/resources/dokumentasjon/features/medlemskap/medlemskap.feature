@@ -9,11 +9,11 @@ Egenskap: Man er medlem hvis man er EØS-borger som bor i Norge, og som har jobb
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | Oslo    | NOR      | 01.01.2000      |                 |
 
-    Og følgende postadresser i personhistorikken
+    Og følgende kontaktadresser i personhistorikken
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | Oslo    | NOR      | 01.01.2000      |                 |
 
-    Og følgende midlertidige adresser i personhistorikken
+    Og følgende oppholdsadresser i personhistorikken
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | Oslo    | NOR      | 01.01.2000      |                 |
 

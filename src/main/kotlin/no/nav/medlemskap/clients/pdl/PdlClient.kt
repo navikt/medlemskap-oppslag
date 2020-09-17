@@ -49,7 +49,7 @@ class PdlClient(
         return runWithRetryAndMetrics("PDL", "HentPerson", retry) {
             val stsToken = stsClient.oidcToken()
             val hentPersonQuery = HentPerson(GraphQLClient(url = URL("$baseUrl")))
-            val variables = HentPerson.Variables(fnr, false)
+            val variables = HentPerson.Variables(fnr, false, false)
 
             val response: GraphQLResponse<HentPerson.Result> = hentPersonQuery.execute(variables) {
                 header(HttpHeaders.Authorization, "Bearer $stsToken")

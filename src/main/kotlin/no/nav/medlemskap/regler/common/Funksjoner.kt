@@ -71,17 +71,18 @@ fun nei(begrunnelse: String) = Resultat(
 
 fun nei() = Resultat(svar = Svar.NEI)
 
-fun uavklart(begrunnelse: String) = Resultat(
+fun uavklart(begrunnelse: String, regelId: RegelId? = null) = Resultat(
     begrunnelse = begrunnelse,
-    svar = Svar.UAVKLART
+    svar = Svar.UAVKLART,
+    delresultat = if (regelId == null) emptyList() else listOf(Resultat(regelId = regelId, svar = Svar.UAVKLART))
 )
 
 fun uavklart() = Resultat(svar = Svar.UAVKLART)
 
-fun uavklartKonklusjon(ytelse: Ytelse) = Regel(
+fun uavklartKonklusjon(ytelse: Ytelse, regelId: RegelId? = null) = Regel(
     regelId = REGEL_MEDLEM_KONKLUSJON,
     ytelse = ytelse,
-    operasjon = { uavklart("Kan ikke konkludere med medlemskap") }
+    operasjon = { uavklart("Kan ikke konkludere med medlemskap", regelId) }
 )
 
 fun jaKonklusjon(ytelse: Ytelse) = Regel(
@@ -122,8 +123,8 @@ fun konklusjonNei(ytelse: Ytelse): Regelflyt {
     return Regelflyt(neiKonklusjon(ytelse), ytelse)
 }
 
-fun konklusjonUavklart(ytelse: Ytelse): Regelflyt {
-    return Regelflyt(uavklartKonklusjon(ytelse), ytelse)
+fun konklusjonUavklart(ytelse: Ytelse, regelId: RegelId? = null): Regelflyt {
+    return Regelflyt(uavklartKonklusjon(ytelse, regelId), ytelse)
 }
 
 fun regelflytJa(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
