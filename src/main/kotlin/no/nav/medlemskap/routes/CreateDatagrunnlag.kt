@@ -20,13 +20,13 @@ private val logger = KotlinLogging.logger { }
 private val secureLogger = KotlinLogging.logger("tjenestekall")
 
 suspend fun defaultCreateDatagrunnlag(
-        fnr: String,
-        callId: String,
-        periode: InputPeriode,
-        brukerinput: Brukerinput,
-        services: Services,
-        clientId: String?,
-        ytelseFraRequest: Ytelse?
+    fnr: String,
+    callId: String,
+    periode: InputPeriode,
+    brukerinput: Brukerinput,
+    services: Services,
+    clientId: String?,
+    ytelseFraRequest: Ytelse?
 ): Datagrunnlag = coroutineScope {
 
     val dataOmEktefelle: DataOmEktefelle?
@@ -61,17 +61,17 @@ suspend fun defaultCreateDatagrunnlag(
     }
 
     Datagrunnlag(
-            periode = periode,
-            brukerinput = brukerinput,
-            personhistorikk = historikkFraTps,
-            pdlpersonhistorikk = personHistorikkFraPdl,
-            medlemskap = medlemskap,
-            arbeidsforhold = arbeidsforhold,
-            oppgaver = oppgaver,
-            dokument = journalPoster,
-            ytelse = ytelse,
-            personHistorikkRelatertePersoner = personhistorikkForFamilie,
-            dataOmEktefelle = dataOmEktefelle
+        periode = periode,
+        brukerinput = brukerinput,
+        personhistorikk = historikkFraTps,
+        pdlpersonhistorikk = personHistorikkFraPdl,
+        medlemskap = medlemskap,
+        arbeidsforhold = arbeidsforhold,
+        oppgaver = oppgaver,
+        dokument = journalPoster,
+        ytelse = ytelse,
+        personHistorikkRelatertePersoner = personhistorikkForFamilie,
+        dataOmEktefelle = dataOmEktefelle
     )
 }
 
@@ -82,8 +82,8 @@ private suspend fun CoroutineScope.hentDataOmEktefelle(fnrTilEktefelle: String?,
         val arbeidsforholdEktefelle = arbeidsforholdEktefelleReguest.await()
 
         return DataOmEktefelle(
-                personhistorikkEktefelle = personhistorikkEktefelle,
-                arbeidsforholdEktefelle = arbeidsforholdEktefelle
+            personhistorikkEktefelle = personhistorikkEktefelle,
+            arbeidsforholdEktefelle = arbeidsforholdEktefelle
         )
     }
     return null
@@ -103,10 +103,10 @@ suspend fun hentPersonHistorikkForEktefelle(fnrTilEktefelle: String, services: S
 
 private fun hentFnrTilEktefelle(personHistorikkFraPdl: Personhistorikk?): String? {
     val fnrTilEktefelle =
-            personHistorikkFraPdl?.sivilstand
-                    ?.filter { it.type == Sivilstandstype.GIFT || it.type == Sivilstandstype.REGISTRERT_PARTNER }
-                    ?.map { it.relatertVedSivilstand }
-                    ?.lastOrNull()
+        personHistorikkFraPdl?.sivilstand
+            ?.filter { it.type == Sivilstandstype.GIFT || it.type == Sivilstandstype.REGISTRERT_PARTNER }
+            ?.map { it.relatertVedSivilstand }
+            ?.lastOrNull()
     return fnrTilEktefelle
 }
 
@@ -143,8 +143,9 @@ private fun registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl: Person
         flereStatsborgerskapCounter(personHistorikkFraPdl.statsborgerskap.size.toString(), ytelse).increment()
 
     val statsborgerskapEndretSisteÅret =
-            personHistorikkFraPdl.statsborgerskap.harEndretSisteÅret(
-                    Kontrollperiode(fom = periode.fom.minusYears(1), tom = periode.tom))
+        personHistorikkFraPdl.statsborgerskap.harEndretSisteÅret(
+            Kontrollperiode(fom = periode.fom.minusYears(1), tom = periode.tom)
+        )
 
     if (statsborgerskapEndretSisteÅret.isNotEmpty()) {
         endretStatsborgerskapSisteÅretCounter(ytelse).increment()
