@@ -37,33 +37,20 @@ object PdlMapper {
         )
     }
 
-    fun mapOppholdsAdresse(oppholdsadresser: List<HentPerson.Oppholdsadresse>): List<Adresse> {
-        val pdlOppholdsadresser: List<HentPerson.Oppholdsadresse> = oppholdsadresser.sortedBy { it.gyldigFraOgMed }
-        return pdlOppholdsadresser.map { mapOppholdsadresser(it) }
-    }
-
-    fun mapFamilierelasjon(familierelasjon: HentPerson.Familierelasjon): Familierelasjon {
-        return Familierelasjon(
-            relatertPersonsIdent = familierelasjon.relatertPersonsIdent,
-            relatertPersonsRolle = mapFamileRelasjonsrolle(familierelasjon.relatertPersonsRolle)!!,
-            minRolleForPerson = mapFamileRelasjonsrolle(familierelasjon.minRolleForPerson),
-            folkeregistermetadata = mapFolkeregisterMetadata(familierelasjon.folkeregistermetadata)
+    fun mapStatsborgerskap(it: HentPerson.Statsborgerskap): Statsborgerskap {
+        return Statsborgerskap(
+            landkode = it.land,
+            fom = convertToLocalDate(it.gyldigFraOgMed),
+            tom = convertToLocalDate(it.gyldigTilOgMed)
         )
     }
 
-    fun mapOppholdsadresser(oppholdsadresse: HentPerson.Oppholdsadresse): Adresse {
+    fun mapBostedsadresse(bostedsadresse: HentPerson.Bostedsadresse): Adresse {
         return Adresse(
-            fom = convertToLocalDateTime(oppholdsadresse.gyldigFraOgMed)?.toLocalDate(),
-            tom = convertToLocalDateTime(oppholdsadresse.folkeregistermetadata?.opphoerstidspunkt)?.toLocalDate(),
-            landkode = mapLandkodeForOppholdsadresse(oppholdsadresse)
+            landkode = "NOR",
+            fom = convertToLocalDateTime(bostedsadresse.folkeregistermetadata?.gyldighetstidspunkt)?.toLocalDate(),
+            tom = convertToLocalDateTime(bostedsadresse.folkeregistermetadata?.opphoerstidspunkt)?.toLocalDate()
         )
-    }
-
-    fun mapLandkodeForOppholdsadresse(oppholdsadresse: HentPerson.Oppholdsadresse): String {
-        if (oppholdsadresse.utenlandskAdresse != null) {
-            return mapLandkode(oppholdsadresse.utenlandskAdresse!!.landkode)
-        }
-        return CountryCode.NO.alpha3
     }
 
     fun mapKontaktAdresse(it: HentPerson.Kontaktadresse): Adresse {
@@ -84,28 +71,32 @@ object PdlMapper {
         return CountryCode.NO.alpha3
     }
 
-    private fun mapLandkode(landkode: String): String {
-        return try {
-            CountryCode.getByCode(landkode.toUpperCase()).alpha3
-        } catch (e: Exception) {
-            logger.warn("Klarte ikke å mappe {}", landkode, e)
-            "UKJENT"
-        }
+    fun mapOppholdsAdresse(oppholdsadresser: List<HentPerson.Oppholdsadresse>): List<Adresse> {
+        val pdlOppholdsadresser: List<HentPerson.Oppholdsadresse> = oppholdsadresser.sortedBy { it.gyldigFraOgMed }
+        return pdlOppholdsadresser.map { mapOppholdsadresser(it) }
     }
 
-    fun mapBostedsadresse(bostedsadresse: HentPerson.Bostedsadresse): Adresse {
+    fun mapOppholdsadresser(oppholdsadresse: HentPerson.Oppholdsadresse): Adresse {
         return Adresse(
-            landkode = "NOR",
-            fom = convertToLocalDateTime(bostedsadresse.folkeregistermetadata?.gyldighetstidspunkt)?.toLocalDate(),
-            tom = convertToLocalDateTime(bostedsadresse.folkeregistermetadata?.opphoerstidspunkt)?.toLocalDate()
+            fom = convertToLocalDateTime(oppholdsadresse.gyldigFraOgMed)?.toLocalDate(),
+            tom = convertToLocalDateTime(oppholdsadresse.folkeregistermetadata?.opphoerstidspunkt)?.toLocalDate(),
+            landkode = mapLandkodeForOppholdsadresse(oppholdsadresse)
         )
     }
 
-    fun mapStatsborgerskap(it: HentPerson.Statsborgerskap): Statsborgerskap {
-        return Statsborgerskap(
-            landkode = it.land,
-            fom = convertToLocalDate(it.gyldigFraOgMed),
-            tom = convertToLocalDate(it.gyldigTilOgMed)
+    fun mapLandkodeForOppholdsadresse(oppholdsadresse: HentPerson.Oppholdsadresse): String {
+        if (oppholdsadresse.utenlandskAdresse != null) {
+            return mapLandkode(oppholdsadresse.utenlandskAdresse!!.landkode)
+        }
+        return CountryCode.NO.alpha3
+    }
+
+    fun mapFamilierelasjon(familierelasjon: HentPerson.Familierelasjon): Familierelasjon {
+        return Familierelasjon(
+            relatertPersonsIdent = familierelasjon.relatertPersonsIdent,
+            relatertPersonsRolle = mapFamileRelasjonsrolle(familierelasjon.relatertPersonsRolle)!!,
+            minRolleForPerson = mapFamileRelasjonsrolle(familierelasjon.minRolleForPerson),
+            folkeregistermetadata = mapFolkeregisterMetadata(familierelasjon.folkeregistermetadata)
         )
     }
 
@@ -141,11 +132,21 @@ object PdlMapper {
         }
     }
 
+    private fun mapLandkode(landkode: String): String {
+        return try {
+            CountryCode.getByCode(landkode.toUpperCase()).alpha3
+        } catch (e: Exception) {
+            logger.warn("Klarte ikke å mappe {}", landkode, e)
+            "UKJENT"
+        }
+    }
+
     private fun convertToLocalDateTime(dateTimeToConvert: String?): LocalDateTime? {
+
         return dateTimeToConvert?.let { parseLocalDateTime(it) }
     }
 
-    private fun parseLocalDateTime(string: String): LocalDateTime? {
+    private fun parseLocalDateTime(string: String?): LocalDateTime? {
         return try {
             LocalDateTime.parse(string, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
         } catch (e: Exception) {
