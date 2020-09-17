@@ -5,12 +5,14 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.Services
+import no.nav.medlemskap.common.endretStatsborgerskapSisteÅretCounter
 import no.nav.medlemskap.common.flereStatsborgerskapCounter
 import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
+import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.harEndretSisteÅret
 import javax.xml.ws.soap.SOAPFaultException
 
 private val logger = KotlinLogging.logger { }
@@ -18,13 +20,13 @@ private val logger = KotlinLogging.logger { }
 private val secureLogger = KotlinLogging.logger("tjenestekall")
 
 suspend fun defaultCreateDatagrunnlag(
-    fnr: String,
-    callId: String,
-    periode: InputPeriode,
-    brukerinput: Brukerinput,
-    services: Services,
-    clientId: String?,
-    ytelseFraRequest: Ytelse?
+        fnr: String,
+        callId: String,
+        periode: InputPeriode,
+        brukerinput: Brukerinput,
+        services: Services,
+        clientId: String?,
+        ytelseFraRequest: Ytelse?
 ): Datagrunnlag = coroutineScope {
 
     val dataOmEktefelle: DataOmEktefelle?
@@ -54,21 +56,22 @@ suspend fun defaultCreateDatagrunnlag(
 
     ytelseCounter(ytelse.metricName()).increment()
 
-    if (personHistorikkFraPdl?.statsborgerskap?.size != null && personHistorikkFraPdl.statsborgerskap.size > 1)
-        flereStatsborgerskapCounter(personHistorikkFraPdl.statsborgerskap.size.toString(), ytelse).increment()
+    if (personHistorikkFraPdl != null) {
+        registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl, periode, ytelse)
+    }
 
     Datagrunnlag(
-        periode = periode,
-        brukerinput = brukerinput,
-        personhistorikk = historikkFraTps,
-        pdlpersonhistorikk = personHistorikkFraPdl,
-        medlemskap = medlemskap,
-        arbeidsforhold = arbeidsforhold,
-        oppgaver = oppgaver,
-        dokument = journalPoster,
-        ytelse = ytelse,
-        personHistorikkRelatertePersoner = personhistorikkForFamilie,
-        dataOmEktefelle = dataOmEktefelle
+            periode = periode,
+            brukerinput = brukerinput,
+            personhistorikk = historikkFraTps,
+            pdlpersonhistorikk = personHistorikkFraPdl,
+            medlemskap = medlemskap,
+            arbeidsforhold = arbeidsforhold,
+            oppgaver = oppgaver,
+            dokument = journalPoster,
+            ytelse = ytelse,
+            personHistorikkRelatertePersoner = personhistorikkForFamilie,
+            dataOmEktefelle = dataOmEktefelle
     )
 }
 
@@ -79,8 +82,8 @@ private suspend fun CoroutineScope.hentDataOmEktefelle(fnrTilEktefelle: String?,
         val arbeidsforholdEktefelle = arbeidsforholdEktefelleReguest.await()
 
         return DataOmEktefelle(
-            personhistorikkEktefelle = personhistorikkEktefelle,
-            arbeidsforholdEktefelle = arbeidsforholdEktefelle
+                personhistorikkEktefelle = personhistorikkEktefelle,
+                arbeidsforholdEktefelle = arbeidsforholdEktefelle
         )
     }
     return null
@@ -100,10 +103,10 @@ suspend fun hentPersonHistorikkForEktefelle(fnrTilEktefelle: String, services: S
 
 private fun hentFnrTilEktefelle(personHistorikkFraPdl: Personhistorikk?): String? {
     val fnrTilEktefelle =
-        personHistorikkFraPdl?.sivilstand
-            ?.filter { it.type == Sivilstandstype.GIFT || it.type == Sivilstandstype.REGISTRERT_PARTNER }
-            ?.map { it.relatertVedSivilstand }
-            ?.lastOrNull()
+            personHistorikkFraPdl?.sivilstand
+                    ?.filter { it.type == Sivilstandstype.GIFT || it.type == Sivilstandstype.REGISTRERT_PARTNER }
+                    ?.map { it.relatertVedSivilstand }
+                    ?.lastOrNull()
     return fnrTilEktefelle
 }
 
@@ -133,4 +136,17 @@ private suspend fun CoroutineScope.hentPersonhistorikkForFamilieAsync(personHist
             emptyList<PersonhistorikkRelatertPerson>()
         }
     } ?: emptyList<PersonhistorikkRelatertPerson>()
+}
+
+private fun registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl: Personhistorikk, periode: InputPeriode, ytelse: Ytelse) {
+    if (personHistorikkFraPdl.statsborgerskap.size > 1)
+        flereStatsborgerskapCounter(personHistorikkFraPdl.statsborgerskap.size.toString(), ytelse).increment()
+
+    val statsborgerskapEndretSisteÅret =
+            personHistorikkFraPdl.statsborgerskap.harEndretSisteÅret(
+                    Kontrollperiode(fom = periode.fom.minusYears(1), tom = periode.tom))
+
+    if (statsborgerskapEndretSisteÅret.isNotEmpty()) {
+        endretStatsborgerskapSisteÅretCounter(ytelse).increment()
+    }
 }

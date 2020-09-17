@@ -17,6 +17,14 @@ object StatsborgerskapFunksjoner {
             Periode(it.fom, it.tom).interval().contains(lagInstantStartOfDay(dato))
         }.map { it.landkode }
 
+    infix fun List<Statsborgerskap>.harEndretSisteÅret(kontrollPeriode: Kontrollperiode): List<Statsborgerskap> =
+        this.filter {
+            if (it.fom != null && it.tom != null) {
+                kontrollPeriode.tilPeriode().interval().contains(lagInstantStartOfDay(it.fom)) ||
+                    kontrollPeriode.tilPeriode().interval().contains(lagInstantStartOfDay(it.tom))
+            } else { false }
+        }
+
     infix fun List<Statsborgerskap>.hentStatsborgerskapVedStartAvKontrollperiode(kontrollPeriode: Kontrollperiode): List<String> =
         this.hentStatsborgerskapFor(kontrollPeriode.fom)
 
