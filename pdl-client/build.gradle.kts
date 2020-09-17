@@ -17,9 +17,7 @@ graphql {
         allowDeprecatedFields = false
 
         queryFiles = mutableListOf(
-                file("${project.projectDir}/src/main/resources/pdl/hentFoedselsaar.graphql"),
                 file("${project.projectDir}/src/main/resources/pdl/hentIdenter.graphql"),
-                file("${project.projectDir}/src/main/resources/pdl/hentNasjonalitet.graphql"),
                 file("${project.projectDir}/src/main/resources/pdl/hentPerson.graphql")
         )
     }
