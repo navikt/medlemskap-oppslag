@@ -85,6 +85,9 @@ object PdlMapper {
     }
 
     private fun mapLandkode(landkode: String): String {
+        if(landkode.length == 3){
+            return landkode
+        }
         return try {
             CountryCode.getByCode(landkode.toUpperCase()).alpha3
         } catch (e: Exception) {
