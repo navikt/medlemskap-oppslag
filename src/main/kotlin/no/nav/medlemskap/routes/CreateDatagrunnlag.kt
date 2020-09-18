@@ -7,6 +7,7 @@ import mu.KotlinLogging
 import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.endretStatsborgerskapSisteÅretCounter
 import no.nav.medlemskap.common.flereStatsborgerskapCounter
+import no.nav.medlemskap.common.uendretStatsborgerskapSisteÅretCounter
 import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
@@ -118,7 +119,9 @@ private fun registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl: Person
             Kontrollperiode(fom = periode.fom.minusYears(1), tom = periode.tom)
         )
 
-    if (statsborgerskapEndretSisteÅret.isNotEmpty()) {
+    if (statsborgerskapEndretSisteÅret.isEmpty()) {
+        uendretStatsborgerskapSisteÅretCounter(ytelse).increment()
+    } else {
         endretStatsborgerskapSisteÅretCounter(ytelse).increment()
     }
 }

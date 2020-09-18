@@ -22,8 +22,8 @@ object StatsborgerskapFunksjoner {
             erStatsborgerskapetInnenforPerioden(it, kontrollPeriode)
         }
 
-    private fun erStatsborgerskapetInnenforPerioden(it: Statsborgerskap, kontrollPeriode: Kontrollperiode): Boolean {
-        return if (it.fom != null && it.tom != null) {
+    private fun erStatsborgerskapetInnenforPerioden(it: Statsborgerskap, kontrollPeriode: Kontrollperiode): Boolean =
+        if (it.fom != null && it.tom != null) {
             erFomInnenforPerioden(kontrollPeriode, it.fom) || erTomInnenforPerioden(kontrollPeriode, it.tom)
         } else if (it.fom != null && it.tom == null) {
             erFomInnenforPerioden(kontrollPeriode, it.fom)
@@ -32,7 +32,6 @@ object StatsborgerskapFunksjoner {
         } else {
             false
         }
-    }
 
     private fun erTomInnenforPerioden(kontrollPeriode: Kontrollperiode, tom: LocalDate) =
         kontrollPeriode.tilPeriode().interval().contains(lagInstantStartOfDay(tom))
