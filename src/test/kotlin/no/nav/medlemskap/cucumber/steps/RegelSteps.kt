@@ -2,6 +2,7 @@ package no.nav.medlemskap.cucumber.steps
 
 import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
+import no.nav.medlemskap.common.JsonMapper
 import no.nav.medlemskap.cucumber.*
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.barn.DataOmBarn
@@ -12,6 +13,7 @@ import no.nav.medlemskap.regler.v1.RegelFactory
 import no.nav.medlemskap.regler.v1.ReglerService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import java.io.File
 
 class RegelSteps : No {
     private val ANSATTE_9 = listOf(Ansatte(9, null, null))
@@ -211,6 +213,38 @@ class RegelSteps : No {
             val regelIdListe = domenespråkParser.mapDataTable(dataTable, RegelIdMapper())
             assertTrue(resultat!!.delresultat.map { it.regelId }.containsAll(regelIdListe))
         }
+
+        Så("skal JSON datagrunnlag og resultat genereres i filen {string}") { filnavn: String ->
+            val datagrunnlagJson: String = JsonMapper.mapToJson(datagrunnlag!!).trim()
+            val resultatJson = JsonMapper.mapToJson(resultat!!)
+            val responseJson = datagrunnlagJson.substring(0, datagrunnlagJson.length - 2) + ",\n \"resultat\" : " + resultatJson + "}"
+
+            lagreJson(filnavn, responseJson)
+        }
+
+        Så("skal JSON resultat genereres i filen {string}") { filnavn: String ->
+            lagreJsonResultat(filnavn)
+        }
+
+        Så("skal JSON datagrunnlag genereres i filen {string}") { filnavn: String ->
+            lagreJsonDatagrunnlag(filnavn)
+        }
+    }
+
+    private fun lagreJsonResultat(filnavn: String) {
+        lagreJson(filnavn, JsonMapper.mapToJson(resultat!!))
+    }
+
+    private fun lagreJsonDatagrunnlag(filnavn: String) {
+        lagreJson(filnavn, JsonMapper.mapToJson(datagrunnlag!!))
+    }
+
+    private fun lagreJson(filnavn: String, json: String) {
+        val katalog = File("build", "cucumberjson")
+        katalog.mkdir()
+
+        val myfile = File(katalog, "$filnavn.json")
+        myfile.writeText(json)
     }
 
     private fun arbeidsforholdIndeks(radnummer: Int?): Int {

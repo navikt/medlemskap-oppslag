@@ -34,10 +34,14 @@ Egenskap: Regel 11: Statsborgerskap
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
-    Så skal svaret være "<Svar>"
+    Så skal svaret være "<Medlemskap>"
     Og skal regel "11" gi svaret "<Regel 11>"
 
+    Og skal JSON datagrunnlag genereres i filen "<Filnavn>"
+    Og skal JSON resultat genereres i filen "<Filnavn>_resultat"
+    Og skal JSON datagrunnlag og resultat genereres i filen "<Filnavn>_response"
+
     Eksempler:
-      | Statsborgerskap | Svar     | Regel 11 |
-      | NOR             | Ja       | Ja       |
-      | FRA             | Ja       | Nei      |
+      | Statsborgerskap | Medlemskap | Regel 11 | Filnavn      |
+      | NOR             | Ja         | Ja       | norsk_borger |
+      | FRA             | Ja         | Nei      | eøs_borger   |
