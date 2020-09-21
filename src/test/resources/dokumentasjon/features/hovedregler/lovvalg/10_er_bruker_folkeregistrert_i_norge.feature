@@ -73,3 +73,19 @@ Egenskap: Regel 10: Er bruker folkeregistert i Norge?
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "Nei"
+
+  Scenario: Adresser der "Til og med dato" er før "Fra og med dato"
+
+    Gitt følgende bostedsadresser i personhistorikken
+      | Adresse | Landkode | Fra og med dato | Til og med dato |
+      | XXX     | NOR      | 05.02.2000      | 01.02.2000      |
+
+    Og følgende oppholdsadresser i personhistorikken
+      | Adresse | Landkode | Fra og med dato | Til og med dato |
+      | XXX     | FRA      | 05.02.2000      | 01.02.2000                |
+
+    Når regel "10" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
+
+    Så skal svaret være "Nei"

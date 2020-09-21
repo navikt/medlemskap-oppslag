@@ -2,6 +2,9 @@ package no.nav.medlemskap.domene
 
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
+import no.nav.medlemskap.regler.common.startOfDayInstant
+import org.threeten.extra.Interval
+import java.time.Instant
 import java.time.LocalDate
 
 data class Datagrunnlag(
@@ -20,31 +23,42 @@ data class Datagrunnlag(
 data class Periode(
     val fom: LocalDate?,
     val tom: LocalDate?
-)
+) {
+    fun erGyldigPeriode(): Boolean {
+        return (fomNotNull().isBefore(tomNotNull()))
+    }
+
+    fun overlapper(annenPeriode: Periode): Boolean {
+        if (!erGyldigPeriode()) {
+            return false
+        }
+
+        return interval().overlaps(annenPeriode.interval()) || interval().encloses(annenPeriode.interval())
+    }
+
+    fun fomNotNull() = this.fom ?: LocalDate.MIN
+
+    fun tomNotNull() = this.tom ?: LocalDate.MAX
+
+    private fun intervalStartInclusive(): Instant = this.fom?.startOfDayInstant() ?: Instant.MIN
+    private fun intervalEndExclusive(): Instant = this.tom?.plusDays(1)?.startOfDayInstant() ?: Instant.MAX
+
+    private fun interval(): Interval = Interval.of(this.intervalStartInclusive(), this.intervalEndExclusive())
+}
 
 data class Kontrollperiode(
     val fom: LocalDate,
     val tom: LocalDate
 ) {
-    fun tilPeriode(): Periode {
-        return Periode(fom, tom)
-    }
+    val periode = Periode(fom, tom)
 }
 
 data class Bruksperiode(
     val fom: LocalDate?,
     val tom: LocalDate?
-) {
-    fun tilPeriode(): Periode {
-        return Periode(fom, tom)
-    }
-}
+)
 
 data class Gyldighetsperiode(
     val fom: LocalDate?,
     val tom: LocalDate?
-) {
-    fun tilPeriode(): Periode {
-        return Periode(fom, tom)
-    }
-}
+)

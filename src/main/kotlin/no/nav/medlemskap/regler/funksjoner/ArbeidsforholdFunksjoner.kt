@@ -24,17 +24,17 @@ object ArbeidsforholdFunksjoner {
 
     infix fun List<Arbeidsforhold>.arbeidsforholdForYrkestype(kontrollPeriode: Kontrollperiode): List<String> =
         this.filter {
-            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)), kontrollPeriode.tilPeriode())
+            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)), kontrollPeriode.periode)
         }.map { it.arbeidsfolholdstype.navn }
 
     infix fun List<Arbeidsforhold>.sisteArbeidsforholdYrkeskode(kontrollPeriode: Kontrollperiode): List<String> =
         this.filter {
-            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)), kontrollPeriode.tilPeriode())
+            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)), kontrollPeriode.periode)
         }.flatMap { it.arbeidsavtaler }.map { it.yrkeskode }
 
     infix fun List<Arbeidsforhold>.sisteArbeidsforholdSkipsregister(kontrollPeriode: Kontrollperiode): List<String> =
         this.filter {
-            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)), kontrollPeriode.tilPeriode())
+            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)), kontrollPeriode.periode)
         }.flatMap { it -> it.arbeidsavtaler.map { it.skipsregister?.name ?: "" } }
 
     infix fun List<Arbeidsforhold>.konkursStatuserArbeidsgivere(kontrollPeriode: Kontrollperiode): List<String?>? {
@@ -165,7 +165,7 @@ object ArbeidsforholdFunksjoner {
         this.filter {
             periodefilter(
                 lagInterval(Periode(it.periode.fom, it.periode.tom)),
-                kontrollPeriode.tilPeriode()
+                kontrollPeriode.periode
             )
         }
 
