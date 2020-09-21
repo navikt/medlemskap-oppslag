@@ -17,7 +17,6 @@ class RestClients(
 ) {
 
     private val aaRegRetry = retryRegistry.retry("AaReg")
-    private val inntektRetry = retryRegistry.retry("Inntekt")
     private val medlRetry = retryRegistry.retry("Medl")
     private val oppgaveRetry = retryRegistry.retry("Oppgave")
     private val pdlRetry = retryRegistry.retry("PDL")
