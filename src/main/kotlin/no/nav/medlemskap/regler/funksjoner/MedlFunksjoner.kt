@@ -56,7 +56,7 @@ object MedlFunksjoner {
 
     private infix fun List<Medlemskap>.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode: Kontrollperiode): List<Medlemskap> =
         this.filter {
-            lagInterval(Periode(it.fraOgMed, it.tilOgMed)).overlaps(kontrollPeriode.periode.interval()) &&
+            it.overlapper(kontrollPeriode.periode) &&
                 (it.lovvalg == null || it.lovvalg == Lovvalg.ENDL) &&
                 (it.periodeStatus == null || it.periodeStatus == PeriodeStatus.GYLD)
         }
