@@ -8,13 +8,10 @@ import no.nav.medlemskap.clients.pdl.PdlClient
 import no.nav.medlemskap.clients.saf.SafClient
 import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.clients.sts.stsClient
-import no.nav.medlemskap.clients.tpsws.PersonClient
-import no.nav.medlemskap.common.callIdGenerator
 import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.common.healthcheck.HealthReporter
 import no.nav.medlemskap.common.healthcheck.HealthService
 import no.nav.medlemskap.common.healthcheck.HttpResponseHealthCheck
-import no.nav.medlemskap.common.healthcheck.TryCatchHealthCheck
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.config.retryRegistry
 import no.nav.medlemskap.services.aareg.AaRegService
@@ -25,7 +22,6 @@ import no.nav.medlemskap.services.saf.SafService
 
 class Services(val configuration: Configuration) {
 
-    private val personClient: PersonClient
     private val medlClient: MedlClient
     val medlService: MedlService
     private val aaRegClient: AaRegClient
@@ -60,17 +56,11 @@ class Services(val configuration: Configuration) {
             httpClient = cioHttpClient
         )
 
-        val wsClients = WsClients(
-            stsClientWs = stsWsClient,
-            callIdGenerator = callIdGenerator::get
-        )
-
         val restClients = RestClients(
             stsClientRest = stsRestClient,
             configuration = configuration
         )
 
-        personClient = wsClients.person(configuration.register.tpsUrl, tpsRetry)
         medlClient = restClients.medl2(configuration.register.medl2BaseUrl)
         medlService = MedlService(medlClient)
         pdlClient = restClients.pdl(configuration.register.pdlBaseUrl)
@@ -90,8 +80,7 @@ class Services(val configuration: Configuration) {
                 HttpResponseHealthCheck("Oppg", { oppgaveClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("PDL", { pdlClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("SAF", { safClient.healthCheck() }, healthRetry),
-                HttpResponseHealthCheck("STS", { stsRestClient.healthCheck() }, healthRetry),
-                TryCatchHealthCheck("TPS", { personClient.healthCheck() }, healthRetry)
+                HttpResponseHealthCheck("STS", { stsRestClient.healthCheck() }, healthRetry)
             )
         )
 
