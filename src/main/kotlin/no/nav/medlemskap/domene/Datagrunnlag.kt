@@ -36,14 +36,23 @@ data class Periode(
         return interval().overlaps(annenPeriode.interval()) || interval().encloses(annenPeriode.interval())
     }
 
+    fun encloses(annenPeriode: Periode): Boolean {
+        if (!erGyldigPeriode()) {
+            return false
+        }
+
+        return interval().encloses(annenPeriode.interval())
+    }
+
     fun fomNotNull() = this.fom ?: LocalDate.MIN
 
     fun tomNotNull() = this.tom ?: LocalDate.MAX
 
-    private fun intervalStartInclusive(): Instant = this.fom?.startOfDayInstant() ?: Instant.MIN
-    private fun intervalEndExclusive(): Instant = this.tom?.plusDays(1)?.startOfDayInstant() ?: Instant.MAX
+    fun interval(): Interval = Interval.of(this.intervalStartInclusive(), this.intervalEndExclusive())
 
-    private fun interval(): Interval = Interval.of(this.intervalStartInclusive(), this.intervalEndExclusive())
+    private fun intervalStartInclusive(): Instant = this.fom?.startOfDayInstant() ?: Instant.MIN
+
+    private fun intervalEndExclusive(): Instant = this.tom?.plusDays(1)?.startOfDayInstant() ?: Instant.MAX
 }
 
 data class Kontrollperiode(

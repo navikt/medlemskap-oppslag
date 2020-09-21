@@ -6,7 +6,6 @@ import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.RegelId
-import no.nav.medlemskap.regler.common.interval
 import no.nav.medlemskap.regler.common.lagInstantStartOfDay
 import java.time.LocalDate
 

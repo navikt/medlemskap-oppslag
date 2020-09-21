@@ -4,7 +4,6 @@ import no.nav.medlemskap.common.*
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
-import no.nav.medlemskap.regler.common.interval
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import java.util.stream.Collectors
@@ -146,7 +145,7 @@ object ArbeidsforholdFunksjoner {
     }
 
     private fun List<Arbeidsforhold>.ingenAndreParallelleArbeidsforhold(arbeidsforhold: Arbeidsforhold): Boolean =
-        this.none { it.periode.interval().encloses(arbeidsforhold.periode.interval()) && it != arbeidsforhold }
+        this.none { it.periode.encloses(arbeidsforhold.periode) && it != arbeidsforhold }
 
     private infix fun List<Arbeidsforhold>.ansatteHosArbeidsgivere(kontrollPeriode: Kontrollperiode): List<Ansatte> =
         arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(kontrollPeriode).mapNotNull { it.ansatte }.flatten()

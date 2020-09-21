@@ -16,7 +16,13 @@ data class Statsborgerskap(
     val landkode: String,
     val fom: LocalDate?,
     val tom: LocalDate?
-)
+) {
+    private val periode = Periode(fom, tom)
+
+    fun overlapper(annenPeriode: Periode): Boolean {
+        return periode.overlapper(annenPeriode)
+    }
+}
 
 data class FolkeregisterPersonstatus(
     val personstatus: PersonStatus,
