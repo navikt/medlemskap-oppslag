@@ -88,8 +88,5 @@ fun lagInstantStartOfDay(date: LocalDate) = date.atStartOfDay(ZoneId.systemDefau
 
 fun LocalDate.startOfDayInstant() = this.atStartOfDay(ZoneId.systemDefault()).toInstant()
 
-fun Periode.fomNotNull() = this.fom ?: LocalDate.MIN
-fun Periode.tomNotNull() = this.tom ?: LocalDate.MAX
-
 fun Periode.intervalStartInclusive(): Instant = this.fom?.startOfDayInstant() ?: Instant.MIN
 fun Periode.intervalEndExclusive(): Instant = this.tom?.plusDays(1)?.startOfDayInstant() ?: Instant.MAX
