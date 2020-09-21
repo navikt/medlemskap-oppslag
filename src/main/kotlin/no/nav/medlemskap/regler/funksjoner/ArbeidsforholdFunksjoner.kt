@@ -3,10 +3,8 @@ package no.nav.medlemskap.regler.funksjoner
 import no.nav.medlemskap.common.*
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
-import no.nav.medlemskap.regler.common.Funksjoner
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
 import no.nav.medlemskap.regler.common.interval
-import no.nav.medlemskap.regler.common.lagInterval
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import java.util.stream.Collectors
@@ -106,10 +104,7 @@ object ArbeidsforholdFunksjoner {
 
     infix fun List<Arbeidsforhold>.arbeidsforholdForDato(dato: LocalDate): List<Arbeidsforhold> =
         this.filter {
-            Funksjoner.periodefilter(
-                lagInterval(Periode(it.periode.fom, it.periode.tom)),
-                Periode(dato, dato)
-            )
+            it.periode.overlapper(Periode(dato, dato))
         }.sorted()
 
     fun List<Arbeidsforhold>.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(gittStillingsprosent: Double, kontrollPeriode: Kontrollperiode, ytelse: Ytelse): Boolean {

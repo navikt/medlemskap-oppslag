@@ -1,9 +1,7 @@
 package no.nav.medlemskap.regler.common
 
-import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.RegelId.REGEL_MEDLEM_KONKLUSJON
-import org.threeten.extra.Interval
 
 object Funksjoner {
 
@@ -37,10 +35,6 @@ object Funksjoner {
     fun List<String?>?.finnes() = this != null && this.isNotEmpty()
 
     infix fun List<Int?>.finnesMindreEnn(tall: Int) = this.stream().anyMatch { p -> p == null || p < tall }
-
-    fun periodefilter(periodeDatagrunnlag: Interval, periode: Periode): Boolean {
-        return periodeDatagrunnlag.overlaps(lagInterval(periode)) || periodeDatagrunnlag.encloses(lagInterval(periode))
-    }
 }
 
 fun ja(begrunnelse: String) = Resultat(
