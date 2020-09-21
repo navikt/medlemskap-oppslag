@@ -83,7 +83,7 @@ object PdlMapper {
     }
 
     private fun mapLandkode(landkode: String): String {
-        if(landkode.length == 3){
+        if (landkode.length == 3) {
             return landkode
         }
         return try {
