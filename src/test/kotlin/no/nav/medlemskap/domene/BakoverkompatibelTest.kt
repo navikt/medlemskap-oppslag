@@ -163,16 +163,6 @@ private fun personhistorikk(): Personhistorikk {
     )
 }
 
-private fun personhistorikkRelatertPerson(): PersonhistorikkRelatertPerson {
-    return PersonhistorikkRelatertPerson(
-        ident = ektefelleFnr(),
-        personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSA, enDato(), enAnnenDato())),
-        bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
-    )
-}
-
 private fun personhistorikkForBarn(): PersonhistorikkBarn {
     return PersonhistorikkBarn(
         ident = barnFnr(),

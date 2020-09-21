@@ -8,9 +8,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import mu.KotlinLogging
-import no.nav.medlemskap.clients.pdl.generated.HentFoedselsaar
 import no.nav.medlemskap.clients.pdl.generated.HentIdenter
-import no.nav.medlemskap.clients.pdl.generated.HentNasjonalitet
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
 import no.nav.medlemskap.clients.sts.StsRestClient
@@ -52,43 +50,6 @@ class PdlClient(
             val variables = HentPerson.Variables(fnr, false, false)
 
             val response: GraphQLResponse<HentPerson.Result> = hentPersonQuery.execute(variables) {
-                header(HttpHeaders.Authorization, "Bearer $stsToken")
-                header(HttpHeaders.ContentType, ContentType.Application.Json)
-                header(HttpHeaders.Accept, ContentType.Application.Json)
-                header("TEMA", "MED")
-                header("Nav-Call-Id", callId)
-                header("Nav-Consumer-Token", "Bearer $stsToken")
-                header("Nav-Consumer-Id", username)
-            }
-            response
-        }
-    }
-
-    suspend fun hentNasjonalitet(fnr: String, callId: String): GraphQLResponse<HentNasjonalitet.Result> {
-        return runWithRetryAndMetrics("PDL", "HentNasjonalitet", retry) {
-            val stsToken = stsClient.oidcToken()
-            val hentNasjonalitetQuery = HentNasjonalitet(GraphQLClient(url = URL("$baseUrl")))
-            val variables = HentNasjonalitet.Variables(fnr, false)
-
-            val response: GraphQLResponse<HentNasjonalitet.Result> = hentNasjonalitetQuery.execute(variables) {
-                header(HttpHeaders.Authorization, "Bearer $stsToken")
-                header(HttpHeaders.ContentType, ContentType.Application.Json)
-                header(HttpHeaders.Accept, ContentType.Application.Json)
-                header("Nav-Call-Id", callId)
-                header("Nav-Consumer-Token", "Bearer $stsToken")
-                header("Nav-Consumer-Id", username)
-            }
-            response
-        }
-    }
-
-    suspend fun hentFoedselsaar(fnr: String, callId: String): GraphQLResponse<HentFoedselsaar.Result> {
-        return runWithRetryAndMetrics("PDL", "HentFoedselsaar", retry) {
-            val stsToken = stsClient.oidcToken()
-            val hentFoedselsaarQuery = HentFoedselsaar(GraphQLClient(url = URL("$baseUrl")))
-            val variables = HentFoedselsaar.Variables(fnr)
-
-            val response: GraphQLResponse<HentFoedselsaar.Result> = hentFoedselsaarQuery.execute(variables) {
                 header(HttpHeaders.Authorization, "Bearer $stsToken")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
