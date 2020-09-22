@@ -105,7 +105,6 @@ suspend fun hentPersonHistorikkForBarn(fnrTilBarn: String, services: Services, c
     return services.pdlService.hentPersonHistorikkTilBarn(fnrTilBarn, callId)
 }
 
-// Midlertidig kode, ekstra feilhåndtering fordi integrasjonen vår mot PDL ikke er helt 100% ennå..
 private suspend fun hentPersonhistorikkFraPdl(services: Services, fnr: String, callId: String): Personhistorikk {
     return services.pdlService.hentPersonHistorikkTilBruker(fnr, callId)
 }

@@ -96,3 +96,7 @@ Egenskap: Regelflyt for reglene 11.5 for bruker som har ektefelle og barn. Ektef
     Og skal regel "11.4" gi svaret "Ja"
     Og skal regel "11.5" gi svaret "UAVKLART"
     Og skal regel "11.5.2" gi svaret "Ja"
+
+    Og skal JSON datagrunnlag genereres i filen "eøs_borger_uavklart_datagrunnlag"
+    Og skal JSON resultat genereres i filen "eøs_borger_uavklart_resultat"
+    Og skal JSON datagrunnlag og resultat genereres i filen "eøs_borger_uavklart_response"

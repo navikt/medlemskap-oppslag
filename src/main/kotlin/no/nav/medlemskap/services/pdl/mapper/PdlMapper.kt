@@ -2,10 +2,8 @@ package no.nav.medlemskap.services.pdl.mapper
 
 import com.neovisionaries.i18n.CountryCode
 import mu.KotlinLogging
-import no.nav.medlemskap.clients.pdl.generated.HentFoedselsaar
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
-import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
 import java.time.LocalDate
@@ -85,6 +83,9 @@ object PdlMapper {
     }
 
     private fun mapLandkode(landkode: String): String {
+        if (landkode.length == 3) {
+            return landkode
+        }
         return try {
             CountryCode.getByCode(landkode.toUpperCase()).alpha3
         } catch (e: Exception) {
@@ -156,8 +157,4 @@ object PdlMapper {
     fun convertToLocalDate(dateToConvert: String?): LocalDate? {
         return dateToConvert?.let { LocalDate.parse(it, DateTimeFormatter.ISO_LOCAL_DATE) }
     }
-
-    // Vi velger det høyeste årstallet, da blir personen yngst og det er mest sannsynlig at vi må vurdere bosted
-    fun mapTilFoedselsaar(foedsel: List<HentFoedselsaar.Foedsel>?): Int =
-        foedsel?.map { it.foedselsaar }?.sortedBy { it }?.last() ?: throw PersonIkkeFunnet("PDL")
 }

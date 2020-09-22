@@ -23,7 +23,7 @@ object PdlMapperEktefelle {
         )
     }
 
-    fun mapFnrBarnTilBrukersEktefelle(familierelasjoner: List<HentPerson.Familierelasjon>): List<String> {
+    private fun mapFnrBarnTilBrukersEktefelle(familierelasjoner: List<HentPerson.Familierelasjon>): List<String> {
         return familierelasjoner
             .filter { it.relatertPersonsRolle == HentPerson.Familierelasjonsrolle.BARN }
             .filter { FodselsnummerValidator.isValid(it.relatertPersonsIdent) }
