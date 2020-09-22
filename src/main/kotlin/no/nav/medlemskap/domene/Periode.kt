@@ -37,6 +37,10 @@ data class Periode(
         return interval().encloses(annenPeriode.interval())
     }
 
+    fun encloses(dato: LocalDate): Boolean {
+        return encloses(Periode(fom = dato, tom = dato))
+    }
+
     fun fomNotNull() = this.fom ?: LocalDate.MIN
 
     fun tomNotNull() = this.tom ?: LocalDate.MAX

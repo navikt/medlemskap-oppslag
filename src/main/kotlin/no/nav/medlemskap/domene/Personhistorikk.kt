@@ -26,6 +26,14 @@ data class Statsborgerskap(
     fun overlapper(dato: LocalDate): Boolean {
         return periode.overlapper(dato)
     }
+
+    fun encloses(annenPeriode: Periode): Boolean {
+        return periode.encloses(annenPeriode)
+    }
+
+    fun encloses(dato: LocalDate): Boolean {
+        return periode.encloses(dato)
+    }
 }
 
 data class FolkeregisterPersonstatus(

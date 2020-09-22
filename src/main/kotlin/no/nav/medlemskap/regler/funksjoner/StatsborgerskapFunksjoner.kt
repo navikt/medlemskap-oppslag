@@ -2,6 +2,7 @@ package no.nav.medlemskap.regler.funksjoner
 
 import no.nav.medlemskap.common.statsborgerskapUavklartForRegel
 import no.nav.medlemskap.domene.Kontrollperiode
+import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.RegelId
@@ -18,11 +19,7 @@ object StatsborgerskapFunksjoner {
         this.filter { erStatsborgerskapetInnenforPerioden(it, kontrollPeriode) }.isNotEmpty()
 
     private fun erStatsborgerskapetInnenforPerioden(it: Statsborgerskap, kontrollPeriode: Kontrollperiode): Boolean =
-        erInnenforPerioden(kontrollPeriode, it.fom ?: LocalDate.MIN) ||
-            erInnenforPerioden(kontrollPeriode, it.tom ?: LocalDate.MAX)
-
-    private fun erInnenforPerioden(kontrollPeriode: Kontrollperiode, dato: LocalDate) =
-        kontrollPeriode.tilPeriode().interval().contains(lagInstantStartOfDay(dato))
+        kontrollPeriode.periode.encloses(Periode(fom = it.fom, tom = it.fom)) || kontrollPeriode.periode.encloses(Periode(fom = it.tom, tom = it.tom))
 
     infix fun List<Statsborgerskap>.hentStatsborgerskapVedStartAvKontrollperiode(kontrollPeriode: Kontrollperiode): List<String> =
         this.hentStatsborgerskapFor(kontrollPeriode.fom)

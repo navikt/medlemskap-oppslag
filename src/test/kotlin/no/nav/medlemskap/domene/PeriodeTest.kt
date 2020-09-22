@@ -1,7 +1,7 @@
 package no.nav.medlemskap.domene
 
-import junit.framework.Assert.assertFalse
-import junit.framework.Assert.assertTrue
+import junit.framework.TestCase.assertFalse
+import junit.framework.TestCase.assertTrue
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
