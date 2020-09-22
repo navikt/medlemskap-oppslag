@@ -10,7 +10,7 @@ data class Periode(
     val tom: LocalDate?
 ) {
     fun erGyldigPeriode(): Boolean {
-        return (fomNotNull().isBefore(tomNotNull()))
+        return (fomNotNull().isBefore(tomNotNull()) || fomNotNull().isEqual(tomNotNull()))
     }
 
     fun overlapper(annenPeriode: Periode): Boolean {
