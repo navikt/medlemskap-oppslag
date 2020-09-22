@@ -23,13 +23,13 @@ private val logger = KotlinLogging.logger { }
 private val secureLogger = KotlinLogging.logger("tjenestekall")
 
 suspend fun defaultCreateDatagrunnlag(
-        fnr: String,
-        callId: String,
-        periode: InputPeriode,
-        brukerinput: Brukerinput,
-        services: Services,
-        clientId: String?,
-        ytelseFraRequest: Ytelse?
+    fnr: String,
+    callId: String,
+    periode: InputPeriode,
+    brukerinput: Brukerinput,
+    services: Services,
+    clientId: String?,
+    ytelseFraRequest: Ytelse?
 ): Datagrunnlag = coroutineScope {
 
     val dataOmEktefelle: DataOmEktefelle?
@@ -59,16 +59,16 @@ suspend fun defaultCreateDatagrunnlag(
     registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl, periode, ytelse)
 
     Datagrunnlag(
-            periode = periode,
-            brukerinput = brukerinput,
-            pdlpersonhistorikk = personHistorikkFraPdl,
-            medlemskap = medlemskap,
-            arbeidsforhold = arbeidsforhold,
-            oppgaver = oppgaver,
-            dokument = journalPoster,
-            ytelse = ytelse,
-            dataOmBarn = dataOmBrukersBarn,
-            dataOmEktefelle = dataOmEktefelle
+        periode = periode,
+        brukerinput = brukerinput,
+        pdlpersonhistorikk = personHistorikkFraPdl,
+        medlemskap = medlemskap,
+        arbeidsforhold = arbeidsforhold,
+        oppgaver = oppgaver,
+        dokument = journalPoster,
+        ytelse = ytelse,
+        dataOmBarn = dataOmBrukersBarn,
+        dataOmEktefelle = dataOmEktefelle
     )
 }
 
@@ -87,8 +87,8 @@ private suspend fun CoroutineScope.hentDataOmEktefelle(fnrTilEktefelle: String?,
         }
 
         return DataOmEktefelle(
-                personhistorikkEktefelle = personhistorikkEktefelle,
-                arbeidsforholdEktefelle = arbeidsforholdEktefelle
+            personhistorikkEktefelle = personhistorikkEktefelle,
+            arbeidsforholdEktefelle = arbeidsforholdEktefelle
         )
     }
     return null
@@ -111,7 +111,7 @@ private fun registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl: Person
         flereStatsborgerskapCounter(personHistorikkFraPdl.statsborgerskap.size.toString(), ytelse).increment()
 
     val statsborgerskapEndretSisteÅret = personHistorikkFraPdl.statsborgerskap
-            .harEndretSisteÅret(Kontrollperiode(fom = periode.fom.minusYears(1), tom = periode.tom))
+        .harEndretSisteÅret(Kontrollperiode(fom = periode.fom.minusYears(1), tom = periode.tom))
 
     endretStatsborgerskapSisteÅretCounter(statsborgerskapEndretSisteÅret, ytelse).increment()
 }
