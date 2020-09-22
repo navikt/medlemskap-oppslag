@@ -7,7 +7,6 @@ import mu.KotlinLogging
 import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.endretStatsborgerskapSisteÅretCounter
 import no.nav.medlemskap.common.flereStatsborgerskapCounter
-import no.nav.medlemskap.common.uendretStatsborgerskapSisteÅretCounter
 import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
@@ -24,13 +23,13 @@ private val logger = KotlinLogging.logger { }
 private val secureLogger = KotlinLogging.logger("tjenestekall")
 
 suspend fun defaultCreateDatagrunnlag(
-    fnr: String,
-    callId: String,
-    periode: InputPeriode,
-    brukerinput: Brukerinput,
-    services: Services,
-    clientId: String?,
-    ytelseFraRequest: Ytelse?
+        fnr: String,
+        callId: String,
+        periode: InputPeriode,
+        brukerinput: Brukerinput,
+        services: Services,
+        clientId: String?,
+        ytelseFraRequest: Ytelse?
 ): Datagrunnlag = coroutineScope {
 
     val dataOmEktefelle: DataOmEktefelle?
@@ -60,16 +59,16 @@ suspend fun defaultCreateDatagrunnlag(
     registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl, periode, ytelse)
 
     Datagrunnlag(
-        periode = periode,
-        brukerinput = brukerinput,
-        pdlpersonhistorikk = personHistorikkFraPdl,
-        medlemskap = medlemskap,
-        arbeidsforhold = arbeidsforhold,
-        oppgaver = oppgaver,
-        dokument = journalPoster,
-        ytelse = ytelse,
-        dataOmBarn = dataOmBrukersBarn,
-        dataOmEktefelle = dataOmEktefelle
+            periode = periode,
+            brukerinput = brukerinput,
+            pdlpersonhistorikk = personHistorikkFraPdl,
+            medlemskap = medlemskap,
+            arbeidsforhold = arbeidsforhold,
+            oppgaver = oppgaver,
+            dokument = journalPoster,
+            ytelse = ytelse,
+            dataOmBarn = dataOmBrukersBarn,
+            dataOmEktefelle = dataOmEktefelle
     )
 }
 
@@ -88,8 +87,8 @@ private suspend fun CoroutineScope.hentDataOmEktefelle(fnrTilEktefelle: String?,
         }
 
         return DataOmEktefelle(
-            personhistorikkEktefelle = personhistorikkEktefelle,
-            arbeidsforholdEktefelle = arbeidsforholdEktefelle
+                personhistorikkEktefelle = personhistorikkEktefelle,
+                arbeidsforholdEktefelle = arbeidsforholdEktefelle
         )
     }
     return null
@@ -111,13 +110,8 @@ private fun registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl: Person
     if (personHistorikkFraPdl.statsborgerskap.size > 1)
         flereStatsborgerskapCounter(personHistorikkFraPdl.statsborgerskap.size.toString(), ytelse).increment()
 
-    val statsborgerskapEndretSisteÅret =
-        personHistorikkFraPdl.statsborgerskap
-                .harEndretSisteÅret(Kontrollperiode(fom = periode.fom.minusYears(1), tom = periode.tom))
+    val statsborgerskapEndretSisteÅret = personHistorikkFraPdl.statsborgerskap
+            .harEndretSisteÅret(Kontrollperiode(fom = periode.fom.minusYears(1), tom = periode.tom))
 
-    if (statsborgerskapEndretSisteÅret.isEmpty()) {
-        uendretStatsborgerskapSisteÅretCounter(ytelse).increment()
-    } else {
-        endretStatsborgerskapSisteÅretCounter(ytelse).increment()
-    }
+    endretStatsborgerskapSisteÅretCounter(statsborgerskapEndretSisteÅret, ytelse).increment()
 }

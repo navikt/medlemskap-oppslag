@@ -150,15 +150,9 @@ fun flereStatsborgerskapCounter(antallStatsborgerskap: String, ytelse: Ytelse): 
     .description("")
     .register(Metrics.globalRegistry)
 
-fun endretStatsborgerskapSisteÅretCounter(ytelse: Ytelse): Counter = Counter
+fun endretStatsborgerskapSisteÅretCounter(statsborgerskapEndretSisteÅret: Boolean, ytelse: Ytelse): Counter = Counter
     .builder("endret_statsborgerskap_siste_aaret")
-    .tags("ytelse", ytelse.metricName())
-    .description("")
-    .register(Metrics.globalRegistry)
-
-fun uendretStatsborgerskapSisteÅretCounter(ytelse: Ytelse): Counter = Counter
-    .builder("uendret_statsborgerskap_siste_aaret")
-    .tags("ytelse", ytelse.metricName())
+    .tags("endret_statsborgerskap", statsborgerskapEndretSisteÅret.toString(), "ytelse", ytelse.metricName())
     .description("")
     .register(Metrics.globalRegistry)
 

@@ -17,10 +17,8 @@ object StatsborgerskapFunksjoner {
             Periode(it.fom, it.tom).interval().contains(lagInstantStartOfDay(dato))
         }.map { it.landkode }
 
-    infix fun List<Statsborgerskap>.harEndretSisteÅret(kontrollPeriode: Kontrollperiode): List<Statsborgerskap> =
-        this.filter {
-            erStatsborgerskapetInnenforPerioden(it, kontrollPeriode)
-        }
+    infix fun List<Statsborgerskap>.harEndretSisteÅret(kontrollPeriode: Kontrollperiode): Boolean =
+        this.filter { erStatsborgerskapetInnenforPerioden(it, kontrollPeriode) }.isNotEmpty()
 
     private fun erStatsborgerskapetInnenforPerioden(it: Statsborgerskap, kontrollPeriode: Kontrollperiode): Boolean =
         erInnenforPerioden(kontrollPeriode, it.fom ?: LocalDate.MIN) ||
