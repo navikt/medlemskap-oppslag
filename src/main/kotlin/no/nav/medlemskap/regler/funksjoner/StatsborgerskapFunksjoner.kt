@@ -14,6 +14,16 @@ object StatsborgerskapFunksjoner {
             it.overlapper(dato)
         }.map { it.landkode }
 
+    infix fun List<Statsborgerskap>.harEndretSisteÅret(kontrollPeriode: Kontrollperiode): Boolean =
+        this.filter { erStatsborgerskapetInnenforPerioden(it, kontrollPeriode) }.isNotEmpty()
+
+    private fun erStatsborgerskapetInnenforPerioden(it: Statsborgerskap, kontrollPeriode: Kontrollperiode): Boolean =
+        erInnenforPerioden(kontrollPeriode, it.fom ?: LocalDate.MIN) ||
+            erInnenforPerioden(kontrollPeriode, it.tom ?: LocalDate.MAX)
+
+    private fun erInnenforPerioden(kontrollPeriode: Kontrollperiode, dato: LocalDate) =
+        kontrollPeriode.tilPeriode().interval().contains(lagInstantStartOfDay(dato))
+
     infix fun List<Statsborgerskap>.hentStatsborgerskapVedStartAvKontrollperiode(kontrollPeriode: Kontrollperiode): List<String> =
         this.hentStatsborgerskapFor(kontrollPeriode.fom)
 
