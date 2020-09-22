@@ -36,6 +36,14 @@ data class Periode(
         return interval().overlaps(annenPeriode.interval()) || interval().encloses(annenPeriode.interval())
     }
 
+    fun overlapper(dato: LocalDate): Boolean {
+        if (!erGyldigPeriode()) {
+            return false
+        }
+
+        return overlapper(Periode(fom = dato, tom = dato))
+    }
+
     fun encloses(annenPeriode: Periode): Boolean {
         if (!erGyldigPeriode()) {
             return false
