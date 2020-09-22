@@ -594,7 +594,3 @@ class AaregMapperTest {
         
         """.trimIndent()
 }
-
-private fun DateTimeFormatter.format(date: LocalDateTime?): String? {
-    return date.toString()
-}
