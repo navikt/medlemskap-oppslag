@@ -10,7 +10,7 @@ import java.time.LocalDate
 class StatsborgerskapFunksjonerTest {
 
     @Test
-    fun `Endret statsborgerskap blir filtrert ut`() {
+    fun `Endret statsborgerskap blir ikke filtrert ut`() {
         val statsborgerskapListe = listOf(statsborgerskapUendretSisteÅret, statsborgerskapEndretSisteÅret)
         val kontrollperiode = Kontrollperiode(
             fom = LocalDate.of(2019, 1, 1),
@@ -34,12 +34,13 @@ class StatsborgerskapFunksjonerTest {
     }
 
     @Test
-    fun `Statsborgerskap med fom lik null blir filtrert`() {
+    fun `Statsborgerskap med fom lik null og innenfor perioden blir ikke filtrert`() {
         val statsborgerskapListe = listOf(statsborgerskapMedFomLikNullOgTomInnenforPeriode)
         val kontrollperiode = Kontrollperiode(
             fom = LocalDate.of(2019, 1, 1),
             tom = LocalDate.of(2019, 12, 31)
         )
+
         val filtrertListe = statsborgerskapListe.harEndretSisteÅret(kontrollperiode)
         assertEquals(1, filtrertListe.size)
     }
@@ -51,17 +52,19 @@ class StatsborgerskapFunksjonerTest {
             fom = LocalDate.of(2019, 1, 1),
             tom = LocalDate.of(2019, 12, 31)
         )
+
         val filtrertListe = statsborgerskapListe.harEndretSisteÅret(kontrollperiode)
         assertEquals(0, filtrertListe.size)
     }
 
     @Test
-    fun `Statsborgerskap med tom lik null og fom innenfor perioden`() {
+    fun `Statsborgerskap med tom lik null og fom innenfor perioden ikke filtrert`() {
         val statsborgerskapListe = listOf(statsborgerskapMedTomLikNullOgFomInnenforPeriode)
         val kontrollperiode = Kontrollperiode(
             fom = LocalDate.of(2019, 1, 1),
             tom = LocalDate.of(2019, 12, 31)
         )
+
         val filtrertListe = statsborgerskapListe.harEndretSisteÅret(kontrollperiode)
         assertEquals(1, filtrertListe.size)
     }

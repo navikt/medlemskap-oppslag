@@ -23,21 +23,11 @@ object StatsborgerskapFunksjoner {
         }
 
     private fun erStatsborgerskapetInnenforPerioden(it: Statsborgerskap, kontrollPeriode: Kontrollperiode): Boolean =
-        if (it.fom != null && it.tom != null) {
-            erFomInnenforPerioden(kontrollPeriode, it.fom) || erTomInnenforPerioden(kontrollPeriode, it.tom)
-        } else if (it.fom != null && it.tom == null) {
-            erFomInnenforPerioden(kontrollPeriode, it.fom)
-        } else if (it.fom == null && it.tom != null) {
-            erTomInnenforPerioden(kontrollPeriode, it.tom)
-        } else {
-            false
-        }
+        erInnenforPerioden(kontrollPeriode, it.fom ?: LocalDate.MIN) ||
+            erInnenforPerioden(kontrollPeriode, it.tom ?: LocalDate.MAX)
 
-    private fun erTomInnenforPerioden(kontrollPeriode: Kontrollperiode, tom: LocalDate) =
-        kontrollPeriode.tilPeriode().interval().contains(lagInstantStartOfDay(tom))
-
-    private fun erFomInnenforPerioden(kontrollPeriode: Kontrollperiode, fom: LocalDate) =
-        kontrollPeriode.tilPeriode().interval().contains(lagInstantStartOfDay(fom))
+    private fun erInnenforPerioden(kontrollPeriode: Kontrollperiode, dato: LocalDate) =
+        kontrollPeriode.tilPeriode().interval().contains(lagInstantStartOfDay(dato))
 
     infix fun List<Statsborgerskap>.hentStatsborgerskapVedStartAvKontrollperiode(kontrollPeriode: Kontrollperiode): List<String> =
         this.hentStatsborgerskapFor(kontrollPeriode.fom)

@@ -57,9 +57,7 @@ suspend fun defaultCreateDatagrunnlag(
 
     ytelseCounter(ytelse.metricName()).increment()
 
-    if (personHistorikkFraPdl != null) {
-        registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl, periode, ytelse)
-    }
+    registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl, periode, ytelse)
 
     Datagrunnlag(
         periode = periode,
@@ -114,9 +112,8 @@ private fun registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl: Person
         flereStatsborgerskapCounter(personHistorikkFraPdl.statsborgerskap.size.toString(), ytelse).increment()
 
     val statsborgerskapEndretSisteÅret =
-        personHistorikkFraPdl.statsborgerskap.harEndretSisteÅret(
-            Kontrollperiode(fom = periode.fom.minusYears(1), tom = periode.tom)
-        )
+        personHistorikkFraPdl.statsborgerskap
+                .harEndretSisteÅret(Kontrollperiode(fom = periode.fom.minusYears(1), tom = periode.tom))
 
     if (statsborgerskapEndretSisteÅret.isEmpty()) {
         uendretStatsborgerskapSisteÅretCounter(ytelse).increment()
