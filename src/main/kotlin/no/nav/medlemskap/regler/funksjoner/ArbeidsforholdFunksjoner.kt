@@ -6,7 +6,6 @@ import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
-import java.util.stream.Collectors
 import kotlin.math.abs
 
 object ArbeidsforholdFunksjoner {
@@ -38,7 +37,7 @@ object ArbeidsforholdFunksjoner {
     }
 
     fun List<Arbeidsforhold>.filtrerUtArbeidsgivereMedFærreEnn6Ansatte(kontrollPeriode: Kontrollperiode) =
-        arbeidsforholdForKontrollPeriode(kontrollPeriode).stream().map { it.arbeidsgiver }.collect(Collectors.toList())
+        arbeidsforholdForKontrollPeriode(kontrollPeriode).map { it.arbeidsgiver }
             .filter { !it.ansatte?.finnesMindreEnn(6).isNullOrEmpty() }
 
     fun List<Arbeidsgiver>.registrereArbeidsgivere(ytelse: Ytelse) {
@@ -151,7 +150,7 @@ object ArbeidsforholdFunksjoner {
         arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(kontrollPeriode).mapNotNull { it.ansatte }.flatten()
 
     private infix fun List<Arbeidsforhold>.arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(kontrollPeriode: Kontrollperiode): List<Arbeidsgiver> {
-        return arbeidsforholdForKontrollPeriode(kontrollPeriode).stream().map { it.arbeidsgiver }.collect(Collectors.toList())
+        return arbeidsforholdForKontrollPeriode(kontrollPeriode).map { it.arbeidsgiver }
     }
 
     private fun List<Arbeidsforhold>.arbeidsforholdForKontrollPeriode(kontrollPeriode: Kontrollperiode) =
