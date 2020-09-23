@@ -1,4 +1,4 @@
-package no.nav.medlemskap.regler.common.pdlMapperTest
+package no.nav.medlemskap.clients.pdl
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
