@@ -152,7 +152,7 @@ fun flereStatsborgerskapCounter(antallStatsborgerskap: String, ytelse: Ytelse): 
 
 fun endretStatsborgerskapSisteÅretCounter(statsborgerskapEndretSisteÅret: Boolean, ytelse: Ytelse): Counter = Counter
     .builder("endret_statsborgerskap_siste_aaret")
-    .tags("endret_statsborgerskap", statsborgerskapEndretSisteÅret.toString(), "ytelse", ytelse.metricName())
+    .tags("endret_statsborgerskap", endretStatsborgerskap(statsborgerskapEndretSisteÅret), "ytelse", ytelse.metricName())
     .description("")
     .register(Metrics.globalRegistry)
 
@@ -173,6 +173,12 @@ fun enhetstypeForJuridiskEnhet(enhetstype: String?, ytelse: String): Counter = C
     .tags("juridiskEnhetstype", enhetstype ?: "N/A", "ytelse", ytelse)
     .description("Ulike enhetstyper for juridiske enheter")
     .register(Metrics.globalRegistry)
+
+private fun endretStatsborgerskap(statsborgerskapEndretSisteÅret: Boolean) : String =
+    when(statsborgerskapEndretSisteÅret) {
+        true -> "endret"
+        false -> "uendret"
+}
 
 private fun getStillingsprosentIntervall(stillingsprosent: Double): String {
     // Fjerner desimaler fremfor å runde av fordi regelsjekken godtar ikke f.eks. 24.9% stilling som høy nok til å regnes som 25% stilling.
