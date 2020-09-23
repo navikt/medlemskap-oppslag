@@ -174,7 +174,7 @@ fun enhetstypeForJuridiskEnhet(enhetstype: String?, ytelse: String): Counter = C
     .description("Ulike enhetstyper for juridiske enheter")
     .register(Metrics.globalRegistry)
 
-private fun mapEndretStatsborgerskapBooleanTilMetrikkVerdi (statsborgerskapEndretSisteÅret: Boolean): String =
+private fun mapEndretStatsborgerskapBooleanTilMetrikkVerdi(statsborgerskapEndretSisteÅret: Boolean): String =
     when (statsborgerskapEndretSisteÅret) {
         true -> "endret"
         false -> "uendret"
