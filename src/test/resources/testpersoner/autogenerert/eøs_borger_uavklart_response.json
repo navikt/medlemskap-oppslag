@@ -12,11 +12,6 @@
       "fom" : "2000-01-01",
       "tom" : null
     } ],
-    "personstatuser" : [ {
-      "personstatus" : "BOSA",
-      "fom" : "2000-01-01",
-      "tom" : null
-    } ],
     "bostedsadresser" : [ {
       "landkode" : "NOR",
       "fom" : "2000-01-01",

@@ -23,7 +23,6 @@ Egenskap: Man er medlem i Folketrygden hvis man er EØS-borger og bor og jobber 
         "tom": "2020-01-30"
       }
     ],
-    "personstatuser": [],
     "bostedsadresser": [
        {
         "landkode": "NOR",

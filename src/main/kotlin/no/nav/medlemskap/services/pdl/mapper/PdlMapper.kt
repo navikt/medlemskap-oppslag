@@ -22,11 +22,9 @@ object PdlMapper {
         val oppholdsadresser: List<Adresse> = mapOppholdsAdresse(person.oppholdsadresse)
         val sivilstand: List<Sivilstand> = mapSivilstander(person.sivilstand)
         val familierelasjoner: List<Familierelasjon> = person.familierelasjoner.map { mapFamilierelasjon(it) }
-        val personstatuser: List<FolkeregisterPersonstatus> = emptyList()
 
         return Personhistorikk(
             statsborgerskap = statsborgerskap,
-            personstatuser = personstatuser,
             bostedsadresser = bostedsadresser,
             sivilstand = sivilstand,
             familierelasjoner = familierelasjoner,

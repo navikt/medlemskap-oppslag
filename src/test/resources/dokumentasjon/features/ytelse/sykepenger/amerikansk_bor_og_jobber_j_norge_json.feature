@@ -23,7 +23,6 @@ Egenskap: Borgere som ikke er EØS-borgere skal ha uavklart medlemskap i MVP
         "tom": null
       }
     ],
-    "personstatuser": [],
     "bostedsadresser": [
          {
         "landkode": "NOR",
