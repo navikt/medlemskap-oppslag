@@ -18,7 +18,7 @@ data class Periode(
             return false
         }
 
-        return interval().overlaps(annenPeriode.interval()) || interval().encloses(annenPeriode.interval())
+        return interval().overlaps(annenPeriode.interval())
     }
 
     fun overlapper(dato: LocalDate): Boolean {
