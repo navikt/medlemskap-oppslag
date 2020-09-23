@@ -11,6 +11,11 @@ data class Medlemskap(
     val lovvalgsland: String?,
     val periodeStatus: PeriodeStatus?
 ) : Comparable<Medlemskap> {
+    private val periode = Periode(fraOgMed, tilOgMed)
+
+    fun overlapper(annenPeriode: Periode): Boolean {
+        return periode.overlapper(annenPeriode)
+    }
 
     override fun compareTo(other: Medlemskap): Int {
         return this.tilOgMed.compareTo(other.tilOgMed)

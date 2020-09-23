@@ -6,16 +6,20 @@ import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.RegelId
-import no.nav.medlemskap.regler.common.interval
-import no.nav.medlemskap.regler.common.lagInstantStartOfDay
 import java.time.LocalDate
 
 object StatsborgerskapFunksjoner {
 
     infix fun List<Statsborgerskap>.hentStatsborgerskapFor(dato: LocalDate): List<String> =
         this.filter {
-            Periode(it.fom, it.tom).interval().contains(lagInstantStartOfDay(dato))
+            it.overlapper(dato)
         }.map { it.landkode }
+
+    infix fun List<Statsborgerskap>.harEndretSisteÅret(kontrollPeriode: Kontrollperiode): Boolean =
+        this.filter { erStatsborgerskapetInnenforPerioden(it, kontrollPeriode) }.isNotEmpty()
+
+    private fun erStatsborgerskapetInnenforPerioden(it: Statsborgerskap, kontrollPeriode: Kontrollperiode): Boolean =
+        kontrollPeriode.periode.encloses(Periode(fom = it.fom, tom = it.fom)) || kontrollPeriode.periode.encloses(Periode(fom = it.tom, tom = it.tom))
 
     infix fun List<Statsborgerskap>.hentStatsborgerskapVedStartAvKontrollperiode(kontrollPeriode: Kontrollperiode): List<String> =
         this.hentStatsborgerskapFor(kontrollPeriode.fom)

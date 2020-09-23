@@ -3,14 +3,9 @@ package no.nav.medlemskap.regler.funksjoner
 import no.nav.medlemskap.common.*
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
-import no.nav.medlemskap.regler.common.Funksjoner
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
-import no.nav.medlemskap.regler.common.interval
-import no.nav.medlemskap.regler.common.lagInterval
-import org.threeten.extra.Interval
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
-import java.util.stream.Collectors
 import kotlin.math.abs
 
 object ArbeidsforholdFunksjoner {
@@ -24,17 +19,17 @@ object ArbeidsforholdFunksjoner {
 
     infix fun List<Arbeidsforhold>.arbeidsforholdForYrkestype(kontrollPeriode: Kontrollperiode): List<String> =
         this.filter {
-            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)), kontrollPeriode.tilPeriode())
+            it.periode.overlapper(kontrollPeriode.periode)
         }.map { it.arbeidsfolholdstype.navn }
 
     infix fun List<Arbeidsforhold>.sisteArbeidsforholdYrkeskode(kontrollPeriode: Kontrollperiode): List<String> =
         this.filter {
-            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)), kontrollPeriode.tilPeriode())
+            it.periode.overlapper(kontrollPeriode.periode)
         }.flatMap { it.arbeidsavtaler }.map { it.yrkeskode }
 
     infix fun List<Arbeidsforhold>.sisteArbeidsforholdSkipsregister(kontrollPeriode: Kontrollperiode): List<String> =
         this.filter {
-            periodefilter(lagInterval(Periode(it.periode.fom, it.periode.tom)), kontrollPeriode.tilPeriode())
+            it.periode.overlapper(kontrollPeriode.periode)
         }.flatMap { it -> it.arbeidsavtaler.map { it.skipsregister?.name ?: "" } }
 
     infix fun List<Arbeidsforhold>.konkursStatuserArbeidsgivere(kontrollPeriode: Kontrollperiode): List<String?>? {
@@ -42,7 +37,7 @@ object ArbeidsforholdFunksjoner {
     }
 
     fun List<Arbeidsforhold>.filtrerUtArbeidsgivereMedFærreEnn6Ansatte(kontrollPeriode: Kontrollperiode) =
-        arbeidsforholdForKontrollPeriode(kontrollPeriode).stream().map { it.arbeidsgiver }.collect(Collectors.toList())
+        arbeidsforholdForKontrollPeriode(kontrollPeriode).map { it.arbeidsgiver }
             .filter { !it.ansatte?.finnesMindreEnn(6).isNullOrEmpty() }
 
     fun List<Arbeidsgiver>.registrereArbeidsgivere(ytelse: Ytelse) {
@@ -107,10 +102,7 @@ object ArbeidsforholdFunksjoner {
 
     infix fun List<Arbeidsforhold>.arbeidsforholdForDato(dato: LocalDate): List<Arbeidsforhold> =
         this.filter {
-            Funksjoner.periodefilter(
-                lagInterval(Periode(it.periode.fom, it.periode.tom)),
-                Periode(dato, dato)
-            )
+            it.periode.overlapper(Periode(dato, dato))
         }.sorted()
 
     fun List<Arbeidsforhold>.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(gittStillingsprosent: Double, kontrollPeriode: Kontrollperiode, ytelse: Ytelse): Boolean {
@@ -152,26 +144,19 @@ object ArbeidsforholdFunksjoner {
     }
 
     private fun List<Arbeidsforhold>.ingenAndreParallelleArbeidsforhold(arbeidsforhold: Arbeidsforhold): Boolean =
-        this.none { it.periode.interval().encloses(arbeidsforhold.periode.interval()) && it != arbeidsforhold }
+        this.none { it.periode.encloses(arbeidsforhold.periode) && it != arbeidsforhold }
 
     private infix fun List<Arbeidsforhold>.ansatteHosArbeidsgivere(kontrollPeriode: Kontrollperiode): List<Ansatte> =
         arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(kontrollPeriode).mapNotNull { it.ansatte }.flatten()
 
     private infix fun List<Arbeidsforhold>.arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(kontrollPeriode: Kontrollperiode): List<Arbeidsgiver> {
-        return arbeidsforholdForKontrollPeriode(kontrollPeriode).stream().map { it.arbeidsgiver }.collect(Collectors.toList())
+        return arbeidsforholdForKontrollPeriode(kontrollPeriode).map { it.arbeidsgiver }
     }
 
     private fun List<Arbeidsforhold>.arbeidsforholdForKontrollPeriode(kontrollPeriode: Kontrollperiode) =
         this.filter {
-            periodefilter(
-                lagInterval(Periode(it.periode.fom, it.periode.tom)),
-                kontrollPeriode.tilPeriode()
-            )
+            it.periode.overlapper(kontrollPeriode.periode)
         }
 
     fun fraOgMedDatoForArbeidsforhold(periode: InputPeriode) = periode.fom.minusYears(1).minusDays(1)
-
-    private fun periodefilter(periodeDatagrunnlag: Interval, periode: Periode): Boolean {
-        return periodeDatagrunnlag.overlaps(lagInterval(periode)) || periodeDatagrunnlag.encloses(lagInterval(periode))
-    }
 }

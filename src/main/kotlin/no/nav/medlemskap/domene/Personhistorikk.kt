@@ -16,7 +16,25 @@ data class Statsborgerskap(
     val landkode: String,
     val fom: LocalDate?,
     val tom: LocalDate?
-)
+) {
+    private val periode = Periode(fom, tom)
+
+    fun overlapper(annenPeriode: Periode): Boolean {
+        return periode.overlapper(annenPeriode)
+    }
+
+    fun overlapper(dato: LocalDate): Boolean {
+        return periode.overlapper(dato)
+    }
+
+    fun encloses(annenPeriode: Periode): Boolean {
+        return periode.encloses(annenPeriode)
+    }
+
+    fun encloses(dato: LocalDate): Boolean {
+        return periode.encloses(dato)
+    }
+}
 
 data class FolkeregisterPersonstatus(
     val personstatus: PersonStatus,
@@ -44,7 +62,13 @@ data class Adresse(
     val landkode: String,
     val fom: LocalDate?,
     val tom: LocalDate?
-)
+) {
+    private val periode = Periode(fom, tom)
+
+    fun overlapper(annenPeriode: Periode): Boolean {
+        return periode.overlapper(annenPeriode)
+    }
+}
 
 data class Sivilstand(
     val type: Sivilstandstype,
@@ -52,23 +76,7 @@ data class Sivilstand(
     val gyldigTilOgMed: LocalDate?,
     val relatertVedSivilstand: String?,
     val folkeregistermetadata: Folkeregistermetadata?
-) {
-    fun overlapper(dato: LocalDate): Boolean {
-        return !fraOgMedEllerMinDato().isAfter(dato) && !tilOgMedEllerMaksDato().isBefore(dato)
-    }
-
-    fun fraOgMedEllerMinDato(): LocalDate {
-        return gyldigFraOgMed ?: LocalDate.MIN
-    }
-
-    fun tilOgMedEllerMaksDato(): LocalDate {
-        return gyldigTilOgMed ?: LocalDate.MAX
-    }
-
-    fun giftEllerRegistrertPartner(): Boolean {
-        return type == Sivilstandstype.GIFT || type == Sivilstandstype.REGISTRERT_PARTNER
-    }
-}
+)
 
 enum class Sivilstandstype {
     GIFT,

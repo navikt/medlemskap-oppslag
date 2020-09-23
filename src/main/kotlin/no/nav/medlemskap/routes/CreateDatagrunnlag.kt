@@ -5,6 +5,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.Services
+import no.nav.medlemskap.common.endretStatsborgerskapSisteÅretCounter
 import no.nav.medlemskap.common.flereStatsborgerskapCounter
 import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.domene.*
@@ -16,6 +17,7 @@ import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.fraOgMedDatoForArbeidsforhold
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarn
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilEktefelle
+import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.harEndretSisteÅret
 
 private val logger = KotlinLogging.logger { }
 private val secureLogger = KotlinLogging.logger("tjenestekall")
@@ -54,8 +56,7 @@ suspend fun defaultCreateDatagrunnlag(
 
     ytelseCounter(ytelse.metricName()).increment()
 
-    if (personHistorikkFraPdl?.statsborgerskap?.size != null && personHistorikkFraPdl.statsborgerskap.size > 1)
-        flereStatsborgerskapCounter(personHistorikkFraPdl.statsborgerskap.size.toString(), ytelse).increment()
+    registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl, periode, ytelse)
 
     Datagrunnlag(
         periode = periode,
@@ -101,7 +102,16 @@ suspend fun hentPersonHistorikkForBarn(fnrTilBarn: String, services: Services, c
     return services.pdlService.hentPersonHistorikkTilBarn(fnrTilBarn, callId)
 }
 
-// Midlertidig kode, ekstra feilhåndtering fordi integrasjonen vår mot PDL ikke er helt 100% ennå..
 private suspend fun hentPersonhistorikkFraPdl(services: Services, fnr: String, callId: String): Personhistorikk {
     return services.pdlService.hentPersonHistorikkTilBruker(fnr, callId)
+}
+
+private fun registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl: Personhistorikk, periode: InputPeriode, ytelse: Ytelse) {
+    if (personHistorikkFraPdl.statsborgerskap.size > 1)
+        flereStatsborgerskapCounter(personHistorikkFraPdl.statsborgerskap.size.toString(), ytelse).increment()
+
+    val statsborgerskapEndretSisteÅret = personHistorikkFraPdl.statsborgerskap
+        .harEndretSisteÅret(Kontrollperiode(fom = periode.fom.minusYears(1), tom = periode.tom))
+
+    endretStatsborgerskapSisteÅretCounter(statsborgerskapEndretSisteÅret, ytelse).increment()
 }
