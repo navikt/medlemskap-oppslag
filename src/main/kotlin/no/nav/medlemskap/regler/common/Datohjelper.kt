@@ -2,10 +2,7 @@ package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Kontrollperiode
-import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Ytelse
-import org.threeten.extra.Interval
-import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -80,16 +77,4 @@ class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
 
 fun erDatoerSammenhengende(sluttDato: LocalDate, startDato: LocalDate?): Boolean = sluttDato.isAfter(startDato?.minusDays(3))
 
-fun lagInterval(periode: Periode): Interval = periode.interval()
-
-fun Periode.interval(): Interval = Interval.of(this.intervalStartInclusive(), this.intervalEndExclusive())
-
-fun lagInstantStartOfDay(date: LocalDate) = date.atStartOfDay(ZoneId.systemDefault()).toInstant()
-
 fun LocalDate.startOfDayInstant() = this.atStartOfDay(ZoneId.systemDefault()).toInstant()
-
-fun Periode.fomNotNull() = this.fom ?: LocalDate.MIN
-fun Periode.tomNotNull() = this.tom ?: LocalDate.MAX
-
-fun Periode.intervalStartInclusive(): Instant = this.fom?.startOfDayInstant() ?: Instant.MIN
-fun Periode.intervalEndExclusive(): Instant = this.tom?.plusDays(1)?.startOfDayInstant() ?: Instant.MAX
