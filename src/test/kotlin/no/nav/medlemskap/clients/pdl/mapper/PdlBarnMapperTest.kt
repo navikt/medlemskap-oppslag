@@ -1,4 +1,5 @@
-package no.nav.medlemskap.clients.pdl
+package no.nav.medlemskap.clients.pdl.mapper
+
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
@@ -6,66 +7,44 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
-import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapTilPersonHistorikkTilBruker
+import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
+import no.nav.medlemskap.services.pdl.mapper.PdlMapperBarn
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class PdlMapperTest {
+class PdlBarnMapperTest {
 
     private val javaTimeModule = JavaTimeModule()
 
     @Test
-    fun `PDLdata mappes om til riktige statsborgerskap `() {
+    fun `PDLdata mappes om til riktige data om barn `() {
 
-        val mappetHistorikkTilBruker = pdlData()
-        val mappetStatsborgerskapUtland = mappetHistorikkTilBruker.statsborgerskap[0]
-        val mappetStatsborgerskapNOR = mappetHistorikkTilBruker.statsborgerskap[1]
-        val mappetBostedsadresse = mappetHistorikkTilBruker.bostedsadresser[0]
-        val mappetBostedsadresse2 = mappetHistorikkTilBruker.bostedsadresser[1]
-        val mappetOppholdssadresse = mappetHistorikkTilBruker.oppholdsadresser[0]
-        val mappetOppholdsadresse2 = mappetHistorikkTilBruker.oppholdsadresser[1]
-        val mappetKontaktadresse = mappetHistorikkTilBruker.kontaktadresser[0]
-        val familierelasjonerMappet = mappetHistorikkTilBruker.familierelasjoner.get(0)
-        val sivilstandMappet = mappetHistorikkTilBruker.sivilstand[0]
+        val mappetHistorikkTilBarn = pdlData()
+        val mappetBostedsadresse = mappetHistorikkTilBarn.bostedsadresser[0]
+        val mappetBostedsadresse2 = mappetHistorikkTilBarn.bostedsadresser[1]
+        val mappetOppholdssadresse = mappetHistorikkTilBarn.oppholdsadresser[0]
+        val mappetOppholdsadresse2 = mappetHistorikkTilBarn.oppholdsadresser[1]
+        val mappetKontaktadresse = mappetHistorikkTilBarn.kontaktadresser[0]
+        val mappetFamilierelasjonerFar = mappetHistorikkTilBarn.familierelasjoner[0]
+        val mappetFamilierelasjonerMor = mappetHistorikkTilBarn.familierelasjoner[1]
 
-        Assertions.assertEquals(2, mappetHistorikkTilBruker.statsborgerskap.size)
-        Assertions.assertEquals(1, mappetHistorikkTilBruker.familierelasjoner.size)
-        Assertions.assertEquals(2, mappetHistorikkTilBruker.bostedsadresser.size)
-        Assertions.assertEquals(1, mappetHistorikkTilBruker.kontaktadresser.size)
-        Assertions.assertEquals(2, mappetHistorikkTilBruker.oppholdsadresser.size)
-
-        Assertions.assertEquals("SWE", mappetStatsborgerskapUtland.landkode)
-        Assertions.assertEquals(LocalDate.of(1976, 7, 15), mappetStatsborgerskapUtland.fom)
-        Assertions.assertEquals(LocalDate.of(1989, 12, 31), mappetStatsborgerskapUtland.tom)
-
-        Assertions.assertEquals("NOR", mappetStatsborgerskapNOR.landkode)
-        Assertions.assertEquals(LocalDate.of(1990, 1, 1), mappetStatsborgerskapNOR.fom)
-        Assertions.assertEquals(null, mappetStatsborgerskapNOR.tom)
+        Assertions.assertEquals(mappetHistorikkTilBarn.bostedsadresser.size, mappetHistorikkTilBarn.bostedsadresser.size)
+        Assertions.assertEquals(mappetHistorikkTilBarn.oppholdsadresser.size, mappetHistorikkTilBarn.oppholdsadresser.size)
+        Assertions.assertEquals(mappetHistorikkTilBarn.kontaktadresser.size, mappetHistorikkTilBarn.kontaktadresser.size)
 
         Assertions.assertEquals("NOR", mappetBostedsadresse.landkode)
         Assertions.assertEquals(LocalDate.of(1990, 1, 1), mappetBostedsadresse.fom)
         Assertions.assertEquals(LocalDate.of(1992, 1, 1), mappetBostedsadresse.tom)
-
         Assertions.assertEquals("NOR", mappetBostedsadresse.landkode)
         Assertions.assertEquals(LocalDate.of(1992, 1, 2), mappetBostedsadresse2.fom)
         Assertions.assertEquals(null, mappetBostedsadresse2.tom)
-
-        Assertions.assertEquals("BARN", familierelasjonerMappet.relatertPersonsRolle.name)
-        Assertions.assertEquals("FAR", familierelasjonerMappet.minRolleForPerson?.name)
-        Assertions.assertEquals("09069534888", familierelasjonerMappet.relatertPersonsIdent)
-
-        Assertions.assertEquals(LocalDateTime.of(2020, 6, 20, 10, 1, 1), familierelasjonerMappet.folkeregistermetadata?.ajourholdstidspunkt)
-        Assertions.assertEquals(LocalDateTime.of(2019, 10, 10, 10, 1, 1), familierelasjonerMappet.folkeregistermetadata?.gyldighetstidspunkt)
-        Assertions.assertEquals(null, familierelasjonerMappet.folkeregistermetadata?.opphoerstidspunkt)
-
         Assertions.assertEquals("SWE", mappetOppholdssadresse.landkode)
+
         Assertions.assertEquals(LocalDate.of(1989, 12, 31), mappetOppholdssadresse.fom)
         Assertions.assertEquals(LocalDate.of(1992, 1, 1), mappetOppholdssadresse.tom)
-
         Assertions.assertEquals("NOR", mappetOppholdsadresse2.landkode)
         Assertions.assertEquals(LocalDate.of(1992, 12, 31), mappetOppholdsadresse2.fom)
         Assertions.assertEquals(null, mappetOppholdsadresse2.tom)
@@ -74,16 +53,16 @@ class PdlMapperTest {
         Assertions.assertEquals(LocalDate.of(1989, 12, 31), mappetKontaktadresse.fom)
         Assertions.assertEquals(null, mappetKontaktadresse.tom)
 
-        Assertions.assertEquals("GIFT", sivilstandMappet.type.name)
-        Assertions.assertEquals("10108000398", sivilstandMappet.relatertVedSivilstand)
-        Assertions.assertEquals(LocalDate.of(1990, 1, 1), sivilstandMappet.gyldigFraOgMed)
-        Assertions.assertEquals(null, sivilstandMappet.gyldigTilOgMed)
-        Assertions.assertEquals(null, sivilstandMappet.folkeregistermetadata?.ajourholdstidspunkt)
-        Assertions.assertEquals(LocalDateTime.of(1990, 10, 10, 10, 1, 1), sivilstandMappet.folkeregistermetadata?.gyldighetstidspunkt)
-        Assertions.assertEquals(null, sivilstandMappet.folkeregistermetadata?.opphoerstidspunkt)
+        Assertions.assertEquals("FAR", mappetFamilierelasjonerFar?.relatertPersonsRolle?.name)
+        Assertions.assertEquals("BARN", mappetFamilierelasjonerFar?.minRolleForPerson?.name)
+        Assertions.assertEquals("15076500565", mappetFamilierelasjonerFar?.relatertPersonsIdent)
+
+        Assertions.assertEquals("MOR", mappetFamilierelasjonerMor?.relatertPersonsRolle?.name)
+        Assertions.assertEquals("BARN", mappetFamilierelasjonerMor?.minRolleForPerson?.name)
+        Assertions.assertEquals("10108000398", mappetFamilierelasjonerMor?.relatertPersonsIdent)
     }
 
-    fun pdlData(): Personhistorikk {
+    fun pdlData(): PersonhistorikkBarn {
         val localDateTimeDeserializer = LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
         javaTimeModule.addDeserializer(LocalDateTime::class.java, localDateTimeDeserializer)
 
@@ -91,8 +70,9 @@ class PdlMapperTest {
             .registerModules(KotlinModule(), javaTimeModule)
             .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
 
-        val pdlData = objectMapper.readValue<HentPerson.Person>(pdlDataJson)
-        return mapTilPersonHistorikkTilBruker(pdlData)
+        val pdlDataBarn = objectMapper.readValue<HentPerson.Person>(pdlDataJson)
+
+        return PdlMapperBarn.mapPersonhistorikkTilBarn("09069534888", pdlDataBarn)
     }
 
     val pdlDataJson =
@@ -100,9 +80,18 @@ class PdlMapperTest {
  {
             "familierelasjoner": [
                 {
-                   "relatertPersonsIdent" : "09069534888", 
-                   "relatertPersonsRolle" : "BARN",
-                   "minRolleForPerson": "FAR", 
+                   "relatertPersonsIdent" : "15076500565", 
+                   "relatertPersonsRolle" : "FAR",
+                   "minRolleForPerson": "BARN", 
+                   "folkeregistermetadata": {
+                        "ajourholdstidspunkt": "2020-06-20T10:01:01", 
+                        "gyldighetstidspunkt": "2019-10-10T10:01:01"
+                   }
+                }, 
+                {
+                   "relatertPersonsIdent": "10108000398", 
+                   "relatertPersonsRolle" : "MOR",
+                   "minRolleForPerson": "BARN", 
                    "folkeregistermetadata": {
                         "ajourholdstidspunkt": "2020-06-20T10:01:01", 
                         "gyldighetstidspunkt": "2019-10-10T10:01:01"
@@ -120,16 +109,7 @@ class PdlMapperTest {
                     "gyldigFraOgMed": "1990-01-01"
                 }
             ], 
-            "sivilstand": [
-               {
-                "type": "GIFT", 
-                "gyldigFraOgMed": "1990-01-01",
-                "relatertVedSivilstand": "10108000398",
-                "folkeregistermetadata": {
-                        "gyldighetstidspunkt": "1990-10-10T10:01:01"
-                 }
-               }
-            ],
+            "sivilstand": [],
             "bostedsadresse": [
                {
                 "angittFlyttedato": "1992-01-01",
