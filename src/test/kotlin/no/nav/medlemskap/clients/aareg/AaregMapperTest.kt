@@ -6,16 +6,13 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
-import no.nav.medlemskap.clients.ereg.Ansatte
-import no.nav.medlemskap.clients.ereg.Bruksperiode
-import no.nav.medlemskap.domene.Arbeidsforholdstype
-import no.nav.medlemskap.domene.Periode
-import no.nav.medlemskap.services.aareg.AaRegService
+import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.services.aareg.mapAaregResultat
 import org.junit.Assert
 import org.junit.Test
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 
 class AaregMapperTest {
@@ -33,19 +30,18 @@ class AaregMapperTest {
 
         val aaRegArbeidsforhold = objectMapper.readValue<AaRegArbeidsforhold>(jsonStringAaRegArbeidsforholdList)
 
-        val dataOmArbeidsgiver = mutableMapOf<String, AaRegService.ArbeidsgiverInfo>()
         val juridiskEnhetOrgnummerEnhetstype = mutableMapOf<String, String?>()
         juridiskEnhetOrgnummerEnhetstype["123456789"] = "AS"
-        val orgnummer = "985672744"
-        dataOmArbeidsgiver[orgnummer] = AaRegService.ArbeidsgiverInfo(
-            arbeidsgiverEnhetstype = "BEDR",
+
+        val arbeidsgiver = Arbeidsgiver(
+            type = "BEDR",
+            identifikator = "985672744",
             ansatte = listOf(Ansatte(5, Bruksperiode(LocalDate.now(), LocalDate.now().plusDays(2)), null)),
-            opphoersdato = null,
             konkursStatus = null,
-            juridiskEnhetOrgnummerEnhetstype = juridiskEnhetOrgnummerEnhetstype
+            juridiskEnhetEnhetstypeMap = juridiskEnhetOrgnummerEnhetstype
         )
 
-        val mappedAaregResultatList = mapAaregResultat(listOf(aaRegArbeidsforhold), dataOmArbeidsgiver)
+        val mappedAaregResultatList = mapAaregResultat(listOf(aaRegArbeidsforhold), listOf(arbeidsgiver))
         Assert.assertEquals(1, mappedAaregResultatList.size)
 
         val mappedAaregResultat = mappedAaregResultatList.first()
@@ -53,12 +49,22 @@ class AaregMapperTest {
         Assert.assertEquals("BEDR", mappedAaregResultat.arbeidsgiver.type)
         Assert.assertEquals(5, mappedAaregResultat.arbeidsgiver.ansatte!!.first().antall)
         Assert.assertEquals("AS", mappedAaregResultat.arbeidsgiver.juridiskEnhetEnhetstypeMap?.get("123456789"))
+
         Assert.assertEquals(1, mappedAaregResultat.arbeidsavtaler.size)
-        Assert.assertEquals("Organisasjon", mappedAaregResultat.arbeidsgivertype.name)
+        Assert.assertEquals(LocalDate.parse("2018-09-13"), mappedAaregResultat.arbeidsavtaler.first().periode.fom)
+        Assert.assertNull(mappedAaregResultat.arbeidsavtaler.first().periode.tom)
+        Assert.assertEquals(Skipsregister.UKJENT, mappedAaregResultat.arbeidsavtaler.first().skipsregister)
         Assert.assertEquals(100.0, mappedAaregResultat.arbeidsavtaler.first().stillingsprosent)
+        Assert.assertEquals("8322108", mappedAaregResultat.arbeidsavtaler.first().yrkeskode)
+
+        Assert.assertEquals("Organisasjon", mappedAaregResultat.arbeidsgivertype.name)
         Assert.assertEquals(Arbeidsforholdstype.NORMALT, mappedAaregResultat.arbeidsfolholdstype)
         Assert.assertEquals(Periode(LocalDate.parse("2008-01-01"), LocalDate.parse("2018-10-30")), mappedAaregResultat.periode)
-        Assert.assertNull(mappedAaregResultat.utenlandsopphold)
+
+        Assert.assertEquals(1, mappedAaregResultat.utenlandsopphold?.size)
+        Assert.assertEquals("SWE", mappedAaregResultat.utenlandsopphold?.first()?.landkode)
+        Assert.assertEquals(Periode(LocalDate.parse("1975-10-10"), LocalDate.parse("2020-08-01")), mappedAaregResultat.utenlandsopphold?.first()?.periode)
+        Assert.assertEquals(YearMonth.parse("2010-01"), mappedAaregResultat.utenlandsopphold?.first()?.rapporteringsperiode)
     }
 
     private val jsonStringAaRegArbeidsforholdList =
@@ -589,7 +595,24 @@ class AaregMapperTest {
               "opprettetKildereferanse": "c2b82646-0587-490c-9662-bab5dd31e9f5",
               "opprettetTidspunkt": "2015-01-23T07:50:43.200"
             },
-            "type": "ordinaertArbeidsforhold"
+            "type": "ordinaertArbeidsforhold",
+            "utenlandsopphold" : [ {
+                "landkode" : "SWE",
+                "periode" : {
+                  "fom" : "1975-10-10",
+                  "tom" : "2020-08-01"
+                },
+                "rapporteringsperiode" : "2010-01",
+                "sporingsinformasjon": {
+                  "endretAv": "srvappserver",
+                  "endretKilde": "EDAG",
+                  "endretTidspunkt": "2019-06-19T07:21:31.491",
+                  "opprettetAv": "srvappserver",
+                  "opprettetKilde": "EDAG",
+                  "opprettetKildereferanse": "c2b82646-0587-490c-9662-bab5dd31e9f5",
+                  "opprettetTidspunkt": "2015-01-23T07:50:43.200"
+                }
+            }]
           }
         
         """.trimIndent()

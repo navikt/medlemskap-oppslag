@@ -67,7 +67,7 @@ class Services(val configuration: Configuration) {
         pdlService = PdlService(pdlClient)
         eregClient = restClients.ereg(configuration.register.eregBaseUrl)
         aaRegClient = restClients.aaReg(configuration.register.aaRegBaseUrl)
-        aaRegService = AaRegService(aaRegClient, eregClient, pdlService)
+        aaRegService = AaRegService(aaRegClient, eregClient)
         safClient = restClients.saf(configuration.register.safBaseUrl)
         safService = SafService(safClient)
         oppgaveClient = restClients.oppgaver(configuration.register.oppgaveBaseUrl)
