@@ -9,14 +9,14 @@ import no.nav.medlemskap.domene.*
 
 private val logger = KotlinLogging.logger { }
 
-fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, dataOmArbeidsgiver: MutableMap<String, AaRegService.ArbeidsgiverInfo>): List<Arbeidsforhold> {
+fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, mappedOrganisasjonAsArbeidsgiver: List<Arbeidsgiver>): List<Arbeidsforhold> {
     return arbeidsforhold.map {
         Arbeidsforhold(
             periode = mapPeriodeTilArbeidsforhold(it),
             utenlandsopphold = mapUtenlandsopphold(it),
             arbeidsfolholdstype = mapArbeidsforholdType(it),
             arbeidsgivertype = mapArbeidsgiverType(it.arbeidsgiver.type),
-            arbeidsgiver = mapArbeidsgiver(it, dataOmArbeidsgiver),
+            arbeidsgiver = mappedOrganisasjonAsArbeidsgiver.first { p -> p.identifikator == it.arbeidsgiver.organisasjonsnummer },
             arbeidsavtaler = mapArbeidsAvtaler(it)
         )
     }
@@ -71,21 +71,6 @@ fun mapArbeidsforholdType(arbeidsforhold: AaRegArbeidsforhold): Arbeidsforholdst
             Arbeidsforholdstype.ANDRE
         }
     }
-}
-
-fun mapArbeidsgiver(arbeidsforhold: AaRegArbeidsforhold, dataOmArbeidsgiver: MutableMap<String, AaRegService.ArbeidsgiverInfo>): Arbeidsgiver {
-    val orgnummer = arbeidsforhold.arbeidsgiver.organisasjonsnummer
-    val enhetstype = dataOmArbeidsgiver[orgnummer]?.arbeidsgiverEnhetstype
-    val ansatte = dataOmArbeidsgiver[orgnummer]?.ansatte
-    val konkursStatus = dataOmArbeidsgiver[orgnummer]?.konkursStatus
-    val juridiskEnhetEnhetstypeMap = dataOmArbeidsgiver[orgnummer]?.juridiskEnhetOrgnummerEnhetstype
-    return Arbeidsgiver(
-        type = enhetstype,
-        identifikator = orgnummer,
-        ansatte = mapAnsatte(ansatte),
-        konkursStatus = konkursStatus,
-        juridiskEnhetEnhetstypeMap = juridiskEnhetEnhetstypeMap
-    )
 }
 
 fun mapAnsatte(ansatte: List<no.nav.medlemskap.clients.ereg.Ansatte>?): List<Ansatte>? =
