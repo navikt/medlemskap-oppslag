@@ -369,16 +369,6 @@ class UtenlandsoppholdMapper : RadMapper<Utenlandsopphold> {
     }
 }
 
-class PersonstatusMapper : RadMapper<FolkeregisterPersonstatus> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): FolkeregisterPersonstatus {
-        return FolkeregisterPersonstatus(
-            personstatus = PersonStatus.valueOf(domenespråkParser.parseString(PERSONSTATUS, rad)),
-            fom = domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad),
-            tom = domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
-        )
-    }
-}
-
 class PersonhistorikkEktefelleMapper : RadMapper<PersonhistorikkEktefelle> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): PersonhistorikkEktefelle {
         val fraOgMedDato = domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad)
@@ -505,7 +495,6 @@ enum class Domenebegrep(val nøkkel: String) {
     MIN_ROLLE_FOR_PERSON("Min rolle for person"),
     OPPHOLDSADRESSE("Oppholdsadresse"),
     PERIODESTATUS("Periodestatus"),
-    PERSONSTATUS("Personstatus"),
     PRIORITET("Prioritet"),
     REGEL("Regel"),
     RELATERT_PERSONS_IDENT("Relatert persons ident"),

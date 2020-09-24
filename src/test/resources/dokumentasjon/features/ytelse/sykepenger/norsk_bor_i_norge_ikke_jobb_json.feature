@@ -23,7 +23,6 @@ Egenskap: Man er medlem i Folketrygden hvis man bor i Norge eller jobber i Norge
         "tom": null
       }
     ],
-    "personstatuser": [],
     "bostedsadresser": [
       {
         "landkode": "NOR",
