@@ -1,31 +1,16 @@
 package no.nav.medlemskap.clients.ereg
 
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
+import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.services.ereg.mapOrganisasjonTilArbeidsgiver
 import org.junit.Assert
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class EregMapperTest {
 
     @Test
     fun mapOrganisasjonTilArbeidsgiver() {
-        val javaTimeModule = JavaTimeModule()
-        val localDateTimeDeserializer = LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
-        javaTimeModule.addDeserializer(LocalDateTime::class.java, localDateTimeDeserializer)
-
-        val objectMapper: ObjectMapper = ObjectMapper()
-            .registerModules(KotlinModule(), javaTimeModule)
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
         val organisasjon = objectMapper.readValue<Organisasjon>(eregHentOrganisasjonResponse)
 
