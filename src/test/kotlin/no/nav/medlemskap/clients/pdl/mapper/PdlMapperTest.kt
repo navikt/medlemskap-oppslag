@@ -1,18 +1,14 @@
 package no.nav.medlemskap.clients.pdl.mapper
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
-import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.common.objectMapper
+import no.nav.medlemskap.domene.Personhistorikk
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapTilPersonHistorikkTilBruker
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 class PdlMapperTest {
 
@@ -84,13 +80,6 @@ class PdlMapperTest {
     }
 
     fun pdlData(): Personhistorikk {
-        val localDateTimeDeserializer = LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
-        javaTimeModule.addDeserializer(LocalDateTime::class.java, localDateTimeDeserializer)
-
-        val objectMapper: ObjectMapper = ObjectMapper()
-            .registerModules(KotlinModule(), javaTimeModule)
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-
         val pdlData = objectMapper.readValue<HentPerson.Person>(pdlDataJson)
         return mapTilPersonHistorikkTilBruker(pdlData)
     }
