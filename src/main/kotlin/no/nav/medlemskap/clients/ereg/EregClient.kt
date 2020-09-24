@@ -63,7 +63,7 @@ class EregClient(
                             Organisasjon(
                                 null,
                                 null,
-                                null,
+                                orgnummer,
                                 null,
                                 null
                             )
