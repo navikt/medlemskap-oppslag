@@ -135,7 +135,6 @@ class PdlEktefelleMapperTest {
             "bostedsadresse": [
                {
                 "angittFlyttedato": "1992-01-01",
-                "coAdressenavn": "Donald Duck",
                 "vegadresse": 
                     {
                     "postnummer": "8072"
@@ -152,25 +151,10 @@ class PdlEktefelleMapperTest {
                     {
                         "gyldighetstidspunkt": "1990-01-01T10:01:01",
                         "opphoerstidspunkt": "1992-01-01T10:01:01"
-                    },
-                 "metadata": {
-                  "opplysningsId": "1234",
-                  "master": "FREG",
-                  "endringer": [
-                    {
-                        "type": "OPPRETT",
-                        "registrert": "1989-12-31T10:01:01", 
-                        "registrertAv": "Z990200", 
-                        "systemkilde": "FREG", 
-                        "kilde": "NAV"
                     }
-                  ], 
-                  "historisk": "true"
-                  }
               },
               {
                 "angittFlyttedato": "1992-01-02",
-                "coAdressenavn": "Donald Duck",
                 "vegadresse": 
                 {
                   "postnummer": "8072"   
@@ -184,93 +168,33 @@ class PdlEktefelleMapperTest {
                 },
                 "folkeregistermetadata": {
                         "gyldighetstidspunkt": "1992-01-02T10:01:01"
-                 },
-                 "metadata": {
-                  "opplysningsId": "1234",
-                  "master": "FREG",
-                  "endringer": [
-                    {
-                        "type": "OPPRETT",
-                        "registrert": "1989-12-31T10:01:01", 
-                        "registrertAv": "Z990200", 
-                        "systemkilde": "FREG", 
-                        "kilde": "NAV"
-                    }
-                  ], 
-                  "historisk": "true"
-              }
+                 }
               }
             ], 
             "kontaktadresse": [
                 {
                     "gyldigFraOgMed" : "1989-12-31T10:01:01",
-                    "coAdressenavn": "Donald Duck", 
-                    "type": "Utland", 
                     "utenlandskAdresse": {
                         "landkode": "BEL"
                     },
                     "folkeregistermetadata": {
                         "ajourholdstidspunkt": "2010-09-20T10:01:01"
-                    }, 
-                    "metadata": {
-                         "opplysningsId": "1234",
-                         "master": "FREG",
-                         "endringer": [
-                             {
-                                "type": "OPPRETT",
-                                "registrert": "1989-12-31T10:01:01", 
-                                "registrertAv": "Z990200", 
-                                "systemkilde": "FREG", 
-                                "kilde": "NAV"
-                             }
-                         ], 
-                         "historisk": "true"
                     }
                 }
             ], 
             "oppholdsadresse": [
                 {
-                    "gyldigFraOgMed" : "1989-12-31T10:01:01", 
-                    "coAdressenavn": "Donald duck",
+                    "gyldigFraOgMed" : "1989-12-31T10:01:01",
                     "utenlandskAdresse": {
                         "landkode": "SWE"
                     },
-                    "metadata": {
-                         "opplysningsId": "1234",
-                         "master": "FREG",
-                         "endringer": [
-                             {
-                                "type": "OPPRETT",
-                                "registrert": "1989-12-31T10:01:01", 
-                                "registrertAv": "Z990200", 
-                                "systemkilde": "FREG", 
-                                "kilde": "NAV"
-                             }
-                         ], 
-                         "historisk": "true"
-                    }, 
                     "folkeregistermetadata": {
                         "ajourholdstidspunkt": "1989-12-31T10:01:01",
                         "opphoerstidspunkt": "1992-01-01T10:01:01"
                     }
                 },
                  {
-                    "gyldigFraOgMed" : "1992-12-31T10:01:01", 
-                    "coAdressenavn": "Donald duck",
-                    "metadata": {
-                         "opplysningsId": "1234",
-                         "master": "FREG",
-                         "endringer": [
-                             {
-                                "type": "OPPRETT",
-                                "registrert": "1989-12-31T10:01:01", 
-                                "registrertAv": "Z990200", 
-                                "systemkilde": "FREG", 
-                                "kilde": "NAV"
-                             }
-                         ], 
-                         "historisk": "true"
-                    }, 
+                    "gyldigFraOgMed" : "1992-12-31T10:01:01",
                     "folkeregistermetadata": {
                         "ajourholdstidspunkt": "1991-08-01T10:01:01"
                     }
