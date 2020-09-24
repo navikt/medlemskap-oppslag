@@ -1,4 +1,4 @@
-package no.nav.medlemskap.clients.pdl
+package no.nav.medlemskap.clients.pdl.mapper
 
 import no.nav.medlemskap.domene.Sivilstandstype
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper
