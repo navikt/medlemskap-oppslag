@@ -26,7 +26,6 @@ class PdlMapperTest {
         val mappetStatsborgerskapNOR = mappetHistorikkTilBruker.statsborgerskap[1]
 
         Assertions.assertEquals(mappetHistorikkTilBruker.statsborgerskap.size, mappetHistorikkTilBruker.statsborgerskap.size)
-
         Assertions.assertEquals("SWE", mappetStatsborgerskapUtland.landkode)
         Assertions.assertEquals(LocalDate.of(1976, 7, 15), mappetStatsborgerskapUtland.fom)
         Assertions.assertEquals(LocalDate.of(1989, 12, 31), mappetStatsborgerskapUtland.tom)
