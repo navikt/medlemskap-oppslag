@@ -1,32 +1,18 @@
 package no.nav.medlemskap.clients.aareg
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
-import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.fasterxml.jackson.module.kotlin.readValue
+import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.services.aareg.mapAaregResultat
 import org.junit.Assert
 import org.junit.Test
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.YearMonth
-import java.time.format.DateTimeFormatter
 
 class AaregMapperTest {
 
     @Test
     fun mapAaregResultatTilArbeidsforhold() {
-
-        val javaTimeModule = JavaTimeModule()
-        val localDateTimeDeserializer = LocalDateTimeDeserializer(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS"))
-        javaTimeModule.addDeserializer(LocalDateTime::class.java, localDateTimeDeserializer)
-
-        val objectMapper: ObjectMapper = ObjectMapper()
-            .registerModules(KotlinModule(), javaTimeModule)
-            .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
 
         val aaRegArbeidsforhold = objectMapper.readValue<AaRegArbeidsforhold>(jsonStringAaRegArbeidsforholdList)
 
