@@ -50,7 +50,7 @@ Egenskap: Borgere som ikke er EØS-borgere skal ha uavklart medlemskap i MVP
         "identifikator": "1",
         "antallAnsatte": "6"
       },
-      "arbeidsfolholdstype": "NORMALT",
+      "arbeidsforholdstype": "NORMALT",
       "arbeidsavtaler": [
         {
           "periode": {

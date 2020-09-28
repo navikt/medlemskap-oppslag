@@ -64,7 +64,7 @@ class ArbeidsforholdFunksjonerTest {
                 konkursStatus = null,
                 juridiskEnhetEnhetstypeMap = null
             ),
-            arbeidsfolholdstype = Arbeidsforholdstype.NORMALT,
+            arbeidsforholdstype = Arbeidsforholdstype.NORMALT,
             arbeidsavtaler = listOf(
                 Arbeidsavtale(
                     periode = Periode(fom = null, tom = null),
