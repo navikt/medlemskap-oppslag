@@ -12,7 +12,6 @@ import java.time.LocalDate
 
 class PdlEktefelleMapperTest {
 
-    private val javaTimeModule = JavaTimeModule()
 
     @Test
     fun `PDLdata mappes om til riktige data om ektefelle`() {
