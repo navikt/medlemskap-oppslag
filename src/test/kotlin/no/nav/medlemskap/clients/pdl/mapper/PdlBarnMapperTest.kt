@@ -12,8 +12,6 @@ import java.time.LocalDate
 
 class PdlBarnMapperTest {
 
-    private val javaTimeModule = JavaTimeModule()
-
     @Test
     fun `PDLdata mappes om til riktige data om barn `() {
 
@@ -26,9 +24,10 @@ class PdlBarnMapperTest {
         val mappetFamilierelasjonerFar = mappetHistorikkTilBarn.familierelasjoner[0]
         val mappetFamilierelasjonerMor = mappetHistorikkTilBarn.familierelasjoner[1]
 
-        Assertions.assertEquals(mappetHistorikkTilBarn.bostedsadresser.size, mappetHistorikkTilBarn.bostedsadresser.size)
-        Assertions.assertEquals(mappetHistorikkTilBarn.oppholdsadresser.size, mappetHistorikkTilBarn.oppholdsadresser.size)
-        Assertions.assertEquals(mappetHistorikkTilBarn.kontaktadresser.size, mappetHistorikkTilBarn.kontaktadresser.size)
+        Assertions.assertEquals(2, mappetHistorikkTilBarn.bostedsadresser.size)
+        Assertions.assertEquals(2, mappetHistorikkTilBarn.oppholdsadresser.size)
+        Assertions.assertEquals(1, mappetHistorikkTilBarn.kontaktadresser.size)
+        Assertions.assertEquals(2, mappetHistorikkTilBarn.familierelasjoner.size)
 
         Assertions.assertEquals("NOR", mappetBostedsadresse.landkode)
         Assertions.assertEquals(LocalDate.of(1990, 1, 1), mappetBostedsadresse.fom)
@@ -36,8 +35,8 @@ class PdlBarnMapperTest {
         Assertions.assertEquals("NOR", mappetBostedsadresse.landkode)
         Assertions.assertEquals(LocalDate.of(1992, 1, 2), mappetBostedsadresse2.fom)
         Assertions.assertEquals(null, mappetBostedsadresse2.tom)
-        Assertions.assertEquals("SWE", mappetOppholdssadresse.landkode)
 
+        Assertions.assertEquals("SWE", mappetOppholdssadresse.landkode)
         Assertions.assertEquals(LocalDate.of(1989, 12, 31), mappetOppholdssadresse.fom)
         Assertions.assertEquals(LocalDate.of(1992, 1, 1), mappetOppholdssadresse.tom)
         Assertions.assertEquals("NOR", mappetOppholdsadresse2.landkode)
