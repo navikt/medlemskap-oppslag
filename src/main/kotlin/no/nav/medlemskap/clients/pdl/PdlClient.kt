@@ -29,7 +29,7 @@ class PdlClient(
         return runWithRetryAndMetrics("PDL", "HentIdenter", retry) {
             val stsToken = stsClient.oidcToken()
             val hentIdenterQuery = HentIdenter(GraphQLClient(url = URL("$baseUrl")))
-            val variables = HentIdenter.Variables(fnr, null, false)
+            val variables = HentIdenter.Variables(fnr, null, true)
 
             val response: GraphQLResponse<HentIdenter.Result> = hentIdenterQuery.execute(variables) {
                 header(HttpHeaders.Authorization, "Bearer $stsToken")
