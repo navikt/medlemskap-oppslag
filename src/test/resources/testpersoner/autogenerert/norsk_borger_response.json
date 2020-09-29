@@ -46,7 +46,7 @@
       "konkursStatus" : null,
       "juridiskEnhetEnhetstypeMap" : null
     },
-    "arbeidsfolholdstype" : "NORMALT",
+    "arbeidsforholdstype" : "NORMALT",
     "arbeidsavtaler" : [ {
       "periode" : {
         "fom" : "2018-01-01",
@@ -74,7 +74,7 @@
       "konkursStatus" : null,
       "juridiskEnhetEnhetstypeMap" : null
     },
-    "arbeidsfolholdstype" : "NORMALT",
+    "arbeidsforholdstype" : "NORMALT",
     "arbeidsavtaler" : [ ]
   } ],
   "oppgaver" : [ ],

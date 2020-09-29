@@ -7,7 +7,7 @@ data class Arbeidsforhold(
     val utenlandsopphold: List<Utenlandsopphold>?,
     val arbeidsgivertype: OpplysningspliktigArbeidsgiverType,
     val arbeidsgiver: Arbeidsgiver,
-    val arbeidsfolholdstype: Arbeidsforholdstype,
+    val arbeidsforholdstype: Arbeidsforholdstype,
     var arbeidsavtaler: List<Arbeidsavtale>
 ) : Comparable<Arbeidsforhold> {
 

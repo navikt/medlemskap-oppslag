@@ -41,7 +41,7 @@
         "identifikator": "1",
         "antallAnsatte": "6"
       },
-      "arbeidsfolholdstype": "NORMALT",
+      "arbeidsforholdstype": "NORMALT",
       "arbeidsavtaler": [
         {
           "periode": {

@@ -50,7 +50,7 @@ Egenskap: Man er medlem i Folketrygden hvis man er EØS-borger og bor og jobber 
         "identifikator": "1",
         "antallAnsatte": "6"
       },
-      "arbeidsfolholdstype": "NORMALT",
+      "arbeidsforholdstype": "NORMALT",
       "arbeidsavtaler": [
         {
           "periode": {

@@ -44,7 +44,7 @@ class AaregMapperTest {
         Assert.assertEquals("8322108", mappedAaregResultat.arbeidsavtaler.first().yrkeskode)
 
         Assert.assertEquals("Organisasjon", mappedAaregResultat.arbeidsgivertype.name)
-        Assert.assertEquals(Arbeidsforholdstype.NORMALT, mappedAaregResultat.arbeidsfolholdstype)
+        Assert.assertEquals(Arbeidsforholdstype.NORMALT, mappedAaregResultat.arbeidsforholdstype)
         Assert.assertEquals(Periode(LocalDate.parse("2008-01-01"), LocalDate.parse("2018-10-30")), mappedAaregResultat.periode)
 
         Assert.assertEquals(1, mappedAaregResultat.utenlandsopphold?.size)
