@@ -1,6 +1,5 @@
 package no.nav.medlemskap.clients.pdl.mapper
 
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.common.objectMapper

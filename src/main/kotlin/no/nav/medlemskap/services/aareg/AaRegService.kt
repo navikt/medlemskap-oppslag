@@ -1,14 +1,11 @@
 package no.nav.medlemskap.services.aareg
 
-import mu.KotlinLogging
 import no.nav.medlemskap.clients.aareg.AaRegArbeidsforhold
 import no.nav.medlemskap.clients.aareg.AaRegClient
 import no.nav.medlemskap.clients.ereg.EregClient
 import no.nav.medlemskap.clients.ereg.Organisasjon
 import no.nav.medlemskap.domene.Arbeidsforhold
 import java.time.LocalDate
-
-private val secureLogger = KotlinLogging.logger("tjenestekall")
 
 class AaRegService(
     private val aaRegClient: AaRegClient,
@@ -21,16 +18,18 @@ class AaRegService(
         val arbeidsforholdMedOrganisasjon = mutableListOf<ArbeidsforholdOrganisasjon>()
 
         for (aaRegArbeidsforhold in arbeidsforhold) {
-            val organisasjon = eregClient.hentOrganisasjon(aaRegArbeidsforhold.arbeidsgiver.organisasjonsnummer, callId)
+            if (aaRegArbeidsforhold.arbeidsgiver.organisasjonsnummer != null) {
+                val organisasjon = eregClient.hentOrganisasjon(aaRegArbeidsforhold.arbeidsgiver.organisasjonsnummer, callId)
 
-            val juridiskEnhetstypeMap = mutableMapOf<String, String>()
-            organisasjon.getOrganisasjonsnumreJuridiskeEnheter().forEach {
-                val enhetstype = eregClient.hentEnhetstype(it, callId)
-                if (enhetstype != null) {
-                    juridiskEnhetstypeMap[it] = enhetstype
+                val juridiskEnhetstypeMap = mutableMapOf<String, String>()
+                organisasjon.getOrganisasjonsnumreJuridiskeEnheter().forEach {
+                    val enhetstype = eregClient.hentEnhetstype(it, callId)
+                    if (enhetstype != null) {
+                        juridiskEnhetstypeMap[it] = enhetstype
+                    }
                 }
+                arbeidsforholdMedOrganisasjon.add(ArbeidsforholdOrganisasjon(aaRegArbeidsforhold, organisasjon, juridiskEnhetstypeMap))
             }
-            arbeidsforholdMedOrganisasjon.add(ArbeidsforholdOrganisasjon(aaRegArbeidsforhold, organisasjon, juridiskEnhetstypeMap))
         }
 
         return mapArbeidsforhold(arbeidsforholdMedOrganisasjon)
