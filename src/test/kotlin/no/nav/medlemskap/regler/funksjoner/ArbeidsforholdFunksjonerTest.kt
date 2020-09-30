@@ -4,7 +4,6 @@ import junit.framework.Assert.*
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.filtrerUtArbeidsgivereMedFærreEnn6Ansatte
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harMinst25stillingsprosent
-import org.junit.Ignore
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
@@ -46,7 +45,6 @@ class ArbeidsforholdFunksjonerTest {
         assertEquals(1, filtrertArbeidsforhold.size)
     }
 
-    @Ignore
     @Test
     fun `Bruker med 100 stillingsprosent blir true`() {
         val arbeidsforhold = listOf(arbeidsforholdMed100Stillingsprosent)
@@ -70,7 +68,6 @@ class ArbeidsforholdFunksjonerTest {
         assertTrue(sjekkerStillingsprosent)
     }
 
-    @Ignore
     @Test
     fun `Arbeidsavtale under 25% blir false`() {
         val arbeidsforhold = listOf(arbeidsforholdMed25stillingsprosent)
