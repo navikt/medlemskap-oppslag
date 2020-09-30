@@ -65,6 +65,7 @@ class EregClient(
                                 null,
                                 orgnummer,
                                 null,
+                                null,
                                 null
                             )
                         } else {

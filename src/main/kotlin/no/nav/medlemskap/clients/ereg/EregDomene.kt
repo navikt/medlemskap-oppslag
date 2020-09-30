@@ -28,7 +28,8 @@ data class Organisasjonsdetaljer(
     val stiftelsesdato: LocalDate?,
     val telefaksnummer: List<Telefonnummer?>?,
     val telefonnummer: List<Telefonnummer?>?,
-    val underlagtHjemlandLovgivningForetaksform: List<UnderlagtHjemlandLovgivningForetaksform>?
+    val underlagtHjemlandLovgivningForetaksform: List<UnderlagtHjemlandLovgivningForetaksform>?,
+    val inngaarIJuridiskEnheter: List<JuridiskEnhet?>?
 )
 
 data class UnderlagtHjemlandLovgivningForetaksform(
@@ -153,7 +154,8 @@ data class Organisasjon(
     val organisasjonDetaljer: Organisasjonsdetaljer?,
     val organisasjonsnummer: String?,
     val type: String?,
-    val bestaarAvOrganisasjonsledd: List<BestaarAvOrganisasjonsledd?>?
+    val bestaarAvOrganisasjonsledd: List<BestaarAvOrganisasjonsledd?>?,
+    val inngaarIJuridiskEnheter: List<JuridiskEnhet?>?
 ) {
     fun getOrganisasjonsnumreJuridiskeEnheter(): List<String> {
 
@@ -165,6 +167,7 @@ data class Organisasjon(
                 }
             }
         }
+        inngaarIJuridiskEnheter?.forEach { p -> p != null && !p.organisasjonsnummer.isNullOrBlank() && orgnumre.add(p.organisasjonsnummer) }
         return orgnumre
     }
 }
