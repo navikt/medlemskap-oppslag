@@ -106,10 +106,10 @@ object ArbeidsforholdFunksjoner {
         }.sorted()
 
     fun List<Arbeidsforhold>.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(gittStillingsprosent: Double, kontrollPeriode: Kontrollperiode, ytelse: Ytelse): Boolean {
-
         val arbeidsforholdForKontrollPeriode = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
-
         var samletStillingsprosent = 0.0
+
+        this.harMinst25stillingsprosent(kontrollPeriode, ytelse)
 
         for (arbeidsforhold in arbeidsforholdForKontrollPeriode) {
             val vektetStillingsprosentForArbeidsforhold = arbeidsforhold.vektetStillingsprosentForArbeidsforhold(kontrollPeriode)
@@ -130,6 +130,7 @@ object ArbeidsforholdFunksjoner {
     private fun Arbeidsforhold.vektetStillingsprosentForArbeidsforhold(kontrollPeriode: Kontrollperiode): Double {
         val totaltAntallDager = kontrollPeriode.fom.until(kontrollPeriode.tom, ChronoUnit.DAYS).toDouble()
         var vektetStillingsprosentForArbeidsforhold = 0.0
+
         for (arbeidsavtale in this.arbeidsavtaler) {
             val stillingsprosent = arbeidsavtale.stillingsprosent ?: 100.0
             val tilDato = arbeidsavtale.periode.tom ?: this.periode.tom
@@ -141,6 +142,23 @@ object ArbeidsforholdFunksjoner {
             vektetStillingsprosentForArbeidsforhold += (antallDager / totaltAntallDager) * stillingsprosent
         }
         return vektetStillingsprosentForArbeidsforhold
+    }
+
+    fun List<Arbeidsforhold>.harMinst25stillingsprosent(kontrollPeriode: Kontrollperiode, ytelse: Ytelse): Boolean {
+        val arbeidsforholdForKontrollPeriode = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
+        val stillingsprosent = 25.0
+        var sumVektetStillingsprosentForArbeidsforhold = 0.0
+
+        for (arbeidsforhold in arbeidsforholdForKontrollPeriode) {
+            sumVektetStillingsprosentForArbeidsforhold += arbeidsforhold.vektetStillingsprosentForArbeidsforhold(kontrollPeriode)
+        }
+
+        val gjennomsnittligStillingsprosentIKontrollperiode =
+            sumVektetStillingsprosentForArbeidsforhold / arbeidsforholdForKontrollPeriode.size
+
+        minst25stillingsprosentCounter(ytelse).increment()
+
+        return gjennomsnittligStillingsprosentIKontrollperiode >= stillingsprosent
     }
 
     private fun List<Arbeidsforhold>.ingenAndreParallelleArbeidsforhold(arbeidsforhold: Arbeidsforhold): Boolean =
