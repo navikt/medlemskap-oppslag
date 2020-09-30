@@ -94,6 +94,12 @@ fun stillingsprosentCounter(stillingsprosent: Double, ytelse: String): Counter =
             .register(Metrics.globalRegistry)
     }
 
+fun minst25stillingsprosentCounter(ytelse: Ytelse): Counter = Counter
+    .builder("stillingsprosent_25")
+    .tags("ytelse", ytelse.metricName())
+    .description("")
+    .register(Metrics.globalRegistry)
+
 fun merEnn10ArbeidsforholdCounter(ytelse: Ytelse): Counter = Counter
     .builder("over_10_arbeidsforhold")
     .tags("ytelse", ytelse.metricName())
