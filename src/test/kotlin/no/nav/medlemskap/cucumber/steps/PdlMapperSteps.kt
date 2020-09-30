@@ -7,7 +7,6 @@ import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.StatsborgerskapMapper
 import no.nav.medlemskap.cucumber.mapping.pdl.PdlDomenespråkParser
-import no.nav.medlemskap.cucumber.mapping.pdl.PdlStatsborgerskapMapper
 import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapStatsborgerskap
 
@@ -21,7 +20,7 @@ class PdlMapperSteps : No {
 
     init {
         Gitt<DataTable>("følgende statsborgerskap fra PDL:") { dataTable: DataTable? ->
-            pdlStatsborgerskap = pdlDomenespråkParser.mapDataTable(dataTable, PdlStatsborgerskapMapper())
+            pdlStatsborgerskap = pdlDomenespråkParser.mapDataTable(dataTable, PdlDomenespråkParser.StatsborgerskapMapper())
         }
 
         Når("statsborgerskap mappes") {
