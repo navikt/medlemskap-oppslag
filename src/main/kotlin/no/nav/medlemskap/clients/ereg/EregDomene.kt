@@ -151,8 +151,8 @@ data class Gyldighetsperiode(
 data class Organisasjon(
     val navn: Navn?,
     val organisasjonDetaljer: Organisasjonsdetaljer?,
-    val organisasjonsNummer: String?,
-    val organisasjonstype: String?,
+    val organisasjonsnummer: String?,
+    val type: String?,
     val bestaarAvOrganisasjonsledd: List<BestaarAvOrganisasjonsledd?>?
 ) {
     fun getOrganisasjonsnumreJuridiskeEnheter(): List<String> {

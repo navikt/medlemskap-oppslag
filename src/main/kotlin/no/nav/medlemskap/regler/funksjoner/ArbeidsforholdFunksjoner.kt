@@ -20,7 +20,7 @@ object ArbeidsforholdFunksjoner {
     infix fun List<Arbeidsforhold>.arbeidsforholdForYrkestype(kontrollPeriode: Kontrollperiode): List<String> =
         this.filter {
             it.periode.overlapper(kontrollPeriode.periode)
-        }.map { it.arbeidsfolholdstype.navn }
+        }.map { it.arbeidsforholdstype.navn }
 
     infix fun List<Arbeidsforhold>.sisteArbeidsforholdYrkeskode(kontrollPeriode: Kontrollperiode): List<String> =
         this.filter {

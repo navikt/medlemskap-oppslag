@@ -1,7 +1,5 @@
 query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolean!){
     hentPerson(ident: $ident) {
-        adressebeskyttelse{ gradering },
-        kjoenn{ kjoenn },
         familierelasjoner {
             relatertPersonsIdent
             relatertPersonsRolle
@@ -17,11 +15,6 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
             gyldigFraOgMed,
             gyldigTilOgMed
         },
-        navn {
-            fornavn,
-            mellomnavn,
-            etternavn
-        },
         sivilstand(historikk: $bostedHistorikk) {
             type
             gyldigFraOgMed
@@ -34,7 +27,6 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
         },
         bostedsadresse(historikk: true) {
             angittFlyttedato
-            coAdressenavn
             vegadresse { postnummer },
             matrikkeladresse { postnummer },
             ukjentBosted {
@@ -44,28 +36,11 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
                 ajourholdstidspunkt
                 gyldighetstidspunkt
                 opphoerstidspunkt
-                kilde
-                aarsak
-                sekvens
-            }
-            metadata {
-                opplysningsId
-                master
-                endringer {
-                    type
-                    registrert
-                    registrertAv
-                    systemkilde
-                    kilde
-                }
-                historisk
             }
         },
         kontaktadresse(historikk: true) {
             gyldigFraOgMed
             gyldigTilOgMed
-            type
-            coAdressenavn
             utenlandskAdresse {
                 landkode
             }
@@ -76,49 +51,17 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
                 ajourholdstidspunkt
                 gyldighetstidspunkt
                 opphoerstidspunkt
-                kilde
-                aarsak
-                sekvens
-            }
-            metadata {
-                opplysningsId
-                master
-                endringer {
-                    type
-                    registrert
-                    registrertAv
-                    systemkilde
-                    kilde
-                }
-                historisk
             }
         }
         oppholdsadresse(historikk: true) {
-            coAdressenavn
             gyldigFraOgMed
             utenlandskAdresse {
                 landkode
             }
-            oppholdAnnetSted
             folkeregistermetadata {
                 ajourholdstidspunkt
                 gyldighetstidspunkt
                 opphoerstidspunkt
-                kilde
-                aarsak
-                sekvens
-            }
-            metadata {
-                opplysningsId
-                master
-                endringer {
-                    type
-                    registrert
-                    registrertAv
-                    systemkilde
-                    kilde
-                }
-                historisk
             }
         }
     }

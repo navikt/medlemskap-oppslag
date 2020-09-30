@@ -322,7 +322,7 @@ private val forventetResponse =
                          "juridiskOrgnummer" : "juridiskEnhetstype"
                        }
                      },
-                     "arbeidsfolholdstype" : "NORMALT",
+                     "arbeidsforholdstype" : "NORMALT",
                      "arbeidsavtaler" : [ {
                        "periode" : {
                          "fom" : "1975-10-10",
@@ -406,7 +406,7 @@ private val forventetResponse =
               "juridiskOrgnummer" : "juridiskEnhetstype"
             }
           },
-          "arbeidsfolholdstype" : "NORMALT",
+          "arbeidsforholdstype" : "NORMALT",
           "arbeidsavtaler" : [ {
             "periode" : {
               "fom" : "1975-10-10",

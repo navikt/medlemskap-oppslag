@@ -317,7 +317,7 @@ class ArbeidsforholdMapper {
             utenlandsopphold = utenlandsopphold,
             arbeidsgivertype = OpplysningspliktigArbeidsgiverType.valueOf(domenespråkParser.parseString(ARBEIDSGIVERTYPE, rad)),
             arbeidsgiver = arbeidsgiver ?: VANLIG_NORSK_ARBEIDSGIVER,
-            arbeidsfolholdstype = domenespråkParser.parseArbeidsforholdstype(rad),
+            arbeidsforholdstype = domenespråkParser.parseArbeidsforholdstype(rad),
             arbeidsavtaler = emptyList()
         )
     }

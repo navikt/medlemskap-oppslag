@@ -4,9 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
-import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
+import io.ktor.http.*
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -62,7 +60,7 @@ class PdlClientHentPersonTest {
 
         val pdlResponse = runBlocking { pdlClient.hentPerson("1234567890", callId) }
 
-        assertEquals("TESTFAMILIEN", pdlResponse.data?.hentPerson?.navn?.first()?.etternavn)
+        assertEquals("NOR", pdlResponse.data?.hentPerson?.statsborgerskap?.first()?.land)
     }
 
     val pdlRequestMapping: MappingBuilder = post(urlPathEqualTo("/"))
@@ -73,6 +71,34 @@ class PdlClientHentPersonTest {
 
     val pdlResponse =
         """
-            {"data": {"hentPerson":{"adressebeskyttelse":[],"kjoenn":[{"kjoenn":"MANN"}],"familierelasjoner":[],"statsborgerskap":[{"land":"NOR","gyldigFraOgMed":"2010-10-21","gyldigTilOgMed":null}],"navn":[{"fornavn":"AREMARK","mellomnavn":null,"etternavn":"TESTFAMILIEN"}],"sivilstand":[{"type":"UGIFT","gyldigFraOgMed":"2010-02-21","relatertVedSivilstand":null,"folkeregistermetadata":{"ajourholdstidspunkt":"2020-02-19T10:36:54","gyldighetstidspunkt":"2020-02-19T10:36:54","opphoerstidspunkt":null}}],"bostedsadresse":[],"kontaktadresse":[], "oppholdsadresse":[]}}}
+        {
+            "data": {
+                "hentPerson": {
+                    "familierelasjoner":[],
+                    "statsborgerskap": [
+                            {
+                                "land":"NOR",
+                                "gyldigFraOgMed": "2010-10-21",
+                                "gyldigTilOgMed":  null}
+                    ],
+                    "sivilstand": [
+                            {
+                            "type": "UGIFT",
+                            "gyldigFraOgMed": "2010-02-21",
+                            "relatertVedSivilstand": null,
+                            "folkeregistermetadata":
+                                 {
+                                 "ajourholdstidspunkt": "2020-02-19T10:36:54",
+                                 "gyldighetstidspunkt":"2020-02-19T10:36:54",
+                                 "opphoerstidspunkt": null
+                                  }
+                            }
+                    ],
+                    "bostedsadresse":[],
+                    "kontaktadresse":[], 
+                    "oppholdsadresse":[]
+                 }
+             }   
+         }     
         """.trimIndent()
 }
