@@ -58,7 +58,6 @@ class ArbeidsforholdFunksjonerTest {
         assertTrue(sjekkerStillingsprosent)
     }
 
-    @Ignore
     @Test
     fun `Flere arbeidsavtaler med 25% stillingsprosent eller mer blir true`() {
         val arbeidsforholdMedFlereArbeidsavtaler =
