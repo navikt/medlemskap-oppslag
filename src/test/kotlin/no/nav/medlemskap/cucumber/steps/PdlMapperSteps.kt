@@ -2,7 +2,7 @@ package no.nav.medlemskap.cucumber.steps
 
 import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
-import junit.framework.TestCase.assertTrue
+import io.kotest.matchers.collections.shouldContainExactly
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.StatsborgerskapMapper
@@ -30,7 +30,7 @@ class PdlMapperSteps : No {
         Så<DataTable>("skal mappet statsborgerskap være") { dataTable: DataTable? ->
             val statsborgerskapForventet = domenespråkParser.mapDataTable(dataTable, StatsborgerskapMapper())
 
-            assertTrue(statsborgerskapForventet.containsAll(statsborgerskap))
+            statsborgerskap.shouldContainExactly(statsborgerskapForventet)
         }
     }
 }

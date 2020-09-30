@@ -138,6 +138,7 @@ dependencies {
     testImplementation("com.tngtech.archunit:archunit:$archUnitVersion")
     testImplementation("com.tngtech.archunit:archunit-junit5:$archUnitVersion")
     testImplementation("org.skyscreamer:jsonassert:$jsonassertVersion")
+    testImplementation("io.kotest:kotest-assertions-core:4.2.5")
 
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:$junitJupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
