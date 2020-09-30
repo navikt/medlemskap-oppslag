@@ -16,7 +16,8 @@ object PdlMapper {
 
     fun mapTilPersonHistorikkTilBruker(person: HentPerson.Person): Personhistorikk {
 
-        val statsborgerskap: List<Statsborgerskap> = person.statsborgerskap.map { mapStatsborgerskap(it) }
+        val statsborgerskap: List<Statsborgerskap> = mapStatsborgerskap(person.statsborgerskap)
+
         val bostedsadresser: List<Adresse> = person.bostedsadresse.map { mapBostedsadresse(it) }
         val kontaktadresser: List<Adresse> = person.kontaktadresse.map { mapKontaktAdresse(it) }
         val oppholdsadresser: List<Adresse> = mapOppholdsAdresse(person.oppholdsadresse)
@@ -102,12 +103,14 @@ object PdlMapper {
         )
     }
 
-    fun mapStatsborgerskap(it: HentPerson.Statsborgerskap): Statsborgerskap {
-        return Statsborgerskap(
-            landkode = it.land,
-            fom = convertToLocalDate(it.gyldigFraOgMed),
-            tom = convertToLocalDate(it.gyldigTilOgMed)
-        )
+    fun mapStatsborgerskap(statsborgerskap: List<HentPerson.Statsborgerskap>): List<Statsborgerskap> {
+        return statsborgerskap.map {
+            Statsborgerskap(
+                landkode = it.land,
+                fom = convertToLocalDate(it.gyldigFraOgMed),
+                tom = convertToLocalDate(it.gyldigTilOgMed)
+            )
+        }
     }
 
     private fun mapFamileRelasjonsrolle(rolle: HentPerson.Familierelasjonsrolle?): no.nav.medlemskap.domene.Familierelasjonsrolle? {

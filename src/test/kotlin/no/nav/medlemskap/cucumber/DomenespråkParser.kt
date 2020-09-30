@@ -225,7 +225,7 @@ class StatsborgerskapMapper : RadMapper<Statsborgerskap> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Statsborgerskap {
         return Statsborgerskap(
             domenespråkParser.parseString(LANDKODE, rad),
-            domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
+            domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad),
             domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
         )
     }

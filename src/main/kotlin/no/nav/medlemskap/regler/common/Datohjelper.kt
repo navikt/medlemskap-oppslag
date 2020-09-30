@@ -67,10 +67,15 @@ class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
     }
 
     companion object {
-        private val datoFormatter = DateTimeFormatter.ofPattern("d.MM.yyyy")
+        private val norskDatoFormatter = DateTimeFormatter.ofPattern("d.MM.yyyy")
+        private val isoDatoFormatter = DateTimeFormatter.ISO_LOCAL_DATE
 
         fun parseDato(dato: String): LocalDate {
-            return LocalDate.parse(dato, datoFormatter)
+            if (dato.contains(".")) {
+                return LocalDate.parse(dato, norskDatoFormatter)
+            } else {
+                return LocalDate.parse(dato, isoDatoFormatter)
+            }
         }
     }
 }

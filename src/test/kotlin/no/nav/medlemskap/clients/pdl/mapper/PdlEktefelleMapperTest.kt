@@ -1,6 +1,5 @@
 package no.nav.medlemskap.clients.pdl.mapper
 
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.readValue
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.common.objectMapper
@@ -11,7 +10,6 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 class PdlEktefelleMapperTest {
-
 
     @Test
     fun `PDLdata mappes om til riktige data om ektefelle`() {
