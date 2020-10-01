@@ -182,7 +182,7 @@ fun enhetstypeForJuridiskEnhet(enhetstype: String?, ytelse: String): Counter = C
 
 private fun mapStillingsprosentBooleanTilMetrikkVerdi(harOver25Stillingsprosent: Boolean) =
         when (harOver25Stillingsprosent) {
-            true -> "har over 25 gjennomsnittlig stillingsprosent"
+            true -> "har minst 25 gjennomsnittlig stillingsprosent"
             false -> "har under 25 gjennomsnittlig stillingsprosent"
         }
 
