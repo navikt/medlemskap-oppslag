@@ -17,7 +17,7 @@ fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, mappedOrganisasj
             utenlandsopphold = mapUtenlandsopphold(it),
             arbeidsforholdstype = mapArbeidsforholdType(it),
             arbeidsgivertype = mapArbeidsgiverType(it.arbeidsgiver.type),
-            arbeidsgiver = mappedOrganisasjonAsArbeidsgiver.first { p -> p.identifikator == it.arbeidsgiver.organisasjonsnummer },
+            arbeidsgiver = mappedOrganisasjonAsArbeidsgiver.first { p -> p.organisasjonsnummer == it.arbeidsgiver.organisasjonsnummer },
             arbeidsavtaler = mapArbeidsAvtaler(it)
         )
     }
