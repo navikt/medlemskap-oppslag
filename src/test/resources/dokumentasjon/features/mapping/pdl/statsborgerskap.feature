@@ -83,3 +83,18 @@ Egenskap: Mapping av statsborgerskap fra PDL hentPerson
       | Landkode | Fra og med dato | Til og med dato |
       | GB       |                 |                 |
       | NO       | 1994-09-20      |                 |
+
+  Scenario: Statsborgerskap skal sorteres på "Fra og med dato", stigende
+    Gitt følgende statsborgerskap fra PDL:
+      | Land | Gyldig fra og med dato | Gyldig til og med dato |
+      | NOR  | 1994-09-20             |                        |
+      | BEL  |                        |                        |
+      | FRA  | 1984-08-08             |                        |
+
+    Når statsborgerskap mappes
+
+    Så skal mappet statsborgerskap være
+      | Landkode | Fra og med dato | Til og med dato |
+      | BEL      |                 |                 |
+      | FRA      | 1984-08-08      |                 |
+      | NOR      | 1994-09-20      |                 |

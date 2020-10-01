@@ -37,8 +37,7 @@ object PdlMapper {
     }
 
     fun mapOppholdsadresser(oppholdsadresser: List<HentPerson.Oppholdsadresse>): List<Adresse> {
-        val pdlOppholdsadresser: List<HentPerson.Oppholdsadresse> = oppholdsadresser.sortedBy { it.gyldigFraOgMed }
-        return pdlOppholdsadresser.map { mapOppholdsadresse(it) }
+        return oppholdsadresser.map { mapOppholdsadresse(it) }.sortedBy { it.fom }
     }
 
     fun mapFamilierelasjon(familierelasjon: HentPerson.Familierelasjon): Familierelasjon {
@@ -72,7 +71,7 @@ object PdlMapper {
                 tom = convertToLocalDateTime(it.gyldigTilOgMed)?.toLocalDate(),
                 landkode = mapLandkodeForKontaktadresse(it)
             )
-        }
+        }.sortedBy { it.fom }
     }
 
     fun mapLandkodeForKontaktadresse(kontaktadresse: HentPerson.Kontaktadresse): String {
@@ -104,15 +103,7 @@ object PdlMapper {
                 fom = convertToLocalDateTime(it.folkeregistermetadata?.gyldighetstidspunkt)?.toLocalDate(),
                 tom = convertToLocalDateTime(it.folkeregistermetadata?.opphoerstidspunkt)?.toLocalDate()
             )
-        }
-    }
-
-    fun mapBostedsadresse(bostedsadresse: HentPerson.Bostedsadresse): Adresse {
-        return Adresse(
-            landkode = "NOR",
-            fom = convertToLocalDateTime(bostedsadresse.folkeregistermetadata?.gyldighetstidspunkt)?.toLocalDate(),
-            tom = convertToLocalDateTime(bostedsadresse.folkeregistermetadata?.opphoerstidspunkt)?.toLocalDate()
-        )
+        }.sortedBy { it.fom }
     }
 
     fun mapStatsborgerskap(statsborgerskap: List<HentPerson.Statsborgerskap>): List<Statsborgerskap> {
@@ -122,7 +113,7 @@ object PdlMapper {
                 fom = convertToLocalDate(it.gyldigFraOgMed),
                 tom = convertToLocalDate(it.gyldigTilOgMed)
             )
-        }
+        }.sortedBy { it.fom }
     }
 
     private fun mapFamileRelasjonsrolle(rolle: HentPerson.Familierelasjonsrolle?): no.nav.medlemskap.domene.Familierelasjonsrolle? {

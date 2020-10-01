@@ -67,3 +67,18 @@ Egenskap: Mapping av kontaktadresser fra PDL HentPerson.Kontaktadresse
     Så skal mappede kontaktadresser være
       | Landkode | Fra og med dato | Til og med dato |
       | GBR      |                 |                 |
+
+  Scenario: Kontaktadresser skal sorteres på "Fra og med dato", stigende
+    Gitt følgende kontaktadresser fra PDL:
+      | Gyldig fra og med    | Gyldig til og med |
+      | 2015-03-25 10:00:00  |                   |
+      |                      |                   |
+      | 2005-05-25 10:00:00 |                   |
+
+    Når kontaktadresser mappes
+
+    Så skal mappede kontaktadresser være
+      | Landkode | Fra og med dato | Til og med dato |
+      | NOR      |                 |                 |
+      | NOR      | 2005-05-25      |                 |
+      | NOR      | 2015-03-25      |                 |
