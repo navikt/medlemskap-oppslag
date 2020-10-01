@@ -28,9 +28,28 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         }
     }
 
+    class BostedsadresseMapper : RadMapper<HentPerson.Bostedsadresse> {
+        override fun mapRad(domenespråkParser: PdlDomenespråkParser, rad: Map<String, String>): HentPerson.Bostedsadresse {
+
+            return HentPerson.Bostedsadresse(
+                angittFlyttedato = null,
+                vegadresse = null,
+                matrikkeladresse = null,
+                ukjentBosted = null,
+                folkeregistermetadata = HentPerson.Folkeregistermetadata2(
+                    ajourholdstidspunkt = null,
+                    gyldighetstidspunkt = domenespråkParser.parseValgfriString(Domenebegrep.FOLKE_REG_GYLDIGHETSTIDSPUNKT.nøkkel, rad),
+                    opphoerstidspunkt = domenespråkParser.parseValgfriString(Domenebegrep.FOLKE_REG_OPPHOERSTIDSPUNKT.nøkkel, rad)
+                )
+            )
+        }
+    }
+
     enum class Domenebegrep(val nøkkel: String) {
         GYLDIG_FRA_OG_MED_DATO("Gyldig fra og med dato"),
         GYLDIG_TIL_OG_MED_DATO("Gyldig til og med dato"),
+        FOLKE_REG_GYLDIGHETSTIDSPUNKT("Folkeregistermetadata gyldighetstidspunkt"),
+        FOLKE_REG_OPPHOERSTIDSPUNKT("Folkeregistermetadata opphoerstidspunkt"),
         LAND("Land"),
     }
 }

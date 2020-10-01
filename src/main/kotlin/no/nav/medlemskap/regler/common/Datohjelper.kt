@@ -4,6 +4,7 @@ import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Kontrollperiode
 import no.nav.medlemskap.domene.Ytelse
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
@@ -76,6 +77,10 @@ class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
             } else {
                 return LocalDate.parse(dato, isoDatoFormatter)
             }
+        }
+
+        fun parseDatoTid(datoTid: String): LocalDateTime {
+            return LocalDateTime.parse(datoTid, DateTimeFormatter.ISO_DATE_TIME)
         }
     }
 }

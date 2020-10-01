@@ -18,7 +18,7 @@ object PdlMapper {
 
         val statsborgerskap: List<Statsborgerskap> = mapStatsborgerskap(person.statsborgerskap)
 
-        val bostedsadresser: List<Adresse> = person.bostedsadresse.map { mapBostedsadresse(it) }
+        val bostedsadresser: List<Adresse> = mapBostedsadresser(person.bostedsadresse)
         val kontaktadresser: List<Adresse> = person.kontaktadresse.map { mapKontaktAdresse(it) }
         val oppholdsadresser: List<Adresse> = mapOppholdsAdresse(person.oppholdsadresse)
         val sivilstand: List<Sivilstand> = mapSivilstander(person.sivilstand)
@@ -92,6 +92,16 @@ object PdlMapper {
         } catch (e: Exception) {
             logger.warn("Klarte ikke å mappe {}", landkode, e)
             "UKJENT"
+        }
+    }
+
+    fun mapBostedsadresser(pdlPostedsadresser: List<HentPerson.Bostedsadresse>): List<Adresse> {
+        return pdlPostedsadresser.map {
+            Adresse(
+                landkode = "NOR",
+                fom = convertToLocalDateTime(it.folkeregistermetadata?.gyldighetstidspunkt)?.toLocalDate(),
+                tom = convertToLocalDateTime(it.folkeregistermetadata?.opphoerstidspunkt)?.toLocalDate()
+            )
         }
     }
 
