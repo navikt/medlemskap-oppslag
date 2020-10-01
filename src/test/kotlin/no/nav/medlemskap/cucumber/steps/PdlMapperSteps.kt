@@ -11,6 +11,7 @@ import no.nav.medlemskap.cucumber.mapping.pdl.PdlDomenespråkParser
 import no.nav.medlemskap.domene.Adresse
 import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapBostedsadresser
+import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapKontaktAdresser
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapStatsborgerskap
 
 class PdlMapperSteps : No {
@@ -19,9 +20,11 @@ class PdlMapperSteps : No {
 
     private var pdlStatsborgerskap: List<HentPerson.Statsborgerskap> = emptyList()
     private var pdlBostedsadresser: List<HentPerson.Bostedsadresse> = emptyList()
+    private var pdlKontaktadresser: List<HentPerson.Kontaktadresse> = emptyList()
 
     private var statsborgerskap: List<Statsborgerskap> = emptyList()
     private var bostedsadresser: List<Adresse> = emptyList()
+    private var kontaktadresser: List<Adresse> = emptyList()
 
     init {
         Gitt<DataTable>("følgende statsborgerskap fra PDL:") { dataTable: DataTable? ->
@@ -32,12 +35,20 @@ class PdlMapperSteps : No {
             pdlBostedsadresser = pdlDomenespråkParser.mapDataTable(dataTable, PdlDomenespråkParser.BostedsadresseMapper())
         }
 
+        Gitt<DataTable>("følgende kontaktadresser fra PDL:") { dataTable: DataTable? ->
+            pdlKontaktadresser = pdlDomenespråkParser.mapDataTable(dataTable, PdlDomenespråkParser.KontaktadresseMapper())
+        }
+
         Når("statsborgerskap mappes") {
             statsborgerskap = mapStatsborgerskap(pdlStatsborgerskap)
         }
 
         Når("bostedsadresser mappes") {
             bostedsadresser = mapBostedsadresser(pdlBostedsadresser)
+        }
+
+        Når("kontaktadresser mappes") {
+            kontaktadresser = mapKontaktAdresser(pdlKontaktadresser)
         }
 
         Så<DataTable>("skal mappet statsborgerskap være") { dataTable: DataTable? ->
@@ -50,6 +61,12 @@ class PdlMapperSteps : No {
             val bostedsadresserForventet = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
 
             bostedsadresser.shouldContainExactly(bostedsadresserForventet)
+        }
+
+        Så<DataTable>("skal mappede kontaktadresser være") { dataTable: DataTable? ->
+            val kontaktadresserForventet = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
+
+            kontaktadresser.shouldContainExactly(kontaktadresserForventet)
         }
     }
 }

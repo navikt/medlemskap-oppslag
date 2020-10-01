@@ -17,9 +17,9 @@ object PdlMapper {
     fun mapTilPersonHistorikkTilBruker(person: HentPerson.Person): Personhistorikk {
 
         val statsborgerskap: List<Statsborgerskap> = mapStatsborgerskap(person.statsborgerskap)
-
         val bostedsadresser: List<Adresse> = mapBostedsadresser(person.bostedsadresse)
-        val kontaktadresser: List<Adresse> = person.kontaktadresse.map { mapKontaktAdresse(it) }
+        val kontaktadresser: List<Adresse> = mapKontaktAdresser(person.kontaktadresse)
+
         val oppholdsadresser: List<Adresse> = mapOppholdsAdresse(person.oppholdsadresse)
         val sivilstand: List<Sivilstand> = mapSivilstander(person.sivilstand)
         val familierelasjoner: List<Familierelasjon> = person.familierelasjoner.map { mapFamilierelasjon(it) }
@@ -65,12 +65,14 @@ object PdlMapper {
         return CountryCode.NO.alpha3
     }
 
-    fun mapKontaktAdresse(it: HentPerson.Kontaktadresse): Adresse {
-        return Adresse(
-            fom = convertToLocalDateTime(it.gyldigFraOgMed)?.toLocalDate(),
-            tom = convertToLocalDateTime(it.gyldigTilOgMed)?.toLocalDate(),
-            landkode = mapLandkodeForKontaktadresse(it)
-        )
+    fun mapKontaktAdresser(pdlKontaktadresser: List<HentPerson.Kontaktadresse>): List<Adresse> {
+        return pdlKontaktadresser.map {
+            Adresse(
+                fom = convertToLocalDateTime(it.gyldigFraOgMed)?.toLocalDate(),
+                tom = convertToLocalDateTime(it.gyldigTilOgMed)?.toLocalDate(),
+                landkode = mapLandkodeForKontaktadresse(it)
+            )
+        }
     }
 
     fun mapLandkodeForKontaktadresse(kontaktadresse: HentPerson.Kontaktadresse): String {
