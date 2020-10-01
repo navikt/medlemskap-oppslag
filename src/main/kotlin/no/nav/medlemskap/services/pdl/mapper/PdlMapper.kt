@@ -19,8 +19,8 @@ object PdlMapper {
         val statsborgerskap: List<Statsborgerskap> = mapStatsborgerskap(person.statsborgerskap)
         val bostedsadresser: List<Adresse> = mapBostedsadresser(person.bostedsadresse)
         val kontaktadresser: List<Adresse> = mapKontaktAdresser(person.kontaktadresse)
+        val oppholdsadresser: List<Adresse> = mapOppholdsadresser(person.oppholdsadresse)
 
-        val oppholdsadresser: List<Adresse> = mapOppholdsAdresse(person.oppholdsadresse)
         val sivilstand: List<Sivilstand> = mapSivilstander(person.sivilstand)
         val familierelasjoner: List<Familierelasjon> = person.familierelasjoner.map { mapFamilierelasjon(it) }
         val personstatuser: List<FolkeregisterPersonstatus> = emptyList()
@@ -36,9 +36,9 @@ object PdlMapper {
         )
     }
 
-    fun mapOppholdsAdresse(oppholdsadresser: List<HentPerson.Oppholdsadresse>): List<Adresse> {
+    fun mapOppholdsadresser(oppholdsadresser: List<HentPerson.Oppholdsadresse>): List<Adresse> {
         val pdlOppholdsadresser: List<HentPerson.Oppholdsadresse> = oppholdsadresser.sortedBy { it.gyldigFraOgMed }
-        return pdlOppholdsadresser.map { mapOppholdsadresser(it) }
+        return pdlOppholdsadresser.map { mapOppholdsadresse(it) }
     }
 
     fun mapFamilierelasjon(familierelasjon: HentPerson.Familierelasjon): Familierelasjon {
@@ -50,7 +50,7 @@ object PdlMapper {
         )
     }
 
-    fun mapOppholdsadresser(oppholdsadresse: HentPerson.Oppholdsadresse): Adresse {
+    fun mapOppholdsadresse(oppholdsadresse: HentPerson.Oppholdsadresse): Adresse {
         return Adresse(
             fom = convertToLocalDateTime(oppholdsadresse.gyldigFraOgMed)?.toLocalDate(),
             tom = convertToLocalDateTime(oppholdsadresse.folkeregistermetadata?.opphoerstidspunkt)?.toLocalDate(),

@@ -73,6 +73,28 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         }
     }
 
+    class OppholdsadresseMapper : RadMapper<HentPerson.Oppholdsadresse> {
+        override fun mapRad(domenespråkParser: PdlDomenespråkParser, rad: Map<String, String>): HentPerson.Oppholdsadresse {
+            val utenlandskLandkode = domenespråkParser.parseValgfriString(Domenebegrep.UTENLANDSK_ADRESSE_LANDKODE.nøkkel, rad)
+
+            val utenlandskAdresse = if (utenlandskLandkode != null) {
+                HentPerson.UtenlandskAdresse2(utenlandskLandkode)
+            } else {
+                null
+            }
+
+            return HentPerson.Oppholdsadresse(
+                gyldigFraOgMed = domenespråkParser.parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED.nøkkel, rad),
+                utenlandskAdresse = utenlandskAdresse,
+                folkeregistermetadata = HentPerson.Folkeregistermetadata2(
+                    ajourholdstidspunkt = null,
+                    gyldighetstidspunkt = domenespråkParser.parseValgfriString(Domenebegrep.FOLKE_REG_GYLDIGHETSTIDSPUNKT.nøkkel, rad),
+                    opphoerstidspunkt = domenespråkParser.parseValgfriString(Domenebegrep.FOLKE_REG_OPPHOERSTIDSPUNKT.nøkkel, rad)
+                )
+            )
+        }
+    }
+
     enum class Domenebegrep(val nøkkel: String) {
         GYLDIG_FRA_OG_MED_DATO("Gyldig fra og med dato"),
         GYLDIG_TIL_OG_MED_DATO("Gyldig til og med dato"),

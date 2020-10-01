@@ -12,6 +12,7 @@ import no.nav.medlemskap.domene.Adresse
 import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapBostedsadresser
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapKontaktAdresser
+import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapOppholdsadresser
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapStatsborgerskap
 
 class PdlMapperSteps : No {
@@ -21,10 +22,12 @@ class PdlMapperSteps : No {
     private var pdlStatsborgerskap: List<HentPerson.Statsborgerskap> = emptyList()
     private var pdlBostedsadresser: List<HentPerson.Bostedsadresse> = emptyList()
     private var pdlKontaktadresser: List<HentPerson.Kontaktadresse> = emptyList()
+    private var pdlOppholdsadresser: List<HentPerson.Oppholdsadresse> = emptyList()
 
     private var statsborgerskap: List<Statsborgerskap> = emptyList()
     private var bostedsadresser: List<Adresse> = emptyList()
     private var kontaktadresser: List<Adresse> = emptyList()
+    private var oppholdsadresser: List<Adresse> = emptyList()
 
     init {
         Gitt<DataTable>("følgende statsborgerskap fra PDL:") { dataTable: DataTable? ->
@@ -39,6 +42,10 @@ class PdlMapperSteps : No {
             pdlKontaktadresser = pdlDomenespråkParser.mapDataTable(dataTable, PdlDomenespråkParser.KontaktadresseMapper())
         }
 
+        Gitt<DataTable>("følgende oppholdsadresser fra PDL:") { dataTable: DataTable? ->
+            pdlOppholdsadresser = pdlDomenespråkParser.mapDataTable(dataTable, PdlDomenespråkParser.OppholdsadresseMapper())
+        }
+
         Når("statsborgerskap mappes") {
             statsborgerskap = mapStatsborgerskap(pdlStatsborgerskap)
         }
@@ -49,6 +56,10 @@ class PdlMapperSteps : No {
 
         Når("kontaktadresser mappes") {
             kontaktadresser = mapKontaktAdresser(pdlKontaktadresser)
+        }
+
+        Når("oppholdsadresser mappes") {
+            oppholdsadresser = mapOppholdsadresser(pdlOppholdsadresser)
         }
 
         Så<DataTable>("skal mappet statsborgerskap være") { dataTable: DataTable? ->
@@ -67,6 +78,12 @@ class PdlMapperSteps : No {
             val kontaktadresserForventet = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
 
             kontaktadresser.shouldContainExactly(kontaktadresserForventet)
+        }
+
+        Så<DataTable>("skal mappede oppholdsadresser være") { dataTable: DataTable? ->
+            val oppholdsadresserForventet = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
+
+            oppholdsadresser.shouldContainExactly(oppholdsadresserForventet)
         }
     }
 }

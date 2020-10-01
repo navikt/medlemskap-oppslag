@@ -12,7 +12,7 @@ object PdlMapperEktefelle {
 
     fun mapPersonhistorikkTilEktefelle(fnr: String, ektefelle: HentPerson.Person): PersonhistorikkEktefelle {
         val barn = mapFnrBarnTilBrukersEktefelle(ektefelle.familierelasjoner)
-        val oppholdsadresse = PdlMapper.mapOppholdsAdresse(ektefelle.oppholdsadresse)
+        val oppholdsadresse = PdlMapper.mapOppholdsadresser(ektefelle.oppholdsadresse)
         val bostedsadresser: List<Adresse> = mapBostedsadresser(ektefelle.bostedsadresse)
         val kontaktadresser: List<Adresse> = mapKontaktAdresser(ektefelle.kontaktadresse)
 
