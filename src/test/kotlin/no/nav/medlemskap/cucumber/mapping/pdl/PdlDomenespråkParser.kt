@@ -10,26 +10,26 @@ class PdlDomenespråkParser : BasisDomeneParser() {
             return emptyList()
         }
 
-        return dataTable.asMaps().map { radMapper.mapRad(this, it) }
+        return dataTable.asMaps().map { radMapper.mapRad(it) }
     }
 
     interface RadMapper<T> {
-        fun mapRad(domenespråkParser: PdlDomenespråkParser, rad: Map<String, String>): T
+        fun mapRad(rad: Map<String, String>): T
     }
 
     class StatsborgerskapMapper : RadMapper<HentPerson.Statsborgerskap> {
-        override fun mapRad(domenespråkParser: PdlDomenespråkParser, rad: Map<String, String>): HentPerson.Statsborgerskap {
+        override fun mapRad(rad: Map<String, String>): HentPerson.Statsborgerskap {
 
             return HentPerson.Statsborgerskap(
-                domenespråkParser.parseString(Domenebegrep.LAND.nøkkel, rad),
-                domenespråkParser.parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED_DATO.nøkkel, rad),
-                domenespråkParser.parseValgfriString(Domenebegrep.GYLDIG_TIL_OG_MED_DATO.nøkkel, rad)
+                parseString(Domenebegrep.LAND.nøkkel, rad),
+                parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED_DATO.nøkkel, rad),
+                parseValgfriString(Domenebegrep.GYLDIG_TIL_OG_MED_DATO.nøkkel, rad)
             )
         }
     }
 
     class BostedsadresseMapper : RadMapper<HentPerson.Bostedsadresse> {
-        override fun mapRad(domenespråkParser: PdlDomenespråkParser, rad: Map<String, String>): HentPerson.Bostedsadresse {
+        override fun mapRad(rad: Map<String, String>): HentPerson.Bostedsadresse {
 
             return HentPerson.Bostedsadresse(
                 angittFlyttedato = null,
@@ -38,16 +38,16 @@ class PdlDomenespråkParser : BasisDomeneParser() {
                 ukjentBosted = null,
                 folkeregistermetadata = HentPerson.Folkeregistermetadata2(
                     ajourholdstidspunkt = null,
-                    gyldighetstidspunkt = domenespråkParser.parseValgfriString(Domenebegrep.FOLKE_REG_GYLDIGHETSTIDSPUNKT.nøkkel, rad),
-                    opphoerstidspunkt = domenespråkParser.parseValgfriString(Domenebegrep.FOLKE_REG_OPPHOERSTIDSPUNKT.nøkkel, rad)
+                    gyldighetstidspunkt = parseValgfriString(Domenebegrep.FOLKE_REG_GYLDIGHETSTIDSPUNKT.nøkkel, rad),
+                    opphoerstidspunkt = parseValgfriString(Domenebegrep.FOLKE_REG_OPPHOERSTIDSPUNKT.nøkkel, rad)
                 )
             )
         }
     }
 
     class KontaktadresseMapper : RadMapper<HentPerson.Kontaktadresse> {
-        override fun mapRad(domenespråkParser: PdlDomenespråkParser, rad: Map<String, String>): HentPerson.Kontaktadresse {
-            val utenlandskLandkode = domenespråkParser.parseValgfriString(Domenebegrep.UTENLANDSK_ADRESSE_LANDKODE.nøkkel, rad)
+        override fun mapRad(rad: Map<String, String>): HentPerson.Kontaktadresse {
+            val utenlandskLandkode = parseValgfriString(Domenebegrep.UTENLANDSK_ADRESSE_LANDKODE.nøkkel, rad)
 
             val utenlandskAdresse = if (utenlandskLandkode != null) {
                 HentPerson.UtenlandskAdresse(utenlandskLandkode)
@@ -55,7 +55,7 @@ class PdlDomenespråkParser : BasisDomeneParser() {
                 null
             }
 
-            val utenlandskLandkodeFrittFormat = domenespråkParser.parseValgfriString(Domenebegrep.UTENLANDSK_ADRESSE_FRITT_FORMAT_LANDKODE.nøkkel, rad)
+            val utenlandskLandkodeFrittFormat = parseValgfriString(Domenebegrep.UTENLANDSK_ADRESSE_FRITT_FORMAT_LANDKODE.nøkkel, rad)
 
             val utenlandskAdresseFrittFormat = if (utenlandskLandkodeFrittFormat != null) {
                 HentPerson.UtenlandskAdresseIFrittFormat(utenlandskLandkodeFrittFormat)
@@ -64,8 +64,8 @@ class PdlDomenespråkParser : BasisDomeneParser() {
             }
 
             return HentPerson.Kontaktadresse(
-                gyldigFraOgMed = domenespråkParser.parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED.nøkkel, rad),
-                gyldigTilOgMed = domenespråkParser.parseValgfriString(Domenebegrep.GYLDIG_TIL_OG_MED.nøkkel, rad),
+                gyldigFraOgMed = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED.nøkkel, rad),
+                gyldigTilOgMed = parseValgfriString(Domenebegrep.GYLDIG_TIL_OG_MED.nøkkel, rad),
                 utenlandskAdresse = utenlandskAdresse,
                 utenlandskAdresseIFrittFormat = utenlandskAdresseFrittFormat,
                 folkeregistermetadata = null
@@ -74,8 +74,8 @@ class PdlDomenespråkParser : BasisDomeneParser() {
     }
 
     class OppholdsadresseMapper : RadMapper<HentPerson.Oppholdsadresse> {
-        override fun mapRad(domenespråkParser: PdlDomenespråkParser, rad: Map<String, String>): HentPerson.Oppholdsadresse {
-            val utenlandskLandkode = domenespråkParser.parseValgfriString(Domenebegrep.UTENLANDSK_ADRESSE_LANDKODE.nøkkel, rad)
+        override fun mapRad(rad: Map<String, String>): HentPerson.Oppholdsadresse {
+            val utenlandskLandkode = parseValgfriString(Domenebegrep.UTENLANDSK_ADRESSE_LANDKODE.nøkkel, rad)
 
             val utenlandskAdresse = if (utenlandskLandkode != null) {
                 HentPerson.UtenlandskAdresse2(utenlandskLandkode)
@@ -84,12 +84,12 @@ class PdlDomenespråkParser : BasisDomeneParser() {
             }
 
             return HentPerson.Oppholdsadresse(
-                gyldigFraOgMed = domenespråkParser.parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED.nøkkel, rad),
+                gyldigFraOgMed = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED.nøkkel, rad),
                 utenlandskAdresse = utenlandskAdresse,
                 folkeregistermetadata = HentPerson.Folkeregistermetadata2(
                     ajourholdstidspunkt = null,
-                    gyldighetstidspunkt = domenespråkParser.parseValgfriString(Domenebegrep.FOLKE_REG_GYLDIGHETSTIDSPUNKT.nøkkel, rad),
-                    opphoerstidspunkt = domenespråkParser.parseValgfriString(Domenebegrep.FOLKE_REG_OPPHOERSTIDSPUNKT.nøkkel, rad)
+                    gyldighetstidspunkt = parseValgfriString(Domenebegrep.FOLKE_REG_GYLDIGHETSTIDSPUNKT.nøkkel, rad),
+                    opphoerstidspunkt = parseValgfriString(Domenebegrep.FOLKE_REG_OPPHOERSTIDSPUNKT.nøkkel, rad)
                 )
             )
         }
@@ -97,13 +97,13 @@ class PdlDomenespråkParser : BasisDomeneParser() {
 
     class SivilstandMapper : RadMapper<HentPerson.Sivilstand> {
 
-        override fun mapRad(domenespråkParser: PdlDomenespråkParser, rad: Map<String, String>): HentPerson.Sivilstand {
-            val sivilstandstype = HentPerson.Sivilstandstype.valueOf(domenespråkParser.parseString(Domenebegrep.SIVILSTANDSTYPE.nøkkel, rad))
+        override fun mapRad(rad: Map<String, String>): HentPerson.Sivilstand {
+            val sivilstandstype = HentPerson.Sivilstandstype.valueOf(parseString(Domenebegrep.SIVILSTANDSTYPE.nøkkel, rad))
 
             return HentPerson.Sivilstand(
                 type = sivilstandstype,
-                gyldigFraOgMed = domenespråkParser.parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED.nøkkel, rad),
-                relatertVedSivilstand = domenespråkParser.parseValgfriString(Domenebegrep.RELATERT_VED_SIVILSTAND.nøkkel, rad),
+                gyldigFraOgMed = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED.nøkkel, rad),
+                relatertVedSivilstand = parseValgfriString(Domenebegrep.RELATERT_VED_SIVILSTAND.nøkkel, rad),
                 folkeregistermetadata = null
             )
         }
