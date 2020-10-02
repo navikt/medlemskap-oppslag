@@ -145,7 +145,7 @@ private fun arbeidsforhold(): Arbeidsforhold {
         Periode(enDato(), enAnnenDato()),
         listOf(Utenlandsopphold("SWE", Periode(enDato(), enAnnenDato()), YearMonth.of(2010, 1))),
         OpplysningspliktigArbeidsgiverType.Organisasjon,
-        Arbeidsgiver("type", "identifikator", listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus"), juridiskEnhetstypeMap),
+        Arbeidsgiver("type", "organisasjonsnummer", listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus"), juridiskEnhetstypeMap),
         Arbeidsforholdstype.NORMALT,
         listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble()))
     )
@@ -305,7 +305,7 @@ private val forventetResponse =
                      "arbeidsgivertype" : "Organisasjon",
                      "arbeidsgiver" : {
                        "type" : "type",
-                       "identifikator" : "identifikator",
+                       "organisasjonsnummer" : "organisasjonsnummer",
                        "ansatte" : [ {
                          "antall" : 10,
                          "bruksperiode" : {
@@ -389,7 +389,7 @@ private val forventetResponse =
           "arbeidsgivertype" : "Organisasjon",
           "arbeidsgiver" : {
             "type" : "type",
-            "identifikator" : "identifikator",
+            "organisasjonsnummer" : "organisasjonsnummer",
             "ansatte" : [ {
               "antall" : 10,
               "bruksperiode" : {

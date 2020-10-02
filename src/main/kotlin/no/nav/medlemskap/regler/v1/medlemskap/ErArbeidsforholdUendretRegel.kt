@@ -46,8 +46,8 @@ class ErArbeidsforholdUendretRegel(
     private fun ulikeArbeidsforholdMenSammeArbeidsgiver() =
         (
             arbeidsforhold.arbeidsforholdForDato(medlemskap.tidligsteFraOgMedDatoForMedl(kontrollPeriodeForMedl)) != arbeidsforhold.arbeidsforholdForDato(datohjelper.tilOgMedDag()) &&
-                arbeidsforhold.arbeidsforholdForDato(medlemskap.tidligsteFraOgMedDatoForMedl(kontrollPeriodeForMedl)).map { it.arbeidsgiver.identifikator } ==
-                arbeidsforhold.arbeidsforholdForDato(datohjelper.tilOgMedDag().plusDays(1)).map { it.arbeidsgiver.identifikator }
+                arbeidsforhold.arbeidsforholdForDato(medlemskap.tidligsteFraOgMedDatoForMedl(kontrollPeriodeForMedl)).map { it.arbeidsgiver.organisasjonsnummer } ==
+                arbeidsforhold.arbeidsforholdForDato(datohjelper.tilOgMedDag().plusDays(1)).map { it.arbeidsgiver.organisasjonsnummer }
             )
 
     companion object {

@@ -16,7 +16,7 @@ object StatsborgerskapFunksjoner {
         }.map { it.landkode }
 
     infix fun List<Statsborgerskap>.harEndretSisteÅret(kontrollPeriode: Kontrollperiode): Boolean =
-        this.filter { erStatsborgerskapetInnenforPerioden(it, kontrollPeriode) }.isNotEmpty()
+        this.any { erStatsborgerskapetInnenforPerioden(it, kontrollPeriode) }
 
     private fun erStatsborgerskapetInnenforPerioden(it: Statsborgerskap, kontrollPeriode: Kontrollperiode): Boolean =
         kontrollPeriode.periode.encloses(Periode(fom = it.fom, tom = it.fom)) || kontrollPeriode.periode.encloses(Periode(fom = it.tom, tom = it.tom))

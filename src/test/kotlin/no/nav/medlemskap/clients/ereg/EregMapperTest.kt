@@ -26,10 +26,27 @@ class EregMapperTest {
         Assert.assertNull(mappedArbeidsgiverFraOrganisasjon.ansatte?.first()?.bruksperiode?.tom)
         Assert.assertEquals(LocalDate.parse("2020-07-13"), mappedArbeidsgiverFraOrganisasjon.ansatte?.first()?.gyldighetsperiode?.fom)
         Assert.assertNull(mappedArbeidsgiverFraOrganisasjon.ansatte?.first()?.gyldighetsperiode?.tom)
-        Assert.assertEquals("975016684", mappedArbeidsgiverFraOrganisasjon.identifikator)
+        Assert.assertEquals("975016684", mappedArbeidsgiverFraOrganisasjon.organisasjonsnummer)
         Assert.assertNull(mappedArbeidsgiverFraOrganisasjon.konkursStatus)
         Assert.assertEquals(1, mappedArbeidsgiverFraOrganisasjon.juridiskEnhetEnhetstypeMap?.keys?.size)
         Assert.assertEquals("123456789", mappedArbeidsgiverFraOrganisasjon.juridiskEnhetEnhetstypeMap?.keys?.first())
+        Assert.assertEquals("AS", mappedArbeidsgiverFraOrganisasjon.juridiskEnhetEnhetstypeMap?.values?.first())
+    }
+
+    @Test
+    fun mapOrganisasjonSomInngaarIJuridiskEnhetTilArbeidsgiver() {
+
+        val organisasjon = objectMapper.readValue<Organisasjon>(eregHentOrganisasjonResponseMedInngaarIJuridiskEnhet)
+        val organisasjonsnumreJuridiskeEnheter = organisasjon.getOrganisasjonsnumreJuridiskeEnheter()
+        val juridiskEnhetOrgnummerEnhetstype = mutableMapOf<String, String?>()
+        juridiskEnhetOrgnummerEnhetstype[organisasjonsnumreJuridiskeEnheter.first()] = "AS"
+
+        val mappedArbeidsgiverFraOrganisasjon = mapOrganisasjonTilArbeidsgiver(organisasjon, juridiskEnhetOrgnummerEnhetstype)
+
+        Assert.assertEquals("873159642", mappedArbeidsgiverFraOrganisasjon.organisasjonsnummer)
+        Assert.assertEquals("BEDR", mappedArbeidsgiverFraOrganisasjon.type)
+        Assert.assertEquals(1, mappedArbeidsgiverFraOrganisasjon.juridiskEnhetEnhetstypeMap?.keys?.size)
+        Assert.assertEquals("989077457", mappedArbeidsgiverFraOrganisasjon.juridiskEnhetEnhetstypeMap?.keys?.first())
         Assert.assertEquals("AS", mappedArbeidsgiverFraOrganisasjon.juridiskEnhetEnhetstypeMap?.values?.first())
     }
 
@@ -200,5 +217,173 @@ class EregMapperTest {
             }
           ]
         }
+        """.trimIndent()
+
+    private val eregHentOrganisasjonResponseMedInngaarIJuridiskEnhet =
+        """
+        {
+          "organisasjonsnummer": "873159642",
+          "type": "Virksomhet",
+          "navn": {
+            "redigertnavn": "DANIELSEN VIDEREGÅENDE SKOLE",
+            "navnelinje1": "DANIELSEN VIDEREGÅENDE SKOLE",
+            "bruksperiode": {
+              "fom": "2015-02-23T08:04:53.2"
+            },
+            "gyldighetsperiode": {
+              "fom": "2006-02-28"
+            }
+          },
+          "organisasjonDetaljer": {
+            "registreringsdato": "1995-02-23T00:00:00",
+            "enhetstyper": [
+              {
+                "enhetstype": "BEDR",
+                "bruksperiode": {
+                  "fom": "2014-05-21T14:55:08.721"
+                },
+                "gyldighetsperiode": {
+                  "fom": "1995-02-23"
+                }
+              }
+            ],
+            "naeringer": [
+              {
+                "naeringskode": "85.310",
+                "hjelpeenhet": false,
+                "bruksperiode": {
+                  "fom": "2014-05-22T00:40:59.636"
+                },
+                "gyldighetsperiode": {
+                  "fom": "1978-01-25"
+                }
+              }
+            ],
+            "navn": [
+              {
+                "redigertnavn": "DANIELSEN VIDEREGÅENDE SKOLE",
+                "navnelinje1": "DANIELSEN VIDEREGÅENDE SKOLE",
+                "bruksperiode": {
+                  "fom": "2015-02-23T08:04:53.2"
+                },
+                "gyldighetsperiode": {
+                  "fom": "2006-02-28"
+                }
+              }
+            ],
+            "forretningsadresser": [
+              {
+                "type": "Forretningsadresse",
+                "adresselinje1": "Nygaten 8",
+                "postnummer": "5017",
+                "landkode": "NO",
+                "kommunenummer": "4601",
+                "bruksperiode": {
+                  "fom": "2020-01-02T13:49:58.654"
+                },
+                "gyldighetsperiode": {
+                  "fom": "2019-12-31"
+                }
+              }
+            ],
+            "internettadresser": [
+              {
+                "adresse": "www.danielsen-skoler.no",
+                "bruksperiode": {
+                  "fom": "2016-04-08T04:02:56.831"
+                },
+                "gyldighetsperiode": {
+                  "fom": "2016-04-07"
+                }
+              }
+            ],
+            "epostadresser": [
+              {
+                "adresse": "danadm@danielsen-skoler.no",
+                "bruksperiode": {
+                  "fom": "2014-05-21T18:44:03.138"
+                },
+                "gyldighetsperiode": {
+                  "fom": "2014-03-18"
+                }
+              }
+            ],
+            "telefonnummer": [
+              {
+                "nummer": "55 55 98 00",
+                "telefontype": "TFON",
+                "bruksperiode": {
+                  "fom": "2014-05-21T18:44:03.138"
+                },
+                "gyldighetsperiode": {
+                  "fom": "2014-03-18"
+                }
+              }
+            ],
+            "telefaksnummer": [
+              {
+                "nummer": "55 55 98 20",
+                "bruksperiode": {},
+                "gyldighetsperiode": {}
+              }
+            ],
+            "sistEndret": "2020-07-13",
+            "dubletter": [
+              {
+                "organisasjonsnummer": "971561610",
+                "navn": {
+                  "redigertnavn": "DANIELSEN VIDEREGÅENDE SKOLE",
+                  "navnelinje1": "DANIELSEN VIDEREGÅENDE SKOLE",
+                  "bruksperiode": {
+                    "fom": "2015-02-23T08:04:53.2"
+                  },
+                  "gyldighetsperiode": {
+                    "fom": "1996-12-06"
+                  }
+                },
+                "type": "Organisasjon"
+              }
+            ],
+            "ansatte": [
+              {
+                "antall": 80,
+                "bruksperiode": {
+                  "fom": "2020-07-16T00:42:47.399"
+                },
+                "gyldighetsperiode": {
+                  "fom": "2020-07-13"
+                }
+              }
+            ]
+          },
+          "virksomhetDetaljer": {
+            "enhetstype": "BEDR",
+            "oppstartsdato": "1965-12-31",
+            "eierskiftedato": "2006-01-01"
+          },
+          "inngaarIJuridiskEnheter": [
+            {
+              "organisasjonsnummer": "989077457",
+              "navn": {
+                "redigertnavn": "FORENINGEN DANIELSEN VIDEREGÅENDE SK",
+                "navnelinje1": "FORENINGEN DANIELSEN VIDEREGÅENDE",
+                "navnelinje2": "SKOLE",
+                "bruksperiode": {
+                  "fom": "2015-02-23T08:04:53.2"
+                },
+                "gyldighetsperiode": {
+                  "fom": "2005-12-21"
+                }
+              },
+              "bruksperiode": {
+                "fom": "2014-05-23T15:17:54.466"
+              },
+              "gyldighetsperiode": {
+                "fom": "2006-02-27"
+              }
+            }
+          ]
+        }
+        
         """.trimIndent()
 }

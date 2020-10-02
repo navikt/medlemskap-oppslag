@@ -64,7 +64,7 @@ class Services(val configuration: Configuration) {
         medlClient = restClients.medl2(configuration.register.medl2BaseUrl)
         medlService = MedlService(medlClient)
         pdlClient = restClients.pdl(configuration.register.pdlBaseUrl)
-        pdlService = PdlService(pdlClient)
+        pdlService = PdlService(pdlClient, configuration.cluster)
         eregClient = restClients.ereg(configuration.register.eregBaseUrl)
         aaRegClient = restClients.aaReg(configuration.register.aaRegBaseUrl)
         aaRegService = AaRegService(aaRegClient, eregClient)
