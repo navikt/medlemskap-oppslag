@@ -20,9 +20,8 @@ object PdlMapper {
         val bostedsadresser: List<Adresse> = mapBostedsadresser(person.bostedsadresse)
         val kontaktadresser: List<Adresse> = mapKontaktAdresser(person.kontaktadresse)
         val oppholdsadresser: List<Adresse> = mapOppholdsadresser(person.oppholdsadresse)
-
         val sivilstand: List<Sivilstand> = mapSivilstander(person.sivilstand)
-        val familierelasjoner: List<Familierelasjon> = person.familierelasjoner.map { mapFamilierelasjon(it) }
+        val familierelasjoner: List<Familierelasjon> = mapFamilierelasjoner(person.familierelasjoner)
         val personstatuser: List<FolkeregisterPersonstatus> = emptyList()
 
         return Personhistorikk(
@@ -38,6 +37,10 @@ object PdlMapper {
 
     fun mapOppholdsadresser(oppholdsadresser: List<HentPerson.Oppholdsadresse>): List<Adresse> {
         return oppholdsadresser.map { mapOppholdsadresse(it) }.sortedBy { it.fom }
+    }
+
+    fun mapFamilierelasjoner(pdlFamilierelasjoner: List<HentPerson.Familierelasjon>): List<Familierelasjon> {
+        return pdlFamilierelasjoner.map { mapFamilierelasjon(it) }
     }
 
     fun mapFamilierelasjon(familierelasjon: HentPerson.Familierelasjon): Familierelasjon {

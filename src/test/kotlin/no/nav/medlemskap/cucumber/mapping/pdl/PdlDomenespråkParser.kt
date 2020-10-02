@@ -109,6 +109,27 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         }
     }
 
+    class FamilerelasjonMapper : RadMapper<HentPerson.Familierelasjon> {
+
+        override fun mapRad(rad: Map<String, String>): HentPerson.Familierelasjon {
+            val relatertPersonsrolle = HentPerson.Familierelasjonsrolle.valueOf(parseString(Domenebegrep.RELATERT_PERSONS_ROLLE.nøkkel, rad))
+            val minRolleForPersonStr = parseValgfriString(Domenebegrep.MIN_ROLLE_FOR_PERSON.nøkkel, rad)
+
+            val minRolleForPerson = if (minRolleForPersonStr != null) {
+                HentPerson.Familierelasjonsrolle.valueOf(minRolleForPersonStr)
+            } else {
+                null
+            }
+
+            return HentPerson.Familierelasjon(
+                relatertPersonsIdent = parseString(Domenebegrep.RELATERT_PERSONS_IDENT.nøkkel, rad),
+                relatertPersonsRolle = relatertPersonsrolle,
+                minRolleForPerson = minRolleForPerson,
+                folkeregistermetadata = null
+            )
+        }
+    }
+
     enum class Domenebegrep(val nøkkel: String) {
         GYLDIG_FRA_OG_MED_DATO("Gyldig fra og med dato"),
         GYLDIG_TIL_OG_MED_DATO("Gyldig til og med dato"),
@@ -117,6 +138,9 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         FOLKE_REG_GYLDIGHETSTIDSPUNKT("Folkeregistermetadata gyldighetstidspunkt"),
         FOLKE_REG_OPPHOERSTIDSPUNKT("Folkeregistermetadata opphoerstidspunkt"),
         LAND("Land"),
+        MIN_ROLLE_FOR_PERSON("Min rolle for person"),
+        RELATERT_PERSONS_IDENT("Relatert persons ident"),
+        RELATERT_PERSONS_ROLLE("Relatert persons rolle"),
         RELATERT_VED_SIVILSTAND("Relatert ved sivilstand"),
         SIVILSTANDSTYPE("Type"),
         UTENLANDSK_ADRESSE_LANDKODE("Utenlandsk adresse landkode"),

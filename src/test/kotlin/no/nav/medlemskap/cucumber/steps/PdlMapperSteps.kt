@@ -4,16 +4,15 @@ import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
 import io.kotest.matchers.collections.shouldContainExactly
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
-import no.nav.medlemskap.cucumber.AdresseMapper
-import no.nav.medlemskap.cucumber.DomenespråkParser
-import no.nav.medlemskap.cucumber.SivilstandMapper
-import no.nav.medlemskap.cucumber.StatsborgerskapMapper
+import no.nav.medlemskap.cucumber.*
 import no.nav.medlemskap.cucumber.mapping.pdl.PdlDomenespråkParser
 import no.nav.medlemskap.domene.Adresse
+import no.nav.medlemskap.domene.Familierelasjon
 import no.nav.medlemskap.domene.Sivilstand
 import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapBostedsadresser
+import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapFamilierelasjoner
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapKontaktAdresser
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapOppholdsadresser
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapStatsborgerskap
@@ -27,12 +26,14 @@ class PdlMapperSteps : No {
     private var pdlKontaktadresser: List<HentPerson.Kontaktadresse> = emptyList()
     private var pdlOppholdsadresser: List<HentPerson.Oppholdsadresse> = emptyList()
     private var pdlSivilstander: List<HentPerson.Sivilstand> = emptyList()
+    private var pdlFamilierelasjoner: List<HentPerson.Familierelasjon> = emptyList()
 
     private var statsborgerskap: List<Statsborgerskap> = emptyList()
     private var bostedsadresser: List<Adresse> = emptyList()
     private var kontaktadresser: List<Adresse> = emptyList()
     private var oppholdsadresser: List<Adresse> = emptyList()
     private var sivilstander: List<Sivilstand> = emptyList()
+    private var familierelasjoner: List<Familierelasjon> = emptyList()
 
     init {
         Gitt<DataTable>("følgende statsborgerskap fra PDL:") { dataTable: DataTable? ->
@@ -55,6 +56,10 @@ class PdlMapperSteps : No {
             pdlSivilstander = pdlDomenespråkParser.mapDataTable(dataTable, PdlDomenespråkParser.SivilstandMapper())
         }
 
+        Gitt<DataTable>("følgende familierelasjoner fra PDL:") { dataTable: DataTable? ->
+            pdlFamilierelasjoner = pdlDomenespråkParser.mapDataTable(dataTable, PdlDomenespråkParser.FamilerelasjonMapper())
+        }
+
         Når("statsborgerskap mappes") {
             statsborgerskap = mapStatsborgerskap(pdlStatsborgerskap)
         }
@@ -73,6 +78,10 @@ class PdlMapperSteps : No {
 
         Når("sivilstander mappes") {
             sivilstander = mapSivilstander(pdlSivilstander)
+        }
+
+        Når("familierelasjoner mappes") {
+            familierelasjoner = mapFamilierelasjoner(pdlFamilierelasjoner)
         }
 
         Så<DataTable>("skal mappet statsborgerskap være") { dataTable: DataTable? ->
@@ -103,6 +112,12 @@ class PdlMapperSteps : No {
             val sivilstanderForventet = domenespråkParser.mapDataTable(dataTable, SivilstandMapper())
 
             sivilstander.shouldContainExactly(sivilstanderForventet)
+        }
+
+        Så<DataTable>("skal mappede familierelasjoner være") { dataTable: DataTable? ->
+            val familierelasjonerForventet = domenespråkParser.mapDataTable(dataTable, FamilieRelasjonMapper())
+
+            familierelasjoner.shouldContainExactly(familierelasjonerForventet)
         }
     }
 }

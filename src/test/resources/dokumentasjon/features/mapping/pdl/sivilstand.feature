@@ -25,7 +25,7 @@ Egenskap: Mapping av sivilstand fra PDL HentPerson.sivilstand
       | SKILT           | 10108000398             | 1999-05-05             |                        |
 
 
-  Scenario: Sivilstander skal sorteres på "Gyldig fra og med", stigende
+  Scenario: Sivilstander skal sorteres på "Gyldig fra og med dato", stigende
     Gitt følgende sivilstander fra PDL:
       | Type     | Relatert ved sivilstand | Gyldig fra og med |
       | SKILT    | 10108000398             | 1999-05-05        |
