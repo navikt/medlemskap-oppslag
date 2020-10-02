@@ -28,6 +28,7 @@ val xmlSchemaVersion = "2.2.5"
 val jaxwsToolsVersion = "2.3.1"
 val activationVersion = "1.1.1"
 val nvi18nVersion = "1.27"
+val kotestVersion = "4.2.5"
 
 // Temporary to fix high severity Snyk vulernabilities:
 val nettyCodecVersion = "4.1.46.Final"
@@ -138,7 +139,7 @@ dependencies {
     testImplementation("com.tngtech.archunit:archunit:$archUnitVersion")
     testImplementation("com.tngtech.archunit:archunit-junit5:$archUnitVersion")
     testImplementation("org.skyscreamer:jsonassert:$jsonassertVersion")
-    testImplementation("io.kotest:kotest-assertions-core:4.2.5")
+    testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
 
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:$junitJupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
