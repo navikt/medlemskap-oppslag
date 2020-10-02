@@ -10,7 +10,7 @@ fun mapOrganisasjonTilArbeidsgiver(organisasjon: Organisasjon, juridiskEnhetOrgn
     val konkursStatus = organisasjon.organisasjonDetaljer?.statuser?.map { it -> it?.kode }
     return Arbeidsgiver(
         type = enhetstype,
-        identifikator = organisasjon.organisasjonsnummer,
+        organisasjonsnummer = organisasjon.organisasjonsnummer,
         ansatte = mapAnsatte(ansatte),
         konkursStatus = konkursStatus,
         juridiskEnhetEnhetstypeMap = juridiskEnhetOrgnummerEnhetstypeMap

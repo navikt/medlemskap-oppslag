@@ -206,7 +206,7 @@ class DomenespråkParser {
     companion object {
         val ANSATTE_9 = listOf(Ansatte(9, null, null))
         val STATSBORGERSKAP_NOR = listOf(Statsborgerskap("NOR", LocalDate.MIN, null))
-        val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", identifikator = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskEnhetEnhetstypeMap = null)
+        val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", organisasjonsnummer = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskEnhetEnhetstypeMap = null)
     }
 }
 
@@ -347,7 +347,7 @@ class ArbeidsgiverMapper : RadMapper<Arbeidsgiver> {
         }
 
         return Arbeidsgiver(
-            identifikator = domenespråkParser.parseValgfriString(IDENTIFIKATOR, rad),
+            organisasjonsnummer = domenespråkParser.parseValgfriString(IDENTIFIKATOR, rad),
             type = domenespråkParser.parseValgfriString(ARBEIDSGIVERTYPE, rad),
             ansatte = listOf(Ansatte(domenespråkParser.parseValgfriInt(ANTALL_ANSATTE, rad), null, null)),
             konkursStatus = konkursStatuser,

@@ -124,7 +124,7 @@ class ArbeidsforholdFunksjonerTest {
             arbeidsgivertype = OpplysningspliktigArbeidsgiverType.Organisasjon,
             arbeidsgiver = Arbeidsgiver(
                 type = null,
-                identifikator = null,
+                organisasjonsnummer = null,
                 ansatte = listOf(Ansatte(antall = antall, bruksperiode = null, gyldighetsperiode = null)),
                 konkursStatus = null,
                 juridiskEnhetEnhetstypeMap = null
