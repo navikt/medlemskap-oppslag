@@ -3,8 +3,6 @@
 
 Egenskap: Mapping av statsborgerskap fra PDL hentPerson
 
-  TODO: Er dette realistiske eksempler?
-
   Scenario: En person som er norsk statsborger
     Gitt følgende statsborgerskap fra PDL:
       | Land | Gyldig fra og med dato | Gyldig til og med dato |
@@ -71,6 +69,7 @@ Egenskap: Mapping av statsborgerskap fra PDL hentPerson
       | PAK      |                 |                 |
       | NOR      | 1994-09-20      |                 |
 
+
   Scenario: Landkode med to tegn
     Gitt følgende statsborgerskap fra PDL:
       | Land | Gyldig fra og med dato | Gyldig til og med dato |
@@ -83,6 +82,7 @@ Egenskap: Mapping av statsborgerskap fra PDL hentPerson
       | Landkode | Fra og med dato | Til og med dato |
       | GB       |                 |                 |
       | NO       | 1994-09-20      |                 |
+
 
   Scenario: Statsborgerskap skal sorteres på "Fra og med dato", stigende
     Gitt følgende statsborgerskap fra PDL:

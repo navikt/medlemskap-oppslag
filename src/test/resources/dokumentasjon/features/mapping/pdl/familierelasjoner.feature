@@ -3,10 +3,6 @@
 
 Egenskap: Mapping av familierelasjoner fra PDL HentPerson.Familierelasjon
 
-  TODO:
-  * Er dette realistiske eksempler?
-  * Bør vi ha flere scenarier?
-
   Scenario: En person som har flere familierelasjoner
     Gitt følgende familierelasjoner fra PDL:
       | Relatert persons ident | Relatert persons rolle | Min rolle for person | Folkeregister metadata ajourholdstidspunkt | Folkeregistermetadata gyldighetstidspunkt | Folkeregistermetadata opphoerstidspunkt |
