@@ -10,12 +10,19 @@ Dette er en tjeneste som finner ut lovvalg og medlemskap.
 * Ytelse utledes fra request
 
 ## Datagrunnlag
-* Personhistorikk hentes fra TPS/PDL
+* Personhistorikk hentes fra PDL
 * Medlemskap hentes fra MEDL
 * Arbeidsforhold hentes fra AAReg
 * InntektListe hentes fra InntektService
 * Journalposter hentes fra JOARK
 * Oppgaver hentes fra GOSYS
+
+# Mapping til datagrunnlag
+
+## Mapping fra PDL til datagrunnlag
+
+
+
 
 ## Regelsett
 

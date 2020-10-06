@@ -5,14 +5,16 @@ import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.domene.Adresse
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.erBarnUnder25Aar
+import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapBostedsadresser
+import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapKontaktAdresser
 
 object PdlMapperEktefelle {
 
     fun mapPersonhistorikkTilEktefelle(fnr: String, ektefelle: HentPerson.Person): PersonhistorikkEktefelle {
         val barn = mapFnrBarnTilBrukersEktefelle(ektefelle.familierelasjoner)
-        val oppholdsadresse = PdlMapper.mapOppholdsAdresse(ektefelle.oppholdsadresse)
-        val bostedsadresser: List<Adresse> = ektefelle.bostedsadresse.map { PdlMapper.mapBostedsadresse(it) }
-        val kontaktadresser: List<Adresse> = ektefelle.kontaktadresse.map { PdlMapper.mapKontaktAdresse(it) }
+        val oppholdsadresse = PdlMapper.mapOppholdsadresser(ektefelle.oppholdsadresse)
+        val bostedsadresser: List<Adresse> = mapBostedsadresser(ektefelle.bostedsadresse)
+        val kontaktadresser: List<Adresse> = mapKontaktAdresser(ektefelle.kontaktadresse)
 
         return PersonhistorikkEktefelle(
             ident = fnr,
