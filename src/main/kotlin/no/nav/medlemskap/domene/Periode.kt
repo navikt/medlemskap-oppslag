@@ -41,6 +41,20 @@ data class Periode(
         return encloses(Periode(fom = dato, tom = dato))
     }
 
+    fun intersection(periode: Kontrollperiode): Kontrollperiode {
+        return Kontrollperiode(this.fomNotNull().returnerNyesteDato(periode.fom), this.tomNotNull().returnerEldsteDato(periode.tom))
+    }
+
+    private fun LocalDate.returnerEldsteDato(dato: LocalDate): LocalDate {
+        return if (this.isBefore(dato)) this
+        else dato
+    }
+
+    private fun LocalDate.returnerNyesteDato(dato: LocalDate): LocalDate {
+        return if (this.isAfter(dato)) this
+        else dato
+    }
+
     fun fomNotNull() = this.fom ?: LocalDate.MIN
 
     fun tomNotNull() = this.tom ?: LocalDate.MAX

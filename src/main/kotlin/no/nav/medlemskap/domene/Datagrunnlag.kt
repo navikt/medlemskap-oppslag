@@ -3,6 +3,7 @@ package no.nav.medlemskap.domene
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 data class Datagrunnlag(
     val periode: InputPeriode,
@@ -22,6 +23,7 @@ data class Kontrollperiode(
     val tom: LocalDate
 ) {
     val periode = Periode(fom, tom)
+    val antallDager = fom.until(tom, ChronoUnit.DAYS).toDouble()
 }
 
 data class Bruksperiode(
