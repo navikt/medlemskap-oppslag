@@ -13,7 +13,7 @@ import no.nav.medlemskap.regler.v1.ReglerService
 class RegelFraDatagrunnlagJsonSteps : No {
     private var resultat: Resultat? = null
     private var datagrunnlag: Datagrunnlag? = null
-    private val domenespråkParser = DomenespråkParser()
+    private val domenespråkParser = DomenespråkParser
 
     init {
         Gitt("følgende datagrunnlag json") { docString: String? ->

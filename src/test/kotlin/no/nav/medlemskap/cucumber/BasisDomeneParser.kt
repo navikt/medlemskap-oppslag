@@ -6,6 +6,31 @@ import java.time.LocalDate
 abstract class BasisDomeneParser {
 
     companion object {
+        fun parseDato(domenebegrep: Domenenøkkel, rad: Map<String, String>): LocalDate {
+            return parseDato(domenebegrep.nøkkel(), rad)
+        }
+
+        fun parseValgfriDato(domenebegrep: Domenenøkkel, rad: Map<String, String?>): LocalDate? {
+            return parseValgfriDato(domenebegrep.nøkkel(), rad)
+        }
+
+        fun parseString(domenebegrep: Domenenøkkel, rad: Map<String, String>): String {
+            return verdi(domenebegrep.nøkkel(), rad)
+        }
+
+        fun parseValgfriString(domenebegrep: Domenenøkkel, rad: Map<String, String>): String? {
+            return valgfriVerdi(domenebegrep.nøkkel(), rad)
+        }
+
+        fun parseBoolean(domenebegrep: Domenenøkkel, rad: Map<String, String>): Boolean {
+            val verdi = verdi(domenebegrep.nøkkel(), rad)
+
+            return when (verdi) {
+                "Ja" -> true
+                else -> false
+            }
+        }
+
         fun parseDato(domenebegrep: String, rad: Map<String, String>): LocalDate {
             return Datohjelper.parseDato(verdi(domenebegrep, rad))
         }
