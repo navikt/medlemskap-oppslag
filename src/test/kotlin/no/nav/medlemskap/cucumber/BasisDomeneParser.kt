@@ -1,5 +1,6 @@
 package no.nav.medlemskap.cucumber
 
+import io.cucumber.datatable.DataTable
 import no.nav.medlemskap.regler.common.Datohjelper
 import java.time.LocalDate
 
@@ -60,7 +61,7 @@ abstract class BasisDomeneParser {
             }
         }
 
-        protected fun verdi(nøkkel: String, rad: Map<String, String>): String {
+        fun verdi(nøkkel: String, rad: Map<String, String>): String {
             val verdi = rad.get(nøkkel)
 
             if (verdi == null || verdi == "") {
@@ -70,7 +71,7 @@ abstract class BasisDomeneParser {
             return verdi
         }
 
-        protected fun valgfriVerdi(nøkkel: String, rad: Map<String, String>): String? {
+        fun valgfriVerdi(nøkkel: String, rad: Map<String, String>): String? {
             val verdi = rad.get(nøkkel)
 
             return verdi
@@ -95,5 +96,17 @@ abstract class BasisDomeneParser {
 
             return parseInt(domenebegrep, rad)
         }
+
+        fun <T> mapDataTable(dataTable: DataTable?, radMapper: RadMapper<T>): List<T> {
+            if (dataTable == null) {
+                return emptyList()
+            }
+
+            return dataTable.asMaps().map { radMapper.mapRad(it) }
+        }
     }
+}
+
+interface RadMapper<T> {
+    fun mapRad(rad: Map<String, String>): T
 }

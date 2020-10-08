@@ -4,18 +4,32 @@ import io.cucumber.datatable.DataTable
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.cucumber.BasisDomeneParser
 import no.nav.medlemskap.cucumber.Domenenøkkel
+import no.nav.medlemskap.cucumber.RadMapper
 
 class PdlDomenespråkParser : BasisDomeneParser() {
-    fun <T> mapDataTable(dataTable: DataTable?, radMapper: RadMapper<T>): List<T> {
-        if (dataTable == null) {
-            return emptyList()
-        }
 
-        return dataTable.asMaps().map { radMapper.mapRad(it) }
+    fun mapStatsborgerskap(dataTable: DataTable?): List<HentPerson.Statsborgerskap> {
+        return mapDataTable(dataTable, StatsborgerskapMapper())
     }
 
-    interface RadMapper<T> {
-        fun mapRad(rad: Map<String, String>): T
+    fun mapBostedsadresser(dataTable: DataTable?): List<HentPerson.Bostedsadresse> {
+        return mapDataTable(dataTable, BostedsadresseMapper())
+    }
+
+    fun mapKontaktadresser(dataTable: DataTable?): List<HentPerson.Kontaktadresse> {
+        return mapDataTable(dataTable, KontaktadresseMapper())
+    }
+
+    fun mapOppholdsadresser(dataTable: DataTable?): List<HentPerson.Oppholdsadresse> {
+        return mapDataTable(dataTable, OppholdsadresseMapper())
+    }
+
+    fun mapSivilstander(dataTable: DataTable?): List<HentPerson.Sivilstand> {
+        return mapDataTable(dataTable, SivilstandMapper())
+    }
+
+    fun mapFamilierelasjoner(dataTable: DataTable?): List<HentPerson.Familierelasjon> {
+        return mapDataTable(dataTable, FamilerelasjonMapper())
     }
 
     class StatsborgerskapMapper : RadMapper<HentPerson.Statsborgerskap> {

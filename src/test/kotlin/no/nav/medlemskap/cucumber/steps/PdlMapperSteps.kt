@@ -18,27 +18,27 @@ class PdlMapperSteps : No {
 
     init {
         Gitt<DataTable>("følgende statsborgerskap fra PDL:") { dataTable: DataTable? ->
-            pdlPersonBuilder.statsborgerskap = pdlDomenespråkParser.mapDataTable(dataTable, PdlDomenespråkParser.StatsborgerskapMapper())
+            pdlPersonBuilder.statsborgerskap = pdlDomenespråkParser.mapStatsborgerskap(dataTable)
         }
 
         Gitt<DataTable>("følgende bostedsadresser fra PDL:") { dataTable: DataTable? ->
-            pdlPersonBuilder.bostedsadresser = pdlDomenespråkParser.mapDataTable(dataTable, PdlDomenespråkParser.BostedsadresseMapper())
+            pdlPersonBuilder.bostedsadresser = pdlDomenespråkParser.mapBostedsadresser(dataTable)
         }
 
         Gitt<DataTable>("følgende kontaktadresser fra PDL:") { dataTable: DataTable? ->
-            pdlPersonBuilder.kontaktadresser = pdlDomenespråkParser.mapDataTable(dataTable, PdlDomenespråkParser.KontaktadresseMapper())
+            pdlPersonBuilder.kontaktadresser = pdlDomenespråkParser.mapKontaktadresser(dataTable)
         }
 
         Gitt<DataTable>("følgende oppholdsadresser fra PDL:") { dataTable: DataTable? ->
-            pdlPersonBuilder.oppholdsadresser = pdlDomenespråkParser.mapDataTable(dataTable, PdlDomenespråkParser.OppholdsadresseMapper())
+            pdlPersonBuilder.oppholdsadresser = pdlDomenespråkParser.mapOppholdsadresser(dataTable)
         }
 
         Gitt<DataTable>("følgende sivilstander fra PDL:") { dataTable: DataTable? ->
-            pdlPersonBuilder.sivilstander = pdlDomenespråkParser.mapDataTable(dataTable, PdlDomenespråkParser.SivilstandMapper())
+            pdlPersonBuilder.sivilstander = pdlDomenespråkParser.mapSivilstander(dataTable)
         }
 
         Gitt<DataTable>("følgende familierelasjoner fra PDL:") { dataTable: DataTable? ->
-            pdlPersonBuilder.familierelasjoner = pdlDomenespråkParser.mapDataTable(dataTable, PdlDomenespråkParser.FamilerelasjonMapper())
+            pdlPersonBuilder.familierelasjoner = pdlDomenespråkParser.mapFamilierelasjoner(dataTable)
         }
 
         Når("statsborgerskap mappes") {

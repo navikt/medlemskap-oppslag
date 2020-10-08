@@ -67,30 +67,6 @@ object DomenespråkParser : BasisDomeneParser() {
         }
     }
 
-    private fun verdi(nøkkel: String, rad: Map<String, String>): String {
-        val verdi = rad.get(nøkkel)
-
-        if (verdi == null || verdi == "") {
-            throw java.lang.RuntimeException("Fant ingen verdi for $nøkkel")
-        }
-
-        return verdi
-    }
-
-    private fun valgfriVerdi(nøkkel: String, rad: Map<String, String>): String? {
-        val verdi = rad.get(nøkkel)
-
-        return verdi
-    }
-
-    fun <T> mapDataTable(dataTable: DataTable?, radMapper: RadMapper<T>): List<T> {
-        if (dataTable == null) {
-            return emptyList()
-        }
-
-        return dataTable.asMaps().map { radMapper.mapRad(it) }
-    }
-
     fun mapArbeidsforhold(
         dataTable: DataTable?,
         utenlandsopphold: List<Utenlandsopphold> = emptyList(),
@@ -239,10 +215,6 @@ object DomenespråkParser : BasisDomeneParser() {
 
     fun mapInputPeriode(dataTable: DataTable?): InputPeriode? {
         return mapDataTable(dataTable, InputPeriodeMapper()).get(0)
-    }
-
-    interface RadMapper<T> {
-        fun mapRad(rad: Map<String, String>): T
     }
 
     class RegelIdMapper : RadMapper<RegelId> {
