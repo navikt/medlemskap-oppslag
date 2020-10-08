@@ -10,6 +10,9 @@ Egenskap: Mapping av bostedsadresser fra PDL HentPerson.Bostedsadresse
       | 2015-03-25 10:03:03                       |                                         |                                                                                    |
       | 2018-05-20 12:03:05                       |                                         |                                                                                    |
 
+
+    //Snart tilgjengelig --> Utenlandsk bostedsadresse
+
     Når bostedsadresser mappes
 
     Så skal mappede bostedsadresser være

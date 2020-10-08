@@ -38,6 +38,40 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
                 opphoerstidspunkt
             }
         },
+    	doedsfall{
+    			doedsdato,
+          metadata{
+            opplysningsId,
+            master,
+            endringer{
+              type
+            }
+          }
+  		},
+    	folkeregisterpersonstatus {
+    	   status
+    	   forenkletStatus
+    	   folkeregistermetadata {
+    	     ajourholdstidspunkt
+    	     gyldighetstidspunkt
+    	     opphoerstidspunkt
+    	     kilde
+    	     aarsak
+    	     sekvens
+    	   }
+    	   metadata {
+    	     opplysningsId
+    	     master
+    	     endringer {
+    	       type
+    	       registrert
+    	       registrertAv
+    	       systemkilde
+    	       kilde
+    	     }
+    	     historisk
+    	   }
+    	 }
         kontaktadresse(historikk: true) {
             gyldigFraOgMed
             gyldigTilOgMed

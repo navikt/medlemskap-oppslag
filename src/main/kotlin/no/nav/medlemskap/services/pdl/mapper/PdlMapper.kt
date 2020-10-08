@@ -22,7 +22,7 @@ object PdlMapper {
         val oppholdsadresser: List<Adresse> = mapOppholdsadresser(person.oppholdsadresse)
         val sivilstand: List<Sivilstand> = mapSivilstander(person.sivilstand)
         val familierelasjoner: List<Familierelasjon> = mapFamilierelasjoner(person.familierelasjoner)
-        val personstatuser: List<FolkeregisterPersonstatus> = emptyList()
+        val personstatuser: List<FolkeregisterPersonstatus> = mapPersonStatuser(person.folkeregisterpersonstatus)
 
         return Personhistorikk(
             statsborgerskap = statsborgerskap,
@@ -33,6 +33,16 @@ object PdlMapper {
             kontaktadresser = kontaktadresser,
             oppholdsadresser = oppholdsadresser
         )
+    }
+
+    private fun mapPersonStatuser(folkeregisterpersonstatus: List<HentPerson.Folkeregisterpersonstatus>): List<FolkeregisterPersonstatus> {
+        return folkeregisterpersonstatus.map {
+            FolkeregisterPersonstatus(
+                personstatus = PersonStatus.ABNR,
+                fom = convertToLocalDate(it.folkeregistermetadata.gyldighetstidspunkt),
+                tom = convertToLocalDate(it.folkeregistermetadata.opphoerstidspunkt)
+            )
+        }
     }
 
     fun mapOppholdsadresser(oppholdsadresser: List<HentPerson.Oppholdsadresse>): List<Adresse> {
