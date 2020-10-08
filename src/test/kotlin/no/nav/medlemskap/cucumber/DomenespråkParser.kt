@@ -83,17 +83,6 @@ object DomenespråkParser : BasisDomeneParser() {
         return YearMonth.parse(rad.get(domenebegrep.nøkkel)!!)
     }
 
-    fun parseInt(domenebegrep: Domenebegrep, rad: Map<String, String>): Int {
-        val verdi = verdi(domenebegrep.nøkkel, rad)
-
-        return Integer.parseInt(verdi)
-    }
-
-    fun parseDouble(domenebegrep: Domenebegrep, rad: Map<String, String>): Double {
-        val verdi = verdi(domenebegrep.nøkkel, rad)
-        return verdi.toDouble()
-    }
-
     fun parseSkipsregister(rad: Map<String, String>): Skipsregister? {
         val verdi = valgfriVerdi(SKIPSREGISTER.nøkkel, rad)
 
@@ -110,15 +99,6 @@ object DomenespråkParser : BasisDomeneParser() {
         val verdi = verdi(domenebegrep.nøkkel, rad)
 
         return Sivilstandstype.valueOf(verdi)
-    }
-
-    fun parseValgfriInt(domenebegrep: Domenebegrep, rad: Map<String, String>): Int? {
-        val verdi = valgfriVerdi(domenebegrep.nøkkel, rad)
-        if (verdi == null) {
-            return null
-        }
-
-        return parseInt(domenebegrep, rad)
     }
 
     fun parsePrioritet(domenebegrep: Domenebegrep, rad: Map<String, String>): Prioritet {
