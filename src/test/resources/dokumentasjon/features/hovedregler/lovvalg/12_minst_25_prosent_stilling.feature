@@ -146,7 +146,7 @@ Egenskap: Regel 12: Har bruker vært i minst 25 % stilling siste 12 måneder?
 
     Og følgende arbeidsgiver i arbeidsforhold 2
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
-      | 1             | BEDR             | NOR      | 9              |
+      | 2             | BEDR             | NOR      | 9              |
 
     Og følgende arbeidsavtaler i arbeidsforhold 2
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   | Skipsregister |

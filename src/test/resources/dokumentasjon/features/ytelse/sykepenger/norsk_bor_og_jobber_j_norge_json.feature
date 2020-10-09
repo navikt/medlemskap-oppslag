@@ -10,7 +10,7 @@ Egenskap: Man er medlem i Folketrygden hvis man er EØS-borger og bor og jobber 
 {
   "periode": {
     "fom": "2020-01-30",
-    "tom": "2021-01-30"
+    "tom": "2020-02-28"
   },
   "brukerinput": {
     "arbeidUtenforNorge": false
@@ -54,7 +54,7 @@ Egenskap: Man er medlem i Folketrygden hvis man er EØS-borger og bor og jobber 
       "arbeidsavtaler": [
         {
           "periode": {
-            "fom": "2020-01-30",
+            "fom": "2018-01-30",
             "tom": "2020-06-30"
           },
           "yrkeskode": "0001"
