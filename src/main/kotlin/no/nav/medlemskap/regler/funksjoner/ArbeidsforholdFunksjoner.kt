@@ -140,7 +140,7 @@ object ArbeidsforholdFunksjoner {
             vektetStillingsprosentForArbeidsforhold += (arbeidsavtaleKontrollperiodeIntersection.antallDager / totaltAntallDager) * stillingsprosent
         }
 
-        return String.format("%.1f", vektetStillingsprosentForArbeidsforhold).toDouble()
+        return Math.round(vektetStillingsprosentForArbeidsforhold * 10.0) / 10.0
     }
 
     fun List<Arbeidsforhold>.beregnGjennomsnittligStillingsprosentForGrafana(kontrollPeriode: Kontrollperiode): Double {
