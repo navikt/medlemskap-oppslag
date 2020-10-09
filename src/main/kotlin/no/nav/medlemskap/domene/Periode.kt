@@ -42,15 +42,15 @@ data class Periode(
     }
 
     fun intersection(periode: Kontrollperiode): Kontrollperiode {
-        return Kontrollperiode(this.fomNotNull().returnerNyesteDato(periode.fom), this.tomNotNull().returnerEldsteDato(periode.tom))
+        return Kontrollperiode(this.fomNotNull().nyesteDato(periode.fom), this.tomNotNull().eldsteDato(periode.tom))
     }
 
-    private fun LocalDate.returnerEldsteDato(dato: LocalDate): LocalDate {
+    private fun LocalDate.eldsteDato(dato: LocalDate): LocalDate {
         return if (this.isBefore(dato)) this
         else dato
     }
 
-    private fun LocalDate.returnerNyesteDato(dato: LocalDate): LocalDate {
+    private fun LocalDate.nyesteDato(dato: LocalDate): LocalDate {
         return if (this.isAfter(dato)) this
         else dato
     }
