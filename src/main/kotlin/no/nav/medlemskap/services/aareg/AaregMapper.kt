@@ -104,8 +104,8 @@ fun mapBruksperiode(bruksperiode: no.nav.medlemskap.clients.ereg.Bruksperiode?):
 
 fun mapPeriodeTilArbeidsavtale(arbeidsavtale: AaRegArbeidsavtale): Periode {
     return Periode(
-        fom = arbeidsavtale.gyldighetsperiode.fom,
-        tom = arbeidsavtale.gyldighetsperiode.tom
+        fom = arbeidsavtale.bruksperiode.fom.toLocalDate(),
+        tom = arbeidsavtale.bruksperiode.tom?.toLocalDate()
     )
 }
 
