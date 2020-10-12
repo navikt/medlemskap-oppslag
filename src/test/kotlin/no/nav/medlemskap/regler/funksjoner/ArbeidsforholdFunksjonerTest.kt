@@ -4,6 +4,7 @@ import io.mockk.every
 import io.mockk.mockk
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.beregnGjennomsnittligStillingsprosentForGrafana
+import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.erArbeidsforholdetStatligEllerKommunalt
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.filtrerUtArbeidsgivereMedFærreEnn6Ansatte
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.vektetStillingsprosentForArbeidsforhold
@@ -35,7 +36,7 @@ class ArbeidsforholdFunksjonerTest {
     }
 
     @Test
-    fun `Sjekker grenseverdien`() {
+    fun `Sjekker grenseverdien på antall ansatte`() {
         val arbeidsforhold = listOf(arbeidsforholdMedAkkurat6Ansatte, arbeidsforholdMed5Ansatte)
         val filtrertArbeidsforhold = arbeidsforhold.filtrerUtArbeidsgivereMedFærreEnn6Ansatte(kontrollperiodeFra2019Til2020)
         assertEquals(2, arbeidsforhold.size)
@@ -187,6 +188,59 @@ class ArbeidsforholdFunksjonerTest {
         assertFalse(arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollperiode, Ytelse.SYKEPENGER))
     }
 
+    @Test
+    fun `Arbeidsforhold med både statlig og privat enhetstype får true`() {
+        val arbeidsforhold =
+            listOf(arbeidsforholdMedStatligJuridiskEnhetstype, arbeidsforholdMedIkkeStatligEllerKommunalJuridiskEnhetstype)
+
+        val kontrollperiode = Kontrollperiode(
+            fom = LocalDate.of(2019, 1, 1),
+            tom = LocalDate.of(2020, 1, 1)
+        )
+
+        val sjekkJuridiskEnhet = erArbeidsforholdetStatligEllerKommunalt(arbeidsforhold, kontrollperiode)
+        assertTrue(sjekkJuridiskEnhet)
+    }
+
+    @Test
+    fun `Arbeidsforhold med juridisk enhetstype som null får false`() {
+        val arbeidsforhold = listOf(arbeidsforholdMedFlerEnn6Ansatte)
+
+        val kontrollperiode = Kontrollperiode(
+            fom = LocalDate.of(2019, 1, 1),
+            tom = LocalDate.of(2020, 1, 1)
+        )
+
+        val sjekkJuridiskEnhet = erArbeidsforholdetStatligEllerKommunalt(arbeidsforhold, kontrollperiode)
+        assertFalse(sjekkJuridiskEnhet)
+    }
+
+    @Test
+    fun `Ikke statlig eller kommunalt arbeidsforhold får false`() {
+        val arbeidsforhold = listOf(arbeidsforholdMedIkkeStatligEllerKommunalJuridiskEnhetstype)
+
+        val kontrollperiode = Kontrollperiode(
+            fom = LocalDate.of(2019, 1, 1),
+            tom = LocalDate.of(2020, 1, 1)
+        )
+
+        val sjekkJuridiskEnhet = erArbeidsforholdetStatligEllerKommunalt(arbeidsforhold, kontrollperiode)
+        assertFalse(sjekkJuridiskEnhet)
+    }
+
+    @Test
+    fun `Statlig Arbeidsforhold får true`() {
+        val arbeidsforhold = listOf(arbeidsforholdMedStatligJuridiskEnhetstype)
+
+        val kontrollperiode = Kontrollperiode(
+            fom = LocalDate.of(2019, 1, 1),
+            tom = LocalDate.of(2020, 1, 1)
+        )
+
+        val sjekkJuridiskEnhet = erArbeidsforholdetStatligEllerKommunalt(arbeidsforhold, kontrollperiode)
+        assertTrue(sjekkJuridiskEnhet)
+    }
+
     private fun createArbeidsforholdMock(arbeidsforholdPeriode: Periode, stillingsprosent: Double? = 100.0): Arbeidsforhold {
 
         val arbeidsavtaleMock = mockk<Arbeidsavtale>()
@@ -217,12 +271,16 @@ class ArbeidsforholdFunksjonerTest {
     private val arbeidsforholdMedAkkurat6Ansatte = lagArbeidsforhold(6)
     private val arbeidsforholdMed5Ansatte = lagArbeidsforhold(5)
 
-    private fun lagArbeidsforhold(
+    val arbeidsforholdMedStatligJuridiskEnhetstype = lagArbeidsforhold(juridiskEnhetstypeMap = mapOf("1" to "STAT"))
+    val arbeidsforholdMedIkkeStatligEllerKommunalJuridiskEnhetstype = lagArbeidsforhold(juridiskEnhetstypeMap = mapOf("1" to "AS"))
+
+    fun lagArbeidsforhold(
         antall: Int = 10,
         periode: Periode =
             Periode(LocalDate.of(2019, 1, 1), LocalDate.of(2019, 12, 31)),
         arbeidsavtale: List<Arbeidsavtale> =
-            listOf(lagArbeidsavtale(Periode(null, null), "Yrkeskode", null, null))
+            listOf(lagArbeidsavtale(Periode(null, null), "Yrkeskode", null, null)),
+        juridiskEnhetstypeMap: Map<String, String?>? = null
     ): Arbeidsforhold {
         return Arbeidsforhold(
             periode = periode,
@@ -233,7 +291,7 @@ class ArbeidsforholdFunksjonerTest {
                 organisasjonsnummer = null,
                 ansatte = listOf(Ansatte(antall = antall, bruksperiode = null, gyldighetsperiode = null)),
                 konkursStatus = null,
-                juridiskEnhetEnhetstypeMap = null
+                juridiskEnhetEnhetstypeMap = juridiskEnhetstypeMap
             ),
             arbeidsforholdstype = Arbeidsforholdstype.NORMALT,
             arbeidsavtaler = arbeidsavtale
