@@ -10,8 +10,31 @@ import kotlin.math.abs
 
 object ArbeidsforholdFunksjoner {
 
+    private val enhetstyper = listOf("STAT", "FKF", "FYLK", "KF", "KOMM", "SF")
+
     infix fun List<Arbeidsforhold>.erAlleArbeidsgivereOrganisasjon(kontrollPeriode: Kontrollperiode): Boolean {
         return arbeidsforholdForKontrollPeriode(kontrollPeriode).stream().allMatch { it.arbeidsgivertype == OpplysningspliktigArbeidsgiverType.Organisasjon }
+    }
+
+    fun erArbeidsforholdetStatligEllerKommunalt(arbeidsforhold: List<Arbeidsforhold>, kontrollPeriode: Kontrollperiode): Boolean =
+        arbeidsforhold.erArbeidsgiverStatligEllerKommunal(kontrollPeriode)
+
+    infix fun List<Arbeidsforhold>.erArbeidsgiverStatligEllerKommunal(kontrollPeriode: Kontrollperiode): Boolean {
+        val kontrollPeriodeForSiste3Måneder = Kontrollperiode(kontrollPeriode.tom.minusMonths(3), kontrollPeriode.tom)
+
+        val erArbeidsforholdetStatlig =
+            this.arbeidsforholdForKontrollPeriode(kontrollPeriodeForSiste3Måneder).any {
+                hentJuridiskEnhetstypeFraMap(it.arbeidsgiver.juridiskEnhetEnhetstypeMap).any { enhetstype -> enhetstype in enhetstyper }
+            }
+
+        return erArbeidsforholdetStatlig
+    }
+
+    private fun hentJuridiskEnhetstypeFraMap(juridiskEnhetEnhetstypeMap: Map<String, String?>?): List<String> {
+        if (juridiskEnhetEnhetstypeMap != null) {
+            return juridiskEnhetEnhetstypeMap.mapNotNull { (_, enhetstype) -> enhetstype }
+        }
+        return emptyList()
     }
 
     infix fun List<Arbeidsforhold>.antallAnsatteHosArbeidsgivere(kontrollPeriode: Kontrollperiode): List<Int> =
