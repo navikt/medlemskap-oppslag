@@ -4,7 +4,7 @@ import io.mockk.every
 import io.mockk.mockk
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.beregnGjennomsnittligStillingsprosentForGrafana
-import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.erArbeidsforholdetStatligEllerKommunalt
+import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.erArbeidsforholdetStatlig
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.filtrerUtArbeidsgivereMedFærreEnn6Ansatte
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.vektetStillingsprosentForArbeidsforhold
@@ -192,52 +192,28 @@ class ArbeidsforholdFunksjonerTest {
     fun `Arbeidsforhold med både statlig og privat enhetstype får true`() {
         val arbeidsforhold =
             listOf(arbeidsforholdMedStatligJuridiskEnhetstype, arbeidsforholdMedIkkeStatligEllerKommunalJuridiskEnhetstype)
-
-        val kontrollperiode = Kontrollperiode(
-            fom = LocalDate.of(2019, 1, 1),
-            tom = LocalDate.of(2020, 1, 1)
-        )
-
-        val sjekkJuridiskEnhet = erArbeidsforholdetStatligEllerKommunalt(arbeidsforhold, kontrollperiode)
+        val sjekkJuridiskEnhet = erArbeidsforholdetStatlig(arbeidsforhold, kontrollperiodeFra2019Til2020)
         assertTrue(sjekkJuridiskEnhet)
     }
 
     @Test
     fun `Arbeidsforhold med juridisk enhetstype som null får false`() {
         val arbeidsforhold = listOf(arbeidsforholdMedFlerEnn6Ansatte)
-
-        val kontrollperiode = Kontrollperiode(
-            fom = LocalDate.of(2019, 1, 1),
-            tom = LocalDate.of(2020, 1, 1)
-        )
-
-        val sjekkJuridiskEnhet = erArbeidsforholdetStatligEllerKommunalt(arbeidsforhold, kontrollperiode)
+        val sjekkJuridiskEnhet = erArbeidsforholdetStatlig(arbeidsforhold, kontrollperiodeFra2019Til2020)
         assertFalse(sjekkJuridiskEnhet)
     }
 
     @Test
     fun `Ikke statlig eller kommunalt arbeidsforhold får false`() {
         val arbeidsforhold = listOf(arbeidsforholdMedIkkeStatligEllerKommunalJuridiskEnhetstype)
-
-        val kontrollperiode = Kontrollperiode(
-            fom = LocalDate.of(2019, 1, 1),
-            tom = LocalDate.of(2020, 1, 1)
-        )
-
-        val sjekkJuridiskEnhet = erArbeidsforholdetStatligEllerKommunalt(arbeidsforhold, kontrollperiode)
+        val sjekkJuridiskEnhet = erArbeidsforholdetStatlig(arbeidsforhold, kontrollperiodeFra2019Til2020)
         assertFalse(sjekkJuridiskEnhet)
     }
 
     @Test
     fun `Statlig Arbeidsforhold får true`() {
         val arbeidsforhold = listOf(arbeidsforholdMedStatligJuridiskEnhetstype)
-
-        val kontrollperiode = Kontrollperiode(
-            fom = LocalDate.of(2019, 1, 1),
-            tom = LocalDate.of(2020, 1, 1)
-        )
-
-        val sjekkJuridiskEnhet = erArbeidsforholdetStatligEllerKommunalt(arbeidsforhold, kontrollperiode)
+        val sjekkJuridiskEnhet = erArbeidsforholdetStatlig(arbeidsforhold, kontrollperiodeFra2019Til2020)
         assertTrue(sjekkJuridiskEnhet)
     }
 

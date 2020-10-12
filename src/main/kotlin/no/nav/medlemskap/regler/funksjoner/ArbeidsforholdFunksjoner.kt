@@ -9,21 +9,18 @@ import java.time.temporal.ChronoUnit
 import kotlin.math.abs
 
 object ArbeidsforholdFunksjoner {
-    private val enhetstyper = listOf("STAT", "FKF", "FYLK", "KF", "KOMM", "SF")
+    private val statligeJuridiskeEnhetstyper = listOf("STAT", "FKF", "FYLK", "KF", "KOMM", "SF")
 
-    fun erArbeidsforholdetStatligEllerKommunalt(arbeidsforhold: List<Arbeidsforhold>, kontrollPeriode: Kontrollperiode): Boolean =
+    fun erArbeidsforholdetStatlig(arbeidsforhold: List<Arbeidsforhold>, kontrollPeriode: Kontrollperiode): Boolean =
         arbeidsforhold.erArbeidsgiverStatligEllerKommunal(kontrollPeriode)
 
-    infix fun List<Arbeidsforhold>.erArbeidsgiverStatligEllerKommunal(kontrollPeriode: Kontrollperiode): Boolean {
-        val kontrollPeriodeForSiste3Måneder = Kontrollperiode(kontrollPeriode.tom.minusMonths(3), kontrollPeriode.tom)
-
-        val erArbeidsforholdetStatlig =
-            this.arbeidsforholdForKontrollPeriode(kontrollPeriodeForSiste3Måneder).any {
-                hentJuridiskEnhetstypeFraMap(it.arbeidsgiver.juridiskEnhetEnhetstypeMap).any { enhetstype -> enhetstype in enhetstyper }
+    infix fun List<Arbeidsforhold>.erArbeidsgiverStatligEllerKommunal(kontrollPeriode: Kontrollperiode): Boolean =
+            this.arbeidsforholdForKontrollPeriode(
+                    Kontrollperiode(kontrollPeriode.tom.minusMonths(3), kontrollPeriode.tom)
+            ).any {
+                hentJuridiskEnhetstypeFraMap(it.arbeidsgiver.juridiskEnhetEnhetstypeMap)
+                        .any { enhetstype -> enhetstype in statligeJuridiskeEnhetstyper }
             }
-
-        return erArbeidsforholdetStatlig
-    }
 
     private fun hentJuridiskEnhetstypeFraMap(juridiskEnhetEnhetstypeMap: Map<String, String?>?): List<String> {
         if (juridiskEnhetEnhetstypeMap != null) {
