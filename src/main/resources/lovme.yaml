@@ -45,94 +45,16 @@ paths:
 
 components:
   schemas:
-    BrukerInput:
-      properties:
-        arbeidUtenforNorge:
-          type: boolean
-    InputPeriode:
-      properties:
-        fom:
-          type: string
-        tom:
-          type: string
-
-    Response:
-      properties:
-        datagrunnlag:
-          $ref: "#/components/schemas/Datagrunnlag"
-        resultat:
-          $ref: "#/components/schemas/Resultat"
-        versjonRegler:
-          type: string
-        tidspunkt:
-          type: string
-        versjonTjeneste:
-          type: string
-    Resultat:
-      required:
-        - regelId
-        - avklaring
-        - begrunnelse
-        - svar
-      properties:
-        regelId:
-          type: string
-        avklaring:
-          type: string
-        begrunnelse:
-          type: string
-        svar:
-          type: string
-        harDekning:
-          type: string
-          nullable: true
-        dekning:
-          type: string
-        delresultat:
-          type: array
-          items:
-            $ref: "#/components/schemas/Resultat"
-        tag:
-          type: string
-    Delresultat:
-      type: array
-      items:
-        $ref: "#/components/schemas/Resultat"
-    Error:
-      required:
-        - code
-        - message
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-    Medlemskap:
-      properties:
-        dekning:
-          type: string
-        fraOgMed:
-          type: string
-        tilOgMed:
-          type: string
-        erMedlem:
-          type: boolean
-        lovvalg:
-          type: string
-        lovvalgsland:
-          type: string
-        periodeStatus:
-          type: string
-    Utenlandsopphold:
+    Adresse:
       properties:
         landkode:
           type: string
-        periode:
-          $ref: "#/components/schemas/InputPeriode"
-        rapporteringsperiode:
+        fom:
           type: string
-
+          nullable: true
+        tom:
+          type: string
+          nullable: true
     Ansatte:
       properties:
         antall:
@@ -154,26 +76,6 @@ components:
         stillingsprosent:
           type: number
           multipleOf: 0.01
-    Arbeidsgiver:
-      properties:
-        type:
-          type: string
-        organisasjonsnummer:
-          type: string
-        ansatte:
-          type: array
-          items:
-            $ref: "#/components/schemas/Ansatte"
-        konkursStatus:
-          type: array
-          items:
-            type: string
-        juridiskEnhetEnhetstypeMap:
-          type: object
-          additionalProperties:
-            $ref: "#/components/schemas/JuridiskEnhetstype"
-    JuridiskEnhetstype:
-      type: string
     Arbeidsforhold:
       properties:
         periode:
@@ -192,29 +94,99 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Arbeidsavtale"
-
-    Adresse:
+    Arbeidsgiver:
       properties:
-        landkode:
+        type:
           type: string
-        fom:
+        organisasjonsnummer:
           type: string
-          nullable: true
-        tom:
-          type: string
-          nullable: true
-
-    Folkeregistermetadata:
+        ansatte:
+          type: array
+          items:
+            $ref: "#/components/schemas/Ansatte"
+        konkursStatus:
+          type: array
+          items:
+            type: string
+        juridiskEnhetEnhetstypeMap:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/JuridiskEnhetstype"
+    BrukerInput:
       properties:
-        ajourholdstidspunkt:
+        arbeidUtenforNorge:
+          type: boolean
+    Datagrunnlag:
+      properties:
+        periode:
+          $ref: "#/components/schemas/InputPeriode"
+        brukerinput:
+          $ref: "#/components/schemas/BrukerInput"
+        pdlpersonhistorikk:
+          $ref: "#/components/schemas/Personhistorikk"
+        medlemskap:
+          type: array
+          items:
+            $ref: "#/components/schemas/Medlemskap"
+        arbeidsforhold:
+          type: array
+          items:
+            $ref: "#/components/schemas/Arbeidsforhold"
+        oppgaver:
+          type: array
+          items:
+            $ref: "#/components/schemas/Oppgave"
+        dokument:
+          type: array
+          items:
+            $ref: "#/components/schemas/Journalpost"
+        ytelse:
+          type: string
+        dataOmBarn:
+          type: array
+          items:
+            $ref: "#/components/schemas/DataOmBarn"
+        dataOmEktefelle:
+          $ref: "#/components/schemas/DataOmEktefelle"
+    DataOmBarn:
+      properties:
+        personhistorikkBarn:
+          $ref: "#/components/schemas/PersonhistorikkBarn"
+    DataOmEktefelle:
+      properties:
+        personhistorikkEktefelle:
+          $ref: "#/components/schemas/PersonhistorikkEktefelle"
+        arbeidsforholdEktefelle:
+          type: array
+          items:
+            $ref: "#/components/schemas/Arbeidsforhold"
+    Dato:
+      type: string
+      format: date
+      description: Dato
+      nullable: true
+      example: "2021-01-30"
+    Delresultat:
+      type: array
+      items:
+        $ref: "#/components/schemas/Resultat"
+    Dokument:
+      properties:
+        dokumentId:
+          type: string
+        tittel:
           type: string
           nullable: true
-        gyldighetstidspunkt:
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
           type: string
-          nullable: true
-        opphoerstidspunkt:
-          type: string
-          nullable: true
     Familierelasjon:
       properties:
         relatertPersonsIdent:
@@ -226,34 +198,17 @@ components:
           nullable: true
         folkeregistermetadata:
           $ref: "#/components/schemas/Folkeregistermetadata"
-
-    Sivilstand:
+    Folkeregistermetadata:
       properties:
-        type:
-          type: string
-        gyldigFraOgMed:
+        ajourholdstidspunkt:
           type: string
           nullable: true
-        gyldigTilOgMed:
+        gyldighetstidspunkt:
           type: string
           nullable: true
-        relatertVedSivilstand:
+        opphoerstidspunkt:
           type: string
           nullable: true
-        folkeregistermetadata:
-          $ref: "#/components/schemas/Folkeregistermetadata"
-
-    Statsborgerskap:
-      properties:
-        landkode:
-          type: string
-        fom:
-          type: string
-          nullable: true
-        tom:
-          type: string
-          nullable: true
-
     FolkeregisterPersonstatus:
       properties:
         personstatus:
@@ -264,7 +219,61 @@ components:
         tom:
           type: string
           nullable: true
-
+    InputPeriode:
+      properties:
+        fom:
+          $ref: "#/components/schemas/Dato"
+        tom:
+          $ref: "#/components/schemas/Dato"
+    Journalpost:
+      properties:
+        journalpostId:
+          type: string
+        tittel:
+          type: string
+          nullable: true
+        journalposttype:
+          type: string
+          nullable: true
+        journalstatus:
+          type: string
+          nullable: true
+        tema:
+          type: string
+          nullable: true
+        dokumenter:
+          type: array
+          items:
+            $ref: "#/components/schemas/Dokument"
+    JuridiskEnhetstype:
+      type: string
+    Medlemskap:
+      properties:
+        dekning:
+          type: string
+        fraOgMed:
+          type: string
+        tilOgMed:
+          type: string
+        erMedlem:
+          type: boolean
+        lovvalg:
+          type: string
+        lovvalgsland:
+          type: string
+        periodeStatus:
+          type: string
+    Oppgave:
+      properties:
+        aktivDato:
+          type: string
+        prioritet:
+          type: string
+        status:
+          type: string
+        tema:
+          type: string
+          nullable: true
     Personhistorikk:
       properties:
         statsborgerskap:
@@ -336,90 +345,74 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Adresse"
-
-    DataOmBarn:
+    Response:
       properties:
-        personhistorikkBarn:
-          $ref: "#/components/schemas/PersonhistorikkBarn"
-
-    Dokument:
-      properties:
-        dokumentId:
+        datagrunnlag:
+          $ref: "#/components/schemas/Datagrunnlag"
+        resultat:
+          $ref: "#/components/schemas/Resultat"
+        versjonRegler:
           type: string
-        tittel:
+        tidspunkt:
+          type: string
+        versjonTjeneste:
+          type: string
+    Resultat:
+      required:
+        - regelId
+        - avklaring
+        - begrunnelse
+        - svar
+      properties:
+        regelId:
+          type: string
+        avklaring:
+          type: string
+        begrunnelse:
+          type: string
+        svar:
+          type: string
+        harDekning:
           type: string
           nullable: true
-
-
-    DataOmEktefelle:
-      properties:
-        personhistorikkEktefelle:
-          $ref: "#/components/schemas/PersonhistorikkEktefelle"
-        arbeidsforholdEktefelle:
+        dekning:
+          type: string
+        delresultat:
           type: array
           items:
-            $ref: "#/components/schemas/Arbeidsforhold"
-    Oppgave:
+            $ref: "#/components/schemas/Resultat"
+        tag:
+          type: string
+    Sivilstand:
       properties:
-        aktivDato:
+        type:
           type: string
-        prioritet:
-          type: string
-        status:
-          type: string
-        tema:
+        gyldigFraOgMed:
           type: string
           nullable: true
-    Journalpost:
+        gyldigTilOgMed:
+          type: string
+          nullable: true
+        relatertVedSivilstand:
+          type: string
+          nullable: true
+        folkeregistermetadata:
+          $ref: "#/components/schemas/Folkeregistermetadata"
+    Statsborgerskap:
+        properties:
+          landkode:
+            type: string
+          fom:
+            type: string
+            nullable: true
+          tom:
+            type: string
+            nullable: true
+    Utenlandsopphold:
       properties:
-        journalpostId:
+        landkode:
           type: string
-        tittel:
-          type: string
-          nullable: true
-        journalposttype:
-          type: string
-          nullable: true
-        journalstatus:
-          type: string
-          nullable: true
-        tema:
-          type: string
-          nullable: true
-        dokumenter:
-          type: array
-          items:
-            $ref: "#/components/schemas/Dokument"
-
-    Datagrunnlag:
-      properties:
         periode:
           $ref: "#/components/schemas/InputPeriode"
-        brukerinput:
-          $ref: "#/components/schemas/BrukerInput"
-        pdlpersonhistorikk:
-          $ref: "#/components/schemas/Personhistorikk"
-        medlemskap:
-          type: array
-          items:
-            $ref: "#/components/schemas/Medlemskap"
-        arbeidsforhold:
-          type: array
-          items:
-            $ref: "#/components/schemas/Arbeidsforhold"
-        oppgaver:
-          type: array
-          items:
-            $ref: "#/components/schemas/Oppgave"
-        dokument:
-          type: array
-          items:
-            $ref: "#/components/schemas/Journalpost"
-        ytelse:
+        rapporteringsperiode:
           type: string
-        dataOmBarn:
-          type: array
-          items:
-            $ref: "#/components/schemas/DataOmBarn"
-        dataOmEktefelle:
-          $ref: "#/components/schemas/DataOmEktefelle"
