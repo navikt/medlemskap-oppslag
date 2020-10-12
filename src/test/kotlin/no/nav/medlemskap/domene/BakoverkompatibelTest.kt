@@ -1,5 +1,6 @@
 package no.nav.medlemskap.domene
 
+import com.atlassian.oai.validator.restassured.OpenApiValidationFilter
 import io.ktor.server.engine.*
 import io.restassured.RestAssured
 import io.restassured.RestAssured.given
@@ -108,6 +109,19 @@ class BakoverkompatibelTest {
                 Customization("tidspunkt") { _, _ -> true }
             )
         )
+    }
+
+    @Test
+    fun testKontrakt() {
+        val validationFilter = OpenApiValidationFilter("src/main/resources/lovme.yaml")
+
+        val faktiskResponse = given()
+            .filter(validationFilter)
+            .body(input)
+            .header(Header("Content-Type", "application/json"))
+            .post("/")
+            .then()
+            .statusCode(200)
     }
 }
 

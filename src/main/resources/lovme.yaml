@@ -1,0 +1,425 @@
+openapi: "3.0.3"
+info:
+  version: 1.0.0
+  title: Lovvalg og medlemskap
+  license:
+    name: MIT
+servers:
+  - url: http://petstore.swagger.io/v1
+paths:
+  /:
+    post:
+      summary: Avgjøre om lovvalg er norsk, og om bruker er medlem av folketrygden
+      operationId: avgjørLovvalgOgMedlemskap
+      tags:
+        - Lovvalg
+        - Medlemskap
+      description: Expected response to a valid request
+      requestBody:
+        content:
+          application/json:
+            schema:      # Request body contents
+              type: object
+              properties:
+                fnr:
+                  type: string
+                periode:
+                  $ref: "#/components/schemas/InputPeriode"
+                brukerinput:
+                  $ref: "#/components/schemas/BrukerInput"
+      responses:
+        200:
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Response"
+        201:
+          description: Null response
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    BrukerInput:
+      properties:
+        arbeidUtenforNorge:
+          type: boolean
+    InputPeriode:
+      properties:
+        fom:
+          type: string
+        tom:
+          type: string
+
+    Response:
+      properties:
+        datagrunnlag:
+          $ref: "#/components/schemas/Datagrunnlag"
+        resultat:
+          $ref: "#/components/schemas/Resultat"
+        versjonRegler:
+          type: string
+        tidspunkt:
+          type: string
+        versjonTjeneste:
+          type: string
+    Resultat:
+      required:
+        - regelId
+        - avklaring
+        - begrunnelse
+        - svar
+      properties:
+        regelId:
+          type: string
+        avklaring:
+          type: string
+        begrunnelse:
+          type: string
+        svar:
+          type: string
+        harDekning:
+          type: string
+          nullable: true
+        dekning:
+          type: string
+        delresultat:
+          type: array
+          items:
+            $ref: "#/components/schemas/Resultat"
+        tag:
+          type: string
+    Delresultat:
+      type: array
+      items:
+        $ref: "#/components/schemas/Resultat"
+    Error:
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+    Medlemskap:
+      properties:
+        dekning:
+          type: string
+        fraOgMed:
+          type: string
+        tilOgMed:
+          type: string
+        erMedlem:
+          type: boolean
+        lovvalg:
+          type: string
+        lovvalgsland:
+          type: string
+        periodeStatus:
+          type: string
+    Utenlandsopphold:
+      properties:
+        landkode:
+          type: string
+        periode:
+          $ref: "#/components/schemas/InputPeriode"
+        rapporteringsperiode:
+          type: string
+
+    Ansatte:
+      properties:
+        antall:
+          type: number
+          nullable: true
+        bruksperiode:
+          $ref: "#/components/schemas/InputPeriode"
+        gyldighetsperiode:
+          $ref: "#/components/schemas/InputPeriode"
+    Arbeidsavtale:
+      properties:
+        periode:
+          $ref: "#/components/schemas/InputPeriode"
+        yrkeskode:
+          type: string
+        skipsregister:
+          type: string
+          nullable: true
+        stillingsprosent:
+          type: number
+          multipleOf: 0.01
+    Arbeidsgiver:
+      properties:
+        type:
+          type: string
+        organisasjonsnummer:
+          type: string
+        ansatte:
+          type: array
+          items:
+            $ref: "#/components/schemas/Ansatte"
+        konkursStatus:
+          type: array
+          items:
+            type: string
+        juridiskEnhetEnhetstypeMap:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/JuridiskEnhetstype"
+    JuridiskEnhetstype:
+      type: string
+    Arbeidsforhold:
+      properties:
+        periode:
+          $ref: "#/components/schemas/InputPeriode"
+        utenlandsopphold:
+          type: array
+          items:
+            $ref: "#/components/schemas/Utenlandsopphold"
+        arbeidsgivertype:
+          type: string
+        arbeidsgiver:
+          $ref: "#/components/schemas/Arbeidsgiver"
+        arbeidsforholdstype:
+          type: string
+        arbeidsavtaler:
+          type: array
+          items:
+            $ref: "#/components/schemas/Arbeidsavtale"
+
+    Adresse:
+      properties:
+        landkode:
+          type: string
+        fom:
+          type: string
+          nullable: true
+        tom:
+          type: string
+          nullable: true
+
+    Folkeregistermetadata:
+      properties:
+        ajourholdstidspunkt:
+          type: string
+          nullable: true
+        gyldighetstidspunkt:
+          type: string
+          nullable: true
+        opphoerstidspunkt:
+          type: string
+          nullable: true
+    Familierelasjon:
+      properties:
+        relatertPersonsIdent:
+          type: string
+        relatertPersonsRolle:
+          type: string
+        minRolleForPerson:
+          type: string
+          nullable: true
+        folkeregistermetadata:
+          $ref: "#/components/schemas/Folkeregistermetadata"
+
+    Sivilstand:
+      properties:
+        type:
+          type: string
+        gyldigFraOgMed:
+          type: string
+          nullable: true
+        gyldigTilOgMed:
+          type: string
+          nullable: true
+        relatertVedSivilstand:
+          type: string
+          nullable: true
+        folkeregistermetadata:
+          $ref: "#/components/schemas/Folkeregistermetadata"
+
+    Statsborgerskap:
+      properties:
+        landkode:
+          type: string
+        fom:
+          type: string
+          nullable: true
+        tom:
+          type: string
+          nullable: true
+
+    FolkeregisterPersonstatus:
+      properties:
+        personstatus:
+          type: string
+        fom:
+          type: string
+          nullable: true
+        tom:
+          type: string
+          nullable: true
+
+    Personhistorikk:
+      properties:
+        statsborgerskap:
+          type: array
+          items:
+            $ref: "#/components/schemas/Statsborgerskap"
+        personstatuser:
+          type: array
+          items:
+            $ref: "#/components/schemas/FolkeregisterPersonstatus"
+        bostedsadresser:
+          type: array
+          items:
+            $ref: "#/components/schemas/Adresse"
+        kontaktadresser:
+          type: array
+          items:
+            $ref: "#/components/schemas/Adresse"
+        oppholdsadresser:
+          type: array
+          items:
+            $ref: "#/components/schemas/Adresse"
+        sivilstand:
+          type: array
+          items:
+            $ref: "#/components/schemas/Sivilstand"
+        familierelasjoner:
+          type: array
+          items:
+            $ref: "#/components/schemas/Familierelasjon"
+    PersonhistorikkBarn:
+      properties:
+        ident:
+          type: string
+        bostedsadresser:
+          type: array
+          items:
+            $ref: "#/components/schemas/Adresse"
+        kontaktadresser:
+          type: array
+          items:
+            $ref: "#/components/schemas/Adresse"
+        oppholdsadresser:
+          type: array
+          items:
+            $ref: "#/components/schemas/Adresse"
+        familierelasjoner:
+          type: array
+          items:
+            $ref: "#/components/schemas/Familierelasjon"
+    PersonhistorikkEktefelle:
+      properties:
+        ident:
+          type: string
+        barn:
+          type: array
+          nullable: true
+          items:
+            type: string
+        bostedsadresser:
+          type: array
+          items:
+            $ref: "#/components/schemas/Adresse"
+        kontaktadresser:
+          type: array
+          items:
+            $ref: "#/components/schemas/Adresse"
+        oppholdsadresser:
+          type: array
+          items:
+            $ref: "#/components/schemas/Adresse"
+
+    DataOmBarn:
+      properties:
+        personhistorikkBarn:
+          $ref: "#/components/schemas/PersonhistorikkBarn"
+
+    Dokument:
+      properties:
+        dokumentId:
+          type: string
+        tittel:
+          type: string
+          nullable: true
+
+
+    DataOmEktefelle:
+      properties:
+        personhistorikkEktefelle:
+          $ref: "#/components/schemas/PersonhistorikkEktefelle"
+        arbeidsforholdEktefelle:
+          type: array
+          items:
+            $ref: "#/components/schemas/Arbeidsforhold"
+    Oppgave:
+      properties:
+        aktivDato:
+          type: string
+        prioritet:
+          type: string
+        status:
+          type: string
+        tema:
+          type: string
+          nullable: true
+    Journalpost:
+      properties:
+        journalpostId:
+          type: string
+        tittel:
+          type: string
+          nullable: true
+        journalposttype:
+          type: string
+          nullable: true
+        journalstatus:
+          type: string
+          nullable: true
+        tema:
+          type: string
+          nullable: true
+        dokumenter:
+          type: array
+          items:
+            $ref: "#/components/schemas/Dokument"
+
+    Datagrunnlag:
+      properties:
+        periode:
+          $ref: "#/components/schemas/InputPeriode"
+        brukerinput:
+          $ref: "#/components/schemas/BrukerInput"
+        pdlpersonhistorikk:
+          $ref: "#/components/schemas/Personhistorikk"
+        medlemskap:
+          type: array
+          items:
+            $ref: "#/components/schemas/Medlemskap"
+        arbeidsforhold:
+          type: array
+          items:
+            $ref: "#/components/schemas/Arbeidsforhold"
+        oppgaver:
+          type: array
+          items:
+            $ref: "#/components/schemas/Oppgave"
+        dokument:
+          type: array
+          items:
+            $ref: "#/components/schemas/Journalpost"
+        ytelse:
+          type: string
+        dataOmBarn:
+          type: array
+          items:
+            $ref: "#/components/schemas/DataOmBarn"
+        dataOmEktefelle:
+          $ref: "#/components/schemas/DataOmEktefelle"
