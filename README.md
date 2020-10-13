@@ -8,7 +8,6 @@ Denne tjenesten gjør REST-kall mot følgende tjenester/registre:
 * MEDL: Medlemskapsregisteret, inneholder medlemskapsperioder som avviker fra normalen
 * GSAK: Saksbehandlingsløsning
 * JOARK: Journalarkiv
-* TPS: Tjenestebasert Persondatasystem
 * PDL: Ny persondataløsning, mangler foreløpig utenlandsopphold 
 
 # Funksjonell dokumentasjon

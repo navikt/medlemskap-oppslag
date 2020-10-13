@@ -279,7 +279,7 @@
       "delresultat" : [ ]
     }, {
       "regelId" : "REGEL_11_3",
-      "avklaring" : "Har bruker barn i TPS/PDL?",
+      "avklaring" : "Har bruker barn i PDL?",
       "begrunnelse" : "",
       "svar" : "JA",
       "harDekning" : null,
