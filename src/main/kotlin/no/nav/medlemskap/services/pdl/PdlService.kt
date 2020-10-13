@@ -39,9 +39,10 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
     suspend fun hentPersonHistorikkTilBruker(fnr: String, callId: String): Personhistorikk {
         val hentPersonhistorikkTilBrukerRespons = pdlClient.hentPerson(fnr, callId)
 
-        hentPersonhistorikkTilBrukerRespons.errors?.let { errors ->
-            logger.warn { "Fikk følgende feil fra PDL: ${objectMapper.writeValueAsString(errors)}" }
-            throw GraphqlError(errors.first(), "PDL")
+        hentPersonhistorikkTilBrukerRespons.errors?.forEach {
+            if (it.message == "Fant ikke person") {
+                throw PersonIkkeFunnet("PDL")
+            }
         }
 
         if (hentPersonhistorikkTilBrukerRespons.data?.hentPerson != null) {
@@ -49,8 +50,14 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
         } else throw PersonIkkeFunnet("PDL")
     }
 
-    suspend fun hentPersonHistorikkTilEktefelle(fnrTilEktefelle: String, callId: String): PersonhistorikkEktefelle {
+    suspend fun hentPersonHistorikkTilEktefelle(fnrTilEktefelle: String, callId: String): PersonhistorikkEktefelle? {
         val hentPersonhistorikkTilEktefelleResponse = pdlClient.hentPerson(fnrTilEktefelle, callId)
+
+        hentPersonhistorikkTilEktefelleResponse.errors?.forEach {
+            if (it.message == "Fant ikke person") {
+                return null
+            }
+        }
 
         hentPersonhistorikkTilEktefelleResponse.errors?.let { errors ->
             logger.warn { "Fikk følgende feil fra PDL: ${objectMapper.writeValueAsString(errors)}" }
@@ -58,13 +65,19 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
         }
 
         if (hentPersonhistorikkTilEktefelleResponse.data?.hentPerson != null) {
-            return PdlMapperEktefelle
-                .mapPersonhistorikkTilEktefelle(fnrTilEktefelle, hentPersonhistorikkTilEktefelleResponse.data?.hentPerson!!)
-        } else throw PersonIkkeFunnet("PDL")
+            return PdlMapperEktefelle.mapPersonhistorikkTilEktefelle(fnrTilEktefelle, hentPersonhistorikkTilEktefelleResponse.data?.hentPerson!!)
+        }
+        return null
     }
 
-    suspend fun hentPersonHistorikkTilBarn(fnrTilBarn: String, callId: String): PersonhistorikkBarn {
+    suspend fun hentPersonHistorikkTilBarn(fnrTilBarn: String, callId: String): PersonhistorikkBarn? {
         val hentPersonHistorikkTilBarnRespons = pdlClient.hentPerson(fnrTilBarn, callId)
+
+        hentPersonHistorikkTilBarnRespons.errors?.forEach {
+            if (it.message == "Fant ikke person") {
+                return null
+            }
+        }
 
         hentPersonHistorikkTilBarnRespons.errors?.let { errors ->
             logger.warn { "Fikk følgende feil fra PDL: ${objectMapper.writeValueAsString(errors)}" }
@@ -73,6 +86,8 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
 
         if (hentPersonHistorikkTilBarnRespons.data?.hentPerson != null) {
             return PdlMapperBarn.mapPersonhistorikkTilBarn(fnrTilBarn, hentPersonHistorikkTilBarnRespons.data?.hentPerson!!)
-        } else throw PersonIkkeFunnet("PDL")
+        }
+
+        return null
     }
 }

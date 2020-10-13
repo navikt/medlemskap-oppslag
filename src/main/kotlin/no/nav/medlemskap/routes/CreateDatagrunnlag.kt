@@ -73,13 +73,24 @@ suspend fun defaultCreateDatagrunnlag(
 }
 
 suspend fun hentDataOmBarn(fnrBarn: List<String>, services: Services, callId: String): List<DataOmBarn> {
-    return fnrBarn.map { DataOmBarn(personhistorikkBarn = hentPersonHistorikkForBarn(it, services, callId)) }
+    val dataOmBarn: MutableList<DataOmBarn> = ArrayList()
+
+    fnrBarn.forEach {
+        val personhistorikkBarn = hentPersonHistorikkForBarn(it, services, callId)
+        if (personhistorikkBarn != null) {
+            dataOmBarn.add(DataOmBarn(personhistorikkBarn))
+        }
+    }
+
+    return dataOmBarn
 }
 
 private suspend fun CoroutineScope.hentDataOmEktefelle(fnrTilEktefelle: String?, services: Services, callId: String, periode: InputPeriode): DataOmEktefelle? {
     if (fnrTilEktefelle != null) {
         val personhistorikkEktefelle = hentPersonHistorikkForEktefelle(fnrTilEktefelle, services, callId)
-
+        if (personhistorikkEktefelle == null) {
+            return null
+        }
         val arbeidsforholdEktefelle = try {
             services.aaRegService.hentArbeidsforhold(fnrTilEktefelle, callId, fraOgMedDatoForArbeidsforhold(periode), periode.tom)
         } catch (t: Exception) {
@@ -94,11 +105,11 @@ private suspend fun CoroutineScope.hentDataOmEktefelle(fnrTilEktefelle: String?,
     return null
 }
 
-suspend fun hentPersonHistorikkForEktefelle(fnrTilEktefelle: String, services: Services, callId: String): PersonhistorikkEktefelle {
+suspend fun hentPersonHistorikkForEktefelle(fnrTilEktefelle: String, services: Services, callId: String): PersonhistorikkEktefelle? {
     return services.pdlService.hentPersonHistorikkTilEktefelle(fnrTilEktefelle, callId)
 }
 
-suspend fun hentPersonHistorikkForBarn(fnrTilBarn: String, services: Services, callId: String): PersonhistorikkBarn {
+suspend fun hentPersonHistorikkForBarn(fnrTilBarn: String, services: Services, callId: String): PersonhistorikkBarn? {
     return services.pdlService.hentPersonHistorikkTilBarn(fnrTilBarn, callId)
 }
 
