@@ -50,11 +50,9 @@ components:
         landkode:
           type: string
         fom:
-          type: string
-          nullable: true
+          $ref: "#/components/schemas/ValgfriDato"
         tom:
-          type: string
-          nullable: true
+          $ref: "#/components/schemas/ValgfriDato"
     Ansatte:
       properties:
         antall:
@@ -160,12 +158,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Arbeidsforhold"
-    Dato:
-      type: string
-      format: date
-      description: Dato
-      nullable: true
-      example: "2021-01-30"
     Delresultat:
       type: array
       items:
@@ -201,14 +193,11 @@ components:
     Folkeregistermetadata:
       properties:
         ajourholdstidspunkt:
-          type: string
-          nullable: true
+          $ref: "#/components/schemas/ValgfriDatoTid"
         gyldighetstidspunkt:
-          type: string
-          nullable: true
+          $ref: "#/components/schemas/ValgfriDatoTid"
         opphoerstidspunkt:
-          type: string
-          nullable: true
+          $ref: "#/components/schemas/ValgfriDatoTid"
     FolkeregisterPersonstatus:
       properties:
         personstatus:
@@ -222,9 +211,9 @@ components:
     InputPeriode:
       properties:
         fom:
-          $ref: "#/components/schemas/Dato"
+          $ref: "#/components/schemas/ValgfriDato"
         tom:
-          $ref: "#/components/schemas/Dato"
+          $ref: "#/components/schemas/ValgfriDato"
     Journalpost:
       properties:
         journalpostId:
@@ -269,8 +258,18 @@ components:
           type: string
         prioritet:
           type: string
+          enum:
+            - HOY
+            - NORM
+            - LAV
         status:
           type: string
+          enum:
+            - OPPRETTET
+            - AAPNET
+            - UNDER_BEHANDLING
+            - FERDIGSTILT
+            - FEILREGISTRERT
         tema:
           type: string
           nullable: true
@@ -366,17 +365,26 @@ components:
       properties:
         regelId:
           type: string
+          description: Identifiserer en regel
         avklaring:
           type: string
+          description: Spørsmål som regelen avklarer
         begrunnelse:
           type: string
+          description: Begrunnelse for avklaringen
         svar:
           type: string
+          enum:
+            - JA
+            - NEI
+            - UAVKLART
         harDekning:
           type: string
           nullable: true
+          description: Har den angitte ytelsen dekning?
         dekning:
           type: string
+          description: ???
         delresultat:
           type: array
           items:
@@ -416,3 +424,14 @@ components:
           $ref: "#/components/schemas/InputPeriode"
         rapporteringsperiode:
           type: string
+    ValgfriDato:
+      type: string
+      format: date
+      description: Dato
+      nullable: true
+      example: "2021-01-30"
+    ValgfriDatoTid:
+      type: string
+      description: Dato tid
+      nullable: true
+      example: "2021-01-30T17:32:28"
