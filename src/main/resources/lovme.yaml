@@ -18,15 +18,8 @@ paths:
       requestBody:
         content:
           application/json:
-            schema:      # Request body contents
-              type: object
-              properties:
-                fnr:
-                  type: string
-                periode:
-                  $ref: "#/components/schemas/InputPeriode"
-                brukerinput:
-                  $ref: "#/components/schemas/BrukerInput"
+            schema:
+              $ref: "#/components/schemas/Request"
       responses:
         200:
           description: Expected response to a valid request
@@ -59,13 +52,13 @@ components:
           type: number
           nullable: true
         bruksperiode:
-          $ref: "#/components/schemas/InputPeriode"
+          $ref: "#/components/schemas/Bruksperiode"
         gyldighetsperiode:
-          $ref: "#/components/schemas/InputPeriode"
+          $ref: "#/components/schemas/Gyldighetsperiode"
     Arbeidsavtale:
       properties:
         periode:
-          $ref: "#/components/schemas/InputPeriode"
+          $ref: "#/components/schemas/Periode"
         yrkeskode:
           type: string
         skipsregister:
@@ -77,7 +70,7 @@ components:
     Arbeidsforhold:
       properties:
         periode:
-          $ref: "#/components/schemas/InputPeriode"
+          $ref: "#/components/schemas/Periode"
         utenlandsopphold:
           type: array
           items:
@@ -114,6 +107,12 @@ components:
       properties:
         arbeidUtenforNorge:
           type: boolean
+    Bruksperiode:
+      properties:
+        fom:
+          $ref: "#/components/schemas/ValgfriDato"
+        tom:
+          $ref: "#/components/schemas/ValgfriDato"
     Datagrunnlag:
       properties:
         periode:
@@ -208,6 +207,12 @@ components:
         tom:
           type: string
           nullable: true
+    Gyldighetsperiode:
+      properties:
+        fom:
+          $ref: "#/components/schemas/ValgfriDato"
+        tom:
+          $ref: "#/components/schemas/ValgfriDato"
     InputPeriode:
       properties:
         fom:
@@ -273,6 +278,12 @@ components:
         tema:
           type: string
           nullable: true
+    Periode:
+      properties:
+        fom:
+          $ref: "#/components/schemas/ValgfriDato"
+        tom:
+          $ref: "#/components/schemas/ValgfriDato"
     Personhistorikk:
       properties:
         statsborgerskap:
@@ -344,6 +355,14 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Adresse"
+    Request:
+      properties:
+        fnr:
+          type: string
+        periode:
+          $ref: "#/components/schemas/InputPeriode"
+        brukerinput:
+          $ref: "#/components/schemas/BrukerInput"
     Response:
       properties:
         datagrunnlag:
@@ -421,7 +440,7 @@ components:
         landkode:
           type: string
         periode:
-          $ref: "#/components/schemas/InputPeriode"
+          $ref: "#/components/schemas/ValgfriPeriode"
         rapporteringsperiode:
           type: string
     ValgfriDato:
@@ -435,3 +454,10 @@ components:
       description: Dato tid
       nullable: true
       example: "2021-01-30T17:32:28"
+    ValgfriPeriode:
+      properties:
+        fom:
+          $ref: "#/components/schemas/ValgfriDato"
+        tom:
+          $ref: "#/components/schemas/ValgfriDato"
+      nullable: true
