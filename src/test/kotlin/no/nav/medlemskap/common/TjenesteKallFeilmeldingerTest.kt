@@ -360,12 +360,13 @@ class TjenesteKallFeilmeldingerTest {
     private fun personhistorikk(): Personhistorikk {
         return Personhistorikk(
             statsborgerskap = listOf(Statsborgerskap("NOR", enDato(), enAnnenDato())),
-            personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSA, enDato(), enAnnenDato())),
+            personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.bosatt, enDato(), enAnnenDato())),
             bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
             kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
             oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
             sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr(), folkeregistermetadata())),
-            familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata()))
+            familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata())),
+            doedsfall = emptyList()
         )
     }
 

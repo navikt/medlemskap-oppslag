@@ -12,8 +12,9 @@
       "fom" : "2000-01-01",
       "tom" : null
     } ],
+    "doedsfall": [],
     "personstatuser" : [ {
-      "personstatus" : "BOSA",
+      "personstatus" : "bosatt",
       "fom" : "2000-01-01",
       "tom" : null
     } ],

@@ -10,7 +10,7 @@ Egenskap: Regelflyt for reglene 11.5 for bruker som har ektefelle og barn. Ektef
 
     Og følgende personstatuser i personhistorikken
       | Personstatus | Fra og med dato | Til og med dato |
-      | BOSA         | 01.01.2000      |                 |
+      | bosatt       | 01.01.2000      |                 |
 
     Og følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |

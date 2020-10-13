@@ -23,7 +23,12 @@ Egenskap: Borgere som ikke er EØS-borgere skal ha uavklart medlemskap i MVP
         "tom": null
       }
     ],
-    "personstatuser": [],
+    "doedsfall": [],
+    "personstatuser" : [ {
+      "personstatus" : "bosatt",
+      "fom" : "2000-01-01",
+      "tom" : null
+    } ],
     "bostedsadresser": [
          {
         "landkode": "NOR",

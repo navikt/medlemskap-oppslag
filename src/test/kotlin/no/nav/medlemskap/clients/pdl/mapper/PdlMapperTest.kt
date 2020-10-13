@@ -86,7 +86,7 @@ class PdlMapperTest {
 
     val pdlDataJson =
         """
- {
+{
             "familierelasjoner": [
                 {
                    "relatertPersonsIdent" : "09069534888", 
@@ -179,6 +179,35 @@ class PdlMapperTest {
                         "ajourholdstidspunkt": "1991-08-01T10:01:01"
                     }
                  }
+            ],
+            "doedsfall":[], 
+            "folkeregisterpersonstatus": [
+              {
+                "status": "bosatt",
+                "forenkletStatus": "bosattEtterFolkeregisterloven",
+                "folkeregistermetadata": {
+                  "ajourholdstidspunkt": "2020-09-30T16:17:23",
+                  "gyldighetstidspunkt": "2020-09-30T16:17:23",
+                  "opphoerstidspunkt": null,
+                  "kilde": "Dolly",
+                  "aarsak": null,
+                  "sekvens": null
+                },
+                "metadata": {
+                  "opplysningsId": "cc2650f4-5acc-4a53-9a74-223f21c82478",
+                  "master": "Freg",
+                  "endringer": [
+                    {
+                      "type": "OPPRETT",
+                      "registrert": "2020-09-30T16:17:23",
+                      "registrertAv": "Folkeregisteret",
+                      "systemkilde": "FREG",
+                      "kilde": "Dolly"
+                    }
+                  ],
+                  "historisk": false
+                }
+              }
             ]
         }
         """.trimIndent()

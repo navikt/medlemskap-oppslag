@@ -10,7 +10,7 @@ Egenskap: Regel 10: Hvis postadresse eller midlertidig adresse er utenlandsk, s�
 
     Og følgende personstatuser i personhistorikken
       | Personstatus | Fra og med dato | Til og med dato |
-      | FØDR         | 01.01.2000      |                 |
+      | bosatt       | 01.01.2000      |                 |
 
     Og følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |

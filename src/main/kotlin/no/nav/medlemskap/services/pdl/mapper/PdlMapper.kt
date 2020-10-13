@@ -23,25 +23,47 @@ object PdlMapper {
         val sivilstand: List<Sivilstand> = mapSivilstander(person.sivilstand)
         val familierelasjoner: List<Familierelasjon> = mapFamilierelasjoner(person.familierelasjoner)
         val personstatuser: List<FolkeregisterPersonstatus> = mapPersonStatuser(person.folkeregisterpersonstatus)
+        val doedsfall: List<LocalDate?> = mapDoedsfall(person.doedsfall)
 
         return Personhistorikk(
             statsborgerskap = statsborgerskap,
-            personstatuser = personstatuser,
             bostedsadresser = bostedsadresser,
             sivilstand = sivilstand,
             familierelasjoner = familierelasjoner,
             kontaktadresser = kontaktadresser,
-            oppholdsadresser = oppholdsadresser
+            oppholdsadresser = oppholdsadresser,
+            personstatuser = personstatuser,
+            doedsfall = doedsfall
         )
+    }
+
+    private fun mapDoedsfall(doedsfall: List<HentPerson.Doedsfall>): List<LocalDate?> {
+        return doedsfall.map {
+            convertToLocalDate(it.doedsdato)
+        }
     }
 
     private fun mapPersonStatuser(folkeregisterpersonstatus: List<HentPerson.Folkeregisterpersonstatus>): List<FolkeregisterPersonstatus> {
         return folkeregisterpersonstatus.map {
             FolkeregisterPersonstatus(
-                personstatus = PersonStatus.ABNR,
-                fom = convertToLocalDate(it.folkeregistermetadata.gyldighetstidspunkt),
-                tom = convertToLocalDate(it.folkeregistermetadata.opphoerstidspunkt)
+                personstatus = mapStatus(it.status),
+                fom = convertToLocalDateTime(it.folkeregistermetadata.gyldighetstidspunkt)?.toLocalDate(),
+                tom = convertToLocalDateTime(it.folkeregistermetadata.opphoerstidspunkt)?.toLocalDate()
             )
+        }
+    }
+
+    fun mapStatus(status: String): PersonStatus {
+        return when (status) {
+            "doed" -> PersonStatus.doed
+            "bosatt" -> PersonStatus.bosatt
+            "foedselsregistrert" -> PersonStatus.foedselsregistrert
+            "ikkeBosatt" -> PersonStatus.ikkeBosatt
+            "inaktiv" -> PersonStatus.inaktiv
+            "midlertidig" -> PersonStatus.midlertidig
+            "opphoert" -> PersonStatus.opphoert
+            "utflyttet" -> PersonStatus.utflyttet
+            else -> throw DetteSkalAldriSkje("Personstatus er ikke tilgjengelig")
         }
     }
 
@@ -129,7 +151,7 @@ object PdlMapper {
         }.sortedBy { it.fom }
     }
 
-    private fun mapFamileRelasjonsrolle(rolle: HentPerson.Familierelasjonsrolle?): no.nav.medlemskap.domene.Familierelasjonsrolle? {
+    private fun mapFamileRelasjonsrolle(rolle: HentPerson.Familierelasjonsrolle?): Familierelasjonsrolle? {
         return rolle.let {
             when (it) {
                 HentPerson.Familierelasjonsrolle.BARN -> Familierelasjonsrolle.BARN

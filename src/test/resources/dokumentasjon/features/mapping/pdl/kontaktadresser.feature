@@ -32,8 +32,8 @@ Egenskap: Mapping av kontaktadresser fra PDL HentPerson.Kontaktadresse
 
   Scenario: En person som først har utenlandsk kontaktadresse, og så norsk kontaktadresse
     Gitt følgende kontaktadresser fra PDL:
-      | Utenlandsk adresse landkode | Gyldig fra og med   | Gyldig til og med   | Spørsmål til PDL                      | Svar
-      | BEL                         |                     | 2015-03-25 10:03:03 | Vil det ligge en norsk adresse først? | Nei, ikke alltid. (Dobbelsjekk med Hanne)
+      | Utenlandsk adresse landkode | Gyldig fra og med   | Gyldig til og med   | Spørsmål til PDL                      |
+      | BEL                         |                     | 2015-03-25 10:03:03 | Vil det ligge en norsk adresse først? |
       |                             | 2016-04-25 14:03:03 |                     |                                       |
 
     Når kontaktadresser mappes
@@ -49,7 +49,7 @@ Egenskap: Mapping av kontaktadresser fra PDL HentPerson.Kontaktadresse
       | BEL                                     | 2016-04-25 14:03:03 |                   | Vil det ligge en norsk adresse først? Kan både ut. fritt format og ut.format være angitt? |
 
 
-    // Gjeldende adresse har max alltid ett utfylt format
+
     Når kontaktadresser mappes
 
     Så skal mappede kontaktadresser være

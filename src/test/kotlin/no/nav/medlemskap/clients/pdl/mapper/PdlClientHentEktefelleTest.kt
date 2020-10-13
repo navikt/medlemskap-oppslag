@@ -71,31 +71,61 @@ class PdlClientHentEktefelleTest {
 
     val pdlResponse =
         """
-        {
+     {
             "data": {
-                "hentPerson": {
-                    "familierelasjoner":[],
-                    "statsborgerskap": [
-                            {
-                                "land":"NOR",
-                                "gyldigFraOgMed": "2010-10-21",
-                                "gyldigTilOgMed":  null}
-                    ],
-                 "sivilstand": [
-                       {
-                              "type": "GIFT", 
-                              "gyldigFraOgMed": "1990-01-01",
-                              "relatertVedSivilstand": "15076500565",
-                              "folkeregistermetadata": {
-                              "gyldighetstidspunkt": "1990-10-10T10:01:01"
-                              }
-                       }
-                  ],
-                    "bostedsadresse":[],
-                    "kontaktadresse":[], 
-                    "oppholdsadresse":[]
-                 }
-             }   
-         }     
+              "hentPerson": {
+                "familierelasjoner": [
+                  {
+                    "relatertPersonsIdent": "20041276216",
+                    "relatertPersonsRolle": "BARN",
+                    "minRolleForPerson": "FAR",
+                    "folkeregistermetadata": {
+                      "ajourholdstidspunkt": "2020-09-30T16:17:23",
+                      "gyldighetstidspunkt": "2020-09-30T16:17:23",
+                      "opphoerstidspunkt": null
+                    }
+                  }
+                ],
+                "statsborgerskap": [
+                  {
+                    "land": "NOR",
+                    "gyldigFraOgMed": "1973-11-11",
+                    "gyldigTilOgMed": null
+                  }
+                ],
+                "sivilstand": [
+                  {
+                    "type": "GIFT",
+                    "gyldigFraOgMed": "2020-09-15",
+                    "relatertVedSivilstand": "13128619857",
+                    "folkeregistermetadata": {
+                      "ajourholdstidspunkt": "2020-09-30T16:17:24",
+                      "gyldighetstidspunkt": "2020-09-30T16:17:24",
+                      "opphoerstidspunkt": null
+                    }
+                  }
+                ],
+                "bostedsadresse": [
+                  {
+                    "angittFlyttedato": "1973-11-11",
+                    "vegadresse": {
+                      "postnummer": "4994"
+                    },
+                    "matrikkeladresse": null,
+                    "ukjentBosted": null,
+                    "folkeregistermetadata": {
+                      "ajourholdstidspunkt": "2020-09-30T16:17:23",
+                      "gyldighetstidspunkt": "2020-09-30T16:17:23",
+                      "opphoerstidspunkt": null
+                    }
+                  }
+                ],
+                "doedsfall": [],
+                "folkeregisterpersonstatus": [],
+                "kontaktadresse": [],
+                "oppholdsadresse": []
+              }
+            }
+}  
         """.trimIndent()
 }

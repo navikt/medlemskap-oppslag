@@ -19,7 +19,7 @@ Egenskap: Man er medlem hvis man er EØS-borger som bor i Norge, og som har jobb
 
     Og følgende personstatuser i personhistorikken
       | Personstatus | Fra og med dato | Til og med dato |
-      | FØDR         | 01.01.2012      |                 |
+      | bosatt       | 01.01.2012      |                 |
 
     Og følgende statsborgerskap i personhistorikken
       | Landkode          | Fra og med dato | Til og med dato |
