@@ -2,15 +2,19 @@ openapi: "3.0.3"
 info:
   version: 1.0.0
   title: Lovvalg og medlemskap
-  license:
-    name: MIT
 servers:
-  - url: http://petstore.swagger.io/v1
+  - url: https://medlemskap-oppslag.nais.preprod.local
+    description: preproduksjon
+  - url: https://medlemskap-oppslag.nais.adeo.no
+    description: produksjon
 paths:
   /:
     post:
       summary: Avgjøre om lovvalg er norsk, og om bruker er medlem av folketrygden
       operationId: avgjørLovvalgOgMedlemskap
+      security:
+        - oAuth2:
+          - api://<client_id>/.default
       tags:
         - Lovvalg
         - Medlemskap
@@ -22,13 +26,17 @@ paths:
               $ref: "#/components/schemas/Request"
       responses:
         200:
-          description: Expected response to a valid request
+          description: Forventet response på en gyldig request
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/Response"
-        201:
-          description: Null response
+        400:
+          description: Ugyldig request eller annen feil
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
         default:
           description: unexpected error
           content:
@@ -37,11 +45,19 @@ paths:
                 $ref: "#/components/schemas/Error"
 
 components:
+  securitySchemes:
+    oAuth2:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: https://login.microsoftonline.com/966ac572-f5b7-4bbe-aa88-c76419c0f851/oauth2/v2.0/token
+          scopes:
+            api://<client_id>/:default: client tilgang
   schemas:
     Adresse:
       properties:
         landkode:
-          type: string
+          $ref: "#/components/schemas/Landkode"
         fom:
           $ref: "#/components/schemas/ValgfriDato"
         tom:
@@ -49,7 +65,7 @@ components:
     Ansatte:
       properties:
         antall:
-          type: number
+          type: integer
           nullable: true
         bruksperiode:
           $ref: "#/components/schemas/Bruksperiode"
@@ -67,6 +83,7 @@ components:
         stillingsprosent:
           type: number
           multipleOf: 0.01
+          nullable: true
     Arbeidsforhold:
       properties:
         periode:
@@ -77,10 +94,19 @@ components:
             $ref: "#/components/schemas/Utenlandsopphold"
         arbeidsgivertype:
           type: string
+          enum:
+            - Organisasjon
+            - Person
         arbeidsgiver:
           $ref: "#/components/schemas/Arbeidsgiver"
         arbeidsforholdstype:
           type: string
+          enum:
+            - FRILANSER
+            - MARITIM
+            - NORMALT
+            - FORENKLET
+            - ANDRE
         arbeidsavtaler:
           type: array
           items:
@@ -89,20 +115,25 @@ components:
       properties:
         type:
           type: string
+          nullable: true
         organisasjonsnummer:
           type: string
+          nullable: true
         ansatte:
           type: array
           items:
             $ref: "#/components/schemas/Ansatte"
+          nullable: true
         konkursStatus:
           type: array
           items:
             type: string
+          nullable: true
         juridiskEnhetEnhetstypeMap:
           type: object
           additionalProperties:
             $ref: "#/components/schemas/JuridiskEnhetstype"
+          nullable: true
     BrukerInput:
       properties:
         arbeidUtenforNorge:
@@ -113,6 +144,13 @@ components:
           $ref: "#/components/schemas/ValgfriDato"
         tom:
           $ref: "#/components/schemas/ValgfriDato"
+      nullable: true
+    Code:
+      properties:
+        value:
+          type: integer
+        description:
+          type: string
     Datagrunnlag:
       properties:
         periode:
@@ -139,10 +177,12 @@ components:
             $ref: "#/components/schemas/Journalpost"
         ytelse:
           type: string
+          example: SYKEPENGER, DAGPENGER, ENSLIG_FORSORGER
         dataOmBarn:
           type: array
           items:
             $ref: "#/components/schemas/DataOmBarn"
+          nullable: true
         dataOmEktefelle:
           $ref: "#/components/schemas/DataOmEktefelle"
     DataOmBarn:
@@ -157,6 +197,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Arbeidsforhold"
+      nullable: true
     Delresultat:
       type: array
       items:
@@ -170,14 +211,17 @@ components:
           nullable: true
     Error:
       required:
-        - code
+        - url
         - message
       properties:
-        code:
-          type: integer
-          format: int32
+        url:
+          type: string
         message:
           type: string
+        cause:
+          type: string
+        code:
+          $ref: "#/components/schemas/Code"
     Familierelasjon:
       properties:
         relatertPersonsIdent:
@@ -197,22 +241,22 @@ components:
           $ref: "#/components/schemas/ValgfriDatoTid"
         opphoerstidspunkt:
           $ref: "#/components/schemas/ValgfriDatoTid"
+      nullable: true
     FolkeregisterPersonstatus:
       properties:
         personstatus:
           type: string
         fom:
-          type: string
-          nullable: true
+          $ref: "#/components/schemas/ValgfriDato"
         tom:
-          type: string
-          nullable: true
+          $ref: "#/components/schemas/ValgfriDato"
     Gyldighetsperiode:
       properties:
         fom:
           $ref: "#/components/schemas/ValgfriDato"
         tom:
           $ref: "#/components/schemas/ValgfriDato"
+      nullable: true
     InputPeriode:
       properties:
         fom:
@@ -241,6 +285,12 @@ components:
             $ref: "#/components/schemas/Dokument"
     JuridiskEnhetstype:
       type: string
+    Landkode:
+      type: string
+      minLength: 2
+      maxLength: 3
+      description: Landkode med to eller tre tegn
+      example: NOR
     Medlemskap:
       properties:
         dekning:
@@ -403,7 +453,8 @@ components:
           description: Har den angitte ytelsen dekning?
         dekning:
           type: string
-          description: ???
+          description: Angir hva slags dekning brukeren har ifølge Folketrygdloven
+          example: FTL_2-6
         delresultat:
           type: array
           items:
@@ -415,11 +466,9 @@ components:
         type:
           type: string
         gyldigFraOgMed:
-          type: string
-          nullable: true
+          $ref: "#/components/schemas/ValgfriDato"
         gyldigTilOgMed:
-          type: string
-          nullable: true
+          $ref: "#/components/schemas/ValgfriDato"
         relatertVedSivilstand:
           type: string
           nullable: true
@@ -428,21 +477,21 @@ components:
     Statsborgerskap:
         properties:
           landkode:
-            type: string
+            $ref: "#/components/schemas/Landkode"
           fom:
-            type: string
-            nullable: true
+            $ref: "#/components/schemas/ValgfriDato"
           tom:
-            type: string
-            nullable: true
+            $ref: "#/components/schemas/ValgfriDato"
     Utenlandsopphold:
       properties:
         landkode:
-          type: string
+          $ref: "#/components/schemas/Landkode"
         periode:
           $ref: "#/components/schemas/ValgfriPeriode"
         rapporteringsperiode:
           type: string
+          example: 2015-02
+      nullable: true
     ValgfriDato:
       type: string
       format: date
