@@ -55,7 +55,8 @@ Egenskap: Regel 3: Har bruker sammenhengende arbeidsforhold siste 12 måneder?
       | 01.01.2019 | 15.03.2019 | 16.03.2019 |            | Ja   | Arbeidsforhold som er sammenhengende        |
       | 01.01.2019 | 15.03.2019 | 17.03.2019 |            | Ja   | Arbeidsforhold med en dags opphold          |
       | 01.01.2019 |            | 17.03.2019 | 25.04.2019 | Ja   | Første arbeidsforhold uten til dato         |
-      | 01.01.2019 | 15.03.2019 | 19.03.2019 |            | Nei  | Arbeidsforhold med tre dagers opphold       |
+      | 01.01.2019 | 15.03.2019 | 18.03.2019 |            | Ja   | Arbeidsforhold med to dager opphold         |
+      | 01.01.2019 | 15.03.2019 | 19.03.2019 |            | Nei  | Arbeidsforhold med tre dager opphold        |
       | 01.01.2019 | 15.03.2019 | 17.04.2019 |            | Nei  | Arbeidsforhold som ikke er sammenhengende   |
       | 01.01.2016 | 15.03.2019 | 16.03.2019 | 29.05.2019 | Nei  | Mangler arbeidsforhold i bakkant            |
       | 01.03.2019 | 15.03.2019 | 16.03.2019 | 29.05.2019 | Nei  | Mangler arbeidsforhold i forkant og bakkant |
