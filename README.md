@@ -10,6 +10,9 @@ Denne tjenesten gjør REST-kall mot følgende tjenester/registre:
 * JOARK: Journalarkiv
 * PDL: Ny persondataløsning, mangler foreløpig utenlandsopphold 
 
+# OpenAPI spesifikasjon for tjenesten
+[OpenAPI spesifikasjon](src/main/resources/lovme.yaml)
+
 # Funksjonell dokumentasjon
 * [Funksjonell dokumentasjon](src/test/resources/dokumentasjon/README.md)
 
