@@ -231,6 +231,12 @@ class StatsborgerskapMapper : RadMapper<Statsborgerskap> {
     }
 }
 
+class DoedsfallMapper : RadMapper<LocalDate> {
+    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): LocalDate {
+        return domenespråkParser.parseDato(DOEDSDATO, rad)
+    }
+}
+
 class InputPeriodeMapper : RadMapper<InputPeriode> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): InputPeriode {
         return InputPeriode(
@@ -487,6 +493,7 @@ enum class Domenebegrep(val nøkkel: String) {
     ARBEIDSGIVER_ID("Arbeidsgiver Id"),
     ARBEIDSGIVERTYPE("Arbeidsgivertype"),
     DEKNING("Dekning"),
+    DOEDSDATO("Doedsdato"),
     ER_MEDLEM("Er medlem"),
     FRA_OG_MED_DATO("Fra og med dato"),
     GYLDIG_FRA_OG_MED("Gyldig fra og med dato"),

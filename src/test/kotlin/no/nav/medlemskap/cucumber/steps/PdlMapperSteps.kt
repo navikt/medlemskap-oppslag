@@ -42,6 +42,10 @@ class PdlMapperSteps : No {
             pdlPersonBuilder.familierelasjoner = pdlDomenespråkParser.mapDataTable(dataTable, PdlDomenespråkParser.FamilerelasjonMapper())
         }
 
+        Gitt<DataTable>("følgende opplysninger om doedsfall fra PDL:") { dataTable: DataTable? ->
+            pdlPersonBuilder.doedsfall = pdlDomenespråkParser.mapDataTable(dataTable, PdlDomenespråkParser.DoedsfallMapper())
+        }
+
         Når("statsborgerskap mappes") {
             personhistorikk = mapTilPersonhistorikk()
         }
@@ -59,6 +63,10 @@ class PdlMapperSteps : No {
         }
 
         Når("sivilstander mappes") {
+            personhistorikk = mapTilPersonhistorikk()
+        }
+
+        Når("doedsfall mappes") {
             personhistorikk = mapTilPersonhistorikk()
         }
 
@@ -94,6 +102,11 @@ class PdlMapperSteps : No {
             personhistorikk!!.oppholdsadresser.shouldContainExactly(oppholdsadresserForventet)
         }
 
+        Så<DataTable>("skal mappede doedsfall være") { dataTable: DataTable? ->
+            val doedsfallForventet = domenespråkParser.mapDataTable(dataTable, DoedsfallMapper())
+            personhistorikk?.doedsfall.shouldContainExactly(doedsfallForventet)
+        }
+
         Så<DataTable>("skal mappede sivilstander være") { dataTable: DataTable? ->
             val sivilstanderForventet = domenespråkParser.mapDataTable(dataTable, SivilstandMapper())
 
@@ -122,7 +135,7 @@ class PdlMapperSteps : No {
         var sivilstander: List<HentPerson.Sivilstand> = emptyList()
         var familierelasjoner: List<HentPerson.Familierelasjon> = emptyList()
         val personstatuser: List<HentPerson.Folkeregisterpersonstatus> = emptyList()
-        val doedsfall: List<HentPerson.Doedsfall> = emptyList()
+        var doedsfall: List<HentPerson.Doedsfall> = emptyList()
 
         fun build(): HentPerson.Person {
             return HentPerson.Person(

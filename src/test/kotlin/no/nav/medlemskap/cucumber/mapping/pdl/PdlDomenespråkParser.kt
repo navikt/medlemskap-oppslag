@@ -130,6 +130,15 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         }
     }
 
+    class DoedsfallMapper : RadMapper<HentPerson.Doedsfall> {
+
+        override fun mapRad(rad: Map<String, String>): HentPerson.Doedsfall {
+            return HentPerson.Doedsfall(
+                doedsdato = parseValgfriString(Domenebegrep.DOEDSDATO.nøkkel, rad)
+            )
+        }
+    }
+
     enum class Domenebegrep(val nøkkel: String) {
         GYLDIG_FRA_OG_MED_DATO("Gyldig fra og med dato"),
         GYLDIG_TIL_OG_MED_DATO("Gyldig til og med dato"),
@@ -144,6 +153,7 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         RELATERT_VED_SIVILSTAND("Relatert ved sivilstand"),
         SIVILSTANDSTYPE("Type"),
         UTENLANDSK_ADRESSE_LANDKODE("Utenlandsk adresse landkode"),
-        UTENLANDSK_ADRESSE_FRITT_FORMAT_LANDKODE("Utenlandsk adresse frittformat landkode")
+        UTENLANDSK_ADRESSE_FRITT_FORMAT_LANDKODE("Utenlandsk adresse frittformat landkode"),
+        DOEDSDATO("Doedsdato")
     }
 }
