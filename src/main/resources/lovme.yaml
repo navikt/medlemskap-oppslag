@@ -202,6 +202,12 @@ components:
       type: array
       items:
         $ref: "#/components/schemas/Resultat"
+    Dato:
+      type: string
+      format: date
+      description: Dato
+      nullable: true
+      example: "2021-01-30"
     Dokument:
       properties:
         dokumentId:
@@ -283,6 +289,7 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Dokument"
+          nullable: true
     JuridiskEnhetstype:
       type: string
     Landkode:
@@ -295,22 +302,26 @@ components:
       properties:
         dekning:
           type: string
+          nullable: true
         fraOgMed:
-          type: string
+          $ref: "#/components/schemas/Dato"
         tilOgMed:
-          type: string
+          $ref: "#/components/schemas/Dato"
         erMedlem:
           type: boolean
         lovvalg:
           type: string
+          nullable: true
         lovvalgsland:
           type: string
+          nullable: true
         periodeStatus:
           type: string
+          nullable: true
     Oppgave:
       properties:
         aktivDato:
-          type: string
+          $ref: "#/components/schemas/Dato"
         prioritet:
           type: string
           enum:
@@ -459,8 +470,6 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Resultat"
-        tag:
-          type: string
     Sivilstand:
       properties:
         type:
