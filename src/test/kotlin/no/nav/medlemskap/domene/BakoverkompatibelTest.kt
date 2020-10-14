@@ -197,7 +197,7 @@ private fun arbeidsforhold(): Arbeidsforhold {
         OpplysningspliktigArbeidsgiverType.Organisasjon,
         Arbeidsgiver("type", "organisasjonsnummer", listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus"), juridiskEnhetstypeMap),
         Arbeidsforholdstype.NORMALT,
-        listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble()))
+        listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble()))
     )
 }
 
@@ -392,6 +392,10 @@ private val forventetResponse =
                          "fom" : "1975-10-10",
                          "tom" : "2020-08-01"
                        },
+                       "gyldighetsperiode" : {
+                         "fom" : "1975-10-10",
+                         "tom" : "2020-08-01"
+                       },
                        "yrkeskode" : "yrkeskode",
                        "skipsregister" : "NIS",
                        "stillingsprosent" : 100.0
@@ -473,6 +477,10 @@ private val forventetResponse =
           "arbeidsforholdstype" : "NORMALT",
           "arbeidsavtaler" : [ {
             "periode" : {
+              "fom" : "1975-10-10",
+              "tom" : "2020-08-01"
+            },
+            "gyldighetsperiode" : {
               "fom" : "1975-10-10",
               "tom" : "2020-08-01"
             },
