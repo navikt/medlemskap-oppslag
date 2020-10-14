@@ -75,6 +75,8 @@ components:
       properties:
         periode:
           $ref: "#/components/schemas/Periode"
+        gyldighetsperiode:
+          $ref: "#/components/schemas/Periode"
         yrkeskode:
           type: string
         skipsregister:

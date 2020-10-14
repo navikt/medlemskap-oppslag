@@ -53,6 +53,7 @@ fun mapArbeidsAvtaler(arbeidsforhold: AaRegArbeidsforhold): List<Arbeidsavtale> 
     return arbeidsforhold.arbeidsavtaler.map {
         Arbeidsavtale(
             periode = mapPeriodeTilArbeidsavtale(it),
+            gyldighetsperiode = Periode(it.gyldighetsperiode.fom, it.gyldighetsperiode.tom),
             skipsregister = mapSkipsregister(it),
             stillingsprosent = it.stillingsprosent,
             yrkeskode = it.yrke

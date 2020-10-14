@@ -57,6 +57,10 @@ Egenskap: Borgere som ikke er EØS-borgere skal ha uavklart medlemskap i MVP
             "fom": "2020-01-30",
             "tom": "2020-06-30"
           },
+          "gyldighetsperiode": {
+            "fom": "2020-01-30",
+            "tom": "2020-06-30"
+          },
           "yrkeskode": "0001"
         }
       ]

@@ -312,6 +312,10 @@ object DomenespråkParser : BasisDomeneParser() {
                     parseDato(FRA_OG_MED_DATO, rad),
                     parseValgfriDato(TIL_OG_MED_DATO, rad)
                 ),
+                Periode(
+                    parseDato(FRA_OG_MED_DATO, rad),
+                    parseValgfriDato(TIL_OG_MED_DATO, rad)
+                ),
                 parseString(YRKESKODE, rad),
                 parseSkipsregister(rad),
                 parseDouble(STILLINGSPROSENT, rad)
