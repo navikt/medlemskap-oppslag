@@ -112,20 +112,17 @@ class BakoverkompatibelTest {
 }
 
 suspend fun mockCreateDatagrunnlag(
-    fnr: String,
+    request: Request,
     callId: String,
-    periode: InputPeriode,
-    brukerinput: Brukerinput,
     services: Services,
-    clientId: String?,
-    ytelseFraRequest: Ytelse?
+    clientId: String?
 ): Datagrunnlag = runBlocking {
 
     val ytelse = Ytelse.SYKEPENGER
 
     Datagrunnlag(
-        periode = periode,
-        brukerinput = brukerinput,
+        periode = request.periode,
+        brukerinput = request.brukerinput,
         pdlpersonhistorikk = personhistorikk(),
         medlemskap = listOf(Medlemskap("dekning", enDato(), enAnnenDato(), true, Lovvalg.ENDL, "NOR", PeriodeStatus.GYLD)),
         arbeidsforhold = listOf(arbeidsforhold()),
