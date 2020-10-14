@@ -2,7 +2,7 @@
 ## encoding: UTF-8
 #
 #
-#Egenskap: Regel 11.2: Har bruker ektefelle i TPS/PDL?
+#Egenskap: Regel 11.2: Har bruker ektefelle i PDL?
 #
 #
 #  Scenario: Regel 11.2 - Gift og så skilt
