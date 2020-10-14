@@ -39,14 +39,7 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
             }
         },
     	doedsfall{
-    			doedsdato,
-          metadata{
-            opplysningsId,
-            master,
-            endringer{
-              type
-            }
-          }
+    			doedsdato
   		},
     	folkeregisterpersonstatus {
     	   status
