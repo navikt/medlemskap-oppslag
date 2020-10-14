@@ -22,8 +22,8 @@ class HarBrukerJobbet25ProsentEllerMerRegel(
 ) : LovvalgRegel(regelId, ytelse, periode) {
 
     override fun operasjon(): Resultat {
-        gjennomsnittligStillingsprosentCounter(arbeidsforhold.beregnGjennomsnittligStillingsprosentForGrafana(kontrollPeriodeForArbeidsforhold), ytelse)
-        stillingsprosentSkyggeCounter(arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTidSkygge(25.0, kontrollPeriodeForArbeidsforhold), ytelse)
+        gjennomsnittligStillingsprosentCounter(arbeidsforhold.beregnGjennomsnittligStillingsprosentForGrafana(kontrollPeriodeForArbeidsforhold), ytelse).increment()
+        stillingsprosentSkyggeCounter(arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTidSkygge(25.0, kontrollPeriodeForArbeidsforhold), ytelse).increment()
         return when {
             arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollPeriodeForArbeidsforhold, ytelse) -> ja()
             else -> nei("Bruker har ikke jobbet 25% eller mer i løpet av periode.")
