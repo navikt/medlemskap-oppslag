@@ -11,16 +11,14 @@ import kotlin.math.abs
 object ArbeidsforholdFunksjoner {
     private val statligeJuridiskeEnhetstyper = listOf("STAT", "FKF", "FYLK", "KF", "KOMM", "SF")
 
-    fun erArbeidsforholdetStatlig(arbeidsforhold: List<Arbeidsforhold>, kontrollPeriode: Kontrollperiode): Boolean =
-        arbeidsforhold.erArbeidsgiverStatligEllerKommunal(kontrollPeriode)
+    fun erArbeidsforholdetStatlig(arbeidsforhold: List<Arbeidsforhold>, kontrollPeriode: Kontrollperiode, ytelse: Ytelse): Boolean =
+        vektetStatligArbeidsforhold(arbeidsforhold, kontrollPeriode, ytelse)
 
-    infix fun List<Arbeidsforhold>.erArbeidsgiverStatligEllerKommunal(kontrollPeriode: Kontrollperiode): Boolean =
-            this.arbeidsforholdForKontrollPeriode(
-                    Kontrollperiode(kontrollPeriode.tom.minusMonths(3), kontrollPeriode.tom)
-            ).any {
-                hentJuridiskEnhetstypeFraMap(it.arbeidsgiver.juridiskEnhetEnhetstypeMap)
-                        .any { enhetstype -> enhetstype in statligeJuridiskeEnhetstyper }
-            }
+    private fun vektetStatligArbeidsforhold(arbeidsforhold: List<Arbeidsforhold>, kontrollPeriode: Kontrollperiode, ytelse: Ytelse): Boolean =
+        arbeidsforhold.filter {
+            hentJuridiskEnhetstypeFraMap(it.arbeidsgiver.juridiskEnhetEnhetstypeMap)
+                .any { enhetstype -> enhetstype in statligeJuridiskeEnhetstyper }
+        }.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollPeriode, ytelse)
 
     private fun hentJuridiskEnhetstypeFraMap(juridiskEnhetEnhetstypeMap: Map<String, String?>?): List<String> {
         if (juridiskEnhetEnhetstypeMap != null) {
