@@ -77,7 +77,7 @@ class RegelSteps : No {
         }
 
         Gitt<DataTable>("følgende folkeregistrerte personstatuser i personhistorikk fra PDL:") { dataTable: DataTable? ->
-            val personstatuser = domenespråkParser.mapDataTable(dataTable, PersonstatusMapper())
+            val personstatuser = domenespråkParser.mapPersonstatuser(dataTable)
             pdlPersonhistorikkBuilder.personstatuser.addAll(personstatuser)
         }
 

@@ -42,11 +42,11 @@ class PdlMapperSteps : No {
         }
 
         Gitt<DataTable>("følgende opplysninger om doedsfall fra PDL:") { dataTable: DataTable? ->
-            pdlPersonBuilder.doedsfall = pdlDomenespråkParser.mapDataTable(dataTable, PdlDomenespråkParser.DoedsfallMapper())
+            pdlPersonBuilder.doedsfall = pdlDomenespråkParser.mapDoedsfall(dataTable)
         }
 
         Gitt<DataTable>("følgende personstatuser fra PDL:") { dataTable: DataTable? ->
-            pdlPersonBuilder.personstatuser = pdlDomenespråkParser.mapDataTable(dataTable, PdlDomenespråkParser.PersonstatusMapper())
+            pdlPersonBuilder.personstatuser = pdlDomenespråkParser.mapPersonstatuser(dataTable)
         }
 
         Når("statsborgerskap mappes") {
@@ -122,12 +122,12 @@ class PdlMapperSteps : No {
         }
 
         Så<DataTable>("skal mappede doedsfall være") { dataTable: DataTable? ->
-            val doedsfallForventet = domenespråkParser.mapDataTable(dataTable, DoedsfallMapper())
+            val doedsfallForventet = DomenespråkParser.mapDoedsfall(dataTable)
             personhistorikk?.doedsfall.shouldContainExactly(doedsfallForventet)
         }
 
         Så<DataTable>("skal mappede personstatuser være") { dataTable: DataTable? ->
-            val personstatuserForventet = domenespråkParser.mapDataTable(dataTable, PersonstatusMapper())
+            val personstatuserForventet = DomenespråkParser.mapPersonstatuser(dataTable)
             personhistorikk?.personstatuser.shouldContainExactly(personstatuserForventet)
         }
 
