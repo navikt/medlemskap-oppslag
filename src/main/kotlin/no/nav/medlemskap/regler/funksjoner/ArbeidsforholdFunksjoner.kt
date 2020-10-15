@@ -109,8 +109,6 @@ object ArbeidsforholdFunksjoner {
         val arbeidsforholdForKontrollPeriode = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
         var samletStillingsprosent = 0.0
 
-        this.harMinst25stillingsprosent(kontrollPeriode, ytelse)
-
         for (arbeidsforhold in arbeidsforholdForKontrollPeriode) {
             val vektetStillingsprosentForArbeidsforhold = arbeidsforhold.vektetStillingsprosentForArbeidsforhold(kontrollPeriode)
 
@@ -127,43 +125,76 @@ object ArbeidsforholdFunksjoner {
         return samletStillingsprosent >= gittStillingsprosent
     }
 
-    private fun Arbeidsforhold.vektetStillingsprosentForArbeidsforhold(kontrollPeriode: Kontrollperiode): Double {
-        val totaltAntallDager = kontrollPeriode.fom.until(kontrollPeriode.tom, ChronoUnit.DAYS).toDouble()
+    fun Arbeidsforhold.vektetStillingsprosentForArbeidsforhold(kontrollPeriode: Kontrollperiode, beregnGjennomsnittForKontrollperioden: Boolean = false): Double {
+
+        val arbeidsforholdKontrollperiodeIntersection = this.periode.intersection(kontrollPeriode)
+        val totaltAntallDager = if (beregnGjennomsnittForKontrollperioden) kontrollPeriode.antallDager
+        else arbeidsforholdKontrollperiodeIntersection.antallDager
+
         var vektetStillingsprosentForArbeidsforhold = 0.0
 
         for (arbeidsavtale in this.arbeidsavtaler) {
             val stillingsprosent = arbeidsavtale.stillingsprosent ?: 100.0
-            val tilDato = arbeidsavtale.periode.tom ?: this.periode.tom
-                ?: kontrollPeriode.tom
-            var antallDager = kontrollPeriode.fom.until(tilDato, ChronoUnit.DAYS).toDouble()
-            if (antallDager > totaltAntallDager) {
-                antallDager = totaltAntallDager
-            }
-            vektetStillingsprosentForArbeidsforhold += (antallDager / totaltAntallDager) * stillingsprosent
+
+            val arbeidsavtaleKontrollperiodeIntersection = arbeidsavtale.periode.intersection(arbeidsforholdKontrollperiodeIntersection)
+            vektetStillingsprosentForArbeidsforhold += (arbeidsavtaleKontrollperiodeIntersection.antallDager / totaltAntallDager) * stillingsprosent
         }
-        return vektetStillingsprosentForArbeidsforhold
+
+        return Math.round(vektetStillingsprosentForArbeidsforhold * 10.0) / 10.0
     }
 
-    fun List<Arbeidsforhold>.harMinst25stillingsprosent(kontrollPeriode: Kontrollperiode, ytelse: Ytelse): Boolean {
+    fun List<Arbeidsforhold>.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTidSkygge(gittStillingsprosent: Double, kontrollPeriode: Kontrollperiode): Boolean {
         val arbeidsforholdForKontrollPeriode = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
-        val stillingsprosent = 25.0
-        var sumVektetStillingsprosentForArbeidsforhold = 0.0
+        var samletStillingsprosent = 0.0
 
         for (arbeidsforhold in arbeidsforholdForKontrollPeriode) {
-            sumVektetStillingsprosentForArbeidsforhold += arbeidsforhold.vektetStillingsprosentForArbeidsforhold(kontrollPeriode)
+            val vektetStillingsprosentForArbeidsforhold = arbeidsforhold.vektetStillingsprosentForArbeidsforholdSkygge(kontrollPeriode)
+
+            if (vektetStillingsprosentForArbeidsforhold < gittStillingsprosent &&
+                this.arbeidsforholdForKontrollPeriode(kontrollPeriode).ingenAndreParallelleArbeidsforhold(arbeidsforhold)
+            ) {
+                return false
+            }
+
+            samletStillingsprosent += vektetStillingsprosentForArbeidsforhold
         }
 
-        val gjennomsnittligStillingsprosentIKontrollperiode =
-            sumVektetStillingsprosentForArbeidsforhold / arbeidsforholdForKontrollPeriode.size
+        return samletStillingsprosent >= gittStillingsprosent
+    }
 
-        val har25StillingsprosentEllerHøyere = gjennomsnittligStillingsprosentIKontrollperiode >= stillingsprosent
+    private fun Arbeidsforhold.vektetStillingsprosentForArbeidsforholdSkygge(kontrollPeriode: Kontrollperiode, beregnGjennomsnittForKontrollperioden: Boolean = false): Double {
 
-        minst25stillingsprosentCounter(har25StillingsprosentEllerHøyere, ytelse).increment()
-        return har25StillingsprosentEllerHøyere
+        val arbeidsforholdKontrollperiodeIntersection = this.periode.intersection(kontrollPeriode)
+        val totaltAntallDager = if (beregnGjennomsnittForKontrollperioden) kontrollPeriode.antallDager
+        else arbeidsforholdKontrollperiodeIntersection.antallDager
+
+        var vektetStillingsprosentForArbeidsforhold = 0.0
+
+        for (arbeidsavtale in this.arbeidsavtaler.filter { it.gyldighetsperiode.overlapper(kontrollPeriode.periode) }) {
+            val stillingsprosent = arbeidsavtale.stillingsprosent ?: 100.0
+            val arbeidsavtaleKontrollperiodeIntersection = arbeidsavtale.gyldighetsperiode.intersection(arbeidsforholdKontrollperiodeIntersection)
+            vektetStillingsprosentForArbeidsforhold += (arbeidsavtaleKontrollperiodeIntersection.antallDager / totaltAntallDager) * stillingsprosent
+        }
+
+        return Math.round(vektetStillingsprosentForArbeidsforhold * 10.0) / 10.0
+    }
+
+    fun List<Arbeidsforhold>.beregnGjennomsnittligStillingsprosentForGrafana(kontrollPeriode: Kontrollperiode): Double {
+        var sumStillingsprosent = 0.0
+
+        for (arbeidsforhold in this) {
+            sumStillingsprosent += arbeidsforhold.vektetStillingsprosentForArbeidsforhold(kontrollPeriode, true)
+        }
+
+        return sumStillingsprosent
     }
 
     private fun List<Arbeidsforhold>.ingenAndreParallelleArbeidsforhold(arbeidsforhold: Arbeidsforhold): Boolean =
-        this.none { it.periode.encloses(arbeidsforhold.periode) && it != arbeidsforhold }
+        this.none {
+            it.periode.encloses(arbeidsforhold.periode) &&
+                it != arbeidsforhold &&
+                it.arbeidsavtaler.all { p -> p.stillingsprosent == null || p.stillingsprosent > 0.0 }
+        }
 
     private infix fun List<Arbeidsforhold>.ansatteHosArbeidsgivere(kontrollPeriode: Kontrollperiode): List<Ansatte> =
         arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(kontrollPeriode).mapNotNull { it.ansatte }.flatten()

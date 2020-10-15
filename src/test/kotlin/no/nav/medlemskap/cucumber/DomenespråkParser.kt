@@ -2,47 +2,17 @@ package no.nav.medlemskap.cucumber
 
 import io.cucumber.datatable.DataTable
 import no.nav.medlemskap.cucumber.Domenebegrep.*
-import no.nav.medlemskap.cucumber.DomenespråkParser.Companion.VANLIG_NORSK_ARBEIDSGIVER
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
-import no.nav.medlemskap.regler.common.Datohjelper
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Svar
-import java.time.LocalDate
 import java.time.YearMonth
 
-class DomenespråkParser {
-
-    fun parseDato(domenebegrep: Domenebegrep, rad: Map<String, String>): LocalDate {
-        return Datohjelper.parseDato(verdi(domenebegrep.nøkkel, rad))
-    }
-
-    fun parseValgfriDato(domenebegrep: Domenebegrep, rad: Map<String, String?>): LocalDate? {
-        if (rad.get(domenebegrep.nøkkel) == null || rad.get(domenebegrep.nøkkel) == "") {
-            return null
-        }
-
-        return Datohjelper.parseDato(rad.get(domenebegrep.nøkkel)!!)
-    }
-
-    fun parseString(domenebegrep: Domenebegrep, rad: Map<String, String>): String {
-        return verdi(domenebegrep.nøkkel, rad)
-    }
-
-    fun parseValgfriString(domenebegrep: Domenebegrep, rad: Map<String, String>): String? {
-        return valgfriVerdi(domenebegrep.nøkkel, rad)
-    }
-
-    fun parseBoolean(domenebegrep: Domenebegrep, rad: Map<String, String>): Boolean {
-        val verdi = verdi(domenebegrep.nøkkel, rad)
-
-        return when (verdi) {
-            "Ja" -> true
-            else -> false
-        }
-    }
+object DomenespråkParser : BasisDomeneParser() {
+    val ANSATTE_9 = listOf(Ansatte(9, null, null))
+    val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", organisasjonsnummer = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskEnhetEnhetstypeMap = null)
 
     fun parseValgfriYtelse(domenebegrep: Domenebegrep, rad: Map<String, String>): Ytelse? {
         val valgfriVerdi = valgfriVerdi(domenebegrep.nøkkel, rad)
@@ -97,30 +67,6 @@ class DomenespråkParser {
         }
     }
 
-    private fun verdi(nøkkel: String, rad: Map<String, String>): String {
-        val verdi = rad.get(nøkkel)
-
-        if (verdi == null || verdi == "") {
-            throw java.lang.RuntimeException("Fant ingen verdi for $nøkkel")
-        }
-
-        return verdi
-    }
-
-    private fun valgfriVerdi(nøkkel: String, rad: Map<String, String>): String? {
-        val verdi = rad.get(nøkkel)
-
-        return verdi
-    }
-
-    fun <T> mapDataTable(dataTable: DataTable?, radMapper: RadMapper<T>): List<T> {
-        if (dataTable == null) {
-            return emptyList()
-        }
-
-        return dataTable.asMaps().map { radMapper.mapRad(this, it) }
-    }
-
     fun mapArbeidsforhold(
         dataTable: DataTable?,
         utenlandsopphold: List<Utenlandsopphold> = emptyList(),
@@ -130,22 +76,11 @@ class DomenespråkParser {
             return emptyList()
         }
 
-        return dataTable.asMaps().map { ArbeidsforholdMapper().mapRad(this, it, utenlandsopphold, arbeidsgiver) }
+        return dataTable.asMaps().map { ArbeidsforholdMapper().mapRad(it, utenlandsopphold, arbeidsgiver) }
     }
 
     fun parseAarMaaned(domenebegrep: Domenebegrep, rad: Map<String, String>): YearMonth {
         return YearMonth.parse(rad.get(domenebegrep.nøkkel)!!)
-    }
-
-    fun parseInt(domenebegrep: Domenebegrep, rad: Map<String, String>): Int {
-        val verdi = verdi(domenebegrep.nøkkel, rad)
-
-        return Integer.parseInt(verdi)
-    }
-
-    fun parseDouble(domenebegrep: Domenebegrep, rad: Map<String, String>): Double {
-        val verdi = verdi(domenebegrep.nøkkel, rad)
-        return verdi.toDouble()
     }
 
     fun parseSkipsregister(rad: Map<String, String>): Skipsregister? {
@@ -164,15 +99,6 @@ class DomenespråkParser {
         val verdi = verdi(domenebegrep.nøkkel, rad)
 
         return Sivilstandstype.valueOf(verdi)
-    }
-
-    fun parseValgfriInt(domenebegrep: Domenebegrep, rad: Map<String, String>): Int? {
-        val verdi = valgfriVerdi(domenebegrep.nøkkel, rad)
-        if (verdi == null) {
-            return null
-        }
-
-        return parseInt(domenebegrep, rad)
     }
 
     fun parsePrioritet(domenebegrep: Domenebegrep, rad: Map<String, String>): Prioritet {
@@ -203,34 +129,99 @@ class DomenespråkParser {
         return Familierelasjonsrolle.valueOf(verdi)
     }
 
-    companion object {
-        val ANSATTE_9 = listOf(Ansatte(9, null, null))
-        val STATSBORGERSKAP_NOR = listOf(Statsborgerskap("NOR", LocalDate.MIN, null))
-        val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", organisasjonsnummer = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskEnhetEnhetstypeMap = null)
+    fun mapStatsborgerskap(dataTable: DataTable?): List<Statsborgerskap> {
+        return mapDataTable(dataTable, StatsborgerskapMapper())
     }
-}
 
-interface RadMapper<T> {
-    fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): T
-}
-
-class RegelIdMapper : RadMapper<RegelId> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): RegelId {
-
-        return domenespråkParser.parseRegelId(REGEL, rad)
+    fun mapAdresser(dataTable: DataTable?): List<Adresse> {
+        return mapDataTable(dataTable, AdresseMapper())
     }
-}
 
-class StatsborgerskapMapper : RadMapper<Statsborgerskap> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Statsborgerskap {
-        return Statsborgerskap(
-            domenespråkParser.parseString(LANDKODE, rad),
-            domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad),
-            domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
-        )
+    fun mapSivilstander(dataTable: DataTable?): List<Sivilstand> {
+        return mapDataTable(dataTable, SivilstandMapper())
     }
-}
 
+    fun mapFamilierelasjoner(dataTable: DataTable?): List<Familierelasjon> {
+        return mapDataTable(dataTable, FamilieRelasjonMapper())
+    }
+
+    fun mapPersonstatuser(dataTable: DataTable?): List<FolkeregisterPersonstatus> {
+        return mapDataTable(dataTable, PersonstatusMapper())
+    }
+
+    fun mapPersonhistorikkEktefelle(dataTable: DataTable?): List<PersonhistorikkEktefelle> {
+        return mapDataTable(dataTable, PersonhistorikkEktefelleMapper())
+    }
+
+    fun mapBarnTilEktefelle(dataTable: DataTable?): List<String> {
+        return mapDataTable(dataTable, BarnTilEktefelleMapper())
+    }
+
+    fun mapPersonhistorikkBarn(dataTable: DataTable?): List<DataOmBarn> {
+        return mapDataTable(dataTable, PersonhistorikkBarnMapper())
+    }
+
+    fun mapMedlemskap(dataTable: DataTable?): List<Medlemskap> {
+        return mapDataTable(dataTable, MedlemskapMapper())
+    }
+
+    fun mapArbeidsgivere(dataTable: DataTable?): List<Arbeidsgiver> {
+        return mapDataTable(dataTable, ArbeidsgiverMapper())
+    }
+
+    fun mapArbeidsavtaler(dataTable: DataTable?): List<Arbeidsavtale> {
+        return mapDataTable(dataTable, ArbeidsavtaleMapper())
+    }
+
+    fun mapUtenlandsopphold(dataTable: DataTable?): List<Utenlandsopphold> {
+        return mapDataTable(dataTable, UtenlandsoppholdMapper())
+    }
+
+    fun mapOppgaverFraGosys(dataTable: DataTable?): List<Oppgave> {
+        return mapDataTable(dataTable, OppgaveMapper())
+    }
+
+    fun mapJournalposter(dataTable: DataTable?): List<Journalpost> {
+        return mapDataTable(dataTable, JournalpostMapper())
+    }
+
+    fun mapMedlemskapsparametre(dataTable: DataTable?): Medlemskapsparametre {
+        return mapDataTable(dataTable, MedlemskapsparametreMapper()).get(0)
+    }
+
+    fun mapRegelId(dataTable: DataTable?): List<RegelId> {
+        return mapDataTable(dataTable, RegelIdMapper())
+    }
+
+    fun mapInputPeriode(dataTable: DataTable?): InputPeriode? {
+        return mapDataTable(dataTable, InputPeriodeMapper()).get(0)
+    }
+
+    class RegelIdMapper : RadMapper<RegelId> {
+        override fun mapRad(rad: Map<String, String>): RegelId {
+
+            return parseRegelId(REGEL, rad)
+        }
+    }
+
+    class StatsborgerskapMapper : RadMapper<Statsborgerskap> {
+        override fun mapRad(rad: Map<String, String>): Statsborgerskap {
+            return Statsborgerskap(
+                parseString(LANDKODE, rad),
+                parseValgfriDato(FRA_OG_MED_DATO, rad),
+                parseValgfriDato(TIL_OG_MED_DATO, rad)
+            )
+        }
+    }
+
+    class InputPeriodeMapper : RadMapper<InputPeriode> {
+        override fun mapRad(rad: Map<String, String>): InputPeriode {
+            return InputPeriode(
+                parseDato(FRA_OG_MED_DATO, rad),
+                parseDato(TIL_OG_MED_DATO, rad)
+            )
+        }
+    }
 class DoedsfallMapper : RadMapper<LocalDate> {
     override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): LocalDate {
         return domenespråkParser.parseDato(DOEDSDATO, rad)
@@ -246,245 +237,249 @@ class InputPeriodeMapper : RadMapper<InputPeriode> {
     }
 }
 
-class MedlemskapsparametreMapper : RadMapper<Medlemskapsparametre> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Medlemskapsparametre {
-        return Medlemskapsparametre(
-            InputPeriode(
-                domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
-                domenespråkParser.parseDato(TIL_OG_MED_DATO, rad)
-            ),
-            domenespråkParser.parseBoolean(HAR_HATT_ARBEID_UTENFOR_NORGE, rad),
-            domenespråkParser.parseValgfriYtelse(YTELSE, rad)
-        )
-    }
-}
-
-class AdresseMapper : RadMapper<Adresse> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Adresse {
-        return Adresse(
-            domenespråkParser.parseString(LANDKODE, rad),
-            domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad),
-            domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
-        )
-    }
-}
-
-class MedlemskapMapper : RadMapper<Medlemskap> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Medlemskap {
-        return Medlemskap(
-            domenespråkParser.parseValgfriString(DEKNING, rad),
-            domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
-            domenespråkParser.parseDato(TIL_OG_MED_DATO, rad),
-            domenespråkParser.parseBoolean(ER_MEDLEM, rad),
-            domenespråkParser.parseValgfriLovvalg(LOVVALG, rad),
-            domenespråkParser.parseValgfriString(LOVVALGSLAND, rad),
-            domenespråkParser.parseValgfriPeriodeStatus(PERIODESTATUS, rad)
-        )
-    }
-}
-
-class OppgaveMapper : RadMapper<Oppgave> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Oppgave {
-        return Oppgave(
-            aktivDato = domenespråkParser.parseDato(AKTIV_DATO, rad),
-            prioritet = domenespråkParser.parsePrioritet(PRIORITET, rad),
-            status = domenespråkParser.parseStatus(STATUS, rad),
-            tema = domenespråkParser.parseValgfriString(TEMA, rad)
-        )
-    }
-}
-
-class JournalpostMapper : RadMapper<Journalpost> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Journalpost {
-        return Journalpost(
-            domenespråkParser.parseString(JOURNALPOST_ID, rad),
-            domenespråkParser.parseValgfriString(TITTEL, rad),
-            domenespråkParser.parseValgfriString(JOURNALPOST_TYPE, rad),
-            domenespråkParser.parseValgfriString(JOURNAL_STATUS, rad),
-            domenespråkParser.parseValgfriString(TEMA, rad),
-            null
-        )
-    }
-}
-
-class ArbeidsforholdMapper {
-    fun mapRad(
-        domenespråkParser: DomenespråkParser,
-        rad: Map<String, String>,
-        utenlandsopphold: List<Utenlandsopphold> = emptyList(),
-        arbeidsgiver: Arbeidsgiver?
-    ): Arbeidsforhold {
-        val periode = Periode(
-            domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad),
-            domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
-        )
-        return Arbeidsforhold(
-            periode = periode,
-            utenlandsopphold = utenlandsopphold,
-            arbeidsgivertype = OpplysningspliktigArbeidsgiverType.valueOf(domenespråkParser.parseString(ARBEIDSGIVERTYPE, rad)),
-            arbeidsgiver = arbeidsgiver ?: VANLIG_NORSK_ARBEIDSGIVER,
-            arbeidsforholdstype = domenespråkParser.parseArbeidsforholdstype(rad),
-            arbeidsavtaler = emptyList()
-        )
-    }
-}
-
-class ArbeidsavtaleMapper : RadMapper<Arbeidsavtale> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Arbeidsavtale {
-        return Arbeidsavtale(
-            Periode(
-                domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
-                domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
-            ),
-            domenespråkParser.parseString(YRKESKODE, rad),
-            domenespråkParser.parseSkipsregister(rad),
-            domenespråkParser.parseDouble(STILLINGSPROSENT, rad)
-        )
-    }
-}
-
-class ArbeidsgiverMapper : RadMapper<Arbeidsgiver> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Arbeidsgiver {
-        val konkursStatus = domenespråkParser.parseValgfriString(KONKURSSTATUS, rad)
-        val konkursStatuser = if (konkursStatus == null) {
-            null
-        } else {
-            listOf(konkursStatus)
+    class MedlemskapsparametreMapper : RadMapper<Medlemskapsparametre> {
+        override fun mapRad(rad: Map<String, String>): Medlemskapsparametre {
+            return Medlemskapsparametre(
+                InputPeriode(
+                    parseDato(FRA_OG_MED_DATO, rad),
+                    parseDato(TIL_OG_MED_DATO, rad)
+                ),
+                parseBoolean(HAR_HATT_ARBEID_UTENFOR_NORGE, rad),
+                parseValgfriYtelse(YTELSE, rad)
+            )
         }
-
-        return Arbeidsgiver(
-            organisasjonsnummer = domenespråkParser.parseValgfriString(IDENTIFIKATOR, rad),
-            type = domenespråkParser.parseValgfriString(ARBEIDSGIVERTYPE, rad),
-            ansatte = listOf(Ansatte(domenespråkParser.parseValgfriInt(ANTALL_ANSATTE, rad), null, null)),
-            konkursStatus = konkursStatuser,
-            juridiskEnhetEnhetstypeMap = null
-        )
     }
-}
 
-class UtenlandsoppholdMapper : RadMapper<Utenlandsopphold> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Utenlandsopphold {
-        return Utenlandsopphold(
-            landkode = domenespråkParser.parseString(LANDKODE, rad),
-            periode = Periode(
-                domenespråkParser.parseDato(FRA_OG_MED_DATO, rad),
-                domenespråkParser.parseDato(TIL_OG_MED_DATO, rad)
-            ),
-            rapporteringsperiode = domenespråkParser.parseAarMaaned(RAPPORTERINGSPERIODE, rad)
-        )
+    class AdresseMapper : RadMapper<Adresse> {
+        override fun mapRad(rad: Map<String, String>): Adresse {
+            return Adresse(
+                parseString(LANDKODE, rad),
+                parseValgfriDato(FRA_OG_MED_DATO, rad),
+                parseValgfriDato(TIL_OG_MED_DATO, rad)
+            )
+        }
     }
-}
 
-class PersonstatusMapper : RadMapper<FolkeregisterPersonstatus> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): FolkeregisterPersonstatus {
-        return FolkeregisterPersonstatus(
-            personstatus = PersonStatus.valueOf(domenespråkParser.parseString(PERSONSTATUS, rad)),
-            fom = domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad),
-            tom = domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
-        )
+    class MedlemskapMapper : RadMapper<Medlemskap> {
+        override fun mapRad(rad: Map<String, String>): Medlemskap {
+            return Medlemskap(
+                parseValgfriString(DEKNING, rad),
+                parseDato(FRA_OG_MED_DATO, rad),
+                parseDato(TIL_OG_MED_DATO, rad),
+                parseBoolean(ER_MEDLEM, rad),
+                parseValgfriLovvalg(LOVVALG, rad),
+                parseValgfriString(LOVVALGSLAND, rad),
+                parseValgfriPeriodeStatus(PERIODESTATUS, rad)
+            )
+        }
     }
-}
 
-class PersonhistorikkEktefelleMapper : RadMapper<PersonhistorikkEktefelle> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): PersonhistorikkEktefelle {
-        val fraOgMedDato = domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad)
-        val tilOgMedDato = domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
-
-        val bostedsadresser = mutableListOf<Adresse>()
-        val bostedsadresse = domenespråkParser.parseValgfriString(BOSTED, rad)
-        if (bostedsadresse != null) {
-            bostedsadresser.add(Adresse(bostedsadresse, fraOgMedDato, tilOgMedDato))
+    class OppgaveMapper : RadMapper<Oppgave> {
+        override fun mapRad(rad: Map<String, String>): Oppgave {
+            return Oppgave(
+                aktivDato = parseDato(AKTIV_DATO, rad),
+                prioritet = parsePrioritet(PRIORITET, rad),
+                status = parseStatus(STATUS, rad),
+                tema = parseValgfriString(TEMA, rad)
+            )
         }
-
-        val kontaktadresser = mutableListOf<Adresse>()
-        val kontaktadresse = domenespråkParser.parseValgfriString(KONTAKTADRESSE, rad)
-        if (kontaktadresse != null) {
-            kontaktadresser.add(Adresse(kontaktadresse, fraOgMedDato, tilOgMedDato))
-        }
-
-        val oppholdsadresser = mutableListOf<Adresse>()
-        val oppholdsadresse = domenespråkParser.parseValgfriString(OPPHOLDSADRESSE, rad)
-        if (oppholdsadresse != null) {
-            oppholdsadresser.add(Adresse(oppholdsadresse, fraOgMedDato, tilOgMedDato))
-        }
-
-        return PersonhistorikkEktefelle(
-            ident = domenespråkParser.parseString(IDENT, rad),
-            barn = mutableListOf<String>(),
-            bostedsadresser = bostedsadresser,
-            kontaktadresser = kontaktadresser,
-            oppholdsadresser = oppholdsadresser
-
-        )
     }
-}
 
-class PersonhistorikkBarnMapper : RadMapper<DataOmBarn> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): DataOmBarn {
-        val fraOgMedDato = domenespråkParser.parseValgfriDato(FRA_OG_MED_DATO, rad)
-        val tilOgMedDato = domenespråkParser.parseValgfriDato(TIL_OG_MED_DATO, rad)
-
-        val bostedsadresser = mutableListOf<Adresse>()
-        val bostedsadresse = domenespråkParser.parseValgfriString(BOSTED, rad)
-        if (bostedsadresse != null) {
-            bostedsadresser.add(Adresse(bostedsadresse, fraOgMedDato, tilOgMedDato))
+    class JournalpostMapper : RadMapper<Journalpost> {
+        override fun mapRad(rad: Map<String, String>): Journalpost {
+            return Journalpost(
+                parseString(JOURNALPOST_ID, rad),
+                parseValgfriString(TITTEL, rad),
+                parseValgfriString(JOURNALPOST_TYPE, rad),
+                parseValgfriString(JOURNAL_STATUS, rad),
+                parseValgfriString(TEMA, rad),
+                null
+            )
         }
+    }
 
-        val kontaktadresser = mutableListOf<Adresse>()
-        val kontaktadresse = domenespråkParser.parseValgfriString(KONTAKTADRESSE, rad)
-        if (kontaktadresse != null) {
-            kontaktadresser.add(Adresse(kontaktadresse, fraOgMedDato, tilOgMedDato))
+    class ArbeidsforholdMapper {
+        fun mapRad(
+            rad: Map<String, String>,
+            utenlandsopphold: List<Utenlandsopphold> = emptyList(),
+            arbeidsgiver: Arbeidsgiver?
+        ): Arbeidsforhold {
+            val periode = Periode(
+                parseValgfriDato(FRA_OG_MED_DATO, rad),
+                parseValgfriDato(TIL_OG_MED_DATO, rad)
+            )
+            return Arbeidsforhold(
+                periode = periode,
+                utenlandsopphold = utenlandsopphold,
+                arbeidsgivertype = OpplysningspliktigArbeidsgiverType.valueOf(parseString(ARBEIDSGIVERTYPE, rad)),
+                arbeidsgiver = arbeidsgiver ?: VANLIG_NORSK_ARBEIDSGIVER,
+                arbeidsforholdstype = parseArbeidsforholdstype(rad),
+                arbeidsavtaler = emptyList()
+            )
         }
+    }
 
-        val oppholdsadresser = mutableListOf<Adresse>()
-        val oppholdsadresse = domenespråkParser.parseValgfriString(OPPHOLDSADRESSE, rad)
-        if (oppholdsadresse != null) {
-            oppholdsadresser.add(Adresse(oppholdsadresse, fraOgMedDato, tilOgMedDato))
+    class ArbeidsavtaleMapper : RadMapper<Arbeidsavtale> {
+        override fun mapRad(rad: Map<String, String>): Arbeidsavtale {
+            return Arbeidsavtale(
+                Periode(
+                    parseDato(FRA_OG_MED_DATO, rad),
+                    parseValgfriDato(TIL_OG_MED_DATO, rad)
+                ),
+                Periode(
+                    parseDato(FRA_OG_MED_DATO, rad),
+                    parseValgfriDato(TIL_OG_MED_DATO, rad)
+                ),
+                parseString(YRKESKODE, rad),
+                parseSkipsregister(rad),
+                parseDouble(STILLINGSPROSENT, rad)
+            )
         }
+    }
 
-        return DataOmBarn(
-            PersonhistorikkBarn(
-                ident = domenespråkParser.parseString(IDENT, rad),
-                familierelasjoner = mutableListOf<Familierelasjon>(),
+    class ArbeidsgiverMapper : RadMapper<Arbeidsgiver> {
+        override fun mapRad(rad: Map<String, String>): Arbeidsgiver {
+            val konkursStatus = parseValgfriString(KONKURSSTATUS, rad)
+            val konkursStatuser = if (konkursStatus == null) {
+                null
+            } else {
+                listOf(konkursStatus)
+            }
+
+            return Arbeidsgiver(
+                organisasjonsnummer = parseValgfriString(IDENTIFIKATOR, rad),
+                type = parseValgfriString(ARBEIDSGIVERTYPE, rad),
+                ansatte = listOf(Ansatte(parseValgfriInt(ANTALL_ANSATTE, rad), null, null)),
+                konkursStatus = konkursStatuser,
+                juridiskEnhetEnhetstypeMap = null
+            )
+        }
+    }
+
+    class UtenlandsoppholdMapper : RadMapper<Utenlandsopphold> {
+        override fun mapRad(rad: Map<String, String>): Utenlandsopphold {
+            return Utenlandsopphold(
+                landkode = parseString(LANDKODE, rad),
+                periode = Periode(
+                    parseDato(FRA_OG_MED_DATO, rad),
+                    parseDato(TIL_OG_MED_DATO, rad)
+                ),
+                rapporteringsperiode = parseAarMaaned(RAPPORTERINGSPERIODE, rad)
+            )
+        }
+    }
+
+    class PersonstatusMapper : RadMapper<FolkeregisterPersonstatus> {
+        override fun mapRad(rad: Map<String, String>): FolkeregisterPersonstatus {
+            return FolkeregisterPersonstatus(
+                personstatus = PersonStatus.valueOf(parseString(PERSONSTATUS, rad)),
+                fom = parseValgfriDato(FRA_OG_MED_DATO, rad),
+                tom = parseValgfriDato(TIL_OG_MED_DATO, rad)
+            )
+        }
+    }
+
+    class PersonhistorikkEktefelleMapper : RadMapper<PersonhistorikkEktefelle> {
+        override fun mapRad(rad: Map<String, String>): PersonhistorikkEktefelle {
+            val fraOgMedDato = parseValgfriDato(FRA_OG_MED_DATO, rad)
+            val tilOgMedDato = parseValgfriDato(TIL_OG_MED_DATO, rad)
+
+            val bostedsadresser = mutableListOf<Adresse>()
+            val bostedsadresse = parseValgfriString(BOSTED, rad)
+            if (bostedsadresse != null) {
+                bostedsadresser.add(Adresse(bostedsadresse, fraOgMedDato, tilOgMedDato))
+            }
+
+            val kontaktadresser = mutableListOf<Adresse>()
+            val kontaktadresse = parseValgfriString(KONTAKTADRESSE, rad)
+            if (kontaktadresse != null) {
+                kontaktadresser.add(Adresse(kontaktadresse, fraOgMedDato, tilOgMedDato))
+            }
+
+            val oppholdsadresser = mutableListOf<Adresse>()
+            val oppholdsadresse = parseValgfriString(OPPHOLDSADRESSE, rad)
+            if (oppholdsadresse != null) {
+                oppholdsadresser.add(Adresse(oppholdsadresse, fraOgMedDato, tilOgMedDato))
+            }
+
+            return PersonhistorikkEktefelle(
+                ident = parseString(IDENT, rad),
+                barn = mutableListOf<String>(),
                 bostedsadresser = bostedsadresser,
                 kontaktadresser = kontaktadresser,
                 oppholdsadresser = oppholdsadresser
 
             )
-        )
+        }
+    }
+
+    class PersonhistorikkBarnMapper : RadMapper<DataOmBarn> {
+        override fun mapRad(rad: Map<String, String>): DataOmBarn {
+            val fraOgMedDato = parseValgfriDato(FRA_OG_MED_DATO, rad)
+            val tilOgMedDato = parseValgfriDato(TIL_OG_MED_DATO, rad)
+
+            val bostedsadresser = mutableListOf<Adresse>()
+            val bostedsadresse = parseValgfriString(BOSTED, rad)
+            if (bostedsadresse != null) {
+                bostedsadresser.add(Adresse(bostedsadresse, fraOgMedDato, tilOgMedDato))
+            }
+
+            val kontaktadresser = mutableListOf<Adresse>()
+            val kontaktadresse = parseValgfriString(KONTAKTADRESSE, rad)
+            if (kontaktadresse != null) {
+                kontaktadresser.add(Adresse(kontaktadresse, fraOgMedDato, tilOgMedDato))
+            }
+
+            val oppholdsadresser = mutableListOf<Adresse>()
+            val oppholdsadresse = parseValgfriString(OPPHOLDSADRESSE, rad)
+            if (oppholdsadresse != null) {
+                oppholdsadresser.add(Adresse(oppholdsadresse, fraOgMedDato, tilOgMedDato))
+            }
+
+            return DataOmBarn(
+                PersonhistorikkBarn(
+                    ident = parseString(IDENT, rad),
+                    familierelasjoner = mutableListOf<Familierelasjon>(),
+                    bostedsadresser = bostedsadresser,
+                    kontaktadresser = kontaktadresser,
+                    oppholdsadresser = oppholdsadresser
+
+                )
+            )
+        }
+    }
+
+    class SivilstandMapper : RadMapper<Sivilstand> {
+        override fun mapRad(rad: Map<String, String>): Sivilstand {
+            return Sivilstand(
+                type = parseSivilstandstype(SIVILSTANDSTYPE, rad),
+                gyldigFraOgMed = parseValgfriDato(GYLDIG_FRA_OG_MED, rad),
+                gyldigTilOgMed = parseValgfriDato(GYLDIG_TIL_OG_MED, rad),
+                relatertVedSivilstand = parseValgfriString(RELATERT_VED_SIVILSTAND, rad),
+                folkeregistermetadata = null
+            )
+        }
+    }
+
+    class FamilieRelasjonMapper : RadMapper<Familierelasjon> {
+        override fun mapRad(rad: Map<String, String>): Familierelasjon {
+            return Familierelasjon(
+                relatertPersonsIdent = parseString(RELATERT_PERSONS_IDENT, rad),
+                relatertPersonsRolle = parseRolle(RELATERT_PERSONS_ROLLE, rad),
+                minRolleForPerson = parseValgfriRolle(MIN_ROLLE_FOR_PERSON, rad),
+                folkeregistermetadata = null
+            )
+        }
+    }
+
+    class BarnTilEktefelleMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return String()
+        }
     }
 }
 
-class SivilstandMapper : RadMapper<Sivilstand> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Sivilstand {
-        return Sivilstand(
-            type = domenespråkParser.parseSivilstandstype(SIVILSTANDSTYPE, rad),
-            gyldigFraOgMed = domenespråkParser.parseValgfriDato(GYLDIG_FRA_OG_MED, rad),
-            gyldigTilOgMed = domenespråkParser.parseValgfriDato(GYLDIG_TIL_OG_MED, rad),
-            relatertVedSivilstand = domenespråkParser.parseValgfriString(RELATERT_VED_SIVILSTAND, rad),
-            folkeregistermetadata = null
-        )
-    }
-}
-
-class FamilieRelasjonMapper : RadMapper<Familierelasjon> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): Familierelasjon {
-        return Familierelasjon(
-            relatertPersonsIdent = domenespråkParser.parseString(RELATERT_PERSONS_IDENT, rad),
-            relatertPersonsRolle = domenespråkParser.parseRolle(RELATERT_PERSONS_ROLLE, rad),
-            minRolleForPerson = domenespråkParser.parseValgfriRolle(MIN_ROLLE_FOR_PERSON, rad),
-            folkeregistermetadata = null
-        )
-    }
-}
-
-class BarnTilEktefelleMapper : RadMapper<String> {
-    override fun mapRad(domenespråkParser: DomenespråkParser, rad: Map<String, String>): String {
-        return String()
-    }
-}
-
-enum class Domenebegrep(val nøkkel: String) {
+enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     ADRESSE("Adresse"),
     BOSTED("Bosted"),
     AKTIV_DATO("Aktiv dato"),
@@ -493,7 +488,6 @@ enum class Domenebegrep(val nøkkel: String) {
     ARBEIDSGIVER_ID("Arbeidsgiver Id"),
     ARBEIDSGIVERTYPE("Arbeidsgivertype"),
     DEKNING("Dekning"),
-    DOEDSDATO("Doedsdato"),
     ER_MEDLEM("Er medlem"),
     FRA_OG_MED_DATO("Fra og med dato"),
     GYLDIG_FRA_OG_MED("Gyldig fra og med dato"),
@@ -527,7 +521,11 @@ enum class Domenebegrep(val nøkkel: String) {
     TIL_OG_MED_DATO("Til og med dato"),
     TITTEL("Tittel"),
     YRKESKODE("Yrkeskode"),
-    YTELSE("Ytelse")
+    YTELSE("Ytelse");
+
+    override fun nøkkel(): String {
+        return nøkkel
+    }
 }
 
 data class Medlemskapsparametre(

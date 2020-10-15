@@ -94,9 +94,15 @@ fun stillingsprosentCounter(stillingsprosent: Double, ytelse: String): Counter =
             .register(Metrics.globalRegistry)
     }
 
-fun minst25stillingsprosentCounter(harMinst25Stillingsprosent: Boolean, ytelse: Ytelse): Counter = Counter
-    .builder("stillingsprosent_25")
-    .tags("har_minst_25_stillingsprosent", mapStillingsprosentBooleanTilMetrikkVerdi(harMinst25Stillingsprosent), "ytelse", ytelse.metricName())
+fun gjennomsnittligStillingsprosentCounter(stillingsprosent: Double, ytelse: Ytelse): Counter = Counter
+    .builder("gjennomsnittlig_stillingsprosent")
+    .tags("stillingsprosent", getStillingsprosentIntervall(stillingsprosent), "ytelse", ytelse.metricName())
+    .description("")
+    .register(Metrics.globalRegistry)
+
+fun stillingsprosentSkyggeCounter(harJobbet25ProsentEllerMer: Boolean, ytelse: Ytelse): Counter = Counter
+    .builder("stillingsprosent_skygge")
+    .tags("harJobbetNok", harJobbet25ProsentEllerMer.toString(), "ytelse", ytelse.metricName())
     .description("")
     .register(Metrics.globalRegistry)
 
@@ -179,12 +185,6 @@ fun enhetstypeForJuridiskEnhet(enhetstype: String?, ytelse: String): Counter = C
     .tags("juridiskEnhetstype", enhetstype ?: "N/A", "ytelse", ytelse)
     .description("Ulike enhetstyper for juridiske enheter")
     .register(Metrics.globalRegistry)
-
-private fun mapStillingsprosentBooleanTilMetrikkVerdi(harOver25Stillingsprosent: Boolean) =
-    when (harOver25Stillingsprosent) {
-        true -> "har minst 25 gjennomsnittlig stillingsprosent"
-        false -> "har under 25 gjennomsnittlig stillingsprosent"
-    }
 
 private fun mapEndretStatsborgerskapBooleanTilMetrikkVerdi(statsborgerskapEndretSisteÅret: Boolean): String =
     when (statsborgerskapEndretSisteÅret) {

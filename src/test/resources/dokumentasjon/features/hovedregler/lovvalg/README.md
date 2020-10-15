@@ -10,7 +10,7 @@
 
 ### Regel 11
 * [Regel 11: Er bruker norsk statsborger?](11_er_norsk_statsborger.feature)
-* [Regel 11.2: Har bruker ektefelle i TPS?](11_2_har_bruker_ektefelle_i_tps_pdl.feature)
+* [Regel 11.2: Har bruker ektefelle i PDL?](11_2_har_bruker_ektefelle_i_tps_pdl.feature)
 * [Regel 11.2.1 Har bruker uten ektefelle barn?](11_2_1_har_bruker_uten_ektefelle_barn.feature)
 * [Regel 11.2.2 Er brukers barn folkeregistrert som bosatt i Norge](11_2_2_er_brukers_barn_folkeregistrert_i_norge.feature)
 * [Regel 11.2.2.1 Har bruker uten ektefelle mer enn 100-prosent stilling](11_2_2_1_har_bruker_uten_ektefelle_jobbet_mer_enn_100_prosent.feature)
@@ -33,7 +33,7 @@
 * [Statsborgerskap](regelflyt_11_statsborgerskap.feature)
 * [Regelflyt 11.2 Bruker uten ektefelle](regelflyt_11_2_ikke_ektefelle.feature)
 * [Regelflyt 11.3 Bruker uten barn](regelflyt_11_3_ikke_barn.feature)
-* [Regelflyt 11.4 Bruker med ektefelle som ikke er bosatt i Norge, men med barn i TPS/PDL](regelflyt_11_4_nei.feature)
+* [Regelflyt 11.4 Bruker med ektefelle som ikke er bosatt i Norge, men med barn i PDL](regelflyt_11_4_nei.feature)
 * [Regelflyt 11.5 Bruker med ektefelle og barn](regelflyt_11_5.feature)
 * [Regelflyt 11.6 Har bruker med ektefelle og barn minst 80 %  stilling?](regelflyt_11_6.feature) 
 
