@@ -59,10 +59,25 @@ object DomenespråkParser : BasisDomeneParser() {
         return regelId
     }
 
+    fun parseSvar(domenebegrep: Domenenøkkel, rad: Map<String, String>): Svar {
+        val verdi = verdi(domenebegrep.nøkkel(), rad)
+        return parseSvar(verdi)
+    }
+
+    fun parseValgfrittSvar(domenebegrep: Domenenøkkel, rad: Map<String, String>): Svar? {
+        val valgfriVerdi = valgfriVerdi(domenebegrep.nøkkel(), rad)
+
+        if (valgfriVerdi == null) {
+            return null
+        }
+
+        return parseSvar(domenebegrep, rad)
+    }
+
     fun parseSvar(verdi: String): Svar {
-        return when (verdi) {
-            "Ja" -> Svar.JA
-            "Nei" -> Svar.NEI
+        return when (verdi.toUpperCase()) {
+            "JA" -> Svar.JA
+            "NEI" -> Svar.NEI
             else -> Svar.UAVKLART
         }
     }
@@ -189,6 +204,11 @@ object DomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, MedlemskapsparametreMapper()).get(0)
     }
 
+    fun mapOverstyrteRegler(dataTable: DataTable?): Map<RegelId, Svar> {
+        val x = mapDataTable(dataTable, OverstyrteReglerMapper())
+        return x.toMap()
+    }
+
     fun mapRegelId(dataTable: DataTable?): List<RegelId> {
         return mapDataTable(dataTable, RegelIdMapper())
     }
@@ -233,6 +253,13 @@ object DomenespråkParser : BasisDomeneParser() {
                 parseBoolean(HAR_HATT_ARBEID_UTENFOR_NORGE, rad),
                 parseValgfriYtelse(YTELSE, rad)
             )
+        }
+    }
+
+    class OverstyrteReglerMapper : RadMapper<Pair<RegelId, Svar>> {
+        override fun mapRad(rad: Map<String, String>): Pair<RegelId, Svar> {
+            val svar = parseValgfrittSvar(SVAR, rad)
+            return Pair(parseRegelId(REGEL, rad), parseSvar(SVAR, rad))
         }
     }
 
@@ -503,6 +530,7 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     SKIPSREGISTER("Skipsregister"),
     STATUS("Status"),
     STILLINGSPROSENT("Stillingsprosent"),
+    SVAR("Svar"),
     TEMA("Tema"),
     TIL_OG_MED_DATO("Til og med dato"),
     TITTEL("Tittel"),

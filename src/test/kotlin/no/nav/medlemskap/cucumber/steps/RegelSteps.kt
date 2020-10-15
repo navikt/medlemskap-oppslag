@@ -8,6 +8,7 @@ import no.nav.medlemskap.cucumber.Medlemskapsparametre
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.regler.assertDelresultat
+import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.v1.RegelFactory
@@ -44,6 +45,8 @@ class RegelSteps : No {
     private val domenespråkParser = DomenespråkParser
 
     private var datagrunnlag: Datagrunnlag? = null
+
+    var overstyrteRegler: Map<RegelId, Svar> = mapOf()
 
     init {
         Gitt("følgende statsborgerskap i personhistorikken") { dataTable: DataTable? ->
@@ -154,6 +157,10 @@ class RegelSteps : No {
         Gitt("følgende arbeidsavtaler til ektefelle i arbeidsforholdet") { dataTable: DataTable? ->
             arbeidsavtaleEktefelleMap[0] = domenespråkParser.mapArbeidsavtaler(dataTable)
             dataOmEktefelleBuilder.arbeidsforholdEktefelle.get(0).arbeidsavtaler = arbeidsavtaleEktefelleMap[0]!!
+        }
+
+        Gitt<DataTable>("med følgende regeloverstyringer") { dataTable: DataTable? ->
+            overstyrteRegler = domenespråkParser.mapOverstyrteRegler(dataTable)
         }
 
         Når("medlemskap beregnes med følgende parametre") { dataTable: DataTable? ->
@@ -271,7 +278,8 @@ class RegelSteps : No {
             dokument = journalPosterFraJoArk,
             ytelse = ytelse,
             dataOmBarn = dataOmBarn,
-            dataOmEktefelle = dataOmEktefelleBuilder.build()
+            dataOmEktefelle = dataOmEktefelleBuilder.build(),
+            overstyrteRegler = overstyrteRegler
         )
     }
 

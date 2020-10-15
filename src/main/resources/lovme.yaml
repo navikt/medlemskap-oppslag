@@ -18,7 +18,7 @@ paths:
       tags:
         - Lovvalg
         - Medlemskap
-      description: Expected response to a valid request
+      description: Avgjøre om lovvalg er norsk, og om bruker er medlem av folketrygden
       requestBody:
         content:
           application/json:
@@ -187,6 +187,8 @@ components:
           nullable: true
         dataOmEktefelle:
           $ref: "#/components/schemas/DataOmEktefelle"
+        overstyrteRegler:
+          $ref: "#/components/schemas/OverstyrteRegler"
     DataOmBarn:
       properties:
         personhistorikkBarn:
@@ -341,6 +343,12 @@ components:
         tema:
           type: string
           nullable: true
+    OverstyrteRegler:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/OverstyrtRegel"
+    OverstyrtRegel:
+      type: string
     Periode:
       properties:
         fom:
