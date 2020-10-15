@@ -27,7 +27,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val erRegel
     REGEL_11_2_2_1("11.2.2.1", "Har bruker uten ektefelle og folkeregistrerte barn jobbet mer enn 100 prosent?"),
     REGEL_11_2_2_2("11.2.2.2", "Har bruker vært i 80 % stilling eller mer de siste 12 mnd?"),
     REGEL_11_2_3("11.2.3", "Har bruker vært i minst 80 % stilling de siste 12 mnd?"),
-    REGEL_11_3("11.3", "Har bruker barn i TPS/PDL?"),
+    REGEL_11_3("11.3", "Har bruker barn i PDL?"),
     REGEL_11_3_1("11.3.1", "Er brukers ektefelle folkeregistrert som bosatt i Norge?"),
     REGEL_11_3_1_1("11.3.1.1", "Har bruker vært i 100 % stilling eller mer de siste 12 mnd?"),
     REGEL_11_4("11.4", "Er brukers ektefelle folkeregistrert som bosatt i Norge?"),

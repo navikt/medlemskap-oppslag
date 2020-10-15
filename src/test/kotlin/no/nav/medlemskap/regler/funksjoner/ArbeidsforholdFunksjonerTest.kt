@@ -243,6 +243,7 @@ class ArbeidsforholdFunksjonerTest {
     fun lagArbeidsavtale(periode: Periode, yrkesKode: String, skipsregister: Skipsregister?, stillingsprosent: Double?): Arbeidsavtale {
         return Arbeidsavtale(
             periode = periode,
+            gyldighetsperiode = periode,
             yrkeskode = yrkesKode,
             skipsregister = skipsregister,
             stillingsprosent = stillingsprosent

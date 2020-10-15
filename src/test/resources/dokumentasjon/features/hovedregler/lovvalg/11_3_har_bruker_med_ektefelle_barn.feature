@@ -1,7 +1,7 @@
 ## language: no
 ## encoding: UTF-8
 #
-#Egenskap: Regel 11.3: Har bruker barn i TPS/PDL?
+#Egenskap: Regel 11.3: Har bruker barn i PDL?
 #
 #  Scenariomal: Regel 11.3 - Hvis barnets alder er under 25 år skal svaret være "Ja"
 #    Gitt følgende familerelasjoner i personhistorikk fra PDL
