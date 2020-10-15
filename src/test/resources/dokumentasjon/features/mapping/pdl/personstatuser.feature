@@ -8,7 +8,7 @@ Egenskap: Mapping av folkeregistrertpersonstatus fra PDL HentPerson.folkeregiste
     Gitt følgende personstatuser fra PDL:
       | Personstatus         | Folkeregistermetadata gyldighetstidspunkt   | Folkeregistermetadata opphoerstidspunkt |
       | foedselsregistrert   | 1952-05-05 10:03:03                         |                                         |
-      | bosatt               | 1952-02-04 10:03:03                         | 1960-02-04 10:03:03                            |
+      | bosatt               | 1952-02-04 10:03:03                         | 1960-02-04 10:03:03                     |
       | utflyttet            | 1960-02-04 10:03:03                         |                                         |
       | ikkeBosatt           | 1960-02-05 10:03:03                         |                                         |
       | midlertidig          | 1999-05-05 10:03:03                         |                                         |
