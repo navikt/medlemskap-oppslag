@@ -1,16 +1,15 @@
 package no.nav.medlemskap
 
-import io.ktor.application.install
-import io.ktor.auth.Authentication
-import io.ktor.auth.jwt.jwt
+import io.ktor.application.*
+import io.ktor.auth.*
+import io.ktor.auth.jwt.*
 import io.ktor.features.*
-import io.ktor.http.ContentType
-import io.ktor.jackson.JacksonConverter
-import io.ktor.metrics.micrometer.MicrometerMetrics
-import io.ktor.routing.routing
-import io.ktor.server.engine.ApplicationEngine
-import io.ktor.server.engine.embeddedServer
-import io.ktor.server.netty.Netty
+import io.ktor.http.*
+import io.ktor.jackson.*
+import io.ktor.metrics.micrometer.*
+import io.ktor.routing.*
+import io.ktor.server.engine.*
+import io.ktor.server.netty.*
 import io.micrometer.core.instrument.binder.jvm.ClassLoaderMetrics
 import io.micrometer.core.instrument.binder.jvm.JvmGcMetrics
 import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics
@@ -30,10 +29,8 @@ import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.config.getAadConfig
-import no.nav.medlemskap.domene.Brukerinput
 import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.InputPeriode
-import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.domene.Request
 import no.nav.medlemskap.routes.*
 import org.slf4j.event.Level
 import java.util.*
@@ -49,7 +46,7 @@ createHttpServer(
     services: Services = Services(configuration),
     port: Int = 7070,
     prometheusRegistry: PrometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT),
-    createDatagrunnlag: suspend (fnr: String, callId: String, periode: InputPeriode, brukerinput: Brukerinput, services: Services, clientId: String?, ytelseFraRequest: Ytelse?) -> Datagrunnlag = ::defaultCreateDatagrunnlag
+    createDatagrunnlag: suspend (request: Request, callId: String, services: Services, clientId: String?) -> Datagrunnlag = ::defaultCreateDatagrunnlag
 ): ApplicationEngine = embeddedServer(Netty, port) {
 
     install(StatusPages) {

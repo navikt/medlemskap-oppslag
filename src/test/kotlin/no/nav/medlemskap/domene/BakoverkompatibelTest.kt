@@ -431,7 +431,8 @@ private val forventetResponse =
             "tittel" : "Tittel"
           } ]
         } ],
-        "ytelse" : "SYKEPENGER"
+        "ytelse" : "SYKEPENGER",
+        "overstyrteRegler" : { }
       },
        "resultat" : {
         "regelId" : "REGEL_MEDLEM_KONKLUSJON",

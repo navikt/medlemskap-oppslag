@@ -65,7 +65,8 @@ suspend fun defaultCreateDatagrunnlag(
         dokument = journalPoster,
         ytelse = ytelse,
         dataOmBarn = dataOmBrukersBarn,
-        dataOmEktefelle = dataOmEktefelle
+        dataOmEktefelle = dataOmEktefelle,
+        overstyrteRegler = request.overstyrteRegler
     )
 }
 
