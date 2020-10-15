@@ -374,7 +374,7 @@ class ArbeidsforholdFunksjonerTest {
     val arbeidsforholdMedStatligJuridiskEnhetstype = lagArbeidsforhold(juridiskEnhetstypeMap = mapOf("1" to "STAT"))
     val arbeidsforholdMedIkkeStatligEllerKommunalJuridiskEnhetstype = lagArbeidsforhold(juridiskEnhetstypeMap = mapOf("1" to "AS"))
 
-    fun lagArbeidsforhold(
+    private fun lagArbeidsforhold(
         antall: Int = 10,
         periode: Periode =
             Periode(LocalDate.of(2019, 1, 1), LocalDate.of(2019, 12, 31)),
@@ -398,7 +398,7 @@ class ArbeidsforholdFunksjonerTest {
         )
     }
 
-    fun lagArbeidsavtale(periode: Periode, yrkesKode: String, skipsregister: Skipsregister?, stillingsprosent: Double?): Arbeidsavtale {
+    private fun lagArbeidsavtale(periode: Periode, yrkesKode: String, skipsregister: Skipsregister?, stillingsprosent: Double?): Arbeidsavtale {
         return Arbeidsavtale(
             periode = periode,
             yrkeskode = yrkesKode,

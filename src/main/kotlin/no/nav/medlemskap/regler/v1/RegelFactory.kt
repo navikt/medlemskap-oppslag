@@ -62,6 +62,7 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_11_6 -> HarBrukerJobbet80ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_6).regel
             REGEL_11_6_1 -> HarBrukersEktefelleJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_12 -> HarBrukerJobbet25ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_14 -> ErArbeidsforholdetStatlig.fraDatagrunnlag(datagrunnlag).regel
 
             else -> throw java.lang.RuntimeException("Ukjent regel")
         }
