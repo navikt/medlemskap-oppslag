@@ -139,7 +139,23 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         }
     }
 
+    class PersonstatusMapper : RadMapper<HentPerson.Folkeregisterpersonstatus> {
+
+        override fun mapRad(rad: Map<String, String>): HentPerson.Folkeregisterpersonstatus {
+            return HentPerson.Folkeregisterpersonstatus(
+                status = parseValgfriString(Domenebegrep.PERSONSTATUS.nøkkel, rad)!!,
+                folkeregistermetadata = HentPerson.Folkeregistermetadata2(
+                    ajourholdstidspunkt = null,
+                    gyldighetstidspunkt = parseValgfriString(Domenebegrep.FOLKE_REG_GYLDIGHETSTIDSPUNKT.nøkkel, rad),
+                    opphoerstidspunkt = parseValgfriString(Domenebegrep.FOLKE_REG_OPPHOERSTIDSPUNKT.nøkkel, rad)
+                )
+
+            )
+        }
+    }
+
     enum class Domenebegrep(val nøkkel: String) {
+        DOEDSDATO("Doedsdato"),
         GYLDIG_FRA_OG_MED_DATO("Gyldig fra og med dato"),
         GYLDIG_TIL_OG_MED_DATO("Gyldig til og med dato"),
         GYLDIG_FRA_OG_MED("Gyldig fra og med"),
@@ -152,8 +168,8 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         RELATERT_PERSONS_ROLLE("Relatert persons rolle"),
         RELATERT_VED_SIVILSTAND("Relatert ved sivilstand"),
         SIVILSTANDSTYPE("Type"),
+        PERSONSTATUS("Personstatus"),
         UTENLANDSK_ADRESSE_LANDKODE("Utenlandsk adresse landkode"),
-        UTENLANDSK_ADRESSE_FRITT_FORMAT_LANDKODE("Utenlandsk adresse frittformat landkode"),
-        DOEDSDATO("Doedsdato")
+        UTENLANDSK_ADRESSE_FRITT_FORMAT_LANDKODE("Utenlandsk adresse frittformat landkode")
     }
 }

@@ -10,11 +10,10 @@ import no.nav.medlemskap.domene.Personhistorikk
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper
 
 class PdlMapperSteps : No {
+
     private val pdlDomenespråkParser = PdlDomenespråkParser()
     private val domenespråkParser = DomenespråkParser()
-
     private var pdlPersonBuilder = PdlPersonBuilder()
-
     private var personhistorikk: Personhistorikk? = null
 
     init {
@@ -46,6 +45,10 @@ class PdlMapperSteps : No {
             pdlPersonBuilder.doedsfall = pdlDomenespråkParser.mapDataTable(dataTable, PdlDomenespråkParser.DoedsfallMapper())
         }
 
+        Gitt<DataTable>("følgende personstatuser fra PDL:") { dataTable: DataTable? ->
+            pdlPersonBuilder.personstatuser = pdlDomenespråkParser.mapDataTable(dataTable, PdlDomenespråkParser.PersonstatusMapper())
+        }
+
         Når("statsborgerskap mappes") {
             personhistorikk = mapTilPersonhistorikk()
         }
@@ -74,6 +77,10 @@ class PdlMapperSteps : No {
             personhistorikk = mapTilPersonhistorikk()
         }
 
+        Når("personstatuser mappes") {
+            personhistorikk = mapTilPersonhistorikk()
+        }
+
         Når("PDL Person mappes til personhistorikk i datagrunnlaget") {
             personhistorikk = mapTilPersonhistorikk()
         }
@@ -92,7 +99,6 @@ class PdlMapperSteps : No {
 
         Så<DataTable>("skal mappede kontaktadresser være") { dataTable: DataTable? ->
             val kontaktadresserForventet = domenespråkParser.mapDataTable(dataTable, AdresseMapper())
-
             personhistorikk!!.kontaktadresser.shouldContainExactly(kontaktadresserForventet)
         }
 
@@ -102,14 +108,8 @@ class PdlMapperSteps : No {
             personhistorikk!!.oppholdsadresser.shouldContainExactly(oppholdsadresserForventet)
         }
 
-        Så<DataTable>("skal mappede doedsfall være") { dataTable: DataTable? ->
-            val doedsfallForventet = domenespråkParser.mapDataTable(dataTable, DoedsfallMapper())
-            personhistorikk?.doedsfall.shouldContainExactly(doedsfallForventet)
-        }
-
         Så<DataTable>("skal mappede sivilstander være") { dataTable: DataTable? ->
             val sivilstanderForventet = domenespråkParser.mapDataTable(dataTable, SivilstandMapper())
-
             personhistorikk!!.sivilstand.shouldContainExactly(sivilstanderForventet)
         }
 
@@ -117,6 +117,16 @@ class PdlMapperSteps : No {
             val familierelasjonerForventet = domenespråkParser.mapDataTable(dataTable, FamilieRelasjonMapper())
 
             personhistorikk!!.familierelasjoner.shouldContainExactly(familierelasjonerForventet)
+        }
+
+        Så<DataTable>("skal mappede doedsfall være") { dataTable: DataTable? ->
+            val doedsfallForventet = domenespråkParser.mapDataTable(dataTable, DoedsfallMapper())
+            personhistorikk?.doedsfall.shouldContainExactly(doedsfallForventet)
+        }
+
+        Så<DataTable>("skal mappede personstatuser være") { dataTable: DataTable? ->
+            val personstatuserForventet = domenespråkParser.mapDataTable(dataTable, PersonstatusMapper())
+            personhistorikk?.personstatuser.shouldContainExactly(personstatuserForventet)
         }
 
         Så<DataTable>("skal personhistorikk.familierelasjoner være") { dataTable: DataTable? ->
@@ -134,7 +144,7 @@ class PdlMapperSteps : No {
         var oppholdsadresser: List<HentPerson.Oppholdsadresse> = emptyList()
         var sivilstander: List<HentPerson.Sivilstand> = emptyList()
         var familierelasjoner: List<HentPerson.Familierelasjon> = emptyList()
-        val personstatuser: List<HentPerson.Folkeregisterpersonstatus> = emptyList()
+        var personstatuser: List<HentPerson.Folkeregisterpersonstatus> = emptyList()
         var doedsfall: List<HentPerson.Doedsfall> = emptyList()
 
         fun build(): HentPerson.Person {

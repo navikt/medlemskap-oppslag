@@ -43,31 +43,15 @@ data class FolkeregisterPersonstatus(
     val tom: LocalDate?
 )
 
-/*enum class PersonStatus(s: String) {
-    ABNR("Aktivt BOSTNR"),
-    ADNR("Aktivt"),
-    BOSA("Bosatt"),
-    DØD("Død"),
-    DØDD("Død"),
-    FØDR("Fødselsregistrert"),
-    FOSV("Forsvunnet/savnet"),
-    UFUL("Ufullstendig fødselsnr"),
-    UREG("Uregistrert person"),
-    UTAN("Utgått person annullert tilgang Fnr"),
-    UTPE("Utgått person"),
-    UTVA("Utvandret"),
-    UKJENT("Ukjent verdi fra register")
-}*/
-
-enum class PersonStatus {
-    bosatt,
-    utflyttet,
-    doed,
-    opphoert,
-    foedselsregistrert,
-    ikkeBosatt,
-    midlertidig,
-    inaktiv
+enum class PersonStatus(personstatus: String) {
+    BOSATT("bosatt"),
+    UTFLYTTET("utflyttet"),
+    DOED("doed"),
+    OPPHOERT("opphoert"),
+    FOEDSELSREGISTRERT("foedselsregistrert"),
+    IKKEBOSATT("ikkeBosatt"),
+    MIDLERTIDIG("midlertidig"),
+    INAKTIV("inaktiv")
 }
 
 data class Adresse(

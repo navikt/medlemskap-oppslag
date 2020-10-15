@@ -10,7 +10,7 @@ Egenskap: Sjekk at resultat-strukturen er som forventet
 
     Og følgende personstatuser i personhistorikken
       | Personstatus | Fra og med dato | Til og med dato |
-      | bosatt       | 01.01.2000      |                 |
+      | BOSATT       | 01.01.2000      |                 |
 
     Og følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |

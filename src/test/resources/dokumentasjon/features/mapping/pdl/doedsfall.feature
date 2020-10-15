@@ -27,6 +27,6 @@ Egenskap: Mapping av kontaktadresser fra PDL HentPerson.Doedsfall
       Så skal mappede doedsfall være
         | Doedsdato  |
         | 2015-03-25 |
-        | 2015-03-25      |
+        | 2015-03-25 |
 
 

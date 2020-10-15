@@ -154,7 +154,7 @@ private fun arbeidsforhold(): Arbeidsforhold {
 private fun personhistorikk(): Personhistorikk {
     return Personhistorikk(
         statsborgerskap = listOf(Statsborgerskap("NOR", enDato(), enAnnenDato())),
-        personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.bosatt, enDato(), enAnnenDato())),
+        personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSATT, enDato(), enAnnenDato())),
         bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
         sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr(), folkeregistermetadata())),
         familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata())),
@@ -244,7 +244,7 @@ private val forventetResponse =
             "tom" : "2020-08-01"
           }],
           "personstatuser" : [ {
-            "personstatus" : "bosatt",
+            "personstatus" : "BOSATT",
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
           } ],

@@ -55,14 +55,14 @@ object PdlMapper {
 
     fun mapStatus(status: String): PersonStatus {
         return when (status) {
-            "doed" -> PersonStatus.doed
-            "bosatt" -> PersonStatus.bosatt
-            "foedselsregistrert" -> PersonStatus.foedselsregistrert
-            "ikkeBosatt" -> PersonStatus.ikkeBosatt
-            "inaktiv" -> PersonStatus.inaktiv
-            "midlertidig" -> PersonStatus.midlertidig
-            "opphoert" -> PersonStatus.opphoert
-            "utflyttet" -> PersonStatus.utflyttet
+            "doed" -> PersonStatus.DOED
+            "bosatt" -> PersonStatus.BOSATT
+            "foedselsregistrert" -> PersonStatus.FOEDSELSREGISTRERT
+            "ikkeBosatt" -> PersonStatus.IKKEBOSATT
+            "inaktiv" -> PersonStatus.INAKTIV
+            "midlertidig" -> PersonStatus.MIDLERTIDIG
+            "opphoert" -> PersonStatus.OPPHOERT
+            "utflyttet" -> PersonStatus.UTFLYTTET
             else -> throw DetteSkalAldriSkje("Personstatus er ikke tilgjengelig")
         }
     }

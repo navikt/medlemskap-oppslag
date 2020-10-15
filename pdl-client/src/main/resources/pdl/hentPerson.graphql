@@ -40,31 +40,15 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
         },
     	doedsfall{
     			doedsdato
-  		},
-    	folkeregisterpersonstatus {
+  		}
+    	folkeregisterpersonstatus(historikk: true) {
     	   status
-    	   forenkletStatus
     	   folkeregistermetadata {
     	     ajourholdstidspunkt
     	     gyldighetstidspunkt
     	     opphoerstidspunkt
-    	     kilde
-    	     aarsak
-    	     sekvens
     	   }
-    	   metadata {
-    	     opplysningsId
-    	     master
-    	     endringer {
-    	       type
-    	       registrert
-    	       registrertAv
-    	       systemkilde
-    	       kilde
-    	     }
-    	     historisk
-    	   }
-    	 }
+    	 },
         kontaktadresse(historikk: true) {
             gyldigFraOgMed
             gyldigTilOgMed
@@ -79,7 +63,7 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
                 gyldighetstidspunkt
                 opphoerstidspunkt
             }
-        }
+        },
         oppholdsadresse(historikk: true) {
             gyldigFraOgMed
             utenlandskAdresse {

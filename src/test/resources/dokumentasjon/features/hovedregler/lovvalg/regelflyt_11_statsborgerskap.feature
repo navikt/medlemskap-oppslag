@@ -24,7 +24,7 @@ Egenskap: Regel 11: Statsborgerskap
   Scenariomal: Regelflyt regel 11: EØS-borgere som bor og jobber i Norge er medlem
     Gitt følgende personstatuser i personhistorikken
       | Personstatus | Fra og med dato | Til og med dato |
-      | bosatt       | 01.01.2000      |                 |
+      | BOSATT       | 01.01.2000      |                 |
 
     Og følgende statsborgerskap i personhistorikken
       | Landkode          | Fra og med dato | Til og med dato |

@@ -360,7 +360,7 @@ class TjenesteKallFeilmeldingerTest {
     private fun personhistorikk(): Personhistorikk {
         return Personhistorikk(
             statsborgerskap = listOf(Statsborgerskap("NOR", enDato(), enAnnenDato())),
-            personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.bosatt, enDato(), enAnnenDato())),
+            personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSATT, enDato(), enAnnenDato())),
             bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
             kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
             oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
