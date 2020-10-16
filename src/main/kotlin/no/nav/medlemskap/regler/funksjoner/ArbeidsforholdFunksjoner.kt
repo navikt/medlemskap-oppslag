@@ -142,10 +142,10 @@ object ArbeidsforholdFunksjoner {
         return samletStillingsprosent >= gittStillingsprosent
     }
 
-    fun Arbeidsforhold.vektetStillingsprosentForArbeidsforhold(kontrollPeriode: Kontrollperiode, beregnGjennsomnittForKontrollperiode: Boolean = false): Double {
+    fun Arbeidsforhold.vektetStillingsprosentForArbeidsforhold(kontrollPeriode: Kontrollperiode, beregnGjennomsnittForKontrollperioden: Boolean = false): Double {
 
         val arbeidsforholdKontrollperiodeIntersection = this.periode.intersection(kontrollPeriode)
-        val totaltAntallDager = if (beregnGjennsomnittForKontrollperiode) kontrollPeriode.antallDager
+        val totaltAntallDager = if (beregnGjennomsnittForKontrollperioden) kontrollPeriode.antallDager
         else arbeidsforholdKontrollperiodeIntersection.antallDager
 
         var vektetStillingsprosentForArbeidsforhold = 0.0
@@ -154,6 +154,42 @@ object ArbeidsforholdFunksjoner {
             val stillingsprosent = arbeidsavtale.stillingsprosent ?: 100.0
 
             val arbeidsavtaleKontrollperiodeIntersection = arbeidsavtale.periode.intersection(arbeidsforholdKontrollperiodeIntersection)
+            vektetStillingsprosentForArbeidsforhold += (arbeidsavtaleKontrollperiodeIntersection.antallDager / totaltAntallDager) * stillingsprosent
+        }
+
+        return Math.round(vektetStillingsprosentForArbeidsforhold * 10.0) / 10.0
+    }
+
+    fun List<Arbeidsforhold>.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTidSkygge(gittStillingsprosent: Double, kontrollPeriode: Kontrollperiode): Boolean {
+        val arbeidsforholdForKontrollPeriode = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
+        var samletStillingsprosent = 0.0
+
+        for (arbeidsforhold in arbeidsforholdForKontrollPeriode) {
+            val vektetStillingsprosentForArbeidsforhold = arbeidsforhold.vektetStillingsprosentForArbeidsforholdSkygge(kontrollPeriode)
+
+            if (vektetStillingsprosentForArbeidsforhold < gittStillingsprosent &&
+                this.arbeidsforholdForKontrollPeriode(kontrollPeriode).ingenAndreParallelleArbeidsforhold(arbeidsforhold)
+            ) {
+                return false
+            }
+
+            samletStillingsprosent += vektetStillingsprosentForArbeidsforhold
+        }
+
+        return samletStillingsprosent >= gittStillingsprosent
+    }
+
+    private fun Arbeidsforhold.vektetStillingsprosentForArbeidsforholdSkygge(kontrollPeriode: Kontrollperiode, beregnGjennomsnittForKontrollperioden: Boolean = false): Double {
+
+        val arbeidsforholdKontrollperiodeIntersection = this.periode.intersection(kontrollPeriode)
+        val totaltAntallDager = if (beregnGjennomsnittForKontrollperioden) kontrollPeriode.antallDager
+        else arbeidsforholdKontrollperiodeIntersection.antallDager
+
+        var vektetStillingsprosentForArbeidsforhold = 0.0
+
+        for (arbeidsavtale in this.arbeidsavtaler.filter { it.gyldighetsperiode.overlapper(kontrollPeriode.periode) }) {
+            val stillingsprosent = arbeidsavtale.stillingsprosent ?: 100.0
+            val arbeidsavtaleKontrollperiodeIntersection = arbeidsavtale.gyldighetsperiode.intersection(arbeidsforholdKontrollperiodeIntersection)
             vektetStillingsprosentForArbeidsforhold += (arbeidsavtaleKontrollperiodeIntersection.antallDager / totaltAntallDager) * stillingsprosent
         }
 

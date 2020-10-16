@@ -1,5 +1,6 @@
 package no.nav.medlemskap.domene
 
+import com.atlassian.oai.validator.restassured.OpenApiValidationFilter
 import io.ktor.server.engine.*
 import io.restassured.RestAssured
 import io.restassured.RestAssured.given
@@ -109,6 +110,55 @@ class BakoverkompatibelTest {
             )
         )
     }
+
+    @Test
+    fun testFeilInput() {
+
+        // Fnr er Roland Gundersen fra https://www.nhn.no/media/2606/testaktoerer-v46.pdf
+        val faktiskResponse = given()
+            .body(ugyldigInput)
+            .header(Header("Content-Type", "application/json"))
+            .post("/")
+            .then()
+            .statusCode(400)
+            .extract().asString().trimIndent()
+
+        val forventetErrorResponse =
+            """"{
+            "url" : "/",
+            "message" : "Instantiation of [simple type, class no.nav.medlemskap.domene.Request] value failed for JSON property brukerinput due to missing (therefore NULL) value for creator parameter brukerinput which is a non-nullable type\n at [Source: (InputStreamReader); line: 10, column: 1] (through reference chain: no.nav.medlemskap.domene.Request[\"brukerinput\"])",
+            "cause" : "com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException: Instantiation of [simple type, class no.nav.medlemskap.domene.Request] value failed for JSON property brukerinput due to missing (therefore NULL) value for creator parameter brukerinput which is a non-nullable type\n at [Source: (InputStreamReader); line: 10, column: 1] (through reference chain: no.nav.medlemskap.domene.Request[\"brukerinput\"])",
+            "code" : {
+            "value" : 400,
+            "description" : "Bad Request"
+        },
+            "callId" : { }
+        }
+            """.trimIndent()
+
+/*
+        JSONAssert.assertEquals(
+            forventetErrorResponse, faktiskResponse,
+            CustomComparator(
+                JSONCompareMode.STRICT
+            )
+        )
+
+ */
+    }
+
+    @Test
+    fun testKontrakt() {
+        val validationFilter = OpenApiValidationFilter("src/main/resources/lovme.yaml")
+
+        val faktiskResponse = given()
+            .filter(validationFilter)
+            .body(input)
+            .header(Header("Content-Type", "application/json"))
+            .post("/")
+            .then()
+            .statusCode(200)
+    }
 }
 
 suspend fun mockCreateDatagrunnlag(
@@ -147,7 +197,7 @@ private fun arbeidsforhold(): Arbeidsforhold {
         OpplysningspliktigArbeidsgiverType.Organisasjon,
         Arbeidsgiver("type", "organisasjonsnummer", listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus"), juridiskEnhetstypeMap),
         Arbeidsforholdstype.NORMALT,
-        listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble()))
+        listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble()))
     )
 }
 
@@ -202,6 +252,20 @@ private val input =
                 "tom": "2019-12-31"
             },
             "brukerinput": {
+                "arbeidUtenforNorge": false
+            }
+        }
+    """.trimIndent()
+
+private val ugyldigInput =
+    """
+        {
+            "fnr": "15076500565",
+            "periode": {
+                "fom": "2019-01-01",
+                "tom": "2019-12-31"
+            },
+            "ukjent": {
                 "arbeidUtenforNorge": false
             }
         }
@@ -328,6 +392,10 @@ private val forventetResponse =
                          "fom" : "1975-10-10",
                          "tom" : "2020-08-01"
                        },
+                       "gyldighetsperiode" : {
+                         "fom" : "1975-10-10",
+                         "tom" : "2020-08-01"
+                       },
                        "yrkeskode" : "yrkeskode",
                        "skipsregister" : "NIS",
                        "stillingsprosent" : 100.0
@@ -409,6 +477,10 @@ private val forventetResponse =
           "arbeidsforholdstype" : "NORMALT",
           "arbeidsavtaler" : [ {
             "periode" : {
+              "fom" : "1975-10-10",
+              "tom" : "2020-08-01"
+            },
+            "gyldighetsperiode" : {
               "fom" : "1975-10-10",
               "tom" : "2020-08-01"
             },

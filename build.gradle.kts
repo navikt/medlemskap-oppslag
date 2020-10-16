@@ -141,6 +141,9 @@ dependencies {
     testImplementation("org.skyscreamer:jsonassert:$jsonassertVersion")
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
 
+    testImplementation("com.atlassian.oai:swagger-request-validator-core:2.11.0")
+    testImplementation("com.atlassian.oai:swagger-request-validator-restassured:2.11.0")
+
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:$junitJupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
 }

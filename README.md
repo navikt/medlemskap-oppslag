@@ -8,8 +8,10 @@ Denne tjenesten gjør REST-kall mot følgende tjenester/registre:
 * MEDL: Medlemskapsregisteret, inneholder medlemskapsperioder som avviker fra normalen
 * GSAK: Saksbehandlingsløsning
 * JOARK: Journalarkiv
-* TPS: Tjenestebasert Persondatasystem
 * PDL: Ny persondataløsning, mangler foreløpig utenlandsopphold 
+
+# OpenAPI spesifikasjon for tjenesten
+[OpenAPI spesifikasjon](src/main/resources/lovme.yaml)
 
 # Funksjonell dokumentasjon
 * [Funksjonell dokumentasjon](src/test/resources/dokumentasjon/README.md)

@@ -40,6 +40,27 @@ class PdlClientHentPersonTest {
     }
 
     @Test
+    fun `henter person som ikke finnes`() {
+        val callId = "123455"
+        val username = "whatever"
+        val stsClient: StsRestClient = mockk()
+        coEvery { stsClient.oidcToken() } returns "dummytoken"
+        stubFor(
+            pdlRequestMapping
+                .willReturn(
+                    aResponse()
+                        .withStatus(HttpStatusCode.OK.value)
+                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                        .withBody(pdlResponseNotFound)
+                )
+        )
+
+        val pdlClient = PdlClient(server.baseUrl(), stsClient, username, cioHttpClient)
+        val pdlResponse = runBlocking { pdlClient.hentPerson("1234", callId) }
+        assertEquals("Fant ikke person", pdlResponse.errors?.get(0)?.message)
+    }
+
+    @Test
     fun `henter person`() {
         val callId = "123456"
         val username = "whatever"
@@ -68,6 +89,33 @@ class PdlClientHentPersonTest {
         .withHeader("Accept", containing("application/json"))
         .withHeader("Nav-Consumer-Token", equalTo("Bearer dummytoken"))
 // .withRequestBody()
+
+    val pdlResponseNotFound =
+        """
+      {
+            "errors": [
+            {
+                "message": "Fant ikke person",
+                "locations": [
+                {
+                    "line": 2,
+                    "column": 5
+                }
+                ],
+                "path": [
+                "hentPerson"
+                ],
+                "extensions": {
+                "code": "not_found",
+                "classification": "ExecutionAborted"
+            }
+            }
+            ],
+            "data": {
+            "hentPerson": null
+        }
+        }
+        """.trimIndent()
 
     val pdlResponse =
         """
