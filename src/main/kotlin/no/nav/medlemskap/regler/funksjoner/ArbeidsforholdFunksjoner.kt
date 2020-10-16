@@ -133,12 +133,10 @@ object ArbeidsforholdFunksjoner {
 
         var vektetStillingsprosentForArbeidsforhold = 0.0
 
-        for (arbeidsavtale in this.arbeidsavtaler) {
-            val stillingsprosent = arbeidsavtale.stillingsprosent ?: 100.0
-
-            val arbeidsavtaleKontrollperiodeIntersection = arbeidsavtale.periode.intersection(arbeidsforholdKontrollperiodeIntersection)
-            vektetStillingsprosentForArbeidsforhold += (arbeidsavtaleKontrollperiodeIntersection.antallDager / totaltAntallDager) * stillingsprosent
-        }
+        this.arbeidsavtaler
+            .filter { it.gyldighetsperiode.overlapper(kontrollPeriode.periode) }
+            .map { (it.gyldighetsperiode.intersection(arbeidsforholdKontrollperiodeIntersection).antallDager to (it.getStillingsprosent())) }
+            .forEach { vektetStillingsprosentForArbeidsforhold += ((it.first / totaltAntallDager) * it.second) }
 
         return Math.round(vektetStillingsprosentForArbeidsforhold * 10.0) / 10.0
     }
@@ -170,11 +168,10 @@ object ArbeidsforholdFunksjoner {
 
         var vektetStillingsprosentForArbeidsforhold = 0.0
 
-        for (arbeidsavtale in this.arbeidsavtaler.filter { it.gyldighetsperiode.overlapper(kontrollPeriode.periode) }) {
-            val stillingsprosent = arbeidsavtale.stillingsprosent ?: 100.0
-            val arbeidsavtaleKontrollperiodeIntersection = arbeidsavtale.gyldighetsperiode.intersection(arbeidsforholdKontrollperiodeIntersection)
-            vektetStillingsprosentForArbeidsforhold += (arbeidsavtaleKontrollperiodeIntersection.antallDager / totaltAntallDager) * stillingsprosent
-        }
+        this.arbeidsavtaler
+            .filter { it.gyldighetsperiode.overlapper(kontrollPeriode.periode) }
+            .map { (it.gyldighetsperiode.intersection(arbeidsforholdKontrollperiodeIntersection).antallDager to (it.getStillingsprosent())) }
+            .forEach { vektetStillingsprosentForArbeidsforhold += ((it.first / totaltAntallDager) * it.second) }
 
         return Math.round(vektetStillingsprosentForArbeidsforhold * 10.0) / 10.0
     }

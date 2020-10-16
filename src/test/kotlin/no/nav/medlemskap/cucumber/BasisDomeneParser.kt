@@ -71,6 +71,10 @@ abstract class BasisDomeneParser {
             return verdi.toDouble()
         }
 
+        fun parseValgfriDouble(domenebegrep: Domenenøkkel, rad: Map<String, String>): Double? {
+            return valgfriVerdi(domenebegrep.nøkkel(), rad)?.toDouble() ?: return null
+        }
+
         fun parseValgfriInt(domenebegrep: Domenenøkkel, rad: Map<String, String>): Int? {
             val verdi = valgfriVerdi(domenebegrep.nøkkel(), rad)
             if (verdi == null) {

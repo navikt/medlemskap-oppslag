@@ -318,7 +318,8 @@ object DomenespråkParser : BasisDomeneParser() {
                 ),
                 parseString(YRKESKODE, rad),
                 parseSkipsregister(rad),
-                parseDouble(STILLINGSPROSENT, rad)
+                parseDouble(STILLINGSPROSENT, rad),
+                parseValgfriDouble(BEREGNET_ANTALL_TIMER_PR_UKE, rad)
             )
         }
     }
@@ -473,6 +474,7 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     ARBEIDSFORHOLDSTYPE("Arbeidsforholdstype"),
     ARBEIDSGIVER_ID("Arbeidsgiver Id"),
     ARBEIDSGIVERTYPE("Arbeidsgivertype"),
+    BEREGNET_ANTALL_TIMER_PR_UKE("Beregnet antall timer pr uke"),
     DEKNING("Dekning"),
     ER_MEDLEM("Er medlem"),
     FRA_OG_MED_DATO("Fra og med dato"),

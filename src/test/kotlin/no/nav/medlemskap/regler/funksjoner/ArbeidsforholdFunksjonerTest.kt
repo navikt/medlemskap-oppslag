@@ -95,7 +95,9 @@ class ArbeidsforholdFunksjonerTest {
 
         every { arbeidsavtale2Mock.periode } returns arbeidsavtalePeriode
         every { arbeidsavtale2Mock.stillingsprosent } returns 25.0
+        every { arbeidsavtale2Mock.gyldighetsperiode } returns arbeidsavtalePeriode
         every { arbeidsavtaleMock.periode } returns arbeidsavtalePeriode
+        every { arbeidsavtaleMock.gyldighetsperiode } returns arbeidsavtalePeriode
         every { arbeidsavtaleMock.stillingsprosent } returns 35.0
         every { arbeidsforholdMock.periode } returns arbeidsforholdPeriode
         every { arbeidsforholdMock.arbeidsavtaler } returns listOf(arbeidsavtaleMock, arbeidsavtale2Mock)
@@ -187,11 +189,12 @@ class ArbeidsforholdFunksjonerTest {
         assertFalse(arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollperiode, Ytelse.SYKEPENGER))
     }
 
-    private fun createArbeidsforholdMock(arbeidsforholdPeriode: Periode, stillingsprosent: Double? = 100.0): Arbeidsforhold {
+    private fun createArbeidsforholdMock(arbeidsforholdPeriode: Periode, stillingsprosent: Double = 100.0): Arbeidsforhold {
 
         val arbeidsavtaleMock = mockk<Arbeidsavtale>()
         every { arbeidsavtaleMock.periode } returns arbeidsforholdPeriode
         every { arbeidsavtaleMock.stillingsprosent } returns stillingsprosent
+        every { arbeidsavtaleMock.gyldighetsperiode } returns arbeidsforholdPeriode
 
         val arbeidsforholdMock = mockk<Arbeidsforhold>()
         every { arbeidsforholdMock.periode } returns arbeidsforholdPeriode
@@ -204,6 +207,7 @@ class ArbeidsforholdFunksjonerTest {
         val arbeidsavtaleMock = mockk<Arbeidsavtale>()
         every { arbeidsavtaleMock.periode } returns arbeidsavtalePeriode
         every { arbeidsavtaleMock.stillingsprosent } returns stillingsprosent
+        every { arbeidsavtaleMock.gyldighetsperiode } returns arbeidsavtalePeriode
 
         val arbeidsforholdMock = mockk<Arbeidsforhold>()
         every { arbeidsforholdMock.periode } returns arbeidsforholdPeriode
@@ -222,7 +226,7 @@ class ArbeidsforholdFunksjonerTest {
         periode: Periode =
             Periode(LocalDate.of(2019, 1, 1), LocalDate.of(2019, 12, 31)),
         arbeidsavtale: List<Arbeidsavtale> =
-            listOf(lagArbeidsavtale(Periode(null, null), "Yrkeskode", null, null))
+            listOf(lagArbeidsavtale(Periode(null, null), "Yrkeskode", null, null, null))
     ): Arbeidsforhold {
         return Arbeidsforhold(
             periode = periode,
@@ -240,13 +244,14 @@ class ArbeidsforholdFunksjonerTest {
         )
     }
 
-    fun lagArbeidsavtale(periode: Periode, yrkesKode: String, skipsregister: Skipsregister?, stillingsprosent: Double?): Arbeidsavtale {
+    fun lagArbeidsavtale(periode: Periode, yrkesKode: String, skipsregister: Skipsregister?, stillingsprosent: Double?, beregnetAntallTimerPrUke: Double?): Arbeidsavtale {
         return Arbeidsavtale(
             periode = periode,
             gyldighetsperiode = periode,
             yrkeskode = yrkesKode,
             skipsregister = skipsregister,
-            stillingsprosent = stillingsprosent
+            stillingsprosent = stillingsprosent,
+            beregnetAntallTimerPrUke = beregnetAntallTimerPrUke
         )
     }
 }
