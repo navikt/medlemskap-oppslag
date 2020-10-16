@@ -194,6 +194,7 @@ class ArbeidsforholdFunksjonerTest {
         val arbeidsavtaleMock = mockk<Arbeidsavtale>()
         every { arbeidsavtaleMock.periode } returns arbeidsforholdPeriode
         every { arbeidsavtaleMock.stillingsprosent } returns stillingsprosent
+        every { arbeidsavtaleMock.beregnetAntallTimerPrUke } returns (Math.round((37.5 * stillingsprosent / 100) * 10) / 10).toDouble()
         every { arbeidsavtaleMock.gyldighetsperiode } returns arbeidsforholdPeriode
 
         val arbeidsforholdMock = mockk<Arbeidsforhold>()
