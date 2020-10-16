@@ -205,8 +205,11 @@ object DomenespråkParser : BasisDomeneParser() {
     }
 
     fun mapOverstyrteRegler(dataTable: DataTable?): Map<RegelId, Svar> {
-        val x = mapDataTable(dataTable, OverstyrteReglerMapper())
-        return x.toMap()
+        val overstyrteRegler = mapDataTable(dataTable, OverstyrteReglerMapper())
+        return overstyrteRegler
+            .filter { it -> it.second != null }
+            .map { Pair(it.first, it.second!!) }
+            .toMap()
     }
 
     fun mapRegelId(dataTable: DataTable?): List<RegelId> {
@@ -256,10 +259,9 @@ object DomenespråkParser : BasisDomeneParser() {
         }
     }
 
-    class OverstyrteReglerMapper : RadMapper<Pair<RegelId, Svar>> {
-        override fun mapRad(rad: Map<String, String>): Pair<RegelId, Svar> {
-            val svar = parseValgfrittSvar(SVAR, rad)
-            return Pair(parseRegelId(REGEL, rad), parseSvar(SVAR, rad))
+    class OverstyrteReglerMapper : RadMapper<Pair<RegelId, Svar?>> {
+        override fun mapRad(rad: Map<String, String>): Pair<RegelId, Svar?> {
+            return Pair(parseRegelId(REGEL, rad), parseValgfrittSvar(SVAR, rad))
         }
     }
 

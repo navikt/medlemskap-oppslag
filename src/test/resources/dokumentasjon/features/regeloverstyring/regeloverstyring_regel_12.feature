@@ -34,9 +34,9 @@ Egenskap: Overstyring av regelsvar for regel 12
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister |
       | 01.01.2018      |                 | 001       | 22               |               |
 
-     Og med følgende regeloverstyringer
-       | Regel | Svar               |
-       | 12    | "<Overstyrt svar>" |
+    Og med følgende regeloverstyringer
+      | Regel | Svar             |
+      | 12    | <Overstyrt svar> |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
@@ -44,10 +44,11 @@ Egenskap: Overstyring av regelsvar for regel 12
 
     Så skal svaret være "<Medlemskap>"
 
-    Og skal regel "12" gi svaret "<Regel 12>"
+    Og skal regel "12" gi svaret "<Regel 12 svar>"
+    Og skal regel "12" gi begrunnelse "<Regel 12 begrunnelse>"
 
     Eksempler:
-      | Overstyrt svar | Regel 12 | Medlemskap |
-#      |                | Nei      | UAVKLART        |
-#       | Ja             | Ja       | Ja         |
-       | Nei            | Nei      | UAVKLART  |
+      | Overstyrt svar | Regel 12 svar | Regel 12 begrunnelse                                     | Medlemskap |
+      |                | Nei           | Bruker har ikke jobbet 25% eller mer i løpet av periode. | UAVKLART   |
+      | Ja             | Ja            | Overstyrt svar                                           | Ja         |
+      | Nei            | Nei           | Overstyrt svar                                           | UAVKLART   |

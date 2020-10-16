@@ -7,6 +7,7 @@ import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.Medlemskapsparametre
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.barn.DataOmBarn
+import no.nav.medlemskap.regler.assertBegrunnelse
 import no.nav.medlemskap.regler.assertDelresultat
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
@@ -203,6 +204,12 @@ class RegelSteps : No {
             val regelId = domenespråkParser.parseRegelId(regelIdStr!!)
 
             assertDelresultat(regelId, domenespråkParser.parseSvar(forventetSvar!!), resultat!!)
+        }
+
+        Så<String, String>("skal regel {string} gi begrunnelse {string}") { regelIdStr, forventetBegrunnelse ->
+            val regelId = domenespråkParser.parseRegelId(regelIdStr!!)
+
+            assertBegrunnelse(regelId, forventetBegrunnelse, resultat!!)
         }
 
         Så<String, DataTable>("skal regel {string} inneholde følgende delresultater:") { regelIdStr: String?, dataTable: DataTable? ->
