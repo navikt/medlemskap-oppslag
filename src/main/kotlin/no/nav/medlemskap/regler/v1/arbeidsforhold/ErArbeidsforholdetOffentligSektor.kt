@@ -8,10 +8,10 @@ import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.ja
 import no.nav.medlemskap.regler.common.nei
-import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.erArbeidsforholdetStatlig
+import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.erArbeidsforholdetOffentligSektor
 import no.nav.medlemskap.regler.v1.lovvalg.LovvalgRegel
 
-class ErArbeidsforholdetStatlig(
+class ErArbeidsforholdetOffentligSektor(
     ytelse: Ytelse,
     private val periode: InputPeriode,
     private val arbeidsforhold: List<Arbeidsforhold>,
@@ -20,15 +20,15 @@ class ErArbeidsforholdetStatlig(
 
     override fun operasjon(): Resultat {
         return when {
-            erArbeidsforholdetStatlig(arbeidsforhold, kontrollPeriodeForArbeidsforhold, ytelse) -> ja()
+            erArbeidsforholdetOffentligSektor(arbeidsforhold, kontrollPeriodeForArbeidsforhold, ytelse) -> ja()
             else -> nei("Bruker har ikke statlig arbeidsforhold.")
         }
     }
 
     companion object {
 
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErArbeidsforholdetStatlig {
-            return ErArbeidsforholdetStatlig(
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErArbeidsforholdetOffentligSektor {
+            return ErArbeidsforholdetOffentligSektor(
                 ytelse = datagrunnlag.ytelse,
                 periode = datagrunnlag.periode,
                 arbeidsforhold = datagrunnlag.arbeidsforhold

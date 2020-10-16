@@ -9,15 +9,15 @@ import java.time.temporal.ChronoUnit
 import kotlin.math.abs
 
 object ArbeidsforholdFunksjoner {
-    private val statligeJuridiskeEnhetstyper = listOf("STAT", "FKF", "FYLK", "KF", "KOMM", "SF")
+    private val offentligSektorJuridiskeEnhetstyper = listOf("STAT", "FKF", "FYLK", "KF", "KOMM", "SF")
 
-    fun erArbeidsforholdetStatlig(arbeidsforhold: List<Arbeidsforhold>, kontrollPeriode: Kontrollperiode, ytelse: Ytelse): Boolean =
-        vektetStatligArbeidsforhold(arbeidsforhold, kontrollPeriode, ytelse)
+    fun erArbeidsforholdetOffentligSektor(arbeidsforhold: List<Arbeidsforhold>, kontrollPeriode: Kontrollperiode, ytelse: Ytelse): Boolean =
+        vektetOffentligSektorArbeidsforhold(arbeidsforhold, kontrollPeriode, ytelse)
 
-    private fun vektetStatligArbeidsforhold(arbeidsforhold: List<Arbeidsforhold>, kontrollPeriode: Kontrollperiode, ytelse: Ytelse): Boolean =
+    private fun vektetOffentligSektorArbeidsforhold(arbeidsforhold: List<Arbeidsforhold>, kontrollPeriode: Kontrollperiode, ytelse: Ytelse): Boolean =
         arbeidsforhold.filter {
             hentJuridiskEnhetstypeFraMap(it.arbeidsgiver.juridiskEnhetEnhetstypeMap)
-                .any { enhetstype -> enhetstype in statligeJuridiskeEnhetstyper }
+                .any { enhetstype -> enhetstype in offentligSektorJuridiskeEnhetstyper }
         }.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollPeriode, ytelse)
 
     private fun hentJuridiskEnhetstypeFraMap(juridiskEnhetEnhetstypeMap: Map<String, String?>?): List<String> {
