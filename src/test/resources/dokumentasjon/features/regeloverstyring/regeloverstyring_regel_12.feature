@@ -32,11 +32,11 @@ Egenskap: Overstyring av regelsvar for regel 12
 
     Og følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister |
-      | 01.01.2018      |                 | 001       | 28               |               |
+      | 01.01.2018      |                 | 001       | 22               |               |
 
-#    Og med følgende regeloverstyringer
-#      | Regel | Svar               |
-#      | 12    | "<Overstyrt svar>" |
+     Og med følgende regeloverstyringer
+       | Regel | Svar               |
+       | 12    | "<Overstyrt svar>" |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
@@ -48,6 +48,6 @@ Egenskap: Overstyring av regelsvar for regel 12
 
     Eksempler:
       | Overstyrt svar | Regel 12 | Medlemskap |
-#      |                | Nei      | Nei        |
-      | Ja             | Ja       | Ja         |
-#      | Nei            | Nei      | Nei        |
+#      |                | Nei      | UAVKLART        |
+#       | Ja             | Ja       | Ja         |
+       | Nei            | Nei      | UAVKLART  |
