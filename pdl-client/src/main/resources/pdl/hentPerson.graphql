@@ -55,6 +55,7 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
         }
         oppholdsadresse(historikk: true) {
             gyldigFraOgMed
+            gyldigTilOgMed
             utenlandskAdresse {
                 landkode
             }

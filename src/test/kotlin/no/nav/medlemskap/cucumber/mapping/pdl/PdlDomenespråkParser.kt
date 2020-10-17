@@ -100,6 +100,7 @@ class PdlDomenespråkParser : BasisDomeneParser() {
 
             return HentPerson.Oppholdsadresse(
                 gyldigFraOgMed = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED, rad),
+                gyldigTilOgMed = parseValgfriString(Domenebegrep.GYLDIG_TIL_OG_MED, rad),
                 utenlandskAdresse = utenlandskAdresse,
                 folkeregistermetadata = HentPerson.Folkeregistermetadata2(
                     ajourholdstidspunkt = null,
