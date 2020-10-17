@@ -19,8 +19,8 @@ Egenskap: Mapping fra PDL HentPerson.Person til Datagrunnlag.personhistorikk
       |                             | 2016-04-25 14:03:03 |                     |
 
     Og følgende oppholdsadresser fra PDL:
-      | Gyldig fra og med   | Utenlandsk adresse landkode | Folkeregistermetadata opphoerstidspunkt |
-      | 2015-03-25 10:03:03 | BEL                         | 2017-04-26 14:05:05                     |
+      | Gyldig fra og med   | Gyldig til og med   | Utenlandsk adresse landkode |
+      | 2015-03-25 10:03:03 | 2017-04-26 14:05:05 | BEL                         |
 
     Og følgende sivilstander fra PDL:
       | Type | Relatert ved sivilstand | Gyldig fra og med | Folkeregister metadata ajourholdstidspunkt | Folkeregistermetadata gyldighetstidspunkt | Folkeregistermetadata opphoerstidspunkt |
@@ -51,6 +51,3 @@ Egenskap: Mapping fra PDL HentPerson.Person til Datagrunnlag.personhistorikk
     Og skal mappede familierelasjoner være
       | Relatert persons ident | Relatert persons rolle | Min rolle for person |
       | 20041276216            | BARN                   | FAR                  |
-
-
-

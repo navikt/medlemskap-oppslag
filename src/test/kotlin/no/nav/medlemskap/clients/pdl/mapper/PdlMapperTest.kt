@@ -165,6 +165,7 @@ class PdlMapperTest {
             "oppholdsadresse": [
                  {
                     "gyldigFraOgMed" : "1989-12-31T10:01:01",
+                    "gyldigTilOgMed" : "1992-01-01T10:01:01",
                     "utenlandskAdresse": {
                         "landkode": "SWE"
                     },
