@@ -47,9 +47,15 @@ class ReglerForArbeidsforhold(
             hvisNei = regelflytUavklart(ytelse)
         )
 
+        val erArbeidsgiverOffentligSektor = lagRegelflyt(
+            regel = hentRegel(REGEL_14),
+            hvisJa = erForetakAktivtFlyt,
+            hvisNei = harForetakMerEnn5AnsatteFlyt
+        )
+
         val erArbeidsgiverOrganisasjonFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_4),
-            hvisJa = harForetakMerEnn5AnsatteFlyt,
+            hvisJa = erArbeidsgiverOffentligSektor,
             hvisNei = regelflytUavklart(ytelse)
         )
 
@@ -89,7 +95,8 @@ class ReglerForArbeidsforhold(
                 HarBrukerSammenhengendeArbeidsforholdRegel.fraDatagrunnlag(datagrunnlag),
                 HarForetaketMerEnn5AnsatteRegel.fraDatagrunnlag(datagrunnlag),
                 JobberBrukerPaaNorskSkipRegel.fraDatagrunnlag(datagrunnlag),
-                HarBrukerJobbetUtenforNorgeRegel.fraDatagrunnlag(datagrunnlag)
+                HarBrukerJobbetUtenforNorgeRegel.fraDatagrunnlag(datagrunnlag),
+                ErArbeidsforholdetOffentligSektor.fraDatagrunnlag(datagrunnlag)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()

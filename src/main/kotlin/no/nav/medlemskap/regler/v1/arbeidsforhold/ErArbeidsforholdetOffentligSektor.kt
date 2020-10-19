@@ -21,7 +21,7 @@ class ErArbeidsforholdetOffentligSektor(
     override fun operasjon(): Resultat {
         return when {
             erArbeidsforholdetOffentligSektor(arbeidsforhold, kontrollPeriodeForArbeidsforhold, ytelse) -> ja()
-            else -> nei("Bruker har ikke statlig arbeidsforhold.")
+            else -> nei()
         }
     }
 

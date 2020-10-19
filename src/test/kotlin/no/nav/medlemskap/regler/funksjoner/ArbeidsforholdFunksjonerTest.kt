@@ -274,7 +274,7 @@ class ArbeidsforholdFunksjonerTest {
     }
 
     @Test
-    fun `To statlige arbeidsforhold med 25% stilling får true`() {
+    fun `To statlige arbeidsforhold med 25% stilling etter hverandre får true`() {
         val periode1 = Periode(
             fom = LocalDate.of(2019, 6, 1),
             tom = LocalDate.of(2020, 1, 1)

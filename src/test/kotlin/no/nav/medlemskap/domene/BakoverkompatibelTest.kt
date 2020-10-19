@@ -611,6 +611,14 @@ private val forventetResponse =
             "dekning" : "",
             "delresultat" : [ ]
           }, {
+            "regelId" : "REGEL_14",
+            "avklaring" : "Er bruker ansatt i staten eller i en kommune?",
+            "begrunnelse" : "",
+            "svar" : "NEI",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ]
+          }, {
             "regelId" : "REGEL_5",
             "avklaring" : "Har arbeidsgiver sin hovedaktivitet i Norge?",
             "begrunnelse" : "",

@@ -337,7 +337,7 @@ object DomenespråkParser : BasisDomeneParser() {
                 type = parseValgfriString(ARBEIDSGIVERTYPE, rad),
                 ansatte = listOf(Ansatte(parseValgfriInt(ANTALL_ANSATTE, rad), null, null)),
                 konkursStatus = konkursStatuser,
-                juridiskEnhetEnhetstypeMap = mapOf("1" to parseValgfriString(JURIDISKENHETSTYPE, rad))
+                juridiskEnhetEnhetstypeMap = mapOf(parseString(IDENTIFIKATOR, rad) to parseValgfriString(JURIDISKENHETSTYPE, rad))
             )
         }
     }
