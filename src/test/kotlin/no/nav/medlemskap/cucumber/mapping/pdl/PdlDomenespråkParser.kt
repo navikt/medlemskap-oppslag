@@ -47,6 +47,8 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         override fun mapRad(rad: Map<String, String>): HentPerson.Bostedsadresse {
 
             return HentPerson.Bostedsadresse(
+                gyldigFraOgMed = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED, rad),
+                gyldigTilOgMed = parseValgfriString(Domenebegrep.GYLDIG_TIL_OG_MED, rad),
                 angittFlyttedato = null,
                 vegadresse = null,
                 matrikkeladresse = null,

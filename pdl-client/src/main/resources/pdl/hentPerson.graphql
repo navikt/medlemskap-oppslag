@@ -27,6 +27,8 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
         },
         bostedsadresse(historikk: true) {
             angittFlyttedato
+            gyldigFraOgMed
+            gyldigTilOgMed
             vegadresse { postnummer },
             matrikkeladresse { postnummer },
             ukjentBosted {
