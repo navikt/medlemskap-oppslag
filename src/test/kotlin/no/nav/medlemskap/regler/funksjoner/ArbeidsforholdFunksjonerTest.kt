@@ -161,6 +161,33 @@ class ArbeidsforholdFunksjonerTest {
     }
 
     @Test
+    fun `Beregn vektet stillingsprosent med parallelt arbeid med 0% stilling`() {
+
+        val kontrollperiode = Kontrollperiode(
+            fom = LocalDate.of(2018, 12, 31),
+            tom = LocalDate.of(2019, 12, 31)
+        )
+        val arbeidsforholdPeriode = Periode(
+            fom = LocalDate.of(2018, 7, 1),
+            tom = null
+        )
+
+        val arbeidsavtalePeriode = Periode(
+            fom = LocalDate.of(2018, 7, 1),
+            tom = LocalDate.of(2021, 7, 1)
+        )
+
+        val arbeidsforhold = createArbeidsforhold(arbeidsforholdPeriode, 100.0, arbeidsforholdPeriode)
+        val arbeidsforhold2 = createArbeidsforhold(arbeidsforholdPeriode, 0.0, arbeidsavtalePeriode)
+        val arbeidsforholdList = listOf(arbeidsforhold, arbeidsforhold2)
+
+        assertEquals(100.0, arbeidsforholdList.beregnGjennomsnittligStillingsprosentForGrafana(kontrollperiode))
+        assertEquals(100.0, arbeidsforholdList[0].vektetStillingsprosentForArbeidsforhold(kontrollperiode))
+        assertEquals(0.0, arbeidsforholdList[1].vektetStillingsprosentForArbeidsforhold(kontrollperiode))
+        assertTrue(arbeidsforholdList.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollperiode, Ytelse.SYKEPENGER))
+    }
+
+    @Test
     fun `Beregn vektet stillingsprosent for to delvis parallelle arbeidsforhold`() {
 
         val kontrollperiode = Kontrollperiode(
@@ -184,7 +211,7 @@ class ArbeidsforholdFunksjonerTest {
     }
 
     private fun createArbeidsforhold(arbeidsforholdPeriode: Periode, stillingsprosent: Double = 100.0, arbeidsavtalePeriode: Periode = arbeidsforholdPeriode): Arbeidsforhold {
-        val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode, arbeidsavtalePeriode, "11111", Skipsregister.UKJENT, stillingsprosent, 20.0)
+        val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode, arbeidsavtalePeriode, "11111", Skipsregister.UKJENT, stillingsprosent, null)
 
         val arbeidsforhold = Arbeidsforhold(
             arbeidsforholdPeriode, null, OpplysningspliktigArbeidsgiverType.Organisasjon,
