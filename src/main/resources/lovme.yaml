@@ -259,7 +259,7 @@ components:
         tom:
           $ref: "#/components/schemas/ValgfriDato"
     Doedsfall:
-      type: array
+        type: array
         items:
           $ref: "#/components/schemas/ValgfriDato"
     Gyldighetsperiode:
@@ -384,7 +384,7 @@ components:
         doedsfall:
           type: array
           items:
-            $ref: "#/components/schemas/Doedsfall"
+            $ref: "#/components/schemas/ValgfriDato"
     PersonhistorikkBarn:
       properties:
         ident:
