@@ -116,14 +116,13 @@ class PdlEktefelleMapperTest {
                  }
                }
             ],
+            "doedsfall": [],
             "bostedsadresse": [
                {
                 "angittFlyttedato": "1992-01-01",
                 "vegadresse": 
-                    {
-                    "postnummer": "8072"
-                    },
-                "matrikkeladresse": 
+                    { "postnummer": "8072" },
+                 "matrikkeladresse": 
                     {
                     "postnummer": "8072"
                     },
