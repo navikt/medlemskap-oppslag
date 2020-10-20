@@ -23,10 +23,6 @@ Egenskap: Resultat-struktur for norsk statsborger
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
       | 1             | BEDR             | NOR      | 9              |
 
-    Og følgende personstatuser i personhistorikken
-      | Personstatus | Fra og med dato | Til og med dato |
-      | FØDR         | 01.01.2000      |                 |
-
     Og følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
       | NOR      | 01.01.2000      |                 |
@@ -43,7 +39,7 @@ Egenskap: Resultat-struktur for norsk statsborger
       | ARBEIDSFORHOLD  |
       | NORSK           |
       | STATSBORGERSKAP |
-      | BOSATT          |
+
 
     Og skal regel "NORSK" inneholde følgende delresultater:
       | Regel |
@@ -54,10 +50,6 @@ Egenskap: Resultat-struktur for norsk statsborger
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte | Konkursstatus |
       | 1             | BEDR             | NOR      | 9              | OSKP          |
 
-    Og følgende personstatuser i personhistorikken
-      | Personstatus | Fra og med dato | Til og med dato |
-      | FØDR         | 01.01.2000      |                 |
-
     Og følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
       | NOR      | 01.01.2000      |                 |
@@ -74,7 +66,7 @@ Egenskap: Resultat-struktur for norsk statsborger
       | ARBEIDSFORHOLD  |
       | NORSK           |
       | STATSBORGERSKAP |
-      | BOSATT          |
+
 
     Og skal regel "NORSK" inneholde følgende delresultater:
       | Regel |

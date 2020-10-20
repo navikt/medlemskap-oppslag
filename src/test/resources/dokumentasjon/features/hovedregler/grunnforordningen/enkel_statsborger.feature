@@ -22,6 +22,7 @@ Egenskap: Borgere i EØS omfattes av grunnforordningen
       | USA  | Nei  |
 
   Scenario: Regel 2: Person med bare amerikansk statsborgerskap omfattes ikke av grunnforordningen
+
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
       | USA      | 30.01.2000      |                 |

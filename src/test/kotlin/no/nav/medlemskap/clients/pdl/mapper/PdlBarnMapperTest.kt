@@ -145,6 +145,7 @@ class PdlBarnMapperTest {
                     }
                 }
             ], 
+             "doedsfall": [],
             "oppholdsadresse": [
                 {
                     "gyldigFraOgMed" : "1989-12-31T10:01:01",
