@@ -205,7 +205,7 @@ private fun personhistorikk(): Personhistorikk {
     return Personhistorikk(
         statsborgerskap = listOf(Statsborgerskap("NOR", enDato(), enAnnenDato())),
         bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr(), folkeregistermetadata())),
+        sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr())),
         familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata())),
         kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
         oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
@@ -311,12 +311,7 @@ private val forventetResponse =
             "type" : "GIFT",
             "gyldigFraOgMed" : "1975-10-10",
             "gyldigTilOgMed" : "2020-08-01",
-            "relatertVedSivilstand" : "0101197512345",
-            "folkeregistermetadata" : {
-              "ajourholdstidspunkt" : "2020-06-20T10:00:00",
-              "gyldighetstidspunkt" : "2020-06-20T10:00:00",
-              "opphoerstidspunkt" : "2020-06-20T10:00:00"
-            }
+            "relatertVedSivilstand" : "0101197512345"
           } ],
           "familierelasjoner" : [ {
             "relatertPersonsIdent" : "0101201012345",

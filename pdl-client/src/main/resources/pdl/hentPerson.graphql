@@ -20,11 +20,6 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
             gyldigFraOgMed
             bekreftelsesdato
             relatertVedSivilstand
-            folkeregistermetadata {
-                ajourholdstidspunkt
-                gyldighetstidspunkt
-                opphoerstidspunkt
-            }
         },
         bostedsadresse(historikk: true) {
             angittFlyttedato
@@ -34,11 +29,6 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
             matrikkeladresse { postnummer },
             ukjentBosted {
                 bostedskommune
-            }
-            folkeregistermetadata {
-                ajourholdstidspunkt
-                gyldighetstidspunkt
-                opphoerstidspunkt
             }
         },
     	doedsfall{

@@ -3,7 +3,6 @@ package no.nav.medlemskap.services.pdl
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.regler.common.Datohjelper.Companion.parseIsoDato
-import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapFolkeregisterMetadata2
 import java.time.LocalDate
 
 object PdlSivilstandMapper {
@@ -39,9 +38,7 @@ object PdlSivilstandMapper {
             type = mapSivilstandType(sivilstand.type),
             gyldigFraOgMed = gyldigFraOgMed,
             gyldigTilOgMed = gyldigTilOgMed,
-            relatertVedSivilstand = sivilstand.relatertVedSivilstand,
-
-            folkeregistermetadata = mapFolkeregisterMetadata2(sivilstand.folkeregistermetadata)
+            relatertVedSivilstand = sivilstand.relatertVedSivilstand
         )
     }
 

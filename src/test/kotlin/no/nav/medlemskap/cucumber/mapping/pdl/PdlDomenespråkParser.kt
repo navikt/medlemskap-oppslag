@@ -56,12 +56,7 @@ class PdlDomenespråkParser : BasisDomeneParser() {
                 angittFlyttedato = null,
                 vegadresse = null,
                 matrikkeladresse = null,
-                ukjentBosted = null,
-                folkeregistermetadata = HentPerson.Folkeregistermetadata2(
-                    ajourholdstidspunkt = null,
-                    gyldighetstidspunkt = parseValgfriString(Domenebegrep.FOLKE_REG_GYLDIGHETSTIDSPUNKT, rad),
-                    opphoerstidspunkt = parseValgfriString(Domenebegrep.FOLKE_REG_OPPHOERSTIDSPUNKT, rad)
-                )
+                ukjentBosted = null
             )
         }
     }
@@ -126,8 +121,7 @@ class PdlDomenespråkParser : BasisDomeneParser() {
                 type = sivilstandstype,
                 gyldigFraOgMed = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED, rad),
                 bekreftelsesdato = parseValgfriString(Domenebegrep.BEKREFTELSESDATO, rad),
-                relatertVedSivilstand = parseValgfriString(Domenebegrep.RELATERT_VED_SIVILSTAND, rad),
-                folkeregistermetadata = null
+                relatertVedSivilstand = parseValgfriString(Domenebegrep.RELATERT_VED_SIVILSTAND, rad)
             )
         }
     }
