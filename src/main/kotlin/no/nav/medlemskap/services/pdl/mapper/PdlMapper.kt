@@ -6,10 +6,9 @@ import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Datohjelper.Companion.parseIsoDato
+import no.nav.medlemskap.regler.common.Datohjelper.Companion.parseIsoDatoTid
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 object PdlMapper {
 
@@ -61,8 +60,8 @@ object PdlMapper {
 
     fun mapOppholdsadresse(oppholdsadresse: HentPerson.Oppholdsadresse): Adresse {
         return Adresse(
-            fom = convertToLocalDateTime(oppholdsadresse.gyldigFraOgMed)?.toLocalDate(),
-            tom = convertToLocalDateTime(oppholdsadresse.gyldigTilOgMed)?.toLocalDate(),
+            fom = parseIsoDato(oppholdsadresse.gyldigFraOgMed),
+            tom = parseIsoDato(oppholdsadresse.gyldigTilOgMed),
             landkode = mapLandkodeForOppholdsadresse(oppholdsadresse)
         )
     }
@@ -77,8 +76,8 @@ object PdlMapper {
     fun mapKontaktAdresser(pdlKontaktadresser: List<HentPerson.Kontaktadresse>): List<Adresse> {
         return pdlKontaktadresser.map {
             Adresse(
-                fom = convertToLocalDateTime(it.gyldigFraOgMed)?.toLocalDate(),
-                tom = convertToLocalDateTime(it.gyldigTilOgMed)?.toLocalDate(),
+                fom = parseIsoDato(it.gyldigFraOgMed),
+                tom = parseIsoDato(it.gyldigTilOgMed),
                 landkode = mapLandkodeForKontaktadresse(it)
             )
         }.sortedBy { it.fom }
@@ -110,8 +109,8 @@ object PdlMapper {
         return pdlPostedsadresser.map {
             Adresse(
                 landkode = "NOR",
-                fom = convertToLocalDateTime(it.gyldigFraOgMed)?.toLocalDate(),
-                tom = convertToLocalDateTime(it.gyldigTilOgMed)?.toLocalDate()
+                fom = parseIsoDato(it.gyldigFraOgMed),
+                tom = parseIsoDato(it.gyldigTilOgMed)
             )
         }.sortedBy { it.fom }
     }
@@ -141,9 +140,9 @@ object PdlMapper {
     fun mapFolkeregisterMetadata2(folkeregistermetadata: HentPerson.Folkeregistermetadata2?): Folkeregistermetadata? {
         return folkeregistermetadata?.let {
             Folkeregistermetadata(
-                ajourholdstidspunkt = convertToLocalDateTime(it.ajourholdstidspunkt),
-                gyldighetstidspunkt = convertToLocalDateTime(it.gyldighetstidspunkt),
-                opphoerstidspunkt = convertToLocalDateTime(it.opphoerstidspunkt)
+                ajourholdstidspunkt = parseIsoDatoTid(it.ajourholdstidspunkt),
+                gyldighetstidspunkt = parseIsoDatoTid(it.gyldighetstidspunkt),
+                opphoerstidspunkt = parseIsoDatoTid(it.opphoerstidspunkt)
             )
         }
     }
@@ -151,22 +150,10 @@ object PdlMapper {
     fun mapFolkeregisterMetadata(folkeregistermetadata: HentPerson.Folkeregistermetadata?): Folkeregistermetadata? {
         return folkeregistermetadata?.let {
             Folkeregistermetadata(
-                ajourholdstidspunkt = convertToLocalDateTime(it.ajourholdstidspunkt),
-                gyldighetstidspunkt = convertToLocalDateTime(it.gyldighetstidspunkt),
-                opphoerstidspunkt = convertToLocalDateTime(it.opphoerstidspunkt)
+                ajourholdstidspunkt = parseIsoDatoTid(it.ajourholdstidspunkt),
+                gyldighetstidspunkt = parseIsoDatoTid(it.gyldighetstidspunkt),
+                opphoerstidspunkt = parseIsoDatoTid(it.opphoerstidspunkt)
             )
-        }
-    }
-
-    private fun convertToLocalDateTime(dateTimeToConvert: String?): LocalDateTime? {
-        return dateTimeToConvert?.let { parseLocalDateTime(it) }
-    }
-
-    private fun parseLocalDateTime(string: String): LocalDateTime? {
-        return try {
-            LocalDateTime.parse(string, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-        } catch (e: Exception) {
-            LocalDateTime.parse(string, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
         }
     }
 }

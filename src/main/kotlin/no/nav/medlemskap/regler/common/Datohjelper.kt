@@ -91,7 +91,11 @@ class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
             )
         }
 
-        fun parseDatoTid(datoTid: String): LocalDateTime {
+        fun parseIsoDatoTid(datoTid: String?): LocalDateTime? {
+            if (datoTid == null) {
+                return null
+            }
+
             return LocalDateTime.parse(datoTid, DateTimeFormatter.ISO_DATE_TIME)
         }
     }
