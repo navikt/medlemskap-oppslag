@@ -55,7 +55,7 @@ class ReglerForArbeidsforhold(
 
         val erArbeidsgiverOffentligSektor = lagRegelflyt(
             regel = hentRegel(REGEL_14),
-            hvisJa = regelflytJa(ytelse),
+            hvisJa = harBrukerJobbetUtenforNorgeFlyt,
             hvisNei = harForetakMerEnn5AnsatteFlyt
         )
 

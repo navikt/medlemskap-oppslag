@@ -38,6 +38,7 @@ object PdlSivilstandMapper {
             gyldigFraOgMed = convertToLocalDate(sivilstand.gyldigFraOgMed),
             gyldigTilOgMed = gyldigTilOgMed,
             relatertVedSivilstand = sivilstand.relatertVedSivilstand,
+
             folkeregistermetadata = mapFolkeregisterMetadata2(sivilstand.folkeregistermetadata)
         )
     }

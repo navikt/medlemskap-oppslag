@@ -48,6 +48,8 @@ Egenskap: Mapping av kontaktadresser fra PDL HentPerson.Kontaktadresse
       | Utenlandsk adresse frittformat landkode | Gyldig fra og med   | Gyldig til og med | Spørsmål til PDL                                                                          |
       | BEL                                     | 2016-04-25 14:03:03 |                   | Vil det ligge en norsk adresse først? Kan både ut. fritt format og ut.format være angitt? |
 
+
+
     Når kontaktadresser mappes
 
     Så skal mappede kontaktadresser være
@@ -57,14 +59,14 @@ Egenskap: Mapping av kontaktadresser fra PDL HentPerson.Kontaktadresse
 
   Scenario: Kontaktadresse med to-tegns landkode
     Gitt følgende kontaktadresser fra PDL:
-      | Utenlandsk adresse landkode | Gyldig fra og med | Gyldig til og med | Spørsmål til PDL     |
-      | GB                          |                   |                   | Norsk adresse først? |
+      | Utenlandsk adresse landkode | Gyldig fra og med | Gyldig til og med | Spørsmål til PDL     |Svar
+      | GB                          |                   |                   | Norsk adresse først? |Sjekk med Hanne
 
     Når kontaktadresser mappes
 
     Så skal mappede kontaktadresser være
-      | Landkode | Fra og med dato | Til og med dato | Spørsmål til PDL     |
-      | GBR      |                 |                 | Norsk adresse først? |
+      | Landkode | Fra og med dato | Til og med dato | Spørsmål til PDL     |Svar
+      | GBR      |                 |                 | Norsk adresse først? |Sjekk med Hanne
 
   Scenario: Kontaktadresser skal sorteres på "Fra og med dato", stigende
     Gitt følgende kontaktadresser fra PDL:

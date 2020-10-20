@@ -38,6 +38,9 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
                 opphoerstidspunkt
             }
         },
+    	doedsfall{
+    			doedsdato
+  		},
         kontaktadresse(historikk: true) {
             gyldigFraOgMed
             gyldigTilOgMed
@@ -52,7 +55,7 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
                 gyldighetstidspunkt
                 opphoerstidspunkt
             }
-        }
+        },
         oppholdsadresse(historikk: true) {
             gyldigFraOgMed
             utenlandskAdresse {

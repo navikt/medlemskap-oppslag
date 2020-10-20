@@ -22,17 +22,23 @@ object PdlMapper {
         val oppholdsadresser: List<Adresse> = mapOppholdsadresser(person.oppholdsadresse)
         val sivilstand: List<Sivilstand> = mapSivilstander(person.sivilstand)
         val familierelasjoner: List<Familierelasjon> = mapFamilierelasjoner(person.familierelasjoner)
-        val personstatuser: List<FolkeregisterPersonstatus> = emptyList()
+        val doedsfall: List<LocalDate?> = mapDoedsfall(person.doedsfall)
 
         return Personhistorikk(
             statsborgerskap = statsborgerskap,
-            personstatuser = personstatuser,
             bostedsadresser = bostedsadresser,
             sivilstand = sivilstand,
             familierelasjoner = familierelasjoner,
             kontaktadresser = kontaktadresser,
-            oppholdsadresser = oppholdsadresser
+            oppholdsadresser = oppholdsadresser,
+            doedsfall = doedsfall
         )
+    }
+
+    private fun mapDoedsfall(doedsfall: List<HentPerson.Doedsfall>): List<LocalDate?> {
+        return doedsfall.map {
+            convertToLocalDate(it.doedsdato)
+        }
     }
 
     fun mapOppholdsadresser(oppholdsadresser: List<HentPerson.Oppholdsadresse>): List<Adresse> {
@@ -119,7 +125,7 @@ object PdlMapper {
         }.sortedBy { it.fom }
     }
 
-    private fun mapFamileRelasjonsrolle(rolle: HentPerson.Familierelasjonsrolle?): no.nav.medlemskap.domene.Familierelasjonsrolle? {
+    private fun mapFamileRelasjonsrolle(rolle: HentPerson.Familierelasjonsrolle?): Familierelasjonsrolle? {
         return rolle.let {
             when (it) {
                 HentPerson.Familierelasjonsrolle.BARN -> Familierelasjonsrolle.BARN

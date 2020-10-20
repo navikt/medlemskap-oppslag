@@ -4,13 +4,10 @@
 Egenskap: Regelflyt for regel 2
 
   Bakgrunn:
+
     Gitt følgende bostedsadresser i personhistorikken
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | Oslo    | NOR      | 01.01.2000      |                 |
-
-    Og følgende personstatuser i personhistorikken
-      | Personstatus | Fra og med dato | Til og med dato |
-      | BOSA         | 01.01.2000      |                 |
 
     Og følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |

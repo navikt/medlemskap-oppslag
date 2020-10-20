@@ -10,10 +10,10 @@ import no.nav.medlemskap.domene.Personhistorikk
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper
 
 class PdlMapperSteps : No {
+
     private val pdlDomenespråkParser = PdlDomenespråkParser()
 
     private var pdlPersonBuilder = PdlPersonBuilder()
-
     private var personhistorikk: Personhistorikk? = null
 
     init {
@@ -41,6 +41,10 @@ class PdlMapperSteps : No {
             pdlPersonBuilder.familierelasjoner = pdlDomenespråkParser.mapFamilierelasjoner(dataTable)
         }
 
+        Gitt<DataTable>("følgende opplysninger om doedsfall fra PDL:") { dataTable: DataTable? ->
+            pdlPersonBuilder.doedsfall = pdlDomenespråkParser.mapDoedsfall(dataTable)
+        }
+
         Når("statsborgerskap mappes") {
             personhistorikk = mapTilPersonhistorikk()
         }
@@ -58,6 +62,10 @@ class PdlMapperSteps : No {
         }
 
         Når("sivilstander mappes") {
+            personhistorikk = mapTilPersonhistorikk()
+        }
+
+        Når("doedsfall mappes") {
             personhistorikk = mapTilPersonhistorikk()
         }
 
@@ -105,6 +113,11 @@ class PdlMapperSteps : No {
             personhistorikk!!.familierelasjoner.shouldContainExactly(familierelasjonerForventet)
         }
 
+        Så<DataTable>("skal mappede doedsfall være") { dataTable: DataTable? ->
+            val doedsfallForventet = DomenespråkParser.mapDoedsfall(dataTable)
+            personhistorikk?.doedsfall.shouldContainExactly(doedsfallForventet)
+        }
+
         Så<DataTable>("skal personhistorikk.familierelasjoner være") { dataTable: DataTable? ->
         }
     }
@@ -120,6 +133,7 @@ class PdlMapperSteps : No {
         var oppholdsadresser: List<HentPerson.Oppholdsadresse> = emptyList()
         var sivilstander: List<HentPerson.Sivilstand> = emptyList()
         var familierelasjoner: List<HentPerson.Familierelasjon> = emptyList()
+        var doedsfall: List<HentPerson.Doedsfall> = emptyList()
 
         fun build(): HentPerson.Person {
             return HentPerson.Person(
@@ -128,7 +142,8 @@ class PdlMapperSteps : No {
                 sivilstand = sivilstander,
                 bostedsadresse = bostedsadresser,
                 kontaktadresse = kontaktadresser,
-                oppholdsadresse = oppholdsadresser
+                oppholdsadresse = oppholdsadresser,
+                doedsfall = doedsfall
             )
         }
     }

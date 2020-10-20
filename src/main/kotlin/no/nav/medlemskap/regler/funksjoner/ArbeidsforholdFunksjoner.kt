@@ -187,10 +187,13 @@ object ArbeidsforholdFunksjoner {
 
         var vektetStillingsprosentForArbeidsforhold = 0.0
 
-        for (arbeidsavtale in this.arbeidsavtaler.filter { it.gyldighetsperiode.overlapper(kontrollPeriode.periode) }) {
+        for (arbeidsavtale in this.arbeidsavtaler.filter { it.gyldighetsperiode.overlapper(kontrollPeriode.periode) && it.stillingsprosent != null && it.stillingsprosent > 0.0 }) {
             val stillingsprosent = arbeidsavtale.stillingsprosent ?: 100.0
             val arbeidsavtaleKontrollperiodeIntersection = arbeidsavtale.gyldighetsperiode.intersection(arbeidsforholdKontrollperiodeIntersection)
-            vektetStillingsprosentForArbeidsforhold += (arbeidsavtaleKontrollperiodeIntersection.antallDager / totaltAntallDager) * stillingsprosent
+            val beregnetStillingsprosent = (arbeidsavtaleKontrollperiodeIntersection.antallDager / totaltAntallDager) * stillingsprosent
+            if (beregnetStillingsprosent > 0.0) {
+                vektetStillingsprosentForArbeidsforhold += (arbeidsavtaleKontrollperiodeIntersection.antallDager / totaltAntallDager) * stillingsprosent
+            }
         }
 
         return Math.round(vektetStillingsprosentForArbeidsforhold * 10.0) / 10.0
