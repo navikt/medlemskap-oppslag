@@ -16,7 +16,13 @@ class ReglerForArbeidsforhold(
         return listOf(kjørUavhengigeRegelflyterMedEttResultat(REGEL_ARBEIDSFORHOLD))
     }
 
-    fun hentHovedflyt(): Regelflyt {
+    override fun hentRegelflyter(): List<Regelflyt> {
+        val harBrukerJobbetUtenforNorgeFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_9),
+            hvisJa = konklusjonUavklart(ytelse),
+            hvisNei = regelflytJa(ytelse)
+        )
+
         val jobberBrukerPaaNorskSkipFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_7_1),
             hvisJa = regelflytJa(ytelse),
@@ -26,7 +32,7 @@ class ReglerForArbeidsforhold(
         val erBrukerPilotEllerKabinansattFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_8),
             hvisJa = regelflytUavklart(ytelse),
-            hvisNei = regelflytJa(ytelse)
+            hvisNei = harBrukerJobbetUtenforNorgeFlyt
         )
 
         val erArbeidsforholdetMaritimtFlyt = lagRegelflyt(
@@ -49,7 +55,7 @@ class ReglerForArbeidsforhold(
 
         val erArbeidsgiverOffentligSektor = lagRegelflyt(
             regel = hentRegel(REGEL_14),
-            hvisJa = erForetakAktivtFlyt,
+            hvisJa = regelflytJa(ytelse),
             hvisNei = harForetakMerEnn5AnsatteFlyt
         )
 
@@ -65,17 +71,7 @@ class ReglerForArbeidsforhold(
             hvisNei = regelflytUavklart(ytelse)
         )
 
-        return harBrukerSammenhengendeArbeidsforholdSiste12MndFlyt
-    }
-
-    override fun hentRegelflyter(): List<Regelflyt> {
-        val harBrukerJobbetUtenforNorgeFlyt = lagRegelflyt(
-            regel = hentRegel(REGEL_9),
-            hvisJa = konklusjonUavklart(ytelse),
-            hvisNei = regelflytJa(ytelse)
-        )
-
-        return listOf(hentHovedflyt(), harBrukerJobbetUtenforNorgeFlyt)
+        return listOf(harBrukerSammenhengendeArbeidsforholdSiste12MndFlyt)
     }
 
     companion object {
