@@ -83,8 +83,7 @@ class PdlDomenespråkParser : BasisDomeneParser() {
                 gyldigFraOgMed = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED, rad),
                 gyldigTilOgMed = parseValgfriString(Domenebegrep.GYLDIG_TIL_OG_MED, rad),
                 utenlandskAdresse = utenlandskAdresse,
-                utenlandskAdresseIFrittFormat = utenlandskAdresseFrittFormat,
-                folkeregistermetadata = null
+                utenlandskAdresseIFrittFormat = utenlandskAdresseFrittFormat
             )
         }
     }
@@ -102,12 +101,7 @@ class PdlDomenespråkParser : BasisDomeneParser() {
             return HentPerson.Oppholdsadresse(
                 gyldigFraOgMed = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED, rad),
                 gyldigTilOgMed = parseValgfriString(Domenebegrep.GYLDIG_TIL_OG_MED, rad),
-                utenlandskAdresse = utenlandskAdresse,
-                folkeregistermetadata = HentPerson.Folkeregistermetadata2(
-                    ajourholdstidspunkt = null,
-                    gyldighetstidspunkt = parseValgfriString(Domenebegrep.FOLKE_REG_GYLDIGHETSTIDSPUNKT, rad),
-                    opphoerstidspunkt = parseValgfriString(Domenebegrep.FOLKE_REG_OPPHOERSTIDSPUNKT, rad)
-                )
+                utenlandskAdresse = utenlandskAdresse
             )
         }
     }

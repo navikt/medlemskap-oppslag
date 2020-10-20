@@ -43,22 +43,12 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
             utenlandskAdresseIFrittFormat {
                 landkode
             }
-            folkeregistermetadata {
-                ajourholdstidspunkt
-                gyldighetstidspunkt
-                opphoerstidspunkt
-            }
         },
         oppholdsadresse(historikk: true) {
             gyldigFraOgMed
             gyldigTilOgMed
             utenlandskAdresse {
                 landkode
-            }
-            folkeregistermetadata {
-                ajourholdstidspunkt
-                gyldighetstidspunkt
-                opphoerstidspunkt
             }
         }
     }
