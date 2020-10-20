@@ -121,6 +121,7 @@ class PdlDomenespråkParser : BasisDomeneParser() {
             return HentPerson.Sivilstand(
                 type = sivilstandstype,
                 gyldigFraOgMed = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED, rad),
+                bekreftelsesdato = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED, rad),
                 relatertVedSivilstand = parseValgfriString(Domenebegrep.RELATERT_VED_SIVILSTAND, rad),
                 folkeregistermetadata = null
             )

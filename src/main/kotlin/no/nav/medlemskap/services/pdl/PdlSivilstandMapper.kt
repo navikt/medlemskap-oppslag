@@ -18,21 +18,21 @@ object PdlSivilstandMapper {
 
         if (sivilstander.size < 2) {
             return sivilstander.map {
-                mapSivilstander(it)
+                mapSivilstand(it)
             }
         }
 
         return sivilstander
             .zipWithNext { sivilstand, neste ->
-                mapSivilstander(sivilstand, convertToLocalDate(neste.gyldigFraOgMed)?.minusDays(1))
-            }.plus(mapSivilstander(sivilstander.last()))
+                mapSivilstand(sivilstand, convertToLocalDate(neste.gyldigFraOgMed)?.minusDays(1))
+            }.plus(mapSivilstand(sivilstander.last()))
     }
 
     fun convertToLocalDate(dateToConvert: String?): LocalDate? {
         return dateToConvert?.let { LocalDate.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd")) }
     }
 
-    private fun mapSivilstander(sivilstand: HentPerson.Sivilstand, gyldigTilOgMed: LocalDate? = null): no.nav.medlemskap.domene.Sivilstand {
+    private fun mapSivilstand(sivilstand: HentPerson.Sivilstand, gyldigTilOgMed: LocalDate? = null): no.nav.medlemskap.domene.Sivilstand {
         return no.nav.medlemskap.domene.Sivilstand(
             type = mapSivilstandType(sivilstand.type),
             gyldigFraOgMed = convertToLocalDate(sivilstand.gyldigFraOgMed),

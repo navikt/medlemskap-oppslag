@@ -66,15 +66,15 @@ class PdlSivilstandMapperTest {
     }
 
     private fun pdlSivilstandGift(gyldigFraOgMed: LocalDate, relatertVedSivilstand: String): PdlSivilstand {
-        return PdlSivilstand(PdlSivilstandstype.GIFT, gyldigFraOgMed.toString(), relatertVedSivilstand, null)
+        return PdlSivilstand(PdlSivilstandstype.GIFT, gyldigFraOgMed.toString(), null, relatertVedSivilstand, null)
     }
 
     private fun pdlSivilstandSeparert(gyldigFraOgMed: LocalDate, relatertVedSivilstand: String): PdlSivilstand {
-        return PdlSivilstand(PdlSivilstandstype.SEPARERT, gyldigFraOgMed.toString(), relatertVedSivilstand, null)
+        return PdlSivilstand(PdlSivilstandstype.SEPARERT, gyldigFraOgMed.toString(), null, relatertVedSivilstand, null)
     }
 
     private fun pdlSivilstandSkilt(gyldigFraOgMed: LocalDate, relatertVedSivilstand: String): PdlSivilstand {
-        return PdlSivilstand(PdlSivilstandstype.SKILT, gyldigFraOgMed.toString(), relatertVedSivilstand, null)
+        return PdlSivilstand(PdlSivilstandstype.SKILT, gyldigFraOgMed.toString(), null, relatertVedSivilstand, null)
     }
 
     companion object {

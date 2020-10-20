@@ -5,8 +5,8 @@ import mu.KotlinLogging
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.regler.common.Datohjelper.Companion.parseIsoDato
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -113,8 +113,8 @@ object PdlMapper {
         return statsborgerskap.map {
             Statsborgerskap(
                 landkode = it.land,
-                fom = convertToLocalDate(it.gyldigFraOgMed),
-                tom = convertToLocalDate(it.gyldigTilOgMed)
+                fom = parseIsoDato(it.gyldigFraOgMed),
+                tom = parseIsoDato(it.gyldigTilOgMed)
             )
         }.sortedBy { it.fom }
     }
@@ -161,9 +161,5 @@ object PdlMapper {
         } catch (e: Exception) {
             LocalDateTime.parse(string, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
         }
-    }
-
-    fun convertToLocalDate(dateToConvert: String?): LocalDate? {
-        return dateToConvert?.let { LocalDate.parse(it, DateTimeFormatter.ISO_LOCAL_DATE) }
     }
 }

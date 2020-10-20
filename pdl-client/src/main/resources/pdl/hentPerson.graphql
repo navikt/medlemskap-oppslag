@@ -18,6 +18,7 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
         sivilstand(historikk: $bostedHistorikk) {
             type
             gyldigFraOgMed
+            bekreftelsesdato
             relatertVedSivilstand
             folkeregistermetadata {
                 ajourholdstidspunkt

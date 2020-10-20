@@ -7,6 +7,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import kotlin.math.min
 
 class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
 
@@ -77,6 +78,17 @@ class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
             } else {
                 return LocalDate.parse(dato, isoDatoFormatter)
             }
+        }
+
+        fun parseIsoDato(dato: String?): LocalDate? {
+            if (dato == null) {
+                return null
+            }
+
+            return LocalDate.parse(
+                dato.substring(0, min(dato.length, 10)),
+                isoDatoFormatter
+            )
         }
 
         fun parseDatoTid(datoTid: String): LocalDateTime {
