@@ -10,8 +10,8 @@ Egenskap: Mapping fra PDL HentPerson.Person til Datagrunnlag.personhistorikk
       | BEL  |                        |                        |
 
     Og følgende bostedsadresser fra PDL:
-      | Folkeregistermetadata gyldighetstidspunkt | Folkeregistermetadata opphoerstidspunkt |
-      |                                           |                                         |
+      | Gyldig fra og med | Gyldig til og med |
+      |                   |                   |
 
     Og følgende kontaktadresser fra PDL:
       | Utenlandsk adresse landkode | Gyldig fra og med   | Gyldig til og med   |

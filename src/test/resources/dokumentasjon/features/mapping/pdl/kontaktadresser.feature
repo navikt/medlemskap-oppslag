@@ -3,7 +3,6 @@
 
 Egenskap: Mapping av kontaktadresser fra PDL HentPerson.Kontaktadresse
 
-
   Scenario: En person som har flyttet flere ganger i Norge
     Gitt følgende kontaktadresser fra PDL:
       | Utenlandsk adresse landkode | Gyldig fra og med   | Gyldig til og med |
@@ -45,8 +44,8 @@ Egenskap: Mapping av kontaktadresser fra PDL HentPerson.Kontaktadresse
 
   Scenario: En person som har utenlandsk kontaktadresse i fritt format
     Gitt følgende kontaktadresser fra PDL:
-      | Utenlandsk adresse frittformat landkode | Gyldig fra og med   | Gyldig til og med | Spørsmål til PDL                                                                          |
-      | BEL                                     | 2016-04-25 14:03:03 |                   | Vil det ligge en norsk adresse først? Kan både ut. fritt format og ut.format være angitt? |
+      | Utenlandsk adresse frittformat landkode | Gyldig fra og med   | Gyldig til og med |
+      | BEL                                     | 2016-04-25 12:01:01 |                   |
 
     Når kontaktadresser mappes
 
@@ -57,14 +56,14 @@ Egenskap: Mapping av kontaktadresser fra PDL HentPerson.Kontaktadresse
 
   Scenario: Kontaktadresse med to-tegns landkode
     Gitt følgende kontaktadresser fra PDL:
-      | Utenlandsk adresse landkode | Gyldig fra og med | Gyldig til og med | Spørsmål til PDL     |
-      | GB                          |                   |                   | Norsk adresse først? |
+      | Utenlandsk adresse landkode | Gyldig fra og med | Gyldig til og med |
+      | GB                          |                   |                   |
 
     Når kontaktadresser mappes
 
     Så skal mappede kontaktadresser være
-      | Landkode | Fra og med dato | Til og med dato | Spørsmål til PDL     |
-      | GBR      |                 |                 | Norsk adresse først? |
+      | Landkode | Fra og med dato | Til og med dato |
+      | GBR      |                 |                 |
 
   Scenario: Kontaktadresser skal sorteres på "Fra og med dato", stigende
     Gitt følgende kontaktadresser fra PDL:

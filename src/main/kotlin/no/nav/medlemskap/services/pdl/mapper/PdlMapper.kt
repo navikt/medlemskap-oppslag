@@ -103,8 +103,8 @@ object PdlMapper {
         return pdlPostedsadresser.map {
             Adresse(
                 landkode = "NOR",
-                fom = convertToLocalDate(it.gyldigFraOgMed),
-                tom = convertToLocalDate(it.gyldigTilOgMed)
+                fom = convertToLocalDateTime(it.gyldigFraOgMed)?.toLocalDate(),
+                tom = convertToLocalDateTime(it.gyldigTilOgMed)?.toLocalDate()
             )
         }.sortedBy { it.fom }
     }
