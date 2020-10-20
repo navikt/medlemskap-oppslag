@@ -9,7 +9,6 @@ data class Personhistorikk(
     val oppholdsadresser: List<Adresse>,
     val sivilstand: List<Sivilstand>,
     val familierelasjoner: List<Familierelasjon>,
-    val personstatuser: List<FolkeregisterPersonstatus>,
     val doedsfall: List<LocalDate?>
 )
 
@@ -35,23 +34,6 @@ data class Statsborgerskap(
     fun encloses(dato: LocalDate): Boolean {
         return periode.encloses(dato)
     }
-}
-
-data class FolkeregisterPersonstatus(
-    val personstatus: PersonStatus,
-    val fom: LocalDate?,
-    val tom: LocalDate?
-)
-
-enum class PersonStatus(personstatus: String) {
-    BOSATT("bosatt"),
-    UTFLYTTET("utflyttet"),
-    DOED("doed"),
-    OPPHOERT("opphoert"),
-    FOEDSELSREGISTRERT("foedselsregistrert"),
-    IKKEBOSATT("ikkeBosatt"),
-    MIDLERTIDIG("midlertidig"),
-    INAKTIV("inaktiv")
 }
 
 data class Adresse(

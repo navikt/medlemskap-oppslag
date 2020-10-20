@@ -121,7 +121,6 @@ class PdlClientHentEktefelleTest {
                   }
                 ],
                 "doedsfall": [],
-                "folkeregisterpersonstatus": [],
                 "kontaktadresse": [],
                 "oppholdsadresse": []
               }

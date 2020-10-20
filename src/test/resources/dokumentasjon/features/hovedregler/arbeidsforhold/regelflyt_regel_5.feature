@@ -8,10 +8,6 @@ Egenskap: Regelflyt for regel 5
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | Oslo    | NOR      | 01.01.2000      |                 |
 
-    Og følgende personstatuser i personhistorikken
-      | Personstatus | Fra og med dato | Til og med dato |
-      | BOSATT       | 01.01.2000      |                 |
-
     Og følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
       | NOR      | 01.01.2000      |                 |

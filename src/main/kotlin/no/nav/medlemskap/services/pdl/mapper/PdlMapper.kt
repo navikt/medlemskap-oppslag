@@ -22,7 +22,6 @@ object PdlMapper {
         val oppholdsadresser: List<Adresse> = mapOppholdsadresser(person.oppholdsadresse)
         val sivilstand: List<Sivilstand> = mapSivilstander(person.sivilstand)
         val familierelasjoner: List<Familierelasjon> = mapFamilierelasjoner(person.familierelasjoner)
-        val personstatuser: List<FolkeregisterPersonstatus> = mapPersonStatuser(person.folkeregisterpersonstatus)
         val doedsfall: List<LocalDate?> = mapDoedsfall(person.doedsfall)
 
         return Personhistorikk(
@@ -32,7 +31,6 @@ object PdlMapper {
             familierelasjoner = familierelasjoner,
             kontaktadresser = kontaktadresser,
             oppholdsadresser = oppholdsadresser,
-            personstatuser = personstatuser,
             doedsfall = doedsfall
         )
     }
@@ -40,30 +38,6 @@ object PdlMapper {
     private fun mapDoedsfall(doedsfall: List<HentPerson.Doedsfall>): List<LocalDate?> {
         return doedsfall.map {
             convertToLocalDate(it.doedsdato)
-        }
-    }
-
-    private fun mapPersonStatuser(folkeregisterpersonstatus: List<HentPerson.Folkeregisterpersonstatus>): List<FolkeregisterPersonstatus> {
-        return folkeregisterpersonstatus.map {
-            FolkeregisterPersonstatus(
-                personstatus = mapStatus(it.status),
-                fom = convertToLocalDateTime(it.folkeregistermetadata.gyldighetstidspunkt)?.toLocalDate(),
-                tom = convertToLocalDateTime(it.folkeregistermetadata.opphoerstidspunkt)?.toLocalDate()
-            )
-        }
-    }
-
-    fun mapStatus(status: String): PersonStatus {
-        return when (status) {
-            "doed" -> PersonStatus.DOED
-            "bosatt" -> PersonStatus.BOSATT
-            "foedselsregistrert" -> PersonStatus.FOEDSELSREGISTRERT
-            "ikkeBosatt" -> PersonStatus.IKKEBOSATT
-            "inaktiv" -> PersonStatus.INAKTIV
-            "midlertidig" -> PersonStatus.MIDLERTIDIG
-            "opphoert" -> PersonStatus.OPPHOERT
-            "utflyttet" -> PersonStatus.UTFLYTTET
-            else -> throw DetteSkalAldriSkje("Personstatus er ikke tilgjengelig")
         }
     }
 

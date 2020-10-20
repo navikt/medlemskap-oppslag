@@ -24,11 +24,6 @@ Egenskap: Man er medlem i Folketrygden hvis man bor i Norge eller jobber i Norge
       }
     ],
     "doedsfall": [],
-    "personstatuser" : [ {
-      "personstatus" : "bosatt",
-      "fom" : "2000-01-01",
-      "tom" : null
-    } ],
     "bostedsadresser": [
       {
         "landkode": "NOR",

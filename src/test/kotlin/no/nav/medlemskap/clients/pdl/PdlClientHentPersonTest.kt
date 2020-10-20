@@ -145,8 +145,7 @@ class PdlClientHentPersonTest {
                     "bostedsadresse":[],
                     "kontaktadresse":[], 
                     "oppholdsadresse":[],
-                    "doedsfall": [],
-                    "folkeregisterpersonstatus": []
+                    "doedsfall": []
             
                  }   
              }     

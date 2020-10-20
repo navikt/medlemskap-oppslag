@@ -8,9 +8,6 @@ Egenskap: Regel 10: Hvis postadresse eller midlertidig adresse er utenlandsk, s�
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | Oslo    | NOR      | 01.01.2000      |                 |
 
-    Og følgende personstatuser i personhistorikken
-      | Personstatus | Fra og med dato | Til og med dato |
-      | BOSATT       | 01.01.2000      |                 |
 
     Og følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |

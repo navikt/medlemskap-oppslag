@@ -8,10 +8,6 @@ Egenskap: Resultat-struktur arbeidsforhold
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | Oslo    | NOR      | 01.01.2000      |                 |
 
-    Og følgende personstatuser i personhistorikken
-      | Personstatus | Fra og med dato | Til og med dato |
-      | BOSATT       | 01.01.2000      |                 |
-
     Og følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
       | BEL      | 01.01.2000      |                 |
@@ -41,7 +37,6 @@ Egenskap: Resultat-struktur arbeidsforhold
       | ARBEIDSFORHOLD  |
       | EØS-BOSATT      |
       | STATSBORGERSKAP |
-      | BOSATT          |
 
     Og skal regel "ARBEIDSFORHOLD" inneholde følgende delresultater:
       | Regel |

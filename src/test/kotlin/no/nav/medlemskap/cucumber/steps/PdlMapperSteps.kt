@@ -45,10 +45,6 @@ class PdlMapperSteps : No {
             pdlPersonBuilder.doedsfall = pdlDomenespråkParser.mapDoedsfall(dataTable)
         }
 
-        Gitt<DataTable>("følgende personstatuser fra PDL:") { dataTable: DataTable? ->
-            pdlPersonBuilder.personstatuser = pdlDomenespråkParser.mapPersonstatuser(dataTable)
-        }
-
         Når("statsborgerskap mappes") {
             personhistorikk = mapTilPersonhistorikk()
         }
@@ -74,10 +70,6 @@ class PdlMapperSteps : No {
         }
 
         Når("familierelasjoner mappes") {
-            personhistorikk = mapTilPersonhistorikk()
-        }
-
-        Når("personstatuser mappes") {
             personhistorikk = mapTilPersonhistorikk()
         }
 
@@ -126,11 +118,6 @@ class PdlMapperSteps : No {
             personhistorikk?.doedsfall.shouldContainExactly(doedsfallForventet)
         }
 
-        Så<DataTable>("skal mappede personstatuser være") { dataTable: DataTable? ->
-            val personstatuserForventet = DomenespråkParser.mapPersonstatuser(dataTable)
-            personhistorikk?.personstatuser.shouldContainExactly(personstatuserForventet)
-        }
-
         Så<DataTable>("skal personhistorikk.familierelasjoner være") { dataTable: DataTable? ->
         }
     }
@@ -146,7 +133,6 @@ class PdlMapperSteps : No {
         var oppholdsadresser: List<HentPerson.Oppholdsadresse> = emptyList()
         var sivilstander: List<HentPerson.Sivilstand> = emptyList()
         var familierelasjoner: List<HentPerson.Familierelasjon> = emptyList()
-        var personstatuser: List<HentPerson.Folkeregisterpersonstatus> = emptyList()
         var doedsfall: List<HentPerson.Doedsfall> = emptyList()
 
         fun build(): HentPerson.Person {
@@ -157,7 +143,6 @@ class PdlMapperSteps : No {
                 bostedsadresse = bostedsadresser,
                 kontaktadresse = kontaktadresser,
                 oppholdsadresse = oppholdsadresser,
-                folkeregisterpersonstatus = personstatuser,
                 doedsfall = doedsfall
             )
         }

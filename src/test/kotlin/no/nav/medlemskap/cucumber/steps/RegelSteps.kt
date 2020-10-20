@@ -66,19 +66,9 @@ class RegelSteps : No {
             pdlPersonhistorikkBuilder.oppholdsadresse.addAll(oppholdsadresse)
         }
 
-        Gitt("følgende personstatuser i personhistorikken") { dataTable: DataTable? ->
-            val personstatuser = domenespråkParser.mapPersonstatuser(dataTable)
-            pdlPersonhistorikkBuilder.personstatuser.addAll(personstatuser)
-        }
-
         Gitt<DataTable>("følgende sivilstand i personhistorikk fra PDL") { dataTable: DataTable? ->
             val sivilstand = domenespråkParser.mapSivilstander(dataTable)
             pdlPersonhistorikkBuilder.sivilstand.addAll(sivilstand)
-        }
-
-        Gitt<DataTable>("følgende folkeregistrerte personstatuser i personhistorikk fra PDL:") { dataTable: DataTable? ->
-            val personstatuser = domenespråkParser.mapPersonstatuser(dataTable)
-            pdlPersonhistorikkBuilder.personstatuser.addAll(personstatuser)
         }
 
         Gitt<DataTable>("følgende familerelasjoner i personhistorikk fra PDL") { dataTable: DataTable? ->

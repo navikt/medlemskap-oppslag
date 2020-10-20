@@ -8,10 +8,6 @@ Egenskap: Regelflyt for reglene fra 11.6 for bruker som har ektefelle og barn so
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | Oslo    | NOR      | 01.01.2000      |                 |
 
-    Og følgende personstatuser i personhistorikken
-      | Personstatus | Fra og med dato | Til og med dato |
-      | BOSATT       | 01.01.2000      |                 |
-
     Og følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
       | BEL      | 01.01.2000      |                 |
