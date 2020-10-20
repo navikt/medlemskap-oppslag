@@ -125,7 +125,7 @@ class PdlDomenespråkParser : BasisDomeneParser() {
             return HentPerson.Sivilstand(
                 type = sivilstandstype,
                 gyldigFraOgMed = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED, rad),
-                bekreftelsesdato = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED, rad),
+                bekreftelsesdato = parseValgfriString(Domenebegrep.BEKREFTELSESDATO, rad),
                 relatertVedSivilstand = parseValgfriString(Domenebegrep.RELATERT_VED_SIVILSTAND, rad),
                 folkeregistermetadata = null
             )
@@ -163,6 +163,7 @@ class PdlDomenespråkParser : BasisDomeneParser() {
     }
 
     enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
+        BEKREFTELSESDATO("Bekreftelsesdato"),
         DOEDSDATO("Doedsdato"),
         GYLDIG_FRA_OG_MED_DATO("Gyldig fra og med dato"),
         GYLDIG_TIL_OG_MED_DATO("Gyldig til og med dato"),

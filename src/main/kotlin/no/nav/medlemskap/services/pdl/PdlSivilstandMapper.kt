@@ -2,9 +2,9 @@ package no.nav.medlemskap.services.pdl
 
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
+import no.nav.medlemskap.regler.common.Datohjelper.Companion.parseIsoDato
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapFolkeregisterMetadata2
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 
 object PdlSivilstandMapper {
 
@@ -13,7 +13,7 @@ object PdlSivilstandMapper {
             pdlSivilstander.filter {
                 it.type != HentPerson.Sivilstandstype.UGIFT && it.type != HentPerson.Sivilstandstype.UOPPGITT
             }.sortedBy {
-                convertToLocalDate(it.gyldigFraOgMed) ?: LocalDate.MIN
+                parseIsoDato(it.gyldigFraOgMed) ?: LocalDate.MIN
             }
 
         if (sivilstander.size < 2) {
@@ -24,18 +24,20 @@ object PdlSivilstandMapper {
 
         return sivilstander
             .zipWithNext { sivilstand, neste ->
-                mapSivilstand(sivilstand, convertToLocalDate(neste.gyldigFraOgMed)?.minusDays(1))
+                mapSivilstand(sivilstand, parseIsoDato(neste.gyldigFraOgMed)?.minusDays(1))
             }.plus(mapSivilstand(sivilstander.last()))
     }
 
-    fun convertToLocalDate(dateToConvert: String?): LocalDate? {
-        return dateToConvert?.let { LocalDate.parse(it, DateTimeFormatter.ofPattern("yyyy-MM-dd")) }
-    }
-
     private fun mapSivilstand(sivilstand: HentPerson.Sivilstand, gyldigTilOgMed: LocalDate? = null): no.nav.medlemskap.domene.Sivilstand {
+        val gyldigFraOgMed = if (sivilstand.gyldigFraOgMed == null) {
+            parseIsoDato(sivilstand.bekreftelsesdato)
+        } else {
+            parseIsoDato(sivilstand.gyldigFraOgMed)
+        }
+
         return no.nav.medlemskap.domene.Sivilstand(
             type = mapSivilstandType(sivilstand.type),
-            gyldigFraOgMed = convertToLocalDate(sivilstand.gyldigFraOgMed),
+            gyldigFraOgMed = gyldigFraOgMed,
             gyldigTilOgMed = gyldigTilOgMed,
             relatertVedSivilstand = sivilstand.relatertVedSivilstand,
 
