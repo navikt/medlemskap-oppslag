@@ -144,9 +144,12 @@ class PdlClientHentPersonTest {
                     ],
                     "bostedsadresse":[],
                     "kontaktadresse":[], 
-                    "oppholdsadresse":[]
-                 }
-             }   
-         }     
+                    "oppholdsadresse":[],
+                    "doedsfall": [],
+                    "folkeregisterpersonstatus": []
+            
+                 }   
+             }     
+         }
         """.trimIndent()
 }

@@ -204,12 +204,13 @@ private fun arbeidsforhold(): Arbeidsforhold {
 private fun personhistorikk(): Personhistorikk {
     return Personhistorikk(
         statsborgerskap = listOf(Statsborgerskap("NOR", enDato(), enAnnenDato())),
-        personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSA, enDato(), enAnnenDato())),
+        personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSATT, enDato(), enAnnenDato())),
         bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
         sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr(), folkeregistermetadata())),
         familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata())),
         kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
+        oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
+        doedsfall = emptyList()
     )
 }
 
@@ -291,11 +292,6 @@ private val forventetResponse =
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
           } ],
-          "personstatuser" : [ {
-            "personstatus" : "BOSA",
-            "fom" : "1975-10-10",
-            "tom" : "2020-08-01"
-          } ],
           "bostedsadresser" : [ {
             "landkode" : "NOR",
             "fom" : "1975-10-10",
@@ -311,6 +307,12 @@ private val forventetResponse =
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
           }],
+          "personstatuser" : [ {
+            "personstatus" : "BOSATT",
+            "fom" : "1975-10-10",
+            "tom" : "2020-08-01"
+          } ],
+          "doedsfall": [], 
           "sivilstand" : [ {
             "type" : "GIFT",
             "gyldigFraOgMed" : "1975-10-10",

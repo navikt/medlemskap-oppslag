@@ -8,6 +8,7 @@ import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Svar
+import java.time.LocalDate
 import java.time.YearMonth
 
 object DomenespråkParser : BasisDomeneParser() {
@@ -145,10 +146,6 @@ object DomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, FamilieRelasjonMapper())
     }
 
-    fun mapPersonstatuser(dataTable: DataTable?): List<FolkeregisterPersonstatus> {
-        return mapDataTable(dataTable, PersonstatusMapper())
-    }
-
     fun mapPersonhistorikkEktefelle(dataTable: DataTable?): List<PersonhistorikkEktefelle> {
         return mapDataTable(dataTable, PersonhistorikkEktefelleMapper())
     }
@@ -177,8 +174,16 @@ object DomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, UtenlandsoppholdMapper())
     }
 
+    fun mapPersonstatuser(dataTable: DataTable?): List<FolkeregisterPersonstatus> {
+        return mapDataTable(dataTable, PersonstatusMapper())
+    }
+
     fun mapOppgaverFraGosys(dataTable: DataTable?): List<Oppgave> {
         return mapDataTable(dataTable, OppgaveMapper())
+    }
+
+    fun mapDoedsfall(dataTable: DataTable?): List<LocalDate> {
+        return mapDataTable(dataTable, DoedsfallMapper())
     }
 
     fun mapJournalposter(dataTable: DataTable?): List<Journalpost> {
@@ -220,6 +225,12 @@ object DomenespråkParser : BasisDomeneParser() {
                 parseDato(FRA_OG_MED_DATO, rad),
                 parseDato(TIL_OG_MED_DATO, rad)
             )
+        }
+    }
+
+    class DoedsfallMapper : RadMapper<LocalDate> {
+        override fun mapRad(rad: Map<String, String>): LocalDate {
+            return parseDato(DOEDSDATO, rad)
         }
     }
 
@@ -474,6 +485,7 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     ARBEIDSGIVER_ID("Arbeidsgiver Id"),
     ARBEIDSGIVERTYPE("Arbeidsgivertype"),
     DEKNING("Dekning"),
+    DOEDSDATO("Doedsdato"),
     ER_MEDLEM("Er medlem"),
     FRA_OG_MED_DATO("Fra og med dato"),
     GYLDIG_FRA_OG_MED("Gyldig fra og med dato"),

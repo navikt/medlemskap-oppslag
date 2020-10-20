@@ -32,6 +32,14 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, FamilerelasjonMapper())
     }
 
+    fun mapDoedsfall(dataTable: DataTable?): List<HentPerson.Doedsfall> {
+        return mapDataTable(dataTable, DoedsfallMapper())
+    }
+
+    fun mapPersonstatuser(dataTable: DataTable?): List<HentPerson.Folkeregisterpersonstatus> {
+        return mapDataTable(dataTable, PersonstatusMapper())
+    }
+
     class StatsborgerskapMapper : RadMapper<HentPerson.Statsborgerskap> {
         override fun mapRad(rad: Map<String, String>): HentPerson.Statsborgerskap {
 
@@ -145,7 +153,32 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         }
     }
 
+    class DoedsfallMapper : RadMapper<HentPerson.Doedsfall> {
+
+        override fun mapRad(rad: Map<String, String>): HentPerson.Doedsfall {
+            return HentPerson.Doedsfall(
+                doedsdato = parseValgfriString(Domenebegrep.DOEDSDATO, rad)
+            )
+        }
+    }
+
+    class PersonstatusMapper : RadMapper<HentPerson.Folkeregisterpersonstatus> {
+
+        override fun mapRad(rad: Map<String, String>): HentPerson.Folkeregisterpersonstatus {
+            return HentPerson.Folkeregisterpersonstatus(
+                status = parseValgfriString(Domenebegrep.PERSONSTATUS, rad)!!,
+                folkeregistermetadata = HentPerson.Folkeregistermetadata2(
+                    ajourholdstidspunkt = null,
+                    gyldighetstidspunkt = parseValgfriString(Domenebegrep.FOLKE_REG_GYLDIGHETSTIDSPUNKT, rad),
+                    opphoerstidspunkt = parseValgfriString(Domenebegrep.FOLKE_REG_OPPHOERSTIDSPUNKT, rad)
+                )
+
+            )
+        }
+    }
+
     enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
+        DOEDSDATO("Doedsdato"),
         GYLDIG_FRA_OG_MED_DATO("Gyldig fra og med dato"),
         GYLDIG_TIL_OG_MED_DATO("Gyldig til og med dato"),
         GYLDIG_FRA_OG_MED("Gyldig fra og med"),
@@ -154,6 +187,7 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         FOLKE_REG_OPPHOERSTIDSPUNKT("Folkeregistermetadata opphoerstidspunkt"),
         LAND("Land"),
         MIN_ROLLE_FOR_PERSON("Min rolle for person"),
+        PERSONSTATUS("Personstatus"),
         RELATERT_PERSONS_IDENT("Relatert persons ident"),
         RELATERT_PERSONS_ROLLE("Relatert persons rolle"),
         RELATERT_VED_SIVILSTAND("Relatert ved sivilstand"),

@@ -1,6 +1,7 @@
 package no.nav.medlemskap.cucumber.steps
 
 import no.nav.medlemskap.domene.*
+import java.time.LocalDate
 
 class PersonhistorikkBuilder {
     val statsborgerskap = mutableListOf<Statsborgerskap>()
@@ -10,6 +11,7 @@ class PersonhistorikkBuilder {
     val familierelasjoner = mutableListOf<Familierelasjon>()
     val kontaktadresse = mutableListOf<Adresse>()
     val oppholdsadresse = mutableListOf<Adresse>()
+    val doedsfall = mutableListOf<LocalDate>()
 
     fun build(): Personhistorikk {
         return Personhistorikk(
@@ -19,7 +21,8 @@ class PersonhistorikkBuilder {
             kontaktadresser = kontaktadresse,
             oppholdsadresser = oppholdsadresse,
             sivilstand = sivilstand,
-            familierelasjoner = familierelasjoner
+            familierelasjoner = familierelasjoner,
+            doedsfall = doedsfall
         )
     }
 }

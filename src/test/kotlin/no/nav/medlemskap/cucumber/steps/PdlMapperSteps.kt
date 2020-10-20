@@ -10,10 +10,10 @@ import no.nav.medlemskap.domene.Personhistorikk
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper
 
 class PdlMapperSteps : No {
+
     private val pdlDomenespråkParser = PdlDomenespråkParser()
 
     private var pdlPersonBuilder = PdlPersonBuilder()
-
     private var personhistorikk: Personhistorikk? = null
 
     init {
@@ -41,6 +41,14 @@ class PdlMapperSteps : No {
             pdlPersonBuilder.familierelasjoner = pdlDomenespråkParser.mapFamilierelasjoner(dataTable)
         }
 
+        Gitt<DataTable>("følgende opplysninger om doedsfall fra PDL:") { dataTable: DataTable? ->
+            pdlPersonBuilder.doedsfall = pdlDomenespråkParser.mapDoedsfall(dataTable)
+        }
+
+        Gitt<DataTable>("følgende personstatuser fra PDL:") { dataTable: DataTable? ->
+            pdlPersonBuilder.personstatuser = pdlDomenespråkParser.mapPersonstatuser(dataTable)
+        }
+
         Når("statsborgerskap mappes") {
             personhistorikk = mapTilPersonhistorikk()
         }
@@ -61,7 +69,15 @@ class PdlMapperSteps : No {
             personhistorikk = mapTilPersonhistorikk()
         }
 
+        Når("doedsfall mappes") {
+            personhistorikk = mapTilPersonhistorikk()
+        }
+
         Når("familierelasjoner mappes") {
+            personhistorikk = mapTilPersonhistorikk()
+        }
+
+        Når("personstatuser mappes") {
             personhistorikk = mapTilPersonhistorikk()
         }
 
@@ -105,6 +121,16 @@ class PdlMapperSteps : No {
             personhistorikk!!.familierelasjoner.shouldContainExactly(familierelasjonerForventet)
         }
 
+        Så<DataTable>("skal mappede doedsfall være") { dataTable: DataTable? ->
+            val doedsfallForventet = DomenespråkParser.mapDoedsfall(dataTable)
+            personhistorikk?.doedsfall.shouldContainExactly(doedsfallForventet)
+        }
+
+        Så<DataTable>("skal mappede personstatuser være") { dataTable: DataTable? ->
+            val personstatuserForventet = DomenespråkParser.mapPersonstatuser(dataTable)
+            personhistorikk?.personstatuser.shouldContainExactly(personstatuserForventet)
+        }
+
         Så<DataTable>("skal personhistorikk.familierelasjoner være") { dataTable: DataTable? ->
         }
     }
@@ -120,6 +146,8 @@ class PdlMapperSteps : No {
         var oppholdsadresser: List<HentPerson.Oppholdsadresse> = emptyList()
         var sivilstander: List<HentPerson.Sivilstand> = emptyList()
         var familierelasjoner: List<HentPerson.Familierelasjon> = emptyList()
+        var personstatuser: List<HentPerson.Folkeregisterpersonstatus> = emptyList()
+        var doedsfall: List<HentPerson.Doedsfall> = emptyList()
 
         fun build(): HentPerson.Person {
             return HentPerson.Person(
@@ -128,7 +156,9 @@ class PdlMapperSteps : No {
                 sivilstand = sivilstander,
                 bostedsadresse = bostedsadresser,
                 kontaktadresse = kontaktadresser,
-                oppholdsadresse = oppholdsadresser
+                oppholdsadresse = oppholdsadresser,
+                folkeregisterpersonstatus = personstatuser,
+                doedsfall = doedsfall
             )
         }
     }

@@ -23,7 +23,6 @@ Egenskap: Man er medlem i Folketrygden hvis man er EØS-borger og bor og jobber 
         "tom": "2020-01-30"
       }
     ],
-    "personstatuser": [],
     "bostedsadresser": [
        {
         "landkode": "NOR",
@@ -31,6 +30,12 @@ Egenskap: Man er medlem i Folketrygden hvis man er EØS-borger og bor og jobber 
         "tom": null
         }
     ],
+      "personstatuser" : [ {
+      "personstatus" : "bosatt",
+      "fom" : "1975-10-10",
+      "tom" : "2020-08-01"
+    } ],
+    "doedsfall": [],
     "kontaktadresser": [],
     "oppholdsadresser": [],
     "sivilstand": [],
