@@ -86,6 +86,10 @@ components:
           type: number
           multipleOf: 0.01
           nullable: true
+        beregnetAntallTimerPrUke:
+          type: number
+          multipleOf: 0.01
+          nullable: true
     Arbeidsforhold:
       properties:
         periode:
@@ -260,6 +264,10 @@ components:
           $ref: "#/components/schemas/ValgfriDato"
         tom:
           $ref: "#/components/schemas/ValgfriDato"
+    Doedsfall:
+        type: array
+        items:
+          $ref: "#/components/schemas/ValgfriDato"
     Gyldighetsperiode:
       properties:
         fom:
@@ -385,6 +393,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Familierelasjon"
+        doedsfall:
+          type: array
+          items:
+            $ref: "#/components/schemas/ValgfriDato"
     PersonhistorikkBarn:
       properties:
         ident:

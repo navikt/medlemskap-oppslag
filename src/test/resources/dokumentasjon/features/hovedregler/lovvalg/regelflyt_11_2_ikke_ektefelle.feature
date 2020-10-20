@@ -8,10 +8,6 @@ Egenskap: Regelflyt for reglene 11.2.x for bruker som ikke har ektefelle i PDL
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | Oslo    | NOR      | 01.01.2000      |                 |
 
-    Og følgende personstatuser i personhistorikken
-      | Personstatus | Fra og med dato | Til og med dato |
-      | BOSA         | 01.01.2000      |                 |
-
     Og følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
       | BEL      | 01.01.2000      |                 |

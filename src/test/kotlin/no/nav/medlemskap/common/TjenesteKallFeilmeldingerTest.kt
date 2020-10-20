@@ -353,19 +353,19 @@ class TjenesteKallFeilmeldingerTest {
             OpplysningspliktigArbeidsgiverType.Organisasjon,
             Arbeidsgiver("type", "identifikator", listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus"), null),
             Arbeidsforholdstype.NORMALT,
-            listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble()))
+            listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble(), 37.5))
         )
     }
 
     private fun personhistorikk(): Personhistorikk {
         return Personhistorikk(
             statsborgerskap = listOf(Statsborgerskap("NOR", enDato(), enAnnenDato())),
-            personstatuser = listOf(FolkeregisterPersonstatus(PersonStatus.BOSA, enDato(), enAnnenDato())),
             bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
             kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
             oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
             sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr(), folkeregistermetadata())),
-            familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata()))
+            familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata())),
+            doedsfall = emptyList()
         )
     }
 
