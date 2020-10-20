@@ -344,7 +344,7 @@ object DomenespråkParser : BasisDomeneParser() {
                 type = parseValgfriString(ARBEIDSGIVERTYPE, rad),
                 ansatte = listOf(Ansatte(parseValgfriInt(ANTALL_ANSATTE, rad), null, null)),
                 konkursStatus = konkursStatuser,
-                juridiskEnhetEnhetstypeMap = null
+                juridiskEnhetEnhetstypeMap = mapOf(parseString(IDENTIFIKATOR, rad) to parseValgfriString(JURIDISKENHETSTYPE, rad))
             )
         }
     }
@@ -504,6 +504,7 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     TIL_OG_MED_DATO("Til og med dato"),
     TITTEL("Tittel"),
     YRKESKODE("Yrkeskode"),
+    JURIDISKENHETSTYPE("Juridisk enhetstype"),
     YTELSE("Ytelse");
 
     override fun nøkkel(): String {

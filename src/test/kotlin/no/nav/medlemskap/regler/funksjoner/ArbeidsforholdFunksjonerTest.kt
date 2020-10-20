@@ -4,6 +4,7 @@ import io.mockk.every
 import io.mockk.mockk
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.beregnGjennomsnittligStillingsprosentForGrafana
+import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.erArbeidsforholdetOffentligSektor
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.filtrerUtArbeidsgivereMedFærreEnn6Ansatte
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.vektetStillingsprosentForArbeidsforhold
@@ -35,7 +36,7 @@ class ArbeidsforholdFunksjonerTest {
     }
 
     @Test
-    fun `Sjekker grenseverdien`() {
+    fun `Sjekker grenseverdien på antall ansatte`() {
         val arbeidsforhold = listOf(arbeidsforholdMedAkkurat6Ansatte, arbeidsforholdMed5Ansatte)
         val filtrertArbeidsforhold = arbeidsforhold.filtrerUtArbeidsgivereMedFærreEnn6Ansatte(kontrollperiodeFra2019Til2020)
         assertEquals(2, arbeidsforhold.size)
@@ -187,6 +188,177 @@ class ArbeidsforholdFunksjonerTest {
         assertFalse(arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollperiode, Ytelse.SYKEPENGER))
     }
 
+    @Test
+    fun `Arbeidsforhold med både statlig og privat enhetstype får true`() {
+        val arbeidsforhold =
+            listOf(arbeidsforholdMedStatligJuridiskEnhetstype, arbeidsforholdMedIkkeStatligEllerKommunalJuridiskEnhetstype)
+        val sjekkJuridiskEnhet = erArbeidsforholdetOffentligSektor(arbeidsforhold, kontrollperiodeFra2019Til2020, Ytelse.SYKEPENGER)
+        assertTrue(sjekkJuridiskEnhet)
+    }
+
+    @Test
+    fun `Arbeidsforhold med juridisk enhetstype som null får false`() {
+        val arbeidsforhold = listOf(arbeidsforholdMedFlerEnn6Ansatte)
+        val sjekkJuridiskEnhet = erArbeidsforholdetOffentligSektor(arbeidsforhold, kontrollperiodeFra2019Til2020, Ytelse.SYKEPENGER)
+        assertFalse(sjekkJuridiskEnhet)
+    }
+
+    @Test
+    fun `Ikke statlig eller kommunalt arbeidsforhold får false`() {
+        val arbeidsforhold = listOf(arbeidsforholdMedIkkeStatligEllerKommunalJuridiskEnhetstype)
+        val sjekkJuridiskEnhet = erArbeidsforholdetOffentligSektor(arbeidsforhold, kontrollperiodeFra2019Til2020, Ytelse.SYKEPENGER)
+        assertFalse(sjekkJuridiskEnhet)
+    }
+
+    @Test
+    fun `Statlig arbeidsforhold får true`() {
+        val arbeidsforhold = listOf(arbeidsforholdMedStatligJuridiskEnhetstype)
+        val sjekkJuridiskEnhet = erArbeidsforholdetOffentligSektor(arbeidsforhold, kontrollperiodeFra2019Til2020, Ytelse.SYKEPENGER)
+        assertTrue(sjekkJuridiskEnhet)
+    }
+
+    @Test
+    fun `Statlig arbeidsforhold med mindre enn 25% stilling får false`() {
+        val periode = Periode(
+            fom = LocalDate.of(2019, 1, 1),
+            tom = LocalDate.of(2020, 1, 1)
+        )
+
+        val statligArbeidsforholdMedMindreEnn25Stillingsprosent = listOf(
+            lagArbeidsforhold(
+                arbeidsavtale = listOf(
+                    Arbeidsavtale(
+                        periode = periode,
+                        gyldighetsperiode = periode,
+                        yrkeskode = "Yrkeskode",
+                        skipsregister = null,
+                        stillingsprosent = 10.0
+                    )
+                ),
+                juridiskEnhetstypeMap = mapOf("1" to "STAT")
+            )
+        )
+
+        val sjekkStatligArbeidsforhold = erArbeidsforholdetOffentligSektor(
+            statligArbeidsforholdMedMindreEnn25Stillingsprosent, kontrollperiodeFra2019Til2020, Ytelse.SYKEPENGER
+        )
+        assertFalse(sjekkStatligArbeidsforhold)
+    }
+
+    @Test
+    fun `Statlig arbeidsforhold med 25% stilling får true`() {
+        val periode = Periode(
+            fom = LocalDate.of(2019, 1, 1),
+            tom = LocalDate.of(2020, 1, 1)
+        )
+
+        val statligArbeidsforholdMed25Stillingsprosent = listOf(
+            lagArbeidsforhold(
+                arbeidsavtale = listOf(
+                    Arbeidsavtale(
+                        periode = periode,
+                        gyldighetsperiode = periode,
+                        yrkeskode = "Yrkeskode",
+                        skipsregister = null,
+                        stillingsprosent = 25.0
+                    )
+                ),
+                juridiskEnhetstypeMap = mapOf("1" to "STAT")
+            )
+        )
+
+        val sjekkStatligArbeidsforhold = erArbeidsforholdetOffentligSektor(
+            statligArbeidsforholdMed25Stillingsprosent, kontrollperiodeFra2019Til2020, Ytelse.SYKEPENGER
+        )
+        assertTrue(sjekkStatligArbeidsforhold)
+    }
+
+    @Test
+    fun `To statlige arbeidsforhold med 25% stilling etter hverandre får true`() {
+        val periode1 = Periode(
+            fom = LocalDate.of(2019, 6, 1),
+            tom = LocalDate.of(2020, 1, 1)
+        )
+
+        val periode2 = Periode(
+            fom = LocalDate.of(2019, 1, 1),
+            tom = LocalDate.of(2019, 6, 1)
+        )
+
+        val statligArbeidsforholdMed50Stillingsprosent1 = lagArbeidsforhold(
+            arbeidsavtale = listOf(
+                Arbeidsavtale(
+                    periode = periode1,
+                    gyldighetsperiode = periode1,
+                    yrkeskode = "Yrkeskode",
+                    skipsregister = null,
+                    stillingsprosent = 25.0
+                )
+            ),
+            juridiskEnhetstypeMap = mapOf("1" to "STAT")
+        )
+
+        val statligArbeidsforholdMed50Stillingsprosent2 = lagArbeidsforhold(
+            arbeidsavtale = listOf(
+                Arbeidsavtale(
+                    periode = periode2,
+                    gyldighetsperiode = periode2,
+                    yrkeskode = "Yrkeskode",
+                    skipsregister = null,
+                    stillingsprosent = 25.0
+                )
+            ),
+            juridiskEnhetstypeMap = mapOf("1" to "STAT")
+        )
+
+        val arbeidsforhold = listOf(statligArbeidsforholdMed50Stillingsprosent1, statligArbeidsforholdMed50Stillingsprosent2)
+        val sjekkStatligArbeidsforhold = erArbeidsforholdetOffentligSektor(arbeidsforhold, kontrollperiodeFra2019Til2020, Ytelse.SYKEPENGER)
+        assertTrue(sjekkStatligArbeidsforhold)
+    }
+
+    @Test
+    fun `To arbeidsforhold med ett med 25% stilling som går gjennom hele perioden får true`() {
+        val periode1 = Periode(
+            fom = LocalDate.of(2019, 1, 1),
+            tom = LocalDate.of(2020, 1, 1)
+        )
+
+        val periode2 = Periode(
+            fom = LocalDate.of(2019, 1, 1),
+            tom = LocalDate.of(2019, 6, 1)
+        )
+
+        val statligArbeidsforholdMed50Stillingsprosent1 = lagArbeidsforhold(
+            arbeidsavtale = listOf(
+                Arbeidsavtale(
+                    periode = periode1,
+                    gyldighetsperiode = periode1,
+                    yrkeskode = "Yrkeskode",
+                    skipsregister = null,
+                    stillingsprosent = 25.0
+                )
+            ),
+            juridiskEnhetstypeMap = mapOf("1" to "STAT")
+        )
+
+        val statligArbeidsforholdMed10Stillingsprosent2 = lagArbeidsforhold(
+            arbeidsavtale = listOf(
+                Arbeidsavtale(
+                    periode = periode2,
+                    gyldighetsperiode = periode2,
+                    yrkeskode = "Yrkeskode",
+                    skipsregister = null,
+                    stillingsprosent = 10.0
+                )
+            ),
+            juridiskEnhetstypeMap = mapOf("1" to "AS")
+        )
+
+        val arbeidsforhold = listOf(statligArbeidsforholdMed50Stillingsprosent1, statligArbeidsforholdMed10Stillingsprosent2)
+        val sjekkStatligArbeidsforhold = erArbeidsforholdetOffentligSektor(arbeidsforhold, kontrollperiodeFra2019Til2020, Ytelse.SYKEPENGER)
+        assertTrue(sjekkStatligArbeidsforhold)
+    }
+
     private fun createArbeidsforholdMock(arbeidsforholdPeriode: Periode, stillingsprosent: Double? = 100.0): Arbeidsforhold {
 
         val arbeidsavtaleMock = mockk<Arbeidsavtale>()
@@ -217,12 +389,16 @@ class ArbeidsforholdFunksjonerTest {
     private val arbeidsforholdMedAkkurat6Ansatte = lagArbeidsforhold(6)
     private val arbeidsforholdMed5Ansatte = lagArbeidsforhold(5)
 
+    val arbeidsforholdMedStatligJuridiskEnhetstype = lagArbeidsforhold(juridiskEnhetstypeMap = mapOf("1" to "STAT"))
+    val arbeidsforholdMedIkkeStatligEllerKommunalJuridiskEnhetstype = lagArbeidsforhold(juridiskEnhetstypeMap = mapOf("1" to "AS"))
+
     private fun lagArbeidsforhold(
         antall: Int = 10,
         periode: Periode =
             Periode(LocalDate.of(2019, 1, 1), LocalDate.of(2019, 12, 31)),
         arbeidsavtale: List<Arbeidsavtale> =
-            listOf(lagArbeidsavtale(Periode(null, null), "Yrkeskode", null, null))
+            listOf(lagArbeidsavtale(Periode(null, null), "Yrkeskode", null, 100.0)),
+        juridiskEnhetstypeMap: Map<String, String?>? = mapOf("1" to "AS")
     ): Arbeidsforhold {
         return Arbeidsforhold(
             periode = periode,
@@ -233,14 +409,14 @@ class ArbeidsforholdFunksjonerTest {
                 organisasjonsnummer = null,
                 ansatte = listOf(Ansatte(antall = antall, bruksperiode = null, gyldighetsperiode = null)),
                 konkursStatus = null,
-                juridiskEnhetEnhetstypeMap = null
+                juridiskEnhetEnhetstypeMap = juridiskEnhetstypeMap
             ),
             arbeidsforholdstype = Arbeidsforholdstype.NORMALT,
             arbeidsavtaler = arbeidsavtale
         )
     }
 
-    fun lagArbeidsavtale(periode: Periode, yrkesKode: String, skipsregister: Skipsregister?, stillingsprosent: Double?): Arbeidsavtale {
+    private fun lagArbeidsavtale(periode: Periode, yrkesKode: String, skipsregister: Skipsregister?, stillingsprosent: Double?): Arbeidsavtale {
         return Arbeidsavtale(
             periode = periode,
             gyldighetsperiode = periode,
