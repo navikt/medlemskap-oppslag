@@ -64,6 +64,7 @@ Egenskap: Regel 12: Har bruker vært i minst 25 % stilling siste 12 måneder?
 
     Eksempler:
       | Stillingsprosent | Svar |
+      | 0                | Nei  |
       | 5                | Nei  |
       | 15               | Ja   |
       | 20               | Ja   |
@@ -91,6 +92,7 @@ Egenskap: Regel 12: Har bruker vært i minst 25 % stilling siste 12 måneder?
 
     Eksempler:
       | Stillingsprosent | Svar |
+      | 0                | Nei  |
       | 5                | Nei  |
       | 15               | Ja   |
       | 20               | Ja   |
@@ -126,6 +128,7 @@ Egenskap: Regel 12: Har bruker vært i minst 25 % stilling siste 12 måneder?
 
     Eksempler:
       | Stillingsprosent | Svar |
+      | 0                | Nei  |
       | 5                | Nei  |
       | 15               | Ja   |
       | 20               | Ja   |
@@ -166,19 +169,19 @@ Egenskap: Regel 12: Har bruker vært i minst 25 % stilling siste 12 måneder?
       | 30               | Ja   |
 
 
-  Scenariomal: Regel 12 - To arbeidsavtaler med 0 prosent stillingsprosent
+  Scenariomal: Regel 12 - To parallelle arbeidsforhold med varierende stillingsprosent
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
       | 01.01.2018      | 30.12.2019      | Organisasjon     | NORMALT             |
-      | 31.12.2019      |                 | Organisasjon     | NORMALT             |
+      | 31.12.2018      |                 | Organisasjon     | NORMALT             |
 
     Og følgende arbeidsgiver i arbeidsforhold 1
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
       | 1             | BEDR             | NOR      | 9              |
 
     Og følgende arbeidsavtaler i arbeidsforhold 1
-      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister | Beregnet antall timer pr uke |
-      | 01.01.2018      | 30.12.2019      | 001       | 0                |               | <AntallTimer>                |
+      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   | Skipsregister |
+      | 01.01.2018      | 30.12.2019      | 001       | <Stillingsprosent> |               |
 
     Og følgende arbeidsgiver i arbeidsforhold 2
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
@@ -186,7 +189,7 @@ Egenskap: Regel 12: Har bruker vært i minst 25 % stilling siste 12 måneder?
 
     Og følgende arbeidsavtaler i arbeidsforhold 2
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister |
-      | 31.12.2019      |                 | 001       | 30               |               |
+      | 31.12.2018      |                 | 0012      | 15               |               |
 
     Når regel "12" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
@@ -195,8 +198,10 @@ Egenskap: Regel 12: Har bruker vært i minst 25 % stilling siste 12 måneder?
     Så skal svaret være "<Svar>"
 
     Eksempler:
-      | AntallTimer | Svar |
-      | 0           | Nei  |
-      | 5           | Nei  |
-      | 10          | Ja   |
-      | 37.5        | Ja   |
+      | Stillingsprosent | Svar |
+      | 0                | Nei  |
+      | 5                | Nei  |
+      | 10               | Ja   |
+      | 20               | Ja   |
+      | 50               | Ja   |
+      | 100              | Ja   |

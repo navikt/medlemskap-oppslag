@@ -106,16 +106,18 @@ object ArbeidsforholdFunksjoner {
         }.sorted()
 
     fun List<Arbeidsforhold>.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(gittStillingsprosent: Double, kontrollPeriode: Kontrollperiode, ytelse: Ytelse): Boolean {
-        val arbeidsforholdForKontrollPeriode = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
+        val arbeidsforholdForKontrollPeriode = this.arbeidsforholdForKontrollPeriodeMedStillingsprosentOver0(kontrollPeriode)
         var samletStillingsprosent = 0.0
 
+        val list = mutableListOf<Arbeidsforhold>()
         for (arbeidsforhold in arbeidsforholdForKontrollPeriode) {
-            val vektetStillingsprosentForArbeidsforhold = arbeidsforhold.vektetStillingsprosentForArbeidsforhold(kontrollPeriode)
+            val vektetStillingsprosentForArbeidsforhold = arbeidsforhold.vektetStillingsprosentForArbeidsforhold(kontrollPeriode, false)
 
+            list.addAll(this.arbeidsforholdForKontrollPeriode(kontrollPeriode).parallelleArbeidsforhold(arbeidsforhold, kontrollPeriode))
             if (vektetStillingsprosentForArbeidsforhold < gittStillingsprosent &&
-                this.arbeidsforholdForKontrollPeriode(kontrollPeriode).ingenAndreParallelleArbeidsforhold(arbeidsforhold)
+                this.arbeidsforholdForKontrollPeriode(kontrollPeriode).ingenAndreParallelleArbeidsforhold(arbeidsforhold, kontrollPeriode)
             ) {
-                return false
+                if (!list.contains(arbeidsforhold)) return false
             }
 
             samletStillingsprosent += vektetStillingsprosentForArbeidsforhold
@@ -134,7 +136,7 @@ object ArbeidsforholdFunksjoner {
         var vektetStillingsprosentForArbeidsforhold = 0.0
 
         this.arbeidsavtaler
-            .filter { it.gyldighetsperiode.overlapper(kontrollPeriode.periode) && it.stillingsprosent != null && it.stillingsprosent > 0.0 }
+            .filter { it.gyldighetsperiode.overlapper(kontrollPeriode.periode) && (it.stillingsprosent == null || it.stillingsprosent > 0.0) }
             .map { (it.gyldighetsperiode.intersection(arbeidsforholdKontrollperiodeIntersection).antallDager to (it.getStillingsprosent())) }
             .forEach { vektetStillingsprosentForArbeidsforhold += ((it.first / totaltAntallDager) * it.second) }
 
@@ -142,14 +144,14 @@ object ArbeidsforholdFunksjoner {
     }
 
     fun List<Arbeidsforhold>.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTidSkygge(gittStillingsprosent: Double, kontrollPeriode: Kontrollperiode): Boolean {
-        val arbeidsforholdForKontrollPeriode = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
+        val arbeidsforholdForKontrollPeriode = this.arbeidsforholdForKontrollPeriodeMedStillingsprosentOver0(kontrollPeriode)
         var samletStillingsprosent = 0.0
 
         for (arbeidsforhold in arbeidsforholdForKontrollPeriode) {
             val vektetStillingsprosentForArbeidsforhold = arbeidsforhold.vektetStillingsprosentForArbeidsforholdSkygge(kontrollPeriode)
 
             if (vektetStillingsprosentForArbeidsforhold < gittStillingsprosent &&
-                this.arbeidsforholdForKontrollPeriode(kontrollPeriode).ingenAndreParallelleArbeidsforhold(arbeidsforhold)
+                this.arbeidsforholdForKontrollPeriode(kontrollPeriode).ingenAndreParallelleArbeidsforhold(arbeidsforhold, kontrollPeriode)
             ) {
                 return false
             }
@@ -186,11 +188,18 @@ object ArbeidsforholdFunksjoner {
         return sumStillingsprosent
     }
 
-    private fun List<Arbeidsforhold>.ingenAndreParallelleArbeidsforhold(arbeidsforhold: Arbeidsforhold): Boolean =
+    private fun List<Arbeidsforhold>.ingenAndreParallelleArbeidsforhold(arbeidsforhold: Arbeidsforhold, kontrollPeriode: Kontrollperiode): Boolean =
         this.none {
-            it.periode.encloses(arbeidsforhold.periode) &&
+            it.periode.intersection(kontrollPeriode).periode.encloses(arbeidsforhold.periode.intersection(kontrollPeriode).periode) &&
                 it != arbeidsforhold &&
-                it.arbeidsavtaler.all { p -> p.stillingsprosent == null || p.stillingsprosent > 0.0 }
+                it.arbeidsavtaler.any { p -> p.stillingsprosent == null || p.stillingsprosent > 0.0 }
+        }
+
+    private fun List<Arbeidsforhold>.parallelleArbeidsforhold(arbeidsforhold: Arbeidsforhold, kontrollPeriode: Kontrollperiode): List<Arbeidsforhold> =
+        this.filter {
+            it.periode.intersection(kontrollPeriode).periode.encloses(arbeidsforhold.periode.intersection(kontrollPeriode).periode) &&
+                it != arbeidsforhold &&
+                it.arbeidsavtaler.any { p -> p.stillingsprosent == null || p.stillingsprosent > 0.0 }
         }
 
     private infix fun List<Arbeidsforhold>.ansatteHosArbeidsgivere(kontrollPeriode: Kontrollperiode): List<Ansatte> =
@@ -203,6 +212,12 @@ object ArbeidsforholdFunksjoner {
     private fun List<Arbeidsforhold>.arbeidsforholdForKontrollPeriode(kontrollPeriode: Kontrollperiode) =
         this.filter {
             it.periode.overlapper(kontrollPeriode.periode)
+        }
+
+    private fun List<Arbeidsforhold>.arbeidsforholdForKontrollPeriodeMedStillingsprosentOver0(kontrollPeriode: Kontrollperiode) =
+        this.filter {
+            it.periode.overlapper(kontrollPeriode.periode) &&
+                it.arbeidsavtaler.any { p -> p.stillingsprosent == null || p.stillingsprosent > 0.0 }
         }
 
     fun fraOgMedDatoForArbeidsforhold(periode: InputPeriode) = periode.fom.minusYears(1).minusDays(1)
