@@ -13,3 +13,5 @@ Egenskap: Mapping av familierelasjoner fra PDL HentPerson.Familierelasjon
     Så skal mappede familierelasjoner være
       | Relatert persons ident | Relatert persons rolle | Min rolle for person |
       | 20041276216            | BARN                   | FAR                  |
+
+

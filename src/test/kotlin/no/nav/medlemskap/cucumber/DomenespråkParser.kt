@@ -8,6 +8,7 @@ import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Svar
+import java.time.LocalDate
 import java.time.YearMonth
 
 object DomenespråkParser : BasisDomeneParser() {
@@ -145,10 +146,6 @@ object DomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, FamilieRelasjonMapper())
     }
 
-    fun mapPersonstatuser(dataTable: DataTable?): List<FolkeregisterPersonstatus> {
-        return mapDataTable(dataTable, PersonstatusMapper())
-    }
-
     fun mapPersonhistorikkEktefelle(dataTable: DataTable?): List<PersonhistorikkEktefelle> {
         return mapDataTable(dataTable, PersonhistorikkEktefelleMapper())
     }
@@ -179,6 +176,10 @@ object DomenespråkParser : BasisDomeneParser() {
 
     fun mapOppgaverFraGosys(dataTable: DataTable?): List<Oppgave> {
         return mapDataTable(dataTable, OppgaveMapper())
+    }
+
+    fun mapDoedsfall(dataTable: DataTable?): List<LocalDate> {
+        return mapDataTable(dataTable, DoedsfallMapper())
     }
 
     fun mapJournalposter(dataTable: DataTable?): List<Journalpost> {
@@ -220,6 +221,12 @@ object DomenespråkParser : BasisDomeneParser() {
                 parseDato(FRA_OG_MED_DATO, rad),
                 parseDato(TIL_OG_MED_DATO, rad)
             )
+        }
+    }
+
+    class DoedsfallMapper : RadMapper<LocalDate> {
+        override fun mapRad(rad: Map<String, String>): LocalDate {
+            return parseDato(DOEDSDATO, rad)
         }
     }
 
@@ -337,7 +344,7 @@ object DomenespråkParser : BasisDomeneParser() {
                 type = parseValgfriString(ARBEIDSGIVERTYPE, rad),
                 ansatte = listOf(Ansatte(parseValgfriInt(ANTALL_ANSATTE, rad), null, null)),
                 konkursStatus = konkursStatuser,
-                juridiskEnhetEnhetstypeMap = null
+                juridiskEnhetEnhetstypeMap = mapOf(parseString(IDENTIFIKATOR, rad) to parseValgfriString(JURIDISKENHETSTYPE, rad))
             )
         }
     }
@@ -351,16 +358,6 @@ object DomenespråkParser : BasisDomeneParser() {
                     parseDato(TIL_OG_MED_DATO, rad)
                 ),
                 rapporteringsperiode = parseAarMaaned(RAPPORTERINGSPERIODE, rad)
-            )
-        }
-    }
-
-    class PersonstatusMapper : RadMapper<FolkeregisterPersonstatus> {
-        override fun mapRad(rad: Map<String, String>): FolkeregisterPersonstatus {
-            return FolkeregisterPersonstatus(
-                personstatus = PersonStatus.valueOf(parseString(PERSONSTATUS, rad)),
-                fom = parseValgfriDato(FRA_OG_MED_DATO, rad),
-                tom = parseValgfriDato(TIL_OG_MED_DATO, rad)
             )
         }
     }
@@ -474,6 +471,7 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     ARBEIDSGIVER_ID("Arbeidsgiver Id"),
     ARBEIDSGIVERTYPE("Arbeidsgivertype"),
     DEKNING("Dekning"),
+    DOEDSDATO("Doedsdato"),
     ER_MEDLEM("Er medlem"),
     FRA_OG_MED_DATO("Fra og med dato"),
     GYLDIG_FRA_OG_MED("Gyldig fra og med dato"),
@@ -492,7 +490,6 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     MIN_ROLLE_FOR_PERSON("Min rolle for person"),
     OPPHOLDSADRESSE("Oppholdsadresse"),
     PERIODESTATUS("Periodestatus"),
-    PERSONSTATUS("Personstatus"),
     PRIORITET("Prioritet"),
     REGEL("Regel"),
     RELATERT_PERSONS_IDENT("Relatert persons ident"),
@@ -507,6 +504,7 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     TIL_OG_MED_DATO("Til og med dato"),
     TITTEL("Tittel"),
     YRKESKODE("Yrkeskode"),
+    JURIDISKENHETSTYPE("Juridisk enhetstype"),
     YTELSE("Ytelse");
 
     override fun nøkkel(): String {

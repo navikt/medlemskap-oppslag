@@ -40,6 +40,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val erRegel
     REGEL_11_6("11.6", "Har bruker vært i minst 80 % stilling de siste 12 mnd?"),
     REGEL_11_6_1("11.6.1", "Har brukers ektefelle  vært i minst 100 % stilling de siste 12 mnd?"),
     REGEL_12("12", "Har bruker vært i minst 25% stilling de siste 12 mnd?"),
+    REGEL_14("14", "Er bruker ansatt i staten eller i en kommune?"),
     REGEL_OPPLYSNINGER("OPPLYSNINGER", "Finnes det registrerte opplysninger på bruker?"),
     REGEL_A("OPPLYSNINGER-MEDL", "Finnes det registrerte opplysninger i MEDL?"),
     REGEL_B("OPPLYSNINGER-GOSYS", "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?"),

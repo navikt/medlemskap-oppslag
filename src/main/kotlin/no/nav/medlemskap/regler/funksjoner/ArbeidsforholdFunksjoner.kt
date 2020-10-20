@@ -9,6 +9,23 @@ import java.time.temporal.ChronoUnit
 import kotlin.math.abs
 
 object ArbeidsforholdFunksjoner {
+    private val offentligSektorJuridiskeEnhetstyper = listOf("STAT", "FKF", "FYLK", "KF", "KOMM", "SF")
+
+    fun erArbeidsforholdetOffentligSektor(arbeidsforhold: List<Arbeidsforhold>, kontrollPeriode: Kontrollperiode, ytelse: Ytelse): Boolean =
+        vektetOffentligSektorArbeidsforhold(arbeidsforhold, kontrollPeriode, ytelse)
+
+    private fun vektetOffentligSektorArbeidsforhold(arbeidsforhold: List<Arbeidsforhold>, kontrollPeriode: Kontrollperiode, ytelse: Ytelse): Boolean =
+        arbeidsforhold.filter {
+            hentJuridiskEnhetstypeFraMap(it.arbeidsgiver.juridiskEnhetEnhetstypeMap)
+                .any { enhetstype -> enhetstype in offentligSektorJuridiskeEnhetstyper }
+        }.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollPeriode, ytelse)
+
+    private fun hentJuridiskEnhetstypeFraMap(juridiskEnhetEnhetstypeMap: Map<String, String?>?): List<String> {
+        if (juridiskEnhetEnhetstypeMap != null) {
+            return juridiskEnhetEnhetstypeMap.mapNotNull { (_, enhetstype) -> enhetstype }
+        }
+        return emptyList()
+    }
 
     infix fun List<Arbeidsforhold>.erAlleArbeidsgivereOrganisasjon(kontrollPeriode: Kontrollperiode): Boolean {
         return arbeidsforholdForKontrollPeriode(kontrollPeriode).stream().allMatch { it.arbeidsgivertype == OpplysningspliktigArbeidsgiverType.Organisasjon }
@@ -170,10 +187,13 @@ object ArbeidsforholdFunksjoner {
 
         var vektetStillingsprosentForArbeidsforhold = 0.0
 
-        for (arbeidsavtale in this.arbeidsavtaler.filter { it.gyldighetsperiode.overlapper(kontrollPeriode.periode) }) {
+        for (arbeidsavtale in this.arbeidsavtaler.filter { it.gyldighetsperiode.overlapper(kontrollPeriode.periode) && it.stillingsprosent != null && it.stillingsprosent > 0.0 }) {
             val stillingsprosent = arbeidsavtale.stillingsprosent ?: 100.0
             val arbeidsavtaleKontrollperiodeIntersection = arbeidsavtale.gyldighetsperiode.intersection(arbeidsforholdKontrollperiodeIntersection)
-            vektetStillingsprosentForArbeidsforhold += (arbeidsavtaleKontrollperiodeIntersection.antallDager / totaltAntallDager) * stillingsprosent
+            val beregnetStillingsprosent = (arbeidsavtaleKontrollperiodeIntersection.antallDager / totaltAntallDager) * stillingsprosent
+            if (beregnetStillingsprosent > 0.0) {
+                vektetStillingsprosentForArbeidsforhold += (arbeidsavtaleKontrollperiodeIntersection.antallDager / totaltAntallDager) * stillingsprosent
+            }
         }
 
         return Math.round(vektetStillingsprosentForArbeidsforhold * 10.0) / 10.0

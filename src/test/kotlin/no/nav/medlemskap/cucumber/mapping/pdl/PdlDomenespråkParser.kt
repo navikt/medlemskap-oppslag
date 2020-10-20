@@ -32,6 +32,10 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, FamilerelasjonMapper())
     }
 
+    fun mapDoedsfall(dataTable: DataTable?): List<HentPerson.Doedsfall> {
+        return mapDataTable(dataTable, DoedsfallMapper())
+    }
+
     class StatsborgerskapMapper : RadMapper<HentPerson.Statsborgerskap> {
         override fun mapRad(rad: Map<String, String>): HentPerson.Statsborgerskap {
 
@@ -149,7 +153,17 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         }
     }
 
+    class DoedsfallMapper : RadMapper<HentPerson.Doedsfall> {
+
+        override fun mapRad(rad: Map<String, String>): HentPerson.Doedsfall {
+            return HentPerson.Doedsfall(
+                doedsdato = parseValgfriString(Domenebegrep.DOEDSDATO, rad)
+            )
+        }
+    }
+
     enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
+        DOEDSDATO("Doedsdato"),
         GYLDIG_FRA_OG_MED_DATO("Gyldig fra og med dato"),
         GYLDIG_TIL_OG_MED_DATO("Gyldig til og med dato"),
         GYLDIG_FRA_OG_MED("Gyldig fra og med"),

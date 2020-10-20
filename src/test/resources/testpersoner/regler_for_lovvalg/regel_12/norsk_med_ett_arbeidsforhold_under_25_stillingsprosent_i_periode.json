@@ -14,7 +14,6 @@
         "tom": null
       }
     ],
-    "personstatuser": [],
     "sivilstand": [],
     "familierelasjoner": [],
     "bostedsadresser": [
@@ -25,7 +24,13 @@
       }
     ],
     "postadresser": [],
-    "midlertidigAdresser": []
+    "midlertidigAdresser": [],
+    "personstatuser" : [ {
+      "personstatus" : "bosatt",
+      "fom" : "1975-10-10",
+      "tom" : "2020-08-01"
+    } ],
+    "doedsfall": []
   },
   "medlemskap": [],
   "arbeidsforhold": [
