@@ -7,6 +7,7 @@ import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Datohjelper.Companion.parseIsoDato
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -37,7 +38,7 @@ object PdlMapper {
 
     private fun mapDoedsfall(doedsfall: List<HentPerson.Doedsfall>): List<LocalDate?> {
         return doedsfall.map {
-            convertToLocalDate(it.doedsdato)
+            parseIsoDato(it.doedsdato)
         }
     }
 
