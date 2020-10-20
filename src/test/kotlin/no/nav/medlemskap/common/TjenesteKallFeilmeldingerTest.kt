@@ -353,7 +353,7 @@ class TjenesteKallFeilmeldingerTest {
             OpplysningspliktigArbeidsgiverType.Organisasjon,
             Arbeidsgiver("type", "identifikator", listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus"), null),
             Arbeidsforholdstype.NORMALT,
-            listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble()))
+            listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble(), 37.5))
         )
     }
 

@@ -86,6 +86,10 @@ components:
           type: number
           multipleOf: 0.01
           nullable: true
+        beregnetAntallTimerPrUke:
+          type: number
+          multipleOf: 0.01
+          nullable: true
     Arbeidsforhold:
       properties:
         periode:

@@ -197,7 +197,7 @@ private fun arbeidsforhold(): Arbeidsforhold {
         OpplysningspliktigArbeidsgiverType.Organisasjon,
         Arbeidsgiver("type", "organisasjonsnummer", listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus"), juridiskEnhetstypeMap),
         Arbeidsforholdstype.NORMALT,
-        listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble()))
+        listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble(), 37.5))
     )
 }
 
@@ -394,7 +394,8 @@ private val forventetResponse =
                        },
                        "yrkeskode" : "yrkeskode",
                        "skipsregister" : "NIS",
-                       "stillingsprosent" : 100.0
+                       "stillingsprosent" : 100.0,
+                       "beregnetAntallTimerPrUke" : 37.5
                      } ]
                    } ]
         },
@@ -482,7 +483,8 @@ private val forventetResponse =
             },
             "yrkeskode" : "yrkeskode",
             "skipsregister" : "NIS",
-            "stillingsprosent" : 100.0
+            "stillingsprosent" : 100.0,
+            "beregnetAntallTimerPrUke" : 37.5
           } ]
         } ],
         "oppgaver" : [ {

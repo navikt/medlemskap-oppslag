@@ -55,6 +55,7 @@ fun mapArbeidsAvtaler(arbeidsforhold: AaRegArbeidsforhold): List<Arbeidsavtale> 
             periode = mapPeriodeTilArbeidsavtale(it),
             gyldighetsperiode = Periode(it.gyldighetsperiode.fom, it.gyldighetsperiode.tom),
             skipsregister = mapSkipsregister(it),
+            beregnetAntallTimerPrUke = it.beregnetAntallTimerPrUke,
             stillingsprosent = it.stillingsprosent,
             yrkeskode = it.yrke
         )
