@@ -4,7 +4,11 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.Svar.JA
 import no.nav.medlemskap.regler.common.Svar.NEI
 
-abstract class Regler(val ytelse: Ytelse, val regelMap: Map<RegelId, Regel> = emptyMap()) {
+abstract class Regler(
+    val ytelse: Ytelse,
+    val regelMap: Map<RegelId, Regel> = emptyMap(),
+    val overstyrteRegler: Map<RegelId, Svar>
+) {
 
     abstract fun hentRegelflyter(): List<Regelflyt>
 
@@ -44,7 +48,8 @@ abstract class Regler(val ytelse: Ytelse, val regelMap: Map<RegelId, Regel> = em
             hvisJa = hvisJa,
             hvisNei = hvisNei,
             hvisUavklart = hvisUavklart,
-            regelIdForSammensattResultat = regelIdForSammensattResultat
+            regelIdForSammensattResultat = regelIdForSammensattResultat,
+            overstyrteRegler = overstyrteRegler
         )
     }
 

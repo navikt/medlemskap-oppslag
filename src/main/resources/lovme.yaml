@@ -18,7 +18,7 @@ paths:
       tags:
         - Lovvalg
         - Medlemskap
-      description: Expected response to a valid request
+      description: Avgjøre om lovvalg er norsk, og om bruker er medlem av folketrygden
       requestBody:
         content:
           application/json:
@@ -182,8 +182,7 @@ components:
           items:
             $ref: "#/components/schemas/Journalpost"
         ytelse:
-          type: string
-          example: SYKEPENGER, DAGPENGER, ENSLIG_FORSORGER
+          $ref: "#/components/schemas/Ytelse"
         dataOmBarn:
           type: array
           items:
@@ -191,6 +190,8 @@ components:
           nullable: true
         dataOmEktefelle:
           $ref: "#/components/schemas/DataOmEktefelle"
+        overstyrteRegler:
+          $ref: "#/components/schemas/OverstyrteRegler"
     DataOmBarn:
       properties:
         personhistorikkBarn:
@@ -349,6 +350,12 @@ components:
         tema:
           type: string
           nullable: true
+    OverstyrteRegler:
+      type: object
+      additionalProperties:
+        $ref: "#/components/schemas/OverstyrtRegel"
+    OverstyrtRegel:
+      type: string
     Periode:
       properties:
         fom:
@@ -431,6 +438,10 @@ components:
           items:
             $ref: "#/components/schemas/Adresse"
     Request:
+      required:
+        - fnr
+        - periode
+        - brukerinput
       properties:
         fnr:
           type: string
@@ -438,7 +449,15 @@ components:
           $ref: "#/components/schemas/InputPeriode"
         brukerinput:
           $ref: "#/components/schemas/BrukerInput"
+        ytelse:
+          $ref: "#/components/schemas/Ytelse"
+        overstyrteRegler:
+          $ref: "#/components/schemas/OverstyrteRegler"
+
     Response:
+      required:
+        - datagrunnlag
+        - resultat
       properties:
         datagrunnlag:
           $ref: "#/components/schemas/Datagrunnlag"
@@ -533,3 +552,6 @@ components:
         tom:
           $ref: "#/components/schemas/ValgfriDato"
       nullable: true
+    Ytelse:
+      type: string
+      example: SYKEPENGER, DAGPENGER, ENSLIG_FORSORGER
