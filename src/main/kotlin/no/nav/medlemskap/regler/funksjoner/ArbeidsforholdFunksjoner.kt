@@ -140,7 +140,7 @@ object ArbeidsforholdFunksjoner {
             samletStillingsprosent += vektetStillingsprosentForArbeidsforhold
             stillingsprosentCounter(vektetStillingsprosentForArbeidsforhold, ytelse.metricName()).increment()
         }
-
+        samletStillingsprosentCounter(samletStillingsprosent, ytelse.metricName()).increment()
         return samletStillingsprosent >= gittStillingsprosent
     }
 
