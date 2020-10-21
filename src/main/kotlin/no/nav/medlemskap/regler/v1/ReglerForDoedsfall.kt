@@ -15,7 +15,7 @@ class ReglerForDoedsfall(
         val erBrukerDoedRegelFlyt = lagRegelflyt(
             regel = hentRegel(RegelId.REGEL_13),
             hvisJa = regelflytJa(ytelse, RegelId.REGEL_DOED),
-            hvisNei = regelflytNei(ytelse, RegelId.REGEL_DOED)
+            hvisNei = regelflytJa(ytelse, RegelId.REGEL_DOED)
         )
         return erBrukerDoedRegelFlyt
     }

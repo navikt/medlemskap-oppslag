@@ -14,7 +14,6 @@ Egenskap: Regelflyt for regel 13
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
-
     Så skal svaret være "<Medlemskap>"
 
     Og skal regel "13" gi svaret "<Regel 13>"
