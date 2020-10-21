@@ -94,11 +94,11 @@ fun stillingsprosentCounter(stillingsprosent: Double, ytelse: String): Counter =
             .register(Metrics.globalRegistry)
     }
 
-fun gjennomsnittligStillingsprosentCounter(stillingsprosent: Double, ytelse: Ytelse): Counter = Counter
-    .builder("gjennomsnittlig_stillingsprosent")
-    .tags("stillingsprosent", getStillingsprosentIntervall(stillingsprosent), "ytelse", ytelse.metricName())
-    .description("")
-    .register(Metrics.globalRegistry)
+fun samletStillingsprosentCounter(stillingsprosent: Double, ytelse: String): Counter =
+    Counter.builder("stillingsprosent_samlet")
+        .tags("stillingsprosent", getStillingsprosentIntervall(stillingsprosent), "ytelse", ytelse)
+        .description("counter for fordeling av samlet stillingsprosent")
+        .register(Metrics.globalRegistry)
 
 fun stillingsprosentSkyggeCounter(harJobbet25ProsentEllerMer: Boolean, ytelse: Ytelse): Counter = Counter
     .builder("stillingsprosent_skygge")
@@ -196,6 +196,7 @@ private fun getStillingsprosentIntervall(stillingsprosent: Double): String {
     // Fjerner desimaler fremfor å runde av fordi regelsjekken godtar ikke f.eks. 24.9% stilling som høy nok til å regnes som 25% stilling.
     val stillingsprosentHeltall = truncate(stillingsprosent).toInt()
     when {
+        0 > stillingsprosentHeltall -> return "N/A"
         0 == stillingsprosentHeltall -> return "0"
         (1..14).contains(stillingsprosentHeltall) -> return "1 - 14"
         (15..24).contains(stillingsprosentHeltall) -> return "15 - 24"
@@ -206,8 +207,9 @@ private fun getStillingsprosentIntervall(stillingsprosent: Double): String {
         (65..74).contains(stillingsprosentHeltall) -> return "65 - 74"
         (75..84).contains(stillingsprosentHeltall) -> return "75 - 84"
         (85..99).contains(stillingsprosentHeltall) -> return "85 - 99"
+        (100..100).contains(stillingsprosentHeltall) -> return "100"
     }
-    return "N/A"
+    return "Over 100"
 }
 
 fun medlCounter(): Counter = Counter
