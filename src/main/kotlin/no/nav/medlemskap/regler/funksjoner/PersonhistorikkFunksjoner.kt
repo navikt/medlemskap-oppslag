@@ -5,5 +5,5 @@ import java.time.LocalDate
 
 object PersonhistorikkFunksjoner {
     fun List<LocalDate?>.erBrukerDoedEtterPeriode(periode: InputPeriode): Boolean =
-            this.stream().anyMatch { it?.isAfter(periode.fom)!! }
+        this.stream().anyMatch { it?.isAfter(periode.fom)!! }
 }
