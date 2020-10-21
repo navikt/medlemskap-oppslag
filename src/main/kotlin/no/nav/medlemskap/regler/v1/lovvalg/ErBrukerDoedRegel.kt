@@ -13,13 +13,12 @@ class ErBrukerDoed(
 ) : LovvalgRegel(RegelId.REGEL_13, ytelse, periode) {
 
     override fun operasjon(): Resultat {
-        val erBrukerDoed = doedsfall.isNotEmpty()
+        val erBrukerDoed = !doedsfall.isNullOrEmpty()
         val erBrukerDoedEtterInputperiode = doedsfall.erBrukerDoedEtterPeriode(periode)
 
         if (erBrukerDoed && erBrukerDoedEtterInputperiode) {
             return ja("Bruker har dødsdato etter inputperiode, men det påvirker ikke medlemskapet")
-        }
-        else if (erBrukerDoed && !erBrukerDoedEtterInputperiode) {
+        } else if (erBrukerDoed && !erBrukerDoedEtterInputperiode) {
             throw BadRequestException("Bruker er død, men i eller før inputperiode.")
         }
 
