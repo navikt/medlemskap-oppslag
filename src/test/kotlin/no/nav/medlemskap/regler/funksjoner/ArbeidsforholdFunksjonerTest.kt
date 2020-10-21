@@ -1,7 +1,5 @@
 package no.nav.medlemskap.regler.funksjoner
 
-import io.mockk.every
-import io.mockk.mockk
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.beregnGjennomsnittligStillingsprosentForGrafana
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.erArbeidsforholdetOffentligSektor
@@ -36,7 +34,7 @@ class ArbeidsforholdFunksjonerTest {
     }
 
     @Test
-    fun `Sjekker grenseverdien på antall ansatte`() {
+    fun `Sjekker grenseverdien`() {
         val arbeidsforhold = listOf(arbeidsforholdMedAkkurat6Ansatte, arbeidsforholdMed5Ansatte)
         val filtrertArbeidsforhold = arbeidsforhold.filtrerUtArbeidsgivereMedFærreEnn6Ansatte(kontrollperiodeFra2019Til2020)
         assertEquals(2, arbeidsforhold.size)
@@ -51,7 +49,7 @@ class ArbeidsforholdFunksjonerTest {
             tom = kontrollperiodeFra2019Til2020.tom
         )
 
-        val arbeidsforhold = listOf(createArbeidsforholdMock(arbeidsforholdPeriode))
+        val arbeidsforhold = listOf(createArbeidsforhold(arbeidsforholdPeriode))
         assertEquals(50.1, arbeidsforhold.beregnGjennomsnittligStillingsprosentForGrafana(kontrollperiodeFra2019Til2020))
     }
 
@@ -59,10 +57,9 @@ class ArbeidsforholdFunksjonerTest {
     fun `Beregn vektet stillingsprosent for arbeidsforhold med arbeidsavtale med lik periode`() {
 
         val arbeidsforholdPeriode = kontrollperiodeFra2019Til2020.periode
-        val arbeidsforholdMock = createArbeidsforholdMock(arbeidsforholdPeriode, 25.0)
-        val arbeidsforhold = listOf(arbeidsforholdMock)
+        val arbeidsforhold = createArbeidsforhold(arbeidsforholdPeriode, 25.0)
 
-        assertEquals(25.0, arbeidsforhold.first().vektetStillingsprosentForArbeidsforhold(kontrollperiodeFra2019Til2020))
+        assertEquals(25.0, listOf(arbeidsforhold).first().vektetStillingsprosentForArbeidsforhold(kontrollperiodeFra2019Til2020))
     }
 
     @Test
@@ -74,10 +71,9 @@ class ArbeidsforholdFunksjonerTest {
             fom = LocalDate.of(2019, 7, 1),
             tom = LocalDate.of(2019, 12, 31)
         )
-        val arbeidsforholdMock = createArbeidsforholdMock(arbeidsforholdPeriode, arbeidsavtalePeriode, 25.0)
-        val arbeidsforholdList = listOf(arbeidsforholdMock)
+        val arbeidsforhold = createArbeidsforhold(arbeidsforholdPeriode, 25.0, arbeidsavtalePeriode)
 
-        assertEquals(12.5, arbeidsforholdList.first().vektetStillingsprosentForArbeidsforhold(kontrollperiodeFra2019Til2020))
+        assertEquals(12.5, listOf(arbeidsforhold).first().vektetStillingsprosentForArbeidsforhold(kontrollperiodeFra2019Til2020))
     }
 
     @Test
@@ -90,21 +86,16 @@ class ArbeidsforholdFunksjonerTest {
             tom = LocalDate.of(2020, 1, 1)
         )
 
-        val arbeidsforholdMock = mockk<Arbeidsforhold>()
-        val arbeidsavtaleMock = mockk<Arbeidsavtale>()
-        val arbeidsavtale2Mock = mockk<Arbeidsavtale>()
+        val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode, arbeidsavtalePeriode, "1234", Skipsregister.UKJENT, 25.0, 9.0)
+        val arbeidsavtale2 = Arbeidsavtale(arbeidsavtalePeriode, arbeidsavtalePeriode, "4321", Skipsregister.UKJENT, 35.0, 9.0)
 
-        every { arbeidsavtale2Mock.periode } returns arbeidsavtalePeriode
-        every { arbeidsavtale2Mock.stillingsprosent } returns 25.0
-        every { arbeidsavtaleMock.periode } returns arbeidsavtalePeriode
-        every { arbeidsavtaleMock.stillingsprosent } returns 35.0
-        every { arbeidsforholdMock.periode } returns arbeidsforholdPeriode
-        every { arbeidsforholdMock.arbeidsavtaler } returns listOf(arbeidsavtaleMock, arbeidsavtale2Mock)
+        val arbeidsforhold = createArbeidsforhold(arbeidsforholdPeriode)
+        arbeidsforhold.arbeidsavtaler = listOf(arbeidsavtale, arbeidsavtale2)
 
-        val arbeidsforhold = listOf(arbeidsforholdMock)
+        val arbeidsforholdList = listOf(arbeidsforhold)
 
-        assertEquals(30.2, arbeidsforhold.first().vektetStillingsprosentForArbeidsforhold(kontrollperiodeFra2019Til2020))
-        assertEquals(30.2, arbeidsforhold.beregnGjennomsnittligStillingsprosentForGrafana(kontrollperiodeFra2019Til2020))
+        assertEquals(30.2, arbeidsforholdList.first().vektetStillingsprosentForArbeidsforhold(kontrollperiodeFra2019Til2020))
+        assertEquals(30.2, arbeidsforholdList.beregnGjennomsnittligStillingsprosentForGrafana(kontrollperiodeFra2019Til2020))
     }
 
     @Test
@@ -118,7 +109,7 @@ class ArbeidsforholdFunksjonerTest {
             tom = LocalDate.of(2019, 12, 31)
         )
 
-        val arbeidsforholdMock = createArbeidsforholdMock(arbeidsforholdPeriode, 25.0)
+        val arbeidsforholdMock = createArbeidsforhold(arbeidsforholdPeriode, 25.0)
         val arbeidsforhold = listOf(arbeidsforholdMock)
 
         assertEquals(25.0, arbeidsforhold.first().vektetStillingsprosentForArbeidsforhold(kontrollperiode))
@@ -136,7 +127,7 @@ class ArbeidsforholdFunksjonerTest {
             tom = LocalDate.of(2020, 7, 1)
         )
 
-        val arbeidsforholdMock = createArbeidsforholdMock(arbeidsforholdPeriode, 25.0)
+        val arbeidsforholdMock = createArbeidsforhold(arbeidsforholdPeriode, 25.0)
         val arbeidsforholdList = listOf(arbeidsforholdMock)
 
         assertEquals(25.0, arbeidsforholdList.first().vektetStillingsprosentForArbeidsforhold(kontrollperiode))
@@ -155,13 +146,45 @@ class ArbeidsforholdFunksjonerTest {
             tom = null
         )
 
-        val arbeidsforholdMock = createArbeidsforholdMock(arbeidsforholdPeriode, 20.0)
-        val arbeidsforhold2Mock = createArbeidsforholdMock(arbeidsforholdPeriode, 20.0)
-        val arbeidsforholdList = listOf(arbeidsforholdMock, arbeidsforhold2Mock)
+        val arbeidsavtalePeriode = Periode(
+            fom = LocalDate.of(2018, 7, 1),
+            tom = LocalDate.of(2021, 7, 1)
+        )
+
+        val arbeidsforhold = createArbeidsforhold(arbeidsforholdPeriode, 20.0, arbeidsforholdPeriode)
+        val arbeidsforhold2 = createArbeidsforhold(arbeidsforholdPeriode, 20.0, arbeidsavtalePeriode)
+        val arbeidsforholdList = listOf(arbeidsforhold, arbeidsforhold2)
 
         assertEquals(40.0, arbeidsforholdList.beregnGjennomsnittligStillingsprosentForGrafana(kontrollperiode))
         assertEquals(20.0, arbeidsforholdList[0].vektetStillingsprosentForArbeidsforhold(kontrollperiode))
         assertEquals(20.0, arbeidsforholdList[1].vektetStillingsprosentForArbeidsforhold(kontrollperiode))
+        assertTrue(arbeidsforholdList.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollperiode, Ytelse.SYKEPENGER))
+    }
+
+    @Test
+    fun `Beregn vektet stillingsprosent med parallelt arbeid med 0% stilling`() {
+
+        val kontrollperiode = Kontrollperiode(
+            fom = LocalDate.of(2018, 12, 31),
+            tom = LocalDate.of(2019, 12, 31)
+        )
+        val arbeidsforholdPeriode = Periode(
+            fom = LocalDate.of(2018, 7, 1),
+            tom = null
+        )
+
+        val arbeidsavtalePeriode = Periode(
+            fom = LocalDate.of(2018, 7, 1),
+            tom = LocalDate.of(2021, 7, 1)
+        )
+
+        val arbeidsforhold = createArbeidsforhold(arbeidsforholdPeriode, 100.0, arbeidsforholdPeriode)
+        val arbeidsforhold2 = createArbeidsforhold(arbeidsforholdPeriode, 0.0, arbeidsavtalePeriode)
+        val arbeidsforholdList = listOf(arbeidsforhold, arbeidsforhold2)
+
+        assertEquals(100.0, arbeidsforholdList.beregnGjennomsnittligStillingsprosentForGrafana(kontrollperiode))
+        assertEquals(100.0, arbeidsforholdList[0].vektetStillingsprosentForArbeidsforhold(kontrollperiode))
+        assertEquals(0.0, arbeidsforholdList[1].vektetStillingsprosentForArbeidsforhold(kontrollperiode))
         assertTrue(arbeidsforholdList.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollperiode, Ytelse.SYKEPENGER))
     }
 
@@ -181,8 +204,8 @@ class ArbeidsforholdFunksjonerTest {
             tom = null
         )
 
-        val arbeidsforholdMock = createArbeidsforholdMock(arbeidsforholdPeriode, 20.0)
-        val arbeidsforhold2Mock = createArbeidsforholdMock(arbeidsforhold2Periode, 20.0)
+        val arbeidsforholdMock = createArbeidsforhold(arbeidsforholdPeriode, 20.0)
+        val arbeidsforhold2Mock = createArbeidsforhold(arbeidsforhold2Periode, 20.0)
         val arbeidsforhold = listOf(arbeidsforholdMock, arbeidsforhold2Mock)
 
         assertFalse(arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollperiode, Ytelse.SYKEPENGER))
@@ -232,7 +255,8 @@ class ArbeidsforholdFunksjonerTest {
                         gyldighetsperiode = periode,
                         yrkeskode = "Yrkeskode",
                         skipsregister = null,
-                        stillingsprosent = 10.0
+                        stillingsprosent = 10.0,
+                        beregnetAntallTimerPrUke = null
                     )
                 ),
                 juridiskEnhetstypeMap = mapOf("1" to "STAT")
@@ -260,7 +284,8 @@ class ArbeidsforholdFunksjonerTest {
                         gyldighetsperiode = periode,
                         yrkeskode = "Yrkeskode",
                         skipsregister = null,
-                        stillingsprosent = 25.0
+                        stillingsprosent = 25.0,
+                        beregnetAntallTimerPrUke = null
                     )
                 ),
                 juridiskEnhetstypeMap = mapOf("1" to "STAT")
@@ -292,7 +317,8 @@ class ArbeidsforholdFunksjonerTest {
                     gyldighetsperiode = periode1,
                     yrkeskode = "Yrkeskode",
                     skipsregister = null,
-                    stillingsprosent = 25.0
+                    stillingsprosent = 25.0,
+                    beregnetAntallTimerPrUke = null
                 )
             ),
             juridiskEnhetstypeMap = mapOf("1" to "STAT")
@@ -305,7 +331,8 @@ class ArbeidsforholdFunksjonerTest {
                     gyldighetsperiode = periode2,
                     yrkeskode = "Yrkeskode",
                     skipsregister = null,
-                    stillingsprosent = 25.0
+                    stillingsprosent = 25.0,
+                    beregnetAntallTimerPrUke = null
                 )
             ),
             juridiskEnhetstypeMap = mapOf("1" to "STAT")
@@ -335,7 +362,8 @@ class ArbeidsforholdFunksjonerTest {
                     gyldighetsperiode = periode1,
                     yrkeskode = "Yrkeskode",
                     skipsregister = null,
-                    stillingsprosent = 25.0
+                    stillingsprosent = 25.0,
+                    beregnetAntallTimerPrUke = null
                 )
             ),
             juridiskEnhetstypeMap = mapOf("1" to "STAT")
@@ -348,7 +376,8 @@ class ArbeidsforholdFunksjonerTest {
                     gyldighetsperiode = periode2,
                     yrkeskode = "Yrkeskode",
                     skipsregister = null,
-                    stillingsprosent = 10.0
+                    stillingsprosent = 10.0,
+                    beregnetAntallTimerPrUke = null
                 )
             ),
             juridiskEnhetstypeMap = mapOf("1" to "AS")
@@ -359,29 +388,17 @@ class ArbeidsforholdFunksjonerTest {
         assertTrue(sjekkStatligArbeidsforhold)
     }
 
-    private fun createArbeidsforholdMock(arbeidsforholdPeriode: Periode, stillingsprosent: Double? = 100.0): Arbeidsforhold {
+    private fun createArbeidsforhold(arbeidsforholdPeriode: Periode, stillingsprosent: Double = 100.0, arbeidsavtalePeriode: Periode = arbeidsforholdPeriode): Arbeidsforhold {
+        val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode, arbeidsavtalePeriode, "11111", Skipsregister.UKJENT, stillingsprosent, null)
 
-        val arbeidsavtaleMock = mockk<Arbeidsavtale>()
-        every { arbeidsavtaleMock.periode } returns arbeidsforholdPeriode
-        every { arbeidsavtaleMock.stillingsprosent } returns stillingsprosent
+        val arbeidsforhold = Arbeidsforhold(
+            arbeidsforholdPeriode, null, OpplysningspliktigArbeidsgiverType.Organisasjon,
+            Arbeidsgiver(null, null, listOf(Ansatte(antall = 10, bruksperiode = null, gyldighetsperiode = null)), null, null),
+            Arbeidsforholdstype.NORMALT,
+            listOf(arbeidsavtale)
+        )
 
-        val arbeidsforholdMock = mockk<Arbeidsforhold>()
-        every { arbeidsforholdMock.periode } returns arbeidsforholdPeriode
-        every { arbeidsforholdMock.arbeidsavtaler } returns listOf(arbeidsavtaleMock)
-
-        return arbeidsforholdMock
-    }
-
-    private fun createArbeidsforholdMock(arbeidsforholdPeriode: Periode, arbeidsavtalePeriode: Periode, stillingsprosent: Double? = 100.0): Arbeidsforhold {
-        val arbeidsavtaleMock = mockk<Arbeidsavtale>()
-        every { arbeidsavtaleMock.periode } returns arbeidsavtalePeriode
-        every { arbeidsavtaleMock.stillingsprosent } returns stillingsprosent
-
-        val arbeidsforholdMock = mockk<Arbeidsforhold>()
-        every { arbeidsforholdMock.periode } returns arbeidsforholdPeriode
-        every { arbeidsforholdMock.arbeidsavtaler } returns listOf(arbeidsavtaleMock)
-
-        return arbeidsforholdMock
+        return arbeidsforhold
     }
 
     private val arbeidsforholdMedMindreEnn6Ansatte = lagArbeidsforhold(2)
@@ -397,7 +414,7 @@ class ArbeidsforholdFunksjonerTest {
         periode: Periode =
             Periode(LocalDate.of(2019, 1, 1), LocalDate.of(2019, 12, 31)),
         arbeidsavtale: List<Arbeidsavtale> =
-            listOf(lagArbeidsavtale(Periode(null, null), "Yrkeskode", null, 100.0)),
+            listOf(lagArbeidsavtale(Periode(null, null), "Yrkeskode", null, 100.0, null)),
         juridiskEnhetstypeMap: Map<String, String?>? = mapOf("1" to "AS")
     ): Arbeidsforhold {
         return Arbeidsforhold(
@@ -416,13 +433,14 @@ class ArbeidsforholdFunksjonerTest {
         )
     }
 
-    private fun lagArbeidsavtale(periode: Periode, yrkesKode: String, skipsregister: Skipsregister?, stillingsprosent: Double?): Arbeidsavtale {
+    private fun lagArbeidsavtale(periode: Periode, yrkesKode: String, skipsregister: Skipsregister?, stillingsprosent: Double?, beregnetAntallTimerPrUke: Double?): Arbeidsavtale {
         return Arbeidsavtale(
             periode = periode,
             gyldighetsperiode = periode,
             yrkeskode = yrkesKode,
             skipsregister = skipsregister,
-            stillingsprosent = stillingsprosent
+            stillingsprosent = stillingsprosent,
+            beregnetAntallTimerPrUke = beregnetAntallTimerPrUke
         )
     }
 }

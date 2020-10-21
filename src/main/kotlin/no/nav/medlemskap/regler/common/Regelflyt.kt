@@ -8,11 +8,23 @@ class Regelflyt(
     val hvisJa: Regelflyt? = null,
     val hvisNei: Regelflyt? = null,
     val hvisUavklart: Regelflyt? = null,
-    val regelIdForSammensattResultat: RegelId? = null
+    val regelIdForSammensattResultat: RegelId? = null,
+    val overstyrteRegler: Map<RegelId, Svar> = mapOf()
 ) {
 
-    private fun utfør(resultatliste: MutableList<Resultat>, harDekning: Svar? = null, dekning: String = ""): Resultat {
-        val resultat = regel.utfør()
+    private fun utfør(
+        resultatliste: MutableList<Resultat>,
+        harDekning: Svar? = null,
+        dekning: String = ""
+    ): Resultat {
+        val regelResultat = regel.utfør()
+
+        val overstyrtSvar = overstyrteRegler[regel.regelId]
+        val resultat = if (overstyrtSvar != null) {
+            regelResultat.copy(svar = overstyrtSvar, begrunnelse = "Overstyrt svar")
+        } else {
+            regelResultat
+        }
 
         resultatliste.add(resultat)
         if (resultat.svar == Svar.JA && hvisJa != null) {

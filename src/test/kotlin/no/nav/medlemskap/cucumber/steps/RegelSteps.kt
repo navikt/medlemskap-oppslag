@@ -7,7 +7,9 @@ import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.Medlemskapsparametre
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.barn.DataOmBarn
+import no.nav.medlemskap.regler.assertBegrunnelse
 import no.nav.medlemskap.regler.assertDelresultat
+import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.v1.RegelFactory
@@ -44,6 +46,8 @@ class RegelSteps : No {
     private val domenespråkParser = DomenespråkParser
 
     private var datagrunnlag: Datagrunnlag? = null
+
+    var overstyrteRegler: Map<RegelId, Svar> = mapOf()
 
     init {
         Gitt("følgende statsborgerskap i personhistorikken") { dataTable: DataTable? ->
@@ -151,6 +155,10 @@ class RegelSteps : No {
             dataOmEktefelleBuilder.arbeidsforholdEktefelle.get(0).arbeidsavtaler = arbeidsavtaleEktefelleMap[0]!!
         }
 
+        Gitt<DataTable>("med følgende regeloverstyringer") { dataTable: DataTable? ->
+            overstyrteRegler = domenespråkParser.mapOverstyrteRegler(dataTable)
+        }
+
         Når("medlemskap beregnes med følgende parametre") { dataTable: DataTable? ->
             val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
 
@@ -191,6 +199,12 @@ class RegelSteps : No {
             val regelId = domenespråkParser.parseRegelId(regelIdStr!!)
 
             assertDelresultat(regelId, domenespråkParser.parseSvar(forventetSvar!!), resultat!!)
+        }
+
+        Så<String, String>("skal regel {string} gi begrunnelse {string}") { regelIdStr, forventetBegrunnelse ->
+            val regelId = domenespråkParser.parseRegelId(regelIdStr!!)
+
+            assertBegrunnelse(regelId, forventetBegrunnelse, resultat!!)
         }
 
         Så<String, DataTable>("skal regel {string} inneholde følgende delresultater:") { regelIdStr: String?, dataTable: DataTable? ->
@@ -266,7 +280,8 @@ class RegelSteps : No {
             dokument = journalPosterFraJoArk,
             ytelse = ytelse,
             dataOmBarn = dataOmBarn,
-            dataOmEktefelle = dataOmEktefelleBuilder.build()
+            dataOmEktefelle = dataOmEktefelleBuilder.build(),
+            overstyrteRegler = overstyrteRegler
         )
     }
 

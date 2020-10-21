@@ -9,8 +9,9 @@ import no.nav.medlemskap.regler.v1.lovvalg.HarBrukerJobbetUtenforNorgeRegel
 
 class ReglerForArbeidsforhold(
     ytelse: Ytelse,
-    regelMap: Map<RegelId, Regel>
-) : Regler(ytelse, regelMap) {
+    regelMap: Map<RegelId, Regel>,
+    overstyrteRegler: Map<RegelId, Svar>
+) : Regler(ytelse, regelMap, overstyrteRegler) {
 
     override fun kjørRegelflyter(): List<Resultat> {
         return listOf(kjørUavhengigeRegelflyterMedEttResultat(REGEL_ARBEIDSFORHOLD))
@@ -78,7 +79,8 @@ class ReglerForArbeidsforhold(
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForArbeidsforhold {
             return ReglerForArbeidsforhold(
                 ytelse = datagrunnlag.ytelse,
-                regelMap = lagRegelMap(datagrunnlag)
+                regelMap = lagRegelMap(datagrunnlag),
+                overstyrteRegler = datagrunnlag.overstyrteRegler
             )
         }
 

@@ -11,8 +11,9 @@ import no.nav.medlemskap.regler.v1.lovvalg.HarBrukerJobbet25ProsentEllerMerRegel
 class ReglerForNorskeStatsborgere(
     val periode: InputPeriode,
     ytelse: Ytelse,
-    regelMap: Map<RegelId, Regel>
-) : Regler(ytelse, regelMap) {
+    regelMap: Map<RegelId, Regel>,
+    overstyrteRegler: Map<RegelId, Svar>
+) : Regler(ytelse, regelMap, overstyrteRegler) {
 
     override fun hentRegelflyter(): List<Regelflyt> {
         val harBrukerJobbet25ProsentEllerMerFlyt = lagRegelflyt(
@@ -30,7 +31,8 @@ class ReglerForNorskeStatsborgere(
                 return ReglerForNorskeStatsborgere(
                     periode = periode,
                     ytelse = ytelse,
-                    regelMap = lagRegelMap(datagrunnlag)
+                    regelMap = lagRegelMap(datagrunnlag),
+                    overstyrteRegler = datagrunnlag.overstyrteRegler
                 )
             }
         }

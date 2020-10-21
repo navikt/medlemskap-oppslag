@@ -1,6 +1,5 @@
 package no.nav.medlemskap.regler.v1.lovvalg
 
-import no.nav.medlemskap.common.gjennomsnittligStillingsprosentCounter
 import no.nav.medlemskap.domene.Arbeidsforhold
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
@@ -9,7 +8,6 @@ import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.ja
 import no.nav.medlemskap.regler.common.nei
-import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.beregnGjennomsnittligStillingsprosentForGrafana
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
 
 class HarBrukerJobbet100ProsentEllerMerRegel(
@@ -20,7 +18,6 @@ class HarBrukerJobbet100ProsentEllerMerRegel(
 ) : LovvalgRegel(regelId, ytelse, periode) {
 
     override fun operasjon(): Resultat {
-        gjennomsnittligStillingsprosentCounter(arbeidsforhold.beregnGjennomsnittligStillingsprosentForGrafana(kontrollPeriodeForArbeidsforhold), ytelse)
 
         return when {
             arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(100.0, kontrollPeriodeForArbeidsforhold, ytelse) -> ja()
