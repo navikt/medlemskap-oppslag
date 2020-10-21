@@ -44,7 +44,7 @@ Egenskap: Overstyring av regelsvar for regel 12
     Og skal regel "12" gi begrunnelse "<Regel 12 begrunnelse>"
 
     Eksempler:
-      | Overstyrt svar | Regel 12 svar | Regel 12 begrunnelse                                     | Medlemskap |
-      |                | Nei           | Bruker har ikke jobbet 25% eller mer i løpet av periode. | UAVKLART   |
-      | Ja             | Ja            | Overstyrt svar                                           | Ja         |
-      | Nei            | Nei           | Overstyrt svar                                           | UAVKLART   |
+      | Overstyrt svar | Regel 12 svar | Regel 12 begrunnelse                                      | Medlemskap |
+      |                | Nei           | Bruker har ikke jobbet 25% eller mer i løpet av perioden. | UAVKLART   |
+      | Ja             | Ja            | Overstyrt svar                                            | Ja         |
+      | Nei            | Nei           | Overstyrt svar                                            | UAVKLART   |

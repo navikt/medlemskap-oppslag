@@ -26,7 +26,7 @@ class HarBrukerJobbet25ProsentEllerMerRegel(
         stillingsprosentSkyggeCounter(arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTidSkygge(25.0, kontrollPeriodeForArbeidsforhold), ytelse).increment()
         return when {
             arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollPeriodeForArbeidsforhold, ytelse) -> ja()
-            else -> nei("Bruker har ikke jobbet 25% eller mer i løpet av periode.")
+            else -> nei("Bruker har ikke jobbet 25% eller mer i løpet av perioden.")
         }
     }
 
