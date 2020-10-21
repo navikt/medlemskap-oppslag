@@ -23,5 +23,5 @@ Egenskap: Regelflyt for regel 13
     Eksempler:
       | Dato          | Regel 13 | Medlemskap |
       | 2021-01-06    | Ja       | Ja         |
-      |               | Nei      | Nei        |
+      |               | Nei      | Ja         |
 
