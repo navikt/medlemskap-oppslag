@@ -21,14 +21,11 @@ class AaRegService(
             if (aaRegArbeidsforhold.arbeidsgiver.organisasjonsnummer != null) {
                 val organisasjon = eregClient.hentOrganisasjon(aaRegArbeidsforhold.arbeidsgiver.organisasjonsnummer, callId)
 
-                val juridiskEnhetstypeMap = mutableMapOf<String, String>()
+                val juridiskeEnheter = mutableListOf<Organisasjon>()
                 organisasjon.getOrganisasjonsnumreJuridiskeEnheter().forEach {
-                    val enhetstype = eregClient.hentEnhetstype(it, callId)
-                    if (enhetstype != null) {
-                        juridiskEnhetstypeMap[it] = enhetstype
-                    }
+                    juridiskeEnheter.add(eregClient.hentOrganisasjon(it, callId))
                 }
-                arbeidsforholdMedOrganisasjon.add(ArbeidsforholdOrganisasjon(aaRegArbeidsforhold, organisasjon, juridiskEnhetstypeMap))
+                arbeidsforholdMedOrganisasjon.add(ArbeidsforholdOrganisasjon(aaRegArbeidsforhold, organisasjon, juridiskeEnheter))
             }
         }
 
@@ -39,5 +36,5 @@ class AaRegService(
 data class ArbeidsforholdOrganisasjon(
     val arbeidsforhold: AaRegArbeidsforhold,
     val organisasjon: Organisasjon,
-    val juridiskeEnhetstyper: Map<String, String>
+    val juridiskeEnheter: List<Organisasjon>
 )
