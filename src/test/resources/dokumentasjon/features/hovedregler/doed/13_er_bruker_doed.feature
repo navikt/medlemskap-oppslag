@@ -3,11 +3,28 @@
 
 Egenskap: Regelflyt for regel 13
 
+  Bakgrunn:
+
+    Gitt følgende bostedsadresser i personhistorikken
+      | Adresse | Landkode | Fra og med dato | Til og med dato |
+      | Oslo    | NOR      | 01.01.2000      |                 |
+
+    Og følgende arbeidsforhold fra AAReg
+      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
+      | 01.01.2018      |                 | Organisasjon     | NORMALT             |
+
+    Og følgende arbeidsgiver i arbeidsforholdet
+      | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
+      | 1             | BEDR             | NOR      | 9              |
+
+    Og følgende arbeidsavtaler i arbeidsforholdet
+      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
+      | 01.01.2018      |                 | 001       | 100              |
+
   Scenariomal: Regelflyt for regel 13
 
-    Gitt følgende opplysninger om doedsfall fra PDL:
+    Gitt følgende opplysninger om doedsfall i personhistorikken:
       | Doedsdato       |
-      | <Dato>          |
       | <Dato>          |
 
     Når medlemskap beregnes med følgende parametre
@@ -22,5 +39,4 @@ Egenskap: Regelflyt for regel 13
     Eksempler:
       | Dato          | Regel 13 | Medlemskap |
       | 2021-01-06    | Ja       | Ja         |
-      |               | Nei      | Ja         |
 

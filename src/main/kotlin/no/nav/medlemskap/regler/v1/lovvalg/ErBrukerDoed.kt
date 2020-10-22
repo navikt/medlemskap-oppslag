@@ -21,8 +21,7 @@ class ErBrukerDoed(
         } else if (erBrukerDoed && !erBrukerDoedEtterInputperiode) {
             throw BadRequestException("Bruker er død, men i eller før inputperiode.")
         }
-
-        return nei("Bruker er ikke død")
+        return nei()
     }
 
     companion object {

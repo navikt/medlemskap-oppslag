@@ -55,6 +55,10 @@ class RegelSteps : No {
             val bostedsadresser = domenespråkParser.mapAdresser(dataTable)
             pdlPersonhistorikkBuilder.bostedsadresser.addAll(bostedsadresser)
         }
+        Gitt<DataTable>("følgende opplysninger om doedsfall i personhistorikken:") { dataTable: DataTable? ->
+            val doedsfall = domenespråkParser.mapDoedsfall(dataTable)
+            pdlPersonhistorikkBuilder.doedsfall.addAll(doedsfall)
+        }
 
         Gitt("følgende kontaktadresser i personhistorikken") { dataTable: DataTable? ->
             val kontaktadresser = domenespråkParser.mapAdresser(dataTable)
