@@ -1,6 +1,5 @@
 package no.nav.medlemskap.regler.v1
 
-import io.ktor.features.*
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*

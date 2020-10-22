@@ -40,3 +40,5 @@ Egenskap: Regelflyt for regel 13
       | Dato          | Regel 13 | Medlemskap |
       | 2021-01-06    | Ja       | Ja         |
 
+
+
