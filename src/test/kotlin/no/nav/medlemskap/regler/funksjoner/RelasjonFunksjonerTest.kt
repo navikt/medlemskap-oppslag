@@ -64,26 +64,26 @@ class RelasjonFunksjonerTest {
         gyldigFraOgMed: LocalDate? = null,
         gyldigTilOgMed: LocalDate? = null,
         relatertVedSivilstand: String? = null,
-        folkeregisterMetadata: Folkeregistermetadata? = null
+        folkeregistermetadata: Folkeregistermetadata? = null
     ): Sivilstand =
         Sivilstand(
             type = type,
             gyldigFraOgMed = gyldigFraOgMed,
             gyldigTilOgMed = gyldigTilOgMed,
             relatertVedSivilstand = relatertVedSivilstand,
-            folkeregistermetadata = folkeregisterMetadata
+            folkeregistermetadata = folkeregistermetadata
         )
 
     private fun lagFamilierelasjon(
         relatertPersonIdent: String = "12345678910",
         relatertPersonsRolle: Familierelasjonsrolle = Familierelasjonsrolle.BARN,
         minRolleForPerson: Familierelasjonsrolle? = null,
-        folkeregisterMetadata: Folkeregistermetadata? = null
+        folkeregistermetadata: Folkeregistermetadata? = null
     ): Familierelasjon =
         Familierelasjon(
             relatertPersonsIdent = relatertPersonIdent,
             relatertPersonsRolle = relatertPersonsRolle,
             minRolleForPerson = minRolleForPerson,
-            folkeregistermetadata = folkeregisterMetadata
+            folkeregistermetadata = folkeregistermetadata
         )
 }
