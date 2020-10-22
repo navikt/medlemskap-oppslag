@@ -135,10 +135,10 @@ components:
           items:
             type: string
           nullable: true
-        juridiskEnhetEnhetstypeMap:
-          type: object
-          additionalProperties:
-            $ref: "#/components/schemas/JuridiskEnhetstype"
+        juridiskeEnheter:
+          type: array
+          items:
+            $ref: "#/components/schemas/JuridiskEnhet"
           nullable: true
     BrukerInput:
       properties:
@@ -301,8 +301,14 @@ components:
           items:
             $ref: "#/components/schemas/Dokument"
           nullable: true
-    JuridiskEnhetstype:
-      type: string
+    JuridiskEnhet:
+      properties:
+        organisasjonsnummer:
+          type: string
+        enhetstype:
+          type: string
+        antallAnsatte:
+          type: integer
     Landkode:
       type: string
       minLength: 2

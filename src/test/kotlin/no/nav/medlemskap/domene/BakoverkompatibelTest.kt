@@ -186,13 +186,16 @@ suspend fun mockCreateDatagrunnlag(
 
 private fun arbeidsforhold(): Arbeidsforhold {
 
-    val juridiskEnhetstypeMap = HashMap<String, String?>()
-    juridiskEnhetstypeMap["juridiskOrgnummer"] = "juridiskEnhetstype"
     return Arbeidsforhold(
         Periode(enDato(), enAnnenDato()),
         listOf(Utenlandsopphold("SWE", Periode(enDato(), enAnnenDato()), YearMonth.of(2010, 1))),
         OpplysningspliktigArbeidsgiverType.Organisasjon,
-        Arbeidsgiver("type", "organisasjonsnummer", listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus"), juridiskEnhetstypeMap),
+        Arbeidsgiver(
+            "type",
+            "organisasjonsnummer",
+            listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus"),
+            listOf(JuridiskEnhet("juridiskOrgnummer", "juridiskEnhetstype", 20))
+        ),
         Arbeidsforholdstype.NORMALT,
         listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble(), 37.5))
     )
@@ -370,9 +373,11 @@ private val forventetResponse =
                          }
                        } ],
                        "konkursStatus" : [ "Konkursstatus" ],
-                       "juridiskEnhetEnhetstypeMap" : {
-                         "juridiskOrgnummer" : "juridiskEnhetstype"
-                       }
+                       "juridiskeEnheter": [ {
+                            "organisasjonsnummer" : "juridiskOrgnummer",
+                            "enhetstype" : "juridiskEnhetstype",
+                            "antallAnsatte" : 20
+                        } ]
                      },
                      "arbeidsforholdstype" : "NORMALT",
                      "arbeidsavtaler" : [ {
@@ -459,9 +464,12 @@ private val forventetResponse =
               }
             } ],
             "konkursStatus" : [ "Konkursstatus" ],
-            "juridiskEnhetEnhetstypeMap" : {
-              "juridiskOrgnummer" : "juridiskEnhetstype"
-            }
+            "juridiskeEnheter": [ {
+                "organisasjonsnummer" : "juridiskOrgnummer",
+                "enhetstype" : "juridiskEnhetstype",
+                "antallAnsatte" : 20
+             }
+            ]
           },
           "arbeidsforholdstype" : "NORMALT",
           "arbeidsavtaler" : [ {

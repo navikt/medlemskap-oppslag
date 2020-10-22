@@ -30,7 +30,7 @@ fun mapArbeidsforhold(arbeidsforholdMedOrganisasjon: List<ArbeidsforholdOrganisa
             utenlandsopphold = mapUtenlandsopphold(it.arbeidsforhold),
             arbeidsforholdstype = mapArbeidsforholdType(it.arbeidsforhold),
             arbeidsgivertype = mapArbeidsgiverType(it.arbeidsforhold.arbeidsgiver.type),
-            arbeidsgiver = mapOrganisasjonTilArbeidsgiver(it.organisasjon, it.juridiskeEnhetstyper),
+            arbeidsgiver = mapOrganisasjonTilArbeidsgiver(it.organisasjon, it.juridiskeEnheter),
             arbeidsavtaler = mapArbeidsAvtaler(it.arbeidsforhold)
         )
     }
@@ -88,21 +88,6 @@ fun mapArbeidsforholdType(arbeidsforhold: AaRegArbeidsforhold): Arbeidsforholdst
         }
     }
 }
-
-fun mapAnsatte(ansatte: List<no.nav.medlemskap.clients.ereg.Ansatte>?): List<Ansatte>? =
-    ansatte?.map {
-        Ansatte(
-            antall = it.antall,
-            bruksperiode = mapBruksperiode(it.bruksperiode),
-            gyldighetsperiode = mapGyldighetsperiode(it.gyldighetsperiode)
-        )
-    }
-
-fun mapGyldighetsperiode(gyldighetsperiode: no.nav.medlemskap.clients.ereg.Gyldighetsperiode?): Gyldighetsperiode? =
-    gyldighetsperiode?.let { Gyldighetsperiode(fom = it.fom, tom = it.tom) }
-
-fun mapBruksperiode(bruksperiode: no.nav.medlemskap.clients.ereg.Bruksperiode?): Bruksperiode? =
-    bruksperiode?.let { Bruksperiode(fom = it.fom, tom = it.tom) }
 
 fun mapPeriodeTilArbeidsavtale(arbeidsavtale: AaRegArbeidsavtale): Periode {
     return Periode(

@@ -35,16 +35,7 @@ class ErArbeidsgiverOrganisasjonRegel(
 
     private fun registrerArbeidsgiverMetrics() {
         arbeidsforhold.forEach { enhetstypeCounter(it.arbeidsgiver.type ?: "N/A", ytelse.metricName()).increment() }
-        val unikeOrgnumre = HashSet<String>()
-        arbeidsforhold.forEach { unikeOrgnumre.addAll(it.arbeidsgiver.juridiskEnhetEnhetstypeMap?.keys ?: HashSet()) }
-        val enhetstypeList = mutableListOf<String?>()
-        unikeOrgnumre.forEach { p -> arbeidsforhold.forEach { r -> enhetstypeList.add(r.arbeidsgiver.juridiskEnhetEnhetstypeMap?.get(p)) } }
-
-        if (enhetstypeList.isNotEmpty()) {
-            logger.info("Første enhetstype i liste: ${enhetstypeList[0] ?: "N/A"}")
-        }
-
-        enhetstypeList.forEach { enhetstypeForJuridiskEnhet(it, ytelse.metricName()).increment() }
+        arbeidsforhold.forEach { it.arbeidsgiver.juridiskeEnheter?.forEach { p -> enhetstypeForJuridiskEnhet(p?.enhetstype, ytelse.metricName()).increment() } }
     }
 
     companion object {

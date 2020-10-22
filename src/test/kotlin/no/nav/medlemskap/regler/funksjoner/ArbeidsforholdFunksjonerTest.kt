@@ -249,7 +249,7 @@ class ArbeidsforholdFunksjonerTest {
 
         val statligArbeidsforholdMedMindreEnn25Stillingsprosent = listOf(
             lagArbeidsforhold(
-                arbeidsavtale = listOf(
+                arbeidsavtaleList = listOf(
                     Arbeidsavtale(
                         periode = periode,
                         gyldighetsperiode = periode,
@@ -259,7 +259,9 @@ class ArbeidsforholdFunksjonerTest {
                         beregnetAntallTimerPrUke = null
                     )
                 ),
-                juridiskEnhetstypeMap = mapOf("1" to "STAT")
+                juridiskeEnheter = listOf(
+                    JuridiskEnhet("1", "STAT", 20)
+                )
             )
         )
 
@@ -278,7 +280,7 @@ class ArbeidsforholdFunksjonerTest {
 
         val statligArbeidsforholdMed25Stillingsprosent = listOf(
             lagArbeidsforhold(
-                arbeidsavtale = listOf(
+                arbeidsavtaleList = listOf(
                     Arbeidsavtale(
                         periode = periode,
                         gyldighetsperiode = periode,
@@ -288,7 +290,7 @@ class ArbeidsforholdFunksjonerTest {
                         beregnetAntallTimerPrUke = null
                     )
                 ),
-                juridiskEnhetstypeMap = mapOf("1" to "STAT")
+                juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20))
             )
         )
 
@@ -311,7 +313,7 @@ class ArbeidsforholdFunksjonerTest {
         )
 
         val statligArbeidsforholdMed50Stillingsprosent1 = lagArbeidsforhold(
-            arbeidsavtale = listOf(
+            arbeidsavtaleList = listOf(
                 Arbeidsavtale(
                     periode = periode1,
                     gyldighetsperiode = periode1,
@@ -321,11 +323,11 @@ class ArbeidsforholdFunksjonerTest {
                     beregnetAntallTimerPrUke = null
                 )
             ),
-            juridiskEnhetstypeMap = mapOf("1" to "STAT")
+            juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20))
         )
 
         val statligArbeidsforholdMed50Stillingsprosent2 = lagArbeidsforhold(
-            arbeidsavtale = listOf(
+            arbeidsavtaleList = listOf(
                 Arbeidsavtale(
                     periode = periode2,
                     gyldighetsperiode = periode2,
@@ -335,7 +337,7 @@ class ArbeidsforholdFunksjonerTest {
                     beregnetAntallTimerPrUke = null
                 )
             ),
-            juridiskEnhetstypeMap = mapOf("1" to "STAT")
+            juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20))
         )
 
         val arbeidsforhold = listOf(statligArbeidsforholdMed50Stillingsprosent1, statligArbeidsforholdMed50Stillingsprosent2)
@@ -356,7 +358,7 @@ class ArbeidsforholdFunksjonerTest {
         )
 
         val statligArbeidsforholdMed50Stillingsprosent1 = lagArbeidsforhold(
-            arbeidsavtale = listOf(
+            arbeidsavtaleList = listOf(
                 Arbeidsavtale(
                     periode = periode1,
                     gyldighetsperiode = periode1,
@@ -366,11 +368,11 @@ class ArbeidsforholdFunksjonerTest {
                     beregnetAntallTimerPrUke = null
                 )
             ),
-            juridiskEnhetstypeMap = mapOf("1" to "STAT")
+            juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20))
         )
 
         val statligArbeidsforholdMed10Stillingsprosent2 = lagArbeidsforhold(
-            arbeidsavtale = listOf(
+            arbeidsavtaleList = listOf(
                 Arbeidsavtale(
                     periode = periode2,
                     gyldighetsperiode = periode2,
@@ -380,7 +382,7 @@ class ArbeidsforholdFunksjonerTest {
                     beregnetAntallTimerPrUke = null
                 )
             ),
-            juridiskEnhetstypeMap = mapOf("1" to "AS")
+            juridiskeEnheter = listOf(JuridiskEnhet("1", "AS", 20))
         )
 
         val arbeidsforhold = listOf(statligArbeidsforholdMed50Stillingsprosent1, statligArbeidsforholdMed10Stillingsprosent2)
@@ -406,16 +408,14 @@ class ArbeidsforholdFunksjonerTest {
     private val arbeidsforholdMedAkkurat6Ansatte = lagArbeidsforhold(6)
     private val arbeidsforholdMed5Ansatte = lagArbeidsforhold(5)
 
-    val arbeidsforholdMedStatligJuridiskEnhetstype = lagArbeidsforhold(juridiskEnhetstypeMap = mapOf("1" to "STAT"))
-    val arbeidsforholdMedIkkeStatligEllerKommunalJuridiskEnhetstype = lagArbeidsforhold(juridiskEnhetstypeMap = mapOf("1" to "AS"))
+    val arbeidsforholdMedStatligJuridiskEnhetstype = lagArbeidsforhold(juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20)))
+    val arbeidsforholdMedIkkeStatligEllerKommunalJuridiskEnhetstype = lagArbeidsforhold(juridiskeEnheter = listOf(JuridiskEnhet("1", "AS", 20)))
 
-    private fun lagArbeidsforhold(
+    fun lagArbeidsforhold(
         antall: Int = 10,
-        periode: Periode =
-            Periode(LocalDate.of(2019, 1, 1), LocalDate.of(2019, 12, 31)),
-        arbeidsavtale: List<Arbeidsavtale> =
-            listOf(lagArbeidsavtale(Periode(null, null), "Yrkeskode", null, 100.0, null)),
-        juridiskEnhetstypeMap: Map<String, String?>? = mapOf("1" to "AS")
+        periode: Periode = Periode(LocalDate.of(2019, 1, 1), LocalDate.of(2019, 12, 31)),
+        arbeidsavtaleList: List<Arbeidsavtale> = listOf(lagArbeidsavtale(Periode(null, null), "Yrkeskode", null, 100.0, null)),
+        juridiskeEnheter: List<JuridiskEnhet?>? = listOf(JuridiskEnhet("1", "AS", 20))
     ): Arbeidsforhold {
         return Arbeidsforhold(
             periode = periode,
@@ -426,10 +426,10 @@ class ArbeidsforholdFunksjonerTest {
                 organisasjonsnummer = null,
                 ansatte = listOf(Ansatte(antall = antall, bruksperiode = null, gyldighetsperiode = null)),
                 konkursStatus = null,
-                juridiskEnhetEnhetstypeMap = juridiskEnhetstypeMap
+                juridiskeEnheter = juridiskeEnheter
             ),
             arbeidsforholdstype = Arbeidsforholdstype.NORMALT,
-            arbeidsavtaler = arbeidsavtale
+            arbeidsavtaler = arbeidsavtaleList
         )
     }
 

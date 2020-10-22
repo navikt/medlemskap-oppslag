@@ -14,34 +14,6 @@ class EregClient(
     private val configuration: Configuration,
     private val retry: Retry? = null
 ) {
-    suspend fun hentEnhetstype(orgnummer: String, callId: String): String? {
-        val organisasjon = runCatching {
-            runWithRetryAndMetrics("Ereg", "noekkelinfo", retry) {
-                httpClient.get<OrganisasjonNøkkelinfo> {
-                    url("$baseUrl/v1/organisasjon/$orgnummer/noekkelinfo")
-                    header(HttpHeaders.Accept, ContentType.Application.Json)
-                    header("Nav-Call-Id", callId)
-                    header("Nav-Consumer-Id", configuration.sts.username)
-                }
-            }
-        }.fold(
-            onSuccess = { it },
-            onFailure = { error ->
-                when (error) {
-                    is ClientRequestException -> {
-                        if (error.response.status.value == 404) {
-                            OrganisasjonNøkkelinfo(null)
-                        } else {
-                            throw error
-                        }
-                    }
-                    else -> throw error
-                }
-            }
-
-        )
-        return organisasjon.enhetstype
-    }
 
     suspend fun hentOrganisasjon(orgnummer: String?, callId: String): Organisasjon {
         val organisasjonsInfo = kotlin.runCatching {
