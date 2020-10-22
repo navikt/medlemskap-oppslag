@@ -1,6 +1,8 @@
 package no.nav.medlemskap.regler.common
 
 import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import no.nav.medlemskap.domene.Periode
 import org.junit.jupiter.api.Test
@@ -80,5 +82,14 @@ class DatohjelperTest {
         val periode = Periode(toDagerSiden, null)
 
         assertThat(periode.interval().isUnboundedEnd).isTrue()
+    }
+
+    @Test
+    fun parseIsoDate() {
+        assertThat(Datohjelper.parseIsoDato(null)).isNull()
+
+        assertThat(Datohjelper.parseIsoDato("2008-12-11T12:03:04")).isEqualTo(LocalDate.of(2008, 12, 11))
+
+        assertThat(Datohjelper.parseIsoDato("2008-12-11")).isEqualTo(LocalDate.of(2008, 12, 11))
     }
 }

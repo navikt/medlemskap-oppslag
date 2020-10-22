@@ -97,12 +97,7 @@ class PdlClientHentEktefelleTest {
                   {
                     "type": "GIFT",
                     "gyldigFraOgMed": "2020-09-15",
-                    "relatertVedSivilstand": "13128619857",
-                    "folkeregistermetadata": {
-                      "ajourholdstidspunkt": "2020-09-30T16:17:24",
-                      "gyldighetstidspunkt": "2020-09-30T16:17:24",
-                      "opphoerstidspunkt": null
-                    }
+                    "relatertVedSivilstand": "13128619857"
                   }
                 ],
                 "bostedsadresse": [
@@ -112,12 +107,7 @@ class PdlClientHentEktefelleTest {
                       "postnummer": "4994"
                     },
                     "matrikkeladresse": null,
-                    "ukjentBosted": null,
-                    "folkeregistermetadata": {
-                      "ajourholdstidspunkt": "2020-09-30T16:17:23",
-                      "gyldighetstidspunkt": "2020-09-30T16:17:23",
-                      "opphoerstidspunkt": null
-                    }
+                    "ukjentBosted": null
                   }
                 ],
                 "doedsfall": [],

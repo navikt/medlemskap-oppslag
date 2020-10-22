@@ -18,24 +18,17 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
         sivilstand(historikk: $bostedHistorikk) {
             type
             gyldigFraOgMed
+            bekreftelsesdato
             relatertVedSivilstand
-            folkeregistermetadata {
-                ajourholdstidspunkt
-                gyldighetstidspunkt
-                opphoerstidspunkt
-            }
         },
         bostedsadresse(historikk: true) {
             angittFlyttedato
+            gyldigFraOgMed
+            gyldigTilOgMed
             vegadresse { postnummer },
             matrikkeladresse { postnummer },
             ukjentBosted {
                 bostedskommune
-            }
-            folkeregistermetadata {
-                ajourholdstidspunkt
-                gyldighetstidspunkt
-                opphoerstidspunkt
             }
         },
     	doedsfall{
@@ -50,21 +43,12 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
             utenlandskAdresseIFrittFormat {
                 landkode
             }
-            folkeregistermetadata {
-                ajourholdstidspunkt
-                gyldighetstidspunkt
-                opphoerstidspunkt
-            }
         },
         oppholdsadresse(historikk: true) {
             gyldigFraOgMed
+            gyldigTilOgMed
             utenlandskAdresse {
                 landkode
-            }
-            folkeregistermetadata {
-                ajourholdstidspunkt
-                gyldighetstidspunkt
-                opphoerstidspunkt
             }
         }
     }

@@ -468,8 +468,7 @@ object DomenespråkParser : BasisDomeneParser() {
                 type = parseSivilstandstype(SIVILSTANDSTYPE, rad),
                 gyldigFraOgMed = parseValgfriDato(GYLDIG_FRA_OG_MED, rad),
                 gyldigTilOgMed = parseValgfriDato(GYLDIG_TIL_OG_MED, rad),
-                relatertVedSivilstand = parseValgfriString(RELATERT_VED_SIVILSTAND, rad),
-                folkeregistermetadata = null
+                relatertVedSivilstand = parseValgfriString(RELATERT_VED_SIVILSTAND, rad)
             )
         }
     }

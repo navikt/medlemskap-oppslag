@@ -363,7 +363,7 @@ class TjenesteKallFeilmeldingerTest {
             bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
             kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
             oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr(), folkeregistermetadata())),
+            sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr())),
             familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata())),
             doedsfall = emptyList()
         )

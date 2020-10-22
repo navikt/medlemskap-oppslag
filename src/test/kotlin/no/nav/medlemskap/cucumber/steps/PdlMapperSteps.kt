@@ -117,9 +117,6 @@ class PdlMapperSteps : No {
             val doedsfallForventet = DomenespråkParser.mapDoedsfall(dataTable)
             personhistorikk?.doedsfall.shouldContainExactly(doedsfallForventet)
         }
-
-        Så<DataTable>("skal personhistorikk.familierelasjoner være") { dataTable: DataTable? ->
-        }
     }
 
     private fun mapTilPersonhistorikk(): Personhistorikk {
