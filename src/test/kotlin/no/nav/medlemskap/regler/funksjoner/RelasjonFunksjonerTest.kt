@@ -66,13 +66,7 @@ class RelasjonFunksjonerTest {
         relatertVedSivilstand: String? = null,
         folkeregistermetadata: Folkeregistermetadata? = null
     ): Sivilstand =
-        Sivilstand(
-            type = type,
-            gyldigFraOgMed = gyldigFraOgMed,
-            gyldigTilOgMed = gyldigTilOgMed,
-            relatertVedSivilstand = relatertVedSivilstand,
-            folkeregistermetadata = folkeregistermetadata
-        )
+        Sivilstand(type, gyldigFraOgMed, gyldigTilOgMed, relatertVedSivilstand, folkeregistermetadata)
 
     private fun lagFamilierelasjon(
         relatertPersonIdent: String = "12345678910",
