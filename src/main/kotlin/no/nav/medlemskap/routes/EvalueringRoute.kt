@@ -8,6 +8,7 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import mu.KotlinLogging
+import net.logstash.logback.marker.Markers.append
 import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.apiCounter
 import no.nav.medlemskap.common.exceptions.KonsumentIkkeFunnet
@@ -57,8 +58,9 @@ fun Routing.evalueringRoute(
                 datagrunnlag = datagrunnlag,
                 resultat = resultat
             )
-            secureLogger.info("{} konklusjon gitt for bruker {} på regel {}", resultat.svar.name, request.fnr, resultat.sisteRegel())
-            secureLogger.info("For bruker {} er responsen {}", request.fnr, response)
+
+            secureLogger.info(append("resultat", resultat), "{} konklusjon gitt for bruker {}", resultat.svar.name, request.fnr)
+            secureLogger.info(append("response", response), "Response for bruker {}", request.fnr)
 
             call.respond(response)
         }
@@ -90,8 +92,9 @@ fun Routing.evalueringTestRoute(
             datagrunnlag = datagrunnlag,
             resultat = resultat
         )
-        secureLogger.info("{} konklusjon gitt for bruker {} på regel {}", resultat.svar.name, request.fnr, resultat.sisteRegel())
-        secureLogger.info("For bruker {} er responsen {}", request.fnr, response)
+
+        secureLogger.info(append("resultat", resultat), "{} konklusjon gitt for bruker {}", resultat.svar.name, request.fnr)
+        secureLogger.info(append("response", response), "Response for bruker {}", request.fnr)
 
         call.respond(response)
     }

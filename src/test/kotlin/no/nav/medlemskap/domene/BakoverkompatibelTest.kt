@@ -112,42 +112,6 @@ class BakoverkompatibelTest {
     }
 
     @Test
-    fun testFeilInput() {
-
-        // Fnr er Roland Gundersen fra https://www.nhn.no/media/2606/testaktoerer-v46.pdf
-        val faktiskResponse = given()
-            .body(ugyldigInput)
-            .header(Header("Content-Type", "application/json"))
-            .post("/")
-            .then()
-            .statusCode(400)
-            .extract().asString().trimIndent()
-
-        val forventetErrorResponse =
-            """"{
-            "url" : "/",
-            "message" : "Instantiation of [simple type, class no.nav.medlemskap.domene.Request] value failed for JSON property brukerinput due to missing (therefore NULL) value for creator parameter brukerinput which is a non-nullable type\n at [Source: (InputStreamReader); line: 10, column: 1] (through reference chain: no.nav.medlemskap.domene.Request[\"brukerinput\"])",
-            "cause" : "com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException: Instantiation of [simple type, class no.nav.medlemskap.domene.Request] value failed for JSON property brukerinput due to missing (therefore NULL) value for creator parameter brukerinput which is a non-nullable type\n at [Source: (InputStreamReader); line: 10, column: 1] (through reference chain: no.nav.medlemskap.domene.Request[\"brukerinput\"])",
-            "code" : {
-            "value" : 400,
-            "description" : "Bad Request"
-        },
-            "callId" : { }
-        }
-            """.trimIndent()
-
-/*
-        JSONAssert.assertEquals(
-            forventetErrorResponse, faktiskResponse,
-            CustomComparator(
-                JSONCompareMode.STRICT
-            )
-        )
-
- */
-    }
-
-    @Test
     fun testKontrakt() {
         val validationFilter = OpenApiValidationFilter("src/main/resources/lovme.yaml")
 
