@@ -27,7 +27,7 @@ Egenskap: Regelflyt for regel 13
 
   Scenariomal: Regelflyt for regel 13
 
-    Gitt følgende opplysninger om doedsfall i personhistorikken:
+    Gitt følgende opplysninger om dødsfall i personhistorikken:
       | Doedsdato       |
       | <Dato>          |
 
