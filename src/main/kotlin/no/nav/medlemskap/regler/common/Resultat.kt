@@ -29,6 +29,14 @@ data class Resultat(
         return finnRegelResultat(this, regelId)
     }
 
+    fun finnÅrsak(): String {
+        return finnÅrsak(this)?.begrunnelse ?: ""
+    }
+
+    fun finnÅrsaker(): List<Resultat> {
+        return finnÅrsaker(this)
+    }
+
     companion object {
         private fun finnRegelResultat(resultat: Resultat, regelId: RegelId): Resultat? {
             var regelResultat = finnDelresultat(resultat, regelId)
@@ -48,6 +56,26 @@ data class Resultat(
 
         fun finnDelresultat(resultat: Resultat, regelId: RegelId): Resultat? {
             return resultat.delresultat.find { it.regelId == regelId }
+        }
+
+        fun finnÅrsak(resultat: Resultat): Resultat? {
+            if (resultat.svar == Svar.JA && resultat.erMedlemskonklusjon()) {
+                return null
+            }
+
+            if (resultat.delresultat.isNotEmpty()) {
+                return finnÅrsak(resultat.delresultat.last())
+            }
+
+            return resultat
+        }
+
+        fun finnÅrsaker(resultat: Resultat): List<Resultat> {
+            if (resultat.svar == Svar.JA && resultat.erKonklusjon()) {
+                return emptyList()
+            }
+
+            return resultat.delresultat.filter { !it.erKonklusjon() || it.erKonklusjon() && it.svar != Svar.JA }.mapNotNull { finnÅrsak(it) }
         }
     }
 }

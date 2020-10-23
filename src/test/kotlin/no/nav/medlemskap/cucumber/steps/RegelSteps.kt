@@ -182,6 +182,16 @@ class RegelSteps : No {
             assertEquals(forventetSvar, resultat!!.svar)
         }
 
+        Så("skal begrunnelsen være {string}") { forventetBegrunnelse: String ->
+            assertEquals(forventetBegrunnelse, resultat!!.begrunnelse)
+        }
+
+        Så("skal årsaken være {string}") { forventetÅrsak: String ->
+            val årsaker = resultat!!.finnÅrsaker()
+
+            assertEquals(forventetÅrsak, resultat!!.finnÅrsak())
+        }
+
         Så("skal svaret være Ja på medlemskap og {string} på harDekning") { forventetVerdi: String ->
             val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
             assertEquals(Svar.JA, resultat!!.svar)

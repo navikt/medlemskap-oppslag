@@ -469,6 +469,10 @@ components:
           $ref: "#/components/schemas/Datagrunnlag"
         resultat:
           $ref: "#/components/schemas/Resultat"
+        årsaker:
+          type: array
+          items:
+            $ref: "#/components/schemas/Resultat"
         versjonRegler:
           type: string
         tidspunkt:

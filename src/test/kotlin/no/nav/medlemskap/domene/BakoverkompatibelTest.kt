@@ -655,6 +655,23 @@ private val forventetResponse =
             "delresultat" : [ ]
           } ]
         } ]
-      }
+      },
+      "årsaker" : [ {
+        "regelId" : "REGEL_1_4",
+        "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
+        "begrunnelse" : "",
+        "svar" : "NEI",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ]
+      }, {
+        "regelId" : "REGEL_6",
+        "avklaring" : "Er foretaket aktivt?",
+        "begrunnelse" : "Arbeidstaker har hatt arbeidsforhold til arbeidsgiver som har konkurs-status satt",
+        "svar" : "NEI",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ]
+      } ]
     }
     """.trimIndent()

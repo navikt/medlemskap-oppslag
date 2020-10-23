@@ -59,6 +59,8 @@ Egenskap: Regelflyt for reglene 11.2.x for bruker som ikke har ektefelle i PDL
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Medlemskap>"
+    Og skal årsaken være "<Årsak>"
+
     Og skal regel "11" gi svaret "Nei"
     Og skal regel "11.2" gi svaret "Nei"
     Og skal regel "11.2.1" gi svaret "Ja"
@@ -66,9 +68,9 @@ Egenskap: Regelflyt for reglene 11.2.x for bruker som ikke har ektefelle i PDL
     Og skal regel "11.2.3" gi svaret "<Regel 11.2.3>"
 
     Eksempler:
-      | Stillingsprosent | Regel 11.2.3 | Medlemskap |
-      | 79               | Nei          | UAVKLART   |
-      | 81               | Ja           | Ja         |
+      | Stillingsprosent | Regel 11.2.3 | Medlemskap | Årsak                                                    |
+      | 79               | Nei          | UAVKLART   | Bruker har ikke jobbet 80% eller mer i løpet av periode. |
+      | 81               | Ja           | Ja         |                                                          |
 
   Scenario: Bruker med ett barn som bor i Norge og ett barn som ikke bor i Norge skal få "UAVKLART"
     Gitt følgende familerelasjoner i personhistorikk fra PDL
