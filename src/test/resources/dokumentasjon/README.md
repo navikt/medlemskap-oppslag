@@ -17,12 +17,8 @@ Dette er en tjeneste som finner ut lovvalg og medlemskap.
 * Journalposter hentes fra JOARK
 * Oppgaver hentes fra GOSYS
 
-# Mapping til datagrunnlag
-
-## Mapping fra PDL til datagrunnlag
-
-
-
+## Mapping til datagrunnlag
+* [Mapping fra PDL til datagrunnlag](features/mapping/pdl/readme.md)
 
 ## Regelsett
 
@@ -41,7 +37,7 @@ Reglene er gruppert i forskjellige regelsett.
 * [Medlemskap](features/medlemskap/README.md)
 
 ### Regelsett for arbeidsforhold
-* [Arbeidsforhold](features/arbeidsforhold/README.md)
+* [Arbeidsforhold](features/hovedregler/arbeidsforhold/README.md)
 
 ## Lovvalg og medlemskap for ytelsen sykepenger
 * [Lovvalg og medlemskap for ytelsen sykepenger](features/ytelse/sykepenger/README.md)

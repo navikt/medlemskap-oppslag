@@ -24,7 +24,7 @@ class AaregMapperTest {
             organisasjonsnummer = "985672744",
             ansatte = listOf(Ansatte(5, Bruksperiode(LocalDate.now(), LocalDate.now().plusDays(2)), null)),
             konkursStatus = null,
-            juridiskEnhetEnhetstypeMap = juridiskEnhetOrgnummerEnhetstype
+            juridiskeEnheter = listOf(JuridiskEnhet("123456789", "AS", 40))
         )
 
         val mappedAaregResultatList = mapAaregResultat(listOf(aaRegArbeidsforhold), listOf(arbeidsgiver))
@@ -34,7 +34,10 @@ class AaregMapperTest {
         Assert.assertEquals("985672744", mappedAaregResultat.arbeidsgiver.organisasjonsnummer)
         Assert.assertEquals("BEDR", mappedAaregResultat.arbeidsgiver.type)
         Assert.assertEquals(5, mappedAaregResultat.arbeidsgiver.ansatte!!.first().antall)
-        Assert.assertEquals("AS", mappedAaregResultat.arbeidsgiver.juridiskEnhetEnhetstypeMap?.get("123456789"))
+        Assert.assertEquals(1, mappedAaregResultat.arbeidsgiver.juridiskeEnheter!!.size)
+        Assert.assertEquals("123456789", mappedAaregResultat.arbeidsgiver.juridiskeEnheter!!.first()?.organisasjonsnummer)
+        Assert.assertEquals("AS", mappedAaregResultat.arbeidsgiver.juridiskeEnheter!!.first()?.enhetstype)
+        Assert.assertEquals(40, mappedAaregResultat.arbeidsgiver.juridiskeEnheter!!.first()?.antallAnsatte)
 
         Assert.assertEquals(1, mappedAaregResultat.arbeidsavtaler.size)
         Assert.assertEquals(LocalDate.parse("2018-09-13"), mappedAaregResultat.arbeidsavtaler.first().periode.fom)

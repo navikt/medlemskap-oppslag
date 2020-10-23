@@ -33,15 +33,31 @@ data class Arbeidsavtale(
     val gyldighetsperiode: Periode,
     val yrkeskode: String,
     val skipsregister: Skipsregister?,
-    val stillingsprosent: Double?
-)
+    val stillingsprosent: Double?,
+    val beregnetAntallTimerPrUke: Double?
+) {
+    fun getStillingsprosent(): Double {
+        if (stillingsprosent == 0.0 && beregnetAntallTimerPrUke != null && beregnetAntallTimerPrUke > 0) {
+            val beregnetStillingsprosent = (beregnetAntallTimerPrUke / 37.5) * 100
+            return Math.round(beregnetStillingsprosent * 10.0) / 10.0
+        }
+
+        return stillingsprosent ?: 100.0
+    }
+}
 
 data class Arbeidsgiver(
     val type: String?,
     val organisasjonsnummer: String?,
     val ansatte: List<Ansatte>?,
     val konkursStatus: List<String?>?,
-    val juridiskEnhetEnhetstypeMap: Map<String, String?>?
+    val juridiskeEnheter: List<JuridiskEnhet?>?
+)
+
+data class JuridiskEnhet(
+    val organisasjonsnummer: String?,
+    val enhetstype: String?,
+    val antallAnsatte: Int?
 )
 
 data class Utenlandsopphold(

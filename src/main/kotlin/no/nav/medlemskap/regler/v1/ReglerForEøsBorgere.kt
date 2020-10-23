@@ -10,8 +10,9 @@ import no.nav.medlemskap.regler.v1.lovvalg.*
 class ReglerForEøsBorgere(
     val periode: InputPeriode,
     ytelse: Ytelse,
-    regelMap: Map<RegelId, Regel>
-) : Regler(ytelse, regelMap) {
+    regelMap: Map<RegelId, Regel>,
+    overstyrteRegler: Map<RegelId, Svar>
+) : Regler(ytelse, regelMap, overstyrteRegler) {
 
     override fun hentRegelflyter(): List<Regelflyt> {
         val harBrukerMedBarn80ProsenStillingEllerMerRegelFlyt = lagRegelflyt(
@@ -137,7 +138,8 @@ class ReglerForEøsBorgere(
                 return ReglerForEøsBorgere(
                     periode = periode,
                     ytelse = ytelse,
-                    regelMap = lagRegelMap(datagrunnlag)
+                    regelMap = lagRegelMap(datagrunnlag),
+                    overstyrteRegler = datagrunnlag.overstyrteRegler
                 )
             }
         }

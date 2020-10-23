@@ -10,8 +10,9 @@ import no.nav.medlemskap.regler.v1.lovvalg.HarBrukerNorskStatsborgerskapRegel
 class ReglerForStatsborgerskap(
     val periode: InputPeriode,
     ytelse: Ytelse,
-    regelMap: Map<RegelId, Regel>
-) : Regler(ytelse, regelMap) {
+    regelMap: Map<RegelId, Regel>,
+    overstyrteRegler: Map<RegelId, Svar>
+) : Regler(ytelse, regelMap, overstyrteRegler) {
 
     override fun kjørRegelflyter(): List<Resultat> {
         return listOf(kjørUavhengigeRegelflyterMedEttResultat(RegelId.REGEL_STATSBORGERSKAP))
@@ -39,7 +40,8 @@ class ReglerForStatsborgerskap(
                 return ReglerForStatsborgerskap(
                     periode = periode,
                     ytelse = ytelse,
-                    regelMap = lagRegelMap(datagrunnlag)
+                    regelMap = lagRegelMap(datagrunnlag),
+                    overstyrteRegler = datagrunnlag.overstyrteRegler
                 )
             }
         }

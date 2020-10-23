@@ -162,20 +162,17 @@ class BakoverkompatibelTest {
 }
 
 suspend fun mockCreateDatagrunnlag(
-    fnr: String,
+    request: Request,
     callId: String,
-    periode: InputPeriode,
-    brukerinput: Brukerinput,
     services: Services,
-    clientId: String?,
-    ytelseFraRequest: Ytelse?
+    clientId: String?
 ): Datagrunnlag = runBlocking {
 
     val ytelse = Ytelse.SYKEPENGER
 
     Datagrunnlag(
-        periode = periode,
-        brukerinput = brukerinput,
+        periode = request.periode,
+        brukerinput = request.brukerinput,
         pdlpersonhistorikk = personhistorikk(),
         medlemskap = listOf(Medlemskap("dekning", enDato(), enAnnenDato(), true, Lovvalg.ENDL, "NOR", PeriodeStatus.GYLD)),
         arbeidsforhold = listOf(arbeidsforhold()),
@@ -189,15 +186,18 @@ suspend fun mockCreateDatagrunnlag(
 
 private fun arbeidsforhold(): Arbeidsforhold {
 
-    val juridiskEnhetstypeMap = HashMap<String, String?>()
-    juridiskEnhetstypeMap["juridiskOrgnummer"] = "juridiskEnhetstype"
     return Arbeidsforhold(
         Periode(enDato(), enAnnenDato()),
         listOf(Utenlandsopphold("SWE", Periode(enDato(), enAnnenDato()), YearMonth.of(2010, 1))),
         OpplysningspliktigArbeidsgiverType.Organisasjon,
-        Arbeidsgiver("type", "organisasjonsnummer", listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus"), juridiskEnhetstypeMap),
+        Arbeidsgiver(
+            "type",
+            "organisasjonsnummer",
+            listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus"),
+            listOf(JuridiskEnhet("juridiskOrgnummer", "juridiskEnhetstype", 20))
+        ),
         Arbeidsforholdstype.NORMALT,
-        listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble()))
+        listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble(), 37.5))
     )
 }
 
@@ -205,7 +205,7 @@ private fun personhistorikk(): Personhistorikk {
     return Personhistorikk(
         statsborgerskap = listOf(Statsborgerskap("NOR", enDato(), enAnnenDato())),
         bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr(), folkeregistermetadata())),
+        sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr())),
         familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata())),
         kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
         oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
@@ -311,12 +311,7 @@ private val forventetResponse =
             "type" : "GIFT",
             "gyldigFraOgMed" : "1975-10-10",
             "gyldigTilOgMed" : "2020-08-01",
-            "relatertVedSivilstand" : "0101197512345",
-            "folkeregistermetadata" : {
-              "ajourholdstidspunkt" : "2020-06-20T10:00:00",
-              "gyldighetstidspunkt" : "2020-06-20T10:00:00",
-              "opphoerstidspunkt" : "2020-06-20T10:00:00"
-            }
+            "relatertVedSivilstand" : "0101197512345"
           } ],
           "familierelasjoner" : [ {
             "relatertPersonsIdent" : "0101201012345",
@@ -378,9 +373,11 @@ private val forventetResponse =
                          }
                        } ],
                        "konkursStatus" : [ "Konkursstatus" ],
-                       "juridiskEnhetEnhetstypeMap" : {
-                         "juridiskOrgnummer" : "juridiskEnhetstype"
-                       }
+                       "juridiskeEnheter": [ {
+                            "organisasjonsnummer" : "juridiskOrgnummer",
+                            "enhetstype" : "juridiskEnhetstype",
+                            "antallAnsatte" : 20
+                        } ]
                      },
                      "arbeidsforholdstype" : "NORMALT",
                      "arbeidsavtaler" : [ {
@@ -394,7 +391,8 @@ private val forventetResponse =
                        },
                        "yrkeskode" : "yrkeskode",
                        "skipsregister" : "NIS",
-                       "stillingsprosent" : 100.0
+                       "stillingsprosent" : 100.0,
+                       "beregnetAntallTimerPrUke" : 37.5
                      } ]
                    } ]
         },
@@ -466,9 +464,12 @@ private val forventetResponse =
               }
             } ],
             "konkursStatus" : [ "Konkursstatus" ],
-            "juridiskEnhetEnhetstypeMap" : {
-              "juridiskOrgnummer" : "juridiskEnhetstype"
-            }
+            "juridiskeEnheter": [ {
+                "organisasjonsnummer" : "juridiskOrgnummer",
+                "enhetstype" : "juridiskEnhetstype",
+                "antallAnsatte" : 20
+             }
+            ]
           },
           "arbeidsforholdstype" : "NORMALT",
           "arbeidsavtaler" : [ {
@@ -482,7 +483,8 @@ private val forventetResponse =
             },
             "yrkeskode" : "yrkeskode",
             "skipsregister" : "NIS",
-            "stillingsprosent" : 100.0
+            "stillingsprosent" : 100.0,
+            "beregnetAntallTimerPrUke" : 37.5
           } ]
         } ],
         "oppgaver" : [ {
@@ -502,7 +504,8 @@ private val forventetResponse =
             "tittel" : "Tittel"
           } ]
         } ],
-        "ytelse" : "SYKEPENGER"
+        "ytelse" : "SYKEPENGER",
+        "overstyrteRegler" : { }
       },
        "resultat" : {
         "regelId" : "REGEL_MEDLEM_KONKLUSJON",

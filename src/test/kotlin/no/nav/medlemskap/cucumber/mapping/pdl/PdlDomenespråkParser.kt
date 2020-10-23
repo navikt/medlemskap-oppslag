@@ -51,15 +51,12 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         override fun mapRad(rad: Map<String, String>): HentPerson.Bostedsadresse {
 
             return HentPerson.Bostedsadresse(
+                gyldigFraOgMed = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED, rad),
+                gyldigTilOgMed = parseValgfriString(Domenebegrep.GYLDIG_TIL_OG_MED, rad),
                 angittFlyttedato = null,
                 vegadresse = null,
                 matrikkeladresse = null,
-                ukjentBosted = null,
-                folkeregistermetadata = HentPerson.Folkeregistermetadata2(
-                    ajourholdstidspunkt = null,
-                    gyldighetstidspunkt = parseValgfriString(Domenebegrep.FOLKE_REG_GYLDIGHETSTIDSPUNKT, rad),
-                    opphoerstidspunkt = parseValgfriString(Domenebegrep.FOLKE_REG_OPPHOERSTIDSPUNKT, rad)
-                )
+                ukjentBosted = null
             )
         }
     }
@@ -86,8 +83,7 @@ class PdlDomenespråkParser : BasisDomeneParser() {
                 gyldigFraOgMed = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED, rad),
                 gyldigTilOgMed = parseValgfriString(Domenebegrep.GYLDIG_TIL_OG_MED, rad),
                 utenlandskAdresse = utenlandskAdresse,
-                utenlandskAdresseIFrittFormat = utenlandskAdresseFrittFormat,
-                folkeregistermetadata = null
+                utenlandskAdresseIFrittFormat = utenlandskAdresseFrittFormat
             )
         }
     }
@@ -104,12 +100,8 @@ class PdlDomenespråkParser : BasisDomeneParser() {
 
             return HentPerson.Oppholdsadresse(
                 gyldigFraOgMed = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED, rad),
-                utenlandskAdresse = utenlandskAdresse,
-                folkeregistermetadata = HentPerson.Folkeregistermetadata2(
-                    ajourholdstidspunkt = null,
-                    gyldighetstidspunkt = parseValgfriString(Domenebegrep.FOLKE_REG_GYLDIGHETSTIDSPUNKT, rad),
-                    opphoerstidspunkt = parseValgfriString(Domenebegrep.FOLKE_REG_OPPHOERSTIDSPUNKT, rad)
-                )
+                gyldigTilOgMed = parseValgfriString(Domenebegrep.GYLDIG_TIL_OG_MED, rad),
+                utenlandskAdresse = utenlandskAdresse
             )
         }
     }
@@ -122,8 +114,8 @@ class PdlDomenespråkParser : BasisDomeneParser() {
             return HentPerson.Sivilstand(
                 type = sivilstandstype,
                 gyldigFraOgMed = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED, rad),
-                relatertVedSivilstand = parseValgfriString(Domenebegrep.RELATERT_VED_SIVILSTAND, rad),
-                folkeregistermetadata = null
+                bekreftelsesdato = parseValgfriString(Domenebegrep.BEKREFTELSESDATO, rad),
+                relatertVedSivilstand = parseValgfriString(Domenebegrep.RELATERT_VED_SIVILSTAND, rad)
             )
         }
     }
@@ -159,6 +151,7 @@ class PdlDomenespråkParser : BasisDomeneParser() {
     }
 
     enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
+        BEKREFTELSESDATO("Bekreftelsesdato"),
         DOEDSDATO("Doedsdato"),
         GYLDIG_FRA_OG_MED_DATO("Gyldig fra og med dato"),
         GYLDIG_TIL_OG_MED_DATO("Gyldig til og med dato"),
