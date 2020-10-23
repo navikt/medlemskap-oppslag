@@ -22,7 +22,7 @@ object PdlMapper {
         val oppholdsadresser: List<Adresse> = mapOppholdsadresser(person.oppholdsadresse)
         val sivilstand: List<Sivilstand> = mapSivilstander(person.sivilstand)
         val familierelasjoner: List<Familierelasjon> = mapFamilierelasjoner(person.familierelasjoner)
-        val doedsfall: List<LocalDate?> = mapDoedsfall(person.doedsfall)
+        val doedsfall: List<LocalDate> = mapDoedsfall(person.doedsfall)
 
         return Personhistorikk(
             statsborgerskap = statsborgerskap,
@@ -35,9 +35,10 @@ object PdlMapper {
         )
     }
 
-    private fun mapDoedsfall(doedsfall: List<HentPerson.Doedsfall>): List<LocalDate?> {
-        return doedsfall.map {
-            convertToLocalDate(it.doedsdato)
+    private fun mapDoedsfall(doedsfall: List<HentPerson.Doedsfall>): List<LocalDate> {
+
+        return doedsfall.mapNotNull {
+            LocalDate.parse(it.doedsdato, DateTimeFormatter.ISO_LOCAL_DATE)
         }
     }
 

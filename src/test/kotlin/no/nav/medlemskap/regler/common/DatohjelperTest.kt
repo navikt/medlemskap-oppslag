@@ -3,8 +3,10 @@ package no.nav.medlemskap.regler.common
 import assertk.assertThat
 import assertk.assertions.isTrue
 import no.nav.medlemskap.domene.Periode
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class DatohjelperTest {
 
@@ -80,5 +82,14 @@ class DatohjelperTest {
         val periode = Periode(toDagerSiden, null)
 
         assertThat(periode.interval().isUnboundedEnd).isTrue()
+    }
+
+    @Test
+    fun `test på mapping`() {
+
+        val nå = LocalDate.now()
+        val nString = nå.toString()
+        println(nå)
+        Assertions.assertEquals(nå, LocalDate.parse(nString, DateTimeFormatter.ISO_LOCAL_DATE))
     }
 }

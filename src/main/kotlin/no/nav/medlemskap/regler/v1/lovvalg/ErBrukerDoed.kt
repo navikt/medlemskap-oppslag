@@ -7,7 +7,7 @@ import no.nav.medlemskap.regler.funksjoner.PersonhistorikkFunksjoner.erBrukerDoe
 import java.time.LocalDate
 
 class ErBrukerDoed(
-    val doedsfall: List<LocalDate?>,
+    val doedsfall: List<LocalDate>,
     ytelse: Ytelse,
     val periode: InputPeriode
 ) : LovvalgRegel(RegelId.REGEL_13, ytelse, periode) {
