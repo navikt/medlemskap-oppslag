@@ -1,6 +1,7 @@
 package no.nav.medlemskap.regler.funksjoner
 
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.antallAnsatteHosArbeidsgiversJuridiskeEnheter
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.beregnGjennomsnittligStillingsprosentForGrafana
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.erArbeidsforholdetOffentligSektor
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.filtrerUtArbeidsgivereMedFærreEnn6Ansatte
@@ -242,48 +243,26 @@ class ArbeidsforholdFunksjonerTest {
 
     @Test
     fun `Statlig arbeidsforhold med mindre enn 25% stilling får false`() {
-        val periode = Periode(
-            fom = LocalDate.of(2019, 1, 1),
-            tom = LocalDate.of(2020, 1, 1)
-        )
 
         val statligArbeidsforholdMedMindreEnn25Stillingsprosent = listOf(
             lagArbeidsforhold(
-                arbeidsavtaleList = listOf(
-                    Arbeidsavtale(
-                        periode = periode,
-                        gyldighetsperiode = periode,
-                        yrkeskode = "Yrkeskode",
-                        skipsregister = null,
-                        stillingsprosent = 10.0,
-                        beregnetAntallTimerPrUke = null
-                    )
-                ),
-                juridiskeEnheter = listOf(
-                    JuridiskEnhet("1", "STAT", 20)
-                )
+                arbeidsavtaleList = listOf(createArbeidsavtale(kontrollperiodeFra2019Til2020.periode, 10.0)),
+                juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20))
             )
         )
 
-        val sjekkStatligArbeidsforhold = erArbeidsforholdetOffentligSektor(
-            statligArbeidsforholdMedMindreEnn25Stillingsprosent, kontrollperiodeFra2019Til2020, Ytelse.SYKEPENGER
-        )
-        assertFalse(sjekkStatligArbeidsforhold)
+        assertFalse(erArbeidsforholdetOffentligSektor(statligArbeidsforholdMedMindreEnn25Stillingsprosent, kontrollperiodeFra2019Til2020, Ytelse.SYKEPENGER))
     }
 
     @Test
     fun `Statlig arbeidsforhold med 25% stilling får true`() {
-        val periode = Periode(
-            fom = LocalDate.of(2019, 1, 1),
-            tom = LocalDate.of(2020, 1, 1)
-        )
 
         val statligArbeidsforholdMed25Stillingsprosent = listOf(
             lagArbeidsforhold(
                 arbeidsavtaleList = listOf(
                     Arbeidsavtale(
-                        periode = periode,
-                        gyldighetsperiode = periode,
+                        periode = kontrollperiodeFra2019Til2020.periode,
+                        gyldighetsperiode = kontrollperiodeFra2019Til2020.periode,
                         yrkeskode = "Yrkeskode",
                         skipsregister = null,
                         stillingsprosent = 25.0,
@@ -301,6 +280,20 @@ class ArbeidsforholdFunksjonerTest {
     }
 
     @Test
+    fun `antallAnsatteHosArbeidsgiversJuridiskeEnheter returnerer 5`() {
+
+        val statligArbeidsforholdMed25Stillingsprosent = listOf(
+            lagArbeidsforhold(
+                arbeidsavtaleList = listOf(createArbeidsavtale(kontrollperiodeFra2019Til2020.periode)),
+                juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20))
+            )
+        )
+
+        val antallAnsatteHosArbeidsgiversJuridiskeEnheter = statligArbeidsforholdMed25Stillingsprosent.antallAnsatteHosArbeidsgiversJuridiskeEnheter(kontrollperiodeFra2019Til2020)
+        assertEquals(20, antallAnsatteHosArbeidsgiversJuridiskeEnheter.first())
+    }
+
+    @Test
     fun `To statlige arbeidsforhold med 25% stilling etter hverandre får true`() {
         val periode1 = Periode(
             fom = LocalDate.of(2019, 6, 1),
@@ -312,80 +305,39 @@ class ArbeidsforholdFunksjonerTest {
             tom = LocalDate.of(2019, 6, 1)
         )
 
-        val statligArbeidsforholdMed50Stillingsprosent1 = lagArbeidsforhold(
-            arbeidsavtaleList = listOf(
-                Arbeidsavtale(
-                    periode = periode1,
-                    gyldighetsperiode = periode1,
-                    yrkeskode = "Yrkeskode",
-                    skipsregister = null,
-                    stillingsprosent = 25.0,
-                    beregnetAntallTimerPrUke = null
-                )
-            ),
+        val statligArbeidsforholdMed25Stillingsprosent1 = lagArbeidsforhold(
+            arbeidsavtaleList = listOf(createArbeidsavtale(periode1, 25.0)),
             juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20))
         )
 
-        val statligArbeidsforholdMed50Stillingsprosent2 = lagArbeidsforhold(
-            arbeidsavtaleList = listOf(
-                Arbeidsavtale(
-                    periode = periode2,
-                    gyldighetsperiode = periode2,
-                    yrkeskode = "Yrkeskode",
-                    skipsregister = null,
-                    stillingsprosent = 25.0,
-                    beregnetAntallTimerPrUke = null
-                )
-            ),
+        val statligArbeidsforholdMed25Stillingsprosent2 = lagArbeidsforhold(
+            arbeidsavtaleList = listOf(createArbeidsavtale(periode2, 25.0)),
             juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20))
         )
 
-        val arbeidsforhold = listOf(statligArbeidsforholdMed50Stillingsprosent1, statligArbeidsforholdMed50Stillingsprosent2)
+        val arbeidsforhold = listOf(statligArbeidsforholdMed25Stillingsprosent1, statligArbeidsforholdMed25Stillingsprosent2)
         val sjekkStatligArbeidsforhold = erArbeidsforholdetOffentligSektor(arbeidsforhold, kontrollperiodeFra2019Til2020, Ytelse.SYKEPENGER)
         assertTrue(sjekkStatligArbeidsforhold)
     }
 
     @Test
     fun `To arbeidsforhold med ett med 25% stilling som går gjennom hele perioden får true`() {
-        val periode1 = Periode(
-            fom = LocalDate.of(2019, 1, 1),
-            tom = LocalDate.of(2020, 1, 1)
-        )
-
         val periode2 = Periode(
             fom = LocalDate.of(2019, 1, 1),
             tom = LocalDate.of(2019, 6, 1)
         )
 
-        val statligArbeidsforholdMed50Stillingsprosent1 = lagArbeidsforhold(
-            arbeidsavtaleList = listOf(
-                Arbeidsavtale(
-                    periode = periode1,
-                    gyldighetsperiode = periode1,
-                    yrkeskode = "Yrkeskode",
-                    skipsregister = null,
-                    stillingsprosent = 25.0,
-                    beregnetAntallTimerPrUke = null
-                )
-            ),
+        val statligArbeidsforholdMed25Stillingsprosent1 = lagArbeidsforhold(
+            arbeidsavtaleList = listOf(createArbeidsavtale(kontrollperiodeFra2019Til2020.periode, 25.0)),
             juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20))
         )
 
         val statligArbeidsforholdMed10Stillingsprosent2 = lagArbeidsforhold(
-            arbeidsavtaleList = listOf(
-                Arbeidsavtale(
-                    periode = periode2,
-                    gyldighetsperiode = periode2,
-                    yrkeskode = "Yrkeskode",
-                    skipsregister = null,
-                    stillingsprosent = 10.0,
-                    beregnetAntallTimerPrUke = null
-                )
-            ),
+            arbeidsavtaleList = listOf(createArbeidsavtale(periode2, 10.0)),
             juridiskeEnheter = listOf(JuridiskEnhet("1", "AS", 20))
         )
 
-        val arbeidsforhold = listOf(statligArbeidsforholdMed50Stillingsprosent1, statligArbeidsforholdMed10Stillingsprosent2)
+        val arbeidsforhold = listOf(statligArbeidsforholdMed25Stillingsprosent1, statligArbeidsforholdMed10Stillingsprosent2)
         val sjekkStatligArbeidsforhold = erArbeidsforholdetOffentligSektor(arbeidsforhold, kontrollperiodeFra2019Til2020, Ytelse.SYKEPENGER)
         assertTrue(sjekkStatligArbeidsforhold)
     }
@@ -403,6 +355,10 @@ class ArbeidsforholdFunksjonerTest {
         return arbeidsforhold
     }
 
+    private fun createArbeidsavtale(periode: Periode, stillingsprosent: Double = 100.0): Arbeidsavtale {
+        return Arbeidsavtale(periode, periode, "11111", Skipsregister.UKJENT, stillingsprosent, 37.5)
+    }
+
     private val arbeidsforholdMedMindreEnn6Ansatte = lagArbeidsforhold(2)
     private val arbeidsforholdMedFlerEnn6Ansatte = lagArbeidsforhold(10)
     private val arbeidsforholdMedAkkurat6Ansatte = lagArbeidsforhold(6)
@@ -414,7 +370,7 @@ class ArbeidsforholdFunksjonerTest {
     fun lagArbeidsforhold(
         antall: Int = 10,
         periode: Periode = Periode(LocalDate.of(2019, 1, 1), LocalDate.of(2019, 12, 31)),
-        arbeidsavtaleList: List<Arbeidsavtale> = listOf(lagArbeidsavtale(Periode(null, null), "Yrkeskode", null, 100.0, null)),
+        arbeidsavtaleList: List<Arbeidsavtale> = listOf(createArbeidsavtale(Periode(null, null), 100.0)),
         juridiskeEnheter: List<JuridiskEnhet?>? = listOf(JuridiskEnhet("1", "AS", 20))
     ): Arbeidsforhold {
         return Arbeidsforhold(
@@ -430,17 +386,6 @@ class ArbeidsforholdFunksjonerTest {
             ),
             arbeidsforholdstype = Arbeidsforholdstype.NORMALT,
             arbeidsavtaler = arbeidsavtaleList
-        )
-    }
-
-    private fun lagArbeidsavtale(periode: Periode, yrkesKode: String, skipsregister: Skipsregister?, stillingsprosent: Double?, beregnetAntallTimerPrUke: Double?): Arbeidsavtale {
-        return Arbeidsavtale(
-            periode = periode,
-            gyldighetsperiode = periode,
-            yrkeskode = yrkesKode,
-            skipsregister = skipsregister,
-            stillingsprosent = stillingsprosent,
-            beregnetAntallTimerPrUke = beregnetAntallTimerPrUke
         )
     }
 }
