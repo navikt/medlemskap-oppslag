@@ -41,17 +41,8 @@ class RelasjonFunksjonerTest {
         sivilstand: List<Sivilstand> = listOf(lagSivilstand()),
         familierelasjoner: List<Familierelasjon> = listOf(lagFamilierelasjon()),
         doedsfall: List<LocalDate?> = emptyList()
-
     ): Personhistorikk =
-        Personhistorikk(
-            statsborgerskap = statsborgerskap,
-            bostedsadresser = bostedsadresser,
-            kontaktadresser = kontaktadresser,
-            oppholdsadresser = oppholdsadresser,
-            sivilstand = sivilstand,
-            familierelasjoner = familierelasjoner,
-            doedsfall = doedsfall
-        )
+        Personhistorikk(statsborgerskap, bostedsadresser, kontaktadresser, oppholdsadresser, sivilstand, familierelasjoner, doedsfall)
 
     private fun lagStatsborgerskap(landkode: String = "NOR", fom: LocalDate? = null, tom: LocalDate? = null): Statsborgerskap =
         Statsborgerskap(landkode = landkode, fom = fom, tom = tom)
@@ -65,7 +56,7 @@ class RelasjonFunksjonerTest {
         gyldigTilOgMed: LocalDate? = null,
         relatertVedSivilstand: String? = null
     ): Sivilstand =
-        Sivilstand(type, gyldigFraOgMed, gyldigTilOgMed, relatertVedSivilstand, null)
+        Sivilstand(type, gyldigFraOgMed, gyldigTilOgMed, relatertVedSivilstand)
 
     private fun lagFamilierelasjon(
         relatertPersonIdent: String = "12345678910",
@@ -73,10 +64,5 @@ class RelasjonFunksjonerTest {
         minRolleForPerson: Familierelasjonsrolle? = null,
         folkeregistermetadata: Folkeregistermetadata? = null
     ): Familierelasjon =
-        Familierelasjon(
-            relatertPersonsIdent = relatertPersonIdent,
-            relatertPersonsRolle = relatertPersonsRolle,
-            minRolleForPerson = minRolleForPerson,
-            folkeregistermetadata = folkeregistermetadata
-        )
+        Familierelasjon(relatertPersonIdent, relatertPersonsRolle, minRolleForPerson, folkeregistermetadata)
 }
