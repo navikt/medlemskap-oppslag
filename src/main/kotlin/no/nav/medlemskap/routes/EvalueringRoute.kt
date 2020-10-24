@@ -102,15 +102,14 @@ private fun lagResponse(datagrunnlag: Datagrunnlag, resultat: Resultat, versjonT
         versjonRegler = "v1",
         versjonTjeneste = versjonTjeneste,
         datagrunnlag = datagrunnlag,
-        resultat = resultat,
-        årsaker = resultat.finnÅrsaker()
+        resultat = resultat
     )
 }
 
 private fun loggResponse(fnr: String, response: Response) {
-    val årsakerSomRegelIdStr = response.årsaker.map { it.regelId.toString() + " " }
     val resultat = response.resultat
-    val årsaker = response.årsaker
+    val årsaker = resultat.årsaker
+    val årsakerSomRegelIdStr = årsaker.map { it.regelId.toString() + " " }
 
     secureLogger.info(append("resultat", resultat), "{} konklusjon gitt for bruker {}", resultat.svar.name, fnr)
     if (årsaker.isNotEmpty()) {
@@ -142,10 +141,3 @@ fun finnYtelse(ytelseFraRequest: Ytelse?, clientId: String?) =
 
 private fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =
     Hovedregler(datagrunnlag).kjørHovedregler()
-
-private fun Resultat.sisteRegel() =
-    if (this.delresultat.isEmpty()) {
-        this
-    } else {
-        this.delresultat.last()
-    }

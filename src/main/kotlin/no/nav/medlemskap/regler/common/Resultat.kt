@@ -13,6 +13,8 @@ data class Resultat(
     var dekning: String = "",
     val delresultat: List<Resultat> = listOf()
 ) {
+    val årsaker = finnÅrsaker()
+
     fun erMedlemskonklusjon(): Boolean {
         return regelId == RegelId.REGEL_MEDLEM_KONKLUSJON
     }
@@ -59,7 +61,7 @@ data class Resultat(
         }
 
         fun finnÅrsak(resultat: Resultat): Resultat? {
-            if (resultat.svar == Svar.JA && resultat.erMedlemskonklusjon()) {
+            if (resultat.svar == Svar.JA && resultat.erKonklusjon()) {
                 return null
             }
 
@@ -75,7 +77,17 @@ data class Resultat(
                 return emptyList()
             }
 
-            return resultat.delresultat.filter { !it.erKonklusjon() || it.erKonklusjon() && it.svar != Svar.JA }.mapNotNull { finnÅrsak(it) }
+            if (resultat.erMedlemskonklusjon()) {
+                return resultat.delresultat.filter { !it.erKonklusjon() || it.erKonklusjon() && it.svar != Svar.JA }.mapNotNull { finnÅrsak(it) }
+            }
+
+            if (resultat.erRegelflytKonklusjon() && resultat.delresultat.isNotEmpty()) {
+                val sisteResultat = resultat.delresultat.last()
+
+                return listOf(finnÅrsak(sisteResultat)).filterNotNull()
+            }
+
+            return emptyList()
         }
     }
 }

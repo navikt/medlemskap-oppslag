@@ -471,7 +471,7 @@ private val forventetResponse =
         "ytelse" : "SYKEPENGER",
         "overstyrteRegler" : { }
       },
-       "resultat" : {
+        "resultat" : {
         "regelId" : "REGEL_MEDLEM_KONKLUSJON",
         "avklaring" : "Er bruker medlem?",
         "begrunnelse" : "Kan ikke konkludere med medlemskap",
@@ -499,7 +499,8 @@ private val forventetResponse =
               "svar" : "JA",
               "harDekning" : null,
               "dekning" : "",
-              "delresultat" : [ ]
+              "delresultat" : [ ],
+              "årsaker" : [ ]
             }, {
               "regelId" : "REGEL_C",
               "avklaring" : "Finnes det dokumenter i JOARK på medlemskapsområdet?",
@@ -507,7 +508,8 @@ private val forventetResponse =
               "svar" : "NEI",
               "harDekning" : null,
               "dekning" : "",
-              "delresultat" : [ ]
+              "delresultat" : [ ],
+              "årsaker" : [ ]
             }, {
               "regelId" : "REGEL_B",
               "avklaring" : "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?",
@@ -515,8 +517,10 @@ private val forventetResponse =
               "svar" : "NEI",
               "harDekning" : null,
               "dekning" : "",
-              "delresultat" : [ ]
-            } ]
+              "delresultat" : [ ],
+              "årsaker" : [ ]
+            } ],
+            "årsaker" : [ ]
           }, {
             "regelId" : "REGEL_1_1",
             "avklaring" : "Er alle perioder siste 12 mnd avklart (endelig/gyldig)?",
@@ -524,7 +528,8 @@ private val forventetResponse =
             "svar" : "JA",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
           }, {
             "regelId" : "REGEL_1_2",
             "avklaring" : "Er det periode både med og uten medlemskap innenfor 12 mnd?",
@@ -532,7 +537,8 @@ private val forventetResponse =
             "svar" : "NEI",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
           }, {
             "regelId" : "REGEL_1_3",
             "avklaring" : "Er det en periode med medlemskap?",
@@ -540,7 +546,8 @@ private val forventetResponse =
             "svar" : "JA",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
           }, {
             "regelId" : "REGEL_1_4",
             "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
@@ -548,7 +555,18 @@ private val forventetResponse =
             "svar" : "NEI",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
+          } ],
+          "årsaker" : [ {
+            "regelId" : "REGEL_1_4",
+            "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
+            "begrunnelse" : "",
+            "svar" : "NEI",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ],
+            "årsaker" : [ ]
           } ]
         }, {
           "regelId" : "REGEL_ARBEIDSFORHOLD",
@@ -564,7 +582,8 @@ private val forventetResponse =
             "svar" : "JA",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
           }, {
             "regelId" : "REGEL_4",
             "avklaring" : "Er foretaket registrert i foretaksregisteret?",
@@ -572,7 +591,8 @@ private val forventetResponse =
             "svar" : "JA",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
           }, {
             "regelId" : "REGEL_14",
             "avklaring" : "Er bruker ansatt i staten eller i en kommune?",
@@ -580,15 +600,17 @@ private val forventetResponse =
             "svar" : "NEI",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
-          },{
+            "delresultat" : [ ],
+            "årsaker" : [ ]
+          }, {
             "regelId" : "REGEL_5",
             "avklaring" : "Har arbeidsgiver sin hovedaktivitet i Norge?",
             "begrunnelse" : "",
             "svar" : "JA",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
           }, {
             "regelId" : "REGEL_6",
             "avklaring" : "Er foretaket aktivt?",
@@ -596,7 +618,18 @@ private val forventetResponse =
             "svar" : "NEI",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
+          } ],
+          "årsaker" : [ {
+            "regelId" : "REGEL_6",
+            "avklaring" : "Er foretaket aktivt?",
+            "begrunnelse" : "Arbeidstaker har hatt arbeidsforhold til arbeidsgiver som har konkurs-status satt",
+            "svar" : "NEI",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ],
+            "årsaker" : [ ]
           } ]
         }, {
           "regelId" : "REGEL_BOSATT",
@@ -612,8 +645,10 @@ private val forventetResponse =
             "svar" : "JA",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
-          } ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
+          } ],
+          "årsaker" : [ ]
         }, {
           "regelId" : "REGEL_STATSBORGERSKAP",
           "avklaring" : "Er statsborgerskap avklart?",
@@ -628,7 +663,8 @@ private val forventetResponse =
             "svar" : "JA",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
           }, {
             "regelId" : "REGEL_11",
             "avklaring" : "Er bruker norsk statsborger?",
@@ -636,11 +672,13 @@ private val forventetResponse =
             "svar" : "JA",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
-          } ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
+          } ],
+          "årsaker" : [ ]
         }, {
           "regelId" : "REGEL_NORSK",
-          "avklaring" : "Er regler for norsk borgere avklart?",
+          "avklaring" : "Er regler for norske borgere avklart?",
           "begrunnelse" : "Regelflyt konkluderer med JA",
           "svar" : "JA",
           "harDekning" : null,
@@ -652,26 +690,30 @@ private val forventetResponse =
             "svar" : "JA",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
-          } ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
+          } ],
+          "årsaker" : [ ]
+        } ],
+        "årsaker" : [ {
+          "regelId" : "REGEL_1_4",
+          "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
+          "begrunnelse" : "",
+          "svar" : "NEI",
+          "harDekning" : null,
+          "dekning" : "",
+          "delresultat" : [ ],
+          "årsaker" : [ ]
+        }, {
+          "regelId" : "REGEL_6",
+          "avklaring" : "Er foretaket aktivt?",
+          "begrunnelse" : "Arbeidstaker har hatt arbeidsforhold til arbeidsgiver som har konkurs-status satt",
+          "svar" : "NEI",
+          "harDekning" : null,
+          "dekning" : "",
+          "delresultat" : [ ],
+          "årsaker" : [ ]
         } ]
-      },
-      "årsaker" : [ {
-        "regelId" : "REGEL_1_4",
-        "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
-        "begrunnelse" : "",
-        "svar" : "NEI",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ]
-      }, {
-        "regelId" : "REGEL_6",
-        "avklaring" : "Er foretaket aktivt?",
-        "begrunnelse" : "Arbeidstaker har hatt arbeidsforhold til arbeidsgiver som har konkurs-status satt",
-        "svar" : "NEI",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ]
-      } ]
+      }
     }
     """.trimIndent()

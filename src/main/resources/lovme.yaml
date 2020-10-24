@@ -469,10 +469,6 @@ components:
           $ref: "#/components/schemas/Datagrunnlag"
         resultat:
           $ref: "#/components/schemas/Resultat"
-        årsaker:
-          type: array
-          items:
-            $ref: "#/components/schemas/Resultat"
         versjonRegler:
           type: string
         tidspunkt:
@@ -510,6 +506,10 @@ components:
           description: Angir hva slags dekning brukeren har ifølge Folketrygdloven
           example: FTL_2-6
         delresultat:
+          type: array
+          items:
+            $ref: "#/components/schemas/Resultat"
+        årsaker:
           type: array
           items:
             $ref: "#/components/schemas/Resultat"
