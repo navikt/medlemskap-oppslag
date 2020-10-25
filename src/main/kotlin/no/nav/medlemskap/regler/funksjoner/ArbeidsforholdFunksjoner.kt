@@ -3,6 +3,7 @@ package no.nav.medlemskap.regler.funksjoner
 import no.nav.medlemskap.common.*
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
+import no.nav.medlemskap.regler.common.Funksjoner.isNotNullOrEmpty
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -36,7 +37,7 @@ object ArbeidsforholdFunksjoner {
 
     infix fun List<Arbeidsforhold>.antallAnsatteHosArbeidsgiversJuridiskeEnheter(kontrollPeriode: Kontrollperiode): List<Int?> =
         arbeidsforholdForKontrollPeriodeMedStillingsprosentOver0(kontrollPeriode).filter {
-            !it.arbeidsgiver.juridiskeEnheter.isNullOrEmpty()
+            it.arbeidsgiver.juridiskeEnheter.isNotNullOrEmpty()
         }.flatMap { p -> p.arbeidsgiver.juridiskeEnheter!!.map { r -> r?.antallAnsatte ?: 0 } }
 
     infix fun List<Arbeidsforhold>.arbeidsforholdForYrkestype(kontrollPeriode: Kontrollperiode): List<String> =

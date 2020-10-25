@@ -26,9 +26,10 @@ class HarForetaketMerEnn5AnsatteRegel(
 
         val arbeidsforholdMedMinstEnArbeidsavtaleOver0Stillingsprosent = arbeidsforhold.arbeidsforholdForKontrollPeriodeMedStillingsprosentOver0(kontrollPeriodeForArbeidsforhold)
 
-        if (arbeidsforholdMedMinstEnArbeidsavtaleOver0Stillingsprosent.antallAnsatteHosArbeidsgivere(kontrollPeriodeForArbeidsforhold) finnesMindreEnn 6 &&
-            arbeidsforholdMedMinstEnArbeidsavtaleOver0Stillingsprosent.antallAnsatteHosArbeidsgiversJuridiskeEnheter(kontrollPeriodeForArbeidsforhold) finnesMindreEnn 6
-        ) {
+        val finnesMindreEnn6AnsatteIArbeidsgivernesForetak = arbeidsforholdMedMinstEnArbeidsavtaleOver0Stillingsprosent.antallAnsatteHosArbeidsgivere(kontrollPeriodeForArbeidsforhold) finnesMindreEnn 6
+        val finnesMindreEnn6AnsatteIArbeidsgivernesJuridiskeEnheter = arbeidsforholdMedMinstEnArbeidsavtaleOver0Stillingsprosent.antallAnsatteHosArbeidsgiversJuridiskeEnheter(kontrollPeriodeForArbeidsforhold) finnesMindreEnn 6
+
+        if (finnesMindreEnn6AnsatteIArbeidsgivernesForetak && finnesMindreEnn6AnsatteIArbeidsgivernesJuridiskeEnheter) {
             registrerDataForGrafana()
             return nei("Ikke alle arbeidsgivere har 6 ansatte eller flere")
         }
