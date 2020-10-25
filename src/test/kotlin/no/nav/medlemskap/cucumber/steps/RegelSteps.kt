@@ -189,7 +189,7 @@ class RegelSteps : No {
         Så("skal årsaken være {string}") { forventetÅrsak: String ->
             val årsaker = resultat!!.finnÅrsaker()
 
-            assertEquals(forventetÅrsak, resultat!!.finnÅrsak())
+            assertEquals(forventetÅrsak, resultat!!.årsaksTekst())
         }
 
         Så("skal svaret være Ja på medlemskap og {string} på harDekning") { forventetVerdi: String ->

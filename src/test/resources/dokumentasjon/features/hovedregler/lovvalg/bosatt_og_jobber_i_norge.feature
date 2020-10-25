@@ -42,9 +42,9 @@ Egenskap: Reglene 9 til 12
     Og skal regel "12" gi svaret "<Regel 12>"
 
     Eksempler:
-      | Stillingsprosent | Medlemskap | Begrunnelse                        | Årsak                                                     | Regel 12 |
-      | 100              | Ja         | Bruker er medlem                   |                                                           | Ja       |
-      | 20               | UAVKLART   | Kan ikke konkludere med medlemskap | Bruker har ikke jobbet 25% eller mer i løpet av perioden. | Nei      |
+      | Stillingsprosent | Medlemskap | Begrunnelse                        | Årsak                                                                | Regel 12 |
+      | 100              | Ja         | Bruker er medlem                   |                                                                      | Ja       |
+      | 20               | UAVKLART   | Kan ikke konkludere med medlemskap | Regel 12:  Har bruker vært i minst 25% stilling de siste 12 mnd? NEI | Nei      |
 
   Scenariomal: Regel 9: Bruker som svarer ja på spørsmålet "Har hatt arbeid utenfor Norge" skal få "Nei"
     Gitt følgende arbeidsforhold fra AAReg

@@ -68,9 +68,9 @@ Egenskap: Regelflyt for reglene 11.2.x for bruker som ikke har ektefelle i PDL
     Og skal regel "11.2.3" gi svaret "<Regel 11.2.3>"
 
     Eksempler:
-      | Stillingsprosent | Regel 11.2.3 | Medlemskap | Årsak                                                    |
-      | 79               | Nei          | UAVKLART   | Bruker har ikke jobbet 80% eller mer i løpet av periode. |
-      | 81               | Ja           | Ja         |                                                          |
+      | Stillingsprosent | Regel 11.2.3 | Medlemskap | Årsak                                                                     |
+      | 79               | Nei          | UAVKLART   | Regel 11.2.3:  Har bruker vært i minst 80 % stilling de siste 12 mnd? NEI |
+      | 81               | Ja           | Ja         |                                                                           |
 
   Scenario: Bruker med ett barn som bor i Norge og ett barn som ikke bor i Norge skal få "UAVKLART"
     Gitt følgende familerelasjoner i personhistorikk fra PDL
