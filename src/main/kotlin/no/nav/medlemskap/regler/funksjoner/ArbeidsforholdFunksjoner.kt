@@ -81,7 +81,6 @@ object ArbeidsforholdFunksjoner {
      */
     fun List<Arbeidsforhold>.erSammenhengendeIKontrollPeriode(kontrollPeriode: Kontrollperiode, ytelse: Ytelse): Boolean {
 
-        var forrigeTilDato: LocalDate? = null
         val arbeidsforholdForNorskArbeidsgiver = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
 
         if (arbeidsforholdForNorskArbeidsgiver.size > 10) {
@@ -105,6 +104,7 @@ object ArbeidsforholdFunksjoner {
             return false
         }
 
+        var forrigeTilDato: LocalDate? = null
         val sortertArbeidsforholdEtterPeriode = arbeidsforholdForNorskArbeidsgiver.sorted()
         for (arbeidsforhold in sortertArbeidsforholdEtterPeriode) { // Sjekker at alle påfølgende arbeidsforhold er sammenhengende
             if (forrigeTilDato != null && !erDatoerSammenhengende(forrigeTilDato, arbeidsforhold.periode.fom)) {
@@ -114,6 +114,7 @@ object ArbeidsforholdFunksjoner {
                 return false
             }
             forrigeTilDato = arbeidsforhold.periode.tom
+            if (forrigeTilDato == null || forrigeTilDato.isAfter(kontrollPeriode.tom)) return true
         }
 
         if (forrigeTilDato != null) {
