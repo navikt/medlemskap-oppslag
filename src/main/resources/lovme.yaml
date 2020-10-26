@@ -492,11 +492,7 @@ components:
           type: string
           description: Begrunnelse for avklaringen
         svar:
-          type: string
-          enum:
-            - JA
-            - NEI
-            - UAVKLART
+          $ref: "#/components/schemas/Svar"
         harDekning:
           type: string
           nullable: true
@@ -509,6 +505,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Resultat"
+        årsaker:
+          type: array
+          items:
+            $ref: "#/components/schemas/Aarsak"
     Sivilstand:
       properties:
         type:
@@ -530,6 +530,12 @@ components:
             $ref: "#/components/schemas/ValgfriDato"
           tom:
             $ref: "#/components/schemas/ValgfriDato"
+    Svar:
+      type: string
+      enum:
+        - JA
+        - NEI
+        - UAVKLART
     Utenlandsopphold:
       properties:
         landkode:
@@ -561,3 +567,13 @@ components:
     Ytelse:
       type: string
       example: SYKEPENGER, DAGPENGER, ENSLIG_FORSORGER
+    Aarsak:
+      properties:
+        regelId:
+          type: string
+        avklaring:
+          type: string
+        beskrivelse:
+          type: string
+        svar:
+          $ref: "#/components/schemas/Svar"
