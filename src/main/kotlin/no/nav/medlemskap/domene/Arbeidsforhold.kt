@@ -17,6 +17,10 @@ data class Arbeidsforhold(
      */
     override fun compareTo(other: Arbeidsforhold): Int {
 
+        if (this.periode.fom != null && other.periode.fom != null && this.periode.fom != other.periode.fom) {
+            return this.periode.fom.compareTo(other.periode.fom)
+        }
+
         if (this.periode.tom == null && other.periode.tom == null) {
             return this.periode.fom?.compareTo(other.periode.fom)!! // En gyldig periode har alltid minst én dato
         }
