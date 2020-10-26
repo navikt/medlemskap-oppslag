@@ -6,6 +6,7 @@ import java.time.LocalDate
 
 data class Request(
     val fnr: String,
+    val dato: LocalDate?,
     val periode: InputPeriode,
     val brukerinput: Brukerinput,
     val ytelse: Ytelse?,

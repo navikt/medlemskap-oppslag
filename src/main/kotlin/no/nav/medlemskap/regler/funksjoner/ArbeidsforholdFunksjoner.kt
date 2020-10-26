@@ -243,5 +243,11 @@ object ArbeidsforholdFunksjoner {
                 it.arbeidsavtaler.any { p -> p.stillingsprosent == null || p.stillingsprosent > 0.0 }
         }
 
-    fun fraOgMedDatoForArbeidsforhold(periode: InputPeriode) = periode.fom.minusYears(1).minusDays(1)
+    fun fraOgMedDatoForArbeidsforhold(periode: InputPeriode, dato: LocalDate?): LocalDate {
+        if (dato != null) {
+            return dato.minusDays(1)
+        }
+
+        return periode.fom.minusYears(1).minusDays(1)
+    }
 }

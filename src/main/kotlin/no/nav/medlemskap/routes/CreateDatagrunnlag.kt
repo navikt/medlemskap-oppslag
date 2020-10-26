@@ -18,6 +18,7 @@ import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.fraOgMedDato
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarn
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilEktefelle
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.harEndretSisteÅret
+import java.time.LocalDate
 
 private val logger = KotlinLogging.logger { }
 private val secureLogger = KotlinLogging.logger("tjenestekall")
@@ -32,7 +33,7 @@ suspend fun defaultCreateDatagrunnlag(
     val dataOmEktefelle: DataOmEktefelle?
     val dataOmBrukersBarn: List<DataOmBarn>?
 
-    val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(request.fnr, callId, fraOgMedDatoForArbeidsforhold(request.periode), request.periode.tom) }
+    val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(request.fnr, callId, fraOgMedDatoForArbeidsforhold(request.periode, request.dato), request.periode.tom) }
     val aktorIder = services.pdlService.hentAlleAktorIder(request.fnr, callId)
     val personHistorikkFraPdl = hentPersonhistorikkFraPdl(services, request.fnr, callId)
     val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(request.fnr, callId) }
@@ -43,7 +44,7 @@ suspend fun defaultCreateDatagrunnlag(
     dataOmBrukersBarn = if (!fnrTilBarn.isNullOrEmpty()) hentDataOmBarn(fnrTilBarn, services, callId) else null
 
     val fnrTilEktefelle = hentFnrTilEktefelle(personHistorikkFraPdl)
-    dataOmEktefelle = if (!fnrTilEktefelle.isNullOrEmpty()) hentDataOmEktefelle(fnrTilEktefelle, services, callId, request.periode) else null
+    dataOmEktefelle = if (!fnrTilEktefelle.isNullOrEmpty()) hentDataOmEktefelle(fnrTilEktefelle, services, callId, request.periode, request.dato) else null
 
     val medlemskap = medlemskapsunntakRequest.await()
     val arbeidsforhold = arbeidsforholdRequest.await()
@@ -83,14 +84,14 @@ suspend fun hentDataOmBarn(fnrBarn: List<String>, services: Services, callId: St
     return dataOmBarn
 }
 
-private suspend fun CoroutineScope.hentDataOmEktefelle(fnrTilEktefelle: String?, services: Services, callId: String, periode: InputPeriode): DataOmEktefelle? {
+private suspend fun CoroutineScope.hentDataOmEktefelle(fnrTilEktefelle: String?, services: Services, callId: String, periode: InputPeriode, dato: LocalDate?): DataOmEktefelle? {
     if (fnrTilEktefelle != null) {
         val personhistorikkEktefelle = hentPersonHistorikkForEktefelle(fnrTilEktefelle, services, callId)
         if (personhistorikkEktefelle == null) {
             return null
         }
         val arbeidsforholdEktefelle = try {
-            services.aaRegService.hentArbeidsforhold(fnrTilEktefelle, callId, fraOgMedDatoForArbeidsforhold(periode), periode.tom)
+            services.aaRegService.hentArbeidsforhold(fnrTilEktefelle, callId, fraOgMedDatoForArbeidsforhold(periode, dato), periode.tom)
         } catch (t: Exception) {
             emptyList<Arbeidsforhold>()
         }
