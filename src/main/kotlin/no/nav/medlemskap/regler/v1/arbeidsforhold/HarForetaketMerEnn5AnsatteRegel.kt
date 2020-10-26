@@ -7,6 +7,8 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.ja
 import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.antallAnsatteHosArbeidsgivere
+import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.antallAnsatteHosArbeidsgiversJuridiskeEnheter
+import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.arbeidsforholdForKontrollPeriodeMedStillingsprosentOver0
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.filtrerUtArbeidsgivereMedFærreEnn6Ansatte
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.registrerAntallAnsatte
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.registrereArbeidsgivere
@@ -21,7 +23,13 @@ class HarForetaketMerEnn5AnsatteRegel(
 ) : ArbeidsforholdRegel(regelId, ytelse, periode) {
 
     override fun operasjon(): Resultat {
-        if (arbeidsforhold.antallAnsatteHosArbeidsgivere(kontrollPeriodeForArbeidsforhold) finnesMindreEnn 6) {
+
+        val arbeidsforholdMedMinstEnArbeidsavtaleOver0Stillingsprosent = arbeidsforhold.arbeidsforholdForKontrollPeriodeMedStillingsprosentOver0(kontrollPeriodeForArbeidsforhold)
+
+        val finnesMindreEnn6AnsatteIArbeidsgivernesForetak = arbeidsforholdMedMinstEnArbeidsavtaleOver0Stillingsprosent.antallAnsatteHosArbeidsgivere(kontrollPeriodeForArbeidsforhold) finnesMindreEnn 6
+        val finnesMindreEnn6AnsatteIArbeidsgivernesJuridiskeEnheter = arbeidsforholdMedMinstEnArbeidsavtaleOver0Stillingsprosent.antallAnsatteHosArbeidsgiversJuridiskeEnheter(kontrollPeriodeForArbeidsforhold) finnesMindreEnn 6
+
+        if (finnesMindreEnn6AnsatteIArbeidsgivernesForetak && finnesMindreEnn6AnsatteIArbeidsgivernesJuridiskeEnheter) {
             registrerDataForGrafana()
             return nei("Ikke alle arbeidsgivere har 6 ansatte eller flere")
         }

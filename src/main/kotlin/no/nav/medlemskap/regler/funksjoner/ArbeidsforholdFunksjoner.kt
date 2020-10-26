@@ -3,6 +3,7 @@ package no.nav.medlemskap.regler.funksjoner
 import no.nav.medlemskap.common.*
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
+import no.nav.medlemskap.regler.common.Funksjoner.isNotNullOrEmpty
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -33,6 +34,11 @@ object ArbeidsforholdFunksjoner {
 
     infix fun List<Arbeidsforhold>.antallAnsatteHosArbeidsgivere(kontrollPeriode: Kontrollperiode): List<Int> =
         ansatteHosArbeidsgivere(kontrollPeriode).map { it.antall ?: 0 }
+
+    infix fun List<Arbeidsforhold>.antallAnsatteHosArbeidsgiversJuridiskeEnheter(kontrollPeriode: Kontrollperiode): List<Int?> =
+        arbeidsforholdForKontrollPeriodeMedStillingsprosentOver0(kontrollPeriode).filter {
+            it.arbeidsgiver.juridiskeEnheter.isNotNullOrEmpty()
+        }.flatMap { p -> p.arbeidsgiver.juridiskeEnheter!!.map { r -> r?.antallAnsatte ?: 0 } }
 
     infix fun List<Arbeidsforhold>.arbeidsforholdForYrkestype(kontrollPeriode: Kontrollperiode): List<String> =
         this.filter {
@@ -231,7 +237,7 @@ object ArbeidsforholdFunksjoner {
             it.periode.overlapper(kontrollPeriode.periode)
         }
 
-    private fun List<Arbeidsforhold>.arbeidsforholdForKontrollPeriodeMedStillingsprosentOver0(kontrollPeriode: Kontrollperiode) =
+    fun List<Arbeidsforhold>.arbeidsforholdForKontrollPeriodeMedStillingsprosentOver0(kontrollPeriode: Kontrollperiode) =
         this.filter {
             it.periode.overlapper(kontrollPeriode.periode) &&
                 it.arbeidsavtaler.any { p -> p.stillingsprosent == null || p.stillingsprosent > 0.0 }
