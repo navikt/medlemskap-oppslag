@@ -34,20 +34,10 @@ data class Resultat(
     fun årsaksTekst(): String {
         val årsak = finnÅrsak(this)
 
-        if (årsak == null) {
-            return ""
-        }
-
-        val regelIdStr = if (årsak.regelId != null) {
-            "Regel " + årsak.regelId.identifikator + ": "
-        } else {
-            ""
-        }
-
-        return regelIdStr + " " + årsak.avklaring + " " + årsak.svar
+        return årsak?.beskrivelse ?: ""
     }
 
-    fun finnÅrsaker(): List<Resultat> {
+    fun finnÅrsaker(): List<Årsak> {
         return finnÅrsaker(this)
     }
 
@@ -72,7 +62,7 @@ data class Resultat(
             return resultat.delresultat.find { it.regelId == regelId }
         }
 
-        fun finnÅrsak(resultat: Resultat): Resultat? {
+        fun finnÅrsak(resultat: Resultat): Årsak? {
             if (resultat.svar == Svar.JA && resultat.erKonklusjon()) {
                 return null
             }
@@ -81,16 +71,18 @@ data class Resultat(
                 return finnÅrsak(resultat.delresultat.last())
             }
 
-            return resultat
+            return Årsak.fraResultat(resultat)
         }
 
-        fun finnÅrsaker(resultat: Resultat): List<Resultat> {
+        fun finnÅrsaker(resultat: Resultat): List<Årsak> {
             if (resultat.svar == Svar.JA && resultat.erKonklusjon()) {
                 return emptyList()
             }
 
             if (resultat.erMedlemskonklusjon()) {
-                return resultat.delresultat.filter { !it.erKonklusjon() || it.erKonklusjon() && it.svar != Svar.JA }.mapNotNull { finnÅrsak(it) }
+                return resultat
+                    .delresultat.filter { !it.erKonklusjon() || it.erKonklusjon() && it.svar != Svar.JA }
+                    .mapNotNull { finnÅrsak(it) }
             }
 
             if (resultat.erRegelflytKonklusjon() && resultat.delresultat.isNotEmpty()) {

@@ -238,7 +238,7 @@ private val ugyldigInput =
 private val forventetResponse =
     """
     {
-      "tidspunkt" : "2020-08-14T17:43:18.273719",
+      "tidspunkt" : "2020-10-26T08:41:43.272642",
       "versjonTjeneste" : "",
       "versjonRegler" : "v1",
       "datagrunnlag" : {
@@ -261,16 +261,15 @@ private val forventetResponse =
             "tom" : "2020-08-01"
           } ],
           "kontaktadresser" : [ {
-            "landkode" : "NOR", 
+            "landkode" : "NOR",
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
-          }],
-          "oppholdsadresser": [{
-             "landkode" : "NOR", 
+          } ],
+          "oppholdsadresser" : [ {
+            "landkode" : "NOR",
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
-          }],
-          "doedsfall": [], 
+          } ],
           "sivilstand" : [ {
             "type" : "GIFT",
             "gyldigFraOgMed" : "1975-10-10",
@@ -286,110 +285,9 @@ private val forventetResponse =
               "gyldighetstidspunkt" : "2020-06-20T10:00:00",
               "opphoerstidspunkt" : "2020-06-20T10:00:00"
             }
-          } ]
+          } ],
+          "doedsfall" : [ ]
         },
-        "dataOmEktefelle": {
-           "personhistorikkEktefelle": {
-                    "ident": "0101197512345",
-                    "barn": ["0101201012345"], 
-                    "bostedsadresser" : [ {
-                         "landkode" : "NOR",
-                         "fom" : "1975-10-10",
-                         "tom" : "2020-08-01"
-                    } ],
-                    "kontaktadresser" : [ {
-                          "landkode" : "NOR", 
-                          "fom" : "1975-10-10",
-                          "tom" : "2020-08-01"
-                    }],
-                   "oppholdsadresser": [{
-                        "landkode" : "NOR", 
-                        "fom" : "1975-10-10",
-                        "tom" : "2020-08-01"
-                    }]
-           }, 
-            "arbeidsforholdEktefelle" : [ { 
-                     "periode" : {
-                       "fom" : "1975-10-10",
-                       "tom" : "2020-08-01"
-                     },
-                     "utenlandsopphold" : [ {
-                       "landkode" : "SWE",
-                       "periode" : {
-                         "fom" : "1975-10-10",
-                         "tom" : "2020-08-01"
-                       },
-                       "rapporteringsperiode" : "2010-01"
-                     } ],
-                     "arbeidsgivertype" : "Organisasjon",
-                     "arbeidsgiver" : {
-                       "type" : "type",
-                       "organisasjonsnummer" : "organisasjonsnummer",
-                       "ansatte" : [ {
-                         "antall" : 10,
-                         "bruksperiode" : {
-                           "fom" : "1975-10-10",
-                           "tom" : "2020-08-01"
-                         },
-                         "gyldighetsperiode" : {
-                           "fom" : "1975-10-10",
-                           "tom" : "2020-08-01"
-                         }
-                       } ],
-                       "konkursStatus" : [ "Konkursstatus" ],
-                       "juridiskeEnheter": [ {
-                            "organisasjonsnummer" : "juridiskOrgnummer",
-                            "enhetstype" : "juridiskEnhetstype",
-                            "antallAnsatte" : 20
-                        } ]
-                     },
-                     "arbeidsforholdstype" : "NORMALT",
-                     "arbeidsavtaler" : [ {
-                       "periode" : {
-                         "fom" : "1975-10-10",
-                         "tom" : "2020-08-01"
-                       },
-                       "gyldighetsperiode" : {
-                         "fom" : "1975-10-10",
-                         "tom" : "2020-08-01"
-                       },
-                       "yrkeskode" : "yrkeskode",
-                       "skipsregister" : "NIS",
-                       "stillingsprosent" : 100.0,
-                       "beregnetAntallTimerPrUke" : 37.5
-                     } ]
-                   } ]
-        },
-        "dataOmBarn": [ {
-           "personhistorikkBarn": {
-                    "ident": "0101201012345",
-                    "bostedsadresser" : [ {
-                         "landkode" : "NOR",
-                         "fom" : "1975-10-10",
-                         "tom" : "2020-08-01"
-                    } ],
-                    "kontaktadresser" : [ {
-                          "landkode" : "NOR", 
-                          "fom" : "1975-10-10",
-                          "tom" : "2020-08-01"
-                    }],
-                   "oppholdsadresser": [{
-                        "landkode" : "NOR", 
-                        "fom" : "1975-10-10",
-                        "tom" : "2020-08-01"
-                    }],
-                    "familierelasjoner" : [ {
-                         "relatertPersonsIdent" : "15076500565",
-                         "relatertPersonsRolle" : "FAR",
-                         "minRolleForPerson" : "BARN",
-                         "folkeregistermetadata" : {
-                           "ajourholdstidspunkt" : "2020-06-20T10:00:00",
-                           "gyldighetstidspunkt" : "2020-06-20T10:00:00",
-                           "opphoerstidspunkt" : "2020-06-20T10:00:00"
-                         }
-                   }]
-            }
-         }],
         "medlemskap" : [ {
           "dekning" : "dekning",
           "fraOgMed" : "1975-10-10",
@@ -428,12 +326,11 @@ private val forventetResponse =
               }
             } ],
             "konkursStatus" : [ "Konkursstatus" ],
-            "juridiskeEnheter": [ {
-                "organisasjonsnummer" : "juridiskOrgnummer",
-                "enhetstype" : "juridiskEnhetstype",
-                "antallAnsatte" : 20
-             }
-            ]
+            "juridiskeEnheter" : [ {
+              "organisasjonsnummer" : "juridiskOrgnummer",
+              "enhetstype" : "juridiskEnhetstype",
+              "antallAnsatte" : 20
+            } ]
           },
           "arbeidsforholdstype" : "NORMALT",
           "arbeidsavtaler" : [ {
@@ -469,9 +366,111 @@ private val forventetResponse =
           } ]
         } ],
         "ytelse" : "SYKEPENGER",
+        "dataOmBarn" : [ {
+          "personhistorikkBarn" : {
+            "ident" : "0101201012345",
+            "bostedsadresser" : [ {
+              "landkode" : "NOR",
+              "fom" : "1975-10-10",
+              "tom" : "2020-08-01"
+            } ],
+            "kontaktadresser" : [ {
+              "landkode" : "NOR",
+              "fom" : "1975-10-10",
+              "tom" : "2020-08-01"
+            } ],
+            "oppholdsadresser" : [ {
+              "landkode" : "NOR",
+              "fom" : "1975-10-10",
+              "tom" : "2020-08-01"
+            } ],
+            "familierelasjoner" : [ {
+              "relatertPersonsIdent" : "15076500565",
+              "relatertPersonsRolle" : "FAR",
+              "minRolleForPerson" : "BARN",
+              "folkeregistermetadata" : {
+                "ajourholdstidspunkt" : "2020-06-20T10:00:00",
+                "gyldighetstidspunkt" : "2020-06-20T10:00:00",
+                "opphoerstidspunkt" : "2020-06-20T10:00:00"
+              }
+            } ]
+          }
+        } ],
+        "dataOmEktefelle" : {
+          "personhistorikkEktefelle" : {
+            "ident" : "0101197512345",
+            "barn" : [ "0101201012345" ],
+            "bostedsadresser" : [ {
+              "landkode" : "NOR",
+              "fom" : "1975-10-10",
+              "tom" : "2020-08-01"
+            } ],
+            "kontaktadresser" : [ {
+              "landkode" : "NOR",
+              "fom" : "1975-10-10",
+              "tom" : "2020-08-01"
+            } ],
+            "oppholdsadresser" : [ {
+              "landkode" : "NOR",
+              "fom" : "1975-10-10",
+              "tom" : "2020-08-01"
+            } ]
+          },
+          "arbeidsforholdEktefelle" : [ {
+            "periode" : {
+              "fom" : "1975-10-10",
+              "tom" : "2020-08-01"
+            },
+            "utenlandsopphold" : [ {
+              "landkode" : "SWE",
+              "periode" : {
+                "fom" : "1975-10-10",
+                "tom" : "2020-08-01"
+              },
+              "rapporteringsperiode" : "2010-01"
+            } ],
+            "arbeidsgivertype" : "Organisasjon",
+            "arbeidsgiver" : {
+              "type" : "type",
+              "organisasjonsnummer" : "organisasjonsnummer",
+              "ansatte" : [ {
+                "antall" : 10,
+                "bruksperiode" : {
+                  "fom" : "1975-10-10",
+                  "tom" : "2020-08-01"
+                },
+                "gyldighetsperiode" : {
+                  "fom" : "1975-10-10",
+                  "tom" : "2020-08-01"
+                }
+              } ],
+              "konkursStatus" : [ "Konkursstatus" ],
+              "juridiskeEnheter" : [ {
+                "organisasjonsnummer" : "juridiskOrgnummer",
+                "enhetstype" : "juridiskEnhetstype",
+                "antallAnsatte" : 20
+              } ]
+            },
+            "arbeidsforholdstype" : "NORMALT",
+            "arbeidsavtaler" : [ {
+              "periode" : {
+                "fom" : "1975-10-10",
+                "tom" : "2020-08-01"
+              },
+              "gyldighetsperiode" : {
+                "fom" : "1975-10-10",
+                "tom" : "2020-08-01"
+              },
+              "yrkeskode" : "yrkeskode",
+              "skipsregister" : "NIS",
+              "stillingsprosent" : 100.0,
+              "beregnetAntallTimerPrUke" : 37.5
+            } ]
+          } ]
+        },
         "overstyrteRegler" : { }
       },
-        "resultat" : {
+      "resultat" : {
         "regelId" : "REGEL_MEDLEM_KONKLUSJON",
         "avklaring" : "Er bruker medlem?",
         "begrunnelse" : "Kan ikke konkludere med medlemskap",
@@ -561,12 +560,8 @@ private val forventetResponse =
           "årsaker" : [ {
             "regelId" : "REGEL_1_4",
             "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
-            "begrunnelse" : "",
             "svar" : "NEI",
-            "harDekning" : null,
-            "dekning" : "",
-            "delresultat" : [ ],
-            "årsaker" : [ ]
+            "beskrivelse" : "Regel 1.4:  Er hele perioden med medlemskap innenfor 12-måneders perioden? NEI"
           } ]
         }, {
           "regelId" : "REGEL_ARBEIDSFORHOLD",
@@ -624,12 +619,8 @@ private val forventetResponse =
           "årsaker" : [ {
             "regelId" : "REGEL_6",
             "avklaring" : "Er foretaket aktivt?",
-            "begrunnelse" : "Arbeidstaker har hatt arbeidsforhold til arbeidsgiver som har konkurs-status satt",
             "svar" : "NEI",
-            "harDekning" : null,
-            "dekning" : "",
-            "delresultat" : [ ],
-            "årsaker" : [ ]
+            "beskrivelse" : "Regel 6:  Er foretaket aktivt? NEI"
           } ]
         }, {
           "regelId" : "REGEL_BOSATT",
@@ -698,21 +689,13 @@ private val forventetResponse =
         "årsaker" : [ {
           "regelId" : "REGEL_1_4",
           "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
-          "begrunnelse" : "",
           "svar" : "NEI",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ],
-          "årsaker" : [ ]
+          "beskrivelse" : "Regel 1.4:  Er hele perioden med medlemskap innenfor 12-måneders perioden? NEI"
         }, {
           "regelId" : "REGEL_6",
           "avklaring" : "Er foretaket aktivt?",
-          "begrunnelse" : "Arbeidstaker har hatt arbeidsforhold til arbeidsgiver som har konkurs-status satt",
           "svar" : "NEI",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ],
-          "årsaker" : [ ]
+          "beskrivelse" : "Regel 6:  Er foretaket aktivt? NEI"
         } ]
       }
     }
