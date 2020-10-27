@@ -40,7 +40,7 @@ class RelasjonFunksjonerTest {
         oppholdsadresser: List<Adresse> = listOf(lagAdresse()),
         sivilstand: List<Sivilstand> = listOf(lagSivilstand()),
         familierelasjoner: List<Familierelasjon> = listOf(lagFamilierelasjon()),
-        doedsfall: List<LocalDate?> = emptyList()
+        doedsfall: List<LocalDate> = emptyList()
     ): Personhistorikk =
         Personhistorikk(statsborgerskap, bostedsadresser, kontaktadresser, oppholdsadresser, sivilstand, familierelasjoner, doedsfall)
 

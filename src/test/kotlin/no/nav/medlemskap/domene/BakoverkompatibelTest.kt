@@ -478,23 +478,6 @@ private val forventetResponse =
         "harDekning" : null,
         "dekning" : "",
         "delresultat" : [ {
-            "regelId": "REGEL_DOED", 
-            "avklaring" : "Er bruker død?", 
-            "begrunnelse" : "Regelflyt konkluderer med JA", 
-            "svar": "JA", 
-            "harDekning": null, 
-            "dekning": "",
-            "delresultat": [{
-                "regelId": "REGEL_13", 
-                "avklaring": "Er bruker død?", 
-                "begrunnelse": "", 
-                "svar": "NEI", 
-                "harDekning": null, 
-                "dekning": "", 
-                "delresultat": []
-            }]
-          }, 
-          {
           "regelId" : "REGEL_MEDL",
           "avklaring" : "Har bruker avklarte opplysninger i MEDL?",
           "begrunnelse" : "",

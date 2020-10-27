@@ -6,7 +6,7 @@ Egenskap: Regel 13: Er bruker død?
   Scenariomal: Regel 13 - Bruker er død før input
 
     Gitt følgende opplysninger om dødsfall i personhistorikken:
-      | Doedsdato       |
+      | Dødsdato       |
       | <Dato>          |
 
     Og følgende bostedsadresser i personhistorikken

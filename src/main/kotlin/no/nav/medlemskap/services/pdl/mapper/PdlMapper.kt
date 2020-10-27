@@ -35,8 +35,8 @@ object PdlMapper {
         )
     }
 
-    private fun mapDoedsfall(doedsfall: List<HentPerson.Doedsfall>): List<LocalDate?> {
-        return doedsfall.map {
+    private fun mapDoedsfall(doedsfall: List<HentPerson.Doedsfall>): List<LocalDate> {
+        return doedsfall.mapNotNull {
             parseIsoDato(it.doedsdato)
         }
     }

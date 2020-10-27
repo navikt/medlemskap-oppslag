@@ -7,8 +7,9 @@ import no.nav.medlemskap.regler.v1.lovvalg.ErBrukerDoed
 
 class ReglerForDoedsfall(
     ytelse: Ytelse,
-    regelMap: Map<RegelId, Regel> = emptyMap()
-) : Regler(ytelse, regelMap) {
+    regelMap: Map<RegelId, Regel> = emptyMap(),
+    overstyrteRegler: Map<RegelId, Svar>
+) : Regler(ytelse, regelMap, overstyrteRegler) {
 
     private fun hentHovedflyt(): Regelflyt {
         val erBrukerDoedRegelFlyt = lagRegelflyt(
@@ -28,7 +29,8 @@ class ReglerForDoedsfall(
             with(datagrunnlag) {
                 return ReglerForDoedsfall(
                     ytelse = ytelse,
-                    regelMap = lagRegelMap(datagrunnlag)
+                    regelMap = lagRegelMap(datagrunnlag),
+                    overstyrteRegler = datagrunnlag.overstyrteRegler
                 )
             }
         }
