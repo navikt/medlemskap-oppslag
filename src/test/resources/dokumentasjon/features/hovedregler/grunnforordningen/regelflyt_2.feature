@@ -41,3 +41,5 @@ Egenskap: Regelflyt for regel 2
       | FRA  | Ja      | Ja         |
       | NOR  | Ja      | Ja         |
       | USA  | Nei     | UAVKLART   |
+
+

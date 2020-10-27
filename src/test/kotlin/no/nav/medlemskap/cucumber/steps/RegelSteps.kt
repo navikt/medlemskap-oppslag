@@ -2,6 +2,9 @@ package no.nav.medlemskap.cucumber.steps
 
 import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.shouldBe
+import io.ktor.features.*
 import no.nav.medlemskap.common.JsonMapper
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.Medlemskapsparametre
@@ -162,6 +165,20 @@ class RegelSteps : No {
             resultat = ReglerService.kjørRegler(datagrunnlag!!)
         }
 
+        Når<String, DataTable>("regel {string} kjøres med følgende parametre, skal feil være “Bruker er død, men i eller før inputperiode.”") { regelId: String?, dataTable: DataTable? ->
+            val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
+            datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
+
+            val regelFactory = RegelFactory(datagrunnlag!!)
+            val regel = regelFactory.create(regelId!!)
+
+            val exception = shouldThrow<BadRequestException> {
+                regel.utfør()
+            }
+
+            exception.message shouldBe "Bruker er død, men i eller før inputperiode."
+        }
+
         Når<String, DataTable>("regel {string} kjøres med følgende parametre") { regelId: String?, dataTable: DataTable? ->
             val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
@@ -182,6 +199,15 @@ class RegelSteps : No {
             val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
             assertEquals(Svar.JA, resultat!!.svar)
             assertEquals(forventetSvar, resultat!!.harDekning)
+        }
+
+        Så("skal regel {string} gi valideringsfeil med tekst {string}") { regelId: String?, forventetVerdi: String ->
+
+            val exception = shouldThrow<BadRequestException> {
+                domenespråkParser.parseSvar(forventetVerdi)
+            }
+
+            exception.message shouldBe "feil"
         }
 
         Så("skal svaret være {string} på medlemskap og {string} på harDekning") { forventetMedlemskap: String, forventetVerdi: String ->
