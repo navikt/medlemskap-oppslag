@@ -1,21 +1,22 @@
 package no.nav.medlemskap.routes
 
-import io.ktor.application.call
-import io.ktor.auth.authenticate
-import io.ktor.auth.authentication
-import io.ktor.auth.jwt.JWTPrincipal
-import io.ktor.features.BadRequestException
-import io.ktor.features.callId
-import io.ktor.request.receive
-import io.ktor.response.respond
-import io.ktor.routing.Routing
-import io.ktor.routing.post
+import io.ktor.application.*
+import io.ktor.auth.*
+import io.ktor.auth.jwt.*
+import io.ktor.features.*
+import io.ktor.request.*
+import io.ktor.response.*
+import io.ktor.routing.*
 import mu.KotlinLogging
+import net.logstash.logback.marker.Markers.append
 import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.apiCounter
 import no.nav.medlemskap.common.exceptions.KonsumentIkkeFunnet
 import no.nav.medlemskap.config.Configuration
-import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.Request
+import no.nav.medlemskap.domene.Response
+import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
 import java.time.LocalDate
@@ -29,7 +30,7 @@ private val secureLogger = KotlinLogging.logger("tjenestekall")
 fun Routing.evalueringRoute(
     services: Services,
     configuration: Configuration,
-    createDatagrunnlag: suspend (fnr: String, callId: String, periode: InputPeriode, brukerinput: Brukerinput, services: Services, clientId: String?, ytelseFraRequest: Ytelse?) -> Datagrunnlag
+    createDatagrunnlag: suspend (request: Request, callId: String, services: Services, clientId: String?) -> Datagrunnlag
 ) {
 
     authenticate("azureAuth") {
@@ -44,24 +45,20 @@ fun Routing.evalueringRoute(
             val callId = call.callId ?: UUID.randomUUID().toString()
 
             val datagrunnlag = createDatagrunnlag.invoke(
-                request.fnr,
+                request,
                 callId,
-                request.periode,
-                request.brukerinput,
                 services,
-                azp,
-                request.ytelse
+                azp
             )
             val resultat = evaluerData(datagrunnlag)
-            val response = Response(
-                tidspunkt = LocalDateTime.now(),
-                versjonRegler = "v1",
+
+            val response = lagResponse(
                 versjonTjeneste = configuration.commitSha,
                 datagrunnlag = datagrunnlag,
                 resultat = resultat
             )
-            secureLogger.info("{} konklusjon gitt for bruker {} på regel {}", resultat.svar.name, request.fnr, resultat.sisteRegel())
-            secureLogger.info("For bruker {} er responsen {}", request.fnr, response)
+
+            loggResponse(request.fnr, response)
 
             call.respond(response)
         }
@@ -71,7 +68,7 @@ fun Routing.evalueringRoute(
 fun Routing.evalueringTestRoute(
     services: Services,
     configuration: Configuration,
-    createDatagrunnlag: suspend (fnr: String, callId: String, periode: InputPeriode, brukerinput: Brukerinput, services: Services, clientId: String?, ytelseFraRequest: Ytelse?) -> Datagrunnlag
+    createDatagrunnlag: suspend (request: Request, callId: String, services: Services, clientId: String?) -> Datagrunnlag
 ) {
     logger.info("autentiserer IKKE kallet")
     post("/") {
@@ -80,27 +77,46 @@ fun Routing.evalueringTestRoute(
         val callId = call.callId ?: UUID.randomUUID().toString()
 
         val datagrunnlag = createDatagrunnlag.invoke(
-            request.fnr,
+            request,
             callId,
-            request.periode,
-            request.brukerinput,
             services,
-            null,
-            request.ytelse
+            null
         )
         val resultat = evaluerData(datagrunnlag)
-        val response = Response(
-            tidspunkt = LocalDateTime.now(),
-            versjonRegler = "v1",
+
+        val response = lagResponse(
             versjonTjeneste = configuration.commitSha,
             datagrunnlag = datagrunnlag,
             resultat = resultat
         )
-        secureLogger.info("{} konklusjon gitt for bruker {} på regel {}", resultat.svar.name, request.fnr, resultat.sisteRegel())
-        secureLogger.info("For bruker {} er responsen {}", request.fnr, response)
+
+        loggResponse(request.fnr, response)
 
         call.respond(response)
     }
+}
+
+private fun lagResponse(datagrunnlag: Datagrunnlag, resultat: Resultat, versjonTjeneste: String): Response {
+    return Response(
+        tidspunkt = LocalDateTime.now(),
+        versjonRegler = "v1",
+        versjonTjeneste = versjonTjeneste,
+        datagrunnlag = datagrunnlag,
+        resultat = resultat
+    )
+}
+
+private fun loggResponse(fnr: String, response: Response) {
+    val resultat = response.resultat
+    val årsaker = resultat.årsaker
+    val årsakerSomRegelIdStr = årsaker.map { it.regelId.toString() + " " }
+
+    secureLogger.info(append("resultat", resultat), "{} konklusjon gitt for bruker {}", resultat.svar.name, fnr)
+    if (årsaker.isNotEmpty()) {
+        secureLogger.info(append("årsaker", årsaker), "Årsaker for bruker {}: {}", fnr, årsakerSomRegelIdStr)
+    }
+
+    secureLogger.info(append("response", response), "Response for bruker {}", fnr)
 }
 
 private fun validerRequest(request: Request): Request {
@@ -125,10 +141,3 @@ fun finnYtelse(ytelseFraRequest: Ytelse?, clientId: String?) =
 
 private fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =
     Hovedregler(datagrunnlag).kjørHovedregler()
-
-private fun Resultat.sisteRegel() =
-    if (this.delresultat.isEmpty()) {
-        this
-    } else {
-        this.delresultat.last()
-    }

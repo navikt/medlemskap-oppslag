@@ -112,42 +112,6 @@ class BakoverkompatibelTest {
     }
 
     @Test
-    fun testFeilInput() {
-
-        // Fnr er Roland Gundersen fra https://www.nhn.no/media/2606/testaktoerer-v46.pdf
-        val faktiskResponse = given()
-            .body(ugyldigInput)
-            .header(Header("Content-Type", "application/json"))
-            .post("/")
-            .then()
-            .statusCode(400)
-            .extract().asString().trimIndent()
-
-        val forventetErrorResponse =
-            """"{
-            "url" : "/",
-            "message" : "Instantiation of [simple type, class no.nav.medlemskap.domene.Request] value failed for JSON property brukerinput due to missing (therefore NULL) value for creator parameter brukerinput which is a non-nullable type\n at [Source: (InputStreamReader); line: 10, column: 1] (through reference chain: no.nav.medlemskap.domene.Request[\"brukerinput\"])",
-            "cause" : "com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException: Instantiation of [simple type, class no.nav.medlemskap.domene.Request] value failed for JSON property brukerinput due to missing (therefore NULL) value for creator parameter brukerinput which is a non-nullable type\n at [Source: (InputStreamReader); line: 10, column: 1] (through reference chain: no.nav.medlemskap.domene.Request[\"brukerinput\"])",
-            "code" : {
-            "value" : 400,
-            "description" : "Bad Request"
-        },
-            "callId" : { }
-        }
-            """.trimIndent()
-
-/*
-        JSONAssert.assertEquals(
-            forventetErrorResponse, faktiskResponse,
-            CustomComparator(
-                JSONCompareMode.STRICT
-            )
-        )
-
- */
-    }
-
-    @Test
     fun testKontrakt() {
         val validationFilter = OpenApiValidationFilter("src/main/resources/lovme.yaml")
 
@@ -162,20 +126,17 @@ class BakoverkompatibelTest {
 }
 
 suspend fun mockCreateDatagrunnlag(
-    fnr: String,
+    request: Request,
     callId: String,
-    periode: InputPeriode,
-    brukerinput: Brukerinput,
     services: Services,
-    clientId: String?,
-    ytelseFraRequest: Ytelse?
+    clientId: String?
 ): Datagrunnlag = runBlocking {
 
     val ytelse = Ytelse.SYKEPENGER
 
     Datagrunnlag(
-        periode = periode,
-        brukerinput = brukerinput,
+        periode = request.periode,
+        brukerinput = request.brukerinput,
         pdlpersonhistorikk = personhistorikk(),
         medlemskap = listOf(Medlemskap("dekning", enDato(), enAnnenDato(), true, Lovvalg.ENDL, "NOR", PeriodeStatus.GYLD)),
         arbeidsforhold = listOf(arbeidsforhold()),
@@ -189,15 +150,18 @@ suspend fun mockCreateDatagrunnlag(
 
 private fun arbeidsforhold(): Arbeidsforhold {
 
-    val juridiskEnhetstypeMap = HashMap<String, String?>()
-    juridiskEnhetstypeMap["juridiskOrgnummer"] = "juridiskEnhetstype"
     return Arbeidsforhold(
         Periode(enDato(), enAnnenDato()),
         listOf(Utenlandsopphold("SWE", Periode(enDato(), enAnnenDato()), YearMonth.of(2010, 1))),
         OpplysningspliktigArbeidsgiverType.Organisasjon,
-        Arbeidsgiver("type", "organisasjonsnummer", listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus"), juridiskEnhetstypeMap),
+        Arbeidsgiver(
+            "type",
+            "organisasjonsnummer",
+            listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus"),
+            listOf(JuridiskEnhet("juridiskOrgnummer", "juridiskEnhetstype", 20))
+        ),
         Arbeidsforholdstype.NORMALT,
-        listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble()))
+        listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble(), 37.5))
     )
 }
 
@@ -205,7 +169,7 @@ private fun personhistorikk(): Personhistorikk {
     return Personhistorikk(
         statsborgerskap = listOf(Statsborgerskap("NOR", enDato(), enAnnenDato())),
         bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr(), folkeregistermetadata())),
+        sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr())),
         familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata())),
         kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
         oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
@@ -274,7 +238,7 @@ private val ugyldigInput =
 private val forventetResponse =
     """
     {
-      "tidspunkt" : "2020-08-14T17:43:18.273719",
+      "tidspunkt" : "2020-10-26T08:41:43.272642",
       "versjonTjeneste" : "",
       "versjonRegler" : "v1",
       "datagrunnlag" : {
@@ -297,26 +261,20 @@ private val forventetResponse =
             "tom" : "2020-08-01"
           } ],
           "kontaktadresser" : [ {
-            "landkode" : "NOR", 
+            "landkode" : "NOR",
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
-          }],
-          "oppholdsadresser": [{
-             "landkode" : "NOR", 
+          } ],
+          "oppholdsadresser" : [ {
+            "landkode" : "NOR",
             "fom" : "1975-10-10",
             "tom" : "2020-08-01"
-          }],
-          "doedsfall": [], 
+          } ],
           "sivilstand" : [ {
             "type" : "GIFT",
             "gyldigFraOgMed" : "1975-10-10",
             "gyldigTilOgMed" : "2020-08-01",
-            "relatertVedSivilstand" : "0101197512345",
-            "folkeregistermetadata" : {
-              "ajourholdstidspunkt" : "2020-06-20T10:00:00",
-              "gyldighetstidspunkt" : "2020-06-20T10:00:00",
-              "opphoerstidspunkt" : "2020-06-20T10:00:00"
-            }
+            "relatertVedSivilstand" : "0101197512345"
           } ],
           "familierelasjoner" : [ {
             "relatertPersonsIdent" : "0101201012345",
@@ -327,107 +285,9 @@ private val forventetResponse =
               "gyldighetstidspunkt" : "2020-06-20T10:00:00",
               "opphoerstidspunkt" : "2020-06-20T10:00:00"
             }
-          } ]
+          } ],
+          "doedsfall" : [ ]
         },
-        "dataOmEktefelle": {
-           "personhistorikkEktefelle": {
-                    "ident": "0101197512345",
-                    "barn": ["0101201012345"], 
-                    "bostedsadresser" : [ {
-                         "landkode" : "NOR",
-                         "fom" : "1975-10-10",
-                         "tom" : "2020-08-01"
-                    } ],
-                    "kontaktadresser" : [ {
-                          "landkode" : "NOR", 
-                          "fom" : "1975-10-10",
-                          "tom" : "2020-08-01"
-                    }],
-                   "oppholdsadresser": [{
-                        "landkode" : "NOR", 
-                        "fom" : "1975-10-10",
-                        "tom" : "2020-08-01"
-                    }]
-           }, 
-            "arbeidsforholdEktefelle" : [ { 
-                     "periode" : {
-                       "fom" : "1975-10-10",
-                       "tom" : "2020-08-01"
-                     },
-                     "utenlandsopphold" : [ {
-                       "landkode" : "SWE",
-                       "periode" : {
-                         "fom" : "1975-10-10",
-                         "tom" : "2020-08-01"
-                       },
-                       "rapporteringsperiode" : "2010-01"
-                     } ],
-                     "arbeidsgivertype" : "Organisasjon",
-                     "arbeidsgiver" : {
-                       "type" : "type",
-                       "organisasjonsnummer" : "organisasjonsnummer",
-                       "ansatte" : [ {
-                         "antall" : 10,
-                         "bruksperiode" : {
-                           "fom" : "1975-10-10",
-                           "tom" : "2020-08-01"
-                         },
-                         "gyldighetsperiode" : {
-                           "fom" : "1975-10-10",
-                           "tom" : "2020-08-01"
-                         }
-                       } ],
-                       "konkursStatus" : [ "Konkursstatus" ],
-                       "juridiskEnhetEnhetstypeMap" : {
-                         "juridiskOrgnummer" : "juridiskEnhetstype"
-                       }
-                     },
-                     "arbeidsforholdstype" : "NORMALT",
-                     "arbeidsavtaler" : [ {
-                       "periode" : {
-                         "fom" : "1975-10-10",
-                         "tom" : "2020-08-01"
-                       },
-                       "gyldighetsperiode" : {
-                         "fom" : "1975-10-10",
-                         "tom" : "2020-08-01"
-                       },
-                       "yrkeskode" : "yrkeskode",
-                       "skipsregister" : "NIS",
-                       "stillingsprosent" : 100.0
-                     } ]
-                   } ]
-        },
-        "dataOmBarn": [ {
-           "personhistorikkBarn": {
-                    "ident": "0101201012345",
-                    "bostedsadresser" : [ {
-                         "landkode" : "NOR",
-                         "fom" : "1975-10-10",
-                         "tom" : "2020-08-01"
-                    } ],
-                    "kontaktadresser" : [ {
-                          "landkode" : "NOR", 
-                          "fom" : "1975-10-10",
-                          "tom" : "2020-08-01"
-                    }],
-                   "oppholdsadresser": [{
-                        "landkode" : "NOR", 
-                        "fom" : "1975-10-10",
-                        "tom" : "2020-08-01"
-                    }],
-                    "familierelasjoner" : [ {
-                         "relatertPersonsIdent" : "15076500565",
-                         "relatertPersonsRolle" : "FAR",
-                         "minRolleForPerson" : "BARN",
-                         "folkeregistermetadata" : {
-                           "ajourholdstidspunkt" : "2020-06-20T10:00:00",
-                           "gyldighetstidspunkt" : "2020-06-20T10:00:00",
-                           "opphoerstidspunkt" : "2020-06-20T10:00:00"
-                         }
-                   }]
-            }
-         }],
         "medlemskap" : [ {
           "dekning" : "dekning",
           "fraOgMed" : "1975-10-10",
@@ -466,9 +326,11 @@ private val forventetResponse =
               }
             } ],
             "konkursStatus" : [ "Konkursstatus" ],
-            "juridiskEnhetEnhetstypeMap" : {
-              "juridiskOrgnummer" : "juridiskEnhetstype"
-            }
+            "juridiskeEnheter" : [ {
+              "organisasjonsnummer" : "juridiskOrgnummer",
+              "enhetstype" : "juridiskEnhetstype",
+              "antallAnsatte" : 20
+            } ]
           },
           "arbeidsforholdstype" : "NORMALT",
           "arbeidsavtaler" : [ {
@@ -482,7 +344,8 @@ private val forventetResponse =
             },
             "yrkeskode" : "yrkeskode",
             "skipsregister" : "NIS",
-            "stillingsprosent" : 100.0
+            "stillingsprosent" : 100.0,
+            "beregnetAntallTimerPrUke" : 37.5
           } ]
         } ],
         "oppgaver" : [ {
@@ -502,9 +365,112 @@ private val forventetResponse =
             "tittel" : "Tittel"
           } ]
         } ],
-        "ytelse" : "SYKEPENGER"
+        "ytelse" : "SYKEPENGER",
+        "dataOmBarn" : [ {
+          "personhistorikkBarn" : {
+            "ident" : "0101201012345",
+            "bostedsadresser" : [ {
+              "landkode" : "NOR",
+              "fom" : "1975-10-10",
+              "tom" : "2020-08-01"
+            } ],
+            "kontaktadresser" : [ {
+              "landkode" : "NOR",
+              "fom" : "1975-10-10",
+              "tom" : "2020-08-01"
+            } ],
+            "oppholdsadresser" : [ {
+              "landkode" : "NOR",
+              "fom" : "1975-10-10",
+              "tom" : "2020-08-01"
+            } ],
+            "familierelasjoner" : [ {
+              "relatertPersonsIdent" : "15076500565",
+              "relatertPersonsRolle" : "FAR",
+              "minRolleForPerson" : "BARN",
+              "folkeregistermetadata" : {
+                "ajourholdstidspunkt" : "2020-06-20T10:00:00",
+                "gyldighetstidspunkt" : "2020-06-20T10:00:00",
+                "opphoerstidspunkt" : "2020-06-20T10:00:00"
+              }
+            } ]
+          }
+        } ],
+        "dataOmEktefelle" : {
+          "personhistorikkEktefelle" : {
+            "ident" : "0101197512345",
+            "barn" : [ "0101201012345" ],
+            "bostedsadresser" : [ {
+              "landkode" : "NOR",
+              "fom" : "1975-10-10",
+              "tom" : "2020-08-01"
+            } ],
+            "kontaktadresser" : [ {
+              "landkode" : "NOR",
+              "fom" : "1975-10-10",
+              "tom" : "2020-08-01"
+            } ],
+            "oppholdsadresser" : [ {
+              "landkode" : "NOR",
+              "fom" : "1975-10-10",
+              "tom" : "2020-08-01"
+            } ]
+          },
+          "arbeidsforholdEktefelle" : [ {
+            "periode" : {
+              "fom" : "1975-10-10",
+              "tom" : "2020-08-01"
+            },
+            "utenlandsopphold" : [ {
+              "landkode" : "SWE",
+              "periode" : {
+                "fom" : "1975-10-10",
+                "tom" : "2020-08-01"
+              },
+              "rapporteringsperiode" : "2010-01"
+            } ],
+            "arbeidsgivertype" : "Organisasjon",
+            "arbeidsgiver" : {
+              "type" : "type",
+              "organisasjonsnummer" : "organisasjonsnummer",
+              "ansatte" : [ {
+                "antall" : 10,
+                "bruksperiode" : {
+                  "fom" : "1975-10-10",
+                  "tom" : "2020-08-01"
+                },
+                "gyldighetsperiode" : {
+                  "fom" : "1975-10-10",
+                  "tom" : "2020-08-01"
+                }
+              } ],
+              "konkursStatus" : [ "Konkursstatus" ],
+              "juridiskeEnheter" : [ {
+                "organisasjonsnummer" : "juridiskOrgnummer",
+                "enhetstype" : "juridiskEnhetstype",
+                "antallAnsatte" : 20
+              } ]
+            },
+            "arbeidsforholdstype" : "NORMALT",
+            "arbeidsavtaler" : [ {
+              "periode" : {
+                "fom" : "1975-10-10",
+                "tom" : "2020-08-01"
+              },
+              "gyldighetsperiode" : {
+                "fom" : "1975-10-10",
+                "tom" : "2020-08-01"
+              },
+              "yrkeskode" : "yrkeskode",
+              "skipsregister" : "NIS",
+              "stillingsprosent" : 100.0,
+              "beregnetAntallTimerPrUke" : 37.5
+            } ]
+          } ]
+        },
+        "overstyrteRegler" : { }
       },
-       "resultat" : {
+      "resultat" : {
         "regelId" : "REGEL_MEDLEM_KONKLUSJON",
         "avklaring" : "Er bruker medlem?",
         "begrunnelse" : "Kan ikke konkludere med medlemskap",
@@ -549,7 +515,8 @@ private val forventetResponse =
               "svar" : "JA",
               "harDekning" : null,
               "dekning" : "",
-              "delresultat" : [ ]
+              "delresultat" : [ ],
+              "årsaker" : [ ]
             }, {
               "regelId" : "REGEL_C",
               "avklaring" : "Finnes det dokumenter i JOARK på medlemskapsområdet?",
@@ -557,7 +524,8 @@ private val forventetResponse =
               "svar" : "NEI",
               "harDekning" : null,
               "dekning" : "",
-              "delresultat" : [ ]
+              "delresultat" : [ ],
+              "årsaker" : [ ]
             }, {
               "regelId" : "REGEL_B",
               "avklaring" : "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?",
@@ -565,8 +533,10 @@ private val forventetResponse =
               "svar" : "NEI",
               "harDekning" : null,
               "dekning" : "",
-              "delresultat" : [ ]
-            } ]
+              "delresultat" : [ ],
+              "årsaker" : [ ]
+            } ],
+            "årsaker" : [ ]
           }, {
             "regelId" : "REGEL_1_1",
             "avklaring" : "Er alle perioder siste 12 mnd avklart (endelig/gyldig)?",
@@ -574,7 +544,8 @@ private val forventetResponse =
             "svar" : "JA",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
           }, {
             "regelId" : "REGEL_1_2",
             "avklaring" : "Er det periode både med og uten medlemskap innenfor 12 mnd?",
@@ -582,7 +553,8 @@ private val forventetResponse =
             "svar" : "NEI",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
           }, {
             "regelId" : "REGEL_1_3",
             "avklaring" : "Er det en periode med medlemskap?",
@@ -590,7 +562,8 @@ private val forventetResponse =
             "svar" : "JA",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
           }, {
             "regelId" : "REGEL_1_4",
             "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
@@ -598,7 +571,14 @@ private val forventetResponse =
             "svar" : "NEI",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
+          } ],
+          "årsaker" : [ {
+            "regelId" : "REGEL_1_4",
+            "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
+            "svar" : "NEI",
+            "beskrivelse" : "Regel 1.4:  Er hele perioden med medlemskap innenfor 12-måneders perioden? NEI"
           } ]
         }, {
           "regelId" : "REGEL_ARBEIDSFORHOLD",
@@ -614,7 +594,8 @@ private val forventetResponse =
             "svar" : "JA",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
           }, {
             "regelId" : "REGEL_4",
             "avklaring" : "Er foretaket registrert i foretaksregisteret?",
@@ -622,7 +603,17 @@ private val forventetResponse =
             "svar" : "JA",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
+          }, {
+            "regelId" : "REGEL_14",
+            "avklaring" : "Er bruker ansatt i staten eller i en kommune?",
+            "begrunnelse" : "",
+            "svar" : "NEI",
+            "harDekning" : null,
+            "dekning" : "",
+            "delresultat" : [ ],
+            "årsaker" : [ ]
           }, {
             "regelId" : "REGEL_5",
             "avklaring" : "Har arbeidsgiver sin hovedaktivitet i Norge?",
@@ -630,7 +621,8 @@ private val forventetResponse =
             "svar" : "JA",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
           }, {
             "regelId" : "REGEL_6",
             "avklaring" : "Er foretaket aktivt?",
@@ -638,15 +630,14 @@ private val forventetResponse =
             "svar" : "NEI",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
-          }, {
-            "regelId" : "REGEL_9",
-            "avklaring" : "Har bruker utført arbeid utenfor Norge?",
-            "begrunnelse" : "",
+            "delresultat" : [ ],
+            "årsaker" : [ ]
+          } ],
+          "årsaker" : [ {
+            "regelId" : "REGEL_6",
+            "avklaring" : "Er foretaket aktivt?",
             "svar" : "NEI",
-            "harDekning" : null,
-            "dekning" : "",
-            "delresultat" : [ ]
+            "beskrivelse" : "Regel 6:  Er foretaket aktivt? NEI"
           } ]
         }, {
           "regelId" : "REGEL_BOSATT",
@@ -662,8 +653,10 @@ private val forventetResponse =
             "svar" : "JA",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
-          } ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
+          } ],
+          "årsaker" : [ ]
         }, {
           "regelId" : "REGEL_STATSBORGERSKAP",
           "avklaring" : "Er statsborgerskap avklart?",
@@ -678,7 +671,8 @@ private val forventetResponse =
             "svar" : "JA",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
           }, {
             "regelId" : "REGEL_11",
             "avklaring" : "Er bruker norsk statsborger?",
@@ -686,11 +680,13 @@ private val forventetResponse =
             "svar" : "JA",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
-          } ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
+          } ],
+          "årsaker" : [ ]
         }, {
           "regelId" : "REGEL_NORSK",
-          "avklaring" : "Er regler for norsk borgere avklart?",
+          "avklaring" : "Er regler for norske borgere avklart?",
           "begrunnelse" : "Regelflyt konkluderer med JA",
           "svar" : "JA",
           "harDekning" : null,
@@ -702,8 +698,21 @@ private val forventetResponse =
             "svar" : "JA",
             "harDekning" : null,
             "dekning" : "",
-            "delresultat" : [ ]
-          } ]
+            "delresultat" : [ ],
+            "årsaker" : [ ]
+          } ],
+          "årsaker" : [ ]
+        } ],
+        "årsaker" : [ {
+          "regelId" : "REGEL_1_4",
+          "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
+          "svar" : "NEI",
+          "beskrivelse" : "Regel 1.4:  Er hele perioden med medlemskap innenfor 12-måneders perioden? NEI"
+        }, {
+          "regelId" : "REGEL_6",
+          "avklaring" : "Er foretaket aktivt?",
+          "svar" : "NEI",
+          "beskrivelse" : "Regel 6:  Er foretaket aktivt? NEI"
         } ]
       }
     }

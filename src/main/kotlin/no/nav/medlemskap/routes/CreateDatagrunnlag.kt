@@ -23,44 +23,41 @@ private val logger = KotlinLogging.logger { }
 private val secureLogger = KotlinLogging.logger("tjenestekall")
 
 suspend fun defaultCreateDatagrunnlag(
-    fnr: String,
+    request: Request,
     callId: String,
-    periode: InputPeriode,
-    brukerinput: Brukerinput,
     services: Services,
-    clientId: String?,
-    ytelseFraRequest: Ytelse?
+    clientId: String?
 ): Datagrunnlag = coroutineScope {
 
     val dataOmEktefelle: DataOmEktefelle?
     val dataOmBrukersBarn: List<DataOmBarn>?
 
-    val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(fnr, callId, fraOgMedDatoForArbeidsforhold(periode), periode.tom) }
-    val aktorIder = services.pdlService.hentAlleAktorIder(fnr, callId)
-    val personHistorikkFraPdl = hentPersonhistorikkFraPdl(services, fnr, callId)
-    val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(fnr, callId) }
-    val journalPosterRequest = async { services.safService.hentJournaldata(fnr, callId) }
+    val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(request.fnr, callId, fraOgMedDatoForArbeidsforhold(request.periode), request.periode.tom) }
+    val aktorIder = services.pdlService.hentAlleAktorIder(request.fnr, callId)
+    val personHistorikkFraPdl = hentPersonhistorikkFraPdl(services, request.fnr, callId)
+    val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(request.fnr, callId) }
+    val journalPosterRequest = async { services.safService.hentJournaldata(request.fnr, callId) }
     val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktorIder, callId) }
 
     val fnrTilBarn = hentFnrTilBarn(personHistorikkFraPdl.familierelasjoner)
     dataOmBrukersBarn = if (!fnrTilBarn.isNullOrEmpty()) hentDataOmBarn(fnrTilBarn, services, callId) else null
 
     val fnrTilEktefelle = hentFnrTilEktefelle(personHistorikkFraPdl)
-    dataOmEktefelle = if (!fnrTilEktefelle.isNullOrEmpty()) hentDataOmEktefelle(fnrTilEktefelle, services, callId, periode) else null
+    dataOmEktefelle = if (!fnrTilEktefelle.isNullOrEmpty()) hentDataOmEktefelle(fnrTilEktefelle, services, callId, request.periode) else null
 
     val medlemskap = medlemskapsunntakRequest.await()
     val arbeidsforhold = arbeidsforholdRequest.await()
     val journalPoster = journalPosterRequest.await()
     val oppgaver = gosysOppgaver.await()
-    val ytelse: Ytelse = finnYtelse(ytelseFraRequest, clientId)
+    val ytelse: Ytelse = finnYtelse(request.ytelse, clientId)
 
     ytelseCounter(ytelse.metricName()).increment()
 
-    registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl, periode, ytelse)
+    registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl, request.periode, ytelse)
 
     Datagrunnlag(
-        periode = periode,
-        brukerinput = brukerinput,
+        periode = request.periode,
+        brukerinput = request.brukerinput,
         pdlpersonhistorikk = personHistorikkFraPdl,
         medlemskap = medlemskap,
         arbeidsforhold = arbeidsforhold,
@@ -68,7 +65,8 @@ suspend fun defaultCreateDatagrunnlag(
         dokument = journalPoster,
         ytelse = ytelse,
         dataOmBarn = dataOmBrukersBarn,
-        dataOmEktefelle = dataOmEktefelle
+        dataOmEktefelle = dataOmEktefelle,
+        overstyrteRegler = request.overstyrteRegler
     )
 }
 

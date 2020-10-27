@@ -5,10 +5,10 @@ import mu.KotlinLogging
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.regler.common.Datohjelper.Companion.parseIsoDato
+import no.nav.medlemskap.regler.common.Datohjelper.Companion.parseIsoDatoTid
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
 import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 object PdlMapper {
 
@@ -35,10 +35,9 @@ object PdlMapper {
         )
     }
 
-    private fun mapDoedsfall(doedsfall: List<HentPerson.Doedsfall>): List<LocalDate> {
-
-        return doedsfall.mapNotNull {
-            LocalDate.parse(it.doedsdato, DateTimeFormatter.ISO_LOCAL_DATE)
+    private fun mapDoedsfall(doedsfall: List<HentPerson.Doedsfall>): List<LocalDate?> {
+        return doedsfall.map {
+            parseIsoDato(it.doedsdato)
         }
     }
 
@@ -61,8 +60,8 @@ object PdlMapper {
 
     fun mapOppholdsadresse(oppholdsadresse: HentPerson.Oppholdsadresse): Adresse {
         return Adresse(
-            fom = convertToLocalDateTime(oppholdsadresse.gyldigFraOgMed)?.toLocalDate(),
-            tom = convertToLocalDateTime(oppholdsadresse.folkeregistermetadata?.opphoerstidspunkt)?.toLocalDate(),
+            fom = parseIsoDato(oppholdsadresse.gyldigFraOgMed),
+            tom = parseIsoDato(oppholdsadresse.gyldigTilOgMed),
             landkode = mapLandkodeForOppholdsadresse(oppholdsadresse)
         )
     }
@@ -77,8 +76,8 @@ object PdlMapper {
     fun mapKontaktAdresser(pdlKontaktadresser: List<HentPerson.Kontaktadresse>): List<Adresse> {
         return pdlKontaktadresser.map {
             Adresse(
-                fom = convertToLocalDateTime(it.gyldigFraOgMed)?.toLocalDate(),
-                tom = convertToLocalDateTime(it.gyldigTilOgMed)?.toLocalDate(),
+                fom = parseIsoDato(it.gyldigFraOgMed),
+                tom = parseIsoDato(it.gyldigTilOgMed),
                 landkode = mapLandkodeForKontaktadresse(it)
             )
         }.sortedBy { it.fom }
@@ -110,8 +109,8 @@ object PdlMapper {
         return pdlPostedsadresser.map {
             Adresse(
                 landkode = "NOR",
-                fom = convertToLocalDateTime(it.folkeregistermetadata?.gyldighetstidspunkt)?.toLocalDate(),
-                tom = convertToLocalDateTime(it.folkeregistermetadata?.opphoerstidspunkt)?.toLocalDate()
+                fom = parseIsoDato(it.gyldigFraOgMed),
+                tom = parseIsoDato(it.gyldigTilOgMed)
             )
         }.sortedBy { it.fom }
     }
@@ -120,8 +119,8 @@ object PdlMapper {
         return statsborgerskap.map {
             Statsborgerskap(
                 landkode = it.land,
-                fom = convertToLocalDate(it.gyldigFraOgMed),
-                tom = convertToLocalDate(it.gyldigTilOgMed)
+                fom = parseIsoDato(it.gyldigFraOgMed),
+                tom = parseIsoDato(it.gyldigTilOgMed)
             )
         }.sortedBy { it.fom }
     }
@@ -138,39 +137,13 @@ object PdlMapper {
         }
     }
 
-    fun mapFolkeregisterMetadata2(folkeregistermetadata: HentPerson.Folkeregistermetadata2?): Folkeregistermetadata? {
-        return folkeregistermetadata?.let {
-            Folkeregistermetadata(
-                ajourholdstidspunkt = convertToLocalDateTime(it.ajourholdstidspunkt),
-                gyldighetstidspunkt = convertToLocalDateTime(it.gyldighetstidspunkt),
-                opphoerstidspunkt = convertToLocalDateTime(it.opphoerstidspunkt)
-            )
-        }
-    }
-
     fun mapFolkeregisterMetadata(folkeregistermetadata: HentPerson.Folkeregistermetadata?): Folkeregistermetadata? {
         return folkeregistermetadata?.let {
             Folkeregistermetadata(
-                ajourholdstidspunkt = convertToLocalDateTime(it.ajourholdstidspunkt),
-                gyldighetstidspunkt = convertToLocalDateTime(it.gyldighetstidspunkt),
-                opphoerstidspunkt = convertToLocalDateTime(it.opphoerstidspunkt)
+                ajourholdstidspunkt = parseIsoDatoTid(it.ajourholdstidspunkt),
+                gyldighetstidspunkt = parseIsoDatoTid(it.gyldighetstidspunkt),
+                opphoerstidspunkt = parseIsoDatoTid(it.opphoerstidspunkt)
             )
         }
-    }
-
-    private fun convertToLocalDateTime(dateTimeToConvert: String?): LocalDateTime? {
-        return dateTimeToConvert?.let { parseLocalDateTime(it) }
-    }
-
-    private fun parseLocalDateTime(string: String): LocalDateTime? {
-        return try {
-            LocalDateTime.parse(string, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-        } catch (e: Exception) {
-            LocalDateTime.parse(string, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
-        }
-    }
-
-    fun convertToLocalDate(dateToConvert: String?): LocalDate? {
-        return dateToConvert?.let { LocalDate.parse(it, DateTimeFormatter.ISO_LOCAL_DATE) }
     }
 }

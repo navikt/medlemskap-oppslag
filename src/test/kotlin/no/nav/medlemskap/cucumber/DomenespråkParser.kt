@@ -13,7 +13,7 @@ import java.time.YearMonth
 
 object DomenespråkParser : BasisDomeneParser() {
     val ANSATTE_9 = listOf(Ansatte(9, null, null))
-    val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", organisasjonsnummer = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskEnhetEnhetstypeMap = null)
+    val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", organisasjonsnummer = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskeEnheter = null)
 
     fun parseValgfriYtelse(domenebegrep: Domenebegrep, rad: Map<String, String>): Ytelse? {
         val valgfriVerdi = valgfriVerdi(domenebegrep.nøkkel, rad)
@@ -60,10 +60,25 @@ object DomenespråkParser : BasisDomeneParser() {
         return regelId
     }
 
+    fun parseSvar(domenebegrep: Domenenøkkel, rad: Map<String, String>): Svar {
+        val verdi = verdi(domenebegrep.nøkkel(), rad)
+        return parseSvar(verdi)
+    }
+
+    fun parseValgfrittSvar(domenebegrep: Domenenøkkel, rad: Map<String, String>): Svar? {
+        val valgfriVerdi = valgfriVerdi(domenebegrep.nøkkel(), rad)
+
+        if (valgfriVerdi == null) {
+            return null
+        }
+
+        return parseSvar(domenebegrep, rad)
+    }
+
     fun parseSvar(verdi: String): Svar {
-        return when (verdi) {
-            "Ja" -> Svar.JA
-            "Nei" -> Svar.NEI
+        return when (verdi.toUpperCase()) {
+            "JA" -> Svar.JA
+            "NEI" -> Svar.NEI
             else -> Svar.UAVKLART
         }
     }
@@ -190,6 +205,14 @@ object DomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, MedlemskapsparametreMapper()).get(0)
     }
 
+    fun mapOverstyrteRegler(dataTable: DataTable?): Map<RegelId, Svar> {
+        val overstyrteRegler = mapDataTable(dataTable, OverstyrteReglerMapper())
+        return overstyrteRegler
+            .filter { it -> it.second != null }
+            .map { Pair(it.first, it.second!!) }
+            .toMap()
+    }
+
     fun mapRegelId(dataTable: DataTable?): List<RegelId> {
         return mapDataTable(dataTable, RegelIdMapper())
     }
@@ -240,6 +263,12 @@ object DomenespråkParser : BasisDomeneParser() {
                 parseBoolean(HAR_HATT_ARBEID_UTENFOR_NORGE, rad),
                 parseValgfriYtelse(YTELSE, rad)
             )
+        }
+    }
+
+    class OverstyrteReglerMapper : RadMapper<Pair<RegelId, Svar?>> {
+        override fun mapRad(rad: Map<String, String>): Pair<RegelId, Svar?> {
+            return Pair(parseRegelId(REGEL, rad), parseValgfrittSvar(SVAR, rad))
         }
     }
 
@@ -325,7 +354,8 @@ object DomenespråkParser : BasisDomeneParser() {
                 ),
                 parseString(YRKESKODE, rad),
                 parseSkipsregister(rad),
-                parseDouble(STILLINGSPROSENT, rad)
+                parseDouble(STILLINGSPROSENT, rad),
+                parseValgfriDouble(BEREGNET_ANTALL_TIMER_PR_UKE, rad)
             )
         }
     }
@@ -344,7 +374,7 @@ object DomenespråkParser : BasisDomeneParser() {
                 type = parseValgfriString(ARBEIDSGIVERTYPE, rad),
                 ansatte = listOf(Ansatte(parseValgfriInt(ANTALL_ANSATTE, rad), null, null)),
                 konkursStatus = konkursStatuser,
-                juridiskEnhetEnhetstypeMap = null
+                juridiskeEnheter = listOf(JuridiskEnhet(parseValgfriString(IDENTIFIKATOR, rad), parseValgfriString(JURIDISKENHETSTYPE, rad), parseValgfriInt(ANTALL_ANSATTE_I_JURIDISK_ENHET, rad)))
             )
         }
     }
@@ -438,8 +468,7 @@ object DomenespråkParser : BasisDomeneParser() {
                 type = parseSivilstandstype(SIVILSTANDSTYPE, rad),
                 gyldigFraOgMed = parseValgfriDato(GYLDIG_FRA_OG_MED, rad),
                 gyldigTilOgMed = parseValgfriDato(GYLDIG_TIL_OG_MED, rad),
-                relatertVedSivilstand = parseValgfriString(RELATERT_VED_SIVILSTAND, rad),
-                folkeregistermetadata = null
+                relatertVedSivilstand = parseValgfriString(RELATERT_VED_SIVILSTAND, rad)
             )
         }
     }
@@ -467,9 +496,11 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     BOSTED("Bosted"),
     AKTIV_DATO("Aktiv dato"),
     ANTALL_ANSATTE("Antall ansatte"),
+    ANTALL_ANSATTE_I_JURIDISK_ENHET("Antall ansatte i juridisk enhet"),
     ARBEIDSFORHOLDSTYPE("Arbeidsforholdstype"),
     ARBEIDSGIVER_ID("Arbeidsgiver Id"),
     ARBEIDSGIVERTYPE("Arbeidsgivertype"),
+    BEREGNET_ANTALL_TIMER_PR_UKE("Beregnet antall timer pr uke"),
     DEKNING("Dekning"),
     DOEDSDATO("Doedsdato"),
     ER_MEDLEM("Er medlem"),
@@ -500,10 +531,12 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     SKIPSREGISTER("Skipsregister"),
     STATUS("Status"),
     STILLINGSPROSENT("Stillingsprosent"),
+    SVAR("Svar"),
     TEMA("Tema"),
     TIL_OG_MED_DATO("Til og med dato"),
     TITTEL("Tittel"),
     YRKESKODE("Yrkeskode"),
+    JURIDISKENHETSTYPE("Juridisk enhetstype"),
     YTELSE("Ytelse");
 
     override fun nøkkel(): String {

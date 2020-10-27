@@ -1,6 +1,8 @@
 package no.nav.medlemskap.regler.common
 
 import assertk.assertThat
+import assertk.assertions.isEqualTo
+import assertk.assertions.isNull
 import assertk.assertions.isTrue
 import no.nav.medlemskap.domene.Periode
 import org.junit.jupiter.api.Assertions
@@ -85,11 +87,11 @@ class DatohjelperTest {
     }
 
     @Test
-    fun `test på mapping`() {
+    fun parseIsoDate() {
+        assertThat(Datohjelper.parseIsoDato(null)).isNull()
 
-        val nå = LocalDate.now()
-        val nString = nå.toString()
-        println(nå)
-        Assertions.assertEquals(nå, LocalDate.parse(nString, DateTimeFormatter.ISO_LOCAL_DATE))
+        assertThat(Datohjelper.parseIsoDato("2008-12-11T12:03:04")).isEqualTo(LocalDate.of(2008, 12, 11))
+
+        assertThat(Datohjelper.parseIsoDato("2008-12-11")).isEqualTo(LocalDate.of(2008, 12, 11))
     }
 }

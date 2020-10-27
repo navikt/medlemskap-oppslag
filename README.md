@@ -56,6 +56,8 @@ Kallet er en POST på `/`
     * arbeidUtenforNorge: Har brukeren jobbet utenfor Norge siste 12 måneder?
 * ytelse
     * Utledes fra request, ved å se på callerId
+* overstyrteRegler
+    * Map med RegelId, Svar, kan brukes til å overstyre svar på enkeltregler.
 
 ### Ut-parametere
         val tidspunkt: LocalDateTime,

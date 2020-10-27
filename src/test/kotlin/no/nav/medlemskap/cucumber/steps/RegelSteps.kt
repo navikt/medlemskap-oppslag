@@ -10,7 +10,9 @@ import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.Medlemskapsparametre
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.barn.DataOmBarn
+import no.nav.medlemskap.regler.assertBegrunnelse
 import no.nav.medlemskap.regler.assertDelresultat
+import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.v1.RegelFactory
@@ -21,7 +23,7 @@ import java.io.File
 
 class RegelSteps : No {
     private val ANSATTE_9 = listOf(Ansatte(9, null, null))
-    private val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", organisasjonsnummer = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskEnhetEnhetstypeMap = null)
+    private val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", organisasjonsnummer = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskeEnheter = null)
 
     private val pdlPersonhistorikkBuilder = PersonhistorikkBuilder()
 
@@ -47,6 +49,8 @@ class RegelSteps : No {
     private val domenespråkParser = DomenespråkParser
 
     private var datagrunnlag: Datagrunnlag? = null
+
+    var overstyrteRegler: Map<RegelId, Svar> = mapOf()
 
     init {
         Gitt("følgende statsborgerskap i personhistorikken") { dataTable: DataTable? ->
@@ -158,6 +162,10 @@ class RegelSteps : No {
             dataOmEktefelleBuilder.arbeidsforholdEktefelle.get(0).arbeidsavtaler = arbeidsavtaleEktefelleMap[0]!!
         }
 
+        Gitt<DataTable>("med følgende regeloverstyringer") { dataTable: DataTable? ->
+            overstyrteRegler = domenespråkParser.mapOverstyrteRegler(dataTable)
+        }
+
         Når("medlemskap beregnes med følgende parametre") { dataTable: DataTable? ->
             val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
 
@@ -195,6 +203,16 @@ class RegelSteps : No {
             assertEquals(forventetSvar, resultat!!.svar)
         }
 
+        Så("skal begrunnelsen være {string}") { forventetBegrunnelse: String ->
+            assertEquals(forventetBegrunnelse, resultat!!.begrunnelse)
+        }
+
+        Så("skal årsaken være {string}") { forventetÅrsak: String ->
+            val årsaker = resultat!!.finnÅrsaker()
+
+            assertEquals(forventetÅrsak, resultat!!.årsaksTekst())
+        }
+
         Så("skal svaret være Ja på medlemskap og {string} på harDekning") { forventetVerdi: String ->
             val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
             assertEquals(Svar.JA, resultat!!.svar)
@@ -221,6 +239,12 @@ class RegelSteps : No {
             val regelId = domenespråkParser.parseRegelId(regelIdStr!!)
 
             assertDelresultat(regelId, domenespråkParser.parseSvar(forventetSvar!!), resultat!!)
+        }
+
+        Så<String, String>("skal regel {string} gi begrunnelse {string}") { regelIdStr, forventetBegrunnelse ->
+            val regelId = domenespråkParser.parseRegelId(regelIdStr!!)
+
+            assertBegrunnelse(regelId, forventetBegrunnelse, resultat!!)
         }
 
         Så<String, DataTable>("skal regel {string} inneholde følgende delresultater:") { regelIdStr: String?, dataTable: DataTable? ->
@@ -296,7 +320,8 @@ class RegelSteps : No {
             dokument = journalPosterFraJoArk,
             ytelse = ytelse,
             dataOmBarn = dataOmBarn,
-            dataOmEktefelle = dataOmEktefelleBuilder.build()
+            dataOmEktefelle = dataOmEktefelleBuilder.build(),
+            overstyrteRegler = overstyrteRegler
         )
     }
 

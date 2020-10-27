@@ -8,13 +8,7 @@ object Funksjoner {
     val List<Any>.antall: Number
         get() = size
 
-    infix fun List<Any>.inneholder(objekt: Any?): Boolean = this.contains(objekt)
-
-    infix fun Map<String, String>.inneholder(key: String?) = this.containsKey(key)
-
     infix fun Any?.erDelAv(liste: List<Any>) = liste.contains(this)
-
-    infix fun List<String>.inneholder(string: String) = this.contains(string)
 
     infix fun List<String>.alleEr(string: String) = this.all { m -> m.equals(string) }
 
@@ -27,6 +21,8 @@ object Funksjoner {
     infix fun List<String>.inneholderNoe(liste: List<String>) = this.any { it in liste }
 
     infix fun Map<String, String>.finnesI(liste: List<String>) = this.keys.intersect(liste).isNotEmpty()
+
+    fun List<Any?>?.isNotNullOrEmpty(): Boolean = this != null && this.isNotEmpty()
 
     fun List<Any>?.erTom() = this == null || this.isNullOrEmpty()
 

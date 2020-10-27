@@ -5,18 +5,18 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.v1.arbeidsforhold.*
-import no.nav.medlemskap.regler.v1.lovvalg.HarBrukerJobbetUtenforNorgeRegel
 
 class ReglerForArbeidsforhold(
     ytelse: Ytelse,
-    regelMap: Map<RegelId, Regel>
-) : Regler(ytelse, regelMap) {
+    regelMap: Map<RegelId, Regel>,
+    overstyrteRegler: Map<RegelId, Svar>
+) : Regler(ytelse, regelMap, overstyrteRegler) {
 
     override fun kjørRegelflyter(): List<Resultat> {
         return listOf(kjørUavhengigeRegelflyterMedEttResultat(REGEL_ARBEIDSFORHOLD))
     }
 
-    fun hentHovedflyt(): Regelflyt {
+    override fun hentRegelflyter(): List<Regelflyt> {
         val jobberBrukerPaaNorskSkipFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_7_1),
             hvisJa = regelflytJa(ytelse),
@@ -47,9 +47,15 @@ class ReglerForArbeidsforhold(
             hvisNei = regelflytUavklart(ytelse)
         )
 
+        val erArbeidsgiverOffentligSektor = lagRegelflyt(
+            regel = hentRegel(REGEL_14),
+            hvisJa = regelflytJa(ytelse),
+            hvisNei = harForetakMerEnn5AnsatteFlyt
+        )
+
         val erArbeidsgiverOrganisasjonFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_4),
-            hvisJa = harForetakMerEnn5AnsatteFlyt,
+            hvisJa = erArbeidsgiverOffentligSektor,
             hvisNei = regelflytUavklart(ytelse)
         )
 
@@ -59,24 +65,15 @@ class ReglerForArbeidsforhold(
             hvisNei = regelflytUavklart(ytelse)
         )
 
-        return harBrukerSammenhengendeArbeidsforholdSiste12MndFlyt
-    }
-
-    override fun hentRegelflyter(): List<Regelflyt> {
-        val harBrukerJobbetUtenforNorgeFlyt = lagRegelflyt(
-            regel = hentRegel(REGEL_9),
-            hvisJa = konklusjonUavklart(ytelse),
-            hvisNei = regelflytJa(ytelse)
-        )
-
-        return listOf(hentHovedflyt(), harBrukerJobbetUtenforNorgeFlyt)
+        return listOf(harBrukerSammenhengendeArbeidsforholdSiste12MndFlyt)
     }
 
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForArbeidsforhold {
             return ReglerForArbeidsforhold(
                 ytelse = datagrunnlag.ytelse,
-                regelMap = lagRegelMap(datagrunnlag)
+                regelMap = lagRegelMap(datagrunnlag),
+                overstyrteRegler = datagrunnlag.overstyrteRegler
             )
         }
 
@@ -89,7 +86,7 @@ class ReglerForArbeidsforhold(
                 HarBrukerSammenhengendeArbeidsforholdRegel.fraDatagrunnlag(datagrunnlag),
                 HarForetaketMerEnn5AnsatteRegel.fraDatagrunnlag(datagrunnlag),
                 JobberBrukerPaaNorskSkipRegel.fraDatagrunnlag(datagrunnlag),
-                HarBrukerJobbetUtenforNorgeRegel.fraDatagrunnlag(datagrunnlag)
+                ErArbeidsforholdetOffentligSektor.fraDatagrunnlag(datagrunnlag)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()

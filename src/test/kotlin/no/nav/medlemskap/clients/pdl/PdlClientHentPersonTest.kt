@@ -133,13 +133,7 @@ class PdlClientHentPersonTest {
                             {
                             "type": "UGIFT",
                             "gyldigFraOgMed": "2010-02-21",
-                            "relatertVedSivilstand": null,
-                            "folkeregistermetadata":
-                                 {
-                                 "ajourholdstidspunkt": "2020-02-19T10:36:54",
-                                 "gyldighetstidspunkt":"2020-02-19T10:36:54",
-                                 "opphoerstidspunkt": null
-                                  }
+                            "relatertVedSivilstand": null
                             }
                     ],
                     "bostedsadresse":[],
