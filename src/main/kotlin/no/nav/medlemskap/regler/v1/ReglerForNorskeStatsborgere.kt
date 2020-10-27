@@ -22,6 +22,7 @@ class ReglerForNorskeStatsborgere(
             hvisJa = regelflytUavklart(ytelse, REGEL_NORSK),
             hvisNei = regelflytJa(ytelse, REGEL_NORSK)
         )
+
         val harBrukerJobbet25ProsentEllerMerFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_12),
             hvisJa = regelflytJa(ytelse, REGEL_NORSK),
