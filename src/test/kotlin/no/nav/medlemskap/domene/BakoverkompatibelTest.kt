@@ -477,7 +477,26 @@ private val forventetResponse =
         "svar" : "UAVKLART",
         "harDekning" : null,
         "dekning" : "",
-        "delresultat" : [ {
+        "delresultat" : [{
+            "regelId": "REGEL_DOED", 
+            "avklaring" : "Er bruker død?", 
+            "begrunnelse" : "Regelflyt konkluderer med JA", 
+            "svar": "JA", 
+            "harDekning": null, 
+            "dekning": "",
+            "årsaker": [], 
+            "delresultat": [{
+                "regelId": "REGEL_13", 
+                "avklaring": "Er bruker død?", 
+                "begrunnelse": "", 
+                "svar": "NEI", 
+                "harDekning": null, 
+                "dekning": "", 
+                "delresultat": [],
+                "årsaker": []
+            }]
+          }, 
+          {  
           "regelId" : "REGEL_MEDL",
           "avklaring" : "Har bruker avklarte opplysninger i MEDL?",
           "begrunnelse" : "",

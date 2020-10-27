@@ -6,8 +6,8 @@ Egenskap: Regel 13: Er bruker død?
   Scenariomal: Regel 13 - Bruker er død før input
 
     Gitt følgende opplysninger om dødsfall i personhistorikken:
-      | Dødsdato       |
-      | <Dato>          |
+      | Dødsdato  |
+      | <Dødsdato>|
 
     Og følgende bostedsadresser i personhistorikken
       | Adresse | Landkode | Fra og med dato | Til og med dato |
@@ -25,13 +25,14 @@ Egenskap: Regel 13: Er bruker død?
       | Fra og med dato | Til og med dato | Yrkeskode   | Stillingsprosent |
       | 01.01.2018      |                 | <Yrkeskode> | 100              |
 
-    Når regel "13" kjøres med følgende parametre, skal feil være <Svar>
+    Når regel "13" kjøres med følgende parametre, skal valideringsfeil være "<Svar>"
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Eksempler:
-      | Dato             | Svar                                            |
-      | 2020-10-23       | “Bruker er død, men i eller før inputperiode.”  |
+      | Dødsdato         | Svar                                          |
+      | 23.10.2019       | Bruker er død, men i eller før inputperiode.  |
+      | 23.10.2020       | Bruker er død, men i eller før inputperiode.  |
 
 
 

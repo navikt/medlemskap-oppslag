@@ -3,7 +3,7 @@ package no.nav.medlemskap.regler.v1
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.v1.lovvalg.ErBrukerDoed
+import no.nav.medlemskap.regler.v1.lovvalg.ErBrukerDoedRegel
 
 class ReglerForDoedsfall(
     ytelse: Ytelse,
@@ -37,7 +37,7 @@ class ReglerForDoedsfall(
 
         private fun lagRegelMap(datagrunnlag: Datagrunnlag): Map<RegelId, Regel> {
             val regelListe = listOf(
-                ErBrukerDoed.fraDatagrunnlag(datagrunnlag)
+                ErBrukerDoedRegel.fraDatagrunnlag(datagrunnlag)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()

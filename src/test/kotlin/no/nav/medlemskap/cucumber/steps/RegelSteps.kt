@@ -173,7 +173,7 @@ class RegelSteps : No {
             resultat = ReglerService.kjørRegler(datagrunnlag!!)
         }
 
-        Når<String, DataTable>("regel {string} kjøres med følgende parametre, skal feil være “Bruker er død, men i eller før inputperiode.”") { regelId: String?, dataTable: DataTable? ->
+        Når<String, String, DataTable>("regel {string} kjøres med følgende parametre, skal valideringsfeil være {string}") { regelId: String?, forventetValideringsfeil: String?, dataTable: DataTable? ->
             val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
 
@@ -184,7 +184,7 @@ class RegelSteps : No {
                 regel.utfør()
             }
 
-            exception.message shouldBe "Bruker er død, men i eller før inputperiode."
+            exception.message shouldBe forventetValideringsfeil
         }
 
         Når<String, DataTable>("regel {string} kjøres med følgende parametre") { regelId: String?, dataTable: DataTable? ->
@@ -217,15 +217,6 @@ class RegelSteps : No {
             val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
             assertEquals(Svar.JA, resultat!!.svar)
             assertEquals(forventetSvar, resultat!!.harDekning)
-        }
-
-        Så("skal regel {string} gi valideringsfeil med tekst {string}") { regelId: String?, forventetVerdi: String ->
-
-            val exception = shouldThrow<BadRequestException> {
-                domenespråkParser.parseSvar(forventetVerdi)
-            }
-
-            exception.message shouldBe "feil"
         }
 
         Så("skal svaret være {string} på medlemskap og {string} på harDekning") { forventetMedlemskap: String, forventetVerdi: String ->

@@ -152,7 +152,7 @@ class PdlDomenespråkParser : BasisDomeneParser() {
 
     enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
         BEKREFTELSESDATO("Bekreftelsesdato"),
-        DOEDSDATO("Doedsdato"),
+        DOEDSDATO("Dødsdato"),
         GYLDIG_FRA_OG_MED_DATO("Gyldig fra og med dato"),
         GYLDIG_TIL_OG_MED_DATO("Gyldig til og med dato"),
         GYLDIG_FRA_OG_MED("Gyldig fra og med"),
