@@ -15,6 +15,12 @@ class ReglerForEøsBorgere(
 ) : Regler(ytelse, regelMap, overstyrteRegler) {
 
     override fun hentRegelflyter(): List<Regelflyt> {
+        val harBrukerJobbetUtenforNorgeFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_9),
+            hvisJa = regelflytUavklart(ytelse, REGEL_EØS_BOSATT),
+            hvisNei = regelflytJa(ytelse, REGEL_EØS_BOSATT)
+        )
+
         val harBrukerMedBarn80ProsenStillingEllerMerRegelFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_2_2_2),
             hvisJa = regelflytUavklart(ytelse, REGEL_EØS_BOSATT),
@@ -41,13 +47,13 @@ class ReglerForEøsBorgere(
 
         val harBrukerMedFolkeregistrerteBarnJobbetMerEnn80ProsentFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_2_3),
-            hvisJa = regelflytJa(ytelse, REGEL_EØS_BOSATT),
+            hvisJa = harBrukerJobbetUtenforNorgeFlyt,
             hvisNei = regelflytUavklart(ytelse, REGEL_EØS_BOSATT)
         )
 
         val harBrukerJobbetMerEnn100ProsentFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_2_2_1),
-            hvisJa = regelflytJa(ytelse, REGEL_EØS_BOSATT),
+            hvisJa = harBrukerJobbetUtenforNorgeFlyt,
             hvisNei = regelflytUavklart(ytelse, REGEL_EØS_BOSATT)
         )
 
@@ -66,19 +72,19 @@ class ReglerForEøsBorgere(
 
         val harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn100ProsentFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_3_1_1),
-            hvisJa = regelflytJa(ytelse, REGEL_EØS_BOSATT),
+            hvisJa = harBrukerJobbetUtenforNorgeFlyt,
             hvisNei = regelflytUavklart(ytelse, REGEL_EØS_BOSATT)
         )
 
         val harBrukersEktefelleJobbetMinst100ProsentSiste12MndFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_6_1),
-            hvisJa = regelflytJa(ytelse, REGEL_EØS_BOSATT),
+            hvisJa = harBrukerJobbetUtenforNorgeFlyt,
             hvisNei = regelflytUavklart(ytelse, REGEL_EØS_BOSATT)
         )
 
         val harBrukerJobbetMerEnn80ProsentFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_6),
-            hvisJa = regelflytJa(ytelse, REGEL_EØS_BOSATT),
+            hvisJa = harBrukerJobbetUtenforNorgeFlyt,
             hvisNei = harBrukersEktefelleJobbetMinst100ProsentSiste12MndFlyt
         )
 
@@ -146,6 +152,7 @@ class ReglerForEøsBorgere(
 
         private fun lagRegelMap(datagrunnlag: Datagrunnlag): Map<RegelId, Regel> {
             val regelListe = listOf(
+                HarBrukerJobbetUtenforNorgeRegel.fraDatagrunnlag(datagrunnlag),
                 ErBrukersEktefelleBosattINorgeRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_4),
                 ErBrukersEktefelleBosattINorgeRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_3_1),
                 HarBrukersEktefelleJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag),

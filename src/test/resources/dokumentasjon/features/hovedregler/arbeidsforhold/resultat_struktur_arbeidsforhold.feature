@@ -46,7 +46,6 @@ Egenskap: Resultat-struktur arbeidsforhold
       | 6     |
       | 7     |
       | 8     |
-      | 9     |
 
 
 
