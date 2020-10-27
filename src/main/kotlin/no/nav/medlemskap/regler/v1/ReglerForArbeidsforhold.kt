@@ -5,7 +5,6 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.v1.arbeidsforhold.*
-import no.nav.medlemskap.regler.v1.lovvalg.HarBrukerJobbetUtenforNorgeRegel
 
 class ReglerForArbeidsforhold(
     ytelse: Ytelse,
@@ -18,12 +17,6 @@ class ReglerForArbeidsforhold(
     }
 
     override fun hentRegelflyter(): List<Regelflyt> {
-        val harBrukerJobbetUtenforNorgeFlyt = lagRegelflyt(
-            regel = hentRegel(REGEL_9),
-            hvisJa = konklusjonUavklart(ytelse),
-            hvisNei = regelflytJa(ytelse)
-        )
-
         val jobberBrukerPaaNorskSkipFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_7_1),
             hvisJa = regelflytJa(ytelse),
@@ -33,7 +26,7 @@ class ReglerForArbeidsforhold(
         val erBrukerPilotEllerKabinansattFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_8),
             hvisJa = regelflytUavklart(ytelse),
-            hvisNei = harBrukerJobbetUtenforNorgeFlyt
+            hvisNei = regelflytJa(ytelse)
         )
 
         val erArbeidsforholdetMaritimtFlyt = lagRegelflyt(
@@ -56,7 +49,7 @@ class ReglerForArbeidsforhold(
 
         val erArbeidsgiverOffentligSektor = lagRegelflyt(
             regel = hentRegel(REGEL_14),
-            hvisJa = harBrukerJobbetUtenforNorgeFlyt,
+            hvisJa = regelflytJa(ytelse),
             hvisNei = harForetakMerEnn5AnsatteFlyt
         )
 
@@ -93,7 +86,6 @@ class ReglerForArbeidsforhold(
                 HarBrukerSammenhengendeArbeidsforholdRegel.fraDatagrunnlag(datagrunnlag),
                 HarForetaketMerEnn5AnsatteRegel.fraDatagrunnlag(datagrunnlag),
                 JobberBrukerPaaNorskSkipRegel.fraDatagrunnlag(datagrunnlag),
-                HarBrukerJobbetUtenforNorgeRegel.fraDatagrunnlag(datagrunnlag),
                 ErArbeidsforholdetOffentligSektor.fraDatagrunnlag(datagrunnlag)
             )
 
