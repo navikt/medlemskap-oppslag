@@ -34,14 +34,17 @@ Egenskap: Reglene 9 til 12
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | <Jobbet utenfor Norge>        |
 
-    Så skal svaret være "<Svar>"
+    Så skal svaret være "<Medlemskap>"
+    Og skal begrunnelsen være "<Begrunnelse>"
+    Og skal årsaken være "<Årsak>"
+
     Og skal regel "10" gi svaret "Ja"
     Og skal regel "12" gi svaret "<Regel 12>"
 
     Eksempler:
-      | Stillingsprosent | Svar     | Regel 12 | Jobbet utenfor Norge |
-      | 100              | Ja       | Ja       | Nei                  |
-      | 20               | UAVKLART | Nei      | Ja                   |
+      | Stillingsprosent | Jobbet utenfor Norge | Medlemskap | Begrunnelse                        | Årsak                                                | Regel 12 |
+      | 100              | Nei                  | Ja         | Bruker er medlem                   |                                                      | Ja       |
+      | 20               | Ja                   | UAVKLART   | Kan ikke konkludere med medlemskap | Regel 9:  Har bruker utført arbeid utenfor Norge? JA | Nei      |
 
   Scenariomal: Regel 9: Bruker som svarer ja på spørsmålet "Har hatt arbeid utenfor Norge" skal få "Nei"
     Gitt følgende arbeidsforhold fra AAReg

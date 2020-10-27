@@ -51,11 +51,6 @@ Egenskap: Regel 3: Har bruker sammenhengende arbeidsforhold siste 12 måneder?
 
     Eksempler:
       | Fom        | Tom        | Fom 2      | Tom 2      | Svar | Kommentar                                   |
-      | 01.01.2019 | 15.03.2019 | 01.02.2019 |            | Ja   | Overlappende arbeidsfohold                  |
-      | 01.01.2019 | 15.03.2019 | 16.03.2019 |            | Ja   | Arbeidsforhold som er sammenhengende        |
-      | 01.01.2019 | 15.03.2019 | 17.03.2019 |            | Ja   | Arbeidsforhold med en dags opphold          |
-      | 01.01.2019 |            | 17.03.2019 | 25.04.2019 | Ja   | Første arbeidsforhold uten til dato         |
-      | 01.01.2019 | 15.03.2019 | 18.03.2019 |            | Ja   | Arbeidsforhold med to dager opphold         |
       | 01.01.2019 | 15.03.2019 | 19.03.2019 |            | Nei  | Arbeidsforhold med tre dager opphold        |
       | 01.01.2019 | 15.03.2019 | 17.04.2019 |            | Nei  | Arbeidsforhold som ikke er sammenhengende   |
       | 01.01.2016 | 15.03.2019 | 16.03.2019 | 29.05.2019 | Nei  | Mangler arbeidsforhold i bakkant            |
@@ -63,3 +58,18 @@ Egenskap: Regel 3: Har bruker sammenhengende arbeidsforhold siste 12 måneder?
       | 01.03.2019 | 15.03.2019 | 16.03.2019 |            | Nei  | Mangler arbeidsforhold i forkant            |
 #      | 01.01.2019     |15.03.2019 | 18.03.2019        |                   | Ja   | Arbeidsforhold med to dagers opphold         |
 
+
+  Scenario: Person med mange arbeidsforhold i perioden
+    Gitt følgende arbeidsforhold fra AAReg
+      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
+      | 08.04.2019      | 30.09.2019      | Organisasjon     | NORMALT             |
+      | 01.10.2019      | 31.12.2020      | Organisasjon     | NORMALT             |
+      | 01.01.2020      | 31.12.2020      | Organisasjon     | NORMALT             |
+      | 01.01.2020      |                 | Organisasjon     | NORMALT             |
+      | 24.08.2020      | 25.08.2020      | Organisasjon     | NORMALT             |
+
+    Når regel "3" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 24.09.2020      | 15.10.2020      | Nei                           |
+
+    Så skal svaret være "Ja"

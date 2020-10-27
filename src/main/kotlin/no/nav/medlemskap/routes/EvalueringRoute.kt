@@ -51,16 +51,14 @@ fun Routing.evalueringRoute(
                 azp
             )
             val resultat = evaluerData(datagrunnlag)
-            val response = Response(
-                tidspunkt = LocalDateTime.now(),
-                versjonRegler = "v1",
+
+            val response = lagResponse(
                 versjonTjeneste = configuration.commitSha,
                 datagrunnlag = datagrunnlag,
                 resultat = resultat
             )
 
-            secureLogger.info(append("resultat", resultat), "{} konklusjon gitt for bruker {}", resultat.svar.name, request.fnr)
-            secureLogger.info(append("response", response), "Response for bruker {}", request.fnr)
+            loggResponse(request.fnr, response)
 
             call.respond(response)
         }
@@ -85,19 +83,40 @@ fun Routing.evalueringTestRoute(
             null
         )
         val resultat = evaluerData(datagrunnlag)
-        val response = Response(
-            tidspunkt = LocalDateTime.now(),
-            versjonRegler = "v1",
+
+        val response = lagResponse(
             versjonTjeneste = configuration.commitSha,
             datagrunnlag = datagrunnlag,
             resultat = resultat
         )
 
-        secureLogger.info(append("resultat", resultat), "{} konklusjon gitt for bruker {}", resultat.svar.name, request.fnr)
-        secureLogger.info(append("response", response), "Response for bruker {}", request.fnr)
+        loggResponse(request.fnr, response)
 
         call.respond(response)
     }
+}
+
+private fun lagResponse(datagrunnlag: Datagrunnlag, resultat: Resultat, versjonTjeneste: String): Response {
+    return Response(
+        tidspunkt = LocalDateTime.now(),
+        versjonRegler = "v1",
+        versjonTjeneste = versjonTjeneste,
+        datagrunnlag = datagrunnlag,
+        resultat = resultat
+    )
+}
+
+private fun loggResponse(fnr: String, response: Response) {
+    val resultat = response.resultat
+    val årsaker = resultat.årsaker
+    val årsakerSomRegelIdStr = årsaker.map { it.regelId.toString() + " " }
+
+    secureLogger.info(append("resultat", resultat), "{} konklusjon gitt for bruker {}", resultat.svar.name, fnr)
+    if (årsaker.isNotEmpty()) {
+        secureLogger.info(append("årsaker", årsaker), "Årsaker for bruker {}: {}", fnr, årsakerSomRegelIdStr)
+    }
+
+    secureLogger.info(append("response", response), "Response for bruker {}", fnr)
 }
 
 private fun validerRequest(request: Request): Request {
@@ -122,10 +141,3 @@ fun finnYtelse(ytelseFraRequest: Ytelse?, clientId: String?) =
 
 private fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =
     Hovedregler(datagrunnlag).kjørHovedregler()
-
-private fun Resultat.sisteRegel() =
-    if (this.delresultat.isEmpty()) {
-        this
-    } else {
-        this.delresultat.last()
-    }
