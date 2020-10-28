@@ -276,19 +276,16 @@ class RegelSteps : No {
             throw RuntimeException("medlemskapsparametre må være satt for å bygge Datagrunnlag")
         }
 
-        val sykemeldingsperiode = medlemskapsparametre.inputPeriode
-        val harHattArbeidUtenforNorge = medlemskapsparametre.harHattArbeidUtenforNorge
-        val ytelse = medlemskapsparametre.ytelse ?: Ytelse.SYKEPENGER
-
         return Datagrunnlag(
-            periode = sykemeldingsperiode,
-            brukerinput = Brukerinput(harHattArbeidUtenforNorge),
+            periode = medlemskapsparametre.inputPeriode,
+            førsteDagForYtelse = medlemskapsparametre.førsteDagForYtelse,
+            brukerinput = Brukerinput(medlemskapsparametre.harHattArbeidUtenforNorge),
             pdlpersonhistorikk = pdlPersonhistorikkBuilder.build(),
             medlemskap = medlemskap,
             arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgiverMap, arbeidsavtaleMap, utenlandsoppholdMap),
             oppgaver = oppgaverFraGosys,
             dokument = journalPosterFraJoArk,
-            ytelse = ytelse,
+            ytelse = medlemskapsparametre.ytelse ?: Ytelse.SYKEPENGER,
             dataOmBarn = dataOmBarn,
             dataOmEktefelle = dataOmEktefelleBuilder.build(),
             overstyrteRegler = overstyrteRegler

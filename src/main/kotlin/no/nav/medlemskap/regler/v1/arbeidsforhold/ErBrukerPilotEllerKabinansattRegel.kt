@@ -7,13 +7,15 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.ja
 import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.sisteArbeidsforholdYrkeskode
+import java.time.LocalDate
 
 class ErBrukerPilotEllerKabinansattRegel(
     ytelse: Ytelse,
     private val periode: InputPeriode,
+    private val førsteDagForYtelse: LocalDate?,
     private val arbeidsforhold: List<Arbeidsforhold>,
     regelId: RegelId = RegelId.REGEL_8
-) : ArbeidsforholdRegel(regelId, ytelse, periode) {
+) : ArbeidsforholdRegel(regelId, ytelse, periode, førsteDagForYtelse) {
 
     override fun operasjon(): Resultat {
         return when {
@@ -29,6 +31,7 @@ class ErBrukerPilotEllerKabinansattRegel(
             return ErBrukerPilotEllerKabinansattRegel(
                 ytelse = datagrunnlag.ytelse,
                 periode = datagrunnlag.periode,
+                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold
             )
         }

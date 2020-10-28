@@ -13,14 +13,16 @@ import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.filtrerUtArb
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.registrerAntallAnsatte
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.registrereArbeidsgivere
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.registrerStatsborgerskapGrafana
+import java.time.LocalDate
 
 class HarForetaketMerEnn5AnsatteRegel(
     ytelse: Ytelse,
     private val periode: InputPeriode,
+    private val førsteDagForYtelse: LocalDate?,
     private val arbeidsforhold: List<Arbeidsforhold>,
     private val statsborgerskap: List<Statsborgerskap>,
     regelId: RegelId = RegelId.REGEL_5
-) : ArbeidsforholdRegel(regelId, ytelse, periode) {
+) : ArbeidsforholdRegel(regelId, ytelse, periode, førsteDagForYtelse) {
 
     override fun operasjon(): Resultat {
 
@@ -49,6 +51,7 @@ class HarForetaketMerEnn5AnsatteRegel(
             return HarForetaketMerEnn5AnsatteRegel(
                 ytelse = datagrunnlag.ytelse,
                 periode = datagrunnlag.periode,
+                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold,
                 statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap
             )

@@ -7,12 +7,14 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.ja
 import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.gjeldendeDekning
+import java.time.LocalDate
 
 class ErBrukersDekningUavklartRegel(
     ytelse: Ytelse,
     val medlemskap: List<Medlemskap>,
-    val periode: InputPeriode
-) : MedlemskapRegel(RegelId.REGEL_1_6, ytelse, periode, medlemskap) {
+    val periode: InputPeriode,
+    førsteDagForYtelse: LocalDate?
+) : MedlemskapRegel(RegelId.REGEL_1_6, ytelse, periode, førsteDagForYtelse, medlemskap) {
 
     override fun operasjon(): Resultat {
         val gjeldendeDekning = medlemskap.gjeldendeDekning(kontrollPeriodeForMedl)
@@ -30,7 +32,8 @@ class ErBrukersDekningUavklartRegel(
             return ErBrukersDekningUavklartRegel(
                 ytelse = datagrunnlag.ytelse,
                 medlemskap = datagrunnlag.medlemskap,
-                periode = datagrunnlag.periode
+                periode = datagrunnlag.periode,
+                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse
             )
         }
     }

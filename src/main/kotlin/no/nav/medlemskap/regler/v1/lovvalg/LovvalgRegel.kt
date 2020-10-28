@@ -9,13 +9,15 @@ import no.nav.medlemskap.regler.common.Datohjelper
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Funksjoner.erTom
 import no.nav.medlemskap.regler.common.RegelId
+import java.time.LocalDate
 
 abstract class LovvalgRegel(
     regelId: RegelId,
     ytelse: Ytelse,
-    periode: InputPeriode
+    periode: InputPeriode,
+    førsteDagForYtelse: LocalDate?
 ) : BasisRegel(regelId, ytelse) {
-    val datohjelper = Datohjelper(periode, ytelse)
+    val datohjelper = Datohjelper(periode, førsteDagForYtelse, ytelse)
     val kontrollPeriodeForArbeidsforhold = datohjelper.kontrollPeriodeForArbeidsforhold()
     val kontrollPeriodeForPersonhistorikk = datohjelper.kontrollPeriodeForPersonhistorikk()
 

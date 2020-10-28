@@ -21,7 +21,7 @@ class PeriodeSteps : No {
         }
 
         Når("første sykedag beregnes fra sykemeldingsperiode") {
-            førsteSykedag = Datohjelper(sykemeldingsperiode!!, Ytelse.SYKEPENGER).førsteSykedag()
+            førsteSykedag = Datohjelper(sykemeldingsperiode!!, null, Ytelse.SYKEPENGER).førsteSykedag()
         }
 
         Så("skal første sykedag være {string}") { forventetDato: String? ->

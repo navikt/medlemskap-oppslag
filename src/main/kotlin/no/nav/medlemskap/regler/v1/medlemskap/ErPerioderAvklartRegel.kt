@@ -9,12 +9,14 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.ja
 import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.finnesUavklartePerioder
+import java.time.LocalDate
 
 class ErPerioderAvklartRegel(
     ytelse: Ytelse,
     val medlemskap: List<Medlemskap>,
-    val periode: InputPeriode
-) : MedlemskapRegel(RegelId.REGEL_1_1, ytelse, periode, medlemskap) {
+    val periode: InputPeriode,
+    val førsteDagForYtelse: LocalDate?
+) : MedlemskapRegel(RegelId.REGEL_1_1, ytelse, periode, førsteDagForYtelse, medlemskap) {
 
     override fun operasjon(): Resultat {
         return when {
@@ -29,7 +31,8 @@ class ErPerioderAvklartRegel(
             return ErPerioderAvklartRegel(
                 ytelse = datagrunnlag.ytelse,
                 medlemskap = datagrunnlag.medlemskap,
-                periode = datagrunnlag.periode
+                periode = datagrunnlag.periode,
+                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse
             )
         }
     }

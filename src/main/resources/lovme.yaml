@@ -161,6 +161,8 @@ components:
       properties:
         periode:
           $ref: "#/components/schemas/InputPeriode"
+        førsteDagForYtelse:
+          $ref: "#/components/schemas/ValgfriDato"
         brukerinput:
           $ref: "#/components/schemas/BrukerInput"
         pdlpersonhistorikk:
@@ -453,6 +455,8 @@ components:
           type: string
         periode:
           $ref: "#/components/schemas/InputPeriode"
+        førsteDagForYtelse:
+          $ref: "#/components/schemas/ValgfriDato"
         brukerinput:
           $ref: "#/components/schemas/BrukerInput"
         ytelse:

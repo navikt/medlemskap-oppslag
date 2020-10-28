@@ -5,15 +5,17 @@ import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.arbeidsforholdForDato
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.tidligsteFraOgMedDatoForMedl
+import java.time.LocalDate
 
 class ErArbeidsforholdUendretRegel(
     ytelse: Ytelse,
     private val periode: InputPeriode,
+    private val førsteDagForYtelse: LocalDate?,
     private val medlemskap: List<Medlemskap>,
     private val arbeidsforhold: List<Arbeidsforhold>,
     regelId: RegelId
-) : MedlemskapRegel(regelId, ytelse, periode, medlemskap) {
-    private val datohjelper = Datohjelper(periode, ytelse)
+) : MedlemskapRegel(regelId, ytelse, periode, førsteDagForYtelse, medlemskap) {
+    private val datohjelper = Datohjelper(periode, førsteDagForYtelse, ytelse)
 
     override fun operasjon(): Resultat {
         return erBrukersArbeidsforholdUendret(regelId)
@@ -56,6 +58,7 @@ class ErArbeidsforholdUendretRegel(
             return ErArbeidsforholdUendretRegel(
                 ytelse = datagrunnlag.ytelse,
                 periode = datagrunnlag.periode,
+                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
                 medlemskap = datagrunnlag.medlemskap,
                 arbeidsforhold = datagrunnlag.arbeidsforhold,
                 regelId = regelId

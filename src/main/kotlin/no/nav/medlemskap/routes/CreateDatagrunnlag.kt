@@ -33,7 +33,7 @@ suspend fun defaultCreateDatagrunnlag(
     val dataOmEktefelle: DataOmEktefelle?
     val dataOmBrukersBarn: List<DataOmBarn>?
 
-    val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(request.fnr, callId, fraOgMedDatoForArbeidsforhold(request.periode, request.dato), request.periode.tom) }
+    val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(request.fnr, callId, fraOgMedDatoForArbeidsforhold(request.periode, request.førsteDagForYtelse), request.periode.tom) }
     val aktorIder = services.pdlService.hentAlleAktorIder(request.fnr, callId)
     val personHistorikkFraPdl = hentPersonhistorikkFraPdl(services, request.fnr, callId)
     val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(request.fnr, callId) }
@@ -44,7 +44,7 @@ suspend fun defaultCreateDatagrunnlag(
     dataOmBrukersBarn = if (!fnrTilBarn.isNullOrEmpty()) hentDataOmBarn(fnrTilBarn, services, callId) else null
 
     val fnrTilEktefelle = hentFnrTilEktefelle(personHistorikkFraPdl)
-    dataOmEktefelle = if (!fnrTilEktefelle.isNullOrEmpty()) hentDataOmEktefelle(fnrTilEktefelle, services, callId, request.periode, request.dato) else null
+    dataOmEktefelle = if (!fnrTilEktefelle.isNullOrEmpty()) hentDataOmEktefelle(fnrTilEktefelle, services, callId, request.periode, request.førsteDagForYtelse) else null
 
     val medlemskap = medlemskapsunntakRequest.await()
     val arbeidsforhold = arbeidsforholdRequest.await()
@@ -58,6 +58,7 @@ suspend fun defaultCreateDatagrunnlag(
 
     Datagrunnlag(
         periode = request.periode,
+        førsteDagForYtelse = request.førsteDagForYtelse,
         brukerinput = request.brukerinput,
         pdlpersonhistorikk = personHistorikkFraPdl,
         medlemskap = medlemskap,

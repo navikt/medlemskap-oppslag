@@ -9,14 +9,16 @@ import no.nav.medlemskap.regler.common.ja
 import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserForKontrollPeriode
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresserForKontrollPeriode
+import java.time.LocalDate
 
 class ErBrukerBosattINorgeRegel(
     val kontaktadresser: List<Adresse>,
     val bostedsadresser: List<Adresse>,
     val oppholdsadresser: List<Adresse>,
     ytelse: Ytelse,
-    val periode: InputPeriode
-) : LovvalgRegel(REGEL_10, ytelse, periode) {
+    val periode: InputPeriode,
+    førsteDagForYtelse: LocalDate?
+) : LovvalgRegel(REGEL_10, ytelse, periode, førsteDagForYtelse) {
 
     override fun operasjon(): Resultat {
         val bostedsadresser = bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
@@ -38,7 +40,8 @@ class ErBrukerBosattINorgeRegel(
                 bostedsadresser = datagrunnlag.pdlpersonhistorikk.bostedsadresser,
                 oppholdsadresser = datagrunnlag.pdlpersonhistorikk.oppholdsadresser,
                 ytelse = datagrunnlag.ytelse,
-                periode = datagrunnlag.periode
+                periode = datagrunnlag.periode,
+                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse
             )
         }
     }

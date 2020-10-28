@@ -9,7 +9,7 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import kotlin.math.min
 
-class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
+class Datohjelper(val periode: InputPeriode, val førsteDagForYtelse: LocalDate?, val ytelse: Ytelse) {
 
     fun kontrollPeriodeForPersonhistorikk(): Kontrollperiode {
         return when (ytelse) {
@@ -37,9 +37,17 @@ class Datohjelper(val periode: InputPeriode, val ytelse: Ytelse) {
         }
     }
 
-    fun førsteSykedag() = periode.fom.minusDays(1)
-    fun førsteDagpengedag() = periode.fom.minusDays(1)
-    fun førsteEnsligForsørgerdag() = periode.fom.minusDays(1)
+    fun førsteSykedag() = førsteDagForYtelse()
+    fun førsteDagpengedag() = førsteDagForYtelse()
+    fun førsteEnsligForsørgerdag() = førsteDagForYtelse()
+
+    fun førsteDagForYtelse(): LocalDate {
+        if (førsteDagForYtelse != null) {
+            return førsteDagForYtelse
+        } else {
+            return periode.fom.minusDays(1)
+        }
+    }
 
     private fun defaultDagpengePeriode() = Kontrollperiode(førsteDagpengedag().minusMonths(12), førsteDagpengedag())
     private fun defaultEnsligForsørgerPeriode() = Kontrollperiode(førsteEnsligForsørgerdag().minusMonths(12), førsteEnsligForsørgerdag())
