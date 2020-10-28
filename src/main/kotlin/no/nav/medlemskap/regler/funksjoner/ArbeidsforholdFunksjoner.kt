@@ -65,7 +65,7 @@ object ArbeidsforholdFunksjoner {
     fun List<Arbeidsforhold>.registrerAntallAnsatteHosJuridiskEnhet(ytelse: Ytelse) =
         this.forEach { arbeidsforhold ->
             arbeidsforhold.arbeidsgiver.juridiskeEnheter?.forEach { juridiskEnhet ->
-                antallAnsatteHosJuridiskEnhetCounter(juridiskEnhet?.antallAnsatte.toString(), ytelse).increment()
+                antallAnsatteHosJuridiskEnhetCounter(juridiskEnhet?.organisasjonsnummer.toString(), juridiskEnhet?.antallAnsatte.toString(), ytelse).increment()
             }
         }
 
