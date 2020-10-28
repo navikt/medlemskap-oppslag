@@ -6,26 +6,26 @@ Egenskap: Mapping av kontaktadresser fra PDL HentPerson.Doedsfall
 
   Scenario: En person som har registrert doedsfall
     Gitt følgende opplysninger om doedsfall fra PDL:
-      | Doedsdato       |
+      | Dødsdato       |
       | 2015-03-25      |
 
     Når doedsfall mappes
 
     Så skal mappede doedsfall være
-      | Doedsdato  |
+      | Dødsdato  |
       | 2015-03-25 |
 
 
     Scenario: En person som har registrert doedsfall
       Gitt følgende opplysninger om doedsfall fra PDL:
-        | Doedsdato       |
+        | Dødsdato       |
         | 2015-03-25      |
         | 2015-03-25      |
 
       Når doedsfall mappes
 
       Så skal mappede doedsfall være
-        | Doedsdato  |
+        | Dødsdato  |
         | 2015-03-25 |
         | 2015-03-25 |
 

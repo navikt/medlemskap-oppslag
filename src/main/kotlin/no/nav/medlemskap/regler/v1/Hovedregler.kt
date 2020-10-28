@@ -13,11 +13,12 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
     private val reglerForAndreStatsborgere = ReglerForAndreStatsborgere.fraDatagrunnlag(datagrunnlag)
     private val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag)
     private val reglerForBosatt = ReglerForBosatt.fraDatagrunnlag(datagrunnlag)
+    private val reglerForDoedsfall = ReglerForDoedsfall.fraDatagrunnlag(datagrunnlag)
 
     fun kjørHovedregler(): Resultat {
         val ytelse = reglerForMedl.ytelse
         val resultater = mutableListOf<Resultat>()
-
+        resultater.addAll(reglerForDoedsfall.kjørRegelflyter())
         resultater.addAll(reglerForMedl.kjørRegelflyter())
         resultater.addAll(reglerForArbeidsforhold.kjørRegelflyter())
         resultater.addAll(reglerForBosatt.kjørRegelflyter())
