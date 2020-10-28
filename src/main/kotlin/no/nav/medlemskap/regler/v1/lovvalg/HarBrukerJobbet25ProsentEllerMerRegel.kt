@@ -9,7 +9,6 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.ja
 import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
-import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTidSkygge
 import java.time.LocalDate
 
 class HarBrukerJobbet25ProsentEllerMerRegel(

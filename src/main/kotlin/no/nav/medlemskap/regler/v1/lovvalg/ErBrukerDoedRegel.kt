@@ -1,16 +1,22 @@
 package no.nav.medlemskap.regler.v1.lovvalg
 
 import io.ktor.features.*
-import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.regler.common.*
+import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.InputPeriode
+import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.regler.common.RegelId
+import no.nav.medlemskap.regler.common.Resultat
+import no.nav.medlemskap.regler.common.ja
+import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.PersonhistorikkFunksjoner.erBrukerDoedEtterPeriode
 import java.time.LocalDate
 
 class ErBrukerDoedRegel(
     val doedsfall: List<LocalDate>,
     ytelse: Ytelse,
-    val periode: InputPeriode
-) : LovvalgRegel(RegelId.REGEL_13, ytelse, periode) {
+    val periode: InputPeriode,
+    førsteDagForYtelse: LocalDate?
+) : LovvalgRegel(RegelId.REGEL_13, ytelse, periode, førsteDagForYtelse) {
 
     override fun operasjon(): Resultat {
         val erBrukerDoed = !doedsfall.isNullOrEmpty()
@@ -29,8 +35,8 @@ class ErBrukerDoedRegel(
             return ErBrukerDoedRegel(
                 doedsfall = datagrunnlag.pdlpersonhistorikk.doedsfall,
                 ytelse = datagrunnlag.ytelse,
-                periode = datagrunnlag.periode
-
+                periode = datagrunnlag.periode,
+                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse
             )
         }
     }
