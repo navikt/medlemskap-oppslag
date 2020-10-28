@@ -21,13 +21,6 @@ object ArbeidsforholdFunksjoner {
                 it.arbeidsgiver.juridiskeEnheter.all { enhetstype -> enhetstype != null && enhetstype.enhetstype in offentligSektorJuridiskeEnhetstyper }
         }.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollPeriode, ytelse)
 
-    private fun hentJuridiskEnhetstypeFraMap(juridiskEnhetEnhetstypeMap: Map<String, String?>?): List<String> {
-        if (juridiskEnhetEnhetstypeMap != null) {
-            return juridiskEnhetEnhetstypeMap.mapNotNull { (_, enhetstype) -> enhetstype }
-        }
-        return emptyList()
-    }
-
     infix fun List<Arbeidsforhold>.erAlleArbeidsgivereOrganisasjon(kontrollPeriode: Kontrollperiode): Boolean {
         return arbeidsforholdForKontrollPeriode(kontrollPeriode).stream().allMatch { it.arbeidsgivertype == OpplysningspliktigArbeidsgiverType.Organisasjon }
     }
@@ -68,6 +61,13 @@ object ArbeidsforholdFunksjoner {
     }
 
     fun List<Ansatte>.finnesMindreEnn(tall: Int) = this.filter { it.antall ?: 0 < tall }
+
+    fun List<Arbeidsforhold>.registrerAntallAnsatteHosJuridiskEnhet(ytelse: Ytelse) =
+            this.forEach {arbeidsforhold ->
+                arbeidsforhold.arbeidsgiver.juridiskeEnheter?.forEach { juridiskEnhet ->
+                    antallAnsatteHosJuridiskEnhetCounter(juridiskEnhet?.antallAnsatte.toString(), ytelse).increment()
+                }
+            }
 
     fun List<Arbeidsgiver>.registrerAntallAnsatte(ytelse: Ytelse) =
         this.forEach { arbeidsgiver ->
