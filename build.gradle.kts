@@ -12,14 +12,14 @@ val kotlinLoggerVersion = "1.8.3"
 val tjenestespesifikasjonerVersion = "1.2019.12.18-12.22-ce897c4eb2c1"
 val cxfVersion = "3.3.7"
 val coroutinesVersion = "1.3.7"
-val wireMockVersion = "2.27.1"
+val wireMockVersion = "2.27.2"
 val mockkVersion = "1.10.0"
 val junitJupiterVersion = "5.6.2"
 val assertkVersion = "0.22"
 val restAssuredVersion = "4.3.1"
 val resilience4jVersion = "1.5.0"
 val threetenVersion = "1.5.0"
-val cucumberVersion = "6.5.0"
+val cucumberVersion = "6.8.1"
 val nocommonsVersion = "0.9.0"
 val graphqlKotlinClientVersion = "3.6.1"
 val archUnitVersion = "0.14.1"
@@ -29,9 +29,9 @@ val jaxwsToolsVersion = "2.3.1"
 val activationVersion = "1.1.1"
 val nvi18nVersion = "1.27"
 val kotestVersion = "4.2.5"
-
+val swaggerRequestValidatorVersion = "2.11.0"
 // Temporary to fix high severity Snyk vulernabilities:
-val nettyCodecVersion = "4.1.46.Final"
+val nettyCodecVersion = "4.1.53.Final"
 val commonsCodecVersion = "3.2.2"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
@@ -141,8 +141,8 @@ dependencies {
     testImplementation("org.skyscreamer:jsonassert:$jsonassertVersion")
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
 
-    testImplementation("com.atlassian.oai:swagger-request-validator-core:2.11.0")
-    testImplementation("com.atlassian.oai:swagger-request-validator-restassured:2.11.0")
+    testImplementation("com.atlassian.oai:swagger-request-validator-core:$swaggerRequestValidatorVersion")
+    testImplementation("com.atlassian.oai:swagger-request-validator-restassured:$swaggerRequestValidatorVersion")
 
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:$junitJupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")

@@ -2,6 +2,9 @@ package no.nav.medlemskap.cucumber.steps
 
 import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
+import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.shouldBe
+import io.ktor.features.*
 import no.nav.medlemskap.common.JsonMapper
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.Medlemskapsparametre
@@ -58,6 +61,10 @@ class RegelSteps : No {
         Gitt("følgende bostedsadresser i personhistorikken") { dataTable: DataTable? ->
             val bostedsadresser = domenespråkParser.mapAdresser(dataTable)
             pdlPersonhistorikkBuilder.bostedsadresser.addAll(bostedsadresser)
+        }
+        Gitt<DataTable>("følgende opplysninger om dødsfall i personhistorikken:") { dataTable: DataTable? ->
+            val doedsfall = domenespråkParser.mapDoedsfall(dataTable)
+            pdlPersonhistorikkBuilder.doedsfall.addAll(doedsfall)
         }
 
         Gitt("følgende kontaktadresser i personhistorikken") { dataTable: DataTable? ->
@@ -164,6 +171,20 @@ class RegelSteps : No {
 
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
             resultat = ReglerService.kjørRegler(datagrunnlag!!)
+        }
+
+        Når<String, String, DataTable>("regel {string} kjøres med følgende parametre, skal valideringsfeil være {string}") { regelId: String?, forventetValideringsfeil: String?, dataTable: DataTable? ->
+            val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
+            datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
+
+            val regelFactory = RegelFactory(datagrunnlag!!)
+            val regel = regelFactory.create(regelId!!)
+
+            val exception = shouldThrow<BadRequestException> {
+                regel.utfør()
+            }
+
+            exception.message shouldBe forventetValideringsfeil
         }
 
         Når<String, DataTable>("regel {string} kjøres med følgende parametre") { regelId: String?, dataTable: DataTable? ->

@@ -21,13 +21,6 @@ object ArbeidsforholdFunksjoner {
                 it.arbeidsgiver.juridiskeEnheter.all { enhetstype -> enhetstype != null && enhetstype.enhetstype in offentligSektorJuridiskeEnhetstyper }
         }.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollPeriode, ytelse)
 
-    private fun hentJuridiskEnhetstypeFraMap(juridiskEnhetEnhetstypeMap: Map<String, String?>?): List<String> {
-        if (juridiskEnhetEnhetstypeMap != null) {
-            return juridiskEnhetEnhetstypeMap.mapNotNull { (_, enhetstype) -> enhetstype }
-        }
-        return emptyList()
-    }
-
     infix fun List<Arbeidsforhold>.erAlleArbeidsgivereOrganisasjon(kontrollPeriode: Kontrollperiode): Boolean {
         return arbeidsforholdForKontrollPeriode(kontrollPeriode).stream().allMatch { it.arbeidsgivertype == OpplysningspliktigArbeidsgiverType.Organisasjon }
     }
@@ -68,6 +61,13 @@ object ArbeidsforholdFunksjoner {
     }
 
     fun List<Ansatte>.finnesMindreEnn(tall: Int) = this.filter { it.antall ?: 0 < tall }
+
+    fun List<Arbeidsforhold>.registrerAntallAnsatteHosJuridiskEnhet(ytelse: Ytelse) =
+        this.forEach { arbeidsforhold ->
+            arbeidsforhold.arbeidsgiver.juridiskeEnheter?.forEach { juridiskEnhet ->
+                antallAnsatteHosJuridiskEnhetCounter(juridiskEnhet?.organisasjonsnummer.toString(), juridiskEnhet?.antallAnsatte.toString(), ytelse).increment()
+            }
+        }
 
     fun List<Arbeidsgiver>.registrerAntallAnsatte(ytelse: Ytelse) =
         this.forEach { arbeidsgiver ->
@@ -161,41 +161,6 @@ object ArbeidsforholdFunksjoner {
 
         this.arbeidsavtaler
             .filter { it.gyldighetsperiode.overlapper(arbeidsforholdKontrollperiodeIntersection.periode) && (it.stillingsprosent == null || it.stillingsprosent > 0.0) }
-            .map { (it.gyldighetsperiode.intersection(arbeidsforholdKontrollperiodeIntersection).antallDager to (it.getStillingsprosent())) }
-            .forEach { vektetStillingsprosentForArbeidsforhold += ((it.first / totaltAntallDager) * it.second) }
-
-        return Math.round(vektetStillingsprosentForArbeidsforhold * 10.0) / 10.0
-    }
-
-    fun List<Arbeidsforhold>.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTidSkygge(gittStillingsprosent: Double, kontrollPeriode: Kontrollperiode): Boolean {
-        val arbeidsforholdForKontrollPeriode = this.arbeidsforholdForKontrollPeriodeMedStillingsprosentOver0(kontrollPeriode)
-        var samletStillingsprosent = 0.0
-
-        for (arbeidsforhold in arbeidsforholdForKontrollPeriode) {
-            val vektetStillingsprosentForArbeidsforhold = arbeidsforhold.vektetStillingsprosentForArbeidsforholdSkygge(kontrollPeriode)
-
-            if (vektetStillingsprosentForArbeidsforhold < gittStillingsprosent &&
-                this.arbeidsforholdForKontrollPeriode(kontrollPeriode).ingenAndreParallelleArbeidsforhold(arbeidsforhold, kontrollPeriode)
-            ) {
-                return false
-            }
-
-            samletStillingsprosent += vektetStillingsprosentForArbeidsforhold
-        }
-
-        return samletStillingsprosent >= gittStillingsprosent
-    }
-
-    private fun Arbeidsforhold.vektetStillingsprosentForArbeidsforholdSkygge(kontrollPeriode: Kontrollperiode, beregnGjennomsnittForKontrollperioden: Boolean = false): Double {
-
-        val arbeidsforholdKontrollperiodeIntersection = this.periode.intersection(kontrollPeriode)
-        val totaltAntallDager = if (beregnGjennomsnittForKontrollperioden) kontrollPeriode.antallDager
-        else arbeidsforholdKontrollperiodeIntersection.antallDager
-
-        var vektetStillingsprosentForArbeidsforhold = 0.0
-
-        this.arbeidsavtaler
-            .filter { it.gyldighetsperiode.overlapper(kontrollPeriode.periode) && it.stillingsprosent != null && it.stillingsprosent > 0.0 }
             .map { (it.gyldighetsperiode.intersection(arbeidsforholdKontrollperiodeIntersection).antallDager to (it.getStillingsprosent())) }
             .forEach { vektetStillingsprosentForArbeidsforhold += ((it.first / totaltAntallDager) * it.second) }
 

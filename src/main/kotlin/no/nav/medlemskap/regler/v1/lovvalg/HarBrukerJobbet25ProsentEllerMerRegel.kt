@@ -1,6 +1,5 @@
 package no.nav.medlemskap.regler.v1.lovvalg
 
-import no.nav.medlemskap.common.stillingsprosentSkyggeCounter
 import no.nav.medlemskap.domene.Arbeidsforhold
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
@@ -22,7 +21,6 @@ class HarBrukerJobbet25ProsentEllerMerRegel(
 ) : LovvalgRegel(regelId, ytelse, periode, førsteDagForYtelse) {
 
     override fun operasjon(): Resultat {
-        stillingsprosentSkyggeCounter(arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTidSkygge(25.0, kontrollPeriodeForArbeidsforhold), ytelse).increment()
         return when {
             arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollPeriodeForArbeidsforhold, ytelse) -> ja()
             else -> nei("Bruker har ikke jobbet 25% eller mer i løpet av perioden.")

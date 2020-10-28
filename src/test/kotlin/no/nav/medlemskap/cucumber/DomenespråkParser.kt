@@ -503,7 +503,7 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     ARBEIDSGIVERTYPE("Arbeidsgivertype"),
     BEREGNET_ANTALL_TIMER_PR_UKE("Beregnet antall timer pr uke"),
     DEKNING("Dekning"),
-    DOEDSDATO("Doedsdato"),
+    DOEDSDATO("Dødsdato"),
     ER_MEDLEM("Er medlem"),
     FRA_OG_MED_DATO("Fra og med dato"),
     FØRSTE_DAG_FOR_YTELSE("Første dag for ytelse"),

@@ -41,11 +41,7 @@ fun configureSensuInfluxMeterRegistry(): SensuInfluxMeterRegistry {
     influxMeterRegistry.config().meterFilter(
         MeterFilter.denyUnless {
             it.name.startsWith("api_hit_counter") ||
-                it.name.startsWith("stillingsprosent") ||
-                it.name.startsWith("dekningstyper") ||
-                it.name.contains("arbeidsforhold") ||
-                it.name.startsWith("statsborgerskap") ||
-                it.name.startsWith("enhetstype_juridisk_enhet")
+                it.name.startsWith("regel_calls_total")
         }
     )
     influxMeterRegistry.config().commonTags(defaultInfluxTags())
@@ -100,12 +96,6 @@ fun samletStillingsprosentCounter(stillingsprosent: Double, ytelse: String): Cou
         .description("counter for fordeling av samlet stillingsprosent")
         .register(Metrics.globalRegistry)
 
-fun stillingsprosentSkyggeCounter(harJobbet25ProsentEllerMer: Boolean, ytelse: Ytelse): Counter = Counter
-    .builder("stillingsprosent_skygge")
-    .tags("harJobbetNok", harJobbet25ProsentEllerMer.toString(), "ytelse", ytelse.metricName())
-    .description("")
-    .register(Metrics.globalRegistry)
-
 fun merEnn10ArbeidsforholdCounter(ytelse: Ytelse): Counter = Counter
     .builder("over_10_arbeidsforhold")
     .tags("ytelse", ytelse.metricName())
@@ -116,6 +106,12 @@ fun antallTreffPåArbeidsgiver(orgnummer: String?, ytelse: Ytelse): Counter = Co
     .builder("treff_paa_arbeidsgiver")
     .tags("orgnummer", orgnummer, "ytelse", ytelse.metricName())
     .description("counter for antall treff på en arbeidsgiver")
+    .register(Metrics.globalRegistry)
+
+fun antallAnsatteHosJuridiskEnhetCounter(orgnummer: String, antall: String, ytelse: Ytelse): Counter = Counter
+    .builder("antall_ansatte_hos_juridisk_enhet")
+    .tags("orgnummer", orgnummer, "antall", antall, "ytelse", ytelse.metricName())
+    .description("counter for antall ansatte hos juridisk enhet")
     .register(Metrics.globalRegistry)
 
 fun antallAnsatteTilUavklart(antall: String, ytelse: Ytelse): Counter = Counter
