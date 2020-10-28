@@ -41,12 +41,7 @@ fun configureSensuInfluxMeterRegistry(): SensuInfluxMeterRegistry {
     influxMeterRegistry.config().meterFilter(
         MeterFilter.denyUnless {
             it.name.startsWith("api_hit_counter") ||
-                it.name.startsWith("stillingsprosent") ||
-                it.name.startsWith("dekningstyper") ||
-                it.name.contains("arbeidsforhold") ||
-                it.name.startsWith("statsborgerskap") ||
-                it.name.startsWith("enhetstype_juridisk_enhet") ||
-                it.name.startsWith("regel_calls")
+                it.name.startsWith("regel_calls_total")
         }
     )
     influxMeterRegistry.config().commonTags(defaultInfluxTags())
