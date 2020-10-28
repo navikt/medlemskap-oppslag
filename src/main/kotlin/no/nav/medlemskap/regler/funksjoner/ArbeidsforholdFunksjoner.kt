@@ -167,41 +167,6 @@ object ArbeidsforholdFunksjoner {
         return Math.round(vektetStillingsprosentForArbeidsforhold * 10.0) / 10.0
     }
 
-    fun List<Arbeidsforhold>.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTidSkygge(gittStillingsprosent: Double, kontrollPeriode: Kontrollperiode): Boolean {
-        val arbeidsforholdForKontrollPeriode = this.arbeidsforholdForKontrollPeriodeMedStillingsprosentOver0(kontrollPeriode)
-        var samletStillingsprosent = 0.0
-
-        for (arbeidsforhold in arbeidsforholdForKontrollPeriode) {
-            val vektetStillingsprosentForArbeidsforhold = arbeidsforhold.vektetStillingsprosentForArbeidsforholdSkygge(kontrollPeriode)
-
-            if (vektetStillingsprosentForArbeidsforhold < gittStillingsprosent &&
-                this.arbeidsforholdForKontrollPeriode(kontrollPeriode).ingenAndreParallelleArbeidsforhold(arbeidsforhold, kontrollPeriode)
-            ) {
-                return false
-            }
-
-            samletStillingsprosent += vektetStillingsprosentForArbeidsforhold
-        }
-
-        return samletStillingsprosent >= gittStillingsprosent
-    }
-
-    private fun Arbeidsforhold.vektetStillingsprosentForArbeidsforholdSkygge(kontrollPeriode: Kontrollperiode, beregnGjennomsnittForKontrollperioden: Boolean = false): Double {
-
-        val arbeidsforholdKontrollperiodeIntersection = this.periode.intersection(kontrollPeriode)
-        val totaltAntallDager = if (beregnGjennomsnittForKontrollperioden) kontrollPeriode.antallDager
-        else arbeidsforholdKontrollperiodeIntersection.antallDager
-
-        var vektetStillingsprosentForArbeidsforhold = 0.0
-
-        this.arbeidsavtaler
-            .filter { it.gyldighetsperiode.overlapper(kontrollPeriode.periode) && it.stillingsprosent != null && it.stillingsprosent > 0.0 }
-            .map { (it.gyldighetsperiode.intersection(arbeidsforholdKontrollperiodeIntersection).antallDager to (it.getStillingsprosent())) }
-            .forEach { vektetStillingsprosentForArbeidsforhold += ((it.first / totaltAntallDager) * it.second) }
-
-        return Math.round(vektetStillingsprosentForArbeidsforhold * 10.0) / 10.0
-    }
-
     fun List<Arbeidsforhold>.beregnGjennomsnittligStillingsprosentForGrafana(kontrollPeriode: Kontrollperiode): Double {
         var sumStillingsprosent = 0.0
 

@@ -45,7 +45,8 @@ fun configureSensuInfluxMeterRegistry(): SensuInfluxMeterRegistry {
                 it.name.startsWith("dekningstyper") ||
                 it.name.contains("arbeidsforhold") ||
                 it.name.startsWith("statsborgerskap") ||
-                it.name.startsWith("enhetstype_juridisk_enhet")
+                it.name.startsWith("enhetstype_juridisk_enhet") ||
+                it.name.startsWith("regel_calls")
         }
     )
     influxMeterRegistry.config().commonTags(defaultInfluxTags())
@@ -99,12 +100,6 @@ fun samletStillingsprosentCounter(stillingsprosent: Double, ytelse: String): Cou
         .tags("stillingsprosent", getStillingsprosentIntervall(stillingsprosent), "ytelse", ytelse)
         .description("counter for fordeling av samlet stillingsprosent")
         .register(Metrics.globalRegistry)
-
-fun stillingsprosentSkyggeCounter(harJobbet25ProsentEllerMer: Boolean, ytelse: Ytelse): Counter = Counter
-    .builder("stillingsprosent_skygge")
-    .tags("harJobbetNok", harJobbet25ProsentEllerMer.toString(), "ytelse", ytelse.metricName())
-    .description("")
-    .register(Metrics.globalRegistry)
 
 fun merEnn10ArbeidsforholdCounter(ytelse: Ytelse): Counter = Counter
     .builder("over_10_arbeidsforhold")
