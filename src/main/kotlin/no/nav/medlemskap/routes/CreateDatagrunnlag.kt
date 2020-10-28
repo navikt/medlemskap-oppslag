@@ -55,7 +55,7 @@ suspend fun defaultCreateDatagrunnlag(
 
     ytelseCounter(ytelse.metricName()).increment()
 
-    registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl, request.periode, ytelse)
+    registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl, request.periode, request.førsteDagForYtelse, ytelse)
 
     arbeidsforhold.registrerAntallAnsatteHosJuridiskEnhet(ytelse)
 
@@ -88,14 +88,14 @@ suspend fun hentDataOmBarn(fnrBarn: List<String>, services: Services, callId: St
     return dataOmBarn
 }
 
-private suspend fun CoroutineScope.hentDataOmEktefelle(fnrTilEktefelle: String?, services: Services, callId: String, periode: InputPeriode, dato: LocalDate?): DataOmEktefelle? {
+private suspend fun CoroutineScope.hentDataOmEktefelle(fnrTilEktefelle: String?, services: Services, callId: String, periode: InputPeriode, førsteDagForYtelse: LocalDate?): DataOmEktefelle? {
     if (fnrTilEktefelle != null) {
         val personhistorikkEktefelle = hentPersonHistorikkForEktefelle(fnrTilEktefelle, services, callId)
         if (personhistorikkEktefelle == null) {
             return null
         }
         val arbeidsforholdEktefelle = try {
-            services.aaRegService.hentArbeidsforhold(fnrTilEktefelle, callId, fraOgMedDatoForArbeidsforhold(periode, dato), periode.tom)
+            services.aaRegService.hentArbeidsforhold(fnrTilEktefelle, callId, fraOgMedDatoForArbeidsforhold(periode, førsteDagForYtelse), periode.tom)
         } catch (t: Exception) {
             emptyList<Arbeidsforhold>()
         }
@@ -120,12 +120,15 @@ private suspend fun hentPersonhistorikkFraPdl(services: Services, fnr: String, c
     return services.pdlService.hentPersonHistorikkTilBruker(fnr, callId)
 }
 
-private fun registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl: Personhistorikk, periode: InputPeriode, ytelse: Ytelse) {
-    if (personHistorikkFraPdl.statsborgerskap.size > 1)
+private fun registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl: Personhistorikk, periode: InputPeriode, førsteDagForYtelse: LocalDate?, ytelse: Ytelse) {
+    if (personHistorikkFraPdl.statsborgerskap.size > 1) {
         flereStatsborgerskapCounter(personHistorikkFraPdl.statsborgerskap.size.toString(), ytelse).increment()
+    }
+
+    val fraOgMedDato = førsteDagForYtelse ?: periode.fom
 
     val statsborgerskapEndretSisteÅret = personHistorikkFraPdl.statsborgerskap
-        .harEndretSisteÅret(Kontrollperiode(fom = periode.fom.minusYears(1), tom = periode.tom))
+        .harEndretSisteÅret(Kontrollperiode(fom = fraOgMedDato.minusYears(1), tom = periode.tom))
 
     endretStatsborgerskapSisteÅretCounter(statsborgerskapEndretSisteÅret, ytelse).increment()
 }
