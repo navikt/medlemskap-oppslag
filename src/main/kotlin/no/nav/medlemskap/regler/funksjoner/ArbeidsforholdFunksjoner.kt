@@ -63,11 +63,11 @@ object ArbeidsforholdFunksjoner {
     fun List<Ansatte>.finnesMindreEnn(tall: Int) = this.filter { it.antall ?: 0 < tall }
 
     fun List<Arbeidsforhold>.registrerAntallAnsatteHosJuridiskEnhet(ytelse: Ytelse) =
-            this.forEach {arbeidsforhold ->
-                arbeidsforhold.arbeidsgiver.juridiskeEnheter?.forEach { juridiskEnhet ->
-                    antallAnsatteHosJuridiskEnhetCounter(juridiskEnhet?.antallAnsatte.toString(), ytelse).increment()
-                }
+        this.forEach { arbeidsforhold ->
+            arbeidsforhold.arbeidsgiver.juridiskeEnheter?.forEach { juridiskEnhet ->
+                antallAnsatteHosJuridiskEnhetCounter(juridiskEnhet?.antallAnsatte.toString(), ytelse).increment()
             }
+        }
 
     fun List<Arbeidsgiver>.registrerAntallAnsatte(ytelse: Ytelse) =
         this.forEach { arbeidsgiver ->
