@@ -15,6 +15,7 @@ import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.fraOgMedDatoForArbeidsforhold
+import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.registrerAntallAnsatteHosJuridiskEnhet
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarn
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilEktefelle
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.harEndretSisteÅret
@@ -54,6 +55,8 @@ suspend fun defaultCreateDatagrunnlag(
     ytelseCounter(ytelse.metricName()).increment()
 
     registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl, request.periode, ytelse)
+
+    arbeidsforhold.registrerAntallAnsatteHosJuridiskEnhet(ytelse)
 
     Datagrunnlag(
         periode = request.periode,
