@@ -1,22 +1,69 @@
 name: PR build
 
-on: [pull_request]
+on: [ pull_request ]
 
+env:
+  APP: medlemskap-oppslag
 jobs:
-  build:
+  build-branch:
+    name: Build and publish Docker image for PR-branch
     runs-on: ubuntu-latest
+    env:
+      IMAGE: docker.pkg.github.com/${{ github.repository }}/medlemskap-oppslag:${{ github.sha }}
     steps:
-      - uses: actions/checkout@v1
-      - uses: actions/cache@v1.1.2
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Set up Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: '12.x'
+
+      - name: Cache gradle dependencies
+        uses: actions/cache@v1
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - name: test and build
-        run: ./gradlew test build
+      - name: Build with Gradle
+        run: ./gradlew test build --info
+
+      - name: Build and Publish Docker image
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ORG_GRADLE_PROJECT_githubUser: x-access-token
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
-      - name: build docker image
-        run: docker build . --pull
+        run: |
+          docker build -t $IMAGE .
+          docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
+          docker push $IMAGE
+      - name: Archive NAIS yaml
+        uses: actions/upload-artifact@v1
+        with:
+          name: nais-dev-yaml
+          path: nais
+
+  deploy-branch-dev:
+    name: Deploy PR-branch to dev
+    needs: [build-branch]
+    runs-on: ubuntu-latest
+    env:
+      IMAGE: docker.pkg.github.com/${{ github.repository }}/medlemskap-oppslag:${{ github.sha }}
+    steps:
+      - name: Fetch NAIS yaml
+        uses: actions/download-artifact@v1
+        with:
+          name: nais-dev-yaml
+          path: nais
+
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-fss
+          RESOURCE: deploy/preprod.yaml
+          VARS: deploy/vars.yaml
+          VAR: alerts_slack_channel=#team-p3-medlemskap-notifications
+          PRINT_PAYLOAD: true
