@@ -479,7 +479,7 @@ private val forventetResponse =
         "dekning" : "",
         "delresultat" : [{
             "regelId": "REGEL_DOED", 
-            "avklaring" : "Er bruker død?", 
+            "avklaring" : "Er det avklart om brukeren er død eller ikke?", 
             "begrunnelse" : "Regelflyt konkluderer med JA", 
             "svar": "JA", 
             "harDekning": null, 
