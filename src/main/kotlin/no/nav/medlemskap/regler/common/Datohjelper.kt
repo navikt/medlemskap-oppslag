@@ -37,11 +37,11 @@ class Datohjelper(val periode: InputPeriode, val førsteDagForYtelse: LocalDate?
         }
     }
 
-    fun førsteSykedag() = førsteDagForYtelse()
-    fun førsteDagpengedag() = førsteDagForYtelse()
-    fun førsteEnsligForsørgerdag() = førsteDagForYtelse()
+    fun førsteSykedag() = førsteDatoForYtelse()
+    fun førsteDagpengedag() = førsteDatoForYtelse()
+    fun førsteEnsligForsørgerdag() = førsteDatoForYtelse()
 
-    fun førsteDagForYtelse(): LocalDate {
+    fun førsteDatoForYtelse(): LocalDate {
         if (førsteDagForYtelse != null) {
             return førsteDagForYtelse
         } else {
