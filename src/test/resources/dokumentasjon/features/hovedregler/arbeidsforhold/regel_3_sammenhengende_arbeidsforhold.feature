@@ -56,7 +56,7 @@ Egenskap: Regel 3: Har bruker sammenhengende arbeidsforhold siste 12 måneder?
       | 01.01.2016 | 15.03.2019 | 16.03.2019 | 29.05.2019 | Nei  | Mangler arbeidsforhold i bakkant            |
       | 01.03.2019 | 15.03.2019 | 16.03.2019 | 29.05.2019 | Nei  | Mangler arbeidsforhold i forkant og bakkant |
       | 01.03.2019 | 15.03.2019 | 16.03.2019 |            | Nei  | Mangler arbeidsforhold i forkant            |
-#      | 01.01.2019     |15.03.2019 | 18.03.2019        |                   | Ja   | Arbeidsforhold med to dagers opphold         |
+      | 01.01.2019 | 15.03.2019 | 18.03.2019 |            | Ja   | Arbeidsforhold med to dagers opphold        |
 
 
   Scenario: Person med mange arbeidsforhold i perioden
@@ -73,3 +73,22 @@ Egenskap: Regel 3: Har bruker sammenhengende arbeidsforhold siste 12 måneder?
       | 24.09.2020      | 15.10.2020      | Nei                           |
 
     Så skal svaret være "Ja"
+
+  Scenariomal: Hvis "første dag for ytelse" er angitt, så skal kontrollperioden være 12 måneder før denne datoen.
+    Gitt følgende arbeidsforhold fra AAReg
+      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
+      | 01.01.2019      |                 | Organisasjon     | NORMALT             |
+
+    Når regel "3" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Første dag for ytelse   | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2020      | <Første dag for ytelse> | Nei                           |
+
+    Så skal svaret være "<Regel 3>"
+
+    Eksempler:
+      | Første dag for ytelse | Regel 3 |
+      |                       | Ja      |
+      | 30.01.2020            | Ja      |
+      | 01.01.2020            | Ja      |
+      | 31.12.2019            | Nei     |
+      | 01.11.2018            | Nei     |

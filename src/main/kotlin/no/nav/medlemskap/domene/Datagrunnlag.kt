@@ -9,6 +9,7 @@ import java.time.temporal.ChronoUnit
 
 data class Datagrunnlag(
     val periode: InputPeriode,
+    val førsteDagForYtelse: LocalDate?,
     val brukerinput: Brukerinput,
     val pdlpersonhistorikk: Personhistorikk,
     val medlemskap: List<Medlemskap> = listOf(),

@@ -7,13 +7,15 @@ import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.ja
 import no.nav.medlemskap.regler.common.nei
+import java.time.LocalDate
 
 class HarBrukerJobbetUtenforNorgeRegel(
     ytelse: Ytelse,
     private val periode: InputPeriode,
+    førsteDagForYtelse: LocalDate?,
     private val arbeidUtenforNorge: Boolean,
     regelId: RegelId = RegelId.REGEL_9
-) : LovvalgRegel(regelId, ytelse, periode) {
+) : LovvalgRegel(regelId, ytelse, periode, førsteDagForYtelse) {
 
     override fun operasjon(): Resultat {
         return when {
@@ -28,6 +30,7 @@ class HarBrukerJobbetUtenforNorgeRegel(
             return HarBrukerJobbetUtenforNorgeRegel(
                 ytelse = datagrunnlag.ytelse,
                 periode = datagrunnlag.periode,
+                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
                 arbeidUtenforNorge = datagrunnlag.brukerinput.arbeidUtenforNorge
             )
         }

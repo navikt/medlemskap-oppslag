@@ -7,13 +7,15 @@ import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserForKontrollPeriode
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresserForKontrollPeriode
+import java.time.LocalDate
 
 class HarBrukerBarnSomErFolkeregistrertRegel(
     ytelse: Ytelse,
     private val periode: InputPeriode,
+    førsteDagForYtelse: LocalDate?,
     private val dataOmbarn: List<DataOmBarn>?,
     regelId: RegelId = RegelId.REGEL_11_2_2
-) : LovvalgRegel(regelId, ytelse, periode) {
+) : LovvalgRegel(regelId, ytelse, periode, førsteDagForYtelse) {
 
     override fun operasjon(): Resultat {
         val barn = dataOmbarn
@@ -51,6 +53,7 @@ class HarBrukerBarnSomErFolkeregistrertRegel(
             return HarBrukerBarnSomErFolkeregistrertRegel(
                 ytelse = datagrunnlag.ytelse,
                 periode = datagrunnlag.periode,
+                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
                 dataOmbarn = datagrunnlag.dataOmBarn,
                 regelId = regelId
             )

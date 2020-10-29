@@ -13,13 +13,15 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.ja
 import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.erAlleArbeidsgivereOrganisasjon
+import java.time.LocalDate
 
 class ErArbeidsgiverOrganisasjonRegel(
     ytelse: Ytelse,
     private val periode: InputPeriode,
+    private val førsteDagForYtelse: LocalDate?,
     private val arbeidsforhold: List<Arbeidsforhold>,
     regelId: RegelId = RegelId.REGEL_4
-) : ArbeidsforholdRegel(regelId, ytelse, periode) {
+) : ArbeidsforholdRegel(regelId, ytelse, periode, førsteDagForYtelse) {
 
     private val logger = KotlinLogging.logger { }
 
@@ -44,6 +46,7 @@ class ErArbeidsgiverOrganisasjonRegel(
             return ErArbeidsgiverOrganisasjonRegel(
                 ytelse = datagrunnlag.ytelse,
                 periode = datagrunnlag.periode,
+                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold
             )
         }

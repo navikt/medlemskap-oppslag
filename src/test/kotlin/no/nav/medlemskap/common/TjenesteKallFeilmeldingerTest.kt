@@ -7,17 +7,13 @@ import io.restassured.config.RestAssuredConfig
 import io.restassured.http.Header
 import io.restassured.response.ResponseBodyExtractionOptions
 import io.restassured.specification.RequestSpecification
-import kotlinx.coroutines.runBlocking
 import no.nav.medlemskap.ApplicationState
 import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.createHttpServer
-import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.domene.barn.DataOmBarn
-import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
-import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
-import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
+import no.nav.medlemskap.domene.Folkeregistermetadata
+import no.nav.medlemskap.domene.mockCreateDatagrunnlag
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.skyscreamer.jsonassert.Customization
@@ -26,7 +22,6 @@ import org.skyscreamer.jsonassert.JSONCompareMode
 import org.skyscreamer.jsonassert.comparator.CustomComparator
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.YearMonth
 
 class TjenesteKallFeilmeldingerTest {
 
@@ -317,75 +312,6 @@ class TjenesteKallFeilmeldingerTest {
                 JSONCompareMode.STRICT,
                 Customization("tidspunkt") { _, _ -> true }
             )
-        )
-    }
-
-    suspend fun mockCreateDatagrunnlag(
-        fnr: String,
-        callId: String,
-        periode: InputPeriode,
-        brukerinput: Brukerinput,
-        services: Services,
-        clientId: String?,
-        ytelseFraRequest: Ytelse?
-    ): Datagrunnlag = runBlocking {
-
-        val ytelse = Ytelse.SYKEPENGER
-
-        Datagrunnlag(
-            periode = periode,
-            brukerinput = brukerinput,
-            pdlpersonhistorikk = personhistorikk(),
-            medlemskap = listOf(Medlemskap("dekning", enDato(), enAnnenDato(), true, Lovvalg.ENDL, "NOR", PeriodeStatus.GYLD)),
-            arbeidsforhold = listOf(arbeidsforhold()),
-            oppgaver = listOf(Oppgave(enDato(), Prioritet.NORM, Status.AAPNET, "Tema")),
-            dokument = listOf(Journalpost("Id", "Tittel", "Posttype", "Status", "Tema", listOf(Dokument("Id", "Tittel")))),
-            ytelse = ytelse,
-            dataOmBarn = listOf(DataOmBarn(personhistorikkBarn())),
-            dataOmEktefelle = DataOmEktefelle(personhistorikkEktefelle(), listOf(arbeidsforhold()))
-        )
-    }
-
-    private fun arbeidsforhold(): Arbeidsforhold {
-        return Arbeidsforhold(
-            Periode(enDato(), enAnnenDato()),
-            listOf(Utenlandsopphold("SWE", Periode(enDato(), enAnnenDato()), YearMonth.of(2010, 1))),
-            OpplysningspliktigArbeidsgiverType.Organisasjon,
-            Arbeidsgiver("type", "identifikator", listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus"), null),
-            Arbeidsforholdstype.NORMALT,
-            listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble(), 37.5))
-        )
-    }
-
-    private fun personhistorikk(): Personhistorikk {
-        return Personhistorikk(
-            statsborgerskap = listOf(Statsborgerskap("NOR", enDato(), enAnnenDato())),
-            bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr())),
-            familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata())),
-            doedsfall = emptyList()
-        )
-    }
-
-    private fun personhistorikkBarn(): PersonhistorikkBarn {
-        return PersonhistorikkBarn(
-            ident = barnFnr(),
-            bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            familierelasjoner = listOf(Familierelasjon(ektefelleFnr(), Familierelasjonsrolle.MOR, Familierelasjonsrolle.BARN, folkeregistermetadata()))
-        )
-    }
-
-    private fun personhistorikkEktefelle(): PersonhistorikkEktefelle {
-        return PersonhistorikkEktefelle(
-            ident = ektefelleFnr(),
-            barn = listOf(barnFnr()),
-            bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-            oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
         )
     }
 

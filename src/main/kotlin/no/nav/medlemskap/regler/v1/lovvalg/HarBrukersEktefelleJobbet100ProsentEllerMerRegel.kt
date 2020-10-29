@@ -9,13 +9,15 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.ja
 import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
+import java.time.LocalDate
 
 class HarBrukersEktefelleJobbet100ProsentEllerMerRegel(
     ytelse: Ytelse,
     private val periode: InputPeriode,
+    førsteDagForYtelse: LocalDate?,
     private val arbeidsforholdEktefelle: List<Arbeidsforhold>,
     regelId: RegelId = RegelId.REGEL_11_6_1
-) : LovvalgRegel(regelId, ytelse, periode) {
+) : LovvalgRegel(regelId, ytelse, periode, førsteDagForYtelse) {
 
     override fun operasjon(): Resultat {
 
@@ -31,6 +33,7 @@ class HarBrukersEktefelleJobbet100ProsentEllerMerRegel(
             return HarBrukersEktefelleJobbet100ProsentEllerMerRegel(
                 ytelse = datagrunnlag.ytelse,
                 periode = datagrunnlag.periode,
+                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
                 arbeidsforholdEktefelle = datagrunnlag.dataOmEktefelle?.arbeidsforholdEktefelle ?: emptyList()
             )
         }

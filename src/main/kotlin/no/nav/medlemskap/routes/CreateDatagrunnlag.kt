@@ -19,6 +19,7 @@ import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.registrerAnt
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarn
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilEktefelle
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.harEndretSisteÅret
+import java.time.LocalDate
 
 private val logger = KotlinLogging.logger { }
 private val secureLogger = KotlinLogging.logger("tjenestekall")
@@ -33,7 +34,7 @@ suspend fun defaultCreateDatagrunnlag(
     val dataOmEktefelle: DataOmEktefelle?
     val dataOmBrukersBarn: List<DataOmBarn>?
 
-    val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(request.fnr, callId, fraOgMedDatoForArbeidsforhold(request.periode), request.periode.tom) }
+    val arbeidsforholdRequest = async { services.aaRegService.hentArbeidsforhold(request.fnr, callId, fraOgMedDatoForArbeidsforhold(request.periode, request.førsteDagForYtelse), request.periode.tom) }
     val aktorIder = services.pdlService.hentAlleAktorIder(request.fnr, callId)
     val personHistorikkFraPdl = hentPersonhistorikkFraPdl(services, request.fnr, callId)
     val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(request.fnr, callId) }
@@ -44,7 +45,7 @@ suspend fun defaultCreateDatagrunnlag(
     dataOmBrukersBarn = if (!fnrTilBarn.isNullOrEmpty()) hentDataOmBarn(fnrTilBarn, services, callId) else null
 
     val fnrTilEktefelle = hentFnrTilEktefelle(personHistorikkFraPdl)
-    dataOmEktefelle = if (!fnrTilEktefelle.isNullOrEmpty()) hentDataOmEktefelle(fnrTilEktefelle, services, callId, request.periode) else null
+    dataOmEktefelle = if (!fnrTilEktefelle.isNullOrEmpty()) hentDataOmEktefelle(fnrTilEktefelle, services, callId, request.periode, request.førsteDagForYtelse) else null
 
     val medlemskap = medlemskapsunntakRequest.await()
     val arbeidsforhold = arbeidsforholdRequest.await()
@@ -54,12 +55,13 @@ suspend fun defaultCreateDatagrunnlag(
 
     ytelseCounter(ytelse.metricName()).increment()
 
-    registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl, request.periode, ytelse)
+    registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl, request.periode, request.førsteDagForYtelse, ytelse)
 
     arbeidsforhold.registrerAntallAnsatteHosJuridiskEnhet(ytelse)
 
     Datagrunnlag(
         periode = request.periode,
+        førsteDagForYtelse = request.førsteDagForYtelse,
         brukerinput = request.brukerinput,
         pdlpersonhistorikk = personHistorikkFraPdl,
         medlemskap = medlemskap,
@@ -86,14 +88,14 @@ suspend fun hentDataOmBarn(fnrBarn: List<String>, services: Services, callId: St
     return dataOmBarn
 }
 
-private suspend fun CoroutineScope.hentDataOmEktefelle(fnrTilEktefelle: String?, services: Services, callId: String, periode: InputPeriode): DataOmEktefelle? {
+private suspend fun CoroutineScope.hentDataOmEktefelle(fnrTilEktefelle: String?, services: Services, callId: String, periode: InputPeriode, førsteDagForYtelse: LocalDate?): DataOmEktefelle? {
     if (fnrTilEktefelle != null) {
         val personhistorikkEktefelle = hentPersonHistorikkForEktefelle(fnrTilEktefelle, services, callId)
         if (personhistorikkEktefelle == null) {
             return null
         }
         val arbeidsforholdEktefelle = try {
-            services.aaRegService.hentArbeidsforhold(fnrTilEktefelle, callId, fraOgMedDatoForArbeidsforhold(periode), periode.tom)
+            services.aaRegService.hentArbeidsforhold(fnrTilEktefelle, callId, fraOgMedDatoForArbeidsforhold(periode, førsteDagForYtelse), periode.tom)
         } catch (t: Exception) {
             emptyList<Arbeidsforhold>()
         }
@@ -118,12 +120,15 @@ private suspend fun hentPersonhistorikkFraPdl(services: Services, fnr: String, c
     return services.pdlService.hentPersonHistorikkTilBruker(fnr, callId)
 }
 
-private fun registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl: Personhistorikk, periode: InputPeriode, ytelse: Ytelse) {
-    if (personHistorikkFraPdl.statsborgerskap.size > 1)
+private fun registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl: Personhistorikk, periode: InputPeriode, førsteDagForYtelse: LocalDate?, ytelse: Ytelse) {
+    if (personHistorikkFraPdl.statsborgerskap.size > 1) {
         flereStatsborgerskapCounter(personHistorikkFraPdl.statsborgerskap.size.toString(), ytelse).increment()
+    }
+
+    val fraOgMedDato = førsteDagForYtelse ?: periode.fom
 
     val statsborgerskapEndretSisteÅret = personHistorikkFraPdl.statsborgerskap
-        .harEndretSisteÅret(Kontrollperiode(fom = periode.fom.minusYears(1), tom = periode.tom))
+        .harEndretSisteÅret(Kontrollperiode(fom = fraOgMedDato.minusYears(1), tom = periode.tom))
 
     endretStatsborgerskapSisteÅretCounter(statsborgerskapEndretSisteÅret, ytelse).increment()
 }
