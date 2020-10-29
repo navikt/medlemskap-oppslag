@@ -44,7 +44,7 @@ jobs:
         uses: actions/upload-artifact@v1
         with:
           name: nais-dev-yaml
-          path: nais
+          path: deploy
 
   deploy-branch-dev:
     name: Deploy PR-branch to dev
@@ -57,7 +57,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: nais-dev-yaml
-          path: nais
+          path: deploy
 
       - uses: nais/deploy/actions/deploy@v1
         env:
