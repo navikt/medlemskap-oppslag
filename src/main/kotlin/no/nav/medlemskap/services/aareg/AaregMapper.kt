@@ -63,7 +63,6 @@ fun mapArbeidsAvtaler(arbeidsforhold: AaRegArbeidsforhold): List<Arbeidsavtale> 
 }
 
 fun mapSkipsregister(arbeidsavtale: AaRegArbeidsavtale): Skipsregister {
-    logger.info("Mapper skipsregister {}", arbeidsavtale.skipsregister)
     when (arbeidsavtale.skipsregister) {
         "nis" -> return Skipsregister.NIS
         "nor" -> return Skipsregister.NOR
