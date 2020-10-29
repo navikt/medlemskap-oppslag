@@ -49,7 +49,7 @@ data class AaRegArbeidsforhold(
     val registrert: LocalDateTime,
     val sistBekreftet: LocalDateTime?,
     val sporingsinformasjon: AaRegSporingsinformasjon,
-    val type: String,
+    var type: String,
     val utenlandsopphold: List<AaRegUtenlandsopphold>?
 )
 
@@ -73,7 +73,7 @@ data class AaRegGyldighetsperiode(
 )
 
 data class AaRegOpplysningspliktigArbeidsgiver(
-    val type: AaRegOpplysningspliktigArbeidsgiverType,
+    var type: AaRegOpplysningspliktigArbeidsgiverType,
     val organisasjonsnummer: String?,
     val aktoerId: String?,
     val offentligIdent: String?

@@ -330,6 +330,7 @@ object DomenespråkParser : BasisDomeneParser() {
                 parseValgfriDato(FRA_OG_MED_DATO, rad),
                 parseValgfriDato(TIL_OG_MED_DATO, rad)
             )
+
             return Arbeidsforhold(
                 periode = periode,
                 utenlandsopphold = utenlandsopphold,
