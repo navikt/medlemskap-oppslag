@@ -23,7 +23,7 @@
         </triggeringPolicy>
 
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-            <jsonFactoryDecorator class="no.nav.medlemskap.common.ISO8601DateDecorator"/>
+            <timestampPattern>yyyy-MM-dd</timestampPattern>
         </encoder>
     </appender>
 
