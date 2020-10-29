@@ -41,6 +41,27 @@ jobs:
           MESSAGE: "Bygg feilet"
           CHANNEL: "#team-p3-medlemskap-notifications"
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+  deploypreprod:
+    name: Deploy to Preprod
+    needs: build
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        name: Checkout code
+      - uses: nais/deploy/actions/deploy@master
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
+          CLUSTER: dev-fss
+          RESOURCE: deploy/preprod.yaml
+      - name: Post failures to Slack
+        if: failure()
+        run: |
+          curl -X POST --data-urlencode "payload={\"channel\": \"$CHANNEL\", \"text\": \"$MESSAGE\", \"icon_emoji\": \":ghost:\"}" $WEBHOOK_URL
+        env:
+          MESSAGE: "Deploy til preprod feilet"
+          CHANNEL: "#team-p3-medlemskap-notifications"
+          WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
   deployprod:
     name: Deploy to Prod
     needs: build
