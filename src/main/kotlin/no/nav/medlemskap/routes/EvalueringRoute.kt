@@ -112,11 +112,14 @@ private fun loggResponse(fnr: String, response: Response) {
     val årsakerSomRegelIdStr = årsaker.map { it.regelId.toString() + " " }
 
     secureLogger.info(append("resultat", resultat), "{} konklusjon gitt for bruker {}", resultat.svar.name, fnr)
+
+    secureLogger.info(append("resultat", resultat), "{} konklusjon gitt for bruker {}", resultat.svar.name, fnr)
     if (årsaker.isNotEmpty()) {
         secureLogger.info(append("årsaker", årsaker), "Årsaker for bruker {}: {}", fnr, årsakerSomRegelIdStr)
     }
 
-    secureLogger.info(append("response", response), "Response for bruker {}", fnr)
+    secureLogger.info(append("response", response), "Strukturert logging av response for bruker {}", fnr)
+    secureLogger.info("Ikke-strukturert-logging: For bruker {} er responsen {}", fnr, response)
 }
 
 private fun validerRequest(request: Request): Request {

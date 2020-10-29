@@ -2,6 +2,10 @@
 <configuration>
     <appender name="STDOUT_JSON" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <jsonGeneratorDecorator class="net.logstash.logback.decorate.PrettyPrintingJsonGeneratorDecorator"/>
+            <jsonFactoryDecorator class="no.nav.medlemskap.common.ISO8601DateDecorator"/>
+        </encoder>
     </appender>
 
     <appender name="httpTraceLogAppender" class="ch.qos.logback.core.ConsoleAppender">
