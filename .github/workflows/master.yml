@@ -64,7 +64,7 @@ jobs:
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
   deployprod:
     name: Deploy to Prod
-    needs: build
+    needs: deploypreprod
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
