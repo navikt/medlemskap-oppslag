@@ -1,4 +1,4 @@
-package no.nav.medlemskap.cucumber.steps
+package no.nav.medlemskap.cucumber.steps.pdl
 
 import no.nav.medlemskap.domene.*
 import java.time.LocalDate

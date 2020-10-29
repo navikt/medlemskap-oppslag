@@ -1,4 +1,4 @@
-package no.nav.medlemskap.cucumber.steps
+package no.nav.medlemskap.cucumber.steps.pdl
 
 import no.nav.medlemskap.domene.Adresse
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
