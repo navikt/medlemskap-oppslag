@@ -40,7 +40,8 @@ Kallet er en POST på `/`
     "periode": {
         "fom": "2019-01-01", 
         "tom": "2019-12-31"
-    }, 
+    },
+    førsteDagForYtelse = "2019-01-01" 
     "brukerinput": {
         "arbeidUtenforNorge": false
     }
@@ -52,6 +53,7 @@ Kallet er en POST på `/`
 * periode: 
     * For ytelsen sykepenger er dette perioden brukeren søker sykepenger for
     * For ytelsen sykepenger brukes dagen før start på perioden som første sykemeldingsdag
+* førsteDagForYtelse: Første sykedag for sykepenger, eller første dagpengedag for dagpenger    
 * brukerinput: Input fra bruker som må fylles ut i søknadsdialogen og er nødvendig for å avgjøre medlemskap
     * arbeidUtenforNorge: Har brukeren jobbet utenfor Norge siste 12 måneder?
 * ytelse
