@@ -46,7 +46,7 @@ jobs:
           name: nais-dev-yaml
           path: deploy
 
-  deploy-branch-dev:
+  deploypreprod:
     name: Deploy PR-branch to dev
     needs: [build-branch]
     runs-on: ubuntu-latest
@@ -67,3 +67,24 @@ jobs:
           VARS: deploy/vars.yaml
           VAR: alerts_slack_channel=#team-p3-medlemskap-notifications
           PRINT_PAYLOAD: true
+  acceptance-tests:
+    name: Run acceptance tests
+    needs: deploypreprod
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          repository: navikt/medlemskap-oppslag-funksjonelle-tester
+      - id: get-sha
+        run: |
+          echo ::set-output name=sha::$( curl -u "u:${{secrets.GITHUB_TOKEN}}" https://api.github.com/repos/navikt/medlemskap-oppslag-funksjonelle-tester/git/ref/heads/master | jq .object.sha | tr -d '"' )
+      - uses: nais/deploy/actions/deploy@v1
+        name: Run tests
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
+          IMAGE: docker.pkg.github.com/navikt/medlemskap-oppslag-funksjonelle-tester/medlemskap-oppslag-funksjonelle-tester:${{ steps.get-sha.outputs.sha }}
+          CLUSTER: dev-fss
+          VAR: app=medlemskap-oppslag
+          RESOURCE: nais/tests.yml
+        timeout-minutes: 5
