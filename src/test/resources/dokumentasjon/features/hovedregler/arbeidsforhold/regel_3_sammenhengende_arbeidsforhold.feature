@@ -75,6 +75,19 @@ Egenskap: Regel 3: Har bruker sammenhengende arbeidsforhold siste 12 måneder?
 
     Så skal svaret være "Ja"
 
+  Scenario: Person med 3 overlappende arbeidsforhold i perioden
+    Gitt følgende arbeidsforhold fra AAReg
+      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
+      | 20.11.2018      | 31.12.2019      | Organisasjon     | NORMALT             |
+      | 01.03.2018      | 31.07.2020      | Organisasjon     | NORMALT             |
+      | 01.06.2020      |                 | Organisasjon     | NORMALT             |
+
+    Når regel "3" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 05.10.2020      | 25.10.2020      | Nei                           |
+
+    Så skal svaret være "Ja"
+
   Scenariomal: Hvis "første dag for ytelse" er angitt, så skal kontrollperioden være 12 måneder før denne datoen.
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
