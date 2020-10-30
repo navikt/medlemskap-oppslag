@@ -113,7 +113,10 @@ object ArbeidsforholdFunksjoner {
                 usammenhengendeArbeidsforholdCounter(ytelse).increment()
                 return false
             }
-            forrigeTilDato = arbeidsforhold.periode.tom
+            if (arbeidsforhold.periode.tom == null || forrigeTilDato == null || arbeidsforhold.periode.tom.isAfter(forrigeTilDato)) {
+                forrigeTilDato = arbeidsforhold.periode.tom
+            }
+
             if (forrigeTilDato == null || forrigeTilDato.isAfter(kontrollPeriode.tom)) return true
         }
 
