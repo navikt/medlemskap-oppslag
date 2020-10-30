@@ -24,7 +24,7 @@ data class Organisasjonsdetaljer(
     val registreringsdato: LocalDate?,
     val registrertMVA: List<MVA>?,
     val sistEndret: LocalDate?,
-    val statuser: List<Status?>?,
+    var statuser: List<Status?>?,
     val stiftelsesdato: LocalDate?,
     val telefaksnummer: List<Telefonnummer?>?,
     val telefonnummer: List<Telefonnummer?>?,
@@ -134,7 +134,7 @@ data class Enhetstyper(
 )
 
 data class Ansatte(
-    val antall: Int?,
+    var antall: Int?,
     val bruksperiode: Bruksperiode?,
     val gyldighetsperiode: Gyldighetsperiode?
 )
@@ -152,7 +152,7 @@ data class Gyldighetsperiode(
 data class Organisasjon(
     val navn: Navn?,
     val organisasjonDetaljer: Organisasjonsdetaljer?,
-    val organisasjonsnummer: String?,
+    var organisasjonsnummer: String?,
     val type: String?,
     val bestaarAvOrganisasjonsledd: List<BestaarAvOrganisasjonsledd?>?,
     val inngaarIJuridiskEnheter: List<JuridiskEnhet?>?

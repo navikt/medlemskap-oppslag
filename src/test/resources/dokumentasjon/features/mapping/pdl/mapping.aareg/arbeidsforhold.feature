@@ -22,6 +22,17 @@ Egenskap: Mapping av arbeidsforhold
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype|
       | 2015-03-25      |  2016-02-03     | Organisasjon     | NORMALT            |
 
+    Og skal mappet arbeidsgivertype i arbeidsforholdet være
+      | Arbeidsgivertype | Arbeidsforholdstype|
+      | Organisasjon     | NORMALT            |
+
+    Og skal mappet arbeidsforholdstype i arbeidsforholdet være
+      | Arbeidsforholdstype|
+      | NORMALT            |
+
+
+
+
 
 
 

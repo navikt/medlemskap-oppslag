@@ -149,6 +149,18 @@ object DomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, StatsborgerskapMapper())
     }
 
+    fun mapPeriodeIArbeidsforhold(dataTable: DataTable?): Periode {
+        return mapDataTable(dataTable, PeriodeMapper())[0]
+    }
+
+    fun mapArbeidsgivertype(dataTable: DataTable?): OpplysningspliktigArbeidsgiverType {
+        return mapDataTable(dataTable, ArbeidsgivertypeMapper()).get(0)
+    }
+
+    fun mapArbeidsforholdstype(dataTable: DataTable?): Arbeidsforholdstype {
+        return mapDataTable(dataTable, ArbeidsforholdtypeMapper()).get(0)
+    }
+
     fun mapAdresser(dataTable: DataTable?): List<Adresse> {
         return mapDataTable(dataTable, AdresseMapper())
     }
@@ -247,6 +259,15 @@ object DomenespråkParser : BasisDomeneParser() {
         }
     }
 
+    class PeriodeMapper : RadMapper<Periode> {
+        override fun mapRad(rad: Map<String, String>): Periode {
+            return Periode(
+                parseValgfriDato(FRA_OG_MED_DATO, rad),
+                parseValgfriDato(TIL_OG_MED_DATO, rad)
+            )
+        }
+    }
+
     class DoedsfallMapper : RadMapper<LocalDate> {
         override fun mapRad(rad: Map<String, String>): LocalDate {
             return parseDato(DOEDSDATO, rad)
@@ -304,6 +325,18 @@ object DomenespråkParser : BasisDomeneParser() {
                 status = parseStatus(STATUS, rad),
                 tema = parseValgfriString(TEMA, rad)
             )
+        }
+    }
+
+    class ArbeidsgivertypeMapper : RadMapper<OpplysningspliktigArbeidsgiverType> {
+        override fun mapRad(rad: Map<String, String>): OpplysningspliktigArbeidsgiverType {
+            return OpplysningspliktigArbeidsgiverType.valueOf(parseString(ARBEIDSGIVERTYPE, rad))
+        }
+    }
+
+    class ArbeidsforholdtypeMapper : RadMapper<Arbeidsforholdstype> {
+        override fun mapRad(rad: Map<String, String>): Arbeidsforholdstype {
+            return Arbeidsforholdstype.valueOf(parseString(ARBEIDSFORHOLDSTYPE, rad))
         }
     }
 

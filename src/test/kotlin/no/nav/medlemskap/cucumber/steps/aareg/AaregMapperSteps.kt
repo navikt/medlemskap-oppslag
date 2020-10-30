@@ -1,8 +1,12 @@
 package no.nav.medlemskap.cucumber.steps.aareg
 import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
+import io.cucumber.java8.PendingException
 import io.kotest.matchers.shouldBe
 import no.nav.medlemskap.clients.aareg.*
+import no.nav.medlemskap.clients.ereg.BestaarAvOrganisasjonsledd
+import no.nav.medlemskap.clients.ereg.JuridiskEnhet
+import no.nav.medlemskap.clients.ereg.Navn
 import no.nav.medlemskap.clients.ereg.Organisasjon
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.mapping.pdl.aareg.AaregDomenespraakParser
@@ -29,13 +33,47 @@ class AaregMapperSteps : No {
             aaregBuilder.arbeidsforhold.type = aaregDomenespraakParser.mapArbeidsforholdsType(dataTable)
         }
 
+        Gitt<DataTable>("følgende om Organisasjon.type fra ereg") { dataTable: DataTable? ->
+            aaregBuilder.arbeidsforhold.type = aaregDomenespraakParser.mapType(dataTable)
+        }
+
+        Gitt<DataTable>("følgende om Organiasjon.organisasjonsnummer fra ereg") { dataTable: DataTable? ->
+            aaregBuilder.organisasjon.organisasjonsnummer = aaregDomenespraakParser.mapOrganisasjonsnummer(dataTable)
+        }
+
+        Gitt<DataTable>("følgende om ansatte i Organiasjon.Organisasjonsdetaljer.Ansatte fra ereg") { dataTable: DataTable? ->
+            aaregBuilder.organisasjon.organisasjonDetaljer?.ansatte?.get(0)?.antall = aaregDomenespraakParser.mapAntallAnsatte(dataTable)
+        }
+
+        Gitt<DataTable>("følgende om konkursstatus organisasjon.organisasjonDetaljer.statuser") { dataTable: DataTable? ->
+            aaregBuilder.organisasjon.organisasjonDetaljer?.statuser = aaregDomenespraakParser.mapStatuser(dataTable)
+        }
+
+        Så<DataTable>("skal mappet type til arbeidsgiver i arbeidsforholdet være") { dataTable: DataTable? -> throw PendingException() }
+
+        Så<DataTable>("mappet organisasjonsnummer til arbeidsgiver i arbeidsforholdet være") { dataTable: DataTable? -> throw PendingException() }
+
+        Så<DataTable>("mappet ansatte til arbeidsgiver i arbeidsforholdet være") { dataTable: DataTable? -> throw PendingException() }
+
+        Så<DataTable>("mappet konkursstatus til arbeidsgiver i arbeidsforholdet være") { dataTable: DataTable? -> throw PendingException() }
+
         Når("arbeidsforholdene mappes") {
             arbeidsforhold = mapTilArbeidsforhold()
         }
 
         Så<DataTable>("skal mappede periode i arbeidsforhold være") { dataTable: DataTable? ->
-            val arbeidsforholdPeriodeForventet = DomenespråkParser.mapArbeidsforhold(dataTable).get(0).periode
-            arbeidsforhold.get(0).periode.shouldBe(arbeidsforholdPeriodeForventet)
+            val periodeForventet = DomenespråkParser.mapPeriodeIArbeidsforhold(dataTable)
+            arbeidsforhold.get(0).periode.shouldBe(periodeForventet)
+        }
+
+        Så<DataTable>("skal mappet arbeidsgivertype i arbeidsforholdet være") { dataTable: DataTable? ->
+            val arbeidsgiverTypeForventet = DomenespråkParser.mapArbeidsgivertype(dataTable)
+            arbeidsforhold.get(0).arbeidsgivertype.shouldBe(arbeidsgiverTypeForventet)
+        }
+
+        Så<DataTable>("skal mappet arbeidsforholdstype i arbeidsforholdet være") { dataTable: DataTable? ->
+            val arbeidforholdstypeForventet = DomenespråkParser.mapArbeidsforholdstype(dataTable)
+            arbeidsforhold[0].arbeidsforholdstype.shouldBe(arbeidforholdstypeForventet)
         }
     }
 
@@ -117,7 +155,15 @@ class AaregMapperSteps : No {
             utenlandsopphold
         )
 
-        val organisasjon = Organisasjon(null, null, null, null, null, null)
+        var navn = Navn(null, null, null, null, null, null, null, null)
+        val organisasjon = Organisasjon(
+            navn = navn,
+            organisasjonDetaljer = null,
+            organisasjonsnummer = null,
+            type = String(),
+            bestaarAvOrganisasjonsledd = mutableListOf<BestaarAvOrganisasjonsledd?>(),
+            inngaarIJuridiskEnheter = mutableListOf<JuridiskEnhet>()
+        )
         val juridiskEnheter = emptyList<Organisasjon>()
         fun build(): List<ArbeidsforholdOrganisasjon> {
 
