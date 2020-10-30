@@ -1,5 +1,7 @@
 package no.nav.medlemskap.regler.funksjoner
 
+import assertk.assertThat
+import assertk.assertions.isEqualTo
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.antallAnsatteHosArbeidsgiversJuridiskeEnheter
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.beregnGjennomsnittligStillingsprosentForGrafana
@@ -342,6 +344,23 @@ class ArbeidsforholdFunksjonerTest {
         assertTrue(sjekkStatligArbeidsforhold)
     }
 
+    @Test
+    fun fraOgMedDatoForArbeidsforhold_uten_angitt_første_dag_for_ytelse() {
+        val inputPeriode = InputPeriode(LocalDate.of(2019, 1, 1), LocalDate.of(2019, 2, 2))
+
+        val fomArbeidsforhold = ArbeidsforholdFunksjoner.fraOgMedDatoForArbeidsforhold(inputPeriode, null)
+        assertThat(fomArbeidsforhold).isEqualTo(LocalDate.of(2017, 12, 31))
+    }
+
+    @Test
+    fun fraOgMedDatoForArbeidsforhold_med_angitt_første_dag_for_ytelse() {
+        val inputPeriode = InputPeriode(LocalDate.of(2019, 1, 1), LocalDate.of(2019, 2, 2))
+        val førsteDagForYtelse = LocalDate.of(2018, 12, 18)
+
+        val fomArbeidsforhold = ArbeidsforholdFunksjoner.fraOgMedDatoForArbeidsforhold(inputPeriode, førsteDagForYtelse)
+        assertThat(fomArbeidsforhold).isEqualTo(LocalDate.of(2017, 12, 17))
+    }
+
     private fun createArbeidsforhold(arbeidsforholdPeriode: Periode, stillingsprosent: Double = 100.0, arbeidsavtalePeriode: Periode = arbeidsforholdPeriode): Arbeidsforhold {
         val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode, arbeidsavtalePeriode, "11111", Skipsregister.UKJENT, stillingsprosent, null)
 
@@ -367,7 +386,7 @@ class ArbeidsforholdFunksjonerTest {
     val arbeidsforholdMedStatligJuridiskEnhetstype = lagArbeidsforhold(juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20)))
     val arbeidsforholdMedIkkeStatligEllerKommunalJuridiskEnhetstype = lagArbeidsforhold(juridiskeEnheter = listOf(JuridiskEnhet("1", "AS", 20)))
 
-    fun lagArbeidsforhold(
+    private fun lagArbeidsforhold(
         antall: Int = 10,
         periode: Periode = Periode(LocalDate.of(2019, 1, 1), LocalDate.of(2019, 12, 31)),
         arbeidsavtaleList: List<Arbeidsavtale> = listOf(createArbeidsavtale(Periode(null, null), 100.0)),
