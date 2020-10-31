@@ -37,7 +37,33 @@ Egenskap: Regel 3: Har bruker sammenhengende arbeidsforhold siste 12 måneder?
     Så skal svaret være "Nei"
 
 
-  Scenariomal: Person med to arbeidsforhold i perioden
+  Scenariomal: Person med to arbeidsforhold i perioden med under 100 i stillingsprosent på ett av arbeidsforholdene
+    Gitt følgende arbeidsforhold fra AAReg
+      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
+      | <Fom>           | <Tom>           | Organisasjon     | NORMALT             |
+      | <Fom 2>         | <Tom 2>         | Organisasjon     | NORMALT             |
+
+    Og følgende arbeidsavtaler i arbeidsforhold 1
+      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister |
+      | 01.01.2018      |                 | 001       | 99               |               |
+
+    Når regel "3" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
+
+    Så skal svaret være "<Svar>"
+
+    Eksempler:
+      | Fom        | Tom        | Fom 2      | Tom 2      | Svar | Kommentar                                   |
+      | 01.01.2019 | 15.03.2019 | 19.03.2019 |            | Nei  | Arbeidsforhold med tre dager opphold        |
+      | 01.01.2019 | 15.03.2019 | 17.04.2019 |            | Nei  | Arbeidsforhold som ikke er sammenhengende   |
+      | 01.01.2016 | 15.03.2019 | 16.03.2019 | 29.05.2019 | Nei  | Mangler arbeidsforhold i bakkant            |
+      | 01.03.2019 | 15.03.2019 | 16.03.2019 | 29.05.2019 | Nei  | Mangler arbeidsforhold i forkant og bakkant |
+      | 01.03.2019 | 15.03.2019 | 16.03.2019 |            | Nei  | Mangler arbeidsforhold i forkant            |
+      | 01.01.2019 | 15.03.2019 | 18.03.2019 |            | Ja   | Arbeidsforhold med to dagers opphold        |
+      | 01.01.2019 | 30.11.2019 | 01.10.2019 |            | Ja   | Arbeidsforhold med overlapp                 |
+
+  Scenariomal: Person med to arbeidsforhold i perioden med 100 i stillingsprosent på begge arbeidsforholdene
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
       | <Fom>           | <Tom>           | Organisasjon     | NORMALT             |
@@ -51,8 +77,9 @@ Egenskap: Regel 3: Har bruker sammenhengende arbeidsforhold siste 12 måneder?
 
     Eksempler:
       | Fom        | Tom        | Fom 2      | Tom 2      | Svar | Kommentar                                   |
-      | 01.01.2019 | 15.03.2019 | 19.03.2019 |            | Nei  | Arbeidsforhold med tre dager opphold        |
-      | 01.01.2019 | 15.03.2019 | 17.04.2019 |            | Nei  | Arbeidsforhold som ikke er sammenhengende   |
+      | 01.01.2019 | 15.03.2019 | 19.03.2019 |            | Ja   | Arbeidsforhold med tre dager opphold        |
+      | 01.01.2019 | 15.03.2019 | 19.04.2019 |            | Ja   | Arbeidsforhold med 35 dager opphold         |
+      | 01.01.2019 | 15.03.2019 | 20.04.2019 |            | Nei  | Arbeidsforhold med over 35 dager opphold    |
       | 01.01.2016 | 15.03.2019 | 16.03.2019 | 29.05.2019 | Nei  | Mangler arbeidsforhold i bakkant            |
       | 01.03.2019 | 15.03.2019 | 16.03.2019 | 29.05.2019 | Nei  | Mangler arbeidsforhold i forkant og bakkant |
       | 01.03.2019 | 15.03.2019 | 16.03.2019 |            | Nei  | Mangler arbeidsforhold i forkant            |
@@ -101,8 +128,10 @@ Egenskap: Regel 3: Har bruker sammenhengende arbeidsforhold siste 12 måneder?
 
     Eksempler:
       | Første dag for ytelse | Regel 3 |
-      |                       | Ja      |
-      | 30.01.2020            | Ja      |
-      | 01.01.2020            | Ja      |
-      | 31.12.2019            | Nei     |
       | 01.11.2018            | Nei     |
+      | 28.12.2019            | Nei     |
+      | 29.12.2019            | Ja      |
+      | 31.12.2019            | Ja      |
+      | 01.01.2020            | Ja      |
+      | 30.01.2020            | Ja      |
+      |                       | Ja      |

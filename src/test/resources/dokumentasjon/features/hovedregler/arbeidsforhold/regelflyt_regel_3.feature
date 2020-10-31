@@ -38,6 +38,8 @@ Egenskap: Regelflyt for regel 3
       | Fra og med dato | Regel 3 | Medlemskap |
       | 01.01.2018      | Ja      | Ja         |
       | 29.01.2019      | Ja      | Ja         |
-      | 30.01.2019      | Nei     | UAVKLART   |
+      | 30.01.2019      | Ja      | Ja         |
+      | 01.02.2019      | Ja      | Ja         |
+      | 02.02.2019      | Nei     | UAVKLART   |
       | 05.02.2019      | Nei     | UAVKLART   |
       |                 | Nei     | UAVKLART   |
