@@ -1,10 +1,12 @@
-# Lovvalg og medlemskap for sykepenger
+# Ytelsen sykepenger
 
-Eksempler for ytelsen sykepenger
+Spesifikke utledninger og regler for ytelsen sykepenger.
 
 ## Utlede første sykemeldingsdag fra sykemeldingsperiode
-[Utlede første sykemeldingsdag](../../periodeutledning/utlede_foerste_sykedag.feature)
+[Utlede første sykemeldingsdag](utlede_foerste_sykedag.feature)
 
-## Eksempler på lovvalg og medlemskap
+## Utlede kontrollperiode for arbeidsforhold
+[Kontrollperiode for arbeidsforhold](kontrollperiode_arbeidsforhold_sp.feature)
+
+## Komplett eksempel med lovvalg og medlemskap for sykepenger
 [Norsk borger som bor og jobber i Norge](norsk_bor_og_jobber_j_norge_json.feature)
-[Norsk borger som bor i Norge, men ikke har jobb](norsk_bor_i_norge_ikke_jobb_json.feature)
