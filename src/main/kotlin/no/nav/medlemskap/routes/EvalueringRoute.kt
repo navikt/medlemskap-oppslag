@@ -131,8 +131,6 @@ private fun loggResponse(fnr: String, response: Response) {
     if (årsaker.isNotEmpty()) {
         secureLogger.info(append("årsaker", årsaker), "Årsaker for bruker {}: {}", fnr, årsakerSomRegelIdStr)
     }
-
-    secureLogger.info(append("response", objectMapper.writeValueAsString(response)), "Logging av response for bruker {}", fnr)
 }
 
 private fun validerRequest(request: Request): Request {
