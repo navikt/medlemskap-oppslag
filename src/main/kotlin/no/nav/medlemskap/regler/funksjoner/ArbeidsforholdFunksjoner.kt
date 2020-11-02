@@ -93,7 +93,7 @@ object ArbeidsforholdFunksjoner {
             return false
         }
 
-        if (arbeidsforholdForNorskArbeidsgiver.none { it.periode.fom?.isBefore(kontrollPeriode.fom.plusDays(1))!! }) {
+        if (arbeidsforholdForNorskArbeidsgiver.none { it.periode.fom?.isBefore(kontrollPeriode.fom.plusDays(4))!! }) {
             harIkkeArbeidsforhold12MndTilbakeCounter(ytelse).increment()
 
             if (arbeidsforholdForNorskArbeidsgiver.isNotEmpty()) {
@@ -104,14 +104,19 @@ object ArbeidsforholdFunksjoner {
             return false
         }
 
+        var totaltAntallDagerDiff: Long = 0
+        val finnesDeltidArbeidsforhold = arbeidsforholdForNorskArbeidsgiver.finnesDeltidArbeidsforhold()
         var forrigeTilDato: LocalDate? = null
         val sortertArbeidsforholdEtterPeriode = arbeidsforholdForNorskArbeidsgiver.sorted()
         for (arbeidsforhold in sortertArbeidsforholdEtterPeriode) { // Sjekker at alle påfølgende arbeidsforhold er sammenhengende
             if (forrigeTilDato != null && !erDatoerSammenhengende(forrigeTilDato, arbeidsforhold.periode.fom)) {
                 val antallDagerDiff = abs(ChronoUnit.DAYS.between(forrigeTilDato, arbeidsforhold.periode.fom))
+                totaltAntallDagerDiff += antallDagerDiff
                 antallDagerMellomArbeidsforhold(ytelse).record(antallDagerDiff.toDouble())
                 usammenhengendeArbeidsforholdCounter(ytelse).increment()
-                return false
+                if (finnesDeltidArbeidsforhold || totaltAntallDagerDiff > 35) {
+                    return false
+                }
             }
             if (arbeidsforhold.periode.tom == null || forrigeTilDato == null || arbeidsforhold.periode.tom.isAfter(forrigeTilDato)) {
                 forrigeTilDato = arbeidsforhold.periode.tom
@@ -131,6 +136,9 @@ object ArbeidsforholdFunksjoner {
         this.filter {
             it.periode.overlapper(Periode(dato, dato))
         }.sorted()
+
+    fun List<Arbeidsforhold>.finnesDeltidArbeidsforhold(): Boolean =
+        this.any { it.arbeidsavtaler.any { p -> p.stillingsprosent != null && p.stillingsprosent < 100.0 } }
 
     fun List<Arbeidsforhold>.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(gittStillingsprosent: Double, kontrollPeriode: Kontrollperiode, ytelse: Ytelse): Boolean {
         val arbeidsforholdForKontrollPeriode = this.arbeidsforholdForKontrollPeriodeMedStillingsprosentOver0(kontrollPeriode)
