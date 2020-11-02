@@ -114,26 +114,22 @@ private fun loggResponse(fnr: String, response: Response) {
     val årsakerSomRegelIdStr = årsaker.map { it.regelId.toString() + " " }
 
     secureLogger.info(
-            "Strukturert resultat for bruker {}, ytelse {}", fnr, response.datagrunnlag.ytelse,
-            kv("fnr", fnr),
-            kv("fom", response.datagrunnlag.periode.fom.toString()),
-            kv("tom", response.datagrunnlag.periode.tom.toString()),
-            kv("førsteDagForYtelse", response.datagrunnlag.førsteDagForYtelse.toString()),
-            kv("brukerInput", response.datagrunnlag.brukerinput.toString()),
-            kv("ytelse", response.datagrunnlag.ytelse),
-            kv("svar", response.resultat.svar),
-            kv("årsaker", response.resultat.årsaker)
+        "{} konklusjon gitt for bruker {}, ytelse {}", resultat.svar.name, fnr, response.datagrunnlag.ytelse,
+        kv("fnr", fnr),
+        kv("fom", response.datagrunnlag.periode.fom.toString()),
+        kv("tom", response.datagrunnlag.periode.tom.toString()),
+        kv("førsteDagForYtelse", response.datagrunnlag.førsteDagForYtelse.toString()),
+        kv("brukerInput", response.datagrunnlag.brukerinput.toString()),
+        kv("ytelse", response.datagrunnlag.ytelse),
+        kv("svar", response.resultat.svar),
+        kv("årsaker", årsakerSomRegelIdStr)
     )
 
-    secureLogger.info(append("resultat", resultat), "{} konklusjon gitt for bruker {}", resultat.svar.name, fnr)
-
-    secureLogger.info(append("resultat", resultat), "{} konklusjon gitt for bruker {}", resultat.svar.name, fnr)
     if (årsaker.isNotEmpty()) {
         secureLogger.info(append("årsaker", årsaker), "Årsaker for bruker {}: {}", fnr, årsakerSomRegelIdStr)
     }
 
-    secureLogger.info(append("response", objectMapper.writeValueAsString(response)), "Strukturert logging av response for bruker {}", fnr)
-    secureLogger.info("Ikke-strukturert-logging: For bruker {} er responsen {}", fnr, response)
+    secureLogger.info(append("response", objectMapper.writeValueAsString(response)), "Logging av response for bruker {}", fnr)
 }
 
 private fun validerRequest(request: Request): Request {
