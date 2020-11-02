@@ -9,12 +9,14 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.ja
 import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.harPeriodeMedMedlemskap
+import java.time.LocalDate
 
 class PeriodeMedMedlemskapRegel(
     ytelse: Ytelse,
     private val periode: InputPeriode,
+    førsteDagForYtelse: LocalDate?,
     private val medlemskap: List<Medlemskap>
-) : MedlemskapRegel(RegelId.REGEL_1_3, ytelse, periode, medlemskap) {
+) : MedlemskapRegel(RegelId.REGEL_1_3, ytelse, periode, førsteDagForYtelse, medlemskap) {
 
     override fun operasjon(): Resultat {
         return when {
@@ -29,6 +31,7 @@ class PeriodeMedMedlemskapRegel(
             return PeriodeMedMedlemskapRegel(
                 ytelse = datagrunnlag.ytelse,
                 periode = datagrunnlag.periode,
+                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
                 medlemskap = datagrunnlag.medlemskap
             )
         }

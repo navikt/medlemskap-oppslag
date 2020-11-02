@@ -21,13 +21,6 @@ object ArbeidsforholdFunksjoner {
                 it.arbeidsgiver.juridiskeEnheter.all { enhetstype -> enhetstype != null && enhetstype.enhetstype in offentligSektorJuridiskeEnhetstyper }
         }.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollPeriode, ytelse)
 
-    private fun hentJuridiskEnhetstypeFraMap(juridiskEnhetEnhetstypeMap: Map<String, String?>?): List<String> {
-        if (juridiskEnhetEnhetstypeMap != null) {
-            return juridiskEnhetEnhetstypeMap.mapNotNull { (_, enhetstype) -> enhetstype }
-        }
-        return emptyList()
-    }
-
     infix fun List<Arbeidsforhold>.erAlleArbeidsgivereOrganisasjon(kontrollPeriode: Kontrollperiode): Boolean {
         return arbeidsforholdForKontrollPeriode(kontrollPeriode).stream().allMatch { it.arbeidsgivertype == OpplysningspliktigArbeidsgiverType.Organisasjon }
     }
@@ -68,6 +61,13 @@ object ArbeidsforholdFunksjoner {
     }
 
     fun List<Ansatte>.finnesMindreEnn(tall: Int) = this.filter { it.antall ?: 0 < tall }
+
+    fun List<Arbeidsforhold>.registrerAntallAnsatteHosJuridiskEnhet(ytelse: Ytelse) =
+        this.forEach { arbeidsforhold ->
+            arbeidsforhold.arbeidsgiver.juridiskeEnheter?.forEach { juridiskEnhet ->
+                antallAnsatteHosJuridiskEnhetCounter(juridiskEnhet?.organisasjonsnummer ?: "Ikke oppgitt", juridiskEnhet?.antallAnsatte.toString(), ytelse).increment()
+            }
+        }
 
     fun List<Arbeidsgiver>.registrerAntallAnsatte(ytelse: Ytelse) =
         this.forEach { arbeidsgiver ->
@@ -113,7 +113,10 @@ object ArbeidsforholdFunksjoner {
                 usammenhengendeArbeidsforholdCounter(ytelse).increment()
                 return false
             }
-            forrigeTilDato = arbeidsforhold.periode.tom
+            if (arbeidsforhold.periode.tom == null || forrigeTilDato == null || arbeidsforhold.periode.tom.isAfter(forrigeTilDato)) {
+                forrigeTilDato = arbeidsforhold.periode.tom
+            }
+
             if (forrigeTilDato == null || forrigeTilDato.isAfter(kontrollPeriode.tom)) return true
         }
 
@@ -209,5 +212,8 @@ object ArbeidsforholdFunksjoner {
                 it.arbeidsavtaler.any { p -> p.stillingsprosent == null || p.stillingsprosent > 0.0 }
         }
 
-    fun fraOgMedDatoForArbeidsforhold(periode: InputPeriode) = periode.fom.minusYears(1).minusDays(1)
+    fun fraOgMedDatoForArbeidsforhold(periode: InputPeriode, førsteDagForYtelse: LocalDate?): LocalDate {
+
+        return (førsteDagForYtelse ?: periode.fom).minusYears(1).minusDays(1)
+    }
 }

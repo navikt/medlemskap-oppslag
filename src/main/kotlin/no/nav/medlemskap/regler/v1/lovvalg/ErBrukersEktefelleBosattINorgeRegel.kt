@@ -10,13 +10,15 @@ import no.nav.medlemskap.regler.common.ja
 import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserForKontrollPeriode
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresserForKontrollPeriode
+import java.time.LocalDate
 
 class ErBrukersEktefelleBosattINorgeRegel(
     ytelse: Ytelse,
     private val periode: InputPeriode,
+    førsteDagForYtelse: LocalDate?,
     private val dataOmEktefelle: DataOmEktefelle?,
     regelId: RegelId = RegelId.REGEL_11_3_1
-) : LovvalgRegel(regelId, ytelse, periode) {
+) : LovvalgRegel(regelId, ytelse, periode, førsteDagForYtelse) {
 
     override fun operasjon(): Resultat {
 
@@ -42,6 +44,7 @@ class ErBrukersEktefelleBosattINorgeRegel(
             return ErBrukersEktefelleBosattINorgeRegel(
                 ytelse = datagrunnlag.ytelse,
                 periode = datagrunnlag.periode,
+                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
                 dataOmEktefelle = datagrunnlag.dataOmEktefelle,
                 regelId = regelId
             )

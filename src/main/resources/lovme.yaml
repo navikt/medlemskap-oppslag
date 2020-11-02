@@ -161,6 +161,8 @@ components:
       properties:
         periode:
           $ref: "#/components/schemas/InputPeriode"
+        førsteDagForYtelse:
+          $ref: "#/components/schemas/FoersteDagForYtelse"
         brukerinput:
           $ref: "#/components/schemas/BrukerInput"
         pdlpersonhistorikk:
@@ -222,6 +224,10 @@ components:
         tittel:
           type: string
           nullable: true
+    Doedsfall:
+      type: array
+      items:
+        $ref: "#/components/schemas/ValgfriDato"
     Error:
       required:
         - url
@@ -263,10 +269,12 @@ components:
           $ref: "#/components/schemas/ValgfriDato"
         tom:
           $ref: "#/components/schemas/ValgfriDato"
-    Doedsfall:
-        type: array
-        items:
-          $ref: "#/components/schemas/ValgfriDato"
+    FoersteDagForYtelse:
+      type: string
+      format: date
+      description: Første dag for ytelse, for sykepenger er det første dag for sykepenger
+      nullable: true
+      example: "2021-01-30"
     Gyldighetsperiode:
       properties:
         fom:
@@ -280,6 +288,7 @@ components:
           $ref: "#/components/schemas/ValgfriDato"
         tom:
           $ref: "#/components/schemas/ValgfriDato"
+      description: Perioden ytelsen gjelder, for sykepenger er det for eksempel sykemeldingsperioden
     Journalpost:
       properties:
         journalpostId:
@@ -453,6 +462,8 @@ components:
           type: string
         periode:
           $ref: "#/components/schemas/InputPeriode"
+        førsteDagForYtelse:
+          $ref: "#/components/schemas/FoersteDagForYtelse"
         brukerinput:
           $ref: "#/components/schemas/BrukerInput"
         ytelse:

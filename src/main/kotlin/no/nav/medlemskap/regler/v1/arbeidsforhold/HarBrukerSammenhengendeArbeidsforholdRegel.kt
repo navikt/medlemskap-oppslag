@@ -7,14 +7,16 @@ import no.nav.medlemskap.regler.common.ja
 import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.erSammenhengendeIKontrollPeriode
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.registrerStatsborgerskapGrafana
+import java.time.LocalDate
 
 class HarBrukerSammenhengendeArbeidsforholdRegel(
     ytelse: Ytelse,
     private val periode: InputPeriode,
+    private val førsteDagForYtelse: LocalDate?,
     private val arbeidsforhold: List<Arbeidsforhold>,
     private val statsborgerskap: List<Statsborgerskap>,
     regelId: RegelId = RegelId.REGEL_3
-) : ArbeidsforholdRegel(regelId, ytelse, periode) {
+) : ArbeidsforholdRegel(regelId, ytelse, periode, førsteDagForYtelse) {
 
     override fun operasjon(): Resultat {
         return if (!arbeidsforhold.erSammenhengendeIKontrollPeriode(kontrollPeriodeForArbeidsforhold, ytelse)) {
@@ -31,6 +33,7 @@ class HarBrukerSammenhengendeArbeidsforholdRegel(
             return HarBrukerSammenhengendeArbeidsforholdRegel(
                 ytelse = datagrunnlag.ytelse,
                 periode = datagrunnlag.periode,
+                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold,
                 statsborgerskap = datagrunnlag.pdlpersonhistorikk?.statsborgerskap
             )

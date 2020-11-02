@@ -136,6 +136,7 @@ suspend fun mockCreateDatagrunnlag(
 
     Datagrunnlag(
         periode = request.periode,
+        førsteDagForYtelse = request.førsteDagForYtelse,
         brukerinput = request.brukerinput,
         pdlpersonhistorikk = personhistorikk(),
         medlemskap = listOf(Medlemskap("dekning", enDato(), enAnnenDato(), true, Lovvalg.ENDL, "NOR", PeriodeStatus.GYLD)),
@@ -221,24 +222,10 @@ private val input =
         }
     """.trimIndent()
 
-private val ugyldigInput =
-    """
-        {
-            "fnr": "15076500565",
-            "periode": {
-                "fom": "2019-01-01",
-                "tom": "2019-12-31"
-            },
-            "ukjent": {
-                "arbeidUtenforNorge": false
-            }
-        }
-    """.trimIndent()
-
 private val forventetResponse =
     """
-    {
-      "tidspunkt" : "2020-10-26T08:41:43.272642",
+{
+      "tidspunkt" : "2020-10-27T20:28:49.17453",
       "versjonTjeneste" : "",
       "versjonRegler" : "v1",
       "datagrunnlag" : {
@@ -246,6 +233,7 @@ private val forventetResponse =
           "fom" : "2019-01-01",
           "tom" : "2019-12-31"
         },
+        "førsteDagForYtelse" : null,
         "brukerinput" : {
           "arbeidUtenforNorge" : false
         },

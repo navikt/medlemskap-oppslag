@@ -39,8 +39,11 @@ Reglene er gruppert i forskjellige regelsett.
 ### Regelsett for arbeidsforhold
 * [Arbeidsforhold](features/hovedregler/arbeidsforhold/README.md)
 
-## Lovvalg og medlemskap for ytelsen sykepenger
-* [Lovvalg og medlemskap for ytelsen sykepenger](features/ytelse/sykepenger/README.md)
+## Ytelsen sykepenger
+* [Ytelsen sykepenger](features/ytelse/sykepenger/README.md)
+
+## Kontrollperiode
+* [Kontrollperiode](features/kontrollperiode/README.md)
 
 
 

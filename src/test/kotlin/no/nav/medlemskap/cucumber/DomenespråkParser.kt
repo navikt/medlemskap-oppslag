@@ -326,12 +326,13 @@ object DomenespråkParser : BasisDomeneParser() {
     class MedlemskapsparametreMapper : RadMapper<Medlemskapsparametre> {
         override fun mapRad(rad: Map<String, String>): Medlemskapsparametre {
             return Medlemskapsparametre(
-                InputPeriode(
+                inputPeriode = InputPeriode(
                     parseDato(FRA_OG_MED_DATO, rad),
                     parseDato(TIL_OG_MED_DATO, rad)
                 ),
-                parseBoolean(HAR_HATT_ARBEID_UTENFOR_NORGE, rad),
-                parseValgfriYtelse(YTELSE, rad)
+                førsteDagForYtelse = parseValgfriDato(FØRSTE_DAG_FOR_YTELSE, rad),
+                harHattArbeidUtenforNorge = parseBoolean(HAR_HATT_ARBEID_UTENFOR_NORGE, rad),
+                ytelse = parseValgfriYtelse(YTELSE, rad)
             )
         }
     }
@@ -590,6 +591,7 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     DOEDSDATO("Dødsdato"),
     ER_MEDLEM("Er medlem"),
     FRA_OG_MED_DATO("Fra og med dato"),
+    FØRSTE_DAG_FOR_YTELSE("Første dag for ytelse"),
     GYLDIG_FRA_OG_MED("Gyldig fra og med dato"),
     GYLDIG_TIL_OG_MED("Gyldig til og med dato"),
     GYLDIGHETSPERIODE_FRA_OG_MED("Gyldighetsperiode gyldig fra"),
@@ -634,6 +636,7 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
 
 data class Medlemskapsparametre(
     val inputPeriode: InputPeriode,
+    val førsteDagForYtelse: LocalDate?,
     val harHattArbeidUtenforNorge: Boolean,
     val ytelse: Ytelse?
 )
