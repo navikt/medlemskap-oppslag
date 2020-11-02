@@ -8,6 +8,7 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import mu.KotlinLogging
+import net.logstash.logback.argument.StructuredArguments.kv
 import net.logstash.logback.marker.Markers.append
 import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.apiCounter
@@ -111,6 +112,18 @@ private fun loggResponse(fnr: String, response: Response) {
     val resultat = response.resultat
     val årsaker = resultat.årsaker
     val årsakerSomRegelIdStr = årsaker.map { it.regelId.toString() + " " }
+
+    secureLogger.info(
+            "Strukturert resultat for bruker {}, ytelse {}", fnr, response.datagrunnlag.ytelse,
+            kv("fnr", fnr),
+            kv("fom", response.datagrunnlag.periode.fom.toString()),
+            kv("tom", response.datagrunnlag.periode.tom.toString()),
+            kv("førsteDagForYtelse", response.datagrunnlag.førsteDagForYtelse.toString()),
+            kv("brukerInput", response.datagrunnlag.brukerinput.toString()),
+            kv("ytelse", response.datagrunnlag.ytelse),
+            kv("svar", response.resultat.svar),
+            kv("årsaker", response.resultat.årsaker)
+    )
 
     secureLogger.info(append("resultat", resultat), "{} konklusjon gitt for bruker {}", resultat.svar.name, fnr)
 
