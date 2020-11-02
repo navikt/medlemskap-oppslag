@@ -111,8 +111,8 @@ private fun lagResponse(datagrunnlag: Datagrunnlag, resultat: Resultat, versjonT
 private fun loggResponse(fnr: String, response: Response) {
     val resultat = response.resultat
     val årsaker = resultat.årsaker
-    val årsakerSomRegelIdStr = årsaker.map { it.regelId.toString() + " " }
-    val årsak = årsaker.map { it.regelId.toString() + " " }.firstOrNull()
+    val årsakerSomRegelIdStr = årsaker.map { it.regelId.toString() }
+    val årsak = årsaker.map { it.regelId.toString()}.firstOrNull()
 
     secureLogger.info(
             "{} konklusjon gitt for bruker {}, ytelse {}", resultat.svar.name, fnr, response.datagrunnlag.ytelse,
