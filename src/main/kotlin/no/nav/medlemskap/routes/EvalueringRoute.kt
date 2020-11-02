@@ -12,6 +12,7 @@ import net.logstash.logback.marker.Markers.append
 import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.apiCounter
 import no.nav.medlemskap.common.exceptions.KonsumentIkkeFunnet
+import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Request
@@ -118,7 +119,7 @@ private fun loggResponse(fnr: String, response: Response) {
         secureLogger.info(append("årsaker", årsaker), "Årsaker for bruker {}: {}", fnr, årsakerSomRegelIdStr)
     }
 
-    secureLogger.info(append("response", response), "Strukturert logging av response for bruker {}", fnr)
+    secureLogger.info(append("response", objectMapper.writeValueAsString(response)), "Strukturert logging av response for bruker {}", fnr)
     secureLogger.info("Ikke-strukturert-logging: For bruker {} er responsen {}", fnr, response)
 }
 
