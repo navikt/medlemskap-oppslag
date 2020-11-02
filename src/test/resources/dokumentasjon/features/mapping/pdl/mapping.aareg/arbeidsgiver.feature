@@ -24,16 +24,16 @@ Egenskap: Mapping av arbeidsgiver i arbeidsforhold
     Når arbeidsforholdene mappes
 
     Så skal mappet type til arbeidsgiver i arbeidsforholdet være
-      | Type |
-      | BEDR |
+      | Arbeidsgivertype |
+      | BEDR             |
 
     Og mappet organisasjonsnummer til arbeidsgiver i arbeidsforholdet være
       | Organisasjonsnummer |
       | 985672744           |
 
     Og mappet ansatte til arbeidsgiver i arbeidsforholdet være
-      | Antall    | Bruksperiode gyldig fra   | Bruksperiode gyldig til | Gyldighetsperiode gyldig fra | Gyldighetsperiode gyldig til  |
-      | 8         | 2015-03-25                | 2015-03-25              | 2015-03-25                   | 2015-03-25                    |
+      | Antall ansatte   | Bruksperiode gyldig fra   | Bruksperiode gyldig til | Gyldighetsperiode gyldig fra | Gyldighetsperiode gyldig til  |
+      | 8                | 2015-03-25                | 2015-03-25              | 2015-03-25                   | 2015-03-25                    |
 
     Og mappet konkursstatus til arbeidsgiver i arbeidsforholdet være
       | Status |
