@@ -42,5 +42,8 @@ Reglene er gruppert i forskjellige regelsett.
 ## Ytelsen sykepenger
 * [Ytelsen sykepenger](features/ytelse/sykepenger/README.md)
 
+## Kontrollperiode
+* [Kontrollperiode](features/kontrollperiode/README.md)
+
 
 
