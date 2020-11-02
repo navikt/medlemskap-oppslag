@@ -91,11 +91,83 @@ class AaregMapperSteps : No {
     }
 
     class AaregBuilder() {
-        var ansettelsesperiode = AaRegAnsettelsesperiode(
-            bruksperiode = AaRegBruksperiode(fom = LocalDateTime.now(), tom = null),
-            periode = AaRegPeriode(fom = null, tom = null),
-            varslingskode = String(),
-            sporingsinformasjon = AaRegSporingsinformasjon(
+        var ansettelsesperiode = hentAnsettelsesPeriode()
+        var antallTimerForTimeloennet = mutableListOf<AaRegAntallTimerForTimeloennet>()
+        var arbeidsavtaler = mutableListOf<AaRegArbeidsavtale>()
+        var arbeidsforholdId = String()
+        var arbeidsgiver = hentArbeidsgiver()
+        val arbeidstaker = hentArbeidstaker()
+        val innrapportertEtterAOrdningen = false
+        val navArbeidsforholdId = 1
+        val opplysningspliktig = hentOpplysningspliktigArbeidsgiver()
+        val permisjonPermitteringer = mutableListOf<AaRegPermisjonPermittering>()
+        val registrert = LocalDateTime.now()
+        val sistBekreftet = LocalDateTime.now()
+        val sporingsinformasjon = hentAaregSporingsinformasjon()
+        val type = String()
+        val utenlandsopphold = mutableListOf<AaRegUtenlandsopphold>()
+        val arbeidsforholdOrganisasjon = mutableListOf<ArbeidsforholdOrganisasjon>()
+        val arbeidsforhold = hentAaregArbeidsforhold()
+        var navn = null
+        var organisasjon = hentOrganisasjon()
+        val juridiskEnheter = emptyList<Organisasjon>()
+        fun build(): List<ArbeidsforholdOrganisasjon> {
+            arbeidsforholdOrganisasjon
+                .addAll(
+                    listOf
+                    (
+                        ArbeidsforholdOrganisasjon(
+                            arbeidsforhold,
+                            organisasjon,
+                            juridiskEnheter
+                        )
+                    )
+                )
+            return arbeidsforholdOrganisasjon
+        }
+
+        fun hentAnsettelsesPeriode(): AaRegAnsettelsesperiode =
+            AaRegAnsettelsesperiode(
+                bruksperiode = AaRegBruksperiode(fom = LocalDateTime.now(), tom = null),
+                periode = AaRegPeriode(fom = null, tom = null),
+                varslingskode = String(),
+                sporingsinformasjon = AaRegSporingsinformasjon(
+                    endretAv = String(),
+                    endretKilde = String(),
+                    endretKildeReferanse = String(),
+                    endretTidspunkt = LocalDateTime.now(),
+                    opprettetAv = String(),
+                    opprettetKilde = String(),
+                    opprettetKildereferanse = String(),
+                    opprettetTidspunkt = LocalDateTime.now()
+                )
+            )
+
+        fun hentArbeidsgiver(): AaRegOpplysningspliktigArbeidsgiver =
+            AaRegOpplysningspliktigArbeidsgiver(
+                type = AaRegOpplysningspliktigArbeidsgiverType.Organisasjon,
+                organisasjonsnummer = String(),
+                aktoerId = String(),
+                offentligIdent = String()
+            )
+
+        fun hentArbeidstaker(): AaRegPerson =
+            AaRegPerson(
+                type = AaRegPersonType.Person,
+                aktoerId = String(),
+                offentligIdent = String()
+            )
+
+        fun hentOpplysningspliktigArbeidsgiver(): AaRegOpplysningspliktigArbeidsgiver =
+            AaRegOpplysningspliktigArbeidsgiver(
+                type = AaRegOpplysningspliktigArbeidsgiverType.Organisasjon,
+                organisasjonsnummer = String(),
+                aktoerId = String(),
+                offentligIdent = String()
+            )
+
+        fun hentAaregSporingsinformasjon(): AaRegSporingsinformasjon =
+            AaRegSporingsinformasjon(
                 endretAv = String(),
                 endretKilde = String(),
                 endretKildeReferanse = String(),
@@ -106,105 +178,59 @@ class AaregMapperSteps : No {
                 opprettetTidspunkt = LocalDateTime.now()
             )
 
-        )
-        var antallTimerForTimeloennet = mutableListOf<AaRegAntallTimerForTimeloennet>()
-        var arbeidsavtaler = mutableListOf<AaRegArbeidsavtale>()
-        var arbeidsforholdId = String()
-        var arbeidsgiver = AaRegOpplysningspliktigArbeidsgiver(
-            type = AaRegOpplysningspliktigArbeidsgiverType.Organisasjon,
-            organisasjonsnummer = String(),
-            aktoerId = String(),
-            offentligIdent = String()
-        )
-        val arbeidstaker = AaRegPerson(
-            type = AaRegPersonType.Person,
-            aktoerId = String(),
-            offentligIdent = String()
-        )
-        val innrapportertEtterAOrdningen = false
-        val navArbeidsforholdId = 1
-        val opplysningspliktig = AaRegOpplysningspliktigArbeidsgiver(
-            type = AaRegOpplysningspliktigArbeidsgiverType.Organisasjon,
-            organisasjonsnummer = String(),
-            aktoerId = String(),
-            offentligIdent = String()
-        )
-        val permisjonPermitteringer = mutableListOf<AaRegPermisjonPermittering>()
-        val registrert = LocalDateTime.now()
-        val sistBekreftet = LocalDateTime.now()
-        val sporingsinformasjon = AaRegSporingsinformasjon(
-            endretAv = String(),
-            endretKilde = String(),
-            endretKildeReferanse = String(),
-            endretTidspunkt = LocalDateTime.now(),
-            opprettetAv = String(),
-            opprettetKilde = String(),
-            opprettetKildereferanse = String(),
-            opprettetTidspunkt = LocalDateTime.now()
-        )
-        val type = String()
-        val utenlandsopphold = mutableListOf<AaRegUtenlandsopphold>()
-        val arbeidsforholdOrganisasjon = mutableListOf<ArbeidsforholdOrganisasjon>()
+        fun hentAaregArbeidsforhold(): AaRegArbeidsforhold =
+            AaRegArbeidsforhold(
+                ansettelsesperiode,
+                antallTimerForTimeloennet,
+                arbeidsavtaler,
+                arbeidsforholdId,
+                arbeidsgiver,
+                arbeidstaker,
+                innrapportertEtterAOrdningen,
+                navArbeidsforholdId,
+                opplysningspliktig,
+                permisjonPermitteringer,
+                registrert,
+                sistBekreftet,
+                sporingsinformasjon,
+                type,
+                utenlandsopphold
+            )
 
-        val arbeidsforhold = AaRegArbeidsforhold(
-            ansettelsesperiode,
-            antallTimerForTimeloennet,
-            arbeidsavtaler,
-            arbeidsforholdId,
-            arbeidsgiver,
-            arbeidstaker,
-            innrapportertEtterAOrdningen,
-            navArbeidsforholdId,
-            opplysningspliktig,
-            permisjonPermitteringer,
-            registrert,
-            sistBekreftet,
-            sporingsinformasjon,
-            type,
-            utenlandsopphold
-        )
-
-        var navn = Navn(null, null, null, null, null, null, null, null)
-        var organisasjon = Organisasjon(
-            navn = navn,
-            organisasjonDetaljer = Organisasjonsdetaljer(
-                mutableListOf<Ansatte>(Ansatte(null, null, null)),
-                null,
-                null,
-                mutableListOf<Enhetstyper>(Enhetstyper(null, String(), null)),
-                null,
-                null,
-                null,
-                mutableListOf<Hjemlandregistre>(),
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                mutableListOf<Status>(),
-                null,
-                null,
-                null,
-                null,
-                mutableListOf<JuridiskEnhet>()
-            ),
-            organisasjonsnummer = null,
-            type = String(),
-            bestaarAvOrganisasjonsledd = mutableListOf<BestaarAvOrganisasjonsledd?>(),
-            inngaarIJuridiskEnheter = mutableListOf<JuridiskEnhet>()
-        )
-
-        val juridiskEnheter = emptyList<Organisasjon>()
-        fun build(): List<ArbeidsforholdOrganisasjon> {
-
-            arbeidsforholdOrganisasjon.addAll(listOf(ArbeidsforholdOrganisasjon(arbeidsforhold, organisasjon, juridiskEnheter)))
-            return arbeidsforholdOrganisasjon
-        }
+        fun hentOrganisasjon(): Organisasjon =
+            Organisasjon(
+                navn = navn,
+                organisasjonsnummer = null,
+                type = String(),
+                bestaarAvOrganisasjonsledd = mutableListOf<BestaarAvOrganisasjonsledd?>(),
+                inngaarIJuridiskEnheter = mutableListOf<JuridiskEnhet>(),
+                organisasjonDetaljer = Organisasjonsdetaljer(
+                    mutableListOf<Ansatte>(Ansatte(null, null, null)),
+                    null,
+                    null,
+                    mutableListOf<Enhetstyper>(Enhetstyper(null, String(), null)),
+                    null,
+                    null,
+                    null,
+                    mutableListOf<Hjemlandregistre>(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    null,
+                    mutableListOf<Status>(),
+                    null,
+                    null,
+                    null,
+                    null,
+                    mutableListOf<JuridiskEnhet>()
+                )
+            )
     }
 }
