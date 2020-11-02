@@ -1,13 +1,10 @@
 package no.nav.medlemskap.cucumber.steps.aareg
 import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
-import io.cucumber.java8.PendingException
+import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import no.nav.medlemskap.clients.aareg.*
-import no.nav.medlemskap.clients.ereg.BestaarAvOrganisasjonsledd
-import no.nav.medlemskap.clients.ereg.JuridiskEnhet
-import no.nav.medlemskap.clients.ereg.Navn
-import no.nav.medlemskap.clients.ereg.Organisasjon
+import no.nav.medlemskap.clients.ereg.*
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.mapping.pdl.aareg.AaregDomenespraakParser
 import no.nav.medlemskap.domene.Arbeidsforhold
@@ -33,8 +30,8 @@ class AaregMapperSteps : No {
             aaregBuilder.arbeidsforhold.type = aaregDomenespraakParser.mapArbeidsforholdsType(dataTable)
         }
 
-        Gitt<DataTable>("følgende om Organisasjon.type fra ereg") { dataTable: DataTable? ->
-            aaregBuilder.arbeidsforhold.type = aaregDomenespraakParser.mapType(dataTable)
+        Gitt<DataTable>("følgende om Organisasjon.organisasjonsdetaljer.enhetstyper.enhetstype fra ereg") { dataTable: DataTable? ->
+            aaregBuilder.organisasjon.organisasjonDetaljer?.enhetstyper?.first()?.enhetstype = aaregDomenespraakParser.mapEnhetstype(dataTable)
         }
 
         Gitt<DataTable>("følgende om Organiasjon.organisasjonsnummer fra ereg") { dataTable: DataTable? ->
@@ -42,20 +39,32 @@ class AaregMapperSteps : No {
         }
 
         Gitt<DataTable>("følgende om ansatte i Organiasjon.Organisasjonsdetaljer.Ansatte fra ereg") { dataTable: DataTable? ->
-            aaregBuilder.organisasjon.organisasjonDetaljer?.ansatte?.get(0)?.antall = aaregDomenespraakParser.mapAntallAnsatte(dataTable)
+            aaregBuilder.organisasjon.organisasjonDetaljer?.ansatte = aaregDomenespraakParser.mapAntallAnsatte(dataTable)
         }
 
         Gitt<DataTable>("følgende om konkursstatus organisasjon.organisasjonDetaljer.statuser") { dataTable: DataTable? ->
             aaregBuilder.organisasjon.organisasjonDetaljer?.statuser = aaregDomenespraakParser.mapStatuser(dataTable)
         }
 
-        Så<DataTable>("skal mappet type til arbeidsgiver i arbeidsforholdet være") { dataTable: DataTable? -> throw PendingException() }
+        Så<DataTable>("skal mappet type til arbeidsgiver i arbeidsforholdet være") { dataTable: DataTable? ->
+            val typeForventet = DomenespråkParser.mapTypeIArbeidsforhold(dataTable)
+            arbeidsforhold[0].arbeidsgiver.type.shouldBe(typeForventet)
+        }
 
-        Så<DataTable>("mappet organisasjonsnummer til arbeidsgiver i arbeidsforholdet være") { dataTable: DataTable? -> throw PendingException() }
+        Så<DataTable>("mappet organisasjonsnummer til arbeidsgiver i arbeidsforholdet være") { dataTable: DataTable? ->
+            val organisasjonsnummerForventet = DomenespråkParser.mapOrganisasjonsnummer(dataTable)
+            arbeidsforhold[0].arbeidsgiver.organisasjonsnummer.shouldBe(organisasjonsnummerForventet)
+        }
 
-        Så<DataTable>("mappet ansatte til arbeidsgiver i arbeidsforholdet være") { dataTable: DataTable? -> throw PendingException() }
+        Så<DataTable>("mappet ansatte til arbeidsgiver i arbeidsforholdet være") { dataTable: DataTable? ->
+            val ansatteForventet = DomenespråkParser.mapAnsatte(dataTable)
+            arbeidsforhold[0].arbeidsgiver.ansatte.shouldContainExactly(ansatteForventet)
+        }
 
-        Så<DataTable>("mappet konkursstatus til arbeidsgiver i arbeidsforholdet være") { dataTable: DataTable? -> throw PendingException() }
+        Så<DataTable>("mappet konkursstatus til arbeidsgiver i arbeidsforholdet være") { dataTable: DataTable? ->
+            val statusForventet = DomenespråkParser.mapStatuser(dataTable)
+            arbeidsforhold[0].arbeidsgiver.konkursStatus.shouldContainExactly(statusForventet)
+        }
 
         Når("arbeidsforholdene mappes") {
             arbeidsforhold = mapTilArbeidsforhold()
@@ -156,14 +165,41 @@ class AaregMapperSteps : No {
         )
 
         var navn = Navn(null, null, null, null, null, null, null, null)
-        val organisasjon = Organisasjon(
+        var organisasjon = Organisasjon(
             navn = navn,
-            organisasjonDetaljer = null,
+            organisasjonDetaljer = Organisasjonsdetaljer(
+                mutableListOf<Ansatte>(Ansatte(null, null, null)),
+                null,
+                null,
+                mutableListOf<Enhetstyper>(Enhetstyper(null, String(), null)),
+                null,
+                null,
+                null,
+                mutableListOf<Hjemlandregistre>(),
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                mutableListOf<Status>(),
+                null,
+                null,
+                null,
+                null,
+                mutableListOf<JuridiskEnhet>()
+            ),
             organisasjonsnummer = null,
             type = String(),
             bestaarAvOrganisasjonsledd = mutableListOf<BestaarAvOrganisasjonsledd?>(),
             inngaarIJuridiskEnheter = mutableListOf<JuridiskEnhet>()
         )
+
         val juridiskEnheter = emptyList<Organisasjon>()
         fun build(): List<ArbeidsforholdOrganisasjon> {
 

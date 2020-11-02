@@ -153,12 +153,24 @@ object DomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, PeriodeMapper())[0]
     }
 
+    fun mapTypeIArbeidsforhold(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, TypeMapper())[0]
+    }
+
+    fun mapOrganisasjonsnummer(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, OrganisasjonsnummerMapper())[0]
+    }
+
+    fun mapAnsatte(dataTable: DataTable?): List<Ansatte> {
+        return mapDataTable(dataTable, AnsattMapper())
+    }
+
     fun mapArbeidsgivertype(dataTable: DataTable?): OpplysningspliktigArbeidsgiverType {
-        return mapDataTable(dataTable, ArbeidsgivertypeMapper()).get(0)
+        return mapDataTable(dataTable, ArbeidsgivertypeMapper())[0]
     }
 
     fun mapArbeidsforholdstype(dataTable: DataTable?): Arbeidsforholdstype {
-        return mapDataTable(dataTable, ArbeidsforholdtypeMapper()).get(0)
+        return mapDataTable(dataTable, ArbeidsforholdtypeMapper())[0]
     }
 
     fun mapAdresser(dataTable: DataTable?): List<Adresse> {
@@ -171,6 +183,10 @@ object DomenespråkParser : BasisDomeneParser() {
 
     fun mapFamilierelasjoner(dataTable: DataTable?): List<Familierelasjon> {
         return mapDataTable(dataTable, FamilieRelasjonMapper())
+    }
+
+    fun mapStatuser(dataTable: DataTable?): List<String> {
+        return mapDataTable(dataTable, StatusMapper())
     }
 
     fun mapPersonhistorikkEktefelle(dataTable: DataTable?): List<PersonhistorikkEktefelle> {
@@ -232,11 +248,44 @@ object DomenespråkParser : BasisDomeneParser() {
     fun mapInputPeriode(dataTable: DataTable?): InputPeriode? {
         return mapDataTable(dataTable, InputPeriodeMapper()).get(0)
     }
+    class TypeMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(ARBEIDSGIVERTYPE, rad)
+        }
+    }
+
+    class OrganisasjonsnummerMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(ORGANISASJONSNUMMER, rad)
+        }
+    }
 
     class RegelIdMapper : RadMapper<RegelId> {
         override fun mapRad(rad: Map<String, String>): RegelId {
 
             return parseRegelId(REGEL, rad)
+        }
+    }
+
+    class StatusMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(STATUS, rad)
+        }
+    }
+
+    class AnsattMapper : RadMapper<Ansatte> {
+        override fun mapRad(rad: Map<String, String>): Ansatte {
+            return Ansatte(
+                parseInt(ANTALL_ANSATTE, rad),
+                Bruksperiode(
+                    parseDato(BRUKSPERIODE_GYLDIG_FRA, rad),
+                    parseDato(BRUKSPERIODE_GYLDIG_TIL, rad)
+                ),
+                Gyldighetsperiode(
+                    parseDato(GYLDIGHETSPERIODE_FRA_OG_MED, rad),
+                    parseDato(GYLDIGHETSPERIODE_TIL_OG_MED, rad)
+                )
+            )
         }
     }
 
@@ -529,18 +578,22 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     ADRESSE("Adresse"),
     BOSTED("Bosted"),
     AKTIV_DATO("Aktiv dato"),
-    ANTALL_ANSATTE("Antall ansatte"),
+    ANTALL_ANSATTE("Antall"),
     ANTALL_ANSATTE_I_JURIDISK_ENHET("Antall ansatte i juridisk enhet"),
     ARBEIDSFORHOLDSTYPE("Arbeidsforholdstype"),
     ARBEIDSGIVER_ID("Arbeidsgiver Id"),
-    ARBEIDSGIVERTYPE("Arbeidsgivertype"),
+    ARBEIDSGIVERTYPE("Type"),
     BEREGNET_ANTALL_TIMER_PR_UKE("Beregnet antall timer pr uke"),
+    BRUKSPERIODE_GYLDIG_FRA("Bruksperiode gyldig fra"),
+    BRUKSPERIODE_GYLDIG_TIL("Bruksperiode gyldig til"),
     DEKNING("Dekning"),
     DOEDSDATO("Dødsdato"),
     ER_MEDLEM("Er medlem"),
     FRA_OG_MED_DATO("Fra og med dato"),
     GYLDIG_FRA_OG_MED("Gyldig fra og med dato"),
     GYLDIG_TIL_OG_MED("Gyldig til og med dato"),
+    GYLDIGHETSPERIODE_FRA_OG_MED("Gyldighetsperiode gyldig fra"),
+    GYLDIGHETSPERIODE_TIL_OG_MED("Bruksperiode gyldig til"),
     HAR_HATT_ARBEID_UTENFOR_NORGE("Har hatt arbeid utenfor Norge"),
     IDENT("Ident"),
     IDENTIFIKATOR("Identifikator"),
@@ -554,6 +607,7 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     LOVVALGSLAND("Lovvalgsland"),
     MIN_ROLLE_FOR_PERSON("Min rolle for person"),
     OPPHOLDSADRESSE("Oppholdsadresse"),
+    ORGANISASJONSNUMMER("Organisasjonsnummer"),
     PERIODESTATUS("Periodestatus"),
     PRIORITET("Prioritet"),
     REGEL("Regel"),

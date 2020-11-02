@@ -3,6 +3,7 @@ package no.nav.medlemskap.cucumber.mapping.pdl.aareg
 import io.cucumber.datatable.DataTable
 import no.nav.medlemskap.clients.aareg.AaRegOpplysningspliktigArbeidsgiverType
 import no.nav.medlemskap.clients.aareg.AaRegPeriode
+import no.nav.medlemskap.clients.ereg.Ansatte
 import no.nav.medlemskap.clients.ereg.Status
 import no.nav.medlemskap.cucumber.BasisDomeneParser
 import no.nav.medlemskap.cucumber.Domenenøkkel
@@ -21,25 +22,45 @@ class AaregDomenespraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, ArbeidsforholdTypeMappe())[0]
     }
 
-    fun mapType(dataTable: DataTable?): String {
-        return mapDataTable(dataTable, TypeMapper())[0]
+    fun mapEnhetstype(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, EnhetstypeMapper())[0]
     }
 
     fun mapOrganisasjonsnummer(dataTable: DataTable?): String {
         return mapDataTable(dataTable, OrganisasjonsnummerMapper())[0]
     }
 
-    fun mapAntallAnsatte(dataTable: DataTable?): Int {
-        return mapDataTable(dataTable, AntallAnsattMapper())[0]
+    fun mapAntallAnsatte(dataTable: DataTable?): List<Ansatte> {
+        return mapDataTable(dataTable, AntallAnsattMapper())
     }
 
     fun mapStatuser(dataTable: DataTable?): List<Status> {
         return mapDataTable(dataTable, StatusMapper())
     }
 
-    class AntallAnsattMapper : RadMapper<Int> {
-        override fun mapRad(rad: Map<String, String>): Int {
-            return parseInt(Domenebegrep.ANTALL_ANSATTE, rad)
+    class StatusMapper : RadMapper<Status> {
+        override fun mapRad(rad: Map<String, String>): Status {
+            return Status(
+                null,
+                null,
+                parseString(Domenebegrep.STATUS, rad)
+            )
+        }
+    }
+
+    class AntallAnsattMapper : RadMapper<Ansatte> {
+        override fun mapRad(rad: Map<String, String>): Ansatte {
+            return Ansatte(
+                parseInt(Domenebegrep.ANTALL_ANSATTE, rad),
+                no.nav.medlemskap.clients.ereg.Bruksperiode(
+                    parseDato(Domenebegrep.BRUKSPERIODE_GYLDIG_FRA, rad),
+                    parseDato(Domenebegrep.BRUKSPERIODE_GYLDIG_TIL, rad)
+                ),
+                no.nav.medlemskap.clients.ereg.Gyldighetsperiode(
+                    parseDato(no.nav.medlemskap.cucumber.Domenebegrep.GYLDIGHETSPERIODE_FRA_OG_MED, rad),
+                    parseDato(no.nav.medlemskap.cucumber.Domenebegrep.GYLDIGHETSPERIODE_TIL_OG_MED, rad)
+                )
+            )
         }
     }
 
@@ -49,9 +70,9 @@ class AaregDomenespraakParser : BasisDomeneParser() {
         }
     }
 
-    class TypeMapper : RadMapper<String> {
+    class EnhetstypeMapper : RadMapper<String> {
         override fun mapRad(rad: Map<String, String>): String {
-            return parseString(Domenebegrep.TYPE, rad)
+            return parseString(Domenebegrep.ENHETSTYPE, rad)
         }
     }
 
@@ -79,8 +100,13 @@ class AaregDomenespraakParser : BasisDomeneParser() {
         ANTALL_ANSATTE("Antall"),
         ARBEIDSGIVERTYPE("Arbeidsgivertype"),
         ARBEIDSFORHOLDSTYPE("Type"),
+        BRUKSPERIODE_GYLDIG_FRA("Bruksperiode gyldig fra"),
+        BRUKSPERIODE_GYLDIG_TIL("Bruksperiode gyldig til"),
+        ENHETSTYPE("Enhetstype"),
         GYLDIG_FRA_OG_MED_DATO("Gyldig fra og med dato"),
         GYLDIG_TIL_OG_MED_DATO("Gyldig til og med dato"),
+        GYLDIGHETSPERIODE_FRA_OG_MED("Gyldighetsperiode gyldig fra"),
+        GYLDIGHETSPERIODE_TIL_OG_MED("Bruksperiode gyldig til"),
         ORGANISASJONSNUMMER("Organisasjonsnummer"),
         TYPE("Type"),
         STATUS("Konkurstatus"),

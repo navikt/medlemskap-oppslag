@@ -1,13 +1,12 @@
 # language: no
 # encoding: UTF-8
 
-
 Egenskap: Mapping av arbeidsgiver i arbeidsforhold
 
   Scenario: Bruker har arbeidsgiver i arbeidsforholdet
-    Gitt følgende om Organisasjon.type fra ereg
-      | Type   |
-      | BEDR   |
+    Gitt følgende om Organisasjon.organisasjonsdetaljer.enhetstyper.enhetstype fra ereg
+      | Enhetstype|
+      | BEDR      |
 
     Og følgende om Organiasjon.organisasjonsnummer fra ereg
       | Organisasjonsnummer |
@@ -18,8 +17,8 @@ Egenskap: Mapping av arbeidsgiver i arbeidsforhold
       | 8         | 2015-03-25                | 2015-03-25              | 2015-03-25                   | 2015-03-25                    |
 
     Og følgende om konkursstatus organisasjon.organisasjonDetaljer.statuser
-      | Statuskode |
-      | USL        |
+      | Konkurstatus |
+      | USL          |
 
 
     Når arbeidsforholdene mappes
@@ -37,7 +36,7 @@ Egenskap: Mapping av arbeidsgiver i arbeidsforhold
       | 8         | 2015-03-25                | 2015-03-25              | 2015-03-25                   | 2015-03-25                    |
 
     Og mappet konkursstatus til arbeidsgiver i arbeidsforholdet være
-      | Statuskode |
+      | Status |
       | USL        |
 
 

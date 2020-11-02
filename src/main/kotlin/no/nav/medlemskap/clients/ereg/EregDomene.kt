@@ -5,7 +5,7 @@ import java.time.LocalDate
 data class OrganisasjonNøkkelinfo(val enhetstype: String?)
 
 data class Organisasjonsdetaljer(
-    val ansatte: List<Ansatte>?,
+    var ansatte: List<Ansatte>?,
     val dublettAv: Organisasjon?,
     val dubletter: List<Organisasjon>?,
     val enhetstyper: List<Enhetstyper>?,
@@ -129,7 +129,7 @@ data class Epostadresse(
 
 data class Enhetstyper(
     val bruksperiode: Bruksperiode?,
-    val enhetstype: String?,
+    var enhetstype: String?,
     val gyldighetsperiode: Gyldighetsperiode?
 )
 
@@ -153,7 +153,7 @@ data class Organisasjon(
     val navn: Navn?,
     val organisasjonDetaljer: Organisasjonsdetaljer?,
     var organisasjonsnummer: String?,
-    val type: String?,
+    var type: String?,
     val bestaarAvOrganisasjonsledd: List<BestaarAvOrganisasjonsledd?>?,
     val inngaarIJuridiskEnheter: List<JuridiskEnhet?>?
 ) {
