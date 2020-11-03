@@ -37,7 +37,7 @@ Egenskap: Mapping av arbeidsgiver i arbeidsforhold
 
     Og mappet konkursstatus til arbeidsgiver i arbeidsforholdet være
       | Status |
-      | USL        |
+      | USL    |
 
 
 

@@ -1,13 +1,18 @@
 package no.nav.medlemskap.cucumber.mapping.pdl.aareg
 
 import io.cucumber.datatable.DataTable
+import no.nav.medlemskap.clients.aareg.AaRegBruksperiode
+import no.nav.medlemskap.clients.aareg.AaRegGyldighetsperiode
 import no.nav.medlemskap.clients.aareg.AaRegOpplysningspliktigArbeidsgiverType
 import no.nav.medlemskap.clients.aareg.AaRegPeriode
 import no.nav.medlemskap.clients.ereg.Ansatte
+import no.nav.medlemskap.clients.ereg.Bruksperiode
+import no.nav.medlemskap.clients.ereg.Gyldighetsperiode
 import no.nav.medlemskap.clients.ereg.Status
 import no.nav.medlemskap.cucumber.BasisDomeneParser
 import no.nav.medlemskap.cucumber.Domenenøkkel
 import no.nav.medlemskap.cucumber.RadMapper
+import no.nav.medlemskap.regler.common.Datohjelper
 
 class AaregDomenespraakParser : BasisDomeneParser() {
     fun mapPeriode(dataTable: DataTable?): AaRegPeriode {
@@ -36,6 +41,70 @@ class AaregDomenespraakParser : BasisDomeneParser() {
 
     fun mapStatuser(dataTable: DataTable?): List<Status> {
         return mapDataTable(dataTable, StatusMapper())
+    }
+
+    fun mapBruksPeriode(dataTable: DataTable?): AaRegBruksperiode {
+        return mapDataTable(dataTable, BruksperiodeMapper())[0]
+    }
+
+    fun mapGyldighetsPeriode(dataTable: DataTable?): AaRegGyldighetsperiode {
+        return mapDataTable(dataTable, GyldighetsperiodeMapper())[0]
+    }
+
+    fun mapYrkeskode(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, YrkeskodeMapper())[0]
+    }
+    fun mapSkipsregister(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, SkipsregisterMapper())[0]
+    }
+
+    fun mapStillingsprosent(dataTable: DataTable?): Double {
+        return mapDataTable(dataTable, StillingsprosentMapper())[0]
+    }
+
+    fun mapBeregnetAntallTimer(dataTable: DataTable?): Double {
+        return mapDataTable(dataTable, BeregnetAntallTimerMapper())[0]
+    }
+
+    class BeregnetAntallTimerMapper : RadMapper<Double> {
+        override fun mapRad(rad: Map<String, String>): Double {
+            return parseDouble(Domenebegrep.BEREGNET_ANTALL_TIMER, rad)
+        }
+    }
+    class StillingsprosentMapper : RadMapper<Double> {
+        override fun mapRad(rad: Map<String, String>): Double {
+            return parseDouble(Domenebegrep.STILLINGSPROSENT, rad)
+        }
+    }
+
+    class SkipsregisterMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(Domenebegrep.SKIPSREGISTER, rad)
+        }
+    }
+
+    class YrkeskodeMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(Domenebegrep.YRKESKODE, rad)
+        }
+    }
+
+    class GyldighetsperiodeMapper : RadMapper<AaRegGyldighetsperiode> {
+        override fun mapRad(rad: Map<String, String>): AaRegGyldighetsperiode {
+            return AaRegGyldighetsperiode(
+                parseValgfriDato(Domenebegrep.GYLDIG_FRA_OG_MED_DATO, rad)!!,
+                parseValgfriDato(Domenebegrep.GYLDIG_TIL_OG_MED_DATO, rad)
+            )
+        }
+    }
+
+    class BruksperiodeMapper : RadMapper<AaRegBruksperiode> {
+        override fun mapRad(rad: Map<String, String>): AaRegBruksperiode {
+            return AaRegBruksperiode(
+                Datohjelper.parseIsoDatoTid(parseString(Domenebegrep.GYLDIG_FRA_OG_MED_DATO, rad))!!,
+                Datohjelper.parseIsoDatoTid(parseString(Domenebegrep.GYLDIG_TIL_OG_MED_DATO, rad))
+            )
+        }
     }
 
     class StatusMapper : RadMapper<Status> {
@@ -100,6 +169,7 @@ class AaregDomenespraakParser : BasisDomeneParser() {
         ANTALL_ANSATTE("Antall"),
         ARBEIDSGIVERTYPE("Arbeidsgivertype"),
         ARBEIDSFORHOLDSTYPE("Type"),
+        BEREGNET_ANTALL_TIMER("BeregnetAntallTimerPrUke"),
         BRUKSPERIODE_GYLDIG_FRA("Bruksperiode gyldig fra"),
         BRUKSPERIODE_GYLDIG_TIL("Bruksperiode gyldig til"),
         ENHETSTYPE("Enhetstype"),
@@ -109,7 +179,10 @@ class AaregDomenespraakParser : BasisDomeneParser() {
         GYLDIGHETSPERIODE_TIL_OG_MED("Bruksperiode gyldig til"),
         ORGANISASJONSNUMMER("Organisasjonsnummer"),
         TYPE("Type"),
+        SKIPSREGISTER("Skipsregister"),
         STATUS("Konkurstatus"),
+        STILLINGSPROSENT("Stillingsprosent"),
+        YRKESKODE("Yrke"),
         GYLDIG_FRA_OG_MED("Gyldig fra og med"),
         GYLDIG_TIL_OG_MED("Gyldig til og med"),
         FOLKE_REG_GYLDIGHETSTIDSPUNKT("Folkeregistermetadata gyldighetstidspunkt"),

@@ -21,16 +21,16 @@ data class AaRegAntallTimerForTimeloennet(
 data class AaRegArbeidsavtale(
     val antallTimerPrUke: Double?,
     val arbeidstidsordning: String?,
-    val beregnetAntallTimerPrUke: Double?,
-    val bruksperiode: AaRegBruksperiode,
-    val gyldighetsperiode: AaRegGyldighetsperiode,
+    var beregnetAntallTimerPrUke: Double?,
+    var bruksperiode: AaRegBruksperiode,
+    var gyldighetsperiode: AaRegGyldighetsperiode,
     val sistLoennsendring: String?,
     val sistStillingsendring: String?,
     val sporingsinformasjon: AaRegSporingsinformasjon,
-    val stillingsprosent: Double?,
-    val yrke: String,
+    var stillingsprosent: Double?,
+    var yrke: String,
     val fartsomraade: String?,
-    val skipsregister: String?,
+    var skipsregister: String?,
     val skipstype: String?
 
 )

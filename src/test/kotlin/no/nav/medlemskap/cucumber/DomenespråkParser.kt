@@ -161,6 +161,10 @@ object DomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, OrganisasjonsnummerMapper())[0]
     }
 
+    fun mapStillingsprosent(dataTable: DataTable?): Double {
+        return mapDataTable(dataTable, StillingsprosentMapper())[0]
+    }
+
     fun mapAnsatte(dataTable: DataTable?): List<Ansatte> {
         return mapDataTable(dataTable, AnsattMapper())
     }
@@ -171,6 +175,14 @@ object DomenespråkParser : BasisDomeneParser() {
 
     fun mapArbeidsforholdstype(dataTable: DataTable?): Arbeidsforholdstype {
         return mapDataTable(dataTable, ArbeidsforholdtypeMapper())[0]
+    }
+
+    fun mapBeregnetAntallTimerUke(dataTable: DataTable?): Double {
+        return mapDataTable(dataTable, BeregnetAntallTimerPerUkeMapper())[0]
+    }
+
+    fun mapYrkeskode(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, YrkeskodeMapper())[0]
     }
 
     fun mapAdresser(dataTable: DataTable?): List<Adresse> {
@@ -187,6 +199,10 @@ object DomenespråkParser : BasisDomeneParser() {
 
     fun mapStatuser(dataTable: DataTable?): List<String> {
         return mapDataTable(dataTable, StatusMapper())
+    }
+
+    fun mapSkipsregister(dataTable: DataTable?): Skipsregister {
+        return mapDataTable(dataTable, SkipsregisterMapper())[0]
     }
 
     fun mapPersonhistorikkEktefelle(dataTable: DataTable?): List<PersonhistorikkEktefelle> {
@@ -248,6 +264,22 @@ object DomenespråkParser : BasisDomeneParser() {
     fun mapInputPeriode(dataTable: DataTable?): InputPeriode? {
         return mapDataTable(dataTable, InputPeriodeMapper()).get(0)
     }
+
+    fun mapPeriodeIArbeidsavtale(dataTable: DataTable?): Periode {
+        return mapDataTable(dataTable, PeriodeMapper())[0]
+    }
+
+    class YrkeskodeMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(YRKESKODE, rad)
+        }
+    }
+
+    class BeregnetAntallTimerPerUkeMapper : RadMapper<Double> {
+        override fun mapRad(rad: Map<String, String>): Double {
+            return parseDouble(BEREGNET_ANTALL_TIMER_PR_UKE, rad)
+        }
+    }
     class TypeMapper : RadMapper<String> {
         override fun mapRad(rad: Map<String, String>): String {
             return parseString(ARBEIDSGIVERTYPE, rad)
@@ -270,6 +302,12 @@ object DomenespråkParser : BasisDomeneParser() {
     class StatusMapper : RadMapper<String> {
         override fun mapRad(rad: Map<String, String>): String {
             return parseString(STATUS, rad)
+        }
+    }
+
+    class SkipsregisterMapper : RadMapper<Skipsregister> {
+        override fun mapRad(rad: Map<String, String>): Skipsregister {
+            return Skipsregister.valueOf(parseString(SKIPSREGISTER, rad))
         }
     }
 
@@ -350,6 +388,12 @@ object DomenespråkParser : BasisDomeneParser() {
                 parseValgfriDato(FRA_OG_MED_DATO, rad),
                 parseValgfriDato(TIL_OG_MED_DATO, rad)
             )
+        }
+    }
+
+    class StillingsprosentMapper : RadMapper<Double> {
+        override fun mapRad(rad: Map<String, String>): Double {
+            return parseDouble(STILLINGSPROSENT, rad)
         }
     }
 
