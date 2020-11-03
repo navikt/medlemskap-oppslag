@@ -3,7 +3,7 @@
 
 Egenskap: Mapping av arbeidsgivertype i arbeidsforhold
 
-  Scenario: Bruker har flere arbeidsfohrold
+  Scenario: Bruker har arbeidsforhold med arbeidsgivertype
 
     Gitt følgende om arbeidgivertype fra AaRegArbeidsforhold.AaRegOpplysningspliktigArbeidsgiver
       | Arbeidsgivertype |

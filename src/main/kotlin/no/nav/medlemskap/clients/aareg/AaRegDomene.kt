@@ -128,8 +128,8 @@ data class AaRegTjenestefeilResponse(
 )
 
 data class AaRegUtenlandsopphold(
-    val landkode: String,
-    val periode: AaRegPeriode?,
-    val rapporteringsperiode: YearMonth,
+    var landkode: String,
+    var periode: AaRegPeriode?,
+    var rapporteringsperiode: YearMonth,
     val sporingsinformasjon: AaRegSporingsinformasjon
 )

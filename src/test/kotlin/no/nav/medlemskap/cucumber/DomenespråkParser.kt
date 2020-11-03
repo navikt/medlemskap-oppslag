@@ -2,6 +2,7 @@ package no.nav.medlemskap.cucumber
 
 import io.cucumber.datatable.DataTable
 import no.nav.medlemskap.cucumber.Domenebegrep.*
+import no.nav.medlemskap.cucumber.mapping.pdl.aareg.AaregDomenespraakParser
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
@@ -267,6 +268,30 @@ object DomenespråkParser : BasisDomeneParser() {
 
     fun mapPeriodeIArbeidsavtale(dataTable: DataTable?): Periode {
         return mapDataTable(dataTable, PeriodeMapper())[0]
+    }
+
+    fun mapLandkode(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, LandkodeMapper())[0]
+    }
+
+    fun mapPeriodeIUtenlandsopphold(dataTable: DataTable?): Periode {
+        return mapDataTable(dataTable, PeriodeMapper())[0]
+    }
+
+    fun mapRapporteringsperiode(dataTable: DataTable?): YearMonth {
+        return mapDataTable(dataTable, RapporteringsperiodeMapper())[0]
+    }
+
+    class RapporteringsperiodeMapper : RadMapper<YearMonth> {
+        override fun mapRad(rad: Map<String, String>): YearMonth {
+            return YearMonth.parse(parseString(AaregDomenespraakParser.Domenebegrep.RAPPORTERINGSPERIODE, rad))
+        }
+    }
+
+    class LandkodeMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(LANDKODE, rad)
+        }
     }
 
     class YrkeskodeMapper : RadMapper<String> {

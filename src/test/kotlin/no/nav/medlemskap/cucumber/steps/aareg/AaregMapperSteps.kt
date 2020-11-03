@@ -12,6 +12,7 @@ import no.nav.medlemskap.services.aareg.ArbeidsforholdOrganisasjon
 import no.nav.medlemskap.services.aareg.mapArbeidsforhold
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.YearMonth
 
 class AaregMapperSteps : No {
     private val aaregDomenespraakParser = AaregDomenespraakParser()
@@ -29,6 +30,10 @@ class AaregMapperSteps : No {
 
         Gitt<DataTable>("følgende om type fra AaRegArbeidsforhold") { dataTable: DataTable? ->
             aaregBuilder.arbeidsforhold.type = aaregDomenespraakParser.mapArbeidsforholdsType(dataTable)
+        }
+
+        Gitt<DataTable>("følgende om landkode i AaRegArbeidsforhold.AaRegUtenlandsopphold") { dataTable: DataTable? ->
+            aaregBuilder.arbeidsforhold.utenlandsopphold?.get(0)?.landkode = aaregDomenespraakParser.mapLandkode(dataTable)
         }
 
         Gitt<DataTable>("følgende om Organisasjon.organisasjonsdetaljer.enhetstyper.enhetstype fra ereg") { dataTable: DataTable? ->
@@ -69,6 +74,33 @@ class AaregMapperSteps : No {
 
         Gitt<DataTable>("følgende om beregnetAntallTimerPrUke") { dataTable: DataTable? ->
             aaregBuilder.arbeidsavtaler[0].beregnetAntallTimerPrUke = aaregDomenespraakParser.mapBeregnetAntallTimer(dataTable)
+        }
+
+        Gitt<DataTable>("følgende om landkode fra AaRegArbeidsforhold.AaRegUtenlandsopphold") { dataTable: DataTable? ->
+            aaregBuilder.arbeidsforhold.utenlandsopphold?.get(0)?.landkode = aaregDomenespraakParser.mapLandkode(dataTable)
+        }
+
+        Gitt<DataTable>("følgende om AaRegPeriode i fra AaRegArbeidsforhold.AaRegUtenlandsopphold") { dataTable: DataTable? ->
+            aaregBuilder.arbeidsforhold.utenlandsopphold?.get(0)?.periode = aaregDomenespraakParser.mapPeriode(dataTable)
+        }
+
+        Gitt<DataTable>("følgende rapporteringsperiode i AaRegArbeidsforhold.AaRegUtenlandsopphold") { dataTable: DataTable? ->
+            aaregBuilder.arbeidsforhold.utenlandsopphold?.get(0)?.rapporteringsperiode = aaregDomenespraakParser.mapRapporteringsperiode(dataTable)
+        }
+
+        Så<DataTable>("skal mappet landkode i utenlandsoppholdet være") { dataTable: DataTable? ->
+            val landkodeForventet = DomenespråkParser.mapLandkode(dataTable)
+            arbeidsforhold[0].utenlandsopphold?.get(0)?.landkode.shouldBe(landkodeForventet)
+        }
+
+        Så<DataTable>("mappet periode være i utenlandsoppholdet være") { dataTable: DataTable? ->
+            val periodeForventet = DomenespråkParser.mapPeriodeIUtenlandsopphold(dataTable)
+            arbeidsforhold[0].utenlandsopphold?.get(0)?.periode.shouldBe(periodeForventet)
+        }
+
+        Så<DataTable>("mappet rapporteringsperiode i utenlandsoppholdet være") { dataTable: DataTable? ->
+            val rapporteringsPeriodeForventet = DomenespråkParser.mapRapporteringsperiode(dataTable)
+            arbeidsforhold[0].utenlandsopphold?.get(0)?.rapporteringsperiode.shouldBe(rapporteringsPeriodeForventet)
         }
 
         Så<DataTable>("skal mappet type til arbeidsgiver i arbeidsforholdet være") { dataTable: DataTable? ->
@@ -160,7 +192,7 @@ class AaregMapperSteps : No {
         val sistBekreftet = LocalDateTime.now()
         val sporingsinformasjon = hentAaregSporingsinformasjon()
         val type = String()
-        val utenlandsopphold = mutableListOf<AaRegUtenlandsopphold>()
+        val utenlandsopphold: List<AaRegUtenlandsopphold> = listOf(hentUtenlandsopphold())
         val arbeidsforholdOrganisasjon = mutableListOf<ArbeidsforholdOrganisasjon>()
         val arbeidsforhold = hentAaregArbeidsforhold()
         var navn = null
@@ -276,6 +308,14 @@ class AaregMapperSteps : No {
                 sporingsinformasjon,
                 type,
                 utenlandsopphold
+            )
+
+        fun hentUtenlandsopphold(): AaRegUtenlandsopphold =
+            AaRegUtenlandsopphold(
+                landkode = String(),
+                rapporteringsperiode = YearMonth.now(),
+                sporingsinformasjon = hentAaregSporingsinformasjon(),
+                periode = AaRegPeriode(LocalDate.MIN, LocalDate.MAX)
             )
 
         fun hentOrganisasjon(): Organisasjon =

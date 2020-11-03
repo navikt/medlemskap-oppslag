@@ -13,10 +13,15 @@ import no.nav.medlemskap.cucumber.BasisDomeneParser
 import no.nav.medlemskap.cucumber.Domenenøkkel
 import no.nav.medlemskap.cucumber.RadMapper
 import no.nav.medlemskap.regler.common.Datohjelper
+import java.time.YearMonth
 
 class AaregDomenespraakParser : BasisDomeneParser() {
     fun mapPeriode(dataTable: DataTable?): AaRegPeriode {
         return mapDataTable(dataTable, PeriodeMapper())[0]
+    }
+
+    fun mapRapporteringsperiode(dataTable: DataTable?): YearMonth {
+        return mapDataTable(dataTable, RapporteringsperiodeMapper())[0]
     }
 
     fun mapArbeidsgiverType(dataTable: DataTable?): AaRegOpplysningspliktigArbeidsgiverType {
@@ -25,6 +30,10 @@ class AaregDomenespraakParser : BasisDomeneParser() {
 
     fun mapArbeidsforholdsType(dataTable: DataTable?): String {
         return mapDataTable(dataTable, ArbeidsforholdTypeMappe())[0]
+    }
+
+    fun mapLandkode(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, LandkodeMapper())[0]
     }
 
     fun mapEnhetstype(dataTable: DataTable?): String {
@@ -133,9 +142,21 @@ class AaregDomenespraakParser : BasisDomeneParser() {
         }
     }
 
+    class RapporteringsperiodeMapper : RadMapper<YearMonth> {
+        override fun mapRad(rad: Map<String, String>): YearMonth {
+            return YearMonth.parse(parseString(Domenebegrep.RAPPORTERINGSPERIODE, rad))
+        }
+    }
+
     class OrganisasjonsnummerMapper : RadMapper<String> {
         override fun mapRad(rad: Map<String, String>): String {
             return parseString(Domenebegrep.ORGANISASJONSNUMMER, rad)
+        }
+    }
+
+    class LandkodeMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(Domenebegrep.LANDKODE, rad)
         }
     }
 
@@ -177,11 +198,13 @@ class AaregDomenespraakParser : BasisDomeneParser() {
         GYLDIG_TIL_OG_MED_DATO("Gyldig til og med dato"),
         GYLDIGHETSPERIODE_FRA_OG_MED("Gyldighetsperiode gyldig fra"),
         GYLDIGHETSPERIODE_TIL_OG_MED("Bruksperiode gyldig til"),
+        LANDKODE("Landkode"),
         ORGANISASJONSNUMMER("Organisasjonsnummer"),
         TYPE("Type"),
         SKIPSREGISTER("Skipsregister"),
         STATUS("Konkurstatus"),
         STILLINGSPROSENT("Stillingsprosent"),
+        RAPPORTERINGSPERIODE("Rapporteringsperiode"),
         YRKESKODE("Yrke"),
         GYLDIG_FRA_OG_MED("Gyldig fra og med"),
         GYLDIG_TIL_OG_MED("Gyldig til og med"),
