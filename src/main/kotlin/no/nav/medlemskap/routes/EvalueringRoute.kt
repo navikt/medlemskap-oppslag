@@ -8,15 +8,19 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import mu.KotlinLogging
+import net.logstash.logback.argument.StructuredArguments.kv
 import net.logstash.logback.marker.Markers.append
 import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.apiCounter
 import no.nav.medlemskap.common.exceptions.KonsumentIkkeFunnet
+import no.nav.medlemskap.common.objectMapper
+import no.nav.medlemskap.common.uavklartPåRegel
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Request
 import no.nav.medlemskap.domene.Response
 import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
 import java.time.LocalDate
@@ -109,14 +113,27 @@ private fun lagResponse(datagrunnlag: Datagrunnlag, resultat: Resultat, versjonT
 private fun loggResponse(fnr: String, response: Response) {
     val resultat = response.resultat
     val årsaker = resultat.årsaker
-    val årsakerSomRegelIdStr = årsaker.map { it.regelId.toString() + " " }
+    val årsakerSomRegelIdStr = årsaker.map { it.regelId.toString() }
+    val årsak = årsaker.map { it.regelId.toString() }.firstOrNull()
 
-    secureLogger.info(append("resultat", resultat), "{} konklusjon gitt for bruker {}", resultat.svar.name, fnr)
+    secureLogger.info(
+        "{} konklusjon gitt for bruker {}, ytelse {}", resultat.svar.name, fnr, response.datagrunnlag.ytelse,
+        kv("fnr", fnr),
+        kv("fom", response.datagrunnlag.periode.fom.toString()),
+        kv("tom", response.datagrunnlag.periode.tom.toString()),
+        kv("førsteDagForYtelse", response.datagrunnlag.førsteDagForYtelse.toString()),
+        kv("brukerInput", response.datagrunnlag.brukerinput.toString()),
+        kv("ytelse", response.datagrunnlag.ytelse),
+        kv("svar", response.resultat.svar),
+        kv("årsak", årsak),
+        kv("årsaker", årsakerSomRegelIdStr),
+        kv("response", objectMapper.writeValueAsString(response))
+    )
+
     if (årsaker.isNotEmpty()) {
+        uavklartPåRegel(årsaker.first(), response.datagrunnlag.ytelse.metricName()).increment()
         secureLogger.info(append("årsaker", årsaker), "Årsaker for bruker {}: {}", fnr, årsakerSomRegelIdStr)
     }
-
-    secureLogger.info(append("response", response), "Response for bruker {}", fnr)
 }
 
 private fun validerRequest(request: Request): Request {
