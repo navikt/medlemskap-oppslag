@@ -32,7 +32,7 @@ Egenskap: Regel 3: Har bruker sammenhengende arbeidsforhold siste 12 måneder?
 
     Når regel "3" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-      | 30.01.2020      | 30.01.2021      | Nei                           |
+      | 30.01.2020      | 14.02.2020      | Nei                           |
 
     Så skal svaret være "Nei"
 
@@ -49,7 +49,7 @@ Egenskap: Regel 3: Har bruker sammenhengende arbeidsforhold siste 12 måneder?
 
     Når regel "3" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-      | 30.01.2020      | 30.01.2021      | Nei                           |
+      | 30.01.2020      | 12.02.2020      | Nei                           |
 
     Så skal svaret være "<Svar>"
 
