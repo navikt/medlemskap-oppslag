@@ -11,6 +11,7 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Svar
+import no.nav.medlemskap.regler.common.Årsak
 import java.time.Duration
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.math.truncate
@@ -41,7 +42,8 @@ fun configureSensuInfluxMeterRegistry(): SensuInfluxMeterRegistry {
     influxMeterRegistry.config().meterFilter(
         MeterFilter.denyUnless {
             it.name.startsWith("api_hit_counter") ||
-                it.name.startsWith("regel_calls_total")
+                it.name.startsWith("regel_calls_total") ||
+                it.name.startsWith("uavklart_for_regel")
         }
     )
     influxMeterRegistry.config().commonTags(defaultInfluxTags())
@@ -180,6 +182,12 @@ fun enhetstypeForJuridiskEnhet(enhetstype: String?, ytelse: String): Counter = C
     .builder("enhetstype_juridisk_enhet")
     .tags("juridiskEnhetstype", enhetstype ?: "N/A", "ytelse", ytelse)
     .description("Ulike enhetstyper for juridiske enheter")
+    .register(Metrics.globalRegistry)
+
+fun uavklartPåRegel(årsak: Årsak, ytelse: String): Counter = Counter
+    .builder("uavklart_for_regel")
+    .tags("regel", "${årsak.regelId} - ${årsak.avklaring}", "ytelse", ytelse)
+    .description("Regler som gir uavklart")
     .register(Metrics.globalRegistry)
 
 private fun mapEndretStatsborgerskapBooleanTilMetrikkVerdi(statsborgerskapEndretSisteÅret: Boolean): String =
