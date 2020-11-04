@@ -23,8 +23,8 @@ class AaregBuilder() {
 
     fun hentAnsettelsesPeriode(): AaRegAnsettelsesperiode =
         AaRegAnsettelsesperiode(
-            bruksperiode = AaRegBruksperiode(fom = LocalDateTime.now(), tom = null),
-            periode = AaRegPeriode(fom = null, tom = null),
+            bruksperiode = hentAaregBruksperiode(),
+            periode = hentAaregPeriode(),
             varslingskode = String(),
             sporingsinformasjon = AaRegSporingsinformasjon(
                 endretAv = String(),
