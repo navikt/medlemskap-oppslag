@@ -1,4 +1,5 @@
 package no.nav.medlemskap.cucumber.steps.aareg
+import AaregBuilder
 import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
 import io.kotest.matchers.collections.shouldContainExactly
@@ -8,11 +9,7 @@ import no.nav.medlemskap.clients.ereg.*
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.mapping.pdl.aareg.AaregDomenespraakParser
 import no.nav.medlemskap.domene.Arbeidsforhold
-import no.nav.medlemskap.services.aareg.ArbeidsforholdOrganisasjon
 import no.nav.medlemskap.services.aareg.mapArbeidsforhold
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.YearMonth
 
 class AaregMapperSteps : No {
     private val aaregDomenespraakParser = AaregDomenespraakParser()
@@ -53,27 +50,27 @@ class AaregMapperSteps : No {
         }
 
         Gitt<DataTable>("følgende om AaRegPeriode i fra AaRegArbeidsavtale AaRegBruksperiode") { dataTable: DataTable? ->
-            aaregBuilder.arbeidsavtaler[0].bruksperiode = aaregDomenespraakParser.mapBruksPeriode(dataTable)
+            aaregBuilder.arbeidsforhold.arbeidsavtaler[0].bruksperiode = aaregDomenespraakParser.mapBruksPeriode(dataTable)
         }
 
         Gitt<DataTable>("følgende om gyldighetsperiode fra AaRegArbeidsavtale AaRegGyldighetsperiode") { dataTable: DataTable? ->
-            aaregBuilder.arbeidsavtaler[0].gyldighetsperiode = aaregDomenespraakParser.mapGyldighetsPeriode(dataTable)
+            aaregBuilder.arbeidsforhold.arbeidsavtaler[0].gyldighetsperiode = aaregDomenespraakParser.mapGyldighetsPeriode(dataTable)
         }
 
         Gitt<DataTable>("følgende om yrke fra AaRegArbeidsavtale") { dataTable: DataTable? ->
-            aaregBuilder.arbeidsavtaler[0].yrke = aaregDomenespraakParser.mapYrkeskode(dataTable)
+            aaregBuilder.arbeidsforhold.arbeidsavtaler[0].yrke = aaregDomenespraakParser.mapYrkeskode(dataTable)
         }
 
         Gitt<DataTable>("følgende om skipsregister fra AaRegArbeidsavtale") { dataTable: DataTable? ->
-            aaregBuilder.arbeidsavtaler[0].skipsregister = aaregDomenespraakParser.mapSkipsregister(dataTable)
+            aaregBuilder.arbeidsforhold.arbeidsavtaler[0].skipsregister = aaregDomenespraakParser.mapSkipsregister(dataTable)
         }
 
         Gitt<DataTable>("følgende om stillingsprosent fra AaRegArbeidsavtale") { dataTable: DataTable? ->
-            aaregBuilder.arbeidsavtaler[0].stillingsprosent = aaregDomenespraakParser.mapStillingsprosent(dataTable)
+            aaregBuilder.arbeidsforhold.arbeidsavtaler[0].stillingsprosent = aaregDomenespraakParser.mapStillingsprosent(dataTable)
         }
 
         Gitt<DataTable>("følgende om beregnetAntallTimerPrUke") { dataTable: DataTable? ->
-            aaregBuilder.arbeidsavtaler[0].beregnetAntallTimerPrUke = aaregDomenespraakParser.mapBeregnetAntallTimer(dataTable)
+            aaregBuilder.arbeidsforhold.arbeidsavtaler[0].beregnetAntallTimerPrUke = aaregDomenespraakParser.mapBeregnetAntallTimer(dataTable)
         }
 
         Gitt<DataTable>("følgende om landkode fra AaRegArbeidsforhold.AaRegUtenlandsopphold") { dataTable: DataTable? ->
@@ -175,183 +172,5 @@ class AaregMapperSteps : No {
 
     private fun mapTilArbeidsforhold(): List<Arbeidsforhold> {
         return mapArbeidsforhold(aaregBuilder.build())
-    }
-
-    class AaregBuilder() {
-        var ansettelsesperiode = hentAnsettelsesPeriode()
-        var antallTimerForTimeloennet = mutableListOf<AaRegAntallTimerForTimeloennet>()
-        var arbeidsavtaler: List<AaRegArbeidsavtale> = listOf(hentArbeidsavtale())
-        var arbeidsforholdId = String()
-        var arbeidsgiver = hentArbeidsgiver()
-        val arbeidstaker = hentArbeidstaker()
-        val innrapportertEtterAOrdningen = false
-        val navArbeidsforholdId = 1
-        val opplysningspliktig = hentOpplysningspliktigArbeidsgiver()
-        val permisjonPermitteringer = mutableListOf<AaRegPermisjonPermittering>()
-        val registrert = LocalDateTime.now()
-        val sistBekreftet = LocalDateTime.now()
-        val sporingsinformasjon = hentAaregSporingsinformasjon()
-        val type = String()
-        val utenlandsopphold: List<AaRegUtenlandsopphold> = listOf(hentUtenlandsopphold())
-        val arbeidsforholdOrganisasjon = mutableListOf<ArbeidsforholdOrganisasjon>()
-        val arbeidsforhold = hentAaregArbeidsforhold()
-        var navn = null
-        var organisasjon = hentOrganisasjon()
-        val juridiskEnheter = emptyList<Organisasjon>()
-        fun build(): List<ArbeidsforholdOrganisasjon> {
-            arbeidsforholdOrganisasjon
-                .addAll(
-                    listOf
-                    (
-                        ArbeidsforholdOrganisasjon(
-                            arbeidsforhold,
-                            organisasjon,
-                            juridiskEnheter
-                        )
-                    )
-                )
-            return arbeidsforholdOrganisasjon
-        }
-
-        fun hentAnsettelsesPeriode(): AaRegAnsettelsesperiode =
-            AaRegAnsettelsesperiode(
-                bruksperiode = AaRegBruksperiode(fom = LocalDateTime.now(), tom = null),
-                periode = AaRegPeriode(fom = null, tom = null),
-                varslingskode = String(),
-                sporingsinformasjon = AaRegSporingsinformasjon(
-                    endretAv = String(),
-                    endretKilde = String(),
-                    endretKildeReferanse = String(),
-                    endretTidspunkt = LocalDateTime.now(),
-                    opprettetAv = String(),
-                    opprettetKilde = String(),
-                    opprettetKildereferanse = String(),
-                    opprettetTidspunkt = LocalDateTime.now()
-                )
-            )
-
-        fun hentArbeidsgiver(): AaRegOpplysningspliktigArbeidsgiver =
-            AaRegOpplysningspliktigArbeidsgiver(
-                type = AaRegOpplysningspliktigArbeidsgiverType.Organisasjon,
-                organisasjonsnummer = String(),
-                aktoerId = String(),
-                offentligIdent = String()
-            )
-
-        fun hentArbeidstaker(): AaRegPerson =
-            AaRegPerson(
-                type = AaRegPersonType.Person,
-                aktoerId = String(),
-                offentligIdent = String()
-            )
-
-        fun hentOpplysningspliktigArbeidsgiver(): AaRegOpplysningspliktigArbeidsgiver =
-            AaRegOpplysningspliktigArbeidsgiver(
-                type = AaRegOpplysningspliktigArbeidsgiverType.Organisasjon,
-                organisasjonsnummer = String(),
-                aktoerId = String(),
-                offentligIdent = String()
-            )
-
-        fun hentAaregSporingsinformasjon(): AaRegSporingsinformasjon =
-            AaRegSporingsinformasjon(
-                endretAv = String(),
-                endretKilde = String(),
-                endretKildeReferanse = String(),
-                endretTidspunkt = LocalDateTime.now(),
-                opprettetAv = String(),
-                opprettetKilde = String(),
-                opprettetKildereferanse = String(),
-                opprettetTidspunkt = LocalDateTime.now()
-            )
-
-        fun hentArbeidsavtale(): AaRegArbeidsavtale =
-            AaRegArbeidsavtale(
-                antallTimerPrUke = null,
-                arbeidstidsordning = String(),
-                beregnetAntallTimerPrUke = null,
-                bruksperiode = AaRegBruksperiode(LocalDateTime.MIN, null),
-                gyldighetsperiode = AaRegGyldighetsperiode(LocalDate.now(), LocalDate.MIN),
-                sistStillingsendring = null,
-                skipsregister = null,
-                skipstype = String(),
-                fartsomraade = String(),
-                yrke = String(),
-                sporingsinformasjon = AaRegSporingsinformasjon(
-                    endretAv = null,
-                    endretKildeReferanse = null,
-                    endretKilde = null,
-                    endretTidspunkt = null,
-                    opprettetTidspunkt = LocalDateTime.MIN,
-                    opprettetAv = String(),
-                    opprettetKilde = null,
-                    opprettetKildereferanse = String()
-                ),
-                stillingsprosent = null,
-                sistLoennsendring = null
-            )
-
-        fun hentAaregArbeidsforhold(): AaRegArbeidsforhold =
-            AaRegArbeidsforhold(
-                ansettelsesperiode,
-                antallTimerForTimeloennet,
-                arbeidsavtaler,
-                arbeidsforholdId,
-                arbeidsgiver,
-                arbeidstaker,
-                innrapportertEtterAOrdningen,
-                navArbeidsforholdId,
-                opplysningspliktig,
-                permisjonPermitteringer,
-                registrert,
-                sistBekreftet,
-                sporingsinformasjon,
-                type,
-                utenlandsopphold
-            )
-
-        fun hentUtenlandsopphold(): AaRegUtenlandsopphold =
-            AaRegUtenlandsopphold(
-                landkode = String(),
-                rapporteringsperiode = YearMonth.now(),
-                sporingsinformasjon = hentAaregSporingsinformasjon(),
-                periode = AaRegPeriode(LocalDate.MIN, LocalDate.MAX)
-            )
-
-        fun hentOrganisasjon(): Organisasjon =
-            Organisasjon(
-                navn = navn,
-                organisasjonsnummer = null,
-                type = String(),
-                bestaarAvOrganisasjonsledd = mutableListOf<BestaarAvOrganisasjonsledd?>(),
-                inngaarIJuridiskEnheter = mutableListOf<JuridiskEnhet>(),
-                organisasjonDetaljer = Organisasjonsdetaljer(
-                    mutableListOf<Ansatte>(Ansatte(null, null, null)),
-                    null,
-                    null,
-                    mutableListOf<Enhetstyper>(Enhetstyper(null, String(), null)),
-                    null,
-                    null,
-                    null,
-                    mutableListOf<Hjemlandregistre>(),
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    null,
-                    mutableListOf<Status>(),
-                    null,
-                    null,
-                    null,
-                    null,
-                    mutableListOf<JuridiskEnhet>()
-                )
-            )
     }
 }
