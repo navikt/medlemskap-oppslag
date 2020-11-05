@@ -115,6 +115,7 @@ private fun loggResponse(fnr: String, response: Response) {
     val årsaker = resultat.årsaker
     val årsakerSomRegelIdStr = årsaker.map { it.regelId.toString() }
     val årsak = årsaker.map { it.regelId.toString() }.firstOrNull()
+    val aarsaksAnt = årsaker.size
 
     secureLogger.info(
         "{} konklusjon gitt for bruker {}, ytelse {}", resultat.svar.name, fnr, response.datagrunnlag.ytelse,
@@ -127,6 +128,8 @@ private fun loggResponse(fnr: String, response: Response) {
         kv("svar", response.resultat.svar),
         kv("årsak", årsak),
         kv("årsaker", årsakerSomRegelIdStr),
+        kv("aarsaksAnt", aarsaksAnt),
+        kv("aarsaker", årsakerSomRegelIdStr.toString()),
         kv("response", objectMapper.writeValueAsString(response))
     )
 
