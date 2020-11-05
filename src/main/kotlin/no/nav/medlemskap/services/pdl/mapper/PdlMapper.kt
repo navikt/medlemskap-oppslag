@@ -8,6 +8,7 @@ import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Datohjelper.Companion.parseIsoDato
 import no.nav.medlemskap.regler.common.Datohjelper.Companion.parseIsoDatoTid
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
+import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bostedsadresse
 import java.time.LocalDate
 
 object PdlMapper {
@@ -105,13 +106,21 @@ object PdlMapper {
         }
     }
 
-    fun mapBostedsadresser(pdlPostedsadresser: List<HentPerson.Bostedsadresse>): List<Adresse> {
-        return pdlPostedsadresser.map {
-            Adresse(
-                landkode = "NOR",
-                fom = parseIsoDato(it.gyldigFraOgMed),
-                tom = parseIsoDato(it.gyldigTilOgMed)
-            )
+    fun mapBostedsadresser(pdlBostedsadresse: List<HentPerson.Bostedsadresse>): List<Adresse> {
+        return pdlBostedsadresse.map {
+            if (it.utenlandskAdresse == null) {
+                Adresse(
+                    landkode = "NOR",
+                    fom = parseIsoDato(it.gyldigFraOgMed),
+                    tom = parseIsoDato(it.gyldigTilOgMed)
+                )
+            } else {
+                Adresse(
+                    landkode = it.utenlandskAdresse!!.landkode,
+                    fom = parseIsoDato(it.gyldigFraOgMed),
+                    tom = parseIsoDato(it.gyldigTilOgMed)
+                )
+            }
         }.sortedBy { it.fom }
     }
 
