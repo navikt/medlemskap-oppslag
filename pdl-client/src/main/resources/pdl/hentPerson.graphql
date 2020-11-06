@@ -29,7 +29,10 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
             matrikkeladresse { postnummer },
             ukjentBosted {
                 bostedskommune
-            }
+            },
+            utenlandskAdresse {
+                landkode
+            },
         },
     	doedsfall{
     			doedsdato
