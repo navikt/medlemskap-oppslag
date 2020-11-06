@@ -115,6 +115,31 @@ Egenskap: Regel 3: Har bruker sammenhengende arbeidsforhold siste 12 måneder?
 
     Så skal svaret være "Ja"
 
+
+  Scenariomal: Tillater 2 dager hull først og sist i kontrollperioden
+    Gitt følgende arbeidsforhold fra AAReg
+      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
+      | 01.01.2019      |                 | Organisasjon     | NORMALT             |
+
+    Når regel "3" kjøres med følgende parametre
+      | Fra og med dato   | Til og med dato | Har hatt arbeid utenfor Norge |
+      | <Fra og med dato> | 30.02.2020      | Nei                           |
+
+    Så skal svaret være "<Regel 3>"
+
+    Eksempler:
+      | Fra og med dato | Regel 3 | Beskrivelse                                    |
+      | 30.01.2020      | Ja      |                                                |
+      | 01.01.2020      | Ja      |                                                |
+      | 31.12.2019      | Ja      | 1 dag hull i slutten av kontrollperioden       |
+      | 30.12.2019      | Ja      | 2 dager hull i slutten av kontrollperioden     |
+      | 29.12.2019      | Nei     | 3 dager hull i slutten av kontrollperioden     |
+      | 01.01.2020      | Ja      |                                                |
+      | 31.12.2019      | Ja      | 1 dag hull i begynnelsen av kontrollperioden   |
+      | 30.12.2019      | Ja      | 2 dager hull i begynnelsen av kontrollperioden |
+      | 29.12.2019      | Nei     | 3 dager hull i begynnelsen av kontrollperioden |
+
+
   Scenariomal: Hvis "første dag for ytelse" er angitt, så skal kontrollperioden være 12 måneder før denne datoen.
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
@@ -122,16 +147,21 @@ Egenskap: Regel 3: Har bruker sammenhengende arbeidsforhold siste 12 måneder?
 
     Når regel "3" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Første dag for ytelse   | Har hatt arbeid utenfor Norge |
-      | 30.01.2020      | 30.01.2020      | <Første dag for ytelse> | Nei                           |
+      | 30.01.2020      | 30.02.2020      | <Første dag for ytelse> | Nei                           |
 
     Så skal svaret være "<Regel 3>"
 
     Eksempler:
-      | Første dag for ytelse | Regel 3 |
-      | 01.11.2018            | Nei     |
-      | 28.12.2019            | Nei     |
-      | 29.12.2019            | Ja      |
-      | 31.12.2019            | Ja      |
-      | 01.01.2020            | Ja      |
-      | 30.01.2020            | Ja      |
-      |                       | Ja      |
+      | Første dag for ytelse | Regel 3 | Beskrivelse                                                            |
+      |                       | Ja      | Hvis første dag for ytelse ikke er angitt, så benyttes fra og med dato |
+      | 30.01.2020            | Ja      |                                                                        |
+      | 01.01.2020            | Ja      |                                                                        |
+      | 31.12.2019            | Ja      | 31.12 minus en dag = 30.12.2019, og så 12 måneder tilbake: 31.12.2018  |
+      | 30.12.2019            | Ja      | 1 dag hull i slutten av kontrollperioden                               |
+      | 29.12.2019            | Ja      | 2 dager hull i slutten av kontrollperioden                             |
+      | 28.12.2019            | Nei     | 3 dager hull i slutten av kontrollperioden                             |
+      | 01.01.2020            | Ja      |                                                                        |
+      | 31.12.2019            | Ja      | Ingen dager med hull i kontrollperioden                                |
+      | 30.12.2019            | Ja      | 1 dager hull i begynnelsen av kontrollperioden                         |
+      | 29.12.2019            | Ja      | 2 dager hull i begynnelsen av kontrollperioden                         |
+      | 28.12.2019            | Nei     | 3 dager hull i begynnelsen av kontrollperioden                         |
