@@ -10,7 +10,6 @@ data class Arbeidsforhold(
     val arbeidsforholdstype: Arbeidsforholdstype,
     var arbeidsavtaler: List<Arbeidsavtale>
 ) : Comparable<Arbeidsforhold> {
-
     /**
      * Comparator som sorterer arbeidsforhold etter periode.
      * Null-verdier regnes som høyere, slik at aktive arbeidsforhold vil havne sist i listen.
