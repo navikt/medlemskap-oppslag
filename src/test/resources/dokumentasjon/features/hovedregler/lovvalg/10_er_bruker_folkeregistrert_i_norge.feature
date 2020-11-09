@@ -40,7 +40,7 @@ Egenskap: Regel 10: Er bruker folkeregistert i Norge?
     Eksempler:
       | Land | Svar |
       | NOR  | Ja   |
-      | FRA  | Ja   |
+      | FRA  | NEI  |
 
   Scenariomal: Postadresse, men ikke bostedsadresse
     Gitt følgende kontaktadresser i personhistorikken
@@ -89,3 +89,6 @@ Egenskap: Regel 10: Er bruker folkeregistert i Norge?
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "Nei"
+
+
+

@@ -28,8 +28,8 @@ class ErBrukerBosattINorgeRegel(
         val oppholsadresserLandkoder = oppholdsadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
 
         return when {
-            bostedsadresser.erIkkeTom() && landkoderBostedsadresse alleEr "NOR"
-                &&  (kontaktadresserLandkoder.all { Eøsland.erNorsk(it) } || kontaktadresserLandkoder.erTom())
+            bostedsadresser.erIkkeTom() && landkoderBostedsadresse alleEr "NOR" &&
+                (kontaktadresserLandkoder.all { Eøsland.erNorsk(it) } || kontaktadresserLandkoder.erTom())
                 && (oppholsadresserLandkoder.all { Eøsland.erNorsk(it) } || oppholsadresserLandkoder.erTom()) -> ja()
             else -> nei("Ikke alle adressene til bruker er norske, eller bruker mangler bostedsadresse")
         }
