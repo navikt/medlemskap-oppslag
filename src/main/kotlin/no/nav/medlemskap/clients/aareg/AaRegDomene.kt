@@ -6,7 +6,7 @@ import java.time.YearMonth
 
 data class AaRegAnsettelsesperiode(
     val bruksperiode: AaRegBruksperiode,
-    var periode: AaRegPeriode,
+    val periode: AaRegPeriode,
     val sporingsinformasjon: AaRegSporingsinformasjon,
     val varslingskode: String?
 )
@@ -21,16 +21,16 @@ data class AaRegAntallTimerForTimeloennet(
 data class AaRegArbeidsavtale(
     val antallTimerPrUke: Double?,
     val arbeidstidsordning: String?,
-    var beregnetAntallTimerPrUke: Double?,
-    var bruksperiode: AaRegBruksperiode,
-    var gyldighetsperiode: AaRegGyldighetsperiode,
+    val beregnetAntallTimerPrUke: Double?,
+    val bruksperiode: AaRegBruksperiode,
+    val gyldighetsperiode: AaRegGyldighetsperiode,
     val sistLoennsendring: String?,
     val sistStillingsendring: String?,
     val sporingsinformasjon: AaRegSporingsinformasjon,
-    var stillingsprosent: Double?,
-    var yrke: String,
+    val stillingsprosent: Double?,
+    val yrke: String,
     val fartsomraade: String?,
-    var skipsregister: String?,
+    val skipsregister: String?,
     val skipstype: String?
 
 )
@@ -49,7 +49,7 @@ data class AaRegArbeidsforhold(
     val registrert: LocalDateTime,
     val sistBekreftet: LocalDateTime?,
     val sporingsinformasjon: AaRegSporingsinformasjon,
-    var type: String,
+    val type: String,
     val utenlandsopphold: List<AaRegUtenlandsopphold>?
 )
 
@@ -73,7 +73,7 @@ data class AaRegGyldighetsperiode(
 )
 
 data class AaRegOpplysningspliktigArbeidsgiver(
-    var type: AaRegOpplysningspliktigArbeidsgiverType,
+    val type: AaRegOpplysningspliktigArbeidsgiverType,
     val organisasjonsnummer: String?,
     val aktoerId: String?,
     val offentligIdent: String?
@@ -128,8 +128,8 @@ data class AaRegTjenestefeilResponse(
 )
 
 data class AaRegUtenlandsopphold(
-    var landkode: String,
-    var periode: AaRegPeriode?,
-    var rapporteringsperiode: YearMonth,
+    val landkode: String,
+    val periode: AaRegPeriode?,
+    val rapporteringsperiode: YearMonth,
     val sporingsinformasjon: AaRegSporingsinformasjon
 )
