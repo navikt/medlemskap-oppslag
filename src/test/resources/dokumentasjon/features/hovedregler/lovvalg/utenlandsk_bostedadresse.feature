@@ -22,4 +22,5 @@ Egenskap: Regel 10: Er bruker folkeregistert i Norge?
     Eksempler:
       | Bor i land | Post land | Svar |
       | FRA        | NOR       | NEI  |
-      | NOR        | FRA       | Nei  |
+      | NOR        | FRA       | NEI  |
+      | NOR        | NOR       | JA   |
