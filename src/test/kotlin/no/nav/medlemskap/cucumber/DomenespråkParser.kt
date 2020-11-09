@@ -2,6 +2,7 @@ package no.nav.medlemskap.cucumber
 
 import io.cucumber.datatable.DataTable
 import no.nav.medlemskap.cucumber.Domenebegrep.*
+import no.nav.medlemskap.cucumber.mapping.pdl.aareg.AaregDomenespraakParser
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
@@ -149,6 +150,42 @@ object DomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, StatsborgerskapMapper())
     }
 
+    fun mapPeriodeIArbeidsforhold(dataTable: DataTable?): Periode {
+        return mapDataTable(dataTable, PeriodeMapper())[0]
+    }
+
+    fun mapTypeIArbeidsforhold(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, TypeMapper())[0]
+    }
+
+    fun mapOrganisasjonsnummer(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, OrganisasjonsnummerMapper())[0]
+    }
+
+    fun mapStillingsprosent(dataTable: DataTable?): Double {
+        return mapDataTable(dataTable, StillingsprosentMapper())[0]
+    }
+
+    fun mapAnsatte(dataTable: DataTable?): List<Ansatte> {
+        return mapDataTable(dataTable, AnsattMapper())
+    }
+
+    fun mapArbeidsgivertype(dataTable: DataTable?): OpplysningspliktigArbeidsgiverType {
+        return mapDataTable(dataTable, ArbeidsgivertypeMapper())[0]
+    }
+
+    fun mapArbeidsforholdstype(dataTable: DataTable?): Arbeidsforholdstype {
+        return mapDataTable(dataTable, ArbeidsforholdtypeMapper())[0]
+    }
+
+    fun mapBeregnetAntallTimerUke(dataTable: DataTable?): Double {
+        return mapDataTable(dataTable, BeregnetAntallTimerPerUkeMapper())[0]
+    }
+
+    fun mapYrkeskode(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, YrkeskodeMapper())[0]
+    }
+
     fun mapAdresser(dataTable: DataTable?): List<Adresse> {
         return mapDataTable(dataTable, AdresseMapper())
     }
@@ -159,6 +196,14 @@ object DomenespråkParser : BasisDomeneParser() {
 
     fun mapFamilierelasjoner(dataTable: DataTable?): List<Familierelasjon> {
         return mapDataTable(dataTable, FamilieRelasjonMapper())
+    }
+
+    fun mapStatuser(dataTable: DataTable?): List<String> {
+        return mapDataTable(dataTable, StatusMapper())
+    }
+
+    fun mapSkipsregister(dataTable: DataTable?): Skipsregister {
+        return mapDataTable(dataTable, SkipsregisterMapper())[0]
     }
 
     fun mapPersonhistorikkEktefelle(dataTable: DataTable?): List<PersonhistorikkEktefelle> {
@@ -221,10 +266,89 @@ object DomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, InputPeriodeMapper()).get(0)
     }
 
+    fun mapPeriodeIArbeidsavtale(dataTable: DataTable?): Periode {
+        return mapDataTable(dataTable, PeriodeMapper())[0]
+    }
+
+    fun mapLandkode(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, LandkodeMapper())[0]
+    }
+
+    fun mapPeriodeIUtenlandsopphold(dataTable: DataTable?): Periode {
+        return mapDataTable(dataTable, PeriodeMapper())[0]
+    }
+
+    fun mapRapporteringsperiode(dataTable: DataTable?): YearMonth {
+        return mapDataTable(dataTable, RapporteringsperiodeMapper())[0]
+    }
+
+    class RapporteringsperiodeMapper : RadMapper<YearMonth> {
+        override fun mapRad(rad: Map<String, String>): YearMonth {
+            return YearMonth.parse(parseString(AaregDomenespraakParser.Domenebegrep.RAPPORTERINGSPERIODE, rad))
+        }
+    }
+
+    class LandkodeMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(LANDKODE, rad)
+        }
+    }
+
+    class YrkeskodeMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(YRKESKODE, rad)
+        }
+    }
+
+    class BeregnetAntallTimerPerUkeMapper : RadMapper<Double> {
+        override fun mapRad(rad: Map<String, String>): Double {
+            return parseDouble(BEREGNET_ANTALL_TIMER_PR_UKE, rad)
+        }
+    }
+    class TypeMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(ARBEIDSGIVERTYPE, rad)
+        }
+    }
+
+    class OrganisasjonsnummerMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(ORGANISASJONSNUMMER, rad)
+        }
+    }
+
     class RegelIdMapper : RadMapper<RegelId> {
         override fun mapRad(rad: Map<String, String>): RegelId {
 
             return parseRegelId(REGEL, rad)
+        }
+    }
+
+    class StatusMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(STATUS, rad)
+        }
+    }
+
+    class SkipsregisterMapper : RadMapper<Skipsregister> {
+        override fun mapRad(rad: Map<String, String>): Skipsregister {
+            return Skipsregister.valueOf(parseString(SKIPSREGISTER, rad))
+        }
+    }
+
+    class AnsattMapper : RadMapper<Ansatte> {
+        override fun mapRad(rad: Map<String, String>): Ansatte {
+            return Ansatte(
+                parseInt(ANTALL_ANSATTE, rad),
+                Bruksperiode(
+                    parseDato(BRUKSPERIODE_GYLDIG_FRA, rad),
+                    parseDato(BRUKSPERIODE_GYLDIG_TIL, rad)
+                ),
+                Gyldighetsperiode(
+                    parseDato(GYLDIGHETSPERIODE_FRA_OG_MED, rad),
+                    parseDato(GYLDIGHETSPERIODE_TIL_OG_MED, rad)
+                )
+            )
         }
     }
 
@@ -243,6 +367,15 @@ object DomenespråkParser : BasisDomeneParser() {
             return InputPeriode(
                 parseDato(FRA_OG_MED_DATO, rad),
                 parseDato(TIL_OG_MED_DATO, rad)
+            )
+        }
+    }
+
+    class PeriodeMapper : RadMapper<Periode> {
+        override fun mapRad(rad: Map<String, String>): Periode {
+            return Periode(
+                parseValgfriDato(FRA_OG_MED_DATO, rad),
+                parseValgfriDato(TIL_OG_MED_DATO, rad)
             )
         }
     }
@@ -283,6 +416,12 @@ object DomenespråkParser : BasisDomeneParser() {
         }
     }
 
+    class StillingsprosentMapper : RadMapper<Double> {
+        override fun mapRad(rad: Map<String, String>): Double {
+            return parseDouble(STILLINGSPROSENT, rad)
+        }
+    }
+
     class MedlemskapMapper : RadMapper<Medlemskap> {
         override fun mapRad(rad: Map<String, String>): Medlemskap {
             return Medlemskap(
@@ -305,6 +444,18 @@ object DomenespråkParser : BasisDomeneParser() {
                 status = parseStatus(STATUS, rad),
                 tema = parseValgfriString(TEMA, rad)
             )
+        }
+    }
+
+    class ArbeidsgivertypeMapper : RadMapper<OpplysningspliktigArbeidsgiverType> {
+        override fun mapRad(rad: Map<String, String>): OpplysningspliktigArbeidsgiverType {
+            return OpplysningspliktigArbeidsgiverType.valueOf(parseString(ARBEIDSGIVERTYPE, rad))
+        }
+    }
+
+    class ArbeidsforholdtypeMapper : RadMapper<Arbeidsforholdstype> {
+        override fun mapRad(rad: Map<String, String>): Arbeidsforholdstype {
+            return Arbeidsforholdstype.valueOf(parseString(ARBEIDSFORHOLDSTYPE, rad))
         }
     }
 
@@ -331,6 +482,7 @@ object DomenespråkParser : BasisDomeneParser() {
                 parseValgfriDato(FRA_OG_MED_DATO, rad),
                 parseValgfriDato(TIL_OG_MED_DATO, rad)
             )
+
             return Arbeidsforhold(
                 periode = periode,
                 utenlandsopphold = utenlandsopphold,
@@ -502,6 +654,8 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     ARBEIDSGIVER_ID("Arbeidsgiver Id"),
     ARBEIDSGIVERTYPE("Arbeidsgivertype"),
     BEREGNET_ANTALL_TIMER_PR_UKE("Beregnet antall timer pr uke"),
+    BRUKSPERIODE_GYLDIG_FRA("Bruksperiode gyldig fra"),
+    BRUKSPERIODE_GYLDIG_TIL("Bruksperiode gyldig til"),
     DEKNING("Dekning"),
     DOEDSDATO("Dødsdato"),
     ER_MEDLEM("Er medlem"),
@@ -509,6 +663,8 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     FØRSTE_DAG_FOR_YTELSE("Første dag for ytelse"),
     GYLDIG_FRA_OG_MED("Gyldig fra og med dato"),
     GYLDIG_TIL_OG_MED("Gyldig til og med dato"),
+    GYLDIGHETSPERIODE_FRA_OG_MED("Gyldighetsperiode gyldig fra"),
+    GYLDIGHETSPERIODE_TIL_OG_MED("Bruksperiode gyldig til"),
     HAR_HATT_ARBEID_UTENFOR_NORGE("Har hatt arbeid utenfor Norge"),
     IDENT("Ident"),
     IDENTIFIKATOR("Identifikator"),
@@ -522,6 +678,7 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     LOVVALGSLAND("Lovvalgsland"),
     MIN_ROLLE_FOR_PERSON("Min rolle for person"),
     OPPHOLDSADRESSE("Oppholdsadresse"),
+    ORGANISASJONSNUMMER("Organisasjonsnummer"),
     PERIODESTATUS("Periodestatus"),
     PRIORITET("Prioritet"),
     REGEL("Regel"),

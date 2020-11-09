@@ -8,6 +8,7 @@ import io.ktor.features.*
 import no.nav.medlemskap.common.JsonMapper
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.Medlemskapsparametre
+import no.nav.medlemskap.cucumber.steps.pdl.*
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.regler.assertBegrunnelse

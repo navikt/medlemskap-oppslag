@@ -1,4 +1,4 @@
-package no.nav.medlemskap.cucumber.steps
+package no.nav.medlemskap.cucumber.steps.pdl
 
 import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
