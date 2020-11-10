@@ -79,16 +79,14 @@ class LokalWebServer {
                 )
             )
 
-        fun respons(medlemskapsparametre: Medlemskapsparametre): String {
-            println("input: " + input(medlemskapsparametre))
-            return given()
+        fun respons(medlemskapsparametre: Medlemskapsparametre): String =
+            given()
                 .body(input(medlemskapsparametre))
                 .header(Header("Content-Type", "application/json"))
                 .post("/")
                 .then()
                 .statusCode(200)
                 .extract().asString()
-        }
     }
 }
 
