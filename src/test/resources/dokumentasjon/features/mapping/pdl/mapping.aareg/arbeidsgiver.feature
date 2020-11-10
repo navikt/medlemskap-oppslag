@@ -3,6 +3,7 @@
 
 Egenskap: Mapping av arbeidsgiver i arbeidsforhold
 
+  #Endre skrift
   Scenario: Bruker har arbeidsgiver i arbeidsforholdet
     Gitt følgende om Organisasjon.organisasjonsdetaljer.enhetstyper.enhetstype fra ereg
       | Enhetstype|

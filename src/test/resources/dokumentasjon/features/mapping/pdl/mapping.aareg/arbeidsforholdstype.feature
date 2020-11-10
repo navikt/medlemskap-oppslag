@@ -3,6 +3,7 @@
 
 Egenskap: Mapping av arbeidsforholdstype i arbeidsforhold
 
+  // Todo lag alle scenario
   Scenario: Bruker har arbeidsforholdstype i arbeidsforholdet
     Gitt følgende om type fra AaRegArbeidsforhold
       | Type                    |
