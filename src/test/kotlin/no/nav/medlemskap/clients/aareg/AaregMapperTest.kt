@@ -42,7 +42,7 @@ class AaregMapperTest {
         Assert.assertEquals(1, mappedAaregResultat.arbeidsavtaler.size)
         Assert.assertEquals(LocalDate.parse("2018-09-13"), mappedAaregResultat.arbeidsavtaler.first().periode.fom)
         Assert.assertNull(mappedAaregResultat.arbeidsavtaler.first().periode.tom)
-        Assert.assertEquals(Skipsregister.UKJENT, mappedAaregResultat.arbeidsavtaler.first().skipsregister)
+        Assert.assertEquals(null, mappedAaregResultat.arbeidsavtaler.first().skipsregister)
         Assert.assertEquals(100.0, mappedAaregResultat.arbeidsavtaler.first().stillingsprosent)
         Assert.assertEquals("8322108", mappedAaregResultat.arbeidsavtaler.first().yrkeskode)
 

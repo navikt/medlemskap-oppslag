@@ -3,7 +3,7 @@
 
 Egenskap: Mapping av arbeidsforhold
 
-  Scenario: Bruker har flere arbeidsfohrold
+  Scenario: Bruker har flere arbeidsforhold
     Gitt følgende om AaRegPeriode i fra AaRegArbeidsforhold.AaRegAnsettelsesperiode
       | Gyldig fra og med dato   | Gyldig til og med dato|
       | 2015-03-25               | 2016-02-03            |

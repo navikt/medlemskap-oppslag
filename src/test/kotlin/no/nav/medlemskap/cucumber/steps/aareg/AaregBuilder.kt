@@ -339,5 +339,4 @@ class AaregBuilder() {
             inngaarIJuridiskEnheter = mutableListOf(hentJuridiskeEnheter()),
             underlagtHjemlandLovgivningForetaksform = mutableListOf(hentUnderlagtHjemlandLovgivningForetaksform())
         )
-
 }

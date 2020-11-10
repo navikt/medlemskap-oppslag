@@ -81,8 +81,14 @@ enum class Arbeidsforholdstype(val navn: String) {
 enum class Skipsregister(val beskrivelse: String) {
     NIS("Norsk InternasjonaltSkipsregister"),
     NOR("Norsk Ordinært Skipsregister"),
-    UTL("Utenlandsk skipsregister"),
-    UKJENT("Ingen verdi eller ukjent verdi")
+    UTL("Utenlandsk skipsregister");
+
+    companion object {
+        fun fraSkipsregisterVerdi(skipsregisterValue: String?): Skipsregister? {
+            if (skipsregisterValue.isNullOrEmpty()) return null
+            return valueOf(skipsregisterValue.toUpperCase())
+        }
+    }
 }
 
 enum class YrkeskoderForLuftFart(val styrk: String) {
