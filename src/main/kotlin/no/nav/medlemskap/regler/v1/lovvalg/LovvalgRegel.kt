@@ -6,6 +6,7 @@ import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.BasisRegel
 import no.nav.medlemskap.regler.common.Datohjelper
+import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Funksjoner.erTom
 import no.nav.medlemskap.regler.common.RegelId
@@ -22,9 +23,13 @@ abstract class LovvalgRegel(
     val kontrollPeriodeForPersonhistorikk = datohjelper.kontrollPeriodeForPersonhistorikk()
 
     protected fun erPersonBosattINorge(boadadresse: List<Adresse>, postadresseLandkoder: List<String>, midlertidigAdresseLandkoder: List<String>): Boolean {
-        return boadadresse.brukerHarNorskBostedsadresse() &&
+        return boadadresse.brukerHarNorskBostedsadresse() && boadadresse.alleErNorske() &&
             personHarIngenEllerNorskPostadresse(postadresseLandkoder) &&
             personHarIngenEllerNorskMidlertidigadresse(midlertidigAdresseLandkoder)
+    }
+
+    protected fun List<Adresse>.alleErNorske(): Boolean {
+        return this.map { it.landkode } alleEr "NOR"
     }
 
     protected fun List<Adresse>.brukerHarNorskBostedsadresse(): Boolean {

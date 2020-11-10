@@ -54,25 +54,11 @@ fun mapArbeidsAvtaler(arbeidsforhold: AaRegArbeidsforhold): List<Arbeidsavtale> 
         Arbeidsavtale(
             periode = mapPeriodeTilArbeidsavtale(it),
             gyldighetsperiode = Periode(it.gyldighetsperiode.fom, it.gyldighetsperiode.tom),
-            skipsregister = mapSkipsregister(it),
+            skipsregister = Skipsregister.fraSkipsregisterVerdi(it.skipsregister),
             beregnetAntallTimerPrUke = it.beregnetAntallTimerPrUke,
             stillingsprosent = it.stillingsprosent,
             yrkeskode = it.yrke
         )
-    }
-}
-
-fun mapSkipsregister(arbeidsavtale: AaRegArbeidsavtale): Skipsregister {
-    when (arbeidsavtale.skipsregister) {
-        "nis" -> return Skipsregister.NIS
-        "nor" -> return Skipsregister.NOR
-        "utl" -> return Skipsregister.UTL
-        "NIS" -> return Skipsregister.NIS
-        "NOR" -> return Skipsregister.NOR
-        "UTL" -> return Skipsregister.UTL
-        else -> {
-            return Skipsregister.UKJENT
-        }
     }
 }
 

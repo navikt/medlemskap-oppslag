@@ -28,3 +28,5 @@ Egenskap: Regel 7.1: Er bruker ansatt på et norsk skip?
       | Skipsregister | Svar |
       | NIS           | Nei  |
       | NOR           | Ja   |
+      | UTL           | Nei  |
+      |               | Nei  |
