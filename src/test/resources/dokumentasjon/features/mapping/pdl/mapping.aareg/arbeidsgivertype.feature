@@ -3,18 +3,24 @@
 
 Egenskap: Mapping av arbeidsgivertype i arbeidsforhold
 
-  #lag alle scenario
-  Scenario: Bruker har arbeidsforhold med arbeidsgivertype
+  Scenariomal: Bruker har arbeidsforhold med arbeidsgivertype
 
     Gitt følgende om arbeidgivertype fra AaRegOpplysningspliktigArbeidsgiver fra AaRegArbeidsforhold
-      | Arbeidsgivertype |
-      | Organisasjon     |
+      | Arbeidsgivertype        |
+      | <AaRegArbeidsgivertype> |
 
     Når arbeidsforholdene mappes
 
     Så skal mappet arbeidsgivertype i arbeidsforholdet være
-      | Arbeidsgivertype |
-      | Organisasjon     |
+      | Arbeidsgivertype  |
+      | <Arbeidsgivertype> |
+
+    Eksempler:
+      | AaRegArbeidsgivertype | Arbeidsgivertype |
+      | Person                | Person           |
+      | Organisasjon          | Organisasjon     |
+
+
 
 
 
