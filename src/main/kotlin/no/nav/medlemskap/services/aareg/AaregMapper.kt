@@ -15,7 +15,7 @@ fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, mappedOrganisasj
         Arbeidsforhold(
             periode = mapPeriodeFraArbeidsforhold(it),
             utenlandsopphold = mapUtenlandsopphold(it),
-            arbeidsforholdstype = mapArbeidsforholdType(it),
+            arbeidsforholdstype = Arbeidsforholdstype.fraArbeidsforholdtypeVerdi(it.type),
             arbeidsgivertype = mapArbeidsgiverType(it.arbeidsgiver.type),
             arbeidsgiver = mappedOrganisasjonAsArbeidsgiver.first { p -> p.organisasjonsnummer == it.arbeidsgiver.organisasjonsnummer },
             arbeidsavtaler = mapArbeidsAvtaler(it)
@@ -28,7 +28,7 @@ fun mapArbeidsforhold(arbeidsforholdMedOrganisasjon: List<ArbeidsforholdOrganisa
         Arbeidsforhold(
             periode = mapPeriodeFraArbeidsforhold(it.arbeidsforhold),
             utenlandsopphold = mapUtenlandsopphold(it.arbeidsforhold),
-            arbeidsforholdstype = mapArbeidsforholdType(it.arbeidsforhold),
+            arbeidsforholdstype = Arbeidsforholdstype.fraArbeidsforholdtypeVerdi(it.arbeidsforhold.type),
             arbeidsgivertype = mapArbeidsgiverType(it.arbeidsforhold.arbeidsgiver.type),
             arbeidsgiver = mapOrganisasjonTilArbeidsgiver(it.organisasjon, it.juridiskeEnheter),
             arbeidsavtaler = mapArbeidsAvtaler(it.arbeidsforhold)
@@ -59,18 +59,6 @@ fun mapArbeidsAvtaler(arbeidsforhold: AaRegArbeidsforhold): List<Arbeidsavtale> 
             stillingsprosent = it.stillingsprosent,
             yrkeskode = it.yrke
         )
-    }
-}
-
-fun mapArbeidsforholdType(arbeidsforhold: AaRegArbeidsforhold): Arbeidsforholdstype {
-    return when (arbeidsforhold.type) {
-        "maritimtArbeidsforhold" -> Arbeidsforholdstype.MARITIM
-        "forenkletOppgjoersordning" -> Arbeidsforholdstype.FORENKLET
-        "frilanserOppdragstakerHonorarPersonerMm" -> Arbeidsforholdstype.FRILANSER
-        "ordinaertArbeidsforhold" -> Arbeidsforholdstype.NORMALT
-        else -> {
-            Arbeidsforholdstype.ANDRE
-        }
     }
 }
 

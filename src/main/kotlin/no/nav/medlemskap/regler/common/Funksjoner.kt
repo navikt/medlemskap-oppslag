@@ -10,7 +10,7 @@ object Funksjoner {
 
     infix fun Any?.erDelAv(liste: List<Any>) = liste.contains(this)
 
-    infix fun List<String>.alleEr(string: String) = this.all { m -> m.equals(string) }
+    infix fun List<Any>.alleEr(anyObject: Any) = this.all { it == anyObject }
 
     infix fun List<String>.harAlle(strings: List<String>) = this.all { strings.contains(it) }
 
