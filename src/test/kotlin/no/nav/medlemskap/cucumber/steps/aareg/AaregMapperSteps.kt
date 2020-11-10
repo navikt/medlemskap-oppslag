@@ -17,11 +17,11 @@ class AaregMapperSteps : No {
     private var arbeidsforhold = listOf<Arbeidsforhold>()
 
     init {
-        Gitt<DataTable>("følgende om AaRegPeriode i fra AaRegArbeidsforhold.AaRegAnsettelsesperiode") { dataTable: DataTable? ->
+        Gitt<DataTable>("følgende om AaRegPeriode i fra AaRegAnsettelsesperiode fra AaRegArbeidsforhold") { dataTable: DataTable? ->
             aaregBuilder.arbeidsforhold.ansettelsesperiode.periode = aaregDomenespraakParser.mapPeriode(dataTable)
         }
 
-        Gitt<DataTable>("følgende om arbeidgivertype fra AaRegArbeidsforhold.AaRegOpplysningspliktigArbeidsgiver") { dataTable: DataTable? ->
+        Gitt<DataTable>("følgende om arbeidgivertype fra AaRegOpplysningspliktigArbeidsgiver fra AaRegArbeidsforhold") { dataTable: DataTable? ->
             aaregBuilder.arbeidsforhold.arbeidsgiver.type = aaregDomenespraakParser.mapArbeidsgiverType(dataTable)
         }
 
@@ -29,31 +29,27 @@ class AaregMapperSteps : No {
             aaregBuilder.arbeidsforhold.type = aaregDomenespraakParser.mapArbeidsforholdsType(dataTable)
         }
 
-        Gitt<DataTable>("følgende om landkode i AaRegArbeidsforhold.AaRegUtenlandsopphold") { dataTable: DataTable? ->
-            aaregBuilder.arbeidsforhold.utenlandsopphold?.get(0)?.landkode = aaregDomenespraakParser.mapLandkode(dataTable)
-        }
-
-        Gitt<DataTable>("følgende om Organisasjon.organisasjonsdetaljer.enhetstyper.enhetstype fra ereg") { dataTable: DataTable? ->
+        Gitt<DataTable>("følgende om enhetstype fra enhetstyper fra organisasjonsdetaljer fra ereg") { dataTable: DataTable? ->
             aaregBuilder.organisasjon.organisasjonDetaljer?.enhetstyper?.first()?.enhetstype = aaregDomenespraakParser.mapEnhetstype(dataTable)
         }
 
-        Gitt<DataTable>("følgende om Organiasjon.organisasjonsnummer fra ereg") { dataTable: DataTable? ->
+        Gitt<DataTable>("følgende om organisasjonsnummer fra Organiasjon fra ereg") { dataTable: DataTable? ->
             aaregBuilder.organisasjon.organisasjonsnummer = aaregDomenespraakParser.mapOrganisasjonsnummer(dataTable)
         }
 
-        Gitt<DataTable>("følgende om ansatte i Organiasjon.Organisasjonsdetaljer.Ansatte fra ereg") { dataTable: DataTable? ->
+        Gitt<DataTable>("følgende om Ansatte fra  Organisasjonsdetaljer fra Organiasjon fra ereg") { dataTable: DataTable? ->
             aaregBuilder.organisasjon.organisasjonDetaljer?.ansatte = aaregDomenespraakParser.mapAntallAnsatte(dataTable)
         }
 
-        Gitt<DataTable>("følgende om konkursstatus organisasjon.organisasjonDetaljer.statuser") { dataTable: DataTable? ->
+        Gitt<DataTable>("følgende om konkursstatus fra statuser fra organisasjonDetaljer fra organisasjon") { dataTable: DataTable? ->
             aaregBuilder.organisasjon.organisasjonDetaljer?.statuser = aaregDomenespraakParser.mapStatuser(dataTable)
         }
 
-        Gitt<DataTable>("følgende om AaRegPeriode i fra AaRegArbeidsavtale AaRegBruksperiode") { dataTable: DataTable? ->
+        Gitt<DataTable>("følgende om AaRegPeriode fra AaRegArbeidsavtale fra AaRegBruksperiode") { dataTable: DataTable? ->
             aaregBuilder.arbeidsforhold.arbeidsavtaler[0].bruksperiode = aaregDomenespraakParser.mapBruksPeriode(dataTable)
         }
 
-        Gitt<DataTable>("følgende om gyldighetsperiode fra AaRegArbeidsavtale AaRegGyldighetsperiode") { dataTable: DataTable? ->
+        Gitt<DataTable>("følgende om gyldighetsperiode fra AaRegArbeidsavtale fra AaRegGyldighetsperiode") { dataTable: DataTable? ->
             aaregBuilder.arbeidsforhold.arbeidsavtaler[0].gyldighetsperiode = aaregDomenespraakParser.mapGyldighetsPeriode(dataTable)
         }
 
@@ -73,15 +69,15 @@ class AaregMapperSteps : No {
             aaregBuilder.arbeidsforhold.arbeidsavtaler[0].beregnetAntallTimerPrUke = aaregDomenespraakParser.mapBeregnetAntallTimer(dataTable)
         }
 
-        Gitt<DataTable>("følgende om landkode fra AaRegArbeidsforhold.AaRegUtenlandsopphold") { dataTable: DataTable? ->
+        Gitt<DataTable>("følgende om landkode fra AaRegUtenlandsopphold fra AaRegArbeidsforhold") { dataTable: DataTable? ->
             aaregBuilder.arbeidsforhold.utenlandsopphold?.get(0)?.landkode = aaregDomenespraakParser.mapLandkode(dataTable)
         }
 
-        Gitt<DataTable>("følgende om AaRegPeriode i fra AaRegArbeidsforhold.AaRegUtenlandsopphold") { dataTable: DataTable? ->
+        Gitt<DataTable>("følgende om AaRegPeriode i fra AaRegUtenlandsopphold fra AaRegArbeidsforhold") { dataTable: DataTable? ->
             aaregBuilder.arbeidsforhold.utenlandsopphold?.get(0)?.periode = aaregDomenespraakParser.mapPeriode(dataTable)
         }
 
-        Gitt<DataTable>("følgende rapporteringsperiode i AaRegArbeidsforhold.AaRegUtenlandsopphold") { dataTable: DataTable? ->
+        Gitt<DataTable>("følgende rapporteringsperiode fra AaRegUtenlandsopphold fra AaRegArbeidsforhold") { dataTable: DataTable? ->
             aaregBuilder.arbeidsforhold.utenlandsopphold?.get(0)?.rapporteringsperiode = aaregDomenespraakParser.mapRapporteringsperiode(dataTable)
         }
 
