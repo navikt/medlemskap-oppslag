@@ -70,12 +70,18 @@ data class Utenlandsopphold(
     val rapporteringsperiode: YearMonth
 )
 
-enum class Arbeidsforholdstype(val navn: String) {
+enum class Arbeidsforholdstype(val kodeverdi: String) {
     FRILANSER("frilanserOppdragstakerHonorarPersonerMm"),
-    MARITIM("maritimtArbeidsforhold"),
+    MARITIMT("maritimtArbeidsforhold"),
     NORMALT("ordinaertArbeidsforhold"),
     FORENKLET("forenkletOppgjoersordning"),
-    ANDRE("pensjonOgAndreTyperYtelserUtenAnsettelsesforhold")
+    ANDRE("pensjonOgAndreTyperYtelserUtenAnsettelsesforhold");
+
+    companion object {
+        fun fraArbeidsforholdtypeVerdi(arbeidsforholdstypeVerdi: String): Arbeidsforholdstype {
+            return values().first { it.kodeverdi == arbeidsforholdstypeVerdi }
+        }
+    }
 }
 
 enum class Skipsregister(val beskrivelse: String) {

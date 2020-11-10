@@ -1,5 +1,6 @@
 import no.nav.medlemskap.clients.aareg.*
 import no.nav.medlemskap.clients.ereg.*
+import no.nav.medlemskap.domene.Arbeidsforholdstype
 import no.nav.medlemskap.services.aareg.ArbeidsforholdOrganisasjon
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -136,7 +137,7 @@ class AaregBuilder() {
             registrert = LocalDateTime.MAX,
             sistBekreftet = LocalDateTime.MAX,
             sporingsinformasjon = hentAaregSporingsinformasjon(),
-            type = String(),
+            type = Arbeidsforholdstype.NORMALT.kodeverdi,
             utenlandsopphold = mutableListOf(hentUtenlandsopphold())
         )
 
