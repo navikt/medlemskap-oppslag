@@ -56,7 +56,7 @@ class RegelSteps : No {
 
     private var datagrunnlag: Datagrunnlag? = null
 
-    private var respons: String = ""
+    private var input: Medlemskapsparametre? = null
 
     var overstyrteRegler: Map<RegelId, Svar> = mapOf()
 
@@ -206,15 +206,15 @@ class RegelSteps : No {
         }
 
         Når("rest kall med følgende parametere") { dataTable: DataTable? ->
-            val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
-
+            input = domenespråkParser.mapMedlemskapsparametre(dataTable)
             LokalWebServer.startServer()
-            respons = LokalWebServer.respons(medlemskapsparametre)
         }
 
         Så("skal forventet json respons være {string}") { filnavn: String ->
             val forventetRespons = RegelSteps::class.java
-                .getResource("/testpersoner/bakoverkompatibeltest/forventetRespons.json").readText()
+                .getResource("/testpersoner/bakoverkompatibeltest/$filnavn.json").readText()
+
+            val respons = LokalWebServer.respons(input!!)
 
             JSONAssert.assertEquals(
                 forventetRespons, respons,
@@ -223,6 +223,10 @@ class RegelSteps : No {
                     Customization("tidspunkt") { _, _ -> true }
                 )
             )
+        }
+
+        Så("Skal kontrakt være OK") {
+            LokalWebServer.kontrakt(input!!)
         }
 
         Så("skal svaret være {string}") { forventetVerdi: String ->

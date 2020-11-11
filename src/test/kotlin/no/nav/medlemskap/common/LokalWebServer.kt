@@ -1,10 +1,12 @@
 package no.nav.medlemskap.common
 
+import com.atlassian.oai.validator.restassured.OpenApiValidationFilter
 import io.restassured.RestAssured
 import io.restassured.RestAssured.given
 import io.restassured.config.ObjectMapperConfig
 import io.restassured.config.RestAssuredConfig
 import io.restassured.http.Header
+import io.restassured.response.ValidatableResponse
 import kotlinx.coroutines.runBlocking
 import no.nav.medlemskap.ApplicationState
 import no.nav.medlemskap.clients.Services
@@ -87,6 +89,18 @@ class LokalWebServer {
                 .then()
                 .statusCode(200)
                 .extract().asString()
+
+        fun kontrakt(medlemskapsparametre: Medlemskapsparametre): ValidatableResponse {
+            val validationFilter = OpenApiValidationFilter("src/main/resources/lovme.yaml")
+
+            return given()
+                .filter(validationFilter)
+                .body(input(medlemskapsparametre))
+                .header(Header("Content-Type", "application/json"))
+                .post("/")
+                .then()
+                .statusCode(200)
+        }
     }
 }
 
