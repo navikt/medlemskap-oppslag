@@ -33,10 +33,10 @@ object ArbeidsforholdFunksjoner {
             it.arbeidsgiver.juridiskeEnheter.isNotNullOrEmpty()
         }.flatMap { p -> p.arbeidsgiver.juridiskeEnheter!!.map { r -> r?.antallAnsatte ?: 0 } }
 
-    infix fun List<Arbeidsforhold>.arbeidsforholdForYrkestype(kontrollPeriode: Kontrollperiode): List<String> =
+    infix fun List<Arbeidsforhold>.arbeidsforholdForYrkestype(kontrollPeriode: Kontrollperiode): List<Arbeidsforholdstype> =
         this.filter {
             it.periode.overlapper(kontrollPeriode.periode)
-        }.map { it.arbeidsforholdstype.navn }
+        }.map { it.arbeidsforholdstype }
 
     infix fun List<Arbeidsforhold>.sisteArbeidsforholdYrkeskode(kontrollPeriode: Kontrollperiode): List<String> =
         this.filter {

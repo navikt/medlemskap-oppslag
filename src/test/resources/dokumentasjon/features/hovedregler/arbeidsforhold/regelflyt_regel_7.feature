@@ -37,5 +37,5 @@ Egenskap: Regelflyt for regel 7
     Eksempler:
       | Arbeidsforholdstype | Skipsregister | Regel 7 | Medlemskap |
       | NORMALT             |               | Nei     | Ja         |
-      | MARITIM             | NIS           | Ja      | UAVKLART   |
-      | MARITIM             | NOR           | Ja      | Ja         |
+      | MARITIMT            | NIS           | Ja      | UAVKLART   |
+      | MARITIMT            | NOR           | Ja      | Ja         |
