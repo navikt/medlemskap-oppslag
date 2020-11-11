@@ -15,14 +15,12 @@ Egenskap: Mapping av arbeidsforholdstype i arbeidsforhold
       | <Arbeidsforholdstype>|
 
     Eksempler:
-      | Type                                    | Arbeidsforholdstype |
-      | maritimtArbeidsforhold                  | MARITIM             |
-      | forenkletOppgjoersordning               | FORENKLET           |
-      | frilanserOppdragstakerHonorarPersonerMm | FRILANSER           |
-      | ordinaertArbeidsforhold                 | NORMALT             |
-      | annet                                   | ANDRE               |
-
-
+      | Type                                              | Arbeidsforholdstype |
+      | maritimtArbeidsforhold                            | MARITIMT            |
+      | forenkletOppgjoersordning                         | FORENKLET           |
+      | frilanserOppdragstakerHonorarPersonerMm           | FRILANSER           |
+      | ordinaertArbeidsforhold                           | NORMALT             |
+      | pensjonOgAndreTyperYtelserUtenAnsettelsesforhold  | ANDRE               |
 
 
 
