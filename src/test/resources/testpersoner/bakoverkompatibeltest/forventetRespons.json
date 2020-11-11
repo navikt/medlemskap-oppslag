@@ -74,7 +74,6 @@
       } ],
       "arbeidsgivertype" : "Organisasjon",
       "arbeidsgiver" : {
-        "type" : "type",
         "organisasjonsnummer" : "organisasjonsnummer",
         "ansatte" : [ {
           "antall" : 10,
@@ -193,7 +192,6 @@
         } ],
         "arbeidsgivertype" : "Organisasjon",
         "arbeidsgiver" : {
-          "type" : "type",
           "organisasjonsnummer" : "organisasjonsnummer",
           "ansatte" : [ {
             "antall" : 10,

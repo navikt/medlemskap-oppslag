@@ -8,7 +8,6 @@ fun mapOrganisasjonTilArbeidsgiver(organisasjon: Organisasjon, juridiskeEnheter:
     val ansatte = organisasjon.organisasjonDetaljer?.ansatte
     val konkursStatus = organisasjon.organisasjonDetaljer?.statuser?.map { it -> it?.kode }
     return Arbeidsgiver(
-        type = enhetstype,
         organisasjonsnummer = organisasjon.organisasjonsnummer,
         ansatte = mapAnsatte(ansatte),
         konkursStatus = konkursStatus,

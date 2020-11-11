@@ -135,7 +135,6 @@ private fun arbeidsforhold(): Arbeidsforhold {
         listOf(Utenlandsopphold("SWE", Periode(enDato(), enAnnenDato()), YearMonth.of(2010, 1))),
         OpplysningspliktigArbeidsgiverType.Organisasjon,
         Arbeidsgiver(
-            "type",
             "organisasjonsnummer",
             listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus"),
             listOf(JuridiskEnhet("juridiskOrgnummer", "juridiskEnhetstype", 20))
