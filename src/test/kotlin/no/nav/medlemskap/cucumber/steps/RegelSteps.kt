@@ -6,6 +6,7 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.shouldBe
 import io.ktor.features.*
 import no.nav.medlemskap.common.JsonMapper
+import no.nav.medlemskap.common.LokalWebServer
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.Medlemskapsparametre
 import no.nav.medlemskap.cucumber.steps.pdl.*
@@ -20,6 +21,10 @@ import no.nav.medlemskap.regler.v1.RegelFactory
 import no.nav.medlemskap.regler.v1.ReglerService
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.skyscreamer.jsonassert.Customization
+import org.skyscreamer.jsonassert.JSONAssert
+import org.skyscreamer.jsonassert.JSONCompareMode
+import org.skyscreamer.jsonassert.comparator.CustomComparator
 import java.io.File
 
 class RegelSteps : No {
@@ -50,6 +55,8 @@ class RegelSteps : No {
     private val domenespråkParser = DomenespråkParser
 
     private var datagrunnlag: Datagrunnlag? = null
+
+    private var input: Medlemskapsparametre? = null
 
     var overstyrteRegler: Map<RegelId, Svar> = mapOf()
 
@@ -196,6 +203,30 @@ class RegelSteps : No {
             val regel = regelFactory.create(regelId!!)
 
             resultat = regel.utfør()
+        }
+
+        Når("rest kall med følgende parametere") { dataTable: DataTable? ->
+            input = domenespråkParser.mapMedlemskapsparametre(dataTable)
+            LokalWebServer.startServer()
+        }
+
+        Så("skal forventet json respons være {string}") { filnavn: String ->
+            val forventetRespons = RegelSteps::class.java
+                .getResource("/testpersoner/bakoverkompatibeltest/$filnavn.json").readText()
+
+            val respons = LokalWebServer.respons(input!!)
+
+            JSONAssert.assertEquals(
+                forventetRespons, respons,
+                CustomComparator(
+                    JSONCompareMode.STRICT,
+                    Customization("tidspunkt") { _, _ -> true }
+                )
+            )
+        }
+
+        Så("Skal kontrakt være OK") {
+            LokalWebServer.kontrakt(input!!)
         }
 
         Så("skal svaret være {string}") { forventetVerdi: String ->

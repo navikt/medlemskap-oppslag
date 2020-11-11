@@ -13,7 +13,6 @@ import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.createHttpServer
 import no.nav.medlemskap.domene.Folkeregistermetadata
-import no.nav.medlemskap.domene.mockCreateDatagrunnlag
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.skyscreamer.jsonassert.Customization
