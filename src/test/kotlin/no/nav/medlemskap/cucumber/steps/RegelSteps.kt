@@ -56,7 +56,7 @@ class RegelSteps : No {
 
     private var datagrunnlag: Datagrunnlag? = null
 
-    private var input: Medlemskapsparametre? = null
+    private var input: String? = null
 
     var overstyrteRegler: Map<RegelId, Svar> = mapOf()
 
@@ -206,7 +206,7 @@ class RegelSteps : No {
         }
 
         Når("rest kall med følgende parametere") { dataTable: DataTable? ->
-            input = domenespråkParser.mapMedlemskapsparametre(dataTable)
+            input = LokalWebServer.byggInput(domenespråkParser.mapMedlemskapsparametre(dataTable))
             LokalWebServer.startServer()
         }
 
@@ -227,6 +227,11 @@ class RegelSteps : No {
 
         Så("Skal kontrakt være OK") {
             LokalWebServer.kontrakt(input!!)
+        }
+
+        Så("Skal input {string} gi statuskoden {int}") { filnavn: String, statusKode: Int ->
+            val input = RegelSteps::class.java.getResource("/testpersoner/testinput/$filnavn.json").readText()
+            LokalWebServer.testResponsKode(input, statusKode)
         }
 
         Så("skal svaret være {string}") { forventetVerdi: String ->
