@@ -70,7 +70,7 @@ class LokalWebServer {
             }
         }
 
-        private fun input(medlemskapsparametre: Medlemskapsparametre): String =
+        fun byggInput(medlemskapsparametre: Medlemskapsparametre): String =
             objectMapper.writeValueAsString(
                 Request(
                     fnr = medlemskapsparametre.fnr!!,
@@ -81,25 +81,35 @@ class LokalWebServer {
                 )
             )
 
-        fun respons(medlemskapsparametre: Medlemskapsparametre): String =
+        fun respons(input: String): String =
             given()
-                .body(input(medlemskapsparametre))
+                .body(input)
                 .header(Header("Content-Type", "application/json"))
                 .post("/")
                 .then()
                 .statusCode(200)
                 .extract().asString()
 
-        fun kontrakt(medlemskapsparametre: Medlemskapsparametre): ValidatableResponse {
+        fun kontrakt(input: String): ValidatableResponse {
             val validationFilter = OpenApiValidationFilter("src/main/resources/lovme.yaml")
 
             return given()
                 .filter(validationFilter)
-                .body(input(medlemskapsparametre))
+                .body(input)
                 .header(Header("Content-Type", "application/json"))
                 .post("/")
                 .then()
                 .statusCode(200)
+        }
+
+        fun testResponsKode(input: String, statusKode: Int) {
+            given()
+                .body(input)
+                .header(Header("Content-Type", "application/json"))
+                .post("/")
+                .then()
+                .statusCode(statusKode)
+                .extract().asString()
         }
     }
 }
