@@ -14,7 +14,7 @@ import java.time.YearMonth
 
 object DomenespråkParser : BasisDomeneParser() {
     val ANSATTE_9 = listOf(Ansatte(9, null, null))
-    val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", organisasjonsnummer = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskeEnheter = null)
+    val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(organisasjonsnummer = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskeEnheter = null)
 
     fun parseValgfriYtelse(domenebegrep: Domenebegrep, rad: Map<String, String>): Ytelse? {
         val valgfriVerdi = valgfriVerdi(domenebegrep.nøkkel, rad)
@@ -525,7 +525,6 @@ object DomenespråkParser : BasisDomeneParser() {
 
             return Arbeidsgiver(
                 organisasjonsnummer = parseValgfriString(IDENTIFIKATOR, rad),
-                type = parseValgfriString(ARBEIDSGIVERTYPE, rad),
                 ansatte = listOf(Ansatte(parseValgfriInt(ANTALL_ANSATTE, rad), null, null)),
                 konkursStatus = konkursStatuser,
                 juridiskeEnheter = listOf(JuridiskEnhet(parseValgfriString(IDENTIFIKATOR, rad), parseValgfriString(JURIDISKENHETSTYPE, rad), parseValgfriInt(ANTALL_ANSATTE_I_JURIDISK_ENHET, rad)))

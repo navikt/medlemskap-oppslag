@@ -119,9 +119,6 @@ components:
             $ref: "#/components/schemas/Arbeidsavtale"
     Arbeidsgiver:
       properties:
-        type:
-          type: string
-          nullable: true
         organisasjonsnummer:
           type: string
           nullable: true

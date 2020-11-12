@@ -4,8 +4,6 @@ import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
-import no.nav.medlemskap.clients.aareg.*
-import no.nav.medlemskap.clients.ereg.*
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.mapping.pdl.aareg.AaregDomenespraakParser
 import no.nav.medlemskap.domene.Arbeidsforhold
@@ -94,11 +92,6 @@ class AaregMapperSteps : No {
         Så<DataTable>("mappet rapporteringsperiode i utenlandsoppholdet være") { dataTable: DataTable? ->
             val rapporteringsPeriodeForventet = DomenespråkParser.mapRapporteringsperiode(dataTable)
             arbeidsforhold[0].utenlandsopphold?.get(0)?.rapporteringsperiode.shouldBe(rapporteringsPeriodeForventet)
-        }
-
-        Så<DataTable>("skal mappet type til arbeidsgiver i arbeidsforholdet være") { dataTable: DataTable? ->
-            val typeForventet = DomenespråkParser.mapTypeIArbeidsforhold(dataTable)
-            arbeidsforhold[0].arbeidsgiver.type.shouldBe(typeForventet)
         }
 
         Så<DataTable>("skal mappet periode i arbeidsavtale være") { dataTable: DataTable? ->
