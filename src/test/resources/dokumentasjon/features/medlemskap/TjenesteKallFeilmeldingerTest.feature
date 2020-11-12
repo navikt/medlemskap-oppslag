@@ -12,7 +12,7 @@ Egenskap: Tjeneste kall feilmeldinger test
     Så Skal input <input> gi statuskoden 400
 
     Eksempler:
-      | input                     |
+      | input                       |
       | "InputMedFomLikNull"        |
       | "InputMedTomDatoFørFomDato" |
       | "InputMedTomFørFomIJson"    |

@@ -230,7 +230,7 @@ class RegelSteps : No {
         }
 
         Så("Skal input {string} gi statuskoden {int}") { filnavn: String, statusKode: Int ->
-            val input = RegelSteps::class.java.getResource("/testpersoner/testinput/InputMedFomFør2016.json").readText()
+            val input = RegelSteps::class.java.getResource("/testpersoner/testinput/$filnavn.json").readText()
             LokalWebServer.testResponsKode(input, statusKode)
         }
 
