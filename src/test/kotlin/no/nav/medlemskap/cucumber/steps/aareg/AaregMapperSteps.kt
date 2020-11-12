@@ -107,11 +107,6 @@ class AaregMapperSteps : No {
             arbeidsforhold[0].utenlandsopphold?.get(0)?.rapporteringsperiode.shouldBe(rapporteringsPeriodeForventet)
         }
 
-        Så<DataTable>("skal mappet type til arbeidsgiver i arbeidsforholdet være") { dataTable: DataTable? ->
-            val typeForventet = DomenespråkParser.mapTypeIArbeidsforhold(dataTable)
-            arbeidsforhold[0].arbeidsgiver.type.shouldBe(typeForventet)
-        }
-
         Så<DataTable>("skal mappet periode i arbeidsavtale være") { dataTable: DataTable? ->
             val periodeForventet = DomenespråkParser.mapPeriodeIArbeidsavtale(dataTable)
             arbeidsforhold[0].arbeidsavtaler[0].periode.shouldBe(periodeForventet)

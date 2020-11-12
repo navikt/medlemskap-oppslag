@@ -14,7 +14,7 @@ import java.time.YearMonth
 
 object DomenespråkParser : BasisDomeneParser() {
     val ANSATTE_9 = listOf(Ansatte(9, null, null))
-    val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(type = "BEDR", organisasjonsnummer = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskeEnheter = null)
+    val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(organisasjonsnummer = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskeEnheter = null)
 
     fun parseValgfriYtelse(domenebegrep: Domenebegrep, rad: Map<String, String>): Ytelse? {
         val valgfriVerdi = valgfriVerdi(domenebegrep.nøkkel, rad)
@@ -389,6 +389,7 @@ object DomenespråkParser : BasisDomeneParser() {
     class MedlemskapsparametreMapper : RadMapper<Medlemskapsparametre> {
         override fun mapRad(rad: Map<String, String>): Medlemskapsparametre {
             return Medlemskapsparametre(
+                fnr = parseValgfriString(FØDSELSNUMMER, rad),
                 inputPeriode = InputPeriode(
                     parseDato(FRA_OG_MED_DATO, rad),
                     parseDato(TIL_OG_MED_DATO, rad)
@@ -524,7 +525,6 @@ object DomenespråkParser : BasisDomeneParser() {
 
             return Arbeidsgiver(
                 organisasjonsnummer = parseValgfriString(IDENTIFIKATOR, rad),
-                type = parseValgfriString(ARBEIDSGIVERTYPE, rad),
                 ansatte = listOf(Ansatte(parseValgfriInt(ANTALL_ANSATTE, rad), null, null)),
                 konkursStatus = konkursStatuser,
                 juridiskeEnheter = listOf(JuridiskEnhet(parseValgfriString(IDENTIFIKATOR, rad), parseValgfriString(JURIDISKENHETSTYPE, rad), parseValgfriInt(ANTALL_ANSATTE_I_JURIDISK_ENHET, rad)))
@@ -661,6 +661,7 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     ER_MEDLEM("Er medlem"),
     FRA_OG_MED_DATO("Fra og med dato"),
     FØRSTE_DAG_FOR_YTELSE("Første dag for ytelse"),
+    FØDSELSNUMMER("Fødselsnummer"),
     GYLDIG_FRA_OG_MED("Gyldig fra og med dato"),
     GYLDIG_TIL_OG_MED("Gyldig til og med dato"),
     GYLDIGHETSPERIODE_FRA_OG_MED("Gyldighetsperiode gyldig fra"),
@@ -704,6 +705,7 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
 }
 
 data class Medlemskapsparametre(
+    val fnr: String?,
     val inputPeriode: InputPeriode,
     val førsteDagForYtelse: LocalDate?,
     val harHattArbeidUtenforNorge: Boolean,

@@ -4,11 +4,8 @@
 Egenskap: Mapping av arbeidsgiver i arbeidsforhold
 
   Scenario: Bruker har arbeidsgiver i arbeidsforholdet
-    Gitt følgende om enhetstype fra enhetstyper fra organisasjonsdetaljer fra ereg
-      | Enhetstype|
-      | BEDR      |
 
-    Og følgende om organisasjonsnummer fra Organiasjon fra ereg
+    Gitt følgende om organisasjonsnummer fra Organiasjon fra ereg
       | Organisasjonsnummer |
       | 985672744           |
 
@@ -22,10 +19,6 @@ Egenskap: Mapping av arbeidsgiver i arbeidsforhold
 
 
     Når arbeidsforholdene mappes
-
-    Så skal mappet type til arbeidsgiver i arbeidsforholdet være
-      | Arbeidsgivertype |
-      | BEDR             |
 
     Og mappet organisasjonsnummer til arbeidsgiver i arbeidsforholdet være
       | Organisasjonsnummer |

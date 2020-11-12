@@ -16,7 +16,6 @@ class EregMapperTest {
 
         val mappedArbeidsgiverFraOrganisasjon = mapOrganisasjonTilArbeidsgiver(organisasjon, null)
 
-        Assert.assertEquals("BEDR", mappedArbeidsgiverFraOrganisasjon.type)
         Assert.assertEquals(1, mappedArbeidsgiverFraOrganisasjon.ansatte?.size)
         Assert.assertEquals(19, mappedArbeidsgiverFraOrganisasjon.ansatte?.first()?.antall)
         Assert.assertEquals(LocalDate.parse("2020-07-16"), mappedArbeidsgiverFraOrganisasjon.ansatte?.first()?.bruksperiode?.fom)
@@ -37,7 +36,6 @@ class EregMapperTest {
         val mappedArbeidsgiverFraOrganisasjon = mapOrganisasjonTilArbeidsgiver(organisasjonMedTilknyttetJuridiskEnhet, listOf(tilknyttetJuridiskEnhet))
 
         Assert.assertEquals("873159642", mappedArbeidsgiverFraOrganisasjon.organisasjonsnummer)
-        Assert.assertEquals("BEDR", mappedArbeidsgiverFraOrganisasjon.type)
         Assert.assertEquals(1, mappedArbeidsgiverFraOrganisasjon.juridiskeEnheter?.size)
         Assert.assertEquals("989077457", mappedArbeidsgiverFraOrganisasjon.juridiskeEnheter?.first()?.organisasjonsnummer)
         Assert.assertEquals(80, mappedArbeidsgiverFraOrganisasjon.juridiskeEnheter?.first()?.antallAnsatte)

@@ -366,7 +366,7 @@ class ArbeidsforholdFunksjonerTest {
 
         val arbeidsforhold = Arbeidsforhold(
             arbeidsforholdPeriode, null, OpplysningspliktigArbeidsgiverType.Organisasjon,
-            Arbeidsgiver(null, null, listOf(Ansatte(antall = 10, bruksperiode = null, gyldighetsperiode = null)), null, null),
+            Arbeidsgiver(null, listOf(Ansatte(antall = 10, bruksperiode = null, gyldighetsperiode = null)), null, null),
             Arbeidsforholdstype.NORMALT,
             listOf(arbeidsavtale)
         )
@@ -397,7 +397,6 @@ class ArbeidsforholdFunksjonerTest {
             utenlandsopphold = null,
             arbeidsgivertype = OpplysningspliktigArbeidsgiverType.Organisasjon,
             arbeidsgiver = Arbeidsgiver(
-                type = null,
                 organisasjonsnummer = null,
                 ansatte = listOf(Ansatte(antall = antall, bruksperiode = null, gyldighetsperiode = null)),
                 konkursStatus = null,
