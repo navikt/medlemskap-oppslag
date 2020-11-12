@@ -49,7 +49,6 @@ class ReglerForNorskeStatsborgere(
                 HarBrukerJobbetUtenforNorgeRegel.fraDatagrunnlag(datagrunnlag),
                 HarBrukerJobbet25ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag)
             )
-
             return regelListe.map { it.regelId to it.regel }.toMap()
         }
     }

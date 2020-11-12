@@ -15,7 +15,7 @@ fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, mappedOrganisasj
         Arbeidsforhold(
             periode = mapPeriodeFraArbeidsforhold(it),
             utenlandsopphold = mapUtenlandsopphold(it),
-            arbeidsforholdstype = mapArbeidsforholdType(it),
+            arbeidsforholdstype = Arbeidsforholdstype.fraArbeidsforholdtypeVerdi(it.type),
             arbeidsgivertype = mapArbeidsgiverType(it.arbeidsgiver.type),
             arbeidsgiver = mappedOrganisasjonAsArbeidsgiver.first { p -> p.organisasjonsnummer == it.arbeidsgiver.organisasjonsnummer },
             arbeidsavtaler = mapArbeidsAvtaler(it)
@@ -28,7 +28,7 @@ fun mapArbeidsforhold(arbeidsforholdMedOrganisasjon: List<ArbeidsforholdOrganisa
         Arbeidsforhold(
             periode = mapPeriodeFraArbeidsforhold(it.arbeidsforhold),
             utenlandsopphold = mapUtenlandsopphold(it.arbeidsforhold),
-            arbeidsforholdstype = mapArbeidsforholdType(it.arbeidsforhold),
+            arbeidsforholdstype = Arbeidsforholdstype.fraArbeidsforholdtypeVerdi(it.arbeidsforhold.type),
             arbeidsgivertype = mapArbeidsgiverType(it.arbeidsforhold.arbeidsgiver.type),
             arbeidsgiver = mapOrganisasjonTilArbeidsgiver(it.organisasjon, it.juridiskeEnheter),
             arbeidsavtaler = mapArbeidsAvtaler(it.arbeidsforhold)
@@ -54,37 +54,11 @@ fun mapArbeidsAvtaler(arbeidsforhold: AaRegArbeidsforhold): List<Arbeidsavtale> 
         Arbeidsavtale(
             periode = mapPeriodeTilArbeidsavtale(it),
             gyldighetsperiode = Periode(it.gyldighetsperiode.fom, it.gyldighetsperiode.tom),
-            skipsregister = mapSkipsregister(it),
+            skipsregister = Skipsregister.fraSkipsregisterVerdi(it.skipsregister),
             beregnetAntallTimerPrUke = it.beregnetAntallTimerPrUke,
             stillingsprosent = it.stillingsprosent,
             yrkeskode = it.yrke
         )
-    }
-}
-
-fun mapSkipsregister(arbeidsavtale: AaRegArbeidsavtale): Skipsregister {
-    when (arbeidsavtale.skipsregister) {
-        "nis" -> return Skipsregister.NIS
-        "nor" -> return Skipsregister.NOR
-        "utl" -> return Skipsregister.UTL
-        "NIS" -> return Skipsregister.NIS
-        "NOR" -> return Skipsregister.NOR
-        "UTL" -> return Skipsregister.UTL
-        else -> {
-            return Skipsregister.UKJENT
-        }
-    }
-}
-
-fun mapArbeidsforholdType(arbeidsforhold: AaRegArbeidsforhold): Arbeidsforholdstype {
-    return when (arbeidsforhold.type) {
-        "maritimtArbeidsforhold" -> Arbeidsforholdstype.MARITIM
-        "forenkletOppgjoersordning" -> Arbeidsforholdstype.FORENKLET
-        "frilanserOppdragstakerHonorarPersonerMm" -> Arbeidsforholdstype.FRILANSER
-        "ordinaertArbeidsforhold" -> Arbeidsforholdstype.NORMALT
-        else -> {
-            Arbeidsforholdstype.ANDRE
-        }
     }
 }
 

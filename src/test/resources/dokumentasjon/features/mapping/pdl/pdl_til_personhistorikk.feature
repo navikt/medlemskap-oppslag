@@ -6,8 +6,8 @@ Egenskap: Mapping fra PDL HentPerson.Person til Datagrunnlag.personhistorikk
   Scenario: EØS-borger
 
     Gitt følgende statsborgerskap fra PDL:
-      | Land | Gyldig fra og med dato | Gyldig til og med dato |
-      | BEL  |                        |                        |
+      | Land | Gyldig fra og med dato | Gyldig til og med dato | Utenlandsk adresse landkode |
+      | BEL  |                        |                        |                             |
 
     Og følgende bostedsadresser fra PDL:
       | Gyldig fra og med | Gyldig til og med |

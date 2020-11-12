@@ -22,4 +22,4 @@ Egenskap: Regel 7: Er arbeidsforholdet maritimt?
     Eksempler:
       | Arbeidsforholdstype | Svar |
       | NORMALT             | Nei  |
-      | MARITIM             | Ja   |
+      | MARITIMT             | Ja   |

@@ -7,7 +7,7 @@ Egenskap: Regel 7.1: Er bruker ansatt på et norsk skip?
   Scenariomal: Regel 7.1 Bruker som er ansatt på et norsk skip får "Ja"
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
-      | 01.01.2018      |                 | Organisasjon     | MARITIM             |
+      | 01.01.2018      |                 | Organisasjon     | MARITIMT            |
 
     Og følgende arbeidsgiver i arbeidsforholdet
       | Identifikator | Arbeidsgivertype | Antall ansatte | Konkursstatus |
@@ -28,3 +28,5 @@ Egenskap: Regel 7.1: Er bruker ansatt på et norsk skip?
       | Skipsregister | Svar |
       | NIS           | Nei  |
       | NOR           | Ja   |
+      | UTL           | Nei  |
+      |               | Nei  |

@@ -4,18 +4,17 @@
 Egenskap: Mapping av utenlandsopphold i arbeidsforhold
 
   Scenario: Bruker følgende utenlandsopphold i arbeidsforholdet
-    Gitt følgende om landkode i AaRegArbeidsforhold.AaRegUtenlandsopphold
+    Gitt følgende om landkode fra AaRegUtenlandsopphold fra AaRegArbeidsforhold
       | Landkode |
       | BEL      |
 
-    Og følgende om AaRegPeriode i fra AaRegArbeidsforhold.AaRegUtenlandsopphold
+    Og følgende om AaRegPeriode i fra AaRegUtenlandsopphold fra AaRegArbeidsforhold
       | Gyldig fra og med dato      | Gyldig til og med dato |
       | 2015-03-25                  | 2016-02-03             |
 
-    Og følgende rapporteringsperiode i AaRegArbeidsforhold.AaRegUtenlandsopphold
+    Og følgende rapporteringsperiode fra AaRegUtenlandsopphold fra AaRegArbeidsforhold
       | Rapporteringsperiode    |
       | 2015-12                 |
-
 
     Når arbeidsforholdene mappes
 

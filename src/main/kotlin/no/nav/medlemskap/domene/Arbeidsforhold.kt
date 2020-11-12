@@ -70,19 +70,31 @@ data class Utenlandsopphold(
     val rapporteringsperiode: YearMonth
 )
 
-enum class Arbeidsforholdstype(val navn: String) {
+enum class Arbeidsforholdstype(val kodeverdi: String) {
     FRILANSER("frilanserOppdragstakerHonorarPersonerMm"),
-    MARITIM("maritimtArbeidsforhold"),
+    MARITIMT("maritimtArbeidsforhold"),
     NORMALT("ordinaertArbeidsforhold"),
     FORENKLET("forenkletOppgjoersordning"),
-    ANDRE("pensjonOgAndreTyperYtelserUtenAnsettelsesforhold")
+    ANDRE("pensjonOgAndreTyperYtelserUtenAnsettelsesforhold");
+
+    companion object {
+        fun fraArbeidsforholdtypeVerdi(arbeidsforholdstypeVerdi: String): Arbeidsforholdstype {
+            return values().first { it.kodeverdi == arbeidsforholdstypeVerdi }
+        }
+    }
 }
 
 enum class Skipsregister(val beskrivelse: String) {
     NIS("Norsk InternasjonaltSkipsregister"),
     NOR("Norsk Ordinært Skipsregister"),
-    UTL("Utenlandsk skipsregister"),
-    UKJENT("Ingen verdi eller ukjent verdi")
+    UTL("Utenlandsk skipsregister");
+
+    companion object {
+        fun fraSkipsregisterVerdi(skipsregisterValue: String?): Skipsregister? {
+            if (skipsregisterValue.isNullOrEmpty()) return null
+            return valueOf(skipsregisterValue.toUpperCase())
+        }
+    }
 }
 
 enum class YrkeskoderForLuftFart(val styrk: String) {

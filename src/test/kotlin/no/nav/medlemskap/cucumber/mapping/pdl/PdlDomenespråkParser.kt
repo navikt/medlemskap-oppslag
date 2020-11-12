@@ -49,10 +49,18 @@ class PdlDomenespråkParser : BasisDomeneParser() {
 
     class BostedsadresseMapper : RadMapper<HentPerson.Bostedsadresse> {
         override fun mapRad(rad: Map<String, String>): HentPerson.Bostedsadresse {
+            val utenlandskLandkode = parseValgfriString(Domenebegrep.UTENLANDSK_ADRESSE_LANDKODE, rad)
+
+            val utenlandskAdresse = if (utenlandskLandkode != null) {
+                HentPerson.UtenlandskAdresse(utenlandskLandkode)
+            } else {
+                null
+            }
 
             return HentPerson.Bostedsadresse(
                 gyldigFraOgMed = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED, rad),
                 gyldigTilOgMed = parseValgfriString(Domenebegrep.GYLDIG_TIL_OG_MED, rad),
+                utenlandskAdresse = utenlandskAdresse,
                 angittFlyttedato = null,
                 vegadresse = null,
                 matrikkeladresse = null,
@@ -66,7 +74,7 @@ class PdlDomenespråkParser : BasisDomeneParser() {
             val utenlandskLandkode = parseValgfriString(Domenebegrep.UTENLANDSK_ADRESSE_LANDKODE, rad)
 
             val utenlandskAdresse = if (utenlandskLandkode != null) {
-                HentPerson.UtenlandskAdresse(utenlandskLandkode)
+                HentPerson.UtenlandskAdresse2(utenlandskLandkode)
             } else {
                 null
             }

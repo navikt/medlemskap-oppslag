@@ -17,7 +17,7 @@ Egenskap: Regelflyt for regel 7.1
 
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Arbeidsgiver Id |
-      | 01.01.2018      |                 | Organisasjon     | MARITIM             | 1               |
+      | 01.01.2018      |                 | Organisasjon     | MARITIMT             | 1               |
 
     Og følgende arbeidsgiver i arbeidsforholdet
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
