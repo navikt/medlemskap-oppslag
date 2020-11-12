@@ -3,8 +3,8 @@ package no.nav.medlemskap.cucumber.steps.aareg.aaregBuilder
 import no.nav.medlemskap.clients.aareg.AaRegAntallTimerForTimeloennet
 import java.time.YearMonth
 
-class AntallTimerForLoennetBuilder {
-    var sporingsinformasjonBuilder = SporingsinformasjonBuilder()
+class AaRegAntallTimerForLoennetBuilder {
+    var sporingsinformasjonBuilder = AaRegSporingsinformasjonBuilder()
 
     var sporingsinformasjon = sporingsinformasjonBuilder.build()
     var aaregPeriodeBuilder = AaregPeriodeBuilder()

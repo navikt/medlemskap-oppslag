@@ -3,7 +3,7 @@ package no.nav.medlemskap.cucumber.steps.aareg.aaregBuilder
 import no.nav.medlemskap.clients.aareg.AaRegSporingsinformasjon
 import java.time.LocalDateTime
 
-class SporingsinformasjonBuilder {
+class AaRegSporingsinformasjonBuilder {
 
     var endretAv = String()
     var endretKilde = String()

@@ -3,8 +3,8 @@ package no.nav.medlemskap.cucumber.steps.aareg.aaregBuilder
 import no.nav.medlemskap.clients.aareg.AaRegUtenlandsopphold
 import java.time.YearMonth
 
-class UtenlandsoppholdBuilder {
-    var sportingsinformasjonBuilder = SporingsinformasjonBuilder()
+class AaRegUtenlandsoppholdBuilder {
+    var sportingsinformasjonBuilder = AaRegSporingsinformasjonBuilder()
     var periodeBuilder = AaregPeriodeBuilder()
 
     var landkode = String()

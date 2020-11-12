@@ -2,9 +2,9 @@ package no.nav.medlemskap.cucumber.steps.aareg.aaregBuilder
 
 import no.nav.medlemskap.clients.aareg.AaRegPermisjonPermittering
 
-class PermisjonsPermitteringerBuilder {
+class AaRegPermisjonsPermitteringerBuilder {
     var periodeBuilder = AaregPeriodeBuilder()
-    var sporingsinformasjonBuilder = SporingsinformasjonBuilder()
+    var sporingsinformasjonBuilder = AaRegSporingsinformasjonBuilder()
 
     var periode = periodeBuilder.build()
     var permisjonsPermitteringId = String()

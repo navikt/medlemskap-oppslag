@@ -2,10 +2,10 @@ package no.nav.medlemskap.cucumber.steps.aareg.aaregBuilder
 
 import no.nav.medlemskap.clients.aareg.AaRegArbeidsavtale
 
-class ArbeidsavtaleBuilder {
+class AaRegArbeidsavtaleBuilder {
     var bruksperiodeBuilder = AaRegBruksperiodeBuilder()
     var gyldighetsperiodeBuilder = AaRegGyldighetsperiodeBuilder()
-    var sporingsinformasjonBuilder = SporingsinformasjonBuilder()
+    var sporingsinformasjonBuilder = AaRegSporingsinformasjonBuilder()
 
     var antallTimerPerUke = null
     var arbeidstidsordning = String()
@@ -18,7 +18,7 @@ class ArbeidsavtaleBuilder {
     var fartsomraade = String()
     var yrke = String()
     var sporingsinformasjon = sporingsinformasjonBuilder.build()
-    var stillingsprosent = null
+    var stillingsprosent = 100.0
     var sistLoennsendring = String()
 
     fun build(): AaRegArbeidsavtale =
@@ -28,7 +28,7 @@ class ArbeidsavtaleBuilder {
             beregnetAntallTimerPrUke = beregnetAntallTimerPrUke,
             bruksperiode = bruksperiode,
             gyldighetsperiode = gyldighetsperiode,
-            sistStillingsendring = stillingsprosent,
+            sistStillingsendring = sistStillingsendring,
             skipsregister = skipsregister,
             skipstype = skipstype,
             fartsomraade = fartsomraade,
