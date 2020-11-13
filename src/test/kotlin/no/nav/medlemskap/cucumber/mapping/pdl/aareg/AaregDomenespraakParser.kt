@@ -1,13 +1,8 @@
 package no.nav.medlemskap.cucumber.mapping.pdl.aareg
 
 import io.cucumber.datatable.DataTable
-import no.nav.medlemskap.clients.aareg.AaRegBruksperiode
-import no.nav.medlemskap.clients.aareg.AaRegGyldighetsperiode
-import no.nav.medlemskap.clients.aareg.AaRegOpplysningspliktigArbeidsgiverType
-import no.nav.medlemskap.clients.aareg.AaRegPeriode
+import no.nav.medlemskap.clients.aareg.*
 import no.nav.medlemskap.clients.ereg.Ansatte
-import no.nav.medlemskap.clients.ereg.Bruksperiode
-import no.nav.medlemskap.clients.ereg.Gyldighetsperiode
 import no.nav.medlemskap.clients.ereg.Status
 import no.nav.medlemskap.cucumber.BasisDomeneParser
 import no.nav.medlemskap.cucumber.Domenenøkkel
@@ -71,11 +66,11 @@ class AaregDomenespraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, StillingsprosentMapper())[0]
     }
 
-    fun mapBeregnetAntallTimer(dataTable: DataTable?): Double {
-        return mapDataTable(dataTable, BeregnetAntallTimerMapper())[0]
+    fun mapBeregnetAntallTimerPerUke(dataTable: DataTable?): Double {
+        return mapDataTable(dataTable, BeregnetAntallTimerMapperPerUke())[0]
     }
 
-    class BeregnetAntallTimerMapper : RadMapper<Double> {
+    class BeregnetAntallTimerMapperPerUke : RadMapper<Double> {
         override fun mapRad(rad: Map<String, String>): Double {
             return parseDouble(Domenebegrep.BEREGNET_ANTALL_TIMER, rad)
         }

@@ -4,11 +4,11 @@
 Egenskap: Mapping av arbeidsavtaler i arbeidsforhold
 
   Scenario: Bruker følgende arbeidsavtaler i arbeidsforholdet
-    Gitt følgende om AaRegPeriode i fra AaRegArbeidsavtale AaRegBruksperiode
+    Gitt følgende om AaRegPeriode fra AaRegArbeidsavtale fra AaRegBruksperiode
       | Gyldig fra og med dato      | Gyldig til og med dato |
       | 2018-11-15T21:37:40.835     | 2020-11-15T21:37:40.835|
 
-    Og følgende om gyldighetsperiode fra AaRegArbeidsavtale AaRegGyldighetsperiode
+    Og følgende om gyldighetsperiode fra AaRegArbeidsavtale fra AaRegGyldighetsperiode
       | Gyldig fra og med dato      | Gyldig til og med dato |
       | 2015-03-25                  | 2016-02-03             |
 

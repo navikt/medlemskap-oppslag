@@ -1,7 +1,6 @@
 package no.nav.medlemskap.regler.v1.arbeidsforhold
 
 import mu.KotlinLogging
-import no.nav.medlemskap.common.enhetstypeCounter
 import no.nav.medlemskap.common.enhetstypeForJuridiskEnhet
 import no.nav.medlemskap.domene.Arbeidsforhold
 import no.nav.medlemskap.domene.Datagrunnlag
@@ -36,7 +35,6 @@ class ErArbeidsgiverOrganisasjonRegel(
     }
 
     private fun registrerArbeidsgiverMetrics() {
-        arbeidsforhold.forEach { enhetstypeCounter(it.arbeidsgiver.type ?: "N/A", ytelse.metricName()).increment() }
         arbeidsforhold.forEach { it.arbeidsgiver.juridiskeEnheter?.forEach { p -> enhetstypeForJuridiskEnhet(p?.enhetstype, ytelse.metricName()).increment() } }
     }
 
