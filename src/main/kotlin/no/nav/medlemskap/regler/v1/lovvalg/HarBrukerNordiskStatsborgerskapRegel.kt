@@ -1,11 +1,13 @@
 package no.nav.medlemskap.regler.v1.lovvalg
 
-import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.InputPeriode
+import no.nav.medlemskap.domene.Statsborgerskap
+import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.ja
 import no.nav.medlemskap.regler.common.nei
-import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.sjekkStatsborgerskap
 import java.time.LocalDate
 
 class HarBrukerNordiskStatsborgerskapRegel(
@@ -17,11 +19,10 @@ class HarBrukerNordiskStatsborgerskapRegel(
 ) : LovvalgRegel(regelId, ytelse, periode, førsteDagForYtelse) {
 
     override fun operasjon(): Resultat {
-        val erNorskStatsborger = sjekkStatsborgerskap(statsborgerskap, kontrollPeriodeForPersonhistorikk, { s -> Eøsland.erNordisk(s) })
 
         return when {
-            erNorskStatsborger -> ja()
-            else -> nei("Brukeren er ikke norsk statsborger")
+            erBrukerNordiskStatsborger(statsborgerskap) -> ja()
+            else -> nei("Brukeren er ikke nordisk statsborger")
         }
     }
 

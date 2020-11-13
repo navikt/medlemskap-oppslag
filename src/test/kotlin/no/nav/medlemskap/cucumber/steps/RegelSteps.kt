@@ -18,8 +18,7 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.v1.RegelFactory
 import no.nav.medlemskap.regler.v1.ReglerService
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import java.io.File
 
 class RegelSteps : No {
@@ -209,8 +208,6 @@ class RegelSteps : No {
         }
 
         Så("skal årsaken være {string}") { forventetÅrsak: String ->
-            val årsaker = resultat!!.finnÅrsaker()
-
             assertEquals(forventetÅrsak, resultat!!.årsaksTekst())
         }
 
@@ -237,6 +234,13 @@ class RegelSteps : No {
             val regelId = domenespråkParser.parseRegelId(regelIdStr!!)
 
             assertBegrunnelse(regelId, forventetBegrunnelse, resultat!!)
+        }
+
+        Så<String>("skal regel {string} ikke finnes i resultatet") { regelIdStr: String? ->
+            val regelId = domenespråkParser.parseRegelId(regelIdStr!!)
+            val regelResultat = resultat!!.finnRegelResultat(regelId)
+
+            assertNull(regelResultat)
         }
 
         Så<String, DataTable>("skal regel {string} inneholde følgende delresultater:") { regelIdStr: String?, dataTable: DataTable? ->

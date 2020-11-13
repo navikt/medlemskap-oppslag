@@ -217,39 +217,6 @@ class TjenesteKallFeilmeldingerTest {
     }
 
     @Test
-    fun `Request med tom før 2016 får 400 respons`() {
-        val faktiskResponse = RestAssured.given()
-            .body(inputTomFør2016)
-            .header(Header("Content-Type", "application/json"))
-            .post("/")
-            .then()
-            .statusCode(400)
-            .extract().asString()
-
-        val forventetResponse =
-            """
-            {
-                "url" : "/",
-                "message" : "Periode fom kan ikke være før 2016-01-01",
-                "cause" : "io.ktor.features.BadRequestException: Periode fom kan ikke være før 2016-01-01",
-                "code" : {
-                    "value" : 400,
-                    "description" : "Bad Request"
-                },
-                "callId" : { }
-            }
-            """.trimIndent()
-
-        JSONAssert.assertEquals(
-            forventetResponse, faktiskResponse,
-            CustomComparator(
-                JSONCompareMode.STRICT,
-                Customization("tidspunkt") { _, _ -> true }
-            )
-        )
-    }
-
-    @Test
     fun `Request med tom før fom i Json får 400 respons`() {
         val faktiskResponse = RestAssured.given()
             .body(inputMedTomFørFomIJson)

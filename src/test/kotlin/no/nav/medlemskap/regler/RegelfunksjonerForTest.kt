@@ -1,6 +1,5 @@
 package no.nav.medlemskap.regler
 
-import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
@@ -14,7 +13,6 @@ fun evaluer(datagrunnlag: Datagrunnlag): Resultat {
 }
 
 fun assertSvar(regelId: RegelId, forventetSvarFraRegel: Svar, resultat: Resultat, konklusjon: Svar) {
-    println(objectMapper.writeValueAsString(resultat))
     val find = resultat.delresultat.find { it.regelId == regelId }
 
     Assertions.assertNotNull(find, "Fant ikke regel $regelId i delsvar i Resultat. Regel det testes på ble ikke kjørt. Følgende regler ble kjørt: " + resultat.delresultat.map { it.regelId })
@@ -23,7 +21,6 @@ fun assertSvar(regelId: RegelId, forventetSvarFraRegel: Svar, resultat: Resultat
 }
 
 fun assertDelresultat(regelId: RegelId, forventetSvarFraRegel: Svar, resultat: Resultat) {
-    println(objectMapper.writeValueAsString(resultat))
     val funnetResultat = resultat.finnRegelResultat(regelId)
 
     Assertions.assertNotNull(funnetResultat, "Fant ikke regel $regelId i delsvar i Resultat. Regel det testes på ble ikke kjørt. Følgende regler ble kjørt: " + resultat.delresultat.map { it.regelId })
@@ -31,7 +28,6 @@ fun assertDelresultat(regelId: RegelId, forventetSvarFraRegel: Svar, resultat: R
 }
 
 fun assertBegrunnelse(regelId: RegelId, forventetBegrunnelseFraRegel: String, resultat: Resultat) {
-    println(objectMapper.writeValueAsString(resultat))
     val funnetResultat = resultat.finnRegelResultat(regelId)
 
     Assertions.assertNotNull(funnetResultat, "Fant ikke regel $regelId i delsvar i Resultat. Regel det testes på ble ikke kjørt. Følgende regler ble kjørt: " + resultat.delresultat.map { it.regelId })
