@@ -30,7 +30,7 @@ class ErRequestGyldigRegel(
             return nei("Periode fom kan ikke være før $førsteGyldigeDato")
         }
 
-        if (førsteDagForYtelse?.isBefore(førsteDagForYtelse) ?: false) {
+        if (førsteDagForYtelse?.isBefore(førsteGyldigeDato) ?: false) {
             return nei("Første dag for ytelse kan ikke være før $førsteGyldigeDato")
         }
 
