@@ -449,6 +449,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Adresse"
+    RegelId:
+      type: string
+      description: Identifiserer en regel.
+      example: "REGEL_1_1"
     Request:
       required:
         - fnr
@@ -491,8 +495,7 @@ components:
         - svar
       properties:
         regelId:
-          type: string
-          description: Identifiserer en regel
+          $ref: "#/components/schemas/RegelId"
         avklaring:
           type: string
           description: Spørsmål som regelen avklarer
@@ -578,7 +581,7 @@ components:
     Aarsak:
       properties:
         regelId:
-          type: string
+          $ref: "#/components/schemas/RegelId"
         avklaring:
           type: string
         beskrivelse:

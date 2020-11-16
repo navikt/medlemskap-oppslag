@@ -62,7 +62,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val erRegel
 
     companion object {
         fun fraRegelIdString(regelIdStr: String): RegelId? {
-            return values().first { it.identifikator == regelIdStr }
+            return values().first { it.identifikator == regelIdStr || it.name == regelIdStr }
         }
     }
 }
