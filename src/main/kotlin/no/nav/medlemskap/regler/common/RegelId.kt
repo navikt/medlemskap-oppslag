@@ -1,6 +1,7 @@
 package no.nav.medlemskap.regler.common
 
 enum class RegelId(val identifikator: String, val avklaring: String, val erRegelflytKonklusjon: Boolean = false) {
+    REGEL_0_1("0.1", "Er request gyldig?"),
     REGEL_1_1("1.1", "Er alle perioder siste 12 mnd avklart (endelig/gyldig)?"),
     REGEL_1_2("1.2", "Er det periode både med og uten medlemskap innenfor 12 mnd?"),
     REGEL_1_3("1.3", "Er det en periode med medlemskap?"),
@@ -55,12 +56,13 @@ enum class RegelId(val identifikator: String, val avklaring: String, val erRegel
     REGEL_MEDL("MEDL", "Har bruker avklarte opplysninger i MEDL?", true),
     REGEL_STATSBORGERSKAP("STATSBORGERSKAP", "Er statsborgerskap avklart?", true),
     REGEL_BOSATT("BOSATT", "Er det avklart om bruker bor i Norge?", true),
-    REGEL_DOED("DOED", "Er det avklart om brukeren er død eller ikke?", true)
+    REGEL_DOED("DOED", "Er det avklart om brukeren er død eller ikke?", true),
+    REGEL_REQUEST_VALIDERING("Validering", "Er input-dataene gyldige?", true)
     ;
 
     companion object {
         fun fraRegelIdString(regelIdStr: String): RegelId? {
-            return values().first { it.identifikator == regelIdStr }
+            return values().first { it.identifikator == regelIdStr || it.name == regelIdStr }
         }
     }
 }

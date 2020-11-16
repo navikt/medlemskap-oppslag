@@ -3,9 +3,11 @@ package no.nav.medlemskap.regler.v1
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
+import no.nav.medlemskap.regler.common.Svar.JA
 import no.nav.medlemskap.regler.common.Svar.NEI
 
 class Hovedregler(datagrunnlag: Datagrunnlag) {
+    private val reglerForRequestValidering = ReglerForRequestValidering.fraDatagrunnlag(datagrunnlag)
     private val reglerForStatsborgerskap = ReglerForStatsborgerskap.fraDatagrunnlag(datagrunnlag)
     private val reglerForMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag)
     private val reglerForNorskeStatsborgere = ReglerForNorskeStatsborgere.fraDatagrunnlag(datagrunnlag)
@@ -16,7 +18,12 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
     private val reglerForDoedsfall = ReglerForDoedsfall.fraDatagrunnlag(datagrunnlag)
 
     fun kjørHovedregler(): Resultat {
-        val ytelse = reglerForMedl.ytelse
+        val valideringsresultat = kjørValideringsregler()
+        if (valideringsresultat.svar != JA) {
+            return valideringsresultat
+        }
+
+        val ytelse = reglerForRequestValidering.ytelse
         val resultater = mutableListOf<Resultat>()
         resultater.addAll(reglerForDoedsfall.kjørRegelflyter())
         resultater.addAll(reglerForMedl.kjørRegelflyter())
@@ -31,6 +38,10 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
         )
 
         return utledResultat(ytelse, resultater)
+    }
+
+    private fun kjørValideringsregler(): Resultat {
+        return utledResultat(reglerForRequestValidering.ytelse, reglerForRequestValidering.kjørRegelflyter())
     }
 
     private fun bestemReglerForStatsborgerskap(resultatStatsborgerskap: List<Resultat>): Regler {

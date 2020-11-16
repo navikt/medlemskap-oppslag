@@ -23,7 +23,6 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
-import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.*
 
@@ -142,10 +141,6 @@ private fun loggResponse(fnr: String, response: Response) {
 private fun validerRequest(request: Request): Request {
     if (request.periode.tom.isBefore(request.periode.fom)) {
         throw BadRequestException("Periode tom kan ikke være før periode fom")
-    }
-
-    if (request.periode.fom.isBefore(LocalDate.of(2016, 1, 1))) {
-        throw BadRequestException("Periode fom kan ikke være før 2016-01-01")
     }
 
     if (!gyldigFnr(request.fnr)) {
