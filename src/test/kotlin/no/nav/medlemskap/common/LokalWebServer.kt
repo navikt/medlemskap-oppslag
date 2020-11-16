@@ -36,6 +36,8 @@ class LokalWebServer {
 
         private var applicationState = ApplicationState(false, false)
 
+        var testdatagrunnlag: Datagrunnlag? = null
+
         fun startServer() {
 
             if (!applicationState.running) {
@@ -111,31 +113,34 @@ class LokalWebServer {
                 .statusCode(statusKode)
                 .extract().asString()
         }
+
+        suspend fun mockCreateDatagrunnlag(
+            request: Request,
+            callId: String,
+            services: Services,
+            clientId: String?
+        ): Datagrunnlag = runBlocking {
+            if (testdatagrunnlag != null) {
+                testdatagrunnlag!!
+            }
+
+            val ytelse = Ytelse.SYKEPENGER
+
+            Datagrunnlag(
+                periode = request.periode,
+                førsteDagForYtelse = request.førsteDagForYtelse,
+                brukerinput = request.brukerinput,
+                pdlpersonhistorikk = personhistorikk(),
+                medlemskap = listOf(Medlemskap("dekning", enDato(), enAnnenDato(), true, Lovvalg.ENDL, "NOR", PeriodeStatus.GYLD)),
+                arbeidsforhold = listOf(arbeidsforhold()),
+                oppgaver = listOf(Oppgave(enDato(), Prioritet.NORM, Status.AAPNET, "Tema")),
+                dokument = listOf(Journalpost("Id", "Tittel", "Posttype", "Status", "Tema", listOf(Dokument("Id", "Tittel")))),
+                ytelse = ytelse,
+                dataOmBarn = listOf(DataOmBarn(personhistorikkBarn = personhistorikkForBarn())),
+                dataOmEktefelle = DataOmEktefelle(personhistorikkEktefelle(), listOf(arbeidsforhold()))
+            )
+        }
     }
-}
-
-suspend fun mockCreateDatagrunnlag(
-    request: Request,
-    callId: String,
-    services: Services,
-    clientId: String?
-): Datagrunnlag = runBlocking {
-
-    val ytelse = Ytelse.SYKEPENGER
-
-    Datagrunnlag(
-        periode = request.periode,
-        førsteDagForYtelse = request.førsteDagForYtelse,
-        brukerinput = request.brukerinput,
-        pdlpersonhistorikk = personhistorikk(),
-        medlemskap = listOf(Medlemskap("dekning", enDato(), enAnnenDato(), true, Lovvalg.ENDL, "NOR", PeriodeStatus.GYLD)),
-        arbeidsforhold = listOf(arbeidsforhold()),
-        oppgaver = listOf(Oppgave(enDato(), Prioritet.NORM, Status.AAPNET, "Tema")),
-        dokument = listOf(Journalpost("Id", "Tittel", "Posttype", "Status", "Tema", listOf(Dokument("Id", "Tittel")))),
-        ytelse = ytelse,
-        dataOmBarn = listOf(DataOmBarn(personhistorikkBarn = personhistorikkForBarn())),
-        dataOmEktefelle = DataOmEktefelle(personhistorikkEktefelle(), listOf(arbeidsforhold()))
-    )
 }
 
 private fun arbeidsforhold(): Arbeidsforhold {
