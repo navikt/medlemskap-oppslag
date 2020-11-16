@@ -250,6 +250,34 @@ object DomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, MedlemskapsparametreMapper()).get(0)
     }
 
+    fun mapDekning(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, DekningMapper())[0]
+    }
+
+    fun mapFraOgMed(dataTable: DataTable?): LocalDate {
+        return mapDataTable(dataTable, FraOgMedMapper())[0]
+    }
+
+    fun mapTilOgMed(dataTable: DataTable?): LocalDate {
+        return mapDataTable(dataTable, TilOgMedMapper())[0]
+    }
+
+    fun mapErMedlem(dataTable: DataTable?): Boolean {
+        return mapDataTable(dataTable, ErBrukerMedlemMapper())[0]
+    }
+
+    fun mapLovvalg(dataTable: DataTable?): Lovvalg {
+        return mapDataTable(dataTable, LovvalgMapper())[0]
+    }
+
+    fun mapLovvalgsland(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, LovvalgslandMapper())[0]
+    }
+
+    fun mapPeriodeStatus(dataTable: DataTable?): PeriodeStatus {
+        return mapDataTable(dataTable, PeriodeStatusMapper())[0]
+    }
+
     fun mapOverstyrteRegler(dataTable: DataTable?): Map<RegelId, Svar> {
         val overstyrteRegler = mapDataTable(dataTable, OverstyrteReglerMapper())
         return overstyrteRegler
@@ -282,6 +310,18 @@ object DomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, RapporteringsperiodeMapper())[0]
     }
 
+    class PeriodeStatusMapper : RadMapper<PeriodeStatus> {
+        override fun mapRad(rad: Map<String, String>): PeriodeStatus {
+            return PeriodeStatus.valueOf(parseString(PERIODESTATUS, rad))
+        }
+    }
+
+    class ErBrukerMedlemMapper : RadMapper<Boolean> {
+        override fun mapRad(rad: Map<String, String>): Boolean {
+            return parseBoolean(ER_MEDLEM, rad)
+        }
+    }
+
     class RapporteringsperiodeMapper : RadMapper<YearMonth> {
         override fun mapRad(rad: Map<String, String>): YearMonth {
             return YearMonth.parse(parseString(AaregDomenespraakParser.Domenebegrep.RAPPORTERINGSPERIODE, rad))
@@ -305,9 +345,22 @@ object DomenespråkParser : BasisDomeneParser() {
             return parseDouble(BEREGNET_ANTALL_TIMER_PR_UKE, rad)
         }
     }
+
+    class LovvalgslandMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(LOVVALGSLAND, rad)
+        }
+    }
+
     class TypeMapper : RadMapper<String> {
         override fun mapRad(rad: Map<String, String>): String {
             return parseString(ARBEIDSGIVERTYPE, rad)
+        }
+    }
+
+    class LovvalgMapper : RadMapper<Lovvalg> {
+        override fun mapRad(rad: Map<String, String>): Lovvalg {
+            return Lovvalg.valueOf(parseString(LOVVALG, rad))
         }
     }
 
@@ -333,6 +386,24 @@ object DomenespråkParser : BasisDomeneParser() {
     class SkipsregisterMapper : RadMapper<Skipsregister> {
         override fun mapRad(rad: Map<String, String>): Skipsregister {
             return Skipsregister.valueOf(parseString(SKIPSREGISTER, rad))
+        }
+    }
+
+    class DekningMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(MEDLEMSKAP_DEKNING, rad)
+        }
+    }
+
+    class FraOgMedMapper : RadMapper<LocalDate> {
+        override fun mapRad(rad: Map<String, String>): LocalDate {
+            return parseDato(GYLDIG_FRA_OG_MED, rad)
+        }
+    }
+
+    class TilOgMedMapper : RadMapper<LocalDate> {
+        override fun mapRad(rad: Map<String, String>): LocalDate {
+            return parseDato(GYLDIG_TIL_OG_MED, rad)
         }
     }
 
@@ -677,6 +748,7 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     LANDKODE("Landkode"),
     LOVVALG("Lovvalg"),
     LOVVALGSLAND("Lovvalgsland"),
+    MEDLEMSKAP_DEKNING("MedlemskapDekning"),
     MIN_ROLLE_FOR_PERSON("Min rolle for person"),
     OPPHOLDSADRESSE("Oppholdsadresse"),
     ORGANISASJONSNUMMER("Organisasjonsnummer"),
