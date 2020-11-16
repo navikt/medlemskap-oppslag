@@ -206,7 +206,9 @@ class RegelSteps : No {
         }
 
         Når("rest kall med følgende parametere") { dataTable: DataTable? ->
-            input = LokalWebServer.byggInput(domenespråkParser.mapMedlemskapsparametre(dataTable))
+            val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
+            input = LokalWebServer.byggInput(medlemskapsparametre)
+            LokalWebServer.testdatagrunnlag = byggDatagrunnlag(medlemskapsparametre)
             LokalWebServer.startServer()
         }
 
