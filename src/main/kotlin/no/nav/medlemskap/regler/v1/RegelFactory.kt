@@ -6,10 +6,10 @@ import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.v1.arbeidsforhold.*
 import no.nav.medlemskap.regler.v1.grunnforordningen.ErBrukerEøsBorgerRegel
-import no.nav.medlemskap.regler.v1.grunnforordningen.ErRequestGyldigRegel
 import no.nav.medlemskap.regler.v1.lovvalg.*
 import no.nav.medlemskap.regler.v1.medlemskap.*
 import no.nav.medlemskap.regler.v1.registrerteOpplysninger.HarBrukerRegistrerteOpplysningerRegel
+import no.nav.medlemskap.regler.v1.validering.ErRequestGyldigRegel
 
 class RegelFactory(private val datagrunnlag: Datagrunnlag) {
 

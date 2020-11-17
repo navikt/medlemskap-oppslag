@@ -9,7 +9,7 @@ Egenskap: Validering av request
       | Landkode   | Fra og med dato | Til og med dato |
       | <Landkode> | 01.01.2000      |                 |
 
-  Scenariomal: Gyldig fra og med dato avhenger av hvilket statsborgerskap brukeren har
+  Scenariomal: Første gyldige fra og med dato er 01.01.2017 for sveitsiske borger, 01.01.2016 for andre borgere
 
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode   | Fra og med dato | Til og med dato |
@@ -29,6 +29,26 @@ Egenskap: Validering av request
       | NOR      | 31.12.2016      | Ja        |                                          |
       | CHE      | 31.12.2016      | Nei       | Periode fom kan ikke være før 2017-01-01 |
       | CHE      | 01.01.2017      | Ja        |                                          |
+
+
+  Scenariomal: Siste gyldige fra og med dato er 31.12.2020 for britiske borgere
+
+    Gitt følgende statsborgerskap i personhistorikken
+      | Landkode   | Fra og med dato | Til og med dato |
+      | <Landkode> | 01.01.2000      |                 |
+
+    Når regel "0.1" kjøres med følgende parametre
+      | Fra og med dato   | Til og med dato | Har hatt arbeid utenfor Norge |
+      | <Fra og med dato> | 30.01.2021      | <Har jobbet utenfor Norge>    |
+
+    Så skal svaret være "<Regel 0.1>"
+    Og skal begrunnelsen være "<Begrunnelse>"
+
+    Eksempler:
+      | Landkode | Fra og med dato | Regel 0.1 | Begrunnelse                                |
+      | NOR      | 01.01.2021      | Ja        |                                            |
+      | GBR      | 01.01.2021      | Nei       | Periode fom kan ikke være etter 2020-12-31 |
+      | NOR      | 31.12.2020      | Ja        |                                            |
 
 
   Scenariomal: Hvis første dag for ytelse er angitt, er det den som brukes istedet for "fra og med dato"

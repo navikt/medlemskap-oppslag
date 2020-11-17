@@ -4,7 +4,7 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.v1.grunnforordningen.ErRequestGyldigRegel
+import no.nav.medlemskap.regler.v1.validering.ErRequestGyldigRegel
 
 class ReglerForRequestValidering(
     val periode: InputPeriode,
