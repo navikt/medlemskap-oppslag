@@ -1,9 +1,6 @@
 # language: no
 # encoding: UTF-8
 
-# language: no
-# encoding: UTF-8
-
 Egenskap: Mapping av dekning i Medlemskap
 
   Scenariomal: Bruker har dekning fra Medl
