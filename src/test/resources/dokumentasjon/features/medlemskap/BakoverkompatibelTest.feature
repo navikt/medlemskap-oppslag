@@ -1,6 +1,6 @@
 # language: no
 # encoding: UTF-8
-
+@ignored
 Egenskap: Bakoverkompatibel test
 
   Bakgrunn:
@@ -70,6 +70,7 @@ Egenskap: Bakoverkompatibel test
       | 10.10.1975      | 01.08.2020      | yrkeskode | 100              | NIS           | 37.5                         |
 
 
+  @ignored
   Scenario: Bakoverkompatibel test uten ytelse i request
     Når rest kall med følgende parametere
       | Fødselsnummer | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
@@ -77,6 +78,7 @@ Egenskap: Bakoverkompatibel test
 
     Så skal forventet json respons være "forventetRespons"
 
+  @ignored
   Scenario: Kontraktstest
     Når rest kall med følgende parametere
       | Fødselsnummer | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge | Ytelse     |
