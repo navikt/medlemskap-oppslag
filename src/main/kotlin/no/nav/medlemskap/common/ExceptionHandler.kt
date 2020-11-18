@@ -14,9 +14,6 @@ import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
 import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
 import no.nav.medlemskap.common.exceptions.Sikkerhetsbegrensing
-import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.domene.Ytelse.Companion.metricName
-import kotlin.coroutines.coroutineContext
 
 private val logger = KotlinLogging.logger { }
 
@@ -24,19 +21,19 @@ fun StatusPages.Configuration.exceptionHandler() {
 
     exception<GraphqlError> { cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.InternalServerError) {
-            "Feil fra graphql i ${cause.system}: ${cause.errorAsJson()}"
+            "Feil fra graphql i ${cause.system}: ${cause.errorAsJson()} for ${cause.ytelse}"
         }
     }
 
     exception<IdenterIkkeFunnet> { cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.NotFound) {
-            "Fant ingen aktør-id for fødselsnummer"
+            "Fant ingen aktør-id for fødselsnummer for ${cause.ytelse}"
         }
     }
 
     exception<PersonIkkeFunnet> { cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.NotFound) {
-            "Person ikke funnet i ${cause.system}"
+            "Person ikke funnet i ${cause.system} for ${cause.ytelse}"
         }
     }
 
@@ -90,15 +87,14 @@ private suspend inline fun ApplicationCall.logErrorAndRespond(
     status: HttpStatusCode = HttpStatusCode.InternalServerError,
     lazyMessage: () -> String
 ) {
-    val message = lazyMessage() + " Ytelse: " + coroutineContext.ytelse().metricName()
+    val message = lazyMessage()
     logger.error(cause) { message }
     val response = HttpErrorResponse(
         url = this.request.uri,
         cause = cause.toString(),
         message = message,
         code = status,
-        callId = getCorrelationId(),
-        ytelse = coroutineContext.ytelse()
+        callId = getCorrelationId()
     )
     this.respond(status, response)
 }
@@ -108,6 +104,5 @@ internal data class HttpErrorResponse(
     val message: String? = null,
     val cause: String? = null,
     val code: HttpStatusCode = HttpStatusCode.InternalServerError,
-    val callId: CorrelationId? = null,
-    val ytelse: Ytelse? = null
+    val callId: CorrelationId? = null
 )
