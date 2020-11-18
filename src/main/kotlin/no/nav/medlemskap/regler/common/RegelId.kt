@@ -1,7 +1,7 @@
 package no.nav.medlemskap.regler.common
 
 enum class RegelId(val identifikator: String, val avklaring: String, val erRegelflytKonklusjon: Boolean = false) {
-    REGEL_0_1("0.1", "Er request gyldig?"),
+    REGEL_0_1("0.1", "Er input-dato gyldig?"),
     REGEL_1_1("1.1", "Er alle perioder siste 12 mnd avklart (endelig/gyldig)?"),
     REGEL_1_2("1.2", "Er det periode både med og uten medlemskap innenfor 12 mnd?"),
     REGEL_1_3("1.3", "Er det en periode med medlemskap?"),

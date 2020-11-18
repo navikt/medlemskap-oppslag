@@ -4,7 +4,7 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.v1.grunnforordningen.ErRequestGyldigRegel
+import no.nav.medlemskap.regler.v1.validering.InputDatoValideringRegel
 
 class ReglerForRequestValidering(
     val periode: InputPeriode,
@@ -40,7 +40,7 @@ class ReglerForRequestValidering(
 
         private fun lagRegelMap(datagrunnlag: Datagrunnlag): Map<RegelId, Regel> {
             val regelListe = listOf(
-                ErRequestGyldigRegel.fraDatagrunnlag(datagrunnlag)
+                InputDatoValideringRegel.fraDatagrunnlag(datagrunnlag)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()

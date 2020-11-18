@@ -1,7 +1,7 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regelflyt for request-validering
+Egenskap: Regelflyt for validering av input-dag
 
   Bakgrunn: Norsk statsborger bosatt i Norge, med 100 % stilling i Norge
     Gitt følgende bostedsadresser i personhistorikken
@@ -25,26 +25,19 @@ Egenskap: Regelflyt for request-validering
       | 01.01.2018      |                 | 001       | 100              |
 
 
-  Scenariomal: Regelflyt validering av request, gyldig request skal gi Ja på medlemskap
+  Scenario: Regelflyt validering av request, gyldig request skal gi Ja på medlemskap
     Når medlemskap beregnes med følgende parametre
-      | Fra og med dato   | Til og med dato | Har hatt arbeid utenfor Norge |
-      | <Fra og med dato> | 30.01.2021      | Nei                           |
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
 
-    Så skal svaret være "<Medlemskap>"
+    Så skal svaret være "Ja"
     Og skal regel "0.1" ikke finnes i resultatet
 
-    Eksempler:
-      | Fra og med dato | Medlemskap |
-      | 30.01.2020      | Ja         |
 
-  Scenariomal: Regelflyt validering av request, uggyldig request skal gi UAVKLART på medlemskap
+  Scenario: Regelflyt validering av request, uggyldig request skal gi UAVKLART på medlemskap
     Når medlemskap beregnes med følgende parametre
-      | Fra og med dato   | Til og med dato | Har hatt arbeid utenfor Norge |
-      | <Fra og med dato> | 30.01.2021      | Nei                           |
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 01.01.2014      | 30.01.2021      | Nei                           |
 
-    Så skal svaret være "<Medlemskap>"
-    Og skal regel "0.1" gi svaret "<Regel 0.1>"
-
-    Eksempler:
-      | Fra og med dato | Regel 0.1 | Medlemskap |
-      | 01.01.2014      | Nei       | UAVKLART   |
+    Så skal svaret være "UAVKLART"
+    Og skal regel "0.1" gi svaret "Nei"

@@ -46,6 +46,10 @@ abstract class LovvalgRegel(
         return sjekkStatsborgerskap(statsborgerskap, kontrollPeriodeForPersonhistorikk, { s -> Eøsland.erSveitsisk(s) })
     }
 
+    protected fun erBrukerBritiskStatsborger(statsborgerskap: List<Statsborgerskap>): Boolean {
+        return sjekkStatsborgerskap(statsborgerskap, kontrollPeriodeForPersonhistorikk, { s -> Eøsland.erBritisk(s) })
+    }
+
     protected fun erBrukerNorskStatsborger(statsborgerskap: List<Statsborgerskap>): Boolean {
         return sjekkStatsborgerskap(statsborgerskap, kontrollPeriodeForPersonhistorikk, { s -> Eøsland.erNorsk(s) })
     }
@@ -66,5 +70,15 @@ abstract class LovvalgRegel(
         val statsborgerskapUtenomSveits = statsborgerskap.filterNot { Eøsland.erSveitsisk(it.landkode) }
 
         return !sjekkStatsborgerskap(statsborgerskapUtenomSveits, kontrollPeriodeForPersonhistorikk, { s -> Eøsland.erEØSland(s) })
+    }
+
+    protected fun erBrukerBritiskBorgerUtenAnnetEøsStatsborgerskap(statsborgerskap: List<Statsborgerskap>): Boolean {
+        if (!erBrukerBritiskStatsborger(statsborgerskap)) {
+            return false
+        }
+
+        val statsborgerskapUtenomBritisk = statsborgerskap.filterNot { Eøsland.erBritisk(it.landkode) }
+
+        return !sjekkStatsborgerskap(statsborgerskapUtenomBritisk, kontrollPeriodeForPersonhistorikk, { s -> Eøsland.erEØSland(s) })
     }
 }
