@@ -19,6 +19,7 @@ import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
+import no.nav.medlemskap.routes.defaultCreateDatagrunnlag
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.YearMonth
@@ -48,7 +49,7 @@ class LokalWebServer {
                     azureAdOpenIdConfiguration = openIdConfiguration,
                     services = services,
                     port = 7071,
-                    createDatagrunnlag = ::mockCreateDatagrunnlag
+                    createDatagrunnlag = ::defaultCreateDatagrunnlag
                 )
 
                 Runtime.getRuntime().addShutdownHook(

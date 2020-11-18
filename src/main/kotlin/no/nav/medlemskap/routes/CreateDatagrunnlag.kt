@@ -7,6 +7,7 @@ import mu.KotlinLogging
 import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.endretStatsborgerskapSisteÅretCounter
 import no.nav.medlemskap.common.flereStatsborgerskapCounter
+import no.nav.medlemskap.common.ytelse
 import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
@@ -56,6 +57,8 @@ suspend fun defaultCreateDatagrunnlag(
     ytelseCounter(ytelse.metricName()).increment()
 
     registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl, request.periode, request.førsteDagForYtelse, ytelse)
+    val ytelseFraContext = coroutineContext.ytelse()
+    logger.info("*** YTELSE FRA CONTEXT: $ytelseFraContext")
 
     arbeidsforhold.registrerAntallAnsatteHosJuridiskEnhet(ytelse)
 

@@ -20,12 +20,9 @@ import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.Services
-import no.nav.medlemskap.common.JwtConfig
+import no.nav.medlemskap.common.*
 import no.nav.medlemskap.common.JwtConfig.Companion.REALM
-import no.nav.medlemskap.common.MDC_CALL_ID
-import no.nav.medlemskap.common.exceptionHandler
 import no.nav.medlemskap.common.healthcheck.healthRoute
-import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.config.getAadConfig
@@ -96,17 +93,19 @@ createHttpServer(
         )
     }
 
+    val requestContextService = RequestContextService()
+
     if (useAuthentication) {
         routing {
             naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = prometheusRegistry.prometheusRegistry)
-            evalueringRoute(services, configuration, createDatagrunnlag)
+            evalueringRoute(services, configuration, requestContextService, createDatagrunnlag)
             reglerRoute()
             healthRoute("/healthCheck", services.healthService)
         }
     } else {
         routing {
             naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = prometheusRegistry.prometheusRegistry)
-            evalueringTestRoute(services, configuration, createDatagrunnlag)
+            evalueringTestRoute(services, configuration, requestContextService, createDatagrunnlag)
             reglerRoute()
             healthRoute("/healthCheck", services.healthService)
         }

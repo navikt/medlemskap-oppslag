@@ -22,6 +22,8 @@ enum class Ytelse {
 
         fun fromClientId(clientId: String?): Ytelse? = clientIdToYtelseMap[clientId]
 
+        fun toMedlemskapClientId(): String = clientIdToYtelseMap.filter { it.value == LOVME }.keys.first()
+
         fun Ytelse.metricName(): String = this.name.toLowerCase().capitalize()
     }
 }
