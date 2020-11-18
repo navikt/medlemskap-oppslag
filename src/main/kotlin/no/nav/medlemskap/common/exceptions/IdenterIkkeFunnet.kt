@@ -1,3 +1,5 @@
 package no.nav.medlemskap.common.exceptions
 
-class IdenterIkkeFunnet : Exception()
+import no.nav.medlemskap.domene.Ytelse
+
+class IdenterIkkeFunnet(ytelse: Ytelse) : Exception()

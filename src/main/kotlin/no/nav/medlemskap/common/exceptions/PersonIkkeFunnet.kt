@@ -1,12 +1,5 @@
 package no.nav.medlemskap.common.exceptions
 
-class PersonIkkeFunnet : Exception {
-    val system: String
+import no.nav.medlemskap.domene.Ytelse
 
-    constructor(system: String) : super() {
-        this.system = system
-    }
-    constructor(cause: Throwable, system: String) : super(cause) {
-        this.system = system
-    }
-}
+class PersonIkkeFunnet(val system: String, val ytelse: Ytelse) : Exception()

@@ -5,6 +5,7 @@ import io.micrometer.core.instrument.config.MeterFilter
 import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
 import io.micrometer.prometheus.PrometheusRenameFilter
+import mu.KotlinLogging
 import no.nav.medlemskap.common.influx.SensuInfluxConfig
 import no.nav.medlemskap.common.influx.SensuInfluxMeterRegistry
 import no.nav.medlemskap.domene.Ytelse
@@ -14,7 +15,10 @@ import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.common.Årsak
 import java.time.Duration
 import java.util.concurrent.atomic.AtomicInteger
+import kotlin.coroutines.coroutineContext
 import kotlin.math.truncate
+
+private val logger = KotlinLogging.logger { }
 
 fun configurePrometheusMeterRegistry(): PrometheusMeterRegistry {
     val prometheusRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
@@ -66,6 +70,10 @@ fun regelCounter(regel: String, status: String, ytelse: String): Counter = Count
     .tags("regel", regel, "status", status, "ytelse", ytelse)
     .description("counter for ja, nei, uavklart for regel calls")
     .register(Metrics.globalRegistry)
+
+suspend fun testContextCallMetrics() {
+    logger.info("*** FRA METRICS: ${coroutineContext.ytelse()}")
+}
 
 fun ytelseCounter(ytelse: String): Counter = Counter
     .builder("ytelse_total")
