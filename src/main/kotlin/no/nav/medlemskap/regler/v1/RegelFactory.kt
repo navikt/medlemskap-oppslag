@@ -9,7 +9,7 @@ import no.nav.medlemskap.regler.v1.grunnforordningen.ErBrukerEøsBorgerRegel
 import no.nav.medlemskap.regler.v1.lovvalg.*
 import no.nav.medlemskap.regler.v1.medlemskap.*
 import no.nav.medlemskap.regler.v1.registrerteOpplysninger.HarBrukerRegistrerteOpplysningerRegel
-import no.nav.medlemskap.regler.v1.validering.ErRequestGyldigRegel
+import no.nav.medlemskap.regler.v1.validering.InputDatoValideringRegel
 
 class RegelFactory(private val datagrunnlag: Datagrunnlag) {
 
@@ -25,7 +25,7 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
     fun create(regelId: RegelId): Regel {
         return when (regelId) {
             REGEL_OPPLYSNINGER -> HarBrukerRegistrerteOpplysningerRegel.fraDatagrunnlag(datagrunnlag).regel
-            REGEL_0_1 -> ErRequestGyldigRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_0_1 -> InputDatoValideringRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_1_1 -> ErPerioderAvklartRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_1_2 -> PeriodeMedOgUtenMedlemskapRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_1_3 -> PeriodeMedMedlemskapRegel.fraDatagrunnlag(datagrunnlag).regel

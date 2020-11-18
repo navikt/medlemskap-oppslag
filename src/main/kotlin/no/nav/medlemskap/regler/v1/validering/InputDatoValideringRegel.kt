@@ -11,7 +11,7 @@ import no.nav.medlemskap.regler.common.nei
 import no.nav.medlemskap.regler.v1.lovvalg.LovvalgRegel
 import java.time.LocalDate
 
-class ErRequestGyldigRegel(
+class InputDatoValideringRegel(
     ytelse: Ytelse,
     val periode: InputPeriode,
     val førsteDagForYtelse: LocalDate?,
@@ -60,8 +60,8 @@ class ErRequestGyldigRegel(
     }
 
     companion object {
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErRequestGyldigRegel {
-            return ErRequestGyldigRegel(
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): InputDatoValideringRegel {
+            return InputDatoValideringRegel(
                 ytelse = datagrunnlag.ytelse,
                 periode = datagrunnlag.periode,
                 førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
