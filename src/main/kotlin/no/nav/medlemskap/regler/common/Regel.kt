@@ -15,4 +15,24 @@ data class Regel(
         regelId = regelId,
         avklaring = regelId.avklaring
     )
+
+    companion object {
+        fun regelflytUavklartKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(
+            regelId = regelId,
+            ytelse = ytelse,
+            operasjon = { Resultat.uavklart("Regelflyt konkluderer med UAVKLART") }
+        )
+
+        fun regelflytJaKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(
+            regelId = regelId,
+            ytelse = ytelse,
+            operasjon = { Resultat.ja() }
+        )
+
+        fun regelflytNeiKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(
+            regelId = regelId,
+            ytelse = ytelse,
+            operasjon = { Resultat.nei("Regelflyt konkluderer med NEI") }
+        )
+    }
 }

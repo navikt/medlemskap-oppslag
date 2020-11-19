@@ -1,11 +1,11 @@
 package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.regler.common.Resultat.Companion.ja
+import no.nav.medlemskap.regler.common.Regel.Companion.regelflytJaKonklusjon
+import no.nav.medlemskap.regler.common.Regel.Companion.regelflytNeiKonklusjon
+import no.nav.medlemskap.regler.common.Regel.Companion.regelflytUavklartKonklusjon
 import no.nav.medlemskap.regler.common.Resultat.Companion.jaKonklusjon
-import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import no.nav.medlemskap.regler.common.Resultat.Companion.neiKonklusjon
-import no.nav.medlemskap.regler.common.Resultat.Companion.uavklart
 import no.nav.medlemskap.regler.common.Resultat.Companion.uavklartKonklusjon
 import no.nav.medlemskap.regler.common.Resultat.Companion.utenKonklusjon
 
@@ -75,23 +75,6 @@ class Regelflyt(
     }
 
     companion object {
-        fun regelflytUavklartKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(
-            regelId = regelId,
-            ytelse = ytelse,
-            operasjon = { uavklart("Regelflyt konkluderer med UAVKLART") }
-        )
-
-        fun regelflytJaKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(
-            regelId = regelId,
-            ytelse = ytelse,
-            operasjon = { ja() }
-        )
-
-        fun regelflytNeiKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(
-            regelId = regelId,
-            ytelse = ytelse,
-            operasjon = { nei("Regelflyt konkluderer med NEI") }
-        )
 
         fun konklusjonJa(ytelse: Ytelse): Regelflyt {
             return Regelflyt(jaKonklusjon(ytelse), ytelse)
