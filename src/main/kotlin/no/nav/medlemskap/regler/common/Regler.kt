@@ -1,6 +1,10 @@
 package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJaKonklusjon
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytNeiKonklusjon
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytUavklartKonklusjon
 import no.nav.medlemskap.regler.common.Svar.JA
 import no.nav.medlemskap.regler.common.Svar.NEI
 

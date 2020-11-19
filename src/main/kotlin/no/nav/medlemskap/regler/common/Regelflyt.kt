@@ -66,4 +66,48 @@ class Regelflyt(
 
         return konklusjon
     }
+
+    companion object {
+        fun regelflytUavklartKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(
+            regelId = regelId,
+            ytelse = ytelse,
+            operasjon = { uavklart("Regelflyt konkluderer med UAVKLART") }
+        )
+
+        fun regelflytJaKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(
+            regelId = regelId,
+            ytelse = ytelse,
+            operasjon = { ja("Regelflyt konkluderer med JA") }
+        )
+
+        fun regelflytNeiKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(
+            regelId = regelId,
+            ytelse = ytelse,
+            operasjon = { nei("Regelflyt konkluderer med NEI") }
+        )
+
+        fun konklusjonJa(ytelse: Ytelse): Regelflyt {
+            return Regelflyt(jaKonklusjon(ytelse), ytelse)
+        }
+
+        fun konklusjonNei(ytelse: Ytelse): Regelflyt {
+            return Regelflyt(neiKonklusjon(ytelse), ytelse)
+        }
+
+        fun konklusjonUavklart(ytelse: Ytelse, regelId: RegelId? = null): Regelflyt {
+            return Regelflyt(uavklartKonklusjon(ytelse, regelId), ytelse)
+        }
+
+        fun regelflytJa(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
+            return Regelflyt(regelflytJaKonklusjon(ytelse, regelId), ytelse)
+        }
+
+        fun regelflytNei(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
+            return Regelflyt(regelflytNeiKonklusjon(ytelse, regelId), ytelse)
+        }
+
+        fun regelflytUavklart(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
+            return Regelflyt(regelflytUavklartKonklusjon(ytelse, regelId), ytelse)
+        }
+    }
 }

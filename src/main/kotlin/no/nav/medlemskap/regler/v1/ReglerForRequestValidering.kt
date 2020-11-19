@@ -4,6 +4,8 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytUavklart
 import no.nav.medlemskap.regler.v1.validering.InputDatoValideringRegel
 
 class ReglerForRequestValidering(
