@@ -1,9 +1,9 @@
 package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.regler.common.Regel.Companion.regelflytJaKonklusjon
-import no.nav.medlemskap.regler.common.Regel.Companion.regelflytNeiKonklusjon
-import no.nav.medlemskap.regler.common.Regel.Companion.regelflytUavklartKonklusjon
+import no.nav.medlemskap.regler.common.Regel.Companion.regelJaKonklusjon
+import no.nav.medlemskap.regler.common.Regel.Companion.regelNeiKonklusjon
+import no.nav.medlemskap.regler.common.Regel.Companion.regelUavklartKonklusjon
 import no.nav.medlemskap.regler.common.Resultat.Companion.jaKonklusjon
 import no.nav.medlemskap.regler.common.Resultat.Companion.neiKonklusjon
 import no.nav.medlemskap.regler.common.Resultat.Companion.uavklartKonklusjon
@@ -89,15 +89,15 @@ class Regelflyt(
         }
 
         fun regelflytJa(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
-            return Regelflyt(regelflytJaKonklusjon(ytelse, regelId), ytelse)
+            return Regelflyt(regelJaKonklusjon(ytelse, regelId), ytelse)
         }
 
         fun regelflytNei(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
-            return Regelflyt(regelflytNeiKonklusjon(ytelse, regelId), ytelse)
+            return Regelflyt(regelNeiKonklusjon(ytelse, regelId), ytelse)
         }
 
         fun regelflytUavklart(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
-            return Regelflyt(regelflytUavklartKonklusjon(ytelse, regelId), ytelse)
+            return Regelflyt(regelUavklartKonklusjon(ytelse, regelId), ytelse)
         }
     }
 }
