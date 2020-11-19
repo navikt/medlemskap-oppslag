@@ -34,5 +34,23 @@ data class Regel(
             ytelse = ytelse,
             operasjon = { Resultat.nei("Regelflyt konkluderer med NEI") }
         )
+
+        fun uavklartKonklusjon(ytelse: Ytelse, regelId: RegelId? = null) = Regel(
+            regelId = RegelId.REGEL_MEDLEM_KONKLUSJON,
+            ytelse = ytelse,
+            operasjon = { Resultat.uavklart("Kan ikke konkludere med medlemskap", regelId) }
+        )
+
+        fun jaKonklusjon(ytelse: Ytelse) = Regel(
+            regelId = RegelId.REGEL_MEDLEM_KONKLUSJON,
+            ytelse = ytelse,
+            operasjon = { Resultat.ja("Bruker er medlem") }
+        )
+
+        fun neiKonklusjon(ytelse: Ytelse) = Regel(
+            regelId = RegelId.REGEL_MEDLEM_KONKLUSJON,
+            ytelse = ytelse,
+            operasjon = { Resultat.nei("Bruker er ikke medlem") }
+        )
     }
 }

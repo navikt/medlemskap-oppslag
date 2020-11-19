@@ -1,7 +1,5 @@
 package no.nav.medlemskap.regler.common
 
-import no.nav.medlemskap.domene.Ytelse
-
 enum class Svar {
     JA, NEI, UAVKLART
 }
@@ -131,24 +129,6 @@ data class Resultat(
         )
 
         fun uavklart() = Resultat(svar = Svar.UAVKLART)
-
-        fun uavklartKonklusjon(ytelse: Ytelse, regelId: RegelId? = null) = Regel(
-            regelId = RegelId.REGEL_MEDLEM_KONKLUSJON,
-            ytelse = ytelse,
-            operasjon = { uavklart("Kan ikke konkludere med medlemskap", regelId) }
-        )
-
-        fun jaKonklusjon(ytelse: Ytelse) = Regel(
-            regelId = RegelId.REGEL_MEDLEM_KONKLUSJON,
-            ytelse = ytelse,
-            operasjon = { ja("Bruker er medlem") }
-        )
-
-        fun neiKonklusjon(ytelse: Ytelse) = Regel(
-            regelId = RegelId.REGEL_MEDLEM_KONKLUSJON,
-            ytelse = ytelse,
-            operasjon = { nei("Bruker er ikke medlem") }
-        )
 
         fun List<Resultat>.utenKonklusjon(): List<Resultat> {
             return this.filterNot { it.erKonklusjon() }

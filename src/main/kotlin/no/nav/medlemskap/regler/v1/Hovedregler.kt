@@ -2,12 +2,12 @@ package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.regler.common.Regel.Companion.jaKonklusjon
+import no.nav.medlemskap.regler.common.Regel.Companion.neiKonklusjon
+import no.nav.medlemskap.regler.common.Regel.Companion.uavklartKonklusjon
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Regler
 import no.nav.medlemskap.regler.common.Resultat
-import no.nav.medlemskap.regler.common.Resultat.Companion.jaKonklusjon
-import no.nav.medlemskap.regler.common.Resultat.Companion.neiKonklusjon
-import no.nav.medlemskap.regler.common.Resultat.Companion.uavklartKonklusjon
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.common.Svar.JA
 import no.nav.medlemskap.regler.common.Svar.NEI

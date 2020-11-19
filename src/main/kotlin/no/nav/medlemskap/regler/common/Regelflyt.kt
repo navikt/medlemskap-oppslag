@@ -1,12 +1,12 @@
 package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.regler.common.Regel.Companion.jaKonklusjon
+import no.nav.medlemskap.regler.common.Regel.Companion.neiKonklusjon
 import no.nav.medlemskap.regler.common.Regel.Companion.regelJaKonklusjon
 import no.nav.medlemskap.regler.common.Regel.Companion.regelNeiKonklusjon
 import no.nav.medlemskap.regler.common.Regel.Companion.regelUavklartKonklusjon
-import no.nav.medlemskap.regler.common.Resultat.Companion.jaKonklusjon
-import no.nav.medlemskap.regler.common.Resultat.Companion.neiKonklusjon
-import no.nav.medlemskap.regler.common.Resultat.Companion.uavklartKonklusjon
+import no.nav.medlemskap.regler.common.Regel.Companion.uavklartKonklusjon
 import no.nav.medlemskap.regler.common.Resultat.Companion.utenKonklusjon
 
 class Regelflyt(
