@@ -1,6 +1,6 @@
 package no.nav.medlemskap.regler.common
 
-enum class RegelId(val identifikator: String, val avklaring: String, val erRegelflytKonklusjon: Boolean = false) {
+enum class RegelId(val identifikator: String, val avklaring: String, val begrunnelse: String = "", val erRegelflytKonklusjon: Boolean = false) {
     REGEL_1_1("1.1", "Er alle perioder siste 12 mnd avklart (endelig/gyldig)?"),
     REGEL_1_2("1.2", "Er det periode både med og uten medlemskap innenfor 12 mnd?"),
     REGEL_1_3("1.3", "Er det en periode med medlemskap?"),
@@ -9,7 +9,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val erRegel
     REGEL_1_4("1.4", "Er hele perioden med medlemskap innenfor 12-måneders perioden?"),
     REGEL_1_5("1.5", "Er brukers arbeidsforhold uendret?"),
     REGEL_1_6("1.6", "Er brukers dekning uavklart?"),
-    REGEL_1_7("1.7", "Har bruker et medlemskap som omfatter ytelse? (Dekning i MEDL)"),
+    REGEL_1_7("1.7", "Har bruker et medlemskap som omfatter ytelse? (Dekning i MEDL)", "Bruker har ikke dekning"),
     REGEL_2("2", "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?"),
     REGEL_3("3", "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?"),
     REGEL_4("4", "Er foretaket registrert i foretaksregisteret?"),
@@ -47,15 +47,15 @@ enum class RegelId(val identifikator: String, val avklaring: String, val erRegel
     REGEL_B("OPPLYSNINGER-GOSYS", "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?"),
     REGEL_C("OPPLYSNINGER-JOARK", "Finnes det dokumenter i JOARK på medlemskapsområdet?"),
     REGEL_MEDLEM_KONKLUSJON("LOVME", "Er bruker medlem?"),
-    REGEL_FLYT_KONKLUSJON("RFK", "Svar på regelflyt", true),
-    REGEL_ARBEIDSFORHOLD("ARBEIDSFORHOLD", "Er arbeidsforhold avklart?", true),
-    REGEL_EØS_BOSATT("EØS-BOSATT", "Er EØS-borger bosatt i Norge?", true),
-    REGEL_ANDRE_BORGERE("ANDRE BORGERE", "Er regler for andre borgere avklart?", true),
-    REGEL_NORSK("NORSK", "Er regler for norske borgere avklart?", true),
-    REGEL_MEDL("MEDL", "Har bruker avklarte opplysninger i MEDL?", true),
-    REGEL_STATSBORGERSKAP("STATSBORGERSKAP", "Er statsborgerskap avklart?", true),
-    REGEL_BOSATT("BOSATT", "Er det avklart om bruker bor i Norge?", true),
-    REGEL_DOED("DOED", "Er det avklart om brukeren er død eller ikke?", true)
+    REGEL_FLYT_KONKLUSJON("RFK", "Svar på regelflyt", erRegelflytKonklusjon = true),
+    REGEL_ARBEIDSFORHOLD("ARBEIDSFORHOLD", "Er arbeidsforhold avklart?", erRegelflytKonklusjon = true),
+    REGEL_EØS_BOSATT("EØS-BOSATT", "Er EØS-borger bosatt i Norge?", erRegelflytKonklusjon = true),
+    REGEL_ANDRE_BORGERE("ANDRE BORGERE", "Er regler for andre borgere avklart?", erRegelflytKonklusjon = true),
+    REGEL_NORSK("NORSK", "Er regler for norske borgere avklart?", erRegelflytKonklusjon = true),
+    REGEL_MEDL("MEDL", "Har bruker avklarte opplysninger i MEDL?", erRegelflytKonklusjon = true),
+    REGEL_STATSBORGERSKAP("STATSBORGERSKAP", "Er statsborgerskap avklart?", erRegelflytKonklusjon = true),
+    REGEL_BOSATT("BOSATT", "Er det avklart om bruker bor i Norge?", erRegelflytKonklusjon = true),
+    REGEL_DOED("DOED", "Er det avklart om brukeren er død eller ikke?", erRegelflytKonklusjon = true)
     ;
 
     companion object {

@@ -26,7 +26,7 @@ Forventer et AzureAD-token utstedt til servicebruker, satt Authorization-header 
 Hvordan hente ut et AzureAD-token for servicebruker:
 `curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d 'client_id=<client_id>&scope=api://<client_id>/.default&client_secret=<client_secret>&grant_type=client_credentials' 'https://login.microsoftonline.com/966ac572-f5b7-4bbe-aa88-c76419c0f851/oauth2/v2.0/token'`
 
-Client ID og passord hentes fra Vault: `azuread / dev / creds / servicebruker`
+Client ID og passord hentes fra Vault: `azuread / dev / creds / medlemskap-oppslag`
 
 ## Headere
 I tillegg til Authorization-headeren kreves det at Content-Type er satt til application/json

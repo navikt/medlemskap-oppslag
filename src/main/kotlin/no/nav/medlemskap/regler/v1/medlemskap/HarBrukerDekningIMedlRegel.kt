@@ -25,7 +25,7 @@ class HarBrukerDekningIMedlRegel(
 
         return when {
             Dekning.from(dekning)!!.gjelderForYtelse(ytelse) -> ja("Bruker har dekning", dekning)
-            else -> nei("Bruker har ikke dekning", dekning)
+            else -> nei(RegelId.REGEL_1_7.begrunnelse, dekning)
         }
     }
 
