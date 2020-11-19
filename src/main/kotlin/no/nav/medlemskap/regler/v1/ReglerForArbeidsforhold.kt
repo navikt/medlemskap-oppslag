@@ -4,6 +4,8 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.*
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytUavklart
 import no.nav.medlemskap.regler.v1.arbeidsforhold.*
 
 class ReglerForArbeidsforhold(
@@ -12,21 +14,17 @@ class ReglerForArbeidsforhold(
     overstyrteRegler: Map<RegelId, Svar>
 ) : Regler(ytelse, regelMap, overstyrteRegler) {
 
-    override fun kjørRegelflyter(): List<Resultat> {
-        return listOf(kjørUavhengigeRegelflyterMedEttResultat(REGEL_ARBEIDSFORHOLD))
-    }
-
     override fun hentRegelflyter(): List<Regelflyt> {
         val jobberBrukerPaaNorskSkipFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_7_1),
-            hvisJa = regelflytJa(ytelse),
-            hvisNei = regelflytUavklart(ytelse)
+            hvisJa = regelflytJa(ytelse, REGEL_ARBEIDSFORHOLD),
+            hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD)
         )
 
         val erBrukerPilotEllerKabinansattFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_8),
-            hvisJa = regelflytUavklart(ytelse),
-            hvisNei = regelflytJa(ytelse)
+            hvisJa = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD),
+            hvisNei = regelflytJa(ytelse, REGEL_ARBEIDSFORHOLD)
         )
 
         val erArbeidsforholdetMaritimtFlyt = lagRegelflyt(
@@ -38,31 +36,31 @@ class ReglerForArbeidsforhold(
         val erForetakAktivtFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_6),
             hvisJa = erArbeidsforholdetMaritimtFlyt,
-            hvisNei = regelflytUavklart(ytelse)
+            hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD)
         )
 
         val harForetakMerEnn5AnsatteFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_5),
             hvisJa = erForetakAktivtFlyt,
-            hvisNei = regelflytUavklart(ytelse)
+            hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD)
         )
 
         val erArbeidsgiverOffentligSektor = lagRegelflyt(
             regel = hentRegel(REGEL_14),
-            hvisJa = regelflytJa(ytelse),
+            hvisJa = regelflytJa(ytelse, REGEL_ARBEIDSFORHOLD),
             hvisNei = harForetakMerEnn5AnsatteFlyt
         )
 
         val erArbeidsgiverOrganisasjonFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_4),
             hvisJa = erArbeidsgiverOffentligSektor,
-            hvisNei = regelflytUavklart(ytelse)
+            hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD)
         )
 
         val harBrukerSammenhengendeArbeidsforholdSiste12MndFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_3),
             hvisJa = erArbeidsgiverOrganisasjonFlyt,
-            hvisNei = regelflytUavklart(ytelse)
+            hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD)
         )
 
         return listOf(harBrukerSammenhengendeArbeidsforholdSiste12MndFlyt)

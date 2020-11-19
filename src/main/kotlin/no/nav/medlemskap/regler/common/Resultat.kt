@@ -93,5 +93,45 @@ data class Resultat(
 
             return emptyList()
         }
+
+        fun ja(begrunnelse: String) = Resultat(
+            begrunnelse = begrunnelse,
+            svar = Svar.JA
+        )
+
+        fun ja() = Resultat(svar = Svar.JA)
+
+        fun ja(begrunnelse: String, dekning: String) = Resultat(
+            begrunnelse = begrunnelse,
+            svar = Svar.JA,
+            harDekning = Svar.JA,
+            dekning = dekning
+        )
+
+        fun nei(begrunnelse: String, dekning: String) = Resultat(
+            begrunnelse = begrunnelse,
+            svar = Svar.NEI,
+            harDekning = Svar.NEI,
+            dekning = dekning
+        )
+
+        fun nei(begrunnelse: String) = Resultat(
+            begrunnelse = begrunnelse,
+            svar = Svar.NEI
+        )
+
+        fun nei() = Resultat(svar = Svar.NEI)
+
+        fun uavklart(begrunnelse: String, regelId: RegelId? = null) = Resultat(
+            begrunnelse = begrunnelse,
+            svar = Svar.UAVKLART,
+            delresultat = if (regelId == null) emptyList() else listOf(Resultat(regelId = regelId, svar = Svar.UAVKLART))
+        )
+
+        fun uavklart() = Resultat(svar = Svar.UAVKLART)
+
+        fun List<Resultat>.utenKonklusjon(): List<Resultat> {
+            return this.filterNot { it.erKonklusjon() }
+        }
     }
 }
