@@ -84,7 +84,7 @@ class Regelflyt(
         fun regelflytJaKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(
             regelId = regelId,
             ytelse = ytelse,
-            operasjon = { ja("Regelflyt konkluderer med JA") }
+            operasjon = { ja() }
         )
 
         fun regelflytNeiKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(

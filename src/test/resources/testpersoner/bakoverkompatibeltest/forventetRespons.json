@@ -240,7 +240,7 @@
     "delresultat" : [{
       "regelId": "REGEL_DOED",
       "avklaring" : "Er det avklart om brukeren er død eller ikke?",
-      "begrunnelse" : "Regelflyt konkluderer med JA",
+      "begrunnelse" : "",
       "svar": "JA",
       "harDekning": null,
       "dekning": "",
@@ -403,7 +403,7 @@
       }, {
         "regelId" : "REGEL_BOSATT",
         "avklaring" : "Er det avklart om bruker bor i Norge?",
-        "begrunnelse" : "Regelflyt konkluderer med JA",
+        "begrunnelse" : "",
         "svar" : "JA",
         "harDekning" : null,
         "dekning" : "",
@@ -421,7 +421,7 @@
       }, {
         "regelId" : "REGEL_STATSBORGERSKAP",
         "avklaring" : "Er statsborgerskap avklart?",
-        "begrunnelse" : "Regelflyt konkluderer med JA",
+        "begrunnelse" : "",
         "svar" : "JA",
         "harDekning" : null,
         "dekning" : "",
@@ -448,7 +448,7 @@
       }, {
         "regelId" : "REGEL_NORSK",
         "avklaring" : "Er regler for norske borgere avklart?",
-        "begrunnelse" : "Regelflyt konkluderer med JA",
+        "begrunnelse" : "",
         "svar" : "JA",
         "harDekning" : null,
         "dekning" : "",
