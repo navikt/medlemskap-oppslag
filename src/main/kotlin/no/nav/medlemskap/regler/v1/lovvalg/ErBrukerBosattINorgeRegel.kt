@@ -6,8 +6,8 @@ import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Funksjoner.erTom
 import no.nav.medlemskap.regler.common.RegelId.REGEL_10
 import no.nav.medlemskap.regler.common.Resultat
-import no.nav.medlemskap.regler.common.ja
-import no.nav.medlemskap.regler.common.nei
+import no.nav.medlemskap.regler.common.Resultat.Companion.ja
+import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserForKontrollPeriode
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresserForKontrollPeriode
 import java.time.LocalDate

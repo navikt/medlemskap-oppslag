@@ -5,6 +5,9 @@ import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJaKonklusjon
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytNeiKonklusjon
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytUavklartKonklusjon
+import no.nav.medlemskap.regler.common.Resultat.Companion.ja
+import no.nav.medlemskap.regler.common.Resultat.Companion.nei
+import no.nav.medlemskap.regler.common.Resultat.Companion.uavklart
 import no.nav.medlemskap.regler.common.Svar.JA
 import no.nav.medlemskap.regler.common.Svar.NEI
 
