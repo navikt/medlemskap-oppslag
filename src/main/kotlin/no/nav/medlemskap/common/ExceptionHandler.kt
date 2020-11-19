@@ -21,19 +21,19 @@ fun StatusPages.Configuration.exceptionHandler() {
 
     exception<GraphqlError> { cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.InternalServerError) {
-            "Feil fra graphql i ${cause.system}: ${cause.errorAsJson()} for ${cause.ytelse}"
+            "Feil fra graphql i ${cause.system}: ${cause.errorAsJson()} for konsument ${cause.ytelse}"
         }
     }
 
     exception<IdenterIkkeFunnet> { cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.NotFound) {
-            "Fant ingen aktør-id for fødselsnummer for ${cause.ytelse}"
+            "Fant ingen aktør-id for fødselsnummer for konsument ${cause.ytelse}"
         }
     }
 
     exception<PersonIkkeFunnet> { cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.NotFound) {
-            "Person ikke funnet i ${cause.system} for ${cause.ytelse}"
+            "Person ikke funnet i ${cause.system} for konsument ${cause.ytelse}"
         }
     }
 

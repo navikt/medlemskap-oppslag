@@ -6,7 +6,7 @@ import no.nav.medlemskap.domene.Arbeidsforhold
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.domene.Ytelse.Companion.metricName
+import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.ja
@@ -35,7 +35,7 @@ class ErArbeidsgiverOrganisasjonRegel(
     }
 
     private fun registrerArbeidsgiverMetrics() {
-        arbeidsforhold.forEach { it.arbeidsgiver.juridiskeEnheter?.forEach { p -> enhetstypeForJuridiskEnhet(p?.enhetstype, ytelse.metricName()).increment() } }
+        arbeidsforhold.forEach { it.arbeidsgiver.juridiskeEnheter?.forEach { p -> enhetstypeForJuridiskEnhet(p?.enhetstype, ytelse.name()).increment() } }
     }
 
     companion object {

@@ -10,7 +10,7 @@ import no.nav.medlemskap.common.flereStatsborgerskapCounter
 import no.nav.medlemskap.common.ytelse
 import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.domene.Ytelse.Companion.metricName
+import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
@@ -54,7 +54,7 @@ suspend fun defaultCreateDatagrunnlag(
     val oppgaver = gosysOppgaver.await()
     val ytelse: Ytelse = finnYtelse(request.ytelse, clientId)
 
-    ytelseCounter(ytelse.metricName()).increment()
+    ytelseCounter(ytelse.name()).increment()
 
     registrerStatsborgerskapDataForGrafana(personHistorikkFraPdl, request.periode, request.førsteDagForYtelse, ytelse)
     val ytelseFraContext = coroutineContext.ytelse()

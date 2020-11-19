@@ -22,7 +22,7 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Request
 import no.nav.medlemskap.domene.Response
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.domene.Ytelse.Companion.metricName
+import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
 import java.time.LocalDateTime
@@ -151,7 +151,7 @@ private fun loggResponse(fnr: String, response: Response) {
     )
 
     if (årsaker.isNotEmpty()) {
-        uavklartPåRegel(årsaker.first(), response.datagrunnlag.ytelse.metricName()).increment()
+        uavklartPåRegel(årsaker.first(), response.datagrunnlag.ytelse.name()).increment()
         secureLogger.info(append("årsaker", årsaker), "Årsaker for bruker {}: {}", fnr, årsakerSomRegelIdStr)
     }
 }
