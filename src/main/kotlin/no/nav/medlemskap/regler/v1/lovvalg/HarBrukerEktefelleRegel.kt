@@ -24,10 +24,10 @@ class HarBrukerEktefelleRegel(
         if (ektefelle != null) {
             return when {
                 !ektefelle.ident.isEmpty() -> ja()
-                else -> nei("Bruker har ikke ektefelle i PDL")
+                else -> nei(RegelId.REGEL_11_2.begrunnelse)
             }
         }
-        return nei("Bruker har ikke ektefelle i PDL")
+        return nei(RegelId.REGEL_11_2.begrunnelse)
     }
 
     companion object {

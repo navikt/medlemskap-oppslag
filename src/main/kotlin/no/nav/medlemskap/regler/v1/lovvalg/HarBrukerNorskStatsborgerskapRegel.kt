@@ -22,7 +22,7 @@ class HarBrukerNorskStatsborgerskapRegel(
 
         return when {
             erBrukerNorskStatsborger(statsborgerskap) -> ja()
-            else -> nei("Brukeren er ikke norsk statsborger")
+            else -> nei(RegelId.REGEL_11.begrunnelse)
         }
     }
 

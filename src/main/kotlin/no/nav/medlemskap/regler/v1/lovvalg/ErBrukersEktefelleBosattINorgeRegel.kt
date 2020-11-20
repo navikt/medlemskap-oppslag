@@ -31,11 +31,11 @@ class ErBrukersEktefelleBosattINorgeRegel(
 
             return when {
                 erPersonBosattINorge(bostedsadresserTilEktefelle, kontaktadresseTilEktefelle, oppholdsadresseTilEktefelle) -> ja()
-                else -> nei("Ikke alle adressene til ektefelle er norske, eller ektefelle mangler bostedsadresse")
+                else -> nei(RegelId.REGEL_11_3_1.begrunnelse)
             }
         }
         // Denne vil ikke skje
-        return nei("Ikke alle adressene til ektefelle er norske, eller ektefelle mangler bostedsadresse")
+        return nei(RegelId.REGEL_11_3_1.begrunnelse)
     }
 
     companion object {

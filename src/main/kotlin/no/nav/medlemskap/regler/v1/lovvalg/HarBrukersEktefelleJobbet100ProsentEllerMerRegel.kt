@@ -23,7 +23,7 @@ class HarBrukersEktefelleJobbet100ProsentEllerMerRegel(
 
         return when {
             arbeidsforholdEktefelle.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(100.0, kontrollPeriodeForArbeidsforhold, ytelse) -> ja()
-            else -> nei("Brukers ektefelle har ikke jobbet 100% eller mer i løpet av periode.")
+            else -> nei(RegelId.REGEL_11_6_1.begrunnelse)
         }
     }
 

@@ -23,7 +23,7 @@ class ErBrukerDoedRegel(
         val erBrukerDoedEtterInputperiode = doedsfall.erBrukerDoedEtterPeriode(periode)
 
         if (erBrukerDoed && erBrukerDoedEtterInputperiode) {
-            return ja("Bruker har dødsdato etter inputperiode, men det påvirker ikke medlemskapet")
+            return ja(RegelId.REGEL_13.begrunnelse)
         } else if (erBrukerDoed && !erBrukerDoedEtterInputperiode) {
             throw BadRequestException("Bruker er død, men i eller før inputperiode.")
         }
