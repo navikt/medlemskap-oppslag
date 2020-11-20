@@ -1,6 +1,6 @@
 package no.nav.medlemskap.regler.v1.lovvalg
 
-import io.ktor.features.*
+import no.nav.medlemskap.common.exceptions.UgyldigRequestException
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
@@ -25,7 +25,7 @@ class ErBrukerDoedRegel(
         if (erBrukerDoed && erBrukerDoedEtterInputperiode) {
             return ja("Bruker har dødsdato etter inputperiode, men det påvirker ikke medlemskapet")
         } else if (erBrukerDoed && !erBrukerDoedEtterInputperiode) {
-            throw BadRequestException("Bruker er død, men i eller før inputperiode.")
+            throw UgyldigRequestException("Bruker er død, men i eller før inputperiode.", ytelse)
         }
         return nei()
     }

@@ -15,6 +15,7 @@ import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.RequestContextService
 import no.nav.medlemskap.common.apiCounter
 import no.nav.medlemskap.common.exceptions.KonsumentIkkeFunnet
+import no.nav.medlemskap.common.exceptions.UgyldigRequestException
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.common.uavklartPåRegel
 import no.nav.medlemskap.config.Configuration
@@ -47,7 +48,7 @@ fun Routing.evalueringRoute(
             val azp = callerPrincipal.payload.getClaim("azp").asString()
             secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
 
-            val request = validerRequest(call.receive())
+            val request = validerRequest(call.receive(), azp)
             val callId = call.callId ?: UUID.randomUUID().toString()
 
             val datagrunnlag = withContext(
@@ -87,7 +88,7 @@ fun Routing.evalueringTestRoute(
     logger.info("autentiserer IKKE kallet")
     post("/") {
         apiCounter().increment()
-        val request = validerRequest(call.receive())
+        val request = validerRequest(call.receive(), Ytelse.toMedlemskapClientId())
         val callId = call.callId ?: UUID.randomUUID().toString()
 
         val datagrunnlag = withContext(
@@ -156,13 +157,15 @@ private fun loggResponse(fnr: String, response: Response) {
     }
 }
 
-private fun validerRequest(request: Request): Request {
+private fun validerRequest(request: Request, azp: String): Request {
+    val ytelse = finnYtelse(request.ytelse, azp)
+
     if (request.periode.tom.isBefore(request.periode.fom)) {
-        throw BadRequestException("Periode tom kan ikke være før periode fom")
+        throw UgyldigRequestException("Periode tom kan ikke være før periode fom", ytelse)
     }
 
     if (!gyldigFnr(request.fnr)) {
-        throw BadRequestException("Ugyldig fødselsnummer")
+        throw UgyldigRequestException("Ugyldig fødselsnummer", ytelse)
     }
 
     return request

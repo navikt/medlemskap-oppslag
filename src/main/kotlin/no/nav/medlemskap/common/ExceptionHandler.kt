@@ -10,10 +10,7 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import mu.KotlinLogging
-import no.nav.medlemskap.common.exceptions.GraphqlError
-import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
-import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
-import no.nav.medlemskap.common.exceptions.Sikkerhetsbegrensing
+import no.nav.medlemskap.common.exceptions.*
 
 private val logger = KotlinLogging.logger { }
 
@@ -53,6 +50,12 @@ fun StatusPages.Configuration.exceptionHandler() {
         call.logErrorAndRespond(cause, HttpStatusCode.InternalServerError) {
             val url = cause.response.call.request.url
             "Kall mot $url feilet"
+        }
+    }
+
+    exception<UgyldigRequestException> { cause ->
+        call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
+            "${cause.message!!} for konsument ${cause.ytelse}"
         }
     }
 
