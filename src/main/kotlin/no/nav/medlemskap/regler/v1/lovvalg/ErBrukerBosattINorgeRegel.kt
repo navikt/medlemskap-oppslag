@@ -6,8 +6,8 @@ import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Funksjoner.erTom
 import no.nav.medlemskap.regler.common.RegelId.REGEL_10
 import no.nav.medlemskap.regler.common.Resultat
-import no.nav.medlemskap.regler.common.ja
-import no.nav.medlemskap.regler.common.nei
+import no.nav.medlemskap.regler.common.Resultat.Companion.ja
+import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.adresserForKontrollPeriode
 import no.nav.medlemskap.regler.funksjoner.AdresseFunksjoner.landkodeTilAdresserForKontrollPeriode
 import java.time.LocalDate
@@ -31,7 +31,7 @@ class ErBrukerBosattINorgeRegel(
             bostedsadresser.erIkkeTom() && landkoderBostedsadresse alleEr "NOR" &&
                 (kontaktadresserLandkoder.all { Eøsland.erNorsk(it) } || kontaktadresserLandkoder.erTom())
                 && (oppholsadresserLandkoder.all { Eøsland.erNorsk(it) } || oppholsadresserLandkoder.erTom()) -> ja()
-            else -> nei("Ikke alle adressene til bruker er norske, eller bruker mangler bostedsadresse")
+            else -> nei(REGEL_10.begrunnelse)
         }
     }
 

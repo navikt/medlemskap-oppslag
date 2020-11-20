@@ -5,8 +5,8 @@ import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
-import no.nav.medlemskap.regler.common.ja
-import no.nav.medlemskap.regler.common.nei
+import no.nav.medlemskap.regler.common.Resultat.Companion.ja
+import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import java.time.LocalDate
 
 class HarBrukerJobbetUtenforNorgeRegel(
@@ -19,7 +19,7 @@ class HarBrukerJobbetUtenforNorgeRegel(
 
     override fun operasjon(): Resultat {
         return when {
-            arbeidUtenforNorge -> ja()
+            arbeidUtenforNorge -> ja(RegelId.REGEL_9.begrunnelse)
             else -> nei()
         }
     }

@@ -4,8 +4,8 @@ import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Funksjoner.kunInneholder
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
-import no.nav.medlemskap.regler.common.ja
-import no.nav.medlemskap.regler.common.nei
+import no.nav.medlemskap.regler.common.Resultat.Companion.ja
+import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.sisteArbeidsforholdSkipsregister
 import java.time.LocalDate
 
@@ -20,7 +20,7 @@ class JobberBrukerPaaNorskSkipRegel(
     override fun operasjon(): Resultat {
         return when {
             arbeidsforhold sisteArbeidsforholdSkipsregister kontrollPeriodeForArbeidsforhold kunInneholder Skipsregister.NOR.name -> ja()
-            else -> nei()
+            else -> nei(RegelId.REGEL_7_1.begrunnelse)
         }
     }
 

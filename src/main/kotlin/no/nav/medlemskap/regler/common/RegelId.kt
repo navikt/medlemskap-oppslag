@@ -1,25 +1,26 @@
 package no.nav.medlemskap.regler.common
 
 enum class RegelId(val identifikator: String, val avklaring: String, val begrunnelse: String = "", val erRegelflytKonklusjon: Boolean = false) {
-    REGEL_1_1("1.1", "Er alle perioder siste 12 mnd avklart (endelig/gyldig)?"),
-    REGEL_1_2("1.2", "Er det periode både med og uten medlemskap innenfor 12 mnd?"),
+    REGEL_0_1("0.1", "Er input-dato gyldig?", "Ugyldig input dato"),
+    REGEL_1_1("1.1", "Er alle perioder siste 12 mnd avklart (endelig/gyldig)?", "Ikke alle perioder siste 12 mnd er avklart"),
+    REGEL_1_2("1.2", "Er det periode både med og uten medlemskap innenfor 12 mnd?", "Fant periode både med og uten medlemskap"),
     REGEL_1_3("1.3", "Er det en periode med medlemskap?"),
-    REGEL_1_3_1("1.3.1", "Er hele perioden uten medlemskap innenfor 12-måneders perioden?"),
-    REGEL_1_3_2("1.3.2", "Er bruker uten medlemskap sin situasjon uendret?"),
-    REGEL_1_4("1.4", "Er hele perioden med medlemskap innenfor 12-måneders perioden?"),
-    REGEL_1_5("1.5", "Er brukers arbeidsforhold uendret?"),
-    REGEL_1_6("1.6", "Er brukers dekning uavklart?"),
+    REGEL_1_3_1("1.3.1", "Er hele perioden uten medlemskap innenfor 12-måneders perioden?", "Deler av 12-måneders perioden har medlemskap"),
+    REGEL_1_3_2("1.3.2", "Er bruker uten medlemskap sin situasjon uendret?", "Brukers arbeidsforhold er uendret"),
+    REGEL_1_4("1.4", "Er hele perioden med medlemskap innenfor 12-måneders perioden?", "Det finnes hull i 12-måneders perioden for medlemskap"),
+    REGEL_1_5("1.5", "Er brukers arbeidsforhold uendret?", "Brukers arbeidsforhold er uendret"),
+    REGEL_1_6("1.6", "Er brukers dekning uavklart?", "Kan ikke avklare dekning til bruker"),
     REGEL_1_7("1.7", "Har bruker et medlemskap som omfatter ytelse? (Dekning i MEDL)", "Bruker har ikke dekning"),
-    REGEL_2("2", "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?"),
-    REGEL_3("3", "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?"),
-    REGEL_4("4", "Er foretaket registrert i foretaksregisteret?"),
-    REGEL_5("5", "Har arbeidsgiver sin hovedaktivitet i Norge?"),
-    REGEL_6("6", "Er foretaket aktivt?"),
+    REGEL_2("2", "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?", "Brukeren er ikke statsborger i et EØS-land."),
+    REGEL_3("3", "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?", "Arbeidstaker har ikke sammenhengende arbeidsforhold siste 12 mnd"),
+    REGEL_4("4", "Er foretaket registrert i foretaksregisteret?", "Ikke alle arbeidsgivere er av typen organisasjon"),
+    REGEL_5("5", "Har arbeidsgiver sin hovedaktivitet i Norge?", "Ikke alle arbeidsgivere har 6 ansatte eller flere"),
+    REGEL_6("6", "Er foretaket aktivt?", "Arbeidstaker har hatt arbeidsforhold til arbeidsgiver som har konkurs-status satt"),
     REGEL_7("7", "Er arbeidsforholdet maritimt?"),
-    REGEL_7_1("7.1", "Er bruker ansatt på et NOR-skip?"),
-    REGEL_8("8", "Er bruker pilot eller kabinansatt?"),
-    REGEL_9("9", "Har bruker utført arbeid utenfor Norge?"),
-    REGEL_10("10", "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?"),
+    REGEL_7_1("7.1", "Er bruker ansatt på et NOR-skip?", "Bruker har maritimt arbeidsforhold, men ikke på et NOR-skip"),
+    REGEL_8("8", "Er bruker pilot eller kabinansatt?", "Bruker er pilot eller kabinansatt"),
+    REGEL_9("9", "Har bruker utført arbeid utenfor Norge?", "Bruker har utført arbeid utenfor Norge"),
+    REGEL_10("10", "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?", "Ikke alle adressene til bruker er norske, eller bruker mangler bostedsadresse"),
     REGEL_11("11", "Er bruker norsk statsborger?"),
     REGEL_11_2("11.2", "Har bruker ektefelle i PDL?"),
     REGEL_11_2_1("11.2.1", "Har bruker barn i PDL?"),
@@ -55,12 +56,13 @@ enum class RegelId(val identifikator: String, val avklaring: String, val begrunn
     REGEL_MEDL("MEDL", "Har bruker avklarte opplysninger i MEDL?", erRegelflytKonklusjon = true),
     REGEL_STATSBORGERSKAP("STATSBORGERSKAP", "Er statsborgerskap avklart?", erRegelflytKonklusjon = true),
     REGEL_BOSATT("BOSATT", "Er det avklart om bruker bor i Norge?", erRegelflytKonklusjon = true),
-    REGEL_DOED("DOED", "Er det avklart om brukeren er død eller ikke?", erRegelflytKonklusjon = true)
+    REGEL_DOED("DOED", "Er det avklart om brukeren er død eller ikke?", erRegelflytKonklusjon = true),
+    REGEL_REQUEST_VALIDERING("Validering", "Er input-dataene gyldige?", erRegelflytKonklusjon = true)
     ;
 
     companion object {
         fun fraRegelIdString(regelIdStr: String): RegelId? {
-            return values().first { it.identifikator == regelIdStr }
+            return values().first { it.identifikator == regelIdStr || it.name == regelIdStr }
         }
     }
 }

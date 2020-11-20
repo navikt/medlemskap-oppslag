@@ -3,7 +3,12 @@ package no.nav.medlemskap.regler.v1.medlemskap
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Medlemskap
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.regler.common.*
+import no.nav.medlemskap.regler.common.BasisRegel
+import no.nav.medlemskap.regler.common.Datohjelper
+import no.nav.medlemskap.regler.common.RegelId
+import no.nav.medlemskap.regler.common.Resultat
+import no.nav.medlemskap.regler.common.Resultat.Companion.ja
+import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.erMedlemskapsperioderOver12Mnd
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.harGyldigeMedlemskapsperioder
 import java.time.LocalDate
@@ -21,7 +26,7 @@ abstract class MedlemskapRegel(
         return when {
             medlemskap.erMedlemskapsperioderOver12Mnd(finnPeriodeMedMedlemskap, kontrollPeriodeForMedl)
                 && medlemskap harGyldigeMedlemskapsperioder kontrollPeriodeForMedl -> ja()
-            else -> nei()
+            else -> nei(regelId.begrunnelse)
         }
     }
 }

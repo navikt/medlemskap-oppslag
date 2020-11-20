@@ -2,7 +2,12 @@ package no.nav.medlemskap.regler.v1.medlemskap
 
 import no.nav.medlemskap.common.regelUendretCounterMidlertidig
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.regler.common.*
+import no.nav.medlemskap.regler.common.Datohjelper
+import no.nav.medlemskap.regler.common.RegelId
+import no.nav.medlemskap.regler.common.Resultat
+import no.nav.medlemskap.regler.common.Resultat.Companion.ja
+import no.nav.medlemskap.regler.common.Resultat.Companion.nei
+import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.arbeidsforholdForDato
 import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.tidligsteFraOgMedDatoForMedl
 import java.time.LocalDate
@@ -27,7 +32,7 @@ class ErArbeidsforholdUendretRegel(
             return ja()
         } else {
             regelUendretCounterMidlertidig(regelId, Svar.NEI, ytelse).increment()
-            return nei()
+            return nei(regelId.begrunnelse)
         }
         /* Tas inn igjen når man ikke lenger trenger egen Grafana-counter for denne (når dekning kan gis i response)
         when {

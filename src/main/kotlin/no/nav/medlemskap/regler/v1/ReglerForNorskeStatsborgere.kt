@@ -6,6 +6,8 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.REGEL_12
 import no.nav.medlemskap.regler.common.RegelId.REGEL_NORSK
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytUavklart
 import no.nav.medlemskap.regler.v1.lovvalg.HarBrukerJobbet25ProsentEllerMerRegel
 import no.nav.medlemskap.regler.v1.lovvalg.HarBrukerJobbetUtenforNorgeRegel
 

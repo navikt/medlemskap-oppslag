@@ -1,6 +1,5 @@
 package no.nav.medlemskap.regler.v1.arbeidsforhold
 
-import mu.KotlinLogging
 import no.nav.medlemskap.common.enhetstypeForJuridiskEnhet
 import no.nav.medlemskap.domene.Arbeidsforhold
 import no.nav.medlemskap.domene.Datagrunnlag
@@ -9,8 +8,8 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.metricName
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
-import no.nav.medlemskap.regler.common.ja
-import no.nav.medlemskap.regler.common.nei
+import no.nav.medlemskap.regler.common.Resultat.Companion.ja
+import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.erAlleArbeidsgivereOrganisasjon
 import java.time.LocalDate
 
@@ -22,14 +21,12 @@ class ErArbeidsgiverOrganisasjonRegel(
     regelId: RegelId = RegelId.REGEL_4
 ) : ArbeidsforholdRegel(regelId, ytelse, periode, førsteDagForYtelse) {
 
-    private val logger = KotlinLogging.logger { }
-
     override fun operasjon(): Resultat {
 
         registrerArbeidsgiverMetrics()
 
         return when {
-            !arbeidsforhold.erAlleArbeidsgivereOrganisasjon(kontrollPeriodeForArbeidsforhold) -> nei("Ikke alle arbeidsgivere er av typen organisasjon")
+            !arbeidsforhold.erAlleArbeidsgivereOrganisasjon(kontrollPeriodeForArbeidsforhold) -> nei(RegelId.REGEL_4.begrunnelse)
             else -> ja()
         }
     }

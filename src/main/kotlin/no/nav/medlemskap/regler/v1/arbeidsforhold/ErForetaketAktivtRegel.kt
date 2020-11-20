@@ -7,8 +7,8 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.Funksjoner.finnes
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
-import no.nav.medlemskap.regler.common.ja
-import no.nav.medlemskap.regler.common.nei
+import no.nav.medlemskap.regler.common.Resultat.Companion.ja
+import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.konkursStatuserArbeidsgivere
 import java.time.LocalDate
 
@@ -22,7 +22,7 @@ class ErForetaketAktivtRegel(
 
     override fun operasjon(): Resultat {
         return when {
-            arbeidsforhold.konkursStatuserArbeidsgivere(kontrollPeriodeForArbeidsforhold).finnes() -> nei("Arbeidstaker har hatt arbeidsforhold til arbeidsgiver som har konkurs-status satt")
+            arbeidsforhold.konkursStatuserArbeidsgivere(kontrollPeriodeForArbeidsforhold).finnes() -> nei(RegelId.REGEL_6.begrunnelse)
             else -> ja()
         }
     }
