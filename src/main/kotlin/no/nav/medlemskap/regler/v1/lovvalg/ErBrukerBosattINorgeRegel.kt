@@ -31,7 +31,7 @@ class ErBrukerBosattINorgeRegel(
             bostedsadresser.erIkkeTom() && landkoderBostedsadresse alleEr "NOR" &&
                 (kontaktadresserLandkoder.all { Eøsland.erNorsk(it) } || kontaktadresserLandkoder.erTom())
                 && (oppholsadresserLandkoder.all { Eøsland.erNorsk(it) } || oppholsadresserLandkoder.erTom()) -> ja()
-            else -> nei("Ikke alle adressene til bruker er norske, eller bruker mangler bostedsadresse")
+            else -> nei(REGEL_10.begrunnelse)
         }
     }
 

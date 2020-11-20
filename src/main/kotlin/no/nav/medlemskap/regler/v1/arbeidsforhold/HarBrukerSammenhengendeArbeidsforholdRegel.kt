@@ -21,7 +21,7 @@ class HarBrukerSammenhengendeArbeidsforholdRegel(
     override fun operasjon(): Resultat {
         return if (!arbeidsforhold.erSammenhengendeIKontrollPeriode(kontrollPeriodeForArbeidsforhold, ytelse)) {
             statsborgerskap.registrerStatsborgerskapGrafana(kontrollPeriodeForArbeidsforhold, ytelse, regelId)
-            nei("Arbeidstaker har ikke sammenhengende arbeidsforhold siste 12 mnd")
+            nei(RegelId.REGEL_3.begrunnelse)
         } else {
             ja()
         }

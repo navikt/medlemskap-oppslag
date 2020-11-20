@@ -22,7 +22,7 @@ class HarBrukerJobbet25ProsentEllerMerRegel(
     override fun operasjon(): Resultat {
         return when {
             arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollPeriodeForArbeidsforhold, ytelse) -> ja()
-            else -> nei("Bruker har ikke jobbet 25% eller mer i løpet av perioden.")
+            else -> nei(RegelId.REGEL_12.begrunnelse)
         }
     }
 

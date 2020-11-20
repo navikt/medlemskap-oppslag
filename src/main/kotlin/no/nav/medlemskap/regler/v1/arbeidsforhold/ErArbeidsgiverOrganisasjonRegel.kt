@@ -26,7 +26,7 @@ class ErArbeidsgiverOrganisasjonRegel(
         registrerArbeidsgiverMetrics()
 
         return when {
-            !arbeidsforhold.erAlleArbeidsgivereOrganisasjon(kontrollPeriodeForArbeidsforhold) -> nei("Ikke alle arbeidsgivere er av typen organisasjon")
+            !arbeidsforhold.erAlleArbeidsgivereOrganisasjon(kontrollPeriodeForArbeidsforhold) -> nei(RegelId.REGEL_4.begrunnelse)
             else -> ja()
         }
     }

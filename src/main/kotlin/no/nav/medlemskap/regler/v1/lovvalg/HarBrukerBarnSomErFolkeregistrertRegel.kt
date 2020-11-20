@@ -41,13 +41,13 @@ class HarBrukerBarnSomErFolkeregistrertRegel(
         }?.any()
 
         if (harBarnBosattINorge!! && harBarnSomIkkeErBosattINorge!!) {
-            return uavklart("Noen barn med norsk adresse og noen barn med utenlandsk adresse")
+            return uavklart(RegelId.REGEL_11_2_2.begrunnelse)
         }
 
         if (harBarnBosattINorge) {
             return ja()
         } else {
-            return nei("Ikke alle adressene til barna er norske, eller barn som mangler bostedsadresse")
+            return nei(RegelId.REGEL_11_2_2.begrunnelse)
         }
     }
 

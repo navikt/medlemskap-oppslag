@@ -20,7 +20,7 @@ class JobberBrukerPaaNorskSkipRegel(
     override fun operasjon(): Resultat {
         return when {
             arbeidsforhold sisteArbeidsforholdSkipsregister kontrollPeriodeForArbeidsforhold kunInneholder Skipsregister.NOR.name -> ja()
-            else -> nei()
+            else -> nei(RegelId.REGEL_7_1.begrunnelse)
         }
     }
 

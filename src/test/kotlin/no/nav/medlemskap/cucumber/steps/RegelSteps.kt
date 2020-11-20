@@ -20,8 +20,6 @@ import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.v1.RegelFactory
 import no.nav.medlemskap.regler.v1.ReglerService
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.skyscreamer.jsonassert.Customization
 import org.skyscreamer.jsonassert.JSONAssert
 import org.skyscreamer.jsonassert.JSONCompareMode

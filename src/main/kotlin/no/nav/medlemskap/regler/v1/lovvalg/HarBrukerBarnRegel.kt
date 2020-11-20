@@ -24,7 +24,7 @@ class HarBrukerBarnRegel(
 
         return when {
             barn.erIkkeTom() -> ja()
-            else -> nei("Bruker har ikke barn i pdl")
+            else -> nei(RegelId.REGEL_11_2_1.begrunnelse)
         }
     }
 

@@ -24,7 +24,7 @@ class ErBrukerEøsBorgerRegel(
             return ja()
         } else {
             statsborgerskap.registrerStatsborgerskapGrafana(kontrollPeriodeForPersonhistorikk, ytelse, RegelId.REGEL_2)
-            return nei("Brukeren er ikke statsborger i et EØS-land.")
+            return nei(RegelId.REGEL_2.begrunnelse)
         }
     }
 

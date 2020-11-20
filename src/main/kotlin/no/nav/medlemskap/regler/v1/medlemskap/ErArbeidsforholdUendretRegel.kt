@@ -32,7 +32,7 @@ class ErArbeidsforholdUendretRegel(
             return ja()
         } else {
             regelUendretCounterMidlertidig(regelId, Svar.NEI, ytelse).increment()
-            return nei()
+            return nei(regelId.begrunnelse)
         }
         /* Tas inn igjen når man ikke lenger trenger egen Grafana-counter for denne (når dekning kan gis i response)
         when {

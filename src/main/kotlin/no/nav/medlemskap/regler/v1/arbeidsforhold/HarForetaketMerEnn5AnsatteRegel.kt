@@ -33,7 +33,7 @@ class HarForetaketMerEnn5AnsatteRegel(
 
         if (finnesMindreEnn6AnsatteIArbeidsgivernesForetak && finnesMindreEnn6AnsatteIArbeidsgivernesJuridiskeEnheter) {
             registrerDataForGrafana()
-            return nei("Ikke alle arbeidsgivere har 6 ansatte eller flere")
+            return nei(RegelId.REGEL_5.begrunnelse)
         }
 
         return ja()

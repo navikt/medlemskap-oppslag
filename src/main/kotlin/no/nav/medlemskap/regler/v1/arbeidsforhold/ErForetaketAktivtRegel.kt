@@ -22,7 +22,7 @@ class ErForetaketAktivtRegel(
 
     override fun operasjon(): Resultat {
         return when {
-            arbeidsforhold.konkursStatuserArbeidsgivere(kontrollPeriodeForArbeidsforhold).finnes() -> nei("Arbeidstaker har hatt arbeidsforhold til arbeidsgiver som har konkurs-status satt")
+            arbeidsforhold.konkursStatuserArbeidsgivere(kontrollPeriodeForArbeidsforhold).finnes() -> nei(RegelId.REGEL_6.begrunnelse)
             else -> ja()
         }
     }

@@ -20,7 +20,7 @@ class ErPerioderAvklartRegel(
 
     override fun operasjon(): Resultat {
         return when {
-            medlemskap finnesUavklartePerioder kontrollPeriodeForMedl -> nei()
+            medlemskap finnesUavklartePerioder kontrollPeriodeForMedl -> nei(RegelId.REGEL_1_1.begrunnelse)
             else -> ja()
         }
     }

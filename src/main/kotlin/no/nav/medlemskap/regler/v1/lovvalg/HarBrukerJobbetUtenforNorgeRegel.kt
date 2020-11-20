@@ -19,7 +19,7 @@ class HarBrukerJobbetUtenforNorgeRegel(
 
     override fun operasjon(): Resultat {
         return when {
-            arbeidUtenforNorge -> ja()
+            arbeidUtenforNorge -> ja(RegelId.REGEL_9.begrunnelse)
             else -> nei()
         }
     }

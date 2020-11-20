@@ -22,20 +22,20 @@ class InputDatoValideringRegel(
         val førsteGyldigeDato = bestemFørsteGyldigeDato()
 
         if (periode.fom.isBefore(førsteGyldigeDato)) {
-            return nei("Periode fom kan ikke være før $førsteGyldigeDato")
+            return nei(RegelId.REGEL_0_1.begrunnelse)
         }
 
         if (førsteDagForYtelse?.isBefore(førsteGyldigeDato) ?: false) {
-            return nei("Første dag for ytelse kan ikke være før $førsteGyldigeDato")
+            return nei(RegelId.REGEL_0_1.begrunnelse)
         }
 
         val sisteGyldigeDato = bestemSisteGyldigeDato()
         if (periode.fom.isAfter(sisteGyldigeDato)) {
-            return nei("Periode fom kan ikke være etter $sisteGyldigeDato")
+            return nei(RegelId.REGEL_0_1.begrunnelse)
         }
 
         if (førsteDagForYtelse?.isAfter(sisteGyldigeDato) ?: false) {
-            return nei("Første dag for ytelse kan ikke være etter $sisteGyldigeDato")
+            return nei(RegelId.REGEL_0_1.begrunnelse)
         }
 
         return ja()
