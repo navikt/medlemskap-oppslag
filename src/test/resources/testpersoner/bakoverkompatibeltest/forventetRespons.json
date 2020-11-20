@@ -328,7 +328,7 @@
         }, {
           "regelId" : "REGEL_1_4",
           "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
-          "begrunnelse" : "",
+        "begrunnelse" : "Det finnes hull i 12-måneders perioden for medlemskap",
           "svar" : "NEI",
           "harDekning" : null,
           "dekning" : "",

@@ -17,14 +17,14 @@ Egenskap: Validering av input-dato
     Og skal begrunnelsen være "<Begrunnelse>"
 
     Eksempler:
-      | Landkode | Fra og med dato | Regel 0.1 | Begrunnelse                              |
-      | NOR      | 31.12.2015      | Nei       | Periode fom kan ikke være før 2016-01-01 |
-      | NOR      | 01.01.2016      | Ja        |                                          |
-      | NOR      | 31.12.2016      | Ja        |                                          |
-      | CHE      | 31.12.2016      | Nei       | Periode fom kan ikke være før 2017-01-01 |
-      | CHE      | 01.01.2017      | Ja        |                                          |
-      | BEL      | 31.12.2015      | Nei       | Periode fom kan ikke være før 2016-01-01 |
-      | BEL      | 01.01.2016      | Ja        |                                          |
+      | Landkode | Fra og med dato | Regel 0.1 | Begrunnelse        |
+      | NOR      | 31.12.2015      | Nei       | Ugyldig input dato |
+      | NOR      | 01.01.2016      | Ja        |                    |
+      | NOR      | 31.12.2016      | Ja        |                    |
+      | CHE      | 31.12.2016      | Nei       | Ugyldig input dato |
+      | CHE      | 01.01.2017      | Ja        |                    |
+      | BEL      | 31.12.2015      | Nei       | Ugyldig input dato |
+      | BEL      | 01.01.2016      | Ja        |                    |
 
 
   Scenariomal: Siste gyldige input-dag er 31.12.2020 for britiske borgere
@@ -41,10 +41,10 @@ Egenskap: Validering av input-dato
     Og skal begrunnelsen være "<Begrunnelse>"
 
     Eksempler:
-      | Landkode | Fra og med dato | Regel 0.1 | Begrunnelse                                |
-      | NOR      | 01.01.2021      | Ja        |                                            |
-      | GBR      | 01.01.2021      | Nei       | Periode fom kan ikke være etter 2020-12-31 |
-      | NOR      | 31.12.2020      | Ja        |                                            |
+      | Landkode | Fra og med dato | Regel 0.1 | Begrunnelse        |
+      | NOR      | 01.01.2021      | Ja        |                    |
+      | GBR      | 01.01.2021      | Nei       | Ugyldig input dato |
+      | NOR      | 31.12.2020      | Ja        |                    |
 
 
   Scenariomal: Hvis "første dag for ytelse" er angitt, er det den som brukes i stedet for "fra og med dato"
@@ -61,12 +61,12 @@ Egenskap: Validering av input-dato
     Og skal begrunnelsen være "<Begrunnelse>"
 
     Eksempler:
-      | Landkode | Første dag for ytelse | Regel 0.1 | Begrunnelse                                        |
-      | NOR      | 31.12.2015            | Nei       | Første dag for ytelse kan ikke være før 2016-01-01 |
-      | NOR      | 01.01.2016            | Ja        |                                                    |
-      | NOR      | 31.12.2016            | Ja        |                                                    |
-      | CHE      | 31.12.2016            | Nei       | Første dag for ytelse kan ikke være før 2017-01-01 |
-      | CHE      | 01.01.2017            | Ja        |                                                    |
+      | Landkode | Første dag for ytelse | Regel 0.1 | Begrunnelse        |
+      | NOR      | 31.12.2015            | Nei       | Ugyldig input dato |
+      | NOR      | 01.01.2016            | Ja        |                    |
+      | NOR      | 31.12.2016            | Ja        |                    |
+      | CHE      | 31.12.2016            | Nei       | Ugyldig input dato |
+      | CHE      | 01.01.2017            | Ja        |                    |
 
 
   Scenariomal: Bruker har annet EØS statsborgerskap i tillegg til sveitsisk
@@ -85,13 +85,13 @@ Egenskap: Validering av input-dato
     Og skal begrunnelsen være "<Begrunnelse>"
 
     Eksempler:
-      | Landkode | Fra og med dato | Regel 0.1 | Begrunnelse                              |
-      | NOR      | 31.12.2015      | Nei       | Periode fom kan ikke være før 2016-01-01 |
-      | NOR      | 01.01.2016      | Ja        |                                          |
-      | NOR      | 31.12.2016      | Ja        |                                          |
-      | SWE      | 31.12.2015      | Nei       | Periode fom kan ikke være før 2016-01-01 |
-      | SWE      | 01.01.2016      | Ja        |                                          |
-      | SWE      | 01.01.2017      | Ja        |                                          |
-      | USA      | 31.12.2015      | Nei       | Periode fom kan ikke være før 2017-01-01 |
-      | USA      | 01.01.2016      | Nei       | Periode fom kan ikke være før 2017-01-01 |
-      | USA      | 01.01.2017      | Ja        |                                          |
+      | Landkode | Fra og med dato | Regel 0.1 | Begrunnelse        |
+      | NOR      | 31.12.2015      | Nei       | Ugyldig input dato |
+      | NOR      | 01.01.2016      | Ja        |                    |
+      | NOR      | 31.12.2016      | Ja        |                    |
+      | SWE      | 31.12.2015      | Nei       | Ugyldig input dato |
+      | SWE      | 01.01.2016      | Ja        |                    |
+      | SWE      | 01.01.2017      | Ja        |                    |
+      | USA      | 31.12.2015      | Nei       | Ugyldig input dato |
+      | USA      | 01.01.2016      | Nei       | Ugyldig input dato |
+      | USA      | 01.01.2017      | Ja        |                    |
