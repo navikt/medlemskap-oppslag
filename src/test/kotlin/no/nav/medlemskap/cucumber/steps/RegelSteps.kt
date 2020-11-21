@@ -204,10 +204,16 @@ class RegelSteps : No {
             resultat = regel.utfør()
         }
 
-        Når("rest kall med følgende parametere") { dataTable: DataTable? ->
+        Når("tjenestekall med følgende parametere behandles") { dataTable: DataTable? ->
             val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
             input = LokalWebServer.byggInput(medlemskapsparametre)
             LokalWebServer.testdatagrunnlag = byggDatagrunnlag(medlemskapsparametre)
+            LokalWebServer.startServer()
+        }
+
+        Når("tjenestekall for regler med følgende parametere behandles") { dataTable: DataTable? ->
+            val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
+            input = LokalWebServer.byggDatagrunnlagInput(byggDatagrunnlag(medlemskapsparametre))
             LokalWebServer.startServer()
         }
 
@@ -227,7 +233,11 @@ class RegelSteps : No {
         }
 
         Så("Skal kontrakt være OK") {
-            LokalWebServer.kontrakt(input!!)
+            LokalWebServer.kontraktMedlemskap(input!!)
+        }
+
+        Så("Skal kontrakt for Regler fra datagrunnlag være OK") {
+            LokalWebServer.kontraktRegler(input!!)
         }
 
         Så("Skal input {string} gi statuskoden {int}") { filnavn: String, statusKode: Int ->

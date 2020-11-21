@@ -71,15 +71,24 @@ Egenskap: Bakoverkompatibel test
 
 
   Scenario: Bakoverkompatibel test uten ytelse i request
-    Når rest kall med følgende parametere
+    Når tjenestekall med følgende parametere behandles
       | Fødselsnummer | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 15076500565   | 01.01.2019      | 31.12.2019      | Nei                           |
 
     Så skal forventet json respons være "forventetRespons"
 
-  Scenario: Kontraktstest
-    Når rest kall med følgende parametere
+
+  Scenario: Kontraktstest for tjenestekall
+    Når tjenestekall med følgende parametere behandles
       | Fødselsnummer | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge | Ytelse     |
       | 15076500565   | 01.01.2019      | 31.12.2019      | Nei                           | SYKEPENGER |
 
     Så Skal kontrakt være OK
+
+
+  Scenario: Kontraktstest for kjøring av regler fra datagrunnlag
+    Når tjenestekall for regler med følgende parametere behandles
+      | Fødselsnummer | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 15076500565   | 01.01.2019      | 31.12.2019      | Nei                           |
+
+    Så Skal kontrakt for Regler fra datagrunnlag være OK

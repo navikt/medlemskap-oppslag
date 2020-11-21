@@ -72,8 +72,8 @@ class LokalWebServer {
             }
         }
 
-        fun byggInput(medlemskapsparametre: Medlemskapsparametre): String =
-            objectMapper.writeValueAsString(
+        fun byggInput(medlemskapsparametre: Medlemskapsparametre): String {
+            return objectMapper.writeValueAsString(
                 Request(
                     fnr = medlemskapsparametre.fnr!!,
                     periode = medlemskapsparametre.inputPeriode,
@@ -82,17 +82,23 @@ class LokalWebServer {
                     ytelse = medlemskapsparametre.ytelse
                 )
             )
+        }
 
-        fun respons(input: String): String =
-            given()
+        fun byggDatagrunnlagInput(datagrunnlag: Datagrunnlag): String {
+            return objectMapper.writeValueAsString(datagrunnlag)
+        }
+
+        fun respons(input: String): String {
+            return given()
                 .body(input)
                 .header(Header("Content-Type", "application/json"))
                 .post("/")
                 .then()
                 .statusCode(200)
                 .extract().asString()
+        }
 
-        fun kontrakt(input: String): ValidatableResponse {
+        fun kontraktMedlemskap(input: String): ValidatableResponse {
             val validationFilter = OpenApiValidationFilter("src/main/resources/lovme.yaml")
 
             return given()
@@ -102,6 +108,20 @@ class LokalWebServer {
                 .post("/")
                 .then()
                 .statusCode(200)
+        }
+
+        fun kontraktRegler(datagrunnlagJson: String): ValidatableResponse {
+            val validationFilter = OpenApiValidationFilter("src/main/resources/lovme.yaml")
+
+            val response = given()
+                .filter(validationFilter)
+                .body(datagrunnlagJson)
+                .header(Header("Content-Type", "application/json"))
+                .post("regler")
+                .then()
+                .statusCode(200)
+
+            return response
         }
 
         fun testResponsKode(input: String, statusKode: Int) {
