@@ -70,6 +70,46 @@ class AaregDomenespraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, BeregnetAntallTimerMapperPerUke())[0]
     }
 
+    fun mapPermitteringsId(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, PermitteringsIdMapper())[0]
+    }
+
+    fun mapProsent(dataTable: DataTable?): Double {
+        return mapDataTable(dataTable, ProsentMapper())[0]
+    }
+
+    fun mapType(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, PermitteringsTypeMapper())[0]
+    }
+
+    fun mapVarslingskode(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, VarslingskodeMapper())[0]
+    }
+
+    class VarslingskodeMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(Domenebegrep.VARSLINGSKODE, rad)
+        }
+    }
+
+    class PermitteringsTypeMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(Domenebegrep.PERMITTERINGSTYPE, rad)
+        }
+    }
+
+    class ProsentMapper : RadMapper<Double> {
+        override fun mapRad(rad: Map<String, String>): Double {
+            return parseDouble(Domenebegrep.PROSENT, rad)
+        }
+    }
+
+    class PermitteringsIdMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(Domenebegrep.PERMISJONPERMITTERINGID, rad)
+        }
+    }
+
     class BeregnetAntallTimerMapperPerUke : RadMapper<Double> {
         override fun mapRad(rad: Map<String, String>): Double {
             return parseDouble(Domenebegrep.BEREGNET_ANTALL_TIMER, rad)
@@ -195,11 +235,15 @@ class AaregDomenespraakParser : BasisDomeneParser() {
         GYLDIGHETSPERIODE_TIL_OG_MED("Bruksperiode gyldig til"),
         LANDKODE("Landkode"),
         ORGANISASJONSNUMMER("Organisasjonsnummer"),
+        PERMISJONPERMITTERINGID("PermisjonPermitteringId"),
+        PERMITTERINGSTYPE("PermisjonPermitteringType"),
+        PROSENT("Prosent"),
         TYPE("Type"),
         SKIPSREGISTER("Skipsregister"),
         STATUS("Konkurstatus"),
         STILLINGSPROSENT("Stillingsprosent"),
         RAPPORTERINGSPERIODE("Rapporteringsperiode"),
+        VARSLINGSKODE("Varslingkode"),
         YRKESKODE("Yrke"),
         GYLDIG_FRA_OG_MED("Gyldig fra og med"),
         GYLDIG_TIL_OG_MED("Gyldig til og med"),

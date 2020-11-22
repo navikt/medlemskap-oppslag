@@ -206,6 +206,18 @@ object DomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, SkipsregisterMapper())[0]
     }
 
+    fun mapProsent(dataTable: DataTable?): Double {
+        return mapDataTable(dataTable, ProsentMapper())[0]
+    }
+
+    fun mapType(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, PermitteringsTypeMapper())[0]
+    }
+
+    fun mapVarslingskode(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, VarslingskodeMapper())[0]
+    }
+
     fun mapPersonhistorikkEktefelle(dataTable: DataTable?): List<PersonhistorikkEktefelle> {
         return mapDataTable(dataTable, PersonhistorikkEktefelleMapper())
     }
@@ -306,8 +318,28 @@ object DomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, PeriodeMapper())[0]
     }
 
+    fun mapPeriodeForPermittering(dataTable: DataTable?): Periode {
+        return mapDataTable(dataTable, PeriodeMapper())[0]
+    }
+
+    fun mapPermitteringId(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, PermitteringsIdMapper())[0]
+    }
+
     fun mapRapporteringsperiode(dataTable: DataTable?): YearMonth {
         return mapDataTable(dataTable, RapporteringsperiodeMapper())[0]
+    }
+
+    class PermitteringsTypeMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(PERMITTERINGSTYPE, rad)
+        }
+    }
+
+    class PermitteringsIdMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(PERMISJONPERMITTERINGSID, rad)
+        }
     }
 
     class PeriodeStatusMapper : RadMapper<PeriodeStatus> {
@@ -346,6 +378,12 @@ object DomenespråkParser : BasisDomeneParser() {
         }
     }
 
+    class ProsentMapper : RadMapper<Double> {
+        override fun mapRad(rad: Map<String, String>): Double {
+            return parseDouble(PROSENT, rad)
+        }
+    }
+
     class LovvalgslandMapper : RadMapper<String> {
         override fun mapRad(rad: Map<String, String>): String {
             return parseString(LOVVALGSLAND, rad)
@@ -380,6 +418,12 @@ object DomenespråkParser : BasisDomeneParser() {
     class StatusMapper : RadMapper<String> {
         override fun mapRad(rad: Map<String, String>): String {
             return parseString(STATUS, rad)
+        }
+    }
+
+    class VarslingskodeMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(VARSLINGSKODE, rad)
         }
     }
 
@@ -561,7 +605,8 @@ object DomenespråkParser : BasisDomeneParser() {
                 arbeidsgivertype = OpplysningspliktigArbeidsgiverType.valueOf(parseString(ARBEIDSGIVERTYPE, rad)),
                 arbeidsgiver = arbeidsgiver ?: VANLIG_NORSK_ARBEIDSGIVER,
                 arbeidsforholdstype = parseArbeidsforholdstype(rad),
-                arbeidsavtaler = emptyList()
+                arbeidsavtaler = emptyList(),
+                permisjonPermittering = emptyList()
             )
         }
     }
@@ -753,7 +798,10 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     OPPHOLDSADRESSE("Oppholdsadresse"),
     ORGANISASJONSNUMMER("Organisasjonsnummer"),
     PERIODESTATUS("Periodestatus"),
+    PERMISJONPERMITTERINGSID("PermisjonPermitteringId"),
+    PERMITTERINGSTYPE("Type"),
     PRIORITET("Prioritet"),
+    PROSENT("Prosent"),
     REGEL("Regel"),
     RELATERT_PERSONS_IDENT("Relatert persons ident"),
     RELATERT_PERSONS_ROLLE("Relatert persons rolle"),
@@ -767,6 +815,7 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     TEMA("Tema"),
     TIL_OG_MED_DATO("Til og med dato"),
     TITTEL("Tittel"),
+    VARSLINGSKODE("Varslingkode"),
     YRKESKODE("Yrkeskode"),
     JURIDISKENHETSTYPE("Juridisk enhetstype"),
     YTELSE("Ytelse");

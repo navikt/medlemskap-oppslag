@@ -368,7 +368,8 @@ class ArbeidsforholdFunksjonerTest {
             arbeidsforholdPeriode, null, OpplysningspliktigArbeidsgiverType.Organisasjon,
             Arbeidsgiver(null, listOf(Ansatte(antall = 10, bruksperiode = null, gyldighetsperiode = null)), null, null),
             Arbeidsforholdstype.NORMALT,
-            listOf(arbeidsavtale)
+            listOf(arbeidsavtale),
+            emptyList()
         )
 
         return arbeidsforhold
@@ -403,7 +404,8 @@ class ArbeidsforholdFunksjonerTest {
                 juridiskeEnheter = juridiskeEnheter
             ),
             arbeidsforholdstype = Arbeidsforholdstype.NORMALT,
-            arbeidsavtaler = arbeidsavtaleList
+            arbeidsavtaler = arbeidsavtaleList,
+            permisjonPermittering = emptyList()
         )
     }
 }

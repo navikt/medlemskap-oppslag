@@ -25,6 +25,7 @@ class AaregMapperSteps : No {
     private var ansettelsesPeriodeBuilder = AaRegAnsettelsesPeriodeBuilder()
     private var arbeidsavtaleBuilder = AaRegArbeidsavtaleBuilder()
     private var utenlandoppholdBuiler = AaRegUtenlandsoppholdBuilder()
+    private var permisjonsPermitteringerBuilder = AaRegPermisjonsPermitteringerBuilder()
 
     init {
         Gitt<DataTable>("følgende om AaRegPeriode i fra AaRegAnsettelsesperiode fra AaRegArbeidsforhold") { dataTable: DataTable? ->
@@ -92,6 +93,26 @@ class AaregMapperSteps : No {
             utenlandoppholdBuiler.rapporteringsperiode = aaregDomenespraakParser.mapRapporteringsperiode(dataTable)
         }
 
+        Gitt<DataTable>("følgende om AaRegPeriode fra AaRegPermisjonPermittering fra AaRegArbeidsforhold") { dataTable: DataTable? ->
+            permisjonsPermitteringerBuilder.periode = aaregDomenespraakParser.mapPeriode(dataTable)
+        }
+
+        Gitt<DataTable>("følgende om permisjonPermitteringId i fra AaRegPermisjonPermittering fra AaRegArbeidsforhold") { dataTable: DataTable? ->
+            permisjonsPermitteringerBuilder.permisjonsPermitteringId = aaregDomenespraakParser.mapPermitteringsId(dataTable)
+        }
+
+        Gitt<DataTable>("følgende prosent fra fra AaRegPermisjonPermittering fra AaRegArbeidsforhold") { dataTable: DataTable? ->
+            permisjonsPermitteringerBuilder.prosent = aaregDomenespraakParser.mapProsent(dataTable)
+        }
+
+        Gitt<DataTable>("følgende type fra fra AaRegPermisjonPermittering fra AaRegArbeidsforhold") { dataTable: DataTable? ->
+            permisjonsPermitteringerBuilder.type = aaregDomenespraakParser.mapType(dataTable)
+        }
+
+        Gitt<DataTable>("følgende varslingskode fra fra AaRegPermisjonPermittering fra AaRegArbeidsforhold") { dataTable: DataTable? ->
+            permisjonsPermitteringerBuilder.varslingkode = aaregDomenespraakParser.mapVarslingskode(dataTable)
+        }
+
         Så<DataTable>("skal mappet landkode i utenlandsoppholdet være") { dataTable: DataTable? ->
             val landkodeForventet = DomenespråkParser.mapLandkode(dataTable)
             arbeidsforhold[0].utenlandsopphold?.get(0)?.landkode.shouldBe(landkodeForventet)
@@ -100,6 +121,16 @@ class AaregMapperSteps : No {
         Så<DataTable>("mappet periode være i utenlandsoppholdet være") { dataTable: DataTable? ->
             val periodeForventet = DomenespråkParser.mapPeriodeIUtenlandsopphold(dataTable)
             arbeidsforhold[0].utenlandsopphold?.get(0)?.periode.shouldBe(periodeForventet)
+        }
+
+        Så<DataTable>("skal mappet periode i arbeidsforholdet være") { dataTable: DataTable? ->
+            val periodeForventet = DomenespråkParser.mapPeriodeForPermittering(dataTable)
+            arbeidsforhold[0].permisjonPermittering?.get(0)?.periode.shouldBe(periodeForventet)
+        }
+
+        Så<DataTable>("mappet permisjonPermitteringId skal være") { dataTable: DataTable? ->
+            val permisjonPermitteringIdForventet = DomenespråkParser.mapPermitteringId(dataTable)
+            arbeidsforhold[0].permisjonPermittering?.get(0)?.permisjonPermitteringId.shouldBe(permisjonPermitteringIdForventet)
         }
 
         Så<DataTable>("mappet rapporteringsperiode i utenlandsoppholdet være") { dataTable: DataTable? ->
@@ -135,6 +166,21 @@ class AaregMapperSteps : No {
         Så<DataTable>("mappet skipsregister være") { dataTable: DataTable? ->
             val skipsregisterForventet = DomenespråkParser.mapSkipsregister(dataTable)
             arbeidsforhold[0].arbeidsavtaler[0].skipsregister.shouldBe(skipsregisterForventet)
+        }
+
+        Så<DataTable>("mappet prosent skal være") { dataTable: DataTable? ->
+            val prosentForventet = DomenespråkParser.mapProsent(dataTable)
+            arbeidsforhold[0].permisjonPermittering?.get(0)?.prosent.shouldBe(prosentForventet)
+        }
+
+        Så<DataTable>("mappet type skal være") { dataTable: DataTable? ->
+            val permisjonstypeForventet = DomenespråkParser.mapType(dataTable)
+            arbeidsforhold[0].permisjonPermittering?.get(0)?.type.shouldBe(permisjonstypeForventet)
+        }
+
+        Så<DataTable>("mappet varslingkode skal være") { dataTable: DataTable? ->
+            val varslingsKodeForventet = DomenespråkParser.mapVarslingskode(dataTable)
+            arbeidsforhold[0].permisjonPermittering?.get(0)?.varslingskode.shouldBe(varslingsKodeForventet)
         }
 
         Når("arbeidsforholdene mappes") {
@@ -185,6 +231,7 @@ class AaregMapperSteps : No {
         aaregArbeidsforholdBuilder.utenlandsopphold = mutableListOf(utenlandoppholdBuiler.build())
         aaregArbeidsforholdBuilder.arbeidsgiver = aaregArbeidsgiverBuilder.build()
         aaregArbeidsforholdBuilder.arbeidsavtaler = mutableListOf(arbeidsavtaleBuilder.build())
+        aaregArbeidsforholdBuilder.permisjonPermitteringer = mutableListOf(permisjonsPermitteringerBuilder.build())
         aaregBuilder.arbeidsforhold = aaregArbeidsforholdBuilder.build()
         aaregBuilder.organisasjon = organisasjonBuilder.build()
         return aaregBuilder

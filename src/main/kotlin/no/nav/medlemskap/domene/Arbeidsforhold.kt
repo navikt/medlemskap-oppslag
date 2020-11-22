@@ -1,5 +1,4 @@
 package no.nav.medlemskap.domene
-
 import java.time.YearMonth
 
 data class Arbeidsforhold(
@@ -8,7 +7,8 @@ data class Arbeidsforhold(
     val arbeidsgivertype: OpplysningspliktigArbeidsgiverType,
     val arbeidsgiver: Arbeidsgiver,
     val arbeidsforholdstype: Arbeidsforholdstype,
-    var arbeidsavtaler: List<Arbeidsavtale>
+    var arbeidsavtaler: List<Arbeidsavtale>,
+    val permisjonPermittering: List<PermisjonPermittering>?
 ) : Comparable<Arbeidsforhold> {
 
     /**
@@ -55,6 +55,14 @@ data class Arbeidsgiver(
     val ansatte: List<Ansatte>?,
     val konkursStatus: List<String?>?,
     val juridiskeEnheter: List<JuridiskEnhet?>?
+)
+
+data class PermisjonPermittering(
+    val periode: Periode,
+    val permisjonPermitteringId: String,
+    val prosent: Double?,
+    val type: String,
+    val varslingskode: String?
 )
 
 data class JuridiskEnhet(
