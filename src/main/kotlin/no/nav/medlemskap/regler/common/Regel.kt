@@ -12,7 +12,7 @@ data class Regel(
 ) {
     fun utfør(): Resultat = operasjon.invoke().apply {
         regelCounter(this@Regel.regelId.identifikator + ". " + this@Regel.regelId.avklaring.replace("?", ""), this.svar.name, ytelse.name()).increment()
-        regelInfluxCounter(this.regelId?.identifikator ?: "N/A", this.svar.name, ytelse.name()).increment()
+        regelInfluxCounter(this@Regel.regelId.identifikator, this.svar.name, ytelse.name()).increment()
     }.copy(
         regelId = regelId,
         avklaring = regelId.avklaring
