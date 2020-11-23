@@ -41,9 +41,7 @@ fun configureSensuInfluxMeterRegistry(): SensuInfluxMeterRegistry {
     val influxMeterRegistry = SensuInfluxMeterRegistry(config, Clock.SYSTEM)
     influxMeterRegistry.config().meterFilter(
         MeterFilter.denyUnless {
-            it.name.startsWith("api_hit_counter") ||
-                it.name.startsWith("regel_calls_total") ||
-                it.name.startsWith("uavklart_for_regel")
+            it.name.startsWith("api_hit_counter")
         }
     )
     influxMeterRegistry.config().commonTags(defaultInfluxTags())
