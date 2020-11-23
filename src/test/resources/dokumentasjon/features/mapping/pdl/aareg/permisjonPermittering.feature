@@ -48,16 +48,14 @@ Egenskap: Mapping av arbeidsgivertype i arbeidsforhold
       | Varslingkode |
       | PPIDHI       |
 
-
-
     Eksempler:
-      | AaRegType                   | Type                         |
-      | permisjon                   | permisjon                    |
-      | permisjonMedForeldrepenger  | permisjonMedForeldrepenger   |
-      | permisjonVedMilitaertjeneste| permisjonVedMilitaertjeneste |
-      | permittering                | permittering                 |
-      | utdanningspermisjon         | utdanningspermisjon          |
-      | velferdspermisjon           | velferdspermisjon            |
+      | AaRegType                   | Type                           |
+      | permisjon                   | PERMISJON                      |
+      | permisjonMedForeldrepenger  | PERMISJON_MED_FORELDREPENGER   |
+      | permisjonVedMilitaertjeneste| PERMISJON_VED_MILITAERTJENESTE |
+      | permittering                | PERMITTERING                   |
+      | utdanningspermisjon         | UTDANNINGSPERMISJON            |
+      | velferdspermisjon           | VELFERDSPERMISJON               |
 
 
 

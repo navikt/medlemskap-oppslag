@@ -61,7 +61,7 @@ data class PermisjonPermittering(
     val periode: Periode,
     val permisjonPermitteringId: String,
     val prosent: Double?,
-    val type: String,
+    val type: PermisjonPermitteringType,
     val varslingskode: String?
 )
 
@@ -87,6 +87,23 @@ enum class Arbeidsforholdstype(val kodeverdi: String) {
     companion object {
         fun fraArbeidsforholdtypeVerdi(arbeidsforholdstypeVerdi: String): Arbeidsforholdstype {
             return values().first { it.kodeverdi == arbeidsforholdstypeVerdi }
+        }
+    }
+}
+
+enum class PermisjonPermitteringType(val kodeverdi: String) {
+    PERMISJON("permisjon"),
+    PERMISJON_MED_FORELDREPENGER("permisjonMedForeldrepenger"),
+    PERMISJON_VED_MILITAERTJENESTE("permisjonVedMilitaertjeneste"),
+    PERMITTERING("permittering"),
+    UTDANNINGSPERMISJON("utdanningspermisjon"),
+    VELFERDSPERMISJON("velferdspermisjon"),
+    ANNET("Annet")
+    ;
+
+    companion object {
+        fun fraPermisjonPermitteringVerdi(permisjonPermittering: String): PermisjonPermitteringType {
+            return PermisjonPermitteringType.values().first { it.kodeverdi == permisjonPermittering }
         }
     }
 }

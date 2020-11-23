@@ -38,7 +38,7 @@ fun mapPermisjonsPermittering(arbeidsforhold: AaRegArbeidsforhold): List<Permisj
     return arbeidsforhold.permisjonPermitteringer?.map {
         PermisjonPermittering(
             periode = mapPeriodeTilPermisjonsPermitteringer(it),
-            type = it.type,
+            type = PermisjonPermitteringType.fraPermisjonPermitteringVerdi(it.type),
             varslingskode = it.varslingskode,
             permisjonPermitteringId = it.permisjonPermitteringId,
             prosent = it.prosent

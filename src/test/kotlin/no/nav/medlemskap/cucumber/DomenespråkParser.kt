@@ -210,7 +210,7 @@ object DomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, ProsentMapper())[0]
     }
 
-    fun mapType(dataTable: DataTable?): String {
+    fun mapType(dataTable: DataTable?): PermisjonPermitteringType {
         return mapDataTable(dataTable, PermitteringsTypeMapper())[0]
     }
 
@@ -330,9 +330,9 @@ object DomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, RapporteringsperiodeMapper())[0]
     }
 
-    class PermitteringsTypeMapper : RadMapper<String> {
-        override fun mapRad(rad: Map<String, String>): String {
-            return parseString(PERMITTERINGSTYPE, rad)
+    class PermitteringsTypeMapper : RadMapper<PermisjonPermitteringType> {
+        override fun mapRad(rad: Map<String, String>): PermisjonPermitteringType {
+            return PermisjonPermitteringType.valueOf(parseString(PERMITTERINGSTYPE, rad))
         }
     }
 
