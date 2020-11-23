@@ -41,7 +41,8 @@ fun configureSensuInfluxMeterRegistry(): SensuInfluxMeterRegistry {
     val influxMeterRegistry = SensuInfluxMeterRegistry(config, Clock.SYSTEM)
     influxMeterRegistry.config().meterFilter(
         MeterFilter.denyUnless {
-            it.name.startsWith("api_hit_counter")
+            it.name.startsWith("api_hit_counter") ||
+                it.name.startsWith("regel_calls_influx")
         }
     )
     influxMeterRegistry.config().commonTags(defaultInfluxTags())
@@ -63,6 +64,12 @@ fun regelCounter(regel: String, status: String, ytelse: String): Counter = Count
     .builder("regel_calls_total")
     .tags("regel", regel, "status", status, "ytelse", ytelse)
     .description("counter for ja, nei, uavklart for regel calls")
+    .register(Metrics.globalRegistry)
+
+fun regelInfluxCounter(regel: String, status: String, ytelse: String): Counter = Counter
+    .builder("regel_calls_influx")
+    .tags("regelnummer", regel, "status", status, "ytelse", ytelse)
+    .description("counter for ja, nei, uavklart for regler")
     .register(Metrics.globalRegistry)
 
 fun ytelseCounter(ytelse: String): Counter = Counter
