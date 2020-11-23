@@ -7,12 +7,15 @@ import io.ktor.features.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import kotlinx.coroutines.withContext
 import mu.KotlinLogging
 import net.logstash.logback.argument.StructuredArguments.kv
 import net.logstash.logback.marker.Markers.append
 import no.nav.medlemskap.clients.Services
+import no.nav.medlemskap.common.RequestContextService
 import no.nav.medlemskap.common.apiCounter
 import no.nav.medlemskap.common.exceptions.KonsumentIkkeFunnet
+import no.nav.medlemskap.common.exceptions.UgyldigRequestException
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.common.uavklartPåRegel
 import no.nav.medlemskap.config.Configuration
@@ -20,7 +23,7 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Request
 import no.nav.medlemskap.domene.Response
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.domene.Ytelse.Companion.metricName
+import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
 import java.time.LocalDateTime
@@ -33,6 +36,7 @@ private val secureLogger = KotlinLogging.logger("tjenestekall")
 fun Routing.evalueringRoute(
     services: Services,
     configuration: Configuration,
+    requestContextService: RequestContextService,
     createDatagrunnlag: suspend (request: Request, callId: String, services: Services, clientId: String?) -> Datagrunnlag
 ) {
 
@@ -44,15 +48,22 @@ fun Routing.evalueringRoute(
             val azp = callerPrincipal.payload.getClaim("azp").asString()
             secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
 
-            val request = validerRequest(call.receive())
+            val request = validerRequest(call.receive(), azp)
             val callId = call.callId ?: UUID.randomUUID().toString()
 
-            val datagrunnlag = createDatagrunnlag.invoke(
-                request,
-                callId,
-                services,
-                azp
-            )
+            val datagrunnlag = withContext(
+                requestContextService.getCoroutineContext(
+                    context = coroutineContext,
+                    ytelse = finnYtelse(request.ytelse, azp)
+                )
+            ) {
+                createDatagrunnlag.invoke(
+                    request,
+                    callId,
+                    services,
+                    azp
+                )
+            }
             val resultat = evaluerData(datagrunnlag)
 
             val response = lagResponse(
@@ -71,20 +82,28 @@ fun Routing.evalueringRoute(
 fun Routing.evalueringTestRoute(
     services: Services,
     configuration: Configuration,
+    requestContextService: RequestContextService,
     createDatagrunnlag: suspend (request: Request, callId: String, services: Services, clientId: String?) -> Datagrunnlag
 ) {
     logger.info("autentiserer IKKE kallet")
     post("/") {
         apiCounter().increment()
-        val request = validerRequest(call.receive())
+        val request = validerRequest(call.receive(), Ytelse.toMedlemskapClientId())
         val callId = call.callId ?: UUID.randomUUID().toString()
 
-        val datagrunnlag = createDatagrunnlag.invoke(
-            request,
-            callId,
-            services,
-            null
-        )
+        val datagrunnlag = withContext(
+            requestContextService.getCoroutineContext(
+                context = coroutineContext,
+                ytelse = finnYtelse(request.ytelse, Ytelse.toMedlemskapClientId())
+            )
+        ) {
+            createDatagrunnlag.invoke(
+                request,
+                callId,
+                services,
+                Ytelse.toMedlemskapClientId()
+            )
+        }
         val resultat = evaluerData(datagrunnlag)
 
         val response = lagResponse(
@@ -133,18 +152,20 @@ private fun loggResponse(fnr: String, response: Response) {
     )
 
     if (årsaker.isNotEmpty()) {
-        uavklartPåRegel(årsaker.first(), response.datagrunnlag.ytelse.metricName()).increment()
+        uavklartPåRegel(årsaker.first(), response.datagrunnlag.ytelse.name()).increment()
         secureLogger.info(append("årsaker", årsaker), "Årsaker for bruker {}: {}", fnr, årsakerSomRegelIdStr)
     }
 }
 
-private fun validerRequest(request: Request): Request {
+private fun validerRequest(request: Request, azp: String): Request {
+    val ytelse = finnYtelse(request.ytelse, azp)
+
     if (request.periode.tom.isBefore(request.periode.fom)) {
-        throw BadRequestException("Periode tom kan ikke være før periode fom")
+        throw UgyldigRequestException("Periode tom kan ikke være før periode fom", ytelse)
     }
 
     if (!gyldigFnr(request.fnr)) {
-        throw BadRequestException("Ugyldig fødselsnummer")
+        throw UgyldigRequestException("Ugyldig fødselsnummer", ytelse)
     }
 
     return request

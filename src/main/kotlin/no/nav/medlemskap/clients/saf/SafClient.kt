@@ -13,7 +13,9 @@ import no.nav.medlemskap.clients.saf.generated.Dokumenter
 import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.objectMapper
+import no.nav.medlemskap.common.ytelse
 import java.net.URL
+import kotlin.coroutines.coroutineContext
 
 class SafClient(
     private val baseUrl: String,
@@ -50,7 +52,7 @@ class SafClient(
 
             response.errors?.let { errors ->
                 logger.warn { "Fikk følgende feil fra Saf: ${objectMapper.writeValueAsString(errors)}" }
-                throw GraphqlError(errors.first(), "Saf")
+                throw GraphqlError(errors.first(), "Saf", coroutineContext.ytelse())
             }
             response.data!!
         }

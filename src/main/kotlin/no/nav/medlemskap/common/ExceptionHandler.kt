@@ -10,29 +10,26 @@ import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import mu.KotlinLogging
-import no.nav.medlemskap.common.exceptions.GraphqlError
-import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
-import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
-import no.nav.medlemskap.common.exceptions.Sikkerhetsbegrensing
+import no.nav.medlemskap.common.exceptions.*
 
 private val logger = KotlinLogging.logger { }
 
 fun StatusPages.Configuration.exceptionHandler() {
     exception<GraphqlError> { cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.InternalServerError) {
-            "Feil fra graphql i $cause.system: ${cause.errorAsJson()}"
+            "Feil fra graphql i ${cause.system}: ${cause.errorAsJson()} for konsument ${cause.ytelse}"
         }
     }
 
     exception<IdenterIkkeFunnet> { cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.NotFound) {
-            "Fant ingen aktør-id for fødselsnummer"
+            "Fant ingen aktør-id for fødselsnummer for konsument ${cause.ytelse}"
         }
     }
 
     exception<PersonIkkeFunnet> { cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.NotFound) {
-            "Person ikke funnet i ${cause.system}"
+            "Person ikke funnet i ${cause.system} for konsument ${cause.ytelse}"
         }
     }
 
@@ -53,6 +50,12 @@ fun StatusPages.Configuration.exceptionHandler() {
         call.logErrorAndRespond(cause, HttpStatusCode.InternalServerError) {
             val url = cause.response.call.request.url
             "Kall mot $url feilet"
+        }
+    }
+
+    exception<UgyldigRequestException> { cause ->
+        call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
+            "${cause.message!!} for konsument ${cause.ytelse}"
         }
     }
 
