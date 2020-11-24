@@ -7,12 +7,14 @@ import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
 import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
 import no.nav.medlemskap.common.objectMapper
+import no.nav.medlemskap.common.ytelse
 import no.nav.medlemskap.domene.Personhistorikk
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper
 import no.nav.medlemskap.services.pdl.mapper.PdlMapperBarn
 import no.nav.medlemskap.services.pdl.mapper.PdlMapperEktefelle
+import kotlin.coroutines.coroutineContext
 
 class PdlService(private val pdlClient: PdlClient, private val clusterName: String = "dev-fss") {
 
@@ -28,12 +30,12 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
 
         pdlResponse.errors?.let { errors ->
             logger.warn { "Fikk følgende feil fra PDL: ${objectMapper.writeValueAsString(errors)}" }
-            throw GraphqlError(errors.first(), "PDL")
+            throw GraphqlError(errors.first(), "PDL", coroutineContext.ytelse())
         }
 
         return pdlResponse.data?.hentIdenter?.identer
             ?.filter { it.gruppe == HentIdenter.IdentGruppe.AKTORID }
-            ?.map { it.ident } ?: throw IdenterIkkeFunnet()
+            ?.map { it.ident } ?: throw IdenterIkkeFunnet(coroutineContext.ytelse())
     }
 
     suspend fun hentPersonHistorikkTilBruker(fnr: String, callId: String): Personhistorikk {
@@ -41,13 +43,13 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
 
         hentPersonhistorikkTilBrukerRespons.errors?.forEach {
             if (it.message == "Fant ikke person") {
-                throw PersonIkkeFunnet("PDL")
+                throw PersonIkkeFunnet("PDL", coroutineContext.ytelse())
             }
         }
 
         if (hentPersonhistorikkTilBrukerRespons.data?.hentPerson != null) {
             return PdlMapper.mapTilPersonHistorikkTilBruker(hentPersonhistorikkTilBrukerRespons.data?.hentPerson!!)
-        } else throw PersonIkkeFunnet("PDL")
+        } else throw PersonIkkeFunnet("PDL", coroutineContext.ytelse())
     }
 
     suspend fun hentPersonHistorikkTilEktefelle(fnrTilEktefelle: String, callId: String): PersonhistorikkEktefelle? {
@@ -61,7 +63,7 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
 
         hentPersonhistorikkTilEktefelleResponse.errors?.let { errors ->
             logger.warn { "Fikk følgende feil fra PDL: ${objectMapper.writeValueAsString(errors)}" }
-            throw GraphqlError(errors.first(), "PDL")
+            throw GraphqlError(errors.first(), "PDL", coroutineContext.ytelse())
         }
 
         if (hentPersonhistorikkTilEktefelleResponse.data?.hentPerson != null) {
@@ -81,7 +83,7 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
 
         hentPersonHistorikkTilBarnRespons.errors?.let { errors ->
             logger.warn { "Fikk følgende feil fra PDL: ${objectMapper.writeValueAsString(errors)}" }
-            throw GraphqlError(errors.first(), "PDL")
+            throw GraphqlError(errors.first(), "PDL", coroutineContext.ytelse())
         }
 
         if (hentPersonHistorikkTilBarnRespons.data?.hentPerson != null) {

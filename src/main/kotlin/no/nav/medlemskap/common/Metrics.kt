@@ -8,7 +8,7 @@ import io.micrometer.prometheus.PrometheusRenameFilter
 import no.nav.medlemskap.common.influx.SensuInfluxConfig
 import no.nav.medlemskap.common.influx.SensuInfluxMeterRegistry
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.domene.Ytelse.Companion.metricName
+import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.common.Årsak
@@ -42,8 +42,7 @@ fun configureSensuInfluxMeterRegistry(): SensuInfluxMeterRegistry {
     influxMeterRegistry.config().meterFilter(
         MeterFilter.denyUnless {
             it.name.startsWith("api_hit_counter") ||
-                it.name.startsWith("regel_calls_total") ||
-                it.name.startsWith("uavklart_for_regel")
+                it.name.startsWith("regel_calls_influx")
         }
     )
     influxMeterRegistry.config().commonTags(defaultInfluxTags())
@@ -67,6 +66,12 @@ fun regelCounter(regel: String, status: String, ytelse: String): Counter = Count
     .description("counter for ja, nei, uavklart for regel calls")
     .register(Metrics.globalRegistry)
 
+fun regelInfluxCounter(regel: String, status: String, ytelse: String): Counter = Counter
+    .builder("regel_calls_influx")
+    .tags("regelnummer", regel, "status", status, "ytelse", ytelse)
+    .description("counter for ja, nei, uavklart for regler")
+    .register(Metrics.globalRegistry)
+
 fun ytelseCounter(ytelse: String): Counter = Counter
     .builder("ytelse_total")
     .tags("ytelse", ytelse)
@@ -75,7 +80,7 @@ fun ytelseCounter(ytelse: String): Counter = Counter
 
 fun regelUendretCounterMidlertidig(regelId: RegelId, svar: Svar, ytelse: Ytelse): Counter = Counter // Når dekning kan returneres av tjenesten kan denne fjernes.
     .builder("regel_uendret_arbeidsforhold")
-    .tags("regel", regelId.identifikator, "svar", svar.name, "ytelse", ytelse.metricName())
+    .tags("regel", regelId.identifikator, "svar", svar.name, "ytelse", ytelse.name())
     .description("counter for ja eller nei for regel 1.4")
     .register(Metrics.globalRegistry)
 
@@ -100,69 +105,69 @@ fun samletStillingsprosentCounter(stillingsprosent: Double, ytelse: String): Cou
 
 fun merEnn10ArbeidsforholdCounter(ytelse: Ytelse): Counter = Counter
     .builder("over_10_arbeidsforhold")
-    .tags("ytelse", ytelse.metricName())
+    .tags("ytelse", ytelse.name())
     .description("counter for brukere med flere enn 10 arbeidsforhold")
     .register(Metrics.globalRegistry)
 
 fun antallTreffPåArbeidsgiver(orgnummer: String?, ytelse: Ytelse): Counter = Counter
     .builder("treff_paa_arbeidsgiver")
-    .tags("orgnummer", orgnummer, "ytelse", ytelse.metricName())
+    .tags("orgnummer", orgnummer, "ytelse", ytelse.name())
     .description("counter for antall treff på en arbeidsgiver")
     .register(Metrics.globalRegistry)
 
 fun antallAnsatteHosJuridiskEnhetCounter(orgnummer: String, antall: String, ytelse: Ytelse): Counter = Counter
     .builder("antall_ansatte_hos_juridisk_enhet")
-    .tags("orgnummer", orgnummer, "antall", antall, "ytelse", ytelse.metricName())
+    .tags("orgnummer", orgnummer, "antall", antall, "ytelse", ytelse.name())
     .description("counter for antall ansatte hos juridisk enhet")
     .register(Metrics.globalRegistry)
 
 fun antallAnsatteTilUavklart(antall: String, ytelse: Ytelse): Counter = Counter
     .builder("antall_ansatte_uavklart")
-    .tags("antall", antall, "ytelse", ytelse.metricName())
+    .tags("antall", antall, "ytelse", ytelse.name())
     .description("counter for antall ansatte til uavklart for en arbeidsgiver")
     .register(Metrics.globalRegistry)
 
 fun usammenhengendeArbeidsforholdCounter(ytelse: Ytelse): Counter = Counter
     .builder("usammenhengende_arbeidsforhold")
-    .tags("ytelse", ytelse.metricName())
+    .tags("ytelse", ytelse.name())
     .description("counter for usammenhengende arbeidsforhold")
     .register(Metrics.globalRegistry)
 
 fun harIkkeArbeidsforhold12MndTilbakeCounter(ytelse: Ytelse): Counter = Counter
     .builder("ingen_arbeidsforhold_fra_12_mnd_tilbake")
-    .tags("ytelse", ytelse.metricName())
+    .tags("ytelse", ytelse.name())
     .description("counter for brukere som ikke har arbeidsforhold som starter 12 mnd tilbake")
     .register(Metrics.globalRegistry)
 
 fun antallDagerUtenArbeidsforhold(ytelse: Ytelse): DistributionSummary = DistributionSummary
     .builder("antall_dager_uten_arbeidsforhold")
     .publishPercentileHistogram()
-    .tags("ytelse", ytelse.metricName())
+    .tags("ytelse", ytelse.name())
     .description("")
     .register(Metrics.globalRegistry)
 
 fun antallDagerMellomArbeidsforhold(ytelse: Ytelse): DistributionSummary = DistributionSummary
     .builder("antall_dager_mellom_arbeidsforhold")
     .publishPercentileHistogram()
-    .tags("ytelse", ytelse.metricName())
+    .tags("ytelse", ytelse.name())
     .description("")
     .register(Metrics.globalRegistry)
 
 fun statsborgerskapUavklartForRegel(statsborgerskap: String, ytelse: Ytelse, regel: RegelId): Counter = Counter
     .builder("statsborgerskap_uavklart_for_regel")
-    .tags("statsborgerskap", statsborgerskap, "ytelse", ytelse.metricName(), "regel", regel.identifikator)
+    .tags("statsborgerskap", statsborgerskap, "ytelse", ytelse.name(), "regel", regel.identifikator)
     .description("")
     .register(Metrics.globalRegistry)
 
 fun flereStatsborgerskapCounter(antallStatsborgerskap: String, ytelse: Ytelse): Counter = Counter
     .builder("flere_statsborgerskap")
-    .tags("statsborgerskap", antallStatsborgerskap, "ytelse", ytelse.metricName())
+    .tags("statsborgerskap", antallStatsborgerskap, "ytelse", ytelse.name())
     .description("")
     .register(Metrics.globalRegistry)
 
 fun endretStatsborgerskapSisteÅretCounter(statsborgerskapEndretSisteÅret: Boolean, ytelse: Ytelse): Counter = Counter
     .builder("endret_statsborgerskap_siste_aaret")
-    .tags("endret_statsborgerskap", mapEndretStatsborgerskapBooleanTilMetrikkVerdi(statsborgerskapEndretSisteÅret), "ytelse", ytelse.metricName())
+    .tags("endret_statsborgerskap", mapEndretStatsborgerskapBooleanTilMetrikkVerdi(statsborgerskapEndretSisteÅret), "ytelse", ytelse.name())
     .description("")
     .register(Metrics.globalRegistry)
 

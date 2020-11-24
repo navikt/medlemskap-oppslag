@@ -2,7 +2,7 @@ package no.nav.medlemskap.regler.funksjoner
 
 import no.nav.medlemskap.common.*
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.domene.Ytelse.Companion.metricName
+import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.regler.common.Funksjoner.isNotNullOrEmpty
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
 import java.time.LocalDate
@@ -156,9 +156,9 @@ object ArbeidsforholdFunksjoner {
             }
 
             samletStillingsprosent += vektetStillingsprosentForArbeidsforhold
-            stillingsprosentCounter(vektetStillingsprosentForArbeidsforhold, ytelse.metricName()).increment()
+            stillingsprosentCounter(vektetStillingsprosentForArbeidsforhold, ytelse.name()).increment()
         }
-        samletStillingsprosentCounter(samletStillingsprosent, ytelse.metricName()).increment()
+        samletStillingsprosentCounter(samletStillingsprosent, ytelse.name()).increment()
         return samletStillingsprosent >= gittStillingsprosent
     }
 
