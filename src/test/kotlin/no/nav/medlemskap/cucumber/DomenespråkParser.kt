@@ -106,6 +106,12 @@ object DomenespråkParser : BasisDomeneParser() {
         return if (verdi == null) null else Skipsregister.valueOf(verdi)
     }
 
+    fun parseFartsområde(rad: Map<String, String>): Fartsomraade? {
+        val verdi = valgfriVerdi(FARTSOMRÅDE.nøkkel, rad)
+
+        return if (verdi == null) null else Fartsomraade.valueOf(verdi)
+    }
+
     fun parseArbeidsforholdstype(rad: Map<String, String>): Arbeidsforholdstype {
         val verdi = verdi(ARBEIDSFORHOLDSTYPE.nøkkel, rad)
 
@@ -204,6 +210,10 @@ object DomenespråkParser : BasisDomeneParser() {
 
     fun mapSkipsregister(dataTable: DataTable?): Skipsregister {
         return mapDataTable(dataTable, SkipsregisterMapper())[0]
+    }
+
+    fun mapFartsomraade(dataTable: DataTable?): Fartsomraade {
+        return mapDataTable(dataTable, FartsomraadeMapper())[0]
     }
 
     fun mapProsent(dataTable: DataTable?): Double {
@@ -433,6 +443,12 @@ object DomenespråkParser : BasisDomeneParser() {
         }
     }
 
+    class FartsomraadeMapper : RadMapper<Fartsomraade> {
+        override fun mapRad(rad: Map<String, String>): Fartsomraade {
+            return Fartsomraade.valueOf(parseString(FARTSOMRÅDE, rad))
+        }
+    }
+
     class DekningMapper : RadMapper<String> {
         override fun mapRad(rad: Map<String, String>): String {
             return parseString(MEDLEMSKAP_DEKNING, rad)
@@ -624,6 +640,7 @@ object DomenespråkParser : BasisDomeneParser() {
                 ),
                 parseString(YRKESKODE, rad),
                 parseSkipsregister(rad),
+                null,
                 parseDouble(STILLINGSPROSENT, rad),
                 parseValgfriDouble(BEREGNET_ANTALL_TIMER_PR_UKE, rad)
             )
@@ -776,6 +793,7 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     DOEDSDATO("Dødsdato"),
     ER_MEDLEM("Er medlem"),
     FRA_OG_MED_DATO("Fra og med dato"),
+    FARTSOMRÅDE("Fartsområde"),
     FØRSTE_DAG_FOR_YTELSE("Første dag for ytelse"),
     FØDSELSNUMMER("Fødselsnummer"),
     GYLDIG_FRA_OG_MED("Gyldig fra og med dato"),

@@ -55,7 +55,7 @@ Egenskap: Mapping av arbeidsgivertype i arbeidsforhold
       | permisjonVedMilitaertjeneste| PERMISJON_VED_MILITAERTJENESTE |
       | permittering                | PERMITTERING                   |
       | utdanningspermisjon         | UTDANNINGSPERMISJON            |
-      | velferdspermisjon           | VELFERDSPERMISJON               |
+      | velferdspermisjon           | VELFERDSPERMISJON              |
 
 
 

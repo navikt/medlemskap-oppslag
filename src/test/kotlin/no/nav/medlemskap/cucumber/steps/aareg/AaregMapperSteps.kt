@@ -73,6 +73,10 @@ class AaregMapperSteps : No {
             arbeidsavtaleBuilder.skipsregister = aaregDomenespraakParser.mapSkipsregister(dataTable)
         }
 
+        Gitt<DataTable>("følgende om fartsområde fra AaRegArbeidsavtale") { dataTable: DataTable? ->
+            arbeidsavtaleBuilder.fartsomraade = aaregDomenespraakParser.mapFartsomraade(dataTable)
+        }
+
         Gitt<DataTable>("følgende om stillingsprosent fra AaRegArbeidsavtale") { dataTable: DataTable? ->
             arbeidsavtaleBuilder.stillingsprosent = aaregDomenespraakParser.mapStillingsprosent(dataTable)
         }
@@ -166,6 +170,11 @@ class AaregMapperSteps : No {
         Så<DataTable>("mappet skipsregister være") { dataTable: DataTable? ->
             val skipsregisterForventet = DomenespråkParser.mapSkipsregister(dataTable)
             arbeidsforhold[0].arbeidsavtaler[0].skipsregister.shouldBe(skipsregisterForventet)
+        }
+
+        Så<DataTable>("mappet fartsområde skal være") { dataTable: DataTable? ->
+            val fartsomraadeForventet = DomenespråkParser.mapFartsomraade(dataTable)
+            arbeidsforhold[0].arbeidsavtaler[0].fartsomraade.shouldBe(fartsomraadeForventet)
         }
 
         Så<DataTable>("mappet prosent skal være") { dataTable: DataTable? ->

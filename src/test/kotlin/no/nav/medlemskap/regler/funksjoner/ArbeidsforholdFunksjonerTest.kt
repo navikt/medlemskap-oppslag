@@ -89,8 +89,8 @@ class ArbeidsforholdFunksjonerTest {
             tom = LocalDate.of(2020, 1, 1)
         )
 
-        val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode, arbeidsavtalePeriode, "1234", Skipsregister.NOR, 25.0, 9.0)
-        val arbeidsavtale2 = Arbeidsavtale(arbeidsavtalePeriode, arbeidsavtalePeriode, "4321", null, 35.0, 9.0)
+        val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode, arbeidsavtalePeriode, "1234", Skipsregister.NOR, Fartsomraade.INNENRIKS, 25.0, 9.0)
+        val arbeidsavtale2 = Arbeidsavtale(arbeidsavtalePeriode, arbeidsavtalePeriode, "4321", null, null, 35.0, 9.0)
 
         val arbeidsforhold = createArbeidsforhold(arbeidsforholdPeriode)
         arbeidsforhold.arbeidsavtaler = listOf(arbeidsavtale, arbeidsavtale2)
@@ -266,6 +266,7 @@ class ArbeidsforholdFunksjonerTest {
                         periode = kontrollperiodeFra2019Til2020.periode,
                         gyldighetsperiode = kontrollperiodeFra2019Til2020.periode,
                         yrkeskode = "Yrkeskode",
+                        fartsomraade = null,
                         skipsregister = null,
                         stillingsprosent = 25.0,
                         beregnetAntallTimerPrUke = null
@@ -362,7 +363,7 @@ class ArbeidsforholdFunksjonerTest {
     }
 
     private fun createArbeidsforhold(arbeidsforholdPeriode: Periode, stillingsprosent: Double = 100.0, arbeidsavtalePeriode: Periode = arbeidsforholdPeriode): Arbeidsforhold {
-        val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode, arbeidsavtalePeriode, "11111", Skipsregister.NOR, stillingsprosent, null)
+        val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode, arbeidsavtalePeriode, "11111", Skipsregister.NOR, Fartsomraade.INNENRIKS, stillingsprosent, null)
 
         val arbeidsforhold = Arbeidsforhold(
             arbeidsforholdPeriode, null, OpplysningspliktigArbeidsgiverType.Organisasjon,
@@ -376,7 +377,7 @@ class ArbeidsforholdFunksjonerTest {
     }
 
     private fun createArbeidsavtale(periode: Periode, stillingsprosent: Double = 100.0): Arbeidsavtale {
-        return Arbeidsavtale(periode, periode, "11111", null, stillingsprosent, 37.5)
+        return Arbeidsavtale(periode, periode, "11111", null, null, stillingsprosent, 37.5)
     }
 
     private val arbeidsforholdMedMindreEnn6Ansatte = lagArbeidsforhold(2)

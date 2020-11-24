@@ -65,9 +65,11 @@ fun mapArbeidsAvtaler(arbeidsforhold: AaRegArbeidsforhold): List<Arbeidsavtale> 
             periode = mapPeriodeTilArbeidsavtale(it),
             gyldighetsperiode = Periode(it.gyldighetsperiode.fom, it.gyldighetsperiode.tom),
             skipsregister = Skipsregister.fraSkipsregisterVerdi(it.skipsregister),
+
             beregnetAntallTimerPrUke = it.beregnetAntallTimerPrUke,
             stillingsprosent = it.stillingsprosent,
-            yrkeskode = it.yrke
+            yrkeskode = it.yrke,
+            fartsomraade = Fartsomraade.fraFartsomraadeVerdi(it.fartsomraade)
         )
     }
 }

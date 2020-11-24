@@ -82,6 +82,9 @@ components:
         skipsregister:
           type: string
           nullable: true
+        fartsomraade:
+          type: string
+          nullable: true
         stillingsprosent:
           type: number
           multipleOf: 0.01
@@ -117,6 +120,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Arbeidsavtale"
+        permisjonPermittering:
+          type: array
+          items:
+            $ref: "#/components/schemas/PermisjonPermittering"
     Arbeidsgiver:
       properties:
         organisasjonsnummer:

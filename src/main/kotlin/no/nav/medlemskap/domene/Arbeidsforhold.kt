@@ -37,6 +37,7 @@ data class Arbeidsavtale(
     val gyldighetsperiode: Periode,
     val yrkeskode: String,
     val skipsregister: Skipsregister?,
+    val fartsomraade: Fartsomraade?,
     val stillingsprosent: Double?,
     val beregnetAntallTimerPrUke: Double?
 ) {
@@ -117,6 +118,18 @@ enum class Skipsregister(val beskrivelse: String) {
         fun fraSkipsregisterVerdi(skipsregisterValue: String?): Skipsregister? {
             if (skipsregisterValue.isNullOrEmpty()) return null
             return valueOf(skipsregisterValue.toUpperCase())
+        }
+    }
+}
+
+enum class Fartsomraade(val beskrivelse: String) {
+    INNENRIKS("innenriks"),
+    UTENRIKS("utenriks");
+
+    companion object {
+        fun fraFartsomraadeVerdi(fartsomradeValue: String?): Fartsomraade? {
+            if (fartsomradeValue.isNullOrEmpty()) return null
+            return valueOf(fartsomradeValue.toUpperCase())
         }
     }
 }

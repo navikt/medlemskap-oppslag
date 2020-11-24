@@ -58,8 +58,13 @@ class AaregDomenespraakParser : BasisDomeneParser() {
     fun mapYrkeskode(dataTable: DataTable?): String {
         return mapDataTable(dataTable, YrkeskodeMapper())[0]
     }
+
     fun mapSkipsregister(dataTable: DataTable?): String {
         return mapDataTable(dataTable, SkipsregisterMapper())[0]
+    }
+
+    fun mapFartsomraade(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, FartsomraadeMapper())[0]
     }
 
     fun mapStillingsprosent(dataTable: DataTable?): Double {
@@ -89,6 +94,12 @@ class AaregDomenespraakParser : BasisDomeneParser() {
     class VarslingskodeMapper : RadMapper<String> {
         override fun mapRad(rad: Map<String, String>): String {
             return parseString(Domenebegrep.VARSLINGSKODE, rad)
+        }
+    }
+
+    class FartsomraadeMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(Domenebegrep.FARTSOMRAADE, rad)
         }
     }
 
@@ -229,6 +240,7 @@ class AaregDomenespraakParser : BasisDomeneParser() {
         BRUKSPERIODE_GYLDIG_FRA("Bruksperiode gyldig fra"),
         BRUKSPERIODE_GYLDIG_TIL("Bruksperiode gyldig til"),
         ENHETSTYPE("Enhetstype"),
+        FARTSOMRAADE("Fartsområde"),
         GYLDIG_FRA_OG_MED_DATO("Gyldig fra og med dato"),
         GYLDIG_TIL_OG_MED_DATO("Gyldig til og med dato"),
         GYLDIGHETSPERIODE_FRA_OG_MED("Gyldighetsperiode gyldig fra"),
