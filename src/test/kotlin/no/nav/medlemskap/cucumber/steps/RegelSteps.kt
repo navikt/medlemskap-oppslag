@@ -9,7 +9,9 @@ import no.nav.medlemskap.common.JsonMapper
 import no.nav.medlemskap.common.LokalWebServer
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.Medlemskapsparametre
-import no.nav.medlemskap.cucumber.steps.pdl.*
+import no.nav.medlemskap.cucumber.steps.pdl.DataOmEktefelleBuilder
+import no.nav.medlemskap.cucumber.steps.pdl.PersonhistorikkBuilder
+import no.nav.medlemskap.cucumber.steps.pdl.PersonhistorikkEktefelleBuilder
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.regler.assertBegrunnelse
@@ -35,8 +37,6 @@ class RegelSteps : No {
     private var personhistorikkEktefelleBuilder = PersonhistorikkEktefelleBuilder()
     private var dataOmEktefelleBuilder = DataOmEktefelleBuilder()
 
-    private val personhistorikkBarn = PersonhistorikkBarnBuilder()
-    private val dataOmBarnBuilder = mutableListOf<DataOmBarnBuilder>()
     private var medlemskap: List<Medlemskap> = emptyList()
 
     private var dataOmBarn: List<DataOmBarn> = emptyList()
@@ -44,7 +44,9 @@ class RegelSteps : No {
     private var arbeidsforhold: List<Arbeidsforhold> = emptyList()
     private var arbeidsavtaleMap = hashMapOf<Int, List<Arbeidsavtale>>()
     private var utenlandsoppholdMap = hashMapOf<Int, List<Utenlandsopphold>>()
-    private var arbeidsgiverMap = hashMapOf<Int, Arbeidsgiver>()
+
+    private val arbeidsgiverMap = mutableMapOf<Int, Arbeidsgiver>()
+    private val ansatteMap = hashMapOf<String?, List<Ansatte>>()
 
     private var arbeidsavtaleEktefelleMap = hashMapOf<Int, List<Arbeidsavtale>>()
 
@@ -130,6 +132,20 @@ class RegelSteps : No {
             arbeidsgiverMap[arbeidsforholdIndeks] = arbeidsgivere[0]
         }
 
+        Gitt("følgende detaljer om ansatte for arbeidsgiver med org.nr {string}") { orgnr: String?, dataTable: DataTable? ->
+            val ansatte = domenespråkParser.mapAnsatte(dataTable)
+            if (ansatte.isNotEmpty()) {
+                ansatteMap.put(orgnr, ansatte)
+            }
+        }
+
+        Gitt("følgende detaljer om ansatte for arbeidsgiver") { dataTable: DataTable? ->
+            val ansatte = domenespråkParser.mapAnsatte(dataTable)
+            if (ansatte.isNotEmpty()) {
+                ansatteMap.put(null, ansatte)
+            }
+        }
+
         Gitt("følgende arbeidsavtaler i arbeidsforholdet") { dataTable: DataTable? ->
             arbeidsavtaleMap[0] = domenespråkParser.mapArbeidsavtaler(dataTable)
         }
@@ -207,7 +223,7 @@ class RegelSteps : No {
         Når("tjenestekall med følgende parametere behandles") { dataTable: DataTable? ->
             val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
             input = LokalWebServer.byggInput(medlemskapsparametre)
-            LokalWebServer.testdatagrunnlag = byggDatagrunnlag(medlemskapsparametre)
+            LokalWebServer.testDatagrunnlag = byggDatagrunnlag(medlemskapsparametre)
             LokalWebServer.startServer()
         }
 
@@ -356,7 +372,7 @@ class RegelSteps : No {
             brukerinput = Brukerinput(medlemskapsparametre.harHattArbeidUtenforNorge),
             pdlpersonhistorikk = pdlPersonhistorikkBuilder.build(),
             medlemskap = medlemskap,
-            arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgiverMap, arbeidsavtaleMap, utenlandsoppholdMap),
+            arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgiverMap, arbeidsavtaleMap, utenlandsoppholdMap, ansatteMap),
             oppgaver = oppgaverFraGosys,
             dokument = journalPosterFraJoArk,
             ytelse = medlemskapsparametre.ytelse ?: Ytelse.SYKEPENGER,
@@ -370,15 +386,29 @@ class RegelSteps : No {
         arbeidsforholdListe: List<Arbeidsforhold>,
         arbeidsgiverMap: Map<Int, Arbeidsgiver>,
         arbeidsavtaleMap: Map<Int, List<Arbeidsavtale>>,
-        utenlandsoppholdMap: Map<Int, List<Utenlandsopphold>>
+        utenlandsoppholdMap: Map<Int, List<Utenlandsopphold>>,
+        ansatteMap: Map<String?, List<Ansatte>>
     ): List<Arbeidsforhold> {
         return arbeidsforholdListe
             .mapIndexed { index, arbeidsforhold ->
                 arbeidsforhold.copy(
                     utenlandsopphold = utenlandsoppholdMap[index] ?: emptyList(),
-                    arbeidsgiver = arbeidsgiverMap[index] ?: VANLIG_NORSK_ARBEIDSGIVER,
+                    arbeidsgiver = byggArbeidsgiver(arbeidsgiverMap[index], ansatteMap) ?: VANLIG_NORSK_ARBEIDSGIVER,
                     arbeidsavtaler = arbeidsavtaleMap[index] ?: emptyList()
                 )
             }
+    }
+
+    private fun byggArbeidsgiver(arbeidsgiver: Arbeidsgiver?, ansatteMap: Map<String?, List<Ansatte>>): Arbeidsgiver? {
+        if (arbeidsgiver == null) {
+            return null
+        }
+
+        val ansatte = ansatteMap[arbeidsgiver.organisasjonsnummer] ?: ansatteMap[null]
+        if (ansatte != null) {
+            return arbeidsgiver.copy(ansatte = ansatte)
+        }
+
+        return arbeidsgiver
     }
 }

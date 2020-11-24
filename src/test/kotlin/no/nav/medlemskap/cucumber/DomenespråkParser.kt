@@ -598,7 +598,7 @@ object DomenespråkParser : BasisDomeneParser() {
                 organisasjonsnummer = parseValgfriString(IDENTIFIKATOR, rad),
                 ansatte = listOf(Ansatte(parseValgfriInt(ANTALL_ANSATTE, rad), null, null)),
                 konkursStatus = konkursStatuser,
-                juridiskeEnheter = listOf(JuridiskEnhet(parseValgfriString(IDENTIFIKATOR, rad), parseValgfriString(JURIDISKENHETSTYPE, rad), parseValgfriInt(ANTALL_ANSATTE_I_JURIDISK_ENHET, rad)))
+                juridiskeEnheter = listOf(JuridiskEnhet(parseValgfriString(JURIDISK_ORG_NR, rad), parseValgfriString(JURIDISK_ENHETSTYPE, rad), parseValgfriInt(JURIDISK_ANTALL_ANSATTE, rad)))
             )
         }
     }
@@ -720,7 +720,6 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     BOSTED("Bosted"),
     AKTIV_DATO("Aktiv dato"),
     ANTALL_ANSATTE("Antall ansatte"),
-    ANTALL_ANSATTE_I_JURIDISK_ENHET("Antall ansatte i juridisk enhet"),
     ARBEIDSFORHOLDSTYPE("Arbeidsforholdstype"),
     ARBEIDSGIVER_ID("Arbeidsgiver Id"),
     ARBEIDSGIVERTYPE("Arbeidsgivertype"),
@@ -736,13 +735,16 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     GYLDIG_FRA_OG_MED("Gyldig fra og med dato"),
     GYLDIG_TIL_OG_MED("Gyldig til og med dato"),
     GYLDIGHETSPERIODE_FRA_OG_MED("Gyldighetsperiode gyldig fra"),
-    GYLDIGHETSPERIODE_TIL_OG_MED("Bruksperiode gyldig til"),
+    GYLDIGHETSPERIODE_TIL_OG_MED("Gyldighetsperiode gyldig til"),
     HAR_HATT_ARBEID_UTENFOR_NORGE("Har hatt arbeid utenfor Norge"),
     IDENT("Ident"),
     IDENTIFIKATOR("Identifikator"),
     JOURNAL_STATUS("Journalstatus"),
     JOURNALPOST_ID("JournalpostId"),
     JOURNALPOST_TYPE("JournalpostType"),
+    JURIDISK_ANTALL_ANSATTE("Antall ansatte i juridisk enhet"),
+    JURIDISK_ENHETSTYPE("Juridisk enhetstype"),
+    JURIDISK_ORG_NR("Juridisk orgnr"),
     KONKURSSTATUS("Konkursstatus"),
     KONTAKTADRESSE("Kontaktadresse"),
     LANDKODE("Landkode"),
@@ -768,7 +770,6 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     TIL_OG_MED_DATO("Til og med dato"),
     TITTEL("Tittel"),
     YRKESKODE("Yrkeskode"),
-    JURIDISKENHETSTYPE("Juridisk enhetstype"),
     YTELSE("Ytelse");
 
     override fun nøkkel(): String {
