@@ -1,5 +1,4 @@
 package no.nav.medlemskap.domene
-
 import java.time.YearMonth
 
 data class Arbeidsforhold(
@@ -8,7 +7,8 @@ data class Arbeidsforhold(
     val arbeidsgivertype: OpplysningspliktigArbeidsgiverType,
     val arbeidsgiver: Arbeidsgiver,
     val arbeidsforholdstype: Arbeidsforholdstype,
-    var arbeidsavtaler: List<Arbeidsavtale>
+    var arbeidsavtaler: List<Arbeidsavtale>,
+    val permisjonPermittering: List<PermisjonPermittering>?
 ) : Comparable<Arbeidsforhold> {
 
     /**
@@ -37,6 +37,7 @@ data class Arbeidsavtale(
     val gyldighetsperiode: Periode,
     val yrkeskode: String,
     val skipsregister: Skipsregister?,
+    val fartsomraade: Fartsomraade?,
     val stillingsprosent: Double?,
     val beregnetAntallTimerPrUke: Double?
 ) {
@@ -55,6 +56,14 @@ data class Arbeidsgiver(
     val ansatte: List<Ansatte>?,
     val konkursStatus: List<String?>?,
     val juridiskeEnheter: List<JuridiskEnhet?>?
+)
+
+data class PermisjonPermittering(
+    val periode: Periode,
+    val permisjonPermitteringId: String,
+    val prosent: Double?,
+    val type: PermisjonPermitteringType,
+    val varslingskode: String?
 )
 
 data class JuridiskEnhet(
@@ -83,6 +92,23 @@ enum class Arbeidsforholdstype(val kodeverdi: String) {
     }
 }
 
+enum class PermisjonPermitteringType(val kodeverdi: String) {
+    PERMISJON("permisjon"),
+    PERMISJON_MED_FORELDREPENGER("permisjonMedForeldrepenger"),
+    PERMISJON_VED_MILITAERTJENESTE("permisjonVedMilitaertjeneste"),
+    PERMITTERING("permittering"),
+    UTDANNINGSPERMISJON("utdanningspermisjon"),
+    VELFERDSPERMISJON("velferdspermisjon"),
+    ANNET("Annet")
+    ;
+
+    companion object {
+        fun fraPermisjonPermitteringVerdi(permisjonPermittering: String): PermisjonPermitteringType {
+            return PermisjonPermitteringType.values().first { it.kodeverdi == permisjonPermittering }
+        }
+    }
+}
+
 enum class Skipsregister(val beskrivelse: String) {
     NIS("Norsk InternasjonaltSkipsregister"),
     NOR("Norsk Ordinært Skipsregister"),
@@ -92,6 +118,18 @@ enum class Skipsregister(val beskrivelse: String) {
         fun fraSkipsregisterVerdi(skipsregisterValue: String?): Skipsregister? {
             if (skipsregisterValue.isNullOrEmpty()) return null
             return valueOf(skipsregisterValue.toUpperCase())
+        }
+    }
+}
+
+enum class Fartsomraade(val beskrivelse: String) {
+    INNENRIKS("innenriks"),
+    UTENRIKS("utenriks");
+
+    companion object {
+        fun fraFartsomraadeVerdi(fartsomradeValue: String?): Fartsomraade? {
+            if (fartsomradeValue.isNullOrEmpty()) return null
+            return valueOf(fartsomradeValue.toUpperCase())
         }
     }
 }

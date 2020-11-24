@@ -58,8 +58,13 @@ class AaregDomenespraakParser : BasisDomeneParser() {
     fun mapYrkeskode(dataTable: DataTable?): String {
         return mapDataTable(dataTable, YrkeskodeMapper())[0]
     }
+
     fun mapSkipsregister(dataTable: DataTable?): String {
         return mapDataTable(dataTable, SkipsregisterMapper())[0]
+    }
+
+    fun mapFartsomraade(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, FartsomraadeMapper())[0]
     }
 
     fun mapStillingsprosent(dataTable: DataTable?): Double {
@@ -68,6 +73,52 @@ class AaregDomenespraakParser : BasisDomeneParser() {
 
     fun mapBeregnetAntallTimerPerUke(dataTable: DataTable?): Double {
         return mapDataTable(dataTable, BeregnetAntallTimerMapperPerUke())[0]
+    }
+
+    fun mapPermitteringsId(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, PermitteringsIdMapper())[0]
+    }
+
+    fun mapProsent(dataTable: DataTable?): Double {
+        return mapDataTable(dataTable, ProsentMapper())[0]
+    }
+
+    fun mapType(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, PermitteringsTypeMapper())[0]
+    }
+
+    fun mapVarslingskode(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, VarslingskodeMapper())[0]
+    }
+
+    class VarslingskodeMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(Domenebegrep.VARSLINGSKODE, rad)
+        }
+    }
+
+    class FartsomraadeMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(Domenebegrep.FARTSOMRAADE, rad)
+        }
+    }
+
+    class PermitteringsTypeMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(Domenebegrep.PERMITTERINGSTYPE, rad)
+        }
+    }
+
+    class ProsentMapper : RadMapper<Double> {
+        override fun mapRad(rad: Map<String, String>): Double {
+            return parseDouble(Domenebegrep.PROSENT, rad)
+        }
+    }
+
+    class PermitteringsIdMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(Domenebegrep.PERMISJONPERMITTERINGID, rad)
+        }
     }
 
     class BeregnetAntallTimerMapperPerUke : RadMapper<Double> {
@@ -189,17 +240,22 @@ class AaregDomenespraakParser : BasisDomeneParser() {
         BRUKSPERIODE_GYLDIG_FRA("Bruksperiode gyldig fra"),
         BRUKSPERIODE_GYLDIG_TIL("Bruksperiode gyldig til"),
         ENHETSTYPE("Enhetstype"),
+        FARTSOMRAADE("Fartsområde"),
         GYLDIG_FRA_OG_MED_DATO("Gyldig fra og med dato"),
         GYLDIG_TIL_OG_MED_DATO("Gyldig til og med dato"),
         GYLDIGHETSPERIODE_FRA_OG_MED("Gyldighetsperiode gyldig fra"),
         GYLDIGHETSPERIODE_TIL_OG_MED("Bruksperiode gyldig til"),
         LANDKODE("Landkode"),
         ORGANISASJONSNUMMER("Organisasjonsnummer"),
+        PERMISJONPERMITTERINGID("PermisjonPermitteringId"),
+        PERMITTERINGSTYPE("PermisjonPermitteringType"),
+        PROSENT("Prosent"),
         TYPE("Type"),
         SKIPSREGISTER("Skipsregister"),
         STATUS("Konkurstatus"),
         STILLINGSPROSENT("Stillingsprosent"),
         RAPPORTERINGSPERIODE("Rapporteringsperiode"),
+        VARSLINGSKODE("Varslingkode"),
         YRKESKODE("Yrke"),
         GYLDIG_FRA_OG_MED("Gyldig fra og med"),
         GYLDIG_TIL_OG_MED("Gyldig til og med"),

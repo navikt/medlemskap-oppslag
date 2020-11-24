@@ -155,7 +155,8 @@ private fun arbeidsforhold(): Arbeidsforhold {
             listOf(JuridiskEnhet("juridiskOrgnummer", "juridiskEnhetstype", 20))
         ),
         Arbeidsforholdstype.NORMALT,
-        listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, 100.toDouble(), 37.5))
+        listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, null, 100.toDouble(), 37.5)),
+        permisjonPermittering = emptyList()
     )
 }
 
