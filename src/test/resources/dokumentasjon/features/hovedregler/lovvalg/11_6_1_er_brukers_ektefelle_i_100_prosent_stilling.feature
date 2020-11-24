@@ -17,10 +17,12 @@ Egenskap: Regel 11.6.1: Har ektefelle til bruker vært i 100% stilling siste 12 
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Svar>"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelse utfylt være "<Utfylt begrunnelse>"
 
     Eksempler:
-      | Stillingsprosent | Svar |
-      | 0                | Nei  |
-      | 99               | Nei  |
-      | 100              | Ja   |
-      | 110              | Ja   |
+      | Stillingsprosent | Svar | Utfylt begrunnelse |
+      | 0                | Nei  | Ja                 |
+      | 99               | Nei  | Ja                 |
+      | 100              | Ja   | Nei                |
+      | 110              | Ja   | Nei                |

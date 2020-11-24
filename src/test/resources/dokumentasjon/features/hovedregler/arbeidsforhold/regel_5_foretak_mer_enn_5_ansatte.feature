@@ -22,14 +22,16 @@ Egenskap: Regel 5: Har arbeidsgiver sin hovedaktivitet i Norge?
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Svar>"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelse utfylt være "<Utfylt begrunnelse>"
 
     Eksempler:
-      | Antall ansatte | Svar |
-      | 4              | Nei  |
-      | 5              | Nei  |
-      | 6              | Ja   |
-      | 9              | Ja   |
-      |                | Nei  |
+      | Antall ansatte | Svar | Utfylt begrunnelse |
+      | 4              | Nei  | Ja                 |
+      | 5              | Nei  | Ja                 |
+      | 6              | Ja   | Nei                |
+      | 9              | Ja   | Nei                |
+      |                | Nei  | Ja                 |
 
 
   Scenariomal: Person med arbeidsgiver med mer enn 5 ansatte i juridisk enhet får "Ja"

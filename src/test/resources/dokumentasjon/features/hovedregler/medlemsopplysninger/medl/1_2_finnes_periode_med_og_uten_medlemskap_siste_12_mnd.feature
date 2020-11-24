@@ -16,6 +16,8 @@ Egenskap: Regel 1.2: Er det periode både med og uten medlemskap innenfor 12 mnd
       | 30.01.2020      | 10.02.2020      | Nei                           |
 
     Så skal svaret være "Ja"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelse utfylt være "Ja"
 
   Scenario: Regel 1.2: Er det periode både med og uten medlemskap innenfor 12 mnd?
 

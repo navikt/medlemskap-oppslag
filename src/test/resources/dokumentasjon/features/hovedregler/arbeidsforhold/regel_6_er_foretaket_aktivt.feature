@@ -18,8 +18,10 @@ Egenskap: Regel 6: Er foretaket aktivt?
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Svar>"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelse utfylt være "<Utfylt begrunnelse>"
 
     Eksempler:
-      | Konkursstatus | Svar |
-      |               | Ja   |
-      | OSKP          | Nei  |
+      | Konkursstatus | Svar | Utfylt begrunnelse |
+      |               | Ja   | Nei                |
+      | OSKP          | Nei  | Ja                 |

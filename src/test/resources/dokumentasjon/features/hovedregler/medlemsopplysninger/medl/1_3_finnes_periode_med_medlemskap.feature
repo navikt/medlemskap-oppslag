@@ -14,10 +14,12 @@ Egenskap: Regel 1.3: Er det periode med medlemskap innenfor 12 mnd?
       | 30.01.2020      | 10.02.2020      | Nei                           |
 
     Så skal svaret være "<Svar>"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelse utfylt være "<Utfylt begrunnelse>"
 
     Eksempler:
-      | Er medlem | Til og med dato | Svar |
-      | Ja        | 01.06.2020      | Ja   |
-      | Ja        | 02.02.2020      | Ja   |
-      | Ja        | 02.02.9999      | Ja   |
-      | Nei       | 01.06.2020      | Nei  |
+      | Er medlem | Til og med dato | Svar | Utfylt begrunnelse |
+      | Ja        | 01.06.2020      | Ja   | Nei                |
+      | Ja        | 02.02.2020      | Ja   | Nei                |
+      | Ja        | 02.02.9999      | Ja   | Nei                |
+      | Nei       | 01.06.2020      | Nei  | Ja                 |

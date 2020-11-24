@@ -28,8 +28,8 @@ Egenskap: Regelflyt for regel 13
   Scenariomal: Regelflyt for regel 13
 
     Gitt følgende opplysninger om dødsfall i personhistorikken:
-      | Dødsdato           |
-      | <Dødsdato>          |
+      | Dødsdato   |
+      | <Dødsdato> |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
@@ -41,8 +41,8 @@ Egenskap: Regelflyt for regel 13
 
 
     Eksempler:
-      | Dødsdato          | Regel 13 | Medlemskap |
-      | 23.10.2022        | Ja       | Ja         |
+      | Dødsdato   | Regel 13 | Medlemskap |
+      | 23.10.2022 | Ja       | Ja         |
 
 
 
