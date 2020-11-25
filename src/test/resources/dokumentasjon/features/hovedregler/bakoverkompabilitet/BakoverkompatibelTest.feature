@@ -10,7 +10,7 @@ Egenskap: Bakoverkompatibel test
       | 10.10.1975 | NORM      | AAPNET | Tema |
 
     Og følgende journalposter fra Joark
-      | JournalpostId | Tittel | Journalposttype | Journalstatus | Tema |
+      | JournalpostId | Tittel | JournalpostType | Journalstatus | Tema |
       | Id            | Tittel | Posttype        | Status        | Tema |
 
     Og følgende medlemsunntak fra MEDL
@@ -21,11 +21,11 @@ Egenskap: Bakoverkompatibel test
       | Landkode | Fra og med dato | Til og med dato |
       | NOR      | 10.10.1975      | 01.08.2020      |
 
-    Og følgende bostedsadresser i personhistorikken
+    Og følgende kontaktadresser i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
       | NOR      | 10.10.1975      | 01.08.2020      |
 
-    Og følgende kontaktadresser i personhistorikken
+    Og følgende oppholdsadresser i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
       | NOR      | 10.10.1975      | 01.08.2020      |
 
@@ -41,9 +41,13 @@ Egenskap: Bakoverkompatibel test
       | Ident         | Bosted | Fra og med dato | Til og med dato |
       | 0101197512345 | NOR    | 10.10.1975      | 01.08.2020      |
 
+    Og følgende personhistorikk for barn fra PDL
+      | Ident         | Bosted | Kontaktadresse | Fra og med dato |
+      | 0101201012345 | NOR    | NOR            | 18.07.2010      |
+
     Og følgende arbeidsforhold til ektefelle fra AAReg
-      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
-      | 10.10.1975      | 01.08.2020      | Organisasjon     | NORMALT             |
+      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Arbeidsgiver Id |
+      | 10.10.1975      | 01.08.2020      | Organisasjon     | NORMALT             | 1               |
 
     Og følgende arbeidsavtaler til ektefelle i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister | Beregnet antall timer pr uke |
@@ -62,24 +66,40 @@ Egenskap: Bakoverkompatibel test
       | 10.10.1975      | 01.08.2020      | Organisasjon     | NORMALT             | 1               |
 
     Og følgende arbeidsgiver i arbeidsforholdet
-      | Identifikator       | Arbeidsgivertype | Landkode | Antall ansatte | Juridisk enhetstype |
-      | organisasjonsnummer | STAT             | NOR      | 10             | STAT                |
+      | Identifikator       | Arbeidsgivertype | Landkode | Antall ansatte | Antall ansatte i juridisk enhet | Juridisk enhetstype | Juridisk orgnr    | Konkursstatus |
+      | organisasjonsnummer | STAT             | NOR      | 10             | 20                              | STAT                | juridiskOrgnummer | Konkursstatus |
+
+    Og følgende detaljer om ansatte for arbeidsgiver
+      | Antall ansatte | Gyldighetsperiode gyldig fra | Gyldighetsperiode gyldig til | Bruksperiode gyldig fra | Bruksperiode gyldig til |
+      | 10             | 10.10.1975                   | 01.08.2020                   | 10.10.1975              | 01.08.2020              |
 
     Og følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister | Beregnet antall timer pr uke |
       | 10.10.1975      | 01.08.2020      | yrkeskode | 100              | NIS           | 37.5                         |
 
+    Og følgende utenlandsopphold i arbeidsforholdet
+      | Landkode | Fra og med dato | Til og med dato | Rapporteringsperiode |
+      | SWE      | 10.10.1975      | 01.08.2020      | 2010-01              |
 
   Scenario: Bakoverkompatibel test uten ytelse i request
-    Når rest kall med følgende parametere
+    Når tjenestekall med følgende parametere behandles
       | Fødselsnummer | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 15076500565   | 01.01.2019      | 31.12.2019      | Nei                           |
 
     Så skal forventet json respons være "forventetRespons"
 
-  Scenario: Kontraktstest
-    Når rest kall med følgende parametere
+
+  Scenario: Kontraktstest for tjenestekall
+    Når tjenestekall med følgende parametere behandles
       | Fødselsnummer | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge | Ytelse     |
       | 15076500565   | 01.01.2019      | 31.12.2019      | Nei                           | SYKEPENGER |
 
     Så Skal kontrakt være OK
+
+
+  Scenario: Kontraktstest for kjøring av regler fra datagrunnlag
+    Når tjenestekall for regler med følgende parametere behandles
+      | Fødselsnummer | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 15076500565   | 01.01.2019      | 31.12.2019      | Nei                           |
+
+    Så Skal kontrakt for Regler fra datagrunnlag være OK
