@@ -14,17 +14,19 @@ Egenskap: Regel 1.6: Er dekning uavklart?
       | 30.01.2020      | 10.02.2020      | Nei                           | <Ytelse> |
 
     Så skal svaret være "<Svar>"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelse utfylt være "<Utfylt begrunnelse>"
 
     Eksempler:
-      | Dekning           | Ytelse           | Svar |
-      |                   | SYKEPENGER       | Ja   |
-      | Full              | SYKEPENGER       | Ja   |
-      | FTL_2-6           | SYKEPENGER       | Nei  |
-      | FTL_2-7a_2_ledd_a | SYKEPENGER       | Ja   |
-      | FTL_2-7a_2_ledd_a | DAGPENGER        | Nei  |
-      | FTL_2-7a_2_ledd_a | ENSLIG_FORSORGER | Nei  |
-      | Full              | DAGPENGER        | Ja   |
-      | Full              | ENSLIG_FORSORGER | Ja   |
+      | Dekning           | Ytelse           | Svar | Utfylt begrunnelse |
+      |                   | SYKEPENGER       | Ja   | Nei                |
+      | Full              | SYKEPENGER       | Ja   | Nei                |
+      | FTL_2-6           | SYKEPENGER       | Nei  | Ja                 |
+      | FTL_2-7a_2_ledd_a | SYKEPENGER       | Ja   | Nei                |
+      | FTL_2-7a_2_ledd_a | DAGPENGER        | Nei  | Ja                 |
+      | FTL_2-7a_2_ledd_a | ENSLIG_FORSORGER | Nei  | Ja                 |
+      | Full              | DAGPENGER        | Ja   | Nei                |
+      | Full              | ENSLIG_FORSORGER | Ja   | Nei                |
 
   Scenariomal: Regel 1.6: Er dekning uavklart? Flere perioder fra MEDL
 

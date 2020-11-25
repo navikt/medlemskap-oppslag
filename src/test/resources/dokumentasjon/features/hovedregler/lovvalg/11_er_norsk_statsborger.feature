@@ -13,11 +13,13 @@ Egenskap: Regel 11: Er bruker norsk statborger?
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Svar>"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelse utfylt være "<Utfylt begrunnelse>"
 
     Eksempler:
-      | Statsborgerskap | Svar |
-      | NOR             | Ja   |
-      | FRA             | Nei  |
+      | Statsborgerskap | Svar | Utfylt begrunnelse |
+      | NOR             | Ja   | Nei                |
+      | FRA             | Nei  | Ja                 |
 
   Scenariomal: Regel 11 - Forskjellige statsborgerskap siste 12 måneder
     Gitt følgende statsborgerskap i personhistorikken

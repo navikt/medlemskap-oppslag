@@ -9,8 +9,8 @@ Egenskap: Regel 11.4: Er brukers ektefelle folkeregistrert som bosatt i Norge?
       | GIFT            | 29.06.2015             | 10108000398             |
 
     Og følgende personhistorikk for ektefelle fra PDL
-      | Ident       | Bosted | Kontaktadresse     | Oppholdsadresse     | Fra og med dato | Til og med dato |
-      | 10108000398 | NOR    | <Kontaktadresse>   | <Oppholdsadresse>  | 18.07.2010      | 15.05.2019      |
+      | Ident       | Bosted | Kontaktadresse   | Oppholdsadresse   | Fra og med dato | Til og med dato |
+      | 10108000398 | NOR    | <Kontaktadresse> | <Oppholdsadresse> | 18.07.2010      | 15.05.2019      |
 
     Når regel "11.4" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
@@ -18,11 +18,13 @@ Egenskap: Regel 11.4: Er brukers ektefelle folkeregistrert som bosatt i Norge?
 
 
     Så skal svaret være "<Svar>"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelse utfylt være "<Utfylt begrunnelse>"
 
     Eksempler:
-      | Kontaktadresse | Oppholdsadresse     | Svar |
-      | NOR            | NOR                 | Ja   |
-      | NOR            | NOR                 | Ja   |
-      | FRA            | NOR                 | Nei  |
-      | NOR            | FRA                 | Nei  |
-      | FRA            | FRA                 | Nei  |
+      | Kontaktadresse | Oppholdsadresse | Svar | Utfylt begrunnelse |
+      | NOR            | NOR             | Ja   | Nei                |
+      | NOR            | NOR             | Ja   | Nei                |
+      | FRA            | NOR             | Nei  | Ja                 |
+      | NOR            | FRA             | Nei  | Ja                 |
+      | FRA            | FRA             | Nei  | Ja                 |

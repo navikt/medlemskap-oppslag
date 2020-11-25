@@ -10,8 +10,10 @@ Egenskap: Regel 9: Har bruker utført arbeid utenfor Norge?
       | 30.01.2020      | 30.01.2021      | <Arbeid utenfor Norge>        |
 
     Så skal svaret være "<Svar>"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelse utfylt være "<Utfylt begrunnelse>"
 
     Eksempler:
-      | Arbeid utenfor Norge | Svar |
-      | Ja                   | Ja   |
-      | Nei                  | Nei  |
+      | Arbeid utenfor Norge | Svar | Utfylt begrunnelse |
+      | Ja                   | Ja   | Ja                 |
+      | Nei                  | Nei  | Nei                |

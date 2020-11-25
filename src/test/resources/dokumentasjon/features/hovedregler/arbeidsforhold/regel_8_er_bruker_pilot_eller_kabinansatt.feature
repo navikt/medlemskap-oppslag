@@ -23,8 +23,10 @@ Egenskap: Regel 8: Er bruker pilot eller kabinansatt?
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Svar>"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelse utfylt være "<Utfylt begrunnelse>"
 
     Eksempler:
-      | Yrkeskode | Svar |
-      | 001       | Nei  |
-      | 5111105   | Ja   |
+      | Yrkeskode | Svar | Utfylt begrunnelse |
+      | 001       | Nei  | Nei                |
+      | 5111105   | Ja   | Ja                 |

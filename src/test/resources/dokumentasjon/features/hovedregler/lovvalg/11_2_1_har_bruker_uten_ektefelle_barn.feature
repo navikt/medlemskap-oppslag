@@ -20,3 +20,5 @@ Egenskap: Regel 11.2.1: Har bruker barn i PDL?
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "Nei"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelse utfylt være "Ja"

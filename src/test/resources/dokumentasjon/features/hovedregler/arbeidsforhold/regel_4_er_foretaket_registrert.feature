@@ -13,9 +13,11 @@ Egenskap: Regel 4: Er foretaket registrert i Foretaksregisteret?
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Svar>"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelse utfylt være "<Utfylt begrunnelse>"
 
     Eksempler:
-      | Arbeidsgivertype | Svar |
-      | Organisasjon     | Ja   |
-      | Person           | Nei  |
+      | Arbeidsgivertype | Svar | Utfylt begrunnelse|
+      | Organisasjon     | Ja   | Nei               |
+      | Person           | Nei  | Ja                |
 
