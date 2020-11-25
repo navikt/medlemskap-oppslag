@@ -3,7 +3,7 @@
 
 Egenskap: Mapping av arbeidsavtaler i arbeidsforhold
 
-  Scenario: Bruker følgende arbeidsavtaler i arbeidsforholdet
+  Scenariomal: Bruker følgende arbeidsavtaler i arbeidsforholdet
     Gitt følgende om AaRegPeriode fra AaRegArbeidsavtale fra AaRegBruksperiode
       | Gyldig fra og med dato      | Gyldig til og med dato |
       | 2018-11-15T21:37:40.835     | 2020-11-15T21:37:40.835|
@@ -17,8 +17,12 @@ Egenskap: Mapping av arbeidsavtaler i arbeidsforhold
       | MATROS |
 
     Og følgende om skipsregister fra AaRegArbeidsavtale
-      | Skipsregister |
-      | NOR           |
+      | Skipsregister         |
+      | <SkipsregisterAareg>  |
+
+    Og følgende om fartsområde fra AaRegArbeidsavtale
+      | Fartsområde          |
+      | <FartsområdeAareg>   |
 
     Og følgende om stillingsprosent fra AaRegArbeidsavtale
       | Stillingsprosent|
@@ -39,8 +43,12 @@ Egenskap: Mapping av arbeidsavtaler i arbeidsforhold
       | 2018-11-15         | 2020-11-15      |
 
     Og mappet skipsregister være
-      | Skipsregister |
-      | NOR           |
+      | Skipsregister   |
+      | <Skipsregister> |
+
+    Og mappet fartsområde skal være
+      | Fartsområde     |
+      | <Fartsområde>   |
 
     Og mappet stillingsprosent være
       | Stillingsprosent|
@@ -53,6 +61,19 @@ Egenskap: Mapping av arbeidsavtaler i arbeidsforhold
     Og mappet yrkeskode være
       | Yrkeskode |
       | MATROS    |
+
+
+    Eksempler:
+      | SkipsregisterAareg | Skipsregister | FartsområdeAareg | Fartsområde |
+      | NOR                | NOR           | innenriks        | INNENRIKS   |
+      | nor                | NOR           | utenriks         | UTENRIKS    |
+      | NIS                | NIS           | innenriks        | INNENRIKS   |
+      | nis                | NIS           | utenriks         | UTENRIKS    |
+      | UTL                | UTL           | innenriks        | INNENRIKS   |
+      | utl                | UTL           | utenriks         | UTENRIKS    |
+
+
+
 
 
 

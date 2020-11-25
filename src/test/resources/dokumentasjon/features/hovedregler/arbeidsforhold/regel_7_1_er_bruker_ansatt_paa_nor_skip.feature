@@ -23,10 +23,12 @@ Egenskap: Regel 7.1: Er bruker ansatt på et norsk skip?
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Svar>"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelse utfylt være "<Utfylt begrunnelse>"
 
     Eksempler:
-      | Skipsregister | Svar |
-      | NIS           | Nei  |
-      | NOR           | Ja   |
-      | UTL           | Nei  |
-      |               | Nei  |
+      | Skipsregister | Svar | Utfylt begrunnelse |
+      | NIS           | Nei  | Ja                 |
+      | NOR           | Ja   | Nei                |
+      | UTL           | Nei  | Ja                 |
+      |               | Nei  | Ja                 |

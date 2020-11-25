@@ -90,7 +90,7 @@ curl -X POST -H "Authorization: Bearer <AAD_TOKEN>" -H "Content-Type: applicatio
 * [eøs-borger som er uavklart](src/test/resources/testpersoner/autogenerert/eøs_borger_uavklart_response.json)
 
 ## Kjøre fra laptop
-* NAV-tunnel må være koblet opp
+* Naisdevice må være koblet opp
 * Kubeconfig riktig satt opp
 * `kubectl port-forward <pod-navn> 8080:7070`
 * Endepunktet er nå tilgjengelig på `localhost:8080

@@ -1,10 +1,7 @@
 package no.nav.medlemskap.services.aareg
 
 import mu.KotlinLogging
-import no.nav.medlemskap.clients.aareg.AaRegArbeidsavtale
-import no.nav.medlemskap.clients.aareg.AaRegArbeidsforhold
-import no.nav.medlemskap.clients.aareg.AaRegOpplysningspliktigArbeidsgiverType
-import no.nav.medlemskap.clients.aareg.AaRegUtenlandsopphold
+import no.nav.medlemskap.clients.aareg.*
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.services.ereg.mapOrganisasjonTilArbeidsgiver
 
@@ -18,7 +15,8 @@ fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, mappedOrganisasj
             arbeidsforholdstype = Arbeidsforholdstype.fraArbeidsforholdtypeVerdi(it.type),
             arbeidsgivertype = mapArbeidsgiverType(it.arbeidsgiver.type),
             arbeidsgiver = mappedOrganisasjonAsArbeidsgiver.first { p -> p.organisasjonsnummer == it.arbeidsgiver.organisasjonsnummer },
-            arbeidsavtaler = mapArbeidsAvtaler(it)
+            arbeidsavtaler = mapArbeidsAvtaler(it),
+            permisjonPermittering = mapPermisjonsPermittering(it)
         )
     }
 }
@@ -31,7 +29,19 @@ fun mapArbeidsforhold(arbeidsforholdMedOrganisasjon: List<ArbeidsforholdOrganisa
             arbeidsforholdstype = Arbeidsforholdstype.fraArbeidsforholdtypeVerdi(it.arbeidsforhold.type),
             arbeidsgivertype = mapArbeidsgiverType(it.arbeidsforhold.arbeidsgiver.type),
             arbeidsgiver = mapOrganisasjonTilArbeidsgiver(it.organisasjon, it.juridiskeEnheter),
-            arbeidsavtaler = mapArbeidsAvtaler(it.arbeidsforhold)
+            arbeidsavtaler = mapArbeidsAvtaler(it.arbeidsforhold),
+            permisjonPermittering = mapPermisjonsPermittering(it.arbeidsforhold)
+        )
+    }
+}
+fun mapPermisjonsPermittering(arbeidsforhold: AaRegArbeidsforhold): List<PermisjonPermittering>? {
+    return arbeidsforhold.permisjonPermitteringer?.map {
+        PermisjonPermittering(
+            periode = mapPeriodeTilPermisjonsPermitteringer(it),
+            type = PermisjonPermitteringType.fraPermisjonPermitteringVerdi(it.type),
+            varslingskode = it.varslingskode,
+            permisjonPermitteringId = it.permisjonPermitteringId,
+            prosent = it.prosent
         )
     }
 }
@@ -55,9 +65,11 @@ fun mapArbeidsAvtaler(arbeidsforhold: AaRegArbeidsforhold): List<Arbeidsavtale> 
             periode = mapPeriodeTilArbeidsavtale(it),
             gyldighetsperiode = Periode(it.gyldighetsperiode.fom, it.gyldighetsperiode.tom),
             skipsregister = Skipsregister.fraSkipsregisterVerdi(it.skipsregister),
+
             beregnetAntallTimerPrUke = it.beregnetAntallTimerPrUke,
             stillingsprosent = it.stillingsprosent,
-            yrkeskode = it.yrke
+            yrkeskode = it.yrke,
+            fartsomraade = Fartsomraade.fraFartsomraadeVerdi(it.fartsomraade)
         )
     }
 }
@@ -83,5 +95,12 @@ fun mapPeriodeTilUtenlandsopphold(utenlandsopphold: AaRegUtenlandsopphold): Peri
     return Periode(
         fom = utenlandsopphold.periode?.fom,
         tom = utenlandsopphold.periode?.tom
+    )
+}
+
+fun mapPeriodeTilPermisjonsPermitteringer(permittering: AaRegPermisjonPermittering): Periode {
+    return Periode(
+        fom = permittering.periode?.fom,
+        tom = permittering.periode?.tom
     )
 }

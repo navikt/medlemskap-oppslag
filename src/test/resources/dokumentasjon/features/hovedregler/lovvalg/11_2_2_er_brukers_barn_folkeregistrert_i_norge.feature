@@ -9,22 +9,24 @@ Egenskap: Regel 11.2.2: Er brukers barn folkeregistrert som bosatt i Norge?
       | 09069534888            | BARN                   | FAR                  |
 
     Og følgende personhistorikk for barn fra PDL
-      | Ident       | Bosted | Kontaktadresse    | Oppholdsadresse       | Fra og med dato |
-      | 09069534888 | NOR    | <Kontaktadresse>  | <Oppholdsadresse>     | 18.07.2010      |
+      | Ident       | Bosted | Kontaktadresse   | Oppholdsadresse   | Fra og med dato |
+      | 09069534888 | NOR    | <Kontaktadresse> | <Oppholdsadresse> | 18.07.2010      |
 
     Når regel "11.2.2" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Svar>"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelse utfylt være "<Utfylt begrunnelse>"
 
     Eksempler:
-      | Kontaktadresse | Oppholdsadresse     | Svar |
-      |                |                     | Ja   |
-      | NOR            | NOR                 | Ja   |
-      | FRA            | NOR                 | Nei  |
-      | NOR            | FRA                 | Nei  |
-      | FRA            | FRA                 | Nei  |
+      | Kontaktadresse | Oppholdsadresse | Svar | Utfylt begrunnelse |
+      |                |                 | Ja   | Nei                |
+      | NOR            | NOR             | Ja   | Nei                |
+      | FRA            | NOR             | Nei  | Ja                 |
+      | NOR            | FRA             | Nei  | Ja                 |
+      | FRA            | FRA             | Nei  | Ja                 |
 
   Scenariomal: Regel 11.2.2 - Uavklart hvis ett eller flere barn bor i Norge og ett eller flere barn ikke bor i Norge
     Gitt følgende familerelasjoner i personhistorikk fra PDL

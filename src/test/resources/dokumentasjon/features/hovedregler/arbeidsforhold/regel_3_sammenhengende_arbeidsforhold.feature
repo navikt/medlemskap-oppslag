@@ -13,6 +13,8 @@ Egenskap: Regel 3: Har bruker sammenhengende arbeidsforhold siste 12 måneder?
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "Ja"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelse utfylt være "Nei"
 
 
   Scenario: Bruker med  mer enn 10 arbeidsforhold i perioden
@@ -35,6 +37,8 @@ Egenskap: Regel 3: Har bruker sammenhengende arbeidsforhold siste 12 måneder?
       | 30.01.2020      | 14.02.2020      | Nei                           |
 
     Så skal svaret være "Nei"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelse utfylt være "Ja"
 
 
   Scenariomal: Person med to arbeidsforhold i perioden med under 100 i stillingsprosent på ett av arbeidsforholdene

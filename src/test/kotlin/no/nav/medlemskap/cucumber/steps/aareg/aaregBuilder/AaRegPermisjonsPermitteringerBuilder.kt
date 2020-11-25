@@ -1,6 +1,7 @@
 package no.nav.medlemskap.cucumber.steps.aareg.aaregBuilder
 
 import no.nav.medlemskap.clients.aareg.AaRegPermisjonPermittering
+import no.nav.medlemskap.domene.PermisjonPermitteringType
 
 class AaRegPermisjonsPermitteringerBuilder {
     var periodeBuilder = AaregPeriodeBuilder()
@@ -9,7 +10,7 @@ class AaRegPermisjonsPermitteringerBuilder {
     var periode = periodeBuilder.build()
     var permisjonsPermitteringId = String()
     var sporingsinformasjon = sporingsinformasjonBuilder.build()
-    var type = String()
+    var type = PermisjonPermitteringType.VELFERDSPERMISJON.kodeverdi.toString()
     var varslingkode = String()
     var prosent = 1.0
 

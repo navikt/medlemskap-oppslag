@@ -14,14 +14,16 @@ Egenskap: Regel 1.4: Er det periode med medlemskap innenfor 12 mnd?
       | 30.01.2020      | 10.02.2020      | Nei                           |
 
     Så skal svaret være "<Svar>"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelse utfylt være "<Utfylt begrunnelse>"
 
     Eksempler:
-      | Er medlem | Til og med dato | Svar | Kommentar                                                                               |
-      | Ja        | 01.06.2020      | Ja   | Avsluttet periode uten medlemskap etter inputperiode                                    |
-      | Ja        | 02.02.2020      | Ja   | Avsluttet periode uten medlemskap i inputperiode                                        |
-      | Ja        | 29.01.2020      | Ja   | Avsluttet periode uten medlemskap samtidig med singelinput (inputperiode, fom-dato - 1) |
-      | Ja        | 28.01.2020      | Nei  | Avsluttet periode uten medlemskap før inputperiode                                      |
-      | Nei       | 01.06.2020      | Nei  | Avsluttet periode med  medlemskap etter inputperiode                                    |
+      | Er medlem | Til og med dato | Svar | Utfylt begrunnelse | Kommentar                                                                               |
+      | Ja        | 01.06.2020      | Ja   | Nei                | Avsluttet periode uten medlemskap etter inputperiode                                    |
+      | Ja        | 02.02.2020      | Ja   | Nei                | Avsluttet periode uten medlemskap i inputperiode                                        |
+      | Ja        | 29.01.2020      | Ja   | Nei                | Avsluttet periode uten medlemskap samtidig med singelinput (inputperiode, fom-dato - 1) |
+      | Ja        | 28.01.2020      | Nei  | Ja                 | Avsluttet periode uten medlemskap før inputperiode                                      |
+      | Nei       | 01.06.2020      | Nei  | Ja                 | Avsluttet periode med  medlemskap etter inputperiode                                    |
 
   Scenariomal: Regel 1.4: Er det periode med medlemskap innenfor 12 mnd? Flere perioder fra MEDL
 

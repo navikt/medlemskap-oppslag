@@ -106,6 +106,12 @@ object DomenespråkParser : BasisDomeneParser() {
         return if (verdi == null) null else Skipsregister.valueOf(verdi)
     }
 
+    fun parseFartsområde(rad: Map<String, String>): Fartsomraade? {
+        val verdi = valgfriVerdi(FARTSOMRÅDE.nøkkel, rad)
+
+        return if (verdi == null) null else Fartsomraade.valueOf(verdi)
+    }
+
     fun parseArbeidsforholdstype(rad: Map<String, String>): Arbeidsforholdstype {
         val verdi = verdi(ARBEIDSFORHOLDSTYPE.nøkkel, rad)
 
@@ -204,6 +210,22 @@ object DomenespråkParser : BasisDomeneParser() {
 
     fun mapSkipsregister(dataTable: DataTable?): Skipsregister {
         return mapDataTable(dataTable, SkipsregisterMapper())[0]
+    }
+
+    fun mapFartsomraade(dataTable: DataTable?): Fartsomraade {
+        return mapDataTable(dataTable, FartsomraadeMapper())[0]
+    }
+
+    fun mapProsent(dataTable: DataTable?): Double {
+        return mapDataTable(dataTable, ProsentMapper())[0]
+    }
+
+    fun mapType(dataTable: DataTable?): PermisjonPermitteringType {
+        return mapDataTable(dataTable, PermitteringsTypeMapper())[0]
+    }
+
+    fun mapVarslingskode(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, VarslingskodeMapper())[0]
     }
 
     fun mapPersonhistorikkEktefelle(dataTable: DataTable?): List<PersonhistorikkEktefelle> {
@@ -306,8 +328,28 @@ object DomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, PeriodeMapper())[0]
     }
 
+    fun mapPeriodeForPermittering(dataTable: DataTable?): Periode {
+        return mapDataTable(dataTable, PeriodeMapper())[0]
+    }
+
+    fun mapPermitteringId(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, PermitteringsIdMapper())[0]
+    }
+
     fun mapRapporteringsperiode(dataTable: DataTable?): YearMonth {
         return mapDataTable(dataTable, RapporteringsperiodeMapper())[0]
+    }
+
+    class PermitteringsTypeMapper : RadMapper<PermisjonPermitteringType> {
+        override fun mapRad(rad: Map<String, String>): PermisjonPermitteringType {
+            return PermisjonPermitteringType.valueOf(parseString(PERMITTERINGSTYPE, rad))
+        }
+    }
+
+    class PermitteringsIdMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(PERMISJONPERMITTERINGSID, rad)
+        }
     }
 
     class PeriodeStatusMapper : RadMapper<PeriodeStatus> {
@@ -343,6 +385,12 @@ object DomenespråkParser : BasisDomeneParser() {
     class BeregnetAntallTimerPerUkeMapper : RadMapper<Double> {
         override fun mapRad(rad: Map<String, String>): Double {
             return parseDouble(BEREGNET_ANTALL_TIMER_PR_UKE, rad)
+        }
+    }
+
+    class ProsentMapper : RadMapper<Double> {
+        override fun mapRad(rad: Map<String, String>): Double {
+            return parseDouble(PROSENT, rad)
         }
     }
 
@@ -383,9 +431,21 @@ object DomenespråkParser : BasisDomeneParser() {
         }
     }
 
+    class VarslingskodeMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(VARSLINGSKODE, rad)
+        }
+    }
+
     class SkipsregisterMapper : RadMapper<Skipsregister> {
         override fun mapRad(rad: Map<String, String>): Skipsregister {
             return Skipsregister.valueOf(parseString(SKIPSREGISTER, rad))
+        }
+    }
+
+    class FartsomraadeMapper : RadMapper<Fartsomraade> {
+        override fun mapRad(rad: Map<String, String>): Fartsomraade {
+            return Fartsomraade.valueOf(parseString(FARTSOMRÅDE, rad))
         }
     }
 
@@ -561,7 +621,8 @@ object DomenespråkParser : BasisDomeneParser() {
                 arbeidsgivertype = OpplysningspliktigArbeidsgiverType.valueOf(parseString(ARBEIDSGIVERTYPE, rad)),
                 arbeidsgiver = arbeidsgiver ?: VANLIG_NORSK_ARBEIDSGIVER,
                 arbeidsforholdstype = parseArbeidsforholdstype(rad),
-                arbeidsavtaler = emptyList()
+                arbeidsavtaler = emptyList(),
+                permisjonPermittering = emptyList()
             )
         }
     }
@@ -579,6 +640,7 @@ object DomenespråkParser : BasisDomeneParser() {
                 ),
                 parseString(YRKESKODE, rad),
                 parseSkipsregister(rad),
+                null,
                 parseDouble(STILLINGSPROSENT, rad),
                 parseValgfriDouble(BEREGNET_ANTALL_TIMER_PR_UKE, rad)
             )
@@ -730,6 +792,7 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     DOEDSDATO("Dødsdato"),
     ER_MEDLEM("Er medlem"),
     FRA_OG_MED_DATO("Fra og med dato"),
+    FARTSOMRÅDE("Fartsområde"),
     FØRSTE_DAG_FOR_YTELSE("Første dag for ytelse"),
     FØDSELSNUMMER("Fødselsnummer"),
     GYLDIG_FRA_OG_MED("Gyldig fra og med dato"),
@@ -755,7 +818,10 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     OPPHOLDSADRESSE("Oppholdsadresse"),
     ORGANISASJONSNUMMER("Organisasjonsnummer"),
     PERIODESTATUS("Periodestatus"),
+    PERMISJONPERMITTERINGSID("PermisjonPermitteringId"),
+    PERMITTERINGSTYPE("Type"),
     PRIORITET("Prioritet"),
+    PROSENT("Prosent"),
     REGEL("Regel"),
     RELATERT_PERSONS_IDENT("Relatert persons ident"),
     RELATERT_PERSONS_ROLLE("Relatert persons rolle"),
@@ -769,6 +835,7 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     TEMA("Tema"),
     TIL_OG_MED_DATO("Til og med dato"),
     TITTEL("Tittel"),
+    VARSLINGSKODE("Varslingkode"),
     YRKESKODE("Yrkeskode"),
     YTELSE("Ytelse");
 

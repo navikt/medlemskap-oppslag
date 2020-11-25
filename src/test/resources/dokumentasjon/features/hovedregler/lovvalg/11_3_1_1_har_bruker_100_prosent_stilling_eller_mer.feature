@@ -21,9 +21,11 @@ Egenskap: Regel 11.3.1.1: Har bruker uten ektefelle med folkeregistrerte barn jo
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Svar>"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelse utfylt være "<Utfylt begrunnelse>"
 
     Eksempler:
-      | Stillingsprosent | Svar |
-      | 90               | Nei  |
-      | 100              | Ja   |
-      | 110              | Ja   |
+      | Stillingsprosent | Svar | Utfylt begrunnelse |
+      | 90               | Nei  | Ja                 |
+      | 100              | Ja   | Nei                |
+      | 110              | Ja   | Nei                |

@@ -271,6 +271,20 @@ class RegelSteps : No {
             assertEquals(forventetBegrunnelse, resultat!!.begrunnelse)
         }
 
+        Så("skal avklaringen være som definert i RegelId") {
+            assertEquals(resultat!!.regelId!!.avklaring, resultat!!.avklaring)
+        }
+
+        Så<String>("skal begrunnelse utfylt være {string}") { begrunnelseUtfyltStr: String? ->
+            val begrunnelseUtfylt = domenespråkParser.parseSvar(begrunnelseUtfyltStr!!)
+
+            if (begrunnelseUtfylt == Svar.NEI) {
+                assertEquals("", resultat!!.begrunnelse)
+            } else {
+                assertEquals(resultat!!.regelId!!.begrunnelse, resultat!!.begrunnelse)
+            }
+        }
+
         Så("skal årsaken være {string}") { forventetÅrsak: String ->
             assertEquals(forventetÅrsak, resultat!!.årsaksTekst())
         }

@@ -18,11 +18,13 @@ Egenskap: Regel 10: Er bruker folkeregistert i Norge?
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Svar>"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelse utfylt være "<Utfylt begrunnelse>"
 
     Eksempler:
-      | Bor i land | Post land | Svar |
-      | NOR        | NOR       | Ja   |
-      | NOR        | FRA       | Nei  |
+      | Bor i land | Post land | Svar | Utfylt begrunnelse |
+      | NOR        | NOR       | Ja   | Nei                |
+      | NOR        | FRA       | Nei  | Ja                 |
 
 
   Scenariomal: Ingen postadresse, men bostedsadresse
@@ -82,7 +84,7 @@ Egenskap: Regel 10: Er bruker folkeregistert i Norge?
 
     Og følgende oppholdsadresser i personhistorikken
       | Adresse | Landkode | Fra og med dato | Til og med dato |
-      | XXX     | FRA      | 05.02.2000      | 01.02.2000                |
+      | XXX     | FRA      | 05.02.2000      | 01.02.2000      |
 
     Når regel "10" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |

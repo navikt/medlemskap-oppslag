@@ -64,6 +64,7 @@
         "rapporteringsperiode" : "2010-01"
       } ],
       "arbeidsgivertype" : "Organisasjon",
+      "permisjonPermittering": [],
       "arbeidsgiver" : {
         "organisasjonsnummer" : "organisasjonsnummer",
         "ansatte" : [ {
@@ -96,6 +97,7 @@
         },
         "yrkeskode" : "yrkeskode",
         "skipsregister" : "NIS",
+        "fartsomraade": null,
         "stillingsprosent" : 100.0,
         "beregnetAntallTimerPrUke" : 37.5
       } ]
@@ -161,6 +163,7 @@
           "konkursStatus" : null,
           "juridiskeEnheter" : null
         },
+        "permisjonPermittering" : [],
         "arbeidsforholdstype" : "NORMALT",
         "arbeidsavtaler" : [ {
           "periode" : {
@@ -173,6 +176,7 @@
           },
           "yrkeskode" : "yrkeskode",
           "skipsregister" : "NIS",
+          "fartsomraade": null,
           "stillingsprosent" : 100.0,
           "beregnetAntallTimerPrUke" : 37.5
         } ]

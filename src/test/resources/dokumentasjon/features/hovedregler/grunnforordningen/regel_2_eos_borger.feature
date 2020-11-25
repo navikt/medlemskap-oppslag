@@ -14,40 +14,42 @@ Egenskap: Eøs-land
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Svar>"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelse utfylt være "<Begrunnelse utfylt>"
 
     Eksempler:
-      | Land | Beskrivelse   | Svar |
-      | BEL  | BELGIA        | Ja   |
-      | BGR  | BULGARIA      | Ja   |
-      | DNK  | DANMARK       | Ja   |
-      | EST  | ESTLAND       | Ja   |
-      | FIN  | FINLAND       | Ja   |
-      | FRA  | FRANKRIKE     | Ja   |
-      | GRC  | HELLAS        | Ja   |
-      | IRL  | IRLAND        | Ja   |
-      | ISL  | ISLAND        | Ja   |
-      | ITA  | ITALIA        | Ja   |
-      | HRV  | KROATIA       | Ja   |
-      | CYP  | KYPROS        | Ja   |
-      | LVA  | LATVIA        | Ja   |
-      | LIE  | LIECHTENSTEIN | Ja   |
-      | LTU  | LITAUEN       | Ja   |
-      | LUX  | LUXEMBOURG    | Ja   |
-      | MLT  | MALTA         | Ja   |
-      | NLD  | NEDERLAND     | Ja   |
-      | NOR  | NORGE         | Ja   |
-      | POL  | POLEN         | Ja   |
-      | PRT  | PORTUGAL      | Ja   |
-      | ROU  | ROMANIA       | Ja   |
-      | SVK  | SLOVAKIA      | Ja   |
-      | SVN  | SLOVENIA      | Ja   |
-      | ESP  | SPANIA        | Ja   |
-      | SWE  | SVERIGE       | Ja   |
-      | CZE  | TSJEKKIA      | Ja   |
-      | DEU  | TYSKLAND      | Ja   |
-      | HUN  | UNGARN        | Ja   |
-      | AUT  | ØSTERRIKE     | Ja   |
-      | CHE  | SVEITS        | Ja   |
-      | GBR  | STORBRITANNIA | Ja   |
-      | USA  | USA           | Nei  |
+      | Land | Beskrivelse   | Svar | Begrunnelse utfylt |
+      | BEL  | BELGIA        | Ja   | Nei                |
+      | BGR  | BULGARIA      | Ja   | Nei                |
+      | DNK  | DANMARK       | Ja   | Nei                |
+      | EST  | ESTLAND       | Ja   | Nei                |
+      | FIN  | FINLAND       | Ja   | Nei                |
+      | FRA  | FRANKRIKE     | Ja   | Nei                |
+      | GRC  | HELLAS        | Ja   | Nei                |
+      | IRL  | IRLAND        | Ja   | Nei                |
+      | ISL  | ISLAND        | Ja   | Nei                |
+      | ITA  | ITALIA        | Ja   | Nei                |
+      | HRV  | KROATIA       | Ja   | Nei                |
+      | CYP  | KYPROS        | Ja   | Nei                |
+      | LVA  | LATVIA        | Ja   | Nei                |
+      | LIE  | LIECHTENSTEIN | Ja   | Nei                |
+      | LTU  | LITAUEN       | Ja   | Nei                |
+      | LUX  | LUXEMBOURG    | Ja   | Nei                |
+      | MLT  | MALTA         | Ja   | Nei                |
+      | NLD  | NEDERLAND     | Ja   | Nei                |
+      | NOR  | NORGE         | Ja   | Nei                |
+      | POL  | POLEN         | Ja   | Nei                |
+      | PRT  | PORTUGAL      | Ja   | Nei                |
+      | ROU  | ROMANIA       | Ja   | Nei                |
+      | SVK  | SLOVAKIA      | Ja   | Nei                |
+      | SVN  | SLOVENIA      | Ja   | Nei                |
+      | ESP  | SPANIA        | Ja   | Nei                |
+      | SWE  | SVERIGE       | Ja   | Nei                |
+      | CZE  | TSJEKKIA      | Ja   | Nei                |
+      | DEU  | TYSKLAND      | Ja   | Nei                |
+      | HUN  | UNGARN        | Ja   | Nei                |
+      | AUT  | ØSTERRIKE     | Ja   | Nei                |
+      | CHE  | SVEITS        | Ja   | Nei                |
+      | GBR  | STORBRITANNIA | Ja   | Nei                |
+      | USA  | USA           | Nei  | Ja                 |
 
