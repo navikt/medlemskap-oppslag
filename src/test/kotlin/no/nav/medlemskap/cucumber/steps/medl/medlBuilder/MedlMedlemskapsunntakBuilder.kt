@@ -36,7 +36,7 @@ class MedlMedlemskapsunntakBuilder {
                 status = status,
                 statusaarsak = statusaarsak,
                 tilOgMed = tilOgMed,
-                untakId = untakId,
+                unntakId = untakId,
                 sporingsinformasjon = sporingsinformasjon,
                 studieinformasjon = studieinformasjon
             )

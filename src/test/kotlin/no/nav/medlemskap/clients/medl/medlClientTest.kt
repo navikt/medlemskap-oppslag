@@ -19,6 +19,7 @@ import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.config.Configuration
 import org.junit.jupiter.api.*
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 class medlClientTest {
 
@@ -63,6 +64,31 @@ class medlClientTest {
         val response = runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
 
         Assertions.assertEquals("Full", response[0].dekning)
+        Assertions.assertEquals(100064642, response[0].unntakId)
+        Assertions.assertEquals("25109209177", response[0].ident)
+        Assertions.assertEquals(LocalDate.of(2018, 8, 16), response[0].fraOgMed)
+        Assertions.assertEquals(LocalDate.of(2019, 6, 15), response[0].tilOgMed)
+        Assertions.assertEquals("GYLD", response[0].status)
+        Assertions.assertEquals(true, response[0].helsedel)
+        Assertions.assertEquals(true, response[0].medlem)
+        Assertions.assertEquals("NOR", response[0].lovvalgsland)
+        Assertions.assertEquals("ENDL", response[0].lovvalg)
+        Assertions.assertEquals("FTL_2-5", response[0].grunnlag)
+
+        Assertions.assertEquals("0", response[0].sporingsinformasjon?.versjon)
+        Assertions.assertEquals(LocalDate.of(2018, 6, 3), response[0].sporingsinformasjon?.registrert)
+        Assertions.assertEquals(LocalDate.of(2018, 7, 16), response[0].sporingsinformasjon?.besluttet)
+        Assertions.assertEquals("LAANEKASSEN", response[0].sporingsinformasjon?.kilde)
+        Assertions.assertEquals("Henv_Soknad", response[0].sporingsinformasjon?.kildedokument)
+        Assertions.assertEquals(LocalDateTime.of(2017, 1, 5, 12, 20, 38), response[0].sporingsinformasjon?.opprettet)
+        Assertions.assertEquals("BMEDL2003", response[0].sporingsinformasjon?.opprettetAv)
+        Assertions.assertEquals(LocalDateTime.of(2018, 6, 28, 12, 20, 38), response[0].sporingsinformasjon?.sistEndret)
+        Assertions.assertEquals("REG-150", response[0].sporingsinformasjon?.sistEndretAv)
+
+        Assertions.assertEquals("NOR", response[0].studieinformasjon?.statsborgerland)
+        Assertions.assertEquals("USA", response[0].studieinformasjon?.studieland)
+        Assertions.assertEquals(true, response[0].studieinformasjon?.delstudie)
+        Assertions.assertEquals(true, response[0].studieinformasjon?.soeknadInnvilget)
     }
 
     @Test
