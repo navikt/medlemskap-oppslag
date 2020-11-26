@@ -44,10 +44,10 @@ class HarBrukerBarnSomErFolkeregistrertRegel(
             return uavklart(RegelId.REGEL_11_2_2.neiBegrunnelse)
         }
 
-        if (harBarnBosattINorge) {
-            return ja(RegelId.REGEL_11_2_2.jaBegrunnelse)
+        return if (harBarnBosattINorge) {
+            ja(RegelId.REGEL_11_2_2)
         } else {
-            return nei(RegelId.REGEL_11_2_2.neiBegrunnelse)
+            nei(RegelId.REGEL_11_2_2)
         }
     }
 

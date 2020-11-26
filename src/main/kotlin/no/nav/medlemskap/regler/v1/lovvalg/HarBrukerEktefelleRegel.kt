@@ -23,11 +23,11 @@ class HarBrukerEktefelleRegel(
 
         if (ektefelle != null) {
             return when {
-                !ektefelle.ident.isEmpty() -> ja(RegelId.REGEL_11_2.jaBegrunnelse)
-                else -> nei(RegelId.REGEL_11_2.neiBegrunnelse)
+                !ektefelle.ident.isEmpty() -> ja(RegelId.REGEL_11_2)
+                else -> nei(RegelId.REGEL_11_2)
             }
         }
-        return nei(RegelId.REGEL_11_2.neiBegrunnelse)
+        return nei(RegelId.REGEL_11_2)
     }
 
     companion object {

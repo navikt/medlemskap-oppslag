@@ -16,8 +16,8 @@ class FinnesOpplysningerIGosysRegel(
 ) : BasisRegel(RegelId.REGEL_B, ytelse) {
     override fun operasjon(): Resultat {
         return when {
-            oppgaver.finnesAapneOppgaver() -> ja(RegelId.REGEL_B.jaBegrunnelse)
-            else -> nei(RegelId.REGEL_B.neiBegrunnelse)
+            oppgaver.finnesAapneOppgaver() -> ja(RegelId.REGEL_B)
+            else -> nei(RegelId.REGEL_B)
         }
     }
 

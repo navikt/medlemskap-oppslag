@@ -28,13 +28,13 @@ data class Regel(
         fun regelJaKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(
             regelId = regelId,
             ytelse = ytelse,
-            operasjon = { Resultat.ja(RegelId.REGEL_FLYT_KONKLUSJON.jaBegrunnelse) }
+            operasjon = { Resultat.ja(RegelId.REGEL_FLYT_KONKLUSJON) }
         )
 
         fun regelNeiKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(
             regelId = regelId,
             ytelse = ytelse,
-            operasjon = { Resultat.nei(RegelId.REGEL_FLYT_KONKLUSJON.neiBegrunnelse) }
+            operasjon = { Resultat.nei(RegelId.REGEL_FLYT_KONKLUSJON) }
         )
 
         fun uavklartKonklusjon(ytelse: Ytelse, regelId: RegelId? = null) = Regel(
@@ -46,13 +46,13 @@ data class Regel(
         fun jaKonklusjon(ytelse: Ytelse) = Regel(
             regelId = RegelId.REGEL_MEDLEM_KONKLUSJON,
             ytelse = ytelse,
-            operasjon = { Resultat.ja(RegelId.REGEL_MEDLEM_KONKLUSJON.jaBegrunnelse) }
+            operasjon = { Resultat.ja(RegelId.REGEL_MEDLEM_KONKLUSJON) }
         )
 
         fun neiKonklusjon(ytelse: Ytelse) = Regel(
             regelId = RegelId.REGEL_MEDLEM_KONKLUSJON,
             ytelse = ytelse,
-            operasjon = { Resultat.nei("Bruker er ikke medlem") }
+            operasjon = { Resultat.nei(RegelId.REGEL_MEDLEM_KONKLUSJON) }
         )
     }
 }

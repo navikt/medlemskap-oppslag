@@ -21,8 +21,8 @@ class ErBrukersDekningUavklartRegel(
         val dekning = Dekning.from(gjeldendeDekning)
 
         return when {
-            dekning == null || dekning.uavklartForYtelse(ytelse) -> ja(regelId.jaBegrunnelse)
-            else -> nei(RegelId.REGEL_1_6.neiBegrunnelse)
+            dekning == null || dekning.uavklartForYtelse(ytelse) -> ja(regelId)
+            else -> nei(RegelId.REGEL_1_6)
         }
     }
 

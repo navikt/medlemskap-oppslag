@@ -21,9 +21,9 @@ class HarBrukerSammenhengendeArbeidsforholdRegel(
     override fun operasjon(): Resultat {
         return if (!arbeidsforhold.erSammenhengendeIKontrollPeriode(kontrollPeriodeForArbeidsforhold, ytelse)) {
             statsborgerskap.registrerStatsborgerskapGrafana(kontrollPeriodeForArbeidsforhold, ytelse, regelId)
-            nei(RegelId.REGEL_3.neiBegrunnelse)
+            nei(RegelId.REGEL_3)
         } else {
-            ja(RegelId.REGEL_3.jaBegrunnelse)
+            ja(RegelId.REGEL_3)
         }
     }
 
