@@ -41,13 +41,13 @@ class HarBrukerBarnSomErFolkeregistrertRegel(
         }?.any()
 
         if (harBarnBosattINorge!! && harBarnSomIkkeErBosattINorge!!) {
-            return uavklart(RegelId.REGEL_11_2_2.begrunnelse)
+            return uavklart(RegelId.REGEL_11_2_2.neiBegrunnelse)
         }
 
         if (harBarnBosattINorge) {
-            return ja()
+            return ja(RegelId.REGEL_11_2_2.jaBegrunnelse)
         } else {
-            return nei(RegelId.REGEL_11_2_2.begrunnelse)
+            return nei(RegelId.REGEL_11_2_2.neiBegrunnelse)
         }
     }
 

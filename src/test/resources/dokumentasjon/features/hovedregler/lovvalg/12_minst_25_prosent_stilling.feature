@@ -22,7 +22,7 @@ Egenskap: Regel 12: Har bruker vært i minst 25 % stilling siste 12 måneder?
 
     Så skal svaret være "Nei"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "Ja"
+    Og skal begrunnelse utfylt være "Nei"
 
 
   Scenario: Regel 12 - En stilling med mer enn 25 %
@@ -44,7 +44,7 @@ Egenskap: Regel 12: Har bruker vært i minst 25 % stilling siste 12 måneder?
 
     Så skal svaret være "Ja"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "Nei"
+    Og skal begrunnelse utfylt være "Ja"
 
   Scenariomal: Regel 12 - To stillinger hos samme arbeidsgiver
     Gitt følgende arbeidsforhold fra AAReg

@@ -14,7 +14,7 @@ Egenskap: Regel 3: Har bruker sammenhengende arbeidsforhold siste 12 måneder?
 
     Så skal svaret være "Ja"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "Nei"
+    Og skal begrunnelse utfylt være "Ja"
 
 
   Scenario: Bruker med  mer enn 10 arbeidsforhold i perioden
@@ -38,7 +38,7 @@ Egenskap: Regel 3: Har bruker sammenhengende arbeidsforhold siste 12 måneder?
 
     Så skal svaret være "Nei"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "Ja"
+    Og skal begrunnelse utfylt være "Nei"
 
 
   Scenariomal: Person med to arbeidsforhold i perioden med under 100 i stillingsprosent på ett av arbeidsforholdene

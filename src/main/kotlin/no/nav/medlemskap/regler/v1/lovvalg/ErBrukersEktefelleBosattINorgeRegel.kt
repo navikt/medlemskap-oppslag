@@ -30,12 +30,12 @@ class ErBrukersEktefelleBosattINorgeRegel(
             val oppholdsadresseTilEktefelle = ektefelle.oppholdsadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
 
             return when {
-                erPersonBosattINorge(bostedsadresserTilEktefelle, kontaktadresseTilEktefelle, oppholdsadresseTilEktefelle) -> ja()
-                else -> nei(RegelId.REGEL_11_3_1.begrunnelse)
+                erPersonBosattINorge(bostedsadresserTilEktefelle, kontaktadresseTilEktefelle, oppholdsadresseTilEktefelle) -> ja(RegelId.REGEL_11_3_1.jaBegrunnelse)
+                else -> nei(RegelId.REGEL_11_3_1.neiBegrunnelse)
             }
         }
         // Denne vil ikke skje
-        return nei(RegelId.REGEL_11_3_1.begrunnelse)
+        return nei(RegelId.REGEL_11_3_1.neiBegrunnelse)
     }
 
     companion object {

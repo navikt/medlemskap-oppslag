@@ -29,10 +29,10 @@ class ErArbeidsforholdUendretRegel(
     private fun erBrukersArbeidsforholdUendret(regelId: RegelId): Resultat {
         if (harSammeArbeidsforholdSidenFomDatoFraMedl()) {
             regelUendretCounterMidlertidig(regelId, Svar.JA, ytelse).increment()
-            return ja()
+            return ja(regelId.jaBegrunnelse)
         } else {
             regelUendretCounterMidlertidig(regelId, Svar.NEI, ytelse).increment()
-            return nei(regelId.begrunnelse)
+            return nei(regelId.neiBegrunnelse)
         }
         /* Tas inn igjen når man ikke lenger trenger egen Grafana-counter for denne (når dekning kan gis i response)
         when {

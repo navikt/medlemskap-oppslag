@@ -24,11 +24,11 @@ Egenskap: Regel 7.1: Er bruker ansatt på et norsk skip?
 
     Så skal svaret være "<Svar>"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "<Utfylt begrunnelse>"
+    Og skal begrunnelse utfylt være "<Svar begrunnelse>"
 
     Eksempler:
-      | Skipsregister | Svar | Utfylt begrunnelse |
-      | NIS           | Nei  | Ja                 |
-      | NOR           | Ja   | Nei                |
-      | UTL           | Nei  | Ja                 |
-      |               | Nei  | Ja                 |
+      | Skipsregister | Svar | Svar begrunnelse |
+      | NIS           | Nei  | Nei              |
+      | NOR           | Ja   | Ja               |
+      | UTL           | Nei  | Nei              |
+      |               | Nei  | Nei              |

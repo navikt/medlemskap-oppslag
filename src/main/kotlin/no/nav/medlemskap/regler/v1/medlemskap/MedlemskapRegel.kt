@@ -25,8 +25,8 @@ abstract class MedlemskapRegel(
     protected fun erMedlemskapPeriodeOver12MndPeriode(finnPeriodeMedMedlemskap: Boolean): Resultat {
         return when {
             medlemskap.erMedlemskapsperioderOver12Mnd(finnPeriodeMedMedlemskap, kontrollPeriodeForMedl)
-                && medlemskap harGyldigeMedlemskapsperioder kontrollPeriodeForMedl -> ja()
-            else -> nei(regelId.begrunnelse)
+                && medlemskap harGyldigeMedlemskapsperioder kontrollPeriodeForMedl -> ja(regelId.jaBegrunnelse)
+            else -> nei(regelId.neiBegrunnelse)
         }
     }
 }

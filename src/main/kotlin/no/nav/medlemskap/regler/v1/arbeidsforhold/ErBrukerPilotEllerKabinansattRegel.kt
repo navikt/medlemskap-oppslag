@@ -19,8 +19,8 @@ class ErBrukerPilotEllerKabinansattRegel(
 
     override fun operasjon(): Resultat {
         return when {
-            arbeidsforhold sisteArbeidsforholdYrkeskode kontrollPeriodeForArbeidsforhold inneholderNoe yrkeskoderLuftfart -> ja(RegelId.REGEL_8.begrunnelse)
-            else -> nei()
+            arbeidsforhold sisteArbeidsforholdYrkeskode kontrollPeriodeForArbeidsforhold inneholderNoe yrkeskoderLuftfart -> ja(RegelId.REGEL_8.jaBegrunnelse)
+            else -> nei(RegelId.REGEL_8.neiBegrunnelse)
         }
     }
 

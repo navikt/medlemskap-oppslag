@@ -82,9 +82,9 @@ abstract class Regler(
         private fun utledResultat(resultater: Map<RegelId, Resultat>): Resultat {
 
             return when {
-                resultater[RegelId.REGEL_A]?.svar == JA && resultater[RegelId.REGEL_B]?.svar == NEI -> ja()
+                resultater[RegelId.REGEL_A]?.svar == JA && resultater[RegelId.REGEL_B]?.svar == NEI -> ja(RegelId.REGEL_OPPLYSNINGER.jaBegrunnelse)
                 resultater.values.any { it.svar == JA } -> uavklart()
-                else -> nei("Alle de følgende ble NEI")
+                else -> nei(RegelId.REGEL_OPPLYSNINGER.neiBegrunnelse)
             }
         }
 

@@ -17,8 +17,8 @@ class FinnesOpplysningerIJoarkRegel(
 
     override fun operasjon(): Resultat {
         return when {
-            dokument.finnesDokumenterMedTillatteTeamer() -> ja()
-            else -> nei()
+            dokument.finnesDokumenterMedTillatteTeamer() -> ja(RegelId.REGEL_C.jaBegrunnelse)
+            else -> nei(RegelId.REGEL_C.neiBegrunnelse)
         }
     }
 

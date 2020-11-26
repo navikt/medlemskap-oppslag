@@ -15,19 +15,19 @@ Egenskap: Regel 1.1: Er alle perioder siste 12 mnd avklarte?
 
     Så skal svaret være "<Svar>"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "<Utfylt begrunnelse>"
+    Og skal begrunnelse utfylt være "<Svar begrunnelse>"
 
     Eksempler:
-      | Til og med dato | Lovvalg | Periodestatus | Svar | Utfylt begrunnelse | Kommentar                                                                            |
-      | 01.06.2020      | ENDL    | GYLD          | Ja   | Nei                | Avsluttet periode etter inputperiode, avklarte lovvalg og periodestatus              |
-      | 28.01.2019      | UAVK    | GYLD          | Ja   | Nei                | Avsluttet uavklart periode før 12 mnd tilbake, ingen perioder vil være med i sjekken |
-      | 29.01.2019      | UAVK    | GYLD          | Nei  | Ja                 | Avsluttet periode innenfor 12 mnd tilbake med uavklart lovvalg                       |
-      | 28.01.2020      | ENDL    | AVST          | Nei  | Ja                 | Avsluttet periode før inputperiode med avvist periodestatus                          |
-      | 28.01.2020      |         | GYLD          | Ja   | Nei                | Avsluttet periode før inputperiode tomt lovvalg og gyldig periodestatus              |
-      | 01.06.2020      | ENDL    |               | Ja   | Nei                | Avsluttet periode etter inputperiode, gyldig lovvalg og tom periodestatus            |
-      | 01.06.2020      |         |               | Ja   | Nei                | Avsluttet periode etter inputperiode, tom lovvalg og tom periodestatus               |
-      | 01.06.2020      | FORL    |               | Nei  | Ja                 | Avsluttet periode etter inputperiode med foreløpig lovvalg og gyldig periodestatus   |
-      | 01.06.2020      | ENDL    | UAVK          | Nei  | Ja                 | Avsluttet periode etter inputperiode med periodestatus under avklaring               |
+      | Til og med dato | Lovvalg | Periodestatus | Svar | Svar begrunnelse | Kommentar                                                                            |
+      | 01.06.2020      | ENDL    | GYLD          | Ja   | Ja               | Avsluttet periode etter inputperiode, avklarte lovvalg og periodestatus              |
+      | 28.01.2019      | UAVK    | GYLD          | Ja   | Ja               | Avsluttet uavklart periode før 12 mnd tilbake, ingen perioder vil være med i sjekken |
+      | 29.01.2019      | UAVK    | GYLD          | Nei  | Nei              | Avsluttet periode innenfor 12 mnd tilbake med uavklart lovvalg                       |
+      | 28.01.2020      | ENDL    | AVST          | Nei  | Nei              | Avsluttet periode før inputperiode med avvist periodestatus                          |
+      | 28.01.2020      |         | GYLD          | Ja   | Ja               | Avsluttet periode før inputperiode tomt lovvalg og gyldig periodestatus              |
+      | 01.06.2020      | ENDL    |               | Ja   | Ja               | Avsluttet periode etter inputperiode, gyldig lovvalg og tom periodestatus            |
+      | 01.06.2020      |         |               | Ja   | Ja               | Avsluttet periode etter inputperiode, tom lovvalg og tom periodestatus               |
+      | 01.06.2020      | FORL    |               | Nei  | Nei              | Avsluttet periode etter inputperiode med foreløpig lovvalg og gyldig periodestatus   |
+      | 01.06.2020      | ENDL    | UAVK          | Nei  | Nei              | Avsluttet periode etter inputperiode med periodestatus under avklaring               |
 
   Scenariomal: Regel 1.1: Er alle perioder siste 12 mnd avklarte? Flere perioder fra MEDL
 

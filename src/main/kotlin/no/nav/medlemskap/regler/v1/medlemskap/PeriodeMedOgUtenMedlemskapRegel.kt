@@ -20,8 +20,8 @@ class PeriodeMedOgUtenMedlemskapRegel(
 
     override fun operasjon(): Resultat {
         return when {
-            medlemskap harMedlPeriodeMedOgUtenMedlemskap kontrollPeriodeForMedl -> ja(RegelId.REGEL_1_2.begrunnelse)
-            else -> nei()
+            medlemskap harMedlPeriodeMedOgUtenMedlemskap kontrollPeriodeForMedl -> ja(RegelId.REGEL_1_2.jaBegrunnelse)
+            else -> nei(RegelId.REGEL_1_2.neiBegrunnelse)
         }
     }
 

@@ -33,10 +33,10 @@ class HarForetaketMerEnn5AnsatteRegel(
 
         if (finnesMindreEnn6AnsatteIArbeidsgivernesForetak && finnesMindreEnn6AnsatteIArbeidsgivernesJuridiskeEnheter) {
             registrerDataForGrafana()
-            return nei(RegelId.REGEL_5.begrunnelse)
+            return nei(RegelId.REGEL_5.neiBegrunnelse)
         }
 
-        return ja()
+        return ja(RegelId.REGEL_5.jaBegrunnelse)
     }
 
     fun registrerDataForGrafana() {
