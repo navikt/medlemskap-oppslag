@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2020-11-26T12:39:02.975299",
+  "tidspunkt" : "2020-11-26T18:55:37.930658",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "datagrunnlag" : {
@@ -38,16 +38,7 @@
         "gyldigTilOgMed" : "2020-08-01",
         "relatertVedSivilstand" : "0101197512345"
       } ],
-      "familierelasjoner" : [ {
-        "relatertPersonsIdent" : "0101201012345",
-        "relatertPersonsRolle" : "BARN",
-        "minRolleForPerson" : "FAR",
-        "folkeregistermetadata" : {
-          "ajourholdstidspunkt" : "2020-06-20T10:00:00",
-          "gyldighetstidspunkt" : "2020-06-20T10:00:00",
-          "opphoerstidspunkt" : "2020-06-20T10:00:00"
-        }
-      } ],
+      "familierelasjoner" : [ ],
       "doedsfall" : [ ]
     },
     "medlemskap" : [ {
@@ -89,7 +80,7 @@
         "konkursStatus" : [ "Konkursstatus" ],
         "juridiskeEnheter" : [ {
           "organisasjonsnummer" : "juridiskOrgnummer",
-          "enhetstype" : "juridiskEnhetstype",
+          "enhetstype" : "STAT",
           "antallAnsatte" : 20
         } ]
       },
@@ -123,10 +114,7 @@
       "journalposttype" : "Posttype",
       "journalstatus" : "Status",
       "tema" : "Tema",
-      "dokumenter" : [ {
-        "dokumentId" : "Id",
-        "tittel" : "Tittel"
-      } ]
+      "dokumenter" : null
     } ],
     "ytelse" : "SYKEPENGER",
     "dataOmBarn" : [ {
@@ -134,84 +122,46 @@
         "ident" : "0101201012345",
         "bostedsadresser" : [ {
           "landkode" : "NOR",
-          "fom" : "1975-10-10",
-          "tom" : "2020-08-01"
+          "fom" : "2010-07-18",
+          "tom" : null
         } ],
         "kontaktadresser" : [ {
           "landkode" : "NOR",
-          "fom" : "1975-10-10",
-          "tom" : "2020-08-01"
+          "fom" : "2010-07-18",
+          "tom" : null
         } ],
-        "oppholdsadresser" : [ {
-          "landkode" : "NOR",
-          "fom" : "1975-10-10",
-          "tom" : "2020-08-01"
-        } ],
-        "familierelasjoner" : [ {
-          "relatertPersonsIdent" : "15076500565",
-          "relatertPersonsRolle" : "FAR",
-          "minRolleForPerson" : "BARN",
-          "folkeregistermetadata" : {
-            "ajourholdstidspunkt" : "2020-06-20T10:00:00",
-            "gyldighetstidspunkt" : "2020-06-20T10:00:00",
-            "opphoerstidspunkt" : "2020-06-20T10:00:00"
-          }
-        } ]
+        "oppholdsadresser" : [ ],
+        "familierelasjoner" : [ ]
       }
     } ],
     "dataOmEktefelle" : {
       "personhistorikkEktefelle" : {
         "ident" : "0101197512345",
-        "barn" : [ "0101201012345" ],
+        "barn" : [ ],
         "bostedsadresser" : [ {
           "landkode" : "NOR",
           "fom" : "1975-10-10",
           "tom" : "2020-08-01"
         } ],
-        "kontaktadresser" : [ {
-          "landkode" : "NOR",
-          "fom" : "1975-10-10",
-          "tom" : "2020-08-01"
-        } ],
-        "oppholdsadresser" : [ {
-          "landkode" : "NOR",
-          "fom" : "1975-10-10",
-          "tom" : "2020-08-01"
-        } ]
+        "kontaktadresser" : [ ],
+        "oppholdsadresser" : [ ]
       },
       "arbeidsforholdEktefelle" : [ {
         "periode" : {
           "fom" : "1975-10-10",
           "tom" : "2020-08-01"
         },
-        "utenlandsopphold" : [ {
-          "landkode" : "SWE",
-          "periode" : {
-            "fom" : "1975-10-10",
-            "tom" : "2020-08-01"
-          },
-          "rapporteringsperiode" : "2010-01"
-        } ],
+        "utenlandsopphold" : [ ],
         "arbeidsgivertype" : "Organisasjon",
         "arbeidsgiver" : {
-          "organisasjonsnummer" : "organisasjonsnummer",
+          "organisasjonsnummer" : "1",
           "ansatte" : [ {
-            "antall" : 10,
-            "bruksperiode" : {
-              "fom" : "1975-10-10",
-              "tom" : "2020-08-01"
-            },
-            "gyldighetsperiode" : {
-              "fom" : "1975-10-10",
-              "tom" : "2020-08-01"
-            }
+            "antall" : 9,
+            "bruksperiode" : null,
+            "gyldighetsperiode" : null
           } ],
-          "konkursStatus" : [ "Konkursstatus" ],
-          "juridiskeEnheter" : [ {
-            "organisasjonsnummer" : "juridiskOrgnummer",
-            "enhetstype" : "juridiskEnhetstype",
-            "antallAnsatte" : 20
-          } ]
+          "konkursStatus" : null,
+          "juridiskeEnheter" : null
         },
         "arbeidsforholdstype" : "NORMALT",
         "arbeidsavtaler" : [ {
@@ -348,8 +298,8 @@
     }, {
       "regelId" : "REGEL_ARBEIDSFORHOLD",
       "avklaring" : "Er arbeidsforhold avklart?",
-      "begrunnelse" : "Regelflyt konkluderer med UAVKLART",
-      "svar" : "UAVKLART",
+      "begrunnelse" : "",
+      "svar" : "JA",
       "harDekning" : null,
       "dekning" : "",
       "delresultat" : [ {
@@ -374,36 +324,13 @@
         "regelId" : "REGEL_14",
         "avklaring" : "Er bruker ansatt i staten eller i en kommune?",
         "begrunnelse" : "",
-        "svar" : "NEI",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ]
-      }, {
-        "regelId" : "REGEL_5",
-        "avklaring" : "Har arbeidsgiver sin hovedaktivitet i Norge?",
-        "begrunnelse" : "",
         "svar" : "JA",
         "harDekning" : null,
         "dekning" : "",
         "delresultat" : [ ],
         "årsaker" : [ ]
-      }, {
-        "regelId" : "REGEL_6",
-        "avklaring" : "Er foretaket aktivt?",
-        "begrunnelse" : "Arbeidstaker har hatt arbeidsforhold til arbeidsgiver som har konkurs-status satt",
-        "svar" : "NEI",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ]
       } ],
-      "årsaker" : [ {
-        "regelId" : "REGEL_6",
-        "avklaring" : "Er foretaket aktivt?",
-        "svar" : "NEI",
-        "beskrivelse" : "Regel 6:  Er foretaket aktivt? NEI"
-      } ]
+      "årsaker" : [ ]
     }, {
       "regelId" : "REGEL_BOSATT",
       "avklaring" : "Er det avklart om bruker bor i Norge?",
@@ -491,11 +418,6 @@
       "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
       "svar" : "NEI",
       "beskrivelse" : "Regel 1.4:  Er hele perioden med medlemskap innenfor 12-måneders perioden? NEI"
-    }, {
-      "regelId" : "REGEL_6",
-      "avklaring" : "Er foretaket aktivt?",
-      "svar" : "NEI",
-      "beskrivelse" : "Regel 6:  Er foretaket aktivt? NEI"
     } ]
   }
 }
