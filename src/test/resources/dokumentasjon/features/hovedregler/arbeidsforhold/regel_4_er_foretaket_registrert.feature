@@ -14,10 +14,10 @@ Egenskap: Regel 4: Er foretaket registrert i Foretaksregisteret?
 
     Så skal svaret være "<Svar>"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "<Utfylt begrunnelse>"
+    Og skal begrunnelse utfylt være "<Svar begrunnelse>"
 
     Eksempler:
-      | Arbeidsgivertype | Svar | Utfylt begrunnelse|
-      | Organisasjon     | Ja   | Nei               |
-      | Person           | Nei  | Ja                |
+      | Arbeidsgivertype | Svar | Svar begrunnelse |
+      | Organisasjon     | Ja   | Ja               |
+      | Person           | Nei  | Nei              |
 

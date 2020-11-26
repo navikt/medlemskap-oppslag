@@ -15,18 +15,18 @@ Egenskap: Regel 1.6: Er dekning uavklart?
 
     Så skal svaret være "<Svar>"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "<Utfylt begrunnelse>"
+    Og skal begrunnelse utfylt være "<Svar begrunnelse>"
 
     Eksempler:
-      | Dekning           | Ytelse           | Svar | Utfylt begrunnelse |
-      |                   | SYKEPENGER       | Ja   | Nei                |
-      | Full              | SYKEPENGER       | Ja   | Nei                |
-      | FTL_2-6           | SYKEPENGER       | Nei  | Ja                 |
-      | FTL_2-7a_2_ledd_a | SYKEPENGER       | Ja   | Nei                |
-      | FTL_2-7a_2_ledd_a | DAGPENGER        | Nei  | Ja                 |
-      | FTL_2-7a_2_ledd_a | ENSLIG_FORSORGER | Nei  | Ja                 |
-      | Full              | DAGPENGER        | Ja   | Nei                |
-      | Full              | ENSLIG_FORSORGER | Ja   | Nei                |
+      | Dekning           | Ytelse           | Svar | Svar begrunnelse |
+      |                   | SYKEPENGER       | Ja   | Ja               |
+      | Full              | SYKEPENGER       | Ja   | Ja               |
+      | FTL_2-6           | SYKEPENGER       | Nei  | Nei              |
+      | FTL_2-7a_2_ledd_a | SYKEPENGER       | Ja   | Ja               |
+      | FTL_2-7a_2_ledd_a | DAGPENGER        | Nei  | Nei              |
+      | FTL_2-7a_2_ledd_a | ENSLIG_FORSORGER | Nei  | Nei              |
+      | Full              | DAGPENGER        | Ja   | Ja               |
+      | Full              | ENSLIG_FORSORGER | Ja   | Ja               |
 
   Scenariomal: Regel 1.6: Er dekning uavklart? Flere perioder fra MEDL
 

@@ -22,8 +22,8 @@ class HarBrukersEktefelleJobbet100ProsentEllerMerRegel(
     override fun operasjon(): Resultat {
 
         return when {
-            arbeidsforholdEktefelle.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(100.0, kontrollPeriodeForArbeidsforhold, ytelse) -> ja()
-            else -> nei(RegelId.REGEL_11_6_1.begrunnelse)
+            arbeidsforholdEktefelle.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(100.0, kontrollPeriodeForArbeidsforhold, ytelse) -> ja(RegelId.REGEL_11_6_1)
+            else -> nei(RegelId.REGEL_11_6_1)
         }
     }
 

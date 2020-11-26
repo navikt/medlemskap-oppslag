@@ -25,8 +25,8 @@ class FinnesOpplysningerIMedlRegel(
         val kontrollPeriodeForMedl = Datohjelper(periode, førsteDagForYtelse, ytelse).kontrollPeriodeForMedl()
         if (medlemskap.isNotEmpty()) medlCounter().increment()
         return when {
-            medlemskap finnesPersonIMedlForKontrollPeriode kontrollPeriodeForMedl -> ja()
-            else -> nei()
+            medlemskap finnesPersonIMedlForKontrollPeriode kontrollPeriodeForMedl -> ja(RegelId.REGEL_A)
+            else -> nei(RegelId.REGEL_A)
         }
     }
 

@@ -22,8 +22,8 @@ class ErForetaketAktivtRegel(
 
     override fun operasjon(): Resultat {
         return when {
-            arbeidsforhold.konkursStatuserArbeidsgivere(kontrollPeriodeForArbeidsforhold).finnes() -> nei(RegelId.REGEL_6.begrunnelse)
-            else -> ja()
+            arbeidsforhold.konkursStatuserArbeidsgivere(kontrollPeriodeForArbeidsforhold).finnes() -> nei(RegelId.REGEL_6)
+            else -> ja(RegelId.REGEL_6)
         }
     }
 

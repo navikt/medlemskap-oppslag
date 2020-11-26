@@ -21,10 +21,10 @@ class ErBrukerEøsBorgerRegel(
 
     override fun operasjon(): Resultat {
         if (erBrukerEøsBorger(statsborgerskap)) {
-            return ja()
+            return ja(RegelId.REGEL_2)
         } else {
             statsborgerskap.registrerStatsborgerskapGrafana(kontrollPeriodeForPersonhistorikk, ytelse, RegelId.REGEL_2)
-            return nei(RegelId.REGEL_2.begrunnelse)
+            return nei(RegelId.REGEL_2)
         }
     }
 

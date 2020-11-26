@@ -35,16 +35,18 @@ Egenskap: Reglene 9 til 12
       | 30.01.2020      | 30.01.2021      | <Jobbet utenfor Norge>        |
 
     Så skal svaret være "<Medlemskap>"
-    Og skal begrunnelsen være "<Begrunnelse>"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelse utfylt være "<Svar begrunnelse>"
     Og skal årsaken være "<Årsak>"
 
     Og skal regel "10" gi svaret "Ja"
     Og skal regel "12" gi svaret "<Regel 12>"
 
+
     Eksempler:
-      | Stillingsprosent | Jobbet utenfor Norge | Medlemskap | Begrunnelse                        | Årsak                                                | Regel 12 |
-      | 100              | Nei                  | Ja         | Bruker er medlem                   |                                                      | Ja       |
-      | 20               | Ja                   | UAVKLART   | Kan ikke konkludere med medlemskap | Regel 9:  Har bruker utført arbeid utenfor Norge? JA | Nei      |
+      | Stillingsprosent | Jobbet utenfor Norge | Medlemskap | Svar begrunnelse | Årsak                                                | Regel 12 |
+      | 100              | Nei                  | Ja         | Ja               |                                                      | Ja       |
+      | 20               | Ja                   | UAVKLART   | Nei              | Regel 9:  Har bruker utført arbeid utenfor Norge? JA | Nei      |
 
   Scenariomal: Regel 9: Bruker som svarer ja på spørsmålet "Har hatt arbeid utenfor Norge" skal få "Nei"
     Gitt følgende arbeidsforhold fra AAReg
@@ -62,8 +64,10 @@ Egenskap: Reglene 9 til 12
 
     Så skal svaret være "<Medlemskap>"
     Og skal regel "9" gi svaret "<Regel 9>"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelse utfylt være "<Svar begrunnelse>"
 
     Eksempler:
-      | Har hatt arbeid utenfor Norge | Medlemskap | Regel 9 |
-      | Nei                           | Ja         | Nei     |
-      | Ja                            | UAVKLART   | Ja      |
+      | Har hatt arbeid utenfor Norge | Medlemskap | Regel 9 | Svar begrunnelse |
+      | Nei                           | Ja         | Nei     | Ja               |
+      | Ja                            | UAVKLART   | Ja      | Nei              |

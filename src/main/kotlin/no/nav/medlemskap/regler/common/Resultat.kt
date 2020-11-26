@@ -94,29 +94,29 @@ data class Resultat(
             return emptyList()
         }
 
-        fun ja(begrunnelse: String) = Resultat(
-            begrunnelse = begrunnelse,
+        fun ja(begrunnelse: RegelId) = Resultat(
+            begrunnelse = begrunnelse.jaBegrunnelse,
             svar = Svar.JA
         )
 
         fun ja() = Resultat(svar = Svar.JA)
 
-        fun ja(begrunnelse: String, dekning: String) = Resultat(
-            begrunnelse = begrunnelse,
+        fun ja(begrunnelse: RegelId, dekning: String) = Resultat(
+            begrunnelse = begrunnelse.jaBegrunnelse,
             svar = Svar.JA,
             harDekning = Svar.JA,
             dekning = dekning
         )
 
-        fun nei(begrunnelse: String, dekning: String) = Resultat(
-            begrunnelse = begrunnelse,
+        fun nei(begrunnelse: RegelId, dekning: String) = Resultat(
+            begrunnelse = begrunnelse.neiBegrunnelse,
             svar = Svar.NEI,
             harDekning = Svar.NEI,
             dekning = dekning
         )
 
-        fun nei(begrunnelse: String) = Resultat(
-            begrunnelse = begrunnelse,
+        fun nei(begrunnelse: RegelId) = Resultat(
+            begrunnelse = begrunnelse.neiBegrunnelse,
             svar = Svar.NEI
         )
 
