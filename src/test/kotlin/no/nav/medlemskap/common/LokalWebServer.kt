@@ -14,14 +14,9 @@ import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.createHttpServer
 import no.nav.medlemskap.cucumber.Medlemskapsparametre
-import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.domene.barn.DataOmBarn
-import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
-import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
-import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.YearMonth
+import no.nav.medlemskap.domene.Brukerinput
+import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.Request
 
 class LokalWebServer {
     companion object {
@@ -36,7 +31,7 @@ class LokalWebServer {
 
         private var applicationState = ApplicationState(false, false)
 
-        var testdatagrunnlag: Datagrunnlag? = null
+        var testDatagrunnlag: Datagrunnlag? = null
 
         fun startServer() {
 
@@ -72,8 +67,8 @@ class LokalWebServer {
             }
         }
 
-        fun byggInput(medlemskapsparametre: Medlemskapsparametre): String =
-            objectMapper.writeValueAsString(
+        fun byggInput(medlemskapsparametre: Medlemskapsparametre): String {
+            return objectMapper.writeValueAsString(
                 Request(
                     fnr = medlemskapsparametre.fnr!!,
                     periode = medlemskapsparametre.inputPeriode,
@@ -82,17 +77,23 @@ class LokalWebServer {
                     ytelse = medlemskapsparametre.ytelse
                 )
             )
+        }
 
-        fun respons(input: String): String =
-            given()
+        fun byggDatagrunnlagInput(datagrunnlag: Datagrunnlag): String {
+            return objectMapper.writeValueAsString(datagrunnlag)
+        }
+
+        fun respons(input: String): String {
+            return given()
                 .body(input)
                 .header(Header("Content-Type", "application/json"))
                 .post("/")
                 .then()
                 .statusCode(200)
                 .extract().asString()
+        }
 
-        fun kontrakt(input: String): ValidatableResponse {
+        fun kontraktMedlemskap(input: String): ValidatableResponse {
             val validationFilter = OpenApiValidationFilter("src/main/resources/lovme.yaml")
 
             return given()
@@ -102,6 +103,20 @@ class LokalWebServer {
                 .post("/")
                 .then()
                 .statusCode(200)
+        }
+
+        fun kontraktRegler(datagrunnlagJson: String): ValidatableResponse {
+            val validationFilter = OpenApiValidationFilter("src/main/resources/lovme.yaml")
+
+            val response = given()
+                .filter(validationFilter)
+                .body(datagrunnlagJson)
+                .header(Header("Content-Type", "application/json"))
+                .post("regler")
+                .then()
+                .statusCode(200)
+
+            return response
         }
 
         fun testResponsKode(input: String, statusKode: Int) {
@@ -120,83 +135,11 @@ class LokalWebServer {
             services: Services,
             clientId: String?
         ): Datagrunnlag = runBlocking {
-            if (testdatagrunnlag != null) {
-                testdatagrunnlag!!
+            if (testDatagrunnlag == null) {
+                throw RuntimeException("testDatagrunnlag er null")
             }
 
-            val ytelse = Ytelse.SYKEPENGER
-
-            Datagrunnlag(
-                periode = request.periode,
-                førsteDagForYtelse = request.førsteDagForYtelse,
-                brukerinput = request.brukerinput,
-                pdlpersonhistorikk = personhistorikk(),
-                medlemskap = listOf(Medlemskap("dekning", enDato(), enAnnenDato(), true, Lovvalg.ENDL, "NOR", PeriodeStatus.GYLD)),
-                arbeidsforhold = listOf(arbeidsforhold()),
-                oppgaver = listOf(Oppgave(enDato(), Prioritet.NORM, Status.AAPNET, "Tema")),
-                dokument = listOf(Journalpost("Id", "Tittel", "Posttype", "Status", "Tema", listOf(Dokument("Id", "Tittel")))),
-                ytelse = ytelse,
-                dataOmBarn = listOf(DataOmBarn(personhistorikkBarn = personhistorikkForBarn())),
-                dataOmEktefelle = DataOmEktefelle(personhistorikkEktefelle(), listOf(arbeidsforhold()))
-            )
+            testDatagrunnlag!!
         }
     }
 }
-
-private fun arbeidsforhold(): Arbeidsforhold {
-
-    return Arbeidsforhold(
-        Periode(enDato(), enAnnenDato()),
-        listOf(Utenlandsopphold("SWE", Periode(enDato(), enAnnenDato()), YearMonth.of(2010, 1))),
-        OpplysningspliktigArbeidsgiverType.Organisasjon,
-        Arbeidsgiver(
-            "organisasjonsnummer",
-            listOf(Ansatte(10, Bruksperiode(enDato(), enAnnenDato()), Gyldighetsperiode(enDato(), enAnnenDato()))), listOf("Konkursstatus"),
-            listOf(JuridiskEnhet("juridiskOrgnummer", "juridiskEnhetstype", 20))
-        ),
-        Arbeidsforholdstype.NORMALT,
-        listOf(Arbeidsavtale(Periode(enDato(), enAnnenDato()), Periode(enDato(), enAnnenDato()), "yrkeskode", Skipsregister.NIS, null, 100.toDouble(), 37.5)),
-        permisjonPermittering = emptyList()
-    )
-}
-
-private fun personhistorikk(): Personhistorikk {
-    return Personhistorikk(
-        statsborgerskap = listOf(Statsborgerskap("NOR", enDato(), enAnnenDato())),
-        bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, enDato(), enAnnenDato(), ektefelleFnr())),
-        familierelasjoner = listOf(Familierelasjon(barnFnr(), Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, folkeregistermetadata())),
-        kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        doedsfall = emptyList()
-    )
-}
-
-private fun personhistorikkForBarn(): PersonhistorikkBarn {
-    return PersonhistorikkBarn(
-        ident = barnFnr(),
-        bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        familierelasjoner = listOf(Familierelasjon(brukerFnr(), Familierelasjonsrolle.FAR, Familierelasjonsrolle.BARN, folkeregistermetadata()))
-
-    )
-}
-
-private fun personhistorikkEktefelle(): PersonhistorikkEktefelle {
-    return PersonhistorikkEktefelle(
-        ident = ektefelleFnr(),
-        barn = listOf(barnFnr()),
-        bostedsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        kontaktadresser = listOf(Adresse("NOR", enDato(), enAnnenDato())),
-        oppholdsadresser = listOf(Adresse("NOR", enDato(), enAnnenDato()))
-    )
-}
-
-private fun folkeregistermetadata() = Folkeregistermetadata(etTidspunkt(), etTidspunkt(), etTidspunkt())
-private fun brukerFnr() = "15076500565"
-private fun ektefelleFnr() = "0101197512345"
-private fun barnFnr() = "0101201012345"
-private fun enDato() = LocalDate.of(1975, 10, 10)
-private fun enAnnenDato() = LocalDate.of(2020, 8, 1)
-private fun etTidspunkt() = LocalDateTime.of(2020, 6, 20, 10, 0)
