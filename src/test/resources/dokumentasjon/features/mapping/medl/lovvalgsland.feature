@@ -1,9 +1,6 @@
 # language: no
 # encoding: UTF-8
 
-# language: no
-# encoding: UTF-8
-
 Egenskap: Mapping av lovvalgsland i Medlemskap
 
   Scenariomal: Bruker har lovvalgsland fra Medl
@@ -20,6 +17,8 @@ Egenskap: Mapping av lovvalgsland i Medlemskap
     Eksempler:
       | Lovvalgsland | MedlemskapLovvalgland |
       | BEL          | BEL                   |
+      | USA          | USA                   |
+      | ALA          | ALA                   |
 
 
 

@@ -22,8 +22,8 @@ class ErArbeidsforholdetOffentligSektor(
 
     override fun operasjon(): Resultat {
         return when {
-            erArbeidsforholdetOffentligSektor(arbeidsforhold, kontrollPeriodeForArbeidsforhold, ytelse) -> ja()
-            else -> nei()
+            erArbeidsforholdetOffentligSektor(arbeidsforhold, kontrollPeriodeForArbeidsforhold, ytelse) -> ja(RegelId.REGEL_14)
+            else -> nei(RegelId.REGEL_14)
         }
     }
 

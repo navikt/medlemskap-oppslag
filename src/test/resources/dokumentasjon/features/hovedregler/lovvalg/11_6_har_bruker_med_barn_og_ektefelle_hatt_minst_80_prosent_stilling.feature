@@ -22,11 +22,11 @@ Egenskap: Regel 11.6: Har bruker vært i minst 80 % stilling de siste 12 mnd?
 
     Så skal svaret være "<Svar>"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "<Utfylt begrunnelse>"
+    Og skal begrunnelse utfylt være "<Svar begrunnelse>"
 
     Eksempler:
-      | Stillingsprosent | Svar | Utfylt begrunnelse |
-      | 0                | Nei  | Ja                 |
-      | 79               | Nei  | Ja                 |
-      | 80               | Ja   | Nei                |
-      | 81               | Ja   | Nei                |
+      | Stillingsprosent | Svar | Svar begrunnelse |
+      | 0                | Nei  | Nei              |
+      | 79               | Nei  | Nei              |
+      | 80               | Ja   | Ja               |
+      | 81               | Ja   | Ja               |

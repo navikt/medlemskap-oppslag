@@ -19,12 +19,12 @@ Egenskap: Regel 11.3.1: Er brukers ektefelle folkeregistrert som bosatt i Norge?
 
     Så skal svaret være "<Svar>"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "<Utfylt begrunnelse>"
+    Og skal begrunnelse utfylt være "<Svar begrunnelse>"
 
     Eksempler:
-      | Kontaktadresse | Oppholdsadresse | Svar | Utfylt begrunnelse |
-      |                |                 | Ja   | Nei                |
-      | NOR            | NOR             | Ja   | Nei                |
-      | FRA            | NOR             | Nei  | Ja                 |
-      | NOR            | FRA             | Nei  | Ja                 |
-      | FRA            | FRA             | Nei  | Ja                 |
+      | Kontaktadresse | Oppholdsadresse | Svar | Svar begrunnelse |
+      |                |                 | Ja   | Ja               |
+      | NOR            | NOR             | Ja   | Ja               |
+      | FRA            | NOR             | Nei  | Nei              |
+      | NOR            | FRA             | Nei  | Nei              |
+      | FRA            | FRA             | Nei  | Nei              |

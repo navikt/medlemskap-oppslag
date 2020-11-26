@@ -15,7 +15,7 @@ data class MedlMedlemskapsunntak(
     val status: String,
     val statusaarsak: String?,
     val tilOgMed: LocalDate,
-    val untakId: Int,
+    val unntakId: Int,
     val sporingsinformasjon: MedlSporingsinformasjon?,
     val studieinformasjon: MedlStudieinformasjon?
 )

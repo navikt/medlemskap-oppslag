@@ -30,8 +30,8 @@ class ErBrukerBosattINorgeRegel(
         return when {
             bostedsadresser.erIkkeTom() && landkoderBostedsadresse alleEr "NOR" &&
                 (kontaktadresserLandkoder.all { Eøsland.erNorsk(it) } || kontaktadresserLandkoder.erTom())
-                && (oppholsadresserLandkoder.all { Eøsland.erNorsk(it) } || oppholsadresserLandkoder.erTom()) -> ja()
-            else -> nei(REGEL_10.begrunnelse)
+                && (oppholsadresserLandkoder.all { Eøsland.erNorsk(it) } || oppholsadresserLandkoder.erTom()) -> ja(REGEL_10)
+            else -> nei(REGEL_10)
         }
     }
 

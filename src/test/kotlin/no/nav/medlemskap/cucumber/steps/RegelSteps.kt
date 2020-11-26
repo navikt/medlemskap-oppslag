@@ -239,6 +239,8 @@ class RegelSteps : No {
 
             val respons = LokalWebServer.respons(input!!)
 
+            println("respons: $respons")
+
             JSONAssert.assertEquals(
                 forventetRespons, respons,
                 CustomComparator(
@@ -279,9 +281,9 @@ class RegelSteps : No {
             val begrunnelseUtfylt = domenespråkParser.parseSvar(begrunnelseUtfyltStr!!)
 
             if (begrunnelseUtfylt == Svar.NEI) {
-                assertEquals("", resultat!!.begrunnelse)
+                assertEquals(resultat!!.regelId!!.neiBegrunnelse, resultat!!.begrunnelse)
             } else {
-                assertEquals(resultat!!.regelId!!.begrunnelse, resultat!!.begrunnelse)
+                assertEquals(resultat!!.regelId!!.jaBegrunnelse, resultat!!.begrunnelse)
             }
         }
 
