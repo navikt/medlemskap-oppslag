@@ -63,6 +63,7 @@ class medlClientTest {
         val response = runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
 
         Assertions.assertEquals("Full", response[0].dekning)
+        Assertions.assertEquals(100064642, response[0].unntakId)
     }
 
     @Test
