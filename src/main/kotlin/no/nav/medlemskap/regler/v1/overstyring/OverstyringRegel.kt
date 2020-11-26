@@ -23,7 +23,7 @@ class OverstyringRegel(
             ytelse == Ytelse.SYKEPENGER &&
             erBrukerNorskStatsborger(statsborgerskap)
         ) {
-            ja(regelId.begrunnelse)
+            ja(regelId)
         }
 
         return nei()
