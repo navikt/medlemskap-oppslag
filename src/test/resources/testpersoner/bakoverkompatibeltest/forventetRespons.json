@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2020-11-26T18:55:37.930658",
+  "tidspunkt" : "2020-11-27T08:44:29.674379",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "datagrunnlag" : {
@@ -202,7 +202,7 @@
         "regelId" : "REGEL_0_2",
         "avklaring" : "Skal regler overstyres?",
         "begrunnelse" : "",
-        "svar" : "NEI",
+        "svar" : "JA",
         "harDekning" : null,
         "dekning" : "",
         "delresultat" : [ ],
@@ -305,7 +305,7 @@
       "delresultat" : [ {
         "regelId" : "REGEL_3",
         "avklaring" : "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?",
-        "begrunnelse" : "",
+        "begrunnelse" : "Overstyrt svar",
         "svar" : "JA",
         "harDekning" : null,
         "dekning" : "",
@@ -404,7 +404,7 @@
       "delresultat" : [ {
         "regelId" : "REGEL_12",
         "avklaring" : "Har bruker vært i minst 25% stilling de siste 12 mnd?",
-        "begrunnelse" : "",
+        "begrunnelse" : "Overstyrt svar",
         "svar" : "JA",
         "harDekning" : null,
         "dekning" : "",

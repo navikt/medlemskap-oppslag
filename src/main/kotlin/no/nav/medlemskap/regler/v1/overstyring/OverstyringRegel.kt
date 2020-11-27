@@ -19,11 +19,11 @@ class OverstyringRegel(
 ) : LovvalgRegel(regelId, ytelse, periode, førsteDagForYtelse) {
 
     override fun operasjon(): Resultat {
-        if (brukerInput.arbeidUtenforNorge &&
+        if (!brukerInput.arbeidUtenforNorge &&
             ytelse == Ytelse.SYKEPENGER &&
             erBrukerNorskStatsborger(statsborgerskap)
         ) {
-            ja(regelId)
+            return ja(regelId)
         }
 
         return nei()

@@ -28,7 +28,7 @@ class ReglerForOverstyring(
     }
 
     fun reglerSomSkalOverstyres(resultater: List<Resultat>): Map<RegelId, Svar> {
-        val overstyringResultat = resultater.find { it.regelId == RegelId.REGEL_0_2 }
+        val overstyringResultat = resultater.flatMap { it.delresultat }.find { it.regelId == RegelId.REGEL_0_2 }
 
         if (overstyringResultat?.svar == Svar.JA) {
             return OverstyringRegel.reglerSomSkalOverstyres()

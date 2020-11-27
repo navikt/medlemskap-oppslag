@@ -25,7 +25,7 @@
 * [Regel 12: Har bruker minst 25 % stilling?](12_minst_25_prosent_stilling.feature)
 
 ### Sammensatte scenarier
-* [Bosatt og jobber i Norge](bosatt_og_jobber_i_norge.feature)
+* [Bosatt og jobber i Norge](regelflyt_regel_9_norsk.feature)
 * [Mangler bostedsadresse](Ikke_bostedsadresse.feature)
 * [Utenlandsk adresse](utenlandsk__adresse_skal_gi_uavklart.feature)
 
