@@ -26,7 +26,7 @@ class OverstyringRegel(
             return ja(regelId)
         }
 
-        return nei()
+        return nei(regelId)
     }
 
     companion object {

@@ -23,8 +23,8 @@ class HarBrukerBarnRegel(
         val barn = dataOmBarn
 
         return when {
-            barn.erIkkeTom() -> ja(RegelId.REGEL_11_2_1)
-            else -> nei(RegelId.REGEL_11_2_1)
+            barn.erIkkeTom() -> ja(regelId)
+            else -> nei(regelId)
         }
     }
 

@@ -22,23 +22,23 @@ class InputDatoValideringRegel(
         val førsteGyldigeDato = bestemFørsteGyldigeDato()
 
         if (periode.fom.isBefore(førsteGyldigeDato)) {
-            return nei(RegelId.REGEL_0_1)
+            return nei(regelId)
         }
 
         if (førsteDagForYtelse?.isBefore(førsteGyldigeDato) ?: false) {
-            return nei(RegelId.REGEL_0_1)
+            return nei(regelId)
         }
 
         val sisteGyldigeDato = bestemSisteGyldigeDato()
         if (periode.fom.isAfter(sisteGyldigeDato)) {
-            return nei(RegelId.REGEL_0_1)
+            return nei(regelId)
         }
 
         if (førsteDagForYtelse?.isAfter(sisteGyldigeDato) ?: false) {
-            return nei(RegelId.REGEL_0_1)
+            return nei(regelId)
         }
 
-        return ja(RegelId.REGEL_0_1)
+        return ja(regelId)
     }
 
     private fun bestemFørsteGyldigeDato(): LocalDate {

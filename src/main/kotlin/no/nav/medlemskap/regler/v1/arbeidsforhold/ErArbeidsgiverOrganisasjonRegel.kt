@@ -26,8 +26,8 @@ class ErArbeidsgiverOrganisasjonRegel(
         registrerArbeidsgiverMetrics()
 
         return when {
-            !arbeidsforhold.erAlleArbeidsgivereOrganisasjon(kontrollPeriodeForArbeidsforhold) -> nei(RegelId.REGEL_4)
-            else -> ja(RegelId.REGEL_4)
+            !arbeidsforhold.erAlleArbeidsgivereOrganisasjon(kontrollPeriodeForArbeidsforhold) -> nei(regelId)
+            else -> ja(regelId)
         }
     }
 

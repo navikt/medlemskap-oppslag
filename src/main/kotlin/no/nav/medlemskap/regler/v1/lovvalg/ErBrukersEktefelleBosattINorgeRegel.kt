@@ -31,11 +31,11 @@ class ErBrukersEktefelleBosattINorgeRegel(
 
             return when {
                 erPersonBosattINorge(bostedsadresserTilEktefelle, kontaktadresseTilEktefelle, oppholdsadresseTilEktefelle) -> ja(RegelId.REGEL_11_3_1)
-                else -> nei(RegelId.REGEL_11_3_1)
+                else -> nei(regelId)
             }
         }
         // Denne vil ikke skje
-        return nei(RegelId.REGEL_11_3_1)
+        return nei(regelId)
     }
 
     companion object {
