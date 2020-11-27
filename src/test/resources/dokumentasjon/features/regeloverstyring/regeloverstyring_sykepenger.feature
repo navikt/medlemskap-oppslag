@@ -18,7 +18,7 @@ Egenskap: Regel 0.2: Skal regler overstyres?
       | 30.01.2020      | 30.01.2021      | <Arbeid utenfor Norge?>       | <Ytelse> |
 
     Så skal svaret være "<Regel 0.2>"
-    Og skal begrunnelsen være "<Begrunnelse>"
+    Og skal begrunnelsen være som definert i RegelId
     Og skal avklaringen være som definert i RegelId
 
     Eksempler:

@@ -18,11 +18,11 @@ Egenskap: Regel 11.6.1: Har ektefelle til bruker vært i 100% stilling siste 12 
 
     Så skal svaret være "<Svar>"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "<Svar begrunnelse>"
+    Og skal begrunnelsen være som definert i RegelId
 
     Eksempler:
-      | Stillingsprosent | Svar | Svar begrunnelse |
-      | 0                | Nei  | Nei              |
-      | 99               | Nei  | Nei              |
-      | 100              | Ja   | Ja               |
-      | 110              | Ja   | Ja               |
+      | Stillingsprosent | Svar |
+      | 0                | Nei  |
+      | 99               | Nei  |
+      | 100              | Ja   |
+      | 110              | Ja   |

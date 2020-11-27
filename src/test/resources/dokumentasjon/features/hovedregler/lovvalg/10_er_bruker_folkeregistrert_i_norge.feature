@@ -19,12 +19,12 @@ Egenskap: Regel 10: Er bruker folkeregistert i Norge?
 
     Så skal svaret være "<Svar>"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "<Svar begrunnelse>"
+    Og skal begrunnelsen være som definert i RegelId
 
     Eksempler:
-      | Bor i land | Post land | Svar | Svar begrunnelse |
-      | NOR        | NOR       | Ja   | Ja               |
-      | NOR        | FRA       | Nei  | Nei              |
+      | Bor i land | Post land | Svar |
+      | NOR        | NOR       | Ja   |
+      | NOR        | FRA       | Nei  |
 
 
   Scenariomal: Ingen postadresse, men bostedsadresse

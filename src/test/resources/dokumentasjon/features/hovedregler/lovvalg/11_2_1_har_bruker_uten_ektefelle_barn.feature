@@ -21,4 +21,4 @@ Egenskap: Regel 11.2.1: Har bruker barn i PDL?
 
     Så skal svaret være "Nei"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "Nei"
+    Og skal begrunnelsen være som definert i RegelId
