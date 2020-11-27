@@ -201,7 +201,7 @@
       "delresultat" : [ {
         "regelId" : "REGEL_0_2",
         "avklaring" : "Skal regler overstyres?",
-        "begrunnelse" : "",
+        "begrunnelse" : "Svar på brukerspørsmålet er Nei, og regler 3, 5 og 12 skal derfor overstyres.",
         "svar" : "JA",
         "harDekning" : null,
         "dekning" : "",

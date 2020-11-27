@@ -18,14 +18,16 @@ Egenskap: Regel 0.2: Skal regler overstyres?
       | 30.01.2020      | 30.01.2021      | <Arbeid utenfor Norge?>       | <Ytelse> |
 
     Så skal svaret være "<Regel 0.2>"
+    Og skal begrunnelsen være "<Begrunnelse>"
+    Og skal avklaringen være som definert i RegelId
 
     Eksempler:
-      | Statsborgerskap | Ytelse     | Arbeid utenfor Norge? | Regel 0.2 |
-      | NOR             | DAGPENGER  | Nei                   | Nei       |
-      | NOR             | DAGPENGER  | Ja                    | Nei       |
-      | NOR             | SYKEPENGER | Nei                   | Ja        |
-      | NOR             | SYKEPENGER | Ja                    | Nei       |
-      | BEL             | DAGPENGER  | Nei                   | Nei       |
-      | BEL             | DAGPENGER  | Ja                    | Nei       |
-      | BEL             | SYKEPENGER | Nei                   | Nei       |
-      | BEL             | SYKEPENGER | Ja                    | Nei       |
+      | Statsborgerskap | Ytelse     | Arbeid utenfor Norge? | Regel 0.2 | Begrunnelse                                                                   |
+      | NOR             | DAGPENGER  | Nei                   | Nei       |                                                                               |
+      | NOR             | DAGPENGER  | Ja                    | Nei       |                                                                               |
+      | NOR             | SYKEPENGER | Nei                   | Ja        | Svar på brukerspørsmålet er Nei, og regler 3, 5 og 12 skal derfor overstyres. |
+      | NOR             | SYKEPENGER | Ja                    | Nei       |                                                                               |
+      | BEL             | DAGPENGER  | Nei                   | Nei       |                                                                               |
+      | BEL             | DAGPENGER  | Ja                    | Nei       |                                                                               |
+      | BEL             | SYKEPENGER | Nei                   | Nei       |                                                                               |
+      | BEL             | SYKEPENGER | Ja                    | Nei       |                                                                               |
