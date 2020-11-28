@@ -15,7 +15,7 @@ Egenskap: Mapping av journalpostId
     Når journalposter mappes
 
     Så skal mappede dokumentInfoId være
-      | dokumentInfoId |
+      | DokumentInfoId |
       | 439560100      |
 
     Og mappede tittel være

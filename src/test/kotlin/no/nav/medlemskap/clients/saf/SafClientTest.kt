@@ -10,6 +10,7 @@ import io.ktor.http.HttpStatusCode
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import no.nav.medlemskap.clients.saf.generated.Dokumenter
 import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.cioHttpClient
 import org.junit.jupiter.api.AfterAll
@@ -64,9 +65,9 @@ class SafClientTest {
 
         assertEquals("439560100", safResponse.dokumentoversiktBruker.journalposter.first()?.journalpostId)
         assertEquals("MASKERT_FELT", safResponse.dokumentoversiktBruker.journalposter.first()?.tittel)
-        assertEquals("I", safResponse.dokumentoversiktBruker.journalposter.first()?.journalposttype)
-        assertEquals("JOURNALFOERT", safResponse.dokumentoversiktBruker.journalposter.first()?.journalstatus)
-        assertEquals("SYK", safResponse.dokumentoversiktBruker.journalposter.first()?.tema)
+        assertEquals(Dokumenter.Journalposttype.I, safResponse.dokumentoversiktBruker.journalposter.first()?.journalposttype)
+        assertEquals(Dokumenter.Journalstatus.JOURNALFOERT, safResponse.dokumentoversiktBruker.journalposter.first()?.journalstatus)
+        assertEquals(Dokumenter.Tema.SYK, safResponse.dokumentoversiktBruker.journalposter.first()?.tema)
         assertEquals("453743887", safResponse.dokumentoversiktBruker.journalposter.first()?.dokumenter?.first()?.dokumentInfoId)
         assertEquals("MASKERT_FELT", safResponse.dokumentoversiktBruker.journalposter.first()?.dokumenter?.first()?.tittel)
     }

@@ -10,7 +10,7 @@ Egenskap: Mapping av tittel
 
     Når journalposter mappes
 
-    Så skal mappede journalpostid være
+    Så skal mappede tittel i journalpost være
       | Tittel       |
       | MASKERT_FELT |
 

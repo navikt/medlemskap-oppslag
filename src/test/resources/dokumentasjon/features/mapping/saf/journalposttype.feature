@@ -11,14 +11,17 @@ Egenskap: Mapping av journalpostId
     Når journalposter mappes
 
     Så skal mappede journalposttype være
-      | Journalposttype             |
+      | JournalpostType             |
       | <MedlemskapJournalposttype> |
 
     Eksempler:
-      | <Journalposttype> | <MedlemskapJournalposttype> |
-      | I                 | I                          |
-      | U                 | U                          |
-      | N                 | N                          |
+      | Journalposttype | MedlemskapJournalposttype|
+      | I               | I                        |
+      | U               | U                        |
+      | N               | N                        |
+
+
+
 
 
 

@@ -21,22 +21,24 @@ class AaregMapperTest {
 
         val arbeidsgiver = Arbeidsgiver(
             organisasjonsnummer = "985672744",
-            ansatte = listOf(Ansatte(
-                            antall = 5,
-                            bruksperiode =
-                                Bruksperiode(
-                                        fom = LocalDate.now(),
-                                        tom = LocalDate.now().plusDays(2)
-                                ),
-                            gyldighetsperiode = null)
+            ansatte = listOf(
+                Ansatte(
+                    antall = 5,
+                    bruksperiode =
+                        Bruksperiode(
+                            fom = LocalDate.now(),
+                            tom = LocalDate.now().plusDays(2)
+                        ),
+                    gyldighetsperiode = null
+                )
             ),
             konkursStatus = null,
             juridiskeEnheter = listOf(
-                    JuridiskEnhet(
-                            organisasjonsnummer = "123456789",
-                            enhetstype = "AS",
-                            antallAnsatte = 40
-                    )
+                JuridiskEnhet(
+                    organisasjonsnummer = "123456789",
+                    enhetstype = "AS",
+                    antallAnsatte = 40
+                )
             )
         )
 
