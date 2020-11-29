@@ -4,7 +4,7 @@ import no.nav.medlemskap.clients.ereg.Organisasjon
 import no.nav.medlemskap.domene.*
 
 fun mapOrganisasjonTilArbeidsgiver(organisasjon: Organisasjon, juridiskeEnheter: List<Organisasjon>?): Arbeidsgiver {
-    val enhetstype = organisasjon.organisasjonDetaljer?.enhetstyper?.first()?.enhetstype
+
     val ansatte = organisasjon.organisasjonDetaljer?.ansatte
     val konkursStatus = organisasjon.organisasjonDetaljer?.statuser?.map { it -> it?.kode }
     return Arbeidsgiver(

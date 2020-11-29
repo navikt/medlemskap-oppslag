@@ -53,7 +53,7 @@ class RegelMetricsTest {
         Assert.assertEquals(1, meters.medTagRegelVerdi(RegelId.REGEL_2.metricName()).size)
         Assert.assertEquals(1.0, meters.medTagRegelVerdi(RegelId.REGEL_2.metricName())[0].absoluteValue, 1.0)
     }
-}
 
-private fun List<Meter>.medTagRegelVerdi(s: String): List<Double> =
-    filter { it.id.tags.contains(Tag.of("regel", s)) }.flatMap { it.measure() }.map { it.value }
+    private fun List<Meter>.medTagRegelVerdi(s: String): List<Double> =
+            filter { it.id.tags.contains(Tag.of("regel", s)) }.flatMap { it.measure() }.map { it.value }
+}

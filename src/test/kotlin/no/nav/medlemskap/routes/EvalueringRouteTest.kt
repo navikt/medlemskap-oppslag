@@ -1,8 +1,8 @@
 package no.nav.medlemskap.routes
 
-import junit.framework.Assert.assertEquals
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.personer.Personleser
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class EvalueringRouteTest {
