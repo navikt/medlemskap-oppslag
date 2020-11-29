@@ -1,8 +1,9 @@
 {
   "periode": {
-    "fom": "2020-01-30",
-    "tom": "2021-01-30"
+    "fom": "2020-08-16",
+    "tom": "2020-08-23"
   },
+  "førsteDagForYtelse": null,
   "brukerinput": {
     "arbeidUtenforNorge": false
   },
@@ -10,57 +11,57 @@
     "statsborgerskap": [
       {
         "landkode": "NOR",
-        "fom": "1991-06-30",
+        "fom": null,
         "tom": null
       }
     ],
+    "bostedsadresser": [],
+    "kontaktadresser": [],
+    "oppholdsadresser": [],
     "sivilstand": [],
     "familierelasjoner": [],
-    "bostedsadresser": [
-      {
-        "landkode": "NOR",
-        "fom": "2020-01-01",
-        "tom": null
-      }
-    ],
-    "postadresser": [],
-    "midlertidigAdresser": [],
-    "personstatuser" : [ {
-      "personstatus" : "bosatt",
-      "fom" : "1975-10-10",
-      "tom" : "2020-08-01"
-    } ],
     "doedsfall": []
   },
   "medlemskap": [],
   "arbeidsforhold": [
     {
       "periode": {
-        "fom": "2018-01-01",
-        "tom": "2022-06-30"
+        "fom": "2000-02-12",
+        "tom": null
       },
-      "utenlandsopphold": [],
+      "utenlandsopphold": null,
       "arbeidsgivertype": "Organisasjon",
       "arbeidsgiver": {
-        "type": "BEDR",
-        "identifikator": "1",
-        "antallAnsatte": "6"
+        "organisasjonsnummer": "900668490",
+        "ansatte": null,
+        "konkursStatus": null,
+        "juridiskeEnheter": []
       },
       "arbeidsforholdstype": "NORMALT",
       "arbeidsavtaler": [
         {
           "periode": {
-            "fom": "2020-01-30",
-            "tom": "2020-06-30"
+            "fom": "2020-02-12",
+            "tom": null
           },
-          "yrkeskode": "0001",
-          "stillingsprosent": 24.0
+          "gyldighetsperiode": {
+            "fom": "2000-02-01",
+            "tom": null
+          },
+          "yrkeskode": "7125102",
+          "skipsregister": null,
+          "fartsomraade": null,
+          "stillingsprosent": 20.0,
+          "beregnetAntallTimerPrUke": 7.5
         }
-      ]
+      ],
+      "permisjonPermittering": null
     }
   ],
-  "inntekt": [],
   "oppgaver": [],
   "dokument": [],
-  "ytelse" : "SYKEPENGER"
-}
+  "ytelse": "LOVME",
+  "dataOmBarn": null,
+  "dataOmEktefelle": null,
+  "overstyrteRegler": {}
+},

@@ -58,7 +58,7 @@ class AaregClientTest {
 
         val response = runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
 
-        Assertions.assertEquals(null, response[0].ansettelsesperiode.varslingskode)
+        Assertions.assertEquals("985672744", response[0].arbeidsgiver.organisasjonsnummer)
     }
 
     @Test

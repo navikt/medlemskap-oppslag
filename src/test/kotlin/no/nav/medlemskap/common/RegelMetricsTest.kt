@@ -1,9 +1,6 @@
 package no.nav.medlemskap.common
 
 import assertk.assertThat
-import assertk.assertions.contains
-import assertk.assertions.containsExactly
-import assertk.assertions.containsOnly
 import io.micrometer.core.instrument.Meter
 import io.micrometer.core.instrument.Metrics
 import io.micrometer.core.instrument.MockClock
@@ -11,17 +8,17 @@ import io.micrometer.core.instrument.MockClock.clock
 import io.micrometer.core.instrument.Tag
 import io.micrometer.core.instrument.simple.SimpleConfig
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
+import no.nav.medlemskap.regler.common.RegelId
+import no.nav.medlemskap.regler.common.RegelId.Companion.metricName
+import no.nav.medlemskap.regler.evaluer
 import no.nav.medlemskap.regler.personer.Personleser
-import no.nav.medlemskap.regler.v1.ReglerForArbeidsforhold
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
 import java.time.Duration
 
 @TestInstance(PER_CLASS)
-@Disabled
 class RegelMetricsTest {
 
     /*
@@ -43,26 +40,19 @@ class RegelMetricsTest {
     }
 
     @Test
-    fun `evaluering av regelsett for eøs forordningen for amerikansk statsborgerskap gir to metrikker`() {
+    fun `evaluering av bruker gir en metrikk for medlemskapskonklusjon`() {
         gjørNoeMagiJegIkkeForstår()
 
-        // ReglerForGrunnforordningen(initialiserFakta(personleser.enkelAmerikansk())).hentHovedRegel().utfør(mutableListOf())
-        ReglerForArbeidsforhold.fraDatagrunnlag(personleser.norskMedEttArbeidsforholdMedArbeidsavtaleUnder25ProsentStillingIPeriode()).kjørRegelflyter()
+        evaluer(personleser.brukerIkkeFolkeregistrertSomBosattINorge())
 
         gjørNoeMagiJegIkkeForstår()
 
         assertThat(simpleRegistry.meters.map { it.id.name }).contains("regel_calls_total")
 
         val meters = simpleRegistry.meters.filter { it.id.name == "regel_calls_total" }
-        assertThat(meters.map { it.id }.flatMap { it.tags })
-            .containsOnly(
-                Tag.of("regel", "Er brukeren statsborger i et EØS land"),
-                Tag.of("regel", "Regelsett for grunnforordningen"),
-                Tag.of("status", "NEI"),
-                Tag.of("status", "NEI")
-            )
-        assertThat(meters.medTagRegelVerdi("Er brukeren statsborger i et EØS land")).containsExactly(1.0)
-        assertThat(meters.medTagRegelVerdi("Regelsett for grunnforordningen")).containsExactly(1.0)
+
+        assertThat(meters.medTagRegelVerdi(RegelId.REGEL_MEDLEM_KONKLUSJON.metricName())).containsExactly(1.0)
+        assertThat(meters.medTagRegelVerdi(RegelId.REGEL_2.metricName())).containsExactly(1.0)
     }
 
     private fun gjørNoeMagiJegIkkeForstår() {

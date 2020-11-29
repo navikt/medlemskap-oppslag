@@ -239,8 +239,6 @@ class RegelSteps : No {
 
             val respons = LokalWebServer.respons(input!!)
 
-            println("respons: $respons")
-
             JSONAssert.assertEquals(
                 forventetRespons, respons,
                 CustomComparator(

@@ -4,6 +4,7 @@ import no.nav.medlemskap.common.regelCounter
 import no.nav.medlemskap.common.regelInfluxCounter
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
+import no.nav.medlemskap.regler.common.RegelId.Companion.metricName
 
 data class Regel(
     val regelId: RegelId,
@@ -11,7 +12,7 @@ data class Regel(
     val operasjon: () -> Resultat
 ) {
     fun utfør(): Resultat = operasjon.invoke().apply {
-        regelCounter(this@Regel.regelId.identifikator + ". " + this@Regel.regelId.avklaring.replace("?", ""), this.svar.name, ytelse.name()).increment()
+        regelCounter(this@Regel.regelId.metricName(), this.svar.name, ytelse.name()).increment()
         regelInfluxCounter(this@Regel.regelId.identifikator, this.svar.name, ytelse.name()).increment()
     }.copy(
         regelId = regelId,

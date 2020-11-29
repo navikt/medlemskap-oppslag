@@ -28,6 +28,10 @@ class ReglerForRequestValidering(
         return listOf(hentHovedflyt())
     }
 
+    fun kjørRegel(): Resultat {
+        return hentHovedflyt().utfør()
+    }
+
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForRequestValidering {
             with(datagrunnlag) {
