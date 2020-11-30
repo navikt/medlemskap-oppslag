@@ -22,6 +22,9 @@ fun mapJournalResultat(journal: List<Dokumenter.Journalpost?>): List<Journalpost
 
 fun mapDokumenter(journalPost: Dokumenter.Journalpost): List<Dokument> {
     return journalPost.dokumenter?.filterNotNull()?.map {
-        Dokument(dokumentId = it.dokumentInfoId, tittel = it.tittel)
+        Dokument(
+            dokumentId = it.dokumentInfoId,
+            tittel = it.tittel
+        )
     } ?: emptyList()
 }
