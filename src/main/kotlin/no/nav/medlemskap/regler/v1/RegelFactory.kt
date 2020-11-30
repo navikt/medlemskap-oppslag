@@ -27,7 +27,7 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
         return when (regelId) {
             REGEL_OPPLYSNINGER -> HarBrukerRegistrerteOpplysningerRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_0_1 -> InputDatoValideringRegel.fraDatagrunnlag(datagrunnlag).regel
-            REGEL_0_2 -> OverstyringRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_0_5 -> OverstyringRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_1_1 -> ErPerioderAvklartRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_1_2 -> PeriodeMedOgUtenMedlemskapRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_1_3 -> PeriodeMedMedlemskapRegel.fraDatagrunnlag(datagrunnlag).regel

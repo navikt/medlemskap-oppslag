@@ -15,7 +15,7 @@ class OverstyringRegel(
     private val periode: InputPeriode,
     førsteDagForYtelse: LocalDate?,
     private val statsborgerskap: List<Statsborgerskap>,
-    regelId: RegelId = RegelId.REGEL_0_2
+    regelId: RegelId = RegelId.REGEL_0_5
 ) : LovvalgRegel(regelId, ytelse, periode, førsteDagForYtelse) {
 
     override fun operasjon(): Resultat {

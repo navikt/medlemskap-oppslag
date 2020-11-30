@@ -199,7 +199,7 @@
       "harDekning" : null,
       "dekning" : "",
       "delresultat" : [ {
-        "regelId" : "REGEL_0_2",
+        "regelId" : "REGEL_0_5",
         "avklaring" : "Skal regler overstyres?",
         "begrunnelse" : "Svar på brukerspørsmålet er Nei, og regler 3, 5 og 12 skal derfor overstyres.",
         "svar" : "JA",
