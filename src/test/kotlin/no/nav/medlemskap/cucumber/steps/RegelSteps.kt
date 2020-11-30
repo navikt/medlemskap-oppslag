@@ -10,6 +10,7 @@ import no.nav.medlemskap.common.LokalWebServer
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.Medlemskapsparametre
 import no.nav.medlemskap.cucumber.SpraakParserDomene.ArbeidsforholdDomeneSpraakParser
+import no.nav.medlemskap.cucumber.SpraakParserDomene.PersonhistorikkDomeneSpraakParser
 import no.nav.medlemskap.cucumber.steps.pdl.DataOmEktefelleBuilder
 import no.nav.medlemskap.cucumber.steps.pdl.PersonhistorikkBuilder
 import no.nav.medlemskap.cucumber.steps.pdl.PersonhistorikkEktefelleBuilder
@@ -68,51 +69,51 @@ class RegelSteps : No {
 
     init {
         Gitt("følgende statsborgerskap i personhistorikken") { dataTable: DataTable? ->
-            val statsborgerskap = domenespråkParser.mapStatsborgerskap(dataTable)
+            val statsborgerskap = PersonhistorikkDomeneSpraakParser.mapStatsborgerskap(dataTable)
             pdlPersonhistorikkBuilder.statsborgerskap.addAll(statsborgerskap)
         }
 
         Gitt("følgende bostedsadresser i personhistorikken") { dataTable: DataTable? ->
-            val bostedsadresser = domenespråkParser.mapAdresser(dataTable)
+            val bostedsadresser = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
             pdlPersonhistorikkBuilder.bostedsadresser.addAll(bostedsadresser)
         }
         Gitt<DataTable>("følgende opplysninger om dødsfall i personhistorikken:") { dataTable: DataTable? ->
-            val doedsfall = domenespråkParser.mapDoedsfall(dataTable)
+            val doedsfall = PersonhistorikkDomeneSpraakParser.mapDoedsfall(dataTable)
             pdlPersonhistorikkBuilder.doedsfall.addAll(doedsfall)
         }
 
         Gitt("følgende kontaktadresser i personhistorikken") { dataTable: DataTable? ->
-            val kontaktadresser = domenespråkParser.mapAdresser(dataTable)
+            val kontaktadresser = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
             pdlPersonhistorikkBuilder.kontaktadresse.addAll(kontaktadresser)
         }
 
         Gitt("følgende oppholdsadresser i personhistorikken") { dataTable: DataTable? ->
-            val oppholdsadresse = domenespråkParser.mapAdresser(dataTable)
+            val oppholdsadresse = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
             pdlPersonhistorikkBuilder.oppholdsadresse.addAll(oppholdsadresse)
         }
 
         Gitt<DataTable>("følgende sivilstand i personhistorikk fra PDL") { dataTable: DataTable? ->
-            val sivilstand = domenespråkParser.mapSivilstander(dataTable)
+            val sivilstand = PersonhistorikkDomeneSpraakParser.mapSivilstander(dataTable)
             pdlPersonhistorikkBuilder.sivilstand.addAll(sivilstand)
         }
 
         Gitt<DataTable>("følgende familerelasjoner i personhistorikk fra PDL") { dataTable: DataTable? ->
-            val familierelasjoner = domenespråkParser.mapFamilierelasjoner(dataTable)
+            val familierelasjoner = PersonhistorikkDomeneSpraakParser.mapFamilierelasjoner(dataTable)
             pdlPersonhistorikkBuilder.familierelasjoner.addAll(familierelasjoner)
         }
 
         Gitt<DataTable>("følgende personhistorikk for ektefelle fra PDL") { dataTable: DataTable? ->
-            val ektefelle = domenespråkParser.mapPersonhistorikkEktefelle(dataTable)
+            val ektefelle = PersonhistorikkDomeneSpraakParser.mapPersonhistorikkEktefelle(dataTable)
             dataOmEktefelleBuilder.personhistorikkEktefelle = ektefelle[0]
         }
 
         Gitt<DataTable>("følgende barn i personhistorikk for ektefelle fra PDL") { dataTable: DataTable? ->
-            val barnTilEktefelle = domenespråkParser.mapBarnTilEktefelle(dataTable)
+            val barnTilEktefelle = PersonhistorikkDomeneSpraakParser.mapBarnTilEktefelle(dataTable)
             personhistorikkEktefelleBuilder.barn.addAll(barnTilEktefelle)
         }
 
         Gitt<DataTable>("følgende personhistorikk for barn fra PDL") { dataTable: DataTable? ->
-            val barnTilBruker = domenespråkParser.mapPersonhistorikkBarn(dataTable)
+            val barnTilBruker = PersonhistorikkDomeneSpraakParser.mapPersonhistorikkBarn(dataTable)
             dataOmBarn = barnTilBruker
         }
 

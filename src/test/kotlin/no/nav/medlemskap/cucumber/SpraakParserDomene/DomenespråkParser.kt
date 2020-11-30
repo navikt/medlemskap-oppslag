@@ -3,9 +3,6 @@ package no.nav.medlemskap.cucumber
 import io.cucumber.datatable.DataTable
 import no.nav.medlemskap.cucumber.Domenebegrep.*
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.domene.barn.DataOmBarn
-import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
-import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Svar
 import java.time.LocalDate
@@ -87,19 +84,16 @@ object DomenespråkParser : BasisDomeneParser() {
 
     fun parseSivilstandstype(domenebegrep: Domenebegrep, rad: Map<String, String>): Sivilstandstype {
         val verdi = verdi(domenebegrep.nøkkel, rad)
-
         return Sivilstandstype.valueOf(verdi)
     }
 
     fun parsePrioritet(domenebegrep: Domenebegrep, rad: Map<String, String>): Prioritet {
         val verdi = verdi(domenebegrep.nøkkel, rad)
-
         return Prioritet.valueOf(verdi)
     }
 
     fun parseStatus(domenebegrep: Domenebegrep, rad: Map<String, String>): Status {
         val verdi = verdi(domenebegrep.nøkkel, rad)
-
         return Status.valueOf(verdi)
     }
 
@@ -119,44 +113,12 @@ object DomenespråkParser : BasisDomeneParser() {
         return Familierelasjonsrolle.valueOf(verdi)
     }
 
-    fun mapStatsborgerskap(dataTable: DataTable?): List<Statsborgerskap> {
-        return mapDataTable(dataTable, StatsborgerskapMapper())
-    }
-
-    fun mapAdresser(dataTable: DataTable?): List<Adresse> {
-        return mapDataTable(dataTable, AdresseMapper())
-    }
-
-    fun mapSivilstander(dataTable: DataTable?): List<Sivilstand> {
-        return mapDataTable(dataTable, SivilstandMapper())
-    }
-
-    fun mapFamilierelasjoner(dataTable: DataTable?): List<Familierelasjon> {
-        return mapDataTable(dataTable, FamilieRelasjonMapper())
-    }
-
-    fun mapPersonhistorikkEktefelle(dataTable: DataTable?): List<PersonhistorikkEktefelle> {
-        return mapDataTable(dataTable, PersonhistorikkEktefelleMapper())
-    }
-
-    fun mapBarnTilEktefelle(dataTable: DataTable?): List<String> {
-        return mapDataTable(dataTable, BarnTilEktefelleMapper())
-    }
-
-    fun mapPersonhistorikkBarn(dataTable: DataTable?): List<DataOmBarn> {
-        return mapDataTable(dataTable, PersonhistorikkBarnMapper())
-    }
-
     fun mapMedlemskap(dataTable: DataTable?): List<Medlemskap> {
         return mapDataTable(dataTable, MedlemskapMapper())
     }
 
     fun mapOppgaverFraGosys(dataTable: DataTable?): List<Oppgave> {
         return mapDataTable(dataTable, OppgaveMapper())
-    }
-
-    fun mapDoedsfall(dataTable: DataTable?): List<LocalDate> {
-        return mapDataTable(dataTable, DoedsfallMapper())
     }
 
     fun mapJournalposter(dataTable: DataTable?): List<Journalpost> {
@@ -211,65 +173,6 @@ object DomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, InputPeriodeMapper()).get(0)
     }
 
-    fun mapJournalpostId(dataTable: DataTable?): String {
-        return mapDataTable(dataTable, JournalPostIdMapper())[0]
-    }
-
-    fun mapDokumentInfoId(dataTable: DataTable?): String {
-        return mapDataTable(dataTable, DokumentInfoIdMapper())[0]
-    }
-
-    fun mapTittel(dataTable: DataTable?): String {
-        return mapDataTable(dataTable, TittelMapper())[0]
-    }
-
-    fun mapTema(dataTable: DataTable?): String {
-        return mapDataTable(dataTable, TemaMapper())[0]
-    }
-
-    fun mapJournalstatus(dataTable: DataTable?): String {
-        return mapDataTable(dataTable, JournalStatusMapper())[0]
-    }
-
-    fun mapJournalposttype(dataTable: DataTable?): String {
-        return mapDataTable(dataTable, JournalpostTypeMapper())[0]
-    }
-
-    class TemaMapper : RadMapper<String> {
-        override fun mapRad(rad: Map<String, String>): String {
-            return parseString(TEMA, rad)
-        }
-    }
-
-    class JournalStatusMapper : RadMapper<String> {
-        override fun mapRad(rad: Map<String, String>): String {
-            return parseString(JOURNAL_STATUS, rad)
-        }
-    }
-
-    class JournalpostTypeMapper : RadMapper<String> {
-        override fun mapRad(rad: Map<String, String>): String {
-            return parseString(JOURNALPOST_TYPE, rad)
-        }
-    }
-
-    class TittelMapper : RadMapper<String> {
-        override fun mapRad(rad: Map<String, String>): String {
-            return parseString(TITTEL, rad)
-        }
-    }
-
-    class DokumentInfoIdMapper : RadMapper<String> {
-        override fun mapRad(rad: Map<String, String>): String {
-            return parseString(DOKUMENT_INFO_ID, rad)
-        }
-    }
-    class JournalPostIdMapper : RadMapper<String> {
-        override fun mapRad(rad: Map<String, String>): String {
-            return parseString(JOURNAL_POST_ID, rad)
-        }
-    }
-
     class PeriodeStatusMapper : RadMapper<PeriodeStatus> {
         override fun mapRad(rad: Map<String, String>): PeriodeStatus {
             return PeriodeStatus.valueOf(parseString(PERIODESTATUS, rad))
@@ -319,28 +222,12 @@ object DomenespråkParser : BasisDomeneParser() {
         }
     }
 
-    class StatsborgerskapMapper : RadMapper<Statsborgerskap> {
-        override fun mapRad(rad: Map<String, String>): Statsborgerskap {
-            return Statsborgerskap(
-                parseString(LANDKODE, rad),
-                parseValgfriDato(FRA_OG_MED_DATO, rad),
-                parseValgfriDato(TIL_OG_MED_DATO, rad)
-            )
-        }
-    }
-
     class InputPeriodeMapper : RadMapper<InputPeriode> {
         override fun mapRad(rad: Map<String, String>): InputPeriode {
             return InputPeriode(
                 parseDato(FRA_OG_MED_DATO, rad),
                 parseDato(TIL_OG_MED_DATO, rad)
             )
-        }
-    }
-
-    class DoedsfallMapper : RadMapper<LocalDate> {
-        override fun mapRad(rad: Map<String, String>): LocalDate {
-            return parseDato(DOEDSDATO, rad)
         }
     }
 
@@ -362,16 +249,6 @@ object DomenespråkParser : BasisDomeneParser() {
     class OverstyrteReglerMapper : RadMapper<Pair<RegelId, Svar?>> {
         override fun mapRad(rad: Map<String, String>): Pair<RegelId, Svar?> {
             return Pair(parseRegelId(REGEL, rad), parseValgfrittSvar(SVAR, rad))
-        }
-    }
-
-    class AdresseMapper : RadMapper<Adresse> {
-        override fun mapRad(rad: Map<String, String>): Adresse {
-            return Adresse(
-                parseString(LANDKODE, rad),
-                parseValgfriDato(FRA_OG_MED_DATO, rad),
-                parseValgfriDato(TIL_OG_MED_DATO, rad)
-            )
         }
     }
 
@@ -413,110 +290,12 @@ object DomenespråkParser : BasisDomeneParser() {
         }
     }
 
-    class PersonhistorikkEktefelleMapper : RadMapper<PersonhistorikkEktefelle> {
-        override fun mapRad(rad: Map<String, String>): PersonhistorikkEktefelle {
-            val fraOgMedDato = parseValgfriDato(FRA_OG_MED_DATO, rad)
-            val tilOgMedDato = parseValgfriDato(TIL_OG_MED_DATO, rad)
-
-            val bostedsadresser = mutableListOf<Adresse>()
-            val bostedsadresse = parseValgfriString(BOSTED, rad)
-            if (bostedsadresse != null) {
-                bostedsadresser.add(Adresse(bostedsadresse, fraOgMedDato, tilOgMedDato))
-            }
-
-            val kontaktadresser = mutableListOf<Adresse>()
-            val kontaktadresse = parseValgfriString(KONTAKTADRESSE, rad)
-            if (kontaktadresse != null) {
-                kontaktadresser.add(Adresse(kontaktadresse, fraOgMedDato, tilOgMedDato))
-            }
-
-            val oppholdsadresser = mutableListOf<Adresse>()
-            val oppholdsadresse = parseValgfriString(OPPHOLDSADRESSE, rad)
-            if (oppholdsadresse != null) {
-                oppholdsadresser.add(Adresse(oppholdsadresse, fraOgMedDato, tilOgMedDato))
-            }
-
-            return PersonhistorikkEktefelle(
-                ident = parseString(IDENT, rad),
-                barn = mutableListOf<String>(),
-                bostedsadresser = bostedsadresser,
-                kontaktadresser = kontaktadresser,
-                oppholdsadresser = oppholdsadresser
-
-            )
-        }
-    }
-
-    class PersonhistorikkBarnMapper : RadMapper<DataOmBarn> {
-        override fun mapRad(rad: Map<String, String>): DataOmBarn {
-            val fraOgMedDato = parseValgfriDato(FRA_OG_MED_DATO, rad)
-            val tilOgMedDato = parseValgfriDato(TIL_OG_MED_DATO, rad)
-
-            val bostedsadresser = mutableListOf<Adresse>()
-            val bostedsadresse = parseValgfriString(BOSTED, rad)
-            if (bostedsadresse != null) {
-                bostedsadresser.add(Adresse(bostedsadresse, fraOgMedDato, tilOgMedDato))
-            }
-
-            val kontaktadresser = mutableListOf<Adresse>()
-            val kontaktadresse = parseValgfriString(KONTAKTADRESSE, rad)
-            if (kontaktadresse != null) {
-                kontaktadresser.add(Adresse(kontaktadresse, fraOgMedDato, tilOgMedDato))
-            }
-
-            val oppholdsadresser = mutableListOf<Adresse>()
-            val oppholdsadresse = parseValgfriString(OPPHOLDSADRESSE, rad)
-            if (oppholdsadresse != null) {
-                oppholdsadresser.add(Adresse(oppholdsadresse, fraOgMedDato, tilOgMedDato))
-            }
-
-            return DataOmBarn(
-                PersonhistorikkBarn(
-                    ident = parseString(IDENT, rad),
-                    familierelasjoner = mutableListOf<Familierelasjon>(),
-                    bostedsadresser = bostedsadresser,
-                    kontaktadresser = kontaktadresser,
-                    oppholdsadresser = oppholdsadresser
-
-                )
-            )
-        }
-    }
-
     class PeriodeMapper : RadMapper<Periode> {
         override fun mapRad(rad: Map<String, String>): Periode {
             return Periode(
                 parseValgfriDato(FRA_OG_MED_DATO, rad),
                 parseValgfriDato(TIL_OG_MED_DATO, rad)
             )
-        }
-    }
-
-    class SivilstandMapper : RadMapper<Sivilstand> {
-        override fun mapRad(rad: Map<String, String>): Sivilstand {
-            return Sivilstand(
-                type = parseSivilstandstype(SIVILSTANDSTYPE, rad),
-                gyldigFraOgMed = parseValgfriDato(GYLDIG_FRA_OG_MED, rad),
-                gyldigTilOgMed = parseValgfriDato(GYLDIG_TIL_OG_MED, rad),
-                relatertVedSivilstand = parseValgfriString(RELATERT_VED_SIVILSTAND, rad)
-            )
-        }
-    }
-
-    class FamilieRelasjonMapper : RadMapper<Familierelasjon> {
-        override fun mapRad(rad: Map<String, String>): Familierelasjon {
-            return Familierelasjon(
-                relatertPersonsIdent = parseString(RELATERT_PERSONS_IDENT, rad),
-                relatertPersonsRolle = parseRolle(RELATERT_PERSONS_ROLLE, rad),
-                minRolleForPerson = parseValgfriRolle(MIN_ROLLE_FOR_PERSON, rad),
-                folkeregistermetadata = null
-            )
-        }
-    }
-
-    class BarnTilEktefelleMapper : RadMapper<String> {
-        override fun mapRad(rad: Map<String, String>): String {
-            return String()
         }
     }
 }
@@ -548,10 +327,8 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     JOURNAL_STATUS("Journalstatus"),
     JOURNALPOST_ID("JournalpostId"),
     JOURNALPOST_TYPE("JournalpostType"),
-    JOURNAL_POST_TYPE("Journalposttype"),
     JURIDISK_ANTALL_ANSATTE("Antall ansatte i juridisk enhet"),
     JURIDISK_ENHETSTYPE("Juridisk enhetstype"),
-    JURIDISK_ORG_NR("Juridisk orgnr"),
     KONKURSSTATUS("Konkursstatus"),
     KONTAKTADRESSE("Kontaktadresse"),
     LANDKODE("Landkode"),
@@ -571,7 +348,6 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     RELATERT_VED_SIVILSTAND("Relatert ved sivilstand"),
     RAPPORTERINGSPERIODE("Rapporteringsperiode"),
     SIVILSTANDSTYPE("Sivilstandstype"),
-    SKIPSREGISTER("Skipsregister"),
     STATUS("Status"),
     STILLINGSPROSENT("Stillingsprosent"),
     SVAR("Svar"),
