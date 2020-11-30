@@ -17,7 +17,7 @@ Egenskap: Regelflyt for regel 3
       | 1             | BEDR             | NOR      | 9              |
 
   Scenariomal: Regelflyt regel 3: Bruker får "ja" på spørsmålet om medlemskap hvis det er sammenhengende arbeidsforhold i
-  hele kontrollperioden ,UAVKLART ellers
+  hele kontrollperioden ,UAVKLART ellers. Men for sykepenger skal regel 3 overstyres til ja i dette tilfellet.
 
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato   | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Arbeidsgiver Id |

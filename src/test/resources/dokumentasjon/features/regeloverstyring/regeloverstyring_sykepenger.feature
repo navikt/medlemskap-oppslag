@@ -6,6 +6,7 @@ Egenskap: Regel 0.5: Skal regler overstyres?
   Scenariomal: Regel 0.5 - Overstyring av regler 3, 5 og 12 hvis følgende kriterier er oppfylt:
   - Ytelse sykepenger
   - Norsk statsborger
+  - Og bruker har arbeidsforhold i AaReg som ikke er frilanser (eller selvstendig næringsdrivende)
   - Bruker har svart nei på brukerspørsmålet "Har du jobbet utenfor Norge siste 12 måneder?"
   - TODO: Regelen skal bare gjelde brukere som ikke er frilansere eller selvstendig næringsdrivende
 
