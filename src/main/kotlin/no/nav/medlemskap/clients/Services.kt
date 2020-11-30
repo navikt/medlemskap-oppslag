@@ -7,7 +7,6 @@ import no.nav.medlemskap.clients.oppgave.OppgaveClient
 import no.nav.medlemskap.clients.pdl.PdlClient
 import no.nav.medlemskap.clients.saf.SafClient
 import no.nav.medlemskap.clients.sts.StsRestClient
-import no.nav.medlemskap.clients.sts.stsClient
 import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.common.healthcheck.HealthReporter
 import no.nav.medlemskap.common.healthcheck.HealthService
@@ -39,14 +38,8 @@ class Services(val configuration: Configuration) {
     private val healthRetry = retryRegistry.retry("Helsesjekker")
 
     private val stsRetry = retryRegistry.retry("STS")
-    private val tpsRetry = retryRegistry.retry("TPS")
 
     init {
-        val stsWsClient = stsClient(
-            stsUrl = configuration.sts.endpointUrl,
-            username = configuration.sts.username,
-            password = configuration.sts.password
-        )
 
         val stsRestClient = StsRestClient(
             baseUrl = configuration.sts.restUrl,
