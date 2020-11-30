@@ -2,6 +2,7 @@ package no.nav.medlemskap.cucumber.SpraakParserDomene
 
 import io.cucumber.datatable.DataTable
 import no.nav.medlemskap.cucumber.*
+import no.nav.medlemskap.domene.Journalpost
 
 object OppgaveDomeneSpraakParser : BasisDomeneParser() {
     fun mapJournalpostId(dataTable: DataTable?): String {
@@ -10,6 +11,10 @@ object OppgaveDomeneSpraakParser : BasisDomeneParser() {
 
     fun mapJournalstatus(dataTable: DataTable?): String {
         return mapDataTable(dataTable, JournalStatusMapper())[0]
+    }
+
+    fun mapJournalposter(dataTable: DataTable?): List<Journalpost> {
+        return mapDataTable(dataTable, JournalpostMapper())
     }
 
     fun mapDokumentInfoId(dataTable: DataTable?): String {
@@ -64,11 +69,25 @@ object OppgaveDomeneSpraakParser : BasisDomeneParser() {
         }
     }
 
+    class JournalpostMapper : RadMapper<Journalpost> {
+        override fun mapRad(rad: Map<String, String>): Journalpost {
+            return Journalpost(
+                    parseString(DokumentDomenebegrep.JOURNALPOST_ID, rad),
+                    parseValgfriString(DokumentDomenebegrep.TITTEL, rad),
+                    parseValgfriString(DokumentDomenebegrep.JOURNALPOST_TYPE, rad),
+                    parseValgfriString(DokumentDomenebegrep.JOURNAL_STATUS, rad),
+                    parseValgfriString(DokumentDomenebegrep.TEMA, rad),
+                    null
+            )
+        }
+    }
+
     enum class DokumentDomenebegrep(val nøkkel: String) : Domenenøkkel {
         DOKUMENT_INFO_ID("DokumentInfoId"),
         JOURNAL_STATUS("Journalstatus"),
         JOURNALPOST_TYPE("JournalpostType"),
         JOURNAL_POST_ID("JournalpostId"),
+        JOURNALPOST_ID("JournalpostId"),
         PROSENT("Prosent"),
         RELATERT_VED_SIVILSTAND("Relatert ved sivilstand"),
         TEMA("Tema"),

@@ -5,6 +5,7 @@ import no.nav.medlemskap.clients.saf.generated.Dokumenter
 import no.nav.medlemskap.cucumber.BasisDomeneParser
 import no.nav.medlemskap.cucumber.Domenenøkkel
 import no.nav.medlemskap.cucumber.RadMapper
+import no.nav.medlemskap.domene.Journalpost
 
 class SafDomeneSpraakParser : BasisDomeneParser() {
     fun mapDokumentInfoId(dataTable: DataTable?): String {
@@ -66,6 +67,8 @@ class SafDomeneSpraakParser : BasisDomeneParser() {
             return parseString(Domenebegrep.DOKUMENT_INFO_ID, rad)
         }
     }
+
+
 }
 
 enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {

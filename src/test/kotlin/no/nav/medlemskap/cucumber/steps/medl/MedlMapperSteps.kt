@@ -4,6 +4,7 @@ import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
 import io.kotest.matchers.shouldBe
 import no.nav.medlemskap.cucumber.DomenespråkParser
+import no.nav.medlemskap.cucumber.SpraakParserDomene.MedlemskapDomeneSpraakParser
 import no.nav.medlemskap.cucumber.mapping.pdl.medl.MedlDomenespraakParser
 import no.nav.medlemskap.cucumber.steps.medl.medlBuilder.MedlMedlemskapsunntakBuilder
 import no.nav.medlemskap.domene.Medlemskap
@@ -51,37 +52,37 @@ class MedlMapperSteps : No {
         }
 
         Så<DataTable>("skal mappet dekning i Medlemskap være") { dataTable: DataTable? ->
-            val dekningForventet = DomenespråkParser.mapDekning(dataTable)
+            val dekningForventet = MedlemskapDomeneSpraakParser.mapDekning(dataTable)
             medlemskap[0]?.dekning.shouldBe(dekningForventet)
         }
 
         Så<DataTable>("skal mappet lovvalgsland i Medlemskap være") { dataTable: DataTable? ->
-            val lovvalgslandForventet = DomenespråkParser.mapLovvalgsland(dataTable)
+            val lovvalgslandForventet = MedlemskapDomeneSpraakParser.mapLovvalgsland(dataTable)
             medlemskap[0]?.lovvalgsland.shouldBe(lovvalgslandForventet)
         }
 
         Så<DataTable>("skal mappede fra og med i medlemskap domene være") { dataTable: DataTable? ->
-            val fraOgMedForventet = DomenespråkParser.mapFraOgMed(dataTable)
+            val fraOgMedForventet = MedlemskapDomeneSpraakParser.mapFraOgMed(dataTable)
             medlemskap[0]?.fraOgMed.shouldBe(fraOgMedForventet)
         }
 
         Så<DataTable>("skal mappede til og med i medlemskap domene være") { dataTable: DataTable? ->
-            val tilOgMedForventet = DomenespråkParser.mapTilOgMed(dataTable)
+            val tilOgMedForventet = MedlemskapDomeneSpraakParser.mapTilOgMed(dataTable)
             medlemskap[0]?.tilOgMed.shouldBe(tilOgMedForventet)
         }
 
         Så<DataTable>("skal mappet erMedlem i Medlemskap domene være") { dataTable: DataTable? ->
-            val erMedlemForventet = DomenespråkParser.mapErMedlem(dataTable)
+            val erMedlemForventet = MedlemskapDomeneSpraakParser.mapErMedlem(dataTable)
             medlemskap[0]?.erMedlem.shouldBe(erMedlemForventet)
         }
 
         Så<DataTable>("skal mappet lovvalg i Medlemskap være") { dataTable: DataTable? ->
-            val lovvalgForventet = DomenespråkParser.mapLovvalg(dataTable)
+            val lovvalgForventet = MedlemskapDomeneSpraakParser.mapLovvalg(dataTable)
             medlemskap[0]?.lovvalg.shouldBe(lovvalgForventet)
         }
 
         Så<DataTable>("skal mappet periodeStatus i Medlemskap være") { dataTable: DataTable? ->
-            val periodeStatusForventet = DomenespråkParser.mapPeriodeStatus(dataTable)
+            val periodeStatusForventet = MedlemskapDomeneSpraakParser.mapPeriodeStatus(dataTable)
             medlemskap[0]?.periodeStatus.shouldBe(periodeStatusForventet)
         }
     }
