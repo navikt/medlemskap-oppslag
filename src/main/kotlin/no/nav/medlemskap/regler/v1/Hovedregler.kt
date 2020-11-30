@@ -42,10 +42,6 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         return utledResultat(ytelse, resultater)
     }
 
-    private fun kjørValideringsregler(): Resultat {
-        return utledResultat(reglerForRequestValidering.ytelse, reglerForRequestValidering.kjørRegelflyter())
-    }
-
     private fun kjørFellesRegler(overstyrteRegler: Map<RegelId, Svar>): List<Resultat> {
         val fellesRegler = listOf(
             ReglerForMedl.fraDatagrunnlag(datagrunnlag),
