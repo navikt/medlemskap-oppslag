@@ -9,6 +9,7 @@ import no.nav.medlemskap.common.JsonMapper
 import no.nav.medlemskap.common.LokalWebServer
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.Medlemskapsparametre
+import no.nav.medlemskap.cucumber.SpraakParserDomene.ArbeidsforholdDomeneSpraakParser
 import no.nav.medlemskap.cucumber.steps.pdl.DataOmEktefelleBuilder
 import no.nav.medlemskap.cucumber.steps.pdl.PersonhistorikkBuilder
 import no.nav.medlemskap.cucumber.steps.pdl.PersonhistorikkEktefelleBuilder
@@ -52,7 +53,6 @@ class RegelSteps : No {
 
     private val arbeidsgiverMap = mutableMapOf<Int, Arbeidsgiver>()
     private val ansatteMap = hashMapOf<String?, List<Ansatte>>()
-
     private var arbeidsavtaleEktefelleMap = hashMapOf<Int, List<Arbeidsavtale>>()
 
     private var resultat: Resultat? = null
@@ -121,55 +121,52 @@ class RegelSteps : No {
         }
 
         Gitt("følgende arbeidsforhold fra AAReg") { dataTable: DataTable? ->
-            arbeidsforhold = domenespråkParser.mapArbeidsforhold(dataTable)
+            arbeidsforhold = ArbeidsforholdDomeneSpraakParser.mapArbeidsforhold(dataTable)
         }
 
         Gitt("følgende arbeidsgiver i arbeidsforholdet") { dataTable: DataTable? ->
-            val arbeidsgivere = domenespråkParser.mapArbeidsgivere(dataTable)
-
+            val arbeidsgivere = ArbeidsforholdDomeneSpraakParser.mapArbeidsgivere(dataTable)
             arbeidsgiverMap[0] = arbeidsgivere[0]
         }
 
         Gitt("følgende arbeidsgiver i arbeidsforhold {int}") { arbeidsforholdRad: Int?, dataTable: DataTable? ->
-            val arbeidsgivere = domenespråkParser.mapArbeidsgivere(dataTable)
+            val arbeidsgivere = ArbeidsforholdDomeneSpraakParser.mapArbeidsgivere(dataTable)
             val arbeidsforholdIndeks = arbeidsforholdIndeks(arbeidsforholdRad)
-
             arbeidsgiverMap[arbeidsforholdIndeks] = arbeidsgivere[0]
         }
 
         Gitt("følgende detaljer om ansatte for arbeidsgiver med org.nr {string}") { orgnr: String?, dataTable: DataTable? ->
-            val ansatte = domenespråkParser.mapAnsatte(dataTable)
+            val ansatte = ArbeidsforholdDomeneSpraakParser.mapAnsatte(dataTable)
             if (ansatte.isNotEmpty()) {
                 ansatteMap.put(orgnr, ansatte)
             }
         }
 
         Gitt("følgende detaljer om ansatte for arbeidsgiver") { dataTable: DataTable? ->
-            val ansatte = domenespråkParser.mapAnsatte(dataTable)
+            val ansatte = ArbeidsforholdDomeneSpraakParser.mapAnsatte(dataTable)
             if (ansatte.isNotEmpty()) {
                 ansatteMap.put(null, ansatte)
             }
         }
 
         Gitt("følgende arbeidsavtaler i arbeidsforholdet") { dataTable: DataTable? ->
-            arbeidsavtaleMap[0] = domenespråkParser.mapArbeidsavtaler(dataTable)
+            arbeidsavtaleMap[0] = ArbeidsforholdDomeneSpraakParser.mapArbeidsavtaler(dataTable)
         }
 
         Gitt("følgende arbeidsavtaler i arbeidsforhold {int}") { arbeidsforholdRad: Int?, dataTable: DataTable? ->
-            val arbeidsavtaler = domenespråkParser.mapArbeidsavtaler(dataTable)
+            val arbeidsavtaler = ArbeidsforholdDomeneSpraakParser.mapArbeidsavtaler(dataTable)
             val arbeidsforholdIndeks = arbeidsforholdIndeks(arbeidsforholdRad)
 
             arbeidsavtaleMap[arbeidsforholdIndeks] = arbeidsavtaler
         }
 
         Gitt("følgende utenlandsopphold i arbeidsforholdet") { dataTable: DataTable? ->
-            utenlandsoppholdMap[0] = domenespråkParser.mapUtenlandsopphold(dataTable)
+            utenlandsoppholdMap[0] = ArbeidsforholdDomeneSpraakParser.mapUtenlandsopphold(dataTable)
         }
 
         Gitt("følgende utenlandsopphold i arbeidsforhold {int}") { arbeidsforholdRad: Int?, dataTable: DataTable? ->
             val arbeidsforholdIndeks = arbeidsforholdIndeks(arbeidsforholdRad)
-
-            utenlandsoppholdMap[arbeidsforholdIndeks] = domenespråkParser.mapUtenlandsopphold(dataTable)
+            utenlandsoppholdMap[arbeidsforholdIndeks] = ArbeidsforholdDomeneSpraakParser.mapUtenlandsopphold(dataTable)
         }
 
         Gitt("følgende oppgaver fra Gosys") { dataTable: DataTable? ->
@@ -181,12 +178,12 @@ class RegelSteps : No {
         }
 
         Gitt<DataTable>("følgende arbeidsforhold til ektefelle fra AAReg") { dataTable: DataTable? ->
-            val arbeidsforholdEktefelle = domenespråkParser.mapArbeidsforhold(dataTable)
+            val arbeidsforholdEktefelle = ArbeidsforholdDomeneSpraakParser.mapArbeidsforhold(dataTable)
             dataOmEktefelleBuilder.arbeidsforholdEktefelle = arbeidsforholdEktefelle
         }
 
         Gitt("følgende arbeidsavtaler til ektefelle i arbeidsforholdet") { dataTable: DataTable? ->
-            arbeidsavtaleEktefelleMap[0] = domenespråkParser.mapArbeidsavtaler(dataTable)
+            arbeidsavtaleEktefelleMap[0] = ArbeidsforholdDomeneSpraakParser.mapArbeidsavtaler(dataTable)
             dataOmEktefelleBuilder.arbeidsforholdEktefelle.get(0).arbeidsavtaler = arbeidsavtaleEktefelleMap[0]!!
         }
 
