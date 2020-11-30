@@ -8,7 +8,6 @@ Egenskap: Regel 0.5: Skal regler overstyres?
   - Norsk statsborger
   - Og bruker har arbeidsforhold i AaReg som ikke er frilanser (eller selvstendig næringsdrivende)
   - Bruker har svart nei på brukerspørsmålet "Har du jobbet utenfor Norge siste 12 måneder?"
-  - TODO: Regelen skal bare gjelde brukere som ikke er frilansere eller selvstendig næringsdrivende
 
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode          | Fra og med dato | Til og med dato |
