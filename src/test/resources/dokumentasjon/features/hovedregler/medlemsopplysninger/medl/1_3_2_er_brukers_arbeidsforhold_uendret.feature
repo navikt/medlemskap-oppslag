@@ -19,15 +19,15 @@ Egenskap: Regel 1.3.2: Er brukers arbeidsforhold uendret?
 
     Så skal svaret være "<Svar>"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "<Svar begrunnelse>"
+    Og skal begrunnelsen være som definert i RegelId
 
     Eksempler:
-      | Til og med dato | Svar | Svar begrunnelse |
-      |                 | Ja   | Ja               |
-      | 08.02.2020      | Ja   | Ja               |
-      | 28.01.2020      | Nei  | Nei              |
-      | 29.01.2020      | Nei  | Nei              |
-      | 30.01.2020      | Ja   | Ja               |
+      | Til og med dato | Svar |
+      |                 | Ja   |
+      | 08.02.2020      | Ja   |
+      | 28.01.2020      | Nei  |
+      | 29.01.2020      | Nei  |
+      | 30.01.2020      | Ja   |
 
   Scenariomal: Regel 1.3.2: Er brukers arbeidsforhold uendret - flere arbeidsforhold
 

@@ -1,7 +1,6 @@
 # language: no
 # encoding: UTF-8
 
-
 Egenskap: Regel 5: Har arbeidsgiver sin hovedaktivitet i Norge?
 
   Scenariomal: Person med arbeidsgiver med mer enn 5 ansatte får "Ja"
@@ -23,15 +22,15 @@ Egenskap: Regel 5: Har arbeidsgiver sin hovedaktivitet i Norge?
 
     Så skal svaret være "<Svar>"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "<Svar begrunnelse>"
+    Og skal begrunnelsen være som definert i RegelId
 
     Eksempler:
-      | Antall ansatte | Svar | Svar begrunnelse |
-      | 4              | Nei  | Nei              |
-      | 5              | Nei  | Nei              |
-      | 6              | Ja   | Ja               |
-      | 9              | Ja   | Ja               |
-      |                | Nei  | Nei              |
+      | Antall ansatte | Svar |
+      | 4              | Nei  |
+      | 5              | Nei  |
+      | 6              | Ja   |
+      | 9              | Ja   |
+      |                | Nei  |
 
 
   Scenariomal: Person med arbeidsgiver med mer enn 5 ansatte i juridisk enhet får "Ja"

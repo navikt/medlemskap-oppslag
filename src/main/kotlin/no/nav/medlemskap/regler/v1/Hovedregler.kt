@@ -12,16 +12,10 @@ import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.common.Svar.JA
 import no.nav.medlemskap.regler.common.Svar.NEI
 
-class Hovedregler(datagrunnlag: Datagrunnlag) {
+class Hovedregler(private val datagrunnlag: Datagrunnlag) {
     private val reglerForRequestValidering = ReglerForRequestValidering.fraDatagrunnlag(datagrunnlag)
+    private val reglerForOverstyring = ReglerForOverstyring.fraDatagrunnlag(datagrunnlag)
     private val reglerForStatsborgerskap = ReglerForStatsborgerskap.fraDatagrunnlag(datagrunnlag)
-    private val reglerForMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag)
-    private val reglerForNorskeStatsborgere = ReglerForNorskeStatsborgere.fraDatagrunnlag(datagrunnlag)
-    private val reglerForEøsBorgere = ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag)
-    private val reglerForAndreStatsborgere = ReglerForAndreStatsborgere.fraDatagrunnlag(datagrunnlag)
-    private val reglerForArbeidsforhold = ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag)
-    private val reglerForBosatt = ReglerForBosatt.fraDatagrunnlag(datagrunnlag)
-    private val reglerForDoedsfall = ReglerForDoedsfall.fraDatagrunnlag(datagrunnlag)
 
     fun kjørHovedregler(): Resultat {
 
@@ -32,39 +26,51 @@ class Hovedregler(datagrunnlag: Datagrunnlag) {
 
         val ytelse = reglerForRequestValidering.ytelse
         val resultater = mutableListOf<Resultat>()
-        resultater.addAll(reglerForDoedsfall.kjørRegelflyter())
-        resultater.addAll(reglerForMedl.kjørRegelflyter())
-        resultater.addAll(reglerForArbeidsforhold.kjørRegelflyter())
-        resultater.addAll(reglerForBosatt.kjørRegelflyter())
+        val resultaterForOverstyring = reglerForOverstyring.kjørRegelflyter()
+        val reglerSomSkalOverstyres = reglerForOverstyring.reglerSomSkalOverstyres(resultaterForOverstyring)
+
+        resultater.addAll(resultaterForOverstyring)
+        resultater.addAll(kjørFellesRegler(reglerSomSkalOverstyres))
 
         val resultatStatsborgerskap = reglerForStatsborgerskap.kjørRegelflyter()
         resultater.addAll(resultatStatsborgerskap)
         resultater.addAll(
-            bestemReglerForStatsborgerskap(resultatStatsborgerskap)
+            bestemReglerForStatsborgerskap(resultatStatsborgerskap, reglerSomSkalOverstyres)
                 .kjørRegelflyter()
         )
 
         return utledResultat(ytelse, resultater)
     }
 
-    private fun bestemReglerForStatsborgerskap(resultatStatsborgerskap: List<Resultat>): Regler {
+    private fun kjørFellesRegler(overstyrteRegler: Map<RegelId, Svar>): List<Resultat> {
+        val fellesRegler = listOf(
+            ReglerForMedl.fraDatagrunnlag(datagrunnlag),
+            ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler),
+            ReglerForBosatt.fraDatagrunnlag(datagrunnlag),
+            ReglerForDoedsfall.fraDatagrunnlag(datagrunnlag)
+        )
+
+        return fellesRegler.flatMap { it.kjørRegelflyter() }
+    }
+
+    private fun bestemReglerForStatsborgerskap(resultatStatsborgerskap: List<Resultat>, overstyrteRegler: Map<RegelId, Svar>): Regler {
         val resultatEøsStatsborgerskap = resultatStatsborgerskap
             .flatMap { it.delresultat }
             .first { it.regelId == RegelId.REGEL_2 }
-        val erEøsBorger = resultatEøsStatsborgerskap.svar == Svar.JA
+        val erEøsBorger = resultatEøsStatsborgerskap.svar == JA
         if (!erEøsBorger) {
-            return reglerForAndreStatsborgere
+            return ReglerForAndreStatsborgere.fraDatagrunnlag(datagrunnlag)
         }
 
         val resultatNorskStatsborgerskap = resultatStatsborgerskap
             .flatMap { it.delresultat }
             .first { it.regelId == RegelId.REGEL_11 }
-        val erNorskBorger = resultatNorskStatsborgerskap.svar == Svar.JA
+        val erNorskBorger = resultatNorskStatsborgerskap.svar == JA
 
         return if (erNorskBorger) {
-            reglerForNorskeStatsborgere
+            ReglerForNorskeStatsborgere.fraDatagrunnlag(datagrunnlag, overstyrteRegler)
         } else {
-            reglerForEøsBorgere
+            ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag)
         }
     }
 

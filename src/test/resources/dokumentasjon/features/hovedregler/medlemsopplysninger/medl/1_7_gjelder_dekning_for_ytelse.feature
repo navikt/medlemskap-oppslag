@@ -15,18 +15,18 @@ Egenskap: Regel 1.7: Er det dekning for gjeldende ytelse?
 
     Så skal svaret være "<Svar>"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "<Svar begrunnelse>"
+    Og skal begrunnelsen være som definert i RegelId
 
     Eksempler:
-      | Dekning           | Ytelse           | Svar | Svar begrunnelse |
-      | FTL_2-6           | SYKEPENGER       | Ja   | Ja               |
-      | FTL_2-6           | ENSLIG_FORSORGER | Nei  | Nei              |
-      | FTL_2-6           | DAGPENGER        | Nei  | Nei              |
-      | FTL_2-7a_2_ledd_a | ENSLIG_FORSORGER | Ja   | Ja               |
-      | FTL_2-7a_2_ledd_a | DAGPENGER        | Ja   | Ja               |
-      | FTL_2-9_1_ledd_a  | SYKEPENGER       | Nei  | Nei              |
-      | FTL_2-9_1_ledd_a  | DAGPENGER        | Nei  | Nei              |
-      | FTL_2-9_1_ledd_a  | ENSLIG_FORSORGER | Nei  | Nei              |
+      | Dekning           | Ytelse           | Svar |
+      | FTL_2-6           | SYKEPENGER       | Ja   |
+      | FTL_2-6           | ENSLIG_FORSORGER | Nei  |
+      | FTL_2-6           | DAGPENGER        | Nei  |
+      | FTL_2-7a_2_ledd_a | ENSLIG_FORSORGER | Ja   |
+      | FTL_2-7a_2_ledd_a | DAGPENGER        | Ja   |
+      | FTL_2-9_1_ledd_a  | SYKEPENGER       | Nei  |
+      | FTL_2-9_1_ledd_a  | DAGPENGER        | Nei  |
+      | FTL_2-9_1_ledd_a  | ENSLIG_FORSORGER | Nei  |
 
   Scenariomal: Regel 1.7: Er det dekning for gjeldende ytelse? Flere perioder fra MEDL
 

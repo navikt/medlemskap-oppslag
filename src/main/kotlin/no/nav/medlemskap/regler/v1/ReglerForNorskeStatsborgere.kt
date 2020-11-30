@@ -35,15 +35,14 @@ class ReglerForNorskeStatsborgere(
     }
 
     companion object {
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForNorskeStatsborgere {
-            with(datagrunnlag) {
-                return ReglerForNorskeStatsborgere(
-                    periode = periode,
-                    ytelse = ytelse,
-                    regelMap = lagRegelMap(datagrunnlag),
-                    overstyrteRegler = datagrunnlag.overstyrteRegler
-                )
-            }
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag, overstyrteRegler: Map<RegelId, Svar> = emptyMap()): ReglerForNorskeStatsborgere {
+
+            return ReglerForNorskeStatsborgere(
+                periode = datagrunnlag.periode,
+                ytelse = datagrunnlag.ytelse,
+                regelMap = lagRegelMap(datagrunnlag),
+                overstyrteRegler = overstyrteRegler
+            )
         }
 
         private fun lagRegelMap(datagrunnlag: Datagrunnlag): Map<RegelId, Regel> {

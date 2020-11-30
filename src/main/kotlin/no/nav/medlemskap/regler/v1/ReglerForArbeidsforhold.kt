@@ -67,11 +67,11 @@ class ReglerForArbeidsforhold(
     }
 
     companion object {
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForArbeidsforhold {
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag, overstyrteRegler: Map<RegelId, Svar> = emptyMap()): ReglerForArbeidsforhold {
             return ReglerForArbeidsforhold(
                 ytelse = datagrunnlag.ytelse,
                 regelMap = lagRegelMap(datagrunnlag),
-                overstyrteRegler = datagrunnlag.overstyrteRegler
+                overstyrteRegler = overstyrteRegler
             )
         }
 

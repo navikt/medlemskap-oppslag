@@ -19,7 +19,7 @@ Egenskap: Regel 11.4: Er brukers ektefelle folkeregistrert som bosatt i Norge?
 
     Så skal svaret være "<Svar>"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "<Svar begrunnelse>"
+    Og skal begrunnelsen være som definert i RegelId
 
     Eksempler:
       | Kontaktadresse | Oppholdsadresse | Svar | Svar begrunnelse |

@@ -15,41 +15,41 @@ Egenskap: Eøs-land
 
     Så skal svaret være "<Svar>"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "<Svar begrunnelse>"
+    Og skal begrunnelsen være som definert i RegelId
 
     Eksempler:
-      | Land | Beskrivelse   | Svar | Svar begrunnelse |
-      | BEL  | BELGIA        | Ja   | Ja               |
-      | BGR  | BULGARIA      | Ja   | Ja               |
-      | DNK  | DANMARK       | Ja   | Ja               |
-      | EST  | ESTLAND       | Ja   | Ja               |
-      | FIN  | FINLAND       | Ja   | Ja               |
-      | FRA  | FRANKRIKE     | Ja   | Ja               |
-      | GRC  | HELLAS        | Ja   | Ja               |
-      | IRL  | IRLAND        | Ja   | Ja               |
-      | ISL  | ISLAND        | Ja   | Ja               |
-      | ITA  | ITALIA        | Ja   | Ja               |
-      | HRV  | KROATIA       | Ja   | Ja               |
-      | CYP  | KYPROS        | Ja   | Ja               |
-      | LVA  | LATVIA        | Ja   | Ja               |
-      | LIE  | LIECHTENSTEIN | Ja   | Ja               |
-      | LTU  | LITAUEN       | Ja   | Ja               |
-      | LUX  | LUXEMBOURG    | Ja   | Ja               |
-      | MLT  | MALTA         | Ja   | Ja               |
-      | NLD  | NEDERLAND     | Ja   | Ja               |
-      | NOR  | NORGE         | Ja   | Ja               |
-      | POL  | POLEN         | Ja   | Ja               |
-      | PRT  | PORTUGAL      | Ja   | Ja               |
-      | ROU  | ROMANIA       | Ja   | Ja               |
-      | SVK  | SLOVAKIA      | Ja   | Ja               |
-      | SVN  | SLOVENIA      | Ja   | Ja               |
-      | ESP  | SPANIA        | Ja   | Ja               |
-      | SWE  | SVERIGE       | Ja   | Ja               |
-      | CZE  | TSJEKKIA      | Ja   | Ja               |
-      | DEU  | TYSKLAND      | Ja   | Ja               |
-      | HUN  | UNGARN        | Ja   | Ja               |
-      | AUT  | ØSTERRIKE     | Ja   | Ja               |
-      | CHE  | SVEITS        | Ja   | Ja               |
-      | GBR  | STORBRITANNIA | Ja   | Ja               |
-      | USA  | USA           | Nei  | Nei              |
+      | Land | Beskrivelse   | Svar |
+      | BEL  | BELGIA        | Ja   |
+      | BGR  | BULGARIA      | Ja   |
+      | DNK  | DANMARK       | Ja   |
+      | EST  | ESTLAND       | Ja   |
+      | FIN  | FINLAND       | Ja   |
+      | FRA  | FRANKRIKE     | Ja   |
+      | GRC  | HELLAS        | Ja   |
+      | IRL  | IRLAND        | Ja   |
+      | ISL  | ISLAND        | Ja   |
+      | ITA  | ITALIA        | Ja   |
+      | HRV  | KROATIA       | Ja   |
+      | CYP  | KYPROS        | Ja   |
+      | LVA  | LATVIA        | Ja   |
+      | LIE  | LIECHTENSTEIN | Ja   |
+      | LTU  | LITAUEN       | Ja   |
+      | LUX  | LUXEMBOURG    | Ja   |
+      | MLT  | MALTA         | Ja   |
+      | NLD  | NEDERLAND     | Ja   |
+      | NOR  | NORGE         | Ja   |
+      | POL  | POLEN         | Ja   |
+      | PRT  | PORTUGAL      | Ja   |
+      | ROU  | ROMANIA       | Ja   |
+      | SVK  | SLOVAKIA      | Ja   |
+      | SVN  | SLOVENIA      | Ja   |
+      | ESP  | SPANIA        | Ja   |
+      | SWE  | SVERIGE       | Ja   |
+      | CZE  | TSJEKKIA      | Ja   |
+      | DEU  | TYSKLAND      | Ja   |
+      | HUN  | UNGARN        | Ja   |
+      | AUT  | ØSTERRIKE     | Ja   |
+      | CHE  | SVEITS        | Ja   |
+      | GBR  | STORBRITANNIA | Ja   |
+      | USA  | USA           | Nei  |
 

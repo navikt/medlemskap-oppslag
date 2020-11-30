@@ -23,11 +23,11 @@ class ErBrukerDoedRegel(
         val erBrukerDoedEtterInputperiode = doedsfall.erBrukerDoedEtterPeriode(periode)
 
         if (erBrukerDoed && erBrukerDoedEtterInputperiode) {
-            return ja(RegelId.REGEL_13)
+            return ja(regelId)
         } else if (erBrukerDoed && !erBrukerDoedEtterInputperiode) {
             throw UgyldigRequestException("Bruker er død, men i eller før inputperiode.", ytelse)
         }
-        return nei(RegelId.REGEL_13)
+        return nei(regelId)
     }
 
     companion object {

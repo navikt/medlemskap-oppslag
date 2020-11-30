@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2020-11-24T22:07:17.853303",
+  "tidspunkt" : "2020-11-27T08:44:29.674379",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "datagrunnlag" : {
@@ -64,7 +64,6 @@
         "rapporteringsperiode" : "2010-01"
       } ],
       "arbeidsgivertype" : "Organisasjon",
-      "permisjonPermittering": [],
       "arbeidsgiver" : {
         "organisasjonsnummer" : "organisasjonsnummer",
         "ansatte" : [ {
@@ -97,10 +96,11 @@
         },
         "yrkeskode" : "yrkeskode",
         "skipsregister" : "NIS",
-        "fartsomraade": null,
+        "fartsomraade" : null,
         "stillingsprosent" : 100.0,
         "beregnetAntallTimerPrUke" : 37.5
-      } ]
+      } ],
+      "permisjonPermittering" : [ ]
     } ],
     "oppgaver" : [ {
       "aktivDato" : "1975-10-10",
@@ -163,7 +163,6 @@
           "konkursStatus" : null,
           "juridiskeEnheter" : null
         },
-        "permisjonPermittering" : [],
         "arbeidsforholdstype" : "NORMALT",
         "arbeidsavtaler" : [ {
           "periode" : {
@@ -176,10 +175,11 @@
           },
           "yrkeskode" : "yrkeskode",
           "skipsregister" : "NIS",
-          "fartsomraade": null,
+          "fartsomraade" : null,
           "stillingsprosent" : 100.0,
           "beregnetAntallTimerPrUke" : 37.5
-        } ]
+        } ],
+        "permisjonPermittering" : [ ]
       } ]
     },
     "overstyrteRegler" : { }
@@ -192,17 +192,17 @@
     "harDekning" : null,
     "dekning" : "",
     "delresultat" : [ {
-      "regelId" : "REGEL_DOED",
-      "avklaring" : "Er det avklart om brukeren er død eller ikke?",
+      "regelId" : "REGEL_OVERSTYRING",
+      "avklaring" : "Er overstyringsregler avklart?",
       "begrunnelse" : "",
       "svar" : "JA",
       "harDekning" : null,
       "dekning" : "",
       "delresultat" : [ {
-        "regelId" : "REGEL_13",
-        "avklaring" : "Er bruker død?",
-        "begrunnelse" : "",
-        "svar" : "NEI",
+        "regelId" : "REGEL_0_5",
+        "avklaring" : "Skal regler overstyres?",
+        "begrunnelse" : "Svar på brukerspørsmålet er Nei, og regler 3, 5 og 12 skal derfor overstyres.",
+        "svar" : "JA",
         "harDekning" : null,
         "dekning" : "",
         "delresultat" : [ ],
@@ -305,7 +305,7 @@
       "delresultat" : [ {
         "regelId" : "REGEL_3",
         "avklaring" : "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?",
-        "begrunnelse" : "",
+        "begrunnelse" : "Overstyrt svar",
         "svar" : "JA",
         "harDekning" : null,
         "dekning" : "",
@@ -350,6 +350,24 @@
       } ],
       "årsaker" : [ ]
     }, {
+      "regelId" : "REGEL_DOED",
+      "avklaring" : "Er det avklart om brukeren er død eller ikke?",
+      "begrunnelse" : "",
+      "svar" : "JA",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_13",
+        "avklaring" : "Er bruker død?",
+        "begrunnelse" : "",
+        "svar" : "NEI",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ]
+      } ],
+      "årsaker" : [ ]
+    }, {
       "regelId" : "REGEL_STATSBORGERSKAP",
       "avklaring" : "Er statsborgerskap avklart?",
       "begrunnelse" : "",
@@ -386,7 +404,7 @@
       "delresultat" : [ {
         "regelId" : "REGEL_12",
         "avklaring" : "Har bruker vært i minst 25% stilling de siste 12 mnd?",
-        "begrunnelse" : "",
+        "begrunnelse" : "Overstyrt svar",
         "svar" : "JA",
         "harDekning" : null,
         "dekning" : "",

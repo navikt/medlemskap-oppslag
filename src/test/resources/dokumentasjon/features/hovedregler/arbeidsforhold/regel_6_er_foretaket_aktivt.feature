@@ -19,9 +19,9 @@ Egenskap: Regel 6: Er foretaket aktivt?
 
     Så skal svaret være "<Svar>"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "<Svar begrunnelse>"
+    Og skal begrunnelsen være som definert i RegelId
 
     Eksempler:
-      | Konkursstatus | Svar | Svar begrunnelse |
-      |               | Ja   | Ja               |
-      | OSKP          | Nei  | Nei              |
+      | Konkursstatus | Svar |
+      |               | Ja   |
+      | OSKP          | Nei  |

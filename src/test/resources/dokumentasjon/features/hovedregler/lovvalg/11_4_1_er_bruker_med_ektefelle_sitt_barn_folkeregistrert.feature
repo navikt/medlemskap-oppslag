@@ -26,15 +26,15 @@ Egenskap: Regel 11.4.1: Er brukers barn folkeregistrert som bosatt i Norge?
 
     Så skal svaret være "<Svar>"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "<Svar begrunnelse>"
+    Og skal begrunnelsen være som definert i RegelId
 
     Eksempler:
-      | Kontaktadresse | Oppholdsadresse | Svar | Svar begrunnelse |
-      |                |                 | Ja   | Ja               |
-      | NOR            | NOR             | Ja   | Ja               |
-      | FRA            | NOR             | Nei  | Nei              |
-      | NOR            | FRA             | Nei  | Nei              |
-      | FRA            | FRA             | Nei  | Nei              |
+      | Kontaktadresse | Oppholdsadresse | Svar |
+      |                |                 | Ja   |
+      | NOR            | NOR             | Ja   |
+      | FRA            | NOR             | Nei  |
+      | NOR            | FRA             | Nei  |
+      | FRA            | FRA             | Nei  |
 
   Scenariomal: Regel 11.4.1 - Uavklart hvis ett eller flere barn bor i Norge og ett eller flere barn ikke bor i Norge
     Gitt følgende familerelasjoner i personhistorikk fra PDL

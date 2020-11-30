@@ -14,12 +14,12 @@ Egenskap: Regel 11: Er bruker norsk statborger?
 
     Så skal svaret være "<Svar>"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "<Svar begrunnelse>"
+    Og skal begrunnelsen være som definert i RegelId
 
     Eksempler:
-      | Statsborgerskap | Svar | Svar begrunnelse |
-      | NOR             | Ja   | Ja               |
-      | FRA             | Nei  | Nei              |
+      | Statsborgerskap | Svar |
+      | NOR             | Ja   |
+      | FRA             | Nei  |
 
   Scenariomal: Regel 11 - Forskjellige statsborgerskap siste 12 måneder
     Gitt følgende statsborgerskap i personhistorikken
