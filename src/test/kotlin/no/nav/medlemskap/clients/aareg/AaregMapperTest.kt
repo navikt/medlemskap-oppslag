@@ -21,9 +21,25 @@ class AaregMapperTest {
 
         val arbeidsgiver = Arbeidsgiver(
             organisasjonsnummer = "985672744",
-            ansatte = listOf(Ansatte(5, Bruksperiode(LocalDate.now(), LocalDate.now().plusDays(2)), null)),
+            ansatte = listOf(
+                Ansatte(
+                    antall = 5,
+                    bruksperiode =
+                        Bruksperiode(
+                            fom = LocalDate.now(),
+                            tom = LocalDate.now().plusDays(2)
+                        ),
+                    gyldighetsperiode = null
+                )
+            ),
             konkursStatus = null,
-            juridiskeEnheter = listOf(JuridiskEnhet("123456789", "AS", 40))
+            juridiskeEnheter = listOf(
+                JuridiskEnhet(
+                    organisasjonsnummer = "123456789",
+                    enhetstype = "AS",
+                    antallAnsatte = 40
+                )
+            )
         )
 
         val mappedAaregResultatList = mapAaregResultat(listOf(aaRegArbeidsforhold), listOf(arbeidsgiver))

@@ -340,6 +340,65 @@ object DomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, RapporteringsperiodeMapper())[0]
     }
 
+    fun mapJournalpostId(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, JournalPostIdMapper())[0]
+    }
+
+    fun mapDokumentInfoId(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, DokumentInfoIdMapper())[0]
+    }
+
+    fun mapTittel(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, TittelMapper())[0]
+    }
+
+    fun mapTema(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, TemaMapper())[0]
+    }
+
+    fun mapJournalstatus(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, JournalStatusMapper())[0]
+    }
+
+    fun mapJournalposttype(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, JournalpostTypeMapper())[0]
+    }
+
+    class TemaMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(TEMA, rad)
+        }
+    }
+
+    class JournalStatusMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(JOURNAL_STATUS, rad)
+        }
+    }
+
+    class JournalpostTypeMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(JOURNALPOST_TYPE, rad)
+        }
+    }
+
+    class TittelMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(TITTEL, rad)
+        }
+    }
+
+    class DokumentInfoIdMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(DOKUMENT_INFO_ID, rad)
+        }
+    }
+    class JournalPostIdMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(JOURNAL_POST_ID, rad)
+        }
+    }
+
     class PermitteringsTypeMapper : RadMapper<PermisjonPermitteringType> {
         override fun mapRad(rad: Map<String, String>): PermisjonPermitteringType {
             return PermisjonPermitteringType.valueOf(parseString(PERMITTERINGSTYPE, rad))
@@ -790,6 +849,7 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     BRUKSPERIODE_GYLDIG_TIL("Bruksperiode gyldig til"),
     DEKNING("Dekning"),
     DOEDSDATO("Dødsdato"),
+    DOKUMENT_INFO_ID("DokumentInfoId"),
     ER_MEDLEM("Er medlem"),
     FRA_OG_MED_DATO("Fra og med dato"),
     FARTSOMRÅDE("Fartsområde"),
@@ -805,6 +865,7 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     JOURNAL_STATUS("Journalstatus"),
     JOURNALPOST_ID("JournalpostId"),
     JOURNALPOST_TYPE("JournalpostType"),
+    JOURNAL_POST_TYPE("Journalposttype"),
     JURIDISK_ANTALL_ANSATTE("Antall ansatte i juridisk enhet"),
     JURIDISK_ENHETSTYPE("Juridisk enhetstype"),
     JURIDISK_ORG_NR("Juridisk orgnr"),
@@ -815,6 +876,7 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     LOVVALGSLAND("Lovvalgsland"),
     MEDLEMSKAP_DEKNING("MedlemskapDekning"),
     MIN_ROLLE_FOR_PERSON("Min rolle for person"),
+    JOURNAL_POST_ID("JournalpostId"),
     OPPHOLDSADRESSE("Oppholdsadresse"),
     ORGANISASJONSNUMMER("Organisasjonsnummer"),
     PERIODESTATUS("Periodestatus"),
