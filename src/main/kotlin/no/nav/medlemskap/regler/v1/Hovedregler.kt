@@ -42,7 +42,6 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         return utledResultat(ytelse, resultater)
     }
 
-    private fun bestemReglerForStatsborgerskap(resultatStatsborgerskap: List<Resultat>): Regler {
     private fun kjørValideringsregler(): Resultat {
         return utledResultat(reglerForRequestValidering.ytelse, reglerForRequestValidering.kjørRegelflyter())
     }
