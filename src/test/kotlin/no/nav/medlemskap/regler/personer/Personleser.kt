@@ -13,7 +13,7 @@ class Personleser {
     private val grunnforordningen = "/testpersoner/regler_for_grunnforordningen"
     private val medl = "/testpersoner/regler_for_medl"
 
-    fun norskMedEttArbeidsforholdMedArbeidsavtaleUnder25ProsentStillingIPeriode() = lesDatagrunnlag("$norskLovvalg/regel_12/norsk_med_ett_arbeidsforhold_under_25_stillingsprosent_i_periode.json")
+    fun brukerIkkeFolkeregistrertSomBosattINorge() = lesDatagrunnlag("$norskLovvalg/regel_12/norsk_med_ett_arbeidsforhold_under_25_stillingsprosent_i_periode.json")
 
     private fun lesDatagrunnlag(filnavn: String): Datagrunnlag {
         val res = Personleser::class.java.getResource(filnavn)

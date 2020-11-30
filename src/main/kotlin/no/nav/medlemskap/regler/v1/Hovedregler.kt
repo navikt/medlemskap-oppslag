@@ -18,9 +18,10 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
     private val reglerForStatsborgerskap = ReglerForStatsborgerskap.fraDatagrunnlag(datagrunnlag)
 
     fun kjørHovedregler(): Resultat {
-        val valideringsresultat = kjørValideringsregler()
-        if (valideringsresultat.svar != JA) {
-            return valideringsresultat
+
+        val requestValideringResultat = reglerForRequestValidering.kjørRegel()
+        if (requestValideringResultat.svar != JA) {
+            return requestValideringResultat
         }
 
         val ytelse = reglerForRequestValidering.ytelse
@@ -41,6 +42,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         return utledResultat(ytelse, resultater)
     }
 
+    private fun bestemReglerForStatsborgerskap(resultatStatsborgerskap: List<Resultat>): Regler {
     private fun kjørValideringsregler(): Resultat {
         return utledResultat(reglerForRequestValidering.ytelse, reglerForRequestValidering.kjørRegelflyter())
     }
@@ -85,7 +87,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
                 return lagKonklusjon(medlemskonklusjon, resultater)
             }
 
-            if (resultater.all { it.svar == Svar.JA }) {
+            if (resultater.all { it.svar == JA }) {
                 return lagKonklusjon(jaResultat(ytelse), resultater)
             }
 

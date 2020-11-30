@@ -1,10 +1,10 @@
 package no.nav.medlemskap.regler.funksjoner
 
-import junit.framework.Assert.assertFalse
-import junit.framework.Assert.assertTrue
 import no.nav.medlemskap.domene.Kontrollperiode
 import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.harEndretSisteÅret
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 

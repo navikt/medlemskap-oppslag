@@ -175,5 +175,5 @@ fun finnYtelse(ytelseFraRequest: Ytelse?, clientId: String?) =
     (ytelseFraRequest ?: Ytelse.fromClientId(clientId))
         ?: throw KonsumentIkkeFunnet("Fant ikke clientId i mapping til ytelse. Ta kontakt med medlemskap-teamet for tilgang til tjenesten.")
 
-private fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =
+fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =
     Hovedregler(datagrunnlag).kjørHovedregler()
