@@ -148,6 +148,8 @@ private fun loggResponse(fnr: String, response: Response) {
         kv("årsaker", årsakerSomRegelIdStr),
         kv("aarsaksAnt", aarsaksAnt),
         kv("aarsaker", årsakerSomRegelIdStr.toString()),
+        kv("statsborgerskap", response.datagrunnlag.gyldigeStatsborgerskap()),
+        kv("statsborgerskapAnt", response.datagrunnlag.gyldigeStatsborgerskap().size),
         kv("response", objectMapper.writeValueAsString(response))
     )
 
