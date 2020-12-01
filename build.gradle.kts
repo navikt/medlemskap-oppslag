@@ -30,6 +30,7 @@ val activationVersion = "1.1.1"
 val nvi18nVersion = "1.27"
 val kotestVersion = "4.2.5"
 val swaggerRequestValidatorVersion = "2.11.0"
+val swaggerUiVersion = "3.10.0"
 // Temporary to fix high severity Snyk vulernabilities:
 val nettyCodecVersion = "4.1.53.Final"
 val commonsCodecVersion = "3.2.2"
@@ -45,6 +46,7 @@ plugins {
     id("com.github.ben-manes.versions") version "0.29.0"
     id("org.jlleitschuh.gradle.ktlint") version "9.3.0"
     id("org.jlleitschuh.gradle.ktlint-idea") version "9.3.0"
+    id("org.hidetake.swagger.generator") version "2.18.1" apply true
 }
 
 val githubUser: String by project
@@ -120,6 +122,8 @@ dependencies {
     implementation("com.expediagroup:graphql-kotlin-client:$graphqlKotlinClientVersion")
     implementation("com.neovisionaries:nv-i18n:$nvi18nVersion")
 
+    swaggerUI("org.webjars:swagger-ui:$swaggerUiVersion")
+
     // Temporary to fix high severity Snyk vulernabilities:
     implementation("io.netty:netty-codec:$nettyCodecVersion")
     implementation("commons-collections:commons-collections:$commonsCodecVersion")
@@ -153,31 +157,50 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "1.8"
-    dependsOn("ktlintFormat")
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
-    testLogging {
-        events("passed", "skipped", "failed")
+swaggerSources {
+    create("lovme-api").apply {
+        // setInputFile(file("api/oas3/egenmeldt-sykmelding-api.yaml"))
+        setInputFile(file("src/main/resources/lovme.yaml"))
     }
 }
 
-tasks.withType<ShadowJar> {
-    archiveBaseName.set("app")
-    archiveClassifier.set("")
-    manifest {
-        attributes(
-            mapOf(
-                "Main-Class" to mainClass
+tasks {
+
+    withType<KotlinCompile> {
+        kotlinOptions.jvmTarget = "1.8"
+        dependsOn("ktlintFormat")
+    }
+
+    withType<org.hidetake.gradle.swagger.generator.GenerateSwaggerUI> {
+        outputDir = File(buildDir.path + "/resources/main/api")
+    }
+
+    withType<Test> {
+        useJUnitPlatform()
+        testLogging {
+            events("passed", "skipped", "failed")
+        }
+    }
+
+    withType<ShadowJar> {
+        dependsOn("generateSwaggerUI")
+        archiveBaseName.set("app")
+        archiveClassifier.set("")
+        manifest {
+            attributes(
+                mapOf(
+                    "Main-Class" to mainClass
+                )
             )
-        )
+        }
+        transform(ServiceFileTransformer::class.java) {
+            setPath("META-INF/cxf")
+            include("bus-extensions.txt")
+        }
     }
-    transform(ServiceFileTransformer::class.java) {
-        setPath("META-INF/cxf")
-        include("bus-extensions.txt")
+
+    "check" {
+        dependsOn("generateSwaggerUI")
     }
 }
 
