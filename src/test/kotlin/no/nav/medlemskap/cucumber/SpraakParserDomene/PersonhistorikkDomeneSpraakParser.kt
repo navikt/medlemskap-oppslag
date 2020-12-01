@@ -59,7 +59,7 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
     class SivilstandMapper : RadMapper<Sivilstand> {
         override fun mapRad(rad: Map<String, String>): Sivilstand {
             return Sivilstand(
-                type = DomenespråkParser.parseSivilstandstype(Domenebegrep.SIVILSTANDSTYPE, rad),
+                type = DomenespråkParser.parseSivilstandstype(PersonhistorikkDomenebegrep.SIVILSTANDSTYPE, rad),
                 gyldigFraOgMed = parseValgfriDato(PersonhistorikkDomenebegrep.GYLDIG_FRA_OG_MED, rad),
                 gyldigTilOgMed = parseValgfriDato(PersonhistorikkDomenebegrep.GYLDIG_TIL_OG_MED, rad),
                 relatertVedSivilstand = parseValgfriString(PersonhistorikkDomenebegrep.RELATERT_VED_SIVILSTAND, rad)
@@ -87,8 +87,8 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
         override fun mapRad(rad: Map<String, String>): Familierelasjon {
             return Familierelasjon(
                 relatertPersonsIdent = parseString(PersonhistorikkDomenebegrep.RELATERT_PERSONS_IDENT, rad),
-                relatertPersonsRolle = DomenespråkParser.parseRolle(Domenebegrep.RELATERT_PERSONS_ROLLE, rad),
-                minRolleForPerson = DomenespråkParser.parseValgfriRolle(Domenebegrep.MIN_ROLLE_FOR_PERSON, rad),
+                relatertPersonsRolle = DomenespråkParser.parseRolle(PersonhistorikkDomenebegrep.RELATERT_PERSONS_ROLLE, rad),
+                minRolleForPerson = DomenespråkParser.parseValgfriRolle(PersonhistorikkDomenebegrep.MIN_ROLLE_FOR_PERSON, rad),
                 folkeregistermetadata = null
             )
         }
@@ -172,7 +172,6 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
 }
 
 enum class PersonhistorikkDomenebegrep(val nøkkel: String) : Domenenøkkel {
-    ADRESSE("Adresse"),
     BOSTED("Bosted"),
     DOEDSDATO("Dødsdato"),
     FRA_OG_MED_DATO("Fra og med dato"),
@@ -181,10 +180,13 @@ enum class PersonhistorikkDomenebegrep(val nøkkel: String) : Domenenøkkel {
     IDENT("Ident"),
     KONTAKTADRESSE("Kontaktadresse"),
     LANDKODE("Landkode"),
+    MIN_ROLLE_FOR_PERSON("Min rolle for person"),
     OPPHOLDSADRESSE("Oppholdsadresse"),
     PROSENT("Prosent"),
     RELATERT_PERSONS_IDENT("Relatert persons ident"),
     RELATERT_VED_SIVILSTAND("Relatert ved sivilstand"),
+    RELATERT_PERSONS_ROLLE("Relatert persons rolle"),
+    SIVILSTANDSTYPE("Sivilstandstype"),
     TIL_OG_MED_DATO("Til og med dato");
 
     override fun nøkkel(): String {

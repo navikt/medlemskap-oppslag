@@ -10,6 +10,8 @@ import no.nav.medlemskap.common.LokalWebServer
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.Medlemskapsparametre
 import no.nav.medlemskap.cucumber.SpraakParserDomene.ArbeidsforholdDomeneSpraakParser
+import no.nav.medlemskap.cucumber.SpraakParserDomene.DokumentDomeneSpraakParser
+import no.nav.medlemskap.cucumber.SpraakParserDomene.OppgaverDomeneSpraakParser
 import no.nav.medlemskap.cucumber.SpraakParserDomene.PersonhistorikkDomeneSpraakParser
 import no.nav.medlemskap.cucumber.steps.pdl.DataOmEktefelleBuilder
 import no.nav.medlemskap.cucumber.steps.pdl.PersonhistorikkBuilder
@@ -171,11 +173,11 @@ class RegelSteps : No {
         }
 
         Gitt("følgende oppgaver fra Gosys") { dataTable: DataTable? ->
-            oppgaverFraGosys = domenespråkParser.mapOppgaverFraGosys(dataTable)
+            oppgaverFraGosys = OppgaverDomeneSpraakParser.mapOppgaverFraGosys(dataTable)
         }
 
         Gitt("følgende journalposter fra Joark") { dataTable: DataTable? ->
-            journalPosterFraJoArk = domenespråkParser.mapJournalposter(dataTable)
+            journalPosterFraJoArk = DokumentDomeneSpraakParser.mapJournalposter(dataTable)
         }
 
         Gitt<DataTable>("følgende arbeidsforhold til ektefelle fra AAReg") { dataTable: DataTable? ->

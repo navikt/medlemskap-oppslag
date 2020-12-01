@@ -155,19 +155,19 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
 
     class ArbeidsforholdtypeMapper : RadMapper<Arbeidsforholdstype> {
         override fun mapRad(rad: Map<String, String>): Arbeidsforholdstype {
-            return Arbeidsforholdstype.valueOf(parseString(no.nav.medlemskap.cucumber.Domenebegrep.ARBEIDSFORHOLDSTYPE, rad))
+            return Arbeidsforholdstype.valueOf(parseString(ArbeidDomenebegrep.ARBEIDSFORHOLDSTYPE, rad))
         }
     }
 
     class LandkodeMapper : RadMapper<String> {
         override fun mapRad(rad: Map<String, String>): String {
-            return parseString(no.nav.medlemskap.cucumber.Domenebegrep.LANDKODE, rad)
+            return parseString(ArbeidDomenebegrep.LANDKODE, rad)
         }
     }
 
     class OrganisasjonsnummerMapper : RadMapper<String> {
         override fun mapRad(rad: Map<String, String>): String {
-            return parseString(no.nav.medlemskap.cucumber.Domenebegrep.ORGANISASJONSNUMMER, rad)
+            return parseString(ArbeidDomenebegrep.ORGANISASJONSNUMMER, rad)
         }
     }
 
@@ -224,7 +224,7 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
 
     class StillingsprosentMapper : RadMapper<Double> {
         override fun mapRad(rad: Map<String, String>): Double {
-            return parseDouble(Domenebegrep.STILLINGSPROSENT, rad)
+            return parseDouble(ArbeidDomenebegrep.STILLINGSPROSENT, rad)
         }
     }
 
@@ -247,14 +247,14 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
             arbeidsgiver: Arbeidsgiver?
         ): Arbeidsforhold {
             val periode = Periode(
-                parseValgfriDato(Domenebegrep.FRA_OG_MED_DATO, rad),
-                parseValgfriDato(Domenebegrep.TIL_OG_MED_DATO, rad)
+                parseValgfriDato(ArbeidDomenebegrep.FRA_OG_MED_DATO, rad),
+                parseValgfriDato(ArbeidDomenebegrep.TIL_OG_MED_DATO, rad)
             )
 
             return Arbeidsforhold(
                 periode = periode,
                 utenlandsopphold = utenlandsopphold,
-                arbeidsgivertype = OpplysningspliktigArbeidsgiverType.valueOf(parseString(Domenebegrep.ARBEIDSGIVERTYPE, rad)),
+                arbeidsgivertype = OpplysningspliktigArbeidsgiverType.valueOf(parseString(ArbeidDomenebegrep.ARBEIDSGIVERTYPE, rad)),
                 arbeidsgiver = arbeidsgiver ?: VANLIG_NORSK_ARBEIDSGIVER,
                 arbeidsforholdstype = parseArbeidsforholdstype(rad),
                 arbeidsavtaler = emptyList(),
@@ -267,25 +267,25 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
         override fun mapRad(rad: Map<String, String>): Arbeidsavtale {
             return Arbeidsavtale(
                 Periode(
-                    parseDato(Domenebegrep.FRA_OG_MED_DATO, rad),
-                    parseValgfriDato(Domenebegrep.TIL_OG_MED_DATO, rad)
+                    parseDato(ArbeidDomenebegrep.FRA_OG_MED_DATO, rad),
+                    parseValgfriDato(ArbeidDomenebegrep.TIL_OG_MED_DATO, rad)
                 ),
                 Periode(
-                    parseDato(Domenebegrep.FRA_OG_MED_DATO, rad),
-                    parseValgfriDato(Domenebegrep.TIL_OG_MED_DATO, rad)
+                    parseDato(ArbeidDomenebegrep.FRA_OG_MED_DATO, rad),
+                    parseValgfriDato(ArbeidDomenebegrep.TIL_OG_MED_DATO, rad)
                 ),
-                parseString(Domenebegrep.YRKESKODE, rad),
+                parseString(ArbeidDomenebegrep.YRKESKODE, rad),
                 parseSkipsregister(rad),
                 null,
-                parseDouble(Domenebegrep.STILLINGSPROSENT, rad),
-                parseValgfriDouble(Domenebegrep.BEREGNET_ANTALL_TIMER_PR_UKE, rad)
+                parseDouble(ArbeidDomenebegrep.STILLINGSPROSENT, rad),
+                parseValgfriDouble(ArbeidDomenebegrep.BEREGNET_ANTALL_TIMER_PR_UKE, rad)
             )
         }
     }
 
     class ArbeidsgiverMapper : RadMapper<Arbeidsgiver> {
         override fun mapRad(rad: Map<String, String>): Arbeidsgiver {
-            val konkursStatus = parseValgfriString(Domenebegrep.KONKURSSTATUS, rad)
+            val konkursStatus = parseValgfriString(ArbeidDomenebegrep.KONKURSSTATUS, rad)
             val konkursStatuser = if (konkursStatus == null) {
                 null
             } else {
@@ -293,8 +293,8 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
             }
 
             return Arbeidsgiver(
-                organisasjonsnummer = parseValgfriString(Domenebegrep.IDENTIFIKATOR, rad),
-                ansatte = listOf(Ansatte(parseValgfriInt(Domenebegrep.ANTALL_ANSATTE, rad), null, null)),
+                organisasjonsnummer = parseValgfriString(ArbeidDomenebegrep.IDENTIFIKATOR, rad),
+                ansatte = listOf(Ansatte(parseValgfriInt(ArbeidDomenebegrep.ANTALL_ANSATTE, rad), null, null)),
                 konkursStatus = konkursStatuser,
                 juridiskeEnheter = listOf(JuridiskEnhet(parseValgfriString(ArbeidDomenebegrep.JURIDISK_ORG_NR, rad), parseValgfriString(Domenebegrep.JURIDISK_ENHETSTYPE, rad), parseValgfriInt(Domenebegrep.JURIDISK_ANTALL_ANSATTE, rad)))
             )
@@ -327,6 +327,10 @@ enum class ArbeidDomenebegrep(val nøkkel: String) : Domenenøkkel {
     FARTSOMRÅDE("Fartsområde"),
     GYLDIGHETSPERIODE_FRA_OG_MED("Gyldighetsperiode gyldig fra"),
     GYLDIGHETSPERIODE_TIL_OG_MED("Gyldighetsperiode gyldig til"),
+    KONKURSSTATUS("Konkursstatus"),
+    LANDKODE("Landkode"),
+    ORGANISASJONSNUMMER("Organisasjonsnummer"),
+    IDENTIFIKATOR("Identifikator"),
     JURIDISK_ORG_NR("Juridisk orgnr"),
     PERMITTERINGSTYPE("Type"),
     PERMISJONPERMITTERINGSID("PermisjonPermitteringId"),
@@ -335,6 +339,7 @@ enum class ArbeidDomenebegrep(val nøkkel: String) : Domenenøkkel {
     RAPPORTERINGSPERIODE("Rapporteringsperiode"),
     TIL_OG_MED_DATO("Til og med dato"),
     SKIPSREGISTER("Skipsregister"),
+    STILLINGSPROSENT("Stillingsprosent"),
     STATUS("Status"),
     VARSLINGSKODE("Varslingkode"),
     YRKESKODE("Yrkeskode");

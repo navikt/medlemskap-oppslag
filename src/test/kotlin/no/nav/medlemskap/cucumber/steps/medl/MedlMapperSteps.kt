@@ -3,7 +3,6 @@ package no.nav.medlemskap.cucumber.steps.medl
 import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
 import io.kotest.matchers.shouldBe
-import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.SpraakParserDomene.MedlemskapDomeneSpraakParser
 import no.nav.medlemskap.cucumber.mapping.pdl.medl.MedlDomenespraakParser
 import no.nav.medlemskap.cucumber.steps.medl.medlBuilder.MedlMedlemskapsunntakBuilder

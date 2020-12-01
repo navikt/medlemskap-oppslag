@@ -4,7 +4,7 @@ import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
 import io.kotest.matchers.shouldBe
 import no.nav.medlemskap.clients.saf.generated.Dokumenter
-import no.nav.medlemskap.cucumber.SpraakParserDomene.OppgaveDomeneSpraakParser
+import no.nav.medlemskap.cucumber.SpraakParserDomene.DokumentDomeneSpraakParser
 import no.nav.medlemskap.cucumber.mapping.saf.SafDomeneSpraakParser
 import no.nav.medlemskap.domene.Dokument
 import no.nav.medlemskap.domene.Journalpost
@@ -51,37 +51,37 @@ class SafMapperSteps : No {
         }
 
         Så<DataTable>("skal mappede journalpostid være") { dataTable: DataTable? ->
-            val journalpostIdForventet = OppgaveDomeneSpraakParser.mapJournalpostId(dataTable)
+            val journalpostIdForventet = DokumentDomeneSpraakParser.mapJournalpostId(dataTable)
             dokumenter?.get(0)?.journalpostId.shouldBe(journalpostIdForventet)
         }
 
         Så<DataTable>("skal mappede journalstatus være") { dataTable: DataTable? ->
-            val journalstatusForventet = OppgaveDomeneSpraakParser.mapJournalstatus(dataTable)
+            val journalstatusForventet = DokumentDomeneSpraakParser.mapJournalstatus(dataTable)
             dokumenter?.get(0)?.journalstatus.shouldBe(journalstatusForventet)
         }
 
         Så<DataTable>("skal mappede dokumentInfoId være") { dataTable: DataTable? ->
-            val dokumentInfoIdForventet = OppgaveDomeneSpraakParser.mapDokumentInfoId(dataTable)
+            val dokumentInfoIdForventet = DokumentDomeneSpraakParser.mapDokumentInfoId(dataTable)
             dokumenter?.get(0)?.dokumenter?.get(0)?.dokumentId.shouldBe(dokumentInfoIdForventet)
         }
 
         Så<DataTable>("mappede tittel være") { dataTable: DataTable? ->
-            val tittelForventet = OppgaveDomeneSpraakParser.mapTittel(dataTable)
+            val tittelForventet = DokumentDomeneSpraakParser.mapTittel(dataTable)
             dokumenter?.get(0)?.dokumenter?.get(0)?.tittel.shouldBe(tittelForventet)
         }
 
         Så<DataTable>("skal mappede tema være") { dataTable: DataTable? ->
-            val temaForventet = OppgaveDomeneSpraakParser.mapTema(dataTable)
+            val temaForventet = DokumentDomeneSpraakParser.mapTema(dataTable)
             dokumenter?.get(0)?.tema.shouldBe(temaForventet)
         }
 
         Så<DataTable>("skal mappede tittel i journalpost være") { dataTable: DataTable? ->
-            val tittelForventet = OppgaveDomeneSpraakParser.mapTittel(dataTable)
+            val tittelForventet = DokumentDomeneSpraakParser.mapTittel(dataTable)
             dokumenter?.get(0)?.tittel.shouldBe(tittelForventet)
         }
 
         Så<DataTable>("skal mappede journalposttype være") { dataTable: DataTable? ->
-            val journalposttypeForventet = OppgaveDomeneSpraakParser.mapJournalposttype(dataTable)
+            val journalposttypeForventet = DokumentDomeneSpraakParser.mapJournalposttype(dataTable)
             dokumenter?.get(0)?.journalposttype.shouldBe(journalposttypeForventet)
         }
     }

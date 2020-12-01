@@ -7,7 +7,7 @@ import no.nav.medlemskap.domene.Medlemskap
 import no.nav.medlemskap.domene.PeriodeStatus
 import java.time.LocalDate
 
-object MedlemskapDomeneSpraakParser : BasisDomeneParser(){
+object MedlemskapDomeneSpraakParser : BasisDomeneParser() {
 
     fun mapDekning(dataTable: DataTable?): String {
         return mapDataTable(dataTable, DekningMapper())[0]
@@ -61,7 +61,7 @@ object MedlemskapDomeneSpraakParser : BasisDomeneParser(){
 
     class LovvalgMapper : RadMapper<Lovvalg> {
         override fun mapRad(rad: Map<String, String>): Lovvalg {
-            return Lovvalg.valueOf(parseString(Domenebegrep.LOVVALG, rad))
+            return Lovvalg.valueOf(parseString(MedlemskapDomenebegrep.LOVVALG, rad))
         }
     }
 
@@ -73,7 +73,7 @@ object MedlemskapDomeneSpraakParser : BasisDomeneParser(){
 
     class PeriodeStatusMapper : RadMapper<PeriodeStatus> {
         override fun mapRad(rad: Map<String, String>): PeriodeStatus {
-            return PeriodeStatus.valueOf(parseString(Domenebegrep.PERIODESTATUS, rad))
+            return PeriodeStatus.valueOf(parseString(MedlemskapDomenebegrep.PERIODESTATUS, rad))
         }
     }
 
@@ -83,17 +83,16 @@ object MedlemskapDomeneSpraakParser : BasisDomeneParser(){
         }
     }
 
-
     class MedlemskapMapper : RadMapper<Medlemskap> {
         override fun mapRad(rad: Map<String, String>): Medlemskap {
             return Medlemskap(
-                    parseValgfriString(MedlemskapDomenebegrep.DEKNING, rad),
-                    parseDato(MedlemskapDomenebegrep.FRA_OG_MED_DATO, rad),
-                    parseDato(MedlemskapDomenebegrep.TIL_OG_MED_DATO, rad),
-                    parseBoolean(MedlemskapDomenebegrep.ER_MEDLEM, rad),
-                    DomenespråkParser.parseValgfriLovvalg(no.nav.medlemskap.cucumber.Domenebegrep.LOVVALG, rad),
-                    parseValgfriString(MedlemskapDomenebegrep.LOVVALGSLAND, rad),
-                    DomenespråkParser.parseValgfriPeriodeStatus(no.nav.medlemskap.cucumber.Domenebegrep.PERIODESTATUS, rad)
+                parseValgfriString(MedlemskapDomenebegrep.DEKNING, rad),
+                parseDato(MedlemskapDomenebegrep.FRA_OG_MED_DATO, rad),
+                parseDato(MedlemskapDomenebegrep.TIL_OG_MED_DATO, rad),
+                parseBoolean(MedlemskapDomenebegrep.ER_MEDLEM, rad),
+                DomenespråkParser.parseValgfriLovvalg(MedlemskapDomenebegrep.LOVVALG, rad),
+                parseValgfriString(MedlemskapDomenebegrep.LOVVALGSLAND, rad),
+                DomenespråkParser.parseValgfriPeriodeStatus(Domenebegrep.PERIODESTATUS, rad)
             )
         }
     }
@@ -106,7 +105,9 @@ enum class MedlemskapDomenebegrep(val nøkkel: String) : Domenenøkkel {
     GYLDIG_FRA_OG_MED("Gyldig fra og med dato"),
     GYLDIG_TIL_OG_MED("Gyldig til og med dato"),
     LOVVALGSLAND("Lovvalgsland"),
+    LOVVALG("Lovvalg"),
     MEDLEMSKAP_DEKNING("MedlemskapDekning"),
+    PERIODESTATUS("Periodestatus"),
     PROSENT("Prosent"),
     RELATERT_VED_SIVILSTAND("Relatert ved sivilstand"),
     TIL_OG_MED_DATO("Til og med dato");
