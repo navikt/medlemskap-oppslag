@@ -63,10 +63,13 @@ class EregClientTest {
 
         val response = runBlocking { client.hentOrganisasjon("977074010", callId) }
         assertEquals(1, response.getOrganisasjonsnumreJuridiskeEnheter().size)
+        assertEquals("975016684", response.organisasjonsnummer)
+        assertEquals("Virksomhet", response.type)
+        assertEquals("BEDR", response.organisasjonDetaljer?.enhetstyper?.get(0)?.enhetstype)
+        assertEquals(19, response.organisasjonDetaljer?.ansatte?.get(0)?.antall)
     }
 
     private val config = Configuration()
-
     private val orgnummer = "977074010"
 
     private val queryMappingForHentOrganisasjon: MappingBuilder = WireMock.get(WireMock.urlPathEqualTo("/v1/organisasjon/$orgnummer"))
