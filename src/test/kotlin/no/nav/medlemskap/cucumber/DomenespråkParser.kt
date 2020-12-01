@@ -364,6 +364,40 @@ object DomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, JournalpostTypeMapper())[0]
     }
 
+    fun mapAktivDato(dataTable: DataTable?): LocalDate {
+        return mapDataTable(dataTable, AktivDatoMapper())[0]
+    }
+
+    fun mapOppgaveTema(dataTable: DataTable?): String {
+        return mapDataTable(dataTable, TemaMapper())[0]
+    }
+
+    fun mapOppgaveStatus(dataTable: DataTable?): Status {
+        return mapDataTable(dataTable, OppgaveStatusMapper())[0]
+    }
+
+    fun mapOppgavePrioritet(dataTable: DataTable?): Prioritet {
+        return mapDataTable(dataTable, PrioritetMapper())[0]
+    }
+
+    class AktivDatoMapper() : RadMapper<LocalDate> {
+        override fun mapRad(rad: Map<String, String>): LocalDate {
+            return parseDato(AKTIV_DATO, rad)
+        }
+    }
+
+    class PrioritetMapper() : RadMapper<Prioritet> {
+        override fun mapRad(rad: Map<String, String>): Prioritet {
+            return Prioritet.valueOf(parseString(PRIORITET, rad))
+        }
+    }
+
+    class StatusMapper() : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(STATUS, rad)
+        }
+    }
+
     class TemaMapper : RadMapper<String> {
         override fun mapRad(rad: Map<String, String>): String {
             return parseString(TEMA, rad)
@@ -484,9 +518,9 @@ object DomenespråkParser : BasisDomeneParser() {
         }
     }
 
-    class StatusMapper : RadMapper<String> {
-        override fun mapRad(rad: Map<String, String>): String {
-            return parseString(STATUS, rad)
+    class OppgaveStatusMapper : RadMapper<Status> {
+        override fun mapRad(rad: Map<String, String>): Status {
+            return Status.valueOf(parseString(STATUS, rad))
         }
     }
 
