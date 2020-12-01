@@ -1,5 +1,6 @@
 package no.nav.medlemskap.domene
 
+import no.nav.medlemskap.domene.Statsborgerskap.Companion.gyldigeStatsborgerskap
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
 import no.nav.medlemskap.regler.common.Datohjelper
@@ -28,9 +29,7 @@ data class Datagrunnlag(
     fun gyldigeStatsborgerskap(): List<String> {
         val statsborgerskap: List<Statsborgerskap> = pdlpersonhistorikk.statsborgerskap
 
-        return statsborgerskap
-            .filter { it.overlapper(kontrollPeriodeForPersonhistorikk.fom) && it.overlapper(kontrollPeriodeForPersonhistorikk.tom) }
-            .map { it.landkode }
+        return gyldigeStatsborgerskap(statsborgerskap, kontrollPeriodeForPersonhistorikk)
     }
 }
 

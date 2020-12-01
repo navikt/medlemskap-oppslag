@@ -28,7 +28,7 @@ class YtelseSteps : No {
         }
 
         Når("første sykedag beregnes fra sykemeldingsperiode") {
-            førsteDagForYtelse = Datohjelper(ytelsePeriode!!, null, Ytelse.SYKEPENGER).førsteSykedag()
+            førsteDagForYtelse = Datohjelper(ytelsePeriode!!, null, Ytelse.SYKEPENGER).førsteDatoForYtelse()
         }
 
         Når<DataTable>("kontrollperiode for arbeidsforhold beregnes med følgende parametre:") { dataTable: DataTable? ->
