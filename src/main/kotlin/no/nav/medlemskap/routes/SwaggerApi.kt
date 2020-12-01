@@ -4,10 +4,10 @@ import io.ktor.http.content.*
 import io.ktor.routing.*
 
 fun Route.setupSwaggerDocApi() {
-    route("/api/v1/docs/") {
+    route("/api/") {
         static {
             resources("api")
-            defaultResource("api/index.html")
+            defaultResource("index.html", "api")
         }
     }
 }

@@ -172,7 +172,7 @@ tasks {
     }
 
     withType<org.hidetake.gradle.swagger.generator.GenerateSwaggerUI> {
-        outputDir = File(buildDir.path + "/resources/main/api")
+        outputDir = File("src/main/resources/api")
     }
 
     withType<Test> {
