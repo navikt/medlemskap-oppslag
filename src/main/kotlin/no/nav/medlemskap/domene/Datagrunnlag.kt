@@ -22,8 +22,8 @@ data class Datagrunnlag(
     val dataOmEktefelle: DataOmEktefelle?,
     val overstyrteRegler: Map<RegelId, Svar> = mapOf()
 ) {
-    private var datohjelper = Datohjelper(periode, førsteDagForYtelse, ytelse)
-    private var kontrollPeriodeForPersonhistorikk = datohjelper.kontrollPeriodeForPersonhistorikk()
+    private val datohjelper = Datohjelper(periode, førsteDagForYtelse, ytelse)
+    private val kontrollPeriodeForPersonhistorikk = datohjelper.kontrollPeriodeForPersonhistorikk()
 
     fun gyldigeStatsborgerskap(): List<String> {
         val statsborgerskap: List<Statsborgerskap> = pdlpersonhistorikk.statsborgerskap
