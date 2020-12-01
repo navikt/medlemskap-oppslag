@@ -21,8 +21,8 @@ class HarBrukerNordiskStatsborgerskapRegel(
     override fun operasjon(): Resultat {
 
         return when {
-            erBrukerNordiskStatsborger(statsborgerskap) -> ja(RegelId.REGEL_11)
-            else -> nei(RegelId.REGEL_11)
+            erBrukerNordiskStatsborger(statsborgerskap) -> ja(regelId)
+            else -> nei(regelId)
         }
     }
 

@@ -16,6 +16,7 @@ import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.cioHttpClient
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
+import java.time.LocalDate
 
 class OppgaveClientTest {
 
@@ -64,6 +65,12 @@ class OppgaveClientTest {
 
         assertEquals(1, oppgaveResponse.antallTreffTotalt)
         assertEquals("Z000001", oppgave.tilordnetRessurs)
+        assertEquals(LocalDate.of(2010, 1, 1), oppgave.aktivDato)
+        assertEquals(OppgPrioritet.HOY, oppgave.prioritet)
+        assertEquals(OppgStatus.AAPNET, oppgave.status)
+        assertEquals(1, oppgave.versjon)
+        assertEquals("Z000001", oppgave.tilordnetRessurs)
+        assertEquals("Testbeskrivelse", oppgave.beskrivelse)
     }
 
     @Test

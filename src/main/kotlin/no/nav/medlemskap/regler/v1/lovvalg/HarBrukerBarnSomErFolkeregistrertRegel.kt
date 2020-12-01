@@ -45,9 +45,9 @@ class HarBrukerBarnSomErFolkeregistrertRegel(
         }
 
         return if (harBarnBosattINorge) {
-            ja(RegelId.REGEL_11_2_2)
+            ja(regelId)
         } else {
-            nei(RegelId.REGEL_11_2_2)
+            nei(regelId)
         }
     }
 

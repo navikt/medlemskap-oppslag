@@ -270,21 +270,15 @@ class RegelSteps : No {
             assertEquals(forventetSvar, resultat!!.svar)
         }
 
-        Så("skal begrunnelsen være {string}") { forventetBegrunnelse: String ->
-            assertEquals(forventetBegrunnelse, resultat!!.begrunnelse)
-        }
-
         Så("skal avklaringen være som definert i RegelId") {
             assertEquals(resultat!!.regelId!!.avklaring, resultat!!.avklaring)
         }
 
-        Så<String>("skal begrunnelse utfylt være {string}") { begrunnelseUtfyltStr: String? ->
-            val begrunnelseUtfylt = domenespråkParser.parseSvar(begrunnelseUtfyltStr!!)
-
-            if (begrunnelseUtfylt == Svar.NEI) {
-                assertEquals(resultat!!.regelId!!.neiBegrunnelse, resultat!!.begrunnelse)
-            } else {
+        Så("skal begrunnelsen være som definert i RegelId") {
+            if (resultat!!.svar == Svar.JA) {
                 assertEquals(resultat!!.regelId!!.jaBegrunnelse, resultat!!.begrunnelse)
+            } else {
+                assertEquals(resultat!!.regelId!!.neiBegrunnelse, resultat!!.begrunnelse)
             }
         }
 

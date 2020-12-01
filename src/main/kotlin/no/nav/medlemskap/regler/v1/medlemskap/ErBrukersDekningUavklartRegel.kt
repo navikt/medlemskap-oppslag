@@ -22,7 +22,7 @@ class ErBrukersDekningUavklartRegel(
 
         return when {
             dekning == null || dekning.uavklartForYtelse(ytelse) -> ja(regelId)
-            else -> nei(RegelId.REGEL_1_6)
+            else -> nei(regelId)
         }
     }
 

@@ -27,8 +27,8 @@ class ErBrukersEktefelleOgBarnasForelderSammePersonRegel(
 
         if (ektefellesBarn != null && brukersBarn != null) {
             return when {
-                ektefellesBarn.map { it }.harAlle(brukersBarn.map { it.personhistorikkBarn.ident }) -> ja(RegelId.REGEL_11_5_1)
-                else -> nei(RegelId.REGEL_11_5_1)
+                ektefellesBarn.map { it }.harAlle(brukersBarn.map { it.personhistorikkBarn.ident }) -> ja(regelId)
+                else -> nei(regelId)
             }
         }
         return nei()

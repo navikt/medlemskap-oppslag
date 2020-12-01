@@ -28,15 +28,17 @@ Egenskap: Regelflyt for regel 5
       | 01.01.2018      |                 | 001       | 100              |
 
     Når medlemskap beregnes med følgende parametre
-      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-      | 30.01.2020      | 30.01.2021      | Nei                           |
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge | Ytelse   |
+      | 30.01.2020      | 30.01.2021      | Nei                           | <Ytelse> |
 
     Så skal svaret være "<Medlemskap>"
     Og skal regel "5" gi svaret "<Regel 5>"
 
     Eksempler:
-      | Antall ansatte | Regel 5 | Medlemskap |
-      | 4              | Nei     | UAVKLART   |
-      | 5              | Nei     | UAVKLART   |
-      | 6              | Ja      | Ja         |
-      | 9              | Ja      | Ja         |
+      | Ytelse     | Antall ansatte | Regel 5 | Medlemskap | Forklaring         |
+      | DAGPENGER  | 4              | Nei     | UAVKLART   |                    |
+      | DAGPENGER  | 5              | Nei     | UAVKLART   |                    |
+      | SYKEPENGER | 4              | Ja      | Ja         | Regel 5 overstyres |
+      | SYKEPENGER | 5              | Ja      | Ja         | Regel 5 overstyres |
+      | SYKEPENGER | 6              | Ja      | Ja         |                    |
+      | SYKEPENGER | 9              | Ja      | Ja         |                    |

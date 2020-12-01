@@ -22,10 +22,10 @@ Egenskap: Regel 11.3.1.1: Har bruker uten ektefelle med folkeregistrerte barn jo
 
     Så skal svaret være "<Svar>"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "<Svar begrunnelse>"
+    Og skal begrunnelsen være som definert i RegelId
 
     Eksempler:
-      | Stillingsprosent | Svar | Svar begrunnelse |
-      | 90               | Nei  | Nei              |
-      | 100              | Ja   | Ja               |
-      | 110              | Ja   | Ja               |
+      | Stillingsprosent | Svar |
+      | 90               | Nei  |
+      | 100              | Ja   |
+      | 110              | Ja   |

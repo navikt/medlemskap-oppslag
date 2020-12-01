@@ -24,7 +24,7 @@ Egenskap: Regel 8: Er bruker pilot eller kabinansatt?
 
     Så skal svaret være "<Svar>"
     Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelse utfylt være "<Utfylt begrunnelse>"
+    Og skal begrunnelsen være som definert i RegelId
 
     Eksempler:
       | Yrkeskode | Svar | Utfylt begrunnelse |

@@ -2,6 +2,7 @@ package no.nav.medlemskap.regler.common
 
 enum class RegelId(val identifikator: String, val avklaring: String, val neiBegrunnelse: String = "", val jaBegrunnelse: String = "", val erRegelflytKonklusjon: Boolean = false) {
     REGEL_0_1("0.1", "Er input-dato gyldig?", "Ugyldig input dato"),
+    REGEL_0_5("0.5", "Skal regler overstyres?", "", "Svar på brukerspørsmålet er Nei, og regler 3, 5 og 12 skal derfor overstyres."),
     REGEL_1_1("1.1", "Er alle perioder siste 12 mnd avklart (endelig/gyldig)?", "Ikke alle perioder siste 12 mnd er avklart"),
     REGEL_1_2("1.2", "Er det periode både med og uten medlemskap innenfor 12 mnd?", "", "Fant periode både med og uten medlemskap"),
     REGEL_1_3("1.3", "Er det en periode med medlemskap?"),
@@ -57,7 +58,8 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_STATSBORGERSKAP("STATSBORGERSKAP", "Er statsborgerskap avklart?", erRegelflytKonklusjon = true),
     REGEL_BOSATT("BOSATT", "Er det avklart om bruker bor i Norge?", erRegelflytKonklusjon = true),
     REGEL_DOED("DOED", "Er det avklart om brukeren er død eller ikke?", erRegelflytKonklusjon = true),
-    REGEL_REQUEST_VALIDERING("Validering", "Er input-dataene gyldige?", erRegelflytKonklusjon = true)
+    REGEL_REQUEST_VALIDERING("Validering", "Er input-dataene gyldige?", erRegelflytKonklusjon = true),
+    REGEL_OVERSTYRING("OVERSTYRING", "Er overstyringsregler avklart?", erRegelflytKonklusjon = true)
     ;
 
     companion object {
