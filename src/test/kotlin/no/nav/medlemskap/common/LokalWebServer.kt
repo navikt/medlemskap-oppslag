@@ -100,6 +100,7 @@ class LokalWebServer {
                 .filter(validationFilter)
                 .body(input)
                 .header(Header("Content-Type", "application/json"))
+                .header(Header("Authorization", "Bearer dummytoken"))
                 .post("/")
                 .then()
                 .statusCode(200)

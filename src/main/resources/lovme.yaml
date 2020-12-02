@@ -19,7 +19,7 @@ paths:
       parameters:
         - name: Authorization
           in: header
-          description: "Format - byte. Standard Authorization header som inneholder et Base64-kodet Bearer-token (JWT-aksesstoken) utstedt av Maskinporten (Difi). Verdien må starte med \"Bearer \", deretter følger tokenstrengen."
+          description: "Format - byte. Standard Authorization header som inneholder et Base64-kodet Bearer-token utstedt fra AzureAD. Verdien må starte med \"Bearer \", deretter følger tokenstrengen."
           required: true
           schema:
             type: string
