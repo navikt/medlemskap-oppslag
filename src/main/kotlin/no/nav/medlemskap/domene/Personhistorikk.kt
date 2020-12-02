@@ -1,4 +1,6 @@
 package no.nav.medlemskap.domene
+import no.nav.medlemskap.common.statsborgerskapUavklartForRegel
+import no.nav.medlemskap.regler.common.RegelId
 import java.time.LocalDate
 import java.time.LocalDateTime
 
