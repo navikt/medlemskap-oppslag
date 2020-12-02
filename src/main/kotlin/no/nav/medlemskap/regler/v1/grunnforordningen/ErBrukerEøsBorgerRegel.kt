@@ -3,6 +3,7 @@ package no.nav.medlemskap.regler.v1.grunnforordningen
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Statsborgerskap
+import no.nav.medlemskap.domene.Statsborgerskap.Companion.erEøsBorger
 import no.nav.medlemskap.domene.Statsborgerskap.Companion.registrerStatsborgerskapGrafana
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.RegelId
@@ -20,7 +21,7 @@ class ErBrukerEøsBorgerRegel(
 ) : LovvalgRegel(RegelId.REGEL_2, ytelse, periode, førsteDagForYtelse) {
 
     override fun operasjon(): Resultat {
-        if (erBrukerEøsBorger(statsborgerskap)) {
+        if (statsborgerskap.erEøsBorger(kontrollPeriodeForPersonhistorikk)) {
             return ja(regelId)
         } else {
             statsborgerskap.registrerStatsborgerskapGrafana(kontrollPeriodeForPersonhistorikk, ytelse, regelId)
