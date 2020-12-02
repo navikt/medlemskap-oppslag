@@ -198,10 +198,6 @@ tasks {
             include("bus-extensions.txt")
         }
     }
-
-    "check" {
-        dependsOn("generateSwaggerUI")
-    }
 }
 
 ktlint {
