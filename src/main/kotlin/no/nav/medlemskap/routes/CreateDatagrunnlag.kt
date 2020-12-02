@@ -9,6 +9,7 @@ import no.nav.medlemskap.common.endretStatsborgerskapSisteÅretCounter
 import no.nav.medlemskap.common.flereStatsborgerskapCounter
 import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Statsborgerskap.Companion.harEndretSisteÅret
 import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
@@ -18,7 +19,6 @@ import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.fraOgMedDato
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.registrerAntallAnsatteHosJuridiskEnhet
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarn
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilEktefelle
-import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.harEndretSisteÅret
 import java.time.LocalDate
 
 private val logger = KotlinLogging.logger { }

@@ -1,13 +1,15 @@
 package no.nav.medlemskap.regler.v1.lovvalg
 
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Statsborgerskap.Companion.erBritiskBorger
+import no.nav.medlemskap.domene.Statsborgerskap.Companion.erSveitsiskBorger
+import no.nav.medlemskap.domene.Statsborgerskap.Companion.gyldigeStatsborgerskap
 import no.nav.medlemskap.regler.common.BasisRegel
 import no.nav.medlemskap.regler.common.Datohjelper
 import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Funksjoner.erTom
 import no.nav.medlemskap.regler.common.RegelId
-import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.sjekkStatsborgerskap
 import java.time.LocalDate
 
 abstract class LovvalgRegel(
@@ -42,43 +44,27 @@ abstract class LovvalgRegel(
         return midlertidigadresserLandkoder.all { Eøsland.erNorsk(it) } || midlertidigadresserLandkoder.erTom()
     }
 
-    protected fun erBrukerSveitsiskStatsborger(statsborgerskap: List<Statsborgerskap>): Boolean {
-        return sjekkStatsborgerskap(statsborgerskap, kontrollPeriodeForPersonhistorikk, { s -> Eøsland.erSveitsisk(s) })
-    }
-
-    protected fun erBrukerBritiskStatsborger(statsborgerskap: List<Statsborgerskap>): Boolean {
-        return sjekkStatsborgerskap(statsborgerskap, kontrollPeriodeForPersonhistorikk, { s -> Eøsland.erBritisk(s) })
-    }
-
-    protected fun erBrukerNorskStatsborger(statsborgerskap: List<Statsborgerskap>): Boolean {
-        return sjekkStatsborgerskap(statsborgerskap, kontrollPeriodeForPersonhistorikk, { s -> Eøsland.erNorsk(s) })
-    }
-
-    protected fun erBrukerNordiskStatsborger(statsborgerskap: List<Statsborgerskap>): Boolean {
-        return sjekkStatsborgerskap(statsborgerskap, kontrollPeriodeForPersonhistorikk, { s -> Eøsland.erNordisk(s) })
-    }
-
-    protected fun erBrukerEøsBorger(statsborgerskap: List<Statsborgerskap>): Boolean {
-        return sjekkStatsborgerskap(statsborgerskap, kontrollPeriodeForPersonhistorikk, { s -> Eøsland.erEØSland(s) })
-    }
-
     protected fun erBrukerSveitsiskBorgerUtenAnnetEøsStatsborgerskap(statsborgerskap: List<Statsborgerskap>): Boolean {
-        if (!erBrukerSveitsiskStatsborger(statsborgerskap)) {
+        if (!statsborgerskap.erSveitsiskBorger(kontrollPeriodeForPersonhistorikk)) {
             return false
         }
 
-        val statsborgerskapUtenomSveits = statsborgerskap.filterNot { Eøsland.erSveitsisk(it.landkode) }
+        val statsborgerskapUtenomSveits = statsborgerskap
+            .gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk)
+            .filterNot { Eøsland.erSveitsisk(it) }
 
-        return !sjekkStatsborgerskap(statsborgerskapUtenomSveits, kontrollPeriodeForPersonhistorikk, { s -> Eøsland.erEØSland(s) })
+        return !statsborgerskapUtenomSveits.any { Eøsland.erEØSland(it) }
     }
 
     protected fun erBrukerBritiskBorgerUtenAnnetEøsStatsborgerskap(statsborgerskap: List<Statsborgerskap>): Boolean {
-        if (!erBrukerBritiskStatsborger(statsborgerskap)) {
+        if (!statsborgerskap.erBritiskBorger(kontrollPeriodeForPersonhistorikk)) {
             return false
         }
 
-        val statsborgerskapUtenomBritisk = statsborgerskap.filterNot { Eøsland.erBritisk(it.landkode) }
+        val statsborgerskapUtenomBritisk = statsborgerskap
+            .gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk)
+            .filterNot { Eøsland.erBritisk(it) }
 
-        return !sjekkStatsborgerskap(statsborgerskapUtenomBritisk, kontrollPeriodeForPersonhistorikk, { s -> Eøsland.erEØSland(s) })
+        return !statsborgerskapUtenomBritisk.any { Eøsland.erEØSland(it) }
     }
 }

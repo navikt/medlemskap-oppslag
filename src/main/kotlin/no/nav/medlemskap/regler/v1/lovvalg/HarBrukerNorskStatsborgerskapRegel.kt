@@ -3,6 +3,7 @@ package no.nav.medlemskap.regler.v1.lovvalg
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Statsborgerskap
+import no.nav.medlemskap.domene.Statsborgerskap.Companion.erNorskBorger
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
@@ -21,7 +22,7 @@ class HarBrukerNorskStatsborgerskapRegel(
     override fun operasjon(): Resultat {
 
         return when {
-            erBrukerNorskStatsborger(statsborgerskap) -> ja(regelId)
+            statsborgerskap.erNorskBorger(kontrollPeriodeForPersonhistorikk) -> ja(regelId)
             else -> nei(regelId)
         }
     }

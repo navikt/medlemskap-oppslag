@@ -6,7 +6,7 @@ import io.kotest.matchers.shouldBe
 import no.nav.medlemskap.clients.oppgave.OppgOppgave
 import no.nav.medlemskap.clients.oppgave.OppgPrioritet
 import no.nav.medlemskap.clients.oppgave.OppgStatus
-import no.nav.medlemskap.cucumber.DomenespråkParser
+import no.nav.medlemskap.cucumber.SpraakParserDomene.OppgaverDomeneSpraakParser
 import no.nav.medlemskap.cucumber.mapping.oppgave.OppgaveDomeneSpraakParser
 import no.nav.medlemskap.domene.Oppgave
 import no.nav.medlemskap.services.oppgave.mapOppgaveResultat
@@ -39,22 +39,22 @@ class OppgaveMapperSteps : No {
         }
 
         Så<DataTable>("skal mappede  aktivDato i medlemskap domene være") { dataTable: DataTable? ->
-            val aktivDatoForventet = DomenespråkParser.mapAktivDato(dataTable)
+            val aktivDatoForventet = OppgaverDomeneSpraakParser.mapAktivDato(dataTable)
             oppgaver[0].aktivDato.shouldBe(aktivDatoForventet)
         }
 
         Så<DataTable>("skal prioritet i Oppgave domene være") { dataTable: DataTable? ->
-            val prioritetForventet = DomenespråkParser.mapOppgavePrioritet(dataTable)
+            val prioritetForventet = OppgaverDomeneSpraakParser.mapOppgavePrioritet(dataTable)
             oppgaver[0].prioritet.shouldBe(prioritetForventet)
         }
 
         Så<DataTable>("skal status i Oppgave domene være") { dataTable: DataTable? ->
-            val statusForventet = DomenespråkParser.mapOppgaveStatus(dataTable)
+            val statusForventet = OppgaverDomeneSpraakParser.mapOppgaveStatus(dataTable)
             oppgaver[0].status.shouldBe(statusForventet)
         }
 
         Så<DataTable>("skal mappede OppgOppgave være") { dataTable: DataTable? ->
-            val temaForventet = DomenespråkParser.mapOppgaveTema(dataTable)
+            val temaForventet = OppgaverDomeneSpraakParser.mapOppgaveTema(dataTable)
             oppgaver[0].tema.shouldBe(temaForventet)
         }
     }

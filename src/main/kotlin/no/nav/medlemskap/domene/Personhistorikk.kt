@@ -1,4 +1,6 @@
 package no.nav.medlemskap.domene
+import no.nav.medlemskap.common.statsborgerskapUavklartForRegel
+import no.nav.medlemskap.regler.common.RegelId
 import java.time.LocalDate
 import java.time.LocalDateTime
 
@@ -19,38 +21,70 @@ data class Statsborgerskap(
 ) {
     private val periode = Periode(fom, tom)
 
-    fun overlapper(annenPeriode: Periode): Boolean {
-        return periode.overlapper(annenPeriode)
-    }
-
     fun overlapper(dato: LocalDate): Boolean {
         return periode.overlapper(dato)
     }
 
-    fun encloses(annenPeriode: Periode): Boolean {
-        return periode.encloses(annenPeriode)
-    }
-
-    fun encloses(dato: LocalDate): Boolean {
-        return periode.encloses(dato)
-    }
-
     companion object {
-        fun gyldigeStatsborgerskap(
-            statsborgerskap: List<Statsborgerskap>,
+
+        infix fun List<Statsborgerskap>.gyldigeStatsborgerskap(
             kontrollPeriodeForPersonhistorikk: Kontrollperiode
         ): List<String> {
-            val statsborgerskapFørst = statsborgerskap
+            val statsborgerskapFørst = this
                 .filter { it.overlapper(kontrollPeriodeForPersonhistorikk.fom) }
                 .map { it.landkode }
                 .toSet()
-            val statsborgerskapSist = statsborgerskap
+            val statsborgerskapSist = this
                 .filter { it.overlapper(kontrollPeriodeForPersonhistorikk.tom) }
                 .map { it.landkode }
                 .toSet()
 
             return statsborgerskapFørst.filter { statsborgerskapSist.contains(it) }
         }
+
+        infix fun List<Statsborgerskap>.erSveitsiskBorger(
+            kontrollPeriodeForPersonhistorikk: Kontrollperiode
+        ): Boolean {
+            return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Eøsland.erSveitsisk(it) }
+        }
+
+        infix fun List<Statsborgerskap>.erBritiskBorger(
+            kontrollPeriodeForPersonhistorikk: Kontrollperiode
+        ): Boolean {
+            return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Eøsland.erBritisk(it) }
+        }
+
+        infix fun List<Statsborgerskap>.erNorskBorger(
+            kontrollPeriodeForPersonhistorikk: Kontrollperiode
+        ): Boolean {
+            return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Eøsland.erNorsk(it) }
+        }
+
+        infix fun List<Statsborgerskap>.erNordiskBorger(
+            kontrollPeriodeForPersonhistorikk: Kontrollperiode
+        ): Boolean {
+            return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Eøsland.erNordisk(it) }
+        }
+
+        infix fun List<Statsborgerskap>.erEøsBorger(
+            kontrollPeriodeForPersonhistorikk: Kontrollperiode
+        ): Boolean {
+            return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Eøsland.erEØSland(it) }
+        }
+
+        infix fun List<Statsborgerskap>.hentStatsborgerskapFor(dato: LocalDate): List<String> =
+            this.filter {
+                it.overlapper(dato)
+            }.map { it.landkode }
+
+        infix fun List<Statsborgerskap>.harEndretSisteÅret(kontrollPeriode: Kontrollperiode): Boolean =
+            this.any { erStatsborgerskapetInnenforPerioden(it, kontrollPeriode) }
+
+        private fun erStatsborgerskapetInnenforPerioden(it: Statsborgerskap, kontrollPeriode: Kontrollperiode): Boolean =
+            kontrollPeriode.periode.encloses(Periode(fom = it.fom, tom = it.fom)) || kontrollPeriode.periode.encloses(Periode(fom = it.tom, tom = it.tom))
+
+        fun List<Statsborgerskap>.registrerStatsborgerskapGrafana(kontrollPeriode: Kontrollperiode, ytelse: Ytelse, regelId: RegelId) =
+            this.hentStatsborgerskapFor(kontrollPeriode.tom).forEach { statsborgerskapUavklartForRegel(it, ytelse, regelId).increment() }
     }
 }
 
