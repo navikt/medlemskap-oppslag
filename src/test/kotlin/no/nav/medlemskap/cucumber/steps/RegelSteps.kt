@@ -56,6 +56,7 @@ class RegelSteps : No {
 
     private val arbeidsgiverMap = mutableMapOf<Int, Arbeidsgiver>()
     private val ansatteMap = hashMapOf<String?, List<Ansatte>>()
+    private val permisjonPermitteringMap = hashMapOf<Int, List<PermisjonPermittering>>()
     private var arbeidsavtaleEktefelleMap = hashMapOf<Int, List<Arbeidsavtale>>()
 
     private var resultat: Resultat? = null
@@ -150,6 +151,10 @@ class RegelSteps : No {
             if (ansatte.isNotEmpty()) {
                 ansatteMap.put(null, ansatte)
             }
+        }
+
+        Gitt("følgende permisjonspermitteringer i arbeidsforholdet") { dataTable: DataTable? ->
+            permisjonPermitteringMap[0] = ArbeidsforholdDomeneSpraakParser.mapPermisjonspermitteringer(dataTable)
         }
 
         Gitt("følgende arbeidsavtaler i arbeidsforholdet") { dataTable: DataTable? ->
@@ -385,7 +390,7 @@ class RegelSteps : No {
             brukerinput = Brukerinput(medlemskapsparametre.harHattArbeidUtenforNorge),
             pdlpersonhistorikk = pdlPersonhistorikkBuilder.build(),
             medlemskap = medlemskap,
-            arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgiverMap, arbeidsavtaleMap, utenlandsoppholdMap, ansatteMap),
+            arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgiverMap, arbeidsavtaleMap, utenlandsoppholdMap, ansatteMap, permisjonPermitteringMap),
             oppgaver = oppgaverFraGosys,
             dokument = journalPosterFraJoArk,
             ytelse = medlemskapsparametre.ytelse ?: Ytelse.SYKEPENGER,
@@ -400,14 +405,16 @@ class RegelSteps : No {
         arbeidsgiverMap: Map<Int, Arbeidsgiver>,
         arbeidsavtaleMap: Map<Int, List<Arbeidsavtale>>,
         utenlandsoppholdMap: Map<Int, List<Utenlandsopphold>>,
-        ansatteMap: Map<String?, List<Ansatte>>
+        ansatteMap: Map<String?, List<Ansatte>>,
+        permisjonPermitteringMap: Map<Int, List<PermisjonPermittering>>
     ): List<Arbeidsforhold> {
         return arbeidsforholdListe
             .mapIndexed { index, arbeidsforhold ->
                 arbeidsforhold.copy(
                     utenlandsopphold = utenlandsoppholdMap[index] ?: emptyList(),
                     arbeidsgiver = byggArbeidsgiver(arbeidsgiverMap[index], ansatteMap) ?: VANLIG_NORSK_ARBEIDSGIVER,
-                    arbeidsavtaler = arbeidsavtaleMap[index] ?: emptyList()
+                    arbeidsavtaler = arbeidsavtaleMap[index] ?: emptyList(),
+                    permisjonPermittering = permisjonPermitteringMap[index] ?: emptyList()
                 )
             }
     }

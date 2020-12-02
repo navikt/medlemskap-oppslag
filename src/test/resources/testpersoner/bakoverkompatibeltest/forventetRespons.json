@@ -100,7 +100,16 @@
         "stillingsprosent" : 100.0,
         "beregnetAntallTimerPrUke" : 37.5
       } ],
-      "permisjonPermittering" : [ ]
+      "permisjonPermittering" : [ {
+        "periode": {
+          "fom" : "2019-10-10",
+          "tom" : "2020-08-01"
+        },
+        "permisjonPermitteringId": "permisjonPermitteringId",
+        "prosent": 100.0,
+        "type": "PERMISJON",
+        "varslingskode": "varslingskode"
+      }]
     } ],
     "oppgaver" : [ {
       "aktivDato" : "1975-10-10",

@@ -36,22 +36,22 @@ data class Statsborgerskap(
     }
 
     companion object {
-        fun gyldigeStatsborgerskap(statsborgerskap: List<Statsborgerskap>,
-                                             kontrollPeriodeForPersonhistorikk: Kontrollperiode): List<String> {
+        fun gyldigeStatsborgerskap(
+            statsborgerskap: List<Statsborgerskap>,
+            kontrollPeriodeForPersonhistorikk: Kontrollperiode
+        ): List<String> {
             val statsborgerskapFørst = statsborgerskap
-                    .filter { it.overlapper(kontrollPeriodeForPersonhistorikk.fom) }
-                    .map { it.landkode }
-                    .toSet()
+                .filter { it.overlapper(kontrollPeriodeForPersonhistorikk.fom) }
+                .map { it.landkode }
+                .toSet()
             val statsborgerskapSist = statsborgerskap
-                    .filter { it.overlapper(kontrollPeriodeForPersonhistorikk.tom) }
-                    .map { it.landkode }
-                    .toSet()
+                .filter { it.overlapper(kontrollPeriodeForPersonhistorikk.tom) }
+                .map { it.landkode }
+                .toSet()
 
             return statsborgerskapFørst.filter { statsborgerskapSist.contains(it) }
         }
     }
-
-
 }
 
 data class Adresse(
