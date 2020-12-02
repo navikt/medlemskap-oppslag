@@ -35,23 +35,62 @@ data class Statsborgerskap(
         return periode.encloses(dato)
     }
 
+    fun erSveitsisk(): Boolean {
+        return Eøsland.erSveitsisk(landkode)
+    }
+
     companion object {
-        fun gyldigeStatsborgerskap(statsborgerskap: List<Statsborgerskap>,
-                                             kontrollPeriodeForPersonhistorikk: Kontrollperiode): List<String> {
+        fun gyldigeStatsborgerskap(
+            statsborgerskap: List<Statsborgerskap>,
+            kontrollPeriodeForPersonhistorikk: Kontrollperiode
+        ): List<String> {
             val statsborgerskapFørst = statsborgerskap
-                    .filter { it.overlapper(kontrollPeriodeForPersonhistorikk.fom) }
-                    .map { it.landkode }
-                    .toSet()
+                .filter { it.overlapper(kontrollPeriodeForPersonhistorikk.fom) }
+                .map { it.landkode }
+                .toSet()
             val statsborgerskapSist = statsborgerskap
-                    .filter { it.overlapper(kontrollPeriodeForPersonhistorikk.tom) }
-                    .map { it.landkode }
-                    .toSet()
+                .filter { it.overlapper(kontrollPeriodeForPersonhistorikk.tom) }
+                .map { it.landkode }
+                .toSet()
 
             return statsborgerskapFørst.filter { statsborgerskapSist.contains(it) }
         }
+
+        fun erSveitsiskBorger(
+            statsborgerskap: List<Statsborgerskap>,
+            kontrollPeriodeForPersonhistorikk: Kontrollperiode
+        ): Boolean {
+            return gyldigeStatsborgerskap(statsborgerskap, kontrollPeriodeForPersonhistorikk).any { Eøsland.erSveitsisk(it) }
+        }
+
+        fun erBritiskBorger(
+            statsborgerskap: List<Statsborgerskap>,
+            kontrollPeriodeForPersonhistorikk: Kontrollperiode
+        ): Boolean {
+            return gyldigeStatsborgerskap(statsborgerskap, kontrollPeriodeForPersonhistorikk).any { Eøsland.erBritisk(it) }
+        }
+
+        fun erNorskBorger(
+            statsborgerskap: List<Statsborgerskap>,
+            kontrollPeriodeForPersonhistorikk: Kontrollperiode
+        ): Boolean {
+            return gyldigeStatsborgerskap(statsborgerskap, kontrollPeriodeForPersonhistorikk).any { Eøsland.erNorsk(it) }
+        }
+
+        fun erNordiskBorger(
+            statsborgerskap: List<Statsborgerskap>,
+            kontrollPeriodeForPersonhistorikk: Kontrollperiode
+        ): Boolean {
+            return gyldigeStatsborgerskap(statsborgerskap, kontrollPeriodeForPersonhistorikk).any { Eøsland.erNordisk(it) }
+        }
+
+        fun erEøsBorger(
+            statsborgerskap: List<Statsborgerskap>,
+            kontrollPeriodeForPersonhistorikk: Kontrollperiode
+        ): Boolean {
+            return gyldigeStatsborgerskap(statsborgerskap, kontrollPeriodeForPersonhistorikk).any { Eøsland.erEØSland(it) }
+        }
     }
-
-
 }
 
 data class Adresse(
