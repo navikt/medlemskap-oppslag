@@ -4,7 +4,7 @@ import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
 import io.kotest.matchers.collections.shouldContainExactly
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
-import no.nav.medlemskap.cucumber.DomenespråkParser
+import no.nav.medlemskap.cucumber.SpraakParserDomene.PersonhistorikkDomeneSpraakParser
 import no.nav.medlemskap.cucumber.mapping.pdl.PdlDomenespråkParser
 import no.nav.medlemskap.domene.Personhistorikk
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper
@@ -78,43 +78,37 @@ class PdlMapperSteps : No {
         }
 
         Så<DataTable>("skal mappet statsborgerskap være") { dataTable: DataTable? ->
-            val statsborgerskapForventet = DomenespråkParser.mapStatsborgerskap(dataTable)
-
+            val statsborgerskapForventet = PersonhistorikkDomeneSpraakParser.mapStatsborgerskap(dataTable)
             personhistorikk!!.statsborgerskap.shouldContainExactly(statsborgerskapForventet)
         }
 
         Så<DataTable>("skal mappede bostedsadresser være") { dataTable: DataTable? ->
-            val bostedsadresserForventet = DomenespråkParser.mapAdresser(dataTable)
-
+            val bostedsadresserForventet = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
             personhistorikk!!.bostedsadresser.shouldContainExactly(bostedsadresserForventet)
         }
 
         Så<DataTable>("skal mappede kontaktadresser være") { dataTable: DataTable? ->
-            val kontaktadresserForventet = DomenespråkParser.mapAdresser(dataTable)
-
+            val kontaktadresserForventet = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
             personhistorikk!!.kontaktadresser.shouldContainExactly(kontaktadresserForventet)
         }
 
         Så<DataTable>("skal mappede oppholdsadresser være") { dataTable: DataTable? ->
-            val oppholdsadresserForventet = DomenespråkParser.mapAdresser(dataTable)
-
+            val oppholdsadresserForventet = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
             personhistorikk!!.oppholdsadresser.shouldContainExactly(oppholdsadresserForventet)
         }
 
         Så<DataTable>("skal mappede sivilstander være") { dataTable: DataTable? ->
-            val sivilstanderForventet = DomenespråkParser.mapSivilstander(dataTable)
-
+            val sivilstanderForventet = PersonhistorikkDomeneSpraakParser.mapSivilstander(dataTable)
             personhistorikk!!.sivilstand.shouldContainExactly(sivilstanderForventet)
         }
 
         Så<DataTable>("skal mappede familierelasjoner være") { dataTable: DataTable? ->
-            val familierelasjonerForventet = DomenespråkParser.mapFamilierelasjoner(dataTable)
-
+            val familierelasjonerForventet = PersonhistorikkDomeneSpraakParser.mapFamilierelasjoner(dataTable)
             personhistorikk!!.familierelasjoner.shouldContainExactly(familierelasjonerForventet)
         }
 
         Så<DataTable>("skal mappede doedsfall være") { dataTable: DataTable? ->
-            val doedsfallForventet = DomenespråkParser.mapDoedsfall(dataTable)
+            val doedsfallForventet = PersonhistorikkDomeneSpraakParser.mapDoedsfall(dataTable)
             personhistorikk?.doedsfall.shouldContainExactly(doedsfallForventet)
         }
     }

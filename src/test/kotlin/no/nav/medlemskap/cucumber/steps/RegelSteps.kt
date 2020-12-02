@@ -9,6 +9,10 @@ import no.nav.medlemskap.common.JsonMapper
 import no.nav.medlemskap.common.LokalWebServer
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.Medlemskapsparametre
+import no.nav.medlemskap.cucumber.SpraakParserDomene.ArbeidsforholdDomeneSpraakParser
+import no.nav.medlemskap.cucumber.SpraakParserDomene.DokumentDomeneSpraakParser
+import no.nav.medlemskap.cucumber.SpraakParserDomene.OppgaverDomeneSpraakParser
+import no.nav.medlemskap.cucumber.SpraakParserDomene.PersonhistorikkDomeneSpraakParser
 import no.nav.medlemskap.cucumber.steps.pdl.DataOmEktefelleBuilder
 import no.nav.medlemskap.cucumber.steps.pdl.PersonhistorikkBuilder
 import no.nav.medlemskap.cucumber.steps.pdl.PersonhistorikkEktefelleBuilder
@@ -52,7 +56,6 @@ class RegelSteps : No {
 
     private val arbeidsgiverMap = mutableMapOf<Int, Arbeidsgiver>()
     private val ansatteMap = hashMapOf<String?, List<Ansatte>>()
-
     private var arbeidsavtaleEktefelleMap = hashMapOf<Int, List<Arbeidsavtale>>()
 
     private var resultat: Resultat? = null
@@ -68,51 +71,51 @@ class RegelSteps : No {
 
     init {
         Gitt("følgende statsborgerskap i personhistorikken") { dataTable: DataTable? ->
-            val statsborgerskap = domenespråkParser.mapStatsborgerskap(dataTable)
+            val statsborgerskap = PersonhistorikkDomeneSpraakParser.mapStatsborgerskap(dataTable)
             pdlPersonhistorikkBuilder.statsborgerskap.addAll(statsborgerskap)
         }
 
         Gitt("følgende bostedsadresser i personhistorikken") { dataTable: DataTable? ->
-            val bostedsadresser = domenespråkParser.mapAdresser(dataTable)
+            val bostedsadresser = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
             pdlPersonhistorikkBuilder.bostedsadresser.addAll(bostedsadresser)
         }
         Gitt<DataTable>("følgende opplysninger om dødsfall i personhistorikken:") { dataTable: DataTable? ->
-            val doedsfall = domenespråkParser.mapDoedsfall(dataTable)
+            val doedsfall = PersonhistorikkDomeneSpraakParser.mapDoedsfall(dataTable)
             pdlPersonhistorikkBuilder.doedsfall.addAll(doedsfall)
         }
 
         Gitt("følgende kontaktadresser i personhistorikken") { dataTable: DataTable? ->
-            val kontaktadresser = domenespråkParser.mapAdresser(dataTable)
+            val kontaktadresser = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
             pdlPersonhistorikkBuilder.kontaktadresse.addAll(kontaktadresser)
         }
 
         Gitt("følgende oppholdsadresser i personhistorikken") { dataTable: DataTable? ->
-            val oppholdsadresse = domenespråkParser.mapAdresser(dataTable)
+            val oppholdsadresse = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
             pdlPersonhistorikkBuilder.oppholdsadresse.addAll(oppholdsadresse)
         }
 
         Gitt<DataTable>("følgende sivilstand i personhistorikk fra PDL") { dataTable: DataTable? ->
-            val sivilstand = domenespråkParser.mapSivilstander(dataTable)
+            val sivilstand = PersonhistorikkDomeneSpraakParser.mapSivilstander(dataTable)
             pdlPersonhistorikkBuilder.sivilstand.addAll(sivilstand)
         }
 
         Gitt<DataTable>("følgende familerelasjoner i personhistorikk fra PDL") { dataTable: DataTable? ->
-            val familierelasjoner = domenespråkParser.mapFamilierelasjoner(dataTable)
+            val familierelasjoner = PersonhistorikkDomeneSpraakParser.mapFamilierelasjoner(dataTable)
             pdlPersonhistorikkBuilder.familierelasjoner.addAll(familierelasjoner)
         }
 
         Gitt<DataTable>("følgende personhistorikk for ektefelle fra PDL") { dataTable: DataTable? ->
-            val ektefelle = domenespråkParser.mapPersonhistorikkEktefelle(dataTable)
+            val ektefelle = PersonhistorikkDomeneSpraakParser.mapPersonhistorikkEktefelle(dataTable)
             dataOmEktefelleBuilder.personhistorikkEktefelle = ektefelle[0]
         }
 
         Gitt<DataTable>("følgende barn i personhistorikk for ektefelle fra PDL") { dataTable: DataTable? ->
-            val barnTilEktefelle = domenespråkParser.mapBarnTilEktefelle(dataTable)
+            val barnTilEktefelle = PersonhistorikkDomeneSpraakParser.mapBarnTilEktefelle(dataTable)
             personhistorikkEktefelleBuilder.barn.addAll(barnTilEktefelle)
         }
 
         Gitt<DataTable>("følgende personhistorikk for barn fra PDL") { dataTable: DataTable? ->
-            val barnTilBruker = domenespråkParser.mapPersonhistorikkBarn(dataTable)
+            val barnTilBruker = PersonhistorikkDomeneSpraakParser.mapPersonhistorikkBarn(dataTable)
             dataOmBarn = barnTilBruker
         }
 
@@ -121,72 +124,69 @@ class RegelSteps : No {
         }
 
         Gitt("følgende arbeidsforhold fra AAReg") { dataTable: DataTable? ->
-            arbeidsforhold = domenespråkParser.mapArbeidsforhold(dataTable)
+            arbeidsforhold = ArbeidsforholdDomeneSpraakParser.mapArbeidsforhold(dataTable)
         }
 
         Gitt("følgende arbeidsgiver i arbeidsforholdet") { dataTable: DataTable? ->
-            val arbeidsgivere = domenespråkParser.mapArbeidsgivere(dataTable)
-
+            val arbeidsgivere = ArbeidsforholdDomeneSpraakParser.mapArbeidsgivere(dataTable)
             arbeidsgiverMap[0] = arbeidsgivere[0]
         }
 
         Gitt("følgende arbeidsgiver i arbeidsforhold {int}") { arbeidsforholdRad: Int?, dataTable: DataTable? ->
-            val arbeidsgivere = domenespråkParser.mapArbeidsgivere(dataTable)
+            val arbeidsgivere = ArbeidsforholdDomeneSpraakParser.mapArbeidsgivere(dataTable)
             val arbeidsforholdIndeks = arbeidsforholdIndeks(arbeidsforholdRad)
-
             arbeidsgiverMap[arbeidsforholdIndeks] = arbeidsgivere[0]
         }
 
         Gitt("følgende detaljer om ansatte for arbeidsgiver med org.nr {string}") { orgnr: String?, dataTable: DataTable? ->
-            val ansatte = domenespråkParser.mapAnsatte(dataTable)
+            val ansatte = ArbeidsforholdDomeneSpraakParser.mapAnsatte(dataTable)
             if (ansatte.isNotEmpty()) {
                 ansatteMap.put(orgnr, ansatte)
             }
         }
 
         Gitt("følgende detaljer om ansatte for arbeidsgiver") { dataTable: DataTable? ->
-            val ansatte = domenespråkParser.mapAnsatte(dataTable)
+            val ansatte = ArbeidsforholdDomeneSpraakParser.mapAnsatte(dataTable)
             if (ansatte.isNotEmpty()) {
                 ansatteMap.put(null, ansatte)
             }
         }
 
         Gitt("følgende arbeidsavtaler i arbeidsforholdet") { dataTable: DataTable? ->
-            arbeidsavtaleMap[0] = domenespråkParser.mapArbeidsavtaler(dataTable)
+            arbeidsavtaleMap[0] = ArbeidsforholdDomeneSpraakParser.mapArbeidsavtaler(dataTable)
         }
 
         Gitt("følgende arbeidsavtaler i arbeidsforhold {int}") { arbeidsforholdRad: Int?, dataTable: DataTable? ->
-            val arbeidsavtaler = domenespråkParser.mapArbeidsavtaler(dataTable)
+            val arbeidsavtaler = ArbeidsforholdDomeneSpraakParser.mapArbeidsavtaler(dataTable)
             val arbeidsforholdIndeks = arbeidsforholdIndeks(arbeidsforholdRad)
 
             arbeidsavtaleMap[arbeidsforholdIndeks] = arbeidsavtaler
         }
 
         Gitt("følgende utenlandsopphold i arbeidsforholdet") { dataTable: DataTable? ->
-            utenlandsoppholdMap[0] = domenespråkParser.mapUtenlandsopphold(dataTable)
+            utenlandsoppholdMap[0] = ArbeidsforholdDomeneSpraakParser.mapUtenlandsopphold(dataTable)
         }
 
         Gitt("følgende utenlandsopphold i arbeidsforhold {int}") { arbeidsforholdRad: Int?, dataTable: DataTable? ->
             val arbeidsforholdIndeks = arbeidsforholdIndeks(arbeidsforholdRad)
-
-            utenlandsoppholdMap[arbeidsforholdIndeks] = domenespråkParser.mapUtenlandsopphold(dataTable)
+            utenlandsoppholdMap[arbeidsforholdIndeks] = ArbeidsforholdDomeneSpraakParser.mapUtenlandsopphold(dataTable)
         }
 
         Gitt("følgende oppgaver fra Gosys") { dataTable: DataTable? ->
-            oppgaverFraGosys = domenespråkParser.mapOppgaverFraGosys(dataTable)
+            oppgaverFraGosys = OppgaverDomeneSpraakParser.mapOppgaverFraGosys(dataTable)
         }
 
         Gitt("følgende journalposter fra Joark") { dataTable: DataTable? ->
-            journalPosterFraJoArk = domenespråkParser.mapJournalposter(dataTable)
+            journalPosterFraJoArk = DokumentDomeneSpraakParser.mapJournalposter(dataTable)
         }
 
         Gitt<DataTable>("følgende arbeidsforhold til ektefelle fra AAReg") { dataTable: DataTable? ->
-            val arbeidsforholdEktefelle = domenespråkParser.mapArbeidsforhold(dataTable)
+            val arbeidsforholdEktefelle = ArbeidsforholdDomeneSpraakParser.mapArbeidsforhold(dataTable)
             dataOmEktefelleBuilder.arbeidsforholdEktefelle = arbeidsforholdEktefelle
         }
 
         Gitt("følgende arbeidsavtaler til ektefelle i arbeidsforholdet") { dataTable: DataTable? ->
-            arbeidsavtaleEktefelleMap[0] = domenespråkParser.mapArbeidsavtaler(dataTable)
+            arbeidsavtaleEktefelleMap[0] = ArbeidsforholdDomeneSpraakParser.mapArbeidsavtaler(dataTable)
             dataOmEktefelleBuilder.arbeidsforholdEktefelle.get(0).arbeidsavtaler = arbeidsavtaleEktefelleMap[0]!!
         }
 

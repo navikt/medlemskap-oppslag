@@ -4,7 +4,7 @@ import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
-import no.nav.medlemskap.cucumber.DomenespråkParser
+import no.nav.medlemskap.cucumber.SpraakParserDomene.ArbeidsforholdDomeneSpraakParser
 import no.nav.medlemskap.cucumber.mapping.pdl.aareg.AaregDomenespraakParser
 import no.nav.medlemskap.cucumber.steps.aareg.aaregBuilder.*
 import no.nav.medlemskap.cucumber.steps.aareg.eregBuilder.EnhetstypeBuilder
@@ -117,112 +117,112 @@ class AaregMapperSteps : No {
             permisjonsPermitteringerBuilder.varslingkode = aaregDomenespraakParser.mapVarslingskode(dataTable)
         }
 
-        Så<DataTable>("skal mappet landkode i utenlandsoppholdet være") { dataTable: DataTable? ->
-            val landkodeForventet = DomenespråkParser.mapLandkode(dataTable)
-            arbeidsforhold[0].utenlandsopphold?.get(0)?.landkode.shouldBe(landkodeForventet)
-        }
-
-        Så<DataTable>("mappet periode være i utenlandsoppholdet være") { dataTable: DataTable? ->
-            val periodeForventet = DomenespråkParser.mapPeriodeIUtenlandsopphold(dataTable)
-            arbeidsforhold[0].utenlandsopphold?.get(0)?.periode.shouldBe(periodeForventet)
-        }
-
-        Så<DataTable>("skal mappet periode i arbeidsforholdet være") { dataTable: DataTable? ->
-            val periodeForventet = DomenespråkParser.mapPeriodeForPermittering(dataTable)
-            arbeidsforhold[0].permisjonPermittering?.get(0)?.periode.shouldBe(periodeForventet)
-        }
-
-        Så<DataTable>("mappet permisjonPermitteringId skal være") { dataTable: DataTable? ->
-            val permisjonPermitteringIdForventet = DomenespråkParser.mapPermitteringId(dataTable)
-            arbeidsforhold[0].permisjonPermittering?.get(0)?.permisjonPermitteringId.shouldBe(permisjonPermitteringIdForventet)
-        }
-
-        Så<DataTable>("mappet rapporteringsperiode i utenlandsoppholdet være") { dataTable: DataTable? ->
-            val rapporteringsPeriodeForventet = DomenespråkParser.mapRapporteringsperiode(dataTable)
-            arbeidsforhold[0].utenlandsopphold?.get(0)?.rapporteringsperiode.shouldBe(rapporteringsPeriodeForventet)
-        }
-
-        Så<DataTable>("skal mappet periode i arbeidsavtale være") { dataTable: DataTable? ->
-            val periodeForventet = DomenespråkParser.mapPeriodeIArbeidsavtale(dataTable)
-            arbeidsforhold[0].arbeidsavtaler[0].periode.shouldBe(periodeForventet)
-        }
-
-        Så<DataTable>("mappet gyldighetsperiode i arbeidsavtale være") { dataTable: DataTable? ->
-            val periodeForventet = DomenespråkParser.mapPeriodeIArbeidsavtale(dataTable)
-            arbeidsforhold[0].arbeidsavtaler[0].periode.shouldBe(periodeForventet)
-        }
-
-        Så<DataTable>("mappet organisasjonsnummer til arbeidsgiver i arbeidsforholdet være") { dataTable: DataTable? ->
-            val organisasjonsnummerForventet = DomenespråkParser.mapOrganisasjonsnummer(dataTable)
-            arbeidsforhold[0].arbeidsgiver.organisasjonsnummer.shouldBe(organisasjonsnummerForventet)
-        }
-
-        Så<DataTable>("mappet ansatte til arbeidsgiver i arbeidsforholdet være") { dataTable: DataTable? ->
-            val ansatteForventet = DomenespråkParser.mapAnsatte(dataTable)
-            arbeidsforhold[0].arbeidsgiver.ansatte.shouldContainExactly(ansatteForventet)
-        }
-
-        Så<DataTable>("mappet konkursstatus til arbeidsgiver i arbeidsforholdet være") { dataTable: DataTable? ->
-            val statusForventet = DomenespråkParser.mapStatuser(dataTable)
-            arbeidsforhold[0].arbeidsgiver.konkursStatus.shouldContainExactly(statusForventet)
-        }
-
-        Så<DataTable>("mappet skipsregister være") { dataTable: DataTable? ->
-            val skipsregisterForventet = DomenespråkParser.mapSkipsregister(dataTable)
-            arbeidsforhold[0].arbeidsavtaler[0].skipsregister.shouldBe(skipsregisterForventet)
-        }
-
-        Så<DataTable>("mappet fartsområde skal være") { dataTable: DataTable? ->
-            val fartsomraadeForventet = DomenespråkParser.mapFartsomraade(dataTable)
-            arbeidsforhold[0].arbeidsavtaler[0].fartsomraade.shouldBe(fartsomraadeForventet)
-        }
-
-        Så<DataTable>("mappet prosent skal være") { dataTable: DataTable? ->
-            val prosentForventet = DomenespråkParser.mapProsent(dataTable)
-            arbeidsforhold[0].permisjonPermittering?.get(0)?.prosent.shouldBe(prosentForventet)
-        }
-
-        Så<DataTable>("mappet type skal være") { dataTable: DataTable? ->
-            val permisjonstypeForventet = DomenespråkParser.mapType(dataTable)
-            arbeidsforhold[0].permisjonPermittering?.get(0)?.type.shouldBe(permisjonstypeForventet)
-        }
-
-        Så<DataTable>("mappet varslingkode skal være") { dataTable: DataTable? ->
-            val varslingsKodeForventet = DomenespråkParser.mapVarslingskode(dataTable)
-            arbeidsforhold[0].permisjonPermittering?.get(0)?.varslingskode.shouldBe(varslingsKodeForventet)
-        }
-
         Når("arbeidsforholdene mappes") {
             arbeidsforhold = mapTilArbeidsforhold()
         }
 
+        Så<DataTable>("skal mappet landkode i utenlandsoppholdet være") { dataTable: DataTable? ->
+            val landkodeForventet = ArbeidsforholdDomeneSpraakParser.mapLandkode(dataTable)
+            arbeidsforhold[0].utenlandsopphold?.get(0)?.landkode.shouldBe(landkodeForventet)
+        }
+
+        Så<DataTable>("mappet periode være i utenlandsoppholdet være") { dataTable: DataTable? ->
+            val periodeForventet = ArbeidsforholdDomeneSpraakParser.mapPeriodeIUtenlandsopphold(dataTable)
+            arbeidsforhold[0].utenlandsopphold?.get(0)?.periode.shouldBe(periodeForventet)
+        }
+
+        Så<DataTable>("skal mappet periode i arbeidsforholdet være") { dataTable: DataTable? ->
+            val periodeForventet = ArbeidsforholdDomeneSpraakParser.mapPeriodeForPermittering(dataTable)
+            arbeidsforhold[0].permisjonPermittering?.get(0)?.periode.shouldBe(periodeForventet)
+        }
+
+        Så<DataTable>("mappet permisjonPermitteringId skal være") { dataTable: DataTable? ->
+            val permisjonPermitteringIdForventet = ArbeidsforholdDomeneSpraakParser.mapPermitteringId(dataTable)
+            arbeidsforhold[0].permisjonPermittering?.get(0)?.permisjonPermitteringId.shouldBe(permisjonPermitteringIdForventet)
+        }
+
+        Så<DataTable>("mappet rapporteringsperiode i utenlandsoppholdet være") { dataTable: DataTable? ->
+            val rapporteringsPeriodeForventet = ArbeidsforholdDomeneSpraakParser.mapRapporteringsperiode(dataTable)
+            arbeidsforhold[0].utenlandsopphold?.get(0)?.rapporteringsperiode.shouldBe(rapporteringsPeriodeForventet)
+        }
+
+        Så<DataTable>("skal mappet periode i arbeidsavtale være") { dataTable: DataTable? ->
+            val periodeForventet = ArbeidsforholdDomeneSpraakParser.mapPeriodeIArbeidsavtale(dataTable)
+            arbeidsforhold[0].arbeidsavtaler[0].periode.shouldBe(periodeForventet)
+        }
+
+        Så<DataTable>("mappet gyldighetsperiode i arbeidsavtale være") { dataTable: DataTable? ->
+            val periodeForventet = ArbeidsforholdDomeneSpraakParser.mapPeriodeIArbeidsavtale(dataTable)
+            arbeidsforhold[0].arbeidsavtaler[0].periode.shouldBe(periodeForventet)
+        }
+
+        Så<DataTable>("mappet organisasjonsnummer til arbeidsgiver i arbeidsforholdet være") { dataTable: DataTable? ->
+            val organisasjonsnummerForventet = ArbeidsforholdDomeneSpraakParser.mapOrganisasjonsnummer(dataTable)
+            arbeidsforhold[0].arbeidsgiver.organisasjonsnummer.shouldBe(organisasjonsnummerForventet)
+        }
+
+        Så<DataTable>("mappet ansatte til arbeidsgiver i arbeidsforholdet være") { dataTable: DataTable? ->
+            val ansatteForventet = ArbeidsforholdDomeneSpraakParser.mapAnsatte(dataTable)
+            arbeidsforhold[0].arbeidsgiver.ansatte.shouldContainExactly(ansatteForventet)
+        }
+
+        Så<DataTable>("mappet konkursstatus til arbeidsgiver i arbeidsforholdet være") { dataTable: DataTable? ->
+            val statusForventet = ArbeidsforholdDomeneSpraakParser.mapKonkurStatuser(dataTable)
+            arbeidsforhold[0].arbeidsgiver.konkursStatus.shouldContainExactly(statusForventet)
+        }
+
+        Så<DataTable>("mappet skipsregister være") { dataTable: DataTable? ->
+            val skipsregisterForventet = ArbeidsforholdDomeneSpraakParser.mapSkipsregister(dataTable)
+            arbeidsforhold[0].arbeidsavtaler[0].skipsregister.shouldBe(skipsregisterForventet)
+        }
+
+        Så<DataTable>("mappet fartsområde skal være") { dataTable: DataTable? ->
+            val fartsomraadeForventet = ArbeidsforholdDomeneSpraakParser.mapFartsomraade(dataTable)
+            arbeidsforhold[0].arbeidsavtaler[0].fartsomraade.shouldBe(fartsomraadeForventet)
+        }
+
+        Så<DataTable>("mappet prosent skal være") { dataTable: DataTable? ->
+            val prosentForventet = ArbeidsforholdDomeneSpraakParser.mapProsent(dataTable)
+            arbeidsforhold[0].permisjonPermittering?.get(0)?.prosent.shouldBe(prosentForventet)
+        }
+
+        Så<DataTable>("mappet type skal være") { dataTable: DataTable? ->
+            val permisjonstypeForventet = ArbeidsforholdDomeneSpraakParser.mapType(dataTable)
+            arbeidsforhold[0].permisjonPermittering?.get(0)?.type.shouldBe(permisjonstypeForventet)
+        }
+
+        Så<DataTable>("mappet varslingkode skal være") { dataTable: DataTable? ->
+            val varslingsKodeForventet = ArbeidsforholdDomeneSpraakParser.mapVarslingskode(dataTable)
+            arbeidsforhold[0].permisjonPermittering?.get(0)?.varslingskode.shouldBe(varslingsKodeForventet)
+        }
+
         Så<DataTable>("skal mappede periode i arbeidsforhold være") { dataTable: DataTable? ->
-            val periodeForventet = DomenespråkParser.mapPeriodeIArbeidsforhold(dataTable)
+            val periodeForventet = ArbeidsforholdDomeneSpraakParser.mapPeriodeIArbeidsforhold(dataTable)
             arbeidsforhold.get(0).periode.shouldBe(periodeForventet)
         }
 
         Så<DataTable>("mappet stillingsprosent være") { dataTable: DataTable? ->
-            val stillinprosentForventet = DomenespråkParser.mapStillingsprosent(dataTable)
+            val stillinprosentForventet = ArbeidsforholdDomeneSpraakParser.mapStillingsprosent(dataTable)
             arbeidsforhold[0].arbeidsavtaler[0].stillingsprosent.shouldBe(stillinprosentForventet)
         }
 
         Så<DataTable>("skal mappet arbeidsgivertype i arbeidsforholdet være") { dataTable: DataTable? ->
-            val arbeidsgiverTypeForventet = DomenespråkParser.mapArbeidsgivertype(dataTable)
+            val arbeidsgiverTypeForventet = ArbeidsforholdDomeneSpraakParser.mapArbeidsgivertype(dataTable)
             arbeidsforhold.get(0).arbeidsgivertype.shouldBe(arbeidsgiverTypeForventet)
         }
 
         Så<DataTable>("skal mappet arbeidsforholdstype i arbeidsforholdet være") { dataTable: DataTable? ->
-            val arbeidforholdstypeForventet = DomenespråkParser.mapArbeidsforholdstype(dataTable)
+            val arbeidforholdstypeForventet = ArbeidsforholdDomeneSpraakParser.mapArbeidsforholdstype(dataTable)
             arbeidsforhold[0].arbeidsforholdstype.shouldBe(arbeidforholdstypeForventet)
         }
 
         Så<DataTable>("mappet beregnetAntallTimerPrUke være") { dataTable: DataTable? ->
-            val beregnetAntallTimerPerUkeForventet = DomenespråkParser.mapBeregnetAntallTimerUke(dataTable)
+            val beregnetAntallTimerPerUkeForventet = ArbeidsforholdDomeneSpraakParser.mapBeregnetAntallTimerUke(dataTable)
             arbeidsforhold[0].arbeidsavtaler[0].beregnetAntallTimerPrUke.shouldBe(beregnetAntallTimerPerUkeForventet)
         }
 
         Så<DataTable>("mappet yrkeskode være") { dataTable: DataTable? ->
-            val yrkeskodeForventet = DomenespråkParser.mapYrkeskode(dataTable)
+            val yrkeskodeForventet = ArbeidsforholdDomeneSpraakParser.mapYrkeskode(dataTable)
             arbeidsforhold[0].arbeidsavtaler[0].yrkeskode.shouldBe(yrkeskodeForventet)
         }
     }
