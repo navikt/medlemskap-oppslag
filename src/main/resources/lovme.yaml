@@ -12,13 +12,17 @@ paths:
     post:
       summary: Avgjøre om lovvalg er norsk, og om bruker er medlem av folketrygden
       operationId: avgjørLovvalgOgMedlemskap
-      security:
-        - oAuth2:
-          - api://<client_id>/.default
       tags:
         - Lovvalg
         - Medlemskap
       description: Avgjøre om lovvalg er norsk, og om bruker er medlem av folketrygden
+      parameters:
+        - name: Authorization
+          in: header
+          description: "Format - byte. Standard Authorization header som inneholder et Base64-kodet Bearer-token (JWT-aksesstoken) utstedt av Maskinporten (Difi). Verdien må starte med \"Bearer \", deretter følger tokenstrengen."
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
