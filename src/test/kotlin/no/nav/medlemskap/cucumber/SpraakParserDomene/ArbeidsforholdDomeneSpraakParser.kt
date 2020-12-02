@@ -31,6 +31,10 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, ArbeidsavtaleMapper())
     }
 
+    fun mapPermisjonspermitteringer(dataTable: DataTable?): List<PermisjonPermittering> {
+        return mapDataTable(dataTable, PermisjonsPermitteringMapper())
+    }
+
     fun mapUtenlandsopphold(dataTable: DataTable?): List<Utenlandsopphold> {
         return mapDataTable(dataTable, UtenlandsoppholdMapper())
     }
@@ -310,6 +314,21 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
                     parseDato(Domenebegrep.TIL_OG_MED_DATO, rad)
                 ),
                 rapporteringsperiode = DomenespråkParser.parseAarMaaned(Domenebegrep.RAPPORTERINGSPERIODE, rad)
+            )
+        }
+    }
+
+    class PermisjonsPermitteringMapper : RadMapper<PermisjonPermittering> {
+        override fun mapRad(rad: Map<String, String>): PermisjonPermittering {
+            return PermisjonPermittering(
+                periode = Periode(
+                    parseDato(Domenebegrep.FRA_OG_MED_DATO, rad),
+                    parseDato(Domenebegrep.TIL_OG_MED_DATO, rad)
+                ),
+                permisjonPermitteringId = parseString(ArbeidDomenebegrep.PERMISJONPERMITTERINGSID, rad),
+                prosent = parseDouble(Domenebegrep.PROSENT, rad),
+                type = parsePermisjonPermitteringType(rad),
+                varslingskode = parseValgfriString(ArbeidDomenebegrep.VARSLINGSKODE, rad)
             )
         }
     }
