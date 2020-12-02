@@ -5,7 +5,7 @@ enum class Svar {
 }
 
 data class Resultat(
-    val regelId: RegelId? = null,
+    val regelId: RegelId,
     val avklaring: String = "",
     val begrunnelse: String = "",
     val svar: Svar,
@@ -20,7 +20,7 @@ data class Resultat(
     }
 
     fun erRegelflytKonklusjon(): Boolean {
-        return regelId?.erRegelflytKonklusjon ?: false
+        return regelId.erRegelflytKonklusjon
     }
 
     fun erKonklusjon(): Boolean {
@@ -122,13 +122,18 @@ data class Resultat(
             svar = Svar.NEI
         )
 
-        fun uavklart(begrunnelse: String, regelId: RegelId? = null) = Resultat(
-            begrunnelse = begrunnelse,
+        fun uavklart(regelId: RegelId) = Resultat(
+            regelId,
+            begrunnelse = regelId.neiBegrunnelse,
+            svar = Svar.UAVKLART
+        )
+
+        fun uavklartKonklusjon(regelId: RegelId? = null) = Resultat(
+            regelId = RegelId.REGEL_MEDLEM_KONKLUSJON,
+            begrunnelse = RegelId.REGEL_MEDLEM_KONKLUSJON.neiBegrunnelse,
             svar = Svar.UAVKLART,
             delresultat = if (regelId == null) emptyList() else listOf(Resultat(regelId = regelId, svar = Svar.UAVKLART))
         )
-
-        fun uavklart() = Resultat(svar = Svar.UAVKLART)
 
         fun List<Resultat>.utenKonklusjon(): List<Resultat> {
             return this.filterNot { it.erKonklusjon() }
