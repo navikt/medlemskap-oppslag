@@ -2,7 +2,7 @@ package no.nav.medlemskap.regler.funksjoner
 
 import no.nav.medlemskap.domene.Kontrollperiode
 import no.nav.medlemskap.domene.Statsborgerskap
-import no.nav.medlemskap.regler.funksjoner.StatsborgerskapFunksjoner.harEndretSisteÅret
+import no.nav.medlemskap.domene.Statsborgerskap.Companion.harEndretSisteÅret
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
