@@ -1,6 +1,11 @@
 package no.nav.medlemskap.cucumber
 
 import io.cucumber.datatable.DataTable
+import no.nav.medlemskap.cucumber.SpraakParserDomene.ArbeidDomenebegrep
+import no.nav.medlemskap.domene.Arbeidsforholdstype
+import no.nav.medlemskap.domene.Fartsomraade
+import no.nav.medlemskap.domene.PermisjonPermitteringType
+import no.nav.medlemskap.domene.Skipsregister
 import no.nav.medlemskap.regler.common.Datohjelper
 import java.time.LocalDate
 
@@ -17,6 +22,26 @@ abstract class BasisDomeneParser {
 
         fun parseString(domenebegrep: Domenenøkkel, rad: Map<String, String>): String {
             return verdi(domenebegrep.nøkkel(), rad)
+        }
+
+        fun parseFartsområde(rad: Map<String, String>): Fartsomraade? {
+            val verdi = valgfriVerdi(ArbeidDomenebegrep.FARTSOMRÅDE.nøkkel, rad)
+            return if (verdi == null) null else Fartsomraade.valueOf(verdi)
+        }
+
+        fun parseSkipsregister(rad: Map<String, String>): Skipsregister? {
+            val verdi = valgfriVerdi(ArbeidDomenebegrep.SKIPSREGISTER.nøkkel, rad)
+            return if (verdi == null) null else Skipsregister.valueOf(verdi)
+        }
+
+        fun parsePermisjonPermitteringType(rad: Map<String, String>): PermisjonPermitteringType {
+            val verdi = verdi(ArbeidDomenebegrep.PERMITTERINGSTYPE.nøkkel, rad)
+            return PermisjonPermitteringType.valueOf(verdi)
+        }
+
+        fun parseArbeidsforholdstype(rad: Map<String, String>): Arbeidsforholdstype {
+            val verdi = verdi(ArbeidDomenebegrep.ARBEIDSFORHOLDSTYPE.nøkkel, rad)
+            return Arbeidsforholdstype.valueOf(verdi)
         }
 
         fun parseValgfriString(domenebegrep: Domenenøkkel, rad: Map<String, String>): String? {

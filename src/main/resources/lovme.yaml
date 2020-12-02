@@ -419,6 +419,26 @@ components:
           $ref: "#/components/schemas/ValgfriDato"
         tom:
           $ref: "#/components/schemas/ValgfriDato"
+    PermisjonPermittering:
+      properties:
+        periode:
+          $ref: "#/components/schemas/Periode"
+        permisjonPermitteringId:
+          type: string
+        prosent:
+          type: number
+        type:
+          type: string
+          enum:
+            - PERMISJON
+            - PERMISJON_MED_FORELDREPENGER
+            - PERMISJON_VED_MILITAERTJENESTE
+            - PERMITTERING
+            - UTDANNINGSPERMISJON
+            - VELFERDSPERMISJON
+            - ANNET
+        varslingskode:
+          type: string
     Personhistorikk:
       properties:
         statsborgerskap:

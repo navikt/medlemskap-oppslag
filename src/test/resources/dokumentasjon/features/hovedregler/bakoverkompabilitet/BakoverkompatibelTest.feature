@@ -77,6 +77,10 @@ Egenskap: Bakoverkompatibel test
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister | Beregnet antall timer pr uke |
       | 10.10.1975      | 01.08.2020      | yrkeskode | 100              | NIS           | 37.5                         |
 
+    Og følgende permisjonspermitteringer i arbeidsforholdet
+      | Fra og med dato | Til og med dato | PermisjonPermitteringId | Prosent | Type      | Varslingkode  |
+      | 10.10.2019      | 01.08.2020      | permisjonPermitteringId | 100     | PERMISJON | varslingskode |
+
     Og følgende utenlandsopphold i arbeidsforholdet
       | Landkode | Fra og med dato | Til og med dato | Rapporteringsperiode |
       | SWE      | 10.10.1975      | 01.08.2020      | 2010-01              |
