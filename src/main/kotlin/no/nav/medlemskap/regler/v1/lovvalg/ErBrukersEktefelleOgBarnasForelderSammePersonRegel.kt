@@ -31,7 +31,7 @@ class ErBrukersEktefelleOgBarnasForelderSammePersonRegel(
                 else -> nei(regelId)
             }
         }
-        return nei()
+        return nei(regelId)
     }
 
     companion object {

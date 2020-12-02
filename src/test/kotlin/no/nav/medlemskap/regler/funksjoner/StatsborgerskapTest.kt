@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
-class StatsborgerskapFunksjonerTest {
+class StatsborgerskapTest {
 
     @Test
     fun `Endret statsborgerskap gir true`() {
