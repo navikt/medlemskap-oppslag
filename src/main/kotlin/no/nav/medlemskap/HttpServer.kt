@@ -96,7 +96,7 @@ createHttpServer(
     if (useAuthentication) {
         routing {
             naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = prometheusRegistry.prometheusRegistry)
-            setupSwaggerDocApi()
+            if (services.configuration.cluster == "dev-fss") setupSwaggerDocApi()
             evalueringRoute(services, configuration, requestContextService, createDatagrunnlag)
             reglerRoute()
             healthRoute("/healthCheck", services.healthService)
@@ -104,7 +104,7 @@ createHttpServer(
     } else {
         routing {
             naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = prometheusRegistry.prometheusRegistry)
-            setupSwaggerDocApi()
+            if (services.configuration.cluster == "dev-fss") setupSwaggerDocApi()
             evalueringTestRoute(services, configuration, requestContextService, createDatagrunnlag)
             reglerRoute()
             healthRoute("/healthCheck", services.healthService)
