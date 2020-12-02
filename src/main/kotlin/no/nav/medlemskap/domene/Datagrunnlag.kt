@@ -29,7 +29,7 @@ data class Datagrunnlag(
     fun gyldigeStatsborgerskap(): List<String> {
         val statsborgerskap: List<Statsborgerskap> = pdlpersonhistorikk.statsborgerskap
 
-        return gyldigeStatsborgerskap(statsborgerskap, kontrollPeriodeForPersonhistorikk)
+        return statsborgerskap.gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk)
     }
 }
 

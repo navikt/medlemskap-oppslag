@@ -1,6 +1,7 @@
 package no.nav.medlemskap.regler.v1.overstyring
 
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Statsborgerskap.Companion.erNorskBorger
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
@@ -21,7 +22,7 @@ class OverstyringRegel(
     override fun operasjon(): Resultat {
         if (!brukerInput.arbeidUtenforNorge &&
             ytelse == Ytelse.SYKEPENGER &&
-            erBrukerNorskStatsborger(statsborgerskap)
+            statsborgerskap.erNorskBorger(kontrollPeriodeForPersonhistorikk)
         ) {
             return ja(regelId)
         }
