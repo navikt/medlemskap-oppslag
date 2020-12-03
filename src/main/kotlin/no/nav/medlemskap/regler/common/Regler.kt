@@ -83,7 +83,7 @@ abstract class Regler(
 
             return when {
                 resultater[RegelId.REGEL_A]?.svar == JA && resultater[RegelId.REGEL_B]?.svar == NEI -> ja(RegelId.REGEL_OPPLYSNINGER)
-                resultater.values.any { it.svar == JA } -> uavklart()
+                resultater.values.any { it.svar == JA } -> uavklart(RegelId.REGEL_OPPLYSNINGER)
                 else -> nei(RegelId.REGEL_OPPLYSNINGER)
             }
         }

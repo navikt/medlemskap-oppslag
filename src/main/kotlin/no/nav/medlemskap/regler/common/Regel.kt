@@ -23,7 +23,7 @@ data class Regel(
         fun regelUavklartKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(
             regelId = regelId,
             ytelse = ytelse,
-            operasjon = { Resultat.uavklart("Regelflyt konkluderer med UAVKLART") }
+            operasjon = { Resultat.uavklart(regelId) }
         )
 
         fun regelJaKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(
@@ -41,7 +41,7 @@ data class Regel(
         fun uavklartKonklusjon(ytelse: Ytelse, regelId: RegelId? = null) = Regel(
             regelId = RegelId.REGEL_MEDLEM_KONKLUSJON,
             ytelse = ytelse,
-            operasjon = { Resultat.uavklart(RegelId.REGEL_MEDLEM_KONKLUSJON.neiBegrunnelse, regelId) }
+            operasjon = { Resultat.uavklartKonklusjon(regelId) }
         )
 
         fun jaKonklusjon(ytelse: Ytelse) = Regel(
