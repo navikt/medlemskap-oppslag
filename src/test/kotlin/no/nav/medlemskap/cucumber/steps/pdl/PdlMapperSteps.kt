@@ -3,6 +3,7 @@ package no.nav.medlemskap.cucumber.steps.pdl
 import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
 import io.kotest.matchers.collections.shouldContainExactly
+import io.ktor.features.*
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.cucumber.SpraakParserDomene.PersonhistorikkDomeneSpraakParser
 import no.nav.medlemskap.cucumber.mapping.pdl.PdlDomenespråkParser
@@ -150,18 +151,14 @@ class PdlMapperSteps : No {
     }
 
     private fun mapTilPersonhistorikkBarn(): PersonhistorikkBarn {
-        var identBarn = personhistorikk?.familierelasjoner?.get(0)?.relatertPersonsIdent
-        if (identBarn == null) {
-            identBarn = ""
-        }
+        val identBarn = personhistorikk?.familierelasjoner?.get(0)?.relatertPersonsIdent
+                ?: throw BadRequestException("Ingen fnr registrert på barn i familierelasjoner")
         return PdlMapperBarn.mapPersonhistorikkTilBarn(identBarn, pdlPeronBuilderBarn.build())
     }
 
     private fun mapTilPersonhistorikkEktefelle(): PersonhistorikkEktefelle {
-        var identEktefelle = personhistorikk?.sivilstand?.get(0)?.relatertVedSivilstand
-        if (identEktefelle == null) {
-            identEktefelle = ""
-        }
+        val identEktefelle = personhistorikk?.sivilstand?.get(0)?.relatertVedSivilstand
+                ?: throw BadRequestException("Ingen fnr registrert på ektefelle i sivilstand")
         return PdlMapperEktefelle.mapPersonhistorikkTilEktefelle(identEktefelle, pdlPersonBuilderEktefelle.build())
     }
 
