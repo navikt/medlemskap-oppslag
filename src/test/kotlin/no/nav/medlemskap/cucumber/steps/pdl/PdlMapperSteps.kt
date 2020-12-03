@@ -7,14 +7,22 @@ import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.cucumber.SpraakParserDomene.PersonhistorikkDomeneSpraakParser
 import no.nav.medlemskap.cucumber.mapping.pdl.PdlDomenespråkParser
 import no.nav.medlemskap.domene.Personhistorikk
+import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
+import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper
+import no.nav.medlemskap.services.pdl.mapper.PdlMapperBarn
+import no.nav.medlemskap.services.pdl.mapper.PdlMapperEktefelle
 
 class PdlMapperSteps : No {
 
     private val pdlDomenespråkParser = PdlDomenespråkParser()
 
     private var pdlPersonBuilder = PdlPersonBuilder()
+    private var pdlPeronBuilderBarn = PdlPersonBuilder()
+    private var pdlPersonBuilderEktefelle = PdlPersonBuilder()
     private var personhistorikk: Personhistorikk? = null
+    private var personhistorikkEktefelle: PersonhistorikkEktefelle? = null
+    private var personhistorikkBarn: PersonhistorikkBarn? = null
 
     init {
         Gitt<DataTable>("følgende statsborgerskap fra PDL:") { dataTable: DataTable? ->
@@ -43,6 +51,14 @@ class PdlMapperSteps : No {
 
         Gitt<DataTable>("følgende opplysninger om doedsfall fra PDL:") { dataTable: DataTable? ->
             pdlPersonBuilder.doedsfall = pdlDomenespråkParser.mapDoedsfall(dataTable)
+        }
+
+        Gitt<DataTable>("følgende bostedsadresse i barnets personhistorikk") { dataTable: DataTable? ->
+            pdlPeronBuilderBarn.bostedsadresser = pdlDomenespråkParser.mapBostedsadresser(dataTable)
+        }
+
+        Gitt<DataTable>("følgende bostedsadresse til ektefelles personhistorikk") { dataTable: DataTable? ->
+            pdlPersonBuilderEktefelle.bostedsadresser = pdlDomenespråkParser.mapBostedsadresser(dataTable)
         }
 
         Når("statsborgerskap mappes") {
@@ -75,6 +91,12 @@ class PdlMapperSteps : No {
 
         Når("PDL Person mappes til personhistorikk i datagrunnlaget") {
             personhistorikk = mapTilPersonhistorikk()
+        }
+
+        Når("personhistorikken til bruker, ektefelle og barn mappes") {
+            personhistorikk = mapTilPersonhistorikk()
+            personhistorikkBarn = mapTilPersonhistorikkBarn()
+            personhistorikkEktefelle = mapTilPersonhistorikkEktefelle()
         }
 
         Så<DataTable>("skal mappet statsborgerskap være") { dataTable: DataTable? ->
@@ -111,10 +133,36 @@ class PdlMapperSteps : No {
             val doedsfallForventet = PersonhistorikkDomeneSpraakParser.mapDoedsfall(dataTable)
             personhistorikk?.doedsfall.shouldContainExactly(doedsfallForventet)
         }
+
+        Så<DataTable>("mappede bostedadresse til barnet være") { dataTable: DataTable? ->
+            val bostedsadresseForventet = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
+            personhistorikkBarn?.bostedsadresser.shouldContainExactly(bostedsadresseForventet)
+        }
+
+        Så<DataTable>("følgende bostedsadresse til ektefelle være") { dataTable: DataTable? ->
+            val bostedsadresseForventet = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
+            personhistorikkEktefelle?.bostedsadresser.shouldContainExactly(bostedsadresseForventet)
+        }
     }
 
     private fun mapTilPersonhistorikk(): Personhistorikk {
         return PdlMapper.mapTilPersonHistorikkTilBruker(pdlPersonBuilder.build())
+    }
+
+    private fun mapTilPersonhistorikkBarn(): PersonhistorikkBarn {
+        var identBarn = personhistorikk?.familierelasjoner?.get(0)?.relatertPersonsIdent
+        if (identBarn == null) {
+            identBarn = ""
+        }
+        return PdlMapperBarn.mapPersonhistorikkTilBarn(identBarn, pdlPeronBuilderBarn.build())
+    }
+
+    private fun mapTilPersonhistorikkEktefelle(): PersonhistorikkEktefelle {
+        var identEktefelle = personhistorikk?.sivilstand?.get(0)?.relatertVedSivilstand
+        if (identEktefelle == null) {
+            identEktefelle = ""
+        }
+        return PdlMapperEktefelle.mapPersonhistorikkTilEktefelle(identEktefelle, pdlPersonBuilderEktefelle.build())
     }
 
     class PdlPersonBuilder {

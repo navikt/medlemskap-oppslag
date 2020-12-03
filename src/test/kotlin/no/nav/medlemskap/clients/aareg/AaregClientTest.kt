@@ -14,6 +14,7 @@ import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.cioHttpClient
 import org.junit.jupiter.api.*
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 class AaregClientTest {
 
@@ -58,7 +59,30 @@ class AaregClientTest {
 
         val response = runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
 
-        Assertions.assertEquals("985672744", response[0].arbeidsgiver.organisasjonsnummer)
+        val arbeidsforholdType = response[0].type
+        Assertions.assertEquals("ordinaertArbeidsforhold", arbeidsforholdType)
+
+        val arbeidsavtale = response[0].arbeidsavtaler[0]
+        Assertions.assertEquals(AaRegGyldighetsperiode(LocalDate.parse("2018-04-01"), null), arbeidsavtale.gyldighetsperiode)
+        Assertions.assertEquals(AaRegBruksperiode(LocalDateTime.parse("2018-09-13T10:31:09.343"), null), arbeidsavtale.bruksperiode)
+        Assertions.assertEquals("ikkeSkift", arbeidsavtale.arbeidstidsordning)
+        Assertions.assertEquals("8322108", arbeidsavtale.yrke)
+        Assertions.assertEquals(100.0, arbeidsavtale.stillingsprosent)
+        Assertions.assertEquals(37.5, arbeidsavtale.antallTimerPrUke)
+
+        val arbeidsgiver = response[0].arbeidsgiver
+        Assertions.assertEquals("985672744", arbeidsgiver.organisasjonsnummer)
+        Assertions.assertEquals(AaRegOpplysningspliktigArbeidsgiverType.Organisasjon, arbeidsgiver.type)
+
+        val periode = response[0].ansettelsesperiode
+        Assertions.assertEquals(AaRegPeriode(LocalDate.parse("2008-01-01"), LocalDate.parse("2018-10-30")), periode.periode)
+
+        val permisjonPermittering = response[0].permisjonPermitteringer?.get(0)
+        Assertions.assertEquals(AaRegPeriode(LocalDate.parse("1975-10-10"), LocalDate.parse("2020-08-01")), permisjonPermittering?.periode)
+        Assertions.assertEquals("000000", permisjonPermittering?.permisjonPermitteringId)
+        Assertions.assertEquals(100.0, permisjonPermittering?.prosent)
+        Assertions.assertEquals("permisjon", permisjonPermittering?.type)
+        Assertions.assertEquals("PPIDHI", permisjonPermittering?.varslingskode)
     }
 
     @Test
@@ -130,6 +154,26 @@ class AaregClientTest {
 [
   {
     "navArbeidsforholdId": 33536256,
+     "permisjonPermitteringer": [ {
+                "periode": {
+                  "fom" : "1975-10-10",
+                  "tom" : "2020-08-01"
+                }, 
+                "permisjonPermitteringId": "000000", 
+                "prosent": 100.0, 
+                "sporingsinformasjon": {
+                  "endretAv": "srvappserver",
+                  "endretKilde": "EDAG",
+                  "endretTidspunkt": "2019-06-19T07:21:31.491",
+                  "opprettetAv": "srvappserver",
+                  "opprettetKilde": "EDAG",
+                  "opprettetKildereferanse": "c2b82646-0587-490c-9662-bab5dd31e9f5",
+                  "opprettetTidspunkt": "2015-01-23T07:50:43.200"
+                },
+                "type": "permisjon",
+                "varslingskode": "PPIDHI"
+            }
+     ],
     "arbeidsforholdId": "00163EDC07471AA7ACD32B7DC8C675EA",
     "arbeidstaker": {
       "type": "Person",
