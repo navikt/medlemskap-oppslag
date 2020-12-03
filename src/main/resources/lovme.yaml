@@ -85,13 +85,10 @@ paths:
                 $ref: "#/components/schemas/Error"
 components:
   securitySchemes:
-    oAuth2:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: https://login.microsoftonline.com/966ac572-f5b7-4bbe-aa88-c76419c0f851/oauth2/v2.0/token
-          scopes:
-            api://<client_id>/:default: client tilgang
+    bearerAuth:
+      type: "http"
+      scheme: "bearer"
+      bearerFormat: "JWT"
   schemas:
     Adresse:
       properties:
