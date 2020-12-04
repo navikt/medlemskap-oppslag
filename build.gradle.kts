@@ -31,11 +31,14 @@ val nvi18nVersion = "1.27"
 val kotestVersion = "4.2.5"
 val swaggerRequestValidatorVersion = "2.11.1"
 val swaggerUiVersion = "3.37.2"
-// Temporary to fix high severity Snyk vulernabilities:
+// Temporary to fix high severity Snyk vulnerabilities:
 val nettyCodecVersion = "4.1.54.Final"
 val commonsCodecVersion = "3.2.2"
 val httpClientVersion = "4.5.13"
 val jettyWebAppVersion = "9.4.35.v20201120"
+val jacksonDataformatYamlVersion = "2.10.4"
+val guavaVersion = "30.0-jre"
+val junitVersion = "4.13.1"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
@@ -133,8 +136,8 @@ dependencies {
     implementation("io.netty:netty-codec-http:$nettyCodecVersion")
     implementation("commons-collections:commons-collections:$commonsCodecVersion")
     implementation("org.apache.httpcomponents:httpclient:$httpClientVersion")
-
-    // Override versions to fix high and medium severity Snyk vaulnerabilities
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonDataformatYamlVersion")
+    implementation("com.google.guava:guava:$guavaVersion")
     testImplementation("org.eclipse.jetty:jetty-webapp:$jettyWebAppVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
