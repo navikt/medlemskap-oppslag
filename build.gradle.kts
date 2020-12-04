@@ -34,8 +34,7 @@ val swaggerUiVersion = "3.37.2"
 // Temporary to fix high severity Snyk vulernabilities:
 val nettyCodecVersion = "4.1.54.Final"
 val commonsCodecVersion = "3.2.2"
-
-// Override dependencies to fix Snyk vulernabilities:
+val opensamlVersion = "4.5.13"
 val httpClientVersion = "4.5.13"
 val jettyWebAppVersion = "9.4.33.v20201020"
 
@@ -86,7 +85,9 @@ dependencies {
     implementation(project(path = ":pdl-client", configuration = "archives"))
     implementation(project(path = ":saf-client", configuration = "archives"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-    implementation("io.ktor:ktor-server-netty:$ktorVersion")
+    implementation("io.ktor:ktor-server-netty:$ktorVersion") {
+        exclude(group = "io.netty", module = "netty-codec")
+    }
     implementation("io.ktor:ktor-auth:$ktorVersion")
     implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
@@ -130,9 +131,9 @@ dependencies {
     // Temporary to fix high severity Snyk vulernabilities:
     implementation("io.netty:netty-codec:$nettyCodecVersion")
     implementation("commons-collections:commons-collections:$commonsCodecVersion")
+    implementation("org.apache.httpcomponents:httpclient:$httpClientVersion")
 
     // Override versions to fix high and medium severity Snyk vaulnerabilities
-    testImplementation("org.apache.httpcomponents:httpclient:$httpClientVersion")
     testImplementation("org.eclipse.jetty:jetty-webapp:$jettyWebAppVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
@@ -140,7 +141,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
     testImplementation("com.github.tomakehurst:wiremock-jre8:$wireMockVersion") {
         exclude(group = "junit")
-        exclude(group = "jetty")
+        exclude(group = "org.eclipse.jetty", module = "jetty-server")
     }
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:$assertkVersion")
@@ -153,7 +154,9 @@ dependencies {
     testImplementation("org.skyscreamer:jsonassert:$jsonassertVersion")
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
 
-    testImplementation("com.atlassian.oai:swagger-request-validator-core:$swaggerRequestValidatorVersion")
+    testImplementation("com.atlassian.oai:swagger-request-validator-core:$swaggerRequestValidatorVersion") {
+        exclude(group = "com.fasterxml.jackson.dataformat", module = "jackson-dataformat-yaml")
+    }
     testImplementation("com.atlassian.oai:swagger-request-validator-restassured:$swaggerRequestValidatorVersion")
 
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:$junitJupiterVersion")
