@@ -13,8 +13,7 @@ paths:
       summary: Avgjøre om lovvalg er norsk, og om bruker er medlem av folketrygden
       operationId: avgjørLovvalgOgMedlemskap
       security:
-        - oAuth2:
-          - api://<client_id>/.default
+        - bearerAuth: []
       tags:
         - Lovvalg
         - Medlemskap
@@ -49,8 +48,7 @@ paths:
       summary: Avgjør om bruker er medlem av folketrygden, gitt et datagrunnlag
       operationId: avgjørMedlemskapFraDatagrunnlag
       security:
-        - oAuth2:
-            - api://<client_id>/.default
+        - bearerAuth: [ ]
       tags:
         - Lovvalg
         - Medlemskap
@@ -81,13 +79,11 @@ paths:
                 $ref: "#/components/schemas/Error"
 components:
   securitySchemes:
-    oAuth2:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: https://login.microsoftonline.com/966ac572-f5b7-4bbe-aa88-c76419c0f851/oauth2/v2.0/token
-          scopes:
-            api://<client_id>/:default: client tilgang
+    bearerAuth:
+      type: "http"
+      scheme: "bearer"
+      bearerFormat: "JWT"
+      description: "AzureAd token. Dersom det logges inn med en ytelse som ikke har fått tilgang, enten ta kontakt med #team-p3-fellesfunksjoner eller definer gyldig ytelse i request"
   schemas:
     Adresse:
       properties:
