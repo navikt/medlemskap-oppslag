@@ -29,8 +29,8 @@ val jaxwsToolsVersion = "2.3.1"
 val activationVersion = "1.1.1"
 val nvi18nVersion = "1.27"
 val kotestVersion = "4.2.5"
-val swaggerRequestValidatorVersion = "2.11.0"
-val swaggerUiVersion = "3.10.0"
+val swaggerRequestValidatorVersion = "2.11.1"
+val swaggerUiVersion = "3.37.2"
 // Temporary to fix high severity Snyk vulernabilities:
 val nettyCodecVersion = "4.1.54.Final"
 val commonsCodecVersion = "3.2.2"
@@ -46,7 +46,7 @@ plugins {
     id("com.github.ben-manes.versions") version "0.29.0"
     id("org.jlleitschuh.gradle.ktlint") version "9.3.0"
     id("org.jlleitschuh.gradle.ktlint-idea") version "9.3.0"
-    id("org.hidetake.swagger.generator") version "2.18.1" apply true
+    id("org.hidetake.swagger.generator") version "2.18.2" apply true
 }
 
 val githubUser: String by project
