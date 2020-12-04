@@ -5,7 +5,6 @@ import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
-import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytNei
 import no.nav.medlemskap.regler.v1.grunnforordningen.ErBrukerEøsBorgerRegel
 import no.nav.medlemskap.regler.v1.lovvalg.HarBrukerNorskStatsborgerskapRegel
 
@@ -16,24 +15,20 @@ class ReglerForStatsborgerskap(
     overstyrteRegler: Map<RegelId, Svar>
 ) : Regler(ytelse, regelMap, overstyrteRegler) {
 
-    override fun kjørRegelflyter(): List<Resultat> {
-        return listOf(kjørUavhengigeRegelflyterMedEttResultat(RegelId.REGEL_STATSBORGERSKAP))
-    }
-
     override fun hentRegelflyter(): List<Regelflyt> {
         val harBrukerNorskStatsborgerskapFlyt = lagRegelflyt(
             regel = hentRegel(RegelId.REGEL_11),
-            hvisJa = regelflytJa(ytelse),
-            hvisNei = regelflytJa(ytelse)
+            hvisJa = regelflytJa(ytelse, RegelId.REGEL_STATSBORGERSKAP),
+            hvisNei = regelflytJa(ytelse, RegelId.REGEL_STATSBORGERSKAP)
         )
 
         val erBrukerEØSborgerFlyt = lagRegelflyt(
             regel = hentRegel(RegelId.REGEL_2),
-            hvisJa = regelflytJa(ytelse),
-            hvisNei = regelflytNei(ytelse)
+            hvisJa = harBrukerNorskStatsborgerskapFlyt,
+            hvisNei = regelflytJa(ytelse, RegelId.REGEL_STATSBORGERSKAP)
         )
 
-        return listOf(erBrukerEØSborgerFlyt, harBrukerNorskStatsborgerskapFlyt)
+        return listOf(erBrukerEØSborgerFlyt)
     }
 
     companion object {

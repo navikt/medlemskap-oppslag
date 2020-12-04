@@ -27,21 +27,6 @@ abstract class Regler(
         return regelflyt.utfør()
     }
 
-    protected fun kjørUavhengigeRegelflyterMedEttResultat(regelId: RegelId): Resultat {
-        val resultater = hentRegelflyter().map { kjørRegelflyt(it) }
-        val delresultater = resultater.flatMap { if (it.delresultat.isEmpty()) listOf(it) else it.delresultat }
-
-        if (resultater.all { it.svar == JA }) {
-            return regelflytResultat(JA, regelId, delresultater)
-        }
-
-        if (resultater.any { it.svar == NEI }) {
-            return regelflytResultat(NEI, regelId, delresultater)
-        }
-
-        return regelflytResultat(Svar.UAVKLART, regelId, delresultater)
-    }
-
     protected fun lagRegelflyt(
         regel: Regel,
         hvisJa: Regelflyt? = null,
