@@ -12,17 +12,12 @@ paths:
     post:
       summary: Avgjøre om lovvalg er norsk, og om bruker er medlem av folketrygden
       operationId: avgjørLovvalgOgMedlemskap
+      security:
+        - bearerAuth: []
       tags:
         - Lovvalg
         - Medlemskap
       description: Avgjøre om lovvalg er norsk, og om bruker er medlem av folketrygden
-      parameters:
-        - name: Authorization
-          in: header
-          description: "Format - byte. Standard Authorization header som inneholder et Base64-kodet Bearer-token utstedt fra AzureAD. Verdien må starte med \"Bearer \", deretter følger tokenstrengen."
-          required: true
-          schema:
-            type: string
       requestBody:
         content:
           application/json:
@@ -53,8 +48,7 @@ paths:
       summary: Avgjør om bruker er medlem av folketrygden, gitt et datagrunnlag
       operationId: avgjørMedlemskapFraDatagrunnlag
       security:
-        - oAuth2:
-            - api://<client_id>/.default
+        - bearerAuth: [ ]
       tags:
         - Lovvalg
         - Medlemskap
