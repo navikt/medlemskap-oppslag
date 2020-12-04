@@ -34,7 +34,6 @@ val swaggerUiVersion = "3.37.2"
 // Temporary to fix high severity Snyk vulernabilities:
 val nettyCodecVersion = "4.1.54.Final"
 val commonsCodecVersion = "3.2.2"
-val opensamlVersion = "4.5.13"
 val httpClientVersion = "4.5.13"
 val jettyWebAppVersion = "9.4.33.v20201020"
 
