@@ -10,13 +10,13 @@ val logstashVersion = "6.4"
 val konfigVersion = "1.6.10.0"
 val kotlinLoggerVersion = "1.8.3"
 val tjenestespesifikasjonerVersion = "1.2019.12.18-12.22-ce897c4eb2c1"
-val cxfVersion = "3.3.7"
+val cxfVersion = "3.3.8"
 val coroutinesVersion = "1.3.7"
 val wireMockVersion = "2.27.2"
 val mockkVersion = "1.10.0"
 val junitJupiterVersion = "5.6.2"
 val assertkVersion = "0.22"
-val restAssuredVersion = "4.3.1"
+val restAssuredVersion = "4.3.2"
 val resilience4jVersion = "1.5.0"
 val threetenVersion = "1.5.0"
 val cucumberVersion = "6.8.1"
@@ -29,11 +29,16 @@ val jaxwsToolsVersion = "2.3.1"
 val activationVersion = "1.1.1"
 val nvi18nVersion = "1.27"
 val kotestVersion = "4.2.5"
-val swaggerRequestValidatorVersion = "2.11.0"
-val swaggerUiVersion = "3.10.0"
-// Temporary to fix high severity Snyk vulernabilities:
-val nettyCodecVersion = "4.1.53.Final"
+val swaggerRequestValidatorVersion = "2.11.1"
+val swaggerUiVersion = "3.37.2"
+// Temporary to fix high severity Snyk vulnerabilities:
+val nettyCodecVersion = "4.1.54.Final"
 val commonsCodecVersion = "3.2.2"
+val httpClientVersion = "4.5.13"
+val jettyWebAppVersion = "9.4.35.v20201120"
+val jacksonDataformatYamlVersion = "2.10.4"
+val guavaVersion = "30.0-jre"
+val junitVersion = "4.13.1"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
@@ -46,7 +51,7 @@ plugins {
     id("com.github.ben-manes.versions") version "0.29.0"
     id("org.jlleitschuh.gradle.ktlint") version "9.3.0"
     id("org.jlleitschuh.gradle.ktlint-idea") version "9.3.0"
-    id("org.hidetake.swagger.generator") version "2.18.1" apply true
+    id("org.hidetake.swagger.generator") version "2.18.2" apply true
 }
 
 val githubUser: String by project
@@ -82,7 +87,10 @@ dependencies {
     implementation(project(path = ":pdl-client", configuration = "archives"))
     implementation(project(path = ":saf-client", configuration = "archives"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
-    implementation("io.ktor:ktor-server-netty:$ktorVersion")
+    implementation("io.ktor:ktor-server-netty:$ktorVersion") {
+        exclude(group = "io.netty", module = "netty-codec")
+        exclude(group = "io.netty", module = "netty-codec-http")
+    }
     implementation("io.ktor:ktor-auth:$ktorVersion")
     implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
@@ -122,15 +130,22 @@ dependencies {
     implementation("com.expediagroup:graphql-kotlin-client:$graphqlKotlinClientVersion")
     implementation("com.neovisionaries:nv-i18n:$nvi18nVersion")
     swaggerUI("org.webjars:swagger-ui:$swaggerUiVersion")
+
     // Temporary to fix high severity Snyk vulernabilities:
     implementation("io.netty:netty-codec:$nettyCodecVersion")
+    implementation("io.netty:netty-codec-http:$nettyCodecVersion")
     implementation("commons-collections:commons-collections:$commonsCodecVersion")
+    implementation("org.apache.httpcomponents:httpclient:$httpClientVersion")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonDataformatYamlVersion")
+    implementation("com.google.guava:guava:$guavaVersion")
+    testImplementation("org.eclipse.jetty:jetty-webapp:$jettyWebAppVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
     testImplementation("com.github.tomakehurst:wiremock-jre8:$wireMockVersion") {
         exclude(group = "junit")
+        exclude(group = "org.eclipse.jetty", module = "jetty-server")
     }
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:$assertkVersion")
@@ -143,7 +158,9 @@ dependencies {
     testImplementation("org.skyscreamer:jsonassert:$jsonassertVersion")
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
 
-    testImplementation("com.atlassian.oai:swagger-request-validator-core:$swaggerRequestValidatorVersion")
+    testImplementation("com.atlassian.oai:swagger-request-validator-core:$swaggerRequestValidatorVersion") {
+        exclude(group = "com.fasterxml.jackson.dataformat", module = "jackson-dataformat-yaml")
+    }
     testImplementation("com.atlassian.oai:swagger-request-validator-restassured:$swaggerRequestValidatorVersion")
 
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:$junitJupiterVersion")
@@ -184,9 +201,9 @@ tasks {
         archiveClassifier.set("")
         manifest {
             attributes(
-                mapOf(
-                    "Main-Class" to mainClass
-                )
+                    mapOf(
+                            "Main-Class" to mainClass
+                    )
             )
         }
         transform(ServiceFileTransformer::class.java) {
