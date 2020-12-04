@@ -35,7 +35,7 @@ val swaggerUiVersion = "3.37.2"
 val nettyCodecVersion = "4.1.54.Final"
 val commonsCodecVersion = "3.2.2"
 val httpClientVersion = "4.5.13"
-val jettyWebAppVersion = "9.4.33.v20201020"
+val jettyWebAppVersion = "9.4.35.v20201120"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
@@ -86,6 +86,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion") {
         exclude(group = "io.netty", module = "netty-codec")
+        exclude(group = "io.netty", module = "netty-codec-http")
     }
     implementation("io.ktor:ktor-auth:$ktorVersion")
     implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
@@ -129,6 +130,7 @@ dependencies {
 
     // Temporary to fix high severity Snyk vulernabilities:
     implementation("io.netty:netty-codec:$nettyCodecVersion")
+    implementation("io.netty:netty-codec-http:$nettyCodecVersion")
     implementation("commons-collections:commons-collections:$commonsCodecVersion")
     implementation("org.apache.httpcomponents:httpclient:$httpClientVersion")
 
