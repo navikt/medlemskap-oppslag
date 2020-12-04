@@ -16,7 +16,7 @@ val wireMockVersion = "2.27.2"
 val mockkVersion = "1.10.0"
 val junitJupiterVersion = "5.6.2"
 val assertkVersion = "0.22"
-val restAssuredVersion = "4.3.1"
+val restAssuredVersion = "4.3.2"
 val resilience4jVersion = "1.5.0"
 val threetenVersion = "1.5.0"
 val cucumberVersion = "6.8.1"
@@ -34,6 +34,10 @@ val swaggerUiVersion = "3.37.2"
 // Temporary to fix high severity Snyk vulernabilities:
 val nettyCodecVersion = "4.1.54.Final"
 val commonsCodecVersion = "3.2.2"
+
+// Override dependencies to fix Snyk vulernabilities:
+val httpClientVersion = "4.5.13"
+val jettyWebAppVersion = "9.4.33.v20201020"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
@@ -122,15 +126,21 @@ dependencies {
     implementation("com.expediagroup:graphql-kotlin-client:$graphqlKotlinClientVersion")
     implementation("com.neovisionaries:nv-i18n:$nvi18nVersion")
     swaggerUI("org.webjars:swagger-ui:$swaggerUiVersion")
+
     // Temporary to fix high severity Snyk vulernabilities:
     implementation("io.netty:netty-codec:$nettyCodecVersion")
     implementation("commons-collections:commons-collections:$commonsCodecVersion")
+
+    // Override versions to fix high and medium severity Snyk vaulnerabilities
+    testImplementation("org.apache.httpcomponents:httpclient:$httpClientVersion")
+    testImplementation("org.eclipse.jetty:jetty-webapp:$jettyWebAppVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
     testImplementation("com.github.tomakehurst:wiremock-jre8:$wireMockVersion") {
         exclude(group = "junit")
+        exclude(group = "jetty")
     }
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:$assertkVersion")
