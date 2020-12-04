@@ -16,7 +16,7 @@ class ReglerForEøsBorgere(
     overstyrteRegler: Map<RegelId, Svar>
 ) : Regler(ytelse, regelMap, overstyrteRegler) {
 
-    override fun hentRegelflyter(): List<Regelflyt> {
+    override fun hentHovedflyt(): Regelflyt {
         val harBrukerJobbetUtenforNorgeFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_9),
             hvisJa = regelflytUavklart(ytelse, REGEL_EØS_BOSATT),
@@ -135,9 +135,7 @@ class ReglerForEøsBorgere(
             hvisNei = harBrukerUtenEktefelleBarnFlyt
         )
 
-        return listOf(
-            harBrukerEktefelleFlyt
-        )
+        return harBrukerEktefelleFlyt
     }
 
     companion object {

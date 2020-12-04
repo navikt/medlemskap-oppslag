@@ -26,17 +26,17 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
 
         val ytelse = reglerForRequestValidering.ytelse
         val resultater = mutableListOf<Resultat>()
-        val resultaterForOverstyring = reglerForOverstyring.kjørRegelflyter()
-        val reglerSomSkalOverstyres = reglerForOverstyring.reglerSomSkalOverstyres(resultaterForOverstyring)
+        val resultatForOverstyring = reglerForOverstyring.kjørHovedflyt()
+        val reglerSomSkalOverstyres = reglerForOverstyring.reglerSomSkalOverstyres(resultatForOverstyring)
 
-        resultater.addAll(resultaterForOverstyring)
+        resultater.add(resultatForOverstyring)
         resultater.addAll(kjørFellesRegler(reglerSomSkalOverstyres))
 
-        val resultatStatsborgerskap = reglerForStatsborgerskap.kjørRegelflyter()
-        resultater.addAll(resultatStatsborgerskap)
-        resultater.addAll(
+        val resultatStatsborgerskap = reglerForStatsborgerskap.kjørHovedflyt()
+        resultater.add(resultatStatsborgerskap)
+        resultater.add(
             bestemReglerForStatsborgerskap(resultatStatsborgerskap, reglerSomSkalOverstyres)
-                .kjørRegelflyter()
+                .kjørHovedflyt()
         )
 
         return utledResultat(ytelse, resultater)
@@ -50,12 +50,12 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
             ReglerForDoedsfall.fraDatagrunnlag(datagrunnlag)
         )
 
-        return fellesRegler.flatMap { it.kjørRegelflyter() }
+        return fellesRegler.map(Regler::kjørHovedflyt)
     }
 
-    private fun bestemReglerForStatsborgerskap(resultatStatsborgerskap: List<Resultat>, overstyrteRegler: Map<RegelId, Svar>): Regler {
+    private fun bestemReglerForStatsborgerskap(resultatStatsborgerskap: Resultat, overstyrteRegler: Map<RegelId, Svar>): Regler {
         val resultatEøsStatsborgerskap = resultatStatsborgerskap
-            .flatMap { it.delresultat }
+            .delresultat
             .first { it.regelId == RegelId.REGEL_2 }
         val erEøsBorger = resultatEøsStatsborgerskap.svar == JA
         if (!erEøsBorger) {
@@ -63,7 +63,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         }
 
         val resultatNorskStatsborgerskap = resultatStatsborgerskap
-            .flatMap { it.delresultat }
+            .delresultat
             .first { it.regelId == RegelId.REGEL_11 }
         val erNorskBorger = resultatNorskStatsborgerskap.svar == JA
 

@@ -15,17 +15,13 @@ class ReglerForRequestValidering(
     overstyrteRegler: Map<RegelId, Svar>
 ) : Regler(ytelse, regelMap, overstyrteRegler) {
 
-    private fun hentHovedflyt(): Regelflyt {
+    override fun hentHovedflyt(): Regelflyt {
 
         return lagRegelflyt(
             regel = hentRegel(RegelId.REGEL_0_1),
             hvisJa = regelflytJa(ytelse, RegelId.REGEL_REQUEST_VALIDERING),
             hvisNei = regelflytUavklart(ytelse, RegelId.REGEL_REQUEST_VALIDERING)
         )
-    }
-
-    override fun hentRegelflyter(): List<Regelflyt> {
-        return listOf(hentHovedflyt())
     }
 
     fun kjørRegel(): Resultat {

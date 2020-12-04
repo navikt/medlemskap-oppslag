@@ -17,10 +17,10 @@ abstract class Regler(
     val overstyrteRegler: Map<RegelId, Svar>
 ) {
 
-    abstract fun hentRegelflyter(): List<Regelflyt>
+    abstract fun hentHovedflyt(): Regelflyt
 
-    open fun kjørRegelflyter(): List<Resultat> {
-        return hentRegelflyter().map { kjørRegelflyt(it) }
+    fun kjørHovedflyt(): Resultat {
+        return kjørRegelflyt(hentHovedflyt())
     }
 
     protected fun kjørRegelflyt(regelflyt: Regelflyt): Resultat {

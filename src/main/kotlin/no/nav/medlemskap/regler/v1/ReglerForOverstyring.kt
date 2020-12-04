@@ -14,8 +14,7 @@ class ReglerForOverstyring(
     overstyrteRegler: Map<RegelId, Svar>
 ) : Regler(ytelse, regelMap, overstyrteRegler) {
 
-    private fun hentHovedflyt(): Regelflyt {
-
+    override fun hentHovedflyt(): Regelflyt {
         return lagRegelflyt(
             regel = hentRegel(RegelId.REGEL_0_5),
             hvisJa = regelflytJa(ytelse, RegelId.REGEL_OVERSTYRING),
@@ -23,12 +22,8 @@ class ReglerForOverstyring(
         )
     }
 
-    override fun hentRegelflyter(): List<Regelflyt> {
-        return listOf(hentHovedflyt())
-    }
-
-    fun reglerSomSkalOverstyres(resultater: List<Resultat>): Map<RegelId, Svar> {
-        val overstyringResultat = resultater.flatMap { it.delresultat }.find { it.regelId == RegelId.REGEL_0_5 }
+    fun reglerSomSkalOverstyres(resultat: Resultat): Map<RegelId, Svar> {
+        val overstyringResultat = resultat.delresultat.find { it.regelId == RegelId.REGEL_0_5 }
 
         if (overstyringResultat?.svar == Svar.JA) {
             return OverstyringRegel.reglerSomSkalOverstyres()
