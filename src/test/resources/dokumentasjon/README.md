@@ -18,7 +18,7 @@ Dette er en tjeneste som finner ut lovvalg og medlemskap.
 * Oppgaver hentes fra GOSYS
 
 ## Mapping til datagrunnlag
-* [Mapping fra PDL til datagrunnlag](features/mapping/pdl/readme.md)
+* [Mapping fra PDL til datagrunnlag](features/mapping/pdl/bruker/readme.md)
 
 ## De forskjellige reglene 
 

@@ -68,6 +68,12 @@ class AaregMapperTest {
         Assert.assertEquals("SWE", mappedAaregResultat.utenlandsopphold?.first()?.landkode)
         Assert.assertEquals(Periode(LocalDate.parse("1975-10-10"), LocalDate.parse("2020-08-01")), mappedAaregResultat.utenlandsopphold?.first()?.periode)
         Assert.assertEquals(YearMonth.parse("2010-01"), mappedAaregResultat.utenlandsopphold?.first()?.rapporteringsperiode)
+
+        Assert.assertEquals(Periode(LocalDate.parse("1975-10-10"), LocalDate.parse("2020-08-01")), mappedAaregResultat.permisjonPermittering?.get(0)?.periode)
+        Assert.assertEquals("000000", mappedAaregResultat.permisjonPermittering?.get(0)?.permisjonPermitteringId)
+        Assert.assertEquals(100.0, mappedAaregResultat.permisjonPermittering?.get(0)?.prosent)
+        Assert.assertEquals(PermisjonPermitteringType.PERMISJON, mappedAaregResultat.permisjonPermittering?.get(0)?.type)
+        Assert.assertEquals("PPIDHI", mappedAaregResultat.permisjonPermittering?.get(0)?.varslingskode)
     }
 
     private val jsonStringAaRegArbeidsforholdList =
@@ -615,7 +621,27 @@ class AaregMapperTest {
                   "opprettetKildereferanse": "c2b82646-0587-490c-9662-bab5dd31e9f5",
                   "opprettetTidspunkt": "2015-01-23T07:50:43.200"
                 }
-            }]
+            }], 
+            "permisjonPermitteringer": [ {
+                "periode": {
+                  "fom" : "1975-10-10",
+                  "tom" : "2020-08-01"
+                }, 
+                "permisjonPermitteringId": "000000", 
+                "prosent": 100.0, 
+                "sporingsinformasjon": {
+                  "endretAv": "srvappserver",
+                  "endretKilde": "EDAG",
+                  "endretTidspunkt": "2019-06-19T07:21:31.491",
+                  "opprettetAv": "srvappserver",
+                  "opprettetKilde": "EDAG",
+                  "opprettetKildereferanse": "c2b82646-0587-490c-9662-bab5dd31e9f5",
+                  "opprettetTidspunkt": "2015-01-23T07:50:43.200"
+                },
+                "type": "permisjon",
+                "varslingskode": "PPIDHI"
+            }
+            ]
           }
         
         """.trimIndent()
