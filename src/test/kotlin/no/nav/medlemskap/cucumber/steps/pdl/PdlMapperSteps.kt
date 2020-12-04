@@ -152,13 +152,13 @@ class PdlMapperSteps : No {
 
     private fun mapTilPersonhistorikkBarn(): PersonhistorikkBarn {
         val identBarn = personhistorikk?.familierelasjoner?.get(0)?.relatertPersonsIdent
-                ?: throw BadRequestException("Ingen fnr registrert på barn i familierelasjoner")
+            ?: throw BadRequestException("Ingen fnr registrert på barn i familierelasjoner")
         return PdlMapperBarn.mapPersonhistorikkTilBarn(identBarn, pdlPeronBuilderBarn.build())
     }
 
     private fun mapTilPersonhistorikkEktefelle(): PersonhistorikkEktefelle {
         val identEktefelle = personhistorikk?.sivilstand?.get(0)?.relatertVedSivilstand
-                ?: throw BadRequestException("Ingen fnr registrert på ektefelle i sivilstand")
+            ?: throw BadRequestException("Ingen fnr registrert på ektefelle i sivilstand")
         return PdlMapperEktefelle.mapPersonhistorikkTilEktefelle(identEktefelle, pdlPersonBuilderEktefelle.build())
     }
 

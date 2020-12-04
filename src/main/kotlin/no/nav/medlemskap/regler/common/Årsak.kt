@@ -1,15 +1,10 @@
 package no.nav.medlemskap.regler.common
 
-data class Årsak(val regelId: RegelId?, val avklaring: String, val svar: Svar) {
+data class Årsak(val regelId: RegelId, val avklaring: String, val svar: Svar) {
     val beskrivelse = beskrivelse()
 
     fun beskrivelse(): String {
-        val regelIdStr = if (regelId != null) {
-            "Regel ${regelId.identifikator}: "
-        } else {
-            ""
-        }
-
+        val regelIdStr = "Regel ${regelId.identifikator}: "
         return "$regelIdStr $avklaring $svar"
     }
 

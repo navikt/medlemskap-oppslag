@@ -1,7 +1,7 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regelflyt for regel 2, Er bruker EØS-borger?
+Egenskap: Regelflyt for regel 11, er bruker norsk statsborger?
 
   Bakgrunn:
 
@@ -21,7 +21,7 @@ Egenskap: Regelflyt for regel 2, Er bruker EØS-borger?
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
       | 01.01.2018      |                 | 001       | 100              |
 
-  Scenariomal: Regelflyt for regel 2
+  Scenariomal: Regelflyt for regel 11, er bruker norsk statsborger?
 
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
@@ -31,15 +31,28 @@ Egenskap: Regelflyt for regel 2, Er bruker EØS-borger?
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
-
     Så skal svaret være "<Medlemskap>"
-    Og skal regel "2" gi svaret "<Regel 2>"
-
+    Og skal regel "11" gi svaret "<Regel 11>"
+    Og skal regel-årsaker være "<Årsaker>"
 
     Eksempler:
-      | Land | Regel 2 | Medlemskap |
-      | FRA  | Ja      | Ja         |
-      | NOR  | Ja      | Ja         |
-      | USA  | Nei     | UAVKLART   |
+      | Land | Regel 11 | Medlemskap | Årsaker         |
+      | FRA  | Nei      | Ja         | []              |
+      | NOR  | Ja       | Ja         | []              |
+
+
+  Scenario: Regelflyt for regel 11, hvis bruker ikke er EØS-borger skal ikke regel 11 kjøres
+
+    Gitt følgende statsborgerskap i personhistorikken
+      | Landkode | Fra og med dato | Til og med dato |
+      | <Land>   | 20.02.2000      |                 |
+
+    Når medlemskap beregnes med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
+
+    Så skal svaret være "UAVKLART"
+    Og skal regel "11" ikke finnes i resultatet
+    Og skal regel-årsaker være "[ANDRE BORGERE]"
 
 

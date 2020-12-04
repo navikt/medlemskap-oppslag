@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2020-11-27T08:44:29.674379",
+  "tidspunkt" : "2020-12-04T14:10:05.848212",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "datagrunnlag" : {
@@ -101,15 +101,15 @@
         "beregnetAntallTimerPrUke" : 37.5
       } ],
       "permisjonPermittering" : [ {
-        "periode": {
+        "periode" : {
           "fom" : "2019-10-10",
           "tom" : "2020-08-01"
         },
-        "permisjonPermitteringId": "permisjonPermitteringId",
-        "prosent": 100.0,
-        "type": "PERMISJON",
-        "varslingskode": "varslingskode"
-      }]
+        "permisjonPermitteringId" : "permisjonPermitteringId",
+        "prosent" : 100.0,
+        "type" : "PERMISJON",
+        "varslingskode" : "varslingskode"
+      } ]
     } ],
     "oppgaver" : [ {
       "aktivDato" : "1975-10-10",

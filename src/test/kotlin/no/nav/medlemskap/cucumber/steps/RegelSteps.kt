@@ -293,6 +293,10 @@ class RegelSteps : No {
             assertEquals(forventetÅrsak, resultat!!.årsaksTekst())
         }
 
+        Så("skal regel-årsaker være {string}") { forventetÅrsak: String ->
+            assertEquals(forventetÅrsak, resultat!!.årsaker.map { it.regelId.identifikator }.toString())
+        }
+
         Så("skal svaret være Ja på medlemskap og {string} på harDekning") { forventetVerdi: String ->
             val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
             assertEquals(Svar.JA, resultat!!.svar)
