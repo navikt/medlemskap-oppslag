@@ -83,6 +83,7 @@ components:
       type: "http"
       scheme: "bearer"
       bearerFormat: "JWT"
+      description: "AzureAd token. Dersom det logges inn med en ytelse som ikke har fått tilgang, enten ta kontakt med #team-p3-fellesfunksjoner eller definer gyldig ytelse i request"
   schemas:
     Adresse:
       properties:
