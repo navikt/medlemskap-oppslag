@@ -15,7 +15,7 @@ class ReglerForBosatt(
     overstyrteRegler: Map<RegelId, Svar>
 ) : Regler(ytelse, regelMap, overstyrteRegler) {
 
-    private fun hentHovedflyt(): Regelflyt {
+    override fun hentHovedflyt(): Regelflyt {
         val erBrukerBosattINorgeFlyt = lagRegelflyt(
             regel = hentRegel(RegelId.REGEL_10),
             hvisJa = regelflytJa(ytelse, RegelId.REGEL_BOSATT),
@@ -23,10 +23,6 @@ class ReglerForBosatt(
         )
 
         return erBrukerBosattINorgeFlyt
-    }
-
-    override fun hentRegelflyter(): List<Regelflyt> {
-        return listOf(hentHovedflyt())
     }
 
     companion object {

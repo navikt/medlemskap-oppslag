@@ -32,9 +32,10 @@ Egenskap: Regelflyt for regel 8
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Medlemskap>"
+    Og skal regel-årsaker være "<Årsaker>"
     Og skal regel "8" gi svaret "<Regel 8>"
 
     Eksempler:
-      | Yrkeskode | Regel 8 | Medlemskap |
-      | 001       | Nei     | Ja         |
-      | 5111105   | Ja      | UAVKLART   |
+      | Yrkeskode | Regel 8 | Medlemskap | Årsaker |
+      | 001       | Nei     | Ja         |         |
+      | 5111105   | Ja      | UAVKLART   |8        |

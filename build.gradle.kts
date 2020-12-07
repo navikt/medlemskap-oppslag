@@ -201,9 +201,9 @@ tasks {
         archiveClassifier.set("")
         manifest {
             attributes(
-                    mapOf(
-                            "Main-Class" to mainClass
-                    )
+                mapOf(
+                    "Main-Class" to mainClass
+                )
             )
         }
         transform(ServiceFileTransformer::class.java) {

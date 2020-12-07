@@ -2,6 +2,8 @@ package no.nav.medlemskap.regler.funksjoner
 
 import no.nav.medlemskap.common.*
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.OpplysningspliktigArbeidsgiverType.Organisasjon
+import no.nav.medlemskap.domene.OpplysningspliktigArbeidsgiverType.Person
 import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.regler.common.Funksjoner.isNotNullOrEmpty
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
@@ -22,7 +24,7 @@ object ArbeidsforholdFunksjoner {
         }.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollPeriode, ytelse)
 
     infix fun List<Arbeidsforhold>.erAlleArbeidsgivereOrganisasjon(kontrollPeriode: Kontrollperiode): Boolean {
-        return arbeidsforholdForKontrollPeriode(kontrollPeriode).stream().allMatch { it.arbeidsgivertype == OpplysningspliktigArbeidsgiverType.Organisasjon }
+        return arbeidsforholdForKontrollPeriode(kontrollPeriode).stream().allMatch { it.arbeidsgivertype == Organisasjon }
     }
 
     infix fun List<Arbeidsforhold>.antallAnsatteHosArbeidsgivere(kontrollPeriode: Kontrollperiode): List<Int> =
@@ -223,5 +225,13 @@ object ArbeidsforholdFunksjoner {
     fun fraOgMedDatoForArbeidsforhold(periode: InputPeriode, førsteDagForYtelse: LocalDate?): LocalDate {
 
         return (førsteDagForYtelse ?: periode.fom).minusYears(1).minusDays(1)
+    }
+
+    fun erArbeidstaker(arbeidsforhold: List<Arbeidsforhold>, kontrollperiode: Kontrollperiode): Boolean {
+        return arbeidsforhold.any {
+            it.periode.tomNotNull().isAfter(kontrollperiode.tom) &&
+                it.arbeidsforholdstype != Arbeidsforholdstype.FRILANSER &&
+                it.arbeidsgivertype != Person
+        }
     }
 }

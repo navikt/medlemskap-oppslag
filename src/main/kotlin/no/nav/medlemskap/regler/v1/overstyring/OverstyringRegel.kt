@@ -7,6 +7,7 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import no.nav.medlemskap.regler.common.Svar
+import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner
 import no.nav.medlemskap.regler.v1.lovvalg.LovvalgRegel
 import java.time.LocalDate
 
@@ -16,13 +17,15 @@ class OverstyringRegel(
     private val periode: InputPeriode,
     førsteDagForYtelse: LocalDate?,
     private val statsborgerskap: List<Statsborgerskap>,
+    private val arbeidsforhold: List<Arbeidsforhold>,
     regelId: RegelId = RegelId.REGEL_0_5
 ) : LovvalgRegel(regelId, ytelse, periode, førsteDagForYtelse) {
 
     override fun operasjon(): Resultat {
         if (!brukerInput.arbeidUtenforNorge &&
             ytelse == Ytelse.SYKEPENGER &&
-            statsborgerskap.erNorskBorger(kontrollPeriodeForPersonhistorikk)
+            statsborgerskap.erNorskBorger(kontrollPeriodeForPersonhistorikk) &&
+            ArbeidsforholdFunksjoner.erArbeidstaker(arbeidsforhold, kontrollPeriodeForArbeidsforhold)
         ) {
             return ja(regelId)
         }
@@ -38,7 +41,8 @@ class OverstyringRegel(
                 brukerInput = datagrunnlag.brukerinput,
                 periode = datagrunnlag.periode,
                 førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
-                statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap
+                statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap,
+                arbeidsforhold = datagrunnlag.arbeidsforhold
             )
         }
 

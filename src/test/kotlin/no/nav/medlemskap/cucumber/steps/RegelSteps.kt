@@ -293,8 +293,11 @@ class RegelSteps : No {
             assertEquals(forventetÅrsak, resultat!!.årsaksTekst())
         }
 
-        Så("skal regel-årsaker være {string}") { forventetÅrsak: String ->
-            assertEquals(forventetÅrsak, resultat!!.årsaker.map { it.regelId.identifikator }.toString())
+        Så("skal regel-årsaker være {string}") { forventedeÅrsaker: String ->
+            assertEquals(
+                forventedeÅrsaker.trim(),
+                resultat!!.årsaker.map { it.regelId.identifikator }.toString().filter { it != '[' && it != ']' }.trim()
+            )
         }
 
         Så("skal svaret være Ja på medlemskap og {string} på harDekning") { forventetVerdi: String ->

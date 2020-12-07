@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2020-12-04T14:10:05.848212",
+  "tidspunkt" : "2020-12-04T21:00:59.805412",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "datagrunnlag" : {
@@ -235,7 +235,7 @@
         "delresultat" : [ {
           "regelId" : "REGEL_A",
           "avklaring" : "Finnes det registrerte opplysninger i MEDL?",
-          "begrunnelse" : "",
+          "begrunnelse" : "Det finnes registrert opplysninger i Medl",
           "svar" : "JA",
           "harDekning" : null,
           "dekning" : "",
@@ -314,7 +314,7 @@
       "delresultat" : [ {
         "regelId" : "REGEL_3",
         "avklaring" : "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?",
-        "begrunnelse" : "Overstyrt svar",
+        "begrunnelse" : "",
         "svar" : "JA",
         "harDekning" : null,
         "dekning" : "",
@@ -413,7 +413,7 @@
       "delresultat" : [ {
         "regelId" : "REGEL_12",
         "avklaring" : "Har bruker vært i minst 25% stilling de siste 12 mnd?",
-        "begrunnelse" : "Overstyrt svar",
+        "begrunnelse" : "",
         "svar" : "JA",
         "harDekning" : null,
         "dekning" : "",

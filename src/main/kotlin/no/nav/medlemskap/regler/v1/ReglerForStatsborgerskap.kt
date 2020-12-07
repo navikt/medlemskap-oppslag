@@ -15,7 +15,7 @@ class ReglerForStatsborgerskap(
     overstyrteRegler: Map<RegelId, Svar>
 ) : Regler(ytelse, regelMap, overstyrteRegler) {
 
-    override fun hentRegelflyter(): List<Regelflyt> {
+    override fun hentHovedflyt(): Regelflyt {
         val harBrukerNorskStatsborgerskapFlyt = lagRegelflyt(
             regel = hentRegel(RegelId.REGEL_11),
             hvisJa = regelflytJa(ytelse, RegelId.REGEL_STATSBORGERSKAP),
@@ -28,7 +28,7 @@ class ReglerForStatsborgerskap(
             hvisNei = regelflytJa(ytelse, RegelId.REGEL_STATSBORGERSKAP)
         )
 
-        return listOf(erBrukerEØSborgerFlyt)
+        return erBrukerEØSborgerFlyt
     }
 
     companion object {

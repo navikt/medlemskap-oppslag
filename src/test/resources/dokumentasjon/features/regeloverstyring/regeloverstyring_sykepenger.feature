@@ -13,6 +13,18 @@ Egenskap: Regel 0.5: Skal regler overstyres?
       | Landkode          | Fra og med dato | Til og med dato |
       | <Statsborgerskap> | 01.01.2000      |                 |
 
+    Gitt følgende arbeidsforhold fra AAReg
+      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Arbeidsgiver Id |
+      | 15.01.2020      |                 | Organisasjon     | NORMALT             | 1               |
+
+    Og følgende arbeidsavtaler i arbeidsforholdet
+      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
+      | 15.01.2020      |                 | 001       | 10               |
+
+    Og følgende arbeidsgiver i arbeidsforholdet
+      | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
+      | 1             | BEDR             | NOR      | 2              |
+
     Når regel "0.5" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge | Ytelse   |
       | 30.01.2020      | 30.01.2021      | <Arbeid utenfor Norge?>       | <Ytelse> |

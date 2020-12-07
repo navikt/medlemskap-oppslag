@@ -68,7 +68,13 @@ data class Resultat(
             }
 
             if (resultat.delresultat.isNotEmpty()) {
-                return finnÅrsak(resultat.delresultat.last())
+                val muligÅrsak = resultat.delresultat.filter { it.begrunnelse != "" }.firstOrNull()
+
+                return if (muligÅrsak == null) {
+                    finnÅrsak(resultat.delresultat.last())
+                } else {
+                    finnÅrsak(muligÅrsak)
+                }
             }
 
             return Årsak.fraResultat(resultat)
@@ -124,7 +130,7 @@ data class Resultat(
 
         fun uavklart(regelId: RegelId) = Resultat(
             regelId,
-            begrunnelse = regelId.neiBegrunnelse,
+            begrunnelse = regelId.uavklartBegrunnelse,
             svar = Svar.UAVKLART
         )
 

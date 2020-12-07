@@ -35,12 +35,14 @@ Egenskap: Regelflyt for regel 12
       | 30.01.2020      | 30.01.2021      | <Jobbet utenfor Norge>        | <Ytelse> |
 
     Så skal svaret være "<Medlemskap>"
+    Og skal regel-årsaker være "<Årsaker>"
+
     Og skal regel "10" gi svaret "Ja"
     Og skal regel "12" gi svaret "<Regel 12>"
 
     Eksempler:
-      | Ytelse     | Stillingsprosent | Jobbet utenfor Norge | Regel 12 | Medlemskap | Forklaring          |
-      | SYKEPENGER | 100              | Nei                  | Ja       | Ja         |                     |
-      | SYKEPENGER | 20               | Nei                  | Ja       | Ja         | Regel 12 overstyres |
-      | DAGPENGER  | 20               | Nei                  | Nei      | Ja         |                     |
-      | SYKEPENGER | 20               | Ja                   | Nei      | UAVKLART   |                     |
+      | Ytelse     | Stillingsprosent | Jobbet utenfor Norge | Regel 12 | Medlemskap | Årsaker | Forklaring          |
+      | SYKEPENGER | 100              | Nei                  | Ja       | Ja         |         |                     |
+      | SYKEPENGER | 20               | Nei                  | Ja       | Ja         |         | Regel 12 overstyres |
+      | DAGPENGER  | 20               | Nei                  | Nei      | Ja         |         |                     |
+      | SYKEPENGER | 20               | Ja                   | Nei      | UAVKLART   | 12      |                     |

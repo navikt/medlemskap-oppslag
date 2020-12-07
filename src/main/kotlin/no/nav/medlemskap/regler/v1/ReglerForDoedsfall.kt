@@ -12,17 +12,13 @@ class ReglerForDoedsfall(
     overstyrteRegler: Map<RegelId, Svar>
 ) : Regler(ytelse, regelMap, overstyrteRegler) {
 
-    private fun hentHovedflyt(): Regelflyt {
+    override fun hentHovedflyt(): Regelflyt {
         val erBrukerDoedRegelFlyt = lagRegelflyt(
             regel = hentRegel(RegelId.REGEL_13),
             hvisJa = regelflytJa(ytelse, RegelId.REGEL_DOED),
             hvisNei = regelflytJa(ytelse, RegelId.REGEL_DOED)
         )
         return erBrukerDoedRegelFlyt
-    }
-
-    override fun hentRegelflyter(): List<Regelflyt> {
-        return listOf(hentHovedflyt())
     }
 
     companion object {

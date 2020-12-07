@@ -15,8 +15,8 @@ class ReglerForAndreStatsborgere(
     overstyrteRegler: Map<RegelId, Svar>
 ) : Regler(ytelse = ytelse, overstyrteRegler = overstyrteRegler) {
 
-    override fun hentRegelflyter(): List<Regelflyt> {
-        return listOf(konklusjonUavklart(ytelse, RegelId.REGEL_ANDRE_BORGERE))
+    override fun hentHovedflyt(): Regelflyt {
+        return konklusjonUavklart(ytelse, RegelId.REGEL_ANDRE_BORGERE)
     }
 
     companion object {

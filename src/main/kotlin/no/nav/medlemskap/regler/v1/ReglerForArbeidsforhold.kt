@@ -14,7 +14,7 @@ class ReglerForArbeidsforhold(
     overstyrteRegler: Map<RegelId, Svar>
 ) : Regler(ytelse, regelMap, overstyrteRegler) {
 
-    override fun hentRegelflyter(): List<Regelflyt> {
+    override fun hentHovedflyt(): Regelflyt {
         val jobberBrukerPaaNorskSkipFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_7_1),
             hvisJa = regelflytJa(ytelse, REGEL_ARBEIDSFORHOLD),
@@ -63,7 +63,7 @@ class ReglerForArbeidsforhold(
             hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD)
         )
 
-        return listOf(harBrukerSammenhengendeArbeidsforholdSiste12MndFlyt)
+        return harBrukerSammenhengendeArbeidsforholdSiste12MndFlyt
     }
 
     companion object {

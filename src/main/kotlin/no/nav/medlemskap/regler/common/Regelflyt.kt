@@ -28,7 +28,13 @@ class Regelflyt(
 
         val overstyrtSvar = overstyrteRegler[regel.regelId]
         val resultat = if (overstyrtSvar != null) {
-            regelResultat.copy(svar = overstyrtSvar, begrunnelse = "Overstyrt svar")
+
+            val begrunnelse = when (overstyrtSvar) {
+                Svar.JA -> regel.regelId.jaBegrunnelse
+                Svar.NEI -> regel.regelId.neiBegrunnelse
+                else -> regel.regelId.uavklartBegrunnelse
+            }
+            regelResultat.copy(svar = overstyrtSvar, begrunnelse = begrunnelse)
         } else {
             regelResultat
         }
