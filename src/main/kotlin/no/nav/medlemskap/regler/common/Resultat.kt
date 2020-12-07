@@ -130,7 +130,7 @@ data class Resultat(
 
         fun uavklart(regelId: RegelId) = Resultat(
             regelId,
-            begrunnelse = regelId.neiBegrunnelse,
+            begrunnelse = regelId.uavklartBegrunnelse,
             svar = Svar.UAVKLART
         )
 

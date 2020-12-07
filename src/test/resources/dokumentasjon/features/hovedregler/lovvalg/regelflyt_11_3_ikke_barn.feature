@@ -38,17 +38,15 @@ Egenskap: Regelflyt for reglene 11.3.x for bruker som har ektefelle, men ikke ba
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Medlemskap>"
-    Og skal regel "11" gi svaret "Nei"
-    Og skal regel "11.2" gi svaret "Ja"
-    Og skal regel "11.3" gi svaret "Nei"
-    Og skal regel "11.3.1" gi svaret "Ja"
+    Og skal regel-årsaker være "<Årsaker>"
+
     Og skal regel "11.6" gi svaret "<Regel 11.6>"
 
     Eksempler:
-      | Stillingsprosent | Regel 11.6 | Medlemskap |
-      | 79               | Nei        | UAVKLART   |
-      | 80               | Ja         | Ja         |
-      | 85               | Ja         | Ja         |
+      | Stillingsprosent | Regel 11.6 | Medlemskap | Årsaker |
+      | 79               | Nei        | UAVKLART   | 11.6    |
+      | 80               | Ja         | Ja         |         |
+      | 85               | Ja         | Ja         |         |
 
   Scenariomal: Bruker med ektefelle som ikke er bosatt i Norge
     Gitt følgende arbeidsavtaler i arbeidsforholdet
@@ -68,14 +66,13 @@ Egenskap: Regelflyt for reglene 11.3.x for bruker som har ektefelle, men ikke ba
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Medlemskap>"
-    Og skal regel "11" gi svaret "Nei"
-    Og skal regel "11.2" gi svaret "Ja"
-    Og skal regel "11.3" gi svaret "Nei"
+    Og skal regel-årsaker være "<Årsaker>"
+
     Og skal regel "11.3.1" gi svaret "Nei"
     Og skal regel "11.3.1.1" gi svaret "<Regel 11.3.1.1>"
 
     Eksempler:
-      | Stillingsprosent | Regel 11.3.1.1 | Medlemskap |
-      | 99               | Nei            | UAVKLART   |
-      | 100              | Ja             | Ja         |
-      | 105              | Ja             | Ja         |
+      | Stillingsprosent | Regel 11.3.1.1 | Medlemskap | Årsaker  |
+      | 99               | Nei            | UAVKLART   | 11.3.1.1 |
+      | 100              | Ja             | Ja         |          |
+      | 105              | Ja             | Ja         |          |

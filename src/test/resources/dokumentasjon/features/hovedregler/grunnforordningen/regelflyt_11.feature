@@ -36,9 +36,9 @@ Egenskap: Regelflyt for regel 11, er bruker norsk statsborger?
     Og skal regel-årsaker være "<Årsaker>"
 
     Eksempler:
-      | Land | Regel 11 | Medlemskap | Årsaker         |
-      | FRA  | Nei      | Ja         | []              |
-      | NOR  | Ja       | Ja         | []              |
+      | Land | Regel 11 | Medlemskap | Årsaker |
+      | FRA  | Nei      | Ja         |         |
+      | NOR  | Ja       | Ja         |         |
 
 
   Scenario: Regelflyt for regel 11, hvis bruker ikke er EØS-borger skal ikke regel 11 kjøres
@@ -53,6 +53,6 @@ Egenskap: Regelflyt for regel 11, er bruker norsk statsborger?
 
     Så skal svaret være "UAVKLART"
     Og skal regel "11" ikke finnes i resultatet
-    Og skal regel-årsaker være "[ANDRE BORGERE]"
+    Og skal regel-årsaker være "ANDRE BORGERE"
 
 

@@ -39,4 +39,4 @@ Egenskap: Regelflyt for regel opplysninger,
       | 01.01.2019      | 31.12.2019      | Nei                           |
 
     Så skal svaret være "UAVKLART"
-    Og skal regel-årsaker være "[OPPLYSNINGER-JOARK]"
+    Og skal regel-årsaker være "OPPLYSNINGER-JOARK"

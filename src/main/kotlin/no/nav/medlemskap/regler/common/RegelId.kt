@@ -1,6 +1,6 @@
 package no.nav.medlemskap.regler.common
 
-enum class RegelId(val identifikator: String, val avklaring: String, val neiBegrunnelse: String = "", val jaBegrunnelse: String = "", val erRegelflytKonklusjon: Boolean = false) {
+enum class RegelId(val identifikator: String, val avklaring: String, val neiBegrunnelse: String = "", val jaBegrunnelse: String = "", val uavklartBegrunnelse: String = "", val erRegelflytKonklusjon: Boolean = false) {
     REGEL_0_1("0.1", "Er input-dato gyldig?", "Ugyldig input dato"),
     REGEL_0_5("0.5", "Skal regler overstyres?", "", "Svar på brukerspørsmålet er Nei, og regler 3, 5 og 12 skal derfor overstyres."),
     REGEL_1_1("1.1", "Er alle perioder siste 12 mnd avklart (endelig/gyldig)?", "Ikke alle perioder siste 12 mnd er avklart"),
@@ -24,13 +24,13 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_10("10", "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?", "Ikke alle adressene til bruker er norske, eller bruker mangler bostedsadresse"),
     REGEL_11("11", "Er bruker norsk statsborger?", "Brukeren er ikke norsk statsborger"),
     REGEL_11_2("11.2", "Har bruker ektefelle i PDL?"),
-    REGEL_11_2_1("11.2.1", "Har bruker barn i PDL?", "Bruker har ikke barn i pdl"),
-    REGEL_11_2_2("11.2.2", "Er brukers barn folkeregistrert som bosatt i Norge?"),
+    REGEL_11_2_1("11.2.1", "Har bruker barn i PDL?"),
+    REGEL_11_2_2("11.2.2", "Er brukers barn folkeregistrert som bosatt i Norge?", "", "", "Brukers barn er ikke folkregistrert som bosatt I Norge"),
     REGEL_11_2_2_1("11.2.2.1", "Har bruker uten ektefelle og folkeregistrerte barn jobbet mer enn 100 prosent?", "Bruker har ikke jobbet 100% eller mer i løpet av periode."),
     REGEL_11_2_2_2("11.2.2.2", "Har bruker vært i 80 % stilling eller mer de siste 12 mnd?"),
     REGEL_11_2_3("11.2.3", "Har bruker vært i minst 80 % stilling de siste 12 mnd?", "Bruker har ikke jobbet 80% eller mer i løpet av periode."),
     REGEL_11_3("11.3", "Har bruker barn i PDL?"),
-    REGEL_11_3_1("11.3.1", "Er brukers ektefelle folkeregistrert som bosatt i Norge?", "Ikke alle adressene til ektefelle er norske, eller ektefelle mangler bostedsadresse"),
+    REGEL_11_3_1("11.3.1", "Er brukers ektefelle folkeregistrert som bosatt i Norge?"),
     REGEL_11_3_1_1("11.3.1.1", "Har bruker vært i 100 % stilling eller mer de siste 12 mnd?", "Bruker har ikke jobbet 100% eller mer i løpet av periode."),
     REGEL_11_4("11.4", "Er brukers ektefelle folkeregistrert som bosatt i Norge?"),
     REGEL_11_4_1("11.4.1", "Er brukers barn folkeregistrert som bosatt i Norge?", "Ikke alle adressene til barna er norske, eller barn som mangler bostedsadresse"),
