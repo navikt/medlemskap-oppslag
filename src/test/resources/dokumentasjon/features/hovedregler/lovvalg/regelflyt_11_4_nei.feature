@@ -8,7 +8,6 @@ Egenskap: Regelflyt for reglene 11.4.1 for bruker som har ektefelle og barn. Ekt
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | Oslo    | NOR      | 01.01.2000      |                 |
 
-
     Og følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
       | BEL      | 01.01.2000      |                 |
@@ -51,17 +50,14 @@ Egenskap: Regelflyt for reglene 11.4.1 for bruker som har ektefelle og barn. Ekt
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Medlemskap>"
-    Og skal regel "11" gi svaret "Nei"
-    Og skal regel "11.2" gi svaret "Ja"
-    Og skal regel "11.3" gi svaret "Ja"
-    Og skal regel "11.4" gi svaret "Nei"
-    Og skal regel "11.4.1" gi svaret "Nei"
+    Og skal regel-årsaker være "<Årsaker>"
+
     Og skal regel "11.2.2.1" gi svaret "<Regel 11.2.2.1>"
 
     Eksempler:
-      | Stillingsprosent | Regel 11.2.2.1 | Medlemskap |
-      | 85               | Nei            | UAVKLART   |
-      | 100              | Ja             | Ja         |
+      | Stillingsprosent | Regel 11.2.2.1 | Medlemskap | Årsaker  |
+      | 85               | Nei            | UAVKLART   | 11.2.2.1 |
+      | 100              | Ja             | Ja         |          |
 
   Scenario: Regelflyt for regel 11.4: Barnet er bosatt i Norge
     Gitt følgende arbeidsavtaler i arbeidsforholdet
@@ -93,11 +89,14 @@ Egenskap: Regelflyt for reglene 11.4.1 for bruker som har ektefelle og barn. Ekt
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "UAVKLART"
+    Og skal regel-årsaker være "11.5.1"
+    
     Og skal regel "11" gi svaret "Nei"
     Og skal regel "11.2" gi svaret "Ja"
     Og skal regel "11.3" gi svaret "Ja"
     Og skal regel "11.4" gi svaret "Nei"
     Og skal regel "11.4.1" gi svaret "Ja"
+    Og skal regel "11.5.1" gi svaret "Ja"
 
   Scenario: Regelflyt for regel 11.4: Ett barn bosatt i Norge og ett som ikke er det
     Gitt følgende arbeidsavtaler i arbeidsforholdet
@@ -114,7 +113,7 @@ Egenskap: Regelflyt for reglene 11.4.1 for bruker som har ektefelle og barn. Ekt
       | GIFT            | 29.06.2015             | 10108000398             |
 
     Og følgende personhistorikk for ektefelle fra PDL
-      | Ident       |Bosted | Fra og med dato |
+      | Ident       | Bosted | Fra og med dato |
       | 10108000398 |        | 29.06.2015      |
 
     Og følgende personhistorikk for barn fra PDL

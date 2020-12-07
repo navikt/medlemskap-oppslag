@@ -53,9 +53,9 @@ Egenskap: Regelflyt for regel 3
       | 30.01.2020      | 30.01.2021      | Nei                           | <Ytelse> |
 
     Så skal svaret være "<Medlemskap>"
-
+    Og skal regel-årsaker være "<Årsaker>"
 
     Eksempler:
-      | Ytelse     | Medlemskap |
-      | SYKEPENGER | UAVKLART   |
-      | DAGPENGER  | UAVKLART   |
+      | Ytelse     | Medlemskap | Årsaker |
+      | SYKEPENGER | UAVKLART   | 3       |
+      | DAGPENGER  | UAVKLART   | 3       |

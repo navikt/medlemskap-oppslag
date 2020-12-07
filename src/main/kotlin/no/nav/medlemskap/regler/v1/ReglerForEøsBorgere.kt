@@ -113,7 +113,7 @@ class ReglerForEøsBorgere(
         val erBrukerMedFolkeregistrertEktefelleSittBarnFolkeregistrertFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_5),
             hvisJa = harBrukerJobbetMerEnn80ProsentFlyt,
-            hvisNei = regelflytUavklart(ytelse, REGEL_EØS_BOSATT),
+            hvisNei = erBrukersEktefelleOgBarnasMorSammePersonFlyt,
             hvisUavklart = harBrukerMedBarnOgEktefelle80ProsentStillingEllerMerRegelFlyt
         )
 

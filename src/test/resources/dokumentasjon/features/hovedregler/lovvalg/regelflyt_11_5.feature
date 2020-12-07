@@ -8,7 +8,6 @@ Egenskap: Regelflyt for reglene 11.5 for bruker som har ektefelle og barn. Ektef
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | Oslo    | NOR      | 01.01.2000      |                 |
 
-
     Og følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
       | BEL      | 01.01.2000      |                 |
@@ -42,17 +41,16 @@ Egenskap: Regelflyt for reglene 11.5 for bruker som har ektefelle og barn. Ektef
       | Ident       | Bosted | Fra og med dato |
       | 10108000398 | NOR    | 29.06.2015      |
 
-
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "UAVKLART"
-    Og skal regel "11" gi svaret "Nei"
-    Og skal regel "11.2" gi svaret "Ja"
-    Og skal regel "11.3" gi svaret "Ja"
-    Og skal regel "11.4" gi svaret "Ja"
+    Og skal regel-årsaker være "11.5.1"
+
     Og skal regel "11.5" gi svaret "Nei"
+    Og skal regel "11.5.1" gi svaret "Ja"
+
 
   Scenario: Ett barn som er bosatt i Norge og ett som ikke er bosatt i Norge
     Gitt følgende arbeidsavtaler i arbeidsforholdet
@@ -87,10 +85,8 @@ Egenskap: Regelflyt for reglene 11.5 for bruker som har ektefelle og barn. Ektef
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "UAVKLART"
-    Og skal regel "11" gi svaret "Nei"
-    Og skal regel "11.2" gi svaret "Ja"
-    Og skal regel "11.3" gi svaret "Ja"
-    Og skal regel "11.4" gi svaret "Ja"
+    Og skal regel-årsaker være "11.5"
+
     Og skal regel "11.5" gi svaret "UAVKLART"
     Og skal regel "11.5.2" gi svaret "Ja"
 

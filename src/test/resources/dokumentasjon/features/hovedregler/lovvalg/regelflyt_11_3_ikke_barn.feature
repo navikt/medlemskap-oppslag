@@ -40,11 +40,12 @@ Egenskap: Regelflyt for reglene 11.3.x for bruker som har ektefelle, men ikke ba
     Så skal svaret være "<Medlemskap>"
     Og skal regel-årsaker være "<Årsaker>"
 
+    Og skal regel "11.3.1" gi svaret "Ja"
     Og skal regel "11.6" gi svaret "<Regel 11.6>"
 
     Eksempler:
       | Stillingsprosent | Regel 11.6 | Medlemskap | Årsaker |
-      | 79               | Nei        | UAVKLART   | 11.6    |
+      | 79               | Nei        | UAVKLART   | 11.6.1  |
       | 80               | Ja         | Ja         |         |
       | 85               | Ja         | Ja         |         |
 

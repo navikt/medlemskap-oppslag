@@ -36,13 +36,15 @@ Egenskap: Regelflyt for regel 9, for norske borgere
       | 30.01.2020      | 30.01.2021      | <Har hatt arbeid utenfor Norge> | <Ytelse> |
 
     Så skal svaret være "<Medlemskap>"
+    Og skal regel-årsaker være "<Årsaker>"
+
     Og skal regel "9" gi svaret "<Regel 9>"
 
     Eksempler:
-      | Ytelse     | Har hatt arbeid utenfor Norge | Regel 9 | Medlemskap |
-      | DAGPENGER  | Nei                           | Nei     | Ja         |
-      | DAGPENGER  | Ja                            | Ja      | UAVKLART   |
-      | SYKEPENGER | Ja                            | Ja      | UAVKLART   |
+      | Ytelse     | Har hatt arbeid utenfor Norge | Regel 9 | Medlemskap | Årsaker |
+      | DAGPENGER  | Nei                           | Nei     | Ja         |         |
+      | DAGPENGER  | Ja                            | Ja      | UAVKLART   | 12      |
+      | SYKEPENGER | Ja                            | Ja      | UAVKLART   | 12      |
 
   Scenario: Regel 9: Ytelse sykepenger, bruker som svarer nei på spørsmålet "Har hatt arbeid utenfor Norge"
     Gitt følgende arbeidsforhold fra AAReg
@@ -59,4 +61,5 @@ Egenskap: Regelflyt for regel 9, for norske borgere
       | 30.01.2020      | 30.01.2021      | Nei                           | SYKEPENGER |
 
     Så skal svaret være "Ja"
+    Og skal regel-årsaker være ""
     Og skal regel "9" ikke finnes i resultatet

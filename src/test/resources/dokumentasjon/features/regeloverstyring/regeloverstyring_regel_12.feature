@@ -46,5 +46,5 @@ Egenskap: Overstyring av regelsvar for regel 12
     Eksempler:
       | Overstyrt svar | Regel 12 svar | Regel 12 begrunnelse                                      | Har jobbet utenfor Norge | Medlemskap |
       |                | Nei           | Bruker har ikke jobbet 25% eller mer i løpet av perioden. | Ja                       | UAVKLART   |
-      | Ja             | Ja            | Overstyrt svar                                            | Nei                      | Ja         |
-      | Nei            | Nei           | Overstyrt svar                                            | Ja                       | UAVKLART   |
+      | Ja             | Ja            |                                                           | Nei                      | Ja         |
+      | Nei            | Nei           | Bruker har ikke jobbet 25% eller mer i løpet av perioden. | Ja                       | UAVKLART   |

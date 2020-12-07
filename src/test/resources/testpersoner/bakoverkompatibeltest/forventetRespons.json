@@ -314,7 +314,7 @@
       "delresultat" : [ {
         "regelId" : "REGEL_3",
         "avklaring" : "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?",
-        "begrunnelse" : "Overstyrt svar",
+        "begrunnelse" : "",
         "svar" : "JA",
         "harDekning" : null,
         "dekning" : "",
@@ -413,7 +413,7 @@
       "delresultat" : [ {
         "regelId" : "REGEL_12",
         "avklaring" : "Har bruker vært i minst 25% stilling de siste 12 mnd?",
-        "begrunnelse" : "Overstyrt svar",
+        "begrunnelse" : "",
         "svar" : "JA",
         "harDekning" : null,
         "dekning" : "",

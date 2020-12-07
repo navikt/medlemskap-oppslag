@@ -31,10 +31,12 @@ Egenskap: Regelflyt for regel 4
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Medlemskap>"
+    Og skal regel-årsaker være "<Årsaker>"
+    Og skal regel "3" gi svaret "Ja"
     Og skal regel "4" gi svaret "<Regel 4>"
 
     Eksempler:
-      | Arbeidsgivertype | Regel 4 | Medlemskap |
-      | Organisasjon     | Ja      | Ja         |
-      | Person           | Nei     | UAVKLART   |
+      | Arbeidsgivertype | Regel 4 | Medlemskap | Årsaker |
+      | Organisasjon     | Ja      | Ja         |         |
+      | Person           | Nei     | UAVKLART   | 4       |
 
