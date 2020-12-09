@@ -93,6 +93,15 @@ class LokalWebServer {
                 .extract().asString()
         }
 
+        fun responsUtenStatuskodeSjekk(input: String): String {
+            return given()
+                .body(input)
+                .header(Header("Content-Type", "application/json"))
+                .post("/")
+                .then()
+                .extract().asString()
+        }
+
         fun kontraktMedlemskap(input: String): ValidatableResponse {
             val validationFilter = OpenApiValidationFilter("src/main/resources/lovme.yaml")
 
@@ -121,8 +130,8 @@ class LokalWebServer {
             return response
         }
 
-        fun testResponsKode(input: String, statusKode: Int) {
-            given()
+        fun testResponsKode(input: String, statusKode: Int): String {
+            return given()
                 .body(input)
                 .header(Header("Content-Type", "application/json"))
                 .post("/")
