@@ -21,8 +21,7 @@ data class Datagrunnlag(
     val ytelse: Ytelse,
     val dataOmBarn: List<DataOmBarn>?,
     val dataOmEktefelle: DataOmEktefelle?,
-    val overstyrteRegler: Map<RegelId, Svar> = mapOf(),
-    val oppholdstillagelse: Oppholdstillatelse?
+    val overstyrteRegler: Map<RegelId, Svar> = mapOf()
 ) {
     private val datohjelper = Datohjelper(periode, førsteDagForYtelse, ytelse)
     private val kontrollPeriodeForPersonhistorikk = datohjelper.kontrollPeriodeForPersonhistorikk()
@@ -50,8 +49,4 @@ data class Bruksperiode(
 data class Gyldighetsperiode(
     val fom: LocalDate?,
     val tom: LocalDate?
-)
-
-data class Oppholdstillatelse(
-    val avgjørelse:
 )
