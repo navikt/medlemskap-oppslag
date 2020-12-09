@@ -7,6 +7,7 @@ import no.nav.medlemskap.regler.common.Datohjelper
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Svar
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 data class Datagrunnlag(
@@ -22,7 +23,7 @@ data class Datagrunnlag(
     val dataOmBarn: List<DataOmBarn>?,
     val dataOmEktefelle: DataOmEktefelle?,
     val overstyrteRegler: Map<RegelId, Svar> = mapOf(),
-    val oppholdstillagelse: Oppholdstillatelse?
+    val oppholdstillatelse: Oppholdstillatelse?
 ) {
     private val datohjelper = Datohjelper(periode, førsteDagForYtelse, ytelse)
     private val kontrollPeriodeForPersonhistorikk = datohjelper.kontrollPeriodeForPersonhistorikk()
@@ -52,6 +53,4 @@ data class Gyldighetsperiode(
     val tom: LocalDate?
 )
 
-data class Oppholdstillatelse(
-    val avgjørelse:
-)
+
