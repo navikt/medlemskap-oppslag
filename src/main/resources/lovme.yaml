@@ -230,7 +230,9 @@ components:
         overstyrteRegler:
           $ref: "#/components/schemas/OverstyrteRegler"
         oppholdstillatelse:
-          $ref: "#/components/schemas/Oppholdstillatelse"
+          items:
+            $ref: "#/components/schemas/Oppholdstillatelse"
+          nullable: true
     DataOmBarn:
       properties:
         personhistorikkBarn:
