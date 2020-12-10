@@ -229,6 +229,8 @@ components:
           $ref: "#/components/schemas/DataOmEktefelle"
         overstyrteRegler:
           $ref: "#/components/schemas/OverstyrteRegler"
+        oppholdstillatelse:
+          $ref: "#/components/schemas/Oppholdstillatelse"
     DataOmBarn:
       properties:
         personhistorikkBarn:
@@ -345,6 +347,27 @@ components:
           items:
             $ref: "#/components/schemas/Dokument"
           nullable: true
+    Oppholdstillatelse:
+      properties:
+        uttrekkstidspunkt:
+            $ref: "#/components/schemas/ValgfriDato"
+        foresporselsfodselsnummer:
+          type: string
+        avgjoerelse:
+          type: boolean
+        gjeldendeOppholdsstatus:
+          type: boolean
+        arbeidsadgang:
+          type: string
+          enum:
+            - JA
+            - NEI
+            - UAVKLART
+        uavklartFlyktningstatus:
+          type: boolean
+        harFlyktningstatus:
+          type: boolean
+      nullable: true
     JuridiskEnhet:
       properties:
         organisasjonsnummer:
