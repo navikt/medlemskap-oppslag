@@ -403,7 +403,8 @@ class RegelSteps : No {
             ytelse = medlemskapsparametre.ytelse ?: Ytelse.SYKEPENGER,
             dataOmBarn = dataOmBarn,
             dataOmEktefelle = dataOmEktefelleBuilder.build(),
-            overstyrteRegler = overstyrteRegler
+            overstyrteRegler = overstyrteRegler,
+            oppholdstillatelse = null
         )
     }
 

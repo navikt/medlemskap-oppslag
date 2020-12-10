@@ -7,7 +7,6 @@ import no.nav.medlemskap.regler.common.Datohjelper
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Svar
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 data class Datagrunnlag(
@@ -52,5 +51,3 @@ data class Gyldighetsperiode(
     val fom: LocalDate?,
     val tom: LocalDate?
 )
-
-

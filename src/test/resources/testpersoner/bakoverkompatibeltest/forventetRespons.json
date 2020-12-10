@@ -41,6 +41,7 @@
       "familierelasjoner" : [ ],
       "doedsfall" : [ ]
     },
+    "oppholdstillatelse": null,
     "medlemskap" : [ {
       "dekning" : "dekning",
       "fraOgMed" : "1975-10-10",

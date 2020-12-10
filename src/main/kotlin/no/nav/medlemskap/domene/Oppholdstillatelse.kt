@@ -2,19 +2,18 @@ package no.nav.medlemskap.domene
 
 import java.time.LocalDateTime
 
-data class Oppholdstillatelse (
+data class Oppholdstillatelse(
     val uttrekkstidspunkt: LocalDateTime,
     val foresporselsfodselsnummer: String,
     val avgjoerelse: Boolean,
-    val gjeldendeOppholdsstatus : GjeldendeOppholdsstatus,
+    val gjeldendeOppholdsstatus: Boolean,
     val arbeidsadgang: JaNeiUavklart,
     val uavklartFlyktningstatus: Boolean,
     val harFlyktningstatus: Boolean
 )
 
-
 data class GjeldendeOppholdsstatus(
-   val uavklart: Boolean
+    val uavklart: Boolean
 )
 
 enum class JaNeiUavklart(val jaNeiUavklart: String) {
@@ -29,9 +28,3 @@ enum class JaNeiUavklart(val jaNeiUavklart: String) {
         }
     }
 }
-
-
-
-
-
-
