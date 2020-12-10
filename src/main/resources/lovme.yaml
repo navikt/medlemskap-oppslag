@@ -367,6 +367,7 @@ components:
           type: boolean
         harFlyktningstatus:
           type: boolean
+      nullable: true
     JuridiskEnhet:
       properties:
         organisasjonsnummer:
