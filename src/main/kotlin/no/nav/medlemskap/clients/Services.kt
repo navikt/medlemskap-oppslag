@@ -7,6 +7,10 @@ import no.nav.medlemskap.clients.oppgave.OppgaveClient
 import no.nav.medlemskap.clients.pdl.PdlClient
 import no.nav.medlemskap.clients.saf.SafClient
 import no.nav.medlemskap.clients.sts.StsRestClient
+import no.nav.medlemskap.clients.sts.stsClient
+import no.nav.medlemskap.clients.udi.UdiClient
+import no.nav.medlemskap.clients.wsClients.WsClients
+import no.nav.medlemskap.common.callIdGenerator
 import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.common.healthcheck.HealthReporter
 import no.nav.medlemskap.common.healthcheck.HealthService
@@ -18,6 +22,7 @@ import no.nav.medlemskap.services.medl.MedlService
 import no.nav.medlemskap.services.oppgave.OppgaveService
 import no.nav.medlemskap.services.pdl.PdlService
 import no.nav.medlemskap.services.saf.SafService
+import no.nav.medlemskap.services.udi.UdiService
 
 class Services(val configuration: Configuration) {
 
@@ -38,8 +43,14 @@ class Services(val configuration: Configuration) {
     private val healthRetry = retryRegistry.retry("Helsesjekker")
 
     private val stsRetry = retryRegistry.retry("STS")
+    private val udiRetry = retryRegistry.retry("UDI")
 
     init {
+        val stsWsClient = stsClient(
+            stsUrl = configuration.sts.endpointUrl,
+            username = configuration.sts.username,
+            password = configuration.sts.password
+        )
 
         val stsRestClient = StsRestClient(
             baseUrl = configuration.sts.restUrl,
@@ -74,6 +85,7 @@ class Services(val configuration: Configuration) {
                 HttpResponseHealthCheck("PDL", { pdlClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("SAF", { safClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("STS", { stsRestClient.healthCheck() }, healthRetry)
+                //  TryCatchHealthCheck("UDI", { udiClient.healthCheck() }, healthRetry)
             )
         )
 

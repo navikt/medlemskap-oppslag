@@ -40,7 +40,7 @@ suspend fun defaultCreateDatagrunnlag(
     val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(request.fnr, callId) }
     val journalPosterRequest = async { services.safService.hentJournaldata(request.fnr, callId) }
     val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktorIder, callId) }
-    val oppholdstillatelse = null
+  //  val oppholdsstatusRequest = async { services.udiService.hentOppholdstillatelseer(request.fnr) }
 
     val fnrTilBarn = hentFnrTilBarn(personHistorikkFraPdl.familierelasjoner)
     dataOmBrukersBarn = if (!fnrTilBarn.isNullOrEmpty()) hentDataOmBarn(fnrTilBarn, services, callId) else null
@@ -53,6 +53,7 @@ suspend fun defaultCreateDatagrunnlag(
     val journalPoster = journalPosterRequest.await()
     val oppgaver = gosysOppgaver.await()
     val ytelse: Ytelse = finnYtelse(request.ytelse, clientId)
+   // val oppholdstillatelse = oppholdsstatusRequest.await()
 
     ytelseCounter(ytelse.name()).increment()
 
