@@ -30,3 +30,11 @@ Egenskap: Regel 8: Er bruker pilot eller kabinansatt?
       | Yrkeskode | Svar | Utfylt begrunnelse |
       | 001       | Nei  | Nei                |
       | 5111105   | Ja   | Ja                 |
+
+  Scenario: Bruker som ikke har noe arbeidsforhold får "Nei"
+
+    Når regel "8" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
+
+    Så skal svaret være "Nei"

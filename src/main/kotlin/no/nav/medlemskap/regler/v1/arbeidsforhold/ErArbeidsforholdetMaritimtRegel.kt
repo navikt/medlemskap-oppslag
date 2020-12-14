@@ -19,6 +19,7 @@ class ErArbeidsforholdetMaritimtRegel(
 
     override fun operasjon(): Resultat {
         return when {
+            arbeidsforhold.isEmpty() -> nei(regelId)
             arbeidsforhold.arbeidsforholdForYrkestype(kontrollPeriodeForArbeidsforhold) alleEr Arbeidsforholdstype.MARITIMT -> ja(regelId)
             else -> nei(regelId)
         }

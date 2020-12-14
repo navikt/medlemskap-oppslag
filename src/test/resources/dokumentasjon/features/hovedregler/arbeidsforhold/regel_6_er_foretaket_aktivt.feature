@@ -25,3 +25,10 @@ Egenskap: Regel 6: Er foretaket aktivt?
       | Konkursstatus | Svar |
       |               | Ja   |
       | OSKP          | Nei  |
+
+  Scenario: Regel 6: Bruker uten arbeidsforhold skal få "Nei"
+    Når regel "6" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
+
+    Så skal svaret være "Nei"
