@@ -37,6 +37,8 @@ class Services(val configuration: Configuration) {
     private val pdlClient: PdlClient
     val pdlService: PdlService
     private val eregClient: EregClient
+    private val udiClient: UdiClient
+    val udiService: UdiService
 
     val healthService: HealthService
     private val healthReporter: HealthReporter
@@ -65,6 +67,11 @@ class Services(val configuration: Configuration) {
             configuration = configuration
         )
 
+        val wsClients = no.nav.medlemskap.wsClients.WsClients(
+                stsClientWs = stsWsClient,
+                callIdGenerator = callIdGenerator::get
+        )
+
         medlClient = restClients.medl2(configuration.register.medl2BaseUrl)
         medlService = MedlService(medlClient)
         pdlClient = restClients.pdl(configuration.register.pdlBaseUrl)
@@ -76,6 +83,8 @@ class Services(val configuration: Configuration) {
         safService = SafService(safClient)
         oppgaveClient = restClients.oppgaver(configuration.register.oppgaveBaseUrl)
         oppgaveService = OppgaveService(oppgaveClient)
+        udiClient = wsClients.oppholdstillatelse(configuration.register.udiBaseUrl, udiRetry)
+        udiService = UdiService(udiClient)
 
         healthService = HealthService(
             setOf(
@@ -92,3 +101,5 @@ class Services(val configuration: Configuration) {
         healthReporter = HealthReporter(healthService)
     }
 }
+
+

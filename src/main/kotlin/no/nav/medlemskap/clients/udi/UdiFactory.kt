@@ -26,4 +26,5 @@ object UdiFactory {
                 this.features.addAll(features)
                 this.outInterceptors.addAll(outInterceptors)
             }.create(ServiceClass)
+
 }

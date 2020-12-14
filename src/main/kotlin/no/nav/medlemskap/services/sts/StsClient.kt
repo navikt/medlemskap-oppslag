@@ -1,4 +1,5 @@
-package no.nav.medlemskap.clients.udi.sts
+package no.nav.medlemskap.services.sts
+
 
 import org.apache.cxf.Bus
 import org.apache.cxf.BusFactory
@@ -42,6 +43,7 @@ fun STSClient.configureFor(servicePort: Any) {
 fun STSClient.configureFor(servicePort: Any, policyUri: String) {
     val client = ClientProxy.getClient(servicePort)
     client.configureSTS(this, policyUri)
+
 }
 
 fun Client.configureSTS(stsClient: STSClient, policyUri: String = STS_SAML_POLICY) {

@@ -1,6 +1,5 @@
 package no.nav.medlemskap.clients.udi
 
-
 import io.github.resilience4j.kotlin.retry.executeSuspendFunction
 import io.github.resilience4j.retry.Retry
 import kotlinx.coroutines.Dispatchers
