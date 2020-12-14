@@ -4,6 +4,7 @@ import io.github.resilience4j.kotlin.retry.executeSuspendFunction
 import io.github.resilience4j.retry.Retry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import mu.KotlinLogging
 import no.udi.mt_1067_nav_data.v1.HentPersonstatusParameter
 import no.udi.mt_1067_nav_data.v1.HentPersonstatusResultat
 import v1.mt_1067_nav.no.udi.HentPersonstatusRequestType
@@ -20,6 +21,7 @@ class UdiClient(
 
     companion object {
         val dataTypeFactory: DatatypeFactory = DatatypeFactory.newInstance()
+        private val logger = KotlinLogging.logger { }
     }
 
     suspend fun hentOppholdstatusResulat(fnr: String): HentPersonstatusResultat? {
