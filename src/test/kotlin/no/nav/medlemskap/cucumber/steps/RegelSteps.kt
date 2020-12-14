@@ -271,6 +271,13 @@ class RegelSteps : No {
             LokalWebServer.testResponsKode(input, statusKode)
         }
 
+        Så("Skal feilmeldingen med inputen {string} inneholde konsumenten {string}") { filnavn: String, konsument: String ->
+            val input = RegelSteps::class.java.getResource("/testpersoner/testinput/$filnavn.json").readText()
+            val respons = LokalWebServer.responsUtenStatuskodeSjekk(input)
+
+            assertTrue(respons.contains("for konsument $konsument"))
+        }
+
         Så("skal svaret være {string}") { forventetVerdi: String ->
             val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
 

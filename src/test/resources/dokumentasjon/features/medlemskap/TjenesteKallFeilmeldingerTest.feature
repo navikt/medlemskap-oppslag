@@ -19,3 +19,16 @@ Egenskap: Tjeneste kall feilmeldinger test
       | "InputMedUgyldigFnr"        |
       | "UgyldigInput"              |
       | "InputMedFomFør2016"        |
+
+  Scenariomal:
+    Når tjenestekall med følgende parametere behandles
+      | Fødselsnummer | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 15076500565   | 01.01.2019      | 31.12.2019      | Nei                           |
+
+    Så Skal feilmeldingen med inputen <input> inneholde konsumenten <konsument>
+
+    Eksempler:
+      | input                       | konsument    |
+      | "InputMedTomDatoFørFomDato" | "LOVME"      |
+      | "InputMedUgyldigFnr"        | "LOVME"      |
+      | "InputMedFomFør2016"        | "SYKEPENGER" |
