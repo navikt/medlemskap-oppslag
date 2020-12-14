@@ -1,5 +1,6 @@
 package no.nav.medlemskap.services.udi
 
+import no.nav.medlemskap.domene.Oppholdstillatelse
 import no.udi.mt_1067_nav_data.v1.HentPersonstatusResultat
 
 object UdiMapper {
