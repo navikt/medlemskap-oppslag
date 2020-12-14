@@ -26,6 +26,7 @@ class ErArbeidsgiverOrganisasjonRegel(
         registrerArbeidsgiverMetrics()
 
         return when {
+            arbeidsforhold.isEmpty() -> nei(regelId)
             !arbeidsforhold.erAlleArbeidsgivereOrganisasjon(kontrollPeriodeForArbeidsforhold) -> nei(regelId)
             else -> ja(regelId)
         }

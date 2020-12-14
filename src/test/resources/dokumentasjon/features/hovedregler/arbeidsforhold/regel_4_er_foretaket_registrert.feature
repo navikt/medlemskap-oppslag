@@ -21,3 +21,14 @@ Egenskap: Regel 4: Er foretaket registrert i Foretaksregisteret?
       | Organisasjon     | Ja   |
       | Person           | Nei  |
 
+
+  Scenario: Regel 4: Regelen skal svar "Nei" hvis det ikke er noen arbeidsforhold
+
+    Når regel "4" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
+
+    Så skal svaret være "Nei"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelsen være som definert i RegelId
+

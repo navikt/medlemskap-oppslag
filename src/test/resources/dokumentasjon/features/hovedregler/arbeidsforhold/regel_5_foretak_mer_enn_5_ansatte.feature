@@ -3,7 +3,7 @@
 
 Egenskap: Regel 5: Har arbeidsgiver sin hovedaktivitet i Norge?
 
-  Scenariomal: Person med arbeidsgiver med mer enn 5 ansatte får "Ja"
+  Scenariomal: Regel 5: Person med arbeidsgiver med mer enn 5 ansatte får "Ja"
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
       | 01.01.2018      |                 | Organisasjon     | NORMALT             |
@@ -33,7 +33,7 @@ Egenskap: Regel 5: Har arbeidsgiver sin hovedaktivitet i Norge?
       |                | Nei  |
 
 
-  Scenariomal: Person med arbeidsgiver med mer enn 5 ansatte i juridisk enhet får "Ja"
+  Scenariomal: Regel 5: Person med arbeidsgiver med mer enn 5 ansatte i juridisk enhet får "Ja"
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
       | 01.01.2018      |                 | Organisasjon     | NORMALT             |
@@ -45,7 +45,6 @@ Egenskap: Regel 5: Har arbeidsgiver sin hovedaktivitet i Norge?
     Og følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
       | 01.01.2018      |                 | 001       | 100              |
-
 
     Når regel "5" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
@@ -60,3 +59,11 @@ Egenskap: Regel 5: Har arbeidsgiver sin hovedaktivitet i Norge?
       | 6                               | Ja   |
       | 9                               | Ja   |
       |                                 | Nei  |
+
+  Scenario: Regel 5: Person uten arbeidsforhold skal få "Nei"
+
+    Når regel "5" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
+
+    Så skal svaret være "Nei"

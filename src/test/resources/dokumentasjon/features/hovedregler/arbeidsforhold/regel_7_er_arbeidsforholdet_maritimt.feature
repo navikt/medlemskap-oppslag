@@ -23,3 +23,14 @@ Egenskap: Regel 7: Er arbeidsforholdet maritimt?
       | Arbeidsforholdstype | Svar |
       | NORMALT             | Nei  |
       | MARITIMT            | Ja   |
+
+
+  Scenario: Regel 7: Bruker uten arbeidsforhold får "Nei"
+
+    Når regel "7" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
+
+    Så skal svaret være "Nei"
+
+

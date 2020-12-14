@@ -22,6 +22,7 @@ class ErForetaketAktivtRegel(
 
     override fun operasjon(): Resultat {
         return when {
+            arbeidsforhold.isEmpty() -> nei(regelId)
             arbeidsforhold.konkursStatuserArbeidsgivere(kontrollPeriodeForArbeidsforhold).finnes() -> nei(regelId)
             else -> ja(regelId)
         }
