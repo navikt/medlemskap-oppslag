@@ -109,6 +109,12 @@ fun merEnn10ArbeidsforholdCounter(ytelse: Ytelse): Counter = Counter
     .description("counter for brukere med flere enn 10 arbeidsforhold")
     .register(Metrics.globalRegistry)
 
+fun antallUnikeArbeidsforholdCounter(antallUnikeArbeidsforhold: Int, ytelse: Ytelse): Counter = Counter
+    .builder("unike_arbeidsforhold")
+    .tags("antall", antallUnikeArbeidsforhold.toString(), "ytelse", ytelse.name())
+    .description("Counter for unike arbeidsforhold til en bruker")
+    .register(Metrics.globalRegistry)
+
 fun antallTreffPåArbeidsgiver(orgnummer: String?, ytelse: Ytelse): Counter = Counter
     .builder("treff_paa_arbeidsgiver")
     .tags("orgnummer", orgnummer, "ytelse", ytelse.name())

@@ -85,6 +85,8 @@ object ArbeidsforholdFunksjoner {
 
         val arbeidsforholdForNorskArbeidsgiver = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
 
+        antallUnikeArbeidsforholdCounter(arbeidsforholdForNorskArbeidsgiver.size, ytelse).increment()
+
         if (arbeidsforholdForNorskArbeidsgiver.size > 10) {
             merEnn10ArbeidsforholdCounter(ytelse).increment()
             return false
