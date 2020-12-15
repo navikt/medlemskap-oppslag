@@ -9,7 +9,7 @@ val logbackVersion = "1.2.3"
 val logstashVersion = "6.4"
 val konfigVersion = "1.6.10.0"
 val kotlinLoggerVersion = "1.8.3"
-val tjenestespesifikasjonerVersion = "1.2019.12.18-12.22-ce897c4eb2c1"
+val tjenestespesifikasjonerVersion = "1.2020.10.21-14.38-e6bb56478815"
 val cxfVersion = "3.3.8"
 val coroutinesVersion = "1.3.7"
 val wireMockVersion = "2.27.2"
@@ -125,7 +125,9 @@ dependencies {
     implementation("com.sun.xml.ws:jaxws-tools:$jaxwsToolsVersion") {
         exclude(group = "com.sun.xml.ws", module = "policy")
     }
-    implementation(tjenestespesifikasjon("person-v3-tjenestespesifikasjon"))
+
+    implementation(tjenestespesifikasjon("udi-personstatus-v1-tjenestespesifikasjon"))
+
     implementation("io.github.resilience4j:resilience4j-retry:$resilience4jVersion")
     implementation("io.github.resilience4j:resilience4j-kotlin:$resilience4jVersion")
     implementation("no.bekk.bekkopen:nocommons:$nocommonsVersion")

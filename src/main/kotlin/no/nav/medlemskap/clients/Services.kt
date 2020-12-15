@@ -68,8 +68,8 @@ class Services(val configuration: Configuration) {
         )
 
         val wsClients = no.nav.medlemskap.wsClients.WsClients(
-                stsClientWs = stsWsClient,
-                callIdGenerator = callIdGenerator::get
+            stsClientWs = stsWsClient,
+            callIdGenerator = callIdGenerator::get
         )
 
         medlClient = restClients.medl2(configuration.register.medl2BaseUrl)
@@ -101,5 +101,3 @@ class Services(val configuration: Configuration) {
         healthReporter = HealthReporter(healthService)
     }
 }
-
-

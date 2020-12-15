@@ -13,10 +13,9 @@ import v1.mt_1067_nav.no.udi.MT1067NAVV1Interface
 import java.util.*
 import javax.xml.datatype.DatatypeFactory
 
-
 class UdiClient(
-        private val mT1067NAVV1Interface: MT1067NAVV1Interface,
-        private val retry: Retry? = null
+    private val mT1067NAVV1Interface: MT1067NAVV1Interface,
+    private val retry: Retry? = null
 ) {
 
     companion object {
@@ -39,7 +38,6 @@ class UdiClient(
             mT1067NAVV1Interface.hentPersonstatus(mapRequest(fnr))
         }
     }
-
 
     fun mapRequest(fnr: String): HentPersonstatusRequestType? {
         val type = HentPersonstatusRequestType()

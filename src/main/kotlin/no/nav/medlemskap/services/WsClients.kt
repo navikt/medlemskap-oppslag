@@ -10,10 +10,9 @@ import org.apache.cxf.ext.logging.LoggingFeature
 import org.apache.cxf.ws.addressing.WSAddressingFeature
 import org.apache.cxf.ws.security.trust.STSClient
 
-
 class WsClients(
-        private val stsClientWs: STSClient,
-        private val callIdGenerator: () -> String
+    private val stsClientWs: STSClient,
+    private val callIdGenerator: () -> String
 ) {
     private val features get() = listOf(WSAddressingFeature(), LoggingFeature(), MetricFeature())
     private val outInterceptors get() = listOf(CallIdInterceptor(callIdGenerator))
@@ -25,13 +24,13 @@ class WsClients(
     }
 
     private fun <ServicePort : Any> ServicePort.withSts() =
-            apply {
-                stsClientWs.configureFor(this)
-            }
+        apply {
+            stsClientWs.configureFor(this)
+        }
 
     fun oppholdstillatelse(endpointUrl: String, retry: Retry?) =
-            UdiFactory.create(endpointUrl, features, outInterceptors)
-                    .withSts().let { port ->
-                        UdiClient(port, retry)
-                    }
+        UdiFactory.create(endpointUrl, features, outInterceptors)
+            .withSts().let { port ->
+                UdiClient(port, retry)
+            }
 }

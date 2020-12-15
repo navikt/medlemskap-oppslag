@@ -5,5 +5,5 @@ import no.nav.medlemskap.clients.udi.UdiClient
 class UdiService(private val udiClient: UdiClient) {
 
     suspend fun hentOppholdstillatelseer(fnr: String) =
-            udiClient.hentOppholdstatusResulat(fnr = fnr)?.let { UdiMapper.mapTilOppholdstillatelser(it) }
+        udiClient.hentOppholdstatusResulat(fnr = fnr)?.let { UdiMapper.mapTilOppholdstillatelser(it) }
 }

@@ -50,22 +50,11 @@ repositories {
 }
 
 plugins {
-    kotlin("jvm")
     id("java")
     id("no.nils.wsdl2java") version "0.12"
 }
 
 dependencies {
-    implementation(kotlin("stdlib"))
-    implementation("io.ktor:ktor-auth:$ktorVersion")
-    implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
-    implementation("io.ktor:ktor-client-core:$ktorVersion")
-    implementation("io.ktor:ktor-client-apache:$ktorVersion")
-    implementation("io.ktor:ktor-client-cio:$ktorVersion")
-    implementation("io.ktor:ktor-client-json:$ktorVersion")
-    implementation("io.ktor:ktor-client-jackson:$ktorVersion")
-    implementation("io.ktor:ktor-jackson:$ktorVersion")
-    implementation("io.ktor:ktor-metrics-micrometer:$ktorVersion")
     implementation("org.apache.cxf:cxf-rt-ws-security:$cxfVersion")
     implementation("org.apache.cxf:cxf-rt-frontend-jaxws:$cxfVersion")
     implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersion")
@@ -75,12 +64,6 @@ dependencies {
     implementation("com.sun.xml.ws:jaxws-tools:$jaxwsToolsVersion") {
         exclude(group = "com.sun.xml.ws", module = "policy")
     }
-    implementation("io.ktor:ktor-metrics-micrometer:$ktorVersion")
-    implementation("io.github.resilience4j:resilience4j-retry:$resilience4jVersion")
-    implementation("io.github.resilience4j:resilience4j-kotlin:$resilience4jVersion")
-    implementation("no.bekk.bekkopen:nocommons:$nocommonsVersion")
-    implementation("com.expediagroup:graphql-kotlin-client:$graphqlKotlinClientVersion")
-    implementation("com.neovisionaries:nv-i18n:$nvi18nVersion")
 
 }
 

@@ -1,10 +1,7 @@
 package no.nav.medlemskap.clients.wsClients
 
-import io.github.resilience4j.retry.Retry
 import no.nav.medlemskap.clients.CallIdInterceptor
 import no.nav.medlemskap.clients.sts.configureFor
-import no.nav.medlemskap.clients.udi.UdiClient
-import no.nav.medlemskap.clients.udi.UdiFactory
 import no.nav.medlemskap.common.MetricFeature
 import org.apache.cxf.ext.logging.LoggingFeature
 import org.apache.cxf.ws.addressing.WSAddressingFeature
@@ -28,6 +25,4 @@ class WsClients(
         apply {
             stsClientWs.configureFor(this)
         }
-
-
 }
