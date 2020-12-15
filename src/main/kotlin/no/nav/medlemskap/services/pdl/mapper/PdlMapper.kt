@@ -8,7 +8,6 @@ import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Datohjelper.Companion.parseIsoDato
 import no.nav.medlemskap.regler.common.Datohjelper.Companion.parseIsoDatoTid
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
-import no.nav.tjeneste.virksomhet.person.v3.informasjon.Bostedsadresse
 import java.time.LocalDate
 
 object PdlMapper {
