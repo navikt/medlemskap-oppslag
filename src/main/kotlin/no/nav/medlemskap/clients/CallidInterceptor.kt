@@ -31,7 +31,7 @@ class CallIdInterceptor(private val callIdGenerator: () -> String) : AbstractPha
                         logger.info { "Kaller service=$service operation=$operation med callId=$uuid" }
                         val qName = QName("uri:no.nav.applikasjonsrammeverk", "callId")
                         val header = SoapHeader(qName, uuid, JAXBDataBinding(String::class.java))
-                        secureLogger.info("Header: $header")
+                        secureLogger.info("HeaderName: ${header.name} declaredNamespaceMappings ${header.dataBinding.declaredNamespaceMappings}")
                         message.headers.add(header)
                     }
                 } catch (ex: JAXBException) {
