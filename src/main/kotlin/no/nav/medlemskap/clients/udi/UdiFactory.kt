@@ -9,9 +9,9 @@ import javax.xml.namespace.QName
 
 object UdiFactory {
     private val ServiceClass = MT1067NAVV1Interface::class.java
-    private const val Wsdl = "udi-client/src/main/wsdl/MT_1067_NAV_Data_v1.xsd"
-    private const val Namespace = "http://udi.no/MT_1067_NAV_Data/v1"
-    private val ServiceName = QName(Namespace, "MT_1067_NAV_v1Service")
+    private const val Wsdl = "wsdl/MT_1067_NAV_v1.wsdl"
+    private const val Namespace = "http://udi.no.MT_1067_NAV.v1"
+    private val ServiceName = QName(Namespace, "MT_1067_NAV_v1Port")
     private val EndpointName = QName(Namespace, "MT_1067_NAV_v1Port")
 
     fun create(endpointUrl: String, features: List<Feature> = emptyList(), outInterceptors: List<Interceptor<Message>> = emptyList()) =

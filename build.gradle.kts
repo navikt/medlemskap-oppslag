@@ -125,7 +125,9 @@ dependencies {
     implementation("com.sun.xml.ws:jaxws-tools:$jaxwsToolsVersion") {
         exclude(group = "com.sun.xml.ws", module = "policy")
     }
-    implementation(tjenestespesifikasjon("person-v3-tjenestespesifikasjon"))
+
+    implementation(tjenestespesifikasjon("udi-personstatus-v1"))
+
     implementation("io.github.resilience4j:resilience4j-retry:$resilience4jVersion")
     implementation("io.github.resilience4j:resilience4j-kotlin:$resilience4jVersion")
     implementation("no.bekk.bekkopen:nocommons:$nocommonsVersion")
