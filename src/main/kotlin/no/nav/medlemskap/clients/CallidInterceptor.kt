@@ -15,6 +15,8 @@ private val logger = KotlinLogging.logger { }
 
 class CallIdInterceptor(private val callIdGenerator: () -> String) : AbstractPhaseInterceptor<Message>(Phase.PRE_STREAM) {
 
+    private val secureLogger = KotlinLogging.logger("tjenestekall")
+
     @Throws(Fault::class)
     override fun handleMessage(message: Message) {
         when (message) {
@@ -29,6 +31,7 @@ class CallIdInterceptor(private val callIdGenerator: () -> String) : AbstractPha
                         logger.info { "Kaller service=$service operation=$operation med callId=$uuid" }
                         val qName = QName("uri:no.nav.applikasjonsrammeverk", "callId")
                         val header = SoapHeader(qName, uuid, JAXBDataBinding(String::class.java))
+                        secureLogger.info("Header: $header")
                         message.headers.add(header)
                     }
                 } catch (ex: JAXBException) {
