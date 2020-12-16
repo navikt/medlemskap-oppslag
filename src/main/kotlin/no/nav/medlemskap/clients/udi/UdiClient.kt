@@ -10,15 +10,13 @@ import no.udi.mt_1067_nav_data.v1.HentPersonstatusResultat
 import v1.mt_1067_nav.no.udi.HentPersonstatusRequestType
 import v1.mt_1067_nav.no.udi.HentPersonstatusResponseType
 import v1.mt_1067_nav.no.udi.MT1067NAVV1Interface
-import java.util.*
 import javax.xml.datatype.DatatypeFactory
 
-
 class UdiClient(
-        private val mT1067NAVV1Interface: MT1067NAVV1Interface,
-        private val retry: Retry? = null
+    private val mT1067NAVV1Interface: MT1067NAVV1Interface,
+    private val retry: Retry? = null
 ) {
-
+    private val secureLogger = KotlinLogging.logger("tjenestekall")
     companion object {
         val dataTypeFactory: DatatypeFactory = DatatypeFactory.newInstance()
         private val logger = KotlinLogging.logger { }
@@ -36,10 +34,10 @@ class UdiClient(
     suspend fun hentOppholdstatusRequest(fnr: String): HentPersonstatusResponseType? {
 
         return withContext(Dispatchers.Default) {
+            secureLogger.info("Request: ${mapRequest(fnr)}")
             mT1067NAVV1Interface.hentPersonstatus(mapRequest(fnr))
         }
     }
-
 
     fun mapRequest(fnr: String): HentPersonstatusRequestType? {
         val type = HentPersonstatusRequestType()

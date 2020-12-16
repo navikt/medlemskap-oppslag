@@ -1,5 +1,6 @@
 package no.nav.medlemskap.clients
 
+import mu.KotlinLogging
 import no.nav.medlemskap.clients.aareg.AaRegClient
 import no.nav.medlemskap.clients.ereg.EregClient
 import no.nav.medlemskap.clients.medl.MedlClient
@@ -9,7 +10,6 @@ import no.nav.medlemskap.clients.saf.SafClient
 import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.clients.sts.stsClient
 import no.nav.medlemskap.clients.udi.UdiClient
-import no.nav.medlemskap.clients.wsClients.WsClients
 import no.nav.medlemskap.common.callIdGenerator
 import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.common.healthcheck.HealthReporter
@@ -25,7 +25,7 @@ import no.nav.medlemskap.services.saf.SafService
 import no.nav.medlemskap.services.udi.UdiService
 
 class Services(val configuration: Configuration) {
-
+    private val secureLogger = KotlinLogging.logger("tjenestekall")
     private val medlClient: MedlClient
     val medlService: MedlService
     private val aaRegClient: AaRegClient
@@ -54,6 +54,8 @@ class Services(val configuration: Configuration) {
             password = configuration.sts.password
         )
 
+        secureLogger.info("StsWs Config: ${configuration.sts.username} url: ${configuration.sts.endpointUrl}")
+
         val stsRestClient = StsRestClient(
             baseUrl = configuration.sts.restUrl,
             username = configuration.sts.username,
@@ -68,8 +70,8 @@ class Services(val configuration: Configuration) {
         )
 
         val wsClients = no.nav.medlemskap.wsClients.WsClients(
-                stsClientWs = stsWsClient,
-                callIdGenerator = callIdGenerator::get
+            stsClientWs = stsWsClient,
+            callIdGenerator = callIdGenerator::get
         )
 
         medlClient = restClients.medl2(configuration.register.medl2BaseUrl)
@@ -101,5 +103,3 @@ class Services(val configuration: Configuration) {
         healthReporter = HealthReporter(healthService)
     }
 }
-
-

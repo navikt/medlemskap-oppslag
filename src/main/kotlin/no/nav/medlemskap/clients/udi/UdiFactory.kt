@@ -15,14 +15,13 @@ object UdiFactory {
     private val EndpointName = QName(Namespace, "MT_1067_NAV_v1Port")
 
     fun create(endpointUrl: String, features: List<Feature> = emptyList(), outInterceptors: List<Interceptor<Message>> = emptyList()) =
-            JaxWsProxyFactoryBean().apply {
-                address = endpointUrl
-                wsdlURL = Wsdl
-                serviceName = ServiceName
-                endpointName = EndpointName
-                serviceClass = ServiceClass
-                this.features.addAll(features)
-                this.outInterceptors.addAll(outInterceptors)
-            }.create(ServiceClass)
-
+        JaxWsProxyFactoryBean().apply {
+            address = endpointUrl
+            wsdlURL = Wsdl
+            serviceName = ServiceName
+            endpointName = EndpointName
+            serviceClass = ServiceClass
+            this.features.addAll(features)
+            this.outInterceptors.addAll(outInterceptors)
+        }.create(ServiceClass)
 }
