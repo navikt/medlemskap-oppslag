@@ -1,6 +1,5 @@
 package no.nav.medlemskap.clients
 
-import mu.KotlinLogging
 import no.nav.medlemskap.clients.aareg.AaRegClient
 import no.nav.medlemskap.clients.ereg.EregClient
 import no.nav.medlemskap.clients.medl.MedlClient
@@ -25,7 +24,6 @@ import no.nav.medlemskap.services.saf.SafService
 import no.nav.medlemskap.services.udi.UdiService
 
 class Services(val configuration: Configuration) {
-    private val secureLogger = KotlinLogging.logger("tjenestekall")
     private val medlClient: MedlClient
     val medlService: MedlService
     private val aaRegClient: AaRegClient
@@ -50,11 +48,9 @@ class Services(val configuration: Configuration) {
     init {
         val stsWsClient = stsClient(
             stsUrl = configuration.sts.endpointUrl,
-            username = "Z994413",
-            password = "Medlemskap1"
+            username = configuration.sts.username,
+            password = configuration.sts.password
         )
-
-        secureLogger.info("StsWs Config: ${configuration.sts.username} url: ${configuration.sts.endpointUrl}")
 
         val stsRestClient = StsRestClient(
             baseUrl = configuration.sts.restUrl,

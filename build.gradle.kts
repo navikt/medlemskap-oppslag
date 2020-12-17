@@ -42,8 +42,6 @@ val junitVersion = "4.13.1"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
-val navCommonCxfVersion = "1.2019.05.15-13.59-3271d3e87221"
-
 fun tjenestespesifikasjon(name: String) = "no.nav.tjenestespesifikasjoner:$name:$tjenestespesifikasjonerVersion"
 
 plugins {
@@ -128,7 +126,6 @@ dependencies {
         exclude(group = "com.sun.xml.ws", module = "policy")
     }
 
-    implementation("no.nav.common:cxf:$navCommonCxfVersion")
     implementation(tjenestespesifikasjon("udi-personstatus-v1"))
 
     implementation("io.github.resilience4j:resilience4j-retry:$resilience4jVersion")
