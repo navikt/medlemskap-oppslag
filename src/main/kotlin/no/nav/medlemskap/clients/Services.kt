@@ -96,7 +96,7 @@ class Services(val configuration: Configuration) {
                 HttpResponseHealthCheck("PDL", { pdlClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("SAF", { safClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("STS", { stsRestClient.healthCheck() }, healthRetry)
-                //  TryCatchHealthCheck("UDI", { udiClient.healthCheck() }, healthRetry)
+                // TryCatchHealthCheck("UDI", { udiClient.healthCheck() }, healthRetry)
             )
         )
 

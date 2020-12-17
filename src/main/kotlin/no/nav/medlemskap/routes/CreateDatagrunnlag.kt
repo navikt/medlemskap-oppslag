@@ -5,6 +5,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.Services
+import no.nav.medlemskap.common.FeatureToggles
 import no.nav.medlemskap.common.endretStatsborgerskapSisteÅretCounter
 import no.nav.medlemskap.common.flereStatsborgerskapCounter
 import no.nav.medlemskap.common.ytelseCounter
@@ -53,7 +54,12 @@ suspend fun defaultCreateDatagrunnlag(
     val journalPoster = journalPosterRequest.await()
     val oppgaver = gosysOppgaver.await()
     val ytelse: Ytelse = finnYtelse(request.ytelse, clientId)
-    val oppholdstillatelse = oppholdsstatusRequest.await()
+
+    val oppholdstillatelse = if (FeatureToggles.FEATURE_UDI.enabled) {
+        oppholdsstatusRequest.await()
+    } else {
+        null
+    }
 
     ytelseCounter(ytelse.name()).increment()
 

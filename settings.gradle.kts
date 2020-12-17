@@ -8,4 +8,4 @@
  */
 
 rootProject.name = "medlemskap-oppslag"
-include("pdl-client", "saf-client", "udi-client")
+include("pdl-client", "saf-client")
