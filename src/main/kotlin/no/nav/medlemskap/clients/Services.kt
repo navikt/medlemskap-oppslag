@@ -50,8 +50,8 @@ class Services(val configuration: Configuration) {
     init {
         val stsWsClient = stsClient(
             stsUrl = configuration.sts.endpointUrl,
-            username = configuration.sts.username,
-            password = configuration.sts.password
+            username = "Z994413",
+            password = "Medlemskap1"
         )
 
         secureLogger.info("StsWs Config: ${configuration.sts.username} url: ${configuration.sts.endpointUrl}")
