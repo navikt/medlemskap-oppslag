@@ -14,7 +14,6 @@ import javax.xml.namespace.QName
 private val logger = KotlinLogging.logger { }
 
 class CallIdInterceptor(private val callIdGenerator: () -> String) : AbstractPhaseInterceptor<Message>(Phase.PRE_STREAM) {
-
     @Throws(Fault::class)
     override fun handleMessage(message: Message) {
         when (message) {

@@ -7,6 +7,9 @@ import no.nav.medlemskap.clients.oppgave.OppgaveClient
 import no.nav.medlemskap.clients.pdl.PdlClient
 import no.nav.medlemskap.clients.saf.SafClient
 import no.nav.medlemskap.clients.sts.StsRestClient
+import no.nav.medlemskap.clients.sts.stsClient
+import no.nav.medlemskap.clients.udi.UdiClient
+import no.nav.medlemskap.common.callIdGenerator
 import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.common.healthcheck.HealthReporter
 import no.nav.medlemskap.common.healthcheck.HealthService
@@ -18,9 +21,9 @@ import no.nav.medlemskap.services.medl.MedlService
 import no.nav.medlemskap.services.oppgave.OppgaveService
 import no.nav.medlemskap.services.pdl.PdlService
 import no.nav.medlemskap.services.saf.SafService
+import no.nav.medlemskap.services.udi.UdiService
 
 class Services(val configuration: Configuration) {
-
     private val medlClient: MedlClient
     val medlService: MedlService
     private val aaRegClient: AaRegClient
@@ -32,14 +35,22 @@ class Services(val configuration: Configuration) {
     private val pdlClient: PdlClient
     val pdlService: PdlService
     private val eregClient: EregClient
+    private val udiClient: UdiClient
+    val udiService: UdiService
 
     val healthService: HealthService
     private val healthReporter: HealthReporter
     private val healthRetry = retryRegistry.retry("Helsesjekker")
 
     private val stsRetry = retryRegistry.retry("STS")
+    private val udiRetry = retryRegistry.retry("UDI")
 
     init {
+        val stsWsClient = stsClient(
+            stsUrl = configuration.sts.endpointUrl,
+            username = configuration.sts.username,
+            password = configuration.sts.password
+        )
 
         val stsRestClient = StsRestClient(
             baseUrl = configuration.sts.restUrl,
@@ -54,6 +65,11 @@ class Services(val configuration: Configuration) {
             configuration = configuration
         )
 
+        val wsClients = no.nav.medlemskap.wsClients.WsClients(
+            stsClientWs = stsWsClient,
+            callIdGenerator = callIdGenerator::get
+        )
+
         medlClient = restClients.medl2(configuration.register.medl2BaseUrl)
         medlService = MedlService(medlClient)
         pdlClient = restClients.pdl(configuration.register.pdlBaseUrl)
@@ -65,6 +81,8 @@ class Services(val configuration: Configuration) {
         safService = SafService(safClient)
         oppgaveClient = restClients.oppgaver(configuration.register.oppgaveBaseUrl)
         oppgaveService = OppgaveService(oppgaveClient)
+        udiClient = wsClients.oppholdstillatelse(configuration.register.udiBaseUrl, udiRetry)
+        udiService = UdiService(udiClient)
 
         healthService = HealthService(
             setOf(
@@ -74,6 +92,7 @@ class Services(val configuration: Configuration) {
                 HttpResponseHealthCheck("PDL", { pdlClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("SAF", { safClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("STS", { stsRestClient.healthCheck() }, healthRetry)
+                // TryCatchHealthCheck("UDI", { udiClient.healthCheck() }, healthRetry)
             )
         )
 

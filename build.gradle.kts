@@ -86,7 +86,6 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation(project(path = ":pdl-client", configuration = "archives"))
     implementation(project(path = ":saf-client", configuration = "archives"))
-    implementation(project(path = ":udi-client", configuration = "archives"))
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion") {
@@ -125,7 +124,9 @@ dependencies {
     implementation("com.sun.xml.ws:jaxws-tools:$jaxwsToolsVersion") {
         exclude(group = "com.sun.xml.ws", module = "policy")
     }
-    implementation(tjenestespesifikasjon("person-v3-tjenestespesifikasjon"))
+
+    implementation(tjenestespesifikasjon("udi-personstatus-v1"))
+
     implementation("io.github.resilience4j:resilience4j-retry:$resilience4jVersion")
     implementation("io.github.resilience4j:resilience4j-kotlin:$resilience4jVersion")
     implementation("no.bekk.bekkopen:nocommons:$nocommonsVersion")
