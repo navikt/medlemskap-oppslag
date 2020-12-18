@@ -86,7 +86,6 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation(project(path = ":pdl-client", configuration = "archives"))
     implementation(project(path = ":saf-client", configuration = "archives"))
-//    implementation(project(path = ":udi-client", configuration = "archives"))
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion") {
