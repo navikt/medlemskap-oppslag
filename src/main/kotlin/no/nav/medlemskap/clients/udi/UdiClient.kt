@@ -52,11 +52,12 @@ class UdiClient(
         return type
     }
 
-    suspend fun healthCheck() {
-/*
+    fun healthCheck() {
+        TODO("Not yet implemented")
+    /*
         withContext(Dispatchers.Default) {
             mT1067NAVV1Interface.ping(null)
         }
- */
+     */
     }
 }
