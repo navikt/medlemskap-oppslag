@@ -53,8 +53,10 @@ class UdiClient(
     }
 
     suspend fun healthCheck() {
+/*
         withContext(Dispatchers.Default) {
             mT1067NAVV1Interface.ping(null)
         }
+ */
     }
 }
