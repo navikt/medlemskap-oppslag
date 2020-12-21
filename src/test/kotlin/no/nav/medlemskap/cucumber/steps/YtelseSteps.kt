@@ -9,13 +9,11 @@ import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.ytelse.YtelseDomenespråkParser
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Kontrollperiode
-import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.regler.common.Datohjelper
-import no.nav.medlemskap.regler.common.Datohjelper.Companion.parseDato
+import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForArbeidsforhold
+import no.nav.medlemskap.regler.common.Datohjelper.parseDato
 import java.time.LocalDate
 
 class YtelseSteps : No {
-    private val domenespråkParser = DomenespråkParser
     private val ytelseDomenespråkParser = YtelseDomenespråkParser
 
     private var ytelsePeriode: InputPeriode? = null
@@ -28,33 +26,24 @@ class YtelseSteps : No {
         }
 
         Når("første sykedag beregnes fra sykemeldingsperiode") {
-            førsteDagForYtelse = Datohjelper(ytelsePeriode!!, null, Ytelse.SYKEPENGER).førsteDatoForYtelse()
+            førsteDagForYtelse = Kontrollperiode.førsteDatoForYtelse(ytelsePeriode!!, null)
         }
 
         Når<DataTable>("kontrollperiode for arbeidsforhold beregnes med følgende parametre:") { dataTable: DataTable? ->
             val parametreKontrollperiode = ytelseDomenespråkParser.mapParametreKontrollperiode(dataTable!!)
 
             ytelsePeriode = parametreKontrollperiode.iputPeriode
-            val datohjelper = Datohjelper(
-                periode = ytelsePeriode!!,
-                førsteDagForYtelse = parametreKontrollperiode.førsteDagForYtelse,
-                ytelse = parametreKontrollperiode.ytelse
-            )
+            førsteDagForYtelse = parametreKontrollperiode.førsteDagForYtelse
 
-            kontrollperiode = datohjelper.kontrollPeriodeForArbeidsforhold()
+            kontrollperiode = kontrollPeriodeForArbeidsforhold(ytelsePeriode!!, førsteDagForYtelse)
         }
 
         Når<DataTable>("kontrollperiode for medl beregnes med følgende parametre:") { dataTable: DataTable? ->
             val parametreKontrollperiode = ytelseDomenespråkParser.mapParametreKontrollperiode(dataTable!!)
 
             ytelsePeriode = parametreKontrollperiode.iputPeriode
-            val datohjelper = Datohjelper(
-                periode = ytelsePeriode!!,
-                førsteDagForYtelse = parametreKontrollperiode.førsteDagForYtelse,
-                ytelse = parametreKontrollperiode.ytelse
-            )
 
-            kontrollperiode = datohjelper.kontrollPeriodeForMedl()
+            kontrollperiode = Kontrollperiode.kontrollPeriodeForMedl(ytelsePeriode!!, parametreKontrollperiode.førsteDagForYtelse)
         }
 
         Så("skal første sykedag være {string}") { forventetDato: String? ->

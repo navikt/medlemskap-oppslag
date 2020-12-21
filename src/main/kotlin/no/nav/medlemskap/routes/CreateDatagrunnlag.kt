@@ -10,6 +10,8 @@ import no.nav.medlemskap.common.endretStatsborgerskapSisteÅretCounter
 import no.nav.medlemskap.common.flereStatsborgerskapCounter
 import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForPersonhistorikk
+import no.nav.medlemskap.domene.Statsborgerskap.Companion.erEøsBorger
 import no.nav.medlemskap.domene.Statsborgerskap.Companion.harEndretSisteÅret
 import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.domene.barn.DataOmBarn
@@ -46,7 +48,13 @@ suspend fun defaultCreateDatagrunnlag(
     dataOmBrukersBarn = if (!fnrTilBarn.isNullOrEmpty()) hentDataOmBarn(fnrTilBarn, services, callId) else null
 
     val fnrTilEktefelle = hentFnrTilEktefelle(personHistorikkFraPdl)
-    dataOmEktefelle = if (!fnrTilEktefelle.isNullOrEmpty()) hentDataOmEktefelle(fnrTilEktefelle, services, callId, request.periode, request.førsteDagForYtelse) else null
+    dataOmEktefelle = if (!fnrTilEktefelle.isNullOrEmpty()) hentDataOmEktefelle(
+        fnrTilEktefelle,
+        services,
+        callId,
+        request.periode,
+        request.førsteDagForYtelse
+    ) else null
 
     val medlemskap = medlemskapsunntakRequest.await()
     val arbeidsforhold = arbeidsforholdRequest.await()
@@ -54,7 +62,9 @@ suspend fun defaultCreateDatagrunnlag(
     val oppgaver = gosysOppgaver.await()
     val ytelse: Ytelse = finnYtelse(request.ytelse, clientId)
 
-    val oppholdstillatelse = if (FeatureToggles.FEATURE_UDI.enabled) {
+    val oppholdstillatelse = if (FeatureToggles.FEATURE_UDI.enabled &&
+        erAnnenStatsborger(personHistorikkFraPdl.statsborgerskap, request)
+    ) {
         val oppholdsstatusRequest = async { services.udiService.hentOppholdstillatelseer(request.fnr) }
         oppholdsstatusRequest.await()
     } else {
@@ -82,6 +92,12 @@ suspend fun defaultCreateDatagrunnlag(
         overstyrteRegler = request.overstyrteRegler,
         oppholdstillatelse = oppholdstillatelse
     )
+}
+
+private fun erAnnenStatsborger(statsborgerskap: List<Statsborgerskap>, request: Request): Boolean {
+    val kontrollPeriodeForPersonhistorikk = kontrollPeriodeForPersonhistorikk(request.periode, request.førsteDagForYtelse)
+
+    return !statsborgerskap.erEøsBorger(kontrollPeriodeForPersonhistorikk)
 }
 
 suspend fun hentDataOmBarn(fnrBarn: List<String>, services: Services, callId: String): List<DataOmBarn> {

@@ -2,7 +2,6 @@ package no.nav.medlemskap.regler.v1.medlemskap
 
 import no.nav.medlemskap.common.regelUendretCounterMidlertidig
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.regler.common.Datohjelper
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
@@ -20,8 +19,6 @@ class ErArbeidsforholdUendretRegel(
     private val arbeidsforhold: List<Arbeidsforhold>,
     regelId: RegelId
 ) : MedlemskapRegel(regelId, ytelse, periode, førsteDagForYtelse, medlemskap) {
-    private val datohjelper = Datohjelper(periode, førsteDagForYtelse, ytelse)
-
     override fun operasjon(): Resultat {
         return erBrukersArbeidsforholdUendret(regelId)
     }
@@ -47,14 +44,14 @@ class ErArbeidsforholdUendretRegel(
             (
                 ulikeArbeidsforholdMenSammeArbeidsgiver() ||
                     arbeidsforhold.arbeidsforholdForDato(medlemskap.tidligsteFraOgMedDatoForMedl(kontrollPeriodeForMedl)) ==
-                    arbeidsforhold.arbeidsforholdForDato(datohjelper.tilOgMedDag().plusDays(1))
+                    arbeidsforhold.arbeidsforholdForDato(kontrollPeriodeForMedl.tom.plusDays(1))
                 )
 
     private fun ulikeArbeidsforholdMenSammeArbeidsgiver() =
         (
-            arbeidsforhold.arbeidsforholdForDato(medlemskap.tidligsteFraOgMedDatoForMedl(kontrollPeriodeForMedl)) != arbeidsforhold.arbeidsforholdForDato(datohjelper.tilOgMedDag()) &&
+            arbeidsforhold.arbeidsforholdForDato(medlemskap.tidligsteFraOgMedDatoForMedl(kontrollPeriodeForMedl)) != arbeidsforhold.arbeidsforholdForDato(kontrollPeriodeForMedl.tom) &&
                 arbeidsforhold.arbeidsforholdForDato(medlemskap.tidligsteFraOgMedDatoForMedl(kontrollPeriodeForMedl)).map { it.arbeidsgiver.organisasjonsnummer } ==
-                arbeidsforhold.arbeidsforholdForDato(datohjelper.tilOgMedDag().plusDays(1)).map { it.arbeidsgiver.organisasjonsnummer }
+                arbeidsforhold.arbeidsforholdForDato(kontrollPeriodeForMedl.tom.plusDays(1)).map { it.arbeidsgiver.organisasjonsnummer }
             )
 
     companion object {

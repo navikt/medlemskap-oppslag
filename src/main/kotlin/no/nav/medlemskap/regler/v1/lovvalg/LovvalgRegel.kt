@@ -1,11 +1,12 @@
 package no.nav.medlemskap.regler.v1.lovvalg
 
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForArbeidsforhold
+import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForPersonhistorikk
 import no.nav.medlemskap.domene.Statsborgerskap.Companion.erBritiskBorger
 import no.nav.medlemskap.domene.Statsborgerskap.Companion.erSveitsiskBorger
 import no.nav.medlemskap.domene.Statsborgerskap.Companion.gyldigeStatsborgerskap
 import no.nav.medlemskap.regler.common.BasisRegel
-import no.nav.medlemskap.regler.common.Datohjelper
 import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Funksjoner.erTom
@@ -18,9 +19,8 @@ abstract class LovvalgRegel(
     periode: InputPeriode,
     førsteDagForYtelse: LocalDate?
 ) : BasisRegel(regelId, ytelse) {
-    val datohjelper = Datohjelper(periode, førsteDagForYtelse, ytelse)
-    val kontrollPeriodeForArbeidsforhold = datohjelper.kontrollPeriodeForArbeidsforhold()
-    val kontrollPeriodeForPersonhistorikk = datohjelper.kontrollPeriodeForPersonhistorikk()
+    val kontrollPeriodeForArbeidsforhold = kontrollPeriodeForArbeidsforhold(periode, førsteDagForYtelse)
+    val kontrollPeriodeForPersonhistorikk = kontrollPeriodeForPersonhistorikk(periode, førsteDagForYtelse)
 
     protected fun erPersonBosattINorge(boadadresse: List<Adresse>, postadresseLandkoder: List<String>, midlertidigAdresseLandkoder: List<String>): Boolean {
         return boadadresse.brukerHarNorskBostedsadresse() && boadadresse.alleErNorske() &&
