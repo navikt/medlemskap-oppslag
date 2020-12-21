@@ -220,6 +220,17 @@ class RegelSteps : No {
             exception.message shouldBe forventetValideringsfeil
         }
 
+        Når<String, String, DataTable>("regel {string} kjøres med følgende parametre, skal svaret være {string}") { regelId: String?, forventetSvar: String?, dataTable: DataTable? ->
+            val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
+            datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
+
+            val regelFactory = RegelFactory(datagrunnlag!!)
+            val regel = regelFactory.create(regelId!!)
+            val faktiskSvar = regel.utfør()
+
+            assertEquals(forventetSvar, faktiskSvar.svar.name)
+        }
+
         Når<String, DataTable>("regel {string} kjøres med følgende parametre") { regelId: String?, dataTable: DataTable? ->
             val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)

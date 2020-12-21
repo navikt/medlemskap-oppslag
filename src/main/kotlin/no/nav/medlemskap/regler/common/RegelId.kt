@@ -42,7 +42,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_11_6("11.6", "Har bruker vært i minst 80 % stilling de siste 12 mnd?"),
     REGEL_11_6_1("11.6.1", "Har brukers ektefelle  vært i minst 100 % stilling de siste 12 mnd?", "Brukers ektefelle har ikke jobbet 100% eller mer i løpet av periode."),
     REGEL_12("12", "Har bruker vært i minst 25% stilling de siste 12 mnd?", "Bruker har ikke jobbet 25% eller mer i løpet av perioden."),
-    REGEL_13("13", "Er bruker død?", "", "Bruker har dødsdato etter inputperiode, men det påvirker ikke medlemskapet"),
+    REGEL_13("13", "Er bruker død?", "", "Bruker har dødsdato etter inputperiode, men det påvirker ikke medlemskapet", "Bruker er død, men i eller før inputperiode."),
     REGEL_14("14", "Er bruker ansatt i staten eller i en kommune?"),
     REGEL_OPPLYSNINGER("OPPLYSNINGER", "Finnes det registrerte opplysninger på bruker?", "Alle de følgende ble NEI"),
     REGEL_A("OPPLYSNINGER-MEDL", "Finnes det registrerte opplysninger i MEDL?", "", "Det finnes registrert opplysninger i Medl"),

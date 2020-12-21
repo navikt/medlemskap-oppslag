@@ -1,6 +1,5 @@
 package no.nav.medlemskap.regler.v1.lovvalg
 
-import no.nav.medlemskap.common.exceptions.UgyldigRequestException
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
@@ -8,6 +7,7 @@ import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
+import no.nav.medlemskap.regler.common.Resultat.Companion.uavklart
 import no.nav.medlemskap.regler.funksjoner.PersonhistorikkFunksjoner.erBrukerDoedEtterPeriode
 import java.time.LocalDate
 
@@ -25,7 +25,7 @@ class ErBrukerDoedRegel(
         if (erBrukerDoed && erBrukerDoedEtterInputperiode) {
             return ja(regelId)
         } else if (erBrukerDoed && !erBrukerDoedEtterInputperiode) {
-            throw UgyldigRequestException("Bruker er død, men i eller før inputperiode.", ytelse)
+            return uavklart(regelId)
         }
         return nei(regelId)
     }
