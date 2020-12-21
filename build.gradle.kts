@@ -151,6 +151,7 @@ dependencies {
         exclude(group = "org.eclipse.jetty", module = "jetty-server")
     }
     testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:$assertkVersion")
     testImplementation("io.rest-assured:rest-assured:$restAssuredVersion")
 
