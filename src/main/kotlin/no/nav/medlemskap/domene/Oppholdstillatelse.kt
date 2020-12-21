@@ -7,9 +7,14 @@ data class Oppholdstillatelse(
     val foresporselsfodselsnummer: String?,
     val avgjoerelse: Boolean?,
     val gjeldendeOppholdsstatus: Boolean?,
-    val arbeidsadgang: JaNeiUavklart?,
+    val arbeidsadgang: Arbeidsadgang,
     val uavklartFlyktningstatus: Boolean?,
     val harFlyktningstatus: Boolean?
+)
+
+data class Arbeidsadgang(
+        val harArbeidsadgang: Boolean,
+        val periode : Periode
 )
 
 data class GjeldendeOppholdsstatus(
