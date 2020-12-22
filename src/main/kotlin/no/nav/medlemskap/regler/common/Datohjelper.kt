@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter
 import kotlin.math.min
 
 object Datohjelper {
-    private val norskDatoFormatter = DateTimeFormatter.ofPattern("d.MM.yyyy")
+    private val norskDatoFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
     private val isoDatoFormatter = DateTimeFormatter.ISO_LOCAL_DATE
 
     fun parseDato(dato: String): LocalDate {
