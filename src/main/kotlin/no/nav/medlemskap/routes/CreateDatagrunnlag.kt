@@ -3,7 +3,6 @@ package no.nav.medlemskap.routes
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import mu.KotlinLogging
 import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.FeatureToggles
 import no.nav.medlemskap.common.endretStatsborgerskapSisteÅretCounter
@@ -23,9 +22,6 @@ import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.registrerAnt
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarn
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilEktefelle
 import java.time.LocalDate
-
-private val logger = KotlinLogging.logger { }
-private val secureLogger = KotlinLogging.logger("tjenestekall")
 
 suspend fun defaultCreateDatagrunnlag(
     request: Request,
@@ -133,11 +129,11 @@ private suspend fun CoroutineScope.hentDataOmEktefelle(fnrTilEktefelle: String?,
     return null
 }
 
-suspend fun hentPersonHistorikkForEktefelle(fnrTilEktefelle: String, services: Services, callId: String): PersonhistorikkEktefelle? {
+private suspend fun hentPersonHistorikkForEktefelle(fnrTilEktefelle: String, services: Services, callId: String): PersonhistorikkEktefelle? {
     return services.pdlService.hentPersonHistorikkTilEktefelle(fnrTilEktefelle, callId)
 }
 
-suspend fun hentPersonHistorikkForBarn(fnrTilBarn: String, services: Services, callId: String): PersonhistorikkBarn? {
+private suspend fun hentPersonHistorikkForBarn(fnrTilBarn: String, services: Services, callId: String): PersonhistorikkBarn? {
     return services.pdlService.hentPersonHistorikkTilBarn(fnrTilBarn, callId)
 }
 
