@@ -7,6 +7,7 @@ import kotlinx.coroutines.withContext
 import mu.KotlinLogging
 import no.udi.mt_1067_nav_data.v1.HentPersonstatusParameter
 import no.udi.mt_1067_nav_data.v1.HentPersonstatusResultat
+import v1.mt_1067_nav.no.udi.HentPersonstatusFault
 import v1.mt_1067_nav.no.udi.HentPersonstatusRequestType
 import v1.mt_1067_nav.no.udi.HentPersonstatusResponseType
 import v1.mt_1067_nav.no.udi.MT1067NAVV1Interface
@@ -34,9 +35,15 @@ class UdiClient(
 
     suspend fun hentOppholdstatusRequest(fnr: String): HentPersonstatusResponseType? {
 
-        return withContext(Dispatchers.Default) {
-            secureLogger.info("Request: ${mapRequest(fnr)}")
-            mT1067NAVV1Interface.hentPersonstatus(mapRequest(fnr))
+        try {
+            return withContext(Dispatchers.Default) {
+                secureLogger.info("Request: ${mapRequest(fnr)}")
+                mT1067NAVV1Interface.hentPersonstatus(mapRequest(fnr))
+            }
+        } catch (e: HentPersonstatusFault) {
+            logger.error("faultInfo: ${e.faultInfo} faultInfoKodeId: ${e.faultInfo.kodeId}")
+            secureLogger.error("faultInfo: ${e.faultInfo} faultInfoKodeId: ${e.faultInfo.kodeId} feilmelding: ${e.faultInfo.feilmelding}")
+            throw InternalError(e)
         }
     }
 
