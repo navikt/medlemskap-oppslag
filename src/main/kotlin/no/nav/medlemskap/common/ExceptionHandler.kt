@@ -11,6 +11,7 @@ import io.ktor.request.*
 import io.ktor.response.*
 import mu.KotlinLogging
 import no.nav.medlemskap.common.exceptions.*
+import v1.mt_1067_nav.no.udi.HentPersonstatusFault
 
 private val logger = KotlinLogging.logger { }
 
@@ -57,6 +58,15 @@ fun StatusPages.Configuration.exceptionHandler() {
         call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
             "${cause.message!!} for konsument ${cause.ytelse}"
         }
+    }
+
+    exception<HentPersonstatusFault> { cause ->
+        call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
+            "faultInfo.feilMelding: ${cause.faultInfo.feilmelding} faultInfo.kodeId ${cause.faultInfo.kodeId}" +
+                    "faultInfo.kategori ${cause.faultInfo.kategori} faultInfo.niva ${cause.faultInfo.niva} " +
+                    "message: ${cause.message} cause: ${cause.cause}"
+        }
+
     }
 
     exception<BadRequestException> { cause ->

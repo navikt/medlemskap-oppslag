@@ -41,9 +41,10 @@ class UdiClient(
                 mT1067NAVV1Interface.hentPersonstatus(mapRequest(fnr))
             }
         } catch (e: HentPersonstatusFault) {
-            logger.error("faultInfo: ${e.faultInfo} faultInfoKodeId: ${e.faultInfo.kodeId}")
-            secureLogger.error("faultInfo: ${e.faultInfo} faultInfoKodeId: ${e.faultInfo.kodeId} feilmelding: ${e.faultInfo.feilmelding}")
-            throw InternalError(e)
+            "faultInfo.feilMelding: ${e.faultInfo.feilmelding} faultInfo.kodeId ${e.faultInfo.kodeId}" +
+                    "faultInfo.kategori ${e.faultInfo.kategori} faultInfo.niva ${e.faultInfo.niva} " +
+                    "message: ${e.message} cause: ${e.cause}"
+            throw e
         }
     }
 
