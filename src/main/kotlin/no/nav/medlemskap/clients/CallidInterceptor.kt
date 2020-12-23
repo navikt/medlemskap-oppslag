@@ -1,6 +1,7 @@
 package no.nav.medlemskap.clients
 
 import mu.KotlinLogging
+import no.udi.common.headers.v2.RequestHeaderType
 import org.apache.cxf.binding.soap.SoapHeader
 import org.apache.cxf.binding.soap.SoapMessage
 import org.apache.cxf.interceptor.Fault
@@ -26,7 +27,7 @@ class CallIdInterceptor(private val callIdGenerator: () -> String) : AbstractPha
                         val operation = message.exchange?.bindingOperationInfo?.name?.localPart
 
                         val qNameUdi = QName("http://udi.no/Common/Headers/v2", "RequestHeader", "v2")
-                        val headerUdi = SoapHeader(qNameUdi, uuid)
+                        val headerUdi = SoapHeader(qNameUdi, RequestHeaderType())
                         message.headers.add(headerUdi)
 
                         logger.info { "Kaller service=$service operation=$operation med callId=$uuid" }
