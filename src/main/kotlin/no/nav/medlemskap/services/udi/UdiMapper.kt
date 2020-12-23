@@ -22,7 +22,7 @@ object UdiMapper {
     }
 
     private fun mapHarArbeidsadgang(arbeidsadgang: Arbeidsadgang): Boolean {
-        if (arbeidsadgang.harArbeidsadgang.name.equals(JaNeiUavklart.JA.name)) {
+        if (arbeidsadgang.harArbeidsadgang.name == JaNeiUavklart.JA.name) {
             return true
         }
         return false
@@ -108,7 +108,13 @@ object UdiMapper {
         INGEN_INFORMASJON,
         FAMILIE,
         TJENESTEYTING_ELLER_ETABLERING,
-        UAVKLART
+        UAVKLART;
+
+        companion object {
+            fun EosOppholdsgrunnlag.erOppholdsgrunnlagAvklart() : Boolean {
+                return (this == VARIG || this == FAMILIE || this == TJENESTEYTING_ELLER_ETABLERING)
+            }
+        }
     }
 
     enum class ArbeidsadgangType {
@@ -119,21 +125,7 @@ object UdiMapper {
         UAVKLART
     }
 
-    private fun mapEosEllerEftaopphold(eoSellerEFTAOpphold: EOSellerEFTAOpphold?): Boolean {
-        val oppholdsgrunnlag = eoSellerEFTAOpphold?.eoSellerEFTABeslutningOmOppholdsrett?.eosOppholdsgrunnlag?.name
-        if (oppholdsgrunnlag.equals(EosOppholdsgrunnlag.VARIG.name) ||
-            oppholdsgrunnlag.equals(EosOppholdsgrunnlag.INGEN_INFORMASJON.name) ||
-            oppholdsgrunnlag.equals(EosOppholdsgrunnlag.FAMILIE.name) ||
-            oppholdsgrunnlag.equals(EosOppholdsgrunnlag.TJENESTEYTING_ELLER_ETABLERING.name)
-        ) {
-            return true
-        } else if (oppholdsgrunnlag.equals(EosOppholdsgrunnlag.INGEN_INFORMASJON.name) ||
-            oppholdsgrunnlag.equals(EosOppholdsgrunnlag.UAVKLART.name)
-        )
-            return false
 
-        return false
-    }
     private fun XMLGregorianCalendar?.asLocalDate(): LocalDate? = this?.toGregorianCalendar()?.toZonedDateTime()?.toLocalDate()
 
     private fun XMLGregorianCalendar?.asDate(): LocalDateTime? = this?.toGregorianCalendar()?.toZonedDateTime()?.toLocalDateTime()
