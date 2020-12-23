@@ -10,7 +10,7 @@ import no.udi.mt_1067_nav_data.v1.HentPersonstatusResultat
 import v1.mt_1067_nav.no.udi.HentPersonstatusRequestType
 import v1.mt_1067_nav.no.udi.HentPersonstatusResponseType
 import v1.mt_1067_nav.no.udi.MT1067NAVV1Interface
-import java.time.LocalDate
+import java.time.LocalDateTime
 import javax.xml.datatype.DatatypeFactory
 
 class UdiClient(
@@ -48,7 +48,7 @@ class UdiClient(
         param.isInkluderAvgjorelsehistorikk = true
         param.isManuellOppgVedUavklartArbeidsadgang = true
         param.isInkluderSoknadOmBeskyttelseUnderBehandling = true
-        param.avgjorelserFraDato = DatatypeFactory.newInstance().newXMLGregorianCalendar(LocalDate.now().toString())
+        param.avgjorelserFraDato = DatatypeFactory.newInstance().newXMLGregorianCalendar(LocalDateTime.now().minusYears(1).toString())
         type.parameter = param
         return type
     }
