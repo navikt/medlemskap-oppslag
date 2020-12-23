@@ -25,6 +25,10 @@ class CallIdInterceptor(private val callIdGenerator: () -> String) : AbstractPha
                         val service = ep?.service?.name?.localPart
                         val operation = message.exchange?.bindingOperationInfo?.name?.localPart
 
+                        val qNameUdi = QName("http://udi.no/Common/Headers/v2", "RequestHeader", "v2")
+                        val headerUdi = SoapHeader(qNameUdi, uuid)
+                        message.headers.add(headerUdi)
+
                         logger.info { "Kaller service=$service operation=$operation med callId=$uuid" }
                         val qName = QName("uri:no.nav.applikasjonsrammeverk", "callId")
                         val header = SoapHeader(qName, uuid, JAXBDataBinding(String::class.java))
