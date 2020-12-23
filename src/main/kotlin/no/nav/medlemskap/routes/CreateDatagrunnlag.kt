@@ -1,6 +1,5 @@
 package no.nav.medlemskap.routes
 
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import no.nav.medlemskap.clients.Services
@@ -9,8 +8,7 @@ import no.nav.medlemskap.common.endretStatsborgerskapSisteÅretCounter
 import no.nav.medlemskap.common.flereStatsborgerskapCounter
 import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForPersonhistorikk
-import no.nav.medlemskap.domene.Statsborgerskap.Companion.erEøsBorger
+import no.nav.medlemskap.domene.Statsborgerskap.Companion.erAnnenStatsborger
 import no.nav.medlemskap.domene.Statsborgerskap.Companion.harEndretSisteÅret
 import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.domene.barn.DataOmBarn
@@ -59,7 +57,7 @@ suspend fun defaultCreateDatagrunnlag(
     val ytelse: Ytelse = finnYtelse(request.ytelse, clientId)
 
     val oppholdstillatelse = if (FeatureToggles.FEATURE_UDI.enabled &&
-        erAnnenStatsborger(personHistorikkFraPdl.statsborgerskap, request)
+        personHistorikkFraPdl.statsborgerskap.erAnnenStatsborger(request.periode, request.førsteDagForYtelse)
     ) {
         val oppholdsstatusRequest = async { services.udiService.hentOppholdstillatelseer(request.fnr) }
         oppholdsstatusRequest.await()
@@ -90,12 +88,6 @@ suspend fun defaultCreateDatagrunnlag(
     )
 }
 
-private fun erAnnenStatsborger(statsborgerskap: List<Statsborgerskap>, request: Request): Boolean {
-    val kontrollPeriodeForPersonhistorikk = kontrollPeriodeForPersonhistorikk(request.periode, request.førsteDagForYtelse)
-
-    return !statsborgerskap.erEøsBorger(kontrollPeriodeForPersonhistorikk)
-}
-
 suspend fun hentDataOmBarn(fnrBarn: List<String>, services: Services, callId: String): List<DataOmBarn> {
     val dataOmBarn: MutableList<DataOmBarn> = ArrayList()
 
@@ -109,7 +101,13 @@ suspend fun hentDataOmBarn(fnrBarn: List<String>, services: Services, callId: St
     return dataOmBarn
 }
 
-private suspend fun CoroutineScope.hentDataOmEktefelle(fnrTilEktefelle: String?, services: Services, callId: String, periode: InputPeriode, førsteDagForYtelse: LocalDate?): DataOmEktefelle? {
+private suspend fun hentDataOmEktefelle(
+    fnrTilEktefelle: String?,
+    services: Services,
+    callId: String,
+    periode: InputPeriode,
+    førsteDagForYtelse: LocalDate?
+): DataOmEktefelle? {
     if (fnrTilEktefelle != null) {
         val personhistorikkEktefelle = hentPersonHistorikkForEktefelle(fnrTilEktefelle, services, callId)
         if (personhistorikkEktefelle == null) {
