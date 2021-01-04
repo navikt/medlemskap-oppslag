@@ -24,7 +24,7 @@ class UdiClient(
         private val logger = KotlinLogging.logger { }
     }
 
-    suspend fun hentOppholdstatusResulat(fnr: String): HentPersonstatusResultat? {
+    suspend fun hentOppholdstatusResultat(fnr: String): HentPersonstatusResultat? {
         retry?.let {
             return it.executeSuspendFunction {
                 hentOppholdstatusRequest(fnr)?.resultat
@@ -33,7 +33,7 @@ class UdiClient(
         return hentOppholdstatusRequest(fnr)?.resultat
     }
 
-    suspend fun hentOppholdstatusRequest(fnr: String): HentPersonstatusResponseType? {
+    private suspend fun hentOppholdstatusRequest(fnr: String): HentPersonstatusResponseType? {
 
         try {
             return withContext(Dispatchers.Default) {
@@ -48,7 +48,7 @@ class UdiClient(
         }
     }
 
-    fun mapRequest(fnr: String): HentPersonstatusRequestType? {
+    fun mapRequest(fnr: String): HentPersonstatusRequestType {
         val type = HentPersonstatusRequestType()
         val param = HentPersonstatusParameter()
         param.fodselsnummer = fnr
