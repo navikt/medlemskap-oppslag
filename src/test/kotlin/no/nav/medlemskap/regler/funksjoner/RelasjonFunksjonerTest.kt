@@ -22,13 +22,14 @@ class RelasjonFunksjonerTest {
     @Test
     fun `hent fnr til barn`() {
         val familierelasjoner = listOf(
-            lagFamilierelasjon(relatertPersonIdent = "25079821473", minRolleForPerson = Familierelasjonsrolle.FAR),
+            lagFamilierelasjon(relatertPersonIdent = "25079528660", minRolleForPerson = Familierelasjonsrolle.FAR),
             lagFamilierelasjon(relatertPersonIdent = "26079447659", relatertPersonsRolle = Familierelasjonsrolle.MOR),
-            lagFamilierelasjon(relatertPersonIdent = "09069802246", minRolleForPerson = Familierelasjonsrolle.FAR)
+            lagFamilierelasjon(relatertPersonIdent = "09069534888", minRolleForPerson = Familierelasjonsrolle.FAR)
         )
 
-        val fnrTilBarn = RelasjonFunksjoner.hentFnrTilBarn(familierelasjoner)
-        val forventetSvar = listOf("25079821473", "09069802246")
+        val førsteDatoForYtelse = LocalDate.of(2020, 12, 12)
+        val fnrTilBarn = RelasjonFunksjoner.hentFnrTilBarn(familierelasjoner, førsteDatoForYtelse)
+        val forventetSvar = listOf("25079528660", "09069534888")
         assertEquals(2, fnrTilBarn.size)
         assertEquals(forventetSvar, fnrTilBarn)
     }
