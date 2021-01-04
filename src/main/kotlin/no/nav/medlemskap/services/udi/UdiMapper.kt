@@ -111,7 +111,7 @@ object UdiMapper {
         UAVKLART;
 
         companion object {
-            fun EosOppholdsgrunnlag.erOppholdsgrunnlagAvklart() : Boolean {
+            fun EosOppholdsgrunnlag.erOppholdsgrunnlagAvklart(): Boolean {
                 return (this == VARIG || this == FAMILIE || this == TJENESTEYTING_ELLER_ETABLERING)
             }
         }
@@ -124,7 +124,6 @@ object UdiMapper {
         GENERELL,
         UAVKLART
     }
-
 
     private fun XMLGregorianCalendar?.asLocalDate(): LocalDate? = this?.toGregorianCalendar()?.toZonedDateTime()?.toLocalDate()
 

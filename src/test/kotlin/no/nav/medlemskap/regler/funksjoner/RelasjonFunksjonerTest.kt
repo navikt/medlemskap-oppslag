@@ -27,7 +27,8 @@ class RelasjonFunksjonerTest {
             lagFamilierelasjon(relatertPersonIdent = "09069534888", minRolleForPerson = Familierelasjonsrolle.FAR)
         )
 
-        val fnrTilBarn = RelasjonFunksjoner.hentFnrTilBarn(familierelasjoner)
+        val førsteDatoForYtelse = LocalDate.of(2020, 12, 12)
+        val fnrTilBarn = RelasjonFunksjoner.hentFnrTilBarn(familierelasjoner, førsteDatoForYtelse)
         val forventetSvar = listOf("25079528660", "09069534888")
         assertEquals(2, fnrTilBarn.size)
         assertEquals(forventetSvar, fnrTilBarn)

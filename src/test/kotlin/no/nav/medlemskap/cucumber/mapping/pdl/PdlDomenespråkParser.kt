@@ -5,8 +5,13 @@ import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.cucumber.BasisDomeneParser
 import no.nav.medlemskap.cucumber.Domenenøkkel
 import no.nav.medlemskap.cucumber.RadMapper
+import java.time.LocalDate
 
 class PdlDomenespråkParser : BasisDomeneParser() {
+
+    fun mapPdlParametre(dataTable: DataTable?): PdlParametre {
+        return mapDataTable(dataTable, PdlParametreMapper()).get(0)
+    }
 
     fun mapStatsborgerskap(dataTable: DataTable?): List<HentPerson.Statsborgerskap> {
         return mapDataTable(dataTable, StatsborgerskapMapper())
@@ -114,6 +119,12 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         }
     }
 
+    class PdlParametreMapper : RadMapper<PdlParametre> {
+        override fun mapRad(rad: Map<String, String>): PdlParametre {
+            return PdlParametre(parseDato(Domenebegrep.FØRSTE_DATO_FOR_YTELSE, rad))
+        }
+    }
+
     class SivilstandMapper : RadMapper<HentPerson.Sivilstand> {
 
         override fun mapRad(rad: Map<String, String>): HentPerson.Sivilstand {
@@ -161,6 +172,7 @@ class PdlDomenespråkParser : BasisDomeneParser() {
     enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
         BEKREFTELSESDATO("Bekreftelsesdato"),
         DOEDSDATO("Dødsdato"),
+        FØRSTE_DATO_FOR_YTELSE("Første dato for ytelse"),
         GYLDIG_FRA_OG_MED_DATO("Gyldig fra og med dato"),
         GYLDIG_TIL_OG_MED_DATO("Gyldig til og med dato"),
         GYLDIG_FRA_OG_MED("Gyldig fra og med"),
@@ -180,4 +192,6 @@ class PdlDomenespråkParser : BasisDomeneParser() {
             return nøkkel
         }
     }
+
+    data class PdlParametre(val førsteDatoForYtelse: LocalDate)
 }

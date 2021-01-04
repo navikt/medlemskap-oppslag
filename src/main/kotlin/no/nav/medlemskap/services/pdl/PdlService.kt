@@ -14,6 +14,7 @@ import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper
 import no.nav.medlemskap.services.pdl.mapper.PdlMapperBarn
 import no.nav.medlemskap.services.pdl.mapper.PdlMapperEktefelle
+import java.time.LocalDate
 import kotlin.coroutines.coroutineContext
 
 class PdlService(private val pdlClient: PdlClient, private val clusterName: String = "dev-fss") {
@@ -52,7 +53,7 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
         } else throw PersonIkkeFunnet("PDL", coroutineContext.ytelse())
     }
 
-    suspend fun hentPersonHistorikkTilEktefelle(fnrTilEktefelle: String, callId: String): PersonhistorikkEktefelle? {
+    suspend fun hentPersonHistorikkTilEktefelle(fnrTilEktefelle: String, førsteDatoForYtelse: LocalDate, callId: String): PersonhistorikkEktefelle? {
         val hentPersonhistorikkTilEktefelleResponse = pdlClient.hentPerson(fnrTilEktefelle, callId)
 
         hentPersonhistorikkTilEktefelleResponse.errors?.forEach {
@@ -67,7 +68,7 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
         }
 
         if (hentPersonhistorikkTilEktefelleResponse.data?.hentPerson != null) {
-            return PdlMapperEktefelle.mapPersonhistorikkTilEktefelle(fnrTilEktefelle, hentPersonhistorikkTilEktefelleResponse.data?.hentPerson!!)
+            return PdlMapperEktefelle.mapPersonhistorikkTilEktefelle(fnrTilEktefelle, hentPersonhistorikkTilEktefelleResponse.data?.hentPerson!!, førsteDatoForYtelse)
         }
         return null
     }
