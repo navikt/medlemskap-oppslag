@@ -1,6 +1,5 @@
-package no.nav.medlemskap.clients.pdl.mapper
+package no.nav.medlemskap.domene.personhistorikk
 
-import no.nav.medlemskap.domene.personhistorikk.*
 import no.nav.medlemskap.domene.personhistorikk.Familierelasjon.Companion.hentFnrTilBarn
 import no.nav.medlemskap.domene.personhistorikk.Familierelasjon.Companion.hentFnrTilEktefelle
 import org.junit.jupiter.api.Assertions.assertEquals
