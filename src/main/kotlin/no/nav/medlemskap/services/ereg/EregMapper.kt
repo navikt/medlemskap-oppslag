@@ -1,7 +1,11 @@
 package no.nav.medlemskap.services.ereg
 
 import no.nav.medlemskap.clients.ereg.Organisasjon
-import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.arbeidsforhold.Ansatte
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsgiver
+import no.nav.medlemskap.domene.arbeidsforhold.Bruksperiode
+import no.nav.medlemskap.domene.arbeidsforhold.Gyldighetsperiode
+import no.nav.medlemskap.domene.arbeidsforhold.JuridiskEnhet
 
 fun mapOrganisasjonTilArbeidsgiver(organisasjon: Organisasjon, juridiskeEnheter: List<Organisasjon>?): Arbeidsgiver {
 

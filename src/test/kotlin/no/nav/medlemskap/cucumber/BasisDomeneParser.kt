@@ -2,10 +2,10 @@ package no.nav.medlemskap.cucumber
 
 import io.cucumber.datatable.DataTable
 import no.nav.medlemskap.cucumber.SpraakParserDomene.ArbeidDomenebegrep
-import no.nav.medlemskap.domene.Arbeidsforholdstype
-import no.nav.medlemskap.domene.Fartsomraade
-import no.nav.medlemskap.domene.PermisjonPermitteringType
-import no.nav.medlemskap.domene.Skipsregister
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforholdstype
+import no.nav.medlemskap.domene.arbeidsforhold.Fartsomraade
+import no.nav.medlemskap.domene.arbeidsforhold.PermisjonPermitteringType
+import no.nav.medlemskap.domene.arbeidsforhold.Skipsregister
 import no.nav.medlemskap.regler.common.Datohjelper
 import java.time.LocalDate
 

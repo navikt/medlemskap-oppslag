@@ -3,6 +3,7 @@ package no.nav.medlemskap.services.aareg
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.aareg.*
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.arbeidsforhold.*
 import no.nav.medlemskap.services.ereg.mapOrganisasjonTilArbeidsgiver
 
 private val logger = KotlinLogging.logger { }

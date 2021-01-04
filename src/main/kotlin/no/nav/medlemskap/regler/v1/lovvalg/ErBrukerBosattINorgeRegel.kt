@@ -1,6 +1,8 @@
 package no.nav.medlemskap.regler.v1.lovvalg
 
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.personhistorikk.Adresse
 import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Funksjoner.erTom

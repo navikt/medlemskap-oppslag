@@ -1,6 +1,6 @@
 package no.nav.medlemskap.cucumber.steps.pdl
 
-import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.personhistorikk.*
 import java.time.LocalDate
 
 class PersonhistorikkBuilder {

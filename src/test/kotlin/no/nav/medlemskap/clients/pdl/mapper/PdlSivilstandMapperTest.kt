@@ -1,6 +1,6 @@
 package no.nav.medlemskap.clients.pdl.mapper
 
-import no.nav.medlemskap.domene.Sivilstandstype
+import no.nav.medlemskap.domene.personhistorikk.Sivilstandstype
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNull

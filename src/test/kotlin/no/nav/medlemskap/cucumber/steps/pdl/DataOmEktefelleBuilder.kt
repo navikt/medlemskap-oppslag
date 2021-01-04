@@ -1,9 +1,9 @@
 package no.nav.medlemskap.cucumber.steps.pdl
 
-import no.nav.medlemskap.domene.Adresse
-import no.nav.medlemskap.domene.Arbeidsforhold
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
+import no.nav.medlemskap.domene.personhistorikk.Adresse
 
 class DataOmEktefelleBuilder {
     var personhistorikkEktefelle = PersonhistorikkEktefelle(

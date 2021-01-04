@@ -1,7 +1,7 @@
 package no.nav.medlemskap.regler.funksjoner
 
-import no.nav.medlemskap.domene.Adresse
 import no.nav.medlemskap.domene.Kontrollperiode
+import no.nav.medlemskap.domene.personhistorikk.Adresse
 
 object AdresseFunksjoner {
     fun List<Adresse>.adresserForKontrollPeriode(kontrollPeriode: Kontrollperiode): List<Adresse> =

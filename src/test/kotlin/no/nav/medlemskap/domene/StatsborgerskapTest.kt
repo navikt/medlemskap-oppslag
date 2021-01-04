@@ -3,7 +3,8 @@ package no.nav.medlemskap.domene
 import assertk.assertThat
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
-import no.nav.medlemskap.domene.Statsborgerskap.Companion.erAnnenStatsborger
+import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
+import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erAnnenStatsborger
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 

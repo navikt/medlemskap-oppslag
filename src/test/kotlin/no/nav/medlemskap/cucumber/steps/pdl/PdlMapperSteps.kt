@@ -7,9 +7,9 @@ import io.ktor.features.*
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.cucumber.SpraakParserDomene.PersonhistorikkDomeneSpraakParser
 import no.nav.medlemskap.cucumber.mapping.pdl.PdlDomenespråkParser
-import no.nav.medlemskap.domene.Personhistorikk
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
+import no.nav.medlemskap.domene.personhistorikk.Personhistorikk
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper
 import no.nav.medlemskap.services.pdl.mapper.PdlMapperBarn
 import no.nav.medlemskap.services.pdl.mapper.PdlMapperEktefelle

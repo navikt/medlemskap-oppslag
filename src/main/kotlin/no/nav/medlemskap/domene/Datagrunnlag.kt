@@ -1,13 +1,14 @@
 package no.nav.medlemskap.domene
 
-import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForPersonhistorikk
-import no.nav.medlemskap.domene.Statsborgerskap.Companion.gyldigeStatsborgerskap
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
+import no.nav.medlemskap.domene.personhistorikk.Personhistorikk
+import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
+import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.gyldigeStatsborgerskap
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Svar
 import java.time.LocalDate
-import java.time.temporal.ChronoUnit
 
 data class Datagrunnlag(
     val periode: InputPeriode,
@@ -24,7 +25,8 @@ data class Datagrunnlag(
     val overstyrteRegler: Map<RegelId, Svar> = mapOf(),
     val oppholdstillatelse: Oppholdstillatelse?
 ) {
-    private val kontrollPeriodeForPersonhistorikk = kontrollPeriodeForPersonhistorikk(periode, førsteDagForYtelse)
+    private val kontrollPeriodeForPersonhistorikk =
+        Kontrollperiode.kontrollPeriodeForPersonhistorikk(periode, førsteDagForYtelse)
 
     fun gyldigeStatsborgerskap(): List<String> {
         val statsborgerskap: List<Statsborgerskap> = pdlpersonhistorikk.statsborgerskap
@@ -32,52 +34,3 @@ data class Datagrunnlag(
         return statsborgerskap.gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk)
     }
 }
-
-data class Kontrollperiode(
-    val fom: LocalDate,
-    val tom: LocalDate
-) {
-    val periode = Periode(fom, tom)
-    val antallDager = fom.until(tom, ChronoUnit.DAYS).toDouble()
-
-    companion object {
-        fun kontrollPeriodeForPersonhistorikk(inputPeriode: InputPeriode, førsteDagForYtelse: LocalDate?): Kontrollperiode {
-            return Kontrollperiode(
-                fom = førsteDatoForYtelse(inputPeriode, førsteDagForYtelse).minusMonths(12),
-                tom = førsteDatoForYtelse(inputPeriode, førsteDagForYtelse)
-            )
-        }
-
-        fun kontrollPeriodeForMedl(inputPeriode: InputPeriode, førsteDagForYtelse: LocalDate?): Kontrollperiode {
-            return Kontrollperiode(
-                fom = førsteDatoForYtelse(inputPeriode, førsteDagForYtelse).minusMonths(12),
-                tom = førsteDatoForYtelse(inputPeriode, førsteDagForYtelse)
-            )
-        }
-
-        fun kontrollPeriodeForArbeidsforhold(inputPeriode: InputPeriode, førsteDagForYtelse: LocalDate?): Kontrollperiode {
-            return Kontrollperiode(
-                fom = førsteDatoForYtelse(inputPeriode, førsteDagForYtelse).minusMonths(12),
-                tom = førsteDatoForYtelse(inputPeriode, førsteDagForYtelse)
-            )
-        }
-
-        fun førsteDatoForYtelse(inputPeriode: InputPeriode, førsteDagForYtelse: LocalDate?): LocalDate {
-            if (førsteDagForYtelse != null) {
-                return førsteDagForYtelse
-            } else {
-                return inputPeriode.fom.minusDays(1)
-            }
-        }
-    }
-}
-
-data class Bruksperiode(
-    val fom: LocalDate?,
-    val tom: LocalDate?
-)
-
-data class Gyldighetsperiode(
-    val fom: LocalDate?,
-    val tom: LocalDate?
-)

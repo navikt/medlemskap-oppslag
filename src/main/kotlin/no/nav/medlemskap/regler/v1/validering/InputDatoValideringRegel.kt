@@ -2,8 +2,8 @@ package no.nav.medlemskap.regler.v1.validering
 
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
-import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja

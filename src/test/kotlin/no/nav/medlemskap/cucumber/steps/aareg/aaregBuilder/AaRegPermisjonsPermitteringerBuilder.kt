@@ -1,7 +1,7 @@
 package no.nav.medlemskap.cucumber.steps.aareg.aaregBuilder
 
 import no.nav.medlemskap.clients.aareg.AaRegPermisjonPermittering
-import no.nav.medlemskap.domene.PermisjonPermitteringType
+import no.nav.medlemskap.domene.arbeidsforhold.PermisjonPermitteringType
 
 class AaRegPermisjonsPermitteringerBuilder {
     var periodeBuilder = AaregPeriodeBuilder()
