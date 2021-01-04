@@ -5,8 +5,8 @@ import mu.KotlinLogging
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.regler.common.Datohjelper.Companion.parseIsoDato
-import no.nav.medlemskap.regler.common.Datohjelper.Companion.parseIsoDatoTid
+import no.nav.medlemskap.regler.common.Datohjelper.parseIsoDato
+import no.nav.medlemskap.regler.common.Datohjelper.parseIsoDatoTid
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
 import java.time.LocalDate
 

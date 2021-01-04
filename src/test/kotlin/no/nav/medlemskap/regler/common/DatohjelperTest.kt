@@ -92,4 +92,9 @@ class DatohjelperTest {
 
         assertThat(Datohjelper.parseIsoDato("2008-12-11")).isEqualTo(LocalDate.of(2008, 12, 11))
     }
+
+    @Test
+    fun parseDato() {
+        assertThat(Datohjelper.parseDato("01.02.2008")).isEqualTo(LocalDate.of(2008, 2, 1))
+    }
 }

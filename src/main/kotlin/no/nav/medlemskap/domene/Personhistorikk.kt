@@ -83,6 +83,13 @@ data class Statsborgerskap(
         private fun erStatsborgerskapetInnenforPerioden(it: Statsborgerskap, kontrollPeriode: Kontrollperiode): Boolean =
             kontrollPeriode.periode.encloses(Periode(fom = it.fom, tom = it.fom)) || kontrollPeriode.periode.encloses(Periode(fom = it.tom, tom = it.tom))
 
+        fun List<Statsborgerskap>.erAnnenStatsborger(periode: InputPeriode, førsteDagForYtelse: LocalDate?): Boolean {
+            val kontrollPeriodeForPersonhistorikk =
+                Kontrollperiode.kontrollPeriodeForPersonhistorikk(periode, førsteDagForYtelse)
+
+            return !erEøsBorger(kontrollPeriodeForPersonhistorikk)
+        }
+
         fun List<Statsborgerskap>.registrerStatsborgerskapGrafana(kontrollPeriode: Kontrollperiode, ytelse: Ytelse, regelId: RegelId) =
             this.hentStatsborgerskapFor(kontrollPeriode.tom).forEach { statsborgerskapUavklartForRegel(it, ytelse, regelId).increment() }
     }

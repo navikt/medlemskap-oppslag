@@ -1,15 +1,14 @@
 package no.nav.medlemskap.routes
 
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import mu.KotlinLogging
 import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.FeatureToggles
 import no.nav.medlemskap.common.endretStatsborgerskapSisteÅretCounter
 import no.nav.medlemskap.common.flereStatsborgerskapCounter
 import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Statsborgerskap.Companion.erAnnenStatsborger
 import no.nav.medlemskap.domene.Statsborgerskap.Companion.harEndretSisteÅret
 import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.domene.barn.DataOmBarn
@@ -21,9 +20,6 @@ import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.registrerAnt
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarn
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilEktefelle
 import java.time.LocalDate
-
-private val logger = KotlinLogging.logger { }
-private val secureLogger = KotlinLogging.logger("tjenestekall")
 
 suspend fun defaultCreateDatagrunnlag(
     request: Request,
@@ -46,7 +42,13 @@ suspend fun defaultCreateDatagrunnlag(
     dataOmBrukersBarn = if (!fnrTilBarn.isNullOrEmpty()) hentDataOmBarn(fnrTilBarn, services, callId) else null
 
     val fnrTilEktefelle = hentFnrTilEktefelle(personHistorikkFraPdl)
-    dataOmEktefelle = if (!fnrTilEktefelle.isNullOrEmpty()) hentDataOmEktefelle(fnrTilEktefelle, services, callId, request.periode, request.førsteDagForYtelse) else null
+    dataOmEktefelle = if (!fnrTilEktefelle.isNullOrEmpty()) hentDataOmEktefelle(
+        fnrTilEktefelle,
+        services,
+        callId,
+        request.periode,
+        request.førsteDagForYtelse
+    ) else null
 
     val medlemskap = medlemskapsunntakRequest.await()
     val arbeidsforhold = arbeidsforholdRequest.await()
@@ -54,7 +56,9 @@ suspend fun defaultCreateDatagrunnlag(
     val oppgaver = gosysOppgaver.await()
     val ytelse: Ytelse = finnYtelse(request.ytelse, clientId)
 
-    val oppholdstillatelse = if (FeatureToggles.FEATURE_UDI.enabled) {
+    val oppholdstillatelse = if (FeatureToggles.FEATURE_UDI.enabled &&
+        personHistorikkFraPdl.statsborgerskap.erAnnenStatsborger(request.periode, request.førsteDagForYtelse)
+    ) {
         val oppholdsstatusRequest = async { services.udiService.hentOppholdstillatelseer(request.fnr) }
         oppholdsstatusRequest.await()
     } else {
@@ -97,7 +101,13 @@ suspend fun hentDataOmBarn(fnrBarn: List<String>, services: Services, callId: St
     return dataOmBarn
 }
 
-private suspend fun CoroutineScope.hentDataOmEktefelle(fnrTilEktefelle: String?, services: Services, callId: String, periode: InputPeriode, førsteDagForYtelse: LocalDate?): DataOmEktefelle? {
+private suspend fun hentDataOmEktefelle(
+    fnrTilEktefelle: String?,
+    services: Services,
+    callId: String,
+    periode: InputPeriode,
+    førsteDagForYtelse: LocalDate?
+): DataOmEktefelle? {
     if (fnrTilEktefelle != null) {
         val personhistorikkEktefelle = hentPersonHistorikkForEktefelle(fnrTilEktefelle, services, callId)
         if (personhistorikkEktefelle == null) {
@@ -117,11 +127,11 @@ private suspend fun CoroutineScope.hentDataOmEktefelle(fnrTilEktefelle: String?,
     return null
 }
 
-suspend fun hentPersonHistorikkForEktefelle(fnrTilEktefelle: String, services: Services, callId: String): PersonhistorikkEktefelle? {
+private suspend fun hentPersonHistorikkForEktefelle(fnrTilEktefelle: String, services: Services, callId: String): PersonhistorikkEktefelle? {
     return services.pdlService.hentPersonHistorikkTilEktefelle(fnrTilEktefelle, callId)
 }
 
-suspend fun hentPersonHistorikkForBarn(fnrTilBarn: String, services: Services, callId: String): PersonhistorikkBarn? {
+private suspend fun hentPersonHistorikkForBarn(fnrTilBarn: String, services: Services, callId: String): PersonhistorikkBarn? {
     return services.pdlService.hentPersonHistorikkTilBarn(fnrTilBarn, callId)
 }
 
