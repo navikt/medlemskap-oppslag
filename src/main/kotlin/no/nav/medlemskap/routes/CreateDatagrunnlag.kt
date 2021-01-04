@@ -2,6 +2,7 @@ package no.nav.medlemskap.routes
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import mu.KotlinLogging
 import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.FeatureToggles
 import no.nav.medlemskap.common.endretStatsborgerskapSisteÅretCounter
@@ -20,6 +21,8 @@ import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.registrerAnt
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarn
 import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilEktefelle
 import java.time.LocalDate
+
+private val logger = KotlinLogging.logger { }
 
 suspend fun defaultCreateDatagrunnlag(
     request: Request,
@@ -59,6 +62,7 @@ suspend fun defaultCreateDatagrunnlag(
     val oppholdstillatelse = if (FeatureToggles.FEATURE_UDI.enabled &&
         personHistorikkFraPdl.statsborgerskap.erAnnenStatsborger(request.periode, request.førsteDagForYtelse)
     ) {
+        logger.info("Utfører UDI-kall")
         val oppholdsstatusRequest = async { services.udiService.hentOppholdstillatelseer(request.fnr) }
         oppholdsstatusRequest.await()
     } else {
