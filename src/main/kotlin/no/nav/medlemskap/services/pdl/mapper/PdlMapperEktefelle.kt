@@ -3,8 +3,8 @@ package no.nav.medlemskap.services.pdl.mapper
 import no.bekk.bekkopen.person.FodselsnummerValidator
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.domene.Adresse
+import no.nav.medlemskap.domene.Familierelasjon.Companion.erBarnUnder25Aar
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
-import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.erBarnUnder25Aar
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapBostedsadresser
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapKontaktAdresser
 import java.time.LocalDate

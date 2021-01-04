@@ -8,6 +8,8 @@ import no.nav.medlemskap.common.endretStatsborgerskapSisteÅretCounter
 import no.nav.medlemskap.common.flereStatsborgerskapCounter
 import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Familierelasjon.Companion.hentFnrTilBarn
+import no.nav.medlemskap.domene.Familierelasjon.Companion.hentFnrTilEktefelle
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.førsteDatoForYtelse
 import no.nav.medlemskap.domene.Statsborgerskap.Companion.erAnnenStatsborger
 import no.nav.medlemskap.domene.Statsborgerskap.Companion.harEndretSisteÅret
@@ -18,8 +20,6 @@ import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.fraOgMedDatoForArbeidsforhold
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.registrerAntallAnsatteHosJuridiskEnhet
-import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilBarn
-import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner.hentFnrTilEktefelle
 import java.time.LocalDate
 
 suspend fun defaultCreateDatagrunnlag(
