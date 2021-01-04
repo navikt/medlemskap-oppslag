@@ -42,8 +42,8 @@ class UdiClient(
             }
         } catch (e: HentPersonstatusFault) {
             "faultInfo.feilMelding: ${e.faultInfo.feilmelding} faultInfo.kodeId ${e.faultInfo.kodeId}" +
-                    "faultInfo.kategori ${e.faultInfo.kategori} faultInfo.niva ${e.faultInfo.niva} " +
-                    "message: ${e.message} cause: ${e.cause}"
+                "faultInfo.kategori ${e.faultInfo.kategori} faultInfo.niva ${e.faultInfo.niva} " +
+                "message: ${e.message} cause: ${e.cause}"
             throw e
         }
     }

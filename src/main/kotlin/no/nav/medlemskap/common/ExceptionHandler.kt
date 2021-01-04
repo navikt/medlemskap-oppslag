@@ -63,10 +63,9 @@ fun StatusPages.Configuration.exceptionHandler() {
     exception<HentPersonstatusFault> { cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
             "faultInfo.feilMelding: ${cause.faultInfo.feilmelding} faultInfo.kodeId ${cause.faultInfo.kodeId}" +
-                    "faultInfo.kategori ${cause.faultInfo.kategori} faultInfo.niva ${cause.faultInfo.niva} " +
-                    "message: ${cause.message} cause: ${cause.cause}"
+                "faultInfo.kategori ${cause.faultInfo.kategori} faultInfo.niva ${cause.faultInfo.niva} " +
+                "message: ${cause.message} cause: ${cause.cause}"
         }
-
     }
 
     exception<BadRequestException> { cause ->
