@@ -137,7 +137,12 @@ data class Ansatte(
     val antall: Int?,
     val bruksperiode: Bruksperiode?,
     val gyldighetsperiode: Gyldighetsperiode?
-)
+) {
+    companion object {
+        fun List<no.nav.medlemskap.domene.arbeidsforhold.Ansatte>.finnesMindreEnn(tall: Int) =
+            this.filter { it.antall ?: 0 < tall }
+    }
+}
 
 data class Bruksperiode(
     val fom: LocalDate?,

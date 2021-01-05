@@ -1,8 +1,15 @@
 package no.nav.medlemskap.regler.v1.arbeidsforhold
 
-import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.InputPeriode
+import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.antallAnsatteHosArbeidsgivere
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.antallAnsatteHosArbeidsgiversJuridiskeEnheter
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.arbeidsforholdForKontrollPeriodeMedStillingsprosentOver0
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.filtrerUtArbeidsgivereMedFærreEnn6Ansatte
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsgiver.Companion.registrerAntallAnsatte
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsgiver.Companion.registrereArbeidsgivere
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.registrerStatsborgerskapGrafana
 import no.nav.medlemskap.regler.common.Funksjoner.finnesMindreEnn
@@ -10,12 +17,6 @@ import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
-import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.antallAnsatteHosArbeidsgivere
-import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.antallAnsatteHosArbeidsgiversJuridiskeEnheter
-import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.arbeidsforholdForKontrollPeriodeMedStillingsprosentOver0
-import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.filtrerUtArbeidsgivereMedFærreEnn6Ansatte
-import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.registrerAntallAnsatte
-import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.registrereArbeidsgivere
 import java.time.LocalDate
 
 class HarForetaketMerEnn5AnsatteRegel(
