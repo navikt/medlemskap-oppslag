@@ -1,8 +1,11 @@
 package no.nav.medlemskap.regler.v1.medlemskap
 
 import no.nav.medlemskap.common.regelUendretCounterMidlertidig
-import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.InputPeriode
+import no.nav.medlemskap.domene.Medlemskap
+import no.nav.medlemskap.domene.Medlemskap.Companion.tidligsteFraOgMedDatoForMedl
+import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
@@ -10,7 +13,6 @@ import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.arbeidsforholdForDato
-import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.tidligsteFraOgMedDatoForMedl
 import java.time.LocalDate
 
 class ErArbeidsforholdUendretRegel(

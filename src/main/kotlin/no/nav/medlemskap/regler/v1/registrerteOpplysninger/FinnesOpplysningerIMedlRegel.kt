@@ -5,13 +5,13 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForMedl
 import no.nav.medlemskap.domene.Medlemskap
+import no.nav.medlemskap.domene.Medlemskap.Companion.finnesPersonIMedlForKontrollPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.BasisRegel
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
-import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.finnesPersonIMedlForKontrollPeriode
 import java.time.LocalDate
 
 class FinnesOpplysningerIMedlRegel(
