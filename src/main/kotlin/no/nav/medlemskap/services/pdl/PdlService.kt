@@ -8,9 +8,9 @@ import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
 import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.common.ytelse
-import no.nav.medlemskap.domene.Personhistorikk
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
+import no.nav.medlemskap.domene.personhistorikk.Personhistorikk
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper
 import no.nav.medlemskap.services.pdl.mapper.PdlMapperBarn
 import no.nav.medlemskap.services.pdl.mapper.PdlMapperEktefelle

@@ -3,9 +3,11 @@ package no.nav.medlemskap.regler.v1.lovvalg
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForArbeidsforhold
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForPersonhistorikk
-import no.nav.medlemskap.domene.Statsborgerskap.Companion.erBritiskBorger
-import no.nav.medlemskap.domene.Statsborgerskap.Companion.erSveitsiskBorger
-import no.nav.medlemskap.domene.Statsborgerskap.Companion.gyldigeStatsborgerskap
+import no.nav.medlemskap.domene.personhistorikk.Adresse
+import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
+import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erBritiskBorger
+import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erSveitsiskBorger
+import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.gyldigeStatsborgerskap
 import no.nav.medlemskap.regler.common.BasisRegel
 import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom

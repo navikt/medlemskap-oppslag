@@ -1,7 +1,10 @@
 package no.nav.medlemskap.regler.v1.arbeidsforhold
 
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.domene.Statsborgerskap.Companion.registrerStatsborgerskapGrafana
+import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
+import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
+import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.registrerStatsborgerskapGrafana
 import no.nav.medlemskap.regler.common.Funksjoner.finnesMindreEnn
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat

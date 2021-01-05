@@ -3,6 +3,8 @@ package no.nav.medlemskap.regler.funksjoner
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Kontrollperiode
+import no.nav.medlemskap.domene.arbeidsforhold.*
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.antallAnsatteHosArbeidsgiversJuridiskeEnheter
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.beregnGjennomsnittligStillingsprosentForGrafana
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.erArbeidsforholdetOffentligSektor
@@ -377,7 +379,11 @@ class ArbeidsforholdFunksjonerTest {
     private val arbeidsforholdMed5Ansatte = lagArbeidsforhold(5)
 
     val arbeidsforholdMedStatligJuridiskEnhetstype = lagArbeidsforhold(juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20)))
-    val arbeidsforholdMedIkkeStatligEllerKommunalJuridiskEnhetstype = lagArbeidsforhold(juridiskeEnheter = listOf(JuridiskEnhet("1", "AS", 20)))
+    val arbeidsforholdMedIkkeStatligEllerKommunalJuridiskEnhetstype = lagArbeidsforhold(
+        juridiskeEnheter = listOf(
+            JuridiskEnhet("1", "AS", 20)
+        )
+    )
 
     private fun lagArbeidsforhold(
         antall: Int = 10,

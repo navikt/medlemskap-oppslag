@@ -17,6 +17,8 @@ import no.nav.medlemskap.cucumber.steps.pdl.DataOmEktefelleBuilder
 import no.nav.medlemskap.cucumber.steps.pdl.PersonhistorikkBuilder
 import no.nav.medlemskap.cucumber.steps.pdl.PersonhistorikkEktefelleBuilder
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.arbeidsforhold.*
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.regler.assertBegrunnelse
 import no.nav.medlemskap.regler.assertDelresultat

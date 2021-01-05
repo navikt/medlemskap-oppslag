@@ -1,6 +1,6 @@
 package no.nav.medlemskap.domene.ektefelle
 
-import no.nav.medlemskap.domene.Adresse
+import no.nav.medlemskap.domene.personhistorikk.Adresse
 
 data class PersonhistorikkEktefelle(
     val ident: String,

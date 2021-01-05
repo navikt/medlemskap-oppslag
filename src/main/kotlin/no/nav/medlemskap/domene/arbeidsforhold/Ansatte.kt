@@ -1,4 +1,4 @@
-package no.nav.medlemskap.domene
+package no.nav.medlemskap.domene.arbeidsforhold
 
 data class Ansatte(
     val antall: Int?,

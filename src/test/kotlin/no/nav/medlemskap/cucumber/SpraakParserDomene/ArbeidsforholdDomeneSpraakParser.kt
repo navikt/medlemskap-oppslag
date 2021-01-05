@@ -3,6 +3,9 @@ package no.nav.medlemskap.cucumber.SpraakParserDomene
 import io.cucumber.datatable.DataTable
 import no.nav.medlemskap.cucumber.*
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.arbeidsforhold.*
+import no.nav.medlemskap.domene.arbeidsforhold.Bruksperiode
+import no.nav.medlemskap.domene.arbeidsforhold.Gyldighetsperiode
 import java.time.YearMonth
 
 object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {

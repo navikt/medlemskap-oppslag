@@ -4,7 +4,7 @@ import no.nav.medlemskap.clients.aareg.AaRegArbeidsforhold
 import no.nav.medlemskap.clients.aareg.AaRegClient
 import no.nav.medlemskap.clients.ereg.EregClient
 import no.nav.medlemskap.clients.ereg.Organisasjon
-import no.nav.medlemskap.domene.Arbeidsforhold
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import java.time.LocalDate
 
 class AaRegService(
