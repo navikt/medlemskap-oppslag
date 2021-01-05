@@ -1,7 +1,7 @@
 package no.nav.medlemskap.domene.barn
 
-import no.nav.medlemskap.domene.Adresse
-import no.nav.medlemskap.domene.Familierelasjon
+import no.nav.medlemskap.domene.personhistorikk.Adresse
+import no.nav.medlemskap.domene.personhistorikk.Familierelasjon
 
 data class PersonhistorikkBarn(
     val ident: String,

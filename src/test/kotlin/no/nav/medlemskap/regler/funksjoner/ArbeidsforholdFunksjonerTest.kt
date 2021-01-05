@@ -3,6 +3,8 @@ package no.nav.medlemskap.regler.funksjoner
 import assertk.assertThat
 import assertk.assertions.isEqualTo
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Kontrollperiode
+import no.nav.medlemskap.domene.arbeidsforhold.*
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.antallAnsatteHosArbeidsgiversJuridiskeEnheter
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.beregnGjennomsnittligStillingsprosentForGrafana
 import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.erArbeidsforholdetOffentligSektor
@@ -346,20 +348,11 @@ class ArbeidsforholdFunksjonerTest {
     }
 
     @Test
-    fun fraOgMedDatoForArbeidsforhold_uten_angitt_første_dag_for_ytelse() {
-        val inputPeriode = InputPeriode(LocalDate.of(2019, 1, 1), LocalDate.of(2019, 2, 2))
+    fun fraOgMedDatoForArbeidsforhold() {
+        val førsteDatoForYtelse = LocalDate.of(2019, 1, 1)
 
-        val fomArbeidsforhold = ArbeidsforholdFunksjoner.fraOgMedDatoForArbeidsforhold(inputPeriode, null)
+        val fomArbeidsforhold = ArbeidsforholdFunksjoner.fraOgMedDatoForArbeidsforhold(førsteDatoForYtelse)
         assertThat(fomArbeidsforhold).isEqualTo(LocalDate.of(2017, 12, 31))
-    }
-
-    @Test
-    fun fraOgMedDatoForArbeidsforhold_med_angitt_første_dag_for_ytelse() {
-        val inputPeriode = InputPeriode(LocalDate.of(2019, 1, 1), LocalDate.of(2019, 2, 2))
-        val førsteDagForYtelse = LocalDate.of(2018, 12, 18)
-
-        val fomArbeidsforhold = ArbeidsforholdFunksjoner.fraOgMedDatoForArbeidsforhold(inputPeriode, førsteDagForYtelse)
-        assertThat(fomArbeidsforhold).isEqualTo(LocalDate.of(2017, 12, 17))
     }
 
     private fun createArbeidsforhold(arbeidsforholdPeriode: Periode, stillingsprosent: Double = 100.0, arbeidsavtalePeriode: Periode = arbeidsforholdPeriode): Arbeidsforhold {
@@ -386,7 +379,11 @@ class ArbeidsforholdFunksjonerTest {
     private val arbeidsforholdMed5Ansatte = lagArbeidsforhold(5)
 
     val arbeidsforholdMedStatligJuridiskEnhetstype = lagArbeidsforhold(juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20)))
-    val arbeidsforholdMedIkkeStatligEllerKommunalJuridiskEnhetstype = lagArbeidsforhold(juridiskeEnheter = listOf(JuridiskEnhet("1", "AS", 20)))
+    val arbeidsforholdMedIkkeStatligEllerKommunalJuridiskEnhetstype = lagArbeidsforhold(
+        juridiskeEnheter = listOf(
+            JuridiskEnhet("1", "AS", 20)
+        )
+    )
 
     private fun lagArbeidsforhold(
         antall: Int = 10,

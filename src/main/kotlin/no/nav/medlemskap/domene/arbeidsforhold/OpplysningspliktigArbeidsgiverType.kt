@@ -1,4 +1,4 @@
-package no.nav.medlemskap.domene
+package no.nav.medlemskap.domene.arbeidsforhold
 
 enum class OpplysningspliktigArbeidsgiverType {
     Organisasjon, Person

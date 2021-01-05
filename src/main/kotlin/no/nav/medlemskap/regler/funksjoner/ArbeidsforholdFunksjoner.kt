@@ -2,9 +2,14 @@ package no.nav.medlemskap.regler.funksjoner
 
 import no.nav.medlemskap.common.*
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.domene.OpplysningspliktigArbeidsgiverType.Organisasjon
-import no.nav.medlemskap.domene.OpplysningspliktigArbeidsgiverType.Person
+import no.nav.medlemskap.domene.Kontrollperiode
 import no.nav.medlemskap.domene.Ytelse.Companion.name
+import no.nav.medlemskap.domene.arbeidsforhold.Ansatte
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforholdstype
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsgiver
+import no.nav.medlemskap.domene.arbeidsforhold.OpplysningspliktigArbeidsgiverType.Organisasjon
+import no.nav.medlemskap.domene.arbeidsforhold.OpplysningspliktigArbeidsgiverType.Person
 import no.nav.medlemskap.regler.common.Funksjoner.isNotNullOrEmpty
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
 import java.time.LocalDate
@@ -224,9 +229,8 @@ object ArbeidsforholdFunksjoner {
                 it.arbeidsavtaler.any { p -> p.stillingsprosent == null || p.stillingsprosent > 0.0 }
         }
 
-    fun fraOgMedDatoForArbeidsforhold(periode: InputPeriode, førsteDagForYtelse: LocalDate?): LocalDate {
-
-        return (førsteDagForYtelse ?: periode.fom).minusYears(1).minusDays(1)
+    fun fraOgMedDatoForArbeidsforhold(førsteDatoForYtelse: LocalDate): LocalDate {
+        return førsteDatoForYtelse.minusYears(1).minusDays(1)
     }
 
     fun erArbeidstaker(arbeidsforhold: List<Arbeidsforhold>, kontrollperiode: Kontrollperiode): Boolean {

@@ -3,13 +3,13 @@ package no.nav.medlemskap.cucumber.SpraakParserDomene
 import io.cucumber.datatable.DataTable
 import no.nav.medlemskap.cucumber.*
 import no.nav.medlemskap.cucumber.Domenebegrep
-import no.nav.medlemskap.domene.Adresse
-import no.nav.medlemskap.domene.Familierelasjon
-import no.nav.medlemskap.domene.Sivilstand
-import no.nav.medlemskap.domene.Statsborgerskap
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
+import no.nav.medlemskap.domene.personhistorikk.Adresse
+import no.nav.medlemskap.domene.personhistorikk.Familierelasjon
+import no.nav.medlemskap.domene.personhistorikk.Sivilstand
+import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
 import java.time.LocalDate
 
 object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {

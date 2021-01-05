@@ -1,9 +1,9 @@
 package no.nav.medlemskap.services.pdl.mapper
 
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
-import no.nav.medlemskap.domene.Adresse
-import no.nav.medlemskap.domene.Familierelasjon
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
+import no.nav.medlemskap.domene.personhistorikk.Adresse
+import no.nav.medlemskap.domene.personhistorikk.Familierelasjon
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapBostedsadresser
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapKontaktAdresser
 

@@ -2,6 +2,7 @@ package no.nav.medlemskap.regler.v1.medlemskap
 
 import no.nav.medlemskap.common.dekningCounter
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Dekning.Companion.gjelderForYtelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.regler.common.RegelId

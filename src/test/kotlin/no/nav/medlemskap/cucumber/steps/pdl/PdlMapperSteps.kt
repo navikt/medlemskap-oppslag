@@ -7,12 +7,13 @@ import io.ktor.features.*
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.cucumber.SpraakParserDomene.PersonhistorikkDomeneSpraakParser
 import no.nav.medlemskap.cucumber.mapping.pdl.PdlDomenespråkParser
-import no.nav.medlemskap.domene.Personhistorikk
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
+import no.nav.medlemskap.domene.personhistorikk.Personhistorikk
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper
 import no.nav.medlemskap.services.pdl.mapper.PdlMapperBarn
 import no.nav.medlemskap.services.pdl.mapper.PdlMapperEktefelle
+import java.time.LocalDate
 
 class PdlMapperSteps : No {
 
@@ -94,10 +95,12 @@ class PdlMapperSteps : No {
             personhistorikk = mapTilPersonhistorikk()
         }
 
-        Når("personhistorikken til bruker, ektefelle og barn mappes") {
+        Når<DataTable>("personhistorikken til bruker, ektefelle og barn mappes med følgende parametre") { dataTable: DataTable? ->
+            val pdlParametre = pdlDomenespråkParser.mapPdlParametre(dataTable)
+
             personhistorikk = mapTilPersonhistorikk()
             personhistorikkBarn = mapTilPersonhistorikkBarn()
-            personhistorikkEktefelle = mapTilPersonhistorikkEktefelle()
+            personhistorikkEktefelle = mapTilPersonhistorikkEktefelle(pdlParametre.førsteDatoForYtelse)
         }
 
         Så<DataTable>("skal mappet statsborgerskap være") { dataTable: DataTable? ->
@@ -156,10 +159,10 @@ class PdlMapperSteps : No {
         return PdlMapperBarn.mapPersonhistorikkTilBarn(identBarn, pdlPeronBuilderBarn.build())
     }
 
-    private fun mapTilPersonhistorikkEktefelle(): PersonhistorikkEktefelle {
+    private fun mapTilPersonhistorikkEktefelle(førsteDatoForYtelse: LocalDate): PersonhistorikkEktefelle {
         val identEktefelle = personhistorikk?.sivilstand?.get(0)?.relatertVedSivilstand
             ?: throw BadRequestException("Ingen fnr registrert på ektefelle i sivilstand")
-        return PdlMapperEktefelle.mapPersonhistorikkTilEktefelle(identEktefelle, pdlPersonBuilderEktefelle.build())
+        return PdlMapperEktefelle.mapPersonhistorikkTilEktefelle(identEktefelle, pdlPersonBuilderEktefelle.build(), førsteDatoForYtelse)
     }
 
     class PdlPersonBuilder {

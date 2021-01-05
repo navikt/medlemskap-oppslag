@@ -6,6 +6,11 @@ import no.nav.medlemskap.cucumber.SpraakParserDomene.MedlemskapDomenebegrep
 import no.nav.medlemskap.cucumber.SpraakParserDomene.OppgaveDomenebegrep
 import no.nav.medlemskap.cucumber.SpraakParserDomene.PersonhistorikkDomenebegrep
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.arbeidsforhold.Ansatte
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforholdstype
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsgiver
+import no.nav.medlemskap.domene.personhistorikk.Familierelasjonsrolle
+import no.nav.medlemskap.domene.personhistorikk.Sivilstandstype
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Svar
 import java.time.LocalDate

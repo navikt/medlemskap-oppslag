@@ -1,8 +1,8 @@
 package no.nav.medlemskap.cucumber.steps.pdl
 
-import no.nav.medlemskap.domene.Adresse
-import no.nav.medlemskap.domene.Familierelasjon
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
+import no.nav.medlemskap.domene.personhistorikk.Adresse
+import no.nav.medlemskap.domene.personhistorikk.Familierelasjon
 
 class PersonhistorikkBarnBuilder {
 

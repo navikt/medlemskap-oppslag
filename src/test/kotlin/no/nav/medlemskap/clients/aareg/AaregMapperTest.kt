@@ -3,6 +3,8 @@ package no.nav.medlemskap.clients.aareg
 import com.fasterxml.jackson.module.kotlin.readValue
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.arbeidsforhold.*
+import no.nav.medlemskap.domene.arbeidsforhold.Bruksperiode
 import no.nav.medlemskap.services.aareg.mapAaregResultat
 import org.junit.Assert
 import org.junit.Test
