@@ -1,5 +1,6 @@
 package no.nav.medlemskap.domene.personhistorikk
 
+import no.nav.medlemskap.domene.InputPeriode
 import java.time.LocalDate
 
 data class Personhistorikk(
@@ -10,4 +11,10 @@ data class Personhistorikk(
     val sivilstand: List<Sivilstand>,
     val familierelasjoner: List<Familierelasjon>,
     val doedsfall: List<LocalDate>
-)
+) {
+    companion object {
+        fun List<LocalDate>.erBrukerDoedEtterPeriode(periode: InputPeriode): Boolean {
+            return this.stream().allMatch { it.isAfter(periode.tom) }
+        }
+    }
+}
