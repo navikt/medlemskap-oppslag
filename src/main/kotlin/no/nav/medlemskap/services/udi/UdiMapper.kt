@@ -1,7 +1,6 @@
 package no.nav.medlemskap.services.udi
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.ArbeidsadgangType
-import no.nav.medlemskap.domene.ArbeidsadgangType.Companion.fraArbeidsadgangType
 import no.nav.medlemskap.domene.Oppholdstillatelse
 import no.nav.medlemskap.domene.Periode
 import no.udi.mt_1067_nav_data.v1.*
@@ -26,16 +25,15 @@ object UdiMapper {
     }
 
     private fun mapArbeidsadgang(arbeidsadgang: Arbeidsadgang?): no.nav.medlemskap.domene.Arbeidsadgang? {
+        if (arbeidsadgang == null) {
+            return null
+        }
         return no.nav.medlemskap.domene.Arbeidsadgang(
-            harArbeidsadgang = arbeidsadgang?.harArbeidsadgang == JaNeiUavklart.JA,
-            arbeidsadgangType = mapArbeidsadgangType(arbeidsadgang?.typeArbeidsadgang),
-            arbeidsomfang = Arbeidsomfang.fraArbeidsomfangVerdi(arbeidsadgang?.arbeidsOmfang?.name),
-            periode = mapPeriode(arbeidsadgang?.arbeidsadgangsPeriode)
+            harArbeidsadgang = arbeidsadgang.harArbeidsadgang == JaNeiUavklart.JA,
+            arbeidsadgangType = ArbeidsadgangType.fraArbeidsadgangType(arbeidsadgang.typeArbeidsadgang.value()),
+            arbeidsomfang = ArbeidomfangKategori.fraArbeidomfang(arbeidsadgang.arbeidsOmfang.value()),
+            periode = mapPeriode(arbeidsadgang.arbeidsadgangsPeriode)
         )
-    }
-
-    private fun mapArbeidsadgangType(arbeidsadgangType: no.udi.mt_1067_nav_data.v1.ArbeidsadgangType?): ArbeidsadgangType? {
-        return fraArbeidsadgangType(arbeidsadgangType?.value())
     }
 
     private fun mapPeriode(periode: no.udi.mt_1067_nav_data.v1.Periode?): Periode {
@@ -45,7 +43,10 @@ object UdiMapper {
         )
     }
 
-    private fun mapGjeldendeOppholdsstatus(gjeldendeOppholdsstatus: GjeldendeOppholdsstatus): OppholdstillatelsePaSammeVilkar? {
+    private fun mapGjeldendeOppholdsstatus(gjeldendeOppholdsstatus: GjeldendeOppholdsstatus?): OppholdstillatelsePaSammeVilkar? {
+        if (gjeldendeOppholdsstatus == null) {
+            return null
+        }
         if (gjeldendeOppholdsstatus.eoSellerEFTAOpphold != null) {
             if (gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTABeslutningOmOppholdsrett != null) {
                 val oppholdsrettsPeriode =

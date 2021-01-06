@@ -13,10 +13,10 @@ data class Oppholdstillatelse(
 )
 
 data class Arbeidsadgang(
-    val harArbeidsadgang: Boolean?,
-    val arbeidsadgangType: ArbeidsadgangType?,
-    val arbeidsomfang: Arbeidsomfang?,
-    val periode: Periode?
+        val harArbeidsadgang: Boolean,
+        val arbeidsadgangType: ArbeidsadgangType?,
+        val arbeidsomfang: ArbeidomfangKategori?,
+        val periode: Periode
 )
 
 data class OppholdstillatelsePaSammeVilkar(
@@ -28,7 +28,7 @@ data class GjeldendeOppholdsstatus(
     val uavklart: Boolean
 )
 
-enum class Arbeidsomfang(val kodeverdi: String) {
+enum class ArbeidomfangKategori(val kodeverdi: String) {
     INGEN_KRAV_TIL_STILLINGSPROSENT("IngenKravTilStillingsprosent"),
     KUN_ARBEID_HELTID("KunArbeidHeltid"),
     KUN_ARBEID_DELTID("KunArbeidDeltid"),
@@ -36,7 +36,7 @@ enum class Arbeidsomfang(val kodeverdi: String) {
     UAVKLART("Uavklart");
 
     companion object {
-        fun fraArbeidsomfangVerdi(arbeidsomfangVerdi: String?): Arbeidsomfang? {
+        fun fraArbeidomfang(arbeidsomfangVerdi: String?): ArbeidomfangKategori? {
             return values().firstOrNull { it.kodeverdi == arbeidsomfangVerdi }
         }
     }
