@@ -10,7 +10,7 @@ import no.nav.medlemskap.cucumber.steps.aareg.aaregBuilder.*
 import no.nav.medlemskap.cucumber.steps.aareg.eregBuilder.EnhetstypeBuilder
 import no.nav.medlemskap.cucumber.steps.aareg.eregBuilder.OrganisasjonBuilder
 import no.nav.medlemskap.cucumber.steps.aareg.eregBuilder.OrganisasjonsDetaljerBuilder
-import no.nav.medlemskap.domene.Arbeidsforhold
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.services.aareg.mapArbeidsforhold
 
 class AaregMapperSteps : No {

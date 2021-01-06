@@ -1,13 +1,18 @@
 package no.nav.medlemskap.regler.v1.overstyring
 
-import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.domene.Statsborgerskap.Companion.erNorskBorger
+import no.nav.medlemskap.domene.Brukerinput
+import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.InputPeriode
+import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.erArbeidstaker
+import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
+import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erNorskBorger
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import no.nav.medlemskap.regler.common.Svar
-import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner
 import no.nav.medlemskap.regler.v1.lovvalg.LovvalgRegel
 import java.time.LocalDate
 
@@ -25,7 +30,7 @@ class OverstyringRegel(
         if (!brukerInput.arbeidUtenforNorge &&
             ytelse == Ytelse.SYKEPENGER &&
             statsborgerskap.erNorskBorger(kontrollPeriodeForPersonhistorikk) &&
-            ArbeidsforholdFunksjoner.erArbeidstaker(arbeidsforhold, kontrollPeriodeForArbeidsforhold)
+            arbeidsforhold.erArbeidstaker(kontrollPeriodeForArbeidsforhold)
         ) {
             return ja(regelId)
         }

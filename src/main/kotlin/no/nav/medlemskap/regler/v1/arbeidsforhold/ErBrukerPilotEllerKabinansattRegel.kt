@@ -1,12 +1,16 @@
 package no.nav.medlemskap.regler.v1.arbeidsforhold
 
-import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.InputPeriode
+import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.sisteArbeidsforholdYrkeskode
+import no.nav.medlemskap.domene.arbeidsforhold.YrkeskoderForLuftFart
 import no.nav.medlemskap.regler.common.Funksjoner.inneholderNoe
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
-import no.nav.medlemskap.regler.funksjoner.ArbeidsforholdFunksjoner.sisteArbeidsforholdYrkeskode
 import java.time.LocalDate
 
 class ErBrukerPilotEllerKabinansattRegel(

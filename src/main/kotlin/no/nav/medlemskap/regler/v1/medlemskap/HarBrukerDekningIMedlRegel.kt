@@ -3,12 +3,12 @@ package no.nav.medlemskap.regler.v1.medlemskap
 import no.nav.medlemskap.common.dekningCounter
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Dekning.Companion.gjelderForYtelse
+import no.nav.medlemskap.domene.Medlemskap.Companion.gjeldendeDekning
 import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
-import no.nav.medlemskap.regler.funksjoner.MedlFunksjoner.gjeldendeDekning
 import java.time.LocalDate
 
 class HarBrukerDekningIMedlRegel(

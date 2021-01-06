@@ -10,6 +10,7 @@ import no.udi.mt_1067_nav_data.v1.HentPersonstatusResultat
 import v1.mt_1067_nav.no.udi.HentPersonstatusRequestType
 import v1.mt_1067_nav.no.udi.HentPersonstatusResponseType
 import v1.mt_1067_nav.no.udi.MT1067NAVV1Interface
+import java.time.LocalDateTime
 import javax.xml.datatype.DatatypeFactory
 
 class UdiClient(
@@ -22,7 +23,7 @@ class UdiClient(
         private val logger = KotlinLogging.logger { }
     }
 
-    suspend fun hentOppholdstatusResulat(fnr: String): HentPersonstatusResultat? {
+    suspend fun hentOppholdstatusResultat(fnr: String): HentPersonstatusResultat? {
         retry?.let {
             return it.executeSuspendFunction {
                 hentOppholdstatusRequest(fnr)?.resultat
@@ -31,7 +32,7 @@ class UdiClient(
         return hentOppholdstatusRequest(fnr)?.resultat
     }
 
-    suspend fun hentOppholdstatusRequest(fnr: String): HentPersonstatusResponseType? {
+    private suspend fun hentOppholdstatusRequest(fnr: String): HentPersonstatusResponseType? {
 
         return withContext(Dispatchers.Default) {
             secureLogger.info("Request: ${mapRequest(fnr)}")
@@ -39,7 +40,7 @@ class UdiClient(
         }
     }
 
-    fun mapRequest(fnr: String): HentPersonstatusRequestType? {
+    fun mapRequest(fnr: String): HentPersonstatusRequestType {
         val type = HentPersonstatusRequestType()
         val param = HentPersonstatusParameter()
         param.fodselsnummer = fnr
@@ -47,7 +48,7 @@ class UdiClient(
         param.isInkluderAvgjorelsehistorikk = true
         param.isManuellOppgVedUavklartArbeidsadgang = true
         param.isInkluderSoknadOmBeskyttelseUnderBehandling = true
-        param.avgjorelserFraDato = null
+        param.avgjorelserFraDato = DatatypeFactory.newInstance().newXMLGregorianCalendar(LocalDateTime.now().minusYears(1).toString())
         type.parameter = param
         return type
     }

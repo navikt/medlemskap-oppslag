@@ -1,13 +1,13 @@
-package no.nav.medlemskap.regler.funksjoner
+package no.nav.medlemskap.domene.personhistorikk
 
 import no.nav.medlemskap.domene.InputPeriode
-import no.nav.medlemskap.regler.funksjoner.PersonhistorikkFunksjoner.erBrukerDoedEtterPeriode
+import no.nav.medlemskap.domene.personhistorikk.Personhistorikk.Companion.erBrukerDoedEtterPeriode
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
-class PersonhistorikkFunksjonerTest {
+class PersonhistorikkTest {
 
     @Test
     fun `Liste med dødsfall før periode gir false`() {

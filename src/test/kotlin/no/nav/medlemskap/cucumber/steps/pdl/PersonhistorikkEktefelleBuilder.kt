@@ -1,7 +1,7 @@
 package no.nav.medlemskap.cucumber.steps.pdl
 
-import no.nav.medlemskap.domene.Adresse
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
+import no.nav.medlemskap.domene.personhistorikk.Adresse
 
 class PersonhistorikkEktefelleBuilder {
 

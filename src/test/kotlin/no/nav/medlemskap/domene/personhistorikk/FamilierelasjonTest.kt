@@ -1,12 +1,12 @@
-package no.nav.medlemskap.clients.pdl.mapper
+package no.nav.medlemskap.domene.personhistorikk
 
-import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.regler.funksjoner.RelasjonFunksjoner
+import no.nav.medlemskap.domene.personhistorikk.Familierelasjon.Companion.hentFnrTilBarn
+import no.nav.medlemskap.domene.personhistorikk.Familierelasjon.Companion.hentFnrTilEktefelle
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
-class RelasjonFunksjonerTest {
+class FamilierelasjonTest {
 
     @Test
     fun `hent fnr til ektefelle`() {
@@ -15,7 +15,7 @@ class RelasjonFunksjonerTest {
                 lagSivilstand(relatertVedSivilstand = "13128619857")
             )
         )
-        val fnrTilEktefelle = RelasjonFunksjoner.hentFnrTilEktefelle(personhistorikk)
+        val fnrTilEktefelle = hentFnrTilEktefelle(personhistorikk)
         assertEquals("13128619857", fnrTilEktefelle)
     }
 
@@ -27,7 +27,8 @@ class RelasjonFunksjonerTest {
             lagFamilierelasjon(relatertPersonIdent = "09069534888", minRolleForPerson = Familierelasjonsrolle.FAR)
         )
 
-        val fnrTilBarn = RelasjonFunksjoner.hentFnrTilBarn(familierelasjoner)
+        val førsteDatoForYtelse = LocalDate.of(2020, 12, 12)
+        val fnrTilBarn = hentFnrTilBarn(familierelasjoner, førsteDatoForYtelse)
         val forventetSvar = listOf("25079528660", "09069534888")
         assertEquals(2, fnrTilBarn.size)
         assertEquals(forventetSvar, fnrTilBarn)
