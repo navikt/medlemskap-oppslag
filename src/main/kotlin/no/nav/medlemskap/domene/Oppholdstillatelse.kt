@@ -13,10 +13,10 @@ data class Oppholdstillatelse(
 )
 
 data class Arbeidsadgang(
-    val harArbeidsadgang: Boolean,
-    val arbeidsadgangType: ArbeidsAdgangType?,
-    val arbeidsomfang: ArbeidomfangKategori?,
-    val periode: Periode
+        val harArbeidsadgang: Boolean,
+        val arbeidsadgangType: ArbeidsadgangType?,
+        val arbeidsomfang: ArbeidomfangKategori?,
+        val periode: Periode
 )
 
 data class OppholdstillatelsePaSammeVilkar(
@@ -42,7 +42,7 @@ enum class ArbeidomfangKategori(val kodeverdi: String) {
     }
 }
 
-enum class ArbeidsAdgangType(val kodeverdi: String) {
+enum class ArbeidsadgangType(val kodeverdi: String) {
     BESTEMT_ARBEIDSGIVER_ELLER_OPPDRAGSGIVER("BestemtArbeidsgiverEllerOppdragsgiver"),
     BESTEMT_ARBEID_ELLER_OPPDRAG("BestemtArbeidEllerOppdrag"),
     BESTEMT_ARBEIDSGIVER_OG_ARBEID_ELLER_BESTEMT_OPPDRAGSGIVER_OG_OPPDRAG("BestemtArbeidsgiverOgArbeidEllerBestemtOppdragsgiverOgOppdrag"),
@@ -50,7 +50,7 @@ enum class ArbeidsAdgangType(val kodeverdi: String) {
     UAVKLART("Uavklart");
 
     companion object {
-        fun fraArbeidsadgangType(kodeverdi: String?): ArbeidsAdgangType? {
+        fun fraArbeidsadgangType(kodeverdi: String?): ArbeidsadgangType? {
             return values().firstOrNull { it.kodeverdi == kodeverdi }
         }
     }

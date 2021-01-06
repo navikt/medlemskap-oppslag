@@ -5,7 +5,7 @@ import no.nav.medlemskap.cucumber.BasisDomeneParser
 import no.nav.medlemskap.cucumber.Domenenøkkel
 import no.nav.medlemskap.cucumber.RadMapper
 import no.nav.medlemskap.domene.ArbeidomfangKategori
-import no.nav.medlemskap.domene.ArbeidsAdgangType
+import no.nav.medlemskap.domene.ArbeidsadgangType
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.regler.common.Datohjelper
 import java.time.LocalDateTime
@@ -28,7 +28,7 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, ArbeidsomfangKategoriMapper())[0]
     }
 
-    fun mapArbeidsadgangType(dataTable: DataTable?): ArbeidsAdgangType {
+    fun mapArbeidsadgangType(dataTable: DataTable?): ArbeidsadgangType {
         return mapDataTable(dataTable, ArbeidsadgangTypeMapper())[0]
     }
 
@@ -57,9 +57,9 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
         }
     }
 
-    class ArbeidsadgangTypeMapper() : RadMapper<ArbeidsAdgangType> {
-        override fun mapRad(rad: Map<String, String>): ArbeidsAdgangType {
-            return ArbeidsAdgangType.valueOf(parseString(OppholdstillatelseDomenebegrep.ARBEIDSADGANG_TYPE, rad))
+    class ArbeidsadgangTypeMapper() : RadMapper<ArbeidsadgangType> {
+        override fun mapRad(rad: Map<String, String>): ArbeidsadgangType {
+            return ArbeidsadgangType.valueOf(parseString(OppholdstillatelseDomenebegrep.ARBEIDSADGANG_TYPE, rad))
         }
     }
 
