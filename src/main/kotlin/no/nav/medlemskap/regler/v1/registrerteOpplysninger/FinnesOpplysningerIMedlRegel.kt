@@ -4,6 +4,7 @@ import no.nav.medlemskap.common.medlCounter
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForMedl
+import no.nav.medlemskap.domene.Kontrollperiode.Companion.startDatoForYtelse
 import no.nav.medlemskap.domene.Medlemskap
 import no.nav.medlemskap.domene.Medlemskap.Companion.finnesPersonIMedlForKontrollPeriode
 import no.nav.medlemskap.domene.Ytelse
@@ -22,7 +23,7 @@ class FinnesOpplysningerIMedlRegel(
 ) : BasisRegel(RegelId.REGEL_A, ytelse) {
 
     override fun operasjon(): Resultat {
-        val kontrollPeriodeForMedl = kontrollPeriodeForMedl(periode, førsteDagForYtelse)
+        val kontrollPeriodeForMedl = kontrollPeriodeForMedl(startDatoForYtelse(periode, førsteDagForYtelse))
         if (medlemskap.isNotEmpty()) medlCounter().increment()
         return when {
             medlemskap finnesPersonIMedlForKontrollPeriode kontrollPeriodeForMedl -> ja(regelId)

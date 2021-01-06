@@ -11,28 +11,28 @@ data class Kontrollperiode(
     val antallDager = fom.until(tom, ChronoUnit.DAYS).toDouble()
 
     companion object {
-        fun kontrollPeriodeForPersonhistorikk(inputPeriode: InputPeriode, førsteDagForYtelse: LocalDate?): Kontrollperiode {
+        fun kontrollPeriodeForPersonhistorikk(startDatoForYtelse: LocalDate): Kontrollperiode {
             return Kontrollperiode(
-                fom = førsteDatoForYtelse(inputPeriode, førsteDagForYtelse).minusMonths(12),
-                tom = førsteDatoForYtelse(inputPeriode, førsteDagForYtelse)
+                fom = startDatoForYtelse.minusMonths(12),
+                tom = startDatoForYtelse
             )
         }
 
-        fun kontrollPeriodeForMedl(inputPeriode: InputPeriode, førsteDagForYtelse: LocalDate?): Kontrollperiode {
+        fun kontrollPeriodeForMedl(startDatoForYtelse: LocalDate): Kontrollperiode {
             return Kontrollperiode(
-                fom = førsteDatoForYtelse(inputPeriode, førsteDagForYtelse).minusMonths(12),
-                tom = førsteDatoForYtelse(inputPeriode, førsteDagForYtelse)
+                fom = startDatoForYtelse.minusMonths(12),
+                tom = startDatoForYtelse
             )
         }
 
-        fun kontrollPeriodeForArbeidsforhold(inputPeriode: InputPeriode, førsteDagForYtelse: LocalDate?): Kontrollperiode {
+        fun kontrollPeriodeForArbeidsforhold(startDatoForYtelse: LocalDate): Kontrollperiode {
             return Kontrollperiode(
-                fom = førsteDatoForYtelse(inputPeriode, førsteDagForYtelse).minusMonths(12),
-                tom = førsteDatoForYtelse(inputPeriode, førsteDagForYtelse)
+                fom = startDatoForYtelse.minusMonths(12),
+                tom = startDatoForYtelse
             )
         }
 
-        fun førsteDatoForYtelse(inputPeriode: InputPeriode, førsteDagForYtelse: LocalDate?): LocalDate {
+        fun startDatoForYtelse(inputPeriode: InputPeriode, førsteDagForYtelse: LocalDate?): LocalDate {
             if (førsteDagForYtelse != null) {
                 return førsteDagForYtelse
             } else {

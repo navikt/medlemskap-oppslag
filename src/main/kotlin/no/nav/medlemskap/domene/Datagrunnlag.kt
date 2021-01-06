@@ -1,5 +1,6 @@
 package no.nav.medlemskap.domene
 
+import no.nav.medlemskap.domene.Kontrollperiode.Companion.startDatoForYtelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
@@ -26,7 +27,7 @@ data class Datagrunnlag(
     val oppholdstillatelse: Oppholdstillatelse?
 ) {
     private val kontrollPeriodeForPersonhistorikk =
-        Kontrollperiode.kontrollPeriodeForPersonhistorikk(periode, førsteDagForYtelse)
+        Kontrollperiode.kontrollPeriodeForPersonhistorikk(startDatoForYtelse(periode, førsteDagForYtelse))
 
     fun gyldigeStatsborgerskap(): List<String> {
         val statsborgerskap: List<Statsborgerskap> = pdlpersonhistorikk.statsborgerskap
