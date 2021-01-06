@@ -65,7 +65,7 @@ object UdiMapper {
         )
     }
 
-    //Utkommenterte da Helle sa vi ikke skulle bruke det under, venter med å fjerne det til vi har hatt gjennomgang
+    // Utkommenterte da Helle sa vi ikke skulle bruke det under, venter med å fjerne det til vi har hatt gjennomgang
 
     private fun mapGjeldendeOppholdsstatus(gjeldendeOppholdsstatus: GjeldendeOppholdsstatus): Boolean {
         if (gjeldendeOppholdsstatus.eoSellerEFTAOpphold != null) {

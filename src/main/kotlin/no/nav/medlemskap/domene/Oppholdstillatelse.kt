@@ -6,8 +6,8 @@ data class Oppholdstillatelse(
     val uttrekkstidspunkt: LocalDateTime?,
     val foresporselsfodselsnummer: String?,
     val avgjoerelse: Boolean?,
-    val gjeldendeOppholdsstatus: Boolean?,
-    val arbeidsadgang: Arbeidsadgang,
+    val gjeldendeOppholdsstatus: OppholdstillatelsePaSammeVilkar?,
+    val arbeidsadgang: Arbeidsadgang?,
     val uavklartFlyktningstatus: Boolean?,
     val harFlyktningstatus: Boolean?
 )
@@ -17,6 +17,11 @@ data class Arbeidsadgang(
     val arbeidsadgangType: ArbeidsAdgangType,
     val arbeidsomfang: ArbeidomfangKategori,
     val periode: Periode
+)
+
+data class OppholdstillatelsePaSammeVilkar(
+    val periode: Periode,
+    val harTillatelse: Boolean
 )
 
 data class GjeldendeOppholdsstatus(
