@@ -8,6 +8,7 @@ import no.nav.medlemskap.cucumber.RadMapper
 import no.udi.mt_1067_nav_data.v1.ArbeidOmfangKategori
 import no.udi.mt_1067_nav_data.v1.ArbeidsadgangType
 import no.udi.mt_1067_nav_data.v1.JaNeiUavklart
+import no.udi.mt_1067_nav_data.v1.Periode
 import javax.xml.datatype.DatatypeFactory
 import javax.xml.datatype.XMLGregorianCalendar
 
@@ -30,6 +31,10 @@ class UdiDomeneSpraakParser {
 
     fun mapUttrekkstidspunkt(dataTable: DataTable?): XMLGregorianCalendar ? {
         return mapDataTable(dataTable, UttrekkstidspunktMapper())[0]
+    }
+
+    fun mapPeriode(dataTable: DataTable?): Periode {
+        return mapDataTable(dataTable, PeriodeMapper())[0]
     }
 
     class HarArbeidsadgangMapper() : RadMapper<JaNeiUavklart> {
@@ -56,6 +61,17 @@ class UdiDomeneSpraakParser {
         }
     }
 
+    class PeriodeMapper() : RadMapper<Periode> {
+        override fun mapRad(rad: Map<String, String>): Periode {
+            val fom = BasisDomeneParser.parseString(UdiDomenebegrep.GYLDIG_FRA_OG_MED, rad)
+            val tom = BasisDomeneParser.parseString(UdiDomenebegrep.GYLDIG_TIL_OG_MED, rad)
+            val periode = Periode()
+            periode.fra = DatatypeFactory.newInstance().newXMLGregorianCalendar(fom)
+            periode.til = DatatypeFactory.newInstance().newXMLGregorianCalendar(tom)
+            return periode
+        }
+    }
+
     class UttrekkstidspunktMapper() : RadMapper<XMLGregorianCalendar> {
         override fun mapRad(rad: Map<String, String>): XMLGregorianCalendar {
 
@@ -70,6 +86,8 @@ enum class UdiDomenebegrep(val nøkkel: String) : Domenenøkkel {
     ARBEIDOMFANG_KATEGORI("ArbeidomfangKategori"),
     ARBEIDSADGANG_TYPE("ArbeidsadgangType"),
     FORESPORSELSFODSELSNUMMER("Foresporselsfodselsnummer"),
+    GYLDIG_FRA_OG_MED("Gyldig fra og med"),
+    GYLDIG_TIL_OG_MED("Gyldig til og med"),
     UTTREKKSTIDSPUNKT("Uttrekkstidspunkt")
     ;
 

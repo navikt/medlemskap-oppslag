@@ -6,6 +6,7 @@ import no.nav.medlemskap.cucumber.Domenenøkkel
 import no.nav.medlemskap.cucumber.RadMapper
 import no.nav.medlemskap.domene.ArbeidomfangKategori
 import no.nav.medlemskap.domene.ArbeidsAdgangType
+import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.regler.common.Datohjelper
 import java.time.LocalDateTime
 
@@ -29,6 +30,19 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
 
     fun mapArbeidsadgangType(dataTable: DataTable?): ArbeidsAdgangType {
         return mapDataTable(dataTable, ArbeidsadgangTypeMapper())[0]
+    }
+
+    fun mapPeriode(dataTable: DataTable?): Periode {
+        return mapDataTable(dataTable, PeriodeMapper())[0]
+    }
+
+    class PeriodeMapper() : RadMapper<Periode> {
+        override fun mapRad(rad: Map<String, String>): Periode {
+            return Periode(
+                fom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad),
+                tom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad)
+            )
+        }
     }
 
     class ArbeidsomfangKategoriMapper() : RadMapper<ArbeidomfangKategori> {
@@ -66,6 +80,8 @@ enum class OppholdstillatelseDomenebegrep(val nøkkel: String) : Domenenøkkel {
     ARBEIDSADGANG("Arbeidsadgang"),
     ARBEIDOMFANG_KATEGORI("ArbeidomfangKategori"),
     ARBEIDSADGANG_TYPE("ArbeidsadgangType"),
+    GYLDIG_FRA_OG_MED("Gyldig fra og med"),
+    GYLDIG_TIL_OG_MED("Gyldig til og med"),
     FORESPORSELSFODSELSNUMMER("Foresporselsfodselsnummer"),
     UTTREKKSTIDSPUNKT("Uttrekkstidspunkt")
     ;

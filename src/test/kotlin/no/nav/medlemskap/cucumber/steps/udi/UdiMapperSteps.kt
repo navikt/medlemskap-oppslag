@@ -35,6 +35,10 @@ class UdiMapperSteps : No {
             udiOppholdstillatelseBuilder.uttrekkstidspunkt = udiDomenespraakParser.mapUttrekkstidspunkt(dataTable)
         }
 
+        Gitt<DataTable>("følgende om periode i Arbeidsadgang") { dataTable: DataTable? ->
+            udiArbeidsadgangBuilder.arbeidsadgangsPeriode = udiDomenespraakParser.mapPeriode(dataTable)
+        }
+
         Når("arbeidsadgang mappes") {
             oppholdstillatelse = mapTilOppholdstillatelse()
         }
@@ -62,6 +66,11 @@ class UdiMapperSteps : No {
         Så<DataTable>("skal mappede arbeidsadgangtype i medlemskap være") { dataTable: DataTable? ->
             val arbeidsadgangTypeForventet = OppholdstillatelseDomeneSpraakParser.mapArbeidsadgangType(dataTable)
             oppholdstillatelse?.arbeidsadgang?.arbeidsadgangType.shouldBe(arbeidsadgangTypeForventet)
+        }
+
+        Så<DataTable>("mappet periode i medlemskap være") { dataTable: DataTable? ->
+            val periodeForventet = OppholdstillatelseDomeneSpraakParser.mapPeriode(dataTable)
+            oppholdstillatelse?.arbeidsadgang?.periode.shouldBe(periodeForventet)
         }
     }
 
