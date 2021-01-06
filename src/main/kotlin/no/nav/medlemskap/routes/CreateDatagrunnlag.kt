@@ -20,7 +20,6 @@ import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.domene.personhistorikk.Familierelasjon.Companion.hentFnrTilBarn
 import no.nav.medlemskap.domene.personhistorikk.Familierelasjon.Companion.hentFnrTilEktefelle
 import no.nav.medlemskap.domene.personhistorikk.Personhistorikk
-import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erAnnenStatsborger
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.harEndretSisteÅret
 import java.time.LocalDate
 
@@ -70,8 +69,8 @@ suspend fun defaultCreateDatagrunnlag(
     val oppgaver = gosysOppgaver.await()
     val ytelse: Ytelse = finnYtelse(request.ytelse, clientId)
 
-    val oppholdstillatelse = if (FeatureToggles.FEATURE_UDI.enabled &&
-        personHistorikkFraPdl.statsborgerskap.erAnnenStatsborger(request.periode, request.førsteDagForYtelse)
+    val oppholdstillatelse = if (FeatureToggles.FEATURE_UDI.enabled //&&
+        //personHistorikkFraPdl.statsborgerskap.erAnnenStatsborger(request.periode, request.førsteDagForYtelse)
     ) {
         val oppholdsstatusRequest = async { services.udiService.hentOppholdstillatelseer(request.fnr) }
         oppholdsstatusRequest.await()
