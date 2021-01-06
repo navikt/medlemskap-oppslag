@@ -2,13 +2,13 @@ package no.nav.medlemskap.regler.v1.registrerteOpplysninger
 
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Oppgave
+import no.nav.medlemskap.domene.Oppgave.Companion.finnesAapneOppgaver
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.BasisRegel
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
-import no.nav.medlemskap.regler.funksjoner.GsakFunksjoner.finnesAapneOppgaver
 
 class FinnesOpplysningerIGosysRegel(
     ytelse: Ytelse,
