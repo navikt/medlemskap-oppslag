@@ -15,7 +15,7 @@ import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.registre
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erAnnenStatsborger
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.harEndretSisteÅret
-import no.nav.medlemskap.services.HentDataOmFamilieService
+import no.nav.medlemskap.services.FamilieService
 import java.time.LocalDate
 
 suspend fun defaultCreateDatagrunnlag(
@@ -24,7 +24,7 @@ suspend fun defaultCreateDatagrunnlag(
     services: Services,
     clientId: String?
 ): Datagrunnlag = coroutineScope {
-    val familieService = HentDataOmFamilieService(services.aaRegService, services.pdlService)
+    val familieService = FamilieService(services.aaRegService, services.pdlService)
     val startDatoForYtelse = startDatoForYtelse(request.periode, request.førsteDagForYtelse)
 
     val arbeidsforholdRequest = async {

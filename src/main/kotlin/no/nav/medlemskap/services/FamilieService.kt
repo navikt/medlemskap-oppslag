@@ -10,7 +10,7 @@ import no.nav.medlemskap.services.aareg.AaRegService
 import no.nav.medlemskap.services.pdl.PdlService
 import java.time.LocalDate
 
-class HentDataOmFamilieService(private val aaRegService: AaRegService, private val pdlService: PdlService) {
+class FamilieService(private val aaRegService: AaRegService, private val pdlService: PdlService) {
 
     suspend fun hentDataOmBarn(
         familierelasjoner: List<Familierelasjon>,
