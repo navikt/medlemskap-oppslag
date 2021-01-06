@@ -48,6 +48,15 @@ abstract class BasisDomeneParser {
             return valgfriVerdi(domenebegrep.nøkkel(), rad)
         }
 
+        fun parseBooleanMedBooleanVerdi(domenebegrep: Domenenøkkel, rad: Map<String, String>): Boolean {
+            val verdi = verdi(domenebegrep.nøkkel(), rad)
+
+            return when (verdi) {
+                "true" -> true
+                else -> false
+            }
+        }
+
         fun parseBoolean(domenebegrep: Domenenøkkel, rad: Map<String, String>): Boolean {
             val verdi = verdi(domenebegrep.nøkkel(), rad)
 
