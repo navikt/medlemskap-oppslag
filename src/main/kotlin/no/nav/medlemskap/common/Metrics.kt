@@ -201,6 +201,12 @@ fun uavklartPåRegel(årsak: Årsak, ytelse: String): Counter = Counter
     .description("Regler som gir uavklart")
     .register(Metrics.globalRegistry)
 
+fun arbeidsadgangtyperCounter(arbeidsadgangtype: String?): Counter = Counter
+    .builder("arbeidsadgangtyper")
+    .tags("arbeidsadgangtype", arbeidsadgangtype ?: "Ikke oppgitt")
+    .description("counter for ulike typer arbeidsadgang")
+    .register(Metrics.globalRegistry)
+
 private fun mapEndretStatsborgerskapBooleanTilMetrikkVerdi(statsborgerskapEndretSisteÅret: Boolean): String =
     when (statsborgerskapEndretSisteÅret) {
         true -> "endret"
