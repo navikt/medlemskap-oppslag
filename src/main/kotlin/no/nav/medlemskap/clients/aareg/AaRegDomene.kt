@@ -6,7 +6,7 @@ import java.time.YearMonth
 
 data class AaRegAnsettelsesperiode(
     val bruksperiode: AaRegBruksperiode,
-    val periode: AaRegPeriode,
+    val gyldighetsperiode: AaRegPeriode,
     val sporingsinformasjon: AaRegSporingsinformasjon,
     val varslingskode: String?
 )

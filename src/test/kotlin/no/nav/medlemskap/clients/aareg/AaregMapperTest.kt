@@ -2,9 +2,8 @@ package no.nav.medlemskap.clients.aareg
 
 import com.fasterxml.jackson.module.kotlin.readValue
 import no.nav.medlemskap.common.objectMapper
-import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.arbeidsforhold.*
-import no.nav.medlemskap.domene.arbeidsforhold.Bruksperiode
 import no.nav.medlemskap.services.aareg.mapAaregResultat
 import org.junit.Assert
 import org.junit.Test
@@ -86,7 +85,7 @@ class AaregMapperTest {
               "bruksperiode": {
                 "fom": "2018-11-15T21:37:40.835"
               },
-              "periode": {
+              "gyldighetsperiode": {
                 "fom": "2008-01-01",
                 "tom": "2018-10-30"
               },

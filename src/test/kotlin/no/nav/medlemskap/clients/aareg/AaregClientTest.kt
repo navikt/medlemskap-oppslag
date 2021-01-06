@@ -75,7 +75,7 @@ class AaregClientTest {
         Assertions.assertEquals(AaRegOpplysningspliktigArbeidsgiverType.Organisasjon, arbeidsgiver.type)
 
         val periode = response[0].ansettelsesperiode
-        Assertions.assertEquals(AaRegPeriode(LocalDate.parse("2008-01-01"), LocalDate.parse("2018-10-30")), periode.periode)
+        Assertions.assertEquals(AaRegPeriode(LocalDate.parse("2008-01-01"), LocalDate.parse("2018-10-30")), periode.gyldighetsperiode)
 
         val permisjonPermittering = response[0].permisjonPermitteringer?.get(0)
         Assertions.assertEquals(AaRegPeriode(LocalDate.parse("1975-10-10"), LocalDate.parse("2020-08-01")), permisjonPermittering?.periode)
@@ -190,7 +190,7 @@ class AaregClientTest {
     },
     "type": "ordinaertArbeidsforhold",
     "ansettelsesperiode": {
-      "periode": {
+      "gyldighetsperiode": {
         "fom": "2008-01-01",
         "tom": "2018-10-30"
       },

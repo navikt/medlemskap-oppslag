@@ -2,7 +2,7 @@ package no.nav.medlemskap.services.aareg
 
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.aareg.*
-import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.arbeidsforhold.*
 import no.nav.medlemskap.services.ereg.mapOrganisasjonTilArbeidsgiver
 
@@ -55,8 +55,8 @@ fun mapArbeidsgiverType(type: AaRegOpplysningspliktigArbeidsgiverType): Opplysni
 
 fun mapPeriodeFraArbeidsforhold(arbeidsforhold: AaRegArbeidsforhold): Periode {
     return Periode(
-        fom = arbeidsforhold.ansettelsesperiode.periode.fom,
-        tom = arbeidsforhold.ansettelsesperiode.periode.tom
+        fom = arbeidsforhold.ansettelsesperiode.gyldighetsperiode.fom,
+        tom = arbeidsforhold.ansettelsesperiode.gyldighetsperiode.tom
     )
 }
 

@@ -15,7 +15,7 @@ class AaRegAnsettelsesPeriodeBuilder {
     fun build(): AaRegAnsettelsesperiode =
         AaRegAnsettelsesperiode(
             bruksperiode = bruksperiode,
-            periode = periode,
+            gyldighetsperiode = periode,
             varslingskode = varslingskode,
             sporingsinformasjon = sporingsinformasjon
         )
