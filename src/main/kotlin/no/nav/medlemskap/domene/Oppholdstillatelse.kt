@@ -14,8 +14,8 @@ data class Oppholdstillatelse(
 
 data class Arbeidsadgang(
     val harArbeidsadgang: Boolean,
-    val arbeidsadgangType: ArbeidsAdgangType,
-    val arbeidsomfang: ArbeidomfangKategori,
+    val arbeidsadgangType: ArbeidsAdgangType?,
+    val arbeidsomfang: ArbeidomfangKategori?,
     val periode: Periode
 )
 
@@ -28,7 +28,7 @@ data class GjeldendeOppholdsstatus(
     val uavklart: Boolean
 )
 
-enum class ArbeidomfangKategori(val type: String) {
+enum class ArbeidomfangKategori(val kodeverdi: String) {
     INGEN_KRAV_TIL_STILLINGSPROSENT("IngenKravTilStillingsprosent"),
     KUN_ARBEID_HELTID("KunArbeidHeltid"),
     KUN_ARBEID_DELTID("KunArbeidDeltid"),
@@ -36,14 +36,13 @@ enum class ArbeidomfangKategori(val type: String) {
     UAVKLART("Uavklart");
 
     companion object {
-        fun fraJaNeiUavklartVerdi(jaNeiUavklartVerdi: String?): JaNeiUavklart? {
-            if (jaNeiUavklartVerdi.isNullOrEmpty()) return null
-            return JaNeiUavklart.valueOf(jaNeiUavklartVerdi.toUpperCase())
+        fun fraArbeidomfang(arbeidsomfangVerdi: String?): ArbeidomfangKategori? {
+            return values().firstOrNull { it.kodeverdi == arbeidsomfangVerdi }
         }
     }
 }
 
-enum class ArbeidsAdgangType(val type: String) {
+enum class ArbeidsAdgangType(val kodeverdi: String) {
     BESTEMT_ARBEIDSGIVER_ELLER_OPPDRAGSGIVER("BestemtArbeidsgiverEllerOppdragsgiver"),
     BESTEMT_ARBEID_ELLER_OPPDRAG("BestemtArbeidEllerOppdrag"),
     BESTEMT_ARBEIDSGIVER_OG_ARBEID_ELLER_BESTEMT_OPPDRAGSGIVER_OG_OPPDRAG("BestemtArbeidsgiverOgArbeidEllerBestemtOppdragsgiverOgOppdrag"),
@@ -51,9 +50,8 @@ enum class ArbeidsAdgangType(val type: String) {
     UAVKLART("Uavklart");
 
     companion object {
-        fun fraJaNeiUavklartVerdi(jaNeiUavklartVerdi: String?): JaNeiUavklart? {
-            if (jaNeiUavklartVerdi.isNullOrEmpty()) return null
-            return JaNeiUavklart.valueOf(jaNeiUavklartVerdi.toUpperCase())
+        fun fraArbeidsadgangType(kodeverdi: String?): ArbeidsAdgangType? {
+            return values().firstOrNull { it.kodeverdi == kodeverdi }
         }
     }
 }

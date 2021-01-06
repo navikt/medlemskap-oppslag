@@ -29,28 +29,11 @@ object UdiMapper {
         }
         return no.nav.medlemskap.domene.Arbeidsadgang(
             harArbeidsadgang = arbeidsadgang.harArbeidsadgang == JaNeiUavklart.JA,
-            arbeidsadgangType = mapArbeidsadgangType(arbeidsadgang),
-            arbeidsomfang = mapArbeidsadgangOmfang(arbeidsadgang),
+            arbeidsadgangType = ArbeidsAdgangType.fraArbeidsadgangType(arbeidsadgang.typeArbeidsadgang.value()),
+            arbeidsomfang = ArbeidomfangKategori.fraArbeidomfang(arbeidsadgang.arbeidsOmfang.value()),
             periode = mapPeriode(arbeidsadgang.arbeidsadgangsPeriode)
         )
     }
-
-    private fun mapArbeidsadgangOmfang(arbeidsadgang: Arbeidsadgang) =
-        when (arbeidsadgang.arbeidsOmfang) {
-            ArbeidOmfangKategori.KUN_ARBEID_HELTID -> ArbeidomfangKategori.KUN_ARBEID_HELTID
-            ArbeidOmfangKategori.KUN_ARBEID_DELTID -> ArbeidomfangKategori.KUN_ARBEID_DELTID
-            ArbeidOmfangKategori.DELTID_SAMT_FERIER_HELTID -> ArbeidomfangKategori.DELTID_SAMT_FERIER_HELTID
-            ArbeidOmfangKategori.INGEN_KRAV_TIL_STILLINGSPROSENT -> ArbeidomfangKategori.INGEN_KRAV_TIL_STILLINGSPROSENT
-            ArbeidOmfangKategori.UAVKLART -> ArbeidomfangKategori.UAVKLART
-        }
-    private fun mapArbeidsadgangType(arbeidsadgang: Arbeidsadgang) =
-        when (arbeidsadgang.typeArbeidsadgang) {
-            ArbeidsadgangType.BESTEMT_ARBEIDSGIVER_ELLER_OPPDRAGSGIVER -> ArbeidsAdgangType.BESTEMT_ARBEIDSGIVER_ELLER_OPPDRAGSGIVER
-            ArbeidsadgangType.BESTEMT_ARBEID_ELLER_OPPDRAG -> ArbeidsAdgangType.BESTEMT_ARBEID_ELLER_OPPDRAG
-            ArbeidsadgangType.GENERELL -> ArbeidsAdgangType.GENERELL
-            ArbeidsadgangType.UAVKLART -> ArbeidsAdgangType.UAVKLART
-            ArbeidsadgangType.BESTEMT_ARBEIDSGIVER_OG_ARBEID_ELLER_BESTEMT_OPPDRAGSGIVER_OG_OPPDRAG -> ArbeidsAdgangType.BESTEMT_ARBEIDSGIVER_OG_ARBEID_ELLER_BESTEMT_OPPDRAGSGIVER_OG_OPPDRAG
-        }
 
     private fun mapPeriode(periode: no.udi.mt_1067_nav_data.v1.Periode?): Periode {
         return Periode(
