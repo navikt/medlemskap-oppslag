@@ -35,22 +35,3 @@ Egenskap: Mapping av Arbeidsadgang
       | JA               | true                     |
       | NEI              | false                    |
       | UAVKLART         | false                    |
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
