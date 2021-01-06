@@ -5,7 +5,6 @@ import io.cucumber.java8.No
 import io.kotest.matchers.shouldBe
 import no.nav.medlemskap.cucumber.SpraakParserDomene.OppholdstillatelseDomeneSpraakParser
 import no.nav.medlemskap.cucumber.mapping.udi.UdiDomeneSpraakParser
-import no.nav.medlemskap.domene.Arbeidsadgang
 import no.nav.medlemskap.domene.Oppholdstillatelse
 import no.nav.medlemskap.services.udi.UdiMapper
 
@@ -13,7 +12,6 @@ class UdiMapperSteps : No {
     private val udiDomenespraakParser = UdiDomeneSpraakParser()
     private val udiArbeidsadgangBuilder = UdiArbeidsadgangBuilder()
     private val udiOppholdstillatelseBuilder = UdiOppholdstillatelseBuilder()
-    private var arbeidsadgang: Arbeidsadgang? = null
     private var oppholdstillatelse: Oppholdstillatelse? = null
 
     init {
@@ -23,6 +21,14 @@ class UdiMapperSteps : No {
 
         Gitt<DataTable>("foresporselsfodselsnummer fra HentPersonstatusResultat") { dataTable: DataTable? ->
             udiOppholdstillatelseBuilder.foresporselsfodselsnummer = udiDomenespraakParser.mapforesporselfodselsnummer(dataTable)
+        }
+
+        Gitt<DataTable>("følgende arbeidomfangKategori fra Arbeidsadgang") { dataTable: DataTable? ->
+            udiArbeidsadgangBuilder.arbeidsOmfang = udiDomenespraakParser.mapArbeidsomfang(dataTable)
+        }
+
+        Gitt<DataTable>("følgende arbeidsadgangType fra Arbeidsadgang") { dataTable: DataTable? ->
+            udiArbeidsadgangBuilder.typeArbeidsadgang = udiDomenespraakParser.mapArbeidsadgangType(dataTable)
         }
 
         Gitt<DataTable>("uttrekkstidspunkt fra HentPersonstatusResultat") { dataTable: DataTable? ->
@@ -47,13 +53,20 @@ class UdiMapperSteps : No {
             val uttrekkstidspunktDatoForventet = OppholdstillatelseDomeneSpraakParser.mapUttrekkstidspunkt(dataTable)
             oppholdstillatelse?.uttrekkstidspunkt.shouldBe(uttrekkstidspunktDatoForventet)
         }
+
+        Så<DataTable>("skal mappede ArbeidomfangKategori i medlemskap være") { dataTable: DataTable? ->
+            val arbeidomfangKategoriForventet = OppholdstillatelseDomeneSpraakParser.mapArbeidsomfangKategori(dataTable)
+            oppholdstillatelse?.arbeidsadgang?.arbeidsomfang.shouldBe(arbeidomfangKategoriForventet)
+        }
+
+        Så<DataTable>("skal mappede arbeidsadgangtype i medlemskap være") { dataTable: DataTable? ->
+            val arbeidsadgangTypeForventet = OppholdstillatelseDomeneSpraakParser.mapArbeidsadgangType(dataTable)
+            oppholdstillatelse?.arbeidsadgang?.arbeidsadgangType.shouldBe(arbeidsadgangTypeForventet)
+        }
     }
 
     private fun mapTilOppholdstillatelse(): Oppholdstillatelse {
-
         udiOppholdstillatelseBuilder.arbeidsadgang = udiArbeidsadgangBuilder.build()
-        val oppholdstillatelse = UdiMapper.mapTilOppholdstillatelser(udiOppholdstillatelseBuilder.build())
-        println(oppholdstillatelse.arbeidsadgang.harArbeidsadgang)
-        return oppholdstillatelse
+        return UdiMapper.mapTilOppholdstillatelser(udiOppholdstillatelseBuilder.build())
     }
 }

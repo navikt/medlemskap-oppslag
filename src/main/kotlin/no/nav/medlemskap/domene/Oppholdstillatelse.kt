@@ -15,7 +15,7 @@ data class Oppholdstillatelse(
 data class Arbeidsadgang(
     val harArbeidsadgang: Boolean,
     val arbeidsadgangType: ArbeidsAdgangType,
-    val arbeidsomfang: Arbeidsomfang,
+    val arbeidsomfang: ArbeidomfangKategori,
     val periode: Periode
 )
 
@@ -23,7 +23,7 @@ data class GjeldendeOppholdsstatus(
     val uavklart: Boolean
 )
 
-enum class Arbeidsomfang(val type: String) {
+enum class ArbeidomfangKategori(val type: String) {
     INGEN_KRAV_TIL_STILLINGSPROSENT("IngenKravTilStillingsprosent"),
     KUN_ARBEID_HELTID("KunArbeidHeltid"),
     KUN_ARBEID_DELTID("KunArbeidDeltid"),

@@ -5,6 +5,8 @@ import no.nav.medlemskap.cucumber.BasisDomeneParser
 import no.nav.medlemskap.cucumber.BasisDomeneParser.Companion.mapDataTable
 import no.nav.medlemskap.cucumber.Domenenøkkel
 import no.nav.medlemskap.cucumber.RadMapper
+import no.udi.mt_1067_nav_data.v1.ArbeidOmfangKategori
+import no.udi.mt_1067_nav_data.v1.ArbeidsadgangType
 import no.udi.mt_1067_nav_data.v1.JaNeiUavklart
 import javax.xml.datatype.DatatypeFactory
 import javax.xml.datatype.XMLGregorianCalendar
@@ -14,8 +16,16 @@ class UdiDomeneSpraakParser {
         return mapDataTable(dataTable, HarArbeidsadgangMapper())[0]
     }
 
+    fun mapArbeidsomfang(dataTable: DataTable?): ArbeidOmfangKategori {
+        return mapDataTable(dataTable, ArbeidsomfangTypeMapper())[0]
+    }
+
     fun mapforesporselfodselsnummer(dataTable: DataTable?): String {
         return mapDataTable(dataTable, ForesporselfodselsnummerMapper())[0]
+    }
+
+    fun mapArbeidsadgangType(dataTable: DataTable?): ArbeidsadgangType {
+        return mapDataTable(dataTable, ArbeidsadgangTypeMapper())[0]
     }
 
     fun mapUttrekkstidspunkt(dataTable: DataTable?): XMLGregorianCalendar ? {
@@ -28,9 +38,21 @@ class UdiDomeneSpraakParser {
         }
     }
 
+    class ArbeidsomfangTypeMapper() : RadMapper<ArbeidOmfangKategori> {
+        override fun mapRad(rad: Map<String, String>): ArbeidOmfangKategori {
+            return ArbeidOmfangKategori.valueOf(BasisDomeneParser.parseString(UdiDomenebegrep.ARBEIDOMFANG_KATEGORI, rad))
+        }
+    }
+
     class ForesporselfodselsnummerMapper() : RadMapper<String> {
         override fun mapRad(rad: Map<String, String>): String {
             return BasisDomeneParser.parseString(UdiDomenebegrep.FORESPORSELSFODSELSNUMMER, rad)
+        }
+    }
+
+    class ArbeidsadgangTypeMapper() : RadMapper<ArbeidsadgangType> {
+        override fun mapRad(rad: Map<String, String>): ArbeidsadgangType {
+            return ArbeidsadgangType.valueOf(BasisDomeneParser.parseString(UdiDomenebegrep.ARBEIDSADGANG_TYPE, rad))
         }
     }
 
@@ -45,6 +67,8 @@ class UdiDomeneSpraakParser {
 
 enum class UdiDomenebegrep(val nøkkel: String) : Domenenøkkel {
     ARBEIDSADGANG("Arbeidsadgang"),
+    ARBEIDOMFANG_KATEGORI("ArbeidomfangKategori"),
+    ARBEIDSADGANG_TYPE("ArbeidsadgangType"),
     FORESPORSELSFODSELSNUMMER("Foresporselsfodselsnummer"),
     UTTREKKSTIDSPUNKT("Uttrekkstidspunkt")
     ;

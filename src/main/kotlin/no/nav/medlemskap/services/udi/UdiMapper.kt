@@ -1,9 +1,11 @@
 package no.nav.medlemskap.services.udi
-import no.nav.medlemskap.domene.ArbeidsAdgangType
-import no.nav.medlemskap.domene.Arbeidsomfang
+import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Oppholdstillatelse
 import no.nav.medlemskap.domene.Periode
 import no.udi.mt_1067_nav_data.v1.*
+import no.udi.mt_1067_nav_data.v1.Arbeidsadgang
+import no.udi.mt_1067_nav_data.v1.GjeldendeOppholdsstatus
+import no.udi.mt_1067_nav_data.v1.JaNeiUavklart
 import java.time.LocalDate
 import java.time.LocalDateTime
 import javax.xml.datatype.XMLGregorianCalendar
@@ -39,19 +41,19 @@ object UdiMapper {
 
     private fun mapArbeidsadgangOmfang(arbeidsadgang: Arbeidsadgang) =
         when (arbeidsadgang.arbeidsOmfang) {
-            ArbeidOmfangKategori.KUN_ARBEID_HELTID -> Arbeidsomfang.KUN_ARBEID_HELTID
-            ArbeidOmfangKategori.KUN_ARBEID_DELTID -> Arbeidsomfang.KUN_ARBEID_DELTID
-            ArbeidOmfangKategori.DELTID_SAMT_FERIER_HELTID -> Arbeidsomfang.DELTID_SAMT_FERIER_HELTID
-            ArbeidOmfangKategori.INGEN_KRAV_TIL_STILLINGSPROSENT -> Arbeidsomfang.INGEN_KRAV_TIL_STILLINGSPROSENT
-            ArbeidOmfangKategori.UAVKLART -> Arbeidsomfang.UAVKLART
+            ArbeidOmfangKategori.KUN_ARBEID_HELTID -> ArbeidomfangKategori.KUN_ARBEID_HELTID
+            ArbeidOmfangKategori.KUN_ARBEID_DELTID -> ArbeidomfangKategori.KUN_ARBEID_DELTID
+            ArbeidOmfangKategori.DELTID_SAMT_FERIER_HELTID -> ArbeidomfangKategori.DELTID_SAMT_FERIER_HELTID
+            ArbeidOmfangKategori.INGEN_KRAV_TIL_STILLINGSPROSENT -> ArbeidomfangKategori.INGEN_KRAV_TIL_STILLINGSPROSENT
+            ArbeidOmfangKategori.UAVKLART -> ArbeidomfangKategori.UAVKLART
         }
     private fun mapArbeidsadgangType(arbeidsadgang: Arbeidsadgang) =
         when (arbeidsadgang.typeArbeidsadgang) {
-            no.udi.mt_1067_nav_data.v1.ArbeidsadgangType.BESTEMT_ARBEIDSGIVER_ELLER_OPPDRAGSGIVER -> ArbeidsAdgangType.BESTEMT_ARBEIDSGIVER_ELLER_OPPDRAGSGIVER
-            no.udi.mt_1067_nav_data.v1.ArbeidsadgangType.BESTEMT_ARBEID_ELLER_OPPDRAG -> ArbeidsAdgangType.BESTEMT_ARBEID_ELLER_OPPDRAG
-            no.udi.mt_1067_nav_data.v1.ArbeidsadgangType.GENERELL -> ArbeidsAdgangType.GENERELL
-            no.udi.mt_1067_nav_data.v1.ArbeidsadgangType.UAVKLART -> ArbeidsAdgangType.UAVKLART
-            no.udi.mt_1067_nav_data.v1.ArbeidsadgangType.BESTEMT_ARBEIDSGIVER_OG_ARBEID_ELLER_BESTEMT_OPPDRAGSGIVER_OG_OPPDRAG -> ArbeidsAdgangType.BESTEMT_ARBEIDSGIVER_OG_ARBEID_ELLER_BESTEMT_OPPDRAGSGIVER_OG_OPPDRAG
+            ArbeidsadgangType.BESTEMT_ARBEIDSGIVER_ELLER_OPPDRAGSGIVER -> ArbeidsAdgangType.BESTEMT_ARBEIDSGIVER_ELLER_OPPDRAGSGIVER
+            ArbeidsadgangType.BESTEMT_ARBEID_ELLER_OPPDRAG -> ArbeidsAdgangType.BESTEMT_ARBEID_ELLER_OPPDRAG
+            ArbeidsadgangType.GENERELL -> ArbeidsAdgangType.GENERELL
+            ArbeidsadgangType.UAVKLART -> ArbeidsAdgangType.UAVKLART
+            ArbeidsadgangType.BESTEMT_ARBEIDSGIVER_OG_ARBEID_ELLER_BESTEMT_OPPDRAGSGIVER_OG_OPPDRAG -> ArbeidsAdgangType.BESTEMT_ARBEIDSGIVER_OG_ARBEID_ELLER_BESTEMT_OPPDRAGSGIVER_OG_OPPDRAG
         }
 
     private fun mapPeriode(arbeidsadgang: Arbeidsadgang): Periode {
@@ -62,6 +64,8 @@ object UdiMapper {
 
         )
     }
+
+    //Utkommenterte da Helle sa vi ikke skulle bruke det under, venter med å fjerne det til vi har hatt gjennomgang
 
     private fun mapGjeldendeOppholdsstatus(gjeldendeOppholdsstatus: GjeldendeOppholdsstatus): Boolean {
         if (gjeldendeOppholdsstatus.eoSellerEFTAOpphold != null) {
@@ -115,14 +119,6 @@ object UdiMapper {
                 return (this == VARIG || this == FAMILIE || this == TJENESTEYTING_ELLER_ETABLERING)
             }
         }
-    }
-
-    enum class ArbeidsadgangType {
-        BESTEMT_ARBEIDSGIVER_ELLER_OPPDRAGSGIVER,
-        BESTEMT_ARBEID_ELLER_OPPDRAG,
-        BESTEMT_ARBEIDSGIVER_OG_ARBEID_ELLER_BESTEMT_OPPDRAGSGIVER_OG_OPPDRAG,
-        GENERELL,
-        UAVKLART
     }
 
     private fun XMLGregorianCalendar?.asLocalDate(): LocalDate? = this?.toGregorianCalendar()?.toZonedDateTime()?.toLocalDate()
