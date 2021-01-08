@@ -69,8 +69,8 @@ suspend fun defaultCreateDatagrunnlag(
     val oppgaver = gosysOppgaver.await()
     val ytelse: Ytelse = finnYtelse(request.ytelse, clientId)
 
-    val oppholdstillatelse = if (FeatureToggles.FEATURE_UDI.enabled //&&
-        //personHistorikkFraPdl.statsborgerskap.erAnnenStatsborger(request.periode, request.førsteDagForYtelse)
+    val oppholdstillatelse = if (FeatureToggles.FEATURE_UDI.enabled // &&
+        // personHistorikkFraPdl.statsborgerskap.erAnnenStatsborger(request.periode, request.førsteDagForYtelse)
     ) {
         val oppholdsstatusRequest = async { services.udiService.hentOppholdstillatelseer(request.fnr) }
         oppholdsstatusRequest.await()
