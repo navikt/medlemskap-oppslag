@@ -11,7 +11,7 @@ import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.arbeidsforhold.*
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
-import no.nav.medlemskap.domene.personhistorikk.*
+import no.nav.medlemskap.domene.personhistorikk.Adresse
 import no.nav.medlemskap.services.aareg.AaRegService
 import no.nav.medlemskap.services.pdl.PdlService
 import org.junit.jupiter.api.BeforeEach
@@ -37,24 +37,15 @@ internal class FamilieServiceTest {
     }
 
     @Test
-    fun hentDataOmBarn_skal_returnere_barn_under_25_år_som_har_gyldig_fødselsnummer() = runBlockingTest {
+    fun hentDataOmBarn() = runBlockingTest {
         val fnrTilBarnUnder25år = "25079528660"
-        val ugyldigFnr = "123"
-        val fnrTilBarnOver25år = "10019448164"
         val callId = "12"
-        val startDatoForYtelse = LocalDate.of(2020, 1, 1)
-
-        val familierelasjoner = listOf(
-            Familierelasjon(fnrTilBarnUnder25år, Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, null),
-            Familierelasjon(ugyldigFnr, Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, null),
-            Familierelasjon(fnrTilBarnOver25år, Familierelasjonsrolle.BARN, Familierelasjonsrolle.FAR, null)
-        )
 
         coEvery { pdlService.hentPersonHistorikkTilBarn(fnrTilBarnUnder25år, callId) } returns personhistorikkBarn(
             fnrTilBarnUnder25år
         )
 
-        val dataOmBarn = familieService.hentDataOmBarn(familierelasjoner, startDatoForYtelse, callId)
+        val dataOmBarn = familieService.hentDataOmBarn(listOf(fnrTilBarnUnder25år), callId)
 
         dataOmBarn.map { it.personhistorikkBarn.ident }.shouldContainExactly(fnrTilBarnUnder25år)
     }
@@ -80,7 +71,7 @@ internal class FamilieServiceTest {
         } returns emptyList()
 
         val ektefelle =
-            familieService.hentDataOmEktefelle(personhistorikk(fnrEktefelle), callId, periode, startDatoForYtelse)
+            familieService.hentDataOmEktefelle(fnrEktefelle, callId, periode, startDatoForYtelse)
 
         assertThat { ektefelle?.personhistorikkEktefelle?.ident == fnrEktefelle }
         assertThat { ektefelle?.arbeidsforholdEktefelle?.isEmpty() }
@@ -107,7 +98,7 @@ internal class FamilieServiceTest {
         } returns listOf(arbeidsforhold())
 
         val ektefelle =
-            familieService.hentDataOmEktefelle(personhistorikk(fnrEktefelle), callId, periode, startDatoForYtelse)
+            familieService.hentDataOmEktefelle(fnrEktefelle, callId, periode, startDatoForYtelse)
 
         assertThat { ektefelle?.personhistorikkEktefelle?.ident == fnrEktefelle }
         assertThat { ektefelle?.arbeidsforholdEktefelle?.size == 1 }
@@ -123,7 +114,7 @@ internal class FamilieServiceTest {
         coEvery { pdlService.hentPersonHistorikkTilEktefelle(fnrEktefelle, startDatoForYtelse, callId) } returns null
 
         val ektefelle =
-            familieService.hentDataOmEktefelle(personhistorikk(fnrEktefelle), callId, periode, startDatoForYtelse)
+            familieService.hentDataOmEktefelle(fnrEktefelle, callId, periode, startDatoForYtelse)
 
         assertThat { ektefelle == null }
     }
@@ -132,19 +123,6 @@ internal class FamilieServiceTest {
         val barn = PersonhistorikkBarn(ident, listOf(Adresse("NOR", null, null)), emptyList(), emptyList(), emptyList())
 
         return barn
-    }
-
-    private fun personhistorikk(fnrEktefelle: String): Personhistorikk {
-
-        return Personhistorikk(
-            statsborgerskap = listOf(Statsborgerskap("NOR", null, null)),
-            bostedsadresser = listOf(Adresse("NOR", null, null)),
-            kontaktadresser = emptyList(),
-            oppholdsadresser = emptyList(),
-            sivilstand = listOf(Sivilstand(Sivilstandstype.GIFT, null, null, fnrEktefelle)),
-            familierelasjoner = emptyList(),
-            doedsfall = emptyList()
-        )
     }
 
     private fun personhistorikkEktefelle(fnrEktefelle: String): PersonhistorikkEktefelle {

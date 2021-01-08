@@ -12,6 +12,7 @@ import no.nav.medlemskap.domene.Kontrollperiode.Companion.startDatoForYtelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.fraOgMedDatoForArbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.registrerAntallAnsatteHosJuridiskEnhet
+import no.nav.medlemskap.domene.personhistorikk.Familierelasjon
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erAnnenStatsborger
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.harEndretSisteÅret
@@ -44,13 +45,15 @@ suspend fun defaultCreateDatagrunnlag(
     val personHistorikk = services.pdlService.hentPersonHistorikkTilBruker(request.fnr, callId)
 
     val dataOmBrukersBarn = familieService.hentDataOmBarn(
-        personHistorikk.familierelasjoner,
-        startDatoForYtelse,
+        Familierelasjon.hentFnrTilBarn(
+            personHistorikk.familierelasjoner,
+            startDatoForYtelse
+        ),
         callId
     )
 
     val dataOmEktefelle = familieService.hentDataOmEktefelle(
-        personHistorikk = personHistorikk,
+        fnrTilEktefelle = Familierelasjon.hentFnrTilEktefelle(personHistorikk),
         periode = request.periode,
         startDatoForYtelse = startDatoForYtelse,
         callId = callId
