@@ -30,8 +30,8 @@ object UdiMapper {
         }
         return no.nav.medlemskap.domene.Arbeidsadgang(
             harArbeidsadgang = arbeidsadgang.harArbeidsadgang == JaNeiUavklart.JA,
-            arbeidsadgangType = ArbeidsadgangType.fraArbeidsadgangType(arbeidsadgang.typeArbeidsadgang.value()),
-            arbeidsomfang = ArbeidomfangKategori.fraArbeidomfang(arbeidsadgang.arbeidsOmfang.value()),
+            arbeidsadgangType = ArbeidsadgangType.fraArbeidsadgangType(arbeidsadgang.typeArbeidsadgang?.value()),
+            arbeidsomfang = ArbeidomfangKategori.fraArbeidomfang(arbeidsadgang.arbeidsOmfang?.value()),
             periode = mapPeriode(arbeidsadgang.arbeidsadgangsPeriode)
         )
     }
