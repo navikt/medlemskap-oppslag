@@ -3,7 +3,6 @@ package no.nav.medlemskap.domene.personhistorikk
 import assertk.assertThat
 import assertk.assertions.isFalse
 import assertk.assertions.isTrue
-import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Kontrollperiode
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erAnnenStatsborger
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.harEndretSisteÅret
@@ -27,10 +26,9 @@ internal class StatsborgerskapTest {
             Statsborgerskap("USA", null, null)
         )
 
-        val inputPeriode = InputPeriode(LocalDate.of(2019, 1, 1), LocalDate.of(2020, 12, 31))
-        val førsteDagForYtelse = LocalDate.of(2019, 1, 1)
+        val startDatoForYtelse = LocalDate.of(2019, 1, 1)
 
-        assertThat(statsborgerskap.erAnnenStatsborger(inputPeriode, førsteDagForYtelse)).isFalse()
+        assertThat(statsborgerskap.erAnnenStatsborger(startDatoForYtelse)).isFalse()
     }
 
     @Test
@@ -39,10 +37,9 @@ internal class StatsborgerskapTest {
             Statsborgerskap("BEL", null, null)
         )
 
-        val inputPeriode = InputPeriode(LocalDate.of(2019, 1, 1), LocalDate.of(2020, 12, 31))
-        val førsteDagForYtelse = LocalDate.of(2019, 1, 1)
+        val startDatoForYtelse = LocalDate.of(2019, 1, 1)
 
-        assertThat(statsborgerskap.erAnnenStatsborger(inputPeriode, førsteDagForYtelse)).isFalse()
+        assertThat(statsborgerskap.erAnnenStatsborger(startDatoForYtelse)).isFalse()
     }
 
     @Test
@@ -51,10 +48,9 @@ internal class StatsborgerskapTest {
             Statsborgerskap("USA", null, null)
         )
 
-        val inputPeriode = InputPeriode(LocalDate.of(2019, 1, 1), LocalDate.of(2020, 12, 31))
-        val førsteDagForYtelse = LocalDate.of(2019, 1, 1)
+        val startDatoForYtelse = LocalDate.of(2019, 1, 1)
 
-        assertThat(statsborgerskap.erAnnenStatsborger(inputPeriode, førsteDagForYtelse)).isTrue()
+        assertThat(statsborgerskap.erAnnenStatsborger(startDatoForYtelse)).isTrue()
     }
 
     @Test

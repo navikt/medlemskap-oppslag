@@ -2,6 +2,7 @@ package no.nav.medlemskap.regler.v1.medlemskap
 
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForMedl
+import no.nav.medlemskap.domene.Kontrollperiode.Companion.startDatoForYtelse
 import no.nav.medlemskap.domene.Medlemskap
 import no.nav.medlemskap.domene.Medlemskap.Companion.erMedlemskapsperioderOver12Mnd
 import no.nav.medlemskap.domene.Medlemskap.Companion.harGyldigeMedlemskapsperioder
@@ -20,7 +21,7 @@ abstract class MedlemskapRegel(
     førsteDagForYtelse: LocalDate?,
     private val medlemskap: List<Medlemskap>
 ) : BasisRegel(regelId, ytelse) {
-    val kontrollPeriodeForMedl = kontrollPeriodeForMedl(periode, førsteDagForYtelse)
+    val kontrollPeriodeForMedl = kontrollPeriodeForMedl(startDatoForYtelse(periode, førsteDagForYtelse))
 
     protected fun erMedlemskapPeriodeOver12MndPeriode(finnPeriodeMedMedlemskap: Boolean): Resultat {
         return when {
