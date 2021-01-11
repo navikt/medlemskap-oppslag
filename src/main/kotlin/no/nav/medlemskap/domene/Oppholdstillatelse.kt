@@ -13,10 +13,10 @@ data class Oppholdstillatelse(
 )
 
 data class Arbeidsadgang(
-        val harArbeidsadgang: Boolean,
-        val arbeidsadgangType: ArbeidsadgangType?,
-        val arbeidsomfang: ArbeidomfangKategori?,
-        val periode: Periode
+    val harArbeidsadgang: Boolean,
+    val arbeidsadgangType: ArbeidsadgangType?,
+    val arbeidsomfang: ArbeidomfangKategori?,
+    val periode: Periode
 )
 
 data class OppholdstillatelsePaSammeVilkar(
