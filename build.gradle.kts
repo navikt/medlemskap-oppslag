@@ -88,6 +88,7 @@ dependencies {
     implementation(project(path = ":saf-client", configuration = "archives"))
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion") {
         exclude(group = "io.netty", module = "netty-codec")
         exclude(group = "io.netty", module = "netty-codec-http")

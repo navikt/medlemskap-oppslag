@@ -10,6 +10,8 @@ import no.nav.medlemskap.cucumber.ytelse.YtelseDomenespråkParser
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Kontrollperiode
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForArbeidsforhold
+import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForMedl
+import no.nav.medlemskap.domene.Kontrollperiode.Companion.startDatoForYtelse
 import no.nav.medlemskap.regler.common.Datohjelper.parseDato
 import java.time.LocalDate
 
@@ -26,7 +28,7 @@ class YtelseSteps : No {
         }
 
         Når("første sykedag beregnes fra sykemeldingsperiode") {
-            førsteDagForYtelse = Kontrollperiode.førsteDatoForYtelse(ytelsePeriode!!, null)
+            førsteDagForYtelse = Kontrollperiode.startDatoForYtelse(ytelsePeriode!!, null)
         }
 
         Når<DataTable>("kontrollperiode for arbeidsforhold beregnes med følgende parametre:") { dataTable: DataTable? ->
@@ -35,7 +37,7 @@ class YtelseSteps : No {
             ytelsePeriode = parametreKontrollperiode.iputPeriode
             førsteDagForYtelse = parametreKontrollperiode.førsteDagForYtelse
 
-            kontrollperiode = kontrollPeriodeForArbeidsforhold(ytelsePeriode!!, førsteDagForYtelse)
+            kontrollperiode = kontrollPeriodeForArbeidsforhold(startDatoForYtelse(ytelsePeriode!!, førsteDagForYtelse))
         }
 
         Når<DataTable>("kontrollperiode for medl beregnes med følgende parametre:") { dataTable: DataTable? ->
@@ -43,7 +45,7 @@ class YtelseSteps : No {
 
             ytelsePeriode = parametreKontrollperiode.iputPeriode
 
-            kontrollperiode = Kontrollperiode.kontrollPeriodeForMedl(ytelsePeriode!!, parametreKontrollperiode.førsteDagForYtelse)
+            kontrollperiode = kontrollPeriodeForMedl(startDatoForYtelse(ytelsePeriode!!, parametreKontrollperiode.førsteDagForYtelse))
         }
 
         Så("skal første sykedag være {string}") { forventetDato: String? ->

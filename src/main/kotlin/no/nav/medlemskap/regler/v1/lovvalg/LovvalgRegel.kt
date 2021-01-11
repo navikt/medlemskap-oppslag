@@ -1,8 +1,11 @@
 package no.nav.medlemskap.regler.v1.lovvalg
 
-import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Eøsland
+import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForArbeidsforhold
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForPersonhistorikk
+import no.nav.medlemskap.domene.Kontrollperiode.Companion.startDatoForYtelse
+import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.personhistorikk.Adresse
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erBritiskBorger
@@ -21,8 +24,9 @@ abstract class LovvalgRegel(
     periode: InputPeriode,
     førsteDagForYtelse: LocalDate?
 ) : BasisRegel(regelId, ytelse) {
-    val kontrollPeriodeForArbeidsforhold = kontrollPeriodeForArbeidsforhold(periode, førsteDagForYtelse)
-    val kontrollPeriodeForPersonhistorikk = kontrollPeriodeForPersonhistorikk(periode, førsteDagForYtelse)
+    val startDatoForYtelse = startDatoForYtelse(periode, førsteDagForYtelse)
+    val kontrollPeriodeForArbeidsforhold = kontrollPeriodeForArbeidsforhold(startDatoForYtelse)
+    val kontrollPeriodeForPersonhistorikk = kontrollPeriodeForPersonhistorikk(startDatoForYtelse)
 
     protected fun erPersonBosattINorge(boadadresse: List<Adresse>, postadresseLandkoder: List<String>, midlertidigAdresseLandkoder: List<String>): Boolean {
         return boadadresse.brukerHarNorskBostedsadresse() && boadadresse.alleErNorske() &&

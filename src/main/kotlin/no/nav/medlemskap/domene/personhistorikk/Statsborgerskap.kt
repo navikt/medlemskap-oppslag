@@ -2,7 +2,6 @@ package no.nav.medlemskap.domene.personhistorikk
 
 import no.nav.medlemskap.common.statsborgerskapUavklartForRegel
 import no.nav.medlemskap.domene.Eøsland
-import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Kontrollperiode
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Ytelse
@@ -80,9 +79,9 @@ data class Statsborgerskap(
                 Periode(fom = it.tom, tom = it.tom)
             )
 
-        fun List<Statsborgerskap>.erAnnenStatsborger(periode: InputPeriode, førsteDagForYtelse: LocalDate?): Boolean {
+        fun List<Statsborgerskap>.erAnnenStatsborger(startDatoForYtelse: LocalDate): Boolean {
             val kontrollPeriodeForPersonhistorikk =
-                Kontrollperiode.kontrollPeriodeForPersonhistorikk(periode, førsteDagForYtelse)
+                Kontrollperiode.kontrollPeriodeForPersonhistorikk(startDatoForYtelse)
 
             return !erEøsBorger(kontrollPeriodeForPersonhistorikk)
         }
