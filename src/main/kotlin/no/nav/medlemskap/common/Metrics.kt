@@ -210,7 +210,7 @@ fun arbeidsadgangtyperCounter(arbeidsadgangtype: String?): Counter = Counter
 
 fun oppholdstillatelseTypeCounter(oppholdstillatelseType: OppholdstillatelsePaSammeVilkar?): Counter = Counter
     .builder("oppholdstillatelsetyper")
-    .tags("oppholdstillatelse", mapGjeldendeOppholdsstatus(oppholdstillatelseType))
+    .tags("oppholdstillatelse", mapGjeldendeOppholdsstatusTilMetrikkVerdi(oppholdstillatelseType))
     .description("counter for oppholdstillatelsetype")
     .register(Metrics.globalRegistry)
 
@@ -246,7 +246,7 @@ private fun mapHarTillatelseTilMetrikkVerdi(harTillatelse: Boolean?): String =
         else -> "null"
     }
 
-private fun mapGjeldendeOppholdsstatus(oppholdstillatelseType: OppholdstillatelsePaSammeVilkar?): String =
+private fun mapGjeldendeOppholdsstatusTilMetrikkVerdi(oppholdstillatelseType: OppholdstillatelsePaSammeVilkar?): String =
     if (oppholdstillatelseType != null) {
         "Oppholdstillatelse på samme vilkår"
     } else {
