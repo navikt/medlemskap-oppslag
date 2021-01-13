@@ -355,19 +355,44 @@ components:
           type: string
         avgjoerelse:
           type: boolean
+          nullable: true
         gjeldendeOppholdsstatus:
-          type: boolean
+          $ref: "#/components/schemas/OppholdstillatelsePaSammeVilkar"
         arbeidsadgang:
-          type: string
-          enum:
-            - JA
-            - NEI
-            - UAVKLART
+          $ref: "#/components/schemas/Arbeidsadgang"
         uavklartFlyktningstatus:
           type: boolean
+          nullable: true
         harFlyktningstatus:
           type: boolean
+          nullable: true
       nullable: true
+    OppholdstillatelsePaSammeVilkar:
+      properties:
+        periode:
+          $ref: "#/components/schemas/Periode"
+        harTillatelse:
+          type: boolean
+    Arbeidsadgang:
+      properties:
+        periode:
+          $ref: "#/components/schemas/Periode"
+        harArbeidsadgang:
+          type: boolean
+        arbeidsadgangType:
+          enum:
+            - BESTEMT_ARBEIDSGIVER_ELLER_OPPDRAGSGIVER
+            - BESTEMT_ARBEID_ELLER_OPPDRAG
+            - BESTEMT_ARBEIDSGIVER_OG_ARBEID_ELLER_BESTEMT_OPPDRAGSGIVER_OG_OPPDRAG
+            - GENERELL
+            - UAVKLART
+        arbeidsomfang:
+          enum:
+            - INGEN_KRAV_TIL_STILLINGSPROSENT
+            - KUN_ARBEID_HELTID
+            - KUN_ARBEID_DELTID
+            - DELTID_SAMT_FERIER_HELTID
+            - UAVKLART
     JuridiskEnhet:
       properties:
         organisasjonsnummer:

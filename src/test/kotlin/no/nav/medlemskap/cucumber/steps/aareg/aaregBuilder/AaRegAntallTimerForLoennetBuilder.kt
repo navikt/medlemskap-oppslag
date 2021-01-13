@@ -7,9 +7,9 @@ class AaRegAntallTimerForLoennetBuilder {
     var sporingsinformasjonBuilder = AaRegSporingsinformasjonBuilder()
 
     var sporingsinformasjon = sporingsinformasjonBuilder.build()
-    var aaregPeriodeBuilder = AaregPeriodeBuilder()
+    var aaregPeriodeBuilder = PeriodeBuilder()
     var antallTimerForTimeloennet = 1.0
-    var periode = aaregPeriodeBuilder.build()
+    var periode = aaregPeriodeBuilder.buildAaregPeriode()
     var rapporteringsperiode = YearMonth.now()
 
     fun build(): AaRegAntallTimerForTimeloennet {
