@@ -7,6 +7,7 @@ import io.micrometer.prometheus.PrometheusMeterRegistry
 import io.micrometer.prometheus.PrometheusRenameFilter
 import no.nav.medlemskap.common.influx.SensuInfluxConfig
 import no.nav.medlemskap.common.influx.SensuInfluxMeterRegistry
+import no.nav.medlemskap.domene.OppholdstillatelsePaSammeVilkar
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.regler.common.RegelId
@@ -207,10 +208,49 @@ fun arbeidsadgangtyperCounter(arbeidsadgangtype: String?): Counter = Counter
     .description("counter for ulike typer arbeidsadgang")
     .register(Metrics.globalRegistry)
 
+fun oppholdstillatelseTypeCounter(oppholdstillatelseType: OppholdstillatelsePaSammeVilkar?): Counter = Counter
+    .builder("oppholdstillatelsetyper")
+    .tags("oppholdstillatelse", mapGjeldendeOppholdsstatusTilMetrikkVerdi(oppholdstillatelseType))
+    .description("counter for oppholdstillatelsetype")
+    .register(Metrics.globalRegistry)
+
+fun harTillatelseCounter(harTillatelse: Boolean?): Counter = Counter
+    .builder("har_tillatelse")
+    .tags("hartillatelse", mapHarTillatelseTilMetrikkVerdi(harTillatelse))
+    .description("counter for tillatelse")
+    .register(Metrics.globalRegistry)
+
+fun harArbeidsadgangCounter(harArbeidsadgang: Boolean?): Counter = Counter
+    .builder("har_arbeidsadgang")
+    .tags("hararbeidsadgang", mapHarArbeidsadgangTilMetrikkVerdi(harArbeidsadgang))
+    .description("counter for arbeidsadgang")
+    .register(Metrics.globalRegistry)
+
 private fun mapEndretStatsborgerskapBooleanTilMetrikkVerdi(statsborgerskapEndretSisteÅret: Boolean): String =
     when (statsborgerskapEndretSisteÅret) {
         true -> "endret"
         false -> "uendret"
+    }
+
+private fun mapHarArbeidsadgangTilMetrikkVerdi(harArbeidsadgang: Boolean?): String =
+    when (harArbeidsadgang) {
+        true -> "har arbeidsadgang"
+        false -> "har ikke arbeidsadgang"
+        else -> "null"
+    }
+
+private fun mapHarTillatelseTilMetrikkVerdi(harTillatelse: Boolean?): String =
+    when (harTillatelse) {
+        true -> "har tillatelse"
+        false -> "har ikke tillatelse"
+        else -> "null"
+    }
+
+private fun mapGjeldendeOppholdsstatusTilMetrikkVerdi(oppholdstillatelseType: OppholdstillatelsePaSammeVilkar?): String =
+    if (oppholdstillatelseType != null) {
+        "Oppholdstillatelse på samme vilkår"
+    } else {
+        "null"
     }
 
 private fun getStillingsprosentIntervall(stillingsprosent: Double): String {
