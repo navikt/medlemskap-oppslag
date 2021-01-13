@@ -15,7 +15,7 @@ class UdiService(private val udiClient: UdiClient) {
         arbeidsadgangtyperCounter(udiResultat?.arbeidsadgang?.arbeidsadgangType?.name).increment()
         harArbeidsadgangCounter(udiResultat?.arbeidsadgang?.harArbeidsadgang).increment()
         harTillatelseCounter(udiResultat?.gjeldendeOppholdsstatus?.harTillatelse).increment()
-        oppholdstillatelseTypeCounter(udiResultat?.gjeldendeOppholdsstatus)
+        oppholdstillatelseTypeCounter(udiResultat?.gjeldendeOppholdsstatus).increment()
 
         return udiResultat
     }
