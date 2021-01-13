@@ -5,8 +5,8 @@ import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.REGEL_15
+import no.nav.medlemskap.regler.common.RegelId.REGEL_ANDRE_BORGERE
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
-import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytUavklart
 import no.nav.medlemskap.regler.v1.udi.GyldigOppholdstillatelseIKontrollperiodeRegel
 
 class ReglerForAndreStatsborgere(
@@ -20,12 +20,12 @@ class ReglerForAndreStatsborgere(
 
         val harBrukerGyldigOppholdstillatelseIKontrollperiodeRegel = lagRegelflyt(
             regel = hentRegel(REGEL_15),
-            hvisJa = Regelflyt.konklusjonJa(ytelse),
-            hvisNei = regelflytUavklart(ytelse),
-            hvisUavklart = regelflytUavklart(ytelse)
+            hvisJa = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE),
+            hvisNei = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE),
+            hvisUavklart = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE)
         )
 
-        return konklusjonUavklart(ytelse, RegelId.REGEL_ANDRE_BORGERE)
+        return harBrukerGyldigOppholdstillatelseIKontrollperiodeRegel
     }
 
     companion object {
