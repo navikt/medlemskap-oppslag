@@ -14,10 +14,10 @@ import java.time.LocalDate
 
 class DekkerOppholdstillatelseArbeidsperiodeRegel(
     ytelse: Ytelse,
-    val periode: InputPeriode,
-    val oppholdstillatelse: Oppholdstillatelse?,
-    val arbeidsforhold: List<Arbeidsforhold>,
-    val førsteDagForYtelse: LocalDate?,
+    private val periode: InputPeriode,
+    private val oppholdstillatelse: Oppholdstillatelse?,
+    private val arbeidsforhold: List<Arbeidsforhold>,
+    private val førsteDagForYtelse: LocalDate?,
     regelId: RegelId = RegelId.REGEL_16
 ) : BasisRegel(regelId, ytelse) {
 

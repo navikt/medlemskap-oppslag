@@ -14,9 +14,9 @@ import java.time.LocalDate
 
 class GyldigOppholdstillatelseIKontrollperiodeRegel(
     ytelse: Ytelse,
-    val oppholdstillatelse: Oppholdstillatelse?,
-    val periode: InputPeriode,
-    val førsteDagForYtelse: LocalDate?,
+    private val oppholdstillatelse: Oppholdstillatelse?,
+    private val periode: InputPeriode,
+    private val førsteDagForYtelse: LocalDate?,
     regelId: RegelId = RegelId.REGEL_15
 ) : BasisRegel(regelId, ytelse) {
 
