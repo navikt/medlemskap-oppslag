@@ -43,7 +43,7 @@ data class Kontrollperiode(
         fun kontrollPeriodeForOppholdstillatelse(inputPeriode: InputPeriode, førsteDagForYtelse: LocalDate?): Kontrollperiode {
             return Kontrollperiode(
                 fom = startDatoForYtelse(inputPeriode, førsteDagForYtelse).minusMonths(12),
-                tom = startDatoForYtelse(inputPeriode, førsteDagForYtelse).plusMonths(1)
+                tom = startDatoForYtelse(inputPeriode, førsteDagForYtelse).plusMonths(2)
             )
         }
     }

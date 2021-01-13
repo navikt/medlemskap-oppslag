@@ -22,8 +22,8 @@ Egenskap: Regel 15: Har bruker arbeids- og oppholdstillatelse i kontrollperiode?
     Eksempler:
       | Gyldig til og med | Har tillatelse | Arbeidsadgang | ArbeidsadgangType                        | ArbeidomfangKategori            | Svar |
       |                   | Ja             | Ja            | GENERELL                                 | KUN_ARBEID_HELTID               | Ja   |
-      | 21.02.2020        | Ja             | Ja            | GENERELL                                 | KUN_ARBEID_HELTID               | Nei  |
-      | 22.02.2020        | Ja             | Ja            | GENERELL                                 | KUN_ARBEID_HELTID               | Ja   |
+      | 22.03.2020        | Ja             | Ja            | GENERELL                                 | KUN_ARBEID_HELTID               | Ja   |
+      | 21.03.2020        | Ja             | Ja            | GENERELL                                 | KUN_ARBEID_HELTID               | Nei  |
       |                   | Ja             | Nei           | GENERELL                                 | KUN_ARBEID_HELTID               | Nei  |
       |                   | Ja             | Ja            | BESTEMT_ARBEIDSGIVER_ELLER_OPPDRAGSGIVER | KUN_ARBEID_HELTID               | Nei  |
       |                   | Ja             | Ja            | BESTEMT_ARBEID_ELLER_OPPDRAG             | KUN_ARBEID_HELTID               | Nei  |
