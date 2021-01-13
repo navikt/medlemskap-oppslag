@@ -29,7 +29,7 @@ class UdiDomeneSpraakParser {
         return mapDataTable(dataTable, ArbeidsadgangTypeMapper())[0]
     }
 
-    fun mapUttrekkstidspunkt(dataTable: DataTable?): XMLGregorianCalendar ? {
+    fun mapUttrekkstidspunkt(dataTable: DataTable?): XMLGregorianCalendar {
         return mapDataTable(dataTable, UttrekkstidspunktMapper())[0]
     }
 

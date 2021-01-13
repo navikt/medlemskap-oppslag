@@ -16,7 +16,7 @@ import no.nav.medlemskap.services.aareg.mapArbeidsforhold
 class AaregMapperSteps : No {
     private val aaregDomenespraakParser = AaregDomenespraakParser()
     private var arbeidsforhold = listOf<Arbeidsforhold>()
-    private var aaregPeriodeBuilder = AaregPeriodeBuilder()
+    private var periodeBuilder = PeriodeBuilder()
     private var aaregArbeidsgiverBuilder = AaregOpplysningspliktigArbeidsgiverBuilder()
     private var aaregArbeidsforholdBuilder = AaRegArbeidsforholdBuilder()
     private var organisasjonsDetaljerBuilder = OrganisasjonsDetaljerBuilder()
@@ -29,8 +29,8 @@ class AaregMapperSteps : No {
 
     init {
         Gitt<DataTable>("følgende om AaRegPeriode i fra AaRegAnsettelsesperiode fra AaRegArbeidsforhold") { dataTable: DataTable? ->
-            aaregPeriodeBuilder.fom = aaregDomenespraakParser.mapPeriode(dataTable).fom
-            aaregPeriodeBuilder.tom = aaregDomenespraakParser.mapPeriode(dataTable).tom
+            periodeBuilder.fom = aaregDomenespraakParser.mapPeriode(dataTable).fom
+            periodeBuilder.tom = aaregDomenespraakParser.mapPeriode(dataTable).tom
         }
 
         Gitt<DataTable>("følgende om arbeidgivertype fra AaRegOpplysningspliktigArbeidsgiver fra AaRegArbeidsforhold") { dataTable: DataTable? ->
@@ -235,7 +235,7 @@ class AaregMapperSteps : No {
         val aaregBuilder = AaregBuilder()
         organisasjonsDetaljerBuilder.enhetstyper = mutableListOf(enhetstypeBuilder.build())
         organisasjonBuilder.originasjonsDetaljer = organisasjonsDetaljerBuilder.build()
-        ansettelsesPeriodeBuilder.periode = aaregPeriodeBuilder.build()
+        ansettelsesPeriodeBuilder.periode = periodeBuilder.buildAaregPeriode()
         aaregArbeidsforholdBuilder.ansettelsesperiode = ansettelsesPeriodeBuilder.build()
         aaregArbeidsforholdBuilder.utenlandsopphold = mutableListOf(utenlandoppholdBuiler.build())
         aaregArbeidsforholdBuilder.arbeidsgiver = aaregArbeidsgiverBuilder.build()

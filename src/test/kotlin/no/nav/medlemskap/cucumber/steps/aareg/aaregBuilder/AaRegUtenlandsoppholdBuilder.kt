@@ -5,12 +5,12 @@ import java.time.YearMonth
 
 class AaRegUtenlandsoppholdBuilder {
     var sportingsinformasjonBuilder = AaRegSporingsinformasjonBuilder()
-    var periodeBuilder = AaregPeriodeBuilder()
+    var periodeBuilder = PeriodeBuilder()
 
     var landkode = String()
     var rapporteringsperiode = YearMonth.now()
     var sportingsinformasjon = sportingsinformasjonBuilder.build()
-    var periode = periodeBuilder.build()
+    var periode = periodeBuilder.buildAaregPeriode()
 
     fun build(): AaRegUtenlandsopphold =
         AaRegUtenlandsopphold(
