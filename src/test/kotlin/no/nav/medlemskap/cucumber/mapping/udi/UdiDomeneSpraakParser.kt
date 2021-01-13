@@ -5,10 +5,7 @@ import no.nav.medlemskap.cucumber.BasisDomeneParser
 import no.nav.medlemskap.cucumber.BasisDomeneParser.Companion.mapDataTable
 import no.nav.medlemskap.cucumber.Domenenøkkel
 import no.nav.medlemskap.cucumber.RadMapper
-import no.udi.mt_1067_nav_data.v1.ArbeidOmfangKategori
-import no.udi.mt_1067_nav_data.v1.ArbeidsadgangType
-import no.udi.mt_1067_nav_data.v1.JaNeiUavklart
-import no.udi.mt_1067_nav_data.v1.Periode
+import no.udi.mt_1067_nav_data.v1.*
 import javax.xml.datatype.DatatypeFactory
 import javax.xml.datatype.XMLGregorianCalendar
 
@@ -33,6 +30,14 @@ class UdiDomeneSpraakParser {
         return mapDataTable(dataTable, UttrekkstidspunktMapper())[0]
     }
 
+    fun mapEffektueringsdato(dataTable: DataTable?): XMLGregorianCalendar? {
+        return mapDataTable(dataTable, EffektueringsdatoMapper())[0]
+    }
+
+    fun mapOppholdstillatelse(dataTable: DataTable?): Oppholdstillatelse? {
+        return mapDataTable(dataTable, OppholdstillatelseMapper())[0]
+    }
+
     fun mapPeriode(dataTable: DataTable?): Periode {
         return mapDataTable(dataTable, PeriodeMapper())[0]
     }
@@ -40,6 +45,18 @@ class UdiDomeneSpraakParser {
     class HarArbeidsadgangMapper() : RadMapper<JaNeiUavklart> {
         override fun mapRad(rad: Map<String, String>): JaNeiUavklart {
             return JaNeiUavklart.valueOf(BasisDomeneParser.parseString(UdiDomenebegrep.ARBEIDSADGANG, rad))
+        }
+    }
+
+    class OppholdstillatelseMapper() : RadMapper<Oppholdstillatelse> {
+        override fun mapRad(rad: Map<String, String>): Oppholdstillatelse {
+            val vedtaksdato = BasisDomeneParser.parseString(UdiDomenebegrep.VEDTAKSDATO, rad)
+            val vedtaksdatoXMLGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(vedtaksdato)
+            val oppholdstillatelse = Oppholdstillatelse()
+
+            oppholdstillatelse.oppholdstillatelseType = OppholdstillatelseKategori.valueOf(BasisDomeneParser.parseString(UdiDomenebegrep.OPPHOLDSTILLATELSE, rad))
+            oppholdstillatelse.vedtaksDato = vedtaksdatoXMLGregorianCalendar
+            return oppholdstillatelse
         }
     }
 
@@ -79,16 +96,28 @@ class UdiDomeneSpraakParser {
             return DatatypeFactory.newInstance().newXMLGregorianCalendar(uttrekkstidpunktLocalDateTime)
         }
     }
+
+    class EffektueringsdatoMapper() : RadMapper<XMLGregorianCalendar> {
+        override fun mapRad(rad: Map<String, String>): XMLGregorianCalendar {
+
+            val uttrekkstidpunktLocalDateTime = BasisDomeneParser.parseString(UdiDomenebegrep.EFFEKTUERINGSDATO, rad)
+            return DatatypeFactory.newInstance().newXMLGregorianCalendar(uttrekkstidpunktLocalDateTime)
+        }
+    }
 }
 
 enum class UdiDomenebegrep(val nøkkel: String) : Domenenøkkel {
     ARBEIDSADGANG("Arbeidsadgang"),
     ARBEIDOMFANG_KATEGORI("ArbeidomfangKategori"),
     ARBEIDSADGANG_TYPE("ArbeidsadgangType"),
+    EFFEKTUERINGSDATO("Effektueringsdato"),
     FORESPORSELSFODSELSNUMMER("Foresporselsfodselsnummer"),
+    OPPHOLDSTILLATELSE("Oppholdstillatelse"),
+    OPPHOLD_PA_SAMME_VILKAR("OppholdPaSammeVilkar"),
     GYLDIG_FRA_OG_MED("Gyldig fra og med"),
     GYLDIG_TIL_OG_MED("Gyldig til og med"),
-    UTTREKKSTIDSPUNKT("Uttrekkstidspunkt")
+    UTTREKKSTIDSPUNKT("Uttrekkstidspunkt"),
+    VEDTAKSDATO("Vedtaksdato")
     ;
 
     override fun nøkkel(): String {

@@ -1,0 +1,3 @@
+package no.nav.medlemskap.cucumber.steps.udi
+
+class IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisumBuilder

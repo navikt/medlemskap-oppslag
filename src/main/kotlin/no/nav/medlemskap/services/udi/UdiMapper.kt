@@ -62,6 +62,7 @@ object UdiMapper {
                 gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar.oppholdstillatelsePeriode.fra.asLocalDate(),
                 gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar.oppholdstillatelsePeriode.til.asLocalDate()
             )
+
             val harTillatelse = gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar?.oppholdstillatelse?.oppholdstillatelseType != null
             return OppholdstillatelsePaSammeVilkar(oppholdstillatelsePaSammeVilkarPeriode, harTillatelse)
         }

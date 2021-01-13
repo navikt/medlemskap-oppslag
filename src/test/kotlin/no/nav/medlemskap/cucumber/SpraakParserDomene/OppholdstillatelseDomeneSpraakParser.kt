@@ -36,6 +36,16 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, PeriodeMapper())[0]
     }
 
+    fun mapOppholdstillatelsePaSammeVilkar(dataTable: DataTable?): Boolean {
+        return mapDataTable(dataTable, HarOppholdMapper())[0]
+    }
+
+    class HarOppholdMapper() : RadMapper<Boolean> {
+        override fun mapRad(rad: Map<String, String>): Boolean {
+            return parseBoolean(OppholdstillatelseDomenebegrep.HAR_OPPHOLD, rad)
+        }
+    }
+
     class PeriodeMapper() : RadMapper<Periode> {
         override fun mapRad(rad: Map<String, String>): Periode {
             return Periode(
@@ -80,6 +90,7 @@ enum class OppholdstillatelseDomenebegrep(val nøkkel: String) : Domenenøkkel {
     ARBEIDSADGANG("Arbeidsadgang"),
     ARBEIDOMFANG_KATEGORI("ArbeidomfangKategori"),
     ARBEIDSADGANG_TYPE("ArbeidsadgangType"),
+    HAR_OPPHOLD("Har opphold"),
     GYLDIG_FRA_OG_MED("Gyldig fra og med"),
     GYLDIG_TIL_OG_MED("Gyldig til og med"),
     FORESPORSELSFODSELSNUMMER("Foresporselsfodselsnummer"),
