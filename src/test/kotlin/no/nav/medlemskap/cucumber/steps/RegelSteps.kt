@@ -9,15 +9,12 @@ import no.nav.medlemskap.common.JsonMapper
 import no.nav.medlemskap.common.LokalWebServer
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.Medlemskapsparametre
-import no.nav.medlemskap.cucumber.SpraakParserDomene.ArbeidsforholdDomeneSpraakParser
-import no.nav.medlemskap.cucumber.SpraakParserDomene.DokumentDomeneSpraakParser
-import no.nav.medlemskap.cucumber.SpraakParserDomene.OppgaverDomeneSpraakParser
-import no.nav.medlemskap.cucumber.SpraakParserDomene.PersonhistorikkDomeneSpraakParser
+import no.nav.medlemskap.cucumber.SpraakParserDomene.*
 import no.nav.medlemskap.cucumber.steps.pdl.DataOmEktefelleBuilder
 import no.nav.medlemskap.cucumber.steps.pdl.PersonhistorikkBuilder
 import no.nav.medlemskap.cucumber.steps.pdl.PersonhistorikkEktefelleBuilder
+import no.nav.medlemskap.cucumber.steps.udi.OppholdstillatelseBuilder
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.arbeidsforhold.*
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.regler.assertBegrunnelse
@@ -47,7 +44,8 @@ class RegelSteps : No {
 
     private var personhistorikkEktefelleBuilder = PersonhistorikkEktefelleBuilder()
     private var dataOmEktefelleBuilder = DataOmEktefelleBuilder()
-
+    private var oppholdstillatelse: Oppholdstillatelse? = null
+    private var oppholdstillatelseBuilder = OppholdstillatelseBuilder()
     private var medlemskap: List<Medlemskap> = emptyList()
 
     private var dataOmBarn: List<DataOmBarn> = emptyList()
@@ -166,7 +164,6 @@ class RegelSteps : No {
         Gitt("følgende arbeidsavtaler i arbeidsforhold {int}") { arbeidsforholdRad: Int?, dataTable: DataTable? ->
             val arbeidsavtaler = ArbeidsforholdDomeneSpraakParser.mapArbeidsavtaler(dataTable)
             val arbeidsforholdIndeks = arbeidsforholdIndeks(arbeidsforholdRad)
-
             arbeidsavtaleMap[arbeidsforholdIndeks] = arbeidsavtaler
         }
 
@@ -199,6 +196,14 @@ class RegelSteps : No {
 
         Gitt<DataTable>("med følgende regeloverstyringer") { dataTable: DataTable? ->
             overstyrteRegler = domenespråkParser.mapOverstyrteRegler(dataTable)
+        }
+
+        Gitt("følgende oppholdstillatelse") { dataTable: DataTable? ->
+            oppholdstillatelseBuilder.fromOppholdstillatelse(OppholdstillatelseDomeneSpraakParser.mapOppholdstillatelse(dataTable))
+        }
+
+        Gitt("følgende arbeidsadgang") { dataTable: DataTable? ->
+            oppholdstillatelseBuilder.arbeidsadgang = OppholdstillatelseDomeneSpraakParser.mapArbeidstilgang(dataTable)
         }
 
         Når("medlemskap beregnes med følgende parametre") { dataTable: DataTable? ->
@@ -424,7 +429,7 @@ class RegelSteps : No {
             dataOmBarn = dataOmBarn,
             dataOmEktefelle = dataOmEktefelleBuilder.build(),
             overstyrteRegler = overstyrteRegler,
-            oppholdstillatelse = null
+            oppholdstillatelse = oppholdstillatelseBuilder.build()
         )
     }
 

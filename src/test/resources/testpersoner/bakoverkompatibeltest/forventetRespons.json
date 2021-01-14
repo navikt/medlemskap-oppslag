@@ -192,7 +192,30 @@
         "permisjonPermittering" : [ ]
       } ]
     },
-    "overstyrteRegler" : { }
+    "overstyrteRegler" : { },
+    "oppholdstillatelse" : {
+      "uttrekkstidspunkt" : null,
+      "foresporselsfodselsnummer" : "fnr",
+      "avgjoerelse" : null,
+      "gjeldendeOppholdsstatus" : {
+        "periode" : {
+          "fom" : "2019-02-12",
+          "tom" : "2022-02-12"
+        },
+        "harTillatelse" : true
+      },
+      "arbeidsadgang" : {
+        "harArbeidsadgang" : true,
+        "arbeidsadgangType" : "BESTEMT_ARBEID_ELLER_OPPDRAG",
+        "arbeidsomfang" : "KUN_ARBEID_HELTID",
+        "periode" : {
+          "fom" : "2019-02-12",
+          "tom" : "2022-02-12"
+        }
+      },
+      "uavklartFlyktningstatus" : null,
+      "harFlyktningstatus" : null
+    }
   },
   "resultat" : {
     "regelId" : "REGEL_MEDLEM_KONKLUSJON",

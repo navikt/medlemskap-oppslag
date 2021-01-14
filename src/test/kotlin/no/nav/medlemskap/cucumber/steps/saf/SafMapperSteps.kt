@@ -14,14 +14,14 @@ import java.time.LocalDateTime
 class SafMapperSteps : No {
 
     private val safDomenespråkParser = SafDomeneSpraakParser()
-    private val safDokumentBuiilder = SafDokumentBuilder()
+    private val safDokumentBuilder = SafDokumentBuilder()
     private var dokumentInfoBuilder = DokumentInfoBuilder()
     private var dokument: Dokument? = null
     private var dokumenter: List<Journalpost>? = null
 
     init {
         Gitt<DataTable>("følgende tittel fra journalpost") { dataTable: DataTable? ->
-            safDokumentBuiilder.tittel = safDomenespråkParser.mapDokumentTittel(dataTable)
+            safDokumentBuilder.tittel = safDomenespråkParser.mapDokumentTittel(dataTable)
         }
         Gitt<DataTable>("følgende dokumentInfoId fra dokument") { dataTable: DataTable? ->
             dokumentInfoBuilder.dokumentInfoId = safDomenespråkParser.mapDokumentInfoId(dataTable)
@@ -32,19 +32,19 @@ class SafMapperSteps : No {
         }
 
         Gitt<DataTable>("følgende journalpostId fra journalpost") { dataTable: DataTable? ->
-            safDokumentBuiilder.journalpostId = safDomenespråkParser.mapJournalPostId(dataTable)
+            safDokumentBuilder.journalpostId = safDomenespråkParser.mapJournalPostId(dataTable)
         }
 
         Gitt<DataTable>("følgende journalposttype fra journalpost") { dataTable: DataTable? ->
-            safDokumentBuiilder.journalposttype = safDomenespråkParser.mapJournalPostType(dataTable)
+            safDokumentBuilder.journalposttype = safDomenespråkParser.mapJournalPostType(dataTable)
         }
 
         Gitt<DataTable>("følgende tema fra journalpost") { dataTable: DataTable? ->
-            safDokumentBuiilder.tema = safDomenespråkParser.mapJournalTema(dataTable)
+            safDokumentBuilder.tema = safDomenespråkParser.mapJournalTema(dataTable)
         }
 
         Gitt<DataTable>("følgende journalstatus fra journalpost") { dataTable: DataTable? ->
-            safDokumentBuiilder.journalStatus = safDomenespråkParser.mapJournalStatus(dataTable)
+            safDokumentBuilder.journalStatus = safDomenespråkParser.mapJournalStatus(dataTable)
         }
         Når("journalposter mappes") {
             dokumenter = mapTilDokumenter()
@@ -87,8 +87,8 @@ class SafMapperSteps : No {
     }
 
     private fun mapTilDokumenter(): List<Journalpost> {
-        safDokumentBuiilder.dokumenter = listOf(dokumentInfoBuilder.build())
-        return mapJournalResultat(listOf(safDokumentBuiilder.build()))
+        safDokumentBuilder.dokumenter = listOf(dokumentInfoBuilder.build())
+        return mapJournalResultat(listOf(safDokumentBuilder.build()))
     }
 
     class SafDokumentBuilder {

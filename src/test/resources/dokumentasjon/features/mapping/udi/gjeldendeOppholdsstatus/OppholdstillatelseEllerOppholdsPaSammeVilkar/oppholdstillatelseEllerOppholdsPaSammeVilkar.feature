@@ -4,7 +4,7 @@
 Egenskap: Mapping av OppholdstillatelseEllerOppholdsPaSammeVilkar
 
   Scenariomal: Bruker har OppholdstillatelseEllerOppholdsPaSammeVilkar fra GjeldendeOppholdsstatus
-    Og følgende periode fra OppholdstillatelseEllerOppholdsPaSammeVilkar
+    Gitt følgende periode fra OppholdstillatelseEllerOppholdsPaSammeVilkar
       | Gyldig fra og med   | Gyldig til og med |
       | 2015-03-25          | 2016-02-03        |
 
@@ -13,8 +13,8 @@ Egenskap: Mapping av OppholdstillatelseEllerOppholdsPaSammeVilkar
       | 2018-11-15T21:37:40.835 |
 
     Og følgende Oppholdstillatelse fra OppholdstillatelseEllerOppholdsPaSammeVilkar
-      | OppholdstillatelseKategori   | VedtakDato   |
-      | <OppholdstillatelseKategori> | <VedtakDato> |
+      | Oppholdstillatelse   | Vedtaksdato   |
+      | <OppholdstillatelseKategori> | <VedtaksDato> |
 
     Og foresporselsfodselsnummer fra HentPersonstatusResultat
       | Foresporselsfodselsnummer  |
@@ -27,12 +27,11 @@ Egenskap: Mapping av OppholdstillatelseEllerOppholdsPaSammeVilkar
     Når GjeldendeOppholdsstatus mappes
 
     Så skal mappede OppholdstillatelsePaSammeVilkar være
-      | Har opphold  |
-      | true         |
-
+      | Har opphold  | Gyldig fra og med   | Gyldig til og med |
+      | true         | 2015-03-25          | 2016-02-03        |
 
     Eksempler:
-      | OppholdstillatelseKategori     | VedtakDato |
+      | OppholdstillatelseKategori     | VedtaksDato |
       | PERMANENT                      | 2016-02-03  |
       | MIDLERTIDIG                    | 2016-02-03  |
 

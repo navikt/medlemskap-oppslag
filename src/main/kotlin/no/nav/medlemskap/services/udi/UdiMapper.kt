@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 import javax.xml.datatype.XMLGregorianCalendar
 
 object UdiMapper {
-    fun mapTilOppholdstillatelser(oppholdstillatelse: HentPersonstatusResultat): Oppholdstillatelse {
+    fun mapTilOppholdstillatelse(oppholdstillatelse: HentPersonstatusResultat): Oppholdstillatelse {
         return Oppholdstillatelse(
             uttrekkstidspunkt = oppholdstillatelse.uttrekkstidspunkt.asDate(),
             foresporselsfodselsnummer = oppholdstillatelse.foresporselsfodselsnummer,
@@ -68,7 +68,6 @@ object UdiMapper {
         }
         if (gjeldendeOppholdsstatus.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum != null) {
             return null
-            // return mapIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(gjeldendeOppholdsstatus.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum)
         }
         if (gjeldendeOppholdsstatus.uavklart != null) {
             return null

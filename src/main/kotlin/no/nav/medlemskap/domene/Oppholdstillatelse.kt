@@ -1,5 +1,6 @@
 package no.nav.medlemskap.domene
 
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class Oppholdstillatelse(
@@ -10,18 +11,47 @@ data class Oppholdstillatelse(
     val arbeidsadgang: Arbeidsadgang?,
     val uavklartFlyktningstatus: Boolean?,
     val harFlyktningstatus: Boolean?
-)
+) {
+    fun harGyldigOppholdOgArbeidstillatelse(): Boolean {
+        return gjeldendeOppholdsstatus != null && gjeldendeOppholdsstatus.harTillatelse == true &&
+            arbeidsadgang != null && arbeidsadgang.harArbeidsadgang == true &&
+            arbeidsadgang.arbeidsomfang != null && arbeidsadgang.arbeidsomfang == ArbeidomfangKategori.KUN_ARBEID_HELTID &&
+            arbeidsadgang.arbeidsadgangType != null && arbeidsadgang.arbeidsadgangType == ArbeidsadgangType.GENERELL
+    }
+
+    fun harGyldigOppholdOgArbeidstillatelseForPeriode(
+        inputPeriode: InputPeriode,
+        førsteDagForYtelse: LocalDate?
+    ): Boolean {
+        if (gjeldendeOppholdsstatus == null) {
+            return false
+        }
+        return harGyldigOppholdOgArbeidstillatelse() &&
+            gjeldendeOppholdsstatus.periode?.encloses(
+            Kontrollperiode.kontrollPeriodeForOppholdstillatelse(
+                inputPeriode,
+                førsteDagForYtelse
+            ).periode
+        ) ?: false &&
+            arbeidsadgang!!.periode?.encloses(
+            Kontrollperiode.kontrollPeriodeForOppholdstillatelse(
+                inputPeriode,
+                førsteDagForYtelse
+            ).periode
+        ) ?: false
+    }
+}
 
 data class Arbeidsadgang(
-    val harArbeidsadgang: Boolean,
+    val periode: Periode?,
+    val harArbeidsadgang: Boolean?,
     val arbeidsadgangType: ArbeidsadgangType?,
-    val arbeidsomfang: ArbeidomfangKategori?,
-    val periode: Periode
+    val arbeidsomfang: ArbeidomfangKategori?
 )
 
 data class OppholdstillatelsePaSammeVilkar(
-    val periode: Periode,
-    val harTillatelse: Boolean
+    val periode: Periode?,
+    val harTillatelse: Boolean?
 )
 
 data class GjeldendeOppholdsstatus(

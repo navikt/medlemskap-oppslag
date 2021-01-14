@@ -4,11 +4,11 @@ import no.nav.medlemskap.clients.aareg.AaRegAnsettelsesperiode
 
 class AaRegAnsettelsesPeriodeBuilder {
     var bruksperiodeBuilder = AaRegBruksperiodeBuilder()
-    var periodeBuilder = AaregPeriodeBuilder()
+    var periodeBuilder = PeriodeBuilder()
     var sporingsinformasjonBuilder = AaRegSporingsinformasjonBuilder()
 
     var bruksperiode = bruksperiodeBuilder.build()
-    var periode = periodeBuilder.build()
+    var periode = periodeBuilder.buildAaregPeriode()
     var varslingskode = String()
     var sporingsinformasjon = sporingsinformasjonBuilder.build()
 

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import no.nav.medlemskap.services.udi.UdiMapper.mapTilOppholdstillatelser
+import no.nav.medlemskap.services.udi.UdiMapper.mapTilOppholdstillatelse
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import v1.mt_1067_nav.no.udi.HentPersonstatusResponseType
@@ -16,7 +16,7 @@ class UdiMapperTest {
     fun mapUdiResponseTest() {
         val hentPersonstatusResponseTypeObject = readFromTilHentPersonstatusResponseTypeString()
         val resultat = hentPersonstatusResponseTypeObject.resultat
-        val mappedOppholdstillatelser = mapTilOppholdstillatelser(resultat)
+        val mappedOppholdstillatelser = mapTilOppholdstillatelse(resultat)
 
         val gjeldendeOppholdsstatus = resultat.gjeldendeOppholdsstatus
         val gjeldendeOppholdsstatusPaSammeVilkar = gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar

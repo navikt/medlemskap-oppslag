@@ -4,15 +4,14 @@ import io.cucumber.datatable.DataTable
 import no.nav.medlemskap.cucumber.BasisDomeneParser
 import no.nav.medlemskap.cucumber.Domenenøkkel
 import no.nav.medlemskap.cucumber.RadMapper
-import no.nav.medlemskap.domene.ArbeidomfangKategori
-import no.nav.medlemskap.domene.ArbeidsadgangType
-import no.nav.medlemskap.domene.Periode
+import no.nav.medlemskap.cucumber.mapping.udi.UdiDomenebegrep
+import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.Datohjelper
 import java.time.LocalDateTime
 
 object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
 
-    fun mapArbeidstilgang(dataTable: DataTable?): Boolean {
+    fun mapHarArbeidstilgang(dataTable: DataTable?): Boolean {
         return mapDataTable(dataTable, HarArbeidstilgangMapper())[0]
     }
 
@@ -36,14 +35,16 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, PeriodeMapper())[0]
     }
 
-    fun mapOppholdstillatelsePaSammeVilkar(dataTable: DataTable?): Boolean {
-        return mapDataTable(dataTable, HarOppholdMapper())[0]
+    fun mapOppholdstillatelse(dataTable: DataTable?): Oppholdstillatelse {
+        return mapDataTable(dataTable, OppholdstillatelseMapper())[0]
     }
 
-    class HarOppholdMapper() : RadMapper<Boolean> {
-        override fun mapRad(rad: Map<String, String>): Boolean {
-            return parseBoolean(OppholdstillatelseDomenebegrep.HAR_OPPHOLD, rad)
-        }
+    fun mapArbeidstilgang(dataTable: DataTable?): Arbeidsadgang {
+        return mapDataTable(dataTable, ArbeidsadgangMapper())[0]
+    }
+
+    fun mapOppholdstillatelsePaSammeVilkar(dataTable: DataTable?): OppholdstillatelsePaSammeVilkar {
+        return mapDataTable(dataTable, HarOppholdMapper())[0]
     }
 
     class PeriodeMapper() : RadMapper<Periode> {
@@ -51,6 +52,19 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
             return Periode(
                 fom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad),
                 tom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad)
+            )
+        }
+    }
+
+    class HarOppholdMapper() : RadMapper<OppholdstillatelsePaSammeVilkar> {
+        override fun mapRad(rad: Map<String, String>): OppholdstillatelsePaSammeVilkar {
+            return OppholdstillatelsePaSammeVilkar(
+                periode = Periode(
+                    fom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad),
+                    tom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad)
+                ),
+                harTillatelse = parseBooleanMedBooleanVerdi(OppholdstillatelseDomenebegrep.HAR_OPPHOLD, rad)
+
             )
         }
     }
@@ -84,6 +98,42 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
             return parseBooleanMedBooleanVerdi(OppholdstillatelseDomenebegrep.ARBEIDSADGANG, rad)
         }
     }
+
+    class OppholdstillatelseMapper : RadMapper<Oppholdstillatelse> {
+        override fun mapRad(rad: Map<String, String>): Oppholdstillatelse {
+            val periode = Periode(
+                parseValgfriDato(UdiDomenebegrep.GYLDIG_FRA_OG_MED, rad),
+                parseValgfriDato(UdiDomenebegrep.GYLDIG_TIL_OG_MED, rad)
+            )
+
+            return Oppholdstillatelse(
+                null,
+                "fnr",
+                parseValgfriBoolean(OppholdstillatelseDomenebegrep.AVGJOERELSE.nøkkel(), rad),
+                OppholdstillatelsePaSammeVilkar(periode, parseBoolean(OppholdstillatelseDomenebegrep.HAR_OPPHOLDSTILLATELSE, rad)),
+                Arbeidsadgang(periode, true, null, null),
+                parseValgfriBoolean(OppholdstillatelseDomenebegrep.UAVKLART_FLYKTNINGSTATUS.nøkkel(), rad),
+                parseValgfriBoolean(OppholdstillatelseDomenebegrep.HAR_FLYKTNINGSTATUS.nøkkel(), rad)
+
+            )
+        }
+    }
+
+    class ArbeidsadgangMapper : RadMapper<Arbeidsadgang> {
+        override fun mapRad(rad: Map<String, String>): Arbeidsadgang {
+            val periode = Periode(
+                parseValgfriDato(UdiDomenebegrep.GYLDIG_FRA_OG_MED, rad),
+                parseValgfriDato(UdiDomenebegrep.GYLDIG_TIL_OG_MED, rad)
+            )
+
+            return Arbeidsadgang(
+                periode,
+                parseBoolean(UdiDomenebegrep.ARBEIDSADGANG, rad),
+                ArbeidsadgangTypeMapper().mapRad(rad),
+                ArbeidsomfangKategoriMapper().mapRad(rad)
+            )
+        }
+    }
 }
 
 enum class OppholdstillatelseDomenebegrep(val nøkkel: String) : Domenenøkkel {
@@ -91,9 +141,13 @@ enum class OppholdstillatelseDomenebegrep(val nøkkel: String) : Domenenøkkel {
     ARBEIDOMFANG_KATEGORI("ArbeidomfangKategori"),
     ARBEIDSADGANG_TYPE("ArbeidsadgangType"),
     HAR_OPPHOLD("Har opphold"),
+    AVGJOERELSE("Avgjørelse"),
+    HAR_OPPHOLDSTILLATELSE("Har tillatelse"),
+    HAR_FLYKTNINGSTATUS("Har flyktningstatus"),
     GYLDIG_FRA_OG_MED("Gyldig fra og med"),
     GYLDIG_TIL_OG_MED("Gyldig til og med"),
     FORESPORSELSFODSELSNUMMER("Foresporselsfodselsnummer"),
+    UAVKLART_FLYKTNINGSTATUS("Uavklart flyktningstatus"),
     UTTREKKSTIDSPUNKT("Uttrekkstidspunkt")
     ;
 
