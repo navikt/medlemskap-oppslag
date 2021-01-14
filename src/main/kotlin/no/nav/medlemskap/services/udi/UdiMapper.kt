@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 import javax.xml.datatype.XMLGregorianCalendar
 
 object UdiMapper {
-    fun mapTilOppholdstillatelser(oppholdstillatelse: HentPersonstatusResultat): Oppholdstillatelse {
+    fun mapTilOppholdstillatelse(oppholdstillatelse: HentPersonstatusResultat): Oppholdstillatelse {
         return Oppholdstillatelse(
             uttrekkstidspunkt = oppholdstillatelse.uttrekkstidspunkt.asDate(),
             foresporselsfodselsnummer = oppholdstillatelse.foresporselsfodselsnummer,
@@ -30,8 +30,8 @@ object UdiMapper {
         }
         return no.nav.medlemskap.domene.Arbeidsadgang(
             harArbeidsadgang = arbeidsadgang.harArbeidsadgang == JaNeiUavklart.JA,
-            arbeidsadgangType = ArbeidsadgangType.fraArbeidsadgangType(arbeidsadgang.typeArbeidsadgang.value()),
-            arbeidsomfang = ArbeidomfangKategori.fraArbeidomfang(arbeidsadgang.arbeidsOmfang.value()),
+            arbeidsadgangType = ArbeidsadgangType.fraArbeidsadgangType(arbeidsadgang.typeArbeidsadgang?.value()),
+            arbeidsomfang = ArbeidomfangKategori.fraArbeidomfang(arbeidsadgang.arbeidsOmfang?.value()),
             periode = mapPeriode(arbeidsadgang.arbeidsadgangsPeriode)
         )
     }

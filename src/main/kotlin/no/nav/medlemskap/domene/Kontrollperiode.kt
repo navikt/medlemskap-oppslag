@@ -39,5 +39,12 @@ data class Kontrollperiode(
                 return inputPeriode.fom.minusDays(1)
             }
         }
+
+        fun kontrollPeriodeForOppholdstillatelse(inputPeriode: InputPeriode, førsteDagForYtelse: LocalDate?): Kontrollperiode {
+            return Kontrollperiode(
+                fom = startDatoForYtelse(inputPeriode, førsteDagForYtelse).minusMonths(12),
+                tom = startDatoForYtelse(inputPeriode, førsteDagForYtelse).plusMonths(2)
+            )
+        }
     }
 }

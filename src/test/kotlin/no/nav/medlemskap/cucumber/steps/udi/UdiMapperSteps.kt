@@ -7,36 +7,37 @@ import no.nav.medlemskap.cucumber.SpraakParserDomene.OppholdstillatelseDomeneSpr
 import no.nav.medlemskap.cucumber.mapping.udi.UdiDomeneSpraakParser
 import no.nav.medlemskap.domene.Oppholdstillatelse
 import no.nav.medlemskap.services.udi.UdiMapper
+import no.udi.mt_1067_nav_data.v1.Arbeidsadgang
+import no.udi.mt_1067_nav_data.v1.HentPersonstatusResultat
 
 class UdiMapperSteps : No {
     private val udiDomenespraakParser = UdiDomeneSpraakParser()
-    private val udiArbeidsadgangBuilder = UdiArbeidsadgangBuilder()
-    private val udiOppholdstillatelseBuilder = UdiOppholdstillatelseBuilder()
+    private val hentPersonstatusResultat: HentPersonstatusResultat = HentPersonstatusResultat().withArbeidsadgang(Arbeidsadgang())
     private var oppholdstillatelse: Oppholdstillatelse? = null
 
     init {
         Gitt<DataTable>("følgende harArbeidsadgang fra Arbeidsadgang") { dataTable: DataTable? ->
-            udiArbeidsadgangBuilder.harArbeidsadgang = udiDomenespraakParser.mapHarArbeidsadgang(dataTable)
+            hentPersonstatusResultat.arbeidsadgang.harArbeidsadgang = udiDomenespraakParser.mapHarArbeidsadgang(dataTable)
         }
 
         Gitt<DataTable>("foresporselsfodselsnummer fra HentPersonstatusResultat") { dataTable: DataTable? ->
-            udiOppholdstillatelseBuilder.foresporselsfodselsnummer = udiDomenespraakParser.mapforesporselfodselsnummer(dataTable)
+            hentPersonstatusResultat.foresporselsfodselsnummer = udiDomenespraakParser.mapforesporselfodselsnummer(dataTable)
         }
 
         Gitt<DataTable>("følgende arbeidomfangKategori fra Arbeidsadgang") { dataTable: DataTable? ->
-            udiArbeidsadgangBuilder.arbeidsOmfang = udiDomenespraakParser.mapArbeidsomfang(dataTable)
+            hentPersonstatusResultat.arbeidsadgang.arbeidsOmfang = udiDomenespraakParser.mapArbeidsomfang(dataTable)
         }
 
         Gitt<DataTable>("følgende arbeidsadgangType fra Arbeidsadgang") { dataTable: DataTable? ->
-            udiArbeidsadgangBuilder.typeArbeidsadgang = udiDomenespraakParser.mapArbeidsadgangType(dataTable)
+            hentPersonstatusResultat.arbeidsadgang.typeArbeidsadgang = udiDomenespraakParser.mapArbeidsadgangType(dataTable)
         }
 
         Gitt<DataTable>("uttrekkstidspunkt fra HentPersonstatusResultat") { dataTable: DataTable? ->
-            udiOppholdstillatelseBuilder.uttrekkstidspunkt = udiDomenespraakParser.mapUttrekkstidspunkt(dataTable)
+            hentPersonstatusResultat.uttrekkstidspunkt = udiDomenespraakParser.mapUttrekkstidspunkt(dataTable)
         }
 
         Gitt<DataTable>("følgende om periode i Arbeidsadgang") { dataTable: DataTable? ->
-            udiArbeidsadgangBuilder.arbeidsadgangsPeriode = udiDomenespraakParser.mapPeriode(dataTable)
+            hentPersonstatusResultat.arbeidsadgang.arbeidsadgangsPeriode = udiDomenespraakParser.mapPeriode(dataTable)
         }
 
         Når("arbeidsadgang mappes") {
@@ -75,7 +76,6 @@ class UdiMapperSteps : No {
     }
 
     private fun mapTilOppholdstillatelse(): Oppholdstillatelse {
-        udiOppholdstillatelseBuilder.arbeidsadgang = udiArbeidsadgangBuilder.build()
-        return UdiMapper.mapTilOppholdstillatelser(udiOppholdstillatelseBuilder.build())
+        return UdiMapper.mapTilOppholdstillatelse(hentPersonstatusResultat)
     }
 }

@@ -66,6 +66,19 @@ abstract class BasisDomeneParser {
             }
         }
 
+        fun parseValgfriBoolean(domenebegrep: String, rad: Map<String, String?>): Boolean? {
+
+            if (rad.get(domenebegrep) == null || rad.get(domenebegrep) == "") {
+                return null
+            }
+
+            return when (rad.get(domenebegrep)) {
+                "Ja" -> true
+                "Nei" -> false
+                else -> null
+            }
+        }
+
         fun parseDato(domenebegrep: String, rad: Map<String, String>): LocalDate {
             return Datohjelper.parseDato(verdi(domenebegrep, rad))
         }
