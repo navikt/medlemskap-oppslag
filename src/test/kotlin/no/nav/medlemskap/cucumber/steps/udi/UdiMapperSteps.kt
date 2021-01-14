@@ -16,27 +16,27 @@ class UdiMapperSteps : No {
     private var oppholdstillatelse: Oppholdstillatelse? = null
 
     init {
-        Gitt<DataTable>("følgende harArbeidsadgang fra Arbeidsadgang") { dataTable: DataTable? ->
+        Gitt<DataTable>("følgende harArbeidsadgang fra Arbeidsadgang") { dataTable: DataTable ->
             hentPersonstatusResultat.arbeidsadgang.harArbeidsadgang = udiDomenespraakParser.mapHarArbeidsadgang(dataTable)
         }
 
-        Gitt<DataTable>("foresporselsfodselsnummer fra HentPersonstatusResultat") { dataTable: DataTable? ->
+        Gitt<DataTable>("foresporselsfodselsnummer fra HentPersonstatusResultat") { dataTable: DataTable ->
             hentPersonstatusResultat.foresporselsfodselsnummer = udiDomenespraakParser.mapforesporselfodselsnummer(dataTable)
         }
 
-        Gitt<DataTable>("følgende arbeidomfangKategori fra Arbeidsadgang") { dataTable: DataTable? ->
+        Gitt<DataTable>("følgende arbeidomfangKategori fra Arbeidsadgang") { dataTable: DataTable ->
             hentPersonstatusResultat.arbeidsadgang.arbeidsOmfang = udiDomenespraakParser.mapArbeidsomfang(dataTable)
         }
 
-        Gitt<DataTable>("følgende arbeidsadgangType fra Arbeidsadgang") { dataTable: DataTable? ->
+        Gitt<DataTable>("følgende arbeidsadgangType fra Arbeidsadgang") { dataTable: DataTable ->
             hentPersonstatusResultat.arbeidsadgang.typeArbeidsadgang = udiDomenespraakParser.mapArbeidsadgangType(dataTable)
         }
 
-        Gitt<DataTable>("uttrekkstidspunkt fra HentPersonstatusResultat") { dataTable: DataTable? ->
+        Gitt<DataTable>("uttrekkstidspunkt fra HentPersonstatusResultat") { dataTable: DataTable ->
             hentPersonstatusResultat.uttrekkstidspunkt = udiDomenespraakParser.mapUttrekkstidspunkt(dataTable)
         }
 
-        Gitt<DataTable>("følgende om periode i Arbeidsadgang") { dataTable: DataTable? ->
+        Gitt<DataTable>("følgende om periode i Arbeidsadgang") { dataTable: DataTable ->
             hentPersonstatusResultat.arbeidsadgang.arbeidsadgangsPeriode = udiDomenespraakParser.mapPeriode(dataTable)
         }
 
@@ -44,32 +44,32 @@ class UdiMapperSteps : No {
             oppholdstillatelse = mapTilOppholdstillatelse()
         }
 
-        Så<DataTable>("skal mappede harArbeidsgang i medlemskap være") { dataTable: DataTable? ->
+        Så<DataTable>("skal mappede harArbeidsgang i medlemskap være") { dataTable: DataTable ->
             val arbeidsadgangForventet = OppholdstillatelseDomeneSpraakParser.mapArbeidstilgang(dataTable)
             oppholdstillatelse?.arbeidsadgang?.harArbeidsadgang.shouldBe(arbeidsadgangForventet)
         }
 
-        Så<DataTable>("foresporselsfodselsnummer i mappet Oppholdsstatus") { dataTable: DataTable? ->
+        Så<DataTable>("foresporselsfodselsnummer i mappet Oppholdsstatus") { dataTable: DataTable ->
             val foresporselsfodselsnummerForventet = OppholdstillatelseDomeneSpraakParser.mapforesporselfodselsnummer(dataTable)
             oppholdstillatelse?.foresporselsfodselsnummer.shouldBe(foresporselsfodselsnummerForventet)
         }
 
-        Så<DataTable>("uttrekkstidspunkt i mappet Oppholdsstatus") { dataTable: DataTable? ->
+        Så<DataTable>("uttrekkstidspunkt i mappet Oppholdsstatus") { dataTable: DataTable ->
             val uttrekkstidspunktDatoForventet = OppholdstillatelseDomeneSpraakParser.mapUttrekkstidspunkt(dataTable)
             oppholdstillatelse?.uttrekkstidspunkt.shouldBe(uttrekkstidspunktDatoForventet)
         }
 
-        Så<DataTable>("skal mappede ArbeidomfangKategori i medlemskap være") { dataTable: DataTable? ->
+        Så<DataTable>("skal mappede ArbeidomfangKategori i medlemskap være") { dataTable: DataTable ->
             val arbeidomfangKategoriForventet = OppholdstillatelseDomeneSpraakParser.mapArbeidsomfangKategori(dataTable)
             oppholdstillatelse?.arbeidsadgang?.arbeidsomfang.shouldBe(arbeidomfangKategoriForventet)
         }
 
-        Så<DataTable>("skal mappede arbeidsadgangtype i medlemskap være") { dataTable: DataTable? ->
+        Så<DataTable>("skal mappede arbeidsadgangtype i medlemskap være") { dataTable: DataTable ->
             val arbeidsadgangTypeForventet = OppholdstillatelseDomeneSpraakParser.mapArbeidsadgangType(dataTable)
             oppholdstillatelse?.arbeidsadgang?.arbeidsadgangType.shouldBe(arbeidsadgangTypeForventet)
         }
 
-        Så<DataTable>("mappet periode i medlemskap være") { dataTable: DataTable? ->
+        Så<DataTable>("mappet periode i medlemskap være") { dataTable: DataTable ->
             val periodeForventet = OppholdstillatelseDomeneSpraakParser.mapPeriode(dataTable)
             oppholdstillatelse?.arbeidsadgang?.periode.shouldBe(periodeForventet)
         }

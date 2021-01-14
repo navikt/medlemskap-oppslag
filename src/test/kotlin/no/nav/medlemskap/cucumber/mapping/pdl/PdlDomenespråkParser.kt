@@ -9,35 +9,35 @@ import java.time.LocalDate
 
 class PdlDomenespråkParser : BasisDomeneParser() {
 
-    fun mapPdlParametre(dataTable: DataTable?): PdlParametre {
+    fun mapPdlParametre(dataTable: DataTable): PdlParametre {
         return mapDataTable(dataTable, PdlParametreMapper()).get(0)
     }
 
-    fun mapStatsborgerskap(dataTable: DataTable?): List<HentPerson.Statsborgerskap> {
+    fun mapStatsborgerskap(dataTable: DataTable): List<HentPerson.Statsborgerskap> {
         return mapDataTable(dataTable, StatsborgerskapMapper())
     }
 
-    fun mapBostedsadresser(dataTable: DataTable?): List<HentPerson.Bostedsadresse> {
+    fun mapBostedsadresser(dataTable: DataTable): List<HentPerson.Bostedsadresse> {
         return mapDataTable(dataTable, BostedsadresseMapper())
     }
 
-    fun mapKontaktadresser(dataTable: DataTable?): List<HentPerson.Kontaktadresse> {
+    fun mapKontaktadresser(dataTable: DataTable): List<HentPerson.Kontaktadresse> {
         return mapDataTable(dataTable, KontaktadresseMapper())
     }
 
-    fun mapOppholdsadresser(dataTable: DataTable?): List<HentPerson.Oppholdsadresse> {
+    fun mapOppholdsadresser(dataTable: DataTable): List<HentPerson.Oppholdsadresse> {
         return mapDataTable(dataTable, OppholdsadresseMapper())
     }
 
-    fun mapSivilstander(dataTable: DataTable?): List<HentPerson.Sivilstand> {
+    fun mapSivilstander(dataTable: DataTable): List<HentPerson.Sivilstand> {
         return mapDataTable(dataTable, SivilstandMapper())
     }
 
-    fun mapFamilierelasjoner(dataTable: DataTable?): List<HentPerson.Familierelasjon> {
+    fun mapFamilierelasjoner(dataTable: DataTable): List<HentPerson.Familierelasjon> {
         return mapDataTable(dataTable, FamilerelasjonMapper())
     }
 
-    fun mapDoedsfall(dataTable: DataTable?): List<HentPerson.Doedsfall> {
+    fun mapDoedsfall(dataTable: DataTable): List<HentPerson.Doedsfall> {
         return mapDataTable(dataTable, DoedsfallMapper())
     }
 

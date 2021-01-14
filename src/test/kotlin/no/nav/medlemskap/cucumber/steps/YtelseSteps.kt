@@ -23,7 +23,7 @@ class YtelseSteps : No {
     private var kontrollperiode: Kontrollperiode? = null
 
     init {
-        Gitt("følgende sykemeldingsperiode:") { dataTable: DataTable? ->
+        Gitt("følgende sykemeldingsperiode:") { dataTable: DataTable ->
             ytelsePeriode = DomenespråkParser.mapInputPeriode(dataTable)
         }
 

@@ -132,15 +132,15 @@ object DomenespråkParser : BasisDomeneParser() {
         return Familierelasjonsrolle.valueOf(verdi)
     }
 
-    fun mapMedlemskap(dataTable: DataTable?): List<Medlemskap> {
+    fun mapMedlemskap(dataTable: DataTable): List<Medlemskap> {
         return mapDataTable(dataTable, MedlemskapMapper())
     }
 
-    fun mapMedlemskapsparametre(dataTable: DataTable?): Medlemskapsparametre {
+    fun mapMedlemskapsparametre(dataTable: DataTable): Medlemskapsparametre {
         return mapDataTable(dataTable, MedlemskapsparametreMapper()).get(0)
     }
 
-    fun mapOverstyrteRegler(dataTable: DataTable?): Map<RegelId, Svar> {
+    fun mapOverstyrteRegler(dataTable: DataTable): Map<RegelId, Svar> {
         val overstyrteRegler = mapDataTable(dataTable, OverstyrteReglerMapper())
         return overstyrteRegler
             .filter { it -> it.second != null }
@@ -148,11 +148,11 @@ object DomenespråkParser : BasisDomeneParser() {
             .toMap()
     }
 
-    fun mapRegelId(dataTable: DataTable?): List<RegelId> {
+    fun mapRegelId(dataTable: DataTable): List<RegelId> {
         return mapDataTable(dataTable, RegelIdMapper())
     }
 
-    fun mapInputPeriode(dataTable: DataTable?): InputPeriode? {
+    fun mapInputPeriode(dataTable: DataTable): InputPeriode? {
         return mapDataTable(dataTable, InputPeriodeMapper()).get(0)
     }
 

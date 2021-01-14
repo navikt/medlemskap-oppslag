@@ -2,10 +2,8 @@ package no.nav.medlemskap.cucumber.SpraakParserDomene
 
 import io.cucumber.datatable.DataTable
 import no.nav.medlemskap.cucumber.*
-import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.arbeidsforhold.*
-import no.nav.medlemskap.domene.arbeidsforhold.Bruksperiode
-import no.nav.medlemskap.domene.arbeidsforhold.Gyldighetsperiode
 import java.time.YearMonth
 
 object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
@@ -13,116 +11,112 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
     val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(organisasjonsnummer = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskeEnheter = null)
 
     fun mapArbeidsforhold(
-        dataTable: DataTable?,
+        dataTable: DataTable,
         utenlandsopphold: List<Utenlandsopphold> = emptyList(),
         arbeidsgiver: Arbeidsgiver = VANLIG_NORSK_ARBEIDSGIVER
     ): List<Arbeidsforhold> {
-        if (dataTable == null) {
-            return emptyList()
-        }
-
         return dataTable.asMaps().map {
             ArbeidsforholdMapper().mapRad(it, utenlandsopphold, arbeidsgiver)
         }
     }
 
-    fun mapArbeidsgivere(dataTable: DataTable?): List<Arbeidsgiver> {
+    fun mapArbeidsgivere(dataTable: DataTable): List<Arbeidsgiver> {
         return mapDataTable(dataTable, ArbeidsgiverMapper())
     }
 
-    fun mapArbeidsavtaler(dataTable: DataTable?): List<Arbeidsavtale> {
+    fun mapArbeidsavtaler(dataTable: DataTable): List<Arbeidsavtale> {
         return mapDataTable(dataTable, ArbeidsavtaleMapper())
     }
 
-    fun mapPermisjonspermitteringer(dataTable: DataTable?): List<PermisjonPermittering> {
+    fun mapPermisjonspermitteringer(dataTable: DataTable): List<PermisjonPermittering> {
         return mapDataTable(dataTable, PermisjonsPermitteringMapper())
     }
 
-    fun mapUtenlandsopphold(dataTable: DataTable?): List<Utenlandsopphold> {
+    fun mapUtenlandsopphold(dataTable: DataTable): List<Utenlandsopphold> {
         return mapDataTable(dataTable, UtenlandsoppholdMapper())
     }
 
-    fun mapTypeIArbeidsforhold(dataTable: DataTable?): String {
+    fun mapTypeIArbeidsforhold(dataTable: DataTable): String {
         return mapDataTable(dataTable, TypeMapper())[0]
     }
 
-    fun mapAnsatte(dataTable: DataTable?): List<Ansatte> {
+    fun mapAnsatte(dataTable: DataTable): List<Ansatte> {
         return mapDataTable(dataTable, AnsattMapper())
     }
 
-    fun mapArbeidsgivertype(dataTable: DataTable?): OpplysningspliktigArbeidsgiverType {
+    fun mapArbeidsgivertype(dataTable: DataTable): OpplysningspliktigArbeidsgiverType {
         return mapDataTable(dataTable, ArbeidsgivertypeMapper())[0]
     }
 
-    fun mapArbeidsforholdstype(dataTable: DataTable?): Arbeidsforholdstype {
+    fun mapArbeidsforholdstype(dataTable: DataTable): Arbeidsforholdstype {
         return mapDataTable(dataTable, ArbeidsforholdtypeMapper())[0]
     }
 
-    fun mapBeregnetAntallTimerUke(dataTable: DataTable?): Double {
+    fun mapBeregnetAntallTimerUke(dataTable: DataTable): Double {
         return mapDataTable(dataTable, BeregnetAntallTimerPerUkeMapper())[0]
     }
 
-    fun mapFartsomraade(dataTable: DataTable?): Fartsomraade {
+    fun mapFartsomraade(dataTable: DataTable): Fartsomraade {
         return mapDataTable(dataTable, FartsomraadeMapper())[0]
     }
 
-    fun mapKonkurStatuser(dataTable: DataTable?): List<String> {
+    fun mapKonkurStatuser(dataTable: DataTable): List<String> {
         return mapDataTable(dataTable, StatusMapper())
     }
 
-    fun mapLandkode(dataTable: DataTable?): String {
+    fun mapLandkode(dataTable: DataTable): String {
         return mapDataTable(dataTable, LandkodeMapper())[0]
     }
 
-    fun mapPeriodeIArbeidsavtale(dataTable: DataTable?): Periode {
+    fun mapPeriodeIArbeidsavtale(dataTable: DataTable): Periode {
         return mapDataTable(dataTable, PeriodeMapper())[0]
     }
 
-    fun mapOrganisasjonsnummer(dataTable: DataTable?): String {
+    fun mapOrganisasjonsnummer(dataTable: DataTable): String {
         return mapDataTable(dataTable, OrganisasjonsnummerMapper())[0]
     }
 
-    fun mapPeriodeIUtenlandsopphold(dataTable: DataTable?): Periode {
+    fun mapPeriodeIUtenlandsopphold(dataTable: DataTable): Periode {
         return mapDataTable(dataTable, PeriodeMapper())[0]
     }
 
-    fun mapPeriodeForPermittering(dataTable: DataTable?): Periode {
+    fun mapPeriodeForPermittering(dataTable: DataTable): Periode {
         return mapDataTable(dataTable, PeriodeMapper())[0]
     }
 
-    fun mapPeriodeIArbeidsforhold(dataTable: DataTable?): Periode {
+    fun mapPeriodeIArbeidsforhold(dataTable: DataTable): Periode {
         return mapDataTable(dataTable, PeriodeMapper())[0]
     }
 
-    fun mapPermitteringId(dataTable: DataTable?): String {
+    fun mapPermitteringId(dataTable: DataTable): String {
         return mapDataTable(dataTable, PermitteringsIdMapper())[0]
     }
 
-    fun mapSkipsregister(dataTable: DataTable?): Skipsregister {
+    fun mapSkipsregister(dataTable: DataTable): Skipsregister {
         return mapDataTable(dataTable, SkipsregisterMapper())[0]
     }
 
-    fun mapRapporteringsperiode(dataTable: DataTable?): YearMonth {
+    fun mapRapporteringsperiode(dataTable: DataTable): YearMonth {
         return mapDataTable(dataTable, RapporteringsperiodeMapper())[0]
     }
 
-    fun mapStillingsprosent(dataTable: DataTable?): Double {
+    fun mapStillingsprosent(dataTable: DataTable): Double {
         return mapDataTable(dataTable, StillingsprosentMapper())[0]
     }
 
-    fun mapVarslingskode(dataTable: DataTable?): String {
+    fun mapVarslingskode(dataTable: DataTable): String {
         return mapDataTable(dataTable, VarslingskodeMapper())[0]
     }
 
-    fun mapYrkeskode(dataTable: DataTable?): String {
+    fun mapYrkeskode(dataTable: DataTable): String {
         return mapDataTable(dataTable, YrkeskodeMapper())[0]
     }
 
-    fun mapProsent(dataTable: DataTable?): Double {
+    fun mapProsent(dataTable: DataTable): Double {
         return mapDataTable(dataTable, ProsentMapper())[0]
     }
 
-    fun mapType(dataTable: DataTable?): PermisjonPermitteringType {
+    fun mapType(dataTable: DataTable): PermisjonPermitteringType {
         return mapDataTable(dataTable, PermitteringsTypeMapper())[0]
     }
 

@@ -9,23 +9,23 @@ import java.time.LocalDate
 
 object OppgaverDomeneSpraakParser : BasisDomeneParser() {
 
-    fun mapOppgavePrioritet(dataTable: DataTable?): Prioritet {
+    fun mapOppgavePrioritet(dataTable: DataTable): Prioritet {
         return mapDataTable(dataTable, PrioritetMapper())[0]
     }
 
-    fun mapAktivDato(dataTable: DataTable?): LocalDate {
+    fun mapAktivDato(dataTable: DataTable): LocalDate {
         return mapDataTable(dataTable, AktivDatoMapper())[0]
     }
 
-    fun mapOppgaveTema(dataTable: DataTable?): String {
+    fun mapOppgaveTema(dataTable: DataTable): String {
         return mapDataTable(dataTable, TemaMapper())[0]
     }
 
-    fun mapOppgaveStatus(dataTable: DataTable?): Status {
+    fun mapOppgaveStatus(dataTable: DataTable): Status {
         return mapDataTable(dataTable, OppgaveStatusMapper())[0]
     }
 
-    fun mapOppgaverFraGosys(dataTable: DataTable?): List<Oppgave> {
+    fun mapOppgaverFraGosys(dataTable: DataTable): List<Oppgave> {
         return mapDataTable(dataTable, OppgaveMapper())
     }
 

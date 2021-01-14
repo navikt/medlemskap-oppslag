@@ -11,35 +11,35 @@ import java.time.LocalDateTime
 
 object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
 
-    fun mapArbeidstilgang(dataTable: DataTable?): Boolean {
+    fun mapArbeidstilgang(dataTable: DataTable): Boolean {
         return mapDataTable(dataTable, HarArbeidstilgangMapper())[0]
     }
 
-    fun mapforesporselfodselsnummer(dataTable: DataTable?): String {
+    fun mapforesporselfodselsnummer(dataTable: DataTable): String {
         return mapDataTable(dataTable, ForesporselfodselsnummerMapper())[0]
     }
 
-    fun mapUttrekkstidspunkt(dataTable: DataTable?): LocalDateTime? {
+    fun mapUttrekkstidspunkt(dataTable: DataTable): LocalDateTime? {
         return mapDataTable(dataTable, UttrekkstidspunktMapper())[0]
     }
 
-    fun mapArbeidsomfangKategori(dataTable: DataTable?): ArbeidomfangKategori {
+    fun mapArbeidsomfangKategori(dataTable: DataTable): ArbeidomfangKategori {
         return mapDataTable(dataTable, ArbeidsomfangKategoriMapper())[0]
     }
 
-    fun mapArbeidsadgangType(dataTable: DataTable?): ArbeidsadgangType {
+    fun mapArbeidsadgangType(dataTable: DataTable): ArbeidsadgangType {
         return mapDataTable(dataTable, ArbeidsadgangTypeMapper())[0]
     }
 
-    fun mapPeriode(dataTable: DataTable?): Periode {
+    fun mapPeriode(dataTable: DataTable): Periode {
         return mapDataTable(dataTable, PeriodeMapper())[0]
     }
 
-    fun mapArbeidsadgang(dataTable: DataTable?): Arbeidsadgang {
+    fun mapArbeidsadgang(dataTable: DataTable): Arbeidsadgang {
         return mapDataTable(dataTable, ArbeidsadgangMapper())[0]
     }
 
-    fun mapOppholdstillatelse(dataTable: DataTable?): Oppholdstillatelse {
+    fun mapOppholdstillatelse(dataTable: DataTable): Oppholdstillatelse {
         return mapDataTable(dataTable, OppholdstillatelseMapper())[0]
     }
 
