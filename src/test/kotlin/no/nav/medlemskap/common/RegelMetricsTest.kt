@@ -36,6 +36,9 @@ class RegelMetricsTest {
         evaluer(personleser.brukerIkkeFolkeregistrertSomBosattINorge())
 
         // assertEquals(57, simpleRegistry.meters.size) //Blir 68 i GA
+        println(simpleRegistry.meters.map { it.id.name })
+        println(simpleRegistry.meters.map { it.id.tags })
+
         assertTrue(simpleRegistry.meters.map { it.id.name }.contains("regel_calls_total"))
         assertTrue(simpleRegistry.meters.map { it.id.name }.contains("regel_calls_influx"))
 
@@ -44,6 +47,9 @@ class RegelMetricsTest {
 
         assertEquals(28, registeredRegelCallsTotal.size)
         assertEquals(28, registeredRegelCallsInflux.size)
+
+        val registeredNonRegelCalls = simpleRegistry.meters.filter { it.id.name != "regel_calls_total" && it.id.name != "regel_calls_influx" }
+        println(registeredNonRegelCalls)
 
         assertEquals(1, registeredRegelCallsTotal.medTagRegelVerdi(RegelId.REGEL_MEDLEM_KONKLUSJON.metricName()).size)
         assertEquals(1.0, registeredRegelCallsTotal.medTagRegelVerdi(RegelId.REGEL_MEDLEM_KONKLUSJON.metricName())[0].absoluteValue, 1.0)
