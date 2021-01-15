@@ -1,6 +1,5 @@
 package no.nav.medlemskap.domene
 
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class Oppholdstillatelse(
@@ -12,30 +11,17 @@ data class Oppholdstillatelse(
     val uavklartFlyktningstatus: Boolean?,
     val harFlyktningstatus: Boolean?
 ) {
-    fun harGyldigOppholdOgArbeidstillatelse(): Boolean {
-        return gjeldendeOppholdsstatus != null && gjeldendeOppholdsstatus.harTillatelse &&
-            arbeidsadgang != null && arbeidsadgang.harArbeidsadgang &&
+
+    fun harGyldigArbeidstillatelseForPeriode(periode: Periode): Boolean {
+        return arbeidsadgang != null && arbeidsadgang.harArbeidsadgang &&
             arbeidsadgang.arbeidsomfang != null && arbeidsadgang.arbeidsomfang == ArbeidomfangKategori.KUN_ARBEID_HELTID &&
-            arbeidsadgang.arbeidsadgangType != null && arbeidsadgang.arbeidsadgangType == ArbeidsadgangType.GENERELL
+            arbeidsadgang.arbeidsadgangType != null && arbeidsadgang.arbeidsadgangType == ArbeidsadgangType.GENERELL &&
+            arbeidsadgang.periode.encloses(periode)
     }
 
-    fun harGyldigOppholdOgArbeidstillatelseForPeriode(
-        inputPeriode: InputPeriode,
-        førsteDagForYtelse: LocalDate?
-    ): Boolean {
-        return harGyldigOppholdOgArbeidstillatelse() &&
-            gjeldendeOppholdsstatus!!.periode.encloses(
-                Kontrollperiode.kontrollPeriodeForOppholdstillatelse(
-                    inputPeriode,
-                    førsteDagForYtelse
-                ).periode
-            ) &&
-            arbeidsadgang!!.periode.encloses(
-                Kontrollperiode.kontrollPeriodeForOppholdstillatelse(
-                    inputPeriode,
-                    førsteDagForYtelse
-                ).periode
-            )
+    fun harGyldigOppholdstillatelseForPeriode(periode: Periode): Boolean {
+        return gjeldendeOppholdsstatus != null && gjeldendeOppholdsstatus.harTillatelse &&
+            gjeldendeOppholdsstatus.periode.encloses(periode)
     }
 }
 

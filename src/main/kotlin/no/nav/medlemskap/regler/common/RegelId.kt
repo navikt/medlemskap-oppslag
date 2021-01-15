@@ -44,6 +44,8 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_12("12", "Har bruker vært i minst 25% stilling de siste 12 mnd?", "Bruker har ikke jobbet 25% eller mer i løpet av perioden."),
     REGEL_13("13", "Er bruker død?", "", "Bruker har dødsdato etter inputperiode, men det påvirker ikke medlemskapet", "Bruker er død, men i eller før inputperiode."),
     REGEL_14("14", "Er bruker ansatt i staten eller i en kommune?"),
+    REGEL_19_1("19.1", "Har bruker en gyldig oppholdstillatelse 12 måneder bakover og 2 måned fremover i tid?"),
+    REGEL_19_3("19.3", "Har bruker en gyldig arbeidstillatelse 12 måneder bakover og 2 måned fremover i tid?"),
     REGEL_15("15", "Har bruker en gyldig oppholds- og arbeidstillatelse 12 måneder bakover og 1 måned fremover i tid?"),
     REGEL_16("16", "Dekker oppholds- og arbeidstillatelsen den perioden bruker har hatt arbeid i Norge?"),
     REGEL_17("17", "Er bruker omfattet av en trygdeavtale?"),
