@@ -35,7 +35,7 @@ class RegelMetricsTest {
         simpleRegistry.clear()
         evaluer(personleser.brukerIkkeFolkeregistrertSomBosattINorge())
 
-        // assertEquals(57, simpleRegistry.meters.size) //Blir 68 i GA
+        println("Antall registrert " + simpleRegistry.meters.size)
         println(simpleRegistry.meters.map { it.id.name })
         println(simpleRegistry.meters.map { it.id.tags })
 
