@@ -32,6 +32,7 @@ class RegelMetricsTest {
     fun `evaluering av bruker gir en metrikk for medlemskapskonklusjon`() {
         val simpleRegistry = SimpleMeterRegistry(SimpleConfig.DEFAULT, MockClock())
         Metrics.addRegistry(simpleRegistry)
+        simpleRegistry.clear()
         evaluer(personleser.brukerIkkeFolkeregistrertSomBosattINorge())
 
         assertEquals(57, simpleRegistry.meters.size)
