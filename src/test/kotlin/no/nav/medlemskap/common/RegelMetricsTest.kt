@@ -12,7 +12,6 @@ import no.nav.medlemskap.regler.evaluer
 import no.nav.medlemskap.regler.personer.Personleser
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.time.Duration
 import kotlin.math.absoluteValue
@@ -28,17 +27,11 @@ class RegelMetricsTest {
     }
 
     private val personleser = Personleser()
-    private val simpleRegistry = SimpleMeterRegistry(SimpleConfig.DEFAULT, MockClock())
-
-    @BeforeEach
-    fun initCollectorRegistry() {
-        Metrics.addRegistry(simpleRegistry)
-        simpleRegistry.clear()
-    }
 
     @Test
     fun `evaluering av bruker gir en metrikk for medlemskapskonklusjon`() {
-
+        val simpleRegistry = SimpleMeterRegistry(SimpleConfig.DEFAULT, MockClock())
+        Metrics.addRegistry(simpleRegistry)
         evaluer(personleser.brukerIkkeFolkeregistrertSomBosattINorge())
 
         assertEquals(57, simpleRegistry.meters.size)
