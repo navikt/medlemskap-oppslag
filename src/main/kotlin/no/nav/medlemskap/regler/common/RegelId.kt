@@ -47,6 +47,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_15("15", "Har bruker en gyldig oppholds- og arbeidstillatelse 12 måneder bakover og 1 måned fremover i tid?"),
     REGEL_16("16", "Dekker oppholds- og arbeidstillatelsen den perioden bruker har hatt arbeid i Norge?"),
     REGEL_17("17", "Er bruker omfattet av en trygdeavtale?"),
+    REGEL_19_5("19.5", "Er bruker sveitsisk eller britisk borger?"),
     REGEL_OPPLYSNINGER("OPPLYSNINGER", "Finnes det registrerte opplysninger på bruker?", "Alle de følgende ble NEI"),
     REGEL_A("OPPLYSNINGER-MEDL", "Finnes det registrerte opplysninger i MEDL?", "", "Det finnes registrert opplysninger i Medl"),
     REGEL_B("OPPLYSNINGER-GOSYS", "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?", "", "Det finnes registrerte opplysninger i GOSYS"),
