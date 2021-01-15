@@ -13,12 +13,14 @@ import no.nav.medlemskap.regler.personer.Personleser
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
 import java.time.Duration
 import kotlin.math.absoluteValue
 
+@Disabled
 @TestInstance(PER_CLASS)
 class RegelMetricsTest {
 
