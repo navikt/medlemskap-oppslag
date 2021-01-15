@@ -6,6 +6,7 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
+import no.nav.medlemskap.regler.v1.statsborgerskap.ErBrukerBritiskEllerSveitsiskBorgerRegel
 import no.nav.medlemskap.regler.v1.udi.GyldigArbeidstillatelseIKontrollperiodeRegel
 import no.nav.medlemskap.regler.v1.udi.GyldigOppholdstillatelseIKontrollperiodeRegel
 
@@ -18,20 +19,26 @@ class ReglerForAndreStatsborgere(
 
     override fun hentHovedflyt(): Regelflyt {
 
-        val harBrukerGyldigArbeidstillatelseIKontrollperiodeRegel = lagRegelflyt(
-            regel = hentRegel(REGEL_19_3),
+        val erBrukerBritiskEllerSveitsiskBorgerRegelflyt = lagRegelflyt(
+            regel = hentRegel(REGEL_19_5),
             hvisJa = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE),
             hvisNei = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE)
         )
 
-        val harBrukerGyldigOppholdstillatelseIKontrollperiodeRegel = lagRegelflyt(
+        val harBrukerGyldigArbeidstillatelseIKontrollperiodeRegelflyt = lagRegelflyt(
+            regel = hentRegel(REGEL_19_3),
+            hvisJa = erBrukerBritiskEllerSveitsiskBorgerRegelflyt,
+            hvisNei = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE)
+        )
+
+        val harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt = lagRegelflyt(
             regel = hentRegel(REGEL_19_1),
-            hvisJa = harBrukerGyldigArbeidstillatelseIKontrollperiodeRegel,
+            hvisJa = harBrukerGyldigArbeidstillatelseIKontrollperiodeRegelflyt,
             hvisNei = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE),
             hvisUavklart = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE)
         )
 
-        return harBrukerGyldigOppholdstillatelseIKontrollperiodeRegel
+        return harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt
     }
 
     companion object {
@@ -49,7 +56,8 @@ class ReglerForAndreStatsborgere(
         private fun lagRegelMap(datagrunnlag: Datagrunnlag): Map<RegelId, Regel> {
             val regelListe = listOf(
                 GyldigOppholdstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag),
-                GyldigArbeidstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag)
+                GyldigArbeidstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag),
+                ErBrukerBritiskEllerSveitsiskBorgerRegel.fraDatagrunnlag(datagrunnlag)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()
