@@ -1,9 +1,6 @@
 package no.nav.medlemskap.regler.v1.udi
 
-import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.InputPeriode
-import no.nav.medlemskap.domene.Oppholdstillatelse
-import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.regler.common.BasisRegel
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
@@ -17,7 +14,7 @@ class GyldigOppholdstillatelseIKontrollperiodeRegel(
     private val oppholdstillatelse: Oppholdstillatelse?,
     private val periode: InputPeriode,
     private val førsteDagForYtelse: LocalDate?,
-    regelId: RegelId = RegelId.REGEL_15
+    regelId: RegelId = RegelId.REGEL_19_1
 ) : BasisRegel(regelId, ytelse) {
 
     override fun operasjon(): Resultat {
@@ -26,7 +23,8 @@ class GyldigOppholdstillatelseIKontrollperiodeRegel(
             return uavklart(regelId)
         }
 
-        if (oppholdstillatelse.harGyldigOppholdOgArbeidstillatelseForPeriode(periode, førsteDagForYtelse)) {
+        val kontrollperiode = Kontrollperiode.kontrollPeriodeForOppholdstillatelse(periode, førsteDagForYtelse)
+        if (oppholdstillatelse.harGyldigOppholdstillatelseForPeriode(kontrollperiode.periode)) {
             return ja(regelId)
         }
 

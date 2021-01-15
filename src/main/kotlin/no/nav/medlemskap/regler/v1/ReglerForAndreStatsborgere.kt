@@ -4,8 +4,9 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
-import no.nav.medlemskap.regler.common.RegelId.REGEL_15
+import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
+import no.nav.medlemskap.regler.v1.udi.GyldigArbeidstillatelseIKontrollperiodeRegel
 import no.nav.medlemskap.regler.v1.udi.GyldigOppholdstillatelseIKontrollperiodeRegel
 
 class ReglerForAndreStatsborgere(
@@ -17,11 +18,17 @@ class ReglerForAndreStatsborgere(
 
     override fun hentHovedflyt(): Regelflyt {
 
+        val harBrukerGyldigArbeidstillatelseIKontrollperiodeRegel = lagRegelflyt(
+            regel = hentRegel(REGEL_19_3),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE),
+            hvisNei = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE)
+        )
+
         val harBrukerGyldigOppholdstillatelseIKontrollperiodeRegel = lagRegelflyt(
-            regel = hentRegel(REGEL_15),
-            hvisJa = konklusjonUavklart(ytelse, RegelId.REGEL_ANDRE_BORGERE),
-            hvisNei = konklusjonUavklart(ytelse, RegelId.REGEL_ANDRE_BORGERE),
-            hvisUavklart = konklusjonUavklart(ytelse, RegelId.REGEL_ANDRE_BORGERE)
+            regel = hentRegel(REGEL_19_1),
+            hvisJa = harBrukerGyldigArbeidstillatelseIKontrollperiodeRegel,
+            hvisNei = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE),
+            hvisUavklart = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE)
         )
 
         return harBrukerGyldigOppholdstillatelseIKontrollperiodeRegel
@@ -41,7 +48,8 @@ class ReglerForAndreStatsborgere(
 
         private fun lagRegelMap(datagrunnlag: Datagrunnlag): Map<RegelId, Regel> {
             val regelListe = listOf(
-                GyldigOppholdstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag)
+                GyldigOppholdstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag),
+                GyldigArbeidstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()
