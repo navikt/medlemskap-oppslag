@@ -13,12 +13,10 @@ import no.nav.medlemskap.regler.personer.Personleser
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import java.time.Duration
 import kotlin.math.absoluteValue
 
-@Disabled
 class RegelMetricsTest {
 
     /*
@@ -43,6 +41,7 @@ class RegelMetricsTest {
 
         evaluer(personleser.brukerIkkeFolkeregistrertSomBosattINorge())
 
+        assertEquals(57, simpleRegistry.meters.size)
         assertTrue(simpleRegistry.meters.map { it.id.name }.contains("regel_calls_total"))
 
         val meters = simpleRegistry.meters.filter { it.id.name == "regel_calls_total" }

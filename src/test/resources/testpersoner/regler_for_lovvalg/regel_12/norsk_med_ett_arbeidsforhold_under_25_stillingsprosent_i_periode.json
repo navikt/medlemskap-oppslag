@@ -63,5 +63,6 @@
   "ytelse": "LOVME",
   "dataOmBarn": null,
   "dataOmEktefelle": null,
-  "overstyrteRegler": {}
-},
+  "overstyrteRegler": {},
+  "oppholdstillatelse": null
+}
