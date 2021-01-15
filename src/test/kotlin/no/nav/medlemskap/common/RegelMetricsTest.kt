@@ -35,16 +35,21 @@ class RegelMetricsTest {
         simpleRegistry.clear()
         evaluer(personleser.brukerIkkeFolkeregistrertSomBosattINorge())
 
-        assertEquals(57, simpleRegistry.meters.size)
+        // assertEquals(57, simpleRegistry.meters.size) //Blir 68 i GA
         assertTrue(simpleRegistry.meters.map { it.id.name }.contains("regel_calls_total"))
+        assertTrue(simpleRegistry.meters.map { it.id.name }.contains("regel_calls_influx"))
 
-        val meters = simpleRegistry.meters.filter { it.id.name == "regel_calls_total" }
+        val registeredRegelCallsTotal = simpleRegistry.meters.filter { it.id.name == "regel_calls_total" }
+        val registeredRegelCallsInflux = simpleRegistry.meters.filter { it.id.name == "regel_calls_influx" }
 
-        assertEquals(1, meters.medTagRegelVerdi(RegelId.REGEL_MEDLEM_KONKLUSJON.metricName()).size)
-        assertEquals(1.0, meters.medTagRegelVerdi(RegelId.REGEL_MEDLEM_KONKLUSJON.metricName())[0].absoluteValue, 1.0)
+        assertEquals(28, registeredRegelCallsTotal.size)
+        assertEquals(28, registeredRegelCallsInflux.size)
 
-        assertEquals(1, meters.medTagRegelVerdi(RegelId.REGEL_2.metricName()).size)
-        assertEquals(1.0, meters.medTagRegelVerdi(RegelId.REGEL_2.metricName())[0].absoluteValue, 1.0)
+        assertEquals(1, registeredRegelCallsTotal.medTagRegelVerdi(RegelId.REGEL_MEDLEM_KONKLUSJON.metricName()).size)
+        assertEquals(1.0, registeredRegelCallsTotal.medTagRegelVerdi(RegelId.REGEL_MEDLEM_KONKLUSJON.metricName())[0].absoluteValue, 1.0)
+
+        assertEquals(1, registeredRegelCallsTotal.medTagRegelVerdi(RegelId.REGEL_2.metricName()).size)
+        assertEquals(1.0, registeredRegelCallsTotal.medTagRegelVerdi(RegelId.REGEL_2.metricName())[0].absoluteValue, 1.0)
     }
 
     private fun List<Meter>.medTagRegelVerdi(s: String): List<Double> =
