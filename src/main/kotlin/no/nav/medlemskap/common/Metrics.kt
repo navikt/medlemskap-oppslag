@@ -61,11 +61,16 @@ private fun getenv(env: String, defaultValue: String): String {
     return if (System.getenv(env) != null) System.getenv(env) else defaultValue
 }
 
-fun regelCounter(regel: String, status: String, ytelse: String): Counter = Counter
-    .builder("regel_calls_total")
-    .tags("regel", regel, "status", status, "ytelse", ytelse)
-    .description("counter for ja, nei, uavklart for regel calls")
-    .register(Metrics.globalRegistry)
+fun regelCounter(regel: String, status: String, ytelse: String): Counter {
+    println("Global registry: " + Metrics.globalRegistry)
+    println("Registered meters" + Metrics.globalRegistry.meters)
+    println("Registered registries" + Metrics.globalRegistry.registries)
+    return Counter
+        .builder("regel_calls_total")
+        .tags("regel", regel, "status", status, "ytelse", ytelse)
+        .description("counter for ja, nei, uavklart for regel calls")
+        .register(Metrics.globalRegistry)
+}
 
 fun regelInfluxCounter(regel: String, status: String, ytelse: String): Counter = Counter
     .builder("regel_calls_influx")
