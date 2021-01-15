@@ -8,29 +8,29 @@ import java.time.LocalDate
 
 class MedlDomenespraakParser : BasisDomeneParser() {
 
-    fun mapDekning(dataTable: DataTable?): String {
+    fun mapDekning(dataTable: DataTable): String {
         return mapDataTable(dataTable, DekningMapper())[0]
     }
-    fun mapFraOgMed(dataTable: DataTable?): LocalDate {
+    fun mapFraOgMed(dataTable: DataTable): LocalDate {
         return mapDataTable(dataTable, FraOgMedMapper())[0]
     }
-    fun mapTilOgMed(dataTable: DataTable?): LocalDate {
+    fun mapTilOgMed(dataTable: DataTable): LocalDate {
         return mapDataTable(dataTable, TilOgMedMapper())[0]
     }
 
-    fun mapMedlem(dataTable: DataTable?): Boolean {
+    fun mapMedlem(dataTable: DataTable): Boolean {
         return mapDataTable(dataTable, MedlemMapper())[0]
     }
 
-    fun mapLovvalg(dataTable: DataTable?): String {
+    fun mapLovvalg(dataTable: DataTable): String {
         return mapDataTable(dataTable, LovvalgMapper())[0]
     }
 
-    fun mapLovvalgsland(dataTable: DataTable?): String {
+    fun mapLovvalgsland(dataTable: DataTable): String {
         return mapDataTable(dataTable, LovvalgslandMapper())[0]
     }
 
-    fun mapStatus(dataTable: DataTable?): String {
+    fun mapStatus(dataTable: DataTable): String {
         return mapDataTable(dataTable, StatusMapper())[0]
     }
 }

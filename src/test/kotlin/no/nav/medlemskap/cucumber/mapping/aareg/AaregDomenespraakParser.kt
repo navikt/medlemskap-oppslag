@@ -1,7 +1,10 @@
 package no.nav.medlemskap.cucumber.mapping.pdl.aareg
 
 import io.cucumber.datatable.DataTable
-import no.nav.medlemskap.clients.aareg.*
+import no.nav.medlemskap.clients.aareg.AaRegBruksperiode
+import no.nav.medlemskap.clients.aareg.AaRegGyldighetsperiode
+import no.nav.medlemskap.clients.aareg.AaRegOpplysningspliktigArbeidsgiverType
+import no.nav.medlemskap.clients.aareg.AaRegPeriode
 import no.nav.medlemskap.clients.ereg.Ansatte
 import no.nav.medlemskap.clients.ereg.Status
 import no.nav.medlemskap.cucumber.BasisDomeneParser
@@ -11,83 +14,83 @@ import no.nav.medlemskap.regler.common.Datohjelper
 import java.time.YearMonth
 
 class AaregDomenespraakParser : BasisDomeneParser() {
-    fun mapPeriode(dataTable: DataTable?): AaRegPeriode {
+    fun mapPeriode(dataTable: DataTable): AaRegPeriode {
         return mapDataTable(dataTable, PeriodeMapper())[0]
     }
 
-    fun mapRapporteringsperiode(dataTable: DataTable?): YearMonth {
+    fun mapRapporteringsperiode(dataTable: DataTable): YearMonth {
         return mapDataTable(dataTable, RapporteringsperiodeMapper())[0]
     }
 
-    fun mapArbeidsgiverType(dataTable: DataTable?): AaRegOpplysningspliktigArbeidsgiverType {
+    fun mapArbeidsgiverType(dataTable: DataTable): AaRegOpplysningspliktigArbeidsgiverType {
         return mapDataTable(dataTable, ArbeidsgiverTypeMapper())[0]
     }
 
-    fun mapArbeidsforholdsType(dataTable: DataTable?): String {
+    fun mapArbeidsforholdsType(dataTable: DataTable): String {
         return mapDataTable(dataTable, ArbeidsforholdTypeMappe())[0]
     }
 
-    fun mapLandkode(dataTable: DataTable?): String {
+    fun mapLandkode(dataTable: DataTable): String {
         return mapDataTable(dataTable, LandkodeMapper())[0]
     }
 
-    fun mapEnhetstype(dataTable: DataTable?): String {
+    fun mapEnhetstype(dataTable: DataTable): String {
         return mapDataTable(dataTable, EnhetstypeMapper())[0]
     }
 
-    fun mapOrganisasjonsnummer(dataTable: DataTable?): String {
+    fun mapOrganisasjonsnummer(dataTable: DataTable): String {
         return mapDataTable(dataTable, OrganisasjonsnummerMapper())[0]
     }
 
-    fun mapAntallAnsatte(dataTable: DataTable?): List<Ansatte> {
+    fun mapAntallAnsatte(dataTable: DataTable): List<Ansatte> {
         return mapDataTable(dataTable, AntallAnsattMapper())
     }
 
-    fun mapStatuser(dataTable: DataTable?): List<Status> {
+    fun mapStatuser(dataTable: DataTable): List<Status> {
         return mapDataTable(dataTable, StatusMapper())
     }
 
-    fun mapBruksPeriode(dataTable: DataTable?): AaRegBruksperiode {
+    fun mapBruksPeriode(dataTable: DataTable): AaRegBruksperiode {
         return mapDataTable(dataTable, BruksperiodeMapper())[0]
     }
 
-    fun mapGyldighetsPeriode(dataTable: DataTable?): AaRegGyldighetsperiode {
+    fun mapGyldighetsPeriode(dataTable: DataTable): AaRegGyldighetsperiode {
         return mapDataTable(dataTable, GyldighetsperiodeMapper())[0]
     }
 
-    fun mapYrkeskode(dataTable: DataTable?): String {
+    fun mapYrkeskode(dataTable: DataTable): String {
         return mapDataTable(dataTable, YrkeskodeMapper())[0]
     }
 
-    fun mapSkipsregister(dataTable: DataTable?): String {
+    fun mapSkipsregister(dataTable: DataTable): String {
         return mapDataTable(dataTable, SkipsregisterMapper())[0]
     }
 
-    fun mapFartsomraade(dataTable: DataTable?): String {
+    fun mapFartsomraade(dataTable: DataTable): String {
         return mapDataTable(dataTable, FartsomraadeMapper())[0]
     }
 
-    fun mapStillingsprosent(dataTable: DataTable?): Double {
+    fun mapStillingsprosent(dataTable: DataTable): Double {
         return mapDataTable(dataTable, StillingsprosentMapper())[0]
     }
 
-    fun mapBeregnetAntallTimerPerUke(dataTable: DataTable?): Double {
+    fun mapBeregnetAntallTimerPerUke(dataTable: DataTable): Double {
         return mapDataTable(dataTable, BeregnetAntallTimerMapperPerUke())[0]
     }
 
-    fun mapPermitteringsId(dataTable: DataTable?): String {
+    fun mapPermitteringsId(dataTable: DataTable): String {
         return mapDataTable(dataTable, PermitteringsIdMapper())[0]
     }
 
-    fun mapProsent(dataTable: DataTable?): Double {
+    fun mapProsent(dataTable: DataTable): Double {
         return mapDataTable(dataTable, ProsentMapper())[0]
     }
 
-    fun mapType(dataTable: DataTable?): String {
+    fun mapType(dataTable: DataTable): String {
         return mapDataTable(dataTable, PermitteringsTypeMapper())[0]
     }
 
-    fun mapVarslingskode(dataTable: DataTable?): String {
+    fun mapVarslingskode(dataTable: DataTable): String {
         return mapDataTable(dataTable, VarslingskodeMapper())[0]
     }
 

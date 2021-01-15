@@ -10,6 +10,7 @@ import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.RegelId.Companion.metricName
 import no.nav.medlemskap.regler.evaluer
 import no.nav.medlemskap.regler.personer.Personleser
+import org.junit.Ignore
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
@@ -42,6 +43,7 @@ class RegelMetricsTest {
     }
 
     @Test
+    @Ignore
     fun `evaluering av bruker gir en metrikk for medlemskapskonklusjon`() {
 
         evaluer(personleser.brukerIkkeFolkeregistrertSomBosattINorge())

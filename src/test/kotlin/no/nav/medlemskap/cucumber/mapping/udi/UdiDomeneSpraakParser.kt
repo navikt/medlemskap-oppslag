@@ -13,27 +13,27 @@ import javax.xml.datatype.DatatypeFactory
 import javax.xml.datatype.XMLGregorianCalendar
 
 class UdiDomeneSpraakParser {
-    fun mapHarArbeidsadgang(dataTable: DataTable?): JaNeiUavklart {
+    fun mapHarArbeidsadgang(dataTable: DataTable): JaNeiUavklart {
         return mapDataTable(dataTable, HarArbeidsadgangMapper())[0]
     }
 
-    fun mapArbeidsomfang(dataTable: DataTable?): ArbeidOmfangKategori {
+    fun mapArbeidsomfang(dataTable: DataTable): ArbeidOmfangKategori {
         return mapDataTable(dataTable, ArbeidsomfangTypeMapper())[0]
     }
 
-    fun mapforesporselfodselsnummer(dataTable: DataTable?): String {
+    fun mapforesporselfodselsnummer(dataTable: DataTable): String {
         return mapDataTable(dataTable, ForesporselfodselsnummerMapper())[0]
     }
 
-    fun mapArbeidsadgangType(dataTable: DataTable?): ArbeidsadgangType {
+    fun mapArbeidsadgangType(dataTable: DataTable): ArbeidsadgangType {
         return mapDataTable(dataTable, ArbeidsadgangTypeMapper())[0]
     }
 
-    fun mapUttrekkstidspunkt(dataTable: DataTable?): XMLGregorianCalendar {
+    fun mapUttrekkstidspunkt(dataTable: DataTable): XMLGregorianCalendar {
         return mapDataTable(dataTable, UttrekkstidspunktMapper())[0]
     }
 
-    fun mapPeriode(dataTable: DataTable?): Periode {
+    fun mapPeriode(dataTable: DataTable): Periode {
         return mapDataTable(dataTable, PeriodeMapper())[0]
     }
 

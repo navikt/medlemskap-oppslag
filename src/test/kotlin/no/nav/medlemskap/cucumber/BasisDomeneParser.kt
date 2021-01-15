@@ -131,11 +131,7 @@ abstract class BasisDomeneParser {
             return parseInt(domenebegrep, rad)
         }
 
-        fun <T> mapDataTable(dataTable: DataTable?, radMapper: RadMapper<T>): List<T> {
-            if (dataTable == null) {
-                return emptyList()
-            }
-
+        fun <T> mapDataTable(dataTable: DataTable, radMapper: RadMapper<T>): List<T> {
             return dataTable.asMaps().map { radMapper.mapRad(it) }
         }
     }
