@@ -1,5 +1,6 @@
 package no.nav.medlemskap.regler.common
 
+import io.micrometer.core.instrument.Metrics
 import no.nav.medlemskap.common.regelCounter
 import no.nav.medlemskap.common.regelInfluxCounter
 import no.nav.medlemskap.domene.Ytelse
@@ -15,6 +16,7 @@ data class Regel(
         println("regel counter: " + this@Regel.regelId.metricName())
         regelCounter(this@Regel.regelId.metricName(), this.svar.name, ytelse.name()).increment()
         regelInfluxCounter(this@Regel.regelId.identifikator, this.svar.name, ytelse.name()).increment()
+        println("har regel_calls_total: " + Metrics.globalRegistry.registries.first().meters.map { it.id.name }.contains("regel_calls_total"))
     }.copy(
         regelId = regelId,
         avklaring = regelId.avklaring
