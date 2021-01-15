@@ -10,7 +10,7 @@ import no.nav.medlemskap.regler.v1.lovvalg.*
 import no.nav.medlemskap.regler.v1.medlemskap.*
 import no.nav.medlemskap.regler.v1.overstyring.OverstyringRegel
 import no.nav.medlemskap.regler.v1.registrerteOpplysninger.HarBrukerRegistrerteOpplysningerRegel
-import no.nav.medlemskap.regler.v1.udi.DekkerOppholdstillatelseArbeidsperiodeRegel
+import no.nav.medlemskap.regler.v1.udi.GyldigArbeidstillatelseIKontrollperiodeRegel
 import no.nav.medlemskap.regler.v1.udi.GyldigOppholdstillatelseIKontrollperiodeRegel
 import no.nav.medlemskap.regler.v1.validering.InputDatoValideringRegel
 
@@ -70,8 +70,8 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_12 -> HarBrukerJobbet25ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_13 -> ErBrukerDoedRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_14 -> ErArbeidsforholdetOffentligSektor.fraDatagrunnlag(datagrunnlag).regel
-            REGEL_15 -> GyldigOppholdstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag).regel
-            REGEL_16 -> DekkerOppholdstillatelseArbeidsperiodeRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_19_1 -> GyldigOppholdstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_19_3 -> GyldigArbeidstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag).regel
             else -> throw java.lang.RuntimeException("Ukjent regel")
         }
     }
