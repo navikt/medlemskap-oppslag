@@ -48,7 +48,7 @@ class RegelMetricsTest {
         println("registry id name:" + simpleRegistry.meters.map { it.id.name })
         println("registry id tags:" + simpleRegistry.meters.map { it.id.tags })
         println("registry size: " + simpleRegistry.meters.size)
-        assertTrue(simpleRegistry.meters.map { it.id.name }.contains("regel_calls_total"))
+        assertTrue(Metrics.globalRegistry.registries.first().meters.map { it.id.name }.contains("regel_calls_total"))
 
         val meters = simpleRegistry.meters.filter { it.id.name == "regel_calls_total" }
 
