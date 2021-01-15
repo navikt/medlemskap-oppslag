@@ -10,10 +10,8 @@ import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.RegelId.Companion.metricName
 import no.nav.medlemskap.regler.evaluer
 import no.nav.medlemskap.regler.personer.Personleser
-import org.junit.Ignore
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
@@ -31,18 +29,12 @@ class RegelMetricsTest {
         return SimpleConfig.DEFAULT.step()
     }
 
-    private val personleser = Personleser()
-    private val simpleRegistry = SimpleMeterRegistry(SimpleConfig.DEFAULT, MockClock())
-
-    @BeforeEach
-    fun initCollectorRegistry() {
+    @Test
+    fun `evaluering av bruker gir en metrikk for medlemskapskonklusjon`() {
+        val personleser = Personleser()
+        val simpleRegistry = SimpleMeterRegistry(SimpleConfig.DEFAULT, MockClock())
         Metrics.addRegistry(simpleRegistry)
         simpleRegistry.clear()
-    }
-
-    @Test
-    @Ignore
-    fun `evaluering av bruker gir en metrikk for medlemskapskonklusjon`() {
 
         evaluer(personleser.brukerIkkeFolkeregistrertSomBosattINorge())
 
