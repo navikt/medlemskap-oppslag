@@ -11,9 +11,6 @@ data class Oppholdstillatelse(
     val uavklartFlyktningstatus: Boolean?,
     val harFlyktningstatus: Boolean?
 ) {
-    fun harGyldigOppholdOgArbeidstillatelse(): Boolean {
-        return gjeldendeOppholdsstatus != null && gjeldendeOppholdsstatus.harTillatelse
-    }
 
     fun harGyldigArbeidstillatelseForPeriode(periode: Periode): Boolean {
         return arbeidsadgang != null && arbeidsadgang.harArbeidsadgang &&
