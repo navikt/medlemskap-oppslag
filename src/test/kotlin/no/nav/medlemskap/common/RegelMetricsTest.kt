@@ -12,6 +12,7 @@ import no.nav.medlemskap.regler.evaluer
 import no.nav.medlemskap.regler.personer.Personleser
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestInstance.Lifecycle.PER_CLASS
@@ -29,15 +30,21 @@ class RegelMetricsTest {
         return SimpleConfig.DEFAULT.step()
     }
 
-    @Test
-    fun `evaluering av bruker gir en metrikk for medlemskapskonklusjon`() {
-        val personleser = Personleser()
-        val simpleRegistry = SimpleMeterRegistry(SimpleConfig.DEFAULT, MockClock())
+    private val personleser = Personleser()
+    private val simpleRegistry = SimpleMeterRegistry(SimpleConfig.DEFAULT, MockClock())
+
+    @BeforeEach
+    fun initCollectorRegistry() {
         Metrics.addRegistry(simpleRegistry)
         simpleRegistry.clear()
+        gjørNoeMagiJegIkkeForstår()
+    }
 
+    @Test
+    fun `evaluering av bruker gir en metrikk for medlemskapskonklusjon`() {
+        gjørNoeMagiJegIkkeForstår()
         evaluer(personleser.brukerIkkeFolkeregistrertSomBosattINorge())
-
+        gjørNoeMagiJegIkkeForstår()
         println("registry id name:" + simpleRegistry.meters.map { it.id.name })
         println("registry id tags:" + simpleRegistry.meters.map { it.id.tags })
         println("registry size: " + simpleRegistry.meters.size)
@@ -50,6 +57,12 @@ class RegelMetricsTest {
 
         assertEquals(1, meters.medTagRegelVerdi(RegelId.REGEL_2.metricName()).size)
         assertEquals(1.0, meters.medTagRegelVerdi(RegelId.REGEL_2.metricName())[0].absoluteValue, 1.0)
+    }
+
+    private fun gjørNoeMagiJegIkkeForstår() {
+        MockClock.clock(simpleRegistry).add(step())
+        simpleRegistry.forEachMeter { it.measure() }
+        MockClock.clock(simpleRegistry).add(step())
     }
 
     private fun List<Meter>.medTagRegelVerdi(s: String): List<Double> =

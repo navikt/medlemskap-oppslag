@@ -12,6 +12,7 @@ data class Regel(
     val operasjon: () -> Resultat
 ) {
     fun utfør(): Resultat = operasjon.invoke().apply {
+        println("regel counter: " + this@Regel.regelId.metricName())
         regelCounter(this@Regel.regelId.metricName(), this.svar.name, ytelse.name()).increment()
         regelInfluxCounter(this@Regel.regelId.identifikator, this.svar.name, ytelse.name()).increment()
     }.copy(
