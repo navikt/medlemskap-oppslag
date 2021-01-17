@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 
 object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
 
-    fun mapHarArbeidstilgang(dataTable: DataTable?): Boolean {
+    fun mapHarArbeidstilgang(dataTable: DataTable): Boolean {
         return mapDataTable(dataTable, HarArbeidstilgangMapper())[0]
     }
 

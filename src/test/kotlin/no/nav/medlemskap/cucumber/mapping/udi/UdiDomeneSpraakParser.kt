@@ -30,16 +30,15 @@ class UdiDomeneSpraakParser {
         return mapDataTable(dataTable, UttrekkstidspunktMapper())[0]
     }
 
-    fun mapPeriode(dataTable: DataTable): Periode {
-    fun mapEffektueringsdato(dataTable: DataTable?): XMLGregorianCalendar? {
+    fun mapEffektueringsdato(dataTable: DataTable): XMLGregorianCalendar? {
         return mapDataTable(dataTable, EffektueringsdatoMapper())[0]
     }
 
-    fun mapOppholdstillatelse(dataTable: DataTable?): Oppholdstillatelse? {
+    fun mapOppholdstillatelse(dataTable: DataTable): Oppholdstillatelse? {
         return mapDataTable(dataTable, OppholdstillatelseMapper())[0]
     }
 
-    fun mapPeriode(dataTable: DataTable?): Periode {
+    fun mapPeriode(dataTable: DataTable): Periode {
         return mapDataTable(dataTable, PeriodeMapper())[0]
     }
 

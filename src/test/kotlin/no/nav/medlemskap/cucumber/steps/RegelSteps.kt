@@ -198,15 +198,15 @@ class RegelSteps : No {
             overstyrteRegler = domenespråkParser.mapOverstyrteRegler(dataTable)
         }
 
-        Gitt("følgende oppholdstillatelse") { dataTable: DataTable? ->
+        Gitt("følgende oppholdstillatelse") { dataTable: DataTable ->
             oppholdstillatelseBuilder.fromOppholdstillatelse(OppholdstillatelseDomeneSpraakParser.mapOppholdstillatelse(dataTable))
         }
 
-        Gitt("følgende arbeidsadgang") { dataTable: DataTable? ->
+        Gitt("følgende arbeidsadgang") { dataTable: DataTable ->
             oppholdstillatelseBuilder.arbeidsadgang = OppholdstillatelseDomeneSpraakParser.mapArbeidstilgang(dataTable)
         }
 
-        Når("medlemskap beregnes med følgende parametre") { dataTable: DataTable? ->
+        Når("medlemskap beregnes med følgende parametre") { dataTable: DataTable ->
             val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
 
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
