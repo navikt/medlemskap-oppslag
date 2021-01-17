@@ -78,27 +78,27 @@ class UdiMapperSteps : No {
             oppholdstillatelse?.arbeidsadgang?.harArbeidsadgang.shouldBe(arbeidsadgangForventet)
         }
 
-        Så<DataTable>("foresporselsfodselsnummer i mappet Oppholdsstatus") { dataTable: DataTable? ->
+        Så<DataTable>("foresporselsfodselsnummer i mappet Oppholdsstatus") { dataTable: DataTable ->
             val foresporselsfodselsnummerForventet = OppholdstillatelseDomeneSpraakParser.mapforesporselfodselsnummer(dataTable)
             oppholdstillatelse?.foresporselsfodselsnummer.shouldBe(foresporselsfodselsnummerForventet)
         }
 
-        Så<DataTable>("uttrekkstidspunkt i mappet Oppholdsstatus") { dataTable: DataTable? ->
+        Så<DataTable>("uttrekkstidspunkt i mappet Oppholdsstatus") { dataTable: DataTable ->
             val uttrekkstidspunktDatoForventet = OppholdstillatelseDomeneSpraakParser.mapUttrekkstidspunkt(dataTable)
             oppholdstillatelse?.uttrekkstidspunkt.shouldBe(uttrekkstidspunktDatoForventet)
         }
 
-        Så<DataTable>("skal mappede ArbeidomfangKategori i medlemskap være") { dataTable: DataTable? ->
+        Så<DataTable>("skal mappede ArbeidomfangKategori i medlemskap være") { dataTable: DataTable ->
             val arbeidomfangKategoriForventet = OppholdstillatelseDomeneSpraakParser.mapArbeidsomfangKategori(dataTable)
             oppholdstillatelse?.arbeidsadgang?.arbeidsomfang.shouldBe(arbeidomfangKategoriForventet)
         }
 
-        Så<DataTable>("skal mappede arbeidsadgangtype i medlemskap være") { dataTable: DataTable? ->
+        Så<DataTable>("skal mappede arbeidsadgangtype i medlemskap være") { dataTable: DataTable ->
             val arbeidsadgangTypeForventet = OppholdstillatelseDomeneSpraakParser.mapArbeidsadgangType(dataTable)
             oppholdstillatelse?.arbeidsadgang?.arbeidsadgangType.shouldBe(arbeidsadgangTypeForventet)
         }
 
-        Så<DataTable>("mappet periode i medlemskap være") { dataTable: DataTable? ->
+        Så<DataTable>("mappet periode i medlemskap være") { dataTable: DataTable ->
             val periodeForventet = OppholdstillatelseDomeneSpraakParser.mapPeriode(dataTable)
             oppholdstillatelse?.arbeidsadgang?.periode.shouldBe(periodeForventet)
         }

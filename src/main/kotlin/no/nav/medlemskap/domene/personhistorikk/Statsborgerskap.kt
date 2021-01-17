@@ -21,19 +21,25 @@ data class Statsborgerskap(
 
     companion object {
 
-        infix fun List<Statsborgerskap>.gyldigeStatsborgerskap(
-            kontrollPeriodeForPersonhistorikk: Kontrollperiode
-        ): List<String> {
-            val statsborgerskapFørst = this
+        infix fun List<Statsborgerskap>.statsborgerskapFørst(kontrollPeriodeForPersonhistorikk: Kontrollperiode): Set<String> {
+            return this
                 .filter { it.overlapper(kontrollPeriodeForPersonhistorikk.fom) }
                 .map { it.landkode }
                 .toSet()
-            val statsborgerskapSist = this
+        }
+
+        infix fun List<Statsborgerskap>.statsborgerskapSist(kontrollPeriodeForPersonhistorikk: Kontrollperiode): Set<String> {
+            return this
                 .filter { it.overlapper(kontrollPeriodeForPersonhistorikk.tom) }
                 .map { it.landkode }
                 .toSet()
+        }
 
-            return statsborgerskapFørst.filter { statsborgerskapSist.contains(it) }
+        infix fun List<Statsborgerskap>.gyldigeStatsborgerskap(
+            kontrollPeriodeForPersonhistorikk: Kontrollperiode
+        ): List<String> {
+            return statsborgerskapFørst(kontrollPeriodeForPersonhistorikk)
+                .filter { statsborgerskapSist(kontrollPeriodeForPersonhistorikk).contains(it) }
         }
 
         infix fun List<Statsborgerskap>.erSveitsiskBorger(
@@ -46,6 +52,13 @@ data class Statsborgerskap(
             kontrollPeriodeForPersonhistorikk: Kontrollperiode
         ): Boolean {
             return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Eøsland.erBritisk(it) }
+        }
+
+        infix fun List<Statsborgerskap>.erBritiskEllerSveitsiskBorger(
+            kontrollPeriodeForPersonhistorikk: Kontrollperiode
+        ): Boolean {
+            return statsborgerskapFørst(kontrollPeriodeForPersonhistorikk).any { Eøsland.erBritisk(it) || Eøsland.erSveitsisk(it) } &&
+                statsborgerskapSist(kontrollPeriodeForPersonhistorikk).any { Eøsland.erBritisk(it) || Eøsland.erSveitsisk(it) }
         }
 
         infix fun List<Statsborgerskap>.erNorskBorger(

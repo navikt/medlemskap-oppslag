@@ -2,7 +2,6 @@ package no.nav.medlemskap.cucumber.SpraakParserDomene
 
 import io.cucumber.datatable.DataTable
 import no.nav.medlemskap.cucumber.*
-import no.nav.medlemskap.cucumber.Domenebegrep
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
@@ -14,35 +13,35 @@ import java.time.LocalDate
 
 object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
 
-    fun mapStatsborgerskap(dataTable: DataTable?): List<Statsborgerskap> {
+    fun mapStatsborgerskap(dataTable: DataTable): List<Statsborgerskap> {
         return mapDataTable(dataTable, StatsborgerskapMapper())
     }
 
-    fun mapAdresser(dataTable: DataTable?): List<Adresse> {
+    fun mapAdresser(dataTable: DataTable): List<Adresse> {
         return mapDataTable(dataTable, AdresseMapper())
     }
 
-    fun mapSivilstander(dataTable: DataTable?): List<Sivilstand> {
+    fun mapSivilstander(dataTable: DataTable): List<Sivilstand> {
         return mapDataTable(dataTable, SivilstandMapper())
     }
 
-    fun mapDoedsfall(dataTable: DataTable?): List<LocalDate> {
+    fun mapDoedsfall(dataTable: DataTable): List<LocalDate> {
         return mapDataTable(dataTable, DoedsfallMapper())
     }
 
-    fun mapFamilierelasjoner(dataTable: DataTable?): List<Familierelasjon> {
+    fun mapFamilierelasjoner(dataTable: DataTable): List<Familierelasjon> {
         return mapDataTable(dataTable, FamilieRelasjonMapper())
     }
 
-    fun mapPersonhistorikkBarn(dataTable: DataTable?): List<DataOmBarn> {
+    fun mapPersonhistorikkBarn(dataTable: DataTable): List<DataOmBarn> {
         return mapDataTable(dataTable, PersonhistorikkBarnMapper())
     }
 
-    fun mapPersonhistorikkEktefelle(dataTable: DataTable?): List<PersonhistorikkEktefelle> {
+    fun mapPersonhistorikkEktefelle(dataTable: DataTable): List<PersonhistorikkEktefelle> {
         return mapDataTable(dataTable, PersonhistorikkEktefelleMapper())
     }
 
-    fun mapBarnTilEktefelle(dataTable: DataTable?): List<String> {
+    fun mapBarnTilEktefelle(dataTable: DataTable): List<String> {
         return mapDataTable(dataTable, BarnTilEktefelleMapper())
     }
 

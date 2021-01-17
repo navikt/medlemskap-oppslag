@@ -20,6 +20,7 @@ import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.common.uavklartPåRegel
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.Fødselsnummer.Companion.gyldigFnr
 import no.nav.medlemskap.domene.Request
 import no.nav.medlemskap.domene.Response
 import no.nav.medlemskap.domene.Ytelse

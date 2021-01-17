@@ -7,27 +7,27 @@ import no.nav.medlemskap.cucumber.Domenenøkkel
 import no.nav.medlemskap.cucumber.RadMapper
 
 class SafDomeneSpraakParser : BasisDomeneParser() {
-    fun mapDokumentInfoId(dataTable: DataTable?): String {
+    fun mapDokumentInfoId(dataTable: DataTable): String {
         return mapDataTable(dataTable, DokumentInfoIdMapper())[0]
     }
 
-    fun mapJournalStatus(dataTable: DataTable?): Dokumenter.Journalstatus {
+    fun mapJournalStatus(dataTable: DataTable): Dokumenter.Journalstatus {
         return mapDataTable(dataTable, JournalStatusMapper())[0]
     }
 
-    fun mapDokumentTittel(dataTable: DataTable?): String {
+    fun mapDokumentTittel(dataTable: DataTable): String {
         return mapDataTable(dataTable, DokumentTittelMapper())[0]
     }
 
-    fun mapJournalPostId(dataTable: DataTable?): String {
+    fun mapJournalPostId(dataTable: DataTable): String {
         return mapDataTable(dataTable, JournalPostIdMapper())[0]
     }
 
-    fun mapJournalTema(dataTable: DataTable?): Dokumenter.Tema {
+    fun mapJournalTema(dataTable: DataTable): Dokumenter.Tema {
         return mapDataTable(dataTable, JournalTemaMappeer())[0]
     }
 
-    fun mapJournalPostType(dataTable: DataTable?): Dokumenter.Journalposttype {
+    fun mapJournalPostType(dataTable: DataTable): Dokumenter.Journalposttype {
         return mapDataTable(dataTable, JournalPostTypeMapper())[0]
     }
 

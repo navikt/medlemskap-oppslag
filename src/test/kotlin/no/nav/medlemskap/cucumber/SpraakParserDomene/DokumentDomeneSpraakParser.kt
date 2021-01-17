@@ -1,35 +1,37 @@
 package no.nav.medlemskap.cucumber.SpraakParserDomene
 
 import io.cucumber.datatable.DataTable
-import no.nav.medlemskap.cucumber.*
+import no.nav.medlemskap.cucumber.BasisDomeneParser
+import no.nav.medlemskap.cucumber.Domenenøkkel
+import no.nav.medlemskap.cucumber.RadMapper
 import no.nav.medlemskap.domene.Journalpost
 
 object DokumentDomeneSpraakParser : BasisDomeneParser() {
-    fun mapJournalpostId(dataTable: DataTable?): String {
+    fun mapJournalpostId(dataTable: DataTable): String {
         return mapDataTable(dataTable, JournalPostIdMapper())[0]
     }
 
-    fun mapJournalstatus(dataTable: DataTable?): String {
+    fun mapJournalstatus(dataTable: DataTable): String {
         return mapDataTable(dataTable, JournalStatusMapper())[0]
     }
 
-    fun mapJournalposter(dataTable: DataTable?): List<Journalpost> {
+    fun mapJournalposter(dataTable: DataTable): List<Journalpost> {
         return mapDataTable(dataTable, JournalpostMapper())
     }
 
-    fun mapDokumentInfoId(dataTable: DataTable?): String {
+    fun mapDokumentInfoId(dataTable: DataTable): String {
         return mapDataTable(dataTable, DokumentInfoIdMapper())[0]
     }
 
-    fun mapTittel(dataTable: DataTable?): String {
+    fun mapTittel(dataTable: DataTable): String {
         return mapDataTable(dataTable, TittelMapper())[0]
     }
 
-    fun mapTema(dataTable: DataTable?): String {
+    fun mapTema(dataTable: DataTable): String {
         return mapDataTable(dataTable, TemaMapper())[0]
     }
 
-    fun mapJournalposttype(dataTable: DataTable?): String {
+    fun mapJournalposttype(dataTable: DataTable): String {
         return mapDataTable(dataTable, JournalpostTypeMapper())[0]
     }
 

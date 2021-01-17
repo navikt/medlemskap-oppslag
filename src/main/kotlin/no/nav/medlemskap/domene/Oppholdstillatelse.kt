@@ -12,42 +12,23 @@ data class Oppholdstillatelse(
     val uavklartFlyktningstatus: Boolean?,
     val harFlyktningstatus: Boolean?
 ) {
-    fun harGyldigOppholdOgArbeidstillatelse(): Boolean {
-        if (gjeldendeOppholdsstatus != null) {
-            return gjeldendeOppholdsstatus!!.oppholdstillatelsePaSammeVilkar != null && gjeldendeOppholdsstatus!!.oppholdstillatelsePaSammeVilkar?.harTillatelse == true &&
-                arbeidsadgang != null && arbeidsadgang.harArbeidsadgang == true &&
-                arbeidsadgang.arbeidsomfang != null && arbeidsadgang.arbeidsomfang == ArbeidomfangKategori.KUN_ARBEID_HELTID &&
-                arbeidsadgang.arbeidsadgangType != null && arbeidsadgang.arbeidsadgangType == ArbeidsadgangType.GENERELL
-        }
-        return false
+
+    fun harGyldigArbeidstillatelseForPeriode(periode: Periode): Boolean {
+        return arbeidsadgang != null && arbeidsadgang.harArbeidsadgang &&
+            arbeidsadgang.arbeidsomfang != null && arbeidsadgang.arbeidsomfang == ArbeidomfangKategori.KUN_ARBEID_HELTID &&
+            arbeidsadgang.arbeidsadgangType != null && arbeidsadgang.arbeidsadgangType == ArbeidsadgangType.GENERELL &&
+            arbeidsadgang.periode.encloses(periode)
     }
 
-    fun harGyldigOppholdOgArbeidstillatelseForPeriode(
-        inputPeriode: InputPeriode,
-        førsteDagForYtelse: LocalDate?
-    ): Boolean {
-        if (gjeldendeOppholdsstatus == null) {
-            return false
-        }
-        return harGyldigOppholdOgArbeidstillatelse() &&
-            gjeldendeOppholdsstatus.oppholdstillatelsePaSammeVilkar?.periode?.encloses(
-            Kontrollperiode.kontrollPeriodeForOppholdstillatelse(
-                inputPeriode,
-                førsteDagForYtelse
-            ).periode
-        ) ?: false &&
-            arbeidsadgang!!.periode?.encloses(
-            Kontrollperiode.kontrollPeriodeForOppholdstillatelse(
-                inputPeriode,
-                førsteDagForYtelse
-            ).periode
-        ) ?: false
+    fun harGyldigOppholdstillatelseForPeriode(periode: Periode): Boolean {
+        return gjeldendeOppholdsstatus != null && gjeldendeOppholdsstatus.oppholdstillatelsePaSammeVilkar.harTillatelse &&
+            gjeldendeOppholdsstatus.oppholdstillatelsePaSammeVilkar.periode.encloses(periode)
     }
 }
 
 data class Arbeidsadgang(
-    val periode: Periode?,
-    val harArbeidsadgang: Boolean?,
+    val periode: Periode,
+    val harArbeidsadgang: Boolean,
     val arbeidsadgangType: ArbeidsadgangType?,
     val arbeidsomfang: ArbeidomfangKategori?
 )

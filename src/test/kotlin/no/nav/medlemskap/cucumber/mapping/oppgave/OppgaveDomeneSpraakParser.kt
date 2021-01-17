@@ -10,19 +10,19 @@ import java.time.LocalDate
 
 class OppgaveDomeneSpraakParser : BasisDomeneParser() {
 
-    fun mapAktivDato(dataTable: DataTable?): LocalDate {
+    fun mapAktivDato(dataTable: DataTable): LocalDate {
         return mapDataTable(dataTable, AktivDatoMapper())[0]
     }
 
-    fun mapTema(dataTable: DataTable?): String {
+    fun mapTema(dataTable: DataTable): String {
         return mapDataTable(dataTable, TemaMappeer())[0]
     }
 
-    fun mapStatus(dataTable: DataTable?): OppgStatus {
+    fun mapStatus(dataTable: DataTable): OppgStatus {
         return mapDataTable(dataTable, StatusMapper())[0]
     }
 
-    fun mapPrioritet(dataTable: DataTable?): OppgPrioritet {
+    fun mapPrioritet(dataTable: DataTable): OppgPrioritet {
         return mapDataTable(dataTable, PrioritetMapper())[0]
     }
 

@@ -9,35 +9,35 @@ import java.time.LocalDate
 
 object MedlemskapDomeneSpraakParser : BasisDomeneParser() {
 
-    fun mapDekning(dataTable: DataTable?): String {
+    fun mapDekning(dataTable: DataTable): String {
         return mapDataTable(dataTable, DekningMapper())[0]
     }
 
-    fun mapFraOgMed(dataTable: DataTable?): LocalDate {
+    fun mapFraOgMed(dataTable: DataTable): LocalDate {
         return mapDataTable(dataTable, FraOgMedMapper())[0]
     }
 
-    fun mapTilOgMed(dataTable: DataTable?): LocalDate {
+    fun mapTilOgMed(dataTable: DataTable): LocalDate {
         return mapDataTable(dataTable, TilOgMedMapper())[0]
     }
 
-    fun mapErMedlem(dataTable: DataTable?): Boolean {
+    fun mapErMedlem(dataTable: DataTable): Boolean {
         return mapDataTable(dataTable, ErBrukerMedlemMapper())[0]
     }
 
-    fun mapLovvalg(dataTable: DataTable?): Lovvalg {
+    fun mapLovvalg(dataTable: DataTable): Lovvalg {
         return mapDataTable(dataTable, LovvalgMapper())[0]
     }
 
-    fun mapLovvalgsland(dataTable: DataTable?): String {
+    fun mapLovvalgsland(dataTable: DataTable): String {
         return mapDataTable(dataTable, LovvalgslandMapper())[0]
     }
 
-    fun mapPeriodeStatus(dataTable: DataTable?): PeriodeStatus {
+    fun mapPeriodeStatus(dataTable: DataTable): PeriodeStatus {
         return mapDataTable(dataTable, PeriodeStatusMapper())[0]
     }
 
-    fun mapMedlemskap(dataTable: DataTable?): List<Medlemskap> {
+    fun mapMedlemskap(dataTable: DataTable): List<Medlemskap> {
         return mapDataTable(dataTable, MedlemskapMapper())
     }
 
