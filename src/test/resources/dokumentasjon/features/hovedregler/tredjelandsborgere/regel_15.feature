@@ -6,8 +6,8 @@ Egenskap: Regel 15: Har bruker arbeids- og oppholdstillatelse i kontrollperiode?
   Scenariomal: Regel 15: Har bruker arbeids- og oppholdstillatelse i kontrollperiode?
 
     Gitt følgende oppholdstillatelse
-      | Gyldig fra og med | Gyldig til og med   | Har tillatelse   |
-      | 01.01.2018        | <Gyldig til og med> | <Har tillatelse> |
+      | Gyldig fra og med | Gyldig til og med   | Har tillatelse   | Type      |
+      | 01.01.2018        | <Gyldig til og med> | <Har tillatelse> | PERMANENT |
 
     Og følgende arbeidsadgang
       | Gyldig fra og med | Gyldig til og med   | Arbeidsadgang   | ArbeidsadgangType   | ArbeidomfangKategori   |

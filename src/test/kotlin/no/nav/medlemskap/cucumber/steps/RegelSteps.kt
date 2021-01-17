@@ -266,7 +266,8 @@ class RegelSteps : No {
                 .getResource("/testpersoner/bakoverkompatibeltest/$filnavn.json").readText()
 
             val respons = LokalWebServer.respons(input!!)
-
+            println("Forventet " + forventetRespons)
+            println("respons " + respons)
             JSONAssert.assertEquals(
                 forventetRespons, respons,
                 CustomComparator(

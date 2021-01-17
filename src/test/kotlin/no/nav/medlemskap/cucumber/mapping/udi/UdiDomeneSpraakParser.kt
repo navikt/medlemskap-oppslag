@@ -54,7 +54,7 @@ class UdiDomeneSpraakParser {
             val vedtaksdatoXMLGregorianCalendar = DatatypeFactory.newInstance().newXMLGregorianCalendar(vedtaksdato)
             val oppholdstillatelse = Oppholdstillatelse()
 
-            oppholdstillatelse.oppholdstillatelseType = OppholdstillatelseKategori.valueOf(BasisDomeneParser.parseString(UdiDomenebegrep.OPPHOLDSTILLATELSE, rad))
+            oppholdstillatelse.oppholdstillatelseType = OppholdstillatelseKategori.valueOf(BasisDomeneParser.parseString(UdiDomenebegrep.OPPHOLDSTYPE, rad))
             oppholdstillatelse.vedtaksDato = vedtaksdatoXMLGregorianCalendar
             return oppholdstillatelse
         }
@@ -114,6 +114,7 @@ enum class UdiDomenebegrep(val nøkkel: String) : Domenenøkkel {
     FORESPORSELSFODSELSNUMMER("Foresporselsfodselsnummer"),
     OPPHOLDSTILLATELSE("Oppholdstillatelse"),
     OPPHOLD_PA_SAMME_VILKAR("OppholdPaSammeVilkar"),
+    OPPHOLDSTYPE("OppholdstillatelseType"),
     GYLDIG_FRA_OG_MED("Gyldig fra og med"),
     GYLDIG_TIL_OG_MED("Gyldig til og med"),
     UTTREKKSTIDSPUNKT("Uttrekkstidspunkt"),

@@ -105,7 +105,7 @@ class UdiMapperSteps : No {
 
         Så("skal mappede OppholdstillatelsePaSammeVilkar være") { dataTable: DataTable? ->
             val forventetOppholdstillatelsePaSammeVilkar = OppholdstillatelseDomeneSpraakParser.mapOppholdstillatelsePaSammeVilkar(dataTable)
-            oppholdstillatelse?.gjeldendeOppholdsstatus.shouldBe(forventetOppholdstillatelsePaSammeVilkar)
+            oppholdstillatelse?.gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar.shouldBe(forventetOppholdstillatelsePaSammeVilkar)
         }
     }
 

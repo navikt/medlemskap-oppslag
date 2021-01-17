@@ -13,7 +13,7 @@ Egenskap: Mapping av OppholdstillatelseEllerOppholdsPaSammeVilkar
       | 2018-11-15T21:37:40.835 |
 
     Og følgende Oppholdstillatelse fra OppholdstillatelseEllerOppholdsPaSammeVilkar
-      | Oppholdstillatelse   | Vedtaksdato   |
+      | OppholdstillatelseType       | Vedtaksdato   |
       | <OppholdstillatelseKategori> | <VedtaksDato> |
 
     Og foresporselsfodselsnummer fra HentPersonstatusResultat
@@ -27,8 +27,8 @@ Egenskap: Mapping av OppholdstillatelseEllerOppholdsPaSammeVilkar
     Når GjeldendeOppholdsstatus mappes
 
     Så skal mappede OppholdstillatelsePaSammeVilkar være
-      | Har opphold  | Gyldig fra og med   | Gyldig til og med |
-      | true         | 2015-03-25          | 2016-02-03        |
+      | Har opphold  | Gyldig fra og med   | Gyldig til og med | Type                             |
+      | true         | 2015-03-25          | 2016-02-03        | <OppholdstillatelseKategori>     |
 
     Eksempler:
       | OppholdstillatelseKategori     | VedtaksDato |

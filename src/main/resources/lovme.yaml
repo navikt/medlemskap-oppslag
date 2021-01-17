@@ -357,7 +357,7 @@ components:
           type: boolean
           nullable: true
         gjeldendeOppholdsstatus:
-          $ref: "#/components/schemas/OppholdstillatelsePaSammeVilkar"
+          $ref: "#/components/schemas/GjeldendeOppholdsstatus"
         arbeidsadgang:
           $ref: "#/components/schemas/Arbeidsadgang"
         uavklartFlyktningstatus:
@@ -367,12 +367,68 @@ components:
           type: boolean
           nullable: true
       nullable: true
+    GjeldendeOppholdsstatus:
+      properties:
+        oppholdstillatelsePaSammeVilkar:
+          $ref: "#/components/schemas/OppholdstillatelsePaSammeVilkar"
+        eosellerEFTAOpphold:
+          $ref: "#/components/schemas/EOSellerEFTAOpphold"
+        uavklart:
+          $ref: "#/components/schemas/Uavklart"
+        ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum:
+          $ref: "#/components/schemas/IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum"
+      nullable: true
+    Uavklart:
+      properties:
+        uavklart:
+          $ref: string
+    IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum:
+      properties:
+        utvistMedInnreiseForbud:
+          $ref: "#/components/schemas/UtvistMedInnreiseForbud"
+        avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak:
+          $ref: "#/components/schemas/AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak"
+        ovrigIkkeOpphold:
+          $ref: "#/components/schemas/OvrigIkkeOpphold"
+      nullable: true
+    OvrigIkkeOpphold:
+      properties:
+        type:
+          enum:
+            - OPPHEVET_INNREISEFORBUD
+            - ANNULERING_AV_VISUM
+            - UTLOPT_OPPHOLDSTILLATELSE
+            - UTLOPT_EO_SELLER_EFTA_OPPHOLDSRETT_ELLER_EO_SELLER_EFTA_OPPHOLDSTILLATELSE
+    AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak:
+      properties:
+        avgjoerselsesDato:
+          $ref: "#/components/schemas/Dato"
+    UtvistMedInnreiseForbud:
+      properties:
+        type:
+          enum:
+            - JA
+            - NEI
+            - UAVKLART
+    EOSellerEFTAOpphold:
+      properties:
+        periode:
+          $ref: "#/components/schemas/Periode"
+        type:
+          enum:
+            - EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT
+            - EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT
+            - EOS_ELLER_EFTA_OPPHOLDSTILLATELSE
     OppholdstillatelsePaSammeVilkar:
       properties:
         periode:
           $ref: "#/components/schemas/Periode"
         harTillatelse:
           type: boolean
+        type:
+          enum:
+            - MIDLERTIDIG
+            - PERMANENT
     Arbeidsadgang:
       properties:
         periode:

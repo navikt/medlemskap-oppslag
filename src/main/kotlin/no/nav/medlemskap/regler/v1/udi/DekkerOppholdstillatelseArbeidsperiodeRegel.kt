@@ -28,7 +28,7 @@ class DekkerOppholdstillatelseArbeidsperiodeRegel(
                 (
                     oppholdstillatelse.harGyldigOppholdOgArbeidstillatelse() &&
                         (
-                            !oppholdstillatelse.gjeldendeOppholdsstatus!!.periode?.encloses(arbeidsforhold.periode)!! ||
+                            !oppholdstillatelse.gjeldendeOppholdsstatus!!.oppholdstillatelsePaSammeVilkar?.periode?.encloses(arbeidsforhold.periode)!! ||
                                 !oppholdstillatelse.arbeidsadgang!!.periode?.encloses(arbeidsforhold.periode)!!
                             )
                     )

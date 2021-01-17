@@ -25,10 +25,10 @@ class UdiMapperTest {
 
         val oppholdstillatelsePeriode =
             resultat.gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar.oppholdstillatelsePeriode
-        Assertions.assertEquals(mappedOppholdstillatelser.gjeldendeOppholdsstatus?.periode?.fom, oppholdstillatelsePeriode.fra.toGregorianCalendar().toZonedDateTime().toLocalDate())
-        Assertions.assertEquals(mappedOppholdstillatelser.gjeldendeOppholdsstatus?.periode?.tom, oppholdstillatelsePeriode.til.toGregorianCalendar().toZonedDateTime().toLocalDate())
+        Assertions.assertEquals(mappedOppholdstillatelser.gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar?.periode?.fom, oppholdstillatelsePeriode.fra.toGregorianCalendar().toZonedDateTime().toLocalDate())
+        Assertions.assertEquals(mappedOppholdstillatelser.gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar?.periode?.tom, oppholdstillatelsePeriode.til.toGregorianCalendar().toZonedDateTime().toLocalDate())
         Assertions.assertNotNull(resultat.gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar.oppholdstillatelse.oppholdstillatelseType)
-        Assertions.assertTrue(mappedOppholdstillatelser.gjeldendeOppholdsstatus?.harTillatelse!!)
+        Assertions.assertTrue(mappedOppholdstillatelser.gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar?.harTillatelse!!)
     }
 
     private fun readFromTilHentPersonstatusResponseTypeString(): HentPersonstatusResponseType {

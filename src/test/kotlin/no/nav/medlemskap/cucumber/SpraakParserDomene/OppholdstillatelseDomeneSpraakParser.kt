@@ -63,7 +63,8 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
                     fom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad),
                     tom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad)
                 ),
-                harTillatelse = parseBooleanMedBooleanVerdi(OppholdstillatelseDomenebegrep.HAR_OPPHOLD, rad)
+                harTillatelse = parseBooleanMedBooleanVerdi(OppholdstillatelseDomenebegrep.HAR_OPPHOLD, rad),
+                type = OppholdstillaelsePaSammeVilkarType.valueOf(parseString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_TYPE, rad))
 
             )
         }
@@ -110,7 +111,17 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
                 null,
                 "fnr",
                 parseValgfriBoolean(OppholdstillatelseDomenebegrep.AVGJOERELSE.nøkkel(), rad),
-                OppholdstillatelsePaSammeVilkar(periode, parseBoolean(OppholdstillatelseDomenebegrep.HAR_OPPHOLDSTILLATELSE, rad)),
+                GjeldendeOppholdsstatus(
+                    oppholdstillatelsePaSammeVilkar = OppholdstillatelsePaSammeVilkar(
+                        periode = periode,
+                        harTillatelse = parseBoolean(OppholdstillatelseDomenebegrep.HAR_OPPHOLDSTILLATELSE, rad),
+                        type = OppholdstillaelsePaSammeVilkarType.valueOf(parseString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_TYPE, rad))
+                    ),
+                    ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum = null,
+                    eosellerEFTAOpphold = null,
+                    uavklart = null
+
+                ),
                 Arbeidsadgang(periode, true, null, null),
                 parseValgfriBoolean(OppholdstillatelseDomenebegrep.UAVKLART_FLYKTNINGSTATUS.nøkkel(), rad),
                 parseValgfriBoolean(OppholdstillatelseDomenebegrep.HAR_FLYKTNINGSTATUS.nøkkel(), rad)
@@ -140,12 +151,13 @@ enum class OppholdstillatelseDomenebegrep(val nøkkel: String) : Domenenøkkel {
     ARBEIDSADGANG("Arbeidsadgang"),
     ARBEIDOMFANG_KATEGORI("ArbeidomfangKategori"),
     ARBEIDSADGANG_TYPE("ArbeidsadgangType"),
-    HAR_OPPHOLD("Har opphold"),
     AVGJOERELSE("Avgjørelse"),
+    HAR_OPPHOLD("Har opphold"),
     HAR_OPPHOLDSTILLATELSE("Har tillatelse"),
     HAR_FLYKTNINGSTATUS("Har flyktningstatus"),
     GYLDIG_FRA_OG_MED("Gyldig fra og med"),
     GYLDIG_TIL_OG_MED("Gyldig til og med"),
+    OPPHOLDSTILLATELSE_TYPE("Type"),
     FORESPORSELSFODSELSNUMMER("Foresporselsfodselsnummer"),
     UAVKLART_FLYKTNINGSTATUS("Uavklart flyktningstatus"),
     UTTREKKSTIDSPUNKT("Uttrekkstidspunkt")
