@@ -1,7 +1,10 @@
 package no.nav.medlemskap.services.udi
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Arbeidsadgang
 import no.nav.medlemskap.domene.ArbeidsadgangType
 import no.nav.medlemskap.domene.AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak
+import no.nav.medlemskap.domene.EOSellerEFTAOpphold
+import no.nav.medlemskap.domene.GjeldendeOppholdsstatus
 import no.nav.medlemskap.domene.IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
 import no.nav.medlemskap.domene.Oppholdstillatelse
 import no.nav.medlemskap.domene.OvrigIkkeOpphold
@@ -9,11 +12,7 @@ import no.nav.medlemskap.domene.OvrigIkkeOppholdsKategori
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Uavklart
 import no.nav.medlemskap.domene.UtvistMedInnreiseForbud
-import no.nav.medlemskap.services.udi.UdiMapper.asLocalDate
 import no.udi.mt_1067_nav_data.v1.*
-import no.udi.mt_1067_nav_data.v1.Arbeidsadgang
-import no.udi.mt_1067_nav_data.v1.EOSellerEFTAOpphold
-import no.udi.mt_1067_nav_data.v1.GjeldendeOppholdsstatus
 import no.udi.mt_1067_nav_data.v1.JaNeiUavklart
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -32,11 +31,11 @@ object UdiMapper {
         )
     }
 
-    private fun mapArbeidsadgang(arbeidsadgang: Arbeidsadgang?): no.nav.medlemskap.domene.Arbeidsadgang? {
+    private fun mapArbeidsadgang(arbeidsadgang: no.udi.mt_1067_nav_data.v1.Arbeidsadgang?): Arbeidsadgang? {
         if (arbeidsadgang == null) {
             return null
         }
-        return no.nav.medlemskap.domene.Arbeidsadgang(
+        return Arbeidsadgang(
             harArbeidsadgang = arbeidsadgang.harArbeidsadgang == JaNeiUavklart.JA,
             arbeidsadgangType = ArbeidsadgangType.fraArbeidsadgangType(arbeidsadgang.typeArbeidsadgang?.value()),
             arbeidsomfang = ArbeidomfangKategori.fraArbeidomfang(arbeidsadgang.arbeidsOmfang?.value()),
@@ -51,9 +50,9 @@ object UdiMapper {
         )
     }
 
-    private fun mapGjeldendeOppholdsstatus(gjeldendeOppholdsstatus: GjeldendeOppholdsstatus?): no.nav.medlemskap.domene.GjeldendeOppholdsstatus? {
+    private fun mapGjeldendeOppholdsstatus(gjeldendeOppholdsstatus: no.udi.mt_1067_nav_data.v1.GjeldendeOppholdsstatus?): GjeldendeOppholdsstatus? {
         if (gjeldendeOppholdsstatus != null) {
-            return no.nav.medlemskap.domene.GjeldendeOppholdsstatus(
+            return GjeldendeOppholdsstatus(
                 oppholdstillatelsePaSammeVilkar = mapOppholdstillatelseEllerOppholdsPaSammeVilkar(gjeldendeOppholdsstatus),
                 ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum = mapIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(gjeldendeOppholdsstatus),
                 eosellerEFTAOpphold = mapEOSEllerEFTAOpphold(gjeldendeOppholdsstatus),
@@ -63,7 +62,7 @@ object UdiMapper {
         return null
     }
 
-    private fun mapUavklart(gjeldendeOppholdsstatus: GjeldendeOppholdsstatus): Uavklart? {
+    private fun mapUavklart(gjeldendeOppholdsstatus: no.udi.mt_1067_nav_data.v1.GjeldendeOppholdsstatus): Uavklart? {
         if (gjeldendeOppholdsstatus.uavklart != null) {
             return Uavklart(
                 gjeldendeOppholdsstatus.uavklart.toString()
@@ -72,7 +71,7 @@ object UdiMapper {
         return null
     }
 
-    private fun mapIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(gjeldendeOppholdsstatus: GjeldendeOppholdsstatus): IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum? {
+    private fun mapIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(gjeldendeOppholdsstatus: no.udi.mt_1067_nav_data.v1.GjeldendeOppholdsstatus): IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum? {
 
         if (gjeldendeOppholdsstatus.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum != null) {
             return IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(
@@ -100,10 +99,10 @@ object UdiMapper {
         return null
     }
 
-    private fun mapEOSEllerEFTAOpphold(gjeldendeOppholdsstatus: GjeldendeOppholdsstatus): no.nav.medlemskap.domene.EOSellerEFTAOpphold? {
+    private fun mapEOSEllerEFTAOpphold(gjeldendeOppholdsstatus: no.udi.mt_1067_nav_data.v1.GjeldendeOppholdsstatus): EOSellerEFTAOpphold? {
         if (gjeldendeOppholdsstatus.eoSellerEFTAOpphold != null) {
             if (gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTABeslutningOmOppholdsrett != null) {
-                return no.nav.medlemskap.domene.EOSellerEFTAOpphold(
+                return EOSellerEFTAOpphold(
                     periode = Periode(
                         fom = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTABeslutningOmOppholdsrett.oppholdsrettsPeriode.fra.asLocalDate(),
                         tom = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTABeslutningOmOppholdsrett.oppholdsrettsPeriode.til.asLocalDate()
@@ -112,7 +111,7 @@ object UdiMapper {
                 )
             }
             if (gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAOppholdstillatelse != null) {
-                return no.nav.medlemskap.domene.EOSellerEFTAOpphold(
+                return EOSellerEFTAOpphold(
                     periode = Periode(
                         fom = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAOppholdstillatelse.oppholdstillatelsePeriode.fra.asLocalDate(),
                         tom = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAOppholdstillatelse.oppholdstillatelsePeriode.til.asLocalDate()
@@ -121,7 +120,7 @@ object UdiMapper {
                 )
             }
             if (gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAVedtakOmVarigOppholdsrett != null) {
-                return no.nav.medlemskap.domene.EOSellerEFTAOpphold(
+                return EOSellerEFTAOpphold(
                     periode = Periode(
                         fom = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAVedtakOmVarigOppholdsrett.oppholdsrettsPeriode.fra.asLocalDate(),
                         tom = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAVedtakOmVarigOppholdsrett.oppholdsrettsPeriode.til.asLocalDate()
@@ -133,7 +132,7 @@ object UdiMapper {
         return null
     }
 
-    private fun mapOppholdstillatelseEllerOppholdsPaSammeVilkar(gjeldendeOppholdsstatus: GjeldendeOppholdsstatus): OppholdstillatelsePaSammeVilkar? {
+    private fun mapOppholdstillatelseEllerOppholdsPaSammeVilkar(gjeldendeOppholdsstatus: no.udi.mt_1067_nav_data.v1.GjeldendeOppholdsstatus): OppholdstillatelsePaSammeVilkar? {
 
         if (gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar != null) {
             val oppholdstillatelsePaSammeVilkarPeriode = Periode(
@@ -141,12 +140,12 @@ object UdiMapper {
                 gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar?.oppholdstillatelsePeriode?.til.asLocalDate()
             )
             val oppholdstillatelsePaSammeVilkarType =
-                OppholdstillaelsePaSammeVilkarType.fraOppholdstillatelsePaSammeVilkarType(
-                    gjeldendeOppholdsstatus?.oppholdstillatelseEllerOppholdsPaSammeVilkar?.oppholdstillatelse?.oppholdstillatelseType?.value()
+                OppholdstillaelsePaSammeVilkarType.fraOppholdstillatelsePaSammeVilkarTypeVerdi(
+                    gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar?.oppholdstillatelse?.oppholdstillatelseType?.value()
                 )
 
             val harTillatelse =
-                gjeldendeOppholdsstatus?.oppholdstillatelseEllerOppholdsPaSammeVilkar?.oppholdstillatelse?.oppholdstillatelseType != null
+                gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar?.oppholdstillatelse?.oppholdstillatelseType != null
             return OppholdstillatelsePaSammeVilkar(
                 periode = oppholdstillatelsePaSammeVilkarPeriode,
                 harTillatelse = harTillatelse,

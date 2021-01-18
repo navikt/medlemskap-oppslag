@@ -47,8 +47,8 @@ data class GjeldendeOppholdsstatus(
 )
 
 data class IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(
-    val utvistMedInnreiseForbud: no.nav.medlemskap.domene.UtvistMedInnreiseForbud?,
-    var avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak: no.nav.medlemskap.domene.AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak?,
+    val utvistMedInnreiseForbud: UtvistMedInnreiseForbud?,
+    var avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak: AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak?,
     var ovrigIkkeOpphold: no.nav.medlemskap.domene.OvrigIkkeOpphold?
 )
 
@@ -94,7 +94,7 @@ enum class EOSellerEFTAOppholdType(val kodeverdi: String) {
     EOS_ELLER_EFTA_OPPHOLDSTILLATELSE("EOSellerEFTAOppholdstillatelse");
 
     companion object {
-        fun fraEOSellerEFTAOppholdType(EOSellerEFTAOppholdTypeVerdi: String?): EOSellerEFTAOppholdType? {
+        fun fraEOSellerEFTAOppholdTypeVerdi(EOSellerEFTAOppholdTypeVerdi: String?): EOSellerEFTAOppholdType? {
             return values().firstOrNull { it.kodeverdi == EOSellerEFTAOppholdTypeVerdi }
         }
     }
@@ -119,7 +119,7 @@ enum class OppholdstillaelsePaSammeVilkarType(val kodeverdi: String) {
     MIDLERTIDIG("Midlertidig");
 
     companion object {
-        fun fraOppholdstillatelsePaSammeVilkarType(oppholdPaSammeVilkarVerdi: String?): OppholdstillaelsePaSammeVilkarType? {
+        fun fraOppholdstillatelsePaSammeVilkarTypeVerdi(oppholdPaSammeVilkarVerdi: String?): OppholdstillaelsePaSammeVilkarType? {
             return values().firstOrNull { it.kodeverdi == oppholdPaSammeVilkarVerdi }
         }
     }
