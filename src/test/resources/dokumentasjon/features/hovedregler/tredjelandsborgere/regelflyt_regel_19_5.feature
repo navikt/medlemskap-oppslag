@@ -1,7 +1,7 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regelflyt for regel 19.5
+Egenskap: Regelflyt for regel 19.5 og regel 9
 
   Bakgrunn:
 
@@ -33,23 +33,24 @@ Egenskap: Regelflyt for regel 19.5
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister | Beregnet antall timer pr uke |
       | 10.10.1975      | 01.08.2020      | yrkeskode | 100              | NIS           | 37.5                         |
 
-  Scenariomal: Regelflyt for regel 19.5
+  Scenariomal: Regelflyt for regel 19.5 og regel 9
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode          | Fra og med dato | Til og med dato |
       | <Statsborgerskap> | 10.10.1975      |                 |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-      | 05.01.2021      | 12.02.2021      | Nei                           |
+      | 05.01.2021      | 12.02.2021      | <Arbeid utenfor Norge>        |
 
     Så skal svaret være "<Medlemskap>"
     Og skal regel "19.5" gi svaret "<Regel 19.5>"
 
     Eksempler:
-      | Statsborgerskap | Regel 19.5 | Medlemskap |
-      | RUS             | Nei        | Ja         |
-      | USA             | Nei        | Ja         |
-
+      | Statsborgerskap | Regel 19.5 | Arbeid utenfor Norge | Medlemskap |
+      | RUS             | Nei        | Nei                  | Ja         |
+      | USA             | Nei        | Nei                  | Ja         |
+      | RUS             | Nei        | Ja                   | Uavklart   |
+      | USA             | Nei        | Ja                   | Uavklart   |
 
   Scenariomal: Regelflyt for regel 19.5, for britiske og sveitsiske borgere
     Gitt følgende statsborgerskap i personhistorikken
