@@ -198,6 +198,8 @@ components:
           $ref: "#/components/schemas/InputPeriode"
         førsteDagForYtelse:
           $ref: "#/components/schemas/FoersteDagForYtelse"
+        startDatoForYtelse:
+          $ref: "#/components/schemas/StartdatoForYtelse"
         brukerinput:
           $ref: "#/components/schemas/BrukerInput"
         pdlpersonhistorikk:
@@ -642,6 +644,12 @@ components:
           nullable: true
         folkeregistermetadata:
           $ref: "#/components/schemas/Folkeregistermetadata"
+    StartdatoForYtelse:
+      type: string
+      format: date
+      description: Start dato for ytelse, for sykepenger er det første dag for sykepenger
+      nullable: true
+      example: "2021-01-30"
     Statsborgerskap:
         properties:
           landkode:

@@ -5,7 +5,8 @@ import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
 import no.nav.medlemskap.domene.personhistorikk.Personhistorikk
-import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
+import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erAnnenStatsborger
+import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erEøsBorger
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.gyldigeStatsborgerskap
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Svar
@@ -26,12 +27,19 @@ data class Datagrunnlag(
     val overstyrteRegler: Map<RegelId, Svar> = mapOf(),
     val oppholdstillatelse: Oppholdstillatelse?
 ) {
+    val startDatoForYtelse = startDatoForYtelse(periode, førsteDagForYtelse)
     private val kontrollPeriodeForPersonhistorikk =
-        Kontrollperiode.kontrollPeriodeForPersonhistorikk(startDatoForYtelse(periode, førsteDagForYtelse))
+        Kontrollperiode.kontrollPeriodeForPersonhistorikk(startDatoForYtelse)
 
     fun gyldigeStatsborgerskap(): List<String> {
-        val statsborgerskap: List<Statsborgerskap> = pdlpersonhistorikk.statsborgerskap
+        return pdlpersonhistorikk.statsborgerskap.gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk)
+    }
 
-        return statsborgerskap.gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk)
+    fun erTredjelandsborger(): Boolean {
+        return pdlpersonhistorikk.statsborgerskap.erAnnenStatsborger(startDatoForYtelse)
+    }
+
+    fun erEøsBorger(): Boolean {
+        return pdlpersonhistorikk.statsborgerskap.erEøsBorger(kontrollPeriodeForPersonhistorikk)
     }
 }
