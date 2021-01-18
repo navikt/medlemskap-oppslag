@@ -61,10 +61,10 @@ fun StatusPages.Configuration.exceptionHandler() {
     }
 
     exception<HentPersonstatusFault> { cause ->
-        call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
-            "faultInfo.feilMelding: ${cause.faultInfo.feilmelding} faultInfo.kodeId ${cause.faultInfo.kodeId}" +
-                "faultInfo.kategori ${cause.faultInfo.kategori} faultInfo.niva ${cause.faultInfo.niva} " +
-                "message: ${cause.message} cause: ${cause.cause}"
+        if (cause.faultInfo.kodeId == 10003) {
+            call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
+                "Person ikke funnet i UDI-tjenesten"
+            }
         }
     }
 
