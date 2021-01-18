@@ -9,13 +9,15 @@ Egenskap: Regelflyt for regel 19.5 og regel 9
       | Landkode | Fra og med dato | Til og med dato |
       | NOR      | 10.10.1975      |                 |
 
+
     Og følgende oppholdstillatelse
-      | Gyldig fra og med | Gyldig til og med | Har tillatelse |
-      | 01.01.2018        |                   | Ja             |
+      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type      |
+      | 01.01.2018        |                   | Ja             | PERMANENT |
 
     Og følgende arbeidsadgang
       | Gyldig fra og med | Gyldig til og med | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
       | 01.01.2018        |                   | Ja            | GENERELL          | KUN_ARBEID_HELTID    |
+
 
     Og følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Arbeidsgiver Id |

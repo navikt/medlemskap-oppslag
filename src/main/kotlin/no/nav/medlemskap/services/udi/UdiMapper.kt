@@ -1,11 +1,18 @@
 package no.nav.medlemskap.services.udi
 import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Arbeidsadgang
 import no.nav.medlemskap.domene.ArbeidsadgangType
+import no.nav.medlemskap.domene.AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak
+import no.nav.medlemskap.domene.EOSellerEFTAOpphold
+import no.nav.medlemskap.domene.GjeldendeOppholdsstatus
+import no.nav.medlemskap.domene.IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
 import no.nav.medlemskap.domene.Oppholdstillatelse
+import no.nav.medlemskap.domene.OvrigIkkeOpphold
+import no.nav.medlemskap.domene.OvrigIkkeOppholdsKategori
 import no.nav.medlemskap.domene.Periode
+import no.nav.medlemskap.domene.Uavklart
+import no.nav.medlemskap.domene.UtvistMedInnreiseForbud
 import no.udi.mt_1067_nav_data.v1.*
-import no.udi.mt_1067_nav_data.v1.Arbeidsadgang
-import no.udi.mt_1067_nav_data.v1.GjeldendeOppholdsstatus
 import no.udi.mt_1067_nav_data.v1.JaNeiUavklart
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -24,11 +31,11 @@ object UdiMapper {
         )
     }
 
-    private fun mapArbeidsadgang(arbeidsadgang: Arbeidsadgang?): no.nav.medlemskap.domene.Arbeidsadgang? {
+    private fun mapArbeidsadgang(arbeidsadgang: no.udi.mt_1067_nav_data.v1.Arbeidsadgang?): Arbeidsadgang? {
         if (arbeidsadgang == null) {
             return null
         }
-        return no.nav.medlemskap.domene.Arbeidsadgang(
+        return Arbeidsadgang(
             harArbeidsadgang = arbeidsadgang.harArbeidsadgang == JaNeiUavklart.JA,
             arbeidsadgangType = ArbeidsadgangType.fraArbeidsadgangType(arbeidsadgang.typeArbeidsadgang?.value()),
             arbeidsomfang = ArbeidomfangKategori.fraArbeidomfang(arbeidsadgang.arbeidsOmfang?.value()),
@@ -43,62 +50,109 @@ object UdiMapper {
         )
     }
 
-    private fun mapGjeldendeOppholdsstatus(gjeldendeOppholdsstatus: GjeldendeOppholdsstatus?): OppholdstillatelsePaSammeVilkar? {
-        if (gjeldendeOppholdsstatus == null) {
-            return null
-        }
-        if (gjeldendeOppholdsstatus.eoSellerEFTAOpphold != null) {
-            if (gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTABeslutningOmOppholdsrett != null) {
-                val oppholdsrettsPeriode =
-                    gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTABeslutningOmOppholdsrett.oppholdsrettsPeriode
-                val eosEllerEftaOppholdPeriode = Periode(oppholdsrettsPeriode.fra.asLocalDate(), oppholdsrettsPeriode.til.asLocalDate())
-                val harTillatelse = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTABeslutningOmOppholdsrett.eosOppholdsgrunnlag
-            }
-
-            // return mapEosEllerEftaopphold(gjeldendeOppholdsstatus.eoSellerEFTAOpphold)
-        }
-        if (gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar != null) {
-            val oppholdstillatelsePaSammeVilkarPeriode = Periode(
-                gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar.oppholdstillatelsePeriode.fra.asLocalDate(),
-                gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar.oppholdstillatelsePeriode.til.asLocalDate()
+    private fun mapGjeldendeOppholdsstatus(gjeldendeOppholdsstatus: no.udi.mt_1067_nav_data.v1.GjeldendeOppholdsstatus?): GjeldendeOppholdsstatus? {
+        if (gjeldendeOppholdsstatus != null) {
+            return GjeldendeOppholdsstatus(
+                oppholdstillatelsePaSammeVilkar = mapOppholdstillatelseEllerOppholdsPaSammeVilkar(gjeldendeOppholdsstatus),
+                ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum = mapIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(gjeldendeOppholdsstatus),
+                eosellerEFTAOpphold = mapEOSEllerEFTAOpphold(gjeldendeOppholdsstatus),
+                uavklart = mapUavklart(gjeldendeOppholdsstatus)
             )
-            val harTillatelse = gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar?.oppholdstillatelse?.oppholdstillatelseType != null
-            return OppholdstillatelsePaSammeVilkar(oppholdstillatelsePaSammeVilkarPeriode, harTillatelse)
-        }
-        if (gjeldendeOppholdsstatus.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum != null) {
-            return null
-            // return mapIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(gjeldendeOppholdsstatus.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum)
-        }
-        if (gjeldendeOppholdsstatus.uavklart != null) {
-            return null
         }
         return null
     }
 
-    private fun mapIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum: IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum?) {
+    private fun mapUavklart(gjeldendeOppholdsstatus: no.udi.mt_1067_nav_data.v1.GjeldendeOppholdsstatus): Uavklart? {
+        if (gjeldendeOppholdsstatus.uavklart != null) {
+            return Uavklart(
+                gjeldendeOppholdsstatus.uavklart.toString()
+            )
+        }
+        return null
     }
 
-    private fun mapOppholdstillatelseEllerOppholdsPaSammeVilkar(oppholdstillatelseEllerOppholdsPaSammeVilkar: OppholdstillatelseEllerOppholdsPaSammeVilkar?): Boolean {
-        return oppholdstillatelseEllerOppholdsPaSammeVilkar?.oppholdstillatelse?.oppholdstillatelseType != null // Permanent eller midlertidig
+    private fun mapIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(gjeldendeOppholdsstatus: no.udi.mt_1067_nav_data.v1.GjeldendeOppholdsstatus): IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum? {
+
+        if (gjeldendeOppholdsstatus.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum != null) {
+            return IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(
+                utvistMedInnreiseForbud = UtvistMedInnreiseForbud(
+                    innreiseForbud =
+                        no.nav.medlemskap.domene.JaNeiUavklart.fraJaNeiUavklartVerdi(
+                            gjeldendeOppholdsstatus.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum.utvistMedInnreiseForbud.innreiseForbud.value()
+                        )
+                ),
+                avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak =
+                    AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak(
+                        gjeldendeOppholdsstatus
+                            .ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
+                            .avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak
+                            .avgjorelsesDato
+                            .asLocalDate()
+                    ),
+                ovrigIkkeOpphold = OvrigIkkeOpphold(
+                    ovrigIkkeOppholdsKategori = OvrigIkkeOppholdsKategori.fraOvrigIkkeOppholdsKategoriType(
+                        gjeldendeOppholdsstatus.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum.ovrigIkkeOpphold.arsak.value()
+                    )
+                )
+            )
+        }
+        return null
     }
 
-    enum class OppholdstillatelseKategori {
-        PERMANENT,
-        MIDLERTIDIG
-    }
-
-    enum class EosOppholdsgrunnlag {
-        VARIG,
-        INGEN_INFORMASJON,
-        FAMILIE,
-        TJENESTEYTING_ELLER_ETABLERING,
-        UAVKLART;
-
-        companion object {
-            fun EosOppholdsgrunnlag.erOppholdsgrunnlagAvklart(): Boolean {
-                return (this == VARIG || this == FAMILIE || this == TJENESTEYTING_ELLER_ETABLERING)
+    private fun mapEOSEllerEFTAOpphold(gjeldendeOppholdsstatus: no.udi.mt_1067_nav_data.v1.GjeldendeOppholdsstatus): EOSellerEFTAOpphold? {
+        if (gjeldendeOppholdsstatus.eoSellerEFTAOpphold != null) {
+            if (gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTABeslutningOmOppholdsrett != null) {
+                return EOSellerEFTAOpphold(
+                    periode = Periode(
+                        fom = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTABeslutningOmOppholdsrett.oppholdsrettsPeriode.fra.asLocalDate(),
+                        tom = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTABeslutningOmOppholdsrett.oppholdsrettsPeriode.til.asLocalDate()
+                    ),
+                    EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT
+                )
+            }
+            if (gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAOppholdstillatelse != null) {
+                return EOSellerEFTAOpphold(
+                    periode = Periode(
+                        fom = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAOppholdstillatelse.oppholdstillatelsePeriode.fra.asLocalDate(),
+                        tom = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAOppholdstillatelse.oppholdstillatelsePeriode.til.asLocalDate()
+                    ),
+                    EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.EOS_ELLER_EFTA_OPPHOLDSTILLATELSE
+                )
+            }
+            if (gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAVedtakOmVarigOppholdsrett != null) {
+                return EOSellerEFTAOpphold(
+                    periode = Periode(
+                        fom = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAVedtakOmVarigOppholdsrett.oppholdsrettsPeriode.fra.asLocalDate(),
+                        tom = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAVedtakOmVarigOppholdsrett.oppholdsrettsPeriode.til.asLocalDate()
+                    ),
+                    EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT
+                )
             }
         }
+        return null
+    }
+
+    private fun mapOppholdstillatelseEllerOppholdsPaSammeVilkar(gjeldendeOppholdsstatus: no.udi.mt_1067_nav_data.v1.GjeldendeOppholdsstatus): OppholdstillatelsePaSammeVilkar? {
+
+        if (gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar != null) {
+            val oppholdstillatelsePaSammeVilkarPeriode = Periode(
+                gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar?.oppholdstillatelsePeriode?.fra.asLocalDate(),
+                gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar?.oppholdstillatelsePeriode?.til.asLocalDate()
+            )
+            val oppholdstillatelsePaSammeVilkarType =
+                OppholdstillaelsePaSammeVilkarType.fraOppholdstillatelsePaSammeVilkarTypeVerdi(
+                    gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar?.oppholdstillatelse?.oppholdstillatelseType?.value()
+                )
+
+            val harTillatelse =
+                gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar?.oppholdstillatelse?.oppholdstillatelseType != null
+            return OppholdstillatelsePaSammeVilkar(
+                periode = oppholdstillatelsePaSammeVilkarPeriode,
+                harTillatelse = harTillatelse,
+                type = oppholdstillatelsePaSammeVilkarType
+            )
+        }
+        return null
     }
 
     private fun XMLGregorianCalendar?.asLocalDate(): LocalDate? = this?.toGregorianCalendar()?.toZonedDateTime()?.toLocalDate()

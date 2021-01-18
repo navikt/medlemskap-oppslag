@@ -13,8 +13,8 @@ class UdiService(private val udiClient: UdiClient) {
         val udiResultat = udiClient.hentOppholdstatusResultat(fnr = fnr)?.let { UdiMapper.mapTilOppholdstillatelse(it) }
         arbeidsadgangtyperCounter(udiResultat?.arbeidsadgang?.arbeidsadgangType?.name).increment()
         harArbeidsadgangCounter(udiResultat?.arbeidsadgang?.harArbeidsadgang).increment()
-        harTillatelseCounter(udiResultat?.gjeldendeOppholdsstatus?.harTillatelse).increment()
-        oppholdstillatelseTypeCounter(udiResultat?.gjeldendeOppholdsstatus).increment()
+        harTillatelseCounter(udiResultat?.gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar?.harTillatelse).increment()
+        oppholdstillatelseTypeCounter(udiResultat?.gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar).increment()
 
         return udiResultat
     }

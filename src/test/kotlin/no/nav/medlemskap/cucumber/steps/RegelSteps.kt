@@ -164,7 +164,6 @@ class RegelSteps : No {
         Gitt("følgende arbeidsavtaler i arbeidsforhold {int}") { arbeidsforholdRad: Int, dataTable: DataTable ->
             val arbeidsavtaler = ArbeidsforholdDomeneSpraakParser.mapArbeidsavtaler(dataTable)
             val arbeidsforholdIndeks = arbeidsforholdIndeks(arbeidsforholdRad)
-
             arbeidsavtaleMap[arbeidsforholdIndeks] = arbeidsavtaler
         }
 
@@ -204,7 +203,7 @@ class RegelSteps : No {
         }
 
         Gitt("følgende arbeidsadgang") { dataTable: DataTable ->
-            oppholdstillatelseBuilder.arbeidsadgang = OppholdstillatelseDomeneSpraakParser.mapArbeidsadgang(dataTable)
+            oppholdstillatelseBuilder.arbeidsadgang = OppholdstillatelseDomeneSpraakParser.mapArbeidstilgang(dataTable)
         }
 
         Når("medlemskap beregnes med følgende parametre") { dataTable: DataTable ->
