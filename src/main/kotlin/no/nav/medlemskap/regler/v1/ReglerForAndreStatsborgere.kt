@@ -5,7 +5,9 @@ import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.*
-import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytUavklart
+import no.nav.medlemskap.regler.v1.lovvalg.HarBrukerJobbetUtenforNorgeRegel
 import no.nav.medlemskap.regler.v1.statsborgerskap.ErBrukerBritiskEllerSveitsiskBorgerRegel
 import no.nav.medlemskap.regler.v1.udi.GyldigArbeidstillatelseIKontrollperiodeRegel
 import no.nav.medlemskap.regler.v1.udi.GyldigOppholdstillatelseIKontrollperiodeRegel
@@ -18,24 +20,29 @@ class ReglerForAndreStatsborgere(
 ) : Regler(ytelse, regelMap, overstyrteRegler) {
 
     override fun hentHovedflyt(): Regelflyt {
+        val arbeidUtenforNorgeRegelflyt = lagRegelflyt(
+            regel = hentRegel(REGEL_9),
+            hvisJa = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE),
+            hvisNei = regelflytJa(ytelse, REGEL_ANDRE_BORGERE)
+        )
 
         val erBrukerBritiskEllerSveitsiskBorgerRegelflyt = lagRegelflyt(
             regel = hentRegel(REGEL_19_5),
-            hvisJa = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE),
-            hvisNei = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE)
+            hvisJa = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE),
+            hvisNei = arbeidUtenforNorgeRegelflyt
         )
 
         val harBrukerGyldigArbeidstillatelseIKontrollperiodeRegelflyt = lagRegelflyt(
             regel = hentRegel(REGEL_19_3),
             hvisJa = erBrukerBritiskEllerSveitsiskBorgerRegelflyt,
-            hvisNei = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE)
+            hvisNei = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE)
         )
 
         val harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt = lagRegelflyt(
             regel = hentRegel(REGEL_19_1),
             hvisJa = harBrukerGyldigArbeidstillatelseIKontrollperiodeRegelflyt,
-            hvisNei = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE),
-            hvisUavklart = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE)
+            hvisNei = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE),
+            hvisUavklart = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE)
         )
 
         return harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt
@@ -57,7 +64,8 @@ class ReglerForAndreStatsborgere(
             val regelListe = listOf(
                 GyldigOppholdstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag),
                 GyldigArbeidstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag),
-                ErBrukerBritiskEllerSveitsiskBorgerRegel.fraDatagrunnlag(datagrunnlag)
+                ErBrukerBritiskEllerSveitsiskBorgerRegel.fraDatagrunnlag(datagrunnlag),
+                HarBrukerJobbetUtenforNorgeRegel.fraDatagrunnlag(datagrunnlag)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()
