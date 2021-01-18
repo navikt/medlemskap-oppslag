@@ -1,8 +1,8 @@
 package no.nav.medlemskap.domene.personhistorikk
 
 import no.nav.medlemskap.common.statsborgerskapUavklartForRegel
-import no.nav.medlemskap.domene.Eøsland
 import no.nav.medlemskap.domene.Kontrollperiode
+import no.nav.medlemskap.domene.Landkode
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.RegelId
@@ -45,38 +45,38 @@ data class Statsborgerskap(
         infix fun List<Statsborgerskap>.erSveitsiskBorger(
             kontrollPeriodeForPersonhistorikk: Kontrollperiode
         ): Boolean {
-            return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Eøsland.erSveitsisk(it) }
+            return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Landkode.erSveitsisk(it) }
         }
 
         infix fun List<Statsborgerskap>.erBritiskBorger(
             kontrollPeriodeForPersonhistorikk: Kontrollperiode
         ): Boolean {
-            return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Eøsland.erBritisk(it) }
+            return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Landkode.erBritisk(it) }
         }
 
         infix fun List<Statsborgerskap>.erBritiskEllerSveitsiskBorger(
             kontrollPeriodeForPersonhistorikk: Kontrollperiode
         ): Boolean {
-            return statsborgerskapFørst(kontrollPeriodeForPersonhistorikk).any { Eøsland.erBritisk(it) || Eøsland.erSveitsisk(it) } &&
-                statsborgerskapSist(kontrollPeriodeForPersonhistorikk).any { Eøsland.erBritisk(it) || Eøsland.erSveitsisk(it) }
+            return statsborgerskapFørst(kontrollPeriodeForPersonhistorikk).any { Landkode.erBritisk(it) || Landkode.erSveitsisk(it) } &&
+                statsborgerskapSist(kontrollPeriodeForPersonhistorikk).any { Landkode.erBritisk(it) || Landkode.erSveitsisk(it) }
         }
 
         infix fun List<Statsborgerskap>.erNorskBorger(
             kontrollPeriodeForPersonhistorikk: Kontrollperiode
         ): Boolean {
-            return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Eøsland.erNorsk(it) }
+            return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Landkode.erNorsk(it) }
         }
 
         infix fun List<Statsborgerskap>.erNordiskBorger(
             kontrollPeriodeForPersonhistorikk: Kontrollperiode
         ): Boolean {
-            return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Eøsland.erNordisk(it) }
+            return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Landkode.erNordisk(it) }
         }
 
         infix fun List<Statsborgerskap>.erEøsBorger(
             kontrollPeriodeForPersonhistorikk: Kontrollperiode
         ): Boolean {
-            return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Eøsland.erEØSland(it) }
+            return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Landkode.erEØSland(it) }
         }
 
         infix fun List<Statsborgerskap>.hentStatsborgerskapFor(dato: LocalDate): List<String> =

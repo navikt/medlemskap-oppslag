@@ -53,6 +53,5 @@ Egenskap: Regelflyt for regel 11, er bruker norsk statsborger?
 
     Så skal svaret være "UAVKLART"
     Og skal regel "11" ikke finnes i resultatet
-    Og skal regel-årsaker være "ANDRE BORGERE"
 
 

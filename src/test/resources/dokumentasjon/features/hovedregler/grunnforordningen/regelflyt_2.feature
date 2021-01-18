@@ -32,15 +32,13 @@ Egenskap: Regelflyt for regel 2, Er bruker EØS-borger?
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Medlemskap>"
-    Og skal regel-årsaker være "<Årsaker>"
-
     Og skal regel "2" gi svaret "<Regel 2>"
 
 
     Eksempler:
-      | Land | Regel 2 | Medlemskap | Årsaker       |
-      | FRA  | Ja      | Ja         |               |
-      | NOR  | Ja      | Ja         |               |
-      | USA  | Nei     | UAVKLART   | ANDRE BORGERE |
+      | Land | Regel 2 | Medlemskap |
+      | FRA  | Ja      | Ja         |
+      | NOR  | Ja      | Ja         |
+      | USA  | Nei     | UAVKLART   |
 
 
