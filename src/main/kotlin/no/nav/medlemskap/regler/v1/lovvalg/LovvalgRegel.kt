@@ -1,10 +1,10 @@
 package no.nav.medlemskap.regler.v1.lovvalg
 
-import no.nav.medlemskap.domene.Eøsland
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForArbeidsforhold
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForPersonhistorikk
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.startDatoForYtelse
+import no.nav.medlemskap.domene.Landkode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.personhistorikk.Adresse
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
@@ -43,11 +43,11 @@ abstract class LovvalgRegel(
     }
 
     protected fun personHarIngenEllerNorskPostadresse(postadresseLandkoder: List<String>): Boolean {
-        return postadresseLandkoder.all { Eøsland.erNorsk(it) } || postadresseLandkoder.erTom()
+        return postadresseLandkoder.all { Landkode.erNorsk(it) } || postadresseLandkoder.erTom()
     }
 
     protected fun personHarIngenEllerNorskMidlertidigadresse(midlertidigadresserLandkoder: List<String>): Boolean {
-        return midlertidigadresserLandkoder.all { Eøsland.erNorsk(it) } || midlertidigadresserLandkoder.erTom()
+        return midlertidigadresserLandkoder.all { Landkode.erNorsk(it) } || midlertidigadresserLandkoder.erTom()
     }
 
     protected fun erBrukerSveitsiskBorgerUtenAnnetEøsStatsborgerskap(statsborgerskap: List<Statsborgerskap>): Boolean {
@@ -55,11 +55,9 @@ abstract class LovvalgRegel(
             return false
         }
 
-        val statsborgerskapUtenomSveits = statsborgerskap
+        return !statsborgerskap
             .gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk)
-            .filterNot { Eøsland.erSveitsisk(it) }
-
-        return !statsborgerskapUtenomSveits.any { Eøsland.erEØSland(it) }
+            .filterNot { Landkode.erSveitsisk(it) }.any { Landkode.erEØSland(it) }
     }
 
     protected fun erBrukerBritiskBorgerUtenAnnetEøsStatsborgerskap(statsborgerskap: List<Statsborgerskap>): Boolean {
@@ -67,10 +65,8 @@ abstract class LovvalgRegel(
             return false
         }
 
-        val statsborgerskapUtenomBritisk = statsborgerskap
+        return !statsborgerskap
             .gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk)
-            .filterNot { Eøsland.erBritisk(it) }
-
-        return !statsborgerskapUtenomBritisk.any { Eøsland.erEØSland(it) }
+            .filterNot { Landkode.erBritisk(it) }.any { Landkode.erEØSland(it) }
     }
 }

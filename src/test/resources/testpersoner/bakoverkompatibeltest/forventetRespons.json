@@ -11,6 +11,7 @@
     "brukerinput" : {
       "arbeidUtenforNorge" : false
     },
+    "startDatoForYtelse" : "2018-12-31",
     "pdlpersonhistorikk" : {
       "statsborgerskap" : [ {
         "landkode" : "NOR",
@@ -41,7 +42,6 @@
       "familierelasjoner" : [ ],
       "doedsfall" : [ ]
     },
-    "oppholdstillatelse": null,
     "medlemskap" : [ {
       "dekning" : "dekning",
       "fraOgMed" : "1975-10-10",
@@ -196,13 +196,18 @@
     "oppholdstillatelse" : {
       "uttrekkstidspunkt" : null,
       "foresporselsfodselsnummer" : "fnr",
-      "avgjoerelse" : null,
       "gjeldendeOppholdsstatus" : {
-        "periode" : {
-          "fom" : "2019-02-12",
-          "tom" : "2022-02-12"
+        "oppholdstillatelsePaSammeVilkar" : {
+          "type": "PERMANENT",
+          "periode" : {
+            "fom" : "2019-02-12",
+            "tom" : "2022-02-12"
+          },
+          "harTillatelse" : true
         },
-        "harTillatelse" : true
+        "eosellerEFTAOpphold": null,
+        "uavklart": null,
+        "ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum": null
       },
       "arbeidsadgang" : {
         "harArbeidsadgang" : true,
@@ -214,7 +219,8 @@
         }
       },
       "uavklartFlyktningstatus" : null,
-      "harFlyktningstatus" : null
+      "harFlyktningstatus" : null,
+      "avgjoerelse" : null
     }
   },
   "resultat" : {

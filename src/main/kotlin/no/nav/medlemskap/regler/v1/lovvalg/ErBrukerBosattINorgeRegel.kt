@@ -1,8 +1,8 @@
 package no.nav.medlemskap.regler.v1.lovvalg
 
 import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.Eøsland
 import no.nav.medlemskap.domene.InputPeriode
+import no.nav.medlemskap.domene.Landkode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.personhistorikk.Adresse
 import no.nav.medlemskap.domene.personhistorikk.Adresse.Companion.adresserForKontrollPeriode
@@ -33,8 +33,8 @@ class ErBrukerBosattINorgeRegel(
 
         return when {
             bostedsadresser.erIkkeTom() && landkoderBostedsadresse alleEr "NOR" &&
-                (kontaktadresserLandkoder.all { Eøsland.erNorsk(it) } || kontaktadresserLandkoder.erTom())
-                && (oppholsadresserLandkoder.all { Eøsland.erNorsk(it) } || oppholsadresserLandkoder.erTom()) -> ja(regelId)
+                (kontaktadresserLandkoder.all { Landkode.erNorsk(it) } || kontaktadresserLandkoder.erTom())
+                && (oppholsadresserLandkoder.all { Landkode.erNorsk(it) } || oppholsadresserLandkoder.erTom()) -> ja(regelId)
             else -> nei(regelId)
         }
     }

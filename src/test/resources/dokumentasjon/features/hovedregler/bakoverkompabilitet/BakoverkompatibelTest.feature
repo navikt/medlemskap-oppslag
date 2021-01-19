@@ -86,8 +86,8 @@ Egenskap: Bakoverkompatibel test
       | SWE      | 10.10.1975      | 01.08.2020      | 2010-01              |
 
     Og følgende oppholdstillatelse
-      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Avgjørelse | Har flyktningstatus | Uavklart flyktningstatus |
-      | 12.02.2019        | 12.02.2022        | Ja             |            |                     |                          |
+      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Avgjørelse | Har flyktningstatus | Uavklart flyktningstatus | Type     |
+      | 12.02.2019        | 12.02.2022        | Ja             |            |                     |                          | PERMANENT|
 
     Og følgende arbeidsadgang
       | Gyldig fra og med | Gyldig til og med | ArbeidsadgangType            | ArbeidomfangKategori | Arbeidsadgang |
