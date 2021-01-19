@@ -6,6 +6,7 @@ import no.nav.medlemskap.domene.AvslagEllerBortfallAvPOBOSellerTilbakekallEllerF
 import no.nav.medlemskap.domene.EOSellerEFTAOpphold
 import no.nav.medlemskap.domene.GjeldendeOppholdsstatus
 import no.nav.medlemskap.domene.IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
+import no.nav.medlemskap.domene.JaNeiUavklart.Companion.fraJaNeiUavklartVerdi
 import no.nav.medlemskap.domene.Oppholdstillatelse
 import no.nav.medlemskap.domene.OvrigIkkeOpphold
 import no.nav.medlemskap.domene.OvrigIkkeOppholdsKategori
@@ -77,14 +78,13 @@ object UdiMapper {
             return IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(
                 utvistMedInnreiseForbud = UtvistMedInnreiseForbud(
                     innreiseForbud =
-                        no.nav.medlemskap.domene.JaNeiUavklart
-                            .fraJaNeiUavklartVerdi(
-                                gjeldendeOppholdsstatus
-                                    .ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
-                                    .utvistMedInnreiseForbud
-                                    .innreiseForbud
-                                    .value()
-                            )
+                        fraJaNeiUavklartVerdi(
+                            gjeldendeOppholdsstatus
+                                .ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
+                                .utvistMedInnreiseForbud
+                                .innreiseForbud
+                                .value()
+                        )
                 ),
                 avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak =
                     AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak(
