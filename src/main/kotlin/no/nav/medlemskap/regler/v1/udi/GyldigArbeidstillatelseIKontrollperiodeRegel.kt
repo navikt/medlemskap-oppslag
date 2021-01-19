@@ -1,7 +1,6 @@
 package no.nav.medlemskap.regler.v1.udi
 
 import no.nav.medlemskap.domene.*
-import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.regler.common.BasisRegel
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
@@ -13,7 +12,6 @@ class GyldigArbeidstillatelseIKontrollperiodeRegel(
     ytelse: Ytelse,
     private val periode: InputPeriode,
     private val oppholdstillatelse: Oppholdstillatelse?,
-    private val arbeidsforhold: List<Arbeidsforhold>,
     private val førsteDagForYtelse: LocalDate?,
     regelId: RegelId = RegelId.REGEL_19_3
 ) : BasisRegel(regelId, ytelse) {
@@ -37,7 +35,6 @@ class GyldigArbeidstillatelseIKontrollperiodeRegel(
                 ytelse = datagrunnlag.ytelse,
                 periode = datagrunnlag.periode,
                 oppholdstillatelse = datagrunnlag.oppholdstillatelse,
-                arbeidsforhold = datagrunnlag.arbeidsforhold,
                 førsteDagForYtelse = datagrunnlag.førsteDagForYtelse
             )
         }

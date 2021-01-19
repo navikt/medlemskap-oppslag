@@ -7,6 +7,7 @@ import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
 import no.nav.medlemskap.domene.personhistorikk.Personhistorikk
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erAnnenStatsborger
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erEøsBorger
+import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erNorskBorger
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.gyldigeStatsborgerskap
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Svar
@@ -41,5 +42,9 @@ data class Datagrunnlag(
 
     fun erEøsBorger(): Boolean {
         return pdlpersonhistorikk.statsborgerskap.erEøsBorger(kontrollPeriodeForPersonhistorikk)
+    }
+
+    fun erNorskBorger(): Boolean {
+        return pdlpersonhistorikk.statsborgerskap.erNorskBorger(kontrollPeriodeForPersonhistorikk)
     }
 }
