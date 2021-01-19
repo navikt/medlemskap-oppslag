@@ -6,6 +6,7 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
+import no.nav.medlemskap.regler.v1.udi.DekkerOppholdstillatelseArbeidsperiodeRegel
 import no.nav.medlemskap.regler.v1.udi.GyldigArbeidstillatelseIKontrollperiodeRegel
 import no.nav.medlemskap.regler.v1.udi.GyldigOppholdstillatelseIKontrollperiodeRegel
 
@@ -24,10 +25,16 @@ class ReglerForAndreStatsborgere(
             hvisNei = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE)
         )
 
+        val dekkerOppholdstillatelseArbeidsperiodeRegel = lagRegelflyt(
+            regel = hentRegel(REGEL_19_2),
+            hvisJa = harBrukerGyldigArbeidstillatelseIKontrollperiodeRegel,
+            hvisNei = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE)
+        )
+
         val harBrukerGyldigOppholdstillatelseIKontrollperiodeRegel = lagRegelflyt(
             regel = hentRegel(REGEL_19_1),
             hvisJa = harBrukerGyldigArbeidstillatelseIKontrollperiodeRegel,
-            hvisNei = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE),
+            hvisNei = dekkerOppholdstillatelseArbeidsperiodeRegel,
             hvisUavklart = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE)
         )
 
@@ -49,7 +56,8 @@ class ReglerForAndreStatsborgere(
         private fun lagRegelMap(datagrunnlag: Datagrunnlag): Map<RegelId, Regel> {
             val regelListe = listOf(
                 GyldigOppholdstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag),
-                GyldigArbeidstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag)
+                GyldigArbeidstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag),
+                DekkerOppholdstillatelseArbeidsperiodeRegel.fraDatagrunnlag(datagrunnlag)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()

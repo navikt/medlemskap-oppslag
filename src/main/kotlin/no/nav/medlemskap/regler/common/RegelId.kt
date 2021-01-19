@@ -45,6 +45,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_13("13", "Er bruker død?", "", "Bruker har dødsdato etter inputperiode, men det påvirker ikke medlemskapet", "Bruker er død, men i eller før inputperiode."),
     REGEL_14("14", "Er bruker ansatt i staten eller i en kommune?"),
     REGEL_19_1("19.1", "Har bruker en gyldig oppholdstillatelse 12 måneder bakover og 2 måned fremover i tid?"),
+    REGEL_19_2("19.2", "Dekker oppholdstillatelsen arbeidsperioden bakover i tid?"),
     REGEL_19_3("19.3", "Har bruker en gyldig arbeidstillatelse 12 måneder bakover og 2 måned fremover i tid?"),
     REGEL_OPPLYSNINGER("OPPLYSNINGER", "Finnes det registrerte opplysninger på bruker?", "Alle de følgende ble NEI"),
     REGEL_A("OPPLYSNINGER-MEDL", "Finnes det registrerte opplysninger i MEDL?", "", "Det finnes registrert opplysninger i Medl"),
