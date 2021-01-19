@@ -1,7 +1,6 @@
 # language: no
 # encoding: UTF-8
-# Mest sannsynlig vil kun ett felt fra
-# IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum forekommer
+# Mest sannsynlig vil kun ett felt fra IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum forekomme
 
 Egenskap: Mapping av OppholdstillatelseEllerOppholdsPaSammeVilkar
 
