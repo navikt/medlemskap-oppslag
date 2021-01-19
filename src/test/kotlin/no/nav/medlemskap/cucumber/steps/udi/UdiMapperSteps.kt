@@ -16,8 +16,20 @@ class UdiMapperSteps : No {
         HentPersonstatusResultat()
             .withArbeidsadgang(Arbeidsadgang())
     private val hentPersonstatusResultatMedOppholdsstatus: HentPersonstatusResultat =
-        HentPersonstatusResultat().withGjeldendeOppholdsstatus(GjeldendeOppholdsstatus().withOppholdstillatelseEllerOppholdsPaSammeVilkar(OppholdstillatelseEllerOppholdsPaSammeVilkar()))
+        HentPersonstatusResultat()
+            .withGjeldendeOppholdsstatus(GjeldendeOppholdsstatus().withOppholdstillatelseEllerOppholdsPaSammeVilkar(OppholdstillatelseEllerOppholdsPaSammeVilkar()))
 
+    private val hentPersonstatusResultatMedUgyldigOppholdsstatus: HentPersonstatusResultat =
+        HentPersonstatusResultat()
+            .withGjeldendeOppholdsstatus(
+                GjeldendeOppholdsstatus()
+                    .withIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(
+                        IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum()
+                            .withAvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak(AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak())
+                            .withUtvistMedInnreiseForbud(UtvistMedInnreiseForbud())
+                            .withOvrigIkkeOpphold(OvrigIkkeOpphold())
+                    )
+            )
     init {
         Gitt<DataTable>("følgende harArbeidsadgang fra Arbeidsadgang") { dataTable: DataTable ->
             hentPersonstatusResultatMedArbeidsadgang.arbeidsadgang.harArbeidsadgang = udiDomenespraakParser.mapHarArbeidsadgang(dataTable)
@@ -65,12 +77,51 @@ class UdiMapperSteps : No {
             hentPersonstatusResultatMedArbeidsadgang.arbeidsadgang.arbeidsadgangsPeriode = udiDomenespraakParser.mapPeriode(dataTable)
         }
 
+        Gitt<DataTable>(
+            "følgende JaNeiUavklart fra UtvistMedInnreiseForbud"
+        ) { dataTable: DataTable ->
+            hentPersonstatusResultatMedUgyldigOppholdsstatus
+                .gjeldendeOppholdsstatus
+                .ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum.utvistMedInnreiseForbud.innreiseForbud = udiDomenespraakParser.mapJaNeiUavklart(dataTable)
+        }
+
+        Gitt<DataTable>(
+            "avgjorelsesDato fra AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak"
+        ) { dataTable: DataTable ->
+            hentPersonstatusResultatMedUgyldigOppholdsstatus
+                .gjeldendeOppholdsstatus
+                .ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
+                .avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak
+                .avgjorelsesDato = udiDomenespraakParser.mapAvgjorelsesdato(dataTable)
+        }
+
+        Gitt<DataTable>(
+            "følgende OvrigIkkeOppholdsKategori fra OvrigIkkeOpphold"
+        ) { dataTable: DataTable ->
+            hentPersonstatusResultatMedUgyldigOppholdsstatus.gjeldendeOppholdsstatus
+                .ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
+                .ovrigIkkeOpphold.arsak = udiDomenespraakParser.mapOvrigIkkeOpphold(dataTable)
+        }
+
         Når("GjeldendeOppholdsstatus mappes") {
             oppholdstillatelse = mapTilOppholdstillatelse(hentPersonstatusResultatMedOppholdsstatus)
         }
 
         Når("arbeidsadgang mappes") {
             oppholdstillatelse = mapTilOppholdstillatelse(hentPersonstatusResultatMedArbeidsadgang)
+        }
+
+        Når(
+            "GjeldendeOppholdsstatus med IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum mappes"
+        ) {
+            oppholdstillatelse = mapTilOppholdstillatelse(hentPersonstatusResultatMedUgyldigOppholdsstatus)
+        }
+
+        Så<DataTable>(
+            "skal mappede UtvistMedInnreiseForbud i IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum i Oppholdstillatelse være"
+        ) { dataTable: DataTable ->
+            val forventetInnreiseForbud = OppholdstillatelseDomeneSpraakParser.mapJaNeiUavklart(dataTable)
+            oppholdstillatelse?.gjeldendeOppholdsstatus?.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum?.utvistMedInnreiseForbud?.innreiseForbud
         }
 
         Så<DataTable>("skal mappede harArbeidsgang i medlemskap være") { dataTable: DataTable ->
@@ -98,9 +149,23 @@ class UdiMapperSteps : No {
             oppholdstillatelse?.arbeidsadgang?.arbeidsadgangType.shouldBe(arbeidsadgangTypeForventet)
         }
 
+        Så<DataTable>(
+            "mappede AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak i IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum i Oppholdstillatelse være"
+        ) { dataTable: DataTable ->
+            val forventetAvgjorelsesDato = OppholdstillatelseDomeneSpraakParser.mapAvgjorelseDato(dataTable)
+            oppholdstillatelse?.gjeldendeOppholdsstatus?.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum?.avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak?.avgjoerselsesDato.shouldBe(forventetAvgjorelsesDato)
+        }
+
         Så<DataTable>("mappet periode i medlemskap være") { dataTable: DataTable ->
             val periodeForventet = OppholdstillatelseDomeneSpraakParser.mapPeriode(dataTable)
             oppholdstillatelse?.arbeidsadgang?.periode.shouldBe(periodeForventet)
+        }
+
+        Så<DataTable>(
+            "mappede OvrigIkkeOppholdsKategori i IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum i Oppholdstillatelse være"
+        ) { dataTable: DataTable ->
+            val ovrigIkkeOppholdsKategoriForventet = OppholdstillatelseDomeneSpraakParser.mapOvrigIkkeOppholdsKategori(dataTable)
+            oppholdstillatelse?.gjeldendeOppholdsstatus?.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum?.ovrigIkkeOpphold?.ovrigIkkeOppholdsKategori.shouldBe(ovrigIkkeOppholdsKategoriForventet)
         }
 
         Så("skal mappede OppholdstillatelsePaSammeVilkar være") { dataTable: DataTable ->
