@@ -5,7 +5,6 @@ import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.*
-import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytUavklart
 import no.nav.medlemskap.regler.v1.lovvalg.HarBrukerJobbetUtenforNorgeRegel
@@ -43,14 +42,14 @@ class ReglerForAndreStatsborgere(
         val dekkerOppholdstillatelseArbeidsperiodeRegel = lagRegelflyt(
             regel = hentRegel(REGEL_19_2),
             hvisJa = harBrukerGyldigArbeidstillatelseIKontrollperiodeRegelflyt,
-            hvisNei = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE)
+            hvisNei = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE)
         )
 
         val harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt = lagRegelflyt(
             regel = hentRegel(REGEL_19_1),
             hvisJa = harBrukerGyldigArbeidstillatelseIKontrollperiodeRegelflyt,
             hvisNei = dekkerOppholdstillatelseArbeidsperiodeRegel,
-            hvisUavklart = konklusjonUavklart(ytelse, REGEL_ANDRE_BORGERE)
+            hvisUavklart = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE)
         )
 
         return harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt
