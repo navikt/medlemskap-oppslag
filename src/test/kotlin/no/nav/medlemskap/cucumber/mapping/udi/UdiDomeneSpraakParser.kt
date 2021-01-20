@@ -42,6 +42,36 @@ class UdiDomeneSpraakParser {
         return mapDataTable(dataTable, PeriodeMapper())[0]
     }
 
+    fun mapJaNeiUavklart(dataTable: DataTable): JaNeiUavklart {
+        return mapDataTable(dataTable, JaNeiUavklartMapper())[0]
+    }
+
+    fun mapAvgjorelsesdato(dataTable: DataTable): XMLGregorianCalendar? {
+        return mapDataTable(dataTable, AvgjorelsesDatoMapper())[0]
+    }
+
+    fun mapOvrigIkkeOpphold(dataTable: DataTable): OvrigIkkeOppholdsKategori {
+        return mapDataTable(dataTable, OvrigIkkeOppholdKategoriMapper())[0]
+    }
+
+    class OvrigIkkeOppholdKategoriMapper() : RadMapper<OvrigIkkeOppholdsKategori> {
+        override fun mapRad(rad: Map<String, String>): OvrigIkkeOppholdsKategori {
+            return OvrigIkkeOppholdsKategori.valueOf(BasisDomeneParser.parseString(UdiDomenebegrep.OVRIG_IKKE_OPPHOLD, rad))
+        }
+    }
+
+    class AvgjorelsesDatoMapper() : RadMapper<XMLGregorianCalendar> {
+        override fun mapRad(rad: Map<String, String>): XMLGregorianCalendar {
+            val avgjorelseLocalDateTime = BasisDomeneParser.parseString(UdiDomenebegrep.AVGJORELSESDATO, rad)
+            return DatatypeFactory.newInstance().newXMLGregorianCalendar(avgjorelseLocalDateTime)
+        }
+    }
+    class JaNeiUavklartMapper() : RadMapper<JaNeiUavklart> {
+        override fun mapRad(rad: Map<String, String>): JaNeiUavklart {
+            return JaNeiUavklart.valueOf(BasisDomeneParser.parseString(UdiDomenebegrep.JA_NEI_UAVKLART, rad))
+        }
+    }
+
     class HarArbeidsadgangMapper() : RadMapper<JaNeiUavklart> {
         override fun mapRad(rad: Map<String, String>): JaNeiUavklart {
             return JaNeiUavklart.valueOf(BasisDomeneParser.parseString(UdiDomenebegrep.ARBEIDSADGANG, rad))
@@ -110,11 +140,14 @@ enum class UdiDomenebegrep(val nøkkel: String) : Domenenøkkel {
     ARBEIDSADGANG("Arbeidsadgang"),
     ARBEIDOMFANG_KATEGORI("ArbeidomfangKategori"),
     ARBEIDSADGANG_TYPE("ArbeidsadgangType"),
+    AVGJORELSESDATO("Avgjørelsesdato"),
     EFFEKTUERINGSDATO("Effektueringsdato"),
     FORESPORSELSFODSELSNUMMER("Foresporselsfodselsnummer"),
     OPPHOLDSTILLATELSE("Oppholdstillatelse"),
     OPPHOLD_PA_SAMME_VILKAR("OppholdPaSammeVilkar"),
+    OVRIG_IKKE_OPPHOLD("OvrigIkkeOppholdsKategori"),
     OPPHOLDSTYPE("OppholdstillatelseType"),
+    JA_NEI_UAVKLART("JaNeiUavklart"),
     GYLDIG_FRA_OG_MED("Gyldig fra og med"),
     GYLDIG_TIL_OG_MED("Gyldig til og med"),
     UTTREKKSTIDSPUNKT("Uttrekkstidspunkt"),

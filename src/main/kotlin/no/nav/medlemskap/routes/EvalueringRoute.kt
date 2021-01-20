@@ -143,7 +143,7 @@ private fun loggResponse(fnr: String, response: Response) {
         kv("tom", response.datagrunnlag.periode.tom.toString()),
         kv("førsteDagForYtelse", response.datagrunnlag.førsteDagForYtelse.toString()),
         kv("brukerInput", response.datagrunnlag.brukerinput.toString()),
-        kv("startdatoForYtelse", response.datagrunnlag.startDatoForYtelse),
+        kv("startdatoForYtelse", response.datagrunnlag.startDatoForYtelse.toString()),
         kv("ytelse", response.datagrunnlag.ytelse),
         kv("svar", response.resultat.svar),
         kv("årsak", årsak),
@@ -154,6 +154,7 @@ private fun loggResponse(fnr: String, response: Response) {
         kv("statsborgerskapAnt", response.datagrunnlag.gyldigeStatsborgerskap().size),
         kv("erTredjelandsborger", response.datagrunnlag.erTredjelandsborger()),
         kv("erEosBorger", response.datagrunnlag.erEøsBorger()),
+        kv("erNorskBorger", response.datagrunnlag.erNorskBorger()),
         kv("response", objectMapper.writeValueAsString(response))
     )
 

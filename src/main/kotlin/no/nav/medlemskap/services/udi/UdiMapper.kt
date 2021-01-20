@@ -79,7 +79,11 @@ object UdiMapper {
                 utvistMedInnreiseForbud = UtvistMedInnreiseForbud(
                     innreiseForbud =
                         fraJaNeiUavklartVerdi(
-                            gjeldendeOppholdsstatus.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum.utvistMedInnreiseForbud.innreiseForbud.value()
+                            gjeldendeOppholdsstatus
+                                .ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
+                                .utvistMedInnreiseForbud
+                                .innreiseForbud
+                                .value()
                         )
                 ),
                 avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak =
@@ -92,7 +96,11 @@ object UdiMapper {
                     ),
                 ovrigIkkeOpphold = OvrigIkkeOpphold(
                     ovrigIkkeOppholdsKategori = OvrigIkkeOppholdsKategori.fraOvrigIkkeOppholdsKategoriType(
-                        gjeldendeOppholdsstatus.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum.ovrigIkkeOpphold.arsak.value()
+                        gjeldendeOppholdsstatus
+                            .ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
+                            .ovrigIkkeOpphold
+                            .arsak
+                            .value()
                     )
                 )
             )
@@ -105,8 +113,18 @@ object UdiMapper {
             if (gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTABeslutningOmOppholdsrett != null) {
                 return EOSellerEFTAOpphold(
                     periode = Periode(
-                        fom = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTABeslutningOmOppholdsrett.oppholdsrettsPeriode.fra.asLocalDate(),
-                        tom = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTABeslutningOmOppholdsrett.oppholdsrettsPeriode.til.asLocalDate()
+                        fom = gjeldendeOppholdsstatus
+                            .eoSellerEFTAOpphold
+                            .eoSellerEFTABeslutningOmOppholdsrett
+                            .oppholdsrettsPeriode
+                            .fra
+                            .asLocalDate(),
+                        tom = gjeldendeOppholdsstatus
+                            .eoSellerEFTAOpphold
+                            .eoSellerEFTABeslutningOmOppholdsrett
+                            .oppholdsrettsPeriode
+                            .til
+                            .asLocalDate()
                     ),
                     EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT
                 )
