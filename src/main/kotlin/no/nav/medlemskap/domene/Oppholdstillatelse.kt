@@ -49,7 +49,7 @@ data class GjeldendeOppholdsstatus(
 data class IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(
     val utvistMedInnreiseForbud: UtvistMedInnreiseForbud?,
     var avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak: AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak?,
-    var ovrigIkkeOpphold: no.nav.medlemskap.domene.OvrigIkkeOpphold?
+    var ovrigIkkeOpphold: OvrigIkkeOpphold?
 )
 
 data class UtvistMedInnreiseForbud(

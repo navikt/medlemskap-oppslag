@@ -6,6 +6,7 @@ import no.nav.medlemskap.domene.AvslagEllerBortfallAvPOBOSellerTilbakekallEllerF
 import no.nav.medlemskap.domene.EOSellerEFTAOpphold
 import no.nav.medlemskap.domene.GjeldendeOppholdsstatus
 import no.nav.medlemskap.domene.IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
+import no.nav.medlemskap.domene.JaNeiUavklart.Companion.fraJaNeiUavklartVerdi
 import no.nav.medlemskap.domene.Oppholdstillatelse
 import no.nav.medlemskap.domene.OvrigIkkeOpphold
 import no.nav.medlemskap.domene.OvrigIkkeOppholdsKategori
@@ -77,8 +78,12 @@ object UdiMapper {
             return IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(
                 utvistMedInnreiseForbud = UtvistMedInnreiseForbud(
                     innreiseForbud =
-                        no.nav.medlemskap.domene.JaNeiUavklart.fraJaNeiUavklartVerdi(
-                            gjeldendeOppholdsstatus.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum.utvistMedInnreiseForbud.innreiseForbud.value()
+                        fraJaNeiUavklartVerdi(
+                            gjeldendeOppholdsstatus
+                                .ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
+                                .utvistMedInnreiseForbud
+                                .innreiseForbud
+                                .value()
                         )
                 ),
                 avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak =
@@ -91,7 +96,11 @@ object UdiMapper {
                     ),
                 ovrigIkkeOpphold = OvrigIkkeOpphold(
                     ovrigIkkeOppholdsKategori = OvrigIkkeOppholdsKategori.fraOvrigIkkeOppholdsKategoriType(
-                        gjeldendeOppholdsstatus.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum.ovrigIkkeOpphold.arsak.value()
+                        gjeldendeOppholdsstatus
+                            .ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
+                            .ovrigIkkeOpphold
+                            .arsak
+                            .value()
                     )
                 )
             )
@@ -104,8 +113,18 @@ object UdiMapper {
             if (gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTABeslutningOmOppholdsrett != null) {
                 return EOSellerEFTAOpphold(
                     periode = Periode(
-                        fom = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTABeslutningOmOppholdsrett.oppholdsrettsPeriode.fra.asLocalDate(),
-                        tom = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTABeslutningOmOppholdsrett.oppholdsrettsPeriode.til.asLocalDate()
+                        fom = gjeldendeOppholdsstatus
+                            .eoSellerEFTAOpphold
+                            .eoSellerEFTABeslutningOmOppholdsrett
+                            .oppholdsrettsPeriode
+                            .fra
+                            .asLocalDate(),
+                        tom = gjeldendeOppholdsstatus
+                            .eoSellerEFTAOpphold
+                            .eoSellerEFTABeslutningOmOppholdsrett
+                            .oppholdsrettsPeriode
+                            .til
+                            .asLocalDate()
                     ),
                     EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT
                 )

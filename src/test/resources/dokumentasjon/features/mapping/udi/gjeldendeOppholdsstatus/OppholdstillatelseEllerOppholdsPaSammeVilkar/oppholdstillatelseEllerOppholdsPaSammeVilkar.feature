@@ -34,24 +34,3 @@ Egenskap: Mapping av OppholdstillatelseEllerOppholdsPaSammeVilkar
       | OppholdstillatelseKategori     | VedtaksDato |
       | PERMANENT                      | 2016-02-03  |
       | MIDLERTIDIG                    | 2016-02-03  |
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
