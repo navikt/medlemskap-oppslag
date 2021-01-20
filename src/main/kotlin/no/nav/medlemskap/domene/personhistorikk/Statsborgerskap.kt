@@ -54,13 +54,6 @@ data class Statsborgerskap(
             return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Landkode.erBritisk(it) }
         }
 
-        infix fun List<Statsborgerskap>.erBritiskEllerSveitsiskBorger(
-            kontrollPeriodeForPersonhistorikk: Kontrollperiode
-        ): Boolean {
-            return statsborgerskapFørst(kontrollPeriodeForPersonhistorikk).any { Landkode.erBritisk(it) || Landkode.erSveitsisk(it) } &&
-                statsborgerskapSist(kontrollPeriodeForPersonhistorikk).any { Landkode.erBritisk(it) || Landkode.erSveitsisk(it) }
-        }
-
         infix fun List<Statsborgerskap>.erNorskBorger(
             kontrollPeriodeForPersonhistorikk: Kontrollperiode
         ): Boolean {

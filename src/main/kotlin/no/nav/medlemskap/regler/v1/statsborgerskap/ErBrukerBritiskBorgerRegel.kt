@@ -4,13 +4,13 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
-import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erBritiskEllerSveitsiskBorger
+import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erBritiskBorger
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.lovvalg.LovvalgRegel
 import java.time.LocalDate
 
-class ErBrukerBritiskEllerSveitsiskBorgerRegel(
+class ErBrukerBritiskBorgerRegel(
     regelId: RegelId = RegelId.REGEL_19_5,
     ytelse: Ytelse,
     private val statsborgerskap: List<Statsborgerskap>,
@@ -21,15 +21,15 @@ class ErBrukerBritiskEllerSveitsiskBorgerRegel(
     override fun operasjon(): Resultat {
 
         return when {
-            statsborgerskap.erBritiskEllerSveitsiskBorger(kontrollPeriodeForPersonhistorikk) -> Resultat.ja(regelId)
+            statsborgerskap.erBritiskBorger(kontrollPeriodeForPersonhistorikk) -> Resultat.ja(regelId)
             else -> Resultat.nei(regelId)
         }
     }
 
     companion object {
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErBrukerBritiskEllerSveitsiskBorgerRegel {
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErBrukerBritiskBorgerRegel {
 
-            return ErBrukerBritiskEllerSveitsiskBorgerRegel(
+            return ErBrukerBritiskBorgerRegel(
                 regelId = RegelId.REGEL_19_5,
                 ytelse = datagrunnlag.ytelse,
                 statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap,
