@@ -27,15 +27,23 @@ class DekkerOppholdstillatelseArbeidsperiodeRegel(
 
         val oppholdstillatelse = oppholdstillatelse.gjeldendeOppholdsstatus.oppholdstillatelsePaSammeVilkar
 
-        for (arbeidsforhold in arbeidsforhold) {
-            val arbeidsforholdTilOgMedDato = arbeidsforhold.periode.tom ?: oppholdstillatelse?.periode?.tom
-            val arbeidsforholdPeriode = Periode(arbeidsforhold.periode.fom, arbeidsforholdTilOgMedDato)
+        val dekkerOppholdstillatelseArbeidsperioden = arbeidsforhold.map {
+            Arbeidsforhold(
+                periode = Periode(it.periode.fom, it.periode.tom ?: oppholdstillatelse?.periode?.tom),
+                arbeidsavtaler = it.arbeidsavtaler,
+                arbeidsforholdstype = it.arbeidsforholdstype,
+                arbeidsgiver = it.arbeidsgiver,
+                arbeidsgivertype = it.arbeidsgivertype,
+                permisjonPermittering = it.permisjonPermittering,
+                utenlandsopphold = it.utenlandsopphold
+            )
+        }.any { oppholdstillatelse?.periode?.encloses(it.periode) == true }
 
-            if (oppholdstillatelse?.periode?.encloses(arbeidsforholdPeriode) == true) {
-                return ja(regelId)
-            }
+        return if (dekkerOppholdstillatelseArbeidsperioden) {
+            ja(regelId)
+        } else {
+            nei(regelId)
         }
-        return nei(regelId)
     }
 
     companion object {
