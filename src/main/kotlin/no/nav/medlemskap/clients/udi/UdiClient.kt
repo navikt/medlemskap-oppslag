@@ -1,10 +1,10 @@
 package no.nav.medlemskap.clients.udi
 
-import io.github.resilience4j.kotlin.retry.executeSuspendFunction
 import io.github.resilience4j.retry.Retry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mu.KotlinLogging
+import no.nav.medlemskap.clients.runWithRetryAndMetrics
 import no.udi.mt_1067_nav_data.v1.HentPersonstatusParameter
 import no.udi.mt_1067_nav_data.v1.HentPersonstatusResultat
 import v1.mt_1067_nav.no.udi.HentPersonstatusRequestType
@@ -24,12 +24,9 @@ class UdiClient(
     }
 
     suspend fun hentOppholdstatusResultat(fnr: String): HentPersonstatusResultat? {
-        retry?.let {
-            return it.executeSuspendFunction {
-                hentOppholdstatusRequest(fnr)?.resultat
-            }
+        return runWithRetryAndMetrics("UDI", "hentOppholdstillatelseV1", retry) {
+            hentOppholdstatusRequest(fnr)?.resultat
         }
-        return hentOppholdstatusRequest(fnr)?.resultat
     }
 
     private suspend fun hentOppholdstatusRequest(fnr: String): HentPersonstatusResponseType? {
