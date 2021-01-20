@@ -7,7 +7,7 @@ import io.micrometer.prometheus.PrometheusMeterRegistry
 import io.micrometer.prometheus.PrometheusRenameFilter
 import no.nav.medlemskap.common.influx.SensuInfluxConfig
 import no.nav.medlemskap.common.influx.SensuInfluxMeterRegistry
-import no.nav.medlemskap.domene.OppholdstillatelsePaSammeVilkar
+import no.nav.medlemskap.domene.GjeldendeOppholdsstatus
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.regler.common.RegelId
@@ -208,7 +208,7 @@ fun arbeidsadgangtyperCounter(arbeidsadgangtype: String?): Counter = Counter
     .description("counter for ulike typer arbeidsadgang")
     .register(Metrics.globalRegistry)
 
-fun oppholdstillatelseTypeCounter(oppholdstillatelseType: OppholdstillatelsePaSammeVilkar?): Counter = Counter
+fun oppholdstillatelseTypeCounter(oppholdstillatelseType: GjeldendeOppholdsstatus?): Counter = Counter
     .builder("oppholdstillatelsetyper")
     .tags("oppholdstillatelse", mapGjeldendeOppholdsstatusTilMetrikkVerdi(oppholdstillatelseType))
     .description("counter for oppholdstillatelsetype")
@@ -246,11 +246,23 @@ private fun mapHarTillatelseTilMetrikkVerdi(harTillatelse: Boolean?): String =
         else -> "null"
     }
 
-private fun mapGjeldendeOppholdsstatusTilMetrikkVerdi(oppholdstillatelseType: OppholdstillatelsePaSammeVilkar?): String =
-    if (oppholdstillatelseType != null) {
-        "Oppholdstillatelse på samme vilkår"
-    } else {
-        "null"
+private fun mapGjeldendeOppholdsstatusTilMetrikkVerdi(oppholdstillatelseType: GjeldendeOppholdsstatus?): String =
+    when {
+        oppholdstillatelseType?.oppholdstillatelsePaSammeVilkar != null -> {
+            "Oppholdstillatelse på samme vilkår"
+        }
+        oppholdstillatelseType?.eosellerEFTAOpphold != null -> {
+            "EØS eller EFTA opphold"
+        }
+        oppholdstillatelseType?.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum != null -> {
+            "Ikke oppholdstillatelse, ikke oppholds på samme vilkår, ikke visum"
+        }
+        oppholdstillatelseType?.uavklart != null -> {
+            "uavklart"
+        }
+        else -> {
+            "null"
+        }
     }
 
 private fun getStillingsprosentIntervall(stillingsprosent: Double): String {
