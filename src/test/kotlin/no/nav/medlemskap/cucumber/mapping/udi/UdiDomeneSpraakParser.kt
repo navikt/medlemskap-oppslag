@@ -34,6 +34,10 @@ class UdiDomeneSpraakParser {
         return mapDataTable(dataTable, EffektueringsdatoMapper())[0]
     }
 
+    fun mapUavklart(dataTable: DataTable): Uavklart {
+        return mapDataTable(dataTable, UavklartMapper())[0]
+    }
+
     fun mapOppholdstillatelse(dataTable: DataTable): Oppholdstillatelse? {
         return mapDataTable(dataTable, OppholdstillatelseMapper())[0]
     }
@@ -52,6 +56,13 @@ class UdiDomeneSpraakParser {
 
     fun mapOvrigIkkeOpphold(dataTable: DataTable): OvrigIkkeOppholdsKategori {
         return mapDataTable(dataTable, OvrigIkkeOppholdKategoriMapper())[0]
+    }
+
+    class UavklartMapper() : RadMapper<Uavklart> {
+        override fun mapRad(rad: Map<String, String>): Uavklart {
+            val uavklart = Uavklart()
+            return Uavklart()
+        }
     }
 
     class OvrigIkkeOppholdKategoriMapper() : RadMapper<OvrigIkkeOppholdsKategori> {

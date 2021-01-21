@@ -12,9 +12,14 @@ import no.udi.mt_1067_nav_data.v1.*
 class UdiMapperSteps : No {
     private val udiDomenespraakParser = UdiDomeneSpraakParser()
     private var oppholdstillatelse: Oppholdstillatelse? = null
+
     private val hentPersonstatusResultatMedArbeidsadgang: HentPersonstatusResultat =
         HentPersonstatusResultat()
             .withArbeidsadgang(Arbeidsadgang())
+
+    private val hentPersonstatusResultatMedGjeldendeOppholdsstatusUavklart: HentPersonstatusResultat =
+        HentPersonstatusResultat().withGjeldendeOppholdsstatus(GjeldendeOppholdsstatus())
+
     private val hentPersonstatusResultatMedOppholdsstatus: HentPersonstatusResultat =
         HentPersonstatusResultat()
             .withGjeldendeOppholdsstatus(GjeldendeOppholdsstatus().withOppholdstillatelseEllerOppholdsPaSammeVilkar(OppholdstillatelseEllerOppholdsPaSammeVilkar()))
@@ -45,6 +50,11 @@ class UdiMapperSteps : No {
             "effektueringsdato fra OppholdstillatelseEllerOppholdsPaSammeVilkar"
         ) { dataTable: DataTable ->
             hentPersonstatusResultatMedOppholdsstatus.gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar?.effektueringsdato = udiDomenespraakParser.mapEffektueringsdato(dataTable)
+        }
+
+        Gitt<DataTable>("følgende Uavklart") { dataTable: DataTable ->
+            hentPersonstatusResultatMedGjeldendeOppholdsstatusUavklart.gjeldendeOppholdsstatus.uavklart =
+                udiDomenespraakParser.mapUavklart(dataTable)
         }
 
         Gitt<DataTable>(
@@ -117,6 +127,10 @@ class UdiMapperSteps : No {
             oppholdstillatelse = mapTilOppholdstillatelse(hentPersonstatusResultatMedUgyldigOppholdsstatus)
         }
 
+        Når("GjeldendeOppholdsstatus med Uavklart mappes") {
+            oppholdstillatelse = mapTilOppholdstillatelse(hentPersonstatusResultatMedGjeldendeOppholdsstatusUavklart)
+        }
+
         Så<DataTable>(
             "skal mappede UtvistMedInnreiseForbud i IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum i Oppholdstillatelse være"
         ) { dataTable: DataTable ->
@@ -171,6 +185,11 @@ class UdiMapperSteps : No {
         Så("skal mappede OppholdstillatelsePaSammeVilkar være") { dataTable: DataTable ->
             val forventetOppholdstillatelsePaSammeVilkar = OppholdstillatelseDomeneSpraakParser.mapOppholdstillatelsePaSammeVilkar(dataTable)
             oppholdstillatelse?.gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar.shouldBe(forventetOppholdstillatelsePaSammeVilkar)
+        }
+
+        Så<DataTable>("skal mappede Uavklart være") { dataTable: DataTable ->
+            val forventetUavklart = OppholdstillatelseDomeneSpraakParser.mapUavklart(dataTable)
+            oppholdstillatelse?.gjeldendeOppholdsstatus?.uavklart.shouldBe(forventetUavklart)
         }
     }
 

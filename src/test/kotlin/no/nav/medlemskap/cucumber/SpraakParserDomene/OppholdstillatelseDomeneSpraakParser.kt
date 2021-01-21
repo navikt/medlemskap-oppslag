@@ -59,6 +59,18 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, HarOppholdMapper())[0]
     }
 
+    fun mapUavklart(dataTable: DataTable): Uavklart {
+        return mapDataTable(dataTable, UavklartMapper())[0]
+    }
+
+    class UavklartMapper() : RadMapper<Uavklart> {
+        override fun mapRad(rad: Map<String, String>): Uavklart {
+            return Uavklart(
+                parseBooleanMedBooleanVerdi(OppholdstillatelseDomenebegrep.UAVKLART, rad)
+            )
+        }
+    }
+
     class JaNeiUavklartMapper() : RadMapper<JaNeiUavklart> {
         override fun mapRad(rad: Map<String, String>): JaNeiUavklart {
             return JaNeiUavklart.valueOf(parseString(OppholdstillatelseDomenebegrep.JA_NEI_UAVKLART, rad))
@@ -192,6 +204,7 @@ enum class OppholdstillatelseDomenebegrep(val nøkkel: String) : Domenenøkkel {
     GYLDIG_TIL_OG_MED("Gyldig til og med"),
     OPPHOLDSTILLATELSE_TYPE("Type"),
     FORESPORSELSFODSELSNUMMER("Foresporselsfodselsnummer"),
+    UAVKLART("Uavklart"),
     UAVKLART_FLYKTNINGSTATUS("Uavklart flyktningstatus"),
     UTTREKKSTIDSPUNKT("Uttrekkstidspunkt")
     ;
