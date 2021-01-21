@@ -54,6 +54,9 @@ class UdiDomeneSpraakParser {
         return mapDataTable(dataTable, OvrigIkkeOppholdKategoriMapper())[0]
     }
 
+    fun mapEOSEllerEftaOpphold(dataTable: DataTable) {
+    }
+
     class OvrigIkkeOppholdKategoriMapper() : RadMapper<OvrigIkkeOppholdsKategori> {
         override fun mapRad(rad: Map<String, String>): OvrigIkkeOppholdsKategori {
             return OvrigIkkeOppholdsKategori.valueOf(BasisDomeneParser.parseString(UdiDomenebegrep.OVRIG_IKKE_OPPHOLD, rad))
