@@ -65,7 +65,7 @@ data class OvrigIkkeOpphold(
 )
 
 data class Uavklart(
-    val uavklart: String?
+    val uavklart: Boolean = false
 )
 data class EOSellerEFTAOpphold(
     val periode: Periode?,

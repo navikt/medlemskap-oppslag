@@ -54,7 +54,7 @@ object UdiMapper {
     private fun mapUavklart(gjeldendeOppholdsstatus: no.udi.mt_1067_nav_data.v1.GjeldendeOppholdsstatus): Uavklart? {
         if (gjeldendeOppholdsstatus.uavklart != null) {
             return Uavklart(
-                gjeldendeOppholdsstatus.uavklart.toString()
+                uavklart = true
             )
         }
         return null
