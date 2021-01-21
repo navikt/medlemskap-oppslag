@@ -11,6 +11,7 @@ import no.nav.medlemskap.regler.v1.medlemskap.*
 import no.nav.medlemskap.regler.v1.overstyring.OverstyringRegel
 import no.nav.medlemskap.regler.v1.registrerteOpplysninger.HarBrukerRegistrerteOpplysningerRegel
 import no.nav.medlemskap.regler.v1.statsborgerskap.ErBrukerBritiskBorgerRegel
+import no.nav.medlemskap.regler.v1.udi.DekkerArbeidstillatelsenArbeidsperiodenRegel
 import no.nav.medlemskap.regler.v1.udi.DekkerOppholdstillatelseArbeidsperiodeRegel
 import no.nav.medlemskap.regler.v1.udi.GyldigArbeidstillatelseIKontrollperiodeRegel
 import no.nav.medlemskap.regler.v1.udi.GyldigOppholdstillatelseIKontrollperiodeRegel
@@ -75,6 +76,7 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_19_1 -> GyldigOppholdstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_19_2 -> DekkerOppholdstillatelseArbeidsperiodeRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_19_3 -> GyldigArbeidstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_19_4 -> DekkerArbeidstillatelsenArbeidsperiodenRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_19_5 -> ErBrukerBritiskBorgerRegel.fraDatagrunnlag(datagrunnlag).regel
             else -> throw java.lang.RuntimeException("Ukjent regel")
         }
