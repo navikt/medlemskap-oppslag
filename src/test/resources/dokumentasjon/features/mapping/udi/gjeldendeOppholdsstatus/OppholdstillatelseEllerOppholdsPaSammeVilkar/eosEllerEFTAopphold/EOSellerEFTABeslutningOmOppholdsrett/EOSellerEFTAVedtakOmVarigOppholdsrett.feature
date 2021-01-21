@@ -18,6 +18,3 @@ Egenskap: Mapping av OppholdstillatelseEllerOppholdsPaSammeVilkar
     Så skal mappede EOSEllerEFTAOpphold være
       | Gyldig fra og med   | Gyldig til og med   |EOSEllerEFTAOpphold                         |
       | 2019-03-25          | 2020-02-03          |EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT |
-
-
-
