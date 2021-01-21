@@ -59,6 +59,24 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, HarOppholdMapper())[0]
     }
 
+    fun mapEOSElllerEFTAOpphold(dataTable: DataTable): EOSellerEFTAOpphold {
+        return mapDataTable(dataTable, EOSElllerEFTAOppholdMapper())[0]
+    }
+
+    class EOSElllerEFTAOppholdMapper() : RadMapper<EOSellerEFTAOpphold> {
+        override fun mapRad(rad: Map<String, String>): EOSellerEFTAOpphold {
+            return EOSellerEFTAOpphold(
+                periode = Periode(
+                    fom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad),
+                    tom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad)
+                ),
+                EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.valueOf(
+                    parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_OPPHOLD, rad)
+                )
+            )
+        }
+    }
+
     class JaNeiUavklartMapper() : RadMapper<JaNeiUavklart> {
         override fun mapRad(rad: Map<String, String>): JaNeiUavklart {
             return JaNeiUavklart.valueOf(parseString(OppholdstillatelseDomenebegrep.JA_NEI_UAVKLART, rad))
@@ -183,6 +201,7 @@ enum class OppholdstillatelseDomenebegrep(val nøkkel: String) : Domenenøkkel {
     ARBEIDSADGANG_TYPE("ArbeidsadgangType"),
     AVGJOERELSE("Avgjørelse"),
     AVGJORELSEDATO("Avgjorelsesdato"),
+    EOS_ELLER_EFTA_OPPHOLD("EOSEllerEFTAOpphold"),
     HAR_OPPHOLD("Har opphold"),
     HAR_OPPHOLDSTILLATELSE("Har tillatelse"),
     HAR_FLYKTNINGSTATUS("Har flyktningstatus"),
