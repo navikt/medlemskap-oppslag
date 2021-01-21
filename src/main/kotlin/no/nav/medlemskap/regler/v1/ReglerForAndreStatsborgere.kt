@@ -8,7 +8,8 @@ import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytUavklart
 import no.nav.medlemskap.regler.v1.lovvalg.HarBrukerJobbetUtenforNorgeRegel
-import no.nav.medlemskap.regler.v1.statsborgerskap.ErBrukerBritiskEllerSveitsiskBorgerRegel
+import no.nav.medlemskap.regler.v1.statsborgerskap.ErBrukerBritiskBorgerRegel
+import no.nav.medlemskap.regler.v1.udi.DekkerOppholdstillatelseArbeidsperiodeRegel
 import no.nav.medlemskap.regler.v1.udi.GyldigArbeidstillatelseIKontrollperiodeRegel
 import no.nav.medlemskap.regler.v1.udi.GyldigOppholdstillatelseIKontrollperiodeRegel
 
@@ -38,10 +39,16 @@ class ReglerForAndreStatsborgere(
             hvisNei = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE)
         )
 
+        val dekkerOppholdstillatelseArbeidsperiodeRegel = lagRegelflyt(
+            regel = hentRegel(REGEL_19_2),
+            hvisJa = harBrukerGyldigArbeidstillatelseIKontrollperiodeRegelflyt,
+            hvisNei = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE)
+        )
+
         val harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt = lagRegelflyt(
             regel = hentRegel(REGEL_19_1),
             hvisJa = harBrukerGyldigArbeidstillatelseIKontrollperiodeRegelflyt,
-            hvisNei = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE),
+            hvisNei = dekkerOppholdstillatelseArbeidsperiodeRegel,
             hvisUavklart = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE)
         )
 
@@ -64,8 +71,9 @@ class ReglerForAndreStatsborgere(
             val regelListe = listOf(
                 GyldigOppholdstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag),
                 GyldigArbeidstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag),
-                ErBrukerBritiskEllerSveitsiskBorgerRegel.fraDatagrunnlag(datagrunnlag),
-                HarBrukerJobbetUtenforNorgeRegel.fraDatagrunnlag(datagrunnlag)
+                ErBrukerBritiskBorgerRegel.fraDatagrunnlag(datagrunnlag),
+                HarBrukerJobbetUtenforNorgeRegel.fraDatagrunnlag(datagrunnlag),
+                DekkerOppholdstillatelseArbeidsperiodeRegel.fraDatagrunnlag(datagrunnlag)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()

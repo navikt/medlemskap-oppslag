@@ -1,9 +1,9 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regel 19.5: Er bruker britisk eller sveitsisk borger?
+Egenskap: Regel 19.5: Er bruker britisk borger?
 
-  Scenariomal: Regel 19.5 - Er bruker britisk eller sveitsisk borger?
+  Scenariomal: Regel 19.5 - Er bruker britisk borger?
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode          | Fra og med dato | Til og med dato |
       | <Statsborgerskap> | 01.01.2000      |                 |
@@ -21,8 +21,9 @@ Egenskap: Regel 19.5: Er bruker britisk eller sveitsisk borger?
       | NOR             | Nei  |
       | FRA             | Nei  |
       | USA             | Nei  |
+      | CHE             | Nei  |
       | GBR             | Ja   |
-      | CHE             | Ja   |
+
 
   Scenariomal: Regel 19.5 - Forskjellige statsborgerskap siste 12 måneder
     Gitt følgende statsborgerskap i personhistorikken
@@ -39,7 +40,7 @@ Egenskap: Regel 19.5: Er bruker britisk eller sveitsisk borger?
     Eksempler:
       | Statsborgerskap | Svar |
       | GBR             | Ja   |
-      | CHE             | Ja   |
+      | CHE             | Nei  |
       | FRA             | Nei  |
       | NOR             | Nei  |
 
