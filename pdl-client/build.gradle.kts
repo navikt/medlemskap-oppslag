@@ -1,4 +1,4 @@
-val graphqlKotlinClientVersion = "3.6.1"
+val graphqlKotlinClientVersion = "3.6.2"
 
 plugins {
     kotlin("jvm")
