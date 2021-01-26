@@ -151,11 +151,17 @@ object UdiMapper {
                     gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar?.oppholdstillatelse?.oppholdstillatelseType?.value()
                 )
 
-            val harTillatelse =
-                gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar?.oppholdstillatelse?.oppholdstillatelseType != null
+            val harTillatelse = gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar?.oppholdstillatelse?.oppholdstillatelseType != null
+
+
+            var oppholdPaSammeVilkar = null
+            if(gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar.oppholdPaSammeVilkar != null){
+                oppholdPaSammeVilkar = OppholdPaSammeVilkar
+            }
             return OppholdstillatelsePaSammeVilkar(
                 periode = oppholdstillatelsePaSammeVilkarPeriode,
                 harTillatelse = harTillatelse,
+                oppholdPaSammeVilkar = oppholdPaSammeVilkar,
                 type = oppholdstillatelsePaSammeVilkarType
             )
         }

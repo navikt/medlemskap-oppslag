@@ -46,6 +46,10 @@ class UdiDomeneSpraakParser {
         return mapDataTable(dataTable, PeriodeMapper())[0]
     }
 
+    fun mapOppholdPaSammeVilkar(dataTable: DataTable): OppholdPaSammeVilkar {
+        return mapDataTable(dataTable, OppholdPaSammeVilkarMapper())[0]
+    }
+
     fun mapJaNeiUavklart(dataTable: DataTable): JaNeiUavklart {
         return mapDataTable(dataTable, JaNeiUavklartMapper())[0]
     }
@@ -89,6 +93,12 @@ class UdiDomeneSpraakParser {
     class HarArbeidsadgangMapper() : RadMapper<JaNeiUavklart> {
         override fun mapRad(rad: Map<String, String>): JaNeiUavklart {
             return JaNeiUavklart.valueOf(BasisDomeneParser.parseString(UdiDomenebegrep.ARBEIDSADGANG, rad))
+        }
+    }
+
+    class OppholdPaSammeVilkarMapper() : RadMapper<OppholdPaSammeVilkar> {
+        override fun mapRad(rad: Map<String, String>): OppholdPaSammeVilkar {
+            return OppholdPaSammeVilkar()
         }
     }
 
