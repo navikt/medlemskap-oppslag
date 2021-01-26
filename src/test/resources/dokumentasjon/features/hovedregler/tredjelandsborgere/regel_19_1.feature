@@ -21,5 +21,5 @@ Egenskap: Regel 19.1: Har bruker arbeids- og oppholdstillatelse i kontrollperiod
       | 23.01.2019        |                   | Ja             | Nei  | PERMANENT                          |
       | 22.01.2019        |                   | Ja             | Ja   | PERMANENT                          |
       | 22.01.2019        | 22.03.2020        | Ja             | Ja   | PERMANENT                          |
-      |                   | 22.03.2020        | Ja             | Ja   | PERMANENT                          |
+      |                   | 22.03.2020        | Ja             | Ja   | MIDLERTIDIG                        |
       |                   | 21.03.2020        | Ja             | Nei  | MIDLERTIDIG                        |

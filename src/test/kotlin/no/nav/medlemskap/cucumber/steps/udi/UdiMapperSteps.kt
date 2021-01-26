@@ -12,59 +12,14 @@ import no.udi.mt_1067_nav_data.v1.*
 class UdiMapperSteps : No {
     private val udiDomenespraakParser = UdiDomeneSpraakParser()
     private var oppholdstillatelse: Oppholdstillatelse? = null
-
-    private val hentPersonstatusResultatMedArbeidsadgang: HentPersonstatusResultat =
-        HentPersonstatusResultat()
-            .withArbeidsadgang(Arbeidsadgang())
-
-    private val hentPersonstatusResultatMedGjeldendeOppholdsstatusUavklart: HentPersonstatusResultat =
-        HentPersonstatusResultat().withGjeldendeOppholdsstatus(GjeldendeOppholdsstatus())
-
-    private val hentPersonstatusResultatMedOppholdsstatus: HentPersonstatusResultat =
-        HentPersonstatusResultat()
-            .withGjeldendeOppholdsstatus(GjeldendeOppholdsstatus().withOppholdstillatelseEllerOppholdsPaSammeVilkar(OppholdstillatelseEllerOppholdsPaSammeVilkar()))
-
-    private val hentPersonstatusResultatIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum: HentPersonstatusResultat =
-        HentPersonstatusResultat()
-            .withGjeldendeOppholdsstatus(
-                GjeldendeOppholdsstatus()
-                    .withIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(
-                        IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum()
-                            .withAvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak(AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak())
-                            .withUtvistMedInnreiseForbud(UtvistMedInnreiseForbud())
-                            .withOvrigIkkeOpphold(OvrigIkkeOpphold())
-                    )
-            )
-
-    private val hentPersonstatusResultatEOSellerEFTABeslutningOmOppholdsrett: HentPersonstatusResultat =
-        HentPersonstatusResultat()
-            .withGjeldendeOppholdsstatus(
-                GjeldendeOppholdsstatus()
-                    .withEOSellerEFTAOpphold(
-                        EOSellerEFTAOpphold()
-                            .withEOSellerEFTABeslutningOmOppholdsrett(EOSellerEFTABeslutningOmOppholdsrett())
-                    )
-            )
-
-    private val hentPersonstatusResultatEOSellerEFTAOppholdstillatelse: HentPersonstatusResultat =
-        HentPersonstatusResultat()
-            .withGjeldendeOppholdsstatus(
-                GjeldendeOppholdsstatus()
-                    .withEOSellerEFTAOpphold(
-                        EOSellerEFTAOpphold()
-                            .withEOSellerEFTAOppholdstillatelse(EOSellerEFTAOppholdstillatelse())
-                    )
-            )
-
-    private val hentPersonstatusResultatEOSellerEFTAVarigOppholdsrett: HentPersonstatusResultat =
-        HentPersonstatusResultat()
-            .withGjeldendeOppholdsstatus(
-                GjeldendeOppholdsstatus()
-                    .withEOSellerEFTAOpphold(
-                        EOSellerEFTAOpphold()
-                            .withEOSellerEFTAVedtakOmVarigOppholdsrett(EOSellerEFTAVedtakOmVarigOppholdsrett())
-                    )
-            )
+    private val hentResultatBuilder = HentResultatBuilder()
+    private val hentPersonstatusResultatMedArbeidsadgang = hentResultatBuilder.hentPersonstatusResultatMedArbeidsadgang
+    private val hentPersonstatusResultatMedOppholdsstatus = hentResultatBuilder.hentPersonstatusResultatMedOppholdsstatus
+    private val hentPersonstatusResultatMedGjeldendeOppholdsstatusUavklart = hentResultatBuilder.hentPersonstatusResultatMedGjeldendeOppholdsstatusUavklart
+    private val hentPersonstatusResultatIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum = hentResultatBuilder.hentPersonstatusResultatIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
+    private val hentPersonstatusResultatEOSellerEFTABeslutningOmOppholdsrett = hentResultatBuilder.hentPersonstatusResultatEOSellerEFTABeslutningOmOppholdsrett
+    private val hentPersonstatusResultatEOSellerEFTAOppholdstillatelse = hentResultatBuilder.hentPersonstatusResultatEOSellerEFTAOppholdstillatelse
+    private val hentPersonstatusResultatEOSellerEFTAVarigOppholdsrett = hentResultatBuilder.hentPersonstatusResultatEOSellerEFTAVarigOppholdsrett
 
     init {
         Gitt<DataTable>("følgende harArbeidsadgang fra Arbeidsadgang") { dataTable: DataTable ->
@@ -77,9 +32,7 @@ class UdiMapperSteps : No {
             hentPersonstatusResultatMedOppholdsstatus.gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar?.oppholdstillatelsePeriode = udiDomenespraakParser.mapPeriode(dataTable)
         }
 
-        Gitt<DataTable>(
-            "effektueringsdato fra OppholdstillatelseEllerOppholdsPaSammeVilkar"
-        ) { dataTable: DataTable ->
+        Gitt<DataTable>("effektueringsdato fra OppholdstillatelseEllerOppholdsPaSammeVilkar") { dataTable: DataTable ->
             hentPersonstatusResultatMedOppholdsstatus.gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar?.effektueringsdato = udiDomenespraakParser.mapEffektueringsdato(dataTable)
         }
 
@@ -88,9 +41,7 @@ class UdiMapperSteps : No {
                 udiDomenespraakParser.mapUavklart(dataTable)
         }
 
-        Gitt<DataTable>(
-            "følgende Oppholdstillatelse fra OppholdstillatelseEllerOppholdsPaSammeVilkar"
-        ) { dataTable: DataTable ->
+        Gitt<DataTable>("følgende Oppholdstillatelse fra OppholdstillatelseEllerOppholdsPaSammeVilkar") { dataTable: DataTable ->
             hentPersonstatusResultatMedOppholdsstatus.gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar?.oppholdstillatelse = udiDomenespraakParser.mapOppholdstillatelse(dataTable)
         }
 
@@ -115,17 +66,13 @@ class UdiMapperSteps : No {
             hentPersonstatusResultatMedArbeidsadgang.arbeidsadgang.arbeidsadgangsPeriode = udiDomenespraakParser.mapPeriode(dataTable)
         }
 
-        Gitt<DataTable>(
-            "følgende JaNeiUavklart fra UtvistMedInnreiseForbud"
-        ) { dataTable: DataTable ->
+        Gitt<DataTable>("følgende JaNeiUavklart fra UtvistMedInnreiseForbud") { dataTable: DataTable ->
             hentPersonstatusResultatIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
                 .gjeldendeOppholdsstatus
                 .ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum.utvistMedInnreiseForbud.innreiseForbud = udiDomenespraakParser.mapJaNeiUavklart(dataTable)
         }
 
-        Gitt<DataTable>(
-            "avgjorelsesDato fra AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak"
-        ) { dataTable: DataTable ->
+        Gitt<DataTable>("avgjorelsesDato fra AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak") { dataTable: DataTable ->
             hentPersonstatusResultatIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
                 .gjeldendeOppholdsstatus
                 .ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
@@ -133,23 +80,17 @@ class UdiMapperSteps : No {
                 .avgjorelsesDato = udiDomenespraakParser.mapAvgjorelsesdato(dataTable)
         }
 
-        Gitt<DataTable>(
-            "følgende OvrigIkkeOppholdsKategori fra OvrigIkkeOpphold"
-        ) { dataTable: DataTable ->
+        Gitt<DataTable>("følgende OvrigIkkeOppholdsKategori fra OvrigIkkeOpphold") { dataTable: DataTable ->
             hentPersonstatusResultatIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum.gjeldendeOppholdsstatus
                 .ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
                 .ovrigIkkeOpphold.arsak = udiDomenespraakParser.mapOvrigIkkeOpphold(dataTable)
         }
-        Gitt<DataTable>(
-            "følgende periode fra EOSellerEFTABeslutningOmOppholdsrett fra EOSEllerEFTAOpphold med følgende type"
-        ) { dataTable: DataTable ->
+        Gitt<DataTable>("følgende periode fra EOSellerEFTABeslutningOmOppholdsrett fra EOSEllerEFTAOpphold med følgende type") { dataTable: DataTable ->
             hentPersonstatusResultatEOSellerEFTABeslutningOmOppholdsrett.gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTABeslutningOmOppholdsrett.oppholdsrettsPeriode =
                 udiDomenespraakParser.mapPeriode(dataTable)
         }
 
-        Gitt<DataTable>(
-            "følgende periode fra EOSellerEFTAOppholdstillatelse fra EOSEllerEFTAOpphold med følgende type"
-        ) { dataTable: DataTable ->
+        Gitt<DataTable>("følgende periode fra EOSellerEFTAOppholdstillatelse fra EOSEllerEFTAOpphold med følgende type") { dataTable: DataTable ->
             hentPersonstatusResultatEOSellerEFTAOppholdstillatelse.gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAOppholdstillatelse.oppholdstillatelsePeriode =
                 udiDomenespraakParser.mapPeriode(dataTable)
         }
@@ -245,9 +186,7 @@ class UdiMapperSteps : No {
             oppholdstillatelse?.arbeidsadgang?.periode.shouldBe(periodeForventet)
         }
 
-        Så<DataTable>(
-            "mappede OvrigIkkeOppholdsKategori i IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum i Oppholdstillatelse være"
-        ) { dataTable: DataTable ->
+        Så<DataTable>("mappede OvrigIkkeOppholdsKategori i IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum i Oppholdstillatelse være") { dataTable: DataTable ->
             val ovrigIkkeOppholdsKategoriForventet =
                 OppholdstillatelseDomeneSpraakParser.mapOvrigIkkeOppholdsKategori(dataTable)
             oppholdstillatelse?.gjeldendeOppholdsstatus?.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum?.ovrigIkkeOpphold?.ovrigIkkeOppholdsKategori.shouldBe(
@@ -256,8 +195,7 @@ class UdiMapperSteps : No {
         }
 
         Så("skal mappede OppholdstillatelsePaSammeVilkar være") { dataTable: DataTable ->
-            val forventetOppholdstillatelsePaSammeVilkar =
-                OppholdstillatelseDomeneSpraakParser.mapOppholdstillatelsePaSammeVilkar(dataTable)
+            val forventetOppholdstillatelsePaSammeVilkar = OppholdstillatelseDomeneSpraakParser.mapOppholdstillatelsePaSammeVilkar(dataTable)
             oppholdstillatelse?.gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar.shouldBe(
                 forventetOppholdstillatelsePaSammeVilkar
             )
