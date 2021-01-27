@@ -167,25 +167,48 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
                 parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad)
             )
 
+            val gjeldendeOppholdstillatelse = if (parseValgfriString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_KLASSE, rad) != null &&
+                parseValgfriString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_KLASSE, rad) == "Uavklart"
+            ) {
+                createGjeldendeOppholdstatusMedUavklartOppholdstillatelse()
+            } else {
+                createGjeldendeOppholdstatusMedOppholdstillatelsePaSammeVilkar(periode, rad)
+            }
+
             return Oppholdstillatelse(
                 null,
                 "fnr",
                 parseValgfriBoolean(OppholdstillatelseDomenebegrep.AVGJOERELSE.nøkkel(), rad),
-                GjeldendeOppholdsstatus(
-                    oppholdstillatelsePaSammeVilkar = OppholdstillatelsePaSammeVilkar(
-                        periode = periode,
-                        harTillatelse = parseBoolean(OppholdstillatelseDomenebegrep.HAR_OPPHOLDSTILLATELSE, rad),
-                        type = OppholdstillaelsePaSammeVilkarType.valueOf(parseString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_TYPE, rad))
-                    ),
-                    ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum = null,
-                    eosellerEFTAOpphold = null,
-                    uavklart = null
-
-                ),
+                gjeldendeOppholdstillatelse,
                 Arbeidsadgang(periode, true, null, null),
                 parseValgfriBoolean(OppholdstillatelseDomenebegrep.UAVKLART_FLYKTNINGSTATUS.nøkkel(), rad),
                 parseValgfriBoolean(OppholdstillatelseDomenebegrep.HAR_FLYKTNINGSTATUS.nøkkel(), rad)
 
+            )
+        }
+
+        private fun createGjeldendeOppholdstatusMedOppholdstillatelsePaSammeVilkar(
+            periode: Periode,
+            rad: Map<String, String>
+        ): GjeldendeOppholdsstatus {
+            return GjeldendeOppholdsstatus(
+                oppholdstillatelsePaSammeVilkar = OppholdstillatelsePaSammeVilkar(
+                    periode = periode,
+                    harTillatelse = parseValgfriBoolean(OppholdstillatelseDomenebegrep.HAR_OPPHOLDSTILLATELSE.nøkkel(), rad),
+                    type = OppholdstillaelsePaSammeVilkarType.valueOf(parseString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_TYPE, rad))
+                ),
+                ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum = null,
+                eosellerEFTAOpphold = null,
+                uavklart = null
+            )
+        }
+
+        private fun createGjeldendeOppholdstatusMedUavklartOppholdstillatelse(): GjeldendeOppholdsstatus {
+            return GjeldendeOppholdsstatus(
+                oppholdstillatelsePaSammeVilkar = null,
+                ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum = null,
+                eosellerEFTAOpphold = null,
+                uavklart = Uavklart()
             )
         }
     }
@@ -222,6 +245,7 @@ enum class OppholdstillatelseDomenebegrep(val nøkkel: String) : Domenenøkkel {
     GYLDIG_FRA_OG_MED("Gyldig fra og med"),
     GYLDIG_TIL_OG_MED("Gyldig til og med"),
     OPPHOLDSTILLATELSE_TYPE("Type"),
+    OPPHOLDSTILLATELSE_KLASSE("Klasse"),
     FORESPORSELSFODSELSNUMMER("Foresporselsfodselsnummer"),
     UAVKLART("Uavklart"),
     UAVKLART_FLYKTNINGSTATUS("Uavklart flyktningstatus"),

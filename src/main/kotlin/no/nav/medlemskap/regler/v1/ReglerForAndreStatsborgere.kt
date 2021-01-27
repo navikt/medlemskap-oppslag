@@ -9,10 +9,7 @@ import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytUavklart
 import no.nav.medlemskap.regler.v1.lovvalg.HarBrukerJobbetUtenforNorgeRegel
 import no.nav.medlemskap.regler.v1.statsborgerskap.ErBrukerBritiskBorgerRegel
-import no.nav.medlemskap.regler.v1.udi.DekkerArbeidstillatelsenArbeidsperiodenRegel
-import no.nav.medlemskap.regler.v1.udi.DekkerOppholdstillatelseArbeidsperiodeRegel
-import no.nav.medlemskap.regler.v1.udi.GyldigArbeidstillatelseIKontrollperiodeRegel
-import no.nav.medlemskap.regler.v1.udi.GyldigOppholdstillatelseIKontrollperiodeRegel
+import no.nav.medlemskap.regler.v1.udi.*
 
 class ReglerForAndreStatsborgere(
     val periode: InputPeriode,
@@ -59,7 +56,13 @@ class ReglerForAndreStatsborgere(
             hvisUavklart = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE)
         )
 
-        return harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt
+        val erOppholdstillatelseUavklartRegelflyt = lagRegelflyt(
+            regel = hentRegel(REGEL_19_6),
+            hvisJa = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE),
+            hvisNei = harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt
+        )
+
+        return erOppholdstillatelseUavklartRegelflyt
     }
 
     companion object {
@@ -81,7 +84,8 @@ class ReglerForAndreStatsborgere(
                 ErBrukerBritiskBorgerRegel.fraDatagrunnlag(datagrunnlag),
                 HarBrukerJobbetUtenforNorgeRegel.fraDatagrunnlag(datagrunnlag),
                 DekkerOppholdstillatelseArbeidsperiodeRegel.fraDatagrunnlag(datagrunnlag),
-                DekkerArbeidstillatelsenArbeidsperiodenRegel.fraDatagrunnlag(datagrunnlag)
+                DekkerArbeidstillatelsenArbeidsperiodenRegel.fraDatagrunnlag(datagrunnlag),
+                ErOppholdstillatelseUavklartRegel.fraDatagrunnlag(datagrunnlag)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()
