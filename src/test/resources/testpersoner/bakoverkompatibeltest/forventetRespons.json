@@ -203,7 +203,7 @@
             "tom" : "2022-02-12"
           },
           "type" : "PERMANENT",
-          "oppholdPaSammeVilkar": null,
+          "oppholdPaSammeVilkar": false,
           "harTillatelse" : true
         },
         "eosellerEFTAOpphold" : null,
