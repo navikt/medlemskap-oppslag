@@ -16,10 +16,6 @@ Egenskap: Mapping av OppholdstillatelseEllerOppholdsPaSammeVilkar
       | OppholdstillatelseType       | Vedtaksdato   |
       | <OppholdstillatelseKategori> | <VedtaksDato> |
 
-    Og følgende OppholdPaSammeVilkar fra OppholdstillatelseEllerOppholdsPaSammeVilkar
-      | OppholdPaSammeVilkar   |
-      | <OppholdPaSammeVilkar> |
-
     Og foresporselsfodselsnummer fra HentPersonstatusResultat
       | Foresporselsfodselsnummer  |
       | 20041276216                |
