@@ -153,7 +153,7 @@ object UdiMapper {
 
             val harTillatelse = gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar?.oppholdstillatelse?.oppholdstillatelseType != null
 
-            val oppholdPaSammeVilkar: OppholdPaSammeVilkar? = if (gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar.oppholdPaSammeVilkar != null) OppholdPaSammeVilkar(true) else null
+            val oppholdPaSammeVilkar: OppholdPaSammeVilkar? = if (gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar.oppholdPaSammeVilkar != null) OppholdPaSammeVilkar(harOppholdPaSammeVilkar = true) else null
 
             return OppholdstillatelsePaSammeVilkar(
                 periode = oppholdstillatelsePaSammeVilkarPeriode,
