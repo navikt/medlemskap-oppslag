@@ -35,6 +35,6 @@ Egenskap: Mapping av OppholdstillatelseEllerOppholdsPaSammeVilkar
       | true         | 2015-03-25          | 2016-02-03        | <OppholdstillatelseKategori>     |
 
     Eksempler:
-      | OppholdstillatelseKategori     | VedtaksDato |<OppholdPaSammeVilkar>  |
-      | PERMANENT                      | 2016-02-03  |                        |
-      | MIDLERTIDIG                    | 2016-02-03  |                        |
+      | OppholdstillatelseKategori     | VedtaksDato |
+      | PERMANENT                      | 2016-02-03  |
+      | MIDLERTIDIG                    | 2016-02-03  |
