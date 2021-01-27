@@ -31,3 +31,25 @@ Egenskap: Regel 19.3: Har bruker arbeids- og oppholdstillatelse i kontrollperiod
       |                   |                   | Ja            | GENERELL                                 | KUN_ARBEID_DELTID               | Nei  |
       |                   |                   | Ja            | GENERELL                                 | UAVKLART                        | Nei  |
       |                   |                   | Ja            | BESTEMT_ARBEIDSGIVER_ELLER_OPPDRAGSGIVER | INGEN_KRAV_TIL_STILLINGSPROSENT | Nei  |
+
+  Scenariomal: Regel 19.3 - Arbeidsomfang er tom for permanent oppholdstillatelse
+
+    Gitt følgende oppholdstillatelse
+      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type           |
+      |                   |                   | Ja             | <Oppholdstype> |
+
+    Og følgende arbeidsadgang
+      | Gyldig fra og med | Gyldig til og med | Arbeidsadgang   | ArbeidsadgangType   | ArbeidomfangKategori   |
+      | 01.01.2018        |                   | <Arbeidsadgang> | <ArbeidsadgangType> | <ArbeidomfangKategori> |
+
+    Når regel "19.3" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 23.01.2020      | 30.01.2020      | Nei                           |
+
+    Så skal svaret være "<Svar>"
+
+    Eksempler:
+      | Arbeidsadgang | Oppholdstype | ArbeidsadgangType | ArbeidomfangKategori | Svar |
+      | Ja            | PERMANENT    | GENERELL          |                      | Ja   |
+      | Ja            | MIDLERTIDIG  | GENERELL          | KUN_ARBEID_HELTID    | Ja   |
+      | Ja            | MIDLERTIDIG  | GENERELL          | KUN_ARBEID_DELTID    | Nei  |

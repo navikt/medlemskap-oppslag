@@ -28,10 +28,7 @@ data class Oppholdstillatelse(
     private fun harGyldigArbeidsomfang(): Boolean {
         val erOppholdstillatelsePermanent = gjeldendeOppholdsstatus
             ?.oppholdstillatelsePaSammeVilkar?.type == OppholdstillaelsePaSammeVilkarType.PERMANENT
-
-        val arbeidsomfangErIkkeNull = arbeidsadgang?.arbeidsomfang != null
-        val erArbeidsomfangHeltid =
-            arbeidsomfangErIkkeNull && arbeidsadgang?.arbeidsomfang == ArbeidomfangKategori.KUN_ARBEID_HELTID
+        val erArbeidsomfangHeltid = arbeidsadgang?.arbeidsomfang == ArbeidomfangKategori.KUN_ARBEID_HELTID
 
         return when {
             erOppholdstillatelsePermanent -> {
@@ -86,6 +83,7 @@ data class OvrigIkkeOpphold(
 data class Uavklart(
     val uavklart: Boolean = false
 )
+
 data class EOSellerEFTAOpphold(
     val periode: Periode?,
     val EOSellerEFTAOppholdType: EOSellerEFTAOppholdType
