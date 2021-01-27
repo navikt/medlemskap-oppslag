@@ -20,7 +20,7 @@ Egenskap: Regelflyt for regel 9
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
       | 1             | BEDR             | NOR      | 9              |
 
-  Scenariomal:
+  Scenariomal: Regelflyt for arbeidsforhold, regel 9
     Gitt følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
       | 01.01.2018      |                 | 001       | 100              |

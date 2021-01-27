@@ -108,4 +108,4 @@ Egenskap: Regelflyt for reglene fra 11.6 for bruker som har ektefelle og barn so
 
     Eksempler:
       | Medlemskap | Årsaker |
-      | UAVKLART   | 11.6.1  |
+      | UAVKLART   | 18, 11.6.1  |

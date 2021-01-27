@@ -21,7 +21,7 @@ Egenskap: Regelflyt for regel 9, for norske borgere
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
       | 1             | BEDR             | NOR      | 9              |
 
-  Scenariomal: Regel 9: Forskjellige svar på spørsmålet "Har hatt arbeid utenfor Norge"
+  Scenariomal: Regelflyt for regel 9, for norske borgere: Forskjellige svar på spørsmålet "Har hatt arbeid utenfor Norge"
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
       | 01.01.2018      |                 | Organisasjon     | NORMALT             |
@@ -46,7 +46,8 @@ Egenskap: Regelflyt for regel 9, for norske borgere
       | DAGPENGER  | Ja                            | Ja      | UAVKLART   | 12      |
       | SYKEPENGER | Ja                            | Ja      | UAVKLART   | 12      |
 
-  Scenario: Regel 9: Ytelse sykepenger, bruker som svarer nei på spørsmålet "Har hatt arbeid utenfor Norge"
+
+  Scenario: Regelflyt for regel 9, for norske borgere: Ytelse sykepenger, bruker som svarer nei på spørsmålet "Har hatt arbeid utenfor Norge"
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
       | 01.01.2018      |                 | Organisasjon     | NORMALT             |
