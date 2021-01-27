@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2020-12-04T21:00:59.805412",
+  "tidspunkt" : "2021-01-25T13:22:02.071459",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "datagrunnlag" : {
@@ -11,7 +11,6 @@
     "brukerinput" : {
       "arbeidUtenforNorge" : false
     },
-    "startDatoForYtelse" : "2018-12-31",
     "pdlpersonhistorikk" : {
       "statsborgerskap" : [ {
         "landkode" : "NOR",
@@ -196,32 +195,33 @@
     "oppholdstillatelse" : {
       "uttrekkstidspunkt" : null,
       "foresporselsfodselsnummer" : "fnr",
+      "avgjoerelse" : null,
       "gjeldendeOppholdsstatus" : {
         "oppholdstillatelsePaSammeVilkar" : {
-          "type": "PERMANENT",
           "periode" : {
             "fom" : "2019-02-12",
             "tom" : "2022-02-12"
           },
+          "type" : "PERMANENT",
           "harTillatelse" : true
         },
-        "eosellerEFTAOpphold": null,
-        "uavklart": null,
-        "ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum": null
+        "eosellerEFTAOpphold" : null,
+        "uavklart" : null,
+        "ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum" : null
       },
       "arbeidsadgang" : {
-        "harArbeidsadgang" : true,
-        "arbeidsadgangType" : "BESTEMT_ARBEID_ELLER_OPPDRAG",
-        "arbeidsomfang" : "KUN_ARBEID_HELTID",
         "periode" : {
           "fom" : "2019-02-12",
           "tom" : "2022-02-12"
-        }
+        },
+        "harArbeidsadgang" : true,
+        "arbeidsadgangType" : "BESTEMT_ARBEID_ELLER_OPPDRAG",
+        "arbeidsomfang" : "KUN_ARBEID_HELTID"
       },
       "uavklartFlyktningstatus" : null,
-      "harFlyktningstatus" : null,
-      "avgjoerelse" : null
-    }
+      "harFlyktningstatus" : null
+    },
+    "startDatoForYtelse" : "2018-12-31"
   },
   "resultat" : {
     "regelId" : "REGEL_MEDLEM_KONKLUSJON",
@@ -335,42 +335,6 @@
         "beskrivelse" : "Regel 1.4:  Er hele perioden med medlemskap innenfor 12-måneders perioden? NEI"
       } ]
     }, {
-      "regelId" : "REGEL_ARBEIDSFORHOLD",
-      "avklaring" : "Er arbeidsforhold avklart?",
-      "begrunnelse" : "",
-      "svar" : "JA",
-      "harDekning" : null,
-      "dekning" : "",
-      "delresultat" : [ {
-        "regelId" : "REGEL_3",
-        "avklaring" : "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?",
-        "begrunnelse" : "",
-        "svar" : "JA",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ]
-      }, {
-        "regelId" : "REGEL_4",
-        "avklaring" : "Er foretaket registrert i foretaksregisteret?",
-        "begrunnelse" : "",
-        "svar" : "JA",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ]
-      }, {
-        "regelId" : "REGEL_14",
-        "avklaring" : "Er bruker ansatt i staten eller i en kommune?",
-        "begrunnelse" : "",
-        "svar" : "JA",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ]
-      } ],
-      "årsaker" : [ ]
-    }, {
       "regelId" : "REGEL_BOSATT",
       "avklaring" : "Er det avklart om bruker bor i Norge?",
       "begrunnelse" : "",
@@ -425,6 +389,42 @@
       }, {
         "regelId" : "REGEL_11",
         "avklaring" : "Er bruker norsk statsborger?",
+        "begrunnelse" : "",
+        "svar" : "JA",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ]
+      } ],
+      "årsaker" : [ ]
+    }, {
+      "regelId" : "REGEL_ARBEIDSFORHOLD",
+      "avklaring" : "Er arbeidsforhold avklart?",
+      "begrunnelse" : "",
+      "svar" : "JA",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_3",
+        "avklaring" : "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?",
+        "begrunnelse" : "",
+        "svar" : "JA",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ]
+      }, {
+        "regelId" : "REGEL_4",
+        "avklaring" : "Er foretaket registrert i foretaksregisteret?",
+        "begrunnelse" : "",
+        "svar" : "JA",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ]
+      }, {
+        "regelId" : "REGEL_14",
+        "avklaring" : "Er bruker ansatt i staten eller i en kommune?",
         "begrunnelse" : "",
         "svar" : "JA",
         "harDekning" : null,

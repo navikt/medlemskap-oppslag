@@ -2,6 +2,7 @@ package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.regler.ReglerForArbeidstaker
 import no.nav.medlemskap.regler.common.Regel.Companion.jaKonklusjon
 import no.nav.medlemskap.regler.common.Regel.Companion.neiKonklusjon
 import no.nav.medlemskap.regler.common.Regel.Companion.uavklartKonklusjon
@@ -34,10 +35,11 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
 
         val resultatStatsborgerskap = reglerForStatsborgerskap.kjørHovedflyt()
         resultater.add(resultatStatsborgerskap)
-        resultater.add(
-            bestemReglerForStatsborgerskap(resultatStatsborgerskap, reglerSomSkalOverstyres)
-                .kjørHovedflyt()
-        )
+
+        val reglerForStatsborgerskap = bestemReglerForStatsborgerskap(resultatStatsborgerskap, reglerSomSkalOverstyres)
+        reglerForStatsborgerskap.forEach {
+            resultater.add(it.kjørHovedflyt())
+        }
 
         return utledResultat(ytelse, resultater)
     }
@@ -45,7 +47,6 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
     private fun kjørFellesRegler(overstyrteRegler: Map<RegelId, Svar>): List<Resultat> {
         val fellesRegler = listOf(
             ReglerForMedl.fraDatagrunnlag(datagrunnlag),
-            ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler),
             ReglerForBosatt.fraDatagrunnlag(datagrunnlag),
             ReglerForDoedsfall.fraDatagrunnlag(datagrunnlag)
         )
@@ -53,13 +54,17 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         return fellesRegler.map(Regler::kjørHovedflyt)
     }
 
-    private fun bestemReglerForStatsborgerskap(resultatStatsborgerskap: Resultat, overstyrteRegler: Map<RegelId, Svar>): Regler {
+    private fun bestemReglerForStatsborgerskap(resultatStatsborgerskap: Resultat, overstyrteRegler: Map<RegelId, Svar>): List<Regler> {
         val resultatEøsStatsborgerskap = resultatStatsborgerskap
             .delresultat
             .first { it.regelId == RegelId.REGEL_2 }
         val erEøsBorger = resultatEøsStatsborgerskap.svar == JA
         if (!erEøsBorger) {
-            return ReglerForAndreStatsborgere.fraDatagrunnlag(datagrunnlag)
+            return listOf(
+                ReglerForArbeidstaker.fraDatagrunnlag(datagrunnlag),
+                ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler),
+                ReglerForAndreStatsborgere.fraDatagrunnlag(datagrunnlag)
+            )
         }
 
         val resultatNorskStatsborgerskap = resultatStatsborgerskap
@@ -68,9 +73,16 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         val erNorskBorger = resultatNorskStatsborgerskap.svar == JA
 
         return if (erNorskBorger) {
-            ReglerForNorskeStatsborgere.fraDatagrunnlag(datagrunnlag, overstyrteRegler)
+            return listOf(
+                ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler),
+                ReglerForNorskeStatsborgere.fraDatagrunnlag(datagrunnlag, overstyrteRegler)
+            )
         } else {
-            ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag)
+            return listOf(
+                ReglerForArbeidstaker.fraDatagrunnlag(datagrunnlag),
+                ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler),
+                ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag)
+            )
         }
     }
 
