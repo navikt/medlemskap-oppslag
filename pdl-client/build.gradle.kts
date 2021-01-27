@@ -10,17 +10,8 @@ dependencies {
     implementation("com.expediagroup:graphql-kotlin-client:$graphqlKotlinClientVersion")
 }
 
-graphql {
-    client {
-        sdlEndpoint = "https://navikt.github.io/pdl/pdl-api-sdl.graphqls"
-        packageName = "no.nav.medlemskap.clients.pdl.generated"
-        allowDeprecatedFields = false
-
-        queryFiles = mutableListOf(
-                file("${project.projectDir}/src/main/resources/pdl/hentIdenter.graphql"),
-                file("${project.projectDir}/src/main/resources/pdl/hentPerson.graphql")
-        )
-    }
+tasks.withType<com.expediagroup.graphql.plugin.gradle.tasks.GraphQLGenerateClientTask> {
+    packageName.set("no.nav.medlemskap.clients.pdl.generated")
+    schemaFile.set(file("${project.projectDir}/src/main/resources/pdl/pdl-api-sdl.graphqls"))
+    queryFileDirectory.set("${project.projectDir}/src/main/resources/pdl")
 }
-
-

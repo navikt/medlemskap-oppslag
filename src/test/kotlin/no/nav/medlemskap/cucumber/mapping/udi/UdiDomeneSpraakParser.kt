@@ -34,6 +34,10 @@ class UdiDomeneSpraakParser {
         return mapDataTable(dataTable, EffektueringsdatoMapper())[0]
     }
 
+    fun mapUavklart(dataTable: DataTable): Uavklart {
+        return mapDataTable(dataTable, UavklartMapper())[0]
+    }
+
     fun mapOppholdstillatelse(dataTable: DataTable): Oppholdstillatelse? {
         return mapDataTable(dataTable, OppholdstillatelseMapper())[0]
     }
@@ -52,6 +56,16 @@ class UdiDomeneSpraakParser {
 
     fun mapOvrigIkkeOpphold(dataTable: DataTable): OvrigIkkeOppholdsKategori {
         return mapDataTable(dataTable, OvrigIkkeOppholdKategoriMapper())[0]
+    }
+
+    class UavklartMapper() : RadMapper<Uavklart> {
+        override fun mapRad(rad: Map<String, String>): Uavklart {
+            val uavklart = Uavklart()
+            return Uavklart()
+        }
+    }
+
+    fun mapEOSEllerEftaOpphold(dataTable: DataTable) {
     }
 
     class OvrigIkkeOppholdKategoriMapper() : RadMapper<OvrigIkkeOppholdsKategori> {
@@ -110,11 +124,15 @@ class UdiDomeneSpraakParser {
 
     class PeriodeMapper() : RadMapper<Periode> {
         override fun mapRad(rad: Map<String, String>): Periode {
-            val fom = BasisDomeneParser.parseString(UdiDomenebegrep.GYLDIG_FRA_OG_MED, rad)
-            val tom = BasisDomeneParser.parseString(UdiDomenebegrep.GYLDIG_TIL_OG_MED, rad)
+            val fom = BasisDomeneParser.parseValgfriString(UdiDomenebegrep.GYLDIG_FRA_OG_MED, rad)
+            val tom = BasisDomeneParser.parseValgfriString(UdiDomenebegrep.GYLDIG_TIL_OG_MED, rad)
             val periode = Periode()
-            periode.fra = DatatypeFactory.newInstance().newXMLGregorianCalendar(fom)
-            periode.til = DatatypeFactory.newInstance().newXMLGregorianCalendar(tom)
+            if (fom != null) {
+                periode.fra = DatatypeFactory.newInstance().newXMLGregorianCalendar(fom)
+            }
+            if (tom != null) {
+                periode.til = DatatypeFactory.newInstance().newXMLGregorianCalendar(tom)
+            }
             return periode
         }
     }

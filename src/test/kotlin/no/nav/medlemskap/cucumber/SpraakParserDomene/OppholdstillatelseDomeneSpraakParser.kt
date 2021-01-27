@@ -27,7 +27,7 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, UttrekkstidspunktMapper())[0]
     }
 
-    fun mapArbeidsomfangKategori(dataTable: DataTable): ArbeidomfangKategori {
+    fun mapArbeidsomfangKategori(dataTable: DataTable): ArbeidomfangKategori? {
         return mapDataTable(dataTable, ArbeidsomfangKategoriMapper())[0]
     }
 
@@ -57,6 +57,36 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
 
     fun mapOppholdstillatelsePaSammeVilkar(dataTable: DataTable): OppholdstillatelsePaSammeVilkar {
         return mapDataTable(dataTable, HarOppholdMapper())[0]
+    }
+
+    fun mapUavklart(dataTable: DataTable): Uavklart {
+        return mapDataTable(dataTable, UavklartMapper())[0]
+    }
+
+    fun mapEOSElllerEFTAOpphold(dataTable: DataTable): EOSellerEFTAOpphold {
+        return mapDataTable(dataTable, EOSElllerEFTAOppholdMapper())[0]
+    }
+
+    class EOSElllerEFTAOppholdMapper() : RadMapper<EOSellerEFTAOpphold> {
+        override fun mapRad(rad: Map<String, String>): EOSellerEFTAOpphold {
+            return EOSellerEFTAOpphold(
+                periode = Periode(
+                    fom = parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad),
+                    tom = parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad)
+                ),
+                EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.valueOf(
+                    parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_OPPHOLD, rad)
+                )
+            )
+        }
+    }
+
+    class UavklartMapper() : RadMapper<Uavklart> {
+        override fun mapRad(rad: Map<String, String>): Uavklart {
+            return Uavklart(
+                parseBooleanMedBooleanVerdi(OppholdstillatelseDomenebegrep.UAVKLART, rad)
+            )
+        }
     }
 
     class JaNeiUavklartMapper() : RadMapper<JaNeiUavklart> {
@@ -100,9 +130,11 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
         }
     }
 
-    class ArbeidsomfangKategoriMapper() : RadMapper<ArbeidomfangKategori> {
-        override fun mapRad(rad: Map<String, String>): ArbeidomfangKategori {
-            return ArbeidomfangKategori.valueOf(parseString(OppholdstillatelseDomenebegrep.ARBEIDOMFANG_KATEGORI, rad))
+    class ArbeidsomfangKategoriMapper() : RadMapper<ArbeidomfangKategori?> {
+        override fun mapRad(rad: Map<String, String>): ArbeidomfangKategori? {
+            return parseValgfriString(OppholdstillatelseDomenebegrep.ARBEIDOMFANG_KATEGORI, rad)?.let {
+                ArbeidomfangKategori.valueOf(it)
+            }
         }
     }
 
@@ -183,6 +215,7 @@ enum class OppholdstillatelseDomenebegrep(val nøkkel: String) : Domenenøkkel {
     ARBEIDSADGANG_TYPE("ArbeidsadgangType"),
     AVGJOERELSE("Avgjørelse"),
     AVGJORELSEDATO("Avgjorelsesdato"),
+    EOS_ELLER_EFTA_OPPHOLD("EOSEllerEFTAOpphold"),
     HAR_OPPHOLD("Har opphold"),
     HAR_OPPHOLDSTILLATELSE("Har tillatelse"),
     HAR_FLYKTNINGSTATUS("Har flyktningstatus"),
@@ -192,6 +225,7 @@ enum class OppholdstillatelseDomenebegrep(val nøkkel: String) : Domenenøkkel {
     GYLDIG_TIL_OG_MED("Gyldig til og med"),
     OPPHOLDSTILLATELSE_TYPE("Type"),
     FORESPORSELSFODSELSNUMMER("Foresporselsfodselsnummer"),
+    UAVKLART("Uavklart"),
     UAVKLART_FLYKTNINGSTATUS("Uavklart flyktningstatus"),
     UTTREKKSTIDSPUNKT("Uttrekkstidspunkt")
     ;

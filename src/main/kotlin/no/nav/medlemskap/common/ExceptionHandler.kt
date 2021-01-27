@@ -61,9 +61,13 @@ fun StatusPages.Configuration.exceptionHandler() {
     }
 
     exception<HentPersonstatusFault> { cause ->
-        if (cause.faultInfo.kodeId == 10003) {
-            call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
+
+        when (cause.faultInfo.kodeId) {
+            10003 -> call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
                 "Person ikke funnet i UDI-tjenesten"
+            }
+            10623 -> call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
+                "Person er død og finnes ikke i UDI-tjenesten"
             }
         }
     }

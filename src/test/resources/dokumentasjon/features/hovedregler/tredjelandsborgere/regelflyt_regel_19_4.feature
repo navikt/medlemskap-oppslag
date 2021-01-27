@@ -1,7 +1,7 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regelflyt for regel 19.2
+Egenskap: Regelflyt for regel 19.4
 
   Bakgrunn:
 
@@ -31,22 +31,22 @@ Egenskap: Regelflyt for regel 19.2
       | <Arbeid fra og med> | <Arbeid til og med> | Organisasjon     | NORMALT             | 1               |
 
     Og følgende oppholdstillatelse
-      | Gyldig fra og med | Gyldig til og med    | Har tillatelse | Type      |
-      | 01.01.2017        | <Opphold til og med> | Ja             | PERMANENT |
+      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type      |
+      | 01.01.2017        |                   | Ja             | PERMANENT |
 
     Og følgende arbeidsadgang
-      | Gyldig fra og med | Gyldig til og med | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
-      | 01.01.2017        |                   | Ja            | GENERELL          | KUN_ARBEID_HELTID    |
+      | Gyldig fra og med | Gyldig til og med          | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
+      | 01.01.2017        | <Arbeidsadgang til og med> | Ja            | GENERELL          | KUN_ARBEID_HELTID    |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 05.01.2018      | 12.02.2018      | Nei                           |
 
     Så skal svaret være "<Medlemskap>"
-    Og skal regel "19.2" gi svaret "<Regel 19.2>"
+    Og skal regel "19.4" gi svaret "<Regel 19.4>"
 
     Eksempler:
-      | Opphold til og med | Arbeid fra og med | Arbeid til og med | Regel 19.2 | Medlemskap |
-      | 20.03.2017         | 01.01.2017        |                   | Ja         | Ja         |
-      | 20.01.2017         | 01.01.2017        | 30.01.2017        | Nei        | Uavklart   |
-      | 20.01.2017         | 31.12.2016        | 15.01.2017        | Nei        | Uavklart   |
+      | Arbeidsadgang til og med | Arbeid fra og med | Arbeid til og med | Regel 19.4 | Medlemskap |
+      | 20.03.2017               | 01.01.2017        |                   | Ja         | Ja         |
+      | 20.01.2017               | 01.01.2017        | 30.01.2017        | Nei        | Uavklart   |
+      | 20.01.2017               | 31.12.2016        | 15.01.2017        | Nei        | Uavklart   |

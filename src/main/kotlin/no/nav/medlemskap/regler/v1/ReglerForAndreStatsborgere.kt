@@ -9,6 +9,7 @@ import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytUavklart
 import no.nav.medlemskap.regler.v1.lovvalg.HarBrukerJobbetUtenforNorgeRegel
 import no.nav.medlemskap.regler.v1.statsborgerskap.ErBrukerBritiskBorgerRegel
+import no.nav.medlemskap.regler.v1.udi.DekkerArbeidstillatelsenArbeidsperiodenRegel
 import no.nav.medlemskap.regler.v1.udi.DekkerOppholdstillatelseArbeidsperiodeRegel
 import no.nav.medlemskap.regler.v1.udi.GyldigArbeidstillatelseIKontrollperiodeRegel
 import no.nav.medlemskap.regler.v1.udi.GyldigOppholdstillatelseIKontrollperiodeRegel
@@ -33,10 +34,16 @@ class ReglerForAndreStatsborgere(
             hvisNei = arbeidUtenforNorgeRegelflyt
         )
 
+        val dekkerArbeidstillatelsenArbeidsperiodenRegelflyt = lagRegelflyt(
+            regel = hentRegel(REGEL_19_4),
+            hvisJa = erBrukerBritiskEllerSveitsiskBorgerRegelflyt,
+            hvisNei = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE)
+        )
+
         val harBrukerGyldigArbeidstillatelseIKontrollperiodeRegelflyt = lagRegelflyt(
             regel = hentRegel(REGEL_19_3),
             hvisJa = erBrukerBritiskEllerSveitsiskBorgerRegelflyt,
-            hvisNei = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE)
+            hvisNei = dekkerArbeidstillatelsenArbeidsperiodenRegelflyt
         )
 
         val dekkerOppholdstillatelseArbeidsperiodeRegel = lagRegelflyt(
@@ -73,7 +80,8 @@ class ReglerForAndreStatsborgere(
                 GyldigArbeidstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag),
                 ErBrukerBritiskBorgerRegel.fraDatagrunnlag(datagrunnlag),
                 HarBrukerJobbetUtenforNorgeRegel.fraDatagrunnlag(datagrunnlag),
-                DekkerOppholdstillatelseArbeidsperiodeRegel.fraDatagrunnlag(datagrunnlag)
+                DekkerOppholdstillatelseArbeidsperiodeRegel.fraDatagrunnlag(datagrunnlag),
+                DekkerArbeidstillatelsenArbeidsperiodenRegel.fraDatagrunnlag(datagrunnlag)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()

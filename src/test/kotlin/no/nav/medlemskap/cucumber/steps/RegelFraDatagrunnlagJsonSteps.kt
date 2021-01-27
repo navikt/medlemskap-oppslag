@@ -37,7 +37,6 @@ class RegelFraDatagrunnlagJsonSteps : No {
         Så("skal medlemskap i Folketrygden være {string}") {
             forventetVerdi: String ->
             val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
-
             assertEquals(forventetSvar, resultat!!.svar)
         }
     }

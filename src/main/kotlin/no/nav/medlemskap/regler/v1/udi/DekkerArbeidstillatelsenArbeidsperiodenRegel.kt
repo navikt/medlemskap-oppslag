@@ -12,28 +12,28 @@ import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import no.nav.medlemskap.regler.common.Resultat.Companion.uavklart
 
-class DekkerOppholdstillatelseArbeidsperiodeRegel(
+class DekkerArbeidstillatelsenArbeidsperiodenRegel(
     ytelse: Ytelse,
     private val oppholdstillatelse: Oppholdstillatelse?,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    regelId: RegelId = RegelId.REGEL_19_2
+    regelId: RegelId = RegelId.REGEL_19_4
 ) : BasisRegel(regelId, ytelse) {
 
     override fun operasjon(): Resultat {
 
-        if (oppholdstillatelse?.gjeldendeOppholdsstatus == null) {
+        if (oppholdstillatelse?.arbeidsadgang == null) {
             return uavklart(regelId)
         }
 
-        val oppholdstillatelse = oppholdstillatelse.gjeldendeOppholdsstatus.oppholdstillatelsePaSammeVilkar
+        val arbeidsadgang = oppholdstillatelse.arbeidsadgang
 
-        val dekkerOppholdstillatelseArbeidsperioden = arbeidsforhold.any {
-            oppholdstillatelse?.periode?.encloses(
-                Periode(it.periode.fom, it.periode.tom ?: oppholdstillatelse.periode.tom)
-            ) == true
+        val dekkerArbeidstillatelsenArbeidsperioden = arbeidsforhold.any {
+            arbeidsadgang.periode.encloses(
+                Periode(it.periode.fom, it.periode.tom ?: arbeidsadgang.periode.tom)
+            )
         }
 
-        return if (dekkerOppholdstillatelseArbeidsperioden) {
+        return if (dekkerArbeidstillatelsenArbeidsperioden) {
             ja(regelId)
         } else {
             nei(regelId)
@@ -42,8 +42,8 @@ class DekkerOppholdstillatelseArbeidsperiodeRegel(
 
     companion object {
 
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): DekkerOppholdstillatelseArbeidsperiodeRegel {
-            return DekkerOppholdstillatelseArbeidsperiodeRegel(
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): DekkerArbeidstillatelsenArbeidsperiodenRegel {
+            return DekkerArbeidstillatelsenArbeidsperiodenRegel(
                 ytelse = datagrunnlag.ytelse,
                 oppholdstillatelse = datagrunnlag.oppholdstillatelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold
