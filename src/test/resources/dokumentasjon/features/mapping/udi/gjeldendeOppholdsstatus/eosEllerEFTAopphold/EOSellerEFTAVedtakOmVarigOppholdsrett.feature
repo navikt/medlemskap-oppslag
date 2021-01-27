@@ -3,10 +3,10 @@
 
 Egenskap: Mapping av OppholdstillatelseEllerOppholdsPaSammeVilkar
 
-  Scenario: Bruker har EOSEllerEFTAOpphold fra EOSellerEFTABeslutningOmOppholdsrett
+  Scenariomal: Bruker har EOSEllerEFTAOpphold fra EOSellerEFTABeslutningOmOppholdsrett
     Gitt følgende oppholdsrettsPeriode fra EOSellerEFTAVedtakOmVarigOppholdsrett fra EOSEllerEFTAOpphold med følgende type
       | Gyldig fra og med   | Gyldig til og med   |
-      | 2019-03-25          | 2020-02-03          |
+      | <Gyldig fra og med> | <Gyldig til og med> |
 
 
     Og uttrekkstidspunkt fra HentPersonstatusResultat
@@ -16,5 +16,11 @@ Egenskap: Mapping av OppholdstillatelseEllerOppholdsPaSammeVilkar
     Når GjeldendeOppholdsstatus med EOSellerEFTAVedtakOmVarigOppholdsrett med EOSEllerEFTAOpphold mappes
 
     Så skal mappede EOSEllerEFTAOpphold være
-      | Gyldig fra og med   | Gyldig til og med   |EOSEllerEFTAOpphold                         |
-      | 2019-03-25          | 2020-02-03          |EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT |
+      | Gyldig fra og med   | Gyldig til og med   |EOSEllerEFTAOpphold   |
+      | <Gyldig fra og med> | <Gyldig til og med> |<EOSEllerEFTAOpphold> |
+
+    Eksempler:
+      | Gyldig fra og med | Gyldig til og med  |EOSEllerEFTAOpphold                         |
+      | 2019-03-25        | 2020-02-03         |EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT |
+      | 2019-03-25        |                    |EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT |
+      |                   |                    |EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT |

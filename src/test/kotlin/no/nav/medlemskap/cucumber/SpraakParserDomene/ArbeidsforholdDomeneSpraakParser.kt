@@ -141,12 +141,12 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
     class AnsattMapper : RadMapper<Ansatte> {
         override fun mapRad(rad: Map<String, String>): Ansatte {
             return Ansatte(
-                parseInt(ArbeidDomenebegrep.ANTALL_ANSATTE, rad),
-                Bruksperiode(
+                antall = parseInt(ArbeidDomenebegrep.ANTALL_ANSATTE, rad),
+                bruksperiode = Periode(
                     parseDato(ArbeidDomenebegrep.BRUKSPERIODE_GYLDIG_FRA, rad),
                     parseDato(ArbeidDomenebegrep.BRUKSPERIODE_GYLDIG_TIL, rad)
                 ),
-                Gyldighetsperiode(
+                gyldighetsperiode = Periode(
                     parseDato(ArbeidDomenebegrep.GYLDIGHETSPERIODE_FRA_OG_MED, rad),
                     parseDato(ArbeidDomenebegrep.GYLDIGHETSPERIODE_TIL_OG_MED, rad)
                 )

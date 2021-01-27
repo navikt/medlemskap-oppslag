@@ -71,8 +71,8 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
         override fun mapRad(rad: Map<String, String>): EOSellerEFTAOpphold {
             return EOSellerEFTAOpphold(
                 periode = Periode(
-                    fom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad),
-                    tom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad)
+                    fom = parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad),
+                    tom = parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad)
                 ),
                 EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.valueOf(
                     parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_OPPHOLD, rad)

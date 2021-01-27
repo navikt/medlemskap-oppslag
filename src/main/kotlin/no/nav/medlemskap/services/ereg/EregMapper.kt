@@ -1,10 +1,9 @@
 package no.nav.medlemskap.services.ereg
 
 import no.nav.medlemskap.clients.ereg.Organisasjon
+import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.arbeidsforhold.Ansatte
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsgiver
-import no.nav.medlemskap.domene.arbeidsforhold.Bruksperiode
-import no.nav.medlemskap.domene.arbeidsforhold.Gyldighetsperiode
 import no.nav.medlemskap.domene.arbeidsforhold.JuridiskEnhet
 
 fun mapOrganisasjonTilArbeidsgiver(organisasjon: Organisasjon, juridiskeEnheter: List<Organisasjon>?): Arbeidsgiver {
@@ -38,8 +37,8 @@ fun mapAnsatte(ansatte: List<no.nav.medlemskap.clients.ereg.Ansatte>?): List<Ans
         )
     }
 
-fun mapGyldighetsperiode(gyldighetsperiode: no.nav.medlemskap.clients.ereg.Gyldighetsperiode?): Gyldighetsperiode? =
-    gyldighetsperiode?.let { Gyldighetsperiode(fom = it.fom, tom = it.tom) }
+fun mapGyldighetsperiode(gyldighetsperiode: no.nav.medlemskap.clients.ereg.Gyldighetsperiode?): Periode? =
+    gyldighetsperiode?.let { Periode(fom = it.fom, tom = it.tom) }
 
-fun mapBruksperiode(bruksperiode: no.nav.medlemskap.clients.ereg.Bruksperiode?): Bruksperiode? =
-    bruksperiode?.let { Bruksperiode(fom = it.fom, tom = it.tom) }
+fun mapBruksperiode(bruksperiode: no.nav.medlemskap.clients.ereg.Bruksperiode?): Periode? =
+    bruksperiode?.let { Periode(fom = it.fom, tom = it.tom) }
