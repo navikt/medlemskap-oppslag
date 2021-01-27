@@ -50,6 +50,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_19_3("19.3", "Har bruker en gyldig arbeidstillatelse 12 måneder bakover og 2 måned fremover i tid?", "Bruker har ikke gyldig arbeidstillatelse"),
     REGEL_19_4("19.4", "Dekker arbeidstillatelsen arbeidsperioden bakover i tid?", "arbeidstillatelsen dekker ikke arbeidsperioden"),
     REGEL_19_5("19.5", "Er bruker britisk borger?", "", "Bruker er britisk borger"),
+    REGEL_19_6("19.6", "Er oppholdstillatelsen uavklart?", "", "UDI-tjenesten returnerte uavklart oppholdstillatelse, og må derfor behandles manuelt av UDI"),
     REGEL_20("20", "Har bruker mer enn 80% arbeid i Norge de siste 3 månedene?", "Bruker har ikke utført mer enn 80% arbeid de siste 3 månedene", "Bruker har utført mer enn 80% arbeid de siste 3 månedene"),
     REGEL_OPPLYSNINGER("OPPLYSNINGER", "Finnes det registrerte opplysninger på bruker?", "Alle de følgende ble NEI"),
     REGEL_A("OPPLYSNINGER-MEDL", "Finnes det registrerte opplysninger i MEDL?", "", "Det finnes registrert opplysninger i Medl"),
