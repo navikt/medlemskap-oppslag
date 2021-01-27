@@ -8,7 +8,6 @@ Egenskap: Regel 10: Hvis postadresse eller midlertidig adresse er utenlandsk, s√
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | Oslo    | NOR      | 01.01.2000      |                 |
 
-
     Og f√∏lgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
       | NOR      | 01.01.2000      |                 |
@@ -20,7 +19,7 @@ Egenskap: Regel 10: Hvis postadresse eller midlertidig adresse er utenlandsk, s√
 
     Og f√∏lgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister |
-      | 01.01.2018      |                 | 001       | 100              |               |
+      | 01.01.2018      |                 | 001       | 70               |               |
 
     Og f√∏lgende arbeidsgiver i arbeidsforholdet
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |

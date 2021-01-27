@@ -23,7 +23,7 @@ Egenskap: Regel 10: Bruker som mangler bostedsadresse, skal få uavklart medlems
 
     Og følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister |
-      | 01.01.2018      |                 | 001       | 100              |               |
+      | 01.01.2018      |                 | 001       | 70               |               |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
