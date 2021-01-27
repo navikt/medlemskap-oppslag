@@ -134,11 +134,15 @@ class UdiDomeneSpraakParser {
 
     class PeriodeMapper() : RadMapper<Periode> {
         override fun mapRad(rad: Map<String, String>): Periode {
-            val fom = BasisDomeneParser.parseString(UdiDomenebegrep.GYLDIG_FRA_OG_MED, rad)
-            val tom = BasisDomeneParser.parseString(UdiDomenebegrep.GYLDIG_TIL_OG_MED, rad)
+            val fom = BasisDomeneParser.parseValgfriString(UdiDomenebegrep.GYLDIG_FRA_OG_MED, rad)
+            val tom = BasisDomeneParser.parseValgfriString(UdiDomenebegrep.GYLDIG_TIL_OG_MED, rad)
             val periode = Periode()
-            periode.fra = DatatypeFactory.newInstance().newXMLGregorianCalendar(fom)
-            periode.til = DatatypeFactory.newInstance().newXMLGregorianCalendar(tom)
+            if (fom != null) {
+                periode.fra = DatatypeFactory.newInstance().newXMLGregorianCalendar(fom)
+            }
+            if (tom != null) {
+                periode.til = DatatypeFactory.newInstance().newXMLGregorianCalendar(tom)
+            }
             return periode
         }
     }

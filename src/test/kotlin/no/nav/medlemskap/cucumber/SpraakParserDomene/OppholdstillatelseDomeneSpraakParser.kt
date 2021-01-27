@@ -27,7 +27,7 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, UttrekkstidspunktMapper())[0]
     }
 
-    fun mapArbeidsomfangKategori(dataTable: DataTable): ArbeidomfangKategori {
+    fun mapArbeidsomfangKategori(dataTable: DataTable): ArbeidomfangKategori? {
         return mapDataTable(dataTable, ArbeidsomfangKategoriMapper())[0]
     }
 
@@ -71,8 +71,8 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
         override fun mapRad(rad: Map<String, String>): EOSellerEFTAOpphold {
             return EOSellerEFTAOpphold(
                 periode = Periode(
-                    fom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad),
-                    tom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad)
+                    fom = parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad),
+                    tom = parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad)
                 ),
                 EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.valueOf(
                     parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_OPPHOLD, rad)
@@ -130,9 +130,11 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
         }
     }
 
-    class ArbeidsomfangKategoriMapper() : RadMapper<ArbeidomfangKategori> {
-        override fun mapRad(rad: Map<String, String>): ArbeidomfangKategori {
-            return ArbeidomfangKategori.valueOf(parseString(OppholdstillatelseDomenebegrep.ARBEIDOMFANG_KATEGORI, rad))
+    class ArbeidsomfangKategoriMapper() : RadMapper<ArbeidomfangKategori?> {
+        override fun mapRad(rad: Map<String, String>): ArbeidomfangKategori? {
+            return parseValgfriString(OppholdstillatelseDomenebegrep.ARBEIDOMFANG_KATEGORI, rad)?.let {
+                ArbeidomfangKategori.valueOf(it)
+            }
         }
     }
 
