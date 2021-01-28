@@ -46,6 +46,10 @@ class UdiDomeneSpraakParser {
         return mapDataTable(dataTable, PeriodeMapper())[0]
     }
 
+    fun mapEOsOpppholdgrunnlag(dataTable: DataTable): EOSellerEFTAGrunnlagskategoriOppholdsrett {
+        return mapDataTable(dataTable, BeslutninOmOppholdsrett())[0]
+    }
+
     fun mapJaNeiUavklart(dataTable: DataTable): JaNeiUavklart {
         return mapDataTable(dataTable, JaNeiUavklartMapper())[0]
     }
@@ -58,14 +62,16 @@ class UdiDomeneSpraakParser {
         return mapDataTable(dataTable, OvrigIkkeOppholdKategoriMapper())[0]
     }
 
+    class BeslutninOmOppholdsrett() : RadMapper<EOSellerEFTAGrunnlagskategoriOppholdsrett> {
+        override fun mapRad(rad: Map<String, String>): EOSellerEFTAGrunnlagskategoriOppholdsrett {
+            return EOSellerEFTAGrunnlagskategoriOppholdsrett.valueOf(BasisDomeneParser.parseString(UdiDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT, rad))
+        }
+    }
     class UavklartMapper() : RadMapper<Uavklart> {
         override fun mapRad(rad: Map<String, String>): Uavklart {
             val uavklart = Uavklart()
             return Uavklart()
         }
-    }
-
-    fun mapEOSEllerEftaOpphold(dataTable: DataTable) {
     }
 
     class OvrigIkkeOppholdKategoriMapper() : RadMapper<OvrigIkkeOppholdsKategori> {
@@ -159,6 +165,7 @@ enum class UdiDomenebegrep(val nøkkel: String) : Domenenøkkel {
     ARBEIDOMFANG_KATEGORI("ArbeidomfangKategori"),
     ARBEIDSADGANG_TYPE("ArbeidsadgangType"),
     AVGJORELSESDATO("Avgjørelsesdato"),
+    EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT("EOSellerEFTAGrunnlagskategoriOppholdsrett"),
     EFFEKTUERINGSDATO("Effektueringsdato"),
     FORESPORSELSFODSELSNUMMER("Foresporselsfodselsnummer"),
     OPPHOLDSTILLATELSE("Oppholdstillatelse"),

@@ -1,10 +1,7 @@
 package no.nav.medlemskap.domene
 
-import no.udi.mt_1067_nav_data.v1.EOSellerEFTAGrunnlagskategoriOppholdsrett
-import no.udi.mt_1067_nav_data.v1.EOSellerEFTAGrunnlagskategoriOppholdstillatelse
 import java.time.LocalDate
 import java.time.LocalDateTime
-import javax.xml.bind.annotation.XmlEnumValue
 
 data class Oppholdstillatelse(
     val uttrekkstidspunkt: LocalDateTime?,
@@ -94,7 +91,6 @@ data class EOSellerEFTAOpphold(
     val EOSellerEFTAGrunnlagskategoriOppholdstillatelseType: EOSellerEFTAGrunnlagskategoriOppholdsTillatelseType?
 )
 
-
 enum class EOSellerEFTAGrunnlagskategoriOppholdsrettType(val kodeverdi: String) {
     VARIG("Varig"),
     INGEN_INFORMASJON("IngenInformasjon"),
@@ -110,7 +106,6 @@ enum class EOSellerEFTAGrunnlagskategoriOppholdsrettType(val kodeverdi: String) 
                 .firstOrNull { it.kodeverdi == eosEllerEFTAGrunnlagskategoriOppholdsrettType }
         }
     }
-
 }
 
 enum class EOSellerEFTAGrunnlagskategoriOppholdsTillatelseType(val kodeverdi: String) {
@@ -129,7 +124,6 @@ enum class EOSellerEFTAGrunnlagskategoriOppholdsTillatelseType(val kodeverdi: St
                 .firstOrNull { it.kodeverdi == eosEllerEFTAGrunnlagskategoriOppholdsTillatelseType }
         }
     }
-
 }
 
 enum class OvrigIkkeOppholdsKategori(val kodeverdi: String) {

@@ -76,7 +76,12 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
                 ),
                 EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.valueOf(
                     parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_OPPHOLD, rad)
-                )
+                ),
+                EOSellerEFTAGrunnlagskategoriOppholdsrettType =
+                    EOSellerEFTAGrunnlagskategoriOppholdsrettType.fraEOSellerEFTAGrunnlagskategoriOppholdsrettType(
+                        parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT, rad)
+                    ),
+                EOSellerEFTAGrunnlagskategoriOppholdstillatelseType = null
             )
         }
     }
@@ -239,6 +244,7 @@ enum class OppholdstillatelseDomenebegrep(val nøkkel: String) : Domenenøkkel {
     AVGJOERELSE("Avgjørelse"),
     AVGJORELSEDATO("Avgjorelsesdato"),
     EOS_ELLER_EFTA_OPPHOLD("EOSEllerEFTAOpphold"),
+    EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT("EOSellerEFTAGrunnlagskategoriOppholdsrett"),
     HAR_OPPHOLD("Har opphold"),
     HAR_OPPHOLDSTILLATELSE("Har tillatelse"),
     HAR_FLYKTNINGSTATUS("Har flyktningstatus"),

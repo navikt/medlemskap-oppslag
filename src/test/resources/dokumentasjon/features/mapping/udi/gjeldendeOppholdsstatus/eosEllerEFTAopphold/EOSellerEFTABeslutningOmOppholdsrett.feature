@@ -8,6 +8,9 @@ Egenskap: Mapping av EOSEllerEFTAOpphold
       | Gyldig fra og med   | Gyldig til og med   |
       | <Gyldig fra og med> | <Gyldig til og med> |
 
+    Og følgende EOSellerEFTAGrunnlagskategoriOppholdsrett fra EOSellerEFTABeslutningOmOppholdsrett
+      | EOSellerEFTAGrunnlagskategoriOppholdsrett   |
+      | <EOSellerEFTAGrunnlagskategoriOppholdsrett> |
 
     Og uttrekkstidspunkt fra HentPersonstatusResultat
       | Uttrekkstidspunkt       |
@@ -16,11 +19,18 @@ Egenskap: Mapping av EOSEllerEFTAOpphold
     Når GjeldendeOppholdsstatus med EOSEllerEFTAOpphold med EOSellerEFTABeslutningOmOppholdsrett mappes
 
     Så skal mappede EOSEllerEFTAOpphold være
-      | Gyldig fra og med   | Gyldig til og med   |EOSEllerEFTAOpphold   |
-      | <Gyldig fra og med> | <Gyldig til og med> |<EOSEllerEFTAOpphold> |
+      | Gyldig fra og med   | Gyldig til og med   |EOSEllerEFTAOpphold   |EOSellerEFTAGrunnlagskategoriOppholdsrett   | EOSellerEFTAGrunnlagskategoriOppholdstillatelse   |
+      | <Gyldig fra og med> | <Gyldig til og med> |<EOSEllerEFTAOpphold> |<EOSellerEFTAGrunnlagskategoriOppholdsrett> |                                                   |
 
     Eksempler:
-      | Gyldig fra og med | Gyldig til og med  |EOSEllerEFTAOpphold                      |
-      | 2019-03-25        | 2020-02-03         |EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT|
-      | 2019-03-25        |                    |EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT|
-      |                   |                    |EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT|
+      | Gyldig fra og med | Gyldig til og med  | EOSEllerEFTAOpphold                       | EOSellerEFTAGrunnlagskategoriOppholdsrett  | EOSellerEFTAGrunnlagskategoriOppholdstillatelse  |
+      | 2019-03-25        | 2022-02-03         | EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT | VARIG                                      |                                                  |
+      | 2019-03-25        |                    | EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT | INGEN_INFORMASJON                          |                                                  |
+      | 2019-03-25        |                    | EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT | FAMILIE                                    |                                                  |
+      | 2019-03-25        | 2022-02-03         | EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT | TJENESTEYTING_ELLER_ETABLERING             |                                                  |
+      | 2019-03-25        | 2022-02-03         | EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT | UAVKLART                                   |                                                  |
+
+
+
+
+

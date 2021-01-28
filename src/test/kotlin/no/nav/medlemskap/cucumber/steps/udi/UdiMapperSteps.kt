@@ -100,6 +100,11 @@ class UdiMapperSteps : No {
                 udiDomenespraakParser.mapPeriode(dataTable)
         }
 
+        Gitt<DataTable>("følgende EOSellerEFTAGrunnlagskategoriOppholdsrett fra EOSellerEFTABeslutningOmOppholdsrett") { dataTable: DataTable ->
+            hentPersonstatusResultatEOSellerEFTABeslutningOmOppholdsrett.gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTABeslutningOmOppholdsrett.eosOppholdsgrunnlag =
+                udiDomenespraakParser.mapEOsOpppholdgrunnlag(dataTable)
+        }
+
         Gitt<DataTable>("følgende oppholdsrettsPeriode fra EOSellerEFTAVedtakOmVarigOppholdsrett  fra EOSEllerEFTAOpphold med følgende type") {
             oppholdstillatelse = mapTilOppholdstillatelse(hentPersonstatusResultatEOSellerEFTAVarigOppholdsrett)
         }
