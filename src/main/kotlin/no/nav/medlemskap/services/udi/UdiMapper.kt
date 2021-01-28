@@ -151,11 +151,14 @@ object UdiMapper {
                     gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar?.oppholdstillatelse?.oppholdstillatelseType?.value()
                 )
 
-            val harTillatelse =
-                gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar?.oppholdstillatelse?.oppholdstillatelseType != null
+            val harTillatelse = gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar?.oppholdstillatelse?.oppholdstillatelseType != null
+
+            val oppholdPaSammeVilkar: Boolean = gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar.oppholdPaSammeVilkar != null
+
             return OppholdstillatelsePaSammeVilkar(
                 periode = oppholdstillatelsePaSammeVilkarPeriode,
                 harTillatelse = harTillatelse,
+                oppholdPaSammeVilkar = oppholdPaSammeVilkar,
                 type = oppholdstillatelsePaSammeVilkarType
             )
         }

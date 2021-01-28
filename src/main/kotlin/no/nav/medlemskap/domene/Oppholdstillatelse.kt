@@ -53,7 +53,8 @@ data class Arbeidsadgang(
 data class OppholdstillatelsePaSammeVilkar(
     val periode: Periode?,
     val type: OppholdstillaelsePaSammeVilkarType?,
-    val harTillatelse: Boolean?
+    val harTillatelse: Boolean?,
+    val oppholdPaSammeVilkar: Boolean
 )
 
 data class GjeldendeOppholdsstatus(
