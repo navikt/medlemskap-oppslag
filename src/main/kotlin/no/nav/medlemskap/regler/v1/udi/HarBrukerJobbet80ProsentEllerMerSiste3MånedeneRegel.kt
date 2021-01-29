@@ -1,4 +1,4 @@
-package no.nav.medlemskap.regler.v1.lovvalg
+package no.nav.medlemskap.regler.v1.udi
 
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
@@ -10,6 +10,7 @@ import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
+import no.nav.medlemskap.regler.v1.lovvalg.LovvalgRegel
 import java.time.LocalDate
 
 class HarBrukerJobbet80ProsentEllerMerSiste3MånedeneRegel(
@@ -24,7 +25,7 @@ class HarBrukerJobbet80ProsentEllerMerSiste3MånedeneRegel(
         return when {
             arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(
                 80.0,
-                Kontrollperiode(fom = periode.fom.minusMonths(3), tom = periode.tom), ytelse
+                Kontrollperiode(fom = startDatoForYtelse.minusMonths(3), tom = startDatoForYtelse), ytelse
             ) -> ja(regelId)
             else -> nei(regelId)
         }

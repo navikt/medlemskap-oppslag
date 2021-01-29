@@ -31,7 +31,7 @@ Egenskap: Regelflyt for regel 19.5 og regel 9
 
     Og følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister | Beregnet antall timer pr uke |
-      | 10.10.1975      | 01.08.2020      | yrkeskode | 100              | NIS           | 37.5                         |
+      | 10.10.1975      | 01.08.2021      | yrkeskode | 100              | NIS           | 37.5                         |
 
   Scenariomal: Regelflyt for regel 19.5 og regel 9
     Gitt følgende statsborgerskap i personhistorikken

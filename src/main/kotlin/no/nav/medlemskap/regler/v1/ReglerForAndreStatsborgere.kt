@@ -25,10 +25,16 @@ class ReglerForAndreStatsborgere(
             hvisNei = regelflytJa(ytelse, REGEL_ANDRE_BORGERE)
         )
 
+        val harBrukerJobbet80ProsentEllerMerSiste3Månedeneflyt = lagRegelflyt(
+            regel = hentRegel(REGEL_20),
+            hvisJa = arbeidUtenforNorgeRegelflyt,
+            hvisNei = regelflytUavklart(ytelse, REGEL_BOSATT)
+        )
+
         val erBrukerBritiskEllerSveitsiskBorgerRegelflyt = lagRegelflyt(
             regel = hentRegel(REGEL_19_5),
             hvisJa = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE),
-            hvisNei = arbeidUtenforNorgeRegelflyt
+            hvisNei = harBrukerJobbet80ProsentEllerMerSiste3Månedeneflyt
         )
 
         val dekkerArbeidstillatelsenArbeidsperiodenRegelflyt = lagRegelflyt(
@@ -85,7 +91,8 @@ class ReglerForAndreStatsborgere(
                 HarBrukerJobbetUtenforNorgeRegel.fraDatagrunnlag(datagrunnlag),
                 DekkerOppholdstillatelseArbeidsperiodeRegel.fraDatagrunnlag(datagrunnlag),
                 DekkerArbeidstillatelsenArbeidsperiodenRegel.fraDatagrunnlag(datagrunnlag),
-                ErOppholdstillatelseUavklartRegel.fraDatagrunnlag(datagrunnlag)
+                ErOppholdstillatelseUavklartRegel.fraDatagrunnlag(datagrunnlag),
+                HarBrukerJobbet80ProsentEllerMerSiste3MånedeneRegel.fraDatagrunnlag(datagrunnlag, REGEL_20)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()

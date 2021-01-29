@@ -8,13 +8,25 @@ Egenskap: Regelflyt for regel 20, brukere som ikke er registrert som bosatt i No
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | Oslo    | NOR      | 01.01.2000      |                 |
 
+    Og følgende bostedsadresser i personhistorikken
+      | Adresse | Landkode | Fra og med dato | Til og med dato |
+      | Oslo    | NOR      | 01.01.2000      |                 |
+
     Og følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
-      | NOR      | 01.01.2000      |                 |
+      | JPN      | 01.01.2000      |                 |
 
     Og følgende arbeidsgiver i arbeidsforholdet
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
       | 1             | BEDR             | NOR      | 9              |
+
+    Og følgende oppholdstillatelse
+      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type      |
+      | 01.01.2018        |                   | Ja             | PERMANENT |
+
+    Og følgende arbeidsadgang
+      | Gyldig fra og med | Gyldig til og med | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
+      | 01.01.2018        |                   | Ja            | GENERELL          | KUN_ARBEID_HELTID    |
 
   Scenariomal:
     Gitt følgende arbeidsforhold fra AAReg

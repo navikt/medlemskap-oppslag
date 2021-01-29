@@ -19,7 +19,7 @@ Egenskap: Regel 10: Hvis postadresse eller midlertidig adresse er utenlandsk, s�
 
     Og følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister |
-      | 01.01.2018      |                 | 001       | 70               |               |
+      | 01.01.2018      |                 | 001       | 100              |               |
 
     Og følgende arbeidsgiver i arbeidsforholdet
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
