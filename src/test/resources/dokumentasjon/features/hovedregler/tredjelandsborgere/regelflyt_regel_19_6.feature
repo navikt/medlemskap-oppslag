@@ -23,7 +23,7 @@ Egenskap: Regelflyt for regel 19.6
 
     Og følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister | Beregnet antall timer pr uke |
-      | 10.10.1975      | 01.08.2020      | yrkeskode | 100              | NIS           | 37.5                         |
+      | 10.10.1975      | 01.08.2021      | yrkeskode | 100              | NIS           | 37.5                         |
 
   Scenario: Regelflyt for regel 19.6 med uavklart oppholdstillatelse
     Gitt følgende statsborgerskap i personhistorikken
