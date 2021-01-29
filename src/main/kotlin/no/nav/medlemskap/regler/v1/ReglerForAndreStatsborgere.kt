@@ -28,7 +28,7 @@ class ReglerForAndreStatsborgere(
         val harBrukerJobbet80ProsentEllerMerSiste3Månedeneflyt = lagRegelflyt(
             regel = hentRegel(REGEL_20),
             hvisJa = arbeidUtenforNorgeRegelflyt,
-            hvisNei = regelflytUavklart(ytelse, REGEL_BOSATT)
+            hvisNei = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE)
         )
 
         val erBrukerBritiskEllerSveitsiskBorgerRegelflyt = lagRegelflyt(
