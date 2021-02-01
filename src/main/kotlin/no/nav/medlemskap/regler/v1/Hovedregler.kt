@@ -73,7 +73,6 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
 
         return if (erNorskBorger) {
             listOf(
-            return listOf(
                 ReglerForMedl.fraDatagrunnlag(datagrunnlag),
                 ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler),
                 ReglerForBosatt.fraDatagrunnlag(datagrunnlag),
