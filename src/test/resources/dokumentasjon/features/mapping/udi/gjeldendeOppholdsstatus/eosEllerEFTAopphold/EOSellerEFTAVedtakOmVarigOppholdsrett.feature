@@ -19,14 +19,13 @@ Egenskap: Mapping av OppholdstillatelseEllerOppholdsPaSammeVilkar
     Når GjeldendeOppholdsstatus med EOSellerEFTAVedtakOmVarigOppholdsrett med EOSEllerEFTAOpphold mappes
 
     Så skal mappede EOSEllerEFTAOpphold være
-      | Gyldig fra og med   | Gyldig til og med   |EOSEllerEFTAOpphold   | EOSellerEFTAGrunnlagskategoriOppholdsrett    | EOSellerEFTAGrunnlagskategoriOppholdstillatelse   |
-      | <Gyldig fra og med> | <Gyldig til og med> |<EOSEllerEFTAOpphold> | <EOSellerEFTAGrunnlagskategoriOppholdsrett>  |                                                   |
+      | Gyldig fra og med   | Gyldig til og med   |EOSEllerEFTAOpphold   | EOSellerEFTAGrunnlagskategoriOppholdsrett    |
+      | <Gyldig fra og med> | <Gyldig til og med> |<EOSEllerEFTAOpphold> | <EOSellerEFTAGrunnlagskategoriOppholdsrett>  |
 
     Eksempler:
-      | Gyldig fra og med | Gyldig til og med  | EOSEllerEFTAOpphold                           | EOSellerEFTAGrunnlagskategoriOppholdsrett  | EOSellerEFTAGrunnlagskategoriOppholdstillatelse  |
-      | 2019-03-25        | 2021-02-03         | EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT   | VARIG                                      |                                                  |
-      | 2019-03-25        | 2021-03-25         | EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT   | INGEN_INFORMASJON                          |                                                  |
-      | 2019-03-25        | 2021-03-25         | EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT   | FAMILIE                                    |                                                  |
-      | 2019-03-25        | 2022-02-03         | EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT   | TJENESTEYTING_ELLER_ETABLERING             |                                                  |
-      | 2019-03-25        | 2022-02-03         | EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT   | UAVKLART                                   |                                                  |
-
+      | Gyldig fra og med | Gyldig til og med  | EOSEllerEFTAOpphold                           | EOSellerEFTAGrunnlagskategoriOppholdsrett  |
+      | 2019-03-25        | 2021-02-03         | EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT   | VARIG                                      |
+      | 2019-03-25        | 2021-03-25         | EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT   | INGEN_INFORMASJON                          |
+      | 2019-03-25        | 2021-03-25         | EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT   | FAMILIE                                    |
+      | 2019-03-25        | 2022-02-03         | EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT   | TJENESTEYTING_ELLER_ETABLERING             |
+      | 2019-03-25        | 2022-02-03         | EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT   | UAVKLART                                   |

@@ -102,7 +102,21 @@ class UdiMapperSteps : No {
 
         Gitt<DataTable>("følgende EOSellerEFTAGrunnlagskategoriOppholdsrett fra EOSellerEFTABeslutningOmOppholdsrett") { dataTable: DataTable ->
             hentPersonstatusResultatEOSellerEFTABeslutningOmOppholdsrett.gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTABeslutningOmOppholdsrett.eosOppholdsgrunnlag =
-                udiDomenespraakParser.mapEOsOpppholdgrunnlag(dataTable)
+                udiDomenespraakParser.mapEOsOpppholdgrunnlagOppholdsrett(dataTable)
+        }
+
+        Gitt<DataTable>(
+            "følgende EOSellerEFTAGrunnlagskategoriOppholdsrett fra EOSellerEFTAVedtakOmVarigOppholdsrett"
+        ) { dataTable: DataTable ->
+            hentPersonstatusResultatEOSellerEFTAVarigOppholdsrett.gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAVedtakOmVarigOppholdsrett.eosOppholdsgrunnlag =
+                udiDomenespraakParser.mapEOsOpppholdgrunnlagOppholdsrett(dataTable)
+        }
+
+        Gitt<DataTable>(
+            "følgende EOSellerEFTAGrunnlagskategoriOppholdsrett fra EOSellerEFTAOppholdstillatelse"
+        ) { dataTable: DataTable ->
+            hentPersonstatusResultatEOSellerEFTAOppholdstillatelse.gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAOppholdstillatelse.eosOppholdsgrunnlag =
+                udiDomenespraakParser.mapEOsOpppholdgrunnlagOppholdstillatelse(dataTable)
         }
 
         Gitt<DataTable>("følgende oppholdsrettsPeriode fra EOSellerEFTAVedtakOmVarigOppholdsrett  fra EOSEllerEFTAOpphold med følgende type") {
@@ -134,6 +148,13 @@ class UdiMapperSteps : No {
         }
 
         Så<DataTable>("skal mappede EOSEllerEFTAOpphold være") { dataTable: DataTable ->
+            val forventetEOSEllerEFTAOpphold = OppholdstillatelseDomeneSpraakParser.mapEOSElllerEFTAOpphold(dataTable)
+            oppholdstillatelse?.gjeldendeOppholdsstatus?.eosellerEFTAOpphold.shouldBe(forventetEOSEllerEFTAOpphold)
+        }
+
+        Så<DataTable>(
+            "skal mappede oppholdstillatelse med EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT"
+        ) { dataTable: DataTable ->
             val forventetEOSEllerEFTAOpphold = OppholdstillatelseDomeneSpraakParser.mapEOSElllerEFTAOpphold(dataTable)
             oppholdstillatelse?.gjeldendeOppholdsstatus?.eosellerEFTAOpphold.shouldBe(forventetEOSEllerEFTAOpphold)
         }

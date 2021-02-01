@@ -46,8 +46,12 @@ class UdiDomeneSpraakParser {
         return mapDataTable(dataTable, PeriodeMapper())[0]
     }
 
-    fun mapEOsOpppholdgrunnlag(dataTable: DataTable): EOSellerEFTAGrunnlagskategoriOppholdsrett {
-        return mapDataTable(dataTable, BeslutninOmOppholdsrett())[0]
+    fun mapEOsOpppholdgrunnlagOppholdsrett(dataTable: DataTable): EOSellerEFTAGrunnlagskategoriOppholdsrett {
+        return mapDataTable(dataTable, BeslutninOmOppholdsrettMapper())[0]
+    }
+
+    fun mapEOsOpppholdgrunnlagOppholdstillatelse(dataTable: DataTable): EOSellerEFTAGrunnlagskategoriOppholdstillatelse {
+        return mapDataTable(dataTable, KategoriOppholdstillatelseMapper())[0]
     }
 
     fun mapJaNeiUavklart(dataTable: DataTable): JaNeiUavklart {
@@ -62,9 +66,15 @@ class UdiDomeneSpraakParser {
         return mapDataTable(dataTable, OvrigIkkeOppholdKategoriMapper())[0]
     }
 
-    class BeslutninOmOppholdsrett() : RadMapper<EOSellerEFTAGrunnlagskategoriOppholdsrett> {
+    class BeslutninOmOppholdsrettMapper() : RadMapper<EOSellerEFTAGrunnlagskategoriOppholdsrett> {
         override fun mapRad(rad: Map<String, String>): EOSellerEFTAGrunnlagskategoriOppholdsrett {
             return EOSellerEFTAGrunnlagskategoriOppholdsrett.valueOf(BasisDomeneParser.parseString(UdiDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT, rad))
+        }
+    }
+
+    class KategoriOppholdstillatelseMapper() : RadMapper<EOSellerEFTAGrunnlagskategoriOppholdstillatelse> {
+        override fun mapRad(rad: Map<String, String>): EOSellerEFTAGrunnlagskategoriOppholdstillatelse {
+            return EOSellerEFTAGrunnlagskategoriOppholdstillatelse.valueOf(BasisDomeneParser.parseString(UdiDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSTILLATELSE, rad))
         }
     }
     class UavklartMapper() : RadMapper<Uavklart> {
@@ -166,6 +176,7 @@ enum class UdiDomenebegrep(val nøkkel: String) : Domenenøkkel {
     ARBEIDSADGANG_TYPE("ArbeidsadgangType"),
     AVGJORELSESDATO("Avgjørelsesdato"),
     EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT("EOSellerEFTAGrunnlagskategoriOppholdsrett"),
+    EOS_ELLER_EFTA_KATEGORI_OPPHOLDSTILLATELSE("EOSellerEFTAGrunnlagskategoriOppholdstillatelse"),
     EFFEKTUERINGSDATO("Effektueringsdato"),
     FORESPORSELSFODSELSNUMMER("Foresporselsfodselsnummer"),
     OPPHOLDSTILLATELSE("Oppholdstillatelse"),
