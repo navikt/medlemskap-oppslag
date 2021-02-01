@@ -16,6 +16,7 @@ class ReglerForBosatt(
 ) : Regler(ytelse, regelMap, overstyrteRegler) {
 
     override fun hentHovedflyt(): Regelflyt {
+
         val erBrukerBosattINorgeFlyt = lagRegelflyt(
             regel = hentRegel(RegelId.REGEL_10),
             hvisJa = regelflytJa(ytelse, RegelId.REGEL_BOSATT),

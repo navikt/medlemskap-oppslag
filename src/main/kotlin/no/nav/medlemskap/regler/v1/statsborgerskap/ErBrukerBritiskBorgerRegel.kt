@@ -11,7 +11,7 @@ import no.nav.medlemskap.regler.v1.lovvalg.LovvalgRegel
 import java.time.LocalDate
 
 class ErBrukerBritiskBorgerRegel(
-    regelId: RegelId = RegelId.REGEL_19_5,
+    regelId: RegelId = RegelId.REGEL_19_4,
     ytelse: Ytelse,
     private val statsborgerskap: List<Statsborgerskap>,
     periode: InputPeriode,
@@ -30,7 +30,7 @@ class ErBrukerBritiskBorgerRegel(
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErBrukerBritiskBorgerRegel {
 
             return ErBrukerBritiskBorgerRegel(
-                regelId = RegelId.REGEL_19_5,
+                regelId = RegelId.REGEL_19_4,
                 ytelse = datagrunnlag.ytelse,
                 statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap,
                 periode = datagrunnlag.periode,

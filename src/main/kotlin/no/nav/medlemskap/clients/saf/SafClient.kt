@@ -1,6 +1,6 @@
 package no.nav.medlemskap.clients.saf
 
-import com.expediagroup.graphql.client.GraphQLClient
+import com.expediagroup.graphql.client.ktor.GraphQLKtorClient
 import com.expediagroup.graphql.types.GraphQLResponse
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.*
@@ -32,7 +32,7 @@ class SafClient(
     suspend fun hentJournaldata(fnr: String, callId: String): Dokumenter.Result {
         return runWithRetryAndMetrics("SAF", "DokumentoversiktBruker", retry) {
 
-            val dokumenterQuery = Dokumenter(GraphQLClient(url = URL(baseUrl)))
+            val dokumenterQuery = Dokumenter(GraphQLKtorClient(url = URL(baseUrl)))
 
             val stsToken = stsClient.oidcToken()
             val variables = Dokumenter.Variables(

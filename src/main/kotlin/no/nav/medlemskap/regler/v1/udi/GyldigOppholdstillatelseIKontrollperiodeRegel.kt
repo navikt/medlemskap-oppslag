@@ -14,7 +14,7 @@ class GyldigOppholdstillatelseIKontrollperiodeRegel(
     private val oppholdstillatelse: Oppholdstillatelse?,
     private val periode: InputPeriode,
     private val førsteDagForYtelse: LocalDate?,
-    regelId: RegelId = RegelId.REGEL_19_1
+    regelId: RegelId = RegelId.REGEL_19_2
 ) : BasisRegel(regelId, ytelse) {
 
     override fun operasjon(): Resultat {

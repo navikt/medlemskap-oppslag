@@ -54,6 +54,10 @@ class UdiDomeneSpraakParser {
         return mapDataTable(dataTable, KategoriOppholdstillatelseMapper())[0]
     }
 
+    fun mapOppholdPaSammeVilkar(dataTable: DataTable): OppholdPaSammeVilkar {
+        return mapDataTable(dataTable, OppholdPaSammeVilkarMapper())[0]
+    }
+
     fun mapJaNeiUavklart(dataTable: DataTable): JaNeiUavklart {
         return mapDataTable(dataTable, JaNeiUavklartMapper())[0]
     }
@@ -84,6 +88,9 @@ class UdiDomeneSpraakParser {
         }
     }
 
+    fun mapEOSEllerEftaOpphold(dataTable: DataTable) {
+    }
+
     class OvrigIkkeOppholdKategoriMapper() : RadMapper<OvrigIkkeOppholdsKategori> {
         override fun mapRad(rad: Map<String, String>): OvrigIkkeOppholdsKategori {
             return OvrigIkkeOppholdsKategori.valueOf(BasisDomeneParser.parseString(UdiDomenebegrep.OVRIG_IKKE_OPPHOLD, rad))
@@ -105,6 +112,12 @@ class UdiDomeneSpraakParser {
     class HarArbeidsadgangMapper() : RadMapper<JaNeiUavklart> {
         override fun mapRad(rad: Map<String, String>): JaNeiUavklart {
             return JaNeiUavklart.valueOf(BasisDomeneParser.parseString(UdiDomenebegrep.ARBEIDSADGANG, rad))
+        }
+    }
+
+    class OppholdPaSammeVilkarMapper() : RadMapper<OppholdPaSammeVilkar> {
+        override fun mapRad(rad: Map<String, String>): OppholdPaSammeVilkar {
+            return OppholdPaSammeVilkar()
         }
     }
 

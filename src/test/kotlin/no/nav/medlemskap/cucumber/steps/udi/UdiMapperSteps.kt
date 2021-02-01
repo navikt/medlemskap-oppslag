@@ -119,6 +119,11 @@ class UdiMapperSteps : No {
                 udiDomenespraakParser.mapEOsOpppholdgrunnlagOppholdstillatelse(dataTable)
         }
 
+        Gitt<DataTable>("følgende OppholdPaSammeVilkar fra OppholdstillatelseEllerOppholdsPaSammeVilkar") { dataTable: DataTable ->
+            hentPersonstatusResultatMedOppholdsstatus.gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar.oppholdPaSammeVilkar =
+                udiDomenespraakParser.mapOppholdPaSammeVilkar(dataTable)
+        }
+
         Gitt<DataTable>("følgende oppholdsrettsPeriode fra EOSellerEFTAVedtakOmVarigOppholdsrett  fra EOSEllerEFTAOpphold med følgende type") {
             oppholdstillatelse = mapTilOppholdstillatelse(hentPersonstatusResultatEOSellerEFTAVarigOppholdsrett)
         }
@@ -145,6 +150,10 @@ class UdiMapperSteps : No {
 
         Når("GjeldendeOppholdsstatus med EOSellerEFTAVedtakOmVarigOppholdsrett med EOSEllerEFTAOpphold mappes") {
             oppholdstillatelse = mapTilOppholdstillatelse(hentPersonstatusResultatEOSellerEFTAVarigOppholdsrett)
+        }
+
+        Når("Gjeldende opphold på samme vilkår") {
+            oppholdstillatelse = mapTilOppholdstillatelse(hentPersonstatusResultatMedOppholdsstatus)
         }
 
         Så<DataTable>("skal mappede EOSEllerEFTAOpphold være") { dataTable: DataTable ->

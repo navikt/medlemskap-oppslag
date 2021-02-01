@@ -1,18 +1,17 @@
 package no.nav.medlemskap.common.healthcheck
 
-import io.ktor.application.call
-import io.ktor.http.HttpStatusCode
-import io.ktor.response.respond
-import io.ktor.routing.Routing
-import io.ktor.routing.get
+import io.ktor.application.*
+import io.ktor.http.*
+import io.ktor.response.*
+import io.ktor.routing.*
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 import kotlin.system.measureTimeMillis
 
 fun Routing.healthRoute(path: String, healthService: HealthService) {
     get(path) {
-        var healthy: List<Result> = listOf()
-        var unhealthy: List<Result> = listOf()
+        var healthy: List<Result>
+        var unhealthy: List<Result>
 
         val duration = Duration.of(
             measureTimeMillis {
