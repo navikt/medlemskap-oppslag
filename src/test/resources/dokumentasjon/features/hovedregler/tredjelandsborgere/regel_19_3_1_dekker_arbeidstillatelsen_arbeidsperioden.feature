@@ -1,7 +1,7 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regel 19.4: Dekker arbeidstillatelsen arbeidsperioden bakover i tid?
+Egenskap: Regel 19.3.1: Dekker arbeidstillatelsen arbeidsperioden bakover i tid?
 
   Scenariomal:
 
@@ -13,7 +13,7 @@ Egenskap: Regel 19.4: Dekker arbeidstillatelsen arbeidsperioden bakover i tid?
       | Fra og med dato     | Til og med dato     | Arbeidsgivertype | Arbeidsforholdstype |
       | <Arbeid fra og med> | <Arbeid til og med> | Organisasjon     | NORMALT             |
 
-    Når regel "19.4" kjøres med følgende parametre
+    Når regel "19.3.1" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 23.01.2020      | 30.01.2020      | Nei                           |
 

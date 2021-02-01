@@ -12,7 +12,7 @@ import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 class ErOppholdstillatelseUavklartRegel(
     ytelse: Ytelse,
     private val oppholdstillatelse: Oppholdstillatelse?,
-    regelId: RegelId = RegelId.REGEL_19_6
+    regelId: RegelId = RegelId.REGEL_19_1
 ) : BasisRegel(regelId, ytelse) {
 
     override fun operasjon(): Resultat {

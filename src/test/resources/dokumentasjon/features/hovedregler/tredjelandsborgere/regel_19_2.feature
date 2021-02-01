@@ -1,17 +1,13 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regel 19.2: Dekker oppholdstillatelsen arbeidsperioden bakover i tid?
+Egenskap: Regel 19.2: Har bruker arbeids- og oppholdstillatelse i kontrollperiode?
 
-  Scenariomal: Regel 19.2: Dekker oppholdstillatelsen arbeidsperioden bakover i tid?
+  Scenariomal: Regel 19.2: Har bruker arbeids- og oppholdstillatelse i kontrollperiode?
 
     Gitt følgende oppholdstillatelse
-      | Gyldig fra og med               | Gyldig til og med               | Har tillatelse | Type      |
-      | <Oppholdstillatelse fra og med> | <Oppholdstillatelse til og med> | Ja             | PERMANENT |
-
-    Og følgende arbeidsforhold fra AAReg
-      | Fra og med dato     | Til og med dato     | Arbeidsgivertype | Arbeidsforholdstype |
-      | <Arbeid fra og med> | <Arbeid til og med> | Organisasjon     | NORMALT             |
+      | Gyldig fra og med   | Gyldig til og med   | Har tillatelse   | Type                               |
+      | <Gyldig fra og med> | <Gyldig til og med> | <Har tillatelse> |<OppholdstillaelsePaSammeVilkarType>|
 
     Når regel "19.2" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
@@ -20,10 +16,10 @@ Egenskap: Regel 19.2: Dekker oppholdstillatelsen arbeidsperioden bakover i tid?
     Så skal svaret være "<Svar>"
 
     Eksempler:
-      | Oppholdstillatelse fra og med | Oppholdstillatelse til og med | Arbeid fra og med | Arbeid til og med | Svar |
-      | 01.01.2018                    |                               | 01.01.2018        |                   | Ja   |
-      | 22.01.2019                    | 22.03.2020                    | 22.01.2019        | 22.03.2020        | Ja   |
-      | 22.01.2019                    |                               | 22.01.2019        | 22.03.2020        | Ja   |
-      | 22.01.2019                    | 22.03.2020                    | 22.01.2019        |                   | Ja   |
-      | 23.01.2019                    |                               | 01.01.2018        |                   | Nei  |
-      | 23.01.2019                    | 31.12.2019                    | 23.01.2019        | 01.01.2020        | Nei  |
+      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Svar | OppholdstillaelsePaSammeVilkarType |
+      | 01.01.2018        |                   | Ja             | Ja   | PERMANENT                          |
+      | 23.01.2019        |                   | Ja             | Nei  | PERMANENT                          |
+      | 22.01.2019        |                   | Ja             | Ja   | PERMANENT                          |
+      | 22.01.2019        | 22.03.2020        | Ja             | Ja   | PERMANENT                          |
+      |                   | 22.03.2020        | Ja             | Ja   | MIDLERTIDIG                        |
+      |                   | 21.03.2020        | Ja             | Nei  | MIDLERTIDIG                        |
