@@ -103,7 +103,7 @@ class Regelflyt(
         }
 
         fun regelflytUavklart(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
-            return Regelflyt(regelUavklartKonklusjon(ytelse, regelId), ytelse)
+            return Regelflyt(regelUavklartKonklusjon(ytelse, regelId, Konklusjonstype.REGELFLYT), ytelse)
         }
     }
 }

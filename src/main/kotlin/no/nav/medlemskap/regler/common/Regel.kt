@@ -20,10 +20,10 @@ data class Regel(
     )
 
     companion object {
-        fun regelUavklartKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(
+        fun regelUavklartKonklusjon(ytelse: Ytelse, regelId: RegelId, konklusjonstype: Konklusjonstype) = Regel(
             regelId = regelId,
             ytelse = ytelse,
-            operasjon = { Resultat.uavklart(regelId) }
+            operasjon = { Resultat.uavklart(regelId, konklusjonstype) }
         )
 
         fun regelJaKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(

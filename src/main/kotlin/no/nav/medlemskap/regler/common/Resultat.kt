@@ -11,7 +11,8 @@ data class Resultat(
     val svar: Svar,
     var harDekning: Svar? = null,
     var dekning: String = "",
-    val delresultat: List<Resultat> = listOf()
+    val delresultat: List<Resultat> = listOf(),
+    private val konklusjonstype: Konklusjonstype = Konklusjonstype.REGEL
 ) {
     val årsaker = finnÅrsaker()
 
@@ -100,10 +101,11 @@ data class Resultat(
             return emptyList()
         }
 
-        fun ja(regelId: RegelId) = Resultat(
+        fun ja(regelId: RegelId, konklusjonstype: Konklusjonstype = Konklusjonstype.REGELFLYT) = Resultat(
             regelId = regelId,
             begrunnelse = regelId.jaBegrunnelse,
-            svar = Svar.JA
+            svar = Svar.JA,
+            konklusjonstype = konklusjonstype
         )
 
         fun ja(regelId: RegelId, dekning: String) = Resultat(
@@ -128,10 +130,11 @@ data class Resultat(
             svar = Svar.NEI
         )
 
-        fun uavklart(regelId: RegelId) = Resultat(
+        fun uavklart(regelId: RegelId, konklusjonstype: Konklusjonstype = Konklusjonstype.REGELFLYT) = Resultat(
             regelId,
             begrunnelse = regelId.uavklartBegrunnelse,
-            svar = Svar.UAVKLART
+            svar = Svar.UAVKLART,
+            konklusjonstype = konklusjonstype
         )
 
         fun uavklartKonklusjon(regelId: RegelId? = null) = Resultat(

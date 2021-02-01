@@ -55,7 +55,7 @@ abstract class Regler(
         val regel = when (svar) {
             JA -> regelJaKonklusjon(ytelse, regelId)
             NEI -> regelNeiKonklusjon(ytelse, regelId)
-            else -> regelUavklartKonklusjon(ytelse, regelId)
+            else -> regelUavklartKonklusjon(ytelse, regelId, Konklusjonstype.REGELFLYT)
         }
 
         val resultat = regel.utfør()
