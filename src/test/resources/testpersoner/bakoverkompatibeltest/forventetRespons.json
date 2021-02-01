@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2021-02-01T12:26:48.087105",
+  "tidspunkt" : "2021-02-01T12:53:58.862919",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "datagrunnlag" : {
@@ -249,24 +249,6 @@
       } ],
       "årsaker" : [ ]
     }, {
-      "regelId" : "REGEL_BOSATT",
-      "avklaring" : "Er det avklart om bruker bor i Norge?",
-      "begrunnelse" : "",
-      "svar" : "JA",
-      "harDekning" : null,
-      "dekning" : "",
-      "delresultat" : [ {
-        "regelId" : "REGEL_10",
-        "avklaring" : "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
-        "begrunnelse" : "",
-        "svar" : "JA",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ]
-      } ],
-      "årsaker" : [ ]
-    }, {
       "regelId" : "REGEL_DOED",
       "avklaring" : "Er det avklart om brukeren er død eller ikke?",
       "begrunnelse" : "",
@@ -425,6 +407,24 @@
       }, {
         "regelId" : "REGEL_14",
         "avklaring" : "Er bruker ansatt i staten eller i en kommune?",
+        "begrunnelse" : "",
+        "svar" : "JA",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ]
+      } ],
+      "årsaker" : [ ]
+    }, {
+      "regelId" : "REGEL_BOSATT",
+      "avklaring" : "Er det avklart om bruker bor i Norge?",
+      "begrunnelse" : "",
+      "svar" : "JA",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_10",
+        "avklaring" : "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
         "begrunnelse" : "",
         "svar" : "JA",
         "harDekning" : null,

@@ -46,7 +46,6 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
 
     private fun kjørFellesRegler(overstyrteRegler: Map<RegelId, Svar>): List<Resultat> {
         val fellesRegler = listOf(
-            ReglerForBosatt.fraDatagrunnlag(datagrunnlag),
             ReglerForDoedsfall.fraDatagrunnlag(datagrunnlag)
         )
 
@@ -76,6 +75,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
             return listOf(
                 ReglerForMedl.fraDatagrunnlag(datagrunnlag),
                 ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler),
+                ReglerForBosatt.fraDatagrunnlag(datagrunnlag),
                 ReglerForNorskeStatsborgere.fraDatagrunnlag(datagrunnlag, overstyrteRegler)
             )
         } else {
@@ -83,6 +83,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
                 ReglerForArbeidstaker.fraDatagrunnlag(datagrunnlag),
                 ReglerForMedl.fraDatagrunnlag(datagrunnlag),
                 ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler),
+                ReglerForBosatt.fraDatagrunnlag(datagrunnlag),
                 ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag)
             )
         }
