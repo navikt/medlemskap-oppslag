@@ -32,13 +32,13 @@ class ReglerForAndreStatsborgere(
         )
 
         val erBrukerBritiskEllerSveitsiskBorgerRegelflyt = lagRegelflyt(
-            regel = hentRegel(REGEL_19_5),
+            regel = hentRegel(REGEL_19_4),
             hvisJa = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE),
             hvisNei = harBrukerJobbet80ProsentEllerMerSiste3Månedeneflyt
         )
 
         val dekkerArbeidstillatelsenArbeidsperiodenRegelflyt = lagRegelflyt(
-            regel = hentRegel(REGEL_19_4),
+            regel = hentRegel(REGEL_19_3_1),
             hvisJa = erBrukerBritiskEllerSveitsiskBorgerRegelflyt,
             hvisNei = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE)
         )
@@ -50,20 +50,20 @@ class ReglerForAndreStatsborgere(
         )
 
         val dekkerOppholdstillatelseArbeidsperiodeRegel = lagRegelflyt(
-            regel = hentRegel(REGEL_19_2),
+            regel = hentRegel(REGEL_19_2_1),
             hvisJa = harBrukerGyldigArbeidstillatelseIKontrollperiodeRegelflyt,
             hvisNei = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE)
         )
 
         val harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt = lagRegelflyt(
-            regel = hentRegel(REGEL_19_1),
+            regel = hentRegel(REGEL_19_2),
             hvisJa = harBrukerGyldigArbeidstillatelseIKontrollperiodeRegelflyt,
             hvisNei = dekkerOppholdstillatelseArbeidsperiodeRegel,
             hvisUavklart = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE)
         )
 
         val erOppholdstillatelseUavklartRegelflyt = lagRegelflyt(
-            regel = hentRegel(REGEL_19_6),
+            regel = hentRegel(REGEL_19_1),
             hvisJa = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE),
             hvisNei = harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt
         )

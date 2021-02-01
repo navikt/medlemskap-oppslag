@@ -16,7 +16,7 @@ class DekkerArbeidstillatelsenArbeidsperiodenRegel(
     ytelse: Ytelse,
     private val oppholdstillatelse: Oppholdstillatelse?,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    regelId: RegelId = RegelId.REGEL_19_4
+    regelId: RegelId = RegelId.REGEL_19_3_1
 ) : BasisRegel(regelId, ytelse) {
 
     override fun operasjon(): Resultat {
