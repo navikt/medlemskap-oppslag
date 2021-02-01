@@ -17,7 +17,8 @@ data class Oppholdstillatelse(
         return arbeidsadgang != null && arbeidsadgang.harArbeidsadgang &&
             harGyldigArbeidsomfang() &&
             arbeidsadgang.arbeidsadgangType != null && arbeidsadgang.arbeidsadgangType == ArbeidsadgangType.GENERELL &&
-            arbeidsadgang.periode.encloses(periode)
+            arbeidsadgang.periode.encloses(periode) &&
+            gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar?.periode?.equals(arbeidsadgang.periode) ?: false
     }
 
     fun harGyldigOppholdstillatelseForPeriode(periode: Periode): Boolean {
@@ -52,7 +53,8 @@ data class Arbeidsadgang(
 data class OppholdstillatelsePaSammeVilkar(
     val periode: Periode?,
     val type: OppholdstillaelsePaSammeVilkarType?,
-    val harTillatelse: Boolean?
+    val harTillatelse: Boolean?,
+    val oppholdPaSammeVilkar: Boolean
 )
 
 data class GjeldendeOppholdsstatus(

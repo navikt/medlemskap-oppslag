@@ -23,7 +23,7 @@ class HarBrukerEktefelleRegel(
 
         if (ektefelle != null) {
             return when {
-                !ektefelle.ident.isEmpty() -> ja(regelId)
+                ektefelle.ident.isNotEmpty() -> ja(regelId)
                 else -> nei(regelId)
             }
         }

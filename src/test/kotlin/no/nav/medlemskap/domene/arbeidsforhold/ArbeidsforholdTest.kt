@@ -280,7 +280,9 @@ class ArbeidsforholdTest {
         )
 
         val sjekkStatligArbeidsforhold = erArbeidsforholdetOffentligSektor(
-            statligArbeidsforholdMed25Stillingsprosent, kontrollperiodeFra2019Til2020, Ytelse.SYKEPENGER
+            statligArbeidsforholdMed25Stillingsprosent,
+            kontrollperiodeFra2019Til2020,
+            Ytelse.SYKEPENGER
         )
         assertTrue(sjekkStatligArbeidsforhold)
     }
@@ -360,7 +362,9 @@ class ArbeidsforholdTest {
         val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode, arbeidsavtalePeriode, "11111", Skipsregister.NOR, Fartsomraade.INNENRIKS, stillingsprosent, null)
 
         val arbeidsforhold = Arbeidsforhold(
-            arbeidsforholdPeriode, null, OpplysningspliktigArbeidsgiverType.Organisasjon,
+            arbeidsforholdPeriode,
+            null,
+            OpplysningspliktigArbeidsgiverType.Organisasjon,
             Arbeidsgiver(null, listOf(Ansatte(antall = 10, bruksperiode = null, gyldighetsperiode = null)), null, null),
             Arbeidsforholdstype.NORMALT,
             listOf(arbeidsavtale),

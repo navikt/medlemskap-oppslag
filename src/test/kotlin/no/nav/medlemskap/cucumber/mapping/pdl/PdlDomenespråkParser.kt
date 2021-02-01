@@ -79,7 +79,7 @@ class PdlDomenespråkParser : BasisDomeneParser() {
             val utenlandskLandkode = parseValgfriString(Domenebegrep.UTENLANDSK_ADRESSE_LANDKODE, rad)
 
             val utenlandskAdresse = if (utenlandskLandkode != null) {
-                HentPerson.UtenlandskAdresse2(utenlandskLandkode)
+                HentPerson.UtenlandskAdresse(utenlandskLandkode)
             } else {
                 null
             }
@@ -106,7 +106,7 @@ class PdlDomenespråkParser : BasisDomeneParser() {
             val utenlandskLandkode = parseValgfriString(Domenebegrep.UTENLANDSK_ADRESSE_LANDKODE, rad)
 
             val utenlandskAdresse = if (utenlandskLandkode != null) {
-                HentPerson.UtenlandskAdresse2(utenlandskLandkode)
+                HentPerson.UtenlandskAdresse(utenlandskLandkode)
             } else {
                 null
             }

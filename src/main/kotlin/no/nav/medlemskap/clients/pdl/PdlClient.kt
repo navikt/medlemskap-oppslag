@@ -1,6 +1,6 @@
 package no.nav.medlemskap.clients.pdl
 
-import com.expediagroup.graphql.client.GraphQLClient
+import com.expediagroup.graphql.client.ktor.GraphQLKtorClient
 import com.expediagroup.graphql.types.GraphQLResponse
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.*
@@ -28,7 +28,7 @@ class PdlClient(
     suspend fun hentIdenter(fnr: String, callId: String): GraphQLResponse<HentIdenter.Result> {
         return runWithRetryAndMetrics("PDL", "HentIdenter", retry) {
             val stsToken = stsClient.oidcToken()
-            val hentIdenterQuery = HentIdenter(GraphQLClient(url = URL("$baseUrl")))
+            val hentIdenterQuery = HentIdenter(GraphQLKtorClient(url = URL("$baseUrl")))
             val variables = HentIdenter.Variables(fnr, null, true)
 
             val response: GraphQLResponse<HentIdenter.Result> = hentIdenterQuery.execute(variables) {
@@ -46,7 +46,7 @@ class PdlClient(
     suspend fun hentPerson(fnr: String, callId: String): GraphQLResponse<HentPerson.Result> {
         return runWithRetryAndMetrics("PDL", "HentPerson", retry) {
             val stsToken = stsClient.oidcToken()
-            val hentPersonQuery = HentPerson(GraphQLClient(url = URL("$baseUrl")))
+            val hentPersonQuery = HentPerson(GraphQLKtorClient(url = URL("$baseUrl")))
             val variables = HentPerson.Variables(fnr, true, true)
 
             val response: GraphQLResponse<HentPerson.Result> = hentPersonQuery.execute(variables) {

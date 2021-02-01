@@ -1,14 +1,14 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regel 19.5: Er bruker britisk borger?
+Egenskap: Regel 19.4: Er bruker britisk borger?
 
-  Scenariomal: Regel 19.5 - Er bruker britisk borger?
+  Scenariomal: Regel 19.4 - Er bruker britisk borger?
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode          | Fra og med dato | Til og med dato |
       | <Statsborgerskap> | 01.01.2000      |                 |
 
-    Når regel "19.5" kjøres med følgende parametre
+    Når regel "19.4" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
@@ -25,13 +25,13 @@ Egenskap: Regel 19.5: Er bruker britisk borger?
       | GBR             | Ja   |
 
 
-  Scenariomal: Regel 19.5 - Forskjellige statsborgerskap siste 12 måneder
+  Scenariomal: Regel 19.4 - Forskjellige statsborgerskap siste 12 måneder
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode          | Fra og med dato | Til og med dato |
       | <Statsborgerskap> | 01.01.1995      | 31.10.2019      |
       | GBR               | 01.11.2019      |                 |
 
-    Når regel "19.5" kjøres med følgende parametre
+    Når regel "19.4" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 01.01.2020      | 30.01.2021      | Nei                           |
 
@@ -45,7 +45,7 @@ Egenskap: Regel 19.5: Er bruker britisk borger?
       | NOR             | Nei  |
 
 
-  Scenario: Regel 19.5 - Parallelle statsborgerskap siste 12 måneder
+  Scenario: Regel 19.4 - Parallelle statsborgerskap siste 12 måneder
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
       | GBR      | 01.01.2000      |                 |
