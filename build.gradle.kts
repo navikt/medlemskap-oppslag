@@ -2,7 +2,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val ktorVersion = "1.3.2"
+val ktorVersion = "1.5.1"
 val jacksonVersion = "2.10.5"
 val prometheusVersion = "0.9.0"
 val logbackVersion = "1.2.3"
@@ -11,17 +11,18 @@ val konfigVersion = "1.6.10.0"
 val kotlinLoggerVersion = "1.8.3"
 val tjenestespesifikasjonerVersion = "1.2019.12.18-12.22-ce897c4eb2c1"
 val cxfVersion = "3.3.8"
-val coroutinesVersion = "1.3.7"
+val coroutinesVersion = "1.3.9"
 val wireMockVersion = "2.27.2"
-val mockkVersion = "1.10.0"
+val mockkVersion = "1.10.5"
 val junitJupiterVersion = "5.6.2"
 val assertkVersion = "0.22"
 val restAssuredVersion = "4.3.2"
 val resilience4jVersion = "1.5.0"
 val threetenVersion = "1.5.0"
+val kotlinReflectVersion = "1.4.21"
 val cucumberVersion = "6.8.1"
 val nocommonsVersion = "0.9.0"
-val graphqlKotlinClientVersion = "3.6.2"
+val graphqlKotlinClientVersion = "4.0.0-alpha.12"
 val archUnitVersion = "0.14.1"
 val jsonassertVersion = "1.5.0"
 val xmlSchemaVersion = "2.2.5"
@@ -45,9 +46,9 @@ val mainClass = "no.nav.medlemskap.ApplicationKt"
 fun tjenestespesifikasjon(name: String) = "no.nav.tjenestespesifikasjoner:$name:$tjenestespesifikasjonerVersion"
 
 plugins {
-    kotlin("jvm") version "1.3.72"
+    kotlin("jvm") version "1.4.21"
     id("com.github.johnrengelman.shadow") version "6.0.0"
-    id("com.expediagroup.graphql") version "3.6.1" apply false
+    id("com.expediagroup.graphql") version "4.0.0-alpha.12" apply false
     id("com.github.ben-manes.versions") version "0.29.0"
     id("org.jlleitschuh.gradle.ktlint") version "9.3.0"
     id("org.jlleitschuh.gradle.ktlint-idea") version "9.3.0"
@@ -78,7 +79,7 @@ allprojects {
     }
 
     tasks.withType<Wrapper> {
-        gradleVersion = "6.6"
+        gradleVersion = "6.8.1"
     }
 }
 
@@ -115,7 +116,8 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
     implementation("org.threeten:threeten-extra:$threetenVersion")
-
+    implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinReflectVersion")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinReflectVersion")
     implementation("org.apache.cxf:cxf-rt-ws-security:$cxfVersion")
     implementation("org.apache.cxf:cxf-rt-frontend-jaxws:$cxfVersion")
     implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersion")
@@ -131,7 +133,7 @@ dependencies {
     implementation("io.github.resilience4j:resilience4j-retry:$resilience4jVersion")
     implementation("io.github.resilience4j:resilience4j-kotlin:$resilience4jVersion")
     implementation("no.bekk.bekkopen:nocommons:$nocommonsVersion")
-    implementation("com.expediagroup:graphql-kotlin-client:$graphqlKotlinClientVersion")
+    implementation("com.expediagroup:graphql-kotlin-ktor-client:$graphqlKotlinClientVersion")
     implementation("com.neovisionaries:nv-i18n:$nvi18nVersion")
     swaggerUI("org.webjars:swagger-ui:$swaggerUiVersion")
 

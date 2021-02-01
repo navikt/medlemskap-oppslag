@@ -31,7 +31,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         val reglerSomSkalOverstyres = reglerForOverstyring.reglerSomSkalOverstyres(resultatForOverstyring)
 
         resultater.add(resultatForOverstyring)
-        resultater.addAll(kjørFellesRegler(reglerSomSkalOverstyres))
+        resultater.addAll(kjørFellesRegler())
 
         val resultatStatsborgerskap = reglerForStatsborgerskap.kjørHovedflyt()
         resultater.add(resultatStatsborgerskap)
@@ -44,7 +44,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         return utledResultat(ytelse, resultater)
     }
 
-    private fun kjørFellesRegler(overstyrteRegler: Map<RegelId, Svar>): List<Resultat> {
+    private fun kjørFellesRegler(): List<Resultat> {
         val fellesRegler = listOf(
             ReglerForMedl.fraDatagrunnlag(datagrunnlag),
             ReglerForBosatt.fraDatagrunnlag(datagrunnlag),
@@ -73,12 +73,12 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         val erNorskBorger = resultatNorskStatsborgerskap.svar == JA
 
         return if (erNorskBorger) {
-            return listOf(
+            listOf(
                 ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler),
                 ReglerForNorskeStatsborgere.fraDatagrunnlag(datagrunnlag, overstyrteRegler)
             )
         } else {
-            return listOf(
+            listOf(
                 ReglerForArbeidstaker.fraDatagrunnlag(datagrunnlag),
                 ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler),
                 ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag)
