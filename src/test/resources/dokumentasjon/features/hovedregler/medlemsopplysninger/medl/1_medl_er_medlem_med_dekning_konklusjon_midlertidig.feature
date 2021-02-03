@@ -38,8 +38,8 @@ Egenskap: Regel 1 konklusjon for brukere med medlemskap: Er det dekning for gjel
     Så skal svaret være "<medlemskap>" på medlemskap og "<harDekning>" på harDekning
 
     Eksempler:
-      | Dekning | Ytelse     | harDekning | medlemskap |
-      | FTL_2-6 | SYKEPENGER | Ja         | Ja         |
+      | Dekning           | Ytelse           | harDekning | medlemskap |
+      | FTL_2-6           | SYKEPENGER       | Ja         | Ja         |
       | FTL_2-6           | ENSLIG_FORSORGER | Nei        | Uavklart   |
       | FTL_2-6           | DAGPENGER        | Nei        | Uavklart   |
       | FTL_2-7a_2_ledd_a | ENSLIG_FORSORGER | Ja         | Ja         |

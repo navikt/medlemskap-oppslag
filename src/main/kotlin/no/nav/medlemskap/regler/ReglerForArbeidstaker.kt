@@ -14,7 +14,7 @@ class ReglerForArbeidstaker(
         val hovedsakligArbeidstakerFlyt = lagRegelflyt(
             regel = hentRegel(RegelId.REGEL_18),
             hvisJa = Regelflyt.regelflytJa(ytelse, RegelId.REGEL_ARBEIDSTAKER),
-            hvisNei = Regelflyt.konklusjonUavklart(ytelse)
+            hvisNei = Regelflyt.regelflytUavklart(ytelse, RegelId.REGEL_ARBEIDSTAKER, Konklusjonstype.MEDLEM)
         )
 
         return hovedsakligArbeidstakerFlyt

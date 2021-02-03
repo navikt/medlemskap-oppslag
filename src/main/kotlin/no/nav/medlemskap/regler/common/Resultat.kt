@@ -17,7 +17,7 @@ data class Resultat(
     val årsaker = finnÅrsaker()
 
     fun erMedlemskonklusjon(): Boolean {
-        return regelId == RegelId.REGEL_MEDLEM_KONKLUSJON
+        return regelId == RegelId.REGEL_MEDLEM_KONKLUSJON || konklusjonstype == Konklusjonstype.MEDLEM
     }
 
     fun erRegelflytKonklusjon(): Boolean {
@@ -86,7 +86,7 @@ data class Resultat(
                 return emptyList()
             }
 
-            if (resultat.erMedlemskonklusjon()) {
+            if (resultat.regelId == RegelId.REGEL_MEDLEM_KONKLUSJON) {
                 return resultat
                     .delresultat.filter { !it.erKonklusjon() || it.erKonklusjon() && it.svar != Svar.JA }
                     .mapNotNull { finnÅrsak(it) }
@@ -108,26 +108,29 @@ data class Resultat(
             konklusjonstype = konklusjonstype
         )
 
-        fun ja(regelId: RegelId, dekning: String) = Resultat(
+        fun ja(regelId: RegelId, dekning: String, konklusjonstype: Konklusjonstype = Konklusjonstype.REGEL) = Resultat(
             regelId = regelId,
             begrunnelse = regelId.jaBegrunnelse,
             svar = Svar.JA,
             harDekning = Svar.JA,
-            dekning = dekning
+            dekning = dekning,
+            konklusjonstype = konklusjonstype
         )
 
-        fun nei(regelId: RegelId, dekning: String) = Resultat(
+        fun nei(regelId: RegelId, dekning: String, konklusjonstype: Konklusjonstype = Konklusjonstype.REGEL) = Resultat(
             regelId = regelId,
             begrunnelse = regelId.neiBegrunnelse,
             svar = Svar.NEI,
             harDekning = Svar.NEI,
-            dekning = dekning
+            dekning = dekning,
+            konklusjonstype = konklusjonstype
         )
 
-        fun nei(regelId: RegelId) = Resultat(
+        fun nei(regelId: RegelId, konklusjonstype: Konklusjonstype = Konklusjonstype.REGELFLYT) = Resultat(
             regelId,
             begrunnelse = regelId.neiBegrunnelse,
-            svar = Svar.NEI
+            svar = Svar.NEI,
+            konklusjonstype = konklusjonstype
         )
 
         fun uavklart(regelId: RegelId, konklusjonstype: Konklusjonstype = Konklusjonstype.REGELFLYT) = Resultat(

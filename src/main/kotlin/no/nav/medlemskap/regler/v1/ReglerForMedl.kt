@@ -3,10 +3,11 @@ package no.nav.medlemskap.regler.v1
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
+import no.nav.medlemskap.regler.common.Konklusjonstype.MEDLEM
+import no.nav.medlemskap.regler.common.Konklusjonstype.REGELFLYT
 import no.nav.medlemskap.regler.common.RegelId.*
-import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonJa
-import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytUavklart
 import no.nav.medlemskap.regler.v1.medlemskap.*
 import no.nav.medlemskap.regler.v1.registrerteOpplysninger.FinnesOpplysningerIGosysRegel
 import no.nav.medlemskap.regler.v1.registrerteOpplysninger.FinnesOpplysningerIJoarkRegel
@@ -22,38 +23,38 @@ class ReglerForMedl(
     override fun hentHovedflyt(): Regelflyt {
         val harBrukerDekningIMedlFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_1_7),
-            hvisJa = konklusjonJa(ytelse),
-            hvisNei = konklusjonUavklart(ytelse)
+            hvisJa = regelflytJa(ytelse, REGEL_MEDL, MEDLEM),
+            hvisNei = regelflytUavklart(ytelse, REGEL_MEDL, MEDLEM)
         )
 
         val erDekningUavklartFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_1_6),
-            hvisJa = konklusjonUavklart(ytelse),
+            hvisJa = regelflytUavklart(ytelse, REGEL_MEDL, MEDLEM),
             hvisNei = harBrukerDekningIMedlFlyt
         )
 
         val erArbeidsforholdUendretForBrukerMedMedlemskapFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_1_5),
             hvisJa = erDekningUavklartFlyt,
-            hvisNei = konklusjonUavklart(ytelse)
+            hvisNei = regelflytUavklart(ytelse, REGEL_MEDL, MEDLEM)
         )
 
         val erPeriodeMedMedlemskapInnenfor12MndPeriodeFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_1_4),
             hvisJa = erArbeidsforholdUendretForBrukerMedMedlemskapFlyt,
-            hvisNei = konklusjonUavklart(ytelse)
+            hvisNei = regelflytUavklart(ytelse, REGEL_MEDL, MEDLEM)
         )
 
         val erArbeidsforholdUendretForBrukerUtenMedlemskapFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_1_3_2),
-            hvisJa = konklusjonUavklart(ytelse),
-            hvisNei = konklusjonUavklart(ytelse)
+            hvisJa = regelflytUavklart(ytelse, REGEL_MEDL, MEDLEM),
+            hvisNei = regelflytUavklart(ytelse, REGEL_MEDL, MEDLEM)
         )
 
         val erPeriodeUtenMedlemskapInnenfor12MndPeriodeFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_1_3_1),
             hvisJa = erArbeidsforholdUendretForBrukerUtenMedlemskapFlyt,
-            hvisNei = konklusjonUavklart(ytelse)
+            hvisNei = regelflytUavklart(ytelse, REGEL_MEDL, MEDLEM)
         )
 
         val periodeMedMedlemskapFlyt = lagRegelflyt(
@@ -64,22 +65,22 @@ class ReglerForMedl(
 
         val periodeMedOgUtenMedlemskapFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_1_2),
-            hvisJa = konklusjonUavklart(ytelse),
+            hvisJa = regelflytUavklart(ytelse, REGEL_MEDL, MEDLEM),
             hvisNei = periodeMedMedlemskapFlyt
         )
 
         val erPerioderAvklartFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_1_1),
             hvisJa = periodeMedOgUtenMedlemskapFlyt,
-            hvisNei = konklusjonUavklart(ytelse)
+            hvisNei = regelflytUavklart(ytelse, REGEL_MEDL, MEDLEM)
         )
 
         val harBrukerRegistrerteOpplysningerFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_OPPLYSNINGER),
             hvisJa = erPerioderAvklartFlyt,
-            hvisNei = regelflytJa(ytelse),
-            hvisUavklart = konklusjonUavklart(ytelse),
-            regelIdForSammensattResultat = REGEL_MEDL
+            hvisNei = regelflytJa(ytelse, REGEL_MEDL, REGELFLYT),
+            hvisUavklart = regelflytUavklart(ytelse, REGEL_MEDL, MEDLEM)
+//            regelIdForSammensattResultat = REGEL_MEDL
         )
 
         return harBrukerRegistrerteOpplysningerFlyt

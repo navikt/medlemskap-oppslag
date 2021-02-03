@@ -7,6 +7,7 @@ import io.kotest.matchers.shouldBe
 import io.ktor.features.*
 import no.nav.medlemskap.common.JsonMapper
 import no.nav.medlemskap.common.LokalWebServer
+import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.Medlemskapsparametre
 import no.nav.medlemskap.cucumber.SpraakParserDomene.*
@@ -266,6 +267,8 @@ class RegelSteps : No {
                 .getResource("/testpersoner/bakoverkompatibeltest/$filnavn.json").readText()
 
             val respons = LokalWebServer.respons(input!!)
+
+            resultat = objectMapper.readValue(respons, Response::class.java).resultat
 
             JSONAssert.assertEquals(
                 forventetRespons,

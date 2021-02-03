@@ -1,9 +1,9 @@
 package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.regler.common.Regel.Companion.regelJaKonklusjon
-import no.nav.medlemskap.regler.common.Regel.Companion.regelNeiKonklusjon
-import no.nav.medlemskap.regler.common.Regel.Companion.regelUavklartKonklusjon
+import no.nav.medlemskap.regler.common.Regel.Companion.regelJa
+import no.nav.medlemskap.regler.common.Regel.Companion.regelNei
+import no.nav.medlemskap.regler.common.Regel.Companion.regelUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
@@ -53,9 +53,9 @@ abstract class Regler(
 
     private fun regelflytResultat(svar: Svar, regelId: RegelId, delresultater: List<Resultat>): Resultat {
         val regel = when (svar) {
-            JA -> regelJaKonklusjon(ytelse, regelId)
-            NEI -> regelNeiKonklusjon(ytelse, regelId)
-            else -> regelUavklartKonklusjon(ytelse, regelId, Konklusjonstype.REGELFLYT)
+            JA -> regelJa(ytelse, regelId)
+            NEI -> regelNei(ytelse, regelId)
+            else -> regelUavklart(ytelse, regelId)
         }
 
         val resultat = regel.utfør()

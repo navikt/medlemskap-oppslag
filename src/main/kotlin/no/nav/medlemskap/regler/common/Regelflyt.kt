@@ -1,11 +1,12 @@
 package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.regler.common.Konklusjonstype.REGELFLYT
 import no.nav.medlemskap.regler.common.Regel.Companion.jaKonklusjon
 import no.nav.medlemskap.regler.common.Regel.Companion.neiKonklusjon
-import no.nav.medlemskap.regler.common.Regel.Companion.regelJaKonklusjon
-import no.nav.medlemskap.regler.common.Regel.Companion.regelNeiKonklusjon
-import no.nav.medlemskap.regler.common.Regel.Companion.regelUavklartKonklusjon
+import no.nav.medlemskap.regler.common.Regel.Companion.regelJa
+import no.nav.medlemskap.regler.common.Regel.Companion.regelNei
+import no.nav.medlemskap.regler.common.Regel.Companion.regelUavklart
 import no.nav.medlemskap.regler.common.Regel.Companion.uavklartKonklusjon
 import no.nav.medlemskap.regler.common.Resultat.Companion.utenKonklusjon
 
@@ -90,20 +91,20 @@ class Regelflyt(
             return Regelflyt(neiKonklusjon(ytelse), ytelse)
         }
 
-        fun konklusjonUavklart(ytelse: Ytelse, regelId: RegelId? = null): Regelflyt {
+        fun konklusjonUavklart(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_MEDLEM_KONKLUSJON): Regelflyt {
             return Regelflyt(uavklartKonklusjon(ytelse, regelId), ytelse)
         }
 
-        fun regelflytJa(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
-            return Regelflyt(regelJaKonklusjon(ytelse, regelId), ytelse)
+        fun regelflytJa(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON, konklusjonstype: Konklusjonstype = REGELFLYT): Regelflyt {
+            return Regelflyt(regelJa(ytelse, regelId, konklusjonstype), ytelse)
         }
 
-        fun regelflytNei(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
-            return Regelflyt(regelNeiKonklusjon(ytelse, regelId), ytelse)
+        fun regelflytNei(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON, konklusjonstype: Konklusjonstype = REGELFLYT): Regelflyt {
+            return Regelflyt(regelNei(ytelse, regelId, konklusjonstype), ytelse)
         }
 
-        fun regelflytUavklart(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
-            return Regelflyt(regelUavklartKonklusjon(ytelse, regelId, Konklusjonstype.REGELFLYT), ytelse)
+        fun regelflytUavklart(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON, konklusjonstype: Konklusjonstype = REGELFLYT): Regelflyt {
+            return Regelflyt(regelUavklart(ytelse, regelId, konklusjonstype), ytelse)
         }
     }
 }

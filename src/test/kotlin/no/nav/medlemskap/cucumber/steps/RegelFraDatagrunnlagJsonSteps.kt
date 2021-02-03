@@ -17,7 +17,7 @@ class RegelFraDatagrunnlagJsonSteps : No {
 
     init {
         Gitt("følgende datagrunnlag json") { docString: String? ->
-            datagrunnlag = Personleser().dataGrunnlagFraJson(docString!!)
+            datagrunnlag = Personleser.dataGrunnlagFraJson(docString!!)
         }
 
         Når("lovvalg og medlemskap beregnes fra datagrunnlag json") {

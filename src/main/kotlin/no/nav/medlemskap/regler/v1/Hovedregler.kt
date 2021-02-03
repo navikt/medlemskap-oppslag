@@ -94,7 +94,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
 
             val medlemskonklusjon = resultater.find { it.erMedlemskonklusjon() }
             if (medlemskonklusjon != null) {
-                return lagKonklusjon(medlemskonklusjon, resultater)
+                return lagKonklusjon(konklusjon(ytelse, medlemskonklusjon), resultater)
             }
 
             if (resultater.all { it.svar == JA }) {
@@ -114,7 +114,15 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         }
 
         private fun lagDelresultat(resultater: List<Resultat>): List<Resultat> {
-            return resultater.map { if (it.regelId == RegelId.REGEL_FLYT_KONKLUSJON || it.erMedlemskonklusjon() && it.delresultat.isNotEmpty()) it.delresultat.first() else it }
+            return resultater.map { if (it.regelId == RegelId.REGEL_FLYT_KONKLUSJON || it.regelId == RegelId.REGEL_MEDLEM_KONKLUSJON && it.delresultat.isNotEmpty()) it.delresultat.first() else it }
+        }
+
+        private fun konklusjon(ytelse: Ytelse, resultat: Resultat): Resultat {
+            return when (resultat.svar) {
+                JA -> jaKonklusjon(ytelse).utfør().copy(harDekning = resultat.harDekning, dekning = resultat.dekning)
+                NEI -> neiKonklusjon(ytelse).utfør().copy(harDekning = resultat.harDekning, dekning = resultat.dekning)
+                Svar.UAVKLART -> uavklartKonklusjon(ytelse).utfør().copy(harDekning = resultat.harDekning, dekning = resultat.dekning)
+            }
         }
 
         private fun uavklartResultat(ytelse: Ytelse): Resultat {

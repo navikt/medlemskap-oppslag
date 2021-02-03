@@ -33,7 +33,7 @@ class RegelMetricsTest {
         return SimpleConfig.DEFAULT.step()
     }
 
-    private val personleser = Personleser()
+    private val personleser = Personleser
     private val simpleRegistry = SimpleMeterRegistry(SimpleConfig.DEFAULT, MockClock())
 
     @BeforeEach
