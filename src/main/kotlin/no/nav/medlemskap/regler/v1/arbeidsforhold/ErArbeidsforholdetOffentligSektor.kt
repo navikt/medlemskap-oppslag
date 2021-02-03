@@ -1,6 +1,5 @@
 package no.nav.medlemskap.regler.v1.arbeidsforhold
 
-import mu.KotlinLogging
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
@@ -13,8 +12,6 @@ import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import no.nav.medlemskap.regler.v1.lovvalg.LovvalgRegel
 import java.time.LocalDate
 
-private val logger = KotlinLogging.logger { }
-
 class ErArbeidsforholdetOffentligSektor(
     ytelse: Ytelse,
     private val periode: InputPeriode,
@@ -24,13 +21,6 @@ class ErArbeidsforholdetOffentligSektor(
 ) : LovvalgRegel(regelId, ytelse, periode, førsteDagForYtelse) {
 
     override fun operasjon(): Resultat {
-
-        arbeidsforhold.forEach { arbeidsforhold ->
-            arbeidsforhold.arbeidsgiver.juridiskeEnheter
-                ?.filter { juridiskEnhetstype -> juridiskEnhetstype?.enhetstype.equals("SÆR") }
-                ?.forEach { logger.info("orgnr med enhetstype SÆR: ${arbeidsforhold.arbeidsgiver.organisasjonsnummer}") }
-        }
-
         return when {
             erArbeidsforholdetOffentligSektor(arbeidsforhold, kontrollPeriodeForArbeidsforhold, ytelse) -> ja(regelId)
             else -> nei(regelId)

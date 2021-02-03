@@ -108,6 +108,7 @@ Egenskap: Regel 14: Er bruker ansatt i staten eller i en kommune?
       | FYLK                |
       | KF                  |
       | SF                  |
+      | SÆR                 |
 
 
   Scenario: Regel 14 - To parallelle stillinger hos forskjellige arbeidsgivere
