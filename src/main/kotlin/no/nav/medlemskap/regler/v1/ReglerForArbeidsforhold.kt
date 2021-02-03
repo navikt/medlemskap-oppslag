@@ -33,9 +33,15 @@ class ReglerForArbeidsforhold(
             hvisNei = erBrukerPilotEllerKabinansattFlyt
         )
 
+        val erArbeidsforholdetFrilanserFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_17),
+            hvisJa = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD),
+            hvisNei = erArbeidsforholdetMaritimtFlyt
+        )
+
         val erForetakAktivtFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_6),
-            hvisJa = erArbeidsforholdetMaritimtFlyt,
+            hvisJa = erArbeidsforholdetFrilanserFlyt,
             hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD)
         )
 
@@ -84,7 +90,8 @@ class ReglerForArbeidsforhold(
                 HarBrukerSammenhengendeArbeidsforholdRegel.fraDatagrunnlag(datagrunnlag),
                 HarForetaketMerEnn5AnsatteRegel.fraDatagrunnlag(datagrunnlag),
                 JobberBrukerPaaNorskSkipRegel.fraDatagrunnlag(datagrunnlag),
-                ErArbeidsforholdetOffentligSektor.fraDatagrunnlag(datagrunnlag)
+                ErArbeidsforholdetOffentligSektor.fraDatagrunnlag(datagrunnlag),
+                ErArbeidsforholdetFrilanserRegel.fraDatagrunnlag(datagrunnlag)
             )
 
             return regelListe.map { it.regelId to it.regel }.toMap()
