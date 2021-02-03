@@ -51,12 +51,12 @@ class ArbeidsforholdTest {
     fun `Bruker med 100 i stillingsprosent gjennom halve kontrollperioden blir vektet til 50 prosent`() {
 
         val arbeidsforholdPeriode = Periode(
-            fom = LocalDate.of(2019, 7, 2),
+            fom = LocalDate.of(2019, 7, 3),
             tom = kontrollperiodeFra2019Til2020.tom
         )
 
         val arbeidsforhold = listOf(createArbeidsforhold(arbeidsforholdPeriode))
-        assertEquals(50.1, arbeidsforhold.beregnGjennomsnittligStillingsprosentForGrafana(kontrollperiodeFra2019Til2020))
+        assertEquals(50.0, arbeidsforhold.beregnGjennomsnittligStillingsprosentForGrafana(kontrollperiodeFra2019Til2020))
     }
 
     @Test
@@ -74,7 +74,7 @@ class ArbeidsforholdTest {
         val arbeidsforholdPeriode = kontrollperiodeFra2019Til2020.periode
 
         val arbeidsavtalePeriode = Periode(
-            fom = LocalDate.of(2019, 7, 1),
+            fom = LocalDate.of(2019, 7, 2),
             tom = LocalDate.of(2019, 12, 31)
         )
         val arbeidsforhold = createArbeidsforhold(arbeidsforholdPeriode, 25.0, arbeidsavtalePeriode)
@@ -88,7 +88,7 @@ class ArbeidsforholdTest {
         val arbeidsforholdPeriode = kontrollperiodeFra2019Til2020.periode
 
         val arbeidsavtalePeriode = Periode(
-            fom = LocalDate.of(2019, 7, 1),
+            fom = LocalDate.of(2019, 7, 2),
             tom = LocalDate.of(2020, 1, 1)
         )
 
@@ -102,6 +102,66 @@ class ArbeidsforholdTest {
 
         assertEquals(30.2, arbeidsforholdList.first().vektetStillingsprosentForArbeidsforhold(kontrollperiodeFra2019Til2020))
         assertEquals(30.2, arbeidsforholdList.beregnGjennomsnittligStillingsprosentForGrafana(kontrollperiodeFra2019Til2020))
+    }
+
+    @Test
+    fun `Beregn vektet stillingsprosent for arbeidsforhold med to sammenhengende arbeidsavtaler i hele arbeidsforholdperiode`() {
+
+        val arbeidsforholdPeriode = kontrollperiodeFra2019Til2020.periode
+
+        val arbeidsavtalePeriode1 = Periode(
+            fom = LocalDate.of(2018, 1, 1),
+            tom = LocalDate.of(2019, 6, 30)
+        )
+
+        val arbeidsavtalePeriode2 = Periode(
+            fom = LocalDate.of(2019, 7, 1),
+            tom = LocalDate.of(2020, 1, 1)
+        )
+
+        val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode1, arbeidsavtalePeriode1, "1234", Skipsregister.NOR, Fartsomraade.INNENRIKS, 100.0, 37.5)
+        val arbeidsavtale2 = Arbeidsavtale(arbeidsavtalePeriode2, arbeidsavtalePeriode2, "4321", null, null, 100.0, 37.5)
+
+        val arbeidsforhold = createArbeidsforhold(arbeidsforholdPeriode)
+        arbeidsforhold.arbeidsavtaler = listOf(arbeidsavtale, arbeidsavtale2)
+
+        val arbeidsforholdList = listOf(arbeidsforhold)
+
+        assertEquals(100.0, arbeidsforholdList.first().vektetStillingsprosentForArbeidsforhold(kontrollperiodeFra2019Til2020))
+        assertEquals(100.0, arbeidsforholdList.beregnGjennomsnittligStillingsprosentForGrafana(kontrollperiodeFra2019Til2020))
+    }
+
+    @Test
+    fun `Beregn vektet stillingsprosent for arbeidsforhold med tre sammenhengende arbeidsavtaler i hele arbeidsforholdperiode`() {
+
+        val arbeidsforholdPeriode = kontrollperiodeFra2019Til2020.periode
+
+        val arbeidsavtalePeriode1 = Periode(
+            fom = LocalDate.of(2018, 1, 1),
+            tom = LocalDate.of(2019, 6, 30)
+        )
+
+        val arbeidsavtalePeriode2 = Periode(
+            fom = LocalDate.of(2019, 7, 1),
+            tom = LocalDate.of(2019, 9, 30)
+        )
+
+        val arbeidsavtalePeriode3 = Periode(
+            fom = LocalDate.of(2019, 10, 1),
+            tom = LocalDate.of(2020, 1, 1)
+        )
+
+        val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode1, arbeidsavtalePeriode1, "1234", Skipsregister.NOR, Fartsomraade.INNENRIKS, 100.0, 37.5)
+        val arbeidsavtale2 = Arbeidsavtale(arbeidsavtalePeriode2, arbeidsavtalePeriode2, "4321", null, null, 100.0, 37.5)
+        val arbeidsavtale3 = Arbeidsavtale(arbeidsavtalePeriode3, arbeidsavtalePeriode3, "4321", null, null, 100.0, 37.5)
+
+        val arbeidsforhold = createArbeidsforhold(arbeidsforholdPeriode)
+        arbeidsforhold.arbeidsavtaler = listOf(arbeidsavtale, arbeidsavtale2, arbeidsavtale3)
+
+        val arbeidsforholdList = listOf(arbeidsforhold)
+
+        assertEquals(100.0, arbeidsforholdList.first().vektetStillingsprosentForArbeidsforhold(kontrollperiodeFra2019Til2020))
+        assertEquals(100.0, arbeidsforholdList.beregnGjennomsnittligStillingsprosentForGrafana(kontrollperiodeFra2019Til2020))
     }
 
     @Test
@@ -129,8 +189,8 @@ class ArbeidsforholdTest {
             tom = LocalDate.of(2019, 12, 31)
         )
         val arbeidsforholdPeriode = Periode(
-            fom = LocalDate.of(2019, 7, 1),
-            tom = LocalDate.of(2020, 7, 1)
+            fom = LocalDate.of(2019, 7, 2),
+            tom = LocalDate.of(2020, 7, 2)
         )
 
         val arbeidsforholdMock = createArbeidsforhold(arbeidsforholdPeriode, 25.0)

@@ -8,7 +8,7 @@ data class Kontrollperiode(
     val tom: LocalDate
 ) {
     val periode = Periode(fom, tom)
-    val antallDager = fom.until(tom, ChronoUnit.DAYS).toDouble()
+    val antallDager = fom.until(tom, ChronoUnit.DAYS).toDouble() + 1
 
     companion object {
         fun kontrollPeriodeForPersonhistorikk(startDatoForYtelse: LocalDate): Kontrollperiode {
