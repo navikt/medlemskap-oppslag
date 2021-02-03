@@ -69,6 +69,17 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
 
     class EOSElllerEFTAOppholdMapper() : RadMapper<EOSellerEFTAOpphold> {
         override fun mapRad(rad: Map<String, String>): EOSellerEFTAOpphold {
+
+            val EOSellerEFTAGrunnlagskategoriOppholdsrettType = if (parseValgfriString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT, rad) != null
+            ) {
+                EOSellerEFTAGrunnlagskategoriOppholdsrettType.valueOf(parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT, rad))
+            } else { null }
+
+            val EOSellerEFTAGrunnlagskategoriOppholdstillatelseType = if (parseValgfriString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSTILLATELSE, rad) != null
+            ) {
+                EOSellerEFTAGrunnlagskategoriOppholdsTillatelseType.valueOf(parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSTILLATELSE, rad))
+            } else { null }
+
             return EOSellerEFTAOpphold(
                 periode = Periode(
                     fom = parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad),
@@ -76,7 +87,9 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
                 ),
                 EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.valueOf(
                     parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_OPPHOLD, rad)
-                )
+                ),
+                EOSellerEFTAGrunnlagskategoriOppholdsrettType = EOSellerEFTAGrunnlagskategoriOppholdsrettType,
+                EOSellerEFTAGrunnlagskategoriOppholdstillatelseType = EOSellerEFTAGrunnlagskategoriOppholdstillatelseType
             )
         }
     }
@@ -241,6 +254,8 @@ enum class OppholdstillatelseDomenebegrep(val nøkkel: String) : Domenenøkkel {
     AVGJOERELSE("Avgjørelse"),
     AVGJORELSEDATO("Avgjorelsesdato"),
     EOS_ELLER_EFTA_OPPHOLD("EOSEllerEFTAOpphold"),
+    EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT("EOSellerEFTAGrunnlagskategoriOppholdsrett"),
+    EOS_ELLER_EFTA_KATEGORI_OPPHOLDSTILLATELSE("EOSellerEFTAGrunnlagskategoriOppholdstillatelse"),
     HAR_OPPHOLD("Har opphold"),
     HAR_OPPHOLDSTILLATELSE("Har tillatelse"),
     HAR_FLYKTNINGSTATUS("Har flyktningstatus"),

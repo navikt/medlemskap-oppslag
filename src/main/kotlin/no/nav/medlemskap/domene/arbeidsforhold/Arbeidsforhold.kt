@@ -43,7 +43,7 @@ data class Arbeidsforhold(
     }
 
     companion object {
-        private val offentligSektorJuridiskeEnhetstyper = listOf("STAT", "FKF", "FYLK", "KF", "KOMM", "SF")
+        private val offentligSektorJuridiskeEnhetstyper = listOf("STAT", "FKF", "FYLK", "KF", "KOMM", "SF", "SÆR")
 
         fun erArbeidsforholdetOffentligSektor(
             arbeidsforhold: List<Arbeidsforhold>,

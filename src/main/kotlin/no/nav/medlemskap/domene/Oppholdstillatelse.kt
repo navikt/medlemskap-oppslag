@@ -88,8 +88,45 @@ data class Uavklart(
 
 data class EOSellerEFTAOpphold(
     val periode: Periode?,
-    val EOSellerEFTAOppholdType: EOSellerEFTAOppholdType
+    val EOSellerEFTAOppholdType: EOSellerEFTAOppholdType,
+    val EOSellerEFTAGrunnlagskategoriOppholdsrettType: EOSellerEFTAGrunnlagskategoriOppholdsrettType?,
+    val EOSellerEFTAGrunnlagskategoriOppholdstillatelseType: EOSellerEFTAGrunnlagskategoriOppholdsTillatelseType?
 )
+
+enum class EOSellerEFTAGrunnlagskategoriOppholdsrettType(val kodeverdi: String) {
+    VARIG("Varig"),
+    INGEN_INFORMASJON("IngenInformasjon"),
+    FAMILIE("Familie"),
+    TJENESTEYTING_ELLER_ETABLERING("TjenesteytingEllerEtablering"),
+    UAVKLART("Uavklart");
+
+    companion object {
+        fun fraEOSellerEFTAGrunnlagskategoriOppholdsrettType(
+            eosEllerEFTAGrunnlagskategoriOppholdsrettType: String?
+        ): EOSellerEFTAGrunnlagskategoriOppholdsrettType? {
+            return EOSellerEFTAGrunnlagskategoriOppholdsrettType.values()
+                .firstOrNull { it.kodeverdi == eosEllerEFTAGrunnlagskategoriOppholdsrettType }
+        }
+    }
+}
+
+enum class EOSellerEFTAGrunnlagskategoriOppholdsTillatelseType(val kodeverdi: String) {
+    EGNE_MIDLER_ELLER_FASTE_PERIODISKE_YTELSER("EgneMidlerEllerFastePeriodiskeYtelser"),
+    ARBEID("Arbeid"),
+    UTDANNING("Utdanning"),
+    FAMILIE("Familie"),
+    TJENESTEYTING_ELLER_ETABLERING("TjenesteytingEllerEtablering"),
+    UAVKLART("Uavklart");
+
+    companion object {
+        fun fraEOSellerEFTAGrunnlagskategoriOppholdsTillatelseType(
+            eosEllerEFTAGrunnlagskategoriOppholdsTillatelseType: String?
+        ): EOSellerEFTAGrunnlagskategoriOppholdsTillatelseType? {
+            return EOSellerEFTAGrunnlagskategoriOppholdsTillatelseType.values()
+                .firstOrNull { it.kodeverdi == eosEllerEFTAGrunnlagskategoriOppholdsTillatelseType }
+        }
+    }
+}
 
 enum class OvrigIkkeOppholdsKategori(val kodeverdi: String) {
     OPPHEVET_INNREISEFORBUD("OpphevetInnreiseforbud"),
