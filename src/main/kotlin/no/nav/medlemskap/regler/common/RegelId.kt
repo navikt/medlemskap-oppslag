@@ -44,7 +44,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_12("12", "Har bruker vært i minst 25% stilling de siste 12 mnd?", "Bruker har ikke jobbet 25% eller mer i løpet av perioden."),
     REGEL_13("13", "Er bruker død?", "", "Bruker har dødsdato etter inputperiode, men det påvirker ikke medlemskapet", "Bruker er død, men i eller før inputperiode."),
     REGEL_14("14", "Er bruker ansatt i staten eller i en kommune?"),
-    REGEL_17("17", "Er bruker frilanser?"),
+    REGEL_17("17", "Er bruker frilanser?", "Bruker er ikke frilanser"),
     REGEL_18("18", "Er bruker i hovedsak arbeidstaker?", "Bruker er ikke arbeidstaker"),
     REGEL_19_1("19.1", "Er oppholdstillatelsen uavklart?", "", "UDI-tjenesten returnerte uavklart oppholdstillatelse, og må derfor behandles manuelt av UDI"),
     REGEL_19_2("19.2", "Har bruker en gyldig oppholdstillatelse 12 måneder bakover og 2 måned fremover i tid?", "Bruker har ikke gyldig oppholdstillatelse"),
