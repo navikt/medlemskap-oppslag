@@ -140,13 +140,6 @@ data class Resultat(
             konklusjonstype = konklusjonstype
         )
 
-        fun uavklartKonklusjon(regelId: RegelId? = null) = Resultat(
-            regelId = RegelId.REGEL_MEDLEM_KONKLUSJON,
-            begrunnelse = RegelId.REGEL_MEDLEM_KONKLUSJON.neiBegrunnelse,
-            svar = Svar.UAVKLART,
-            delresultat = if (regelId == null) emptyList() else listOf(Resultat(regelId = regelId, svar = Svar.UAVKLART))
-        )
-
         fun List<Resultat>.utenKonklusjon(): List<Resultat> {
             return this.filterNot { it.erKonklusjon() }
         }
