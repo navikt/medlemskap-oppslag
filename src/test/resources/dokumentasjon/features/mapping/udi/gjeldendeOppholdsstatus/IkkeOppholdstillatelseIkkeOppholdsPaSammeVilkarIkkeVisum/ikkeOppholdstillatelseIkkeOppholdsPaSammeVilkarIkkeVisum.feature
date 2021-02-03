@@ -2,6 +2,15 @@
 # encoding: UTF-8
 # Mest sannsynlig vil kun ett felt fra IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum forekomme
 
+# Gruppen Personer uten oppholdstillatelse eller opphold på samme vilkår omfatter personer
+# som ikke har oppholdstillatelse eller opphold på samme vilkår.
+# Oppholdsstatustjenesten vil plassere vedkommende inn i én av undergruppene Avslag på søknad om
+# oppholdstillatelse eller oppholdsrett, Bortfall av PO eller BOS,
+# Tilbakekall eller Formelt vedtak eller Øvrig ikke opphold.
+# Personer som er Utvist med innreiseforbud vil p.t. plasseres i kategorien Uavklart, se pkt. 5.4 under.
+# Personer som ikke faller inn under kategoriene over,
+# vil plasseres overordnet under Ikke oppholdstillatelse, ikke opphold på samme vilkår.
+
 Egenskap: Mapping av OppholdstillatelseEllerOppholdsPaSammeVilkar
 
   Scenariomal: Bruker har følgende fra IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
