@@ -13,7 +13,7 @@ Egenskap: Regelflyt for regel 17
       | NOR      | 01.01.2000      |                 |
 
 
-  Scenariomal: Regelflyt regel 7: Bruker får "ja" på spørsmålet om medlemskap hvis arbeidsforholdet er maritimt
+  Scenariomal: Regelflyt regel 17: Bruker får "ja" på spørsmålet om medlemskap hvis arbeidsforholdet er frilanser
 
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype   | Arbeidsgiver Id |
