@@ -99,44 +99,72 @@ object UdiMapper {
     private fun mapEOSEllerEFTAOpphold(gjeldendeOppholdsstatus: no.udi.mt_1067_nav_data.v1.GjeldendeOppholdsstatus): EOSellerEFTAOpphold? {
         if (gjeldendeOppholdsstatus.eoSellerEFTAOpphold != null) {
             if (gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTABeslutningOmOppholdsrett != null) {
-                return EOSellerEFTAOpphold(
-                    periode = Periode(
-                        fom = gjeldendeOppholdsstatus
-                            .eoSellerEFTAOpphold
-                            .eoSellerEFTABeslutningOmOppholdsrett
-                            .oppholdsrettsPeriode
-                            .fra
-                            .asLocalDate(),
-                        tom = gjeldendeOppholdsstatus
-                            .eoSellerEFTAOpphold
-                            .eoSellerEFTABeslutningOmOppholdsrett
-                            .oppholdsrettsPeriode
-                            .til
-                            .asLocalDate()
-                    ),
-                    EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT
-                )
+                return mapEOSEllerEFTABeslutningOmOppholdsrett(gjeldendeOppholdsstatus)
             }
             if (gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAOppholdstillatelse != null) {
-                return EOSellerEFTAOpphold(
-                    periode = Periode(
-                        fom = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAOppholdstillatelse.oppholdstillatelsePeriode.fra.asLocalDate(),
-                        tom = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAOppholdstillatelse.oppholdstillatelsePeriode.til.asLocalDate()
-                    ),
-                    EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.EOS_ELLER_EFTA_OPPHOLDSTILLATELSE
-                )
+                return mapEoSellerEFTAOppholdstillatelse(gjeldendeOppholdsstatus)
             }
             if (gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAVedtakOmVarigOppholdsrett != null) {
-                return EOSellerEFTAOpphold(
-                    periode = Periode(
-                        fom = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAVedtakOmVarigOppholdsrett.oppholdsrettsPeriode.fra.asLocalDate(),
-                        tom = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAVedtakOmVarigOppholdsrett.oppholdsrettsPeriode.til.asLocalDate()
-                    ),
-                    EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT
-                )
+                return mapEOSellerEFTAVedtakOmVarigOppholdsrett(gjeldendeOppholdsstatus)
             }
         }
         return null
+    }
+
+    private fun mapEOSellerEFTAVedtakOmVarigOppholdsrett(gjeldendeOppholdsstatus: no.udi.mt_1067_nav_data.v1.GjeldendeOppholdsstatus): EOSellerEFTAOpphold {
+        val eoSellerEFTAVedtakOmVarigOppholdsrett = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAVedtakOmVarigOppholdsrett
+        return EOSellerEFTAOpphold(
+            periode = Periode(
+                fom = eoSellerEFTAVedtakOmVarigOppholdsrett.oppholdsrettsPeriode.fra.asLocalDate(),
+                tom = eoSellerEFTAVedtakOmVarigOppholdsrett.oppholdsrettsPeriode.til.asLocalDate()
+            ),
+            EOSellerEFTAGrunnlagskategoriOppholdstillatelseType = null,
+            EOSellerEFTAGrunnlagskategoriOppholdsrettType = EOSellerEFTAGrunnlagskategoriOppholdsrettType
+                .fraEOSellerEFTAGrunnlagskategoriOppholdsrettType(eoSellerEFTAVedtakOmVarigOppholdsrett.eosOppholdsgrunnlag.value()),
+            EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT
+        )
+    }
+
+    private fun mapEoSellerEFTAOppholdstillatelse(gjeldendeOppholdsstatus: no.udi.mt_1067_nav_data.v1.GjeldendeOppholdsstatus): EOSellerEFTAOpphold {
+        val eosEllerEftaOppholdstillatelse = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAOppholdstillatelse
+        return EOSellerEFTAOpphold(
+            periode = Periode(
+                fom = eosEllerEftaOppholdstillatelse.oppholdstillatelsePeriode.fra.asLocalDate(),
+                tom = eosEllerEftaOppholdstillatelse.oppholdstillatelsePeriode.til.asLocalDate()
+            ),
+            EOSellerEFTAGrunnlagskategoriOppholdsrettType = null,
+            EOSellerEFTAGrunnlagskategoriOppholdstillatelseType =
+                EOSellerEFTAGrunnlagskategoriOppholdsTillatelseType
+                    .fraEOSellerEFTAGrunnlagskategoriOppholdsTillatelseType(
+                        eosEllerEftaOppholdstillatelse.eosOppholdsgrunnlag.value()
+                    ),
+            EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.EOS_ELLER_EFTA_OPPHOLDSTILLATELSE
+        )
+    }
+
+    private fun mapEOSEllerEFTABeslutningOmOppholdsrett(gjeldendeOppholdsstatus: no.udi.mt_1067_nav_data.v1.GjeldendeOppholdsstatus): EOSellerEFTAOpphold {
+        val eoSellerEFTABeslutningOmOppholdsrett = gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTABeslutningOmOppholdsrett
+        return EOSellerEFTAOpphold(
+            periode = Periode(
+                fom =
+                    eoSellerEFTABeslutningOmOppholdsrett
+                        .oppholdsrettsPeriode
+                        .fra
+                        .asLocalDate(),
+                tom =
+                    eoSellerEFTABeslutningOmOppholdsrett
+                        .oppholdsrettsPeriode
+                        .til
+                        .asLocalDate()
+            ),
+            EOSellerEFTAGrunnlagskategoriOppholdstillatelseType = null,
+            EOSellerEFTAGrunnlagskategoriOppholdsrettType =
+                EOSellerEFTAGrunnlagskategoriOppholdsrettType
+                    .fraEOSellerEFTAGrunnlagskategoriOppholdsrettType(
+                        eoSellerEFTABeslutningOmOppholdsrett.eosOppholdsgrunnlag.value()
+                    ),
+            EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT
+        )
     }
 
     private fun mapOppholdstillatelseEllerOppholdsPaSammeVilkar(gjeldendeOppholdsstatus: no.udi.mt_1067_nav_data.v1.GjeldendeOppholdsstatus): OppholdstillatelsePaSammeVilkar? {
