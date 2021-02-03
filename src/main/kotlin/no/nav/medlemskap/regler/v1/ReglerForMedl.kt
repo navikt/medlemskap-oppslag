@@ -80,7 +80,6 @@ class ReglerForMedl(
             hvisJa = erPerioderAvklartFlyt,
             hvisNei = regelflytJa(ytelse, REGEL_MEDL, REGELFLYT),
             hvisUavklart = regelflytUavklart(ytelse, REGEL_MEDL, MEDLEM)
-//            regelIdForSammensattResultat = REGEL_MEDL
         )
 
         return harBrukerRegistrerteOpplysningerFlyt

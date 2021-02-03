@@ -16,7 +16,6 @@ class Regelflyt(
     val hvisJa: Regelflyt? = null,
     val hvisNei: Regelflyt? = null,
     val hvisUavklart: Regelflyt? = null,
-    val regelIdForSammensattResultat: RegelId? = null,
     val overstyrteRegler: Map<RegelId, Svar> = mapOf()
 ) {
 
@@ -65,18 +64,6 @@ class Regelflyt(
         val resultat = utfør(resultatliste, harDekning, dekning)
         val delresultater = if (resultat.delresultat.isNotEmpty()) resultat.delresultat else resultatliste.utenKonklusjon()
         val konklusjon = resultat.copy(delresultat = delresultater)
-        if (regelIdForSammensattResultat != null) {
-            return konklusjon.copy(
-                delresultat = listOf(
-                    Resultat(
-                        regelId = regelIdForSammensattResultat,
-                        svar = konklusjon.svar,
-                        avklaring = regelIdForSammensattResultat.avklaring,
-                        delresultat = delresultater
-                    )
-                )
-            )
-        }
 
         return konklusjon
     }

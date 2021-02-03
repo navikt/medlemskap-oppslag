@@ -31,8 +31,7 @@ abstract class Regler(
         regel: Regel,
         hvisJa: Regelflyt? = null,
         hvisNei: Regelflyt? = null,
-        hvisUavklart: Regelflyt = konklusjonUavklart(ytelse),
-        regelIdForSammensattResultat: RegelId? = null
+        hvisUavklart: Regelflyt = konklusjonUavklart(ytelse)
     ): Regelflyt {
         return Regelflyt(
             regel = regel,
@@ -40,7 +39,6 @@ abstract class Regler(
             hvisJa = hvisJa,
             hvisNei = hvisNei,
             hvisUavklart = hvisUavklart,
-            regelIdForSammensattResultat = regelIdForSammensattResultat,
             overstyrteRegler = overstyrteRegler
         )
     }
