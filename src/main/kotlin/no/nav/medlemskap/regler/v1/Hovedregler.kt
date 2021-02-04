@@ -2,7 +2,7 @@ package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.regler.ReglerForArbeidstaker
+import no.nav.medlemskap.regler.ReglerForHovedsakligArbeidstaker
 import no.nav.medlemskap.regler.common.Regel.Companion.jaKonklusjon
 import no.nav.medlemskap.regler.common.Regel.Companion.neiKonklusjon
 import no.nav.medlemskap.regler.common.Regel.Companion.uavklartKonklusjon
@@ -58,8 +58,9 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
             .first { it.regelId == RegelId.REGEL_2 }
         val erEøsBorger = resultatEøsStatsborgerskap.svar == JA
         if (!erEøsBorger) {
+            /** Tredjelandsborgere **/
             return listOf(
-                ReglerForArbeidstaker.fraDatagrunnlag(datagrunnlag),
+                ReglerForHovedsakligArbeidstaker.fraDatagrunnlag(datagrunnlag),
                 ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler),
                 ReglerForMedl.fraDatagrunnlag(datagrunnlag),
                 ReglerForAndreStatsborgere.fraDatagrunnlag(datagrunnlag)
@@ -72,6 +73,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         val erNorskBorger = resultatNorskStatsborgerskap.svar == JA
 
         return if (erNorskBorger) {
+            /** Norske borgere **/
             listOf(
                 ReglerForMedl.fraDatagrunnlag(datagrunnlag),
                 ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler),
@@ -79,8 +81,8 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
                 ReglerForNorskeStatsborgere.fraDatagrunnlag(datagrunnlag, overstyrteRegler)
             )
         } else {
+            /** EØS-borgere **/
             listOf(
-                ReglerForArbeidstaker.fraDatagrunnlag(datagrunnlag),
                 ReglerForMedl.fraDatagrunnlag(datagrunnlag),
                 ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler),
                 ReglerForBosatt.fraDatagrunnlag(datagrunnlag),

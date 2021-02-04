@@ -68,7 +68,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_DOED("DOED", "Er det avklart om brukeren er død eller ikke?", erRegelflytKonklusjon = true),
     REGEL_REQUEST_VALIDERING("Validering", "Er input-dataene gyldige?", erRegelflytKonklusjon = true),
     REGEL_OVERSTYRING("OVERSTYRING", "Er overstyringsregler avklart?", erRegelflytKonklusjon = true),
-    REGEL_ARBEIDSTAKER("Arbeidstaker", "Er arbeidstaker i hovedsak arbeidstaker?", erRegelflytKonklusjon = true)
+    REGEL_HOVEDSAKLIG_ARBEIDSTAKER("Hovedsaklig arbeidstaker", "Er arbeidstaker i hovedsak arbeidstaker?", erRegelflytKonklusjon = true)
     ;
 
     companion object {
