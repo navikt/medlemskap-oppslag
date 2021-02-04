@@ -61,7 +61,6 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
             /** Tredjelandsborgere **/
             return listOf(
                 ReglerForHovedsakligArbeidstaker.fraDatagrunnlag(datagrunnlag),
-                ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler),
                 ReglerForMedl.fraDatagrunnlag(datagrunnlag),
                 ReglerForAndreStatsborgere.fraDatagrunnlag(datagrunnlag)
             )
