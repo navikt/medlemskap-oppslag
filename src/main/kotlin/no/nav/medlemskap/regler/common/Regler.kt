@@ -1,9 +1,6 @@
 package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.regler.common.Regel.Companion.regelJa
-import no.nav.medlemskap.regler.common.Regel.Companion.regelNei
-import no.nav.medlemskap.regler.common.Regel.Companion.regelUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
@@ -47,18 +44,6 @@ abstract class Regler(
         val regel = regelMap[regelId]
 
         return regel ?: throw RuntimeException("Fant ikke regel med regelId $regelId")
-    }
-
-    private fun regelflytResultat(svar: Svar, regelId: RegelId, delresultater: List<Resultat>): Resultat {
-        val regel = when (svar) {
-            JA -> regelJa(ytelse, regelId)
-            NEI -> regelNei(ytelse, regelId)
-            else -> regelUavklart(ytelse, regelId)
-        }
-
-        val resultat = regel.utfør()
-
-        return resultat.copy(delresultat = delresultater)
     }
 
     companion object {

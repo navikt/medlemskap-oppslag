@@ -33,13 +33,13 @@ data class Regel(
         fun regelJa(ytelse: Ytelse, regelId: RegelId, konklusjonstype: Konklusjonstype = REGELFLYT) = Regel(
             regelId = regelId,
             ytelse = ytelse,
-            operasjon = { Resultat.ja(REGEL_FLYT_KONKLUSJON, konklusjonstype) }
+            operasjon = { Resultat.ja(regelId = REGEL_FLYT_KONKLUSJON, konklusjonstype = konklusjonstype) }
         )
 
         fun regelNei(ytelse: Ytelse, regelId: RegelId, konklusjonstype: Konklusjonstype = REGELFLYT) = Regel(
             regelId = regelId,
             ytelse = ytelse,
-            operasjon = { Resultat.nei(REGEL_FLYT_KONKLUSJON, konklusjonstype) }
+            operasjon = { Resultat.nei(regelId = REGEL_FLYT_KONKLUSJON, konklusjonstype = konklusjonstype) }
         )
 
         fun uavklartKonklusjon(ytelse: Ytelse, regelId: RegelId = REGEL_MEDLEM_KONKLUSJON) = Regel(
@@ -48,14 +48,14 @@ data class Regel(
             operasjon = { Resultat.uavklart(REGEL_MEDLEM_KONKLUSJON, MEDLEM) }
         )
 
-        fun jaKonklusjon(ytelse: Ytelse) = Regel(
-            regelId = REGEL_MEDLEM_KONKLUSJON,
+        fun jaKonklusjon(ytelse: Ytelse, regelId: RegelId = REGEL_MEDLEM_KONKLUSJON) = Regel(
+            regelId = regelId,
             ytelse = ytelse,
-            operasjon = { Resultat.ja(REGEL_MEDLEM_KONKLUSJON, MEDLEM) }
+            operasjon = { Resultat.ja(regelId = REGEL_MEDLEM_KONKLUSJON, konklusjonstype = MEDLEM) }
         )
 
-        fun neiKonklusjon(ytelse: Ytelse) = Regel(
-            regelId = REGEL_MEDLEM_KONKLUSJON,
+        fun neiKonklusjon(ytelse: Ytelse, regelId: RegelId = REGEL_MEDLEM_KONKLUSJON) = Regel(
+            regelId = regelId,
             ytelse = ytelse,
             operasjon = { Resultat.nei(REGEL_MEDLEM_KONKLUSJON, MEDLEM) }
         )

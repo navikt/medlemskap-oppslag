@@ -24,8 +24,8 @@ class HarBrukerDekningIMedlRegel(
         dekningCounter(dekning!!, ytelse.name()) // Dekning er ikke null, regel 1.5 filtrerer ut dekning som er null
 
         return when {
-            Dekning.from(dekning)!!.gjelderForYtelse(ytelse) -> ja(regelId, dekning)
-            else -> nei(regelId, dekning)
+            Dekning.from(dekning)!!.gjelderForYtelse(ytelse) -> ja(regelId = regelId, dekning = dekning)
+            else -> nei(regelId = regelId, dekning = dekning)
         }
     }
 

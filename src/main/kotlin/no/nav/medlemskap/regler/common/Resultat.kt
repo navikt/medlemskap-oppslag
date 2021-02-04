@@ -101,39 +101,25 @@ data class Resultat(
             return emptyList()
         }
 
-        fun ja(regelId: RegelId, konklusjonstype: Konklusjonstype = Konklusjonstype.REGELFLYT) = Resultat(
+        fun ja(regelId: RegelId, konklusjonstype: Konklusjonstype = Konklusjonstype.REGEL, dekning: String = "") = Resultat(
             regelId = regelId,
             begrunnelse = regelId.jaBegrunnelse,
             svar = Svar.JA,
-            konklusjonstype = konklusjonstype
-        )
-
-        fun ja(regelId: RegelId, dekning: String, konklusjonstype: Konklusjonstype = Konklusjonstype.REGEL) = Resultat(
-            regelId = regelId,
-            begrunnelse = regelId.jaBegrunnelse,
-            svar = Svar.JA,
-            harDekning = Svar.JA,
+            harDekning = if (dekning != "") Svar.JA else null,
             dekning = dekning,
             konklusjonstype = konklusjonstype
         )
 
-        fun nei(regelId: RegelId, dekning: String, konklusjonstype: Konklusjonstype = Konklusjonstype.REGEL) = Resultat(
+        fun nei(regelId: RegelId, konklusjonstype: Konklusjonstype = Konklusjonstype.REGEL, dekning: String = "") = Resultat(
             regelId = regelId,
             begrunnelse = regelId.neiBegrunnelse,
             svar = Svar.NEI,
-            harDekning = Svar.NEI,
+            harDekning = if (dekning != "") Svar.NEI else null,
             dekning = dekning,
             konklusjonstype = konklusjonstype
         )
 
-        fun nei(regelId: RegelId, konklusjonstype: Konklusjonstype = Konklusjonstype.REGELFLYT) = Resultat(
-            regelId,
-            begrunnelse = regelId.neiBegrunnelse,
-            svar = Svar.NEI,
-            konklusjonstype = konklusjonstype
-        )
-
-        fun uavklart(regelId: RegelId, konklusjonstype: Konklusjonstype = Konklusjonstype.REGELFLYT) = Resultat(
+        fun uavklart(regelId: RegelId, konklusjonstype: Konklusjonstype = Konklusjonstype.REGEL) = Resultat(
             regelId,
             begrunnelse = regelId.uavklartBegrunnelse,
             svar = Svar.UAVKLART,
