@@ -5,6 +5,7 @@ import no.nav.medlemskap.regler.common.Regel
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.v1.arbeidsforhold.*
+import no.nav.medlemskap.regler.v1.frilanser.ErArbeidsforholdetFrilanserRegel
 import no.nav.medlemskap.regler.v1.grunnforordningen.ErBrukerEøsBorgerRegel
 import no.nav.medlemskap.regler.v1.lovvalg.*
 import no.nav.medlemskap.regler.v1.medlemskap.*

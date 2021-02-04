@@ -48,7 +48,8 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         val fellesRegler = listOf(
             ReglerForMedl.fraDatagrunnlag(datagrunnlag),
             ReglerForBosatt.fraDatagrunnlag(datagrunnlag),
-            ReglerForDoedsfall.fraDatagrunnlag(datagrunnlag)
+            ReglerForDoedsfall.fraDatagrunnlag(datagrunnlag),
+            ReglerForFrilansere.fraDatagrunnlag(datagrunnlag)
         )
 
         return fellesRegler.map(Regler::kjørHovedflyt)

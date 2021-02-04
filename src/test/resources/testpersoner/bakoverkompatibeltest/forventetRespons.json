@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2021-01-25T13:22:02.071459",
+  "tidspunkt" : "2021-02-04T10:31:48.66608",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "datagrunnlag" : {
@@ -203,8 +203,8 @@
             "tom" : "2022-02-12"
           },
           "type" : "PERMANENT",
-          "oppholdPaSammeVilkar": false,
-          "harTillatelse" : true
+          "harTillatelse" : true,
+          "oppholdPaSammeVilkar" : false
         },
         "eosellerEFTAOpphold" : null,
         "uavklart" : null,
@@ -364,6 +364,24 @@
         "regelId" : "REGEL_13",
         "avklaring" : "Er bruker død?",
         "begrunnelse" : "",
+        "svar" : "NEI",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ]
+      } ],
+      "årsaker" : [ ]
+    }, {
+      "regelId" : "REGEL_FRILANSER",
+      "avklaring" : "Er bruker frilanser?",
+      "begrunnelse" : "",
+      "svar" : "JA",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_17",
+        "avklaring" : "Er bruker frilanser?",
+        "begrunnelse" : "Bruker er ikke frilanser",
         "svar" : "NEI",
         "harDekning" : null,
         "dekning" : "",

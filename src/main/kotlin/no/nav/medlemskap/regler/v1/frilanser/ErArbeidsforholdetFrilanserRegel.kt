@@ -1,4 +1,4 @@
-package no.nav.medlemskap.regler.v1.arbeidsforhold
+package no.nav.medlemskap.regler.v1.frilanser
 
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
@@ -11,6 +11,7 @@ import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
+import no.nav.medlemskap.regler.v1.arbeidsforhold.ArbeidsforholdRegel
 import java.time.LocalDate
 
 class ErArbeidsforholdetFrilanserRegel(
