@@ -1,7 +1,7 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regelflyt for regel 17
+Egenskap: Regelflyt for regel 17.1
 
   Bakgrunn:
     Gitt følgende bostedsadresser i personhistorikken
@@ -13,11 +13,11 @@ Egenskap: Regelflyt for regel 17
       | NOR      | 01.01.2000      |                 |
 
 
-  Scenario: Regelflyt regel 17: Bruker får "ja" på spørsmålet om medlemskap hvis arbeidsforholdet finnes
+  Scenariomal: Regelflyt regel 17.1: Bruker får "ja" på spørsmålet om medlemskap hvis arbeidsforholdet er frilanser
 
     Gitt følgende arbeidsforhold fra AAReg
-      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Arbeidsgiver Id |
-      | 01.01.2018      |                 | Organisasjon     | NORMALT             | 1               |
+      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype   | Arbeidsgiver Id |
+      | 01.01.2018      |                 | Organisasjon     | <Arbeidsforholdstype> | 1               |
 
     Og følgende arbeidsgiver i arbeidsforholdet
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
@@ -31,14 +31,10 @@ Egenskap: Regelflyt for regel 17
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
-    Så skal svaret være "Ja"
-    Og skal regel "17" gi svaret "Ja"
+    Så skal svaret være "<Medlemskap>"
+    Og skal regel "17.1" gi svaret "<Regel 17.1>"
 
-  Scenario: Regelflyt regel 17: Bruker får "UAVKLART" på spørsmålet om medlemskap hvis arbeidsforholdet ikke finnes
-
-    Når medlemskap beregnes med følgende parametre
-      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-      | 30.01.2020      | 30.01.2021      | Nei                           |
-
-    Så skal svaret være "UAVKLART"
-    Og skal regel "17" gi svaret "Nei"
+    Eksempler:
+      | Arbeidsforholdstype | Regel 17.1 | Medlemskap |
+      | NORMALT             | Nei        | Ja         |
+      | FRILANSER           | Ja         | UAVKLART   |
