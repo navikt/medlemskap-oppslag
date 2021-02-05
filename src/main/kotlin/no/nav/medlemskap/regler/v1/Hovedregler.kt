@@ -49,7 +49,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
             ReglerForMedl.fraDatagrunnlag(datagrunnlag),
             ReglerForBosatt.fraDatagrunnlag(datagrunnlag),
             ReglerForDoedsfall.fraDatagrunnlag(datagrunnlag),
-            ReglerForFrilansere.fraDatagrunnlag(datagrunnlag)
+            ReglerForFellesArbeidsforhold.fraDatagrunnlag(datagrunnlag)
         )
 
         return fellesRegler.map(Regler::kjørHovedflyt)

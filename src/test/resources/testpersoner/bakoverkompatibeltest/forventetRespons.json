@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2021-02-04T10:31:48.66608",
+  "tidspunkt" : "2021-02-05T10:32:14.16981",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "datagrunnlag" : {
@@ -372,8 +372,8 @@
       } ],
       "årsaker" : [ ]
     }, {
-      "regelId" : "REGEL_FRILANSER",
-      "avklaring" : "Er bruker frilanser?",
+      "regelId" : "REGEL_FELLES_ARBEIDSFORHOLD",
+      "avklaring" : "Er felles arbeidsforhold avklart?",
       "begrunnelse" : "",
       "svar" : "JA",
       "harDekning" : null,
