@@ -88,6 +88,10 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
 
     private fun kjørFellesRegler(): List<Resultat> {
         val fellesRegler = listOf(
+            ReglerForMedl.fraDatagrunnlag(datagrunnlag),
+            ReglerForBosatt.fraDatagrunnlag(datagrunnlag),
+            ReglerForDoedsfall.fraDatagrunnlag(datagrunnlag),
+            ReglerForFellesArbeidsforhold.fraDatagrunnlag(datagrunnlag)
             ReglerForDoedsfall.fraDatagrunnlag(datagrunnlag)
         )
 
