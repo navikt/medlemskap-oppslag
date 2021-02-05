@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2021-02-05T13:35:07.857951",
+  "tidspunkt" : "2021-02-05T10:32:14.16981",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "datagrunnlag" : {
@@ -380,15 +380,6 @@
       "dekning" : "",
       "delresultat" : [ {
         "regelId" : "REGEL_17",
-        "avklaring" : "Har bruker arbeidsforhold?",
-        "begrunnelse" : "",
-        "svar" : "JA",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ]
-      }, {
-        "regelId" : "REGEL_17_1",
         "avklaring" : "Er bruker frilanser?",
         "begrunnelse" : "Bruker er ikke frilanser",
         "svar" : "NEI",

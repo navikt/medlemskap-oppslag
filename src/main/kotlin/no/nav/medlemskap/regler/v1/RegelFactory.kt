@@ -71,8 +71,7 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_12 -> HarBrukerJobbet25ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_13 -> ErBrukerDoedRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_14 -> ErArbeidsforholdetOffentligSektor.fraDatagrunnlag(datagrunnlag).regel
-            REGEL_17 -> HarBrukerArbeidsforholdRegel.fraDatagrunnlag(datagrunnlag).regel
-            REGEL_17_1 -> ErArbeidsforholdetFrilanserRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_17 -> ErArbeidsforholdetFrilanserRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_18 -> ErBrukerHovedsakligArbeidstakerRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_19_2 -> GyldigOppholdstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_19_2_1 -> DekkerOppholdstillatelseArbeidsperiodeRegel.fraDatagrunnlag(datagrunnlag).regel

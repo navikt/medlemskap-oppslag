@@ -18,11 +18,12 @@ class ErArbeidsforholdetFrilanserRegel(
     private val periode: InputPeriode,
     private val førsteDagForYtelse: LocalDate?,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    regelId: RegelId = RegelId.REGEL_17_1
+    regelId: RegelId = RegelId.REGEL_17
 ) : ArbeidsforholdRegel(regelId, ytelse, periode, førsteDagForYtelse) {
 
     override fun operasjon(): Resultat {
         return when {
+            arbeidsforhold.isEmpty() -> nei(regelId)
             arbeidsforhold.arbeidsforholdForYrkestype(kontrollPeriodeForArbeidsforhold)
                 .any { it == Arbeidsforholdstype.FRILANSER } -> ja(regelId)
             else -> nei(regelId)
