@@ -32,6 +32,14 @@ data class Resultat(
         return finnRegelResultat(this, regelId)
     }
 
+    fun erKonlusjonstypeMedlem(): Boolean {
+        return konklusjonstype == Konklusjonstype.MEDLEM
+    }
+
+    fun erKonklusjonstypeRegelflyt(): Boolean {
+        return konklusjonstype == Konklusjonstype.REGELFLYT
+    }
+
     fun årsaksTekst(): String {
         val årsak = finnÅrsak(this)
 

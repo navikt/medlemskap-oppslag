@@ -1,7 +1,7 @@
 package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.medlemskonklusjonUavklart
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import no.nav.medlemskap.regler.common.Resultat.Companion.uavklart
@@ -28,7 +28,7 @@ abstract class Regler(
         regel: Regel,
         hvisJa: Regelflyt? = null,
         hvisNei: Regelflyt? = null,
-        hvisUavklart: Regelflyt = konklusjonUavklart(ytelse)
+        hvisUavklart: Regelflyt = medlemskonklusjonUavklart(ytelse)
     ): Regelflyt {
         return Regelflyt(
             regel = regel,

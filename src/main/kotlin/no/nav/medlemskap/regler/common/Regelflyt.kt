@@ -1,9 +1,8 @@
 package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.regler.common.Konklusjonstype.MEDLEM
 import no.nav.medlemskap.regler.common.Konklusjonstype.REGELFLYT
-import no.nav.medlemskap.regler.common.Regel.Companion.jaKonklusjon
-import no.nav.medlemskap.regler.common.Regel.Companion.neiKonklusjon
 import no.nav.medlemskap.regler.common.Regel.Companion.regelJa
 import no.nav.medlemskap.regler.common.Regel.Companion.regelNei
 import no.nav.medlemskap.regler.common.Regel.Companion.regelUavklart
@@ -69,17 +68,8 @@ class Regelflyt(
     }
 
     companion object {
-
-        fun konklusjonJa(ytelse: Ytelse): Regelflyt {
-            return Regelflyt(jaKonklusjon(ytelse), ytelse)
-        }
-
-        fun konklusjonNei(ytelse: Ytelse): Regelflyt {
-            return Regelflyt(neiKonklusjon(ytelse), ytelse)
-        }
-
-        fun konklusjonUavklart(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_MEDLEM_KONKLUSJON): Regelflyt {
-            return Regelflyt(uavklartKonklusjon(ytelse, regelId), ytelse)
+        fun medlemskonklusjonUavklart(ytelse: Ytelse): Regelflyt {
+            return Regelflyt(uavklartKonklusjon(ytelse, RegelId.REGEL_MEDLEM_KONKLUSJON), ytelse)
         }
 
         fun regelflytJa(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON, konklusjonstype: Konklusjonstype = REGELFLYT): Regelflyt {
@@ -92,6 +82,18 @@ class Regelflyt(
 
         fun regelflytUavklart(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON, konklusjonstype: Konklusjonstype = REGELFLYT): Regelflyt {
             return Regelflyt(regelUavklart(ytelse, regelId, konklusjonstype), ytelse)
+        }
+
+        fun konklusjonJa(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_MEDLEM_KONKLUSJON): Regelflyt {
+            return Regelflyt(regelJa(ytelse, regelId, MEDLEM), ytelse)
+        }
+
+        fun konklusjonNei(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_MEDLEM_KONKLUSJON): Regelflyt {
+            return Regelflyt(regelNei(ytelse, regelId, MEDLEM), ytelse)
+        }
+
+        fun konklusjonUavklart(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_MEDLEM_KONKLUSJON): Regelflyt {
+            return Regelflyt(regelUavklart(ytelse, regelId, MEDLEM), ytelse)
         }
     }
 }
