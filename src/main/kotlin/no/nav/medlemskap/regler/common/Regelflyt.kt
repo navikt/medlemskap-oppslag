@@ -72,16 +72,16 @@ class Regelflyt(
             return Regelflyt(uavklartKonklusjon(ytelse, RegelId.REGEL_MEDLEM_KONKLUSJON), ytelse)
         }
 
-        fun regelflytJa(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON, konklusjonstype: Konklusjonstype = REGELFLYT): Regelflyt {
-            return Regelflyt(regelJa(ytelse, regelId, konklusjonstype), ytelse)
+        fun regelflytJa(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
+            return Regelflyt(regelJa(ytelse, regelId, REGELFLYT), ytelse)
         }
 
-        fun regelflytNei(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON, konklusjonstype: Konklusjonstype = REGELFLYT): Regelflyt {
-            return Regelflyt(regelNei(ytelse, regelId, konklusjonstype), ytelse)
+        fun regelflytNei(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
+            return Regelflyt(regelNei(ytelse, regelId, REGELFLYT), ytelse)
         }
 
-        fun regelflytUavklart(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON, konklusjonstype: Konklusjonstype = REGELFLYT): Regelflyt {
-            return Regelflyt(regelUavklart(ytelse, regelId, konklusjonstype), ytelse)
+        fun regelflytUavklart(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
+            return Regelflyt(regelUavklart(ytelse, regelId, REGELFLYT), ytelse)
         }
 
         fun konklusjonJa(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_MEDLEM_KONKLUSJON): Regelflyt {
