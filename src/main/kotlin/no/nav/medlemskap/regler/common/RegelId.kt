@@ -69,15 +69,20 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_DOED("DOED", "Er det avklart om brukeren er død eller ikke?", erRegelflytKonklusjon = true),
     REGEL_REQUEST_VALIDERING("Validering", "Er input-dataene gyldige?", erRegelflytKonklusjon = true),
     REGEL_OVERSTYRING("OVERSTYRING", "Er overstyringsregler avklart?", erRegelflytKonklusjon = true),
-    REGEL_ARBEIDSTAKER("ARBEIDSTAKER", "Er arbeidstaker i hovedsak arbeidstaker?", erRegelflytKonklusjon = true),
-    REGEL_FELLES_ARBEIDSFORHOLD("FELLES ARBEIDSFORHOLD", "Er felles arbeidsforhold avklart?", erRegelflytKonklusjon = true)
+    REGEL_FELLES_ARBEIDSFORHOLD("FELLES ARBEIDSFORHOLD", "Er felles arbeidsforhold avklart?", erRegelflytKonklusjon = true),
     REGEL_HOVEDSAKLIG_ARBEIDSTAKER("Hovedsaklig arbeidstaker", "Er arbeidstaker i hovedsak arbeidstaker?", erRegelflytKonklusjon = true),
     REGEL_OPPHOLDSTILLATELSE("Oppholdstillatelse", "Har bruker gyldig oppholdstillatelse?", erRegelflytKonklusjon = true)
     ;
 
     companion object {
         fun fraRegelIdString(regelIdStr: String): RegelId? {
-            return values().first { it.identifikator == regelIdStr || it.name == regelIdStr }
+
+            val regelIdFunnet = values().filter { it.identifikator == regelIdStr || it.name == regelIdStr }.firstOrNull()
+            if (regelIdFunnet == null) {
+                throw RuntimeException("Fant ikke regelId " + regelIdStr)
+            }
+
+            return regelIdFunnet
         }
         fun RegelId.metricName(): String = this.identifikator + ". " + this.avklaring.replace("?", "")
     }

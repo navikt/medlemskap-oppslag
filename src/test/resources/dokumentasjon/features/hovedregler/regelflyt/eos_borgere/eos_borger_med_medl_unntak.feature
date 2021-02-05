@@ -42,14 +42,15 @@ Egenskap: EØS-borger med medl unntak.
     Så skal svaret være "<Medlemskap>"
 
     Og skal resultat gi følgende delresultater:
-      | Regel           |
-      | OVERSTYRING     |
-      | DOED            |
-      | STATSBORGERSKAP |
-      | MEDL            |
-      | ARBEIDSFORHOLD  |
-      | BOSATT          |
-      | EØS-BOSATT      |
+      | Regel                       |
+      | REGEL_OVERSTYRING           |
+      | REGEL_DOED                  |
+      | REGEL_FELLES_ARBEIDSFORHOLD |
+      | REGEL_STATSBORGERSKAP       |
+      | REGEL_MEDL                  |
+      | REGEL_ARBEIDSFORHOLD        |
+      | REGEL_BOSATT                |
+      | REGEL_EØS_BOSATT            |
 
     Og skal regel "MEDL" gi svaret "<Regel MEDL>"
 
