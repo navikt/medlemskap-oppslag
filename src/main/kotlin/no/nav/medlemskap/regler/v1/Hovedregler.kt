@@ -61,7 +61,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         val resultatMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag).kjørHovedflyt()
         resultater.add(resultatMedl)
 
-        if (resultatMedl.erKonklusjonstypeRegelflyt() && resultatMedl.svar == JA || resultatMedl.svar == UAVKLART) {
+        if (resultatMedl.erRegelflytKonklusjon() && resultatMedl.svar == JA || resultatMedl.svar == UAVKLART) {
             resultater.add(ReglerForAndreStatsborgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         }
 

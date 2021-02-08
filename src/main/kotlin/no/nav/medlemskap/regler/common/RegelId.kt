@@ -1,6 +1,6 @@
 package no.nav.medlemskap.regler.common
 
-enum class RegelId(val identifikator: String, val avklaring: String, val neiBegrunnelse: String = "", val jaBegrunnelse: String = "", val uavklartBegrunnelse: String = "", val erRegelflytKonklusjon: Boolean = false) {
+enum class RegelId(val identifikator: String, val avklaring: String, val neiBegrunnelse: String = "", val jaBegrunnelse: String = "", val uavklartBegrunnelse: String = "") {
     REGEL_0_1("0.1", "Er input-dato gyldig?", "Ugyldig input dato"),
     REGEL_0_5("0.5", "Skal regler overstyres?", "", "Svar på brukerspørsmålet er Nei, og regler 3, 5 og 12 skal derfor overstyres."),
     REGEL_1_1("1.1", "Er alle perioder siste 12 mnd avklart (endelig/gyldig)?", "Ikke alle perioder siste 12 mnd er avklart"),
@@ -59,20 +59,20 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_B("OPPLYSNINGER-GOSYS", "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?", "", "Det finnes registrerte opplysninger i GOSYS"),
     REGEL_C("OPPLYSNINGER-JOARK", "Finnes det dokumenter i JOARK på medlemskapsområdet?", "", "Det finnes registrert opplysninger i JOARK"),
     REGEL_MEDLEM_KONKLUSJON("LOVME", "Er bruker medlem?", "Kan ikke konkludere med medlemskap", "Bruker er medlem", "Kan ikke konkludere med medlemskap"),
-    REGEL_FLYT_KONKLUSJON("RFK", "Svar på regelflyt", "Regelflyt konkluderer med NEI", erRegelflytKonklusjon = true),
-    REGEL_ARBEIDSFORHOLD("ARBEIDSFORHOLD", "Er arbeidsforhold avklart?", erRegelflytKonklusjon = true),
-    REGEL_EØS_BOSATT("EØS-BOSATT", "Er EØS-borger bosatt i Norge?", erRegelflytKonklusjon = true),
-    REGEL_ANDRE_BORGERE("ANDRE BORGERE", "Er regler for andre borgere avklart?", erRegelflytKonklusjon = true),
-    REGEL_NORSK("NORSK", "Er regler for norske borgere avklart?", erRegelflytKonklusjon = true),
-    REGEL_MEDL("MEDL", "Har bruker avklarte opplysninger i MEDL?", erRegelflytKonklusjon = true),
-    REGEL_STATSBORGERSKAP("STATSBORGERSKAP", "Er statsborgerskap avklart?", erRegelflytKonklusjon = true),
-    REGEL_BOSATT("BOSATT", "Er det avklart om bruker bor i Norge?", erRegelflytKonklusjon = true),
-    REGEL_DOED("DOED", "Er det avklart om brukeren er død eller ikke?", erRegelflytKonklusjon = true),
-    REGEL_REQUEST_VALIDERING("Validering", "Er input-dataene gyldige?", erRegelflytKonklusjon = true),
-    REGEL_OVERSTYRING("OVERSTYRING", "Er overstyringsregler avklart?", erRegelflytKonklusjon = true),
-    REGEL_FELLES_ARBEIDSFORHOLD("FELLES ARBEIDSFORHOLD", "Er felles arbeidsforhold avklart?", erRegelflytKonklusjon = true),
-    REGEL_HOVEDSAKLIG_ARBEIDSTAKER("Hovedsaklig arbeidstaker", "Er arbeidstaker i hovedsak arbeidstaker?", erRegelflytKonklusjon = true),
-    REGEL_OPPHOLDSTILLATELSE("Oppholdstillatelse", "Har bruker gyldig oppholdstillatelse?", erRegelflytKonklusjon = true)
+    REGEL_FLYT_KONKLUSJON("RFK", "Svar på regelflyt", "Regelflyt konkluderer med NEI"),
+    REGEL_ARBEIDSFORHOLD("ARBEIDSFORHOLD", "Er arbeidsforhold avklart?"),
+    REGEL_EØS_BOSATT("EØS-BOSATT", "Er EØS-borger bosatt i Norge?"),
+    REGEL_ANDRE_BORGERE("ANDRE BORGERE", "Er regler for andre borgere avklart?"),
+    REGEL_NORSK("NORSK", "Er regler for norske borgere avklart?"),
+    REGEL_MEDL("MEDL", "Har bruker avklarte opplysninger i MEDL?"),
+    REGEL_STATSBORGERSKAP("STATSBORGERSKAP", "Er statsborgerskap avklart?"),
+    REGEL_BOSATT("BOSATT", "Er det avklart om bruker bor i Norge?"),
+    REGEL_DOED("DOED", "Er det avklart om brukeren er død eller ikke?"),
+    REGEL_REQUEST_VALIDERING("Validering", "Er input-dataene gyldige?"),
+    REGEL_OVERSTYRING("OVERSTYRING", "Er overstyringsregler avklart?"),
+    REGEL_FELLES_ARBEIDSFORHOLD("FELLES ARBEIDSFORHOLD", "Er felles arbeidsforhold avklart?"),
+    REGEL_HOVEDSAKLIG_ARBEIDSTAKER("Hovedsaklig arbeidstaker", "Er arbeidstaker i hovedsak arbeidstaker?"),
+    REGEL_OPPHOLDSTILLATELSE("Oppholdstillatelse", "Har bruker gyldig oppholdstillatelse?")
     ;
 
     companion object {

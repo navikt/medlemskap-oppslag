@@ -17,11 +17,11 @@ data class Resultat(
     val årsaker = finnÅrsaker()
 
     fun erMedlemskonklusjon(): Boolean {
-        return regelId == RegelId.REGEL_MEDLEM_KONKLUSJON || konklusjonstype == Konklusjonstype.MEDLEM
+        return konklusjonstype == Konklusjonstype.MEDLEM
     }
 
     fun erRegelflytKonklusjon(): Boolean {
-        return regelId.erRegelflytKonklusjon
+        return konklusjonstype == Konklusjonstype.REGELFLYT
     }
 
     fun erKonklusjon(): Boolean {
@@ -30,14 +30,6 @@ data class Resultat(
 
     fun finnRegelResultat(regelId: RegelId): Resultat? {
         return finnRegelResultat(this, regelId)
-    }
-
-    fun erKonlusjonstypeMedlem(): Boolean {
-        return konklusjonstype == Konklusjonstype.MEDLEM
-    }
-
-    fun erKonklusjonstypeRegelflyt(): Boolean {
-        return konklusjonstype == Konklusjonstype.REGELFLYT
     }
 
     fun årsaksTekst(): String {
@@ -100,7 +92,7 @@ data class Resultat(
                     .mapNotNull { finnÅrsak(it) }
             }
 
-            if (resultat.erRegelflytKonklusjon() && resultat.delresultat.isNotEmpty()) {
+            if (resultat.erKonklusjon() && resultat.delresultat.isNotEmpty()) {
                 val sisteResultat = resultat.delresultat.last()
 
                 return listOf(finnÅrsak(sisteResultat)).filterNotNull()
