@@ -76,19 +76,20 @@ data class Arbeidsforhold(
             }.flatMap { p -> p.arbeidsgiver.juridiskeEnheter!!.map { r -> r?.antallAnsatte ?: 0 } }
 
         infix fun List<Arbeidsforhold>.arbeidsforholdForYrkestype(kontrollPeriode: Kontrollperiode): List<Arbeidsforholdstype> =
-            this.filter {
-                it.periode.overlapper(kontrollPeriode.periode)
-            }.map { it.arbeidsforholdstype }
+            arbeidsforholdForKontrollPeriode(kontrollPeriode).map { it.arbeidsforholdstype }
 
         infix fun List<Arbeidsforhold>.sisteArbeidsforholdYrkeskode(kontrollPeriode: Kontrollperiode): List<String> =
-            this.filter {
-                it.periode.overlapper(kontrollPeriode.periode)
-            }.flatMap { it.arbeidsavtaler }.map { it.yrkeskode }
+            arbeidsforholdForKontrollPeriode(kontrollPeriode).flatMap { it.arbeidsavtaler }.map { it.yrkeskode }
 
         infix fun List<Arbeidsforhold>.sisteArbeidsforholdSkipsregister(kontrollPeriode: Kontrollperiode): List<String> =
-            this.filter {
-                it.periode.overlapper(kontrollPeriode.periode)
-            }.flatMap { it -> it.arbeidsavtaler.map { it.skipsregister?.name ?: "" } }
+            arbeidsforholdForKontrollPeriode(kontrollPeriode).flatMap { it -> it.arbeidsavtaler.map { it.skipsregister?.name ?: "" } }
+
+        infix fun List<Arbeidsforhold>.skipsregisterErNISOgFartsområdeErInnenriks(kontrollPeriode: Kontrollperiode): Boolean =
+            arbeidsforholdForKontrollPeriode(kontrollPeriode).flatMap { it.arbeidsavtaler }
+                .filter {
+                    it.skipsregister?.name.equals(Skipsregister.NIS.name) &&
+                        it.fartsomraade?.name?.equals(Fartsomraade.INNENRIKS.name) == true
+                }.isNotNullOrEmpty()
 
         infix fun List<Arbeidsforhold>.konkursStatuserArbeidsgivere(kontrollPeriode: Kontrollperiode): List<String?>? {
             return arbeidsforholdForKontrollPeriode(kontrollPeriode).flatMap { it.arbeidsgiver.konkursStatus.orEmpty() }

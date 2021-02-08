@@ -14,8 +14,8 @@ Egenskap: Regel 7.1: Er bruker ansatt på et norsk skip?
       | 1             | BEDR             | 9              |               |
 
     Og følgende arbeidsavtaler i arbeidsforholdet
-      | Fra og med dato | Til og med dato | Yrkeskode | Skipsregister   | Stillingsprosent |
-      | 01.01.2018      |                 | 001       | <Skipsregister> | 100              |
+      | Fra og med dato | Til og med dato | Yrkeskode | Skipsregister   | Stillingsprosent | Fartsområde   |
+      | 01.01.2018      |                 | 001       | <Skipsregister> | 100              | <Fartsområde> |
 
 
     Når regel "7.1" kjøres med følgende parametre
@@ -27,11 +27,13 @@ Egenskap: Regel 7.1: Er bruker ansatt på et norsk skip?
     Og skal begrunnelsen være som definert i RegelId
 
     Eksempler:
-      | Skipsregister | Svar |
-      | NIS           | Nei  |
-      | NOR           | Ja   |
-      | UTL           | Nei  |
-      |               | Nei  |
+      | Skipsregister | Fartsområde | Svar |
+      | NIS           |             | Nei  |
+      | NOR           |             | Ja   |
+      | UTL           |             | Nei  |
+      |               |             | Nei  |
+      | NIS           | INNENRIKS   | Ja   |
+      | NIS           | UTENRIKS    | Nei  |
 
   Scenario: Regel 7.1 Bruker som er ansatt på et norsk skip med flere arbeidsavtaler får "Ja"
     Gitt følgende arbeidsforhold fra AAReg
@@ -55,3 +57,4 @@ Egenskap: Regel 7.1: Er bruker ansatt på et norsk skip?
     Så skal svaret være "Ja"
     Og skal avklaringen være som definert i RegelId
     Og skal begrunnelsen være som definert i RegelId
+

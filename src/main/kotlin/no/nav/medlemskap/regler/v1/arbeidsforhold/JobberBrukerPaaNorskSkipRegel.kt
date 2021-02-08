@@ -5,6 +5,7 @@ import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.sisteArbeidsforholdSkipsregister
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.skipsregisterErNISOgFartsområdeErInnenriks
 import no.nav.medlemskap.domene.arbeidsforhold.Skipsregister
 import no.nav.medlemskap.regler.common.Funksjoner.kunInneholder
 import no.nav.medlemskap.regler.common.RegelId
@@ -23,7 +24,9 @@ class JobberBrukerPaaNorskSkipRegel(
 
     override fun operasjon(): Resultat {
         return when {
-            arbeidsforhold sisteArbeidsforholdSkipsregister kontrollPeriodeForArbeidsforhold kunInneholder Skipsregister.NOR.name -> ja(regelId)
+            arbeidsforhold sisteArbeidsforholdSkipsregister kontrollPeriodeForArbeidsforhold kunInneholder Skipsregister.NOR.name ||
+                arbeidsforhold.skipsregisterErNISOgFartsområdeErInnenriks(kontrollPeriodeForArbeidsforhold)
+            -> ja(regelId)
             else -> nei(regelId)
         }
     }
