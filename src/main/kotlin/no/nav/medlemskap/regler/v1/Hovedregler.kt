@@ -36,23 +36,23 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         val resultatStatsborgerskap = reglerForStatsborgerskap.kjørHovedflyt()
         resultater.add(resultatStatsborgerskap)
 
-        val resultaterForStatsborger = kjøReglerForStatsborgerskap(resultatStatsborgerskap, reglerSomSkalOverstyres)
+        val resultaterForStatsborger = kjørReglerForStatsborgerskap(resultatStatsborgerskap, reglerSomSkalOverstyres)
         resultater.addAll(resultaterForStatsborger)
 
         return utledResultat(ytelse, resultater)
     }
 
-    private fun kjøReglerForStatsborgerskap(resultatStatsborgerskap: Resultat, reglerSomSkalOverstyres: Map<RegelId, Svar>): List<Resultat> {
+    private fun kjørReglerForStatsborgerskap(resultatStatsborgerskap: Resultat, reglerSomSkalOverstyres: Map<RegelId, Svar>): List<Resultat> {
         val statsborgerskapskategori = bestemStatsborgerskapskategori(resultatStatsborgerskap)
 
         return when (statsborgerskapskategori) {
-            Statsborgerskapskategori.TREDJELANDSBORGER -> kjørReglerForTredjelandsborgere(reglerSomSkalOverstyres)
+            Statsborgerskapskategori.TREDJELANDSBORGER -> kjørReglerForTredjelandsborgere()
             Statsborgerskapskategori.EØS_BORGER -> kjørReglerForEøsBorgere(reglerSomSkalOverstyres)
             Statsborgerskapskategori.NORSK_BORGER -> kjørReglerForNorskeBorgere(reglerSomSkalOverstyres)
         }
     }
 
-    private fun kjørReglerForTredjelandsborgere(reglerSomSkalOverstyres: Map<RegelId, Svar>): List<Resultat> {
+    private fun kjørReglerForTredjelandsborgere(): List<Resultat> {
         val resultater = mutableListOf<Resultat>()
 
         resultater.add(ReglerForHovedsakligArbeidstaker.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
@@ -149,7 +149,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
             return when (resultat.svar) {
                 JA -> jaKonklusjon(ytelse).utfør().copy(harDekning = resultat.harDekning, dekning = resultat.dekning)
                 NEI -> neiKonklusjon(ytelse).utfør().copy(harDekning = resultat.harDekning, dekning = resultat.dekning)
-                Svar.UAVKLART -> uavklartKonklusjon(ytelse).utfør().copy(harDekning = resultat.harDekning, dekning = resultat.dekning)
+                UAVKLART -> uavklartKonklusjon(ytelse).utfør().copy(harDekning = resultat.harDekning, dekning = resultat.dekning)
             }
         }
 
