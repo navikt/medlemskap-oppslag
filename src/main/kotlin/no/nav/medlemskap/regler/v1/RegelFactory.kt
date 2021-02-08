@@ -79,6 +79,7 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_19_3_1 -> DekkerArbeidstillatelsenArbeidsperiodenRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_19_4 -> ErBrukerBritiskBorgerRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_19_1 -> ErOppholdstillatelseUavklartRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_20 -> HarBrukerJobbet80ProsentEllerMerSiste3MånedeneRegel.fraDatagrunnlag(datagrunnlag, REGEL_20).regel
             else -> throw java.lang.RuntimeException("Ukjent regel")
         }
     }
