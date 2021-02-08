@@ -34,9 +34,10 @@ Egenskap: Regelflyt for regel 20, brukere som ikke er registrert som bosatt i No
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
-    Så skal svaret være "<Svar>"
+    Så skal svaret være "<Medlemskap>"
+    Og skal regel "20" gi svaret "<Regel 20>"
 
     Eksempler:
-      | Stillingsprosent | Svar     |
-      | 80               | Ja       |
-      | 70               | Uavklart |
+      | Stillingsprosent | Regel 20 | Medlemskap |
+      | 80               | Ja       | Ja         |
+      | 70               | Nei      | Uavklart   |

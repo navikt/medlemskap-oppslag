@@ -44,18 +44,3 @@ Egenskap: Regelflyt for regel 3
       | SYKEPENGER | 05.02.2019      | Ja      | Ja         | Regel 3 overstyres |
       | SYKEPENGER |                 | Ja      | Ja         | Regel 3 overstyres |
       | DAGPENGER  | 02.02.2019      | Nei     | UAVKLART   |                    |
-
-
-  Scenariomal: Regelflyt regel 3: Bruker uten arbeidsforhold skal få uavklart
-
-    Når medlemskap beregnes med følgende parametre
-      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge | Ytelse   |
-      | 30.01.2020      | 30.01.2021      | Nei                           | <Ytelse> |
-
-    Så skal svaret være "<Medlemskap>"
-    Og skal regel-årsaker være "<Årsaker>"
-
-    Eksempler:
-      | Ytelse     | Medlemskap | Årsaker |
-      | SYKEPENGER | UAVKLART   | 3       |
-      | DAGPENGER  | UAVKLART   | 3       |

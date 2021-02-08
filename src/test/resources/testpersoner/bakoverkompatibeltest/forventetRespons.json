@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2021-02-05T17:18:11.847839",
+  "tidspunkt" : "2021-02-08T05:47:37.0531",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "datagrunnlag" : {
@@ -410,6 +410,34 @@
         "avklaring" : "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?",
         "begrunnelse" : "",
         "svar" : "JA",
+        "svar" : "NEI",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ]
+      } ],
+      "årsaker" : [ ]
+    }, {
+      "regelId" : "REGEL_FELLES_ARBEIDSFORHOLD",
+      "avklaring" : "Er felles arbeidsforhold avklart?",
+      "begrunnelse" : "",
+      "svar" : "JA",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_17",
+        "avklaring" : "Har bruker arbeidsforhold?",
+        "begrunnelse" : "",
+        "svar" : "JA",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ]
+      }, {
+        "regelId" : "REGEL_17_1",
+        "avklaring" : "Er bruker frilanser?",
+        "begrunnelse" : "Bruker er ikke frilanser",
+        "svar" : "NEI",
         "harDekning" : null,
         "dekning" : "",
         "delresultat" : [ ],
