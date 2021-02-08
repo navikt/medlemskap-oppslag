@@ -17,7 +17,7 @@ Egenskap: Regel 20: Har bruker jobbet 80% eller mer siste 3 månedene?
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   |
       | 01.01.2018      |                 | 001       | <Stillingsprosent> |
 
-    Når regel "11.2.3" kjøres med følgende parametre
+    Når regel "20" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
