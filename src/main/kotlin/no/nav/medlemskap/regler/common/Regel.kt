@@ -4,7 +4,10 @@ import no.nav.medlemskap.common.regelCounter
 import no.nav.medlemskap.common.regelInfluxCounter
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
+import no.nav.medlemskap.regler.common.Konklusjonstype.MEDLEM
+import no.nav.medlemskap.regler.common.Konklusjonstype.REGELFLYT
 import no.nav.medlemskap.regler.common.RegelId.Companion.metricName
+import no.nav.medlemskap.regler.common.RegelId.REGEL_MEDLEM_KONKLUSJON
 
 data class Regel(
     val regelId: RegelId,
@@ -20,40 +23,40 @@ data class Regel(
     )
 
     companion object {
-        fun regelUavklartKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(
+        fun regelUavklart(ytelse: Ytelse, regelId: RegelId, konklusjonstype: Konklusjonstype = REGELFLYT) = Regel(
             regelId = regelId,
             ytelse = ytelse,
-            operasjon = { Resultat.uavklart(regelId) }
+            operasjon = { Resultat.uavklart(regelId, konklusjonstype) }
         )
 
-        fun regelJaKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(
+        fun regelJa(ytelse: Ytelse, regelId: RegelId, konklusjonstype: Konklusjonstype = REGELFLYT) = Regel(
             regelId = regelId,
             ytelse = ytelse,
-            operasjon = { Resultat.ja(RegelId.REGEL_FLYT_KONKLUSJON) }
+            operasjon = { Resultat.ja(regelId, konklusjonstype) }
         )
 
-        fun regelNeiKonklusjon(ytelse: Ytelse, regelId: RegelId) = Regel(
+        fun regelNei(ytelse: Ytelse, regelId: RegelId, konklusjonstype: Konklusjonstype = REGELFLYT) = Regel(
             regelId = regelId,
             ytelse = ytelse,
-            operasjon = { Resultat.nei(RegelId.REGEL_FLYT_KONKLUSJON) }
+            operasjon = { Resultat.nei(regelId, konklusjonstype) }
         )
 
-        fun uavklartKonklusjon(ytelse: Ytelse, regelId: RegelId? = null) = Regel(
-            regelId = RegelId.REGEL_MEDLEM_KONKLUSJON,
+        fun uavklartKonklusjon(ytelse: Ytelse, regelId: RegelId = REGEL_MEDLEM_KONKLUSJON) = Regel(
+            regelId = regelId,
             ytelse = ytelse,
-            operasjon = { Resultat.uavklartKonklusjon(regelId) }
+            operasjon = { Resultat.uavklart(regelId, MEDLEM) }
         )
 
-        fun jaKonklusjon(ytelse: Ytelse) = Regel(
-            regelId = RegelId.REGEL_MEDLEM_KONKLUSJON,
+        fun jaKonklusjon(ytelse: Ytelse, regelId: RegelId = REGEL_MEDLEM_KONKLUSJON) = Regel(
+            regelId = regelId,
             ytelse = ytelse,
-            operasjon = { Resultat.ja(RegelId.REGEL_MEDLEM_KONKLUSJON) }
+            operasjon = { Resultat.ja(regelId, MEDLEM) }
         )
 
-        fun neiKonklusjon(ytelse: Ytelse) = Regel(
-            regelId = RegelId.REGEL_MEDLEM_KONKLUSJON,
+        fun neiKonklusjon(ytelse: Ytelse, regelId: RegelId = REGEL_MEDLEM_KONKLUSJON) = Regel(
+            regelId = regelId,
             ytelse = ytelse,
-            operasjon = { Resultat.nei(RegelId.REGEL_MEDLEM_KONKLUSJON) }
+            operasjon = { Resultat.nei(regelId, MEDLEM) }
         )
     }
 }

@@ -3,10 +3,12 @@ package no.nav.medlemskap.cucumber.steps
 import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
 import io.kotest.assertions.throwables.shouldThrow
+import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import io.ktor.features.*
 import no.nav.medlemskap.common.JsonMapper
 import no.nav.medlemskap.common.LokalWebServer
+import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.Medlemskapsparametre
 import no.nav.medlemskap.cucumber.SpraakParserDomene.*
@@ -267,6 +269,8 @@ class RegelSteps : No {
 
             val respons = LokalWebServer.respons(input!!)
 
+            resultat = objectMapper.readValue(respons, Response::class.java).resultat
+
             JSONAssert.assertEquals(
                 forventetRespons,
                 respons,
@@ -371,8 +375,10 @@ class RegelSteps : No {
         }
 
         Så<DataTable>("skal resultat gi følgende delresultater:") { dataTable: DataTable ->
-            val regelIdListe = domenespråkParser.mapRegelId(dataTable)
-            assertTrue(resultat!!.delresultat.map { it.regelId }.containsAll(regelIdListe))
+            val forventedeRegler = domenespråkParser.mapRegelId(dataTable)
+            val faktiskeRegler = resultat!!.delresultat.map { it.regelId }
+
+            faktiskeRegler.shouldContainExactly(forventedeRegler)
         }
 
         Så("skal JSON datagrunnlag og resultat genereres i filen {string}") { filnavn: String ->

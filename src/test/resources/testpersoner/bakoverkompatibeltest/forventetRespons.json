@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2021-02-08T05:47:37.0531",
+  "tidspunkt" : "2021-02-08T08:58:47.960897",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "datagrunnlag" : {
@@ -250,6 +250,78 @@
       } ],
       "årsaker" : [ ]
     }, {
+      "regelId" : "REGEL_DOED",
+      "avklaring" : "Er det avklart om brukeren er død eller ikke?",
+      "begrunnelse" : "",
+      "svar" : "JA",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_13",
+        "avklaring" : "Er bruker død?",
+        "begrunnelse" : "",
+        "svar" : "NEI",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ]
+      } ],
+      "årsaker" : [ ]
+    }, {
+      "regelId" : "REGEL_FELLES_ARBEIDSFORHOLD",
+      "avklaring" : "Er felles arbeidsforhold avklart?",
+      "begrunnelse" : "",
+      "svar" : "JA",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_17",
+        "avklaring" : "Har bruker arbeidsforhold?",
+        "begrunnelse" : "",
+        "svar" : "JA",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ]
+      }, {
+        "regelId" : "REGEL_17_1",
+        "avklaring" : "Er bruker frilanser?",
+        "begrunnelse" : "Bruker er ikke frilanser",
+        "svar" : "NEI",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ]
+      } ],
+      "årsaker" : [ ]
+    }, {
+      "regelId" : "REGEL_STATSBORGERSKAP",
+      "avklaring" : "Er statsborgerskap avklart?",
+      "begrunnelse" : "",
+      "svar" : "JA",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_2",
+        "avklaring" : "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?",
+        "begrunnelse" : "",
+        "svar" : "JA",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ]
+      }, {
+        "regelId" : "REGEL_11",
+        "avklaring" : "Er bruker norsk statsborger?",
+        "begrunnelse" : "",
+        "svar" : "JA",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ]
+      } ],
+      "årsaker" : [ ]
+    }, {
       "regelId" : "REGEL_MEDL",
       "avklaring" : "Har bruker avklarte opplysninger i MEDL?",
       "begrunnelse" : "",
@@ -336,96 +408,6 @@
         "beskrivelse" : "Regel 1.4:  Er hele perioden med medlemskap innenfor 12-måneders perioden? NEI"
       } ]
     }, {
-      "regelId" : "REGEL_BOSATT",
-      "avklaring" : "Er det avklart om bruker bor i Norge?",
-      "begrunnelse" : "",
-      "svar" : "JA",
-      "harDekning" : null,
-      "dekning" : "",
-      "delresultat" : [ {
-        "regelId" : "REGEL_10",
-        "avklaring" : "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
-        "begrunnelse" : "",
-        "svar" : "JA",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ]
-      } ],
-      "årsaker" : [ ]
-    }, {
-      "regelId" : "REGEL_DOED",
-      "avklaring" : "Er det avklart om brukeren er død eller ikke?",
-      "begrunnelse" : "",
-      "svar" : "JA",
-      "harDekning" : null,
-      "dekning" : "",
-      "delresultat" : [ {
-        "regelId" : "REGEL_13",
-        "avklaring" : "Er bruker død?",
-        "begrunnelse" : "",
-        "svar" : "NEI",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ]
-      } ],
-      "årsaker" : [ ]
-    }, {
-      "regelId" : "REGEL_FELLES_ARBEIDSFORHOLD",
-      "avklaring" : "Er felles arbeidsforhold avklart?",
-      "begrunnelse" : "",
-      "svar" : "JA",
-      "harDekning" : null,
-      "dekning" : "",
-      "delresultat" : [ {
-        "regelId" : "REGEL_17",
-        "avklaring" : "Har bruker arbeidsforhold?",
-        "begrunnelse" : "",
-        "svar" : "JA",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ]
-      }, {
-        "regelId" : "REGEL_17_1",
-        "avklaring" : "Er bruker frilanser?",
-        "begrunnelse" : "Bruker er ikke frilanser",
-        "svar" : "NEI",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ]
-      } ],
-      "årsaker" : [ ]
-    }, {
-      "regelId" : "REGEL_STATSBORGERSKAP",
-      "avklaring" : "Er statsborgerskap avklart?",
-      "begrunnelse" : "",
-      "svar" : "JA",
-      "harDekning" : null,
-      "dekning" : "",
-      "delresultat" : [ {
-        "regelId" : "REGEL_2",
-        "avklaring" : "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?",
-        "begrunnelse" : "",
-        "svar" : "JA",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ]
-      }, {
-        "regelId" : "REGEL_11",
-        "avklaring" : "Er bruker norsk statsborger?",
-        "begrunnelse" : "",
-        "svar" : "JA",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ]
-      } ],
-      "årsaker" : [ ]
-    }, {
       "regelId" : "REGEL_ARBEIDSFORHOLD",
       "avklaring" : "Er arbeidsforhold avklart?",
       "begrunnelse" : "",
@@ -453,6 +435,24 @@
       }, {
         "regelId" : "REGEL_14",
         "avklaring" : "Er bruker ansatt i staten eller i en kommune?",
+        "begrunnelse" : "",
+        "svar" : "JA",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ]
+      } ],
+      "årsaker" : [ ]
+    }, {
+      "regelId" : "REGEL_BOSATT",
+      "avklaring" : "Er det avklart om bruker bor i Norge?",
+      "begrunnelse" : "",
+      "svar" : "JA",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_10",
+        "avklaring" : "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?",
         "begrunnelse" : "",
         "svar" : "JA",
         "harDekning" : null,

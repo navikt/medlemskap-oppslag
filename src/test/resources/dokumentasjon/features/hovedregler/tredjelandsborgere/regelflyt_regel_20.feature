@@ -4,15 +4,8 @@
 Egenskap: Regelflyt for regel 20, brukere som ikke er registrert som bosatt i Norge
 
   Bakgrunn:
-    Gitt følgende kontaktadresser i personhistorikken
-      | Adresse | Landkode | Fra og med dato | Til og med dato |
-      | Oslo    | NOR      | 01.01.2000      |                 |
 
-    Og følgende bostedsadresser i personhistorikken
-      | Adresse | Landkode | Fra og med dato | Til og med dato |
-      | Oslo    | NOR      | 01.01.2000      |                 |
-
-    Og følgende statsborgerskap i personhistorikken
+    Gitt følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
       | JPN      | 01.01.2000      |                 |
 
@@ -28,7 +21,7 @@ Egenskap: Regelflyt for regel 20, brukere som ikke er registrert som bosatt i No
       | Gyldig fra og med | Gyldig til og med | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
       | 01.01.2018        |                   | Ja            | GENERELL          | KUN_ARBEID_HELTID    |
 
-  Scenariomal:
+  Scenariomal: For tredjelandsborgere skal man ta hensyn til regel 10, 20 og 9 hvis det ikke er avklaring i MEDL
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
       | 01.01.2018      |                 | Organisasjon     | NORMALT             |

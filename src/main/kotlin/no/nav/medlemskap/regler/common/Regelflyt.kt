@@ -1,11 +1,11 @@
 package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.regler.common.Regel.Companion.jaKonklusjon
-import no.nav.medlemskap.regler.common.Regel.Companion.neiKonklusjon
-import no.nav.medlemskap.regler.common.Regel.Companion.regelJaKonklusjon
-import no.nav.medlemskap.regler.common.Regel.Companion.regelNeiKonklusjon
-import no.nav.medlemskap.regler.common.Regel.Companion.regelUavklartKonklusjon
+import no.nav.medlemskap.regler.common.Konklusjonstype.MEDLEM
+import no.nav.medlemskap.regler.common.Konklusjonstype.REGELFLYT
+import no.nav.medlemskap.regler.common.Regel.Companion.regelJa
+import no.nav.medlemskap.regler.common.Regel.Companion.regelNei
+import no.nav.medlemskap.regler.common.Regel.Companion.regelUavklart
 import no.nav.medlemskap.regler.common.Regel.Companion.uavklartKonklusjon
 import no.nav.medlemskap.regler.common.Resultat.Companion.utenKonklusjon
 
@@ -15,7 +15,6 @@ class Regelflyt(
     val hvisJa: Regelflyt? = null,
     val hvisNei: Regelflyt? = null,
     val hvisUavklart: Regelflyt? = null,
-    val regelIdForSammensattResultat: RegelId? = null,
     val overstyrteRegler: Map<RegelId, Svar> = mapOf()
 ) {
 
@@ -64,46 +63,37 @@ class Regelflyt(
         val resultat = utfør(resultatliste, harDekning, dekning)
         val delresultater = if (resultat.delresultat.isNotEmpty()) resultat.delresultat else resultatliste.utenKonklusjon()
         val konklusjon = resultat.copy(delresultat = delresultater)
-        if (regelIdForSammensattResultat != null) {
-            return konklusjon.copy(
-                delresultat = listOf(
-                    Resultat(
-                        regelId = regelIdForSammensattResultat,
-                        svar = konklusjon.svar,
-                        avklaring = regelIdForSammensattResultat.avklaring,
-                        delresultat = delresultater
-                    )
-                )
-            )
-        }
 
         return konklusjon
     }
 
     companion object {
-
-        fun konklusjonJa(ytelse: Ytelse): Regelflyt {
-            return Regelflyt(jaKonklusjon(ytelse), ytelse)
-        }
-
-        fun konklusjonNei(ytelse: Ytelse): Regelflyt {
-            return Regelflyt(neiKonklusjon(ytelse), ytelse)
-        }
-
-        fun konklusjonUavklart(ytelse: Ytelse, regelId: RegelId? = null): Regelflyt {
-            return Regelflyt(uavklartKonklusjon(ytelse, regelId), ytelse)
+        fun medlemskonklusjonUavklart(ytelse: Ytelse): Regelflyt {
+            return Regelflyt(uavklartKonklusjon(ytelse, RegelId.REGEL_MEDLEM_KONKLUSJON), ytelse)
         }
 
         fun regelflytJa(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
-            return Regelflyt(regelJaKonklusjon(ytelse, regelId), ytelse)
+            return Regelflyt(regelJa(ytelse, regelId, REGELFLYT), ytelse)
         }
 
         fun regelflytNei(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
-            return Regelflyt(regelNeiKonklusjon(ytelse, regelId), ytelse)
+            return Regelflyt(regelNei(ytelse, regelId, REGELFLYT), ytelse)
         }
 
         fun regelflytUavklart(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
-            return Regelflyt(regelUavklartKonklusjon(ytelse, regelId), ytelse)
+            return Regelflyt(regelUavklart(ytelse, regelId, REGELFLYT), ytelse)
+        }
+
+        fun konklusjonJa(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_MEDLEM_KONKLUSJON): Regelflyt {
+            return Regelflyt(regelJa(ytelse, regelId, MEDLEM), ytelse)
+        }
+
+        fun konklusjonNei(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_MEDLEM_KONKLUSJON): Regelflyt {
+            return Regelflyt(regelNei(ytelse, regelId, MEDLEM), ytelse)
+        }
+
+        fun konklusjonUavklart(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_MEDLEM_KONKLUSJON): Regelflyt {
+            return Regelflyt(regelUavklart(ytelse, regelId, MEDLEM), ytelse)
         }
     }
 }

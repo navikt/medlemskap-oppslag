@@ -1,10 +1,7 @@
 package no.nav.medlemskap.regler.common
 
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.regler.common.Regel.Companion.regelJaKonklusjon
-import no.nav.medlemskap.regler.common.Regel.Companion.regelNeiKonklusjon
-import no.nav.medlemskap.regler.common.Regel.Companion.regelUavklartKonklusjon
-import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.medlemskonklusjonUavklart
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import no.nav.medlemskap.regler.common.Resultat.Companion.uavklart
@@ -31,8 +28,7 @@ abstract class Regler(
         regel: Regel,
         hvisJa: Regelflyt? = null,
         hvisNei: Regelflyt? = null,
-        hvisUavklart: Regelflyt = konklusjonUavklart(ytelse),
-        regelIdForSammensattResultat: RegelId? = null
+        hvisUavklart: Regelflyt = medlemskonklusjonUavklart(ytelse)
     ): Regelflyt {
         return Regelflyt(
             regel = regel,
@@ -40,7 +36,6 @@ abstract class Regler(
             hvisJa = hvisJa,
             hvisNei = hvisNei,
             hvisUavklart = hvisUavklart,
-            regelIdForSammensattResultat = regelIdForSammensattResultat,
             overstyrteRegler = overstyrteRegler
         )
     }
@@ -49,18 +44,6 @@ abstract class Regler(
         val regel = regelMap[regelId]
 
         return regel ?: throw RuntimeException("Fant ikke regel med regelId $regelId")
-    }
-
-    private fun regelflytResultat(svar: Svar, regelId: RegelId, delresultater: List<Resultat>): Resultat {
-        val regel = when (svar) {
-            JA -> regelJaKonklusjon(ytelse, regelId)
-            NEI -> regelNeiKonklusjon(ytelse, regelId)
-            else -> regelUavklartKonklusjon(ytelse, regelId)
-        }
-
-        val resultat = regel.utfør()
-
-        return resultat.copy(delresultat = delresultater)
     }
 
     companion object {

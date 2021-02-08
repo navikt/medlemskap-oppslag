@@ -11,16 +11,17 @@ data class Resultat(
     val svar: Svar,
     var harDekning: Svar? = null,
     var dekning: String = "",
-    val delresultat: List<Resultat> = listOf()
+    val delresultat: List<Resultat> = listOf(),
+    private val konklusjonstype: Konklusjonstype = Konklusjonstype.REGEL
 ) {
     val årsaker = finnÅrsaker()
 
     fun erMedlemskonklusjon(): Boolean {
-        return regelId == RegelId.REGEL_MEDLEM_KONKLUSJON
+        return konklusjonstype == Konklusjonstype.MEDLEM
     }
 
     fun erRegelflytKonklusjon(): Boolean {
-        return regelId.erRegelflytKonklusjon
+        return konklusjonstype == Konklusjonstype.REGELFLYT
     }
 
     fun erKonklusjon(): Boolean {
@@ -85,13 +86,13 @@ data class Resultat(
                 return emptyList()
             }
 
-            if (resultat.erMedlemskonklusjon()) {
+            if (resultat.regelId == RegelId.REGEL_MEDLEM_KONKLUSJON) {
                 return resultat
                     .delresultat.filter { !it.erKonklusjon() || it.erKonklusjon() && it.svar != Svar.JA }
                     .mapNotNull { finnÅrsak(it) }
             }
 
-            if (resultat.erRegelflytKonklusjon() && resultat.delresultat.isNotEmpty()) {
+            if (resultat.erKonklusjon() && resultat.delresultat.isNotEmpty()) {
                 val sisteResultat = resultat.delresultat.last()
 
                 return listOf(finnÅrsak(sisteResultat)).filterNotNull()
@@ -100,45 +101,29 @@ data class Resultat(
             return emptyList()
         }
 
-        fun ja(regelId: RegelId) = Resultat(
-            regelId = regelId,
-            begrunnelse = regelId.jaBegrunnelse,
-            svar = Svar.JA
-        )
-
-        fun ja(regelId: RegelId, dekning: String) = Resultat(
+        fun ja(regelId: RegelId, konklusjonstype: Konklusjonstype = Konklusjonstype.REGEL, dekning: String = "") = Resultat(
             regelId = regelId,
             begrunnelse = regelId.jaBegrunnelse,
             svar = Svar.JA,
-            harDekning = Svar.JA,
-            dekning = dekning
+            harDekning = if (dekning != "") Svar.JA else null,
+            dekning = dekning,
+            konklusjonstype = konklusjonstype
         )
 
-        fun nei(regelId: RegelId, dekning: String) = Resultat(
+        fun nei(regelId: RegelId, konklusjonstype: Konklusjonstype = Konklusjonstype.REGEL, dekning: String = "") = Resultat(
             regelId = regelId,
             begrunnelse = regelId.neiBegrunnelse,
             svar = Svar.NEI,
-            harDekning = Svar.NEI,
-            dekning = dekning
+            harDekning = if (dekning != "") Svar.NEI else null,
+            dekning = dekning,
+            konklusjonstype = konklusjonstype
         )
 
-        fun nei(regelId: RegelId) = Resultat(
-            regelId,
-            begrunnelse = regelId.neiBegrunnelse,
-            svar = Svar.NEI
-        )
-
-        fun uavklart(regelId: RegelId) = Resultat(
+        fun uavklart(regelId: RegelId, konklusjonstype: Konklusjonstype = Konklusjonstype.REGEL) = Resultat(
             regelId,
             begrunnelse = regelId.uavklartBegrunnelse,
-            svar = Svar.UAVKLART
-        )
-
-        fun uavklartKonklusjon(regelId: RegelId? = null) = Resultat(
-            regelId = RegelId.REGEL_MEDLEM_KONKLUSJON,
-            begrunnelse = RegelId.REGEL_MEDLEM_KONKLUSJON.neiBegrunnelse,
             svar = Svar.UAVKLART,
-            delresultat = if (regelId == null) emptyList() else listOf(Resultat(regelId = regelId, svar = Svar.UAVKLART))
+            konklusjonstype = konklusjonstype
         )
 
         fun List<Resultat>.utenKonklusjon(): List<Resultat> {

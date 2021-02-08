@@ -3,9 +3,10 @@ package no.nav.medlemskap.regler
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
+import no.nav.medlemskap.regler.common.RegelId.REGEL_HOVEDSAKLIG_ARBEIDSTAKER
 import no.nav.medlemskap.regler.v1.arbeidsforhold.ErBrukerHovedsakligArbeidstakerRegel
 
-class ReglerForArbeidstaker(
+class ReglerForHovedsakligArbeidstaker(
     ytelse: Ytelse,
     regelMap: Map<RegelId, Regel>,
     overstyrteRegler: Map<RegelId, Svar>
@@ -13,16 +14,16 @@ class ReglerForArbeidstaker(
     override fun hentHovedflyt(): Regelflyt {
         val hovedsakligArbeidstakerFlyt = lagRegelflyt(
             regel = hentRegel(RegelId.REGEL_18),
-            hvisJa = Regelflyt.regelflytJa(ytelse, RegelId.REGEL_ARBEIDSTAKER),
-            hvisNei = Regelflyt.konklusjonUavklart(ytelse)
+            hvisJa = Regelflyt.regelflytJa(ytelse, REGEL_HOVEDSAKLIG_ARBEIDSTAKER),
+            hvisNei = Regelflyt.konklusjonUavklart(ytelse, REGEL_HOVEDSAKLIG_ARBEIDSTAKER)
         )
 
         return hovedsakligArbeidstakerFlyt
     }
 
     companion object {
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag, overstyrteRegler: Map<RegelId, Svar> = emptyMap()): ReglerForArbeidstaker {
-            return ReglerForArbeidstaker(
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag, overstyrteRegler: Map<RegelId, Svar> = emptyMap()): ReglerForHovedsakligArbeidstaker {
+            return ReglerForHovedsakligArbeidstaker(
                 ytelse = datagrunnlag.ytelse,
                 regelMap = lagRegelMap(datagrunnlag),
                 overstyrteRegler = overstyrteRegler

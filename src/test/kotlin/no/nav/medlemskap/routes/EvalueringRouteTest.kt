@@ -10,7 +10,7 @@ class EvalueringRouteTest {
     @Test
     fun `tester kjøring av hele routen`() {
 
-        val resultat = evaluerData(Personleser().brukerIkkeFolkeregistrertSomBosattINorge())
+        val resultat = evaluerData(Personleser.brukerIkkeFolkeregistrertSomBosattINorge())
         assertEquals(Svar.UAVKLART, resultat.svar)
     }
 }
