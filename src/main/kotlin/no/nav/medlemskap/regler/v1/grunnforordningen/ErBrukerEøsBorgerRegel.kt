@@ -21,11 +21,18 @@ class ErBrukerEøsBorgerRegel(
 ) : LovvalgRegel(RegelId.REGEL_2, ytelse, periode, førsteDagForYtelse) {
 
     override fun operasjon(): Resultat {
-        if (statsborgerskap.erEøsBorger(kontrollPeriodeForPersonhistorikk)) {
-            return ja(regelId)
+        if (erBrukerBritiskBorgerUtenAnnetEøsStatsborgerskap(statsborgerskap)) {
+            return when (startDatoForYtelse.isBefore(LocalDate.of(2021, 1, 1))) {
+                true -> ja(regelId)
+                else -> nei(regelId)
+            }
+        }
+
+        return if (statsborgerskap.erEøsBorger(kontrollPeriodeForPersonhistorikk)) {
+            ja(regelId)
         } else {
             statsborgerskap.registrerStatsborgerskapGrafana(kontrollPeriodeForPersonhistorikk, ytelse, regelId)
-            return nei(regelId)
+            nei(regelId)
         }
     }
 

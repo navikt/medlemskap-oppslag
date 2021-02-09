@@ -29,15 +29,6 @@ class InputDatoValideringRegel(
             return nei(regelId)
         }
 
-        val sisteGyldigeDato = bestemSisteGyldigeDato()
-        if (periode.fom.isAfter(sisteGyldigeDato)) {
-            return nei(regelId)
-        }
-
-        if (førsteDagForYtelse?.isAfter(sisteGyldigeDato) ?: false) {
-            return nei(regelId)
-        }
-
         return ja(regelId)
     }
 
@@ -48,14 +39,6 @@ class InputDatoValideringRegel(
             return LocalDate.of(2017, 1, 1)
         } else {
             return LocalDate.of(2016, 1, 1)
-        }
-    }
-
-    private fun bestemSisteGyldigeDato(): LocalDate {
-        if (erBrukerBritiskBorgerUtenAnnetEøsStatsborgerskap(statsborgerskap)) {
-            return LocalDate.of(2020, 12, 31)
-        } else {
-            return LocalDate.MAX
         }
     }
 
