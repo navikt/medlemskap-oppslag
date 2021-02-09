@@ -40,16 +40,17 @@ Egenskap: Regelflyt for britiske borgere
       | GBR      | 10.10.1975      |                 |
 
     Når medlemskap beregnes med følgende parametre
-      | Fra og med dato   | Til og med dato | Har hatt arbeid utenfor Norge |
-      | <Fra og med dato> | 12.02.2021      | Nei                           |
+      | Første dag for ytelse   | Fra og med dato   | Til og med dato | Har hatt arbeid utenfor Norge |
+      | <Første dag for ytelse> | <Fra og med dato> | 12.02.2021      | Nei                           |
 
     Så skal svaret være "<Medlemskap>"
     Og skal regel "2" gi svaret "<EØS-borger>"
 
     Eksempler:
-      | Fra og med dato | EØS-borger | Medlemskap |
-      | 20.05.2020      | Ja         | Ja         |
-      | 30.12.2020      | Ja         | Ja         |
-      | 31.12.2020      | Ja         | Ja         |
-      | 01.01.2021      | Nei        | Uavklart   |
-      | 05.04.2021      | Nei        | Uavklart   |
+      | Første dag for ytelse | Fra og med dato | EØS-borger | Medlemskap |
+      |                       | 20.05.2020      | Ja         | Ja         |
+      |                       | 30.12.2020      | Ja         | Ja         |
+      |                       | 31.12.2020      | Ja         | Ja         |
+      | 31.12.2020            | 31.12.2020      | Ja         | Ja         |
+      | 01.01.2021            | 05.01.2021      | Nei        | Uavklart   |
+      |                       | 05.04.2021      | Nei        | Uavklart   |
