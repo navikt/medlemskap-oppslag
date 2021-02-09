@@ -28,11 +28,11 @@ class ErBrukerEøsBorgerRegel(
             }
         }
 
-        if (statsborgerskap.erEøsBorger(kontrollPeriodeForPersonhistorikk)) {
-            return ja(regelId)
+        return if (statsborgerskap.erEøsBorger(kontrollPeriodeForPersonhistorikk)) {
+            ja(regelId)
         } else {
             statsborgerskap.registrerStatsborgerskapGrafana(kontrollPeriodeForPersonhistorikk, ytelse, regelId)
-            return nei(regelId)
+            nei(regelId)
         }
     }
 
