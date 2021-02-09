@@ -25,29 +25,7 @@ Egenskap: Validering av input-dato
       | CHE      | 01.01.2017      | Ja        |
       | BEL      | 31.12.2015      | Nei       |
       | BEL      | 01.01.2016      | Ja        |
-
-
-  Scenariomal: Siste gyldige input-dag er 31.12.2020 for britiske borgere
-
-    Gitt følgende statsborgerskap i personhistorikken
-      | Landkode   | Fra og med dato | Til og med dato |
-      | <Landkode> | 01.01.2000      |                 |
-
-    Når regel "0.1" kjøres med følgende parametre
-      | Fra og med dato   | Til og med dato | Har hatt arbeid utenfor Norge |
-      | <Fra og med dato> | 30.01.2021      | Nei                           |
-
-    Så skal svaret være "<Regel 0.1>"
-    Og skal begrunnelsen være som definert i RegelId
-
-    Eksempler:
-      | Landkode | Fra og med dato | Regel 0.1 |
-      | NOR      | 01.01.2021      | Ja        |
-      | GBR      | 01.01.2021      | Nei       |
-      | NOR      | 31.12.2020      | Ja        |
-
-
-  Scenariomal: Hvis "første dag for ytelse" er angitt, er det den som brukes i stedet for "fra og med dato"
+Scenariomal: Hvis "første dag for ytelse" er angitt, er det den som brukes i stedet for "fra og med dato"
 
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode   | Fra og med dato | Til og med dato |
