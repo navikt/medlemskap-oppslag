@@ -25,11 +25,15 @@ Egenskap: Regel 17.1: Er bruker frilanser?
       | FRILANSER           | Ja   |
 
 
-  Scenario: Regel 17.1: Bruker uten arbeidsforhold får "Nei"
+  Scenario: Regel 17.1: Bruker med flere arbeidsforhold der ett arbeidsforhold er frilanser får "Ja"
+
+    Gitt følgende arbeidsforhold fra AAReg
+      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
+      | 01.01.2018      |                 | Organisasjon     | NORMALT             |
+      | 01.01.2018      |                 | Organisasjon     | FRILANSER           |
 
     Når regel "17.1" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
-    Så skal svaret være "Nei"
-
+    Så skal svaret være "Ja"
