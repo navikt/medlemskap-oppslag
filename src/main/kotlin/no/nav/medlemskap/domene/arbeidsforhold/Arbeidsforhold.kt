@@ -81,16 +81,13 @@ data class Arbeidsforhold(
         infix fun List<Arbeidsforhold>.sisteArbeidsforholdYrkeskode(kontrollPeriode: Kontrollperiode): List<String> =
             arbeidsforholdForKontrollPeriode(kontrollPeriode).flatMap { it.arbeidsavtaler }.map { it.yrkeskode }
 
-        infix fun List<Arbeidsforhold>.sisteArbeidsforholdSkipsregister(kontrollPeriode: Kontrollperiode): List<String> =
-            arbeidsforholdForKontrollPeriode(kontrollPeriode).flatMap { it -> it.arbeidsavtaler.map { it.skipsregister?.name ?: "" } }
-
-        infix fun List<Arbeidsforhold>.skipsregisterErNISOgFartsområdeErInnenriks(kontrollPeriode: Kontrollperiode): Boolean {
-            val arbeidsavtaler = arbeidsforholdForKontrollPeriode(kontrollPeriode).flatMap { it.arbeidsavtaler }
-            val alleErNIS = arbeidsavtaler.all { it.skipsregister == Skipsregister.NIS }
-            val alleErInnenriks = arbeidsavtaler.all { it.fartsomraade == Fartsomraade.INNENRIKS }
-
-            return alleErNIS && alleErInnenriks
-        }
+        infix fun List<Arbeidsforhold>.skipsregisterErNOREllerNISOgFartsområdeErInnenriks(kontrollPeriode: Kontrollperiode): Boolean =
+            arbeidsforholdForKontrollPeriode(kontrollPeriode)
+                .flatMap { it.arbeidsavtaler }
+                .all {
+                    it.skipsregister == Skipsregister.NOR ||
+                        (it.skipsregister == Skipsregister.NIS && it.fartsomraade == Fartsomraade.INNENRIKS)
+                }
 
         infix fun List<Arbeidsforhold>.konkursStatuserArbeidsgivere(kontrollPeriode: Kontrollperiode): List<String?>? {
             return arbeidsforholdForKontrollPeriode(kontrollPeriode).flatMap { it.arbeidsgiver.konkursStatus.orEmpty() }
