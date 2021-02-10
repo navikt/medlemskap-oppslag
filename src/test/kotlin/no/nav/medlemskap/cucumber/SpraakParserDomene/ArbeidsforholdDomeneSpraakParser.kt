@@ -277,7 +277,7 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
                 ),
                 parseString(ArbeidDomenebegrep.YRKESKODE, rad),
                 parseSkipsregister(rad),
-                null,
+                parseFartsområde(rad),
                 parseDouble(ArbeidDomenebegrep.STILLINGSPROSENT, rad),
                 parseValgfriDouble(ArbeidDomenebegrep.BEREGNET_ANTALL_TIMER_PR_UKE, rad)
             )
