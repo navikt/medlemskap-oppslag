@@ -29,7 +29,6 @@ class JobberBrukerPaaNorskSkipRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): JobberBrukerPaaNorskSkipRegel {
             return JobberBrukerPaaNorskSkipRegel(
                 ytelse = datagrunnlag.ytelse,
