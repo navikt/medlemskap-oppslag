@@ -90,7 +90,10 @@ class PdlClientHentEktefelleTest {
                   {
                     "land": "NOR",
                     "gyldigFraOgMed": "1973-11-11",
-                    "gyldigTilOgMed": null
+                    "gyldigTilOgMed": null,
+                    "metadata": {
+                        "historisk": "true"
+                    }
                   }
                 ],
                 "sivilstand": [

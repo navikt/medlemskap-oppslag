@@ -127,7 +127,11 @@ class PdlClientHentPersonTest {
                             {
                                 "land":"NOR",
                                 "gyldigFraOgMed": "2010-10-21",
-                                "gyldigTilOgMed":  null}
+                                "gyldigTilOgMed":  null,
+                                "metadata": {
+                                    "historisk": "true"
+                                }
+                            }
                     ],
                     "sivilstand": [
                             {
