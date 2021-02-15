@@ -146,7 +146,8 @@ enum class Dekning(val dekningKodeverdi: String) {
                 FOLKETRYGDLOVEN2_9_2_1C
             )
 
-        private fun uavklarteDekningerForSykepenger(): List<Dekning> = listOf(FOLKETRYGDLOVEN2_7A_2A, FOLKETRYGDLOVEN2_7A_2B) + fellesUavklarteDekninger()
+        private fun uavklarteDekningerForSykepenger(): List<Dekning> =
+            listOf(FOLKETRYGDLOVEN2_7A_2A, FOLKETRYGDLOVEN2_7A_2B) + fellesUavklarteDekninger()
 
         fun fellesUavklarteDekninger(): List<Dekning> =
             listOf(
