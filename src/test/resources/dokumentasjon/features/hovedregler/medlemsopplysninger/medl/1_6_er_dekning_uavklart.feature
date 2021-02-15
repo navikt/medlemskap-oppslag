@@ -18,15 +18,17 @@ Egenskap: Regel 1.6: Er dekning uavklart?
     Og skal begrunnelsen være som definert i RegelId
 
     Eksempler:
-      | Dekning           | Ytelse           | Svar |
-      |                   | SYKEPENGER       | Ja   |
-      | Full              | SYKEPENGER       | Ja   |
-      | FTL_2-6           | SYKEPENGER       | Nei  |
-      | FTL_2-7a_2_ledd_a | SYKEPENGER       | Ja   |
-      | FTL_2-7a_2_ledd_a | DAGPENGER        | Nei  |
-      | FTL_2-7a_2_ledd_a | ENSLIG_FORSORGER | Nei  |
-      | Full              | DAGPENGER        | Ja   |
-      | Full              | ENSLIG_FORSORGER | Ja   |
+      | Dekning               | Ytelse           | Svar |
+      |                       | SYKEPENGER       | Ja   |
+      | FTL_2-7a_2_ledd_a     | SYKEPENGER       | Ja   |
+      | Full                  | SYKEPENGER       | Nei  |
+      | FTL_2-6               | SYKEPENGER       | Nei  |
+      | FOLKETRYGDLOVEN2_7_3A | DAGPENGER        | Ja   |
+      | FTL_2-7a_2_ledd_a     | DAGPENGER        | Nei  |
+      | Full                  | DAGPENGER        | Nei  |
+      | FOLKETRYGDLOVEN2_7_3A | ENSLIG_FORSORGER | Ja   |
+      | FTL_2-7a_2_ledd_a     | ENSLIG_FORSORGER | Nei  |
+      | Full                  | ENSLIG_FORSORGER | Nei  |
 
   Scenariomal: Regel 1.6: Er dekning uavklart? Flere perioder fra MEDL
 
