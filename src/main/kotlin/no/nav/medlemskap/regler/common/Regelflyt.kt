@@ -38,13 +38,13 @@ class Regelflyt(
             regelResultat.copy(svar = overstyrtSvar, begrunnelse = begrunnelse)
         } else {
             if (regelResultat.hentÅrsak() == null && regelResultat.erKonklusjon() && regelResultat.svar != Svar.JA) {
-                val årsaken = if (årsak == null) {
-                    Årsak.fraResultat(resultatliste.last())
-                } else {
-                    årsak
-                }
-
-                regelResultat.copy(årsak = årsaken)
+                regelResultat.copy(
+                    årsak = if (årsak == null) {
+                        Årsak.fraResultat(resultatliste.last())
+                    } else {
+                        årsak
+                    }
+                )
             } else {
                 if (årsak != null) {
                     regelResultat.copy(årsak = årsak)
@@ -54,11 +54,7 @@ class Regelflyt(
             }
         }
 
-        if (resultat.hentÅrsak() != null) {
-            resultatliste.add(resultat)
-        } else {
-            resultatliste.add(resultat.copy(årsak = Resultat.finnÅrsak(resultat)))
-        }
+        resultatliste.add(resultat)
 
         val nesteRegel =
             if (resultat.svar == Svar.JA && hvisJa != null) {
