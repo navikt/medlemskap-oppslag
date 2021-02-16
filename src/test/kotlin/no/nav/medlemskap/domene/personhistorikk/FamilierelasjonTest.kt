@@ -46,7 +46,7 @@ class FamilierelasjonTest {
         Personhistorikk(statsborgerskap, bostedsadresser, kontaktadresser, oppholdsadresser, sivilstand, familierelasjoner, doedsfall)
 
     private fun lagStatsborgerskap(landkode: String = "NOR", fom: LocalDate? = null, tom: LocalDate? = null): Statsborgerskap =
-        Statsborgerskap(landkode = landkode, fom = fom, tom = tom)
+        Statsborgerskap(landkode = landkode, fom = fom, tom = tom, historisk = false)
 
     private fun lagAdresse(landkode: String = "NOR", fom: LocalDate? = null, tom: LocalDate? = null): Adresse =
         Adresse(landkode = landkode, fom = fom, tom = tom)

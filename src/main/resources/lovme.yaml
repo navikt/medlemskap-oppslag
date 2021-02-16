@@ -720,6 +720,8 @@ components:
             $ref: "#/components/schemas/ValgfriDato"
           tom:
             $ref: "#/components/schemas/ValgfriDato"
+          historisk:
+            type: boolean
     Svar:
       type: string
       enum:

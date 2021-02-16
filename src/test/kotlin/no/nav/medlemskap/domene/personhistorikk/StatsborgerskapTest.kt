@@ -14,7 +14,7 @@ internal class StatsborgerskapTest {
 
     @Test
     fun overlapper() {
-        val statsborgerskap = Statsborgerskap("NOR", LocalDate.of(2015, 1, 1), null)
+        val statsborgerskap = Statsborgerskap("NOR", LocalDate.of(2015, 1, 1), null, false)
 
         assertThat(statsborgerskap.overlapper(LocalDate.of(2016, 1, 1))).isTrue()
     }
@@ -22,8 +22,8 @@ internal class StatsborgerskapTest {
     @Test
     fun erAnnenStatsborger_norsk_borger_er_ikke_annen_statsborger() {
         val statsborgerskap = listOf(
-            Statsborgerskap("NOR", null, null),
-            Statsborgerskap("USA", null, null)
+            Statsborgerskap("NOR", null, null, false),
+            Statsborgerskap("USA", null, null, false)
         )
 
         val startDatoForYtelse = LocalDate.of(2019, 1, 1)
@@ -34,7 +34,7 @@ internal class StatsborgerskapTest {
     @Test
     fun erAnnenStatsborger_belgisk_borger_er_ikke_annen_statsborger() {
         val statsborgerskap = listOf(
-            Statsborgerskap("BEL", null, null)
+            Statsborgerskap("BEL", null, null, false)
         )
 
         val startDatoForYtelse = LocalDate.of(2019, 1, 1)
@@ -45,7 +45,7 @@ internal class StatsborgerskapTest {
     @Test
     fun erAnnenStatsborger_amerikansk_borger_er_annen_statsborger() {
         val statsborgerskap = listOf(
-            Statsborgerskap("USA", null, null)
+            Statsborgerskap("USA", null, null, false)
         )
 
         val startDatoForYtelse = LocalDate.of(2019, 1, 1)
@@ -107,31 +107,36 @@ internal class StatsborgerskapTest {
         val statsborgerskapMedTomLikNullOgFomInnenforPeriode = Statsborgerskap(
             "NOR",
             fom = LocalDate.of(2019, 5, 20),
-            tom = null
+            tom = null,
+            historisk = false
         )
 
         val statsborgerskapMedTomLikNullOgFomUtenforPeriode = Statsborgerskap(
             "NOR",
             fom = null,
-            tom = LocalDate.of(2015, 1, 1)
+            tom = LocalDate.of(2015, 1, 1),
+            historisk = false
         )
 
         val statsborgerskapMedFomLikNullOgTomInnenforPeriode = Statsborgerskap(
             "SWE",
             fom = null,
-            tom = LocalDate.of(2019, 1, 1)
+            tom = LocalDate.of(2019, 1, 1),
+            historisk = false
         )
 
         val statsborgerskapUendretSisteÅret = Statsborgerskap(
             "NOR",
             fom = LocalDate.of(2017, 1, 20),
-            tom = null
+            tom = null,
+            historisk = false
         )
 
         val statsborgerskapEndretSisteÅret = Statsborgerskap(
             "JPN",
             fom = LocalDate.of(2010, 1, 1),
-            tom = LocalDate.of(2019, 1, 31)
+            tom = LocalDate.of(2019, 1, 31),
+            historisk = false
         )
     }
 }

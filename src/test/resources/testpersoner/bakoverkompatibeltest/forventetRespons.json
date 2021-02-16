@@ -15,7 +15,8 @@
       "statsborgerskap" : [ {
         "landkode" : "NOR",
         "fom" : "1975-10-10",
-        "tom" : "2020-08-01"
+        "tom" : "2020-08-01",
+        "historisk" : false
       } ],
       "bostedsadresser" : [ {
         "landkode" : "NOR",
