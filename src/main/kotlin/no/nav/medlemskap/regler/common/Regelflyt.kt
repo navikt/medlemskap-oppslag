@@ -75,7 +75,7 @@ class Regelflyt(
             )
         }
 
-        return resultat.copy(harDekning = harDekning, dekning = dekning, årsaker = resultatliste.finnÅrsaker())
+        return resultat.copy(harDekning = harDekning, dekning = dekning)
     }
 
     fun utfør(harDekning: Svar? = null, dekning: String = ""): Resultat {
