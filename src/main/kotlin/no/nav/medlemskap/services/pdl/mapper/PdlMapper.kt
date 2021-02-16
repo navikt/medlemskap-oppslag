@@ -123,12 +123,13 @@ object PdlMapper {
         }.sortedBy { it.fom }
     }
 
-    fun mapStatsborgerskap(statsborgerskap: List<HentPerson.Statsborgerskap>): List<Statsborgerskap> {
+    private fun mapStatsborgerskap(statsborgerskap: List<HentPerson.Statsborgerskap>): List<Statsborgerskap> {
         return statsborgerskap.map {
             Statsborgerskap(
                 landkode = it.land,
                 fom = parseIsoDato(it.gyldigFraOgMed),
-                tom = parseIsoDato(it.gyldigTilOgMed)
+                tom = parseIsoDato(it.gyldigTilOgMed),
+                historisk = it.metadata.historisk
             )
         }.sortedBy { it.fom }
     }

@@ -44,11 +44,13 @@ class PdlDomenespråkParser : BasisDomeneParser() {
     class StatsborgerskapMapper : RadMapper<HentPerson.Statsborgerskap> {
         override fun mapRad(rad: Map<String, String>): HentPerson.Statsborgerskap {
 
+            val historisk = parseValgfriBoolean(Domenebegrep.HISTORISK.nøkkel(), rad) ?: false
+
             return HentPerson.Statsborgerskap(
                 parseString(Domenebegrep.LAND, rad),
                 parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED_DATO, rad),
                 parseValgfriString(Domenebegrep.GYLDIG_TIL_OG_MED_DATO, rad),
-                HentPerson.Metadata(false)
+                HentPerson.Metadata(historisk)
             )
         }
     }

@@ -50,7 +50,8 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
             return Statsborgerskap(
                 parseString(PersonhistorikkDomenebegrep.LANDKODE, rad),
                 parseValgfriDato(PersonhistorikkDomenebegrep.FRA_OG_MED_DATO, rad),
-                parseValgfriDato(PersonhistorikkDomenebegrep.TIL_OG_MED_DATO, rad)
+                parseValgfriDato(PersonhistorikkDomenebegrep.TIL_OG_MED_DATO, rad),
+                parseValgfriBoolean(PersonhistorikkDomenebegrep.HISTORISK.nøkkel(), rad) ?: false
             )
         }
     }
@@ -176,6 +177,7 @@ enum class PersonhistorikkDomenebegrep(val nøkkel: String) : Domenenøkkel {
     FRA_OG_MED_DATO("Fra og med dato"),
     GYLDIG_FRA_OG_MED("Gyldig fra og med dato"),
     GYLDIG_TIL_OG_MED("Gyldig til og med dato"),
+    HISTORISK("Historisk"),
     IDENT("Ident"),
     KONTAKTADRESSE("Kontaktadresse"),
     LANDKODE("Landkode"),
