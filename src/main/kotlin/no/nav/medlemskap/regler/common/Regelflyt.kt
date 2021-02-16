@@ -31,21 +31,7 @@ class Regelflyt(
         val resultat = if (overstyrtSvar != null) {
             regelResultat.copy(svar = overstyrtSvar, begrunnelse = regel.regelId.begrunnelse(overstyrtSvar))
         } else {
-            if (regelResultat.hentÅrsak() == null && regelResultat.erKonklusjon() && regelResultat.svar != Svar.JA) {
-                regelResultat.copy(
-                    årsak = if (årsak == null) {
-                        Årsak.fraResultat(resultatliste.last())
-                    } else {
-                        årsak
-                    }
-                )
-            } else {
-                if (årsak != null) {
-                    regelResultat.copy(årsak = årsak)
-                } else {
-                    regelResultat
-                }
-            }
+            regelResultat.copy(årsak = bestemÅrsak(regelResultat, årsak, resultatliste))
         }
 
         resultatliste.add(resultat)
@@ -105,6 +91,26 @@ class Regelflyt(
     }
 
     companion object {
+        fun bestemÅrsak(resultat: Resultat, årsak: Årsak?, delResultater: List<Resultat>): Årsak? {
+            if (resultat.hentÅrsak() != null) {
+                return resultat.hentÅrsak()
+            }
+
+            if (resultat.erKonklusjon() && resultat.svar == Svar.JA) {
+                return null
+            }
+
+            if (årsak != null) {
+                return årsak
+            }
+
+            if (!resultat.erKonklusjon()) {
+                return null
+            }
+
+            return Årsak.fraResultat(delResultater.last())
+        }
+
         fun medlemskonklusjonUavklart(ytelse: Ytelse): Regelflyt {
             return Regelflyt(uavklartKonklusjon(ytelse, RegelId.REGEL_MEDLEM_KONKLUSJON))
         }
