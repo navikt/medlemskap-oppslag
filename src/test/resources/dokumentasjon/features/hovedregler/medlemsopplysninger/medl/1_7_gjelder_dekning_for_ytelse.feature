@@ -20,13 +20,16 @@ Egenskap: Regel 1.7: Er det dekning for gjeldende ytelse?
     Eksempler:
       | Dekning           | Ytelse           | Svar |
       | FTL_2-6           | SYKEPENGER       | Ja   |
-      | FTL_2-6           | ENSLIG_FORSORGER | Nei  |
-      | FTL_2-6           | DAGPENGER        | Nei  |
-      | FTL_2-7a_2_ledd_a | ENSLIG_FORSORGER | Ja   |
-      | FTL_2-7a_2_ledd_a | DAGPENGER        | Ja   |
+      | Full              | SYKEPENGER       | Ja   |
       | FTL_2-9_1_ledd_a  | SYKEPENGER       | Nei  |
-      | FTL_2-9_1_ledd_a  | DAGPENGER        | Nei  |
+      | FTL_2-7a_2_ledd_a | ENSLIG_FORSORGER | Ja   |
+      | Full              | ENSLIG_FORSORGER | Ja   |
+      | FTL_2-6           | ENSLIG_FORSORGER | Nei  |
       | FTL_2-9_1_ledd_a  | ENSLIG_FORSORGER | Nei  |
+      | FTL_2-7a_2_ledd_a | DAGPENGER        | Ja   |
+      | Full              | DAGPENGER        | Ja   |
+      | FTL_2-6           | DAGPENGER        | Nei  |
+      | FTL_2-9_1_ledd_a  | DAGPENGER        | Nei  |
 
   Scenariomal: Regel 1.7: Er det dekning for gjeldende ytelse? Flere perioder fra MEDL
 
