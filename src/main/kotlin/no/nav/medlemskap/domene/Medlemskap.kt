@@ -120,6 +120,7 @@ enum class Dekning(val dekningKodeverdi: String) {
 
         private fun dekningForSykepenger(): List<Dekning> =
             listOf(
+                FULL,
                 FOLKETRYGDLOVEN2_6,
                 FOLKETRYGDLOVEN2_7_3A,
                 FOLKETRYGDLOVEN2_9_2_1A,
@@ -128,6 +129,7 @@ enum class Dekning(val dekningKodeverdi: String) {
 
         private fun dekningForDagpenger(): List<Dekning> =
             listOf(
+                FULL,
                 FOLKETRYGDLOVEN2_7_3A,
                 FOLKETRYGDLOVEN2_7A_2A,
                 FOLKETRYGDLOVEN2_9_1B,
@@ -138,6 +140,7 @@ enum class Dekning(val dekningKodeverdi: String) {
 
         private fun dekningForEnsligForsorger(): List<Dekning> =
             listOf(
+                FULL,
                 FOLKETRYGDLOVEN2_7_3A,
                 FOLKETRYGDLOVEN2_7A_2A,
                 FOLKETRYGDLOVEN2_9_1B,
@@ -146,11 +149,11 @@ enum class Dekning(val dekningKodeverdi: String) {
                 FOLKETRYGDLOVEN2_9_2_1C
             )
 
-        private fun uavklarteDekningerForSykepenger(): List<Dekning> = listOf(FOLKETRYGDLOVEN2_7A_2A, FOLKETRYGDLOVEN2_7A_2B) + fellesUavklarteDekninger()
+        private fun uavklarteDekningerForSykepenger(): List<Dekning> =
+            listOf(FOLKETRYGDLOVEN2_7A_2A, FOLKETRYGDLOVEN2_7A_2B) + fellesUavklarteDekninger()
 
         fun fellesUavklarteDekninger(): List<Dekning> =
             listOf(
-                FULL,
                 IHT_AVTALE,
                 IKKEPENDEL,
                 PENDEL,
