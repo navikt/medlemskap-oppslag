@@ -43,8 +43,8 @@ Egenskap: Regelflyt for regel 9, for norske borgere
     Eksempler:
       | Ytelse     | Har hatt arbeid utenfor Norge | Regel 9 | Medlemskap | Årsaker |
       | DAGPENGER  | Nei                           | Nei     | Ja         |         |
-      | DAGPENGER  | Ja                            | Ja      | UAVKLART   | 12      |
-      | SYKEPENGER | Ja                            | Ja      | UAVKLART   | 12      |
+      | DAGPENGER  | Ja                            | Ja      | UAVKLART   | 9       |
+      | SYKEPENGER | Ja                            | Ja      | UAVKLART   | 9       |
 
 
   Scenario: Regelflyt for regel 9, for norske borgere: Ytelse sykepenger, bruker som svarer nei på spørsmålet "Har hatt arbeid utenfor Norge"

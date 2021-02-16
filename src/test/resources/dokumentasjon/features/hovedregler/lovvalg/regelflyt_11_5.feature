@@ -20,7 +20,7 @@ Egenskap: Regelflyt for reglene 11.5 for bruker som har ektefelle og barn. Ektef
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
       | 1             | BEDR             | NOR      | 9              |
 
-  Scenario: Barnet er ikke bosatt i Norge
+  Scenario: Regelflyt regel 11.5.1, barnet er ikke bosatt i Norge
     Gitt følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
       | 01.01.2018      |                 | 001       | 100              |
@@ -52,7 +52,7 @@ Egenskap: Regelflyt for reglene 11.5 for bruker som har ektefelle og barn. Ektef
     Og skal regel "11.5.1" gi svaret "Ja"
 
 
-  Scenario: Ett barn som er bosatt i Norge og ett som ikke er bosatt i Norge
+  Scenario: Regelflyt regel 11.5.2, ett barn som er bosatt i Norge og ett som ikke er bosatt i Norge
     Gitt følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
       | 01.01.2018      |                 | 001       | 80               |
