@@ -17,8 +17,7 @@ data class Regel(
         regelCounter(this@Regel.regelId.metricName(), this.svar.name, ytelse.name()).increment()
         regelInfluxCounter(this@Regel.regelId.identifikator, this.svar.name, ytelse.name()).increment()
     }.copy(
-        regelId = regelId,
-        avklaring = regelId.avklaring
+        regelId = regelId
     )
 
     companion object {

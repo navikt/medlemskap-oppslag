@@ -6,9 +6,8 @@ enum class Svar {
 
 data class Resultat(
     val regelId: RegelId,
-    val avklaring: String = "",
-    val begrunnelse: String = "",
     val svar: Svar,
+    val begrunnelse: String = regelId.begrunnelse(svar),
     var harDekning: Svar? = null,
     var dekning: String = "",
     val delresultat: List<Resultat> = listOf(),
@@ -16,6 +15,8 @@ data class Resultat(
     private val årsak: Årsak? = null,
     val årsaker: List<Årsak> = if (årsak == null) delresultat.finnÅrsaker() else listOf(årsak)
 ) {
+    val avklaring = regelId.avklaring
+
     fun erMedlemskonklusjon(): Boolean {
         return konklusjonstype == Konklusjonstype.MEDLEM
     }
@@ -106,7 +107,6 @@ data class Resultat(
 
         fun ja(regelId: RegelId, konklusjonstype: Konklusjonstype = Konklusjonstype.REGEL, dekning: String = "") = Resultat(
             regelId = regelId,
-            begrunnelse = regelId.jaBegrunnelse,
             svar = Svar.JA,
             harDekning = if (dekning != "") Svar.JA else null,
             dekning = dekning,
@@ -116,7 +116,6 @@ data class Resultat(
 
         fun nei(regelId: RegelId, konklusjonstype: Konklusjonstype = Konklusjonstype.REGEL, dekning: String = "", årsak: Årsak? = null) = Resultat(
             regelId = regelId,
-            begrunnelse = regelId.neiBegrunnelse,
             svar = Svar.NEI,
             harDekning = if (dekning != "") Svar.NEI else null,
             dekning = dekning,
@@ -126,7 +125,6 @@ data class Resultat(
 
         fun uavklart(regelId: RegelId, konklusjonstype: Konklusjonstype = Konklusjonstype.REGEL, årsak: Årsak? = null) = Resultat(
             regelId,
-            begrunnelse = regelId.uavklartBegrunnelse,
             svar = Svar.UAVKLART,
             konklusjonstype = konklusjonstype,
             årsak = årsak

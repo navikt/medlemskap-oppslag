@@ -29,13 +29,7 @@ class Regelflyt(
 
         val overstyrtSvar = overstyrteRegler[regel.regelId]
         val resultat = if (overstyrtSvar != null) {
-
-            val begrunnelse = when (overstyrtSvar) {
-                Svar.JA -> regel.regelId.jaBegrunnelse
-                Svar.NEI -> regel.regelId.neiBegrunnelse
-                else -> regel.regelId.uavklartBegrunnelse
-            }
-            regelResultat.copy(svar = overstyrtSvar, begrunnelse = begrunnelse)
+            regelResultat.copy(svar = overstyrtSvar, begrunnelse = regel.regelId.begrunnelse(overstyrtSvar))
         } else {
             if (regelResultat.hentÅrsak() == null && regelResultat.erKonklusjon() && regelResultat.svar != Svar.JA) {
                 regelResultat.copy(
@@ -70,10 +64,10 @@ class Regelflyt(
 
         if (nesteResultat != null) {
             if (resultat.hentÅrsak() != null) {
-                return nesteResultat.copy(årsak = årsak)
+                return nesteResultat.copy(årsak = årsak, årsaker = resultatliste.finnÅrsaker())
             }
 
-            val årsak = if (nesteResultat.erKonklusjon() &&
+            val årsaken = if (nesteResultat.erKonklusjon() &&
                 nesteResultat.svar != Svar.JA &&
                 nesteRegel.regel.regelId.erRegelflytKonklusjon &&
                 nesteResultat.hentÅrsak() == null
@@ -83,7 +77,7 @@ class Regelflyt(
                 nesteResultat.hentÅrsak()
             }
 
-            return nesteResultat.copy(årsak = årsak, årsaker = resultatliste.finnÅrsaker())
+            return nesteResultat.copy(årsak = årsaken, årsaker = resultatliste.finnÅrsaker())
         }
 
         if (resultat.hentÅrsak() == null && resultat.erKonklusjon()) {

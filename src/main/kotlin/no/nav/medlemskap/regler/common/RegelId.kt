@@ -75,6 +75,14 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_OPPHOLDSTILLATELSE("Oppholdstillatelse", "Har bruker gyldig oppholdstillatelse?", erRegelflytKonklusjon = true)
     ;
 
+    fun begrunnelse(svar: Svar): String {
+        return when (svar) {
+            Svar.JA -> jaBegrunnelse
+            Svar.NEI -> neiBegrunnelse
+            Svar.UAVKLART -> uavklartBegrunnelse
+        }
+    }
+
     companion object {
         fun fraRegelIdString(regelIdStr: String): RegelId? {
 
@@ -85,6 +93,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
 
             return regelIdFunnet
         }
+
         fun RegelId.metricName(): String = this.identifikator + ". " + this.avklaring.replace("?", "")
     }
 }
