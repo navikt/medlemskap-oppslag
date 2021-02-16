@@ -5,7 +5,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
-import no.udi.common.v2.PingRequestType
 import no.udi.mt_1067_nav_data.v1.HentPersonstatusParameter
 import no.udi.mt_1067_nav_data.v1.HentPersonstatusResultat
 import v1.mt_1067_nav.no.udi.HentPersonstatusRequestType
@@ -50,10 +49,11 @@ class UdiClient(
         type.parameter = param
         return type
     }
-
+/*
     suspend fun healthCheck() {
         withContext(Dispatchers.Default) {
             mT1067NAVV1Interface.ping(PingRequestType())
         }
     }
+ */
 }
