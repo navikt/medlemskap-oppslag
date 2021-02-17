@@ -36,17 +36,7 @@ class Regelflyt(
 
         resultatliste.add(resultat)
 
-        val nesteRegel =
-            if (resultat.svar == Svar.JA && hvisJa != null) {
-                hvisJa
-            } else {
-                if (resultat.svar == Svar.NEI && hvisNei != null) {
-                    hvisNei
-                } else
-                    hvisUavklart
-            }
-
-        val nesteResultat = nesteRegel?.utfør(resultatliste, resultat.harDekning, resultat.dekning)
+        val nesteResultat = bestemNesteRegel(resultat)?.utfør(resultatliste, resultat.harDekning, resultat.dekning)
 
         if (nesteResultat != null) {
             if (resultat.hentÅrsak() != null) {
@@ -80,11 +70,21 @@ class Regelflyt(
         return konklusjon
     }
 
+    private fun bestemNesteRegel(resultat: Resultat): Regelflyt? {
+        return if (resultat.svar == Svar.JA && hvisJa != null) {
+            hvisJa
+        } else {
+            if (resultat.svar == Svar.NEI && hvisNei != null) {
+                hvisNei
+            } else
+                hvisUavklart
+        }
+    }
+
     companion object {
-        fun bestemÅrsakFraRegelResultat(resultat: Resultat, regelResultat: Resultat): Årsak? {
+        private fun bestemÅrsakFraRegelResultat(resultat: Resultat, regelResultat: Resultat): Årsak? {
             if (resultat.erKonklusjon() &&
                 resultat.svar != Svar.JA &&
-                resultat.regelId.erRegelflytKonklusjon &&
                 resultat.hentÅrsak() == null
             ) {
                 return Årsak.fraResultat(regelResultat)
@@ -93,7 +93,7 @@ class Regelflyt(
             }
         }
 
-        fun bestemÅrsak(resultat: Resultat, årsak: Årsak?, delResultater: List<Resultat>): Årsak? {
+        private fun bestemÅrsak(resultat: Resultat, årsak: Årsak?, delResultater: List<Resultat>): Årsak? {
             if (resultat.hentÅrsak() != null) {
                 return resultat.hentÅrsak()
             }
