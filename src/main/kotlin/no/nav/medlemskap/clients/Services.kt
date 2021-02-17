@@ -86,7 +86,7 @@ class Services(val configuration: Configuration) {
 
         healthService = HealthService(
             setOf(
-                HttpResponseHealthCheck("AaReg", { aaRegClient.healthCheck() }),
+                // HttpResponseHealthCheck("AaReg", { aaRegClient.healthCheck() }),
                 HttpResponseHealthCheck("Medl", { medlClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("Oppg", { oppgaveClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("PDL", { pdlClient.healthCheck() }, healthRetry),
