@@ -4,8 +4,7 @@ import no.nav.medlemskap.common.regelCounter
 import no.nav.medlemskap.common.regelInfluxCounter
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
-import no.nav.medlemskap.regler.common.Konklusjonstype.MEDLEM
-import no.nav.medlemskap.regler.common.Konklusjonstype.REGELFLYT
+import no.nav.medlemskap.regler.common.Konklusjonstype.*
 import no.nav.medlemskap.regler.common.RegelId.Companion.metricName
 import no.nav.medlemskap.regler.common.RegelId.REGEL_MEDLEM_KONKLUSJON
 
@@ -18,24 +17,23 @@ data class Regel(
         regelCounter(this@Regel.regelId.metricName(), this.svar.name, ytelse.name()).increment()
         regelInfluxCounter(this@Regel.regelId.identifikator, this.svar.name, ytelse.name()).increment()
     }.copy(
-        regelId = regelId,
-        avklaring = regelId.avklaring
+        regelId = regelId
     )
 
     companion object {
-        fun regelUavklart(ytelse: Ytelse, regelId: RegelId, konklusjonstype: Konklusjonstype = REGELFLYT) = Regel(
+        fun regelUavklart(ytelse: Ytelse, regelId: RegelId, konklusjonstype: Konklusjonstype = REGEL) = Regel(
             regelId = regelId,
             ytelse = ytelse,
             operasjon = { Resultat.uavklart(regelId, konklusjonstype) }
         )
 
-        fun regelJa(ytelse: Ytelse, regelId: RegelId, konklusjonstype: Konklusjonstype = REGELFLYT) = Regel(
+        fun regelJa(ytelse: Ytelse, regelId: RegelId, konklusjonstype: Konklusjonstype = REGEL) = Regel(
             regelId = regelId,
             ytelse = ytelse,
             operasjon = { Resultat.ja(regelId, konklusjonstype) }
         )
 
-        fun regelNei(ytelse: Ytelse, regelId: RegelId, konklusjonstype: Konklusjonstype = REGELFLYT) = Regel(
+        fun regelNei(ytelse: Ytelse, regelId: RegelId, konklusjonstype: Konklusjonstype = REGEL) = Regel(
             regelId = regelId,
             ytelse = ytelse,
             operasjon = { Resultat.nei(regelId, konklusjonstype) }

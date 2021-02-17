@@ -28,15 +28,16 @@ abstract class Regler(
         regel: Regel,
         hvisJa: Regelflyt? = null,
         hvisNei: Regelflyt? = null,
-        hvisUavklart: Regelflyt = medlemskonklusjonUavklart(ytelse)
+        hvisUavklart: Regelflyt = medlemskonklusjonUavklart(ytelse),
+        årsak: Årsak? = null
     ): Regelflyt {
         return Regelflyt(
             regel = regel,
-            ytelse = ytelse,
             hvisJa = hvisJa,
             hvisNei = hvisNei,
             hvisUavklart = hvisUavklart,
-            overstyrteRegler = overstyrteRegler
+            overstyrteRegler = overstyrteRegler,
+            årsak = årsak
         )
     }
 
@@ -51,7 +52,7 @@ abstract class Regler(
 
             return when {
                 resultater[RegelId.REGEL_A]?.svar == JA && resultater[RegelId.REGEL_B]?.svar == NEI -> ja(RegelId.REGEL_OPPLYSNINGER)
-                resultater.values.any { it.svar == JA } -> uavklart(RegelId.REGEL_OPPLYSNINGER)
+                resultater.values.any { it.svar == JA } -> uavklart(RegelId.REGEL_OPPLYSNINGER, årsak = Årsak.fraResultat(resultater.values.first { it.svar == JA }))
                 else -> nei(RegelId.REGEL_OPPLYSNINGER)
             }
         }

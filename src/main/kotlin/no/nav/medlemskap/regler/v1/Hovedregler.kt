@@ -10,6 +10,7 @@ import no.nav.medlemskap.regler.common.Regel.Companion.uavklartKonklusjon
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Regler
 import no.nav.medlemskap.regler.common.Resultat
+import no.nav.medlemskap.regler.common.Resultat.Companion.finnÅrsaker
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.common.Svar.*
 
@@ -138,7 +139,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         }
 
         private fun lagKonklusjon(konklusjon: Resultat, resultater: List<Resultat>): Resultat {
-            return konklusjon.copy(delresultat = lagDelresultat(resultater))
+            return konklusjon.copy(delresultat = lagDelresultat(resultater), årsaker = resultater.finnÅrsaker())
         }
 
         private fun lagDelresultat(resultater: List<Resultat>): List<Resultat> {

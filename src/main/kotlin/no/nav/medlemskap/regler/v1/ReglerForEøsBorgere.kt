@@ -26,13 +26,15 @@ class ReglerForEøsBorgere(
         val harBrukerMedBarn80ProsenStillingEllerMerRegelFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_2_2_2),
             hvisJa = regelflytUavklart(ytelse, REGEL_EØS_BOSATT),
-            hvisNei = regelflytUavklart(ytelse, REGEL_EØS_BOSATT)
+            hvisNei = regelflytUavklart(ytelse, REGEL_EØS_BOSATT),
+            årsak = (Årsak(REGEL_11_2_2, REGEL_11_2_2.avklaring, Svar.UAVKLART))
         )
 
         val harBrukerMedBarnOgEktefelle80ProsentStillingEllerMerRegelFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_5_2),
             hvisJa = regelflytUavklart(ytelse, REGEL_EØS_BOSATT),
-            hvisNei = regelflytUavklart(ytelse, REGEL_EØS_BOSATT)
+            hvisNei = regelflytUavklart(ytelse, REGEL_EØS_BOSATT),
+            årsak = Årsak(REGEL_11_5, REGEL_11_5.avklaring, Svar.UAVKLART)
         )
 
         val harBrukerUtenFolkeregistrertEktefelleStillingsprosent100EllerMerRegelFlyt = lagRegelflyt(
