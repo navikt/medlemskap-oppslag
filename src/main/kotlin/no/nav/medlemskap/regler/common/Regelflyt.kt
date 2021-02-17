@@ -53,17 +53,7 @@ class Regelflyt(
                 return nesteResultat.copy(årsak = årsak, årsaker = resultatliste.finnÅrsaker())
             }
 
-            val årsaken = if (nesteResultat.erKonklusjon() &&
-                nesteResultat.svar != Svar.JA &&
-                nesteRegel.regel.regelId.erRegelflytKonklusjon &&
-                nesteResultat.hentÅrsak() == null
-            ) {
-                Årsak.fraResultat(regelResultat)
-            } else {
-                nesteResultat.hentÅrsak()
-            }
-
-            return nesteResultat.copy(årsak = årsaken, årsaker = resultatliste.finnÅrsaker())
+            return nesteResultat.copy(årsak = bestemÅrsakFraRegelResultat(nesteResultat, regelResultat), årsaker = resultatliste.finnÅrsaker())
         }
 
         if (resultat.hentÅrsak() == null && resultat.erKonklusjon()) {
@@ -91,6 +81,18 @@ class Regelflyt(
     }
 
     companion object {
+        fun bestemÅrsakFraRegelResultat(resultat: Resultat, regelResultat: Resultat): Årsak? {
+            if (resultat.erKonklusjon() &&
+                resultat.svar != Svar.JA &&
+                resultat.regelId.erRegelflytKonklusjon &&
+                resultat.hentÅrsak() == null
+            ) {
+                return Årsak.fraResultat(regelResultat)
+            } else {
+                return resultat.hentÅrsak()
+            }
+        }
+
         fun bestemÅrsak(resultat: Resultat, årsak: Årsak?, delResultater: List<Resultat>): Årsak? {
             if (resultat.hentÅrsak() != null) {
                 return resultat.hentÅrsak()
