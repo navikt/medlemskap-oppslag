@@ -18,6 +18,7 @@ import java.time.LocalDateTime
 
 class AaregClientTest {
 
+    val username = "Stian"
     companion object {
         val server: WireMockServer = WireMockServer(WireMockConfiguration.options().dynamicPort())
 
@@ -55,7 +56,7 @@ class AaregClientTest {
             )
         )
 
-        val client = AaRegClient(server.baseUrl(), stsClient, cioHttpClient)
+        val client = AaRegClient(server.baseUrl(), username, stsClient, cioHttpClient)
 
         val response = runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
 
@@ -99,7 +100,7 @@ class AaregClientTest {
 
             )
         )
-        val client = AaRegClient(server.baseUrl(), stsClient, cioHttpClient)
+        val client = AaRegClient(server.baseUrl(), username, stsClient, cioHttpClient)
 
         Assertions.assertThrows(ServerResponseException::class.java) {
             runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
@@ -121,7 +122,7 @@ class AaregClientTest {
             )
         )
 
-        val client = AaRegClient(server.baseUrl(), stsClient, cioHttpClient)
+        val client = AaRegClient(server.baseUrl(), username, stsClient, cioHttpClient)
 
         Assertions.assertThrows(ClientRequestException::class.java) {
             runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
@@ -143,7 +144,7 @@ class AaregClientTest {
             )
         )
 
-        val client = AaRegClient(server.baseUrl(), stsClient, cioHttpClient)
+        val client = AaRegClient(server.baseUrl(), username, stsClient, cioHttpClient)
         val response = runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
 
         Assertions.assertEquals(0, response.size)
