@@ -62,7 +62,7 @@ class AaRegClient(
     suspend fun healthCheck(): HttpResponse {
         return httpClient.get {
             url("$baseUrl/ping")
-            header(HttpHeaders.Accept, ContentType.Application.Json)
+            header(HttpHeaders.Accept, ContentType.Text.Plain)
             header("Nav-Consumer-Id", username)
         }
     }
