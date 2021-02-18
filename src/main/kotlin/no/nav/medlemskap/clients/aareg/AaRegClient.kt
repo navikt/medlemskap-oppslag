@@ -4,6 +4,7 @@ import io.github.resilience4j.retry.Retry
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import io.ktor.http.*
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
@@ -57,13 +58,14 @@ class AaRegClient(
             }
         )
     }
-/*
+
     suspend fun healthCheck(): HttpResponse {
         return httpClient.get {
-            url("$baseUrl/aareg-services/api/ping")
+            url("$baseUrl/ping")
+            header(HttpHeaders.Accept, ContentType.Application.Json)
             header("Nav-Consumer-Id", username)
         }
     }
-*/
+
     private fun LocalDate.tilIsoFormat() = this.format(DateTimeFormatter.ISO_LOCAL_DATE)
 }
