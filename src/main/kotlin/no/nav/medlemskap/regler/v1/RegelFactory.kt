@@ -19,9 +19,6 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
 
     fun create(regelIdentifikator: String): Regel {
         val regelId = RegelId.fraRegelIdString(regelIdentifikator)
-        if (regelId == null) {
-            throw java.lang.RuntimeException("Ukjent regel")
-        }
 
         return create(regelId)
     }
