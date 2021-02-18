@@ -7,14 +7,13 @@ import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytUavklart
-import no.nav.medlemskap.regler.v1.lovvalg.*
 
 class ReglerForEøsBorgere(
     val periode: InputPeriode,
     ytelse: Ytelse,
-    regelMap: Map<RegelId, Regel>,
+    regelFactory: RegelFactory,
     overstyrteRegler: Map<RegelId, Svar>
-) : Regler(ytelse, regelMap, overstyrteRegler) {
+) : Regler(ytelse, regelFactory, overstyrteRegler) {
 
     override fun hentHovedflyt(): Regelflyt {
         val harBrukerJobbetUtenforNorgeFlyt = lagRegelflyt(
@@ -146,36 +145,10 @@ class ReglerForEøsBorgere(
                 return ReglerForEøsBorgere(
                     periode = periode,
                     ytelse = ytelse,
-                    regelMap = lagRegelMap(datagrunnlag),
+                    regelFactory = RegelFactory(datagrunnlag),
                     overstyrteRegler = datagrunnlag.overstyrteRegler
                 )
             }
-        }
-
-        private fun lagRegelMap(datagrunnlag: Datagrunnlag): Map<RegelId, Regel> {
-            val regelListe = listOf(
-                HarBrukerJobbetUtenforNorgeRegel.fraDatagrunnlag(datagrunnlag),
-                ErBrukersEktefelleBosattINorgeRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_4),
-                ErBrukersEktefelleBosattINorgeRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_3_1),
-                HarBrukersEktefelleJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag),
-                ErBrukersEktefelleOgBarnasForelderSammePersonRegel.fraDatagrunnlag(datagrunnlag),
-                HarBrukerBarnSomErFolkeregistrertRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_2),
-                HarBrukerBarnSomErFolkeregistrertRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_4_1),
-                HarBrukerBarnSomErFolkeregistrertRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_5),
-                HarBrukerBarnRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_3),
-                HarBrukerBarnRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_1),
-                HarBrukerEktefelleRegel.fraDatagrunnlag(datagrunnlag),
-                HarBrukerJobbet80ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_6),
-                HarBrukerJobbet80ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_3),
-                HarBrukerJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_3_1_1),
-                HarBrukerJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_2_1),
-                HarBrukerJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_4_2),
-                HarBrukerJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_5_3),
-                HarBrukerJobbet80ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_2_2),
-                HarBrukerJobbet80ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_5_2)
-            )
-
-            return regelListe.map { it.regelId to it.regel }.toMap()
         }
     }
 }

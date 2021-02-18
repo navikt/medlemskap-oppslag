@@ -2,17 +2,19 @@ package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.regler.common.*
+import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.RegelId.*
+import no.nav.medlemskap.regler.common.Regelflyt
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytUavklart
-import no.nav.medlemskap.regler.v1.arbeidsforhold.*
+import no.nav.medlemskap.regler.common.Regler
+import no.nav.medlemskap.regler.common.Svar
 
 class ReglerForArbeidsforhold(
     ytelse: Ytelse,
-    regelMap: Map<RegelId, Regel>,
+    regelFactory: RegelFactory,
     overstyrteRegler: Map<RegelId, Svar>
-) : Regler(ytelse, regelMap, overstyrteRegler) {
+) : Regler(ytelse, regelFactory, overstyrteRegler) {
 
     override fun hentHovedflyt(): Regelflyt {
         val jobberBrukerPaaNorskSkipFlyt = lagRegelflyt(
@@ -67,27 +69,15 @@ class ReglerForArbeidsforhold(
     }
 
     companion object {
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag, overstyrteRegler: Map<RegelId, Svar> = emptyMap()): ReglerForArbeidsforhold {
+        fun fraDatagrunnlag(
+            datagrunnlag: Datagrunnlag,
+            overstyrteRegler: Map<RegelId, Svar> = emptyMap()
+        ): ReglerForArbeidsforhold {
             return ReglerForArbeidsforhold(
                 ytelse = datagrunnlag.ytelse,
-                regelMap = lagRegelMap(datagrunnlag),
+                regelFactory = RegelFactory(datagrunnlag),
                 overstyrteRegler = overstyrteRegler
             )
-        }
-
-        private fun lagRegelMap(datagrunnlag: Datagrunnlag): Map<RegelId, Regel> {
-            val regelListe = listOf(
-                ErArbeidsforholdetMaritimtRegel.fraDatagrunnlag(datagrunnlag),
-                ErArbeidsgiverOrganisasjonRegel.fraDatagrunnlag(datagrunnlag),
-                ErBrukerPilotEllerKabinansattRegel.fraDatagrunnlag(datagrunnlag),
-                ErForetaketAktivtRegel.fraDatagrunnlag(datagrunnlag),
-                HarBrukerSammenhengendeArbeidsforholdRegel.fraDatagrunnlag(datagrunnlag),
-                HarForetaketMerEnn5AnsatteRegel.fraDatagrunnlag(datagrunnlag),
-                JobberBrukerPaaNorskSkipRegel.fraDatagrunnlag(datagrunnlag),
-                ErArbeidsforholdetOffentligSektor.fraDatagrunnlag(datagrunnlag)
-            )
-
-            return regelListe.map { it.regelId to it.regel }.toMap()
         }
     }
 }
