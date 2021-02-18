@@ -2,15 +2,17 @@ package no.nav.medlemskap.regler.v1
 
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.regler.common.*
+import no.nav.medlemskap.regler.common.RegelId
+import no.nav.medlemskap.regler.common.Regelflyt
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
-import no.nav.medlemskap.regler.v1.lovvalg.ErBrukerDoedRegel
+import no.nav.medlemskap.regler.common.Regler
+import no.nav.medlemskap.regler.common.Svar
 
 class ReglerForDoedsfall(
     ytelse: Ytelse,
-    regelMap: Map<RegelId, Regel> = emptyMap(),
+    regelFactory: RegelFactory,
     overstyrteRegler: Map<RegelId, Svar>
-) : Regler(ytelse, regelMap, overstyrteRegler) {
+) : Regler(ytelse, regelFactory, overstyrteRegler) {
 
     override fun hentHovedflyt(): Regelflyt {
         val erBrukerDoedRegelFlyt = lagRegelflyt(
@@ -26,18 +28,10 @@ class ReglerForDoedsfall(
             with(datagrunnlag) {
                 return ReglerForDoedsfall(
                     ytelse = ytelse,
-                    regelMap = lagRegelMap(datagrunnlag),
+                    regelFactory = RegelFactory(datagrunnlag),
                     overstyrteRegler = datagrunnlag.overstyrteRegler
                 )
             }
-        }
-
-        private fun lagRegelMap(datagrunnlag: Datagrunnlag): Map<RegelId, Regel> {
-            val regelListe = listOf(
-                ErBrukerDoedRegel.fraDatagrunnlag(datagrunnlag)
-            )
-
-            return regelListe.map { it.regelId to it.regel }.toMap()
         }
     }
 }

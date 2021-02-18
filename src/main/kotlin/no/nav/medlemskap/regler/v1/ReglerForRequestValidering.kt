@@ -6,14 +6,13 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytUavklart
-import no.nav.medlemskap.regler.v1.validering.InputDatoValideringRegel
 
 class ReglerForRequestValidering(
     val periode: InputPeriode,
     ytelse: Ytelse,
-    regelMap: Map<RegelId, Regel>,
+    regelFactory: RegelFactory,
     overstyrteRegler: Map<RegelId, Svar>
-) : Regler(ytelse, regelMap, overstyrteRegler) {
+) : Regler(ytelse, regelFactory, overstyrteRegler) {
 
     override fun hentHovedflyt(): Regelflyt {
 
@@ -34,18 +33,10 @@ class ReglerForRequestValidering(
                 return ReglerForRequestValidering(
                     periode = periode,
                     ytelse = ytelse,
-                    regelMap = lagRegelMap(datagrunnlag),
+                    regelFactory = RegelFactory(datagrunnlag),
                     overstyrteRegler = datagrunnlag.overstyrteRegler
                 )
             }
-        }
-
-        private fun lagRegelMap(datagrunnlag: Datagrunnlag): Map<RegelId, Regel> {
-            val regelListe = listOf(
-                InputDatoValideringRegel.fraDatagrunnlag(datagrunnlag)
-            )
-
-            return regelListe.map { it.regelId to it.regel }.toMap()
         }
     }
 }

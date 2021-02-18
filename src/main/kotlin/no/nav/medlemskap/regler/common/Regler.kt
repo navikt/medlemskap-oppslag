@@ -7,10 +7,11 @@ import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import no.nav.medlemskap.regler.common.Resultat.Companion.uavklart
 import no.nav.medlemskap.regler.common.Svar.JA
 import no.nav.medlemskap.regler.common.Svar.NEI
+import no.nav.medlemskap.regler.v1.RegelFactory
 
 abstract class Regler(
     val ytelse: Ytelse,
-    val regelMap: Map<RegelId, Regel> = emptyMap(),
+    val regelFactory: RegelFactory,
     val overstyrteRegler: Map<RegelId, Svar>
 ) {
 
@@ -42,9 +43,7 @@ abstract class Regler(
     }
 
     protected fun hentRegel(regelId: RegelId): Regel {
-        val regel = regelMap[regelId]
-
-        return regel ?: throw RuntimeException("Fant ikke regel med regelId $regelId")
+        return regelFactory.create(regelId)
     }
 
     companion object {

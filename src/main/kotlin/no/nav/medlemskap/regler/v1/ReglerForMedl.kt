@@ -15,9 +15,9 @@ import no.nav.medlemskap.regler.v1.registrerteOpplysninger.HarBrukerRegistrerteO
 
 class ReglerForMedl(
     ytelse: Ytelse,
-    regelMap: Map<RegelId, Regel> = emptyMap(),
+    regelFactory: RegelFactory,
     overstyrteRegler: Map<RegelId, Svar>
-) : Regler(ytelse, regelMap, overstyrteRegler) {
+) : Regler(ytelse, regelFactory, overstyrteRegler) {
 
     override fun hentHovedflyt(): Regelflyt {
         val harBrukerDekningIMedlFlyt = lagRegelflyt(
@@ -89,7 +89,7 @@ class ReglerForMedl(
             with(datagrunnlag) {
                 return ReglerForMedl(
                     ytelse = ytelse,
-                    regelMap = lagRegelMap(datagrunnlag),
+                    regelFactory = RegelFactory(datagrunnlag),
                     overstyrteRegler = datagrunnlag.overstyrteRegler
                 )
             }

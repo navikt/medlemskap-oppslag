@@ -56,13 +56,18 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_11_2_1 -> HarBrukerBarnRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_1).regel
             REGEL_11_2_2 -> HarBrukerBarnSomErFolkeregistrertRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_2).regel
             REGEL_11_2_2_1 -> HarBrukerJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_2_1).regel
+            REGEL_11_2_2_2 -> HarBrukerJobbet80ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_2_2).regel
             REGEL_11_2_3 -> HarBrukerJobbet80ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_3).regel
             REGEL_11_3 -> HarBrukerBarnRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_3).regel
             REGEL_11_3_1 -> ErBrukersEktefelleBosattINorgeRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_3_1).regel
             REGEL_11_3_1_1 -> HarBrukerJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_3_1_1).regel
             REGEL_11_4 -> ErBrukersEktefelleBosattINorgeRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_4).regel
             REGEL_11_4_1 -> HarBrukerBarnSomErFolkeregistrertRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_4_1).regel
+            REGEL_11_4_2 -> HarBrukerJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_4_2).regel
             REGEL_11_5 -> HarBrukerBarnSomErFolkeregistrertRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_5).regel
+            REGEL_11_5_1 -> ErBrukersEktefelleOgBarnasForelderSammePersonRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_11_5_2 -> HarBrukerJobbet80ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_5_2).regel
+            REGEL_11_5_3 -> HarBrukerJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_5_3).regel
             REGEL_11_6 -> HarBrukerJobbet80ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_6).regel
             REGEL_11_6_1 -> HarBrukersEktefelleJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_12 -> HarBrukerJobbet25ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag).regel
@@ -78,7 +83,7 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_19_4 -> ErBrukerBritiskBorgerRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_19_1 -> ErOppholdstillatelseUavklartRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_20 -> HarBrukerJobbet80ProsentEllerMerSiste3MånedeneRegel.fraDatagrunnlag(datagrunnlag, REGEL_20).regel
-            else -> throw java.lang.RuntimeException("Ukjent regel")
+            else -> throw java.lang.RuntimeException("Ukjent regel: $regelId")
         }
     }
 }
