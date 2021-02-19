@@ -6,7 +6,6 @@ import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
 import no.nav.medlemskap.domene.personhistorikk.Personhistorikk
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erAnnenStatsborger
-import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erEøsBorger
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erNorskBorger
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.gyldigeStatsborgerskap
 import no.nav.medlemskap.regler.common.RegelId
@@ -38,10 +37,6 @@ data class Datagrunnlag(
 
     fun erTredjelandsborger(): Boolean {
         return pdlpersonhistorikk.statsborgerskap.erAnnenStatsborger(startDatoForYtelse)
-    }
-
-    fun erEøsBorger(): Boolean {
-        return pdlpersonhistorikk.statsborgerskap.erEøsBorger(kontrollPeriodeForPersonhistorikk)
     }
 
     fun erNorskBorger(): Boolean {

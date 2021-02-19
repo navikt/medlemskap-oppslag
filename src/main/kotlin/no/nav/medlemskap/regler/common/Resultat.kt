@@ -48,6 +48,14 @@ data class Resultat(
         return årsak
     }
 
+    fun erEøsBorger(): Boolean {
+        return finnRegelResultat(RegelId.REGEL_2)?.svar == Svar.JA
+    }
+
+    fun erNorskBorger(): Boolean {
+        return finnRegelResultat(RegelId.REGEL_11)?.svar == Svar.JA
+    }
+
     companion object {
         private fun finnRegelResultat(resultat: Resultat, regelId: RegelId): Resultat? {
             var regelResultat = finnDelresultat(resultat, regelId)

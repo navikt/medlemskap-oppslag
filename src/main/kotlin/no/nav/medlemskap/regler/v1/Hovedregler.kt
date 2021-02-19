@@ -97,24 +97,14 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
     }
 
     private fun bestemStatsborgerskapskategori(resultatStatsborgerskap: Resultat): Statsborgerskapskategori {
-        val resultatEøsStatsborgerskap = resultatStatsborgerskap
-            .delresultat
-            .first { it.regelId == RegelId.REGEL_2 }
-        val erEøsBorger = resultatEøsStatsborgerskap.svar == JA
-
-        if (!erEøsBorger) {
+        if (!resultatStatsborgerskap.erEøsBorger()) {
             return Statsborgerskapskategori.TREDJELANDSBORGER
         }
 
-        val resultatNorskStatsborgerskap = resultatStatsborgerskap
-            .delresultat
-            .first { it.regelId == RegelId.REGEL_11 }
-        val erNorskBorger = resultatNorskStatsborgerskap.svar == JA
-
-        if (erNorskBorger) {
-            return Statsborgerskapskategori.NORSK_BORGER
+        return if (resultatStatsborgerskap.erNorskBorger()) {
+            Statsborgerskapskategori.NORSK_BORGER
         } else {
-            return Statsborgerskapskategori.EØS_BORGER
+            Statsborgerskapskategori.EØS_BORGER
         }
     }
 
