@@ -10,9 +10,9 @@ import no.nav.medlemskap.regler.v1.overstyring.OverstyringRegel
 class ReglerForOverstyring(
     val periode: InputPeriode,
     ytelse: Ytelse,
-    regelMap: Map<RegelId, Regel>,
+    regelFactory: RegelFactory,
     overstyrteRegler: Map<RegelId, Svar>
-) : Regler(ytelse, regelMap, overstyrteRegler) {
+) : Regler(ytelse, regelFactory, overstyrteRegler) {
 
     override fun hentHovedflyt(): Regelflyt {
         return lagRegelflyt(
@@ -38,18 +38,10 @@ class ReglerForOverstyring(
                 return ReglerForOverstyring(
                     periode = periode,
                     ytelse = ytelse,
-                    regelMap = lagRegelMap(datagrunnlag),
+                    regelFactory = RegelFactory(datagrunnlag),
                     overstyrteRegler = datagrunnlag.overstyrteRegler
                 )
             }
-        }
-
-        private fun lagRegelMap(datagrunnlag: Datagrunnlag): Map<RegelId, Regel> {
-            val regelListe = listOf(
-                OverstyringRegel.fraDatagrunnlag(datagrunnlag)
-            )
-
-            return regelListe.map { it.regelId to it.regel }.toMap()
         }
     }
 }

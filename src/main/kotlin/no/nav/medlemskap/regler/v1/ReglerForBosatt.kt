@@ -3,17 +3,19 @@ package no.nav.medlemskap.regler.v1
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.regler.common.*
+import no.nav.medlemskap.regler.common.RegelId
+import no.nav.medlemskap.regler.common.Regelflyt
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytUavklart
-import no.nav.medlemskap.regler.v1.lovvalg.ErBrukerBosattINorgeRegel
+import no.nav.medlemskap.regler.common.Regler
+import no.nav.medlemskap.regler.common.Svar
 
 class ReglerForBosatt(
     val periode: InputPeriode,
     ytelse: Ytelse,
-    regelMap: Map<RegelId, Regel>,
+    regelFactory: RegelFactory,
     overstyrteRegler: Map<RegelId, Svar>
-) : Regler(ytelse, regelMap, overstyrteRegler) {
+) : Regler(ytelse, regelFactory, overstyrteRegler) {
 
     override fun hentHovedflyt(): Regelflyt {
 
@@ -32,18 +34,10 @@ class ReglerForBosatt(
                 return ReglerForBosatt(
                     periode = periode,
                     ytelse = ytelse,
-                    regelMap = lagRegelMap(datagrunnlag),
+                    regelFactory = RegelFactory(datagrunnlag),
                     overstyrteRegler = datagrunnlag.overstyrteRegler
                 )
             }
-        }
-
-        private fun lagRegelMap(datagrunnlag: Datagrunnlag): Map<RegelId, Regel> {
-            val regelListe = listOf(
-                ErBrukerBosattINorgeRegel.fraDatagrunnlag(datagrunnlag)
-            )
-
-            return regelListe.map { it.regelId to it.regel }.toMap()
         }
     }
 }

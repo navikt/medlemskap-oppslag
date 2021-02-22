@@ -75,16 +75,21 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_OPPHOLDSTILLATELSE("Oppholdstillatelse", "Har bruker gyldig oppholdstillatelse?")
     ;
 
-    companion object {
-        fun fraRegelIdString(regelIdStr: String): RegelId? {
-
-            val regelIdFunnet = values().filter { it.identifikator == regelIdStr || it.name == regelIdStr }.firstOrNull()
-            if (regelIdFunnet == null) {
-                throw RuntimeException("Fant ikke regelId " + regelIdStr)
-            }
-
-            return regelIdFunnet
+    fun begrunnelse(svar: Svar): String {
+        return when (svar) {
+            Svar.JA -> jaBegrunnelse
+            Svar.NEI -> neiBegrunnelse
+            Svar.UAVKLART -> uavklartBegrunnelse
         }
-        fun RegelId.metricName(): String = this.identifikator + ". " + this.avklaring.replace("?", "")
+    }
+
+    companion object {
+        fun fraRegelIdString(regelIdStr: String): RegelId {
+
+            return values().firstOrNull { it.identifikator == regelIdStr || it.name == regelIdStr }
+                ?: throw RuntimeException("Fant ikke regelId $regelIdStr")
+        }
+
+        fun RegelId.metricName(): String = identifikator + ". " + avklaring.replace("?", "")
     }
 }

@@ -44,9 +44,10 @@ Egenskap: Regelflyt for regel 19.2.1
 
     Så skal svaret være "<Medlemskap>"
     Og skal regel "19.2.1" gi svaret "<Regel 19.2.1>"
-
+    Og skal regel-årsaker være "<Årsaker>"
+    
     Eksempler:
-      | Opphold til og med | Arbeid fra og med | Arbeid til og med | Regel 19.2.1 | Medlemskap |
-      | 20.03.2017         | 01.01.2017        |                   | Ja           | Ja         |
-      | 20.01.2017         | 01.01.2017        | 30.01.2017        | Nei          | Uavklart   |
-      | 20.01.2017         | 31.12.2016        | 15.01.2017        | Nei          | Uavklart   |
+      | Opphold til og med | Arbeid fra og med | Arbeid til og med | Regel 19.2.1 | Medlemskap | Årsaker |
+      | 20.03.2017         | 01.01.2017        |                   | Ja           | Ja         |         |
+      | 20.01.2017         | 01.01.2017        | 30.01.2017        | Nei          | Uavklart   | 19.2.1  |
+      | 20.01.2017         | 31.12.2016        | 15.01.2017        | Nei          | Uavklart   | 19.2.1  |

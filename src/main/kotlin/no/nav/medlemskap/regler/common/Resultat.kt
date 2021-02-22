@@ -6,15 +6,16 @@ enum class Svar {
 
 data class Resultat(
     val regelId: RegelId,
-    val avklaring: String = "",
-    val begrunnelse: String = "",
     val svar: Svar,
+    val begrunnelse: String = regelId.begrunnelse(svar),
     var harDekning: Svar? = null,
     var dekning: String = "",
     val delresultat: List<Resultat> = listOf(),
-    private val konklusjonstype: Konklusjonstype = Konklusjonstype.REGEL
+    private val konklusjonstype: Konklusjonstype = Konklusjonstype.REGEL,
+    private val årsak: Årsak? = null,
+    val årsaker: List<Årsak> = if (årsak == null) delresultat.finnÅrsaker() else listOf(årsak)
 ) {
-    val årsaker = finnÅrsaker()
+    val avklaring = regelId.avklaring
 
     fun erMedlemskonklusjon(): Boolean {
         return konklusjonstype == Konklusjonstype.MEDLEM
@@ -40,6 +41,11 @@ data class Resultat(
 
     fun finnÅrsaker(): List<Årsak> {
         return finnÅrsaker(this)
+    }
+
+    fun hentÅrsak(): Årsak? {
+
+        return årsak
     }
 
     companion object {
@@ -68,17 +74,11 @@ data class Resultat(
                 return null
             }
 
-            if (resultat.delresultat.isNotEmpty()) {
-                val muligÅrsak = resultat.delresultat.filter { it.begrunnelse != "" }.firstOrNull()
-
-                return if (muligÅrsak == null) {
-                    finnÅrsak(resultat.delresultat.last())
-                } else {
-                    finnÅrsak(muligÅrsak)
-                }
+            if (resultat.hentÅrsak() == null && resultat.delresultat.isNotEmpty()) {
+                return finnÅrsak(resultat.delresultat.last())
             }
 
-            return Årsak.fraResultat(resultat)
+            return resultat.årsak
         }
 
         fun finnÅrsaker(resultat: Resultat): List<Årsak> {
@@ -101,29 +101,33 @@ data class Resultat(
             return emptyList()
         }
 
+        fun List<Resultat>.finnÅrsaker(): List<Årsak> {
+            return this.mapNotNull { finnÅrsak(it) }
+        }
+
         fun ja(regelId: RegelId, konklusjonstype: Konklusjonstype = Konklusjonstype.REGEL, dekning: String = "") = Resultat(
             regelId = regelId,
-            begrunnelse = regelId.jaBegrunnelse,
             svar = Svar.JA,
             harDekning = if (dekning != "") Svar.JA else null,
             dekning = dekning,
-            konklusjonstype = konklusjonstype
+            konklusjonstype = konklusjonstype,
+            årsak = null
         )
 
-        fun nei(regelId: RegelId, konklusjonstype: Konklusjonstype = Konklusjonstype.REGEL, dekning: String = "") = Resultat(
+        fun nei(regelId: RegelId, konklusjonstype: Konklusjonstype = Konklusjonstype.REGEL, dekning: String = "", årsak: Årsak? = null) = Resultat(
             regelId = regelId,
-            begrunnelse = regelId.neiBegrunnelse,
             svar = Svar.NEI,
             harDekning = if (dekning != "") Svar.NEI else null,
             dekning = dekning,
-            konklusjonstype = konklusjonstype
+            konklusjonstype = konklusjonstype,
+            årsak = årsak
         )
 
-        fun uavklart(regelId: RegelId, konklusjonstype: Konklusjonstype = Konklusjonstype.REGEL) = Resultat(
+        fun uavklart(regelId: RegelId, konklusjonstype: Konklusjonstype = Konklusjonstype.REGEL, årsak: Årsak? = null) = Resultat(
             regelId,
-            begrunnelse = regelId.uavklartBegrunnelse,
             svar = Svar.UAVKLART,
-            konklusjonstype = konklusjonstype
+            konklusjonstype = konklusjonstype,
+            årsak = årsak
         )
 
         fun List<Resultat>.utenKonklusjon(): List<Resultat> {

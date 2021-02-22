@@ -45,4 +45,4 @@ Egenskap: Regelflyt for regel 12
       | SYKEPENGER | 100              | Nei                  | Ja       | Ja         |         |                     |
       | SYKEPENGER | 20               | Nei                  | Ja       | Ja         |         | Regel 12 overstyres |
       | DAGPENGER  | 20               | Nei                  | Nei      | Ja         |         |                     |
-      | SYKEPENGER | 20               | Ja                   | Nei      | UAVKLART   | 12      |                     |
+      | SYKEPENGER | 20               | Ja                   | Nei      | UAVKLART   | 9       |                     |
