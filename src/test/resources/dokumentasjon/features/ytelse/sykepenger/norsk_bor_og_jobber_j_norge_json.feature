@@ -20,7 +20,8 @@ Egenskap: Man er medlem i Folketrygden hvis man er EØS-borger og bor og jobber 
       {
         "landkode": "BEL",
         "fom": "2016-01-30",
-        "tom": "2020-01-30"
+        "tom": "2020-01-30",
+        "historisk": false
       }
     ],
     "bostedsadresser": [

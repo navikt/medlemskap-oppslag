@@ -53,3 +53,34 @@ Egenskap: Eøs-land
       | GBR  | STORBRITANNIA | Ja   |
       | USA  | USA           | Nei  |
 
+
+  Scenario: Regel 2: Norsk statsborger med historisk statsborgerskap utenfor EØS får ja
+
+    Gitt følgende statsborgerskap i personhistorikken
+      | Landkode | Fra og med dato | Historisk |
+      | USA      | 30.01.2000      | Ja        |
+      | NOR      | 30.01.2010      | Nei       |
+
+    Når regel "2" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
+
+    Så skal svaret være "Ja"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelsen være som definert i RegelId
+
+
+  Scenario: Regel 2: Amerikansk statsborger med historisk norsk statsborgerskap får nei
+
+    Gitt følgende statsborgerskap i personhistorikken
+      | Landkode | Fra og med dato | Historisk |
+      | USA      | 30.01.2010      | Nei       |
+      | NOR      | 30.01.2000      | Ja        |
+
+    Når regel "2" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
+
+    Så skal svaret være "Nei"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelsen være som definert i RegelId
