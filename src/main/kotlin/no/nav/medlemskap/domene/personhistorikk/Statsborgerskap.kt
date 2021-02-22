@@ -24,14 +24,14 @@ data class Statsborgerskap(
 
         infix fun List<Statsborgerskap>.statsborgerskapFørst(kontrollPeriodeForPersonhistorikk: Kontrollperiode): Set<String> {
             return this
-                .filter { it.overlapper(kontrollPeriodeForPersonhistorikk.fom) && it.historisk != true }
+                .filter { it.overlapper(kontrollPeriodeForPersonhistorikk.fom) && it.historisk == false }
                 .map { it.landkode }
                 .toSet()
         }
 
         infix fun List<Statsborgerskap>.statsborgerskapSist(kontrollPeriodeForPersonhistorikk: Kontrollperiode): Set<String> {
             return this
-                .filter { it.overlapper(kontrollPeriodeForPersonhistorikk.tom) && it.historisk != true }
+                .filter { it.overlapper(kontrollPeriodeForPersonhistorikk.tom) && it.historisk == false }
                 .map { it.landkode }
                 .toSet()
         }
