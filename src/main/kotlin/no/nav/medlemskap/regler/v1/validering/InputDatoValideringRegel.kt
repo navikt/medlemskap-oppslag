@@ -1,7 +1,6 @@
 package no.nav.medlemskap.regler.v1.validering
 
 import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
 import no.nav.medlemskap.regler.common.RegelId
@@ -13,19 +12,18 @@ import java.time.LocalDate
 
 class InputDatoValideringRegel(
     ytelse: Ytelse,
-    val periode: InputPeriode,
-    val førsteDagForYtelse: LocalDate?,
+    startDatoForYtelse: LocalDate,
     val statsborgerskap: List<Statsborgerskap>
-) : LovvalgRegel(RegelId.REGEL_0_1, ytelse, periode, førsteDagForYtelse) {
+) : LovvalgRegel(RegelId.REGEL_0_1, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
         val førsteGyldigeDato = bestemFørsteGyldigeDato()
 
-        if (periode.fom.isBefore(førsteGyldigeDato)) {
+        if (startDatoForYtelse.isBefore(førsteGyldigeDato)) {
             return nei(regelId)
         }
 
-        if (førsteDagForYtelse?.isBefore(førsteGyldigeDato) ?: false) {
+        if (startDatoForYtelse.isBefore(førsteGyldigeDato)) {
             return nei(regelId)
         }
 
@@ -46,8 +44,7 @@ class InputDatoValideringRegel(
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): InputDatoValideringRegel {
             return InputDatoValideringRegel(
                 ytelse = datagrunnlag.ytelse,
-                periode = datagrunnlag.periode,
-                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap
             )
         }

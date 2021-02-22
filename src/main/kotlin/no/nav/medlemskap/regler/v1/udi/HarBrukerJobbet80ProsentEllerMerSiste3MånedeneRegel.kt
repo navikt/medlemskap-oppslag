@@ -1,7 +1,6 @@
 package no.nav.medlemskap.regler.v1.udi
 
 import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Kontrollperiode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
@@ -15,11 +14,10 @@ import java.time.LocalDate
 
 class HarBrukerJobbet80ProsentEllerMerSiste3MånedeneRegel(
     ytelse: Ytelse,
-    private val periode: InputPeriode,
-    førsteDagForYtelse: LocalDate?,
+    startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
     regelId: RegelId = RegelId.REGEL_20
-) : LovvalgRegel(regelId, ytelse, periode, førsteDagForYtelse) {
+) : LovvalgRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
         return when {
@@ -36,8 +34,7 @@ class HarBrukerJobbet80ProsentEllerMerSiste3MånedeneRegel(
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag, regelId: RegelId): HarBrukerJobbet80ProsentEllerMerSiste3MånedeneRegel {
             return HarBrukerJobbet80ProsentEllerMerSiste3MånedeneRegel(
                 ytelse = datagrunnlag.ytelse,
-                periode = datagrunnlag.periode,
-                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold,
                 regelId = regelId
             )

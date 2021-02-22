@@ -1,7 +1,6 @@
 package no.nav.medlemskap.regler.v1.statsborgerskap
 
 import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erBritiskBorger
@@ -14,9 +13,8 @@ class ErBrukerBritiskBorgerRegel(
     regelId: RegelId = RegelId.REGEL_19_4,
     ytelse: Ytelse,
     private val statsborgerskap: List<Statsborgerskap>,
-    periode: InputPeriode,
-    førsteDagForYtelse: LocalDate?
-) : LovvalgRegel(regelId, ytelse, periode, førsteDagForYtelse) {
+    startDatoForYtelse: LocalDate
+) : LovvalgRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
 
@@ -33,8 +31,7 @@ class ErBrukerBritiskBorgerRegel(
                 regelId = RegelId.REGEL_19_4,
                 ytelse = datagrunnlag.ytelse,
                 statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap,
-                periode = datagrunnlag.periode,
-                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse
             )
         }
     }

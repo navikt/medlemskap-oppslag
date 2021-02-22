@@ -1,7 +1,6 @@
 package no.nav.medlemskap.regler.v1.lovvalg
 
 import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
@@ -14,12 +13,11 @@ import java.time.LocalDate
 
 class ErBrukersEktefelleOgBarnasForelderSammePersonRegel(
     ytelse: Ytelse,
-    private val periode: InputPeriode,
-    førsteDagForYtelse: LocalDate?,
+    startDatoForYtelse: LocalDate,
     private val dataOmEktefelle: DataOmEktefelle?,
     private val dataOmBarn: List<DataOmBarn>?,
     regelId: RegelId = RegelId.REGEL_11_5_1
-) : LovvalgRegel(regelId, ytelse, periode, førsteDagForYtelse) {
+) : LovvalgRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
         val ektefellesBarn = dataOmEktefelle?.personhistorikkEktefelle?.barn
@@ -39,8 +37,7 @@ class ErBrukersEktefelleOgBarnasForelderSammePersonRegel(
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErBrukersEktefelleOgBarnasForelderSammePersonRegel {
             return ErBrukersEktefelleOgBarnasForelderSammePersonRegel(
                 ytelse = datagrunnlag.ytelse,
-                periode = datagrunnlag.periode,
-                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 dataOmEktefelle = datagrunnlag.dataOmEktefelle,
                 dataOmBarn = datagrunnlag.dataOmBarn
             )

@@ -2,7 +2,6 @@ package no.nav.medlemskap.regler.v1.overstyring
 
 import no.nav.medlemskap.domene.Brukerinput
 import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.erArbeidstaker
@@ -19,12 +18,11 @@ import java.time.LocalDate
 class OverstyringRegel(
     ytelse: Ytelse,
     private val brukerInput: Brukerinput,
-    private val periode: InputPeriode,
-    førsteDagForYtelse: LocalDate?,
+    startDatoForYtelse: LocalDate,
     private val statsborgerskap: List<Statsborgerskap>,
     private val arbeidsforhold: List<Arbeidsforhold>,
     regelId: RegelId = RegelId.REGEL_0_5
-) : LovvalgRegel(regelId, ytelse, periode, førsteDagForYtelse) {
+) : LovvalgRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
         if (!brukerInput.arbeidUtenforNorge &&
@@ -44,8 +42,7 @@ class OverstyringRegel(
             return OverstyringRegel(
                 ytelse = datagrunnlag.ytelse,
                 brukerInput = datagrunnlag.brukerinput,
-                periode = datagrunnlag.periode,
-                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap,
                 arbeidsforhold = datagrunnlag.arbeidsforhold
             )

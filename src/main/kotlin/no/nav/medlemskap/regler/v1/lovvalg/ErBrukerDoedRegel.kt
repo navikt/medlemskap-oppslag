@@ -15,8 +15,8 @@ class ErBrukerDoedRegel(
     val doedsfall: List<LocalDate>,
     ytelse: Ytelse,
     val periode: InputPeriode,
-    førsteDagForYtelse: LocalDate?
-) : LovvalgRegel(RegelId.REGEL_13, ytelse, periode, førsteDagForYtelse) {
+    startDatoForYtelse: LocalDate
+) : LovvalgRegel(RegelId.REGEL_13, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
         val erBrukerDoed = !doedsfall.isNullOrEmpty()
@@ -36,7 +36,7 @@ class ErBrukerDoedRegel(
                 doedsfall = datagrunnlag.pdlpersonhistorikk.doedsfall,
                 ytelse = datagrunnlag.ytelse,
                 periode = datagrunnlag.periode,
-                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse
             )
         }
     }
