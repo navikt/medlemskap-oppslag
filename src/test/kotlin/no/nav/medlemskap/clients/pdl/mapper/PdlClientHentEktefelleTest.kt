@@ -92,7 +92,7 @@ class PdlClientHentEktefelleTest {
                     "gyldigFraOgMed": "1973-11-11",
                     "gyldigTilOgMed": null,
                     "metadata": {
-                        "historisk": "true"
+                        "historisk": true
                     }
                   }
                 ],
@@ -110,7 +110,10 @@ class PdlClientHentEktefelleTest {
                       "postnummer": "4994"
                     },
                     "matrikkeladresse": null,
-                    "ukjentBosted": null
+                    "ukjentBosted": null,
+                    "metadata": {
+                        "historisk": false
+                    }
                   }
                 ],
                 "doedsfall": [],

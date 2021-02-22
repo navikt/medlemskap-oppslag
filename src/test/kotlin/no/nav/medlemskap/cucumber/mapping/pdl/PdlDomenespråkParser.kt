@@ -72,7 +72,8 @@ class PdlDomenespråkParser : BasisDomeneParser() {
                 angittFlyttedato = null,
                 vegadresse = null,
                 matrikkeladresse = null,
-                ukjentBosted = null
+                ukjentBosted = null,
+                metadata = HentPerson.Metadata(false)
             )
         }
     }
@@ -99,7 +100,8 @@ class PdlDomenespråkParser : BasisDomeneParser() {
                 gyldigFraOgMed = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED, rad),
                 gyldigTilOgMed = parseValgfriString(Domenebegrep.GYLDIG_TIL_OG_MED, rad),
                 utenlandskAdresse = utenlandskAdresse,
-                utenlandskAdresseIFrittFormat = utenlandskAdresseFrittFormat
+                utenlandskAdresseIFrittFormat = utenlandskAdresseFrittFormat,
+                metadata = HentPerson.Metadata(false)
             )
         }
     }
@@ -117,7 +119,8 @@ class PdlDomenespråkParser : BasisDomeneParser() {
             return HentPerson.Oppholdsadresse(
                 gyldigFraOgMed = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED, rad),
                 gyldigTilOgMed = parseValgfriString(Domenebegrep.GYLDIG_TIL_OG_MED, rad),
-                utenlandskAdresse = utenlandskAdresse
+                utenlandskAdresse = utenlandskAdresse,
+                metadata = HentPerson.Metadata(false)
             )
         }
     }

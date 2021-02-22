@@ -78,7 +78,8 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
             return Adresse(
                 parseString(PersonhistorikkDomenebegrep.LANDKODE, rad),
                 parseValgfriDato(PersonhistorikkDomenebegrep.FRA_OG_MED_DATO, rad),
-                parseValgfriDato(PersonhistorikkDomenebegrep.TIL_OG_MED_DATO, rad)
+                parseValgfriDato(PersonhistorikkDomenebegrep.TIL_OG_MED_DATO, rad),
+                parseValgfriBoolean(PersonhistorikkDomenebegrep.HISTORISK.nøkkel(), rad) ?: false
             )
         }
     }
@@ -107,20 +108,21 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
 
             val bostedsadresser = mutableListOf<Adresse>()
             val bostedsadresse = parseValgfriString(PersonhistorikkDomenebegrep.BOSTED, rad)
+            val historisk = parseValgfriBoolean(PersonhistorikkDomenebegrep.HISTORISK.nøkkel(), rad) ?: false
             if (bostedsadresse != null) {
-                bostedsadresser.add(Adresse(bostedsadresse, fraOgMedDato, tilOgMedDato))
+                bostedsadresser.add(Adresse(bostedsadresse, fraOgMedDato, tilOgMedDato, historisk))
             }
 
             val kontaktadresser = mutableListOf<Adresse>()
             val kontaktadresse = parseValgfriString(PersonhistorikkDomenebegrep.KONTAKTADRESSE, rad)
             if (kontaktadresse != null) {
-                kontaktadresser.add(Adresse(kontaktadresse, fraOgMedDato, tilOgMedDato))
+                kontaktadresser.add(Adresse(kontaktadresse, fraOgMedDato, tilOgMedDato, historisk))
             }
 
             val oppholdsadresser = mutableListOf<Adresse>()
             val oppholdsadresse = parseValgfriString(PersonhistorikkDomenebegrep.OPPHOLDSADRESSE, rad)
             if (oppholdsadresse != null) {
-                oppholdsadresser.add(Adresse(oppholdsadresse, fraOgMedDato, tilOgMedDato))
+                oppholdsadresser.add(Adresse(oppholdsadresse, fraOgMedDato, tilOgMedDato, historisk))
             }
 
             return PersonhistorikkEktefelle(
@@ -141,20 +143,21 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
 
             val bostedsadresser = mutableListOf<Adresse>()
             val bostedsadresse = parseValgfriString(PersonhistorikkDomenebegrep.BOSTED, rad)
+            val historisk = parseValgfriBoolean(PersonhistorikkDomenebegrep.HISTORISK.nøkkel(), rad) ?: false
             if (bostedsadresse != null) {
-                bostedsadresser.add(Adresse(bostedsadresse, fraOgMedDato, tilOgMedDato))
+                bostedsadresser.add(Adresse(bostedsadresse, fraOgMedDato, tilOgMedDato, historisk))
             }
 
             val kontaktadresser = mutableListOf<Adresse>()
             val kontaktadresse = parseValgfriString(PersonhistorikkDomenebegrep.KONTAKTADRESSE, rad)
             if (kontaktadresse != null) {
-                kontaktadresser.add(Adresse(kontaktadresse, fraOgMedDato, tilOgMedDato))
+                kontaktadresser.add(Adresse(kontaktadresse, fraOgMedDato, tilOgMedDato, historisk))
             }
 
             val oppholdsadresser = mutableListOf<Adresse>()
             val oppholdsadresse = parseValgfriString(PersonhistorikkDomenebegrep.OPPHOLDSADRESSE, rad)
             if (oppholdsadresse != null) {
-                oppholdsadresser.add(Adresse(oppholdsadresse, fraOgMedDato, tilOgMedDato))
+                oppholdsadresser.add(Adresse(oppholdsadresse, fraOgMedDato, tilOgMedDato, historisk))
             }
 
             return DataOmBarn(
