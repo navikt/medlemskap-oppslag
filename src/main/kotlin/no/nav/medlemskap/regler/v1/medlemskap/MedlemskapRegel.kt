@@ -1,8 +1,6 @@
 package no.nav.medlemskap.regler.v1.medlemskap
 
-import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForMedl
-import no.nav.medlemskap.domene.Kontrollperiode.Companion.startDatoForYtelse
 import no.nav.medlemskap.domene.Medlemskap
 import no.nav.medlemskap.domene.Medlemskap.Companion.erMedlemskapsperioderOver12Mnd
 import no.nav.medlemskap.domene.Medlemskap.Companion.harGyldigeMedlemskapsperioder
@@ -17,11 +15,10 @@ import java.time.LocalDate
 abstract class MedlemskapRegel(
     regelId: RegelId,
     ytelse: Ytelse,
-    periode: InputPeriode,
-    førsteDagForYtelse: LocalDate?,
+    startDatoForYtelse: LocalDate,
     private val medlemskap: List<Medlemskap>
 ) : BasisRegel(regelId, ytelse) {
-    val kontrollPeriodeForMedl = kontrollPeriodeForMedl(startDatoForYtelse(periode, førsteDagForYtelse))
+    val kontrollPeriodeForMedl = kontrollPeriodeForMedl(startDatoForYtelse)
 
     protected fun erMedlemskapPeriodeOver12MndPeriode(finnPeriodeMedMedlemskap: Boolean): Resultat {
         return when {

@@ -1,7 +1,6 @@
 package no.nav.medlemskap.regler.v1.medlemskap
 
 import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Medlemskap
 import no.nav.medlemskap.domene.Medlemskap.Companion.finnesUavklartePerioder
 import no.nav.medlemskap.domene.Ytelse
@@ -14,9 +13,8 @@ import java.time.LocalDate
 class ErPerioderAvklartRegel(
     ytelse: Ytelse,
     val medlemskap: List<Medlemskap>,
-    val periode: InputPeriode,
-    val førsteDagForYtelse: LocalDate?
-) : MedlemskapRegel(RegelId.REGEL_1_1, ytelse, periode, førsteDagForYtelse, medlemskap) {
+    startDatoForYtelse: LocalDate
+) : MedlemskapRegel(RegelId.REGEL_1_1, ytelse, startDatoForYtelse, medlemskap) {
 
     override fun operasjon(): Resultat {
         return when {
@@ -31,8 +29,7 @@ class ErPerioderAvklartRegel(
             return ErPerioderAvklartRegel(
                 ytelse = datagrunnlag.ytelse,
                 medlemskap = datagrunnlag.medlemskap,
-                periode = datagrunnlag.periode,
-                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse
             )
         }
     }

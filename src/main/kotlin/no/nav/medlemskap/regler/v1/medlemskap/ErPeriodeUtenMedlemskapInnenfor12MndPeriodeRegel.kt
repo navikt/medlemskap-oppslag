@@ -1,7 +1,6 @@
 package no.nav.medlemskap.regler.v1.medlemskap
 
 import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Medlemskap
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.RegelId
@@ -10,10 +9,9 @@ import java.time.LocalDate
 
 class ErPeriodeUtenMedlemskapInnenfor12MndPeriodeRegel(
     ytelse: Ytelse,
-    periode: InputPeriode,
-    førsteDagForYtelse: LocalDate?,
+    startDatoForYtelse: LocalDate,
     medlemskap: List<Medlemskap>
-) : MedlemskapRegel(RegelId.REGEL_1_3_1, ytelse, periode, førsteDagForYtelse, medlemskap) {
+) : MedlemskapRegel(RegelId.REGEL_1_3_1, ytelse, startDatoForYtelse, medlemskap) {
 
     override fun operasjon(): Resultat {
         return erMedlemskapPeriodeOver12MndPeriode(false)
@@ -23,9 +21,8 @@ class ErPeriodeUtenMedlemskapInnenfor12MndPeriodeRegel(
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErPeriodeUtenMedlemskapInnenfor12MndPeriodeRegel {
             return ErPeriodeUtenMedlemskapInnenfor12MndPeriodeRegel(
                 ytelse = datagrunnlag.ytelse,
-                periode = datagrunnlag.periode,
                 medlemskap = datagrunnlag.medlemskap,
-                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse
             )
         }
     }
