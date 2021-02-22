@@ -2,6 +2,7 @@ package no.nav.medlemskap.domene
 
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.startDatoForYtelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.gyldigeOrgnummer
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
 import no.nav.medlemskap.domene.personhistorikk.Personhistorikk
@@ -31,6 +32,9 @@ data class Datagrunnlag(
     private val kontrollPeriodeForPersonhistorikk =
         Kontrollperiode.kontrollPeriodeForPersonhistorikk(startDatoForYtelse)
 
+    private val kontrollPeriodeForArbeidsforhold =
+        Kontrollperiode.kontrollPeriodeForArbeidsforhold(startDatoForYtelse)
+
     fun gyldigeStatsborgerskap(): List<String> {
         return pdlpersonhistorikk.statsborgerskap.gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk)
     }
@@ -41,5 +45,9 @@ data class Datagrunnlag(
 
     fun erNorskBorger(): Boolean {
         return pdlpersonhistorikk.statsborgerskap.erNorskBorger(kontrollPeriodeForPersonhistorikk)
+    }
+
+    fun gyldigeOrgnummer(): List<String> {
+        return arbeidsforhold.gyldigeOrgnummer(kontrollPeriodeForArbeidsforhold)
     }
 }

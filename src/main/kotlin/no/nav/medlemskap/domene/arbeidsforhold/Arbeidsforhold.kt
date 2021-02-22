@@ -285,6 +285,10 @@ data class Arbeidsforhold(
             return arbeidsforholdForKontrollPeriode(kontrollPeriode).map { it.arbeidsgiver }
         }
 
+        infix fun List<Arbeidsforhold>.gyldigeOrgnummer(kontrollPeriode: Kontrollperiode): List<String> {
+            return arbeidsforholdForKontrollPeriode(kontrollPeriode).map { it.arbeidsgiver.organisasjonsnummer ?: "null" }
+        }
+
         private fun List<Arbeidsforhold>.arbeidsforholdForKontrollPeriode(kontrollPeriode: Kontrollperiode) =
             this.filter {
                 it.periode.overlapper(kontrollPeriode.periode)
