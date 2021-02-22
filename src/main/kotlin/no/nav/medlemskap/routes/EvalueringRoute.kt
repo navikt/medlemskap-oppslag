@@ -139,6 +139,7 @@ private fun loggResponse(fnr: String, response: Response) {
     secureLogger.info(
         "{} konklusjon gitt for bruker {}, ytelse {}", resultat.svar.name, fnr, response.datagrunnlag.ytelse,
         kv("fnr", fnr),
+        kv("orgnummer", response.datagrunnlag.gyldigeOrgnummer().toString()),
         kv("fom", response.datagrunnlag.periode.fom.toString()),
         kv("tom", response.datagrunnlag.periode.tom.toString()),
         kv("førsteDagForYtelse", response.datagrunnlag.førsteDagForYtelse.toString()),
