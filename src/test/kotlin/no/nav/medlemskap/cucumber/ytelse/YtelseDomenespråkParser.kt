@@ -55,6 +55,7 @@ object YtelseDomenespråkParser : BasisDomeneParser() {
     enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
         FRA_OG_MED_DATO("Fra og med dato"),
         FØRSTE_DAG_FOR_YTELSE("Første dag for ytelse"),
+        START_DATO_FOR_YTELSE("Start dato for ytelse"),
         TIL_OG_MED_DATO("Til og med dato"),
         YTELSE("Ytelse");
 
