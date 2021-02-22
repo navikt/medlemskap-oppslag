@@ -24,7 +24,10 @@ class ErBrukerEøsBorgerRegel(
         if (erBrukerBritiskBorgerUtenAnnetEøsStatsborgerskap(statsborgerskap)) {
             return when (startDatoForYtelse.isBefore(LocalDate.of(2021, 1, 1))) {
                 true -> ja(regelId)
-                else -> nei(regelId)
+                else -> {
+                    statsborgerskap.registrerStatsborgerskapGrafana(kontrollPeriodeForPersonhistorikk, ytelse, regelId)
+                    nei(regelId)
+                }
             }
         }
 

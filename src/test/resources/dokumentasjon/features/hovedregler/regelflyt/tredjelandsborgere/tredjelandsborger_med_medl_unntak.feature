@@ -30,15 +30,15 @@ Egenskap: Tredjelandsborger med medl unntak.
       | 10.10.1975      | 01.08.2020      | yrkeskode | 100              | NIS           | 37.5                         |
 
 
-  Scenariomal: Tredjelandsborger med medl unntak Ja skal ikke ta hensyn til regelflyt "Andre borgere"
+  Scenariomal: Tredjelandsborger med medl unntak "Ja" skal få uavklart medlemskap hvis oppholdstillatelse ikke er i orden.
 
     Gitt følgende oppholdstillatelse
       | Gyldig fra og med | Gyldig til og med    | Har tillatelse | Type      |
       | 01.01.2018        | <Opphold til og med> | Ja             | PERMANENT |
 
     Og følgende arbeidsadgang
-      | Gyldig fra og med | Gyldig til og med | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
-      | 01.01.2018        | 01.01.2019        | Ja            | GENERELL          | KUN_ARBEID_HELTID    |
+      | Gyldig fra og med | Gyldig til og med    | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
+      | 01.01.2018        | <Opphold til og med> | Ja            | GENERELL          | KUN_ARBEID_HELTID    |
 
     Og følgende medlemsunntak fra MEDL
       | Dekning             | Fra og med dato | Til og med dato | Er medlem   | Lovvalg | Lovvalgsland | Periodestatus |
@@ -49,8 +49,8 @@ Egenskap: Tredjelandsborger med medl unntak.
       | 05.01.2021      | 12.02.2021      | Nei                           |
 
     Så skal svaret være "<Medlemskap>"
-    Og skal regel "19.1" gi svaret "Nei"
-    Og skal regel "19.2" gi svaret "<Regel 19.2>"
+    Og skal regel "19.2.1" gi svaret "<Regel 19.2.1>"
+    Og skal regel-årsaker være "<Årsak>"
 
     Og skal resultat gi følgende delresultater:
       | Regel                          |
@@ -63,32 +63,64 @@ Egenskap: Tredjelandsborger med medl unntak.
       | REGEL_MEDL                     |
 
     Eksempler:
-      | Opphold til og med | Er medlem | Regel 19.2 | Medlemskap |
-      | 20.03.2021         | Ja        | Ja         | Ja         |
-      | 20.01.2019         | Ja        | Nei        | Uavklart   |
+      | Opphold til og med | Er medlem | Regel 19.2.1 | Medlemskap | Årsak  |
+      | 20.01.2019         | Ja        | Nei          | Uavklart   | 19.2.1 |
 
 
-  Scenariomal: Tredjelandsborger med medl unntak uavklart skal ta hensyn til regelflyt "Andre borgere"
+  Scenariomal: Tredjelandsborger med medl unntak "Ja" skal få "Ja" på medlemskap hvis oppholdstillatelse er i orden.
 
     Gitt følgende oppholdstillatelse
       | Gyldig fra og med | Gyldig til og med    | Har tillatelse | Type      |
       | 01.01.2018        | <Opphold til og med> | Ja             | PERMANENT |
 
     Og følgende arbeidsadgang
-      | Gyldig fra og med | Gyldig til og med | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
-      | 01.01.2018        | 01.01.2019        | Ja            | GENERELL          | KUN_ARBEID_HELTID    |
+      | Gyldig fra og med | Gyldig til og med    | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
+      | 01.01.2018        | <Opphold til og med> | Ja            | GENERELL          | KUN_ARBEID_HELTID    |
 
     Og følgende medlemsunntak fra MEDL
-      | Dekning             | Fra og med dato | Til og med dato | Er medlem   | Lovvalg | Lovvalgsland | Periodestatus |
-      | FTL_2-9_2_ld_jfr_1c | 01.01.2018      | 01.06.2021      | <Er medlem> | ENDL    | NOR          | GYLD          |
+      | Dekning             | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland | Periodestatus |
+      | FTL_2-9_2_ld_jfr_1c | 01.01.2018      | 01.06.2021      | Ja        | ENDL    | NOR          | GYLD          |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 05.01.2021      | 12.02.2021      | Nei                           |
 
     Så skal svaret være "<Medlemskap>"
-    Og skal regel "19.1" gi svaret "Nei"
-    Og skal regel "19.2" gi svaret "<Regel 19.2>"
+
+    Og skal resultat gi følgende delresultater:
+      | Regel                          |
+      | REGEL_OVERSTYRING              |
+      | REGEL_DOED                     |
+      | REGEL_FELLES_ARBEIDSFORHOLD    |
+      | REGEL_STATSBORGERSKAP          |
+      | REGEL_HOVEDSAKLIG_ARBEIDSTAKER |
+      | REGEL_OPPHOLDSTILLATELSE       |
+      | REGEL_MEDL                     |
+
+    Eksempler:
+      | Opphold til og med | Medlemskap |
+      | 20.03.2021         | Ja         |
+      | 20.01.2019         | Uavklart   |
+
+  Scenario: Tredjelandsborger med medl unntak "Nei" skal få "Uavklart" på medlemskap selv om oppholdstillatelse er i orden.
+
+    Gitt følgende oppholdstillatelse
+      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type      |
+      | 01.01.2018        | 20.03.2021        | Ja             | PERMANENT |
+
+    Og følgende arbeidsadgang
+      | Gyldig fra og med | Gyldig til og med | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
+      | 01.01.2018        | 20.03.2021        | Ja            | GENERELL          | KUN_ARBEID_HELTID    |
+
+    Og følgende medlemsunntak fra MEDL
+      | Dekning             | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland | Periodestatus |
+      | FTL_2-9_2_ld_jfr_1c | 01.01.2018      | 01.06.2021      | Nei       | ENDL    | NOR          | GYLD          |
+
+    Når medlemskap beregnes med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 05.01.2021      | 12.02.2021      | Nei                           |
+
+    Så skal svaret være "Uavklart"
 
     Og skal resultat gi følgende delresultater:
       | Regel                          |
@@ -100,8 +132,3 @@ Egenskap: Tredjelandsborger med medl unntak.
       | REGEL_OPPHOLDSTILLATELSE       |
       | REGEL_MEDL                     |
       | REGEL_ANDRE_BORGERE            |
-
-    Eksempler:
-      | Opphold til og med | Er medlem | Regel 19.2 | Medlemskap |
-      | 20.03.2021         | Nei       | Ja         | Uavklart   |
-      | 20.01.2019         | Nei       | Nei        | Uavklart   |

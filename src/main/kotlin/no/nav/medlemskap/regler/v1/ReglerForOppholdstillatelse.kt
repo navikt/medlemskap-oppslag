@@ -8,7 +8,6 @@ import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.common.Regelflyt
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
-import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytUavklart
 import no.nav.medlemskap.regler.common.Regler
 import no.nav.medlemskap.regler.common.Svar
 
@@ -23,14 +22,14 @@ class ReglerForOppholdstillatelse(
 
         val erBrukerBritiskEllerSveitsiskBorgerRegelflyt = lagRegelflyt(
             regel = hentRegel(REGEL_19_4),
-            hvisJa = regelflytUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE),
             hvisNei = regelflytJa(ytelse, REGEL_OPPHOLDSTILLATELSE)
         )
 
         val dekkerArbeidstillatelsenArbeidsperiodenRegelflyt = lagRegelflyt(
             regel = hentRegel(REGEL_19_3_1),
             hvisJa = erBrukerBritiskEllerSveitsiskBorgerRegelflyt,
-            hvisNei = regelflytUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE)
+            hvisNei = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE)
         )
 
         val harBrukerGyldigArbeidstillatelseIKontrollperiodeRegelflyt = lagRegelflyt(
