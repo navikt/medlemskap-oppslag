@@ -49,7 +49,7 @@ class FamilierelasjonTest {
         Statsborgerskap(landkode = landkode, fom = fom, tom = tom, historisk = false)
 
     private fun lagAdresse(landkode: String = "NOR", fom: LocalDate? = null, tom: LocalDate? = null): Adresse =
-        Adresse(landkode = landkode, fom = fom, tom = tom)
+        Adresse(landkode = landkode, fom = fom, tom = tom, false)
 
     private fun lagSivilstand(
         type: Sivilstandstype = Sivilstandstype.GIFT,

@@ -62,7 +62,8 @@ object PdlMapper {
         return Adresse(
             fom = parseIsoDato(oppholdsadresse.gyldigFraOgMed),
             tom = parseIsoDato(oppholdsadresse.gyldigTilOgMed),
-            landkode = mapLandkodeForOppholdsadresse(oppholdsadresse)
+            landkode = mapLandkodeForOppholdsadresse(oppholdsadresse),
+            historisk = oppholdsadresse.metadata.historisk
         )
     }
 
@@ -78,7 +79,8 @@ object PdlMapper {
             Adresse(
                 fom = parseIsoDato(it.gyldigFraOgMed),
                 tom = parseIsoDato(it.gyldigTilOgMed),
-                landkode = mapLandkodeForKontaktadresse(it)
+                landkode = mapLandkodeForKontaktadresse(it),
+                historisk = it.metadata.historisk
             )
         }.sortedBy { it.fom }
     }
@@ -111,13 +113,15 @@ object PdlMapper {
                 Adresse(
                     landkode = "NOR",
                     fom = parseIsoDato(it.gyldigFraOgMed),
-                    tom = parseIsoDato(it.gyldigTilOgMed)
+                    tom = parseIsoDato(it.gyldigTilOgMed),
+                    historisk = it.metadata.historisk
                 )
             } else {
                 Adresse(
                     landkode = it.utenlandskAdresse!!.landkode,
                     fom = parseIsoDato(it.gyldigFraOgMed),
-                    tom = parseIsoDato(it.gyldigTilOgMed)
+                    tom = parseIsoDato(it.gyldigTilOgMed),
+                    historisk = it.metadata.historisk
                 )
             }
         }.sortedBy { it.fom }

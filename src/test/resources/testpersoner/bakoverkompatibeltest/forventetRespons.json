@@ -21,17 +21,20 @@
       "bostedsadresser" : [ {
         "landkode" : "NOR",
         "fom" : "1975-10-10",
-        "tom" : "2020-08-01"
+        "tom" : "2020-08-01",
+        "historisk" : false
       } ],
       "kontaktadresser" : [ {
         "landkode" : "NOR",
         "fom" : "1975-10-10",
-        "tom" : "2020-08-01"
+        "tom" : "2020-08-01",
+        "historisk" : false
       } ],
       "oppholdsadresser" : [ {
         "landkode" : "NOR",
         "fom" : "1975-10-10",
-        "tom" : "2020-08-01"
+        "tom" : "2020-08-01",
+        "historisk" : false
       } ],
       "sivilstand" : [ {
         "type" : "GIFT",
@@ -133,12 +136,14 @@
         "bostedsadresser" : [ {
           "landkode" : "NOR",
           "fom" : "2010-07-18",
-          "tom" : null
+          "tom" : null,
+          "historisk" : false
         } ],
         "kontaktadresser" : [ {
           "landkode" : "NOR",
           "fom" : "2010-07-18",
-          "tom" : null
+          "tom" : null,
+          "historisk" : false
         } ],
         "oppholdsadresser" : [ ],
         "familierelasjoner" : [ ]
@@ -151,7 +156,8 @@
         "bostedsadresser" : [ {
           "landkode" : "NOR",
           "fom" : "1975-10-10",
-          "tom" : "2020-08-01"
+          "tom" : "2020-08-01",
+          "historisk" : false
         } ],
         "kontaktadresser" : [ ],
         "oppholdsadresser" : [ ]

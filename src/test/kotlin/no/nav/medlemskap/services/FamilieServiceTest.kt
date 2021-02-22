@@ -120,7 +120,7 @@ internal class FamilieServiceTest {
     }
 
     private fun personhistorikkBarn(ident: String): PersonhistorikkBarn {
-        val barn = PersonhistorikkBarn(ident, listOf(Adresse("NOR", null, null)), emptyList(), emptyList(), emptyList())
+        val barn = PersonhistorikkBarn(ident, listOf(Adresse("NOR", null, null, false)), emptyList(), emptyList(), emptyList())
 
         return barn
     }
