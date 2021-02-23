@@ -107,24 +107,27 @@ object PdlMapper {
         }
     }
 
-    fun mapBostedsadresser(pdlBostedsadresse: List<HentPerson.Bostedsadresse>): List<Adresse> {
-        return pdlBostedsadresse.map {
-            if (it.utenlandskAdresse == null) {
-                Adresse(
-                    landkode = "NOR",
-                    fom = parseIsoDato(it.gyldigFraOgMed),
-                    tom = parseIsoDato(it.gyldigTilOgMed),
-                    historisk = it.metadata.historisk
-                )
-            } else {
-                Adresse(
-                    landkode = it.utenlandskAdresse!!.landkode,
-                    fom = parseIsoDato(it.gyldigFraOgMed),
-                    tom = parseIsoDato(it.gyldigTilOgMed),
-                    historisk = it.metadata.historisk
-                )
+    fun mapBostedsadresser(pdlBostedsadresser: List<HentPerson.Bostedsadresse>): List<Adresse> {
+
+        if (pdlBostedsadresser.size < 2) {
+            return pdlBostedsadresser.map {
+                mapBostedadresse(it)
             }
-        }.sortedBy { it.fom }
+        }
+        val sortertPdlBostedsadresser = pdlBostedsadresser.sortedBy { parseIsoDato(it.gyldigFraOgMed) ?: LocalDate.MIN }
+        return sortertPdlBostedsadresser.zipWithNext { bostedadresse, neste ->
+            mapBostedadresse(bostedadresse, parseIsoDato(neste.gyldigFraOgMed)?.minusDays(1))
+        }.plus(mapBostedadresse(sortertPdlBostedsadresser.last()))
+    }
+
+    fun mapBostedadresse(adresse: HentPerson.Bostedsadresse, gyldigTilOgMed: LocalDate? = null): Adresse {
+
+        return Adresse(
+            landkode = adresse.utenlandskAdresse?.landkode ?: "NOR",
+            fom = parseIsoDato(adresse.gyldigFraOgMed),
+            tom = parseIsoDato(adresse.gyldigTilOgMed) ?: gyldigTilOgMed,
+            historisk = adresse.metadata.historisk
+        )
     }
 
     private fun mapStatsborgerskap(statsborgerskap: List<HentPerson.Statsborgerskap>): List<Statsborgerskap> {
