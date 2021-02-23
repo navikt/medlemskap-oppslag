@@ -195,7 +195,7 @@ class RegelSteps : No {
             dataOmEktefelleBuilder.arbeidsforholdEktefelle.get(0).arbeidsavtaler = arbeidsavtaleEktefelleMap[0]!!
         }
 
-        Gitt<DataTable>("med følgende regeloverstyringer") { dataTable: DataTable ->
+        Gitt<DataTable>("med følgende regeloverstyringer") { dataTable ->
             overstyrteRegler = domenespråkParser.mapOverstyrteRegler(dataTable)
         }
 
@@ -211,15 +211,15 @@ class RegelSteps : No {
             val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
 
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
-            resultat = ReglerService.kjørRegler(datagrunnlag!!)
+            resultat = ReglerService.kjørRegler(hentDatagrunnlag())
         }
 
         Når("regel {string} kjøres med følgende parametre, skal valideringsfeil være {string}") { regelId: String, forventetValideringsfeil: String, dataTable: DataTable ->
             val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
 
-            val regelFactory = RegelFactory(datagrunnlag!!)
-            val regel = regelFactory.create(regelId!!)
+            val regelFactory = RegelFactory(hentDatagrunnlag())
+            val regel = regelFactory.create(regelId)
 
             val exception = shouldThrow<BadRequestException> {
                 regel.utfør()
@@ -228,23 +228,23 @@ class RegelSteps : No {
             exception.message shouldBe forventetValideringsfeil
         }
 
-        Når<String, String, DataTable>("regel {string} kjøres med følgende parametre, skal svaret være {string}") { regelId: String, forventetSvar: String, dataTable: DataTable ->
+        Når("regel {string} kjøres med følgende parametre, skal svaret være {string}") { regelId: String, forventetSvar: String, dataTable: DataTable ->
             val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
 
-            val regelFactory = RegelFactory(datagrunnlag!!)
-            val regel = regelFactory.create(regelId!!)
+            val regelFactory = RegelFactory(hentDatagrunnlag())
+            val regel = regelFactory.create(regelId)
             val faktiskSvar = regel.utfør()
 
             assertEquals(forventetSvar, faktiskSvar.svar.name)
         }
 
-        Når<String, DataTable>("regel {string} kjøres med følgende parametre") { regelId: String?, dataTable: DataTable ->
+        Når("regel {string} kjøres med følgende parametre") { regelId: String, dataTable: DataTable ->
             val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
 
-            val regelFactory = RegelFactory(datagrunnlag!!)
-            val regel = regelFactory.create(regelId!!)
+            val regelFactory = RegelFactory(hentDatagrunnlag())
+            val regel = regelFactory.create(regelId)
 
             resultat = regel.utfør()
         }
@@ -303,69 +303,69 @@ class RegelSteps : No {
         Så("skal svaret være {string}") { forventetVerdi: String ->
             val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
 
-            assertEquals(forventetSvar, resultat!!.svar)
+            assertEquals(forventetSvar, hentResultat().svar)
         }
 
         Så("skal avklaringen være som definert i RegelId") {
-            assertEquals(resultat!!.regelId!!.avklaring, resultat!!.avklaring)
+            assertEquals(hentResultat().regelId.avklaring, hentResultat().avklaring)
         }
 
         Så("skal begrunnelsen være som definert i RegelId") {
-            if (resultat!!.svar == Svar.JA) {
-                assertEquals(resultat!!.regelId!!.jaBegrunnelse, resultat!!.begrunnelse)
+            if (hentResultat().svar == Svar.JA) {
+                assertEquals(hentResultat().regelId.jaBegrunnelse, hentResultat().begrunnelse)
             } else {
-                assertEquals(resultat!!.regelId!!.neiBegrunnelse, resultat!!.begrunnelse)
+                assertEquals(hentResultat().regelId.neiBegrunnelse, hentResultat().begrunnelse)
             }
         }
 
         Så("skal årsaken være {string}") { forventetÅrsak: String ->
-            assertEquals(forventetÅrsak, resultat!!.årsaksTekst())
+            assertEquals(forventetÅrsak, hentResultat().årsaksTekst())
         }
 
         Så("skal regel-årsaker være {string}") { forventedeÅrsaker: String ->
             assertEquals(
                 forventedeÅrsaker.trim(),
-                resultat!!.årsaker.map { it.regelId.identifikator }.toString().filter { it != '[' && it != ']' }.trim()
+                hentResultat().årsaker.map { it.regelId.identifikator }.toString().filter { it != '[' && it != ']' }.trim()
             )
         }
 
         Så("skal svaret være Ja på medlemskap og {string} på harDekning") { forventetVerdi: String ->
             val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
-            assertEquals(Svar.JA, resultat!!.svar)
-            assertEquals(forventetSvar, resultat!!.harDekning)
+            assertEquals(Svar.JA, hentResultat().svar)
+            assertEquals(forventetSvar, hentResultat().harDekning)
         }
 
         Så("skal svaret være {string} på medlemskap og {string} på harDekning") { forventetMedlemskap: String, forventetVerdi: String ->
             val forventetSvarMedlemskap = domenespråkParser.parseSvar(forventetMedlemskap)
-            assertEquals(forventetSvarMedlemskap, resultat!!.svar)
+            assertEquals(forventetSvarMedlemskap, hentResultat().svar)
             val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
-            assertEquals(forventetSvar, resultat!!.harDekning)
+            assertEquals(forventetSvar, hentResultat().harDekning)
         }
 
         Så("skal regel {string} gi svaret {string}") { regelIdStr: String?, forventetSvar: String? ->
             val regelId = domenespråkParser.parseRegelId(regelIdStr!!)
 
-            assertDelresultat(regelId, domenespråkParser.parseSvar(forventetSvar!!), resultat!!)
+            assertDelresultat(regelId, domenespråkParser.parseSvar(forventetSvar!!), hentResultat())
         }
 
         Så<String, String>("skal regel {string} gi begrunnelse {string}") { regelIdStr, forventetBegrunnelse ->
             val regelId = domenespråkParser.parseRegelId(regelIdStr!!)
 
-            assertBegrunnelse(regelId, forventetBegrunnelse, resultat!!)
+            assertBegrunnelse(regelId, forventetBegrunnelse, hentResultat())
         }
 
-        Så<String>("skal regel {string} ikke finnes i resultatet") { regelIdStr: String? ->
-            val regelId = domenespråkParser.parseRegelId(regelIdStr!!)
-            val regelResultat = resultat!!.finnRegelResultat(regelId)
+        Så("skal regel {string} ikke finnes i resultatet") { regelIdStr: String ->
+            val regelId = domenespråkParser.parseRegelId(regelIdStr)
+            val regelResultat = hentResultat().finnRegelResultat(regelId)
 
             assertNull(regelResultat)
         }
 
-        Så<String, DataTable>("skal regel {string} inneholde følgende delresultater:") { regelIdStr: String, dataTable: DataTable ->
+        Så("skal regel {string} inneholde følgende delresultater:") { regelIdStr: String, dataTable: DataTable ->
             val regelIdListe = domenespråkParser.mapRegelId(dataTable)
-            val regelId = domenespråkParser.parseRegelId(regelIdStr!!)
+            val regelId = domenespråkParser.parseRegelId(regelIdStr)
 
-            val regelResultat = resultat!!.finnRegelResultat(regelId)
+            val regelResultat = hentResultat().finnRegelResultat(regelId)
             if (regelResultat == null) {
                 throw java.lang.RuntimeException("Fant ikke regelresultat for regel {regelIdStr}")
             }
@@ -373,16 +373,16 @@ class RegelSteps : No {
             assertTrue(regelResultat.delresultat.map { it.regelId }.containsAll(regelIdListe))
         }
 
-        Så<DataTable>("skal resultat gi følgende delresultater:") { dataTable: DataTable ->
+        Så("skal resultat gi følgende delresultater:") { dataTable: DataTable ->
             val forventedeRegler = domenespråkParser.mapRegelId(dataTable)
-            val faktiskeRegler = resultat!!.delresultat.map { it.regelId }
+            val faktiskeRegler = hentResultat().delresultat.map { it.regelId }
 
             faktiskeRegler.shouldContainExactly(forventedeRegler)
         }
 
         Så("skal JSON datagrunnlag og resultat genereres i filen {string}") { filnavn: String ->
-            val datagrunnlagJson: String = JsonMapper.mapToJson(datagrunnlag!!).trim()
-            val resultatJson = JsonMapper.mapToJson(resultat!!)
+            val datagrunnlagJson: String = JsonMapper.mapToJson(hentDatagrunnlag()).trim()
+            val resultatJson = JsonMapper.mapToJson(hentResultat())
             val responseJson = datagrunnlagJson.substring(0, datagrunnlagJson.length - 2) + ",\n \"resultat\" : " + resultatJson + "}"
 
             lagreJson(filnavn, responseJson)
@@ -398,11 +398,11 @@ class RegelSteps : No {
     }
 
     private fun lagreJsonResultat(filnavn: String) {
-        lagreJson(filnavn, JsonMapper.mapToJson(resultat!!))
+        lagreJson(filnavn, JsonMapper.mapToJson(hentResultat()))
     }
 
     private fun lagreJsonDatagrunnlag(filnavn: String) {
-        lagreJson(filnavn, JsonMapper.mapToJson(datagrunnlag!!))
+        lagreJson(filnavn, JsonMapper.mapToJson(hentDatagrunnlag()))
     }
 
     private fun lagreJson(filnavn: String, json: String) {
@@ -469,5 +469,13 @@ class RegelSteps : No {
         }
 
         return arbeidsgiver
+    }
+
+    private fun hentResultat(): Resultat {
+        return resultat ?: throw RuntimeException("Resultat er null")
+    }
+
+    private fun hentDatagrunnlag(): Datagrunnlag {
+        return datagrunnlag ?: throw RuntimeException("Datagrunnlag er null")
     }
 }
