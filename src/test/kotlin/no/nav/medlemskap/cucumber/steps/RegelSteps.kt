@@ -366,9 +366,7 @@ class RegelSteps : No {
             val regelId = domenespråkParser.parseRegelId(regelIdStr)
 
             val regelResultat = hentResultat().finnRegelResultat(regelId)
-            if (regelResultat == null) {
-                throw java.lang.RuntimeException("Fant ikke regelresultat for regel {regelIdStr}")
-            }
+                ?: throw java.lang.RuntimeException("Fant ikke regelresultat for regel {regelIdStr}")
 
             assertTrue(regelResultat.delresultat.map { it.regelId }.containsAll(regelIdListe))
         }
