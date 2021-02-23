@@ -46,7 +46,6 @@ class RegelSteps : No {
 
     private var personhistorikkEktefelleBuilder = PersonhistorikkEktefelleBuilder()
     private var dataOmEktefelleBuilder = DataOmEktefelleBuilder()
-    private var oppholdstillatelse: Oppholdstillatelse? = null
     private var oppholdstillatelseBuilder = OppholdstillatelseBuilder()
     private var medlemskap: List<Medlemskap> = emptyList()
 
@@ -82,7 +81,7 @@ class RegelSteps : No {
             val bostedsadresser = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
             pdlPersonhistorikkBuilder.bostedsadresser.addAll(bostedsadresser)
         }
-        Gitt<DataTable>("følgende opplysninger om dødsfall i personhistorikken:") { dataTable: DataTable ->
+        Gitt("følgende opplysninger om dødsfall i personhistorikken:") { dataTable: DataTable ->
             val doedsfall = PersonhistorikkDomeneSpraakParser.mapDoedsfall(dataTable)
             pdlPersonhistorikkBuilder.doedsfall.addAll(doedsfall)
         }
@@ -97,27 +96,27 @@ class RegelSteps : No {
             pdlPersonhistorikkBuilder.oppholdsadresse.addAll(oppholdsadresse)
         }
 
-        Gitt<DataTable>("følgende sivilstand i personhistorikk fra PDL") { dataTable: DataTable ->
+        Gitt("følgende sivilstand i personhistorikk fra PDL") { dataTable: DataTable ->
             val sivilstand = PersonhistorikkDomeneSpraakParser.mapSivilstander(dataTable)
             pdlPersonhistorikkBuilder.sivilstand.addAll(sivilstand)
         }
 
-        Gitt<DataTable>("følgende familerelasjoner i personhistorikk fra PDL") { dataTable: DataTable ->
+        Gitt("følgende familerelasjoner i personhistorikk fra PDL") { dataTable: DataTable ->
             val familierelasjoner = PersonhistorikkDomeneSpraakParser.mapFamilierelasjoner(dataTable)
             pdlPersonhistorikkBuilder.familierelasjoner.addAll(familierelasjoner)
         }
 
-        Gitt<DataTable>("følgende personhistorikk for ektefelle fra PDL") { dataTable: DataTable ->
+        Gitt("følgende personhistorikk for ektefelle fra PDL") { dataTable: DataTable ->
             val ektefelle = PersonhistorikkDomeneSpraakParser.mapPersonhistorikkEktefelle(dataTable)
             dataOmEktefelleBuilder.personhistorikkEktefelle = ektefelle[0]
         }
 
-        Gitt<DataTable>("følgende barn i personhistorikk for ektefelle fra PDL") { dataTable: DataTable ->
+        Gitt("følgende barn i personhistorikk for ektefelle fra PDL") { dataTable: DataTable ->
             val barnTilEktefelle = PersonhistorikkDomeneSpraakParser.mapBarnTilEktefelle(dataTable)
             personhistorikkEktefelleBuilder.barn.addAll(barnTilEktefelle)
         }
 
-        Gitt<DataTable>("følgende personhistorikk for barn fra PDL") { dataTable: DataTable ->
+        Gitt("følgende personhistorikk for barn fra PDL") { dataTable: DataTable ->
             val barnTilBruker = PersonhistorikkDomeneSpraakParser.mapPersonhistorikkBarn(dataTable)
             dataOmBarn = barnTilBruker
         }
@@ -186,7 +185,7 @@ class RegelSteps : No {
             journalPosterFraJoArk = DokumentDomeneSpraakParser.mapJournalposter(dataTable)
         }
 
-        Gitt<DataTable>("følgende arbeidsforhold til ektefelle fra AAReg") { dataTable: DataTable ->
+        Gitt("følgende arbeidsforhold til ektefelle fra AAReg") { dataTable: DataTable ->
             val arbeidsforholdEktefelle = ArbeidsforholdDomeneSpraakParser.mapArbeidsforhold(dataTable)
             dataOmEktefelleBuilder.arbeidsforholdEktefelle = arbeidsforholdEktefelle
         }
@@ -215,7 +214,7 @@ class RegelSteps : No {
             resultat = ReglerService.kjørRegler(datagrunnlag!!)
         }
 
-        Når<String, String, DataTable>("regel {string} kjøres med følgende parametre, skal valideringsfeil være {string}") { regelId: String, forventetValideringsfeil: String, dataTable: DataTable ->
+        Når("regel {string} kjøres med følgende parametre, skal valideringsfeil være {string}") { regelId: String, forventetValideringsfeil: String, dataTable: DataTable ->
             val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
 
