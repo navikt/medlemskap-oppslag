@@ -1,8 +1,11 @@
 package no.nav.medlemskap.regler.v1.medlemskap
 
-import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.Dekning
 import no.nav.medlemskap.domene.Dekning.Companion.uavklartForYtelse
+import no.nav.medlemskap.domene.Medlemskap
 import no.nav.medlemskap.domene.Medlemskap.Companion.gjeldendeDekning
+import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
@@ -12,9 +15,8 @@ import java.time.LocalDate
 class ErBrukersDekningUavklartRegel(
     ytelse: Ytelse,
     val medlemskap: List<Medlemskap>,
-    val periode: InputPeriode,
-    førsteDagForYtelse: LocalDate?
-) : MedlemskapRegel(RegelId.REGEL_1_6, ytelse, periode, førsteDagForYtelse, medlemskap) {
+    startDatoForYtelse: LocalDate
+) : MedlemskapRegel(RegelId.REGEL_1_6, ytelse, startDatoForYtelse, medlemskap) {
 
     override fun operasjon(): Resultat {
         val gjeldendeDekning = medlemskap.gjeldendeDekning(kontrollPeriodeForMedl)
@@ -32,8 +34,7 @@ class ErBrukersDekningUavklartRegel(
             return ErBrukersDekningUavklartRegel(
                 ytelse = datagrunnlag.ytelse,
                 medlemskap = datagrunnlag.medlemskap,
-                periode = datagrunnlag.periode,
-                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse
             )
         }
     }

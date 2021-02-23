@@ -2,7 +2,6 @@ package no.nav.medlemskap.regler.v1.medlemskap
 
 import no.nav.medlemskap.common.regelUendretCounterMidlertidig
 import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Medlemskap
 import no.nav.medlemskap.domene.Medlemskap.Companion.tidligsteFraOgMedDatoForMedl
 import no.nav.medlemskap.domene.Ytelse
@@ -17,12 +16,11 @@ import java.time.LocalDate
 
 class ErArbeidsforholdUendretRegel(
     ytelse: Ytelse,
-    private val periode: InputPeriode,
-    private val førsteDagForYtelse: LocalDate?,
+    startDatoForYtelse: LocalDate,
     private val medlemskap: List<Medlemskap>,
     private val arbeidsforhold: List<Arbeidsforhold>,
     regelId: RegelId
-) : MedlemskapRegel(regelId, ytelse, periode, førsteDagForYtelse, medlemskap) {
+) : MedlemskapRegel(regelId, ytelse, startDatoForYtelse, medlemskap) {
     override fun operasjon(): Resultat {
         return erBrukersArbeidsforholdUendret(regelId)
     }
@@ -63,8 +61,7 @@ class ErArbeidsforholdUendretRegel(
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag, regelId: RegelId): ErArbeidsforholdUendretRegel {
             return ErArbeidsforholdUendretRegel(
                 ytelse = datagrunnlag.ytelse,
-                periode = datagrunnlag.periode,
-                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 medlemskap = datagrunnlag.medlemskap,
                 arbeidsforhold = datagrunnlag.arbeidsforhold,
                 regelId = regelId

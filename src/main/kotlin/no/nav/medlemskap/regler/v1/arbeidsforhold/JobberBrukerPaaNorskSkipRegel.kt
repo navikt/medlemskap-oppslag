@@ -1,7 +1,6 @@
 package no.nav.medlemskap.regler.v1.arbeidsforhold
 
 import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.skipsregisterErNOREllerNISOgFartsområdeErInnenriks
@@ -13,11 +12,10 @@ import java.time.LocalDate
 
 class JobberBrukerPaaNorskSkipRegel(
     ytelse: Ytelse,
-    private val periode: InputPeriode,
-    private val førsteDagForYtelse: LocalDate?,
+    private val startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
     regelId: RegelId = RegelId.REGEL_7_1
-) : ArbeidsforholdRegel(regelId, ytelse, periode, førsteDagForYtelse) {
+) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
         return when {
@@ -32,8 +30,7 @@ class JobberBrukerPaaNorskSkipRegel(
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): JobberBrukerPaaNorskSkipRegel {
             return JobberBrukerPaaNorskSkipRegel(
                 ytelse = datagrunnlag.ytelse,
-                periode = datagrunnlag.periode,
-                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold
             )
         }

@@ -1,7 +1,6 @@
 package no.nav.medlemskap.regler.v1.lovvalg
 
 import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Landkode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.personhistorikk.Adresse
@@ -21,9 +20,8 @@ class ErBrukerBosattINorgeRegel(
     val bostedsadresser: List<Adresse>,
     val oppholdsadresser: List<Adresse>,
     ytelse: Ytelse,
-    val periode: InputPeriode,
-    førsteDagForYtelse: LocalDate?
-) : LovvalgRegel(REGEL_10, ytelse, periode, førsteDagForYtelse) {
+    startDatoForYtelse: LocalDate
+) : LovvalgRegel(REGEL_10, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
         val bostedsadresser = bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
@@ -46,8 +44,7 @@ class ErBrukerBosattINorgeRegel(
                 bostedsadresser = datagrunnlag.pdlpersonhistorikk.bostedsadresser,
                 oppholdsadresser = datagrunnlag.pdlpersonhistorikk.oppholdsadresser,
                 ytelse = datagrunnlag.ytelse,
-                periode = datagrunnlag.periode,
-                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse
             )
         }
     }

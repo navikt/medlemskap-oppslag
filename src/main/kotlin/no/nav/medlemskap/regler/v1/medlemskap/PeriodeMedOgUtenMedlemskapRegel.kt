@@ -1,7 +1,6 @@
 package no.nav.medlemskap.regler.v1.medlemskap
 
 import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Medlemskap
 import no.nav.medlemskap.domene.Medlemskap.Companion.harMedlPeriodeMedOgUtenMedlemskap
 import no.nav.medlemskap.domene.Ytelse
@@ -13,10 +12,9 @@ import java.time.LocalDate
 
 class PeriodeMedOgUtenMedlemskapRegel(
     ytelse: Ytelse,
-    private val periode: InputPeriode,
-    førsteDagForYtelse: LocalDate?,
+    startDatoForYtelse: LocalDate,
     private val medlemskap: List<Medlemskap>
-) : MedlemskapRegel(RegelId.REGEL_1_2, ytelse, periode, førsteDagForYtelse, medlemskap) {
+) : MedlemskapRegel(RegelId.REGEL_1_2, ytelse, startDatoForYtelse, medlemskap) {
 
     override fun operasjon(): Resultat {
         return when {
@@ -30,8 +28,7 @@ class PeriodeMedOgUtenMedlemskapRegel(
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): PeriodeMedOgUtenMedlemskapRegel {
             return PeriodeMedOgUtenMedlemskapRegel(
                 ytelse = datagrunnlag.ytelse,
-                periode = datagrunnlag.periode,
-                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 medlemskap = datagrunnlag.medlemskap
             )
         }

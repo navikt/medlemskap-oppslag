@@ -1,7 +1,6 @@
 package no.nav.medlemskap.regler.v1.lovvalg
 
 import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erNorskBorger
@@ -13,11 +12,10 @@ import java.time.LocalDate
 
 class HarBrukerNorskStatsborgerskapRegel(
     ytelse: Ytelse,
-    private val periode: InputPeriode,
-    førsteDagForYtelse: LocalDate?,
+    startDatoForYtelse: LocalDate,
     private val statsborgerskap: List<Statsborgerskap>,
     regelId: RegelId = RegelId.REGEL_11
-) : LovvalgRegel(regelId, ytelse, periode, førsteDagForYtelse) {
+) : LovvalgRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
 
@@ -32,8 +30,7 @@ class HarBrukerNorskStatsborgerskapRegel(
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerNorskStatsborgerskapRegel {
             return HarBrukerNorskStatsborgerskapRegel(
                 ytelse = datagrunnlag.ytelse,
-                periode = datagrunnlag.periode,
-                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap
             )
         }

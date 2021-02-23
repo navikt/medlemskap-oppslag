@@ -1,9 +1,7 @@
 package no.nav.medlemskap.regler.v1.lovvalg
 
-import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForArbeidsforhold
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForPersonhistorikk
-import no.nav.medlemskap.domene.Kontrollperiode.Companion.startDatoForYtelse
 import no.nav.medlemskap.domene.Landkode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.personhistorikk.Adresse
@@ -21,10 +19,8 @@ import java.time.LocalDate
 abstract class LovvalgRegel(
     regelId: RegelId,
     ytelse: Ytelse,
-    periode: InputPeriode,
-    førsteDagForYtelse: LocalDate?
+    val startDatoForYtelse: LocalDate
 ) : BasisRegel(regelId, ytelse) {
-    val startDatoForYtelse = startDatoForYtelse(periode, førsteDagForYtelse)
     val kontrollPeriodeForArbeidsforhold = kontrollPeriodeForArbeidsforhold(startDatoForYtelse)
     val kontrollPeriodeForPersonhistorikk = kontrollPeriodeForPersonhistorikk(startDatoForYtelse)
 

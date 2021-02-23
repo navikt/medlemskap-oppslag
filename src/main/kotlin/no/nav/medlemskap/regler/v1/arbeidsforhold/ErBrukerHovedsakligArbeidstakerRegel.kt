@@ -1,7 +1,6 @@
 package no.nav.medlemskap.regler.v1.arbeidsforhold
 
 import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
@@ -13,11 +12,10 @@ import java.time.LocalDate
 
 class ErBrukerHovedsakligArbeidstakerRegel(
     ytelse: Ytelse,
-    private val periode: InputPeriode,
-    private val førsteDagForYtelse: LocalDate?,
+    startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
     regelId: RegelId = RegelId.REGEL_18
-) : ArbeidsforholdRegel(regelId, ytelse, periode, førsteDagForYtelse) {
+) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
         if (arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(
@@ -37,8 +35,7 @@ class ErBrukerHovedsakligArbeidstakerRegel(
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErBrukerHovedsakligArbeidstakerRegel {
             return ErBrukerHovedsakligArbeidstakerRegel(
                 ytelse = datagrunnlag.ytelse,
-                periode = datagrunnlag.periode,
-                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold
             )
         }

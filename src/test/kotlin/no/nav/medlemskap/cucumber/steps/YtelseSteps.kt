@@ -21,6 +21,7 @@ class YtelseSteps : No {
     private var ytelsePeriode: InputPeriode? = null
     private var førsteDagForYtelse: LocalDate? = null
     private var kontrollperiode: Kontrollperiode? = null
+    private var startDatoForYtelse: LocalDate? = null
 
     init {
         Gitt("følgende sykemeldingsperiode:") { dataTable: DataTable ->
@@ -28,33 +29,40 @@ class YtelseSteps : No {
         }
 
         Når("første sykedag beregnes fra sykemeldingsperiode") {
-            førsteDagForYtelse = Kontrollperiode.startDatoForYtelse(ytelsePeriode!!, null)
+            startDatoForYtelse = startDatoForYtelse(ytelsePeriode!!, null)
+            førsteDagForYtelse = startDatoForYtelse
         }
 
-        Når<DataTable>("kontrollperiode for arbeidsforhold beregnes med følgende parametre:") { dataTable: DataTable? ->
-            val parametreKontrollperiode = ytelseDomenespråkParser.mapParametreKontrollperiode(dataTable!!)
+        Når("kontrollperiode for arbeidsforhold beregnes med følgende parametre:") { dataTable: DataTable ->
+            val parametreKontrollperiode = ytelseDomenespråkParser.mapParametreKontrollperiode(dataTable)
 
             ytelsePeriode = parametreKontrollperiode.iputPeriode
             førsteDagForYtelse = parametreKontrollperiode.førsteDagForYtelse
+            startDatoForYtelse = startDatoForYtelse(ytelsePeriode!!, førsteDagForYtelse)
 
             kontrollperiode = kontrollPeriodeForArbeidsforhold(startDatoForYtelse(ytelsePeriode!!, førsteDagForYtelse))
         }
 
-        Når<DataTable>("kontrollperiode for medl beregnes med følgende parametre:") { dataTable: DataTable? ->
-            val parametreKontrollperiode = ytelseDomenespråkParser.mapParametreKontrollperiode(dataTable!!)
+        Når("kontrollperiode for medl beregnes med følgende parametre:") { dataTable: DataTable ->
+            val parametreKontrollperiode = ytelseDomenespråkParser.mapParametreKontrollperiode(dataTable)
 
             ytelsePeriode = parametreKontrollperiode.iputPeriode
+            startDatoForYtelse = startDatoForYtelse(ytelsePeriode!!, førsteDagForYtelse)
 
             kontrollperiode = kontrollPeriodeForMedl(startDatoForYtelse(ytelsePeriode!!, parametreKontrollperiode.førsteDagForYtelse))
         }
 
-        Så("skal første sykedag være {string}") { forventetDato: String? ->
-            assertEquals(parseDato(forventetDato!!), førsteDagForYtelse)
+        Så("skal første sykedag være {string}") { forventetDato: String ->
+            assertEquals(parseDato(forventetDato), førsteDagForYtelse)
         }
 
-        Så<DataTable>("skal kontrollperioden være:") { dataTable: DataTable? ->
-            val forventetKontrollperiode = ytelseDomenespråkParser.mapKontrollperiode(dataTable!!)
+        Så("skal kontrollperioden være:") { dataTable: DataTable ->
+            val forventetKontrollperiode = ytelseDomenespråkParser.mapKontrollperiode(dataTable)
             assertThat(kontrollperiode).isEqualTo(forventetKontrollperiode)
+        }
+
+        Så("skal startdato for ytelse være {string}") { forventetStartDatoForYtelse: String ->
+            assertThat(startDatoForYtelse).isEqualTo(parseDato(forventetStartDatoForYtelse))
         }
     }
 }

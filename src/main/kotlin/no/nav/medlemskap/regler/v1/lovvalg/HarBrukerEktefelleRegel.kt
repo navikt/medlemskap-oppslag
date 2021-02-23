@@ -1,7 +1,6 @@
 package no.nav.medlemskap.regler.v1.lovvalg
 
 import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
 import no.nav.medlemskap.regler.common.RegelId
@@ -12,11 +11,10 @@ import java.time.LocalDate
 
 class HarBrukerEktefelleRegel(
     ytelse: Ytelse,
-    private val periode: InputPeriode,
-    førsteDagForYtelse: LocalDate?,
+    startDatoForYtelse: LocalDate,
     private val dataOmEktefelle: DataOmEktefelle?,
     regelId: RegelId = RegelId.REGEL_11_2
-) : LovvalgRegel(regelId, ytelse, periode, førsteDagForYtelse) {
+) : LovvalgRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
         val ektefelle = dataOmEktefelle?.personhistorikkEktefelle
@@ -35,8 +33,7 @@ class HarBrukerEktefelleRegel(
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerEktefelleRegel {
             return HarBrukerEktefelleRegel(
                 ytelse = datagrunnlag.ytelse,
-                periode = datagrunnlag.periode,
-                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 dataOmEktefelle = datagrunnlag.dataOmEktefelle
             )
         }

@@ -10,22 +10,24 @@ Egenskap: Validering av input-dato
       | <Landkode> | 01.01.2000      |                 |
 
     Når regel "0.1" kjøres med følgende parametre
-      | Fra og med dato   | Til og med dato | Har hatt arbeid utenfor Norge |
-      | <Fra og med dato> | 30.01.2021      | Nei                           |
+      | Første dag for ytelse   | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | <Første dag for ytelse> | 01.01.2016      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Regel 0.1>"
     Og skal begrunnelsen være som definert i RegelId
 
     Eksempler:
-      | Landkode | Fra og med dato | Regel 0.1 |
-      | NOR      | 31.12.2015      | Nei       |
-      | NOR      | 01.01.2016      | Ja        |
-      | NOR      | 31.12.2016      | Ja        |
-      | CHE      | 31.12.2016      | Nei       |
-      | CHE      | 01.01.2017      | Ja        |
-      | BEL      | 31.12.2015      | Nei       |
-      | BEL      | 01.01.2016      | Ja        |
-Scenariomal: Hvis "første dag for ytelse" er angitt, er det den som brukes i stedet for "fra og med dato"
+      | Landkode | Første dag for ytelse | Regel 0.1 |
+      | NOR      | 31.12.2015            | Nei       |
+      | NOR      | 01.01.2016            | Ja        |
+      | NOR      | 31.12.2016            | Ja        |
+      | CHE      | 31.12.2016            | Nei       |
+      | CHE      | 01.01.2017            | Ja        |
+      | BEL      | 31.12.2015            | Nei       |
+      | BEL      | 01.01.2016            | Ja        |
+
+
+  Scenariomal: Hvis "første dag for ytelse" er angitt, er det den som brukes i stedet for "fra og med dato"
 
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode   | Fra og med dato | Til og med dato |
@@ -56,20 +58,20 @@ Scenariomal: Hvis "første dag for ytelse" er angitt, er det den som brukes i st
 
 
     Når regel "0.1" kjøres med følgende parametre
-      | Fra og med dato   | Til og med dato | Har hatt arbeid utenfor Norge |
-      | <Fra og med dato> | 30.01.2021      | Nei                           |
+      | Første dag for ytelse   | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | <Første dag for ytelse> | 31.12.2015      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Regel 0.1>"
     Og skal begrunnelsen være som definert i RegelId
 
     Eksempler:
-      | Landkode | Fra og med dato | Regel 0.1 |
-      | NOR      | 31.12.2015      | Nei       |
-      | NOR      | 01.01.2016      | Ja        |
-      | NOR      | 31.12.2016      | Ja        |
-      | SWE      | 31.12.2015      | Nei       |
-      | SWE      | 01.01.2016      | Ja        |
-      | SWE      | 01.01.2017      | Ja        |
-      | USA      | 31.12.2015      | Nei       |
-      | USA      | 01.01.2016      | Nei       |
-      | USA      | 01.01.2017      | Ja        |
+      | Landkode | Første dag for ytelse | Regel 0.1 |
+      | NOR      | 31.12.2015            | Nei       |
+      | NOR      | 01.01.2016            | Ja        |
+      | NOR      | 31.12.2016            | Ja        |
+      | SWE      | 31.12.2015            | Nei       |
+      | SWE      | 01.01.2016            | Ja        |
+      | SWE      | 01.01.2017            | Ja        |
+      | USA      | 31.12.2015            | Nei       |
+      | USA      | 01.01.2016            | Nei       |
+      | USA      | 01.01.2017            | Ja        |

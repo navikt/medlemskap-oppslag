@@ -1,7 +1,6 @@
 package no.nav.medlemskap.regler.v1.arbeidsforhold
 
 import no.nav.medlemskap.domene.Datagrunnlag
-import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.konkursStatuserArbeidsgivere
@@ -14,11 +13,10 @@ import java.time.LocalDate
 
 class ErForetaketAktivtRegel(
     ytelse: Ytelse,
-    private val periode: InputPeriode,
-    private val førsteDagForYtelse: LocalDate?,
+    startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
     regelId: RegelId = RegelId.REGEL_6
-) : ArbeidsforholdRegel(regelId, ytelse, periode, førsteDagForYtelse) {
+) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
         return when {
@@ -33,8 +31,7 @@ class ErForetaketAktivtRegel(
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErForetaketAktivtRegel {
             return ErForetaketAktivtRegel(
                 ytelse = datagrunnlag.ytelse,
-                periode = datagrunnlag.periode,
-                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold
             )
         }

@@ -1,6 +1,9 @@
 package no.nav.medlemskap.regler.v1.udi
 
-import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.Kontrollperiode
+import no.nav.medlemskap.domene.Oppholdstillatelse
+import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.BasisRegel
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
@@ -12,8 +15,7 @@ import java.time.LocalDate
 class GyldigOppholdstillatelseIKontrollperiodeRegel(
     ytelse: Ytelse,
     private val oppholdstillatelse: Oppholdstillatelse?,
-    private val periode: InputPeriode,
-    private val førsteDagForYtelse: LocalDate?,
+    private val startDatoForYtelse: LocalDate,
     regelId: RegelId = RegelId.REGEL_19_2
 ) : BasisRegel(regelId, ytelse) {
 
@@ -23,7 +25,7 @@ class GyldigOppholdstillatelseIKontrollperiodeRegel(
             return uavklart(regelId)
         }
 
-        val kontrollperiode = Kontrollperiode.kontrollPeriodeForOppholdstillatelse(periode, førsteDagForYtelse)
+        val kontrollperiode = Kontrollperiode.kontrollPeriodeForOppholdstillatelse(startDatoForYtelse)
         if (oppholdstillatelse.harGyldigOppholdstillatelseForPeriode(kontrollperiode.periode)) {
             return ja(regelId)
         }
@@ -36,9 +38,8 @@ class GyldigOppholdstillatelseIKontrollperiodeRegel(
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): GyldigOppholdstillatelseIKontrollperiodeRegel {
             return GyldigOppholdstillatelseIKontrollperiodeRegel(
                 ytelse = datagrunnlag.ytelse,
-                periode = datagrunnlag.periode,
                 oppholdstillatelse = datagrunnlag.oppholdstillatelse,
-                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse
             )
         }
     }
