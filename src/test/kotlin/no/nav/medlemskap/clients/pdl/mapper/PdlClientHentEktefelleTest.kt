@@ -78,12 +78,7 @@ class PdlClientHentEktefelleTest {
                   {
                     "relatertPersonsIdent": "20041276216",
                     "relatertPersonsRolle": "BARN",
-                    "minRolleForPerson": "FAR",
-                    "folkeregistermetadata": {
-                      "ajourholdstidspunkt": "2020-09-30T16:17:23",
-                      "gyldighetstidspunkt": "2020-09-30T16:17:23",
-                      "opphoerstidspunkt": null
-                    }
+                    "minRolleForPerson": "FAR"
                   }
                 ],
                 "statsborgerskap": [

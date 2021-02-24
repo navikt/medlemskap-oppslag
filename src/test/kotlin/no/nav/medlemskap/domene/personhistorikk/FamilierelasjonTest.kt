@@ -62,8 +62,7 @@ class FamilierelasjonTest {
     private fun lagFamilierelasjon(
         relatertPersonIdent: String = "12345678910",
         relatertPersonsRolle: Familierelasjonsrolle = Familierelasjonsrolle.BARN,
-        minRolleForPerson: Familierelasjonsrolle? = null,
-        folkeregistermetadata: Folkeregistermetadata? = null
+        minRolleForPerson: Familierelasjonsrolle? = null
     ): Familierelasjon =
-        Familierelasjon(relatertPersonIdent, relatertPersonsRolle, minRolleForPerson, folkeregistermetadata)
+        Familierelasjon(relatertPersonIdent, relatertPersonsRolle, minRolleForPerson)
 }

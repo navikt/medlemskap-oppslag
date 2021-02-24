@@ -6,7 +6,6 @@ import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.domene.personhistorikk.*
 import no.nav.medlemskap.regler.common.Datohjelper.parseIsoDato
-import no.nav.medlemskap.regler.common.Datohjelper.parseIsoDatoTid
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
 import java.time.LocalDate
 
@@ -53,8 +52,7 @@ object PdlMapper {
         return Familierelasjon(
             relatertPersonsIdent = familierelasjon.relatertPersonsIdent,
             relatertPersonsRolle = mapFamileRelasjonsrolle(familierelasjon.relatertPersonsRolle)!!,
-            minRolleForPerson = mapFamileRelasjonsrolle(familierelasjon.minRolleForPerson),
-            folkeregistermetadata = mapFolkeregisterMetadata(familierelasjon.folkeregistermetadata)
+            minRolleForPerson = mapFamileRelasjonsrolle(familierelasjon.minRolleForPerson)
         )
     }
 
@@ -150,16 +148,6 @@ object PdlMapper {
                 HentPerson.Familierelasjonsrolle.MEDMOR -> Familierelasjonsrolle.MEDMOR
                 else -> throw DetteSkalAldriSkje("Denne familierelasjonen er ikke tilgjengelig")
             }
-        }
-    }
-
-    fun mapFolkeregisterMetadata(folkeregistermetadata: HentPerson.Folkeregistermetadata?): Folkeregistermetadata? {
-        return folkeregistermetadata?.let {
-            Folkeregistermetadata(
-                ajourholdstidspunkt = parseIsoDatoTid(it.ajourholdstidspunkt),
-                gyldighetstidspunkt = parseIsoDatoTid(it.gyldighetstidspunkt),
-                opphoerstidspunkt = parseIsoDatoTid(it.opphoerstidspunkt)
-            )
         }
     }
 }
