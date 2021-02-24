@@ -3,7 +3,7 @@ package no.nav.medlemskap.regler.v1.lovvalg
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.barn.DataOmBarn
-import no.nav.medlemskap.domene.personhistorikk.Adresse.Companion.adresserForKontrollPeriode
+import no.nav.medlemskap.domene.personhistorikk.Adresse.Companion.adresserForKontrollperiode
 import no.nav.medlemskap.domene.personhistorikk.Adresse.Companion.landkodeTilAdresserForKontrollPeriode
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
@@ -24,7 +24,7 @@ class HarBrukerBarnSomErFolkeregistrertRegel(
 
         val harBarnBosattINorge = barn?.any {
             erPersonBosattINorge(
-                it.personhistorikkBarn.bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
+                it.personhistorikkBarn.bostedsadresser.adresserForKontrollperiode(kontrollPeriodeForPersonhistorikk),
                 it.personhistorikkBarn.kontaktadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
                 it.personhistorikkBarn.oppholdsadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
             )
@@ -32,7 +32,7 @@ class HarBrukerBarnSomErFolkeregistrertRegel(
 
         val harBarnSomIkkeErBosattINorge = barn?.filterNot {
             erPersonBosattINorge(
-                it.personhistorikkBarn.bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
+                it.personhistorikkBarn.bostedsadresser.adresserForKontrollperiode(kontrollPeriodeForPersonhistorikk),
                 it.personhistorikkBarn.kontaktadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
                 it.personhistorikkBarn.oppholdsadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
             )

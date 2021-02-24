@@ -17,10 +17,13 @@ data class Adresse(
     }
 
     companion object {
-        fun List<Adresse>.adresserForKontrollPeriode(kontrollPeriode: Kontrollperiode): List<Adresse> =
-            this.filter { it.overlapper(kontrollPeriode.periode) }
+        fun List<Adresse>.adresserForKontrollperiode(kontrollperiode: Kontrollperiode): List<Adresse> =
+            this.filter { it.overlapper(kontrollperiode.periode) }
 
-        fun List<Adresse>.landkodeTilAdresserForKontrollPeriode(kontrollPeriode: Kontrollperiode): List<String> =
-            this.adresserForKontrollPeriode(kontrollPeriode).map { it.landkode }
+        fun List<Adresse>.landkodeTilAdresserForKontrollPeriode(kontrollperiode: Kontrollperiode): List<String> =
+            this.adresserForKontrollperiode(kontrollperiode).map { it.landkode }
+
+        fun List<Adresse>.landkodeForIkkeHistoriskeAdresserForKontrollperiode(kontrollperiode: Kontrollperiode): List<String> =
+            this.filter { it.overlapper(kontrollperiode.periode) && !it.historisk }.map { it.landkode }
     }
 }

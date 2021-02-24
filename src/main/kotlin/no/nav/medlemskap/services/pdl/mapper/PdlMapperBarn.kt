@@ -5,14 +5,14 @@ import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.personhistorikk.Adresse
 import no.nav.medlemskap.domene.personhistorikk.Familierelasjon
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapBostedsadresser
-import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapKontaktAdresser
+import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapKontaktadresser
 
 object PdlMapperBarn {
 
     fun mapPersonhistorikkTilBarn(fnr: String, barn: HentPerson.Person): PersonhistorikkBarn {
         val oppholdsadresse = PdlMapper.mapOppholdsadresser(barn.oppholdsadresse)
         val bostedsadresser: List<Adresse> = mapBostedsadresser(barn.bostedsadresse)
-        val kontaktadresser: List<Adresse> = mapKontaktAdresser(barn.kontaktadresse)
+        val kontaktadresser: List<Adresse> = mapKontaktadresser(barn.kontaktadresse)
         val familierelasjoner: List<Familierelasjon> = barn.familierelasjoner.map { PdlMapper.mapFamilierelasjon(it) }
 
         return PersonhistorikkBarn(

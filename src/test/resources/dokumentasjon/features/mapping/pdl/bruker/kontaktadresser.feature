@@ -13,7 +13,7 @@ Egenskap: Mapping av kontaktadresser fra PDL HentPerson.Kontaktadresse
 
     Så skal mappede kontaktadresser være
       | Landkode | Fra og med dato | Til og med dato |
-      | NOR      | 2015-03-25      |                 |
+      | NOR      | 2015-03-25      | 2016-04-24      |
       | NOR      | 2016-04-25      |                 |
 
   Scenario: En person som først har norsk kontaktadresse, og så utenlandsk kontaktadresse
@@ -76,6 +76,6 @@ Egenskap: Mapping av kontaktadresser fra PDL HentPerson.Kontaktadresse
 
     Så skal mappede kontaktadresser være
       | Landkode | Fra og med dato | Til og med dato |
-      | NOR      |                 |                 |
-      | NOR      | 2005-05-25      |                 |
+      | NOR      |                 | 2005-05-24      |
+      | NOR      | 2005-05-25      | 2015-03-24      |
       | NOR      | 2015-03-25      |                 |

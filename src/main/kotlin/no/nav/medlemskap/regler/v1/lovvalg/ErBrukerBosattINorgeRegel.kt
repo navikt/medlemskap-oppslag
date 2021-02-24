@@ -4,7 +4,7 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Landkode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.personhistorikk.Adresse
-import no.nav.medlemskap.domene.personhistorikk.Adresse.Companion.adresserForKontrollPeriode
+import no.nav.medlemskap.domene.personhistorikk.Adresse.Companion.landkodeForIkkeHistoriskeAdresserForKontrollperiode
 import no.nav.medlemskap.domene.personhistorikk.Adresse.Companion.landkodeTilAdresserForKontrollPeriode
 import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
@@ -24,13 +24,12 @@ class ErBrukerBosattINorgeRegel(
 ) : LovvalgRegel(REGEL_10, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
-        val bostedsadresser = bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
-        val landkoderBostedsadresse = bostedsadresser.map { it.landkode }
-        val kontaktadresserLandkoder = kontaktadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
-        val oppholsadresserLandkoder = oppholdsadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
+        val landkoderBostedsadresser = bostedsadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
+        val kontaktadresserLandkoder = kontaktadresser.landkodeForIkkeHistoriskeAdresserForKontrollperiode(kontrollPeriodeForPersonhistorikk)
+        val oppholsadresserLandkoder = oppholdsadresser.landkodeForIkkeHistoriskeAdresserForKontrollperiode(kontrollPeriodeForPersonhistorikk)
 
         return when {
-            bostedsadresser.erIkkeTom() && landkoderBostedsadresse alleEr "NOR" &&
+            landkoderBostedsadresser.erIkkeTom() && landkoderBostedsadresser alleEr "NOR" &&
                 (kontaktadresserLandkoder.all { Landkode.erNorsk(it) } || kontaktadresserLandkoder.erTom())
                 && (oppholsadresserLandkoder.all { Landkode.erNorsk(it) } || oppholsadresserLandkoder.erTom()) -> ja(regelId)
             else -> nei(regelId)

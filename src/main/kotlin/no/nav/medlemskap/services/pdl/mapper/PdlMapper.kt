@@ -18,7 +18,7 @@ object PdlMapper {
 
         val statsborgerskap: List<Statsborgerskap> = mapStatsborgerskap(person.statsborgerskap)
         val bostedsadresser: List<Adresse> = mapBostedsadresser(person.bostedsadresse)
-        val kontaktadresser: List<Adresse> = mapKontaktAdresser(person.kontaktadresse)
+        val kontaktadresser: List<Adresse> = mapKontaktadresser(person.kontaktadresse)
         val oppholdsadresser: List<Adresse> = mapOppholdsadresser(person.oppholdsadresse)
         val sivilstand: List<Sivilstand> = mapSivilstander(person.sivilstand)
         val familierelasjoner: List<Familierelasjon> = mapFamilierelasjoner(person.familierelasjoner)
@@ -41,8 +41,27 @@ object PdlMapper {
         }
     }
 
-    fun mapOppholdsadresser(oppholdsadresser: List<HentPerson.Oppholdsadresse>): List<Adresse> {
-        return oppholdsadresser.map { mapOppholdsadresse(it) }.sortedBy { it.fom }
+    fun mapOppholdsadresser(pdlOppholdsadresser: List<HentPerson.Oppholdsadresse>): List<Adresse> {
+
+        if (pdlOppholdsadresser.size < 2) {
+            return pdlOppholdsadresser.map {
+                mapOppholdsadresse(it)
+            }
+        }
+
+        val sortertPdlOppholdsadresser = pdlOppholdsadresser.sortedBy { parseIsoDato(it.gyldigFraOgMed) ?: LocalDate.MIN }
+        return sortertPdlOppholdsadresser.zipWithNext { oppholdsadresse, neste ->
+            mapOppholdsadresse(oppholdsadresse, parseIsoDato(neste.gyldigFraOgMed)?.minusDays(1))
+        }.plus(mapOppholdsadresse(sortertPdlOppholdsadresser.last()))
+    }
+
+    fun mapOppholdsadresse(oppholdsadresse: HentPerson.Oppholdsadresse, gyldigTilOgMed: LocalDate? = null): Adresse {
+        return Adresse(
+            fom = parseIsoDato(oppholdsadresse.gyldigFraOgMed),
+            tom = parseIsoDato(oppholdsadresse.gyldigTilOgMed) ?: gyldigTilOgMed,
+            landkode = mapLandkodeForOppholdsadresse(oppholdsadresse),
+            historisk = oppholdsadresse.metadata.historisk
+        )
     }
 
     fun mapFamilierelasjoner(pdlFamilierelasjoner: List<HentPerson.Familierelasjon>): List<Familierelasjon> {
@@ -74,17 +93,6 @@ object PdlMapper {
         return CountryCode.NO.alpha3
     }
 
-    fun mapKontaktAdresser(pdlKontaktadresser: List<HentPerson.Kontaktadresse>): List<Adresse> {
-        return pdlKontaktadresser.map {
-            Adresse(
-                fom = parseIsoDato(it.gyldigFraOgMed),
-                tom = parseIsoDato(it.gyldigTilOgMed),
-                landkode = mapLandkodeForKontaktadresse(it),
-                historisk = it.metadata.historisk
-            )
-        }.sortedBy { it.fom }
-    }
-
     fun mapLandkodeForKontaktadresse(kontaktadresse: HentPerson.Kontaktadresse): String {
         if (kontaktadresse.utenlandskAdresse != null) {
             return mapLandkode(kontaktadresse.utenlandskAdresse!!.landkode)
@@ -93,18 +101,6 @@ object PdlMapper {
             return mapLandkode(kontaktadresse.utenlandskAdresseIFrittFormat!!.landkode)
         }
         return CountryCode.NO.alpha3
-    }
-
-    private fun mapLandkode(landkode: String): String {
-        if (landkode.length == 3) {
-            return landkode
-        }
-        return try {
-            CountryCode.getByCode(landkode.toUpperCase()).alpha3
-        } catch (e: Exception) {
-            logger.warn("Klarte ikke å mappe {}", landkode, e)
-            "UKJENT"
-        }
     }
 
     fun mapBostedsadresser(pdlBostedsadresser: List<HentPerson.Bostedsadresse>): List<Adresse> {
@@ -120,13 +116,36 @@ object PdlMapper {
         }.plus(mapBostedadresse(sortertPdlBostedsadresser.last()))
     }
 
-    fun mapBostedadresse(adresse: HentPerson.Bostedsadresse, gyldigTilOgMed: LocalDate? = null): Adresse {
+    private fun mapBostedadresse(adresse: HentPerson.Bostedsadresse, gyldigTilOgMed: LocalDate? = null): Adresse {
 
         return Adresse(
             landkode = adresse.utenlandskAdresse?.landkode ?: "NOR",
             fom = parseIsoDato(adresse.gyldigFraOgMed),
             tom = parseIsoDato(adresse.gyldigTilOgMed) ?: gyldigTilOgMed,
             historisk = adresse.metadata.historisk
+        )
+    }
+
+    fun mapKontaktadresser(pdlKontaktadresser: List<HentPerson.Kontaktadresse>): List<Adresse> {
+
+        if (pdlKontaktadresser.size < 2) {
+            return pdlKontaktadresser.map {
+                mapKontaktadresse(it)
+            }
+        }
+
+        val sortertPdlKontaktadresser = pdlKontaktadresser.sortedBy { parseIsoDato(it.gyldigFraOgMed) ?: LocalDate.MIN }
+        return sortertPdlKontaktadresser.zipWithNext { kontaktadresse, neste ->
+            mapKontaktadresse(kontaktadresse, parseIsoDato(neste.gyldigFraOgMed)?.minusDays(1))
+        }.plus(mapKontaktadresse(sortertPdlKontaktadresser.last()))
+    }
+
+    private fun mapKontaktadresse(pdlKontaktadresse: HentPerson.Kontaktadresse, gyldigTilOgMed: LocalDate? = null): Adresse {
+        return Adresse(
+            fom = parseIsoDato(pdlKontaktadresse.gyldigFraOgMed),
+            tom = parseIsoDato(pdlKontaktadresse.gyldigTilOgMed) ?: gyldigTilOgMed,
+            landkode = mapLandkodeForKontaktadresse(pdlKontaktadresse),
+            historisk = pdlKontaktadresse.metadata.historisk
         )
     }
 
@@ -160,6 +179,18 @@ object PdlMapper {
                 gyldighetstidspunkt = parseIsoDatoTid(it.gyldighetstidspunkt),
                 opphoerstidspunkt = parseIsoDatoTid(it.opphoerstidspunkt)
             )
+        }
+    }
+
+    private fun mapLandkode(landkode: String): String {
+        if (landkode.length == 3) {
+            return landkode
+        }
+        return try {
+            CountryCode.getByCode(landkode.toUpperCase()).alpha3
+        } catch (e: Exception) {
+            logger.warn("Klarte ikke å mappe {}", landkode, e)
+            "UKJENT"
         }
     }
 }

@@ -3,7 +3,7 @@ package no.nav.medlemskap.regler.v1.lovvalg
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
-import no.nav.medlemskap.domene.personhistorikk.Adresse.Companion.adresserForKontrollPeriode
+import no.nav.medlemskap.domene.personhistorikk.Adresse.Companion.adresserForKontrollperiode
 import no.nav.medlemskap.domene.personhistorikk.Adresse.Companion.landkodeTilAdresserForKontrollPeriode
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
@@ -24,7 +24,7 @@ class ErBrukersEktefelleBosattINorgeRegel(
             val ektefelle = dataOmEktefelle.personhistorikkEktefelle
 
             val bostedsadresserTilEktefelle =
-                ektefelle.bostedsadresser.adresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
+                ektefelle.bostedsadresser.adresserForKontrollperiode(kontrollPeriodeForPersonhistorikk)
             val kontaktadresseTilEktefelle =
                 ektefelle.kontaktadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
             val oppholdsadresseTilEktefelle =
