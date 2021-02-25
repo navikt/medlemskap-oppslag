@@ -4,11 +4,6 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
             relatertPersonsIdent
             relatertPersonsRolle
             minRolleForPerson
-            folkeregistermetadata {
-                ajourholdstidspunkt
-                gyldighetstidspunkt
-                opphoerstidspunkt
-            }
         },
         statsborgerskap(historikk: $statsborgerskapHistorikk) {
             land,

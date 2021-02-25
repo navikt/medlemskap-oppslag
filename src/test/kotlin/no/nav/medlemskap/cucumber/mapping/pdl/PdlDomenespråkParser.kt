@@ -160,8 +160,7 @@ class PdlDomenespråkParser : BasisDomeneParser() {
             return HentPerson.Familierelasjon(
                 relatertPersonsIdent = parseString(Domenebegrep.RELATERT_PERSONS_IDENT, rad),
                 relatertPersonsRolle = relatertPersonsrolle,
-                minRolleForPerson = minRolleForPerson,
-                folkeregistermetadata = null
+                minRolleForPerson = minRolleForPerson
             )
         }
     }
@@ -184,8 +183,6 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         HISTORISK("Historisk"),
         GYLDIG_FRA_OG_MED("Gyldig fra og med"),
         GYLDIG_TIL_OG_MED("Gyldig til og med"),
-        FOLKE_REG_GYLDIGHETSTIDSPUNKT("Folkeregistermetadata gyldighetstidspunkt"),
-        FOLKE_REG_OPPHOERSTIDSPUNKT("Folkeregistermetadata opphoerstidspunkt"),
         LAND("Land"),
         MIN_ROLLE_FOR_PERSON("Min rolle for person"),
         RELATERT_PERSONS_IDENT("Relatert persons ident"),

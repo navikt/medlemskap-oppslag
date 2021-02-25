@@ -7,8 +7,7 @@ import java.time.LocalDate
 data class Familierelasjon(
     val relatertPersonsIdent: String,
     val relatertPersonsRolle: Familierelasjonsrolle,
-    val minRolleForPerson: Familierelasjonsrolle?,
-    val folkeregistermetadata: Folkeregistermetadata?
+    val minRolleForPerson: Familierelasjonsrolle?
 ) {
     companion object {
         fun String.erBarnUnder25Aar(førsteDatoForYtelse: LocalDate) =
