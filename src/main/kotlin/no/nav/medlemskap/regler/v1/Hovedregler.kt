@@ -44,7 +44,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
     }
 
     private fun kjørReglerForStatsborgerskap(resultatStatsborgerskap: Resultat, reglerSomSkalOverstyres: Map<RegelId, Svar>): List<Resultat> {
-        val statsborgerskapskategori = bestemStatsborgerskapskategori(resultatStatsborgerskap)
+        val statsborgerskapskategori = resultatStatsborgerskap.bestemStatsborgerskapskategori()
 
         return when (statsborgerskapskategori) {
             Statsborgerskapskategori.TREDJELANDSBORGER -> kjørReglerForTredjelandsborgere()
@@ -94,18 +94,6 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         )
 
         return fellesRegler.map(Regler::kjørHovedflyt)
-    }
-
-    private fun bestemStatsborgerskapskategori(resultatStatsborgerskap: Resultat): Statsborgerskapskategori {
-        if (!resultatStatsborgerskap.erEøsBorger()) {
-            return Statsborgerskapskategori.TREDJELANDSBORGER
-        }
-
-        return if (resultatStatsborgerskap.erNorskBorger()) {
-            Statsborgerskapskategori.NORSK_BORGER
-        } else {
-            Statsborgerskapskategori.EØS_BORGER
-        }
     }
 
     companion object {

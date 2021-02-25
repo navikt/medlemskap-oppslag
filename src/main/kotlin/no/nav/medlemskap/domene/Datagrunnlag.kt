@@ -6,8 +6,6 @@ import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.gyldigeO
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
 import no.nav.medlemskap.domene.personhistorikk.Personhistorikk
-import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erAnnenStatsborger
-import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erNorskBorger
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.gyldigeStatsborgerskap
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Svar
@@ -37,14 +35,6 @@ data class Datagrunnlag(
 
     fun gyldigeStatsborgerskap(): List<String> {
         return pdlpersonhistorikk.statsborgerskap.gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk)
-    }
-
-    fun erTredjelandsborger(): Boolean {
-        return pdlpersonhistorikk.statsborgerskap.erAnnenStatsborger(startDatoForYtelse)
-    }
-
-    fun erNorskBorger(): Boolean {
-        return pdlpersonhistorikk.statsborgerskap.erNorskBorger(kontrollPeriodeForPersonhistorikk)
     }
 
     fun gyldigeOrgnummer(): List<String> {

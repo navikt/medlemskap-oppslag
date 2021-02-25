@@ -83,34 +83,24 @@ class Regelflyt(
 
     companion object {
         private fun bestemÅrsakFraRegelResultat(resultat: Resultat, regelResultat: Resultat): Årsak? {
-            if (resultat.erKonklusjon() &&
+            return if (resultat.erKonklusjon() &&
                 resultat.svar != Svar.JA &&
                 resultat.hentÅrsak() == null
             ) {
-                return Årsak.fraResultat(regelResultat)
+                Årsak.fraResultat(regelResultat)
             } else {
-                return resultat.hentÅrsak()
+                resultat.hentÅrsak()
             }
         }
 
         private fun bestemÅrsak(resultat: Resultat, årsak: Årsak?, delResultater: List<Resultat>): Årsak? {
-            if (resultat.hentÅrsak() != null) {
-                return resultat.hentÅrsak()
+            return when {
+                resultat.hentÅrsak() != null -> resultat.hentÅrsak()
+                resultat.erKonklusjon() && resultat.svar == Svar.JA -> null
+                årsak != null -> årsak
+                !resultat.erKonklusjon() -> null
+                else -> Årsak.fraResultat(delResultater.last())
             }
-
-            if (resultat.erKonklusjon() && resultat.svar == Svar.JA) {
-                return null
-            }
-
-            if (årsak != null) {
-                return årsak
-            }
-
-            if (!resultat.erKonklusjon()) {
-                return null
-            }
-
-            return Årsak.fraResultat(delResultater.last())
         }
 
         fun medlemskonklusjonUavklart(ytelse: Ytelse): Regelflyt {
