@@ -143,8 +143,8 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
             return Ansatte(
                 antall = parseInt(ArbeidDomenebegrep.ANTALL_ANSATTE, rad),
                 bruksperiode = Periode(
-                    parseDato(ArbeidDomenebegrep.BRUKSPERIODE_GYLDIG_FRA, rad),
-                    parseDato(ArbeidDomenebegrep.BRUKSPERIODE_GYLDIG_TIL, rad)
+                    parseValgfriDato(ArbeidDomenebegrep.BRUKSPERIODE_GYLDIG_FRA, rad),
+                    parseValgfriDato(ArbeidDomenebegrep.BRUKSPERIODE_GYLDIG_TIL, rad)
                 ),
                 gyldighetsperiode = Periode(
                     parseDato(ArbeidDomenebegrep.GYLDIGHETSPERIODE_FRA_OG_MED, rad),
