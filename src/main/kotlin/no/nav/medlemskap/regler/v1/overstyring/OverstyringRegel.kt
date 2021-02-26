@@ -3,8 +3,6 @@ package no.nav.medlemskap.regler.v1.overstyring
 import no.nav.medlemskap.domene.Brukerinput
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
-import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.erArbeidstaker
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erNorskBorger
 import no.nav.medlemskap.regler.common.RegelId
@@ -20,15 +18,13 @@ class OverstyringRegel(
     private val brukerInput: Brukerinput,
     startDatoForYtelse: LocalDate,
     private val statsborgerskap: List<Statsborgerskap>,
-    private val arbeidsforhold: List<Arbeidsforhold>,
     regelId: RegelId = RegelId.REGEL_0_5
 ) : LovvalgRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
         if (!brukerInput.arbeidUtenforNorge &&
             ytelse == Ytelse.SYKEPENGER &&
-            statsborgerskap.erNorskBorger(kontrollPeriodeForPersonhistorikk) &&
-            arbeidsforhold.erArbeidstaker(kontrollPeriodeForArbeidsforhold)
+            statsborgerskap.erNorskBorger(kontrollPeriodeForPersonhistorikk)
         ) {
             return ja(regelId)
         }
@@ -43,8 +39,7 @@ class OverstyringRegel(
                 ytelse = datagrunnlag.ytelse,
                 brukerInput = datagrunnlag.brukerinput,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
-                statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap,
-                arbeidsforhold = datagrunnlag.arbeidsforhold
+                statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap
             )
         }
 
