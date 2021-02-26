@@ -303,13 +303,5 @@ data class Arbeidsforhold(
         fun fraOgMedDatoForArbeidsforhold(førsteDatoForYtelse: LocalDate): LocalDate {
             return førsteDatoForYtelse.minusYears(1).minusDays(1)
         }
-
-        fun List<Arbeidsforhold>.erArbeidstaker(kontrollperiode: Kontrollperiode): Boolean {
-            return this.any {
-                it.periode.tomNotNull().isAfter(kontrollperiode.tom) &&
-                    it.arbeidsforholdstype != Arbeidsforholdstype.FRILANSER &&
-                    it.arbeidsgivertype != OpplysningspliktigArbeidsgiverType.Person
-            }
-        }
     }
 }
