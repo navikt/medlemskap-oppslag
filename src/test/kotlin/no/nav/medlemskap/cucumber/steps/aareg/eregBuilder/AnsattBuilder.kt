@@ -13,6 +13,7 @@ class AnsattBuilder {
     fun build(): Ansatte =
         Ansatte(
             antall = antall,
-            gyldighetsperiode = gyldighetsperiode
+            gyldighetsperiode = gyldighetsperiode,
+            bruksperiode = bruksperiode
         )
 }

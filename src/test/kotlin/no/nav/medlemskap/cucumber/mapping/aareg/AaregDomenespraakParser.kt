@@ -179,6 +179,10 @@ class AaregDomenespraakParser : BasisDomeneParser() {
         override fun mapRad(rad: Map<String, String>): Ansatte {
             return Ansatte(
                 parseInt(Domenebegrep.ANTALL_ANSATTE, rad),
+                no.nav.medlemskap.clients.ereg.Bruksperiode(
+                    parseDato(Domenebegrep.BRUKSPERIODE_GYLDIG_FRA, rad),
+                    parseDato(Domenebegrep.BRUKSPERIODE_GYLDIG_TIL, rad)
+                ),
                 no.nav.medlemskap.clients.ereg.Gyldighetsperiode(
                     parseDato(no.nav.medlemskap.cucumber.Domenebegrep.GYLDIGHETSPERIODE_FRA_OG_MED, rad),
                     parseDato(no.nav.medlemskap.cucumber.Domenebegrep.GYLDIGHETSPERIODE_TIL_OG_MED, rad)
