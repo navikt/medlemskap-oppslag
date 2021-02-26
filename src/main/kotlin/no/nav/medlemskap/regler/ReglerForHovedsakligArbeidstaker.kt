@@ -5,6 +5,8 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.RegelId.REGEL_HOVEDSAKLIG_ARBEIDSTAKER
 import no.nav.medlemskap.regler.common.Regelflyt
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
 import no.nav.medlemskap.regler.common.Regler
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.v1.RegelFactory
@@ -17,8 +19,8 @@ class ReglerForHovedsakligArbeidstaker(
     override fun hentHovedflyt(): Regelflyt {
         val hovedsakligArbeidstakerFlyt = lagRegelflyt(
             regel = hentRegel(RegelId.REGEL_18),
-            hvisJa = Regelflyt.regelflytJa(ytelse, REGEL_HOVEDSAKLIG_ARBEIDSTAKER),
-            hvisNei = Regelflyt.konklusjonUavklart(ytelse, REGEL_HOVEDSAKLIG_ARBEIDSTAKER)
+            hvisJa = regelflytJa(ytelse, REGEL_HOVEDSAKLIG_ARBEIDSTAKER),
+            hvisNei = konklusjonUavklart(ytelse, REGEL_HOVEDSAKLIG_ARBEIDSTAKER)
         )
 
         return hovedsakligArbeidstakerFlyt
