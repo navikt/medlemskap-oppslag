@@ -32,7 +32,6 @@ fun mapAnsatte(ansatte: List<no.nav.medlemskap.clients.ereg.Ansatte>?): List<Ans
     ansatte?.map {
         Ansatte(
             antall = it.antall,
-            bruksperiode = mapBruksperiode(it.bruksperiode),
             gyldighetsperiode = mapGyldighetsperiode(it.gyldighetsperiode)
         )
     }

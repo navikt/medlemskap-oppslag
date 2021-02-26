@@ -25,11 +25,6 @@ class AaregMapperTest {
             ansatte = listOf(
                 Ansatte(
                     antall = 5,
-                    bruksperiode =
-                        Periode(
-                            fom = LocalDate.now(),
-                            tom = LocalDate.now().plusDays(2)
-                        ),
                     gyldighetsperiode = null
                 )
             ),

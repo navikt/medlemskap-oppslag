@@ -141,7 +141,7 @@ internal class FamilieServiceTest {
             periode = Periode(null, null),
             utenlandsopphold = null,
             arbeidsgivertype = OpplysningspliktigArbeidsgiverType.Organisasjon,
-            arbeidsgiver = Arbeidsgiver("123", listOf(Ansatte(5, null, null)), null, null),
+            arbeidsgiver = Arbeidsgiver("123", listOf(Ansatte(5, null)), null, null),
             arbeidsforholdstype = Arbeidsforholdstype.NORMALT,
             arbeidsavtaler = emptyList(),
             permisjonPermittering = null
