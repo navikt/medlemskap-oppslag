@@ -10,8 +10,8 @@ Egenskap: Regel 17.1: Er bruker frilanser?
       | 01.01.2018      |                 | Organisasjon     | <Arbeidsforholdstype> |
 
     Og følgende arbeidsgiver i arbeidsforholdet
-      | Identifikator | Arbeidsgivertype | Antall ansatte | Konkursstatus |
-      | 1             | BEDR             | 9              |               |
+      | Identifikator | Arbeidsgivertype | Antall ansatte |
+      | 1             | BEDR             | 9              |
 
     Når regel "17.1" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |

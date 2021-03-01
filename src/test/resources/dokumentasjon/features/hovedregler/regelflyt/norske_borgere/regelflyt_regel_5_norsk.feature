@@ -1,7 +1,7 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regelflyt for regel 5
+Egenskap: Regelflyt for regel 5 for norske borgere
 
   Bakgrunn:
     Gitt følgende bostedsadresser i personhistorikken
@@ -13,7 +13,7 @@ Egenskap: Regelflyt for regel 5
       | NOR      | 01.01.2000      |                 |
 
 
-  Scenariomal: Regelflyt regel 5: Bruker får "ja" på spørsmålet om medlemskap hvis arbeidsgiver har flere enn 5 ansatte
+  Scenariomal: Regelflyt regel 5 for norske borgere
 
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Arbeidsgiver Id |
