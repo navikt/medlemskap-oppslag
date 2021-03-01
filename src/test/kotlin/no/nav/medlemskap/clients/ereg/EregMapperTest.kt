@@ -18,8 +18,6 @@ class EregMapperTest {
 
         Assert.assertEquals(1, mappedArbeidsgiverFraOrganisasjon.ansatte?.size)
         Assert.assertEquals(19, mappedArbeidsgiverFraOrganisasjon.ansatte?.first()?.antall)
-        Assert.assertEquals(LocalDate.parse("2020-07-16"), mappedArbeidsgiverFraOrganisasjon.ansatte?.first()?.bruksperiode?.fom)
-        Assert.assertNull(mappedArbeidsgiverFraOrganisasjon.ansatte?.first()?.bruksperiode?.tom)
         Assert.assertEquals(LocalDate.parse("2020-07-13"), mappedArbeidsgiverFraOrganisasjon.ansatte?.first()?.gyldighetsperiode?.fom)
         Assert.assertNull(mappedArbeidsgiverFraOrganisasjon.ansatte?.first()?.gyldighetsperiode?.tom)
         Assert.assertEquals("975016684", mappedArbeidsgiverFraOrganisasjon.organisasjonsnummer)

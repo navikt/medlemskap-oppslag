@@ -425,7 +425,7 @@ class ArbeidsforholdTest {
             arbeidsforholdPeriode,
             null,
             OpplysningspliktigArbeidsgiverType.Organisasjon,
-            Arbeidsgiver(null, listOf(Ansatte(antall = 10, bruksperiode = null, gyldighetsperiode = null)), null, null),
+            Arbeidsgiver(null, listOf(Ansatte(antall = 10, gyldighetsperiode = null)), null, null),
             Arbeidsforholdstype.NORMALT,
             listOf(arbeidsavtale),
             emptyList()
@@ -462,7 +462,7 @@ class ArbeidsforholdTest {
             arbeidsgivertype = OpplysningspliktigArbeidsgiverType.Organisasjon,
             arbeidsgiver = Arbeidsgiver(
                 organisasjonsnummer = null,
-                ansatte = listOf(Ansatte(antall = antall, bruksperiode = null, gyldighetsperiode = null)),
+                ansatte = listOf(Ansatte(antall = antall, gyldighetsperiode = null)),
                 konkursStatus = null,
                 juridiskeEnheter = juridiskeEnheter
             ),

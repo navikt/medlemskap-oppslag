@@ -7,7 +7,7 @@ import no.nav.medlemskap.domene.arbeidsforhold.*
 import java.time.YearMonth
 
 object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
-    val ANSATTE_9 = listOf(Ansatte(9, null, null))
+    val ANSATTE_9 = listOf(Ansatte(9, null))
     val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(organisasjonsnummer = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskeEnheter = null)
 
     fun mapArbeidsforhold(
@@ -142,10 +142,6 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
         override fun mapRad(rad: Map<String, String>): Ansatte {
             return Ansatte(
                 antall = parseInt(ArbeidDomenebegrep.ANTALL_ANSATTE, rad),
-                bruksperiode = Periode(
-                    parseDato(ArbeidDomenebegrep.BRUKSPERIODE_GYLDIG_FRA, rad),
-                    parseDato(ArbeidDomenebegrep.BRUKSPERIODE_GYLDIG_TIL, rad)
-                ),
                 gyldighetsperiode = Periode(
                     parseDato(ArbeidDomenebegrep.GYLDIGHETSPERIODE_FRA_OG_MED, rad),
                     parseDato(ArbeidDomenebegrep.GYLDIGHETSPERIODE_TIL_OG_MED, rad)
@@ -295,7 +291,7 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
 
             return Arbeidsgiver(
                 organisasjonsnummer = parseValgfriString(ArbeidDomenebegrep.IDENTIFIKATOR, rad),
-                ansatte = listOf(Ansatte(parseValgfriInt(ArbeidDomenebegrep.ANTALL_ANSATTE, rad), null, null)),
+                ansatte = listOf(Ansatte(parseValgfriInt(ArbeidDomenebegrep.ANTALL_ANSATTE, rad), null)),
                 konkursStatus = konkursStatuser,
                 juridiskeEnheter = listOf(JuridiskEnhet(parseValgfriString(ArbeidDomenebegrep.JURIDISK_ORG_NR, rad), parseValgfriString(Domenebegrep.JURIDISK_ENHETSTYPE, rad), parseValgfriInt(Domenebegrep.JURIDISK_ANTALL_ANSATTE, rad)))
             )

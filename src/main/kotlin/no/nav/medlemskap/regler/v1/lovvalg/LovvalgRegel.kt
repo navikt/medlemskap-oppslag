@@ -6,7 +6,6 @@ import no.nav.medlemskap.domene.Landkode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.personhistorikk.Adresse
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
-import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erBritiskBorger
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erSveitsiskBorger
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.gyldigeStatsborgerskap
 import no.nav.medlemskap.regler.common.BasisRegel
@@ -24,7 +23,11 @@ abstract class LovvalgRegel(
     val kontrollPeriodeForArbeidsforhold = kontrollPeriodeForArbeidsforhold(startDatoForYtelse)
     val kontrollPeriodeForPersonhistorikk = kontrollPeriodeForPersonhistorikk(startDatoForYtelse)
 
-    protected fun erPersonBosattINorge(boadadresse: List<Adresse>, postadresseLandkoder: List<String>, midlertidigAdresseLandkoder: List<String>): Boolean {
+    protected fun erPersonBosattINorge(
+        boadadresse: List<Adresse>,
+        postadresseLandkoder: List<String>,
+        midlertidigAdresseLandkoder: List<String>
+    ): Boolean {
         return boadadresse.brukerHarNorskBostedsadresse() && boadadresse.alleErNorske() &&
             personHarIngenEllerNorskPostadresse(postadresseLandkoder) &&
             personHarIngenEllerNorskMidlertidigadresse(midlertidigAdresseLandkoder)
@@ -54,15 +57,5 @@ abstract class LovvalgRegel(
         return !statsborgerskap
             .gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk)
             .filterNot { Landkode.erSveitsisk(it) }.any { Landkode.erEØSland(it) }
-    }
-
-    protected fun erBrukerBritiskBorgerUtenAnnetEøsStatsborgerskap(statsborgerskap: List<Statsborgerskap>): Boolean {
-        if (!statsborgerskap.erBritiskBorger(kontrollPeriodeForPersonhistorikk)) {
-            return false
-        }
-
-        return !statsborgerskap
-            .gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk)
-            .filterNot { Landkode.erBritisk(it) }.any { Landkode.erEØSland(it) }
     }
 }

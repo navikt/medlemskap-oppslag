@@ -153,9 +153,9 @@ private fun loggResponse(fnr: String, response: Response) {
         kv("aarsaker", årsakerSomRegelIdStr.toString()),
         kv("statsborgerskap", response.datagrunnlag.gyldigeStatsborgerskap().toString()),
         kv("statsborgerskapAnt", response.datagrunnlag.gyldigeStatsborgerskap().size),
-        kv("erTredjelandsborger", response.datagrunnlag.erTredjelandsborger()),
+        kv("erTredjelandsborger", response.resultat.erTredjelandsborger()),
         kv("erEosBorger", response.resultat.erEøsBorger()),
-        kv("erNorskBorger", response.datagrunnlag.erNorskBorger()),
+        kv("erNorskBorger", response.resultat.erNorskBorger()),
         kv("response", objectMapper.writeValueAsString(response))
     )
 

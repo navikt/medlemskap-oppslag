@@ -34,7 +34,7 @@ import org.skyscreamer.jsonassert.comparator.CustomComparator
 import java.io.File
 
 class RegelSteps : No {
-    private val ANSATTE_9 = listOf(Ansatte(9, null, null))
+    private val ANSATTE_9 = listOf(Ansatte(9, null))
     private val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(
         organisasjonsnummer = "1",
         ansatte = ANSATTE_9,

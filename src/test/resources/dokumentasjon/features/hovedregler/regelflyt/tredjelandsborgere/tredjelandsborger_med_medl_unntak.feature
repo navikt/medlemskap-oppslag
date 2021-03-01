@@ -18,16 +18,12 @@ Egenskap: Tredjelandsborger med medl unntak.
       | 10.10.1975      |                 | Organisasjon     | NORMALT             | 1               |
 
     Og følgende arbeidsgiver i arbeidsforholdet
-      | Identifikator       | Arbeidsgivertype | Landkode | Antall ansatte | Antall ansatte i juridisk enhet | Juridisk enhetstype | Juridisk orgnr    | Konkursstatus |
-      | organisasjonsnummer | STAT             | NOR      | 10             | 20                              | STAT                | juridiskOrgnummer | Konkursstatus |
+      | Identifikator       | Arbeidsgivertype | Landkode | Antall ansatte | Antall ansatte i juridisk enhet | Juridisk enhetstype | Juridisk orgnr    |
+      | organisasjonsnummer | STAT             | NOR      | 10             | 20                              | STAT                | juridiskOrgnummer |
 
     Og følgende detaljer om ansatte for arbeidsgiver
-      | Antall ansatte | Gyldighetsperiode gyldig fra | Gyldighetsperiode gyldig til | Bruksperiode gyldig fra | Bruksperiode gyldig til |
-      | 10             | 10.10.1975                   | 01.08.2021                   | 10.10.1975              | 01.08.2021              |
-
-    Og følgende arbeidsavtaler i arbeidsforholdet
-      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister | Beregnet antall timer pr uke |
-      | 10.10.1975      | 01.08.2020      | yrkeskode | 100              | NIS           | 37.5                         |
+      | Antall ansatte | Gyldighetsperiode gyldig fra | Gyldighetsperiode gyldig til |
+      | 10             | 10.10.1975                   | 01.08.2021                   |
 
 
   Scenariomal: Tredjelandsborger med medl unntak "Ja" skal få uavklart medlemskap hvis oppholdstillatelse ikke er i orden.
@@ -43,6 +39,10 @@ Egenskap: Tredjelandsborger med medl unntak.
     Og følgende medlemsunntak fra MEDL
       | Dekning             | Fra og med dato | Til og med dato | Er medlem   | Lovvalg | Lovvalgsland | Periodestatus |
       | FTL_2-9_2_ld_jfr_1c | 01.01.2018      | 01.06.2021      | <Er medlem> | ENDL    | NOR          | GYLD          |
+
+    Og følgende arbeidsavtaler i arbeidsforholdet
+      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
+      | 10.10.1975      | 01.08.2020      | yrkeskode | 100              |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
@@ -81,6 +81,10 @@ Egenskap: Tredjelandsborger med medl unntak.
       | Dekning             | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland | Periodestatus |
       | FTL_2-9_2_ld_jfr_1c | 01.01.2018      | 01.06.2021      | Ja        | ENDL    | NOR          | GYLD          |
 
+    Og følgende arbeidsavtaler i arbeidsforholdet
+      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
+      | 10.10.1975      | 01.08.2020      | yrkeskode | 100              |
+
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 05.01.2021      | 12.02.2021      | Nei                           |
@@ -102,6 +106,38 @@ Egenskap: Tredjelandsborger med medl unntak.
       | 20.03.2021         | Ja         |
       | 20.01.2019         | Uavklart   |
 
+
+  Scenariomal: Tredjelandsborger med gyldig oppholdstillatelse og medl unntak "Ja" skal få "Ja" på medlemskap.
+
+    Gitt følgende oppholdstillatelse
+      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type      |
+      | 01.01.2018        | 20.03.2021        | Ja             | PERMANENT |
+
+    Og følgende arbeidsadgang
+      | Gyldig fra og med | Gyldig til og med | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
+      | 01.01.2018        | 20.03.2021        | Ja            | GENERELL          | KUN_ARBEID_HELTID    |
+
+    Og følgende medlemsunntak fra MEDL
+      | Dekning             | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland | Periodestatus |
+      | FTL_2-9_2_ld_jfr_1c | 01.01.2018      | 01.06.2021      | Ja        | ENDL    | NOR          | GYLD          |
+
+    Og følgende arbeidsavtaler i arbeidsforholdet
+      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   |
+      | 10.10.1975      | 01.08.2020      | yrkeskode | <Stillingsprosent> |
+
+    Når medlemskap beregnes med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 05.01.2021      | 12.02.2021      | Nei                           |
+
+    Så skal svaret være "<Medlemskap>"
+
+    Og skal regel-årsaker være "<Årsaker>"
+
+    Eksempler:
+      | Stillingsprosent | Medlemskap | Årsaker |
+      | 50               | Uavklart   | 18      |
+      | 100              | Ja         |         |
+
   Scenario: Tredjelandsborger med medl unntak "Nei" skal få "Uavklart" på medlemskap selv om oppholdstillatelse er i orden.
 
     Gitt følgende oppholdstillatelse
@@ -115,6 +151,10 @@ Egenskap: Tredjelandsborger med medl unntak.
     Og følgende medlemsunntak fra MEDL
       | Dekning             | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland | Periodestatus |
       | FTL_2-9_2_ld_jfr_1c | 01.01.2018      | 01.06.2021      | Nei       | ENDL    | NOR          | GYLD          |
+
+    Og følgende arbeidsavtaler i arbeidsforholdet
+      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
+      | 10.10.1975      | 01.08.2020      | yrkeskode | 100              |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |

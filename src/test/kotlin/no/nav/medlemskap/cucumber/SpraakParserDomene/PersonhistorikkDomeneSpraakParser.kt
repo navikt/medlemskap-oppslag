@@ -89,8 +89,7 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
             return Familierelasjon(
                 relatertPersonsIdent = parseString(PersonhistorikkDomenebegrep.RELATERT_PERSONS_IDENT, rad),
                 relatertPersonsRolle = DomenespråkParser.parseRolle(PersonhistorikkDomenebegrep.RELATERT_PERSONS_ROLLE, rad),
-                minRolleForPerson = DomenespråkParser.parseValgfriRolle(PersonhistorikkDomenebegrep.MIN_ROLLE_FOR_PERSON, rad),
-                folkeregistermetadata = null
+                minRolleForPerson = DomenespråkParser.parseValgfriRolle(PersonhistorikkDomenebegrep.MIN_ROLLE_FOR_PERSON, rad)
             )
         }
     }

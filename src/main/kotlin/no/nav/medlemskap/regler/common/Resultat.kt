@@ -1,5 +1,7 @@
 package no.nav.medlemskap.regler.common
 
+import no.nav.medlemskap.domene.Statsborgerskapskategori
+
 enum class Svar {
     JA, NEI, UAVKLART
 }
@@ -54,6 +56,18 @@ data class Resultat(
 
     fun erNorskBorger(): Boolean {
         return finnRegelResultat(RegelId.REGEL_11)?.svar == Svar.JA
+    }
+
+    fun erTredjelandsborger(): Boolean {
+        return !erEøsBorger()
+    }
+
+    fun bestemStatsborgerskapskategori(): Statsborgerskapskategori {
+        return when {
+            erNorskBorger() -> Statsborgerskapskategori.NORSK_BORGER
+            erEøsBorger() -> Statsborgerskapskategori.EØS_BORGER
+            else -> Statsborgerskapskategori.TREDJELANDSBORGER
+        }
     }
 
     companion object {

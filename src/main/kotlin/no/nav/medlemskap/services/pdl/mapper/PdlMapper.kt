@@ -72,8 +72,7 @@ object PdlMapper {
         return Familierelasjon(
             relatertPersonsIdent = familierelasjon.relatertPersonsIdent,
             relatertPersonsRolle = mapFamileRelasjonsrolle(familierelasjon.relatertPersonsRolle)!!,
-            minRolleForPerson = mapFamileRelasjonsrolle(familierelasjon.minRolleForPerson),
-            folkeregistermetadata = mapFolkeregisterMetadata(familierelasjon.folkeregistermetadata)
+            minRolleForPerson = mapFamileRelasjonsrolle(familierelasjon.minRolleForPerson)
         )
     }
 
@@ -169,16 +168,6 @@ object PdlMapper {
                 HentPerson.Familierelasjonsrolle.MEDMOR -> Familierelasjonsrolle.MEDMOR
                 else -> throw DetteSkalAldriSkje("Denne familierelasjonen er ikke tilgjengelig")
             }
-        }
-    }
-
-    fun mapFolkeregisterMetadata(folkeregistermetadata: HentPerson.Folkeregistermetadata?): Folkeregistermetadata? {
-        return folkeregistermetadata?.let {
-            Folkeregistermetadata(
-                ajourholdstidspunkt = parseIsoDatoTid(it.ajourholdstidspunkt),
-                gyldighetstidspunkt = parseIsoDatoTid(it.gyldighetstidspunkt),
-                opphoerstidspunkt = parseIsoDatoTid(it.opphoerstidspunkt)
-            )
         }
     }
 

@@ -21,6 +21,15 @@ data class Statsborgerskap(
     }
 
     companion object {
+        protected fun erBrukerBritiskBorgerUtenAnnetEøsStatsborgerskap(statsborgerskap: List<Statsborgerskap>, kontrollPeriodeForPersonhistorikk: Kontrollperiode): Boolean {
+            if (!statsborgerskap.erBritiskBorger(kontrollPeriodeForPersonhistorikk)) {
+                return false
+            }
+
+            return !statsborgerskap
+                .gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk)
+                .filterNot { Landkode.erBritisk(it) }.any { Landkode.erEØSland(it) }
+        }
 
         infix fun List<Statsborgerskap>.statsborgerskapFørst(kontrollPeriodeForPersonhistorikk: Kontrollperiode): Set<String> {
             return this
@@ -70,6 +79,10 @@ data class Statsborgerskap(
         infix fun List<Statsborgerskap>.erEøsBorger(
             kontrollPeriodeForPersonhistorikk: Kontrollperiode
         ): Boolean {
+            if (erBrukerBritiskBorgerUtenAnnetEøsStatsborgerskap(this, kontrollPeriodeForPersonhistorikk)) {
+                return kontrollPeriodeForPersonhistorikk.tom.isBefore(LocalDate.of(2021, 1, 1))
+            }
+
             return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Landkode.erEØSland(it) }
         }
 
