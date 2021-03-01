@@ -26,8 +26,8 @@
 
 ### Sammensatte scenarier
 * [Bosatt og jobber i Norge](../regelflyt/norske_borgere/regelflyt_regel_9_norsk.feature)
-* [Mangler bostedsadresse](Ikke_bostedsadresse.feature)
-* [Utenlandsk adresse](utenlandsk__adresse_skal_gi_uavklart.feature)
+* [Mangler bostedsadresse](10_uten_bostedsadresse.feature)
+* [Utenlandsk adresse](10_utenlandsk__adresse_skal_gi_uavklart.feature)
 
 ### Regelflyt for regel 11
 * [Statsborgerskap](regelflyt_11_statsborgerskap.feature)

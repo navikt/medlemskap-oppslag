@@ -24,6 +24,8 @@ data class Adresse(
             this.adresserForKontrollperiode(kontrollperiode).map { it.landkode }
 
         fun List<Adresse>.landkodeForIkkeHistoriskeAdresserForKontrollperiode(kontrollperiode: Kontrollperiode): List<String> =
-            this.filter { it.overlapper(kontrollperiode.periode) && !it.historisk }.map { it.landkode }
+            this.adresserForKontrollperiode(kontrollperiode).filterNot {
+                it.tom == null && it.historisk && (it.fom == null || it.fom.isAfter(LocalDate.of(2017, 1, 1)))
+            }.map { it.landkode }
     }
 }

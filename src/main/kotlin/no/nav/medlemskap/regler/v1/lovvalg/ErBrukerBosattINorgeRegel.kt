@@ -6,7 +6,6 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.personhistorikk.Adresse
 import no.nav.medlemskap.domene.personhistorikk.Adresse.Companion.landkodeForIkkeHistoriskeAdresserForKontrollperiode
 import no.nav.medlemskap.domene.personhistorikk.Adresse.Companion.landkodeTilAdresserForKontrollPeriode
-import no.nav.medlemskap.regler.common.Funksjoner.alleEr
 import no.nav.medlemskap.regler.common.Funksjoner.erIkkeTom
 import no.nav.medlemskap.regler.common.Funksjoner.erTom
 import no.nav.medlemskap.regler.common.RegelId.REGEL_10
@@ -29,7 +28,7 @@ class ErBrukerBosattINorgeRegel(
         val oppholsadresserLandkoder = oppholdsadresser.landkodeForIkkeHistoriskeAdresserForKontrollperiode(kontrollPeriodeForPersonhistorikk)
 
         return when {
-            landkoderBostedsadresser.erIkkeTom() && landkoderBostedsadresser alleEr "NOR" &&
+            landkoderBostedsadresser.erIkkeTom() && landkoderBostedsadresser.all { Landkode.erNorsk(it) } &&
                 (kontaktadresserLandkoder.all { Landkode.erNorsk(it) } || kontaktadresserLandkoder.erTom())
                 && (oppholsadresserLandkoder.all { Landkode.erNorsk(it) } || oppholsadresserLandkoder.erTom()) -> ja(regelId)
             else -> nei(regelId)
