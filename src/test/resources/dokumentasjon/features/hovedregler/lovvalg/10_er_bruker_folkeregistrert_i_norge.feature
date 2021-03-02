@@ -92,28 +92,3 @@ Egenskap: Regel 10: Er bruker folkeregistert i Norge?
 
     Så skal svaret være "Nei"
 
-  Scenariomal: Bruker har folkeregistrert flere postadresser og bostedsadresser hvor tom-dato er null
-
-    Gitt følgende bostedsadresser i personhistorikken
-      | Adresse | Landkode     | Fra og med dato | Til og med dato | Historisk |
-      | Oslo    | NOR          | 01.01.2000      | 31.12.2000      | Ja        |
-      | Oslo    | FRA          | 01.01.2001      | 31.12.2001      | Ja        |
-      | Oslo    | <Bor i land> | 01.01.2002      |                 | Nei       |
-
-    Gitt følgende kontaktadresser i personhistorikken
-      | Adresse | Landkode    | Fra og med dato | Til og med dato | Historisk |
-      | Oslo    | <Post land> | 01.01.2000      |                 | Nei       |
-
-    Når regel "10" kjøres med følgende parametre
-      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-      | 14.01.2021      | 30.01.2021      | Nei                           |
-
-    Så skal svaret være "<Svar>"
-    Og skal avklaringen være som definert i RegelId
-    Og skal begrunnelsen være som definert i RegelId
-
-    Eksempler:
-      | Bor i land | Post land | Svar |
-      | NOR        | NOR       | Ja   |
-      | FRA        | NOR       | Nei  |
-

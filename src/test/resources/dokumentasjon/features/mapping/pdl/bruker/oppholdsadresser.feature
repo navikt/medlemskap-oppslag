@@ -15,8 +15,8 @@ Egenskap: Mapping av oppholdsadresser fra PDL HentPerson.Oppholdsadresse
 
     Så skal mappede oppholdsadresser være
       | Landkode | Fra og med dato | Til og med dato |
-      | NOR      |                 |                 |
-      | NOR      | 2015-03-25      |                 |
+      | NOR      |                 | 2015-03-24      |
+      | NOR      | 2015-03-25      | 2018-05-19      |
       | NOR      | 2018-05-20      |                 |
 
   Scenario: En person som har hatt flere forskjellige oppholdsadresser i Norge og i utlandet
