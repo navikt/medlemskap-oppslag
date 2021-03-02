@@ -50,6 +50,26 @@ Egenskap: Regel 10: Bruker med flere typer adresser i kombinasjon med historiske
     Og skal begrunnelsen være som definert i RegelId
 
 
+  Scenario: Bruker har norsk bostedsadresse og en utenlandsk kontaktadresse som er historisk og med fom-dato før 2017 og uten tom-periode skal gi ja
+
+    Gitt følgende bostedsadresser i personhistorikken
+      | Adresse | Landkode | Fra og med dato | Til og med dato | Historisk |
+      | Oslo    | NOR      | 01.01.2000      | 31.12.2000      | Ja        |
+      | Oslo    | FRA      | 01.01.2001      | 31.12.2001      | Ja        |
+      | Oslo    | NOR      | 01.01.2002      |                 | Nei       |
+
+    Gitt følgende kontaktadresser i personhistorikken
+      | Adresse | Landkode | Fra og med dato | Til og med dato | Historisk |
+      | Oslo    | SWE      | 31.12.2016      |                 | Ja        |
+
+    Når regel "10" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 14.01.2021      | 30.01.2021      | Nei                           |
+
+    Så skal svaret være "Ja"
+    Og skal avklaringen være som definert i RegelId
+    Og skal begrunnelsen være som definert i RegelId
+
   Scenario: Bruker har norsk bostedsadresse og to kontaktadresser hvorav en er utenlandsk, historisk og uten periode, skal gi Ja
 
     Gitt følgende bostedsadresser i personhistorikken

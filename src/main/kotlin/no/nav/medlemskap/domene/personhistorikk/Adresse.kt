@@ -23,9 +23,12 @@ data class Adresse(
         fun List<Adresse>.landkodeTilAdresserForKontrollPeriode(kontrollperiode: Kontrollperiode): List<String> =
             this.adresserForKontrollperiode(kontrollperiode).map { it.landkode }
 
+        // Metode som filtrerer vekk to caser hvor bruker har kun en kontaktadresse eller oppholdsadresse:
+        // Kontaktadresser/Oppholdsadresser som er historiske og har ingen fom- og tom-dato (ignoreres)
+        // Kontaktadresser/Oppholdsadresser som er historiske og fom-dato før 2017 uten tom-dato (ignoreres)
         fun List<Adresse>.landkodeForIkkeHistoriskeAdresserForKontrollperiode(kontrollperiode: Kontrollperiode): List<String> =
             this.adresserForKontrollperiode(kontrollperiode).filterNot {
-                it.tom == null && it.historisk && (it.fom == null || it.fom.isAfter(LocalDate.of(2017, 1, 1)))
+                it.tom == null && it.historisk && (it.fom == null || it.fom.isBefore(LocalDate.of(2017, 1, 1)))
             }.map { it.landkode }
     }
 }
