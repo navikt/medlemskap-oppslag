@@ -333,8 +333,6 @@ enum class ArbeidDomenebegrep(val nøkkel: String) : Domenenøkkel {
     ARBEIDSGIVER_ID("Arbeidsgiver Id"),
     ARBEIDSGIVERTYPE("Arbeidsgivertype"),
     BEREGNET_ANTALL_TIMER_PR_UKE("Beregnet antall timer pr uke"),
-    BRUKSPERIODE_GYLDIG_FRA("Bruksperiode gyldig fra"),
-    BRUKSPERIODE_GYLDIG_TIL("Bruksperiode gyldig til"),
     FRA_OG_MED_DATO("Fra og med dato"),
     FARTSOMRÅDE("Fartsområde"),
     GYLDIGHETSPERIODE_FRA_OG_MED("Gyldighetsperiode gyldig fra"),

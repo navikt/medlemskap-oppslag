@@ -18,8 +18,8 @@ Egenskap: Tredjelandsborger med medl unntak.
       | 10.10.1975      |                 | Organisasjon     | NORMALT             | 1               |
 
     Og følgende arbeidsgiver i arbeidsforholdet
-      | Identifikator       | Arbeidsgivertype | Landkode | Antall ansatte | Antall ansatte i juridisk enhet | Juridisk enhetstype | Juridisk orgnr    |
-      | organisasjonsnummer | STAT             | NOR      | 10             | 20                              | STAT                | juridiskOrgnummer |
+      | Identifikator       | Arbeidsgivertype | Landkode | Antall ansatte |
+      | organisasjonsnummer | STAT             | NOR      | 10             |
 
     Og følgende detaljer om ansatte for arbeidsgiver
       | Antall ansatte | Gyldighetsperiode gyldig fra | Gyldighetsperiode gyldig til |

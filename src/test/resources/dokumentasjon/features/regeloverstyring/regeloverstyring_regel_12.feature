@@ -27,8 +27,8 @@ Egenskap: Overstyring av regelsvar for regel 12
       | 01.01.2018      |                 | Organisasjon     | NORMALT             |
 
     Og følgende arbeidsavtaler i arbeidsforholdet
-      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister |
-      | 01.01.2018      |                 | 001       | 22               |               |
+      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
+      | 01.01.2018      |                 | 001       | 22               |
 
     Og med følgende regeloverstyringer
       | Regel | Svar             |

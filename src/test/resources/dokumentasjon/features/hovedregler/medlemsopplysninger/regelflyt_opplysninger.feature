@@ -22,16 +22,16 @@ Egenskap: Regelflyt for regel opplysninger
       | 10.10.1975      | 01.08.2020      | Organisasjon     | NORMALT             | 1               |
 
     Og følgende arbeidsgiver i arbeidsforholdet
-      | Identifikator       | Arbeidsgivertype | Landkode | Antall ansatte | Antall ansatte i juridisk enhet | Juridisk enhetstype | Juridisk orgnr    | Konkursstatus |
-      | organisasjonsnummer | STAT             | NOR      | 10             | 20                              | STAT                | juridiskOrgnummer | Konkursstatus |
+      | Identifikator       | Arbeidsgivertype | Landkode | Antall ansatte |
+      | organisasjonsnummer | STAT             | NOR      | 10             |
 
     Og følgende detaljer om ansatte for arbeidsgiver
-      | Antall ansatte | Gyldighetsperiode gyldig fra | Gyldighetsperiode gyldig til | Bruksperiode gyldig fra | Bruksperiode gyldig til |
-      | 10             | 10.10.1975                   | 01.08.2020                   | 10.10.1975              | 01.08.2020              |
+      | Antall ansatte | Gyldighetsperiode gyldig fra | Gyldighetsperiode gyldig til |
+      | 10             | 10.10.1975                   | 01.08.2020                   |
 
     Og følgende arbeidsavtaler i arbeidsforholdet
-      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister | Beregnet antall timer pr uke |
-      | 10.10.1975      | 01.08.2020      | yrkeskode | 100              | NIS           | 37.5                         |
+      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
+      | 10.10.1975      | 01.08.2020      | yrkeskode | 100              |
 
   Scenario: Opplysninger i Joark
     Når medlemskap beregnes med følgende parametre

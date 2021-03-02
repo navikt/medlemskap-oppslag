@@ -22,16 +22,16 @@ Egenskap: Regelflyt for britiske borgere
       | 10.10.1975      |                 | Organisasjon     | NORMALT             | 1               |
 
     Og følgende arbeidsgiver i arbeidsforholdet
-      | Identifikator       | Arbeidsgivertype | Landkode | Antall ansatte | Antall ansatte i juridisk enhet | Juridisk enhetstype | Juridisk orgnr    | Konkursstatus |
-      | organisasjonsnummer | STAT             | NOR      | 10             | 20                              | STAT                | juridiskOrgnummer | Konkursstatus |
+      | Identifikator       | Arbeidsgivertype | Landkode | Antall ansatte |
+      | organisasjonsnummer | STAT             | NOR      | 10             |
 
     Og følgende detaljer om ansatte for arbeidsgiver
-      | Antall ansatte | Gyldighetsperiode gyldig fra | Gyldighetsperiode gyldig til | Bruksperiode gyldig fra | Bruksperiode gyldig til |
-      | 10             | 10.10.1975                   | 01.08.2021                   | 10.10.1975              | 01.08.2021              |
+      | Antall ansatte | Gyldighetsperiode gyldig fra | Gyldighetsperiode gyldig til |
+      | 10             | 10.10.1975                   | 01.08.2021                   |
 
     Og følgende arbeidsavtaler i arbeidsforholdet
-      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister | Beregnet antall timer pr uke |
-      | 10.10.1975      | 01.08.2021      | yrkeskode | 100              | NIS           | 37.5                         |
+      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
+      | 10.10.1975      | 01.08.2021      | yrkeskode | 100              |
 
 
   Scenariomal: Britiske borgere er EØS-borgere bare fram til og med 31.12.2020
