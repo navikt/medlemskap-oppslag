@@ -27,8 +27,8 @@ Egenskap: Regelflyt for regel 20, brukere som ikke er registrert som bosatt i No
       | 01.01.2018      |                 | Organisasjon     | NORMALT             |
 
     Og følgende arbeidsavtaler i arbeidsforholdet
-      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   | Skipsregister |
-      | 01.01.2018      |                 | 001       | <Stillingsprosent> |               |
+      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   |
+      | 01.01.2018      |                 | 001       | <Stillingsprosent> |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
