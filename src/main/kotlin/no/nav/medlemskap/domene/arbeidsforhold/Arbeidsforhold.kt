@@ -285,18 +285,18 @@ data class Arbeidsforhold(
             return arbeidsforholdForKontrollPeriode(kontrollPeriode).map { it.arbeidsgiver }
         }
 
-        infix fun List<Arbeidsforhold>.gyldigeOrgnummer(kontrollPeriode: Kontrollperiode): List<String> {
+        infix fun List<Arbeidsforhold>.orgnummerForKontrollperiode(kontrollPeriode: Kontrollperiode): List<String> {
             return arbeidsforholdForKontrollPeriode(kontrollPeriode).map { it.arbeidsgiver.organisasjonsnummer ?: "null" }
         }
 
-        infix fun List<Arbeidsforhold>.gyldigAaRegUtenlandsoppholdLandkode(kontrollPeriode: Kontrollperiode): List<String> {
+        infix fun List<Arbeidsforhold>.aaRegUtenlandsoppholdLandkodeForKontrollperiode(kontrollPeriode: Kontrollperiode): List<String> {
             return arbeidsforholdForKontrollPeriode(kontrollPeriode)
                 .flatMap {
                     it.utenlandsopphold?.hentLandkoder() ?: listOf("null")
                 }
         }
 
-        infix fun List<Arbeidsforhold>.gyldigAaRegUtenlandsoppholdPeriode(kontrollPeriode: Kontrollperiode): List<Periode?> {
+        infix fun List<Arbeidsforhold>.aaRegUtenlandsoppholdPeriodeForKontrollperiode(kontrollPeriode: Kontrollperiode): List<Periode?> {
             val utenlandsopphold = arbeidsforholdForKontrollPeriode(kontrollPeriode).flatMap {
                 it.utenlandsopphold ?: listOf(null)
             }
