@@ -2,6 +2,8 @@ package no.nav.medlemskap.domene
 
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.startDatoForYtelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.gyldigAaRegUtenlandsoppholdLandkode
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.gyldigAaRegUtenlandsoppholdPeriode
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.gyldigeOrgnummer
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
@@ -39,5 +41,17 @@ data class Datagrunnlag(
 
     fun gyldigeOrgnummer(): List<String> {
         return arbeidsforhold.gyldigeOrgnummer(kontrollPeriodeForArbeidsforhold)
+    }
+
+    fun gyldigeAaRegUtenlandsopphold(): List<String> {
+        return arbeidsforhold.gyldigAaRegUtenlandsoppholdLandkode(kontrollPeriodeForArbeidsforhold)
+    }
+
+    fun gyldigeAaRegUtenlandsoppholdPeriodeFom(): List<LocalDate?> {
+        return arbeidsforhold.gyldigAaRegUtenlandsoppholdPeriode(kontrollPeriodeForArbeidsforhold).map { it?.fom }
+    }
+
+    fun gyldigeAaRegUtenlandsoppholdPeriodeTom(): List<LocalDate?> {
+        return arbeidsforhold.gyldigAaRegUtenlandsoppholdPeriode(kontrollPeriodeForArbeidsforhold).map { it?.tom }
     }
 }

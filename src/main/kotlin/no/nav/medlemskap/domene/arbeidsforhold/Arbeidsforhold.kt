@@ -289,6 +289,24 @@ data class Arbeidsforhold(
             return arbeidsforholdForKontrollPeriode(kontrollPeriode).map { it.arbeidsgiver.organisasjonsnummer ?: "null" }
         }
 
+        infix fun List<Arbeidsforhold>.gyldigAaRegUtenlandsoppholdLandkode(kontrollPeriode: Kontrollperiode): List<String> {
+            return arbeidsforholdForKontrollPeriode(kontrollPeriode)
+                .flatMap {
+                    it.utenlandsopphold?.hentLandkoder() ?: listOf("null")
+                }
+        }
+
+        infix fun List<Arbeidsforhold>.gyldigAaRegUtenlandsoppholdPeriode(kontrollPeriode: Kontrollperiode): List<Periode?> {
+            val utenlandsopphold = arbeidsforholdForKontrollPeriode(kontrollPeriode).flatMap {
+                it.utenlandsopphold ?: listOf(null)
+            }
+            val utenlandsOppholdPeriode = utenlandsopphold.map { it?.periode }
+            return utenlandsOppholdPeriode
+        }
+
+        private fun List<Utenlandsopphold>.hentLandkoder(): List<String> =
+            this.map { it.landkode }
+
         private fun List<Arbeidsforhold>.arbeidsforholdForKontrollPeriode(kontrollPeriode: Kontrollperiode) =
             this.filter {
                 it.periode.overlapper(kontrollPeriode.periode)
