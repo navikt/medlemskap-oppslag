@@ -159,9 +159,7 @@ private fun loggResponse(fnr: String, response: Response) {
         kv("AaRegUtenlandsoppholdLandkode", response.datagrunnlag.gyldigeAaRegUtenlandsopphold()),
         kv("AaRegUtenlandsoppsholdPeriodeFom", response.datagrunnlag.gyldigeAaRegUtenlandsoppholdPeriodeFom().toString()),
         kv("AaRegUtenlandsoppsholdPeriodeTom", response.datagrunnlag.gyldigeAaRegUtenlandsoppholdPeriodeTom().toString()),
-        kv("skipsregister", response.datagrunnlag.gyldigSkipsregister()),
-        kv("skipstype", response.datagrunnlag.gyldigSkipstype()),
-        kv("fartsområde", response.datagrunnlag.gyldigFartsområde()),
+        kv("Skipsregister_fartsområde_og_Skipstype", response.datagrunnlag.kombinasjonAvSkipsregisterFartsomradeOgSkipstype()),
         kv("response", objectMapper.writeValueAsString(response))
     )
 

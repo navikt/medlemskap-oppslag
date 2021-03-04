@@ -304,19 +304,12 @@ data class Arbeidsforhold(
             return utenlandsOppholdPeriode
         }
 
-        infix fun List<Arbeidsforhold>.skipsregisterForKontrollperiode(kontrollPeriode: Kontrollperiode): List<String> {
-            return arbeidsavtalerForKontrollperiode(kontrollPeriode)
-                .map { it.skipsregister?.name ?: "null" }
-        }
-
-        infix fun List<Arbeidsforhold>.fartsområdeForKontrollperiode(kontrollPeriode: Kontrollperiode): List<String> {
-            return arbeidsavtalerForKontrollperiode(kontrollPeriode)
-                .map { it.fartsomraade?.name ?: "null" }
-        }
-
-        infix fun List<Arbeidsforhold>.skipstypeForKontrollperiode(kontrollPeriode: Kontrollperiode): List<String> {
-            return arbeidsavtalerForKontrollperiode(kontrollPeriode)
-                .map { it.skipstype?.name ?: "null" }
+        infix fun List<Arbeidsforhold>.skipsregisterFartsomradeOgSkipstypeForKontrollperiode(kontrollPeriode: Kontrollperiode): List<String> {
+            return arbeidsavtalerForKontrollperiode(kontrollPeriode).map { listOf(
+                it.skipsregister?.name ?: "null",
+                it.fartsomraade?.name ?: "null",
+                it.skipstype?.name ?: "null")
+            }.flatten()
         }
 
         private fun List<Utenlandsopphold>.hentLandkoder(): List<String> =
