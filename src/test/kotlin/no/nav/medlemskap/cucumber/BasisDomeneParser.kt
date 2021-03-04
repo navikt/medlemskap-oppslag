@@ -2,10 +2,7 @@ package no.nav.medlemskap.cucumber
 
 import io.cucumber.datatable.DataTable
 import no.nav.medlemskap.cucumber.SpraakParserDomene.ArbeidDomenebegrep
-import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforholdstype
-import no.nav.medlemskap.domene.arbeidsforhold.Fartsomraade
-import no.nav.medlemskap.domene.arbeidsforhold.PermisjonPermitteringType
-import no.nav.medlemskap.domene.arbeidsforhold.Skipsregister
+import no.nav.medlemskap.domene.arbeidsforhold.*
 import no.nav.medlemskap.regler.common.Datohjelper
 import java.time.LocalDate
 
@@ -32,6 +29,11 @@ abstract class BasisDomeneParser {
         fun parseSkipsregister(rad: Map<String, String>): Skipsregister? {
             val verdi = valgfriVerdi(ArbeidDomenebegrep.SKIPSREGISTER.nøkkel, rad)
             return if (verdi == null) null else Skipsregister.valueOf(verdi)
+        }
+
+        fun parseSkipstype(rad: Map<String, String>): Skipstype? {
+            val verdi = valgfriVerdi(ArbeidDomenebegrep.SKIPSTYPE.nøkkel, rad)
+            return if (verdi == null) null else Skipstype.valueOf(verdi)
         }
 
         fun parsePermisjonPermitteringType(rad: Map<String, String>): PermisjonPermitteringType {

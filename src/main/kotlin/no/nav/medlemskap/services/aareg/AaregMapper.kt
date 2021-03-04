@@ -2,7 +2,7 @@ package no.nav.medlemskap.services.aareg
 
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.aareg.*
-import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.arbeidsforhold.*
 import no.nav.medlemskap.services.ereg.mapOrganisasjonTilArbeidsgiver
 
@@ -70,7 +70,8 @@ fun mapArbeidsAvtaler(arbeidsforhold: AaRegArbeidsforhold): List<Arbeidsavtale> 
             beregnetAntallTimerPrUke = it.beregnetAntallTimerPrUke,
             stillingsprosent = it.stillingsprosent,
             yrkeskode = it.yrke,
-            fartsomraade = Fartsomraade.fraFartsomraadeVerdi(it.fartsomraade)
+            fartsomraade = Fartsomraade.fraFartsomraadeVerdi(it.fartsomraade),
+            skipstype = Skipstype.fraSkipstypeVerdi(it.skipstype)
         )
     }
 }
