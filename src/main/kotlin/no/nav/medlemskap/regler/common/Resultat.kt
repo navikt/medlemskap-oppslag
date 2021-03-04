@@ -35,18 +35,11 @@ data class Resultat(
         return finnRegelResultat(this, regelId)
     }
 
-    fun årsaksTekst(): String {
-        val årsak = finnÅrsak(this)
-
-        return årsak?.beskrivelse ?: ""
-    }
-
     fun finnÅrsaker(): List<Årsak> {
         return finnÅrsaker(this)
     }
 
     fun hentÅrsak(): Årsak? {
-
         return årsak
     }
 

@@ -769,5 +769,7 @@ components:
           type: string
         beskrivelse:
           type: string
+        begrunnelse:
+          type: string
         svar:
           $ref: "#/components/schemas/Svar"
