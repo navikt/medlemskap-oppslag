@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2021-03-04T12:42:45.613986",
+  "tidspunkt" : "2021-03-04T15:17:15.379545",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "datagrunnlag" : {
@@ -405,7 +405,6 @@
         "regelId" : "REGEL_1_4",
         "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
         "svar" : "NEI",
-        "beskrivelse" : "Regel 1.4:  Er hele perioden med medlemskap innenfor 12-måneders perioden? NEI",
         "begrunnelse" : "Det finnes hull i 12-måneders perioden for medlemskap"
       } ],
       "avklaring" : "Har bruker avklarte opplysninger i MEDL?"
@@ -486,7 +485,6 @@
       "regelId" : "REGEL_1_4",
       "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
       "svar" : "NEI",
-      "beskrivelse" : "Regel 1.4:  Er hele perioden med medlemskap innenfor 12-måneders perioden? NEI",
       "begrunnelse" : "Det finnes hull i 12-måneders perioden for medlemskap"
     } ],
     "avklaring" : "Er bruker medlem?"

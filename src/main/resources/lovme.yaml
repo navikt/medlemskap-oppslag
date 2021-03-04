@@ -767,8 +767,6 @@ components:
           $ref: "#/components/schemas/RegelId"
         avklaring:
           type: string
-        beskrivelse:
-          type: string
         begrunnelse:
           type: string
         svar:
