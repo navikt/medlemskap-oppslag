@@ -305,10 +305,12 @@ data class Arbeidsforhold(
         }
 
         infix fun List<Arbeidsforhold>.skipsregisterFartsomradeOgSkipstypeForKontrollperiode(kontrollPeriode: Kontrollperiode): List<String> {
-            return arbeidsavtalerForKontrollperiode(kontrollPeriode).map { listOf(
-                it.skipsregister?.name ?: "null",
-                it.fartsomraade?.name ?: "null",
-                it.skipstype?.name ?: "null")
+            return arbeidsavtalerForKontrollperiode(kontrollPeriode).map {
+                listOf(
+                    it.skipsregister?.name ?: "null",
+                    it.fartsomraade?.name ?: "null",
+                    it.skipstype?.name ?: "null"
+                )
             }.flatten()
         }
 

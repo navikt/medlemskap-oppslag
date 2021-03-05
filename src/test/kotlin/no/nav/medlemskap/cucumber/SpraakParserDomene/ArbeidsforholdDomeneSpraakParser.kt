@@ -96,6 +96,10 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, SkipsregisterMapper())[0]
     }
 
+    fun mapSkipstype(dataTable: DataTable): Skipstype {
+        return mapDataTable(dataTable, SkipstypeMapper())[0]
+    }
+
     fun mapRapporteringsperiode(dataTable: DataTable): YearMonth {
         return mapDataTable(dataTable, RapporteringsperiodeMapper())[0]
     }
@@ -129,6 +133,12 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
     class SkipsregisterMapper : RadMapper<Skipsregister> {
         override fun mapRad(rad: Map<String, String>): Skipsregister {
             return Skipsregister.valueOf(parseString(ArbeidDomenebegrep.SKIPSREGISTER, rad))
+        }
+    }
+
+    class SkipstypeMapper : RadMapper<Skipstype> {
+        override fun mapRad(rad: Map<String, String>): Skipstype {
+            return Skipstype.valueOf(parseString(ArbeidDomenebegrep.SKIPSTYPE, rad))
         }
     }
 

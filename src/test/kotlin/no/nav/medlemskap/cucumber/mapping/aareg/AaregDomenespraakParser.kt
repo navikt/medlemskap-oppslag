@@ -66,6 +66,10 @@ class AaregDomenespraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, SkipsregisterMapper())[0]
     }
 
+    fun mapSkipstype(dataTable: DataTable): String {
+        return mapDataTable(dataTable, SkipstypeMapper())[0]
+    }
+
     fun mapFartsomraade(dataTable: DataTable): String {
         return mapDataTable(dataTable, FartsomraadeMapper())[0]
     }
@@ -138,6 +142,12 @@ class AaregDomenespraakParser : BasisDomeneParser() {
     class SkipsregisterMapper : RadMapper<String> {
         override fun mapRad(rad: Map<String, String>): String {
             return parseString(Domenebegrep.SKIPSREGISTER, rad)
+        }
+    }
+
+    class SkipstypeMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(Domenebegrep.SKIPSTYPE, rad)
         }
     }
 
@@ -255,6 +265,7 @@ class AaregDomenespraakParser : BasisDomeneParser() {
         PROSENT("Prosent"),
         TYPE("Type"),
         SKIPSREGISTER("Skipsregister"),
+        SKIPSTYPE("Skipstype"),
         STATUS("Konkurstatus"),
         STILLINGSPROSENT("Stillingsprosent"),
         RAPPORTERINGSPERIODE("Rapporteringsperiode"),
