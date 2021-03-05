@@ -1,12 +1,7 @@
 package no.nav.medlemskap.regler.common
 
 data class Årsak(val regelId: RegelId, val avklaring: String, val svar: Svar) {
-    val beskrivelse = beskrivelse()
-
-    fun beskrivelse(): String {
-        val regelIdStr = "Regel ${regelId.identifikator}: "
-        return "$regelIdStr $avklaring $svar"
-    }
+    val begrunnelse = regelId.begrunnelse(svar)
 
     companion object {
         fun fraResultat(resultat: Resultat): Årsak {

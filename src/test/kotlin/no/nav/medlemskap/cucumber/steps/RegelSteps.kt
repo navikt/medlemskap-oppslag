@@ -6,12 +6,13 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import io.ktor.features.*
-import no.nav.medlemskap.common.JsonMapper
 import no.nav.medlemskap.common.LokalWebServer
-import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.Medlemskapsparametre
 import no.nav.medlemskap.cucumber.SpraakParserDomene.*
+import no.nav.medlemskap.cucumber.steps.BakoverkompabilitetHjelper.medlemskapRequest
+import no.nav.medlemskap.cucumber.steps.BakoverkompabilitetHjelper.validerDatagrunnlagMotKontrakt
+import no.nav.medlemskap.cucumber.steps.BakoverkompabilitetHjelper.validerMedlemRequestMotKontrakt
 import no.nav.medlemskap.cucumber.steps.pdl.DataOmEktefelleBuilder
 import no.nav.medlemskap.cucumber.steps.pdl.PersonhistorikkBuilder
 import no.nav.medlemskap.cucumber.steps.pdl.PersonhistorikkEktefelleBuilder
@@ -65,9 +66,8 @@ class RegelSteps : No {
     private var journalPosterFraJoArk: List<Journalpost> = emptyList()
     private val domenespråkParser = DomenespråkParser
 
+    private var medlemskapsparametre: Medlemskapsparametre? = null
     private var datagrunnlag: Datagrunnlag? = null
-
-    private var input: String? = null
 
     var overstyrteRegler: Map<RegelId, Svar> = mapOf()
 
@@ -208,14 +208,14 @@ class RegelSteps : No {
         }
 
         Når("medlemskap beregnes med følgende parametre") { dataTable: DataTable ->
-            val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
+            medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
 
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
             resultat = ReglerService.kjørRegler(hentDatagrunnlag())
         }
 
         Når("regel {string} kjøres med følgende parametre, skal valideringsfeil være {string}") { regelId: String, forventetValideringsfeil: String, dataTable: DataTable ->
-            val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
+            medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
 
             val regelFactory = RegelFactory(hentDatagrunnlag())
@@ -229,7 +229,7 @@ class RegelSteps : No {
         }
 
         Når("regel {string} kjøres med følgende parametre, skal svaret være {string}") { regelId: String, forventetSvar: String, dataTable: DataTable ->
-            val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
+            medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
 
             val regelFactory = RegelFactory(hentDatagrunnlag())
@@ -240,7 +240,7 @@ class RegelSteps : No {
         }
 
         Når("regel {string} kjøres med følgende parametre") { regelId: String, dataTable: DataTable ->
-            val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
+            medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
 
             val regelFactory = RegelFactory(hentDatagrunnlag())
@@ -250,29 +250,31 @@ class RegelSteps : No {
         }
 
         Når("tjenestekall med følgende parametere behandles") { dataTable: DataTable ->
-            val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
-            input = LokalWebServer.byggInput(medlemskapsparametre)
-            LokalWebServer.testDatagrunnlag = byggDatagrunnlag(medlemskapsparametre)
+            medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
+            datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
+
+            LokalWebServer.testDatagrunnlag = datagrunnlag
             LokalWebServer.startServer()
         }
 
         Når("tjenestekall for regler med følgende parametere behandles") { dataTable: DataTable ->
-            val medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
-            input = LokalWebServer.byggDatagrunnlagInput(byggDatagrunnlag(medlemskapsparametre))
+            medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
+            datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
+
             LokalWebServer.startServer()
         }
 
         Så("skal forventet json respons være {string}") { filnavn: String ->
-            val forventetRespons = RegelSteps::class.java
+            val forventetJsonResponse = RegelSteps::class.java
                 .getResource("/testpersoner/bakoverkompatibeltest/$filnavn.json").readText()
 
-            val respons = LokalWebServer.respons(input!!)
+            val jsonResponse = medlemskapRequest(medlemskapsparametre)
 
-            resultat = objectMapper.readValue(respons, Response::class.java).resultat
+            resultat = Response.fraJson(jsonResponse).resultat
 
             JSONAssert.assertEquals(
-                forventetRespons,
-                respons,
+                forventetJsonResponse,
+                jsonResponse,
                 CustomComparator(
                     JSONCompareMode.STRICT,
                     Customization("tidspunkt") { _, _ -> true }
@@ -281,11 +283,11 @@ class RegelSteps : No {
         }
 
         Så("Skal kontrakt være OK") {
-            LokalWebServer.kontraktMedlemskap(input!!)
+            validerMedlemRequestMotKontrakt(medlemskapsparametre!!)
         }
 
         Så("Skal kontrakt for Regler fra datagrunnlag være OK") {
-            LokalWebServer.kontraktRegler(input!!)
+            validerDatagrunnlagMotKontrakt(datagrunnlag)
         }
 
         Så("Skal input {string} gi statuskoden {int}") { filnavn: String, statusKode: Int ->
@@ -316,10 +318,6 @@ class RegelSteps : No {
             } else {
                 assertEquals(hentResultat().regelId.neiBegrunnelse, hentResultat().begrunnelse)
             }
-        }
-
-        Så("skal årsaken være {string}") { forventetÅrsak: String ->
-            assertEquals(forventetÅrsak, hentResultat().årsaksTekst())
         }
 
         Så("skal regel-årsaker være {string}") { forventedeÅrsaker: String ->
@@ -379,8 +377,8 @@ class RegelSteps : No {
         }
 
         Så("skal JSON datagrunnlag og resultat genereres i filen {string}") { filnavn: String ->
-            val datagrunnlagJson: String = JsonMapper.mapToJson(hentDatagrunnlag()).trim()
-            val resultatJson = JsonMapper.mapToJson(hentResultat())
+            val datagrunnlagJson: String = hentDatagrunnlag().tilJson()
+            val resultatJson = hentResultat().tilJson()
             val responseJson = datagrunnlagJson.substring(0, datagrunnlagJson.length - 2) + ",\n \"resultat\" : " + resultatJson + "}"
 
             lagreJson(filnavn, responseJson)
@@ -396,11 +394,11 @@ class RegelSteps : No {
     }
 
     private fun lagreJsonResultat(filnavn: String) {
-        lagreJson(filnavn, JsonMapper.mapToJson(hentResultat()))
+        lagreJson(filnavn, hentResultat().tilJson())
     }
 
     private fun lagreJsonDatagrunnlag(filnavn: String) {
-        lagreJson(filnavn, JsonMapper.mapToJson(hentDatagrunnlag()))
+        lagreJson(filnavn, hentDatagrunnlag().tilJson())
     }
 
     private fun lagreJson(filnavn: String, json: String) {
@@ -475,5 +473,34 @@ class RegelSteps : No {
 
     private fun hentDatagrunnlag(): Datagrunnlag {
         return datagrunnlag ?: throw RuntimeException("Datagrunnlag er null")
+    }
+}
+
+private object BakoverkompabilitetHjelper {
+
+    fun medlemskapRequest(medlemskapsparametre: Medlemskapsparametre?): String {
+        if (medlemskapsparametre == null) {
+            throw RuntimeException("Medlemskapsparametre er null")
+        }
+
+        val responseStr = LokalWebServer.medlemskapRequest(medlemskapsparametre)
+
+        return responseStr
+    }
+
+    fun validerMedlemRequestMotKontrakt(medlemskapsparametre: Medlemskapsparametre?) {
+        if (medlemskapsparametre == null) {
+            throw RuntimeException("Medlemskapsparametre er null")
+        }
+
+        LokalWebServer.validerKontraktMedlemskap(medlemskapsparametre)
+    }
+
+    fun validerDatagrunnlagMotKontrakt(datagrunnlag: Datagrunnlag?) {
+        if (datagrunnlag == null) {
+            throw RuntimeException("Datagrunnlag er null")
+        }
+
+        LokalWebServer.validerKontraktRegler(datagrunnlag)
     }
 }

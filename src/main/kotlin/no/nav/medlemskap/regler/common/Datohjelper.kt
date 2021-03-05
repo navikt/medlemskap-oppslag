@@ -11,10 +11,10 @@ object Datohjelper {
     private val isoDatoFormatter = DateTimeFormatter.ISO_LOCAL_DATE
 
     fun parseDato(dato: String): LocalDate {
-        if (dato.contains(".")) {
-            return LocalDate.parse(dato, norskDatoFormatter)
+        return if (dato.contains(".")) {
+            LocalDate.parse(dato, norskDatoFormatter)
         } else {
-            return LocalDate.parse(dato, isoDatoFormatter)
+            LocalDate.parse(dato, isoDatoFormatter)
         }
     }
 

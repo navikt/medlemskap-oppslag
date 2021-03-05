@@ -1,5 +1,6 @@
 package no.nav.medlemskap.regler.common
 
+import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Statsborgerskapskategori
 
 enum class Svar {
@@ -35,18 +36,11 @@ data class Resultat(
         return finnRegelResultat(this, regelId)
     }
 
-    fun årsaksTekst(): String {
-        val årsak = finnÅrsak(this)
-
-        return årsak?.beskrivelse ?: ""
-    }
-
     fun finnÅrsaker(): List<Årsak> {
         return finnÅrsaker(this)
     }
 
     fun hentÅrsak(): Årsak? {
-
         return årsak
     }
 
@@ -68,6 +62,10 @@ data class Resultat(
             erEøsBorger() -> Statsborgerskapskategori.EØS_BORGER
             else -> Statsborgerskapskategori.TREDJELANDSBORGER
         }
+    }
+
+    fun tilJson(): String {
+        return objectMapper.writeValueAsString(this)
     }
 
     companion object {

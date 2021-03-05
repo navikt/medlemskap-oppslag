@@ -1,5 +1,6 @@
 package no.nav.medlemskap.domene
 
+import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.startDatoForYtelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.aaRegUtenlandsoppholdLandkodeForKontrollperiode
@@ -58,5 +59,9 @@ data class Datagrunnlag(
 
     fun kombinasjonAvSkipsregisterFartsomradeOgSkipstype(): List<String> {
         return arbeidsforhold.skipsregisterFartsomradeOgSkipstypeForKontrollperiode(kontrollPeriodeForArbeidsforhold)
+    }
+
+    fun tilJson(): String {
+        return objectMapper.writeValueAsString(this).trim()
     }
 }

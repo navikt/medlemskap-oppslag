@@ -57,10 +57,6 @@ Egenskap: Bakoverkompatibel test
       | Ident         |
       | 0101201012345 |
 
-    Og følgende familierelasjoner fra PDL:
-      | Relatert persons ident | Relatert persons rolle | Min rolle for person |
-      | 0101201012345          | BARN                   | FAR                  |
-
     Og følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Arbeidsgiver Id |
       | 10.10.1975      | 01.08.2020      | Organisasjon     | NORMALT             | 1               |
