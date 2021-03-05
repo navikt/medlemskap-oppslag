@@ -275,7 +275,8 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
                 parseSkipsregister(rad),
                 parseFartsområde(rad),
                 parseDouble(ArbeidDomenebegrep.STILLINGSPROSENT, rad),
-                parseValgfriDouble(ArbeidDomenebegrep.BEREGNET_ANTALL_TIMER_PR_UKE, rad)
+                parseValgfriDouble(ArbeidDomenebegrep.BEREGNET_ANTALL_TIMER_PR_UKE, rad),
+                parseSkipstype(rad)
             )
         }
     }
@@ -349,6 +350,7 @@ enum class ArbeidDomenebegrep(val nøkkel: String) : Domenenøkkel {
     RAPPORTERINGSPERIODE("Rapporteringsperiode"),
     TIL_OG_MED_DATO("Til og med dato"),
     SKIPSREGISTER("Skipsregister"),
+    SKIPSTYPE("Skipstype"),
     STILLINGSPROSENT("Stillingsprosent"),
     STATUS("Status"),
     VARSLINGSKODE("Varslingkode"),

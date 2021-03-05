@@ -304,6 +304,14 @@ data class Arbeidsforhold(
             return utenlandsOppholdPeriode
         }
 
+        infix fun List<Arbeidsforhold>.skipsregisterFartsomradeOgSkipstypeForKontrollperiode(kontrollPeriode: Kontrollperiode): List<String> {
+            return arbeidsavtalerForKontrollperiode(kontrollPeriode).map { listOf(
+                it.skipsregister?.name ?: "null",
+                it.fartsomraade?.name ?: "null",
+                it.skipstype?.name ?: "null")
+            }.flatten()
+        }
+
         private fun List<Utenlandsopphold>.hentLandkoder(): List<String> =
             this.map { it.landkode }
 
@@ -311,6 +319,10 @@ data class Arbeidsforhold(
             this.filter {
                 it.periode.overlapper(kontrollPeriode.periode)
             }
+
+        private fun List<Arbeidsforhold>.arbeidsavtalerForKontrollperiode(kontrollPeriode: Kontrollperiode): List<Arbeidsavtale> {
+            return arbeidsforholdForKontrollPeriode(kontrollPeriode).flatMap { it.arbeidsavtaler }
+        }
 
         fun List<Arbeidsforhold>.arbeidsforholdForKontrollPeriodeMedStillingsprosentOver0(kontrollPeriode: Kontrollperiode) =
             this.filter {

@@ -92,8 +92,8 @@ class ArbeidsforholdTest {
             tom = LocalDate.of(2020, 1, 1)
         )
 
-        val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode, arbeidsavtalePeriode, "1234", Skipsregister.NOR, Fartsomraade.INNENRIKS, 25.0, 9.0)
-        val arbeidsavtale2 = Arbeidsavtale(arbeidsavtalePeriode, arbeidsavtalePeriode, "4321", null, null, 35.0, 9.0)
+        val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode, arbeidsavtalePeriode, "1234", Skipsregister.NOR, Fartsomraade.INNENRIKS, 25.0, 9.0, skipstype = null)
+        val arbeidsavtale2 = Arbeidsavtale(arbeidsavtalePeriode, arbeidsavtalePeriode, "4321", null, null, 35.0, 9.0, skipstype = null)
 
         val arbeidsforhold = createArbeidsforhold(arbeidsforholdPeriode)
         arbeidsforhold.arbeidsavtaler = listOf(arbeidsavtale, arbeidsavtale2)
@@ -119,8 +119,8 @@ class ArbeidsforholdTest {
             tom = LocalDate.of(2020, 1, 1)
         )
 
-        val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode1, arbeidsavtalePeriode1, "1234", Skipsregister.NOR, Fartsomraade.INNENRIKS, 100.0, 37.5)
-        val arbeidsavtale2 = Arbeidsavtale(arbeidsavtalePeriode2, arbeidsavtalePeriode2, "4321", null, null, 100.0, 37.5)
+        val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode1, arbeidsavtalePeriode1, "1234", Skipsregister.NOR, Fartsomraade.INNENRIKS, 100.0, 37.5, skipstype = null)
+        val arbeidsavtale2 = Arbeidsavtale(arbeidsavtalePeriode2, arbeidsavtalePeriode2, "4321", null, null, 100.0, 37.5, skipstype = null)
 
         val arbeidsforhold = createArbeidsforhold(arbeidsforholdPeriode)
         arbeidsforhold.arbeidsavtaler = listOf(arbeidsavtale, arbeidsavtale2)
@@ -151,9 +151,9 @@ class ArbeidsforholdTest {
             tom = LocalDate.of(2020, 1, 1)
         )
 
-        val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode1, arbeidsavtalePeriode1, "1234", Skipsregister.NOR, Fartsomraade.INNENRIKS, 100.0, 37.5)
-        val arbeidsavtale2 = Arbeidsavtale(arbeidsavtalePeriode2, arbeidsavtalePeriode2, "4321", null, null, 100.0, 37.5)
-        val arbeidsavtale3 = Arbeidsavtale(arbeidsavtalePeriode3, arbeidsavtalePeriode3, "4321", null, null, 100.0, 37.5)
+        val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode1, arbeidsavtalePeriode1, "1234", Skipsregister.NOR, Fartsomraade.INNENRIKS, 100.0, 37.5, skipstype = null)
+        val arbeidsavtale2 = Arbeidsavtale(arbeidsavtalePeriode2, arbeidsavtalePeriode2, "4321", null, null, 100.0, 37.5, skipstype = null)
+        val arbeidsavtale3 = Arbeidsavtale(arbeidsavtalePeriode3, arbeidsavtalePeriode3, "4321", null, null, 100.0, 37.5, skipstype = null)
 
         val arbeidsforhold = createArbeidsforhold(arbeidsforholdPeriode)
         arbeidsforhold.arbeidsavtaler = listOf(arbeidsavtale, arbeidsavtale2, arbeidsavtale3)
@@ -332,7 +332,8 @@ class ArbeidsforholdTest {
                         fartsomraade = null,
                         skipsregister = null,
                         stillingsprosent = 25.0,
-                        beregnetAntallTimerPrUke = null
+                        beregnetAntallTimerPrUke = null,
+                        skipstype = null
                     )
                 ),
                 juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20))
@@ -419,7 +420,7 @@ class ArbeidsforholdTest {
     }
 
     private fun createArbeidsforhold(arbeidsforholdPeriode: Periode, stillingsprosent: Double = 100.0, arbeidsavtalePeriode: Periode = arbeidsforholdPeriode): Arbeidsforhold {
-        val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode, arbeidsavtalePeriode, "11111", Skipsregister.NOR, Fartsomraade.INNENRIKS, stillingsprosent, null)
+        val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode, arbeidsavtalePeriode, "11111", Skipsregister.NOR, Fartsomraade.INNENRIKS, stillingsprosent, null, skipstype = null)
 
         val arbeidsforhold = Arbeidsforhold(
             arbeidsforholdPeriode,
@@ -435,7 +436,7 @@ class ArbeidsforholdTest {
     }
 
     private fun createArbeidsavtale(periode: Periode, stillingsprosent: Double = 100.0): Arbeidsavtale {
-        return Arbeidsavtale(periode, periode, "11111", null, null, stillingsprosent, 37.5)
+        return Arbeidsavtale(periode, periode, "11111", null, null, stillingsprosent, 37.5, skipstype = null)
     }
 
     private val arbeidsforholdMedMindreEnn6Ansatte = lagArbeidsforhold(2)

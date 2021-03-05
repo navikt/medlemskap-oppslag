@@ -5,6 +5,7 @@ import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.aaRegUtenlandsoppholdLandkodeForKontrollperiode
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.aaRegUtenlandsoppholdPeriodeForKontrollperiode
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.orgnummerForKontrollperiode
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.skipsregisterFartsomradeOgSkipstypeForKontrollperiode
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.ektefelle.DataOmEktefelle
 import no.nav.medlemskap.domene.personhistorikk.Personhistorikk
@@ -53,5 +54,9 @@ data class Datagrunnlag(
 
     fun gyldigeAaRegUtenlandsoppholdPeriodeTom(): List<LocalDate?> {
         return arbeidsforhold.aaRegUtenlandsoppholdPeriodeForKontrollperiode(kontrollPeriodeForArbeidsforhold).map { it?.tom }
+    }
+
+    fun kombinasjonAvSkipsregisterFartsomradeOgSkipstype(): List<String> {
+        return arbeidsforhold.skipsregisterFartsomradeOgSkipstypeForKontrollperiode(kontrollPeriodeForArbeidsforhold)
     }
 }
