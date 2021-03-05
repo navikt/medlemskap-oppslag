@@ -1,6 +1,7 @@
 package no.nav.medlemskap.cucumber
 
 import io.cucumber.datatable.DataTable
+import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.cucumber.Domenebegrep.*
 import no.nav.medlemskap.cucumber.SpraakParserDomene.MedlemskapDomenebegrep
 import no.nav.medlemskap.cucumber.SpraakParserDomene.OppgaveDomenebegrep
@@ -245,4 +246,17 @@ data class Medlemskapsparametre(
     val førsteDagForYtelse: LocalDate?,
     val harHattArbeidUtenforNorge: Boolean,
     val ytelse: Ytelse?
-)
+) {
+
+    fun tilJson(): String {
+        return objectMapper.writeValueAsString(
+            Request(
+                fnr = fnr!!,
+                periode = inputPeriode,
+                brukerinput = Brukerinput(harHattArbeidUtenforNorge),
+                førsteDagForYtelse = førsteDagForYtelse,
+                ytelse = ytelse
+            )
+        )
+    }
+}

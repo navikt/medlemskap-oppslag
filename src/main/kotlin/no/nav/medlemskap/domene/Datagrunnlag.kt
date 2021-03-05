@@ -1,5 +1,6 @@
 package no.nav.medlemskap.domene
 
+import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.startDatoForYtelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.gyldigeOrgnummer
@@ -39,5 +40,9 @@ data class Datagrunnlag(
 
     fun gyldigeOrgnummer(): List<String> {
         return arbeidsforhold.gyldigeOrgnummer(kontrollPeriodeForArbeidsforhold)
+    }
+
+    fun tilJson(): String {
+        return objectMapper.writeValueAsString(this).trim()
     }
 }

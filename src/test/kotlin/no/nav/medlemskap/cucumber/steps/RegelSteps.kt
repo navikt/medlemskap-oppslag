@@ -6,16 +6,13 @@ import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
 import io.ktor.features.*
-import no.nav.medlemskap.common.JsonMapper
 import no.nav.medlemskap.common.LokalWebServer
-import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.Medlemskapsparametre
 import no.nav.medlemskap.cucumber.SpraakParserDomene.*
-import no.nav.medlemskap.cucumber.steps.BakoverkompabilitetHjelper.hentJsonResponse
-import no.nav.medlemskap.cucumber.steps.BakoverkompabilitetHjelper.responseFraJson
+import no.nav.medlemskap.cucumber.steps.BakoverkompabilitetHjelper.medlemskapRequest
 import no.nav.medlemskap.cucumber.steps.BakoverkompabilitetHjelper.validerDatagrunnlagMotKontrakt
-import no.nav.medlemskap.cucumber.steps.BakoverkompabilitetHjelper.validerRequestMotKontrakt
+import no.nav.medlemskap.cucumber.steps.BakoverkompabilitetHjelper.validerMedlemRequestMotKontrakt
 import no.nav.medlemskap.cucumber.steps.pdl.DataOmEktefelleBuilder
 import no.nav.medlemskap.cucumber.steps.pdl.PersonhistorikkBuilder
 import no.nav.medlemskap.cucumber.steps.pdl.PersonhistorikkEktefelleBuilder
@@ -268,16 +265,16 @@ class RegelSteps : No {
         }
 
         Så("skal forventet json respons være {string}") { filnavn: String ->
-            val forventetRespons = RegelSteps::class.java
+            val forventetJsonResponse = RegelSteps::class.java
                 .getResource("/testpersoner/bakoverkompatibeltest/$filnavn.json").readText()
 
-            val response = hentJsonResponse(medlemskapsparametre)
+            val jsonResponse = medlemskapRequest(medlemskapsparametre)
 
-            resultat = responseFraJson(response)?.resultat
+            resultat = Response.fraJson(jsonResponse).resultat
 
             JSONAssert.assertEquals(
-                forventetRespons,
-                response,
+                forventetJsonResponse,
+                jsonResponse,
                 CustomComparator(
                     JSONCompareMode.STRICT,
                     Customization("tidspunkt") { _, _ -> true }
@@ -286,7 +283,7 @@ class RegelSteps : No {
         }
 
         Så("Skal kontrakt være OK") {
-            validerRequestMotKontrakt(medlemskapsparametre!!)
+            validerMedlemRequestMotKontrakt(medlemskapsparametre!!)
         }
 
         Så("Skal kontrakt for Regler fra datagrunnlag være OK") {
@@ -380,8 +377,8 @@ class RegelSteps : No {
         }
 
         Så("skal JSON datagrunnlag og resultat genereres i filen {string}") { filnavn: String ->
-            val datagrunnlagJson: String = JsonMapper.mapToJson(hentDatagrunnlag()).trim()
-            val resultatJson = JsonMapper.mapToJson(hentResultat())
+            val datagrunnlagJson: String = hentDatagrunnlag().tilJson()
+            val resultatJson = hentResultat().tilJson()
             val responseJson = datagrunnlagJson.substring(0, datagrunnlagJson.length - 2) + ",\n \"resultat\" : " + resultatJson + "}"
 
             lagreJson(filnavn, responseJson)
@@ -397,11 +394,11 @@ class RegelSteps : No {
     }
 
     private fun lagreJsonResultat(filnavn: String) {
-        lagreJson(filnavn, JsonMapper.mapToJson(hentResultat()))
+        lagreJson(filnavn, hentResultat().tilJson())
     }
 
     private fun lagreJsonDatagrunnlag(filnavn: String) {
-        lagreJson(filnavn, JsonMapper.mapToJson(hentDatagrunnlag()))
+        lagreJson(filnavn, hentDatagrunnlag().tilJson())
     }
 
     private fun lagreJson(filnavn: String, json: String) {
@@ -481,24 +478,22 @@ class RegelSteps : No {
 
 private object BakoverkompabilitetHjelper {
 
-    fun hentJsonResponse(medlemskapsparametre: Medlemskapsparametre?): String {
-        val input = LokalWebServer.byggInput(medlemskapsparametre!!)
-        val responseStr = LokalWebServer.respons(input!!)
-
-        return responseStr
-    }
-
-    fun responseFraJson(responseJson: String): Response? {
-        return objectMapper.readValue(responseJson, Response::class.java)
-    }
-
-    fun validerRequestMotKontrakt(medlemskapsparametre: Medlemskapsparametre?) {
+    fun medlemskapRequest(medlemskapsparametre: Medlemskapsparametre?): String {
         if (medlemskapsparametre == null) {
             throw RuntimeException("Medlemskapsparametre er null")
         }
 
-        val input = LokalWebServer.byggInput(medlemskapsparametre!!)
-        LokalWebServer.kontraktMedlemskap(input!!)
+        val responseStr = LokalWebServer.medlemskapRequest(medlemskapsparametre)
+
+        return responseStr
+    }
+
+    fun validerMedlemRequestMotKontrakt(medlemskapsparametre: Medlemskapsparametre?) {
+        if (medlemskapsparametre == null) {
+            throw RuntimeException("Medlemskapsparametre er null")
+        }
+
+        LokalWebServer.validerKontraktMedlemskap(medlemskapsparametre)
     }
 
     fun validerDatagrunnlagMotKontrakt(datagrunnlag: Datagrunnlag?) {
@@ -506,7 +501,6 @@ private object BakoverkompabilitetHjelper {
             throw RuntimeException("Datagrunnlag er null")
         }
 
-        val input = LokalWebServer.byggDatagrunnlagInput(datagrunnlag)
-        LokalWebServer.kontraktRegler(input!!)
+        LokalWebServer.validerKontraktRegler(datagrunnlag)
     }
 }

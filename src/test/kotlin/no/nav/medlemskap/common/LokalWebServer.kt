@@ -79,13 +79,9 @@ class LokalWebServer {
             )
         }
 
-        fun byggDatagrunnlagInput(datagrunnlag: Datagrunnlag): String {
-            return objectMapper.writeValueAsString(datagrunnlag)
-        }
-
-        fun respons(input: String): String {
+        fun medlemskapRequest(medlemskapsparametre: Medlemskapsparametre): String {
             return given()
-                .body(input)
+                .body(medlemskapsparametre.tilJson())
                 .header(Header("Content-Type", "application/json"))
                 .post("/")
                 .then()
@@ -102,12 +98,12 @@ class LokalWebServer {
                 .extract().asString()
         }
 
-        fun kontraktMedlemskap(input: String): ValidatableResponse {
+        fun validerKontraktMedlemskap(medlemskapsparametre: Medlemskapsparametre): ValidatableResponse {
             val validationFilter = OpenApiValidationFilter("src/main/resources/lovme.yaml")
 
             return given()
                 .filter(validationFilter)
-                .body(input)
+                .body(medlemskapsparametre.tilJson())
                 .header(Header("Content-Type", "application/json"))
                 .header(Header("Authorization", "Bearer dummytoken"))
                 .post("/")
@@ -115,12 +111,12 @@ class LokalWebServer {
                 .statusCode(200)
         }
 
-        fun kontraktRegler(datagrunnlagJson: String): ValidatableResponse {
+        fun validerKontraktRegler(datagrunnlag: Datagrunnlag): ValidatableResponse {
             val validationFilter = OpenApiValidationFilter("src/main/resources/lovme.yaml")
 
             val response = given()
                 .filter(validationFilter)
-                .body(datagrunnlagJson)
+                .body(datagrunnlag.tilJson())
                 .header(Header("Content-Type", "application/json"))
                 .header(Header("Authorization", "Bearer dummytoken"))
                 .post("regler")
