@@ -115,6 +115,9 @@ components:
         skipsregister:
           type: string
           nullable: true
+        skipstype:
+          type: string
+          nullable: true
         fartsomraade:
           type: string
           nullable: true

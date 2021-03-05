@@ -9,7 +9,8 @@ data class Arbeidsavtale(
     val skipsregister: Skipsregister?,
     val fartsomraade: Fartsomraade?,
     val stillingsprosent: Double?,
-    val beregnetAntallTimerPrUke: Double?
+    val beregnetAntallTimerPrUke: Double?,
+    val skipstype: Skipstype?
 ) {
     fun getStillingsprosent(): Double {
         if (stillingsprosent == 0.0 && beregnetAntallTimerPrUke != null && beregnetAntallTimerPrUke > 0) {

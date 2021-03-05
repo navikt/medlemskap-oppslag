@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2021-03-04T15:17:15.379545",
+  "tidspunkt" : "2021-03-04T07:31:37.777854",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "datagrunnlag" : {
@@ -98,7 +98,8 @@
         "skipsregister" : "NIS",
         "fartsomraade" : null,
         "stillingsprosent" : 100.0,
-        "beregnetAntallTimerPrUke" : 37.5
+        "beregnetAntallTimerPrUke" : 37.5,
+        "skipstype" : null
       } ],
       "permisjonPermittering" : [ {
         "periode" : {
@@ -188,7 +189,8 @@
           "skipsregister" : "NIS",
           "fartsomraade" : null,
           "stillingsprosent" : 100.0,
-          "beregnetAntallTimerPrUke" : 37.5
+          "beregnetAntallTimerPrUke" : 37.5,
+          "skipstype" : null
         } ],
         "permisjonPermittering" : [ ]
       } ]
