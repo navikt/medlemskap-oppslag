@@ -80,7 +80,7 @@ Egenskap: Regelflyt for reglene 11.2.x for bruker som ikke har ektefelle i PDL
     Og følgende personhistorikk for barn fra PDL
       | Ident       | Bosted | Fra og med dato |
       | 09069534888 | NOR    | 18.07.2010      |
-      | 10079541651 |        | 18.07.2010      |
+      | 10079541651 | SWE    | 18.07.2010      |
 
     Og følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
@@ -119,6 +119,6 @@ Egenskap: Regelflyt for reglene 11.2.x for bruker som ikke har ektefelle i PDL
     Og skal regel "11.2.2.1" gi svaret "<Regel 11.2.2.1>"
 
     Eksempler:
-      | Stillingsprosent | Regel 11.2.2.1 | Medlemskap | Årsaker    |
-      | 99               | Nei            | UAVKLART   | 11.2.2.1   |
-      | 100              | Ja             | Ja         |            |
+      | Stillingsprosent | Regel 11.2.2.1 | Medlemskap | Årsaker  |
+      | 99               | Nei            | UAVKLART   | 11.2.2.1 |
+      | 100              | Ja             | Ja         |          |

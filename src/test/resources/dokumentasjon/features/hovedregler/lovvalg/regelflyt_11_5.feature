@@ -72,7 +72,7 @@ Egenskap: Regelflyt for reglene 11.5 for bruker som har ektefelle og barn. Ektef
 
     Og følgende personhistorikk for barn fra PDL
       | Ident       | Bosted | Fra og med dato |
-      | 10079541651 |        | 29.06.2015      |
+      | 10079541651 | SWE    | 29.06.2015      |
       | 09069534888 | NOR    | 18.07.2010      |
 
     Og følgende barn i personhistorikk for ektefelle fra PDL

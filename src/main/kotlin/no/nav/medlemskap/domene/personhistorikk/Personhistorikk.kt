@@ -1,6 +1,7 @@
 package no.nav.medlemskap.domene.personhistorikk
 
 import no.nav.medlemskap.domene.InputPeriode
+import no.nav.medlemskap.regler.common.Funksjoner.isNotNullOrEmpty
 import java.time.LocalDate
 
 data class Personhistorikk(
@@ -12,9 +13,12 @@ data class Personhistorikk(
     val familierelasjoner: List<Familierelasjon>,
     val doedsfall: List<LocalDate>
 ) {
-    companion object {
-        fun List<LocalDate>.erBrukerDoedEtterPeriode(periode: InputPeriode): Boolean {
-            return this.stream().allMatch { it.isAfter(periode.tom) }
-        }
+
+    fun erBrukerDoed(): Boolean {
+        return doedsfall.isNotNullOrEmpty()
+    }
+
+    fun erBrukerDoedEtterPeriode(inputPeriode: InputPeriode): Boolean {
+        return erBrukerDoed() && doedsfall.all { it.isAfter(inputPeriode.tom) }
     }
 }

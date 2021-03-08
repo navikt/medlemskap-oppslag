@@ -4,7 +4,8 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.personhistorikk.Adresse.Companion.adresserForKontrollperiode
-import no.nav.medlemskap.domene.personhistorikk.Adresse.Companion.landkodeTilAdresserForKontrollPeriode
+import no.nav.medlemskap.domene.personhistorikk.Adresse.Companion.landkodeForIkkeHistoriskeAdresserForKontrollperiode
+import no.nav.medlemskap.regler.common.Funksjoner.isNotNullOrEmpty
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
@@ -20,23 +21,33 @@ class HarBrukerBarnSomErFolkeregistrertRegel(
 ) : LovvalgRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
-        val barn = dataOmbarn
+        val barn = dataOmbarn?.map { it.personhistorikkBarn }?.filter {
+            it.bostedsadresser.adresserForKontrollperiode(kontrollPeriodeForPersonhistorikk).isNotNullOrEmpty()
+        }
 
         val harBarnBosattINorge = barn?.any {
             erPersonBosattINorge(
-                it.personhistorikkBarn.bostedsadresser.adresserForKontrollperiode(kontrollPeriodeForPersonhistorikk),
-                it.personhistorikkBarn.kontaktadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
-                it.personhistorikkBarn.oppholdsadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
+                it.bostedsadresser.adresserForKontrollperiode(kontrollPeriodeForPersonhistorikk),
+                it.kontaktadresser.landkodeForIkkeHistoriskeAdresserForKontrollperiode(
+                    kontrollPeriodeForPersonhistorikk
+                ),
+                it.oppholdsadresser.landkodeForIkkeHistoriskeAdresserForKontrollperiode(
+                    kontrollPeriodeForPersonhistorikk
+                )
             )
         }
 
-        val harBarnSomIkkeErBosattINorge = barn?.filterNot {
-            erPersonBosattINorge(
-                it.personhistorikkBarn.bostedsadresser.adresserForKontrollperiode(kontrollPeriodeForPersonhistorikk),
-                it.personhistorikkBarn.kontaktadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk),
-                it.personhistorikkBarn.oppholdsadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
+        val harBarnSomIkkeErBosattINorge = barn?.any {
+            !erPersonBosattINorge(
+                it.bostedsadresser.adresserForKontrollperiode(kontrollPeriodeForPersonhistorikk),
+                it.kontaktadresser.landkodeForIkkeHistoriskeAdresserForKontrollperiode(
+                    kontrollPeriodeForPersonhistorikk
+                ),
+                it.oppholdsadresser.landkodeForIkkeHistoriskeAdresserForKontrollperiode(
+                    kontrollPeriodeForPersonhistorikk
+                )
             )
-        }?.any()
+        }
 
         if (harBarnBosattINorge!! && harBarnSomIkkeErBosattINorge!!) {
             return uavklart(regelId)
