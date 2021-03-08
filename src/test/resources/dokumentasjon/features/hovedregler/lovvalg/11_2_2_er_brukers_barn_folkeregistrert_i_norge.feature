@@ -50,3 +50,20 @@ Egenskap: Regel 11.2.2: Er brukers barn folkeregistrert som bosatt i Norge?
       |                | Ja       |
       | NOR            | Ja       |
       | FRA            | UAVKLART |
+
+  Scenario: Regel 11.2.2 - Ignorer barn som er født etter kontrollperioden
+    Gitt følgende familerelasjoner i personhistorikk fra PDL
+      | Relatert persons ident | Relatert persons rolle | Min rolle for person |
+      | 09069534888            | BARN                   | FAR                  |
+      | 10079541651            | BARN                   | FAR                  |
+
+    Og følgende personhistorikk for barn fra PDL
+      | Ident       | Bosted | Kontaktadresse | Fra og med dato |
+      | 09069534888 | NOR    | NOR            | 18.07.2011      |
+      | 10079541651 | USA    | USA            | 31.01.2021      |
+
+    Når regel "11.2.2" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 20.01.2021      | 30.01.2021      | Nei                           |
+
+    Så skal svaret være "Ja"
