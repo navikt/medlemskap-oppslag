@@ -90,7 +90,7 @@ Egenskap: Regelflyt for reglene 11.4.1 for bruker som har ektefelle og barn. Ekt
 
     Så skal svaret være "UAVKLART"
     Og skal regel-årsaker være "11.5.1"
-    
+
     Og skal regel "11" gi svaret "Nei"
     Og skal regel "11.2" gi svaret "Ja"
     Og skal regel "11.3" gi svaret "Ja"
@@ -119,7 +119,7 @@ Egenskap: Regelflyt for reglene 11.4.1 for bruker som har ektefelle og barn. Ekt
     Og følgende personhistorikk for barn fra PDL
       | Ident       | Bosted | Fra og med dato |
       | 09069534888 | NOR    | 18.07.2010      |
-      | 10079541651 |        | 18.07.2010      |
+      | 10079541651 | USA    | 18.07.2010      |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
