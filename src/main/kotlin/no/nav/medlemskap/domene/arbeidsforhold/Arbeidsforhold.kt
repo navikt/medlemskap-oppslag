@@ -304,14 +304,16 @@ data class Arbeidsforhold(
             return utenlandsOppholdPeriode
         }
 
-        infix fun List<Arbeidsforhold>.skipsregisterFartsomradeOgSkipstypeForKontrollperiode(kontrollPeriode: Kontrollperiode): List<String> {
-            return arbeidsavtalerForKontrollperiode(kontrollPeriode).map {
+        infix fun List<Arbeidsforhold>.skipsregisterFartsomradeOgSkipstypeForKontrollperiode(kontrollPeriode: Kontrollperiode): List<String?> {
+            val skipsinfo = arbeidsavtalerForKontrollperiode(kontrollPeriode).map {
                 listOf(
-                    it.skipsregister?.name ?: "null",
-                    it.fartsomraade?.name ?: "null",
-                    it.skipstype?.name ?: "null"
+                    it.skipsregister?.name,
+                    it.fartsomraade?.name,
+                    it.skipstype?.name
                 )
             }.flatten()
+
+            return if (skipsinfo.all { it == null }) listOf("null") else skipsinfo
         }
 
         private fun List<Utenlandsopphold>.hentLandkoder(): List<String> =
