@@ -52,24 +52,24 @@ spec:
     - name: AZURE_AUTHORITY_ENDPOINT
       value: https://login.microsoftonline.com
     - name: SECURITY_TOKEN_SERVICE_URL
-      value: https://sts-q1.preprod.local/SecurityTokenServiceProvider/
+      value: https://api-gw-q1.oera.no//SecurityTokenServiceProvider/
     - name: SECURITY_TOKEN_SERVICE_REST_URL
-      value: http://security-token-service.default.svc.nais.local
+      value: https://api-gw-q1.oera.no/security-token-service
     - name: TPSWS_URL
-      value: https://wasapp-q2.adeo.no/tpsws/ws/Person/v3
+      value: https://api-gw-q1.oera.no/tpsws/ws/Person/v3
     - name: INNTEKT_BASE_URL
-      value: https://app-q2.adeo.no/inntektskomponenten-ws
+      value: https://api-gw-q1.oera.no/inntektskomponenten-ws
     - name: MEDL2_BASE_URL
-      value: https://app-q2.adeo.no/medl2
+      value: https://api-gw-q1.oera.no/medl2
     - name: AAREG_BASE_URL
-      value: https://modapp-q2.adeo.no/aareg-services/api
+      value: https://api-gw-q1.oera.no/aareg-services/api
     - name: SAF_BASE_URL
-      value: http://saf.q1.svc.nais.local/graphql
+      value: http://api-gw-q1.oera.no/graphql
     - name: OPPGAVE_BASE_URL
-      value: https://oppgave-q2.nais.preprod.local
+      value: https://api-gw-q1.oera.no/oppgave
     - name: PDL_BASE_URL
-      value: http://pdl-api.default.svc.nais.local/graphql
+      value: http://api-gw-q1.oera.no/graphql
     - name: EREG_BASE_URL
-      value: https://modapp-q0.adeo.no/ereg/api
+      value: https://api-gw-q1.oera.no/ereg/api
     - name: UDI_BASE_URL
       value: https://pep-gw-q1.oera-q.local:9443/ekstern/udi/personstatus/medlemskapoppslag/v1
