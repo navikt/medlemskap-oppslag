@@ -106,7 +106,7 @@ En jMeter-test som henter ned MiniNorge populasjonen og gjør et kall mot medlem
 ```
 jmeter/runJMeterTest.sh <AAD_TOKEN>
 ```
-jMeter-testen krever port-forwarding for medlemskap-oppslag satt opp på port 8080, og for testnorge-hodejegeren på port 8081. Dette kan enklest gjøres med "Kube Forwarder", hvor konfigurasjonen ligger på kube-forwarder-config/cluster-dev-fss — nais-user.kpf-export.v2.json
+jMeter-testen krever port-forwarding for medlemskap-oppslag satt opp på port 8080, og for testnorge-hodejegeren på port 8081. Dette kan enklest gjøres med "Kube Forwarder", hvor konfigurasjonen ligger på kube-forwarder-config/cluster-dev-gcp — nais-user.kpf-export.v2.json
 
 For å kjøre jMeter med GUI, enten fordi man liker det bedre eller fordi man skal redigere test planen, så kan følgende kommando kjøres:
 ```
