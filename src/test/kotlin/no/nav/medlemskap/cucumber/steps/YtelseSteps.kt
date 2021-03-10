@@ -11,6 +11,7 @@ import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Kontrollperiode
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForArbeidsforhold
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForMedl
+import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForOppholdstillatelse
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.startDatoForYtelse
 import no.nav.medlemskap.regler.common.Datohjelper.parseDato
 import java.time.LocalDate
@@ -41,6 +42,18 @@ class YtelseSteps : No {
             startDatoForYtelse = startDatoForYtelse(ytelsePeriode!!, førsteDagForYtelse)
 
             kontrollperiode = kontrollPeriodeForArbeidsforhold(startDatoForYtelse(ytelsePeriode!!, førsteDagForYtelse))
+        }
+
+        Når(
+            "kontrollperiode for oppholdstillatelse beregnes med følgende parametre:"
+        ) { dataTable: DataTable ->
+            val parametreKontrollperiode = ytelseDomenespråkParser.mapParametreKontrollperiode(dataTable)
+
+            ytelsePeriode = parametreKontrollperiode.iputPeriode
+            førsteDagForYtelse = parametreKontrollperiode.førsteDagForYtelse
+            startDatoForYtelse = startDatoForYtelse(ytelsePeriode!!, førsteDagForYtelse)
+
+            kontrollperiode = kontrollPeriodeForOppholdstillatelse(startDatoForYtelse(ytelsePeriode!!, førsteDagForYtelse))
         }
 
         Når("kontrollperiode for medl beregnes med følgende parametre:") { dataTable: DataTable ->
