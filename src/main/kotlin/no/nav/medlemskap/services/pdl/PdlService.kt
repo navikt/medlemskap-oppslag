@@ -25,7 +25,7 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
         val pdlResponse = pdlClient.hentIdenter(fnr, callId)
 
         // Hack for å overleve manglende aktørID i ikke-konsistente data i Q2
-        if (pdlResponse.errors != null && clusterName == "dev-fss") {
+        if (pdlResponse.errors != null && clusterName == "dev-gcp") {
             return listOf("111111111111")
         }
 

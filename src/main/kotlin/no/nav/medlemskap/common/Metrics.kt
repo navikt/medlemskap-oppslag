@@ -53,7 +53,7 @@ fun configureSensuInfluxMeterRegistry(): SensuInfluxMeterRegistry {
 
 fun defaultInfluxTags() = listOf(
     Tag.of("application", getenv("NAIS_APP_NAME", "medlemskap-oppslag")),
-    Tag.of("cluster", getenv("NAIS_CLUSTER_NAME", "dev-fss")),
+    Tag.of("cluster", getenv("NAIS_CLUSTER_NAME", "dev-gcp")),
     Tag.of("namespace", getenv("NAIS_NAMESPACE", "default"))
 )
 
