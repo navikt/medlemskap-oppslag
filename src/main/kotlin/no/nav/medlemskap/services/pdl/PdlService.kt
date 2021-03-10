@@ -17,7 +17,7 @@ import no.nav.medlemskap.services.pdl.mapper.PdlMapperEktefelle
 import java.time.LocalDate
 import kotlin.coroutines.coroutineContext
 
-class PdlService(private val pdlClient: PdlClient, private val clusterName: String = "dev-fss") {
+class PdlService(private val pdlClient: PdlClient, private val clusterName: String = "dev-gcp") {
 
     private val logger = KotlinLogging.logger { }
 
