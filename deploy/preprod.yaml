@@ -51,7 +51,7 @@ spec:
     - name: AZURE_AUTHORITY_ENDPOINT
       value: https://login.microsoftonline.com
     - name: SECURITY_TOKEN_SERVICE_URL
-      value: https://api-gw-q2.oera.no/SecurityTokenServiceProvider/
+      value: https://api-gw-q1.oera.no/SecurityTokenServiceProvider/
     - name: SECURITY_TOKEN_SERVICE_REST_URL
       value: https://api-gw-q2.oera.no/security-token-service
     - name: TPSWS_URL
