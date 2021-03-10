@@ -40,11 +40,7 @@ data class Kontrollperiode(
         }
 
         fun startDatoForYtelse(inputPeriode: InputPeriode, førsteDagForYtelse: LocalDate?): LocalDate {
-            if (førsteDagForYtelse != null) {
-                return førsteDagForYtelse
-            } else {
-                return inputPeriode.fom.minusDays(1)
-            }
+            return førsteDagForYtelse ?: inputPeriode.fom.minusDays(1)
         }
     }
 }
