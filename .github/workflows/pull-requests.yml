@@ -78,7 +78,7 @@ jobs:
           repository: navikt/medlemskap-oppslag-funksjonelle-tester
       - id: get-sha
         run: |
-          echo ::set-output name=sha::$( curl -u "u:${{secrets.GITHUB_TOKEN}}" https://api.github.com/repos/navikt/medlemskap-oppslag-funksjonelle-tester/git/ref/heads/master | jq .object.sha | tr -d '"' )
+          echo ::set-output name=sha::$( curl -u "u:${{secrets.GITHUB_TOKEN}}" https://api.github.com/repos/navikt/medlemskap-oppslag-funksjonelle-tester/git/origin/migrere_til_sky | jq .object.sha | tr -d '"' )
       - uses: nais/deploy/actions/deploy@v1
         name: Run tests
         env:
