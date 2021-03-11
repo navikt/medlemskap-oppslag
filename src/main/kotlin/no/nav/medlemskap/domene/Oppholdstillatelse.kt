@@ -16,8 +16,9 @@ data class Oppholdstillatelse(
     fun harGyldigArbeidstillatelseForPeriode(periode: Periode): Boolean {
         return arbeidsadgang != null && arbeidsadgang.harArbeidsadgang &&
             harGyldigArbeidsomfang() &&
-            arbeidsadgang.arbeidsadgangType != null && arbeidsadgang.arbeidsadgangType == ArbeidsadgangType.GENERELL &&
-            arbeidsadgang.periode.encloses(periode) &&
+            arbeidsadgang.arbeidsadgangType != null &&
+            arbeidsadgang.arbeidsadgangType == ArbeidsadgangType.GENERELL &&
+            arbeidsadgang.periode.enclosesAndFomNotNull(periode) &&
             gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar?.periode?.equals(arbeidsadgang.periode) ?: false
     }
 
