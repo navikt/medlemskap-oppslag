@@ -1,9 +1,9 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Beregne kontrollperiode for arbeidsforhold fra inputperiode og første dag for ytelse
+Egenskap: Beregne kontrollperiode for oppholdstillatelse fra inputperiode og første dag for ytelse
 
-Scenariomal:  Beregne kontrollperiode for arbeidsforhold for forskjellige ytelse
+Scenariomal:  Beregne kontrollperiode for oppholdstillatelse for forskjellige ytelse
 
 Når kontrollperiode for oppholdstillatelse beregnes med følgende parametre:
 | Ytelse   | Fra og med dato | Til og med dato | Første dag for ytelse   |

@@ -6,8 +6,8 @@ Egenskap: Regel 19.2: Har bruker arbeids- og oppholdstillatelse i kontrollperiod
   Scenariomal: Regel 19.2: Har bruker arbeids- og oppholdstillatelse i kontrollperiode?
 
     Gitt følgende oppholdstillatelse
-      | Gyldig fra og med   | Gyldig til og med   | Har tillatelse   | Type                               |
-      | <Gyldig fra og med> | <Gyldig til og med> | <Har tillatelse> |<OppholdstillaelsePaSammeVilkarType>|
+      | Gyldig fra og med   | Gyldig til og med   | Har tillatelse   | Type                                 |
+      | <Gyldig fra og med> | <Gyldig til og med> | <Har tillatelse> | <OppholdstillaelsePaSammeVilkarType> |
 
     Når regel "19.2" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
@@ -29,7 +29,9 @@ Egenskap: Regel 19.2: Har bruker arbeids- og oppholdstillatelse i kontrollperiod
       | Gyldig fra og med | Gyldig til og med | Har tillatelse | Svar | OppholdstillaelsePaSammeVilkarType | Ytelse     | Første dag for ytelse | Startdato for ytelse | Kontrollperiode fra og med dato | Kontrollperiode til og med dato |
       | 01.01.2018        |                   | Ja             | Ja   | PERMANENT                          | SYKEPENGER | 22.01.2020            | 22.01.2020           | 22.01.2019                      | 22.03.2020                      |
       | 23.01.2019        |                   | Ja             | Nei  | PERMANENT                          | SYKEPENGER | 22.01.2020            | 22.01.2020           | 22.01.2019                      | 22.03.2020                      |
+      |                   |                   | Ja             | Nei  | PERMANENT                          | SYKEPENGER | 22.01.2020            | 22.01.2020           | 22.01.2019                      | 22.03.2020                      |
       | 22.01.2019        |                   | Ja             | Ja   | PERMANENT                          | SYKEPENGER | 22.01.2020            | 22.01.2020           | 22.01.2019                      | 22.03.2020                      |
       | 22.01.2019        | 22.03.2020        | Ja             | Ja   | PERMANENT                          | SYKEPENGER | 22.01.2020            | 22.01.2020           | 22.01.2019                      | 22.03.2020                      |
-      |                   | 22.03.2020        | Ja             | Ja   | MIDLERTIDIG                        | SYKEPENGER | 22.01.2020            | 22.01.2020           | 22.01.2019                      | 22.03.2020                      |
+      | 01.01.2018        | 22.03.2020        | Ja             | Ja   | MIDLERTIDIG                        | SYKEPENGER | 22.01.2020            | 22.01.2020           | 22.01.2019                      | 22.03.2020                      |
       |                   | 21.03.2020        | Ja             | Nei  | MIDLERTIDIG                        | SYKEPENGER | 22.01.2020            | 22.01.2020           | 22.01.2019                      | 22.03.2020                      |
+      |                   | 22.03.2020        | Ja             | Nei  | MIDLERTIDIG                        | SYKEPENGER | 22.01.2020            | 22.01.2020           | 22.01.2019                      | 22.03.2020                      |

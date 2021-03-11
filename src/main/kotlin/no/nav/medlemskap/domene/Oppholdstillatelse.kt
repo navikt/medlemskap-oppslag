@@ -23,7 +23,7 @@ data class Oppholdstillatelse(
 
     fun harGyldigOppholdstillatelseForPeriode(periode: Periode): Boolean {
         return gjeldendeOppholdsstatus != null && gjeldendeOppholdsstatus.oppholdstillatelsePaSammeVilkar?.harTillatelse == true &&
-            gjeldendeOppholdsstatus.oppholdstillatelsePaSammeVilkar.periode?.encloses(periode) ?: false
+            gjeldendeOppholdsstatus.oppholdstillatelsePaSammeVilkar.periode?.enclosesAndFomNotNull(periode) ?: false
     }
 
     private fun harGyldigArbeidsomfang(): Boolean {
