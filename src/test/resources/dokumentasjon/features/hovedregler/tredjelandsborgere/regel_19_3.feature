@@ -21,20 +21,20 @@ Egenskap: Regel 19.3: Har bruker arbeids- og oppholdstillatelse i kontrollperiod
 
     Eksempler:
       | Gyldig fra og med | Gyldig til og med | Arbeidsadgang | ArbeidsadgangType                        | ArbeidomfangKategori            | Svar |
-      |                   |                   | Ja            | GENERELL                                 | KUN_ARBEID_HELTID               | Ja   |
+      | 01.01.2018        |                   | Ja            | GENERELL                                 | KUN_ARBEID_HELTID               | Ja   |
       | 01.01.2018        |                   | Ja            | GENERELL                                 | KUN_ARBEID_HELTID               | Ja   |
       | 23.01.2019        |                   | Ja            | GENERELL                                 | KUN_ARBEID_HELTID               | Nei  |
       | 22.01.2019        |                   | Ja            | GENERELL                                 | KUN_ARBEID_HELTID               | Ja   |
-      |                   | 22.03.2020        | Ja            | GENERELL                                 | KUN_ARBEID_HELTID               | Ja   |
+      | 01.01.2018        | 22.03.2020        | Ja            | GENERELL                                 | KUN_ARBEID_HELTID               | Ja   |
       |                   | 21.03.2020        | Ja            | GENERELL                                 | KUN_ARBEID_HELTID               | Nei  |
       |                   |                   | Nei           | GENERELL                                 | KUN_ARBEID_HELTID               | Nei  |
-      |                   |                   | Ja            | BESTEMT_ARBEIDSGIVER_ELLER_OPPDRAGSGIVER | KUN_ARBEID_HELTID               | Nei  |
-      |                   |                   | Ja            | BESTEMT_ARBEID_ELLER_OPPDRAG             | KUN_ARBEID_HELTID               | Nei  |
-      |                   |                   | Ja            | UAVKLART                                 | KUN_ARBEID_HELTID               | Nei  |
-      |                   |                   | Ja            | GENERELL                                 | INGEN_KRAV_TIL_STILLINGSPROSENT | Nei  |
-      |                   |                   | Ja            | GENERELL                                 | KUN_ARBEID_DELTID               | Nei  |
-      |                   |                   | Ja            | GENERELL                                 | UAVKLART                        | Nei  |
-      |                   |                   | Ja            | BESTEMT_ARBEIDSGIVER_ELLER_OPPDRAGSGIVER | INGEN_KRAV_TIL_STILLINGSPROSENT | Nei  |
+      | 01.01.2018        |                   | Ja            | BESTEMT_ARBEIDSGIVER_ELLER_OPPDRAGSGIVER | KUN_ARBEID_HELTID               | Nei  |
+      | 01.01.2018        |                   | Ja            | BESTEMT_ARBEID_ELLER_OPPDRAG             | KUN_ARBEID_HELTID               | Nei  |
+      | 23.01.2019        |                   | Ja            | UAVKLART                                 | KUN_ARBEID_HELTID               | Nei  |
+      | 22.01.2019        |                   | Ja            | GENERELL                                 | INGEN_KRAV_TIL_STILLINGSPROSENT | Nei  |
+      | 01.01.2018        |                   | Ja            | GENERELL                                 | KUN_ARBEID_DELTID               | Nei  |
+      | 01.01.2018        |                   | Ja            | GENERELL                                 | UAVKLART                        | Nei  |
+      | 01.01.2018        |                   | Ja            | BESTEMT_ARBEIDSGIVER_ELLER_OPPDRAGSGIVER | INGEN_KRAV_TIL_STILLINGSPROSENT | Nei  |
 
   Scenariomal: Regel 19.3 - Arbeidsomfang er tom for permanent oppholdstillatelse
 

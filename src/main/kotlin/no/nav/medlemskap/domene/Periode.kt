@@ -29,6 +29,17 @@ data class Periode(
         return overlapper(Periode(fom = dato, tom = dato))
     }
 
+    fun enclosesAndFomNotNull(annenPeriode: Periode): Boolean {
+        if (this.fom == null) {
+            return false
+        } else {
+            if (!erGyldigPeriode()) {
+                return false
+            }
+            return interval().encloses(annenPeriode.interval())
+        }
+    }
+
     fun encloses(annenPeriode: Periode): Boolean {
         if (!erGyldigPeriode()) {
             return false
