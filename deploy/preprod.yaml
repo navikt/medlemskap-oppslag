@@ -34,17 +34,15 @@ spec:
   prometheus:
     enabled: true
     path: /metrics
-  vault:
-    enabled: true
-    paths:
-      - mountPath: /var/run/secrets/nais.io/vault
-        kvPath: /kv/preprod/fss/medlemskap-oppslag/default
-      - mountPath: /var/run/secrets/nais.io/azure
-        kvPath: /azuread/data/dev/creds/medlemskap-oppslag
   secureLogs:
     enabled: true
   webproxy: true
-
+  accessPolicy:
+    inbound:
+      rules:
+        - application: sparkel-medlemskap
+          namespace: tbd
+    #outbound må settes for alle integrasjoner
   env:
     - name: AZURE_TENANT
       value: 966ac572-f5b7-4bbe-aa88-c76419c0f851
@@ -72,3 +70,5 @@ spec:
       value: https://api-gw-q2.oera.no/ereg/api
     - name: UDI_BASE_URL
       value: https://pep-gw-q1.oera-q.local:9443/ekstern/udi/personstatus/medlemskapoppslag/v1
+  envFrom:
+    - secret: medlemskap-oppslag
