@@ -65,11 +65,11 @@ spec:
     - name: AAREG_BASE_URL
       value: https://api-gw-q2.oera.no/aareg-services/api
     - name: SAF_BASE_URL
-      value: http://api-gw-q2.oera.no/graphql
+      value: http://api-gw-q2.oera.no/api/graphql
     - name: OPPGAVE_BASE_URL
       value: https://api-gw-q2.oera.no/oppgave
     - name: PDL_BASE_URL
-      value: http://api-gw-q2.oera.no/graphql
+      value: http://api-gw-q2.oera.no/api/graphql
     - name: EREG_BASE_URL
       value: https://api-gw-q2.oera.no/ereg/api
     - name: UDI_BASE_URL
