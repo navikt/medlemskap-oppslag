@@ -27,6 +27,7 @@ class StsRestClient(
                 httpClient.get<Token> {
                     url("$baseUrl/rest/v1/sts/token")
                     header(HttpHeaders.Authorization, "Basic ${credentials()}")
+                    header("x-nav-apiKey", apiKey)
                     parameter("grant_type", "client_credentials")
                     parameter("scope", "openid")
                 }
