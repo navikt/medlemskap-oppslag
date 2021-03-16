@@ -78,8 +78,8 @@ object UdiMapper {
                     AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak(
                         gjeldendeOppholdsstatus
                             .ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
-                            .avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak
-                            .avgjorelsesDato
+                            ?.avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak
+                            ?.avgjorelsesDato
                             .asLocalDate()
                     ),
                 ovrigIkkeOpphold = OvrigIkkeOpphold(
