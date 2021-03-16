@@ -19,6 +19,7 @@ private val defaultProperties = ConfigurationMap(
         "INNTEKT_BASE_URL" to "",
         "SECURITY_TOKEN_SERVICE_URL" to "",
         "SECURITY_TOKEN_SERVICE_REST_URL" to "",
+        "SECURITY_TOKEN_SERVICE_API_KEY" to "",
         "SERVICE_USER_PASSWORD" to "",
         "NAIS_APP_NAME" to "",
         "NAIS_CLUSTER_NAME" to "",
@@ -27,6 +28,7 @@ private val defaultProperties = ConfigurationMap(
         "SAF_BASE_URL" to "",
         "OPPGAVE_BASE_URL" to "",
         "PDL_BASE_URL" to "",
+        "PDL_API_KEY" to "",
         "EREG_BASE_URL" to "",
         "UDI_BASE_URL" to ""
     )
