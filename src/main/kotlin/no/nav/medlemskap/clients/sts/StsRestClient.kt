@@ -2,10 +2,10 @@ package no.nav.medlemskap.clients.sts
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.github.resilience4j.retry.Retry
-import io.ktor.client.HttpClient
+import io.ktor.client.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.HttpResponse
-import io.ktor.http.HttpHeaders
+import io.ktor.client.statement.*
+import io.ktor.http.*
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
 import java.time.LocalDateTime
 import java.util.*
@@ -15,6 +15,7 @@ class StsRestClient(
     private val username: String,
     private val password: String,
     private val httpClient: HttpClient,
+    private val apiKey: String,
     private val retry: Retry? = null
 ) {
     private var cachedOidcToken: Token? = null
@@ -39,6 +40,7 @@ class StsRestClient(
         return httpClient.options {
             url("$baseUrl/isReady")
             header("Nav-Consumer-Id", username)
+            header("x-nav-apiKey", apiKey)
         }
     }
 

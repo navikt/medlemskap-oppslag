@@ -56,6 +56,7 @@ class Services(val configuration: Configuration) {
             baseUrl = configuration.sts.restUrl,
             username = configuration.sts.username,
             password = configuration.sts.password,
+            apiKey = configuration.sts.apiKey,
             retry = stsRetry,
             httpClient = cioHttpClient
         )
@@ -89,7 +90,7 @@ class Services(val configuration: Configuration) {
                 HttpResponseHealthCheck("AaReg", { aaRegClient.healthCheck() }),
                 HttpResponseHealthCheck("Medl", { medlClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("Oppg", { oppgaveClient.healthCheck() }, healthRetry),
-                HttpResponseHealthCheck("PDL", { pdlClient.healthCheck() }, healthRetry),
+                HttpResponseHealthCheck("PDL", { pdlClient.healthCheck(configuration.register.pdlApiKey) }, healthRetry),
                 HttpResponseHealthCheck("SAF", { safClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("STS", { stsRestClient.healthCheck() }, healthRetry),
                 // TryCatchHealthCheck("UDI", { udiClient.healthCheck() }, healthRetry)

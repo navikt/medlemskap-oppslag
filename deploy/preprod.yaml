@@ -42,11 +42,10 @@ spec:
       rules:
         - application: sparkel-medlemskap
           namespace: tbd
-    #outbound må settes for alle integrasjoner
-    externalHosts:
-      - api-gw-q1.oera.no
-      - api-gw-q2.oera.no
-      - unleash.nais.io
+    outbound:
+      external:
+        - host: api-gw-q1.oera.no
+        - host: api-gw-q2.oera.no
   env:
     - name: AZURE_TENANT
       value: 966ac572-f5b7-4bbe-aa88-c76419c0f851
@@ -69,7 +68,7 @@ spec:
     - name: OPPGAVE_BASE_URL
       value: https://api-gw-q2.oera.no/oppgave
     - name: PDL_BASE_URL
-      value: http://api-gw-q2.oera.no/graphql
+      value: https://api-gw-q2.oera.no/pdl-api/graphql
     - name: EREG_BASE_URL
       value: https://api-gw-q2.oera.no/ereg/api
     - name: UDI_BASE_URL

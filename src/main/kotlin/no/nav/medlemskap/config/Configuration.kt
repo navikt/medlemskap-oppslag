@@ -68,6 +68,7 @@ data class Configuration(
         val safBaseUrl: String = "SAF_BASE_URL".configProperty(),
         val oppgaveBaseUrl: String = "OPPGAVE_BASE_URL".configProperty(),
         val pdlBaseUrl: String = "PDL_BASE_URL".configProperty(),
+        val pdlApiKey: String = "PDL_API_KEY".configProperty(),
         val eregBaseUrl: String = "EREG_BASE_URL".configProperty(),
         val udiBaseUrl: String = "UDI_BASE_URL".configProperty()
     )
@@ -75,6 +76,7 @@ data class Configuration(
     data class Sts(
         val endpointUrl: String = "SECURITY_TOKEN_SERVICE_URL".configProperty(),
         val restUrl: String = "SECURITY_TOKEN_SERVICE_REST_URL".configProperty(),
+        val apiKey: String = "SECURITY_TOKEN_SERVICE_API_KEY".configProperty(),
         val username: String = "SERVICE_USER_USERNAME".configProperty(),
         val password: String = "SERVICE_USER_PASSWORD".configProperty()
     )

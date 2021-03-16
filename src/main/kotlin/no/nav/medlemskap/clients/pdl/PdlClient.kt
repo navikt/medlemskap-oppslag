@@ -62,10 +62,11 @@ class PdlClient(
         }
     }
 
-    suspend fun healthCheck(): HttpResponse {
+    suspend fun healthCheck(pdlApiKey: String): HttpResponse {
         return httpClient.options {
-            url("$baseUrl")
+            url(baseUrl)
             header(HttpHeaders.Accept, ContentType.Application.Json)
+            header("x-nav-apiKey", pdlApiKey)
             header("Nav-Consumer-Id", username)
         }
     }
