@@ -20,12 +20,12 @@ class UtvistMedInnreiseForbudNullTest {
                 )
 
         val mappetUtvistMedInnreiseForbud = UdiMapper.mapTilOppholdstillatelse(utvistMedInnreiseforbudNull)
-        val verdi = mappetUtvistMedInnreiseForbud
+        val utvistMedInnreiseForbud = mappetUtvistMedInnreiseForbud
             .gjeldendeOppholdsstatus
             ?.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
             ?.utvistMedInnreiseForbud
             ?.innreiseForbud
 
-        assertNull(verdi)
+        assertNull(utvistMedInnreiseForbud)
     }
 }
