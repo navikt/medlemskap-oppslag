@@ -69,9 +69,9 @@ object UdiMapper {
                         fraJaNeiUavklartVerdi(
                             gjeldendeOppholdsstatus
                                 .ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
-                                .utvistMedInnreiseForbud
-                                .innreiseForbud
-                                .value()
+                                ?.utvistMedInnreiseForbud
+                                ?.innreiseForbud
+                                ?.value()
                         )
                 ),
                 avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak =
@@ -86,9 +86,9 @@ object UdiMapper {
                     ovrigIkkeOppholdsKategori = OvrigIkkeOppholdsKategori.fraOvrigIkkeOppholdsKategoriType(
                         gjeldendeOppholdsstatus
                             .ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
-                            .ovrigIkkeOpphold
-                            .arsak
-                            .value()
+                            ?.ovrigIkkeOpphold
+                            ?.arsak
+                            ?.value()
                     )
                 )
             )
