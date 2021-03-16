@@ -43,6 +43,10 @@ spec:
         - application: sparkel-medlemskap
           namespace: tbd
     #outbound må settes for alle integrasjoner
+    externalHosts:
+      - api-gw-q1.oera.no
+      - api-gw-q2.oera.no
+      - unleash.nais.io
   env:
     - name: AZURE_TENANT
       value: 966ac572-f5b7-4bbe-aa88-c76419c0f851
