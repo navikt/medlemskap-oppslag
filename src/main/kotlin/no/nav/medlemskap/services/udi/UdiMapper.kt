@@ -69,26 +69,26 @@ object UdiMapper {
                         fraJaNeiUavklartVerdi(
                             gjeldendeOppholdsstatus
                                 .ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
-                                .utvistMedInnreiseForbud
-                                .innreiseForbud
-                                .value()
+                                ?.utvistMedInnreiseForbud
+                                ?.innreiseForbud
+                                ?.value()
                         )
                 ),
                 avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak =
                     AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak(
                         gjeldendeOppholdsstatus
                             .ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
-                            .avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak
-                            .avgjorelsesDato
+                            ?.avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak
+                            ?.avgjorelsesDato
                             .asLocalDate()
                     ),
                 ovrigIkkeOpphold = OvrigIkkeOpphold(
                     ovrigIkkeOppholdsKategori = OvrigIkkeOppholdsKategori.fraOvrigIkkeOppholdsKategoriType(
                         gjeldendeOppholdsstatus
                             .ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
-                            .ovrigIkkeOpphold
-                            .arsak
-                            .value()
+                            ?.ovrigIkkeOpphold
+                            ?.arsak
+                            ?.value()
                     )
                 )
             )
