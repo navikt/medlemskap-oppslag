@@ -39,7 +39,7 @@ class StsRestClient(
 
     suspend fun healthCheck(): HttpResponse {
         return httpClient.options {
-            url("$baseUrl/api/ping")
+            url("$baseUrl/isReady")
             header("Nav-Consumer-Id", username)
             header("x-nav-apiKey", apiKey)
         }
