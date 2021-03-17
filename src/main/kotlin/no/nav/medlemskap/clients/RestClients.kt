@@ -25,7 +25,7 @@ class RestClients(
 
     private val httpClient = cioHttpClient
 
-    fun aaReg(endpointUrl: String) = AaRegClient(endpointUrl, configuration.sts.username, stsClientRest, httpClient, aaRegRetry)
+    fun aaReg(endpointUrl: String) = AaRegClient(endpointUrl, configuration.sts.username, stsClientRest, httpClient, configuration.register.aaRegApiKey, aaRegRetry)
     fun medl2(endpointBaseUrl: String) = MedlClient(endpointBaseUrl, stsClientRest, configuration, httpClient, medlRetry)
     fun saf(endpointBaseUrl: String) = SafClient(endpointBaseUrl, stsClientRest, configuration.sts.username, httpClient, safRetry)
     fun oppgaver(endpointBaseUrl: String) = OppgaveClient(endpointBaseUrl, stsClientRest, httpClient, oppgaveRetry)

@@ -17,6 +17,7 @@ class AaRegClient(
     private val username: String,
     private val stsClient: StsRestClient,
     private val httpClient: HttpClient,
+    private val aaRegApiKey: String,
     private val retry: Retry? = null
 ) {
 
@@ -36,6 +37,7 @@ class AaRegClient(
                     header("Nav-Call-Id", callId)
                     header("Nav-Personident", fnr)
                     header("Nav-Consumer-Token", "Bearer $oidcToken")
+                    header("x-nav-apiKey", aaRegApiKey)
                     fraOgMed?.let { parameter("ansettelsesperiodeFom", fraOgMed.tilIsoFormat()) }
                     tilOgMed?.let { parameter("ansettelsesperiodeTom", tilOgMed.tilIsoFormat()) }
                     parameter("historikk", "true")
@@ -64,6 +66,7 @@ class AaRegClient(
             url("$baseUrl/ping")
             header(HttpHeaders.Accept, ContentType.Text.Plain)
             header("Nav-Consumer-Id", username)
+            header("x-nav-apiKey", aaRegApiKey)
         }
     }
 
