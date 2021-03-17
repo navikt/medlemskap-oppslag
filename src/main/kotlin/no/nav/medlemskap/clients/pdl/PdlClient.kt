@@ -19,7 +19,8 @@ class PdlClient(
     private val stsClient: StsRestClient,
     private val username: String,
     private val httpClient: HttpClient,
-    private val retry: Retry? = null
+    private val retry: Retry? = null,
+    private val pdlApiKey: String
 ) {
     companion object {
         private val logger = KotlinLogging.logger { }
@@ -38,6 +39,7 @@ class PdlClient(
                 header("Nav-Call-Id", callId)
                 header("Nav-Consumer-Token", "Bearer $stsToken")
                 header("Nav-Consumer-Id", username)
+                header("x-nav-apiKey", pdlApiKey)
             }
             response
         }
@@ -57,12 +59,13 @@ class PdlClient(
                 header("Nav-Call-Id", callId)
                 header("Nav-Consumer-Token", "Bearer $stsToken")
                 header("Nav-Consumer-Id", username)
+                header("x-nav-apiKey", pdlApiKey)
             }
             response
         }
     }
 
-    suspend fun healthCheck(pdlApiKey: String): HttpResponse {
+    suspend fun healthCheck(): HttpResponse {
         return httpClient.options {
             url(baseUrl)
             header(HttpHeaders.Accept, ContentType.Application.Json)

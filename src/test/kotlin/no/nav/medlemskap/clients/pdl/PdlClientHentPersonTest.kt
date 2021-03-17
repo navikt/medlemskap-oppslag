@@ -55,9 +55,13 @@ class PdlClientHentPersonTest {
                 )
         )
 
-        val pdlClient = PdlClient(server.baseUrl(), stsClient, username, cioHttpClient)
+        val pdlClient = createPdlClient(stsClient, username)
         val pdlResponse = runBlocking { pdlClient.hentPerson("1234", callId) }
         assertEquals("Fant ikke person", pdlResponse.errors?.get(0)?.message)
+    }
+
+    private fun createPdlClient(stsClient: StsRestClient, username: String): PdlClient {
+        return PdlClient(server.baseUrl(), stsClient, username, cioHttpClient, null, "123")
     }
 
     @Test
@@ -77,7 +81,7 @@ class PdlClientHentPersonTest {
                 )
         )
 
-        val pdlClient = PdlClient(server.baseUrl(), stsClient, username, cioHttpClient)
+        val pdlClient = createPdlClient(stsClient, username)
 
         val pdlResponse = runBlocking { pdlClient.hentPerson("1234567890", callId) }
 
