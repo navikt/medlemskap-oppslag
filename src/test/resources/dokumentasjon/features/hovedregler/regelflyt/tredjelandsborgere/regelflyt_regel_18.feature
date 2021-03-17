@@ -26,8 +26,8 @@ Egenskap: Regelflyt for regel 18, for tredjelandsborger
       | USA      | 10.10.1975      |                 |
 
     Og følgende oppholdstillatelse
-      | Gyldig fra og med | Gyldig til og med | Klasse                          | Har tillatelse | Type      |
-      | 01.01.2020        |                   | OppholdstillatelsePaSammeVilkar | Ja             | PERMANENT |
+      | Gyldig fra og med | Gyldig til og med | Klasse                          | Har tillatelse | Type      | Oppholdstillatelse på samme vilkår flagg |
+      | 01.01.2020        |                   | OppholdstillatelsePaSammeVilkar | Ja             | PERMANENT | Nei                                      |
 
     Og følgende arbeidsadgang
       | Gyldig fra og med | Gyldig til og med | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |

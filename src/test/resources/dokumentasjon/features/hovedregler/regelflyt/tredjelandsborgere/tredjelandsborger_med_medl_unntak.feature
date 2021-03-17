@@ -29,8 +29,8 @@ Egenskap: Tredjelandsborger med medl unntak.
   Scenariomal: Tredjelandsborger med medl unntak "Ja" skal få uavklart medlemskap hvis oppholdstillatelse ikke er i orden.
 
     Gitt følgende oppholdstillatelse
-      | Gyldig fra og med | Gyldig til og med    | Har tillatelse | Type      |
-      | 01.01.2018        | <Opphold til og med> | Ja             | PERMANENT |
+      | Gyldig fra og med | Gyldig til og med    | Har tillatelse | Type      | Oppholdstillatelse på samme vilkår flagg |
+      | 01.01.2018        | <Opphold til og med> | Ja             | PERMANENT | Nei                                      |
 
     Og følgende arbeidsadgang
       | Gyldig fra og med | Gyldig til og med    | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
@@ -70,8 +70,8 @@ Egenskap: Tredjelandsborger med medl unntak.
   Scenariomal: Tredjelandsborger med medl unntak "Ja" skal få "Ja" på medlemskap hvis oppholdstillatelse er i orden.
 
     Gitt følgende oppholdstillatelse
-      | Gyldig fra og med | Gyldig til og med    | Har tillatelse | Type      |
-      | 01.01.2018        | <Opphold til og med> | Ja             | PERMANENT |
+      | Gyldig fra og med | Gyldig til og med    | Har tillatelse | Type      | Oppholdstillatelse på samme vilkår flagg |
+      | 01.01.2018        | <Opphold til og med> | Ja             | PERMANENT | Nei                                      |
 
     Og følgende arbeidsadgang
       | Gyldig fra og med | Gyldig til og med    | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
@@ -110,8 +110,8 @@ Egenskap: Tredjelandsborger med medl unntak.
   Scenariomal: Tredjelandsborger med gyldig oppholdstillatelse og medl unntak "Ja" skal få "Ja" på medlemskap.
 
     Gitt følgende oppholdstillatelse
-      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type      |
-      | 01.01.2018        | 20.03.2021        | Ja             | PERMANENT |
+      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type      | Oppholdstillatelse på samme vilkår flagg |
+      | 01.01.2018        | 20.03.2021        | Ja             | PERMANENT | Nei                                      |
 
     Og følgende arbeidsadgang
       | Gyldig fra og med | Gyldig til og med | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
@@ -141,8 +141,8 @@ Egenskap: Tredjelandsborger med medl unntak.
   Scenario: Tredjelandsborger med medl unntak "Nei" skal få "Uavklart" på medlemskap selv om oppholdstillatelse er i orden.
 
     Gitt følgende oppholdstillatelse
-      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type      |
-      | 01.01.2018        | 20.03.2021        | Ja             | PERMANENT |
+      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type      | Oppholdstillatelse på samme vilkår flagg |
+      | 01.01.2018        | 20.03.2021        | Ja             | PERMANENT | Nei                                      |
 
     Og følgende arbeidsadgang
       | Gyldig fra og med | Gyldig til og med | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |

@@ -6,8 +6,8 @@ Egenskap: Regel 19.3: Har bruker arbeids- og oppholdstillatelse i kontrollperiod
   Scenariomal: Regel 19.3: Har bruker arbeids- og oppholdstillatelse i kontrollperiode?
 
     Gitt følgende oppholdstillatelse
-      | Gyldig fra og med   | Gyldig til og med   | Har tillatelse | Type        |
-      | <Gyldig fra og med> | <Gyldig til og med> | Ja             | MIDLERTIDIG |
+      | Gyldig fra og med   | Gyldig til og med   | Har tillatelse | Type        | Oppholdstillatelse på samme vilkår flagg |
+      | <Gyldig fra og med> | <Gyldig til og med> | Ja             | MIDLERTIDIG | Nei                                      |
 
     Og følgende arbeidsadgang
       | Gyldig fra og med   | Gyldig til og med   | Arbeidsadgang   | ArbeidsadgangType   | ArbeidomfangKategori   |
@@ -39,8 +39,8 @@ Egenskap: Regel 19.3: Har bruker arbeids- og oppholdstillatelse i kontrollperiod
   Scenariomal: Regel 19.3 - Arbeidsomfang er tom for permanent oppholdstillatelse
 
     Gitt følgende oppholdstillatelse
-      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type           |
-      | 01.01.2018        |                   | Ja             | <Oppholdstype> |
+      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type           | Oppholdstillatelse på samme vilkår flagg |
+      | 01.01.2018        |                   | Ja             | <Oppholdstype> | Nei                                      |
 
     Og følgende arbeidsadgang
       | Gyldig fra og med | Gyldig til og med | Arbeidsadgang   | ArbeidsadgangType   | ArbeidomfangKategori   |
@@ -61,8 +61,8 @@ Egenskap: Regel 19.3: Har bruker arbeids- og oppholdstillatelse i kontrollperiod
   Scenariomal: Regel 19.3 - Periode for oppholdstillatelse og arbeidsadgang er ulik
 
     Gitt følgende oppholdstillatelse
-      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type        |
-      | 01.01.2018        | 01.01.2023        | Ja             | MIDLERTIDIG |
+      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type        | Oppholdstillatelse på samme vilkår flagg |
+      | 01.01.2018        | 01.01.2023        | Ja             | MIDLERTIDIG | Nei                                      |
 
     Og følgende arbeidsadgang
       | Gyldig fra og med   | Gyldig til og med   | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |

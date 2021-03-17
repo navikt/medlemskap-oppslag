@@ -31,8 +31,8 @@ Egenskap: Regelflyt for regel 19.3
       | USA      | 10.10.1975      |                 |
 
     Og følgende oppholdstillatelse
-      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type      |
-      | 01.01.2018        | 20.03.2021        | Ja             | PERMANENT |
+      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type      | Oppholdstillatelse på samme vilkår flagg |
+      | 01.01.2018        | 20.03.2021        | Ja             | PERMANENT | Nei                                      |
 
     Og følgende arbeidsadgang
       | Gyldig fra og med | Gyldig til og med          | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
