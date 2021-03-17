@@ -183,12 +183,13 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
                 parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad)
             )
 
-            val gjeldendeOppholdstillatelse = if (parseValgfriString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_KLASSE, rad) != null &&
-                parseValgfriString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_KLASSE, rad) == "Uavklart"
-            ) {
-                createGjeldendeOppholdstatusMedUavklartOppholdstillatelse()
-            } else {
-                createGjeldendeOppholdstatusMedOppholdstillatelsePaSammeVilkar(periode, rad)
+            val gjeldendeOppholdstillatelseKlasse = parseValgfriString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_KLASSE, rad)
+
+            val gjeldendeOppholdstillatelse = when (gjeldendeOppholdstillatelseKlasse) {
+                "Uavklart" -> createGjeldendeOppholdstatusMedUavklartOppholdstillatelse()
+                "OppholdstillatelsePaSammeVilkar" -> createGjeldendeOppholdstatusMedOppholdstillatelsePaSammeVilkar(periode, rad)
+                "EOSellerEFTAOppholdstillatelse" -> createGjeldendeOppholdstatusMedEOSellerEFTAOppholdstillatelse(periode, rad)
+                else -> null
             }
 
             return Oppholdstillatelse(
@@ -228,6 +229,32 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
                 uavklart = Uavklart()
             )
         }
+
+        private fun createGjeldendeOppholdstatusMedEOSellerEFTAOppholdstillatelse(
+            periode: Periode,
+            rad: Map<String, String>
+        ): GjeldendeOppholdsstatus {
+            return GjeldendeOppholdsstatus(
+                oppholdstillatelsePaSammeVilkar = null,
+                ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum = null,
+                eosellerEFTAOpphold = EOSellerEFTAOpphold(
+                    periode = periode,
+                    EOSellerEFTAOppholdType = parseValgfriString(
+                        OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_OPPHOLD_TYPE, rad
+                    )
+                        ?.let { EOSellerEFTAOppholdType.valueOf(it) },
+                    EOSellerEFTAGrunnlagskategoriOppholdsrettType = parseValgfriString(
+                        OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_GRUNNLAGS_KATEGORI_OPPHOLDSRETT_TYPE, rad
+                    )
+                        ?.let { EOSellerEFTAGrunnlagskategoriOppholdsrettType.valueOf(it) },
+                    EOSellerEFTAGrunnlagskategoriOppholdstillatelseType = parseValgfriString(
+                        OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_GRUNNLAGS_KATEGORI_OPPHOLDTILLATELSE_TYPE, rad
+                    )
+                        ?.let { EOSellerEFTAGrunnlagskategoriOppholdsTillatelseType.valueOf(it) }
+                ),
+                uavklart = null
+            )
+        }
     }
 
     class ArbeidsadgangMapper : RadMapper<Arbeidsadgang> {
@@ -256,6 +283,9 @@ enum class OppholdstillatelseDomenebegrep(val nøkkel: String) : Domenenøkkel {
     EOS_ELLER_EFTA_OPPHOLD("EOSEllerEFTAOpphold"),
     EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT("EOSellerEFTAGrunnlagskategoriOppholdsrett"),
     EOS_ELLER_EFTA_KATEGORI_OPPHOLDSTILLATELSE("EOSellerEFTAGrunnlagskategoriOppholdstillatelse"),
+    EOS_ELLER_EFTA_GRUNNLAGS_KATEGORI_OPPHOLDSRETT_TYPE("EOSellerEFTAGrunnlagskategoriOppholdsrettType"),
+    EOS_ELLER_EFTA_GRUNNLAGS_KATEGORI_OPPHOLDTILLATELSE_TYPE("EOSellerEFTAGrunnlagskategoriOppholdstillatelseType"),
+    EOS_ELLER_EFTA_OPPHOLD_TYPE("EOSellerEFTAOppholdtype"),
     HAR_OPPHOLD("Har opphold"),
     HAR_OPPHOLDSTILLATELSE("Har tillatelse"),
     HAR_FLYKTNINGSTATUS("Har flyktningstatus"),

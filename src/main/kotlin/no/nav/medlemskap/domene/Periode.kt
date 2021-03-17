@@ -40,6 +40,17 @@ data class Periode(
         }
     }
 
+    fun enclosesAndTomNotNull(annenPeriode: Periode): Boolean {
+        if (this.tom == null) {
+            return false
+        } else {
+            if (!erGyldigPeriode()) {
+                return false
+            }
+            return interval().encloses(annenPeriode.interval())
+        }
+    }
+
     fun encloses(annenPeriode: Periode): Boolean {
         if (!erGyldigPeriode()) {
             return false

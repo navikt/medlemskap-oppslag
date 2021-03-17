@@ -31,8 +31,8 @@ Egenskap: Regelflyt for regel 19.2
       | USA      | 10.10.1975      |                 |
 
     Og følgende oppholdstillatelse
-      | Gyldig fra og med | Gyldig til og med    | Har tillatelse | Type      |
-      | 01.01.2018        | <Opphold til og med> | Ja             | PERMANENT |
+      | Gyldig fra og med | Gyldig til og med    | Har tillatelse | Type      | Klasse                          |
+      | 01.01.2018        | <Opphold til og med> | Ja             | PERMANENT | OppholdstillatelsePaSammeVilkar |
 
     Og følgende arbeidsadgang
       | Gyldig fra og med | Gyldig til og med    | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |

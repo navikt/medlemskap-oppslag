@@ -6,8 +6,8 @@ Egenskap: Regel 19.3: Har bruker arbeids- og oppholdstillatelse i kontrollperiod
   Scenariomal: Regel 19.3: Har bruker arbeids- og oppholdstillatelse i kontrollperiode?
 
     Gitt følgende oppholdstillatelse
-      | Gyldig fra og med   | Gyldig til og med   | Har tillatelse | Type        |
-      | <Gyldig fra og med> | <Gyldig til og med> | Ja             | MIDLERTIDIG |
+      | Gyldig fra og med   | Gyldig til og med   | Har tillatelse | Type        | Klasse                          |
+      | <Gyldig fra og med> | <Gyldig til og med> | Ja             | MIDLERTIDIG | OppholdstillatelsePaSammeVilkar |
 
     Og følgende arbeidsadgang
       | Gyldig fra og med   | Gyldig til og med   | Arbeidsadgang   | ArbeidsadgangType   | ArbeidomfangKategori   |
@@ -39,8 +39,8 @@ Egenskap: Regel 19.3: Har bruker arbeids- og oppholdstillatelse i kontrollperiod
   Scenariomal: Regel 19.3 - Arbeidsomfang er tom for permanent oppholdstillatelse
 
     Gitt følgende oppholdstillatelse
-      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type           |
-      | 01.01.2018        |                   | Ja             | <Oppholdstype> |
+      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type           | Klasse                          |
+      | 01.01.2018        |                   | Ja             | <Oppholdstype> | OppholdstillatelsePaSammeVilkar |
 
     Og følgende arbeidsadgang
       | Gyldig fra og med | Gyldig til og med | Arbeidsadgang   | ArbeidsadgangType   | ArbeidomfangKategori   |

@@ -23,8 +23,20 @@ data class Oppholdstillatelse(
     }
 
     fun harGyldigOppholdstillatelseForPeriode(periode: Periode): Boolean {
-        return gjeldendeOppholdsstatus != null && gjeldendeOppholdsstatus.oppholdstillatelsePaSammeVilkar?.harTillatelse == true &&
-            gjeldendeOppholdsstatus.oppholdstillatelsePaSammeVilkar.periode?.enclosesAndFomNotNull(periode) ?: false
+        return gjeldendeOppholdsstatus != null &&
+            (
+                gjeldendeOppholdsstatus.oppholdstillatelsePaSammeVilkar?.harTillatelse == true &&
+                    gjeldendeOppholdsstatus.oppholdstillatelsePaSammeVilkar.periode?.enclosesAndFomNotNull(periode) ?: false
+                ) ||
+            harGyldigEOSEllerEFTAVarigOpphold(periode)
+    }
+
+    private fun harGyldigEOSEllerEFTAVarigOpphold(periode: Periode): Boolean {
+        return gjeldendeOppholdsstatus?.eosellerEFTAOpphold != null &&
+            gjeldendeOppholdsstatus.eosellerEFTAOpphold
+            .EOSellerEFTAGrunnlagskategoriOppholdsrettType == EOSellerEFTAGrunnlagskategoriOppholdsrettType.VARIG &&
+            gjeldendeOppholdsstatus.eosellerEFTAOpphold.periode?.enclosesAndFomNotNull(periode) ?: false &&
+            gjeldendeOppholdsstatus.eosellerEFTAOpphold.periode?.enclosesAndTomNotNull(periode) ?: false
     }
 
     private fun harGyldigArbeidsomfang(): Boolean {
@@ -89,7 +101,7 @@ data class Uavklart(
 
 data class EOSellerEFTAOpphold(
     val periode: Periode?,
-    val EOSellerEFTAOppholdType: EOSellerEFTAOppholdType,
+    val EOSellerEFTAOppholdType: EOSellerEFTAOppholdType?,
     val EOSellerEFTAGrunnlagskategoriOppholdsrettType: EOSellerEFTAGrunnlagskategoriOppholdsrettType?,
     val EOSellerEFTAGrunnlagskategoriOppholdstillatelseType: EOSellerEFTAGrunnlagskategoriOppholdsTillatelseType?
 )
