@@ -89,6 +89,7 @@ data class Uavklart(
 
 data class EOSellerEFTAOpphold(
     val periode: Periode?,
+    val EOSellerEFTAOppholdstillatelse: EOSellerEFTAGrunnlagskategoriOppholdsTillatelseType,
     val EOSellerEFTAOppholdType: EOSellerEFTAOppholdType,
     val EOSellerEFTAGrunnlagskategoriOppholdsrettType: EOSellerEFTAGrunnlagskategoriOppholdsrettType?,
     val EOSellerEFTAGrunnlagskategoriOppholdstillatelseType: EOSellerEFTAGrunnlagskategoriOppholdsTillatelseType?
