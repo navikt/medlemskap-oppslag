@@ -55,7 +55,7 @@ data class OppholdstillatelsePaSammeVilkar(
     val periode: Periode?,
     val type: OppholdstillaelsePaSammeVilkarType?,
     val harTillatelse: Boolean?,
-    val oppholdPaSammeVilkar: Boolean
+    val soknadIkkeAvgjort: Boolean
 )
 
 data class GjeldendeOppholdsstatus(

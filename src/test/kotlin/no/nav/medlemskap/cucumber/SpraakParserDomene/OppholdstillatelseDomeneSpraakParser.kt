@@ -138,7 +138,7 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
                 ),
                 harTillatelse = parseBooleanMedBooleanVerdi(OppholdstillatelseDomenebegrep.HAR_OPPHOLD, rad),
                 type = OppholdstillaelsePaSammeVilkarType.valueOf(parseString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_TYPE, rad)),
-                oppholdPaSammeVilkar = false
+                soknadIkkeAvgjort = false
 
             )
         }
@@ -212,7 +212,7 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
                     periode = periode,
                     harTillatelse = parseValgfriBoolean(OppholdstillatelseDomenebegrep.HAR_OPPHOLDSTILLATELSE.nøkkel(), rad),
                     type = OppholdstillaelsePaSammeVilkarType.valueOf(parseString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_TYPE, rad)),
-                    oppholdPaSammeVilkar = parseBoolean(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_PÅ_SAMME_VILKÅR_FLAGG, rad)
+                    soknadIkkeAvgjort = parseBoolean(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_PÅ_SAMME_VILKÅR_FLAGG, rad)
                 ),
                 ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum = null,
                 eosellerEFTAOpphold = null,
