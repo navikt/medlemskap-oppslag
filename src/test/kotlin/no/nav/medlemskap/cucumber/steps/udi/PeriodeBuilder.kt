@@ -4,8 +4,8 @@ import no.nav.medlemskap.domene.Periode
 import java.time.LocalDate
 
 class PeriodeBuilder {
-    var fom: LocalDate = LocalDate.MIN
-    var tom: LocalDate = LocalDate.MAX
+    var fom: LocalDate = LocalDate.now()
+    var tom: LocalDate = LocalDate.now()
 
     fun build(): Periode {
         return Periode(fom, tom)

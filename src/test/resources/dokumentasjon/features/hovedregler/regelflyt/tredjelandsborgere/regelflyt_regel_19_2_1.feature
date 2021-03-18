@@ -1,7 +1,7 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regelflyt for regel 19.2.1
+Egenskap: Regelflyt for regel 19.3.1
 
   Bakgrunn:
 
@@ -21,7 +21,7 @@ Egenskap: Regelflyt for regel 19.2.1
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
       | 10.10.1975      | 01.08.2020      | yrkeskode | 100              |
 
-  Scenariomal: Regelflyt for regel 19.2.1
+  Scenariomal: Regelflyt for regel 19.3.1
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
       | USA      | 10.10.1975      |                 |
@@ -43,11 +43,11 @@ Egenskap: Regelflyt for regel 19.2.1
       | 05.01.2018      | 12.02.2018      | Nei                           |
 
     Så skal svaret være "<Medlemskap>"
-    Og skal regel "19.2.1" gi svaret "<Regel 19.2.1>"
+    Og skal regel "19.3.1" gi svaret "<Regel 19.3.1>"
     Og skal regel-årsaker være "<Årsaker>"
     
     Eksempler:
-      | Opphold til og med | Arbeid fra og med | Arbeid til og med | Regel 19.2.1 | Medlemskap | Årsaker |
+      | Opphold til og med | Arbeid fra og med | Arbeid til og med | Regel 19.3.1 | Medlemskap | Årsaker |
       | 20.03.2017         | 01.01.2017        |                   | Ja           | Ja         |         |
-      | 20.01.2017         | 01.01.2017        | 30.01.2017        | Nei          | Uavklart   | 19.2.1  |
-      | 20.01.2017         | 31.12.2016        | 15.01.2017        | Nei          | Uavklart   | 19.2.1  |
+      | 20.01.2017         | 01.01.2017        | 30.01.2017        | Nei          | Uavklart   | 19.3.1  |
+      | 20.01.2017         | 31.12.2016        | 15.01.2017        | Nei          | Uavklart   | 19.3.1  |

@@ -1,15 +1,15 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regel 19.2: Har bruker arbeids- og oppholdstillatelse i kontrollperiode?
+Egenskap: Regel 19.3: Har bruker arbeids- og oppholdstillatelse i kontrollperiode?
 
-  Scenariomal: Regel 19.2: Har bruker arbeids- og oppholdstillatelse i kontrollperiode?
+  Scenariomal: Regel 19.3: Har bruker arbeids- og oppholdstillatelse i kontrollperiode?
 
     Gitt følgende oppholdstillatelse
       | Gyldig fra og med   | Gyldig til og med   | Har tillatelse   | Type                                 | Oppholdstillatelse på samme vilkår flagg |
       | <Gyldig fra og med> | <Gyldig til og med> | <Har tillatelse> | <OppholdstillaelsePaSammeVilkarType> | Nei                                      |
 
-    Når regel "19.2" kjøres med følgende parametre
+    Når regel "19.3" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 23.01.2020      | 30.01.2020      | Nei                           |
 
