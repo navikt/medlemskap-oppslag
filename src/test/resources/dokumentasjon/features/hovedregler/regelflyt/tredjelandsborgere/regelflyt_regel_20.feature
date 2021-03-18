@@ -14,8 +14,8 @@ Egenskap: Regelflyt for regel 20, brukere som ikke er registrert som bosatt i No
       | 1             | BEDR             | NOR      | 9              |
 
     Og følgende oppholdstillatelse
-      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type      |
-      | 01.01.2018        |                   | Ja             | PERMANENT |
+      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type      | Oppholdstillatelse på samme vilkår flagg |
+      | 01.01.2018        |                   | Ja             | PERMANENT | Nei                                      |
 
     Og følgende arbeidsadgang
       | Gyldig fra og med | Gyldig til og med | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |

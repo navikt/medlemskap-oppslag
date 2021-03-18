@@ -6,8 +6,8 @@ Egenskap: Regel 19.2.1: Dekker oppholdstillatelsen arbeidsperioden bakover i tid
   Scenariomal: Regel 19.2.1: Dekker oppholdstillatelsen arbeidsperioden bakover i tid?
 
     Gitt følgende oppholdstillatelse
-      | Gyldig fra og med               | Gyldig til og med               | Har tillatelse | Type      |
-      | <Oppholdstillatelse fra og med> | <Oppholdstillatelse til og med> | Ja             | PERMANENT |
+      | Gyldig fra og med               | Gyldig til og med               | Har tillatelse | Type      | Oppholdstillatelse på samme vilkår flagg |
+      | <Oppholdstillatelse fra og med> | <Oppholdstillatelse til og med> | Ja             | PERMANENT | Nei                                      |
 
     Og følgende arbeidsforhold fra AAReg
       | Fra og med dato     | Til og med dato     | Arbeidsgivertype | Arbeidsforholdstype |

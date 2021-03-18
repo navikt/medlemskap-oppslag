@@ -138,7 +138,7 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
                 ),
                 harTillatelse = parseBooleanMedBooleanVerdi(OppholdstillatelseDomenebegrep.HAR_OPPHOLD, rad),
                 type = OppholdstillaelsePaSammeVilkarType.valueOf(parseString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_TYPE, rad)),
-                oppholdPaSammeVilkar = false
+                soknadIkkeAvgjort = false
 
             )
         }
@@ -212,7 +212,7 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
                     periode = periode,
                     harTillatelse = parseValgfriBoolean(OppholdstillatelseDomenebegrep.HAR_OPPHOLDSTILLATELSE.nøkkel(), rad),
                     type = OppholdstillaelsePaSammeVilkarType.valueOf(parseString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_TYPE, rad)),
-                    oppholdPaSammeVilkar = false
+                    soknadIkkeAvgjort = parseBoolean(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_PÅ_SAMME_VILKÅR_FLAGG, rad)
                 ),
                 ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum = null,
                 eosellerEFTAOpphold = null,
@@ -265,6 +265,7 @@ enum class OppholdstillatelseDomenebegrep(val nøkkel: String) : Domenenøkkel {
     GYLDIG_TIL_OG_MED("Gyldig til og med"),
     OPPHOLDSTILLATELSE_TYPE("Type"),
     OPPHOLDSTILLATELSE_KLASSE("Klasse"),
+    OPPHOLDSTILLATELSE_PÅ_SAMME_VILKÅR_FLAGG("Oppholdstillatelse på samme vilkår flagg"),
     FORESPORSELSFODSELSNUMMER("Foresporselsfodselsnummer"),
     UAVKLART("Uavklart"),
     UAVKLART_FLYKTNINGSTATUS("Uavklart flyktningstatus"),

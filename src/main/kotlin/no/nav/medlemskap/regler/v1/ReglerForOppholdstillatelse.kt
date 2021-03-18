@@ -44,10 +44,16 @@ class ReglerForOppholdstillatelse(
             hvisNei = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE)
         )
 
+        val harBrukerOppholdPåSammeVilkårFlagg = lagRegelflyt(
+            regel = hentRegel(REGEL_19_8),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE),
+            hvisNei = dekkerOppholdstillatelseArbeidsperiodeRegel
+        )
+
         val harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt = lagRegelflyt(
             regel = hentRegel(REGEL_19_2),
             hvisJa = harBrukerGyldigArbeidstillatelseIKontrollperiodeRegelflyt,
-            hvisNei = dekkerOppholdstillatelseArbeidsperiodeRegel,
+            hvisNei = harBrukerOppholdPåSammeVilkårFlagg,
             hvisUavklart = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE)
         )
 
