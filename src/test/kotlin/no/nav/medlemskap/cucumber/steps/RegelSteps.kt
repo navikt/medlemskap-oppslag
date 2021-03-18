@@ -17,6 +17,7 @@ import no.nav.medlemskap.cucumber.steps.pdl.DataOmEktefelleBuilder
 import no.nav.medlemskap.cucumber.steps.pdl.PersonhistorikkBuilder
 import no.nav.medlemskap.cucumber.steps.pdl.PersonhistorikkEktefelleBuilder
 import no.nav.medlemskap.cucumber.steps.udi.OppholdstillatelseBuilder
+import no.nav.medlemskap.cucumber.steps.udi.OppholdstillatelsePåSammeVilkårBuilder
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.arbeidsforhold.*
 import no.nav.medlemskap.domene.barn.DataOmBarn
@@ -48,6 +49,7 @@ class RegelSteps : No {
     private var personhistorikkEktefelleBuilder = PersonhistorikkEktefelleBuilder()
     private var dataOmEktefelleBuilder = DataOmEktefelleBuilder()
     private var oppholdstillatelseBuilder = OppholdstillatelseBuilder()
+    private var oppholdstillatelsePaSammeVilkarBuilder = OppholdstillatelsePåSammeVilkårBuilder()
     private var medlemskap: List<Medlemskap> = emptyList()
 
     private var dataOmBarn: List<DataOmBarn> = emptyList()
@@ -201,6 +203,14 @@ class RegelSteps : No {
 
         Gitt("følgende oppholdstillatelse") { dataTable: DataTable ->
             oppholdstillatelseBuilder.fromOppholdstillatelse(OppholdstillatelseDomeneSpraakParser.mapOppholdstillatelse(dataTable))
+        }
+
+        Gitt("følgende oppholdstillatelse med oppholdstillatelse på samme vilkår") { dataTable: DataTable? ->
+            oppholdstillatelsePaSammeVilkarBuilder =
+        }
+
+        Gitt("følgende i EØSellerEFTAOpphold") { dataTable: DataTable ->
+            oppholdstillatelseBuilder.gjeldendeOppholdsstatus?.eosellerEFTAOpphold
         }
 
         Gitt("følgende arbeidsadgang") { dataTable: DataTable ->
