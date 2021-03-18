@@ -15,6 +15,7 @@ private val defaultProperties = ConfigurationMap(
         "MEDLEMSKAP_REGLER_URL" to "",
         "TPSWS_URL" to "",
         "MEDL2_BASE_URL" to "",
+        "MEDL2_API_KEY" to "",
         "AAREG_BASE_URL" to "",
         "AAREG_API_KEY" to "",
         "INNTEKT_BASE_URL" to "",
@@ -67,6 +68,7 @@ data class Configuration(
     data class Register(
         val tpsUrl: String = "TPSWS_URL".configProperty(),
         val medl2BaseUrl: String = "MEDL2_BASE_URL".configProperty(),
+        val medl2ApiKey: String = "MEDL2_API_KEY".configProperty(),
         val aaRegBaseUrl: String = "AAREG_BASE_URL".configProperty(),
         val aaRegApiKey: String = "AAREG_API_KEY".configProperty(),
         val inntektBaseUrl: String = "INNTEKT_BASE_URL".configProperty(),

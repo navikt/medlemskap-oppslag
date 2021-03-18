@@ -5,11 +5,8 @@ import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
-import io.ktor.client.features.ClientRequestException
-import io.ktor.client.features.ServerResponseException
-import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
+import io.ktor.client.features.*
+import io.ktor.http.*
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -60,7 +57,7 @@ class medlClientTest {
             )
         )
 
-        val client = MedlClient(server.baseUrl(), stsClient, config, cioHttpClient)
+        val client = createMedlClient(stsClient)
         val response = runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
 
         Assertions.assertEquals("Full", response[0].dekning)
@@ -106,7 +103,7 @@ class medlClientTest {
             )
         )
 
-        val client = MedlClient(server.baseUrl(), stsClient, config, cioHttpClient)
+        val client = createMedlClient(stsClient)
 
         Assertions.assertThrows(ServerResponseException::class.java) {
             runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
@@ -129,7 +126,7 @@ class medlClientTest {
             )
         )
 
-        val client = MedlClient(server.baseUrl(), stsClient, config, cioHttpClient)
+        val client = createMedlClient(stsClient)
 
         Assertions.assertThrows(ClientRequestException::class.java) {
             runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
@@ -151,10 +148,14 @@ class medlClientTest {
             )
         )
 
-        val client = MedlClient(server.baseUrl(), stsClient, config, cioHttpClient)
+        val client = createMedlClient(stsClient)
         val response = runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
 
         Assertions.assertEquals(0, response.size)
+    }
+
+    private fun createMedlClient(stsClient: StsRestClient): MedlClient {
+        return MedlClient(server.baseUrl(), stsClient, config, cioHttpClient, "123")
     }
 
     private val queryMapping: MappingBuilder = WireMock.get(WireMock.urlPathEqualTo("/api/v1/medlemskapsunntak"))
