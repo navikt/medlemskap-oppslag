@@ -22,5 +22,5 @@ Egenskap: Regel 19.2: Har bruker flere oppholdstillatelser som overlapper?
 
     Eksempler:
       | Gyldig fra og med | Gyldig til og med | EØS eller EFTA Gyldig fra og med | EØS eller EFTA Gyldig til og med | Svar |
-      | 01.01.2018        |                   |                                  |                                  | Ja   |
-      | 23.01.2019        |                   |                                  |                                  | Nei  |
+      | 22.01.2019        | 22.03.2020        | 22.01.2018                       | 01.01.2020                       | Ja   |
+      | 22.01.2019        | 22.03.2020        | 01.01.2010                       | 01.01.2015                       | Nei  |

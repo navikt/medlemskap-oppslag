@@ -16,7 +16,7 @@ class HarBrukerFlereOppholdstillatelserSomOverlapper(
 ) : BasisRegel(regelId, ytelse) {
 
     override fun operasjon(): Resultat {
-        if (oppholdstillatelse?.harFlereOppholdsstatuser() == true) {
+        if (oppholdstillatelse?.overlapperOppholdsstatusPeriodene() == true) {
             return ja(regelId)
         }
 
