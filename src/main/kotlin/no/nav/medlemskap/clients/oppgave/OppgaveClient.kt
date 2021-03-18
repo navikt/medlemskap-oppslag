@@ -44,7 +44,7 @@ class OppgaveClient(
     suspend fun healthCheck(): HttpResponse {
         val token = stsClient.oidcToken()
         return httpClient.get {
-            url("$baseUrl/internal/alive")
+            url("$baseUrl/alive")
             header(HttpHeaders.Authorization, "Bearer $token")
             header("x-nav-apiKey", oppgaveApiKey)
         }
