@@ -42,6 +42,20 @@ data class Oppholdstillatelse(
             else -> false
         }
     }
+
+    fun overlapperOppholdsstatusPeriodene(): Boolean {
+        val oppholdPaSammeVilkarPeriode = gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar?.periode
+        val eosEllerEFTAPeriode = gjeldendeOppholdsstatus?.eosellerEFTAOpphold?.periode
+
+        if (harFlereOppholdsstatuser() && oppholdPaSammeVilkarPeriode != null && eosEllerEFTAPeriode != null) {
+            return oppholdPaSammeVilkarPeriode.overlapper(eosEllerEFTAPeriode)
+        }
+
+        return false
+    }
+
+    fun harFlereOppholdsstatuser(): Boolean =
+        (gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar != null && gjeldendeOppholdsstatus.eosellerEFTAOpphold != null)
 }
 
 data class Arbeidsadgang(

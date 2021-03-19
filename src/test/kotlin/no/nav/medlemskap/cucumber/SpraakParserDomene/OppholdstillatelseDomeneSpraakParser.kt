@@ -47,6 +47,14 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, PeriodeMapper())[0]
     }
 
+    fun mapEosEllerEftaPeriode(dataTable: DataTable): Periode {
+        return mapDataTable(dataTable, EosEllerEftaPeriodeMapper())[0]
+    }
+
+    fun mapOppholdsrettType(dataTable: DataTable): EOSellerEFTAGrunnlagskategoriOppholdsrettType {
+        return mapDataTable(dataTable, OppholdsrettTypeMapper())[0]
+    }
+
     fun mapOppholdstillatelse(dataTable: DataTable): Oppholdstillatelse {
         return mapDataTable(dataTable, OppholdstillatelseMapper())[0]
     }
@@ -63,11 +71,56 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, UavklartMapper())[0]
     }
 
-    fun mapEOSElllerEFTAOpphold(dataTable: DataTable): EOSellerEFTAOpphold {
-        return mapDataTable(dataTable, EOSElllerEFTAOppholdMapper())[0]
+    fun mapEOSElllerEFTAOppholdKlasse(dataTable: DataTable): EOSellerEFTAOpphold {
+        return mapDataTable(dataTable, EOSElllerEFTAOppholdKlasseMapper())[0]
     }
 
-    class EOSElllerEFTAOppholdMapper() : RadMapper<EOSellerEFTAOpphold> {
+    fun mapOppholdType(dataTable: DataTable): EOSellerEFTAOppholdType {
+        return mapDataTable(dataTable, EOSellerEFTAOppholdMapper())[0]
+    }
+
+    fun mapHarTillatelse(dataTable: DataTable): Boolean {
+        return mapDataTable(dataTable, HarTillatelseMapper())[0]
+    }
+
+    fun mapSoknadIkkeAvgjort(dataTable: DataTable): Boolean {
+        return mapDataTable(dataTable, HarSoknadIkkeAvgjortMapper())[0]
+    }
+
+    fun mapOppholdstillatelsePaSammeVilkarType(dataTable: DataTable): OppholdstillaelsePaSammeVilkarType {
+        return mapDataTable(dataTable, OppholdstillaelsePaSammeVilkarTypeMapper())[0]
+    }
+
+    class OppholdstillaelsePaSammeVilkarTypeMapper() : RadMapper<OppholdstillaelsePaSammeVilkarType> {
+        override fun mapRad(rad: Map<String, String>): OppholdstillaelsePaSammeVilkarType {
+            return OppholdstillaelsePaSammeVilkarType.valueOf(parseString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_TYPE, rad))
+        }
+    }
+    class OppholdsrettTypeMapper() : RadMapper<EOSellerEFTAGrunnlagskategoriOppholdsrettType> {
+        override fun mapRad(rad: Map<String, String>): EOSellerEFTAGrunnlagskategoriOppholdsrettType {
+            return EOSellerEFTAGrunnlagskategoriOppholdsrettType.valueOf(parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT, rad))
+        }
+    }
+
+    class EOSellerEFTAOppholdMapper : RadMapper<EOSellerEFTAOppholdType> {
+        override fun mapRad(rad: Map<String, String>): EOSellerEFTAOppholdType {
+            return EOSellerEFTAOppholdType.valueOf(parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_OPPHOLD, rad))
+        }
+    }
+
+    class HarSoknadIkkeAvgjortMapper() : RadMapper<Boolean> {
+        override fun mapRad(rad: Map<String, String>): Boolean {
+            return parseBoolean(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_PÅ_SAMME_VILKÅR_FLAGG, rad)
+        }
+    }
+
+    class HarTillatelseMapper() : RadMapper<Boolean> {
+        override fun mapRad(rad: Map<String, String>): Boolean {
+            return parseBoolean(OppholdstillatelseDomenebegrep.HAR_OPPHOLDSTILLATELSE, rad)
+        }
+    }
+
+    class EOSElllerEFTAOppholdKlasseMapper() : RadMapper<EOSellerEFTAOpphold> {
         override fun mapRad(rad: Map<String, String>): EOSellerEFTAOpphold {
 
             val EOSellerEFTAGrunnlagskategoriOppholdsrettType = if (parseValgfriString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT, rad) != null
@@ -113,6 +166,15 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
             return Periode(
                 fom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad),
                 tom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad)
+            )
+        }
+    }
+
+    class EosEllerEftaPeriodeMapper() : RadMapper<Periode> {
+        override fun mapRad(rad: Map<String, String>): Periode {
+            return Periode(
+                fom = parseDato(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_PERIODE_FOM, rad),
+                tom = parseDato(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_PERIODE_TOM, rad)
             )
         }
     }
@@ -256,6 +318,8 @@ enum class OppholdstillatelseDomenebegrep(val nøkkel: String) : Domenenøkkel {
     EOS_ELLER_EFTA_OPPHOLD("EOSEllerEFTAOpphold"),
     EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT("EOSellerEFTAGrunnlagskategoriOppholdsrett"),
     EOS_ELLER_EFTA_KATEGORI_OPPHOLDSTILLATELSE("EOSellerEFTAGrunnlagskategoriOppholdstillatelse"),
+    EOS_ELLER_EFTA_PERIODE_FOM("EØS eller EFTA Gyldig fra og med"),
+    EOS_ELLER_EFTA_PERIODE_TOM("EØS eller EFTA Gyldig til og med"),
     HAR_OPPHOLD("Har opphold"),
     HAR_OPPHOLDSTILLATELSE("Har tillatelse"),
     HAR_FLYKTNINGSTATUS("Har flyktningstatus"),

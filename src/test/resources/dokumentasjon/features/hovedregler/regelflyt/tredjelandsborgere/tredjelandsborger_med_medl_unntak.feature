@@ -49,7 +49,7 @@ Egenskap: Tredjelandsborger med medl unntak.
       | 05.01.2021      | 12.02.2021      | Nei                           |
 
     Så skal svaret være "<Medlemskap>"
-    Og skal regel "19.2.1" gi svaret "<Regel 19.2.1>"
+    Og skal regel "19.3" gi svaret "<Regel 19.3>"
     Og skal regel-årsaker være "<Årsak>"
 
     Og skal resultat gi følgende delresultater:
@@ -63,8 +63,8 @@ Egenskap: Tredjelandsborger med medl unntak.
       | REGEL_MEDL                     |
 
     Eksempler:
-      | Opphold til og med | Er medlem | Regel 19.2.1 | Medlemskap | Årsak  |
-      | 20.01.2019         | Ja        | Nei          | Uavklart   | 19.2.1 |
+      | Opphold til og med | Er medlem | Regel 19.3 | Medlemskap | Årsak  |
+      | 20.01.2019         | Ja        | Nei        | Uavklart   | 19.3.1 |
 
 
   Scenariomal: Tredjelandsborger med medl unntak "Ja" skal få "Ja" på medlemskap hvis oppholdstillatelse er i orden.
