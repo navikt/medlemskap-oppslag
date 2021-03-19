@@ -47,6 +47,7 @@ spec:
         - host: api-gw-q1.oera.no
         - host: api-gw-q2.oera.no
         - host: saf.dev-fss-pub.nais.io
+        - host: login.microsoftonline.com
   env:
     - name: AZURE_TENANT
       value: 966ac572-f5b7-4bbe-aa88-c76419c0f851
