@@ -34,6 +34,7 @@ private val defaultProperties = ConfigurationMap(
         "PDL_BASE_URL" to "",
         "PDL_API_KEY" to "",
         "EREG_BASE_URL" to "",
+        "EREG_API_KEY" to "",
         "UDI_BASE_URL" to ""
     )
 )
@@ -80,6 +81,7 @@ data class Configuration(
         val pdlBaseUrl: String = "PDL_BASE_URL".configProperty(),
         val pdlApiKey: String = "PDL_API_KEY".configProperty(),
         val eregBaseUrl: String = "EREG_BASE_URL".configProperty(),
+        val eregApiKey: String = "EREG_API_KEY".configProperty(),
         val udiBaseUrl: String = "UDI_BASE_URL".configProperty()
     )
 

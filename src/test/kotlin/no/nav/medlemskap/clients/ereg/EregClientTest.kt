@@ -59,7 +59,7 @@ class EregClientTest {
             )
         )
 
-        val client = EregClient(server.baseUrl(), httpClient, config)
+        val client = EregClient(server.baseUrl(), httpClient, config, "123")
 
         val response = runBlocking { client.hentOrganisasjon("977074010", callId) }
         assertEquals(1, response.getOrganisasjonsnumreJuridiskeEnheter().size)
