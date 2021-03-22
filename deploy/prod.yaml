@@ -54,10 +54,6 @@ spec:
       value: https://sts.adeo.no/SecurityTokenServiceProvider/
     - name: SECURITY_TOKEN_SERVICE_REST_URL
       value: https://security-token-service.nais.adeo.no
-    - name: TPSWS_URL
-      value: https://wasapp.adeo.no/tpsws/ws/Person/v3
-    - name: INNTEKT_BASE_URL
-      value: https://app.adeo.no/inntektskomponenten-ws
     - name: MEDL2_BASE_URL
       value: https://app.adeo.no/medl2
     - name: AAREG_BASE_URL

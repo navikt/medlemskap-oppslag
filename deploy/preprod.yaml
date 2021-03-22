@@ -57,10 +57,6 @@ spec:
       value: https://api-gw-q1.oera.no/SecurityTokenServiceProvider/
     - name: SECURITY_TOKEN_SERVICE_REST_URL
       value: https://api-gw-q1.oera.no/security-token-service
-    - name: TPSWS_URL
-      value: https://api-gw-q1.oera.no/tpsws/ws/Person/v3
-    - name: INNTEKT_BASE_URL
-      value: https://api-gw-q1.oera.no/inntektskomponenten-ws
     - name: MEDL2_BASE_URL
       value: https://api-gw-q1.oera.no/medl2
     - name: AAREG_BASE_URL

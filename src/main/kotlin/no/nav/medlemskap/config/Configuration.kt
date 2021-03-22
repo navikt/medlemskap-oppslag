@@ -13,12 +13,10 @@ private val defaultProperties = ConfigurationMap(
         "AZURE_AUTHORITY_ENDPOINT" to "",
         "SERVICE_USER_USERNAME" to "test",
         "MEDLEMSKAP_REGLER_URL" to "",
-        "TPSWS_URL" to "",
         "MEDL2_BASE_URL" to "",
         "MEDL2_API_KEY" to "",
         "AAREG_BASE_URL" to "",
         "AAREG_API_KEY" to "",
-        "INNTEKT_BASE_URL" to "",
         "SECURITY_TOKEN_SERVICE_URL" to "",
         "SECURITY_TOKEN_SERVICE_REST_URL" to "",
         "SECURITY_TOKEN_SERVICE_API_KEY" to "",
@@ -68,12 +66,10 @@ data class Configuration(
     val commitSha: String = hentCommitSha("NAIS_APP_IMAGE".configProperty())
 ) {
     data class Register(
-        val tpsUrl: String = "TPSWS_URL".configProperty(),
         val medl2BaseUrl: String = "MEDL2_BASE_URL".configProperty(),
         val medl2ApiKey: String = "MEDL2_API_KEY".configProperty(),
         val aaRegBaseUrl: String = "AAREG_BASE_URL".configProperty(),
         val aaRegApiKey: String = "AAREG_API_KEY".configProperty(),
-        val inntektBaseUrl: String = "INNTEKT_BASE_URL".configProperty(),
         val safBaseUrl: String = "SAF_BASE_URL".configProperty(),
         val safApiKey: String = "SAF_API_KEY".configProperty(),
         val oppgaveBaseUrl: String = "OPPGAVE_BASE_URL".configProperty(),
