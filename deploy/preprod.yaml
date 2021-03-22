@@ -23,7 +23,7 @@ spec:
       rules:
         - application: medlemskap-oppslag-funksjonelle-tester
         - application: sparkel-medlemskap
-            namespace: tbd
+          namespace: tbd
   resources:
     limits:
       cpu: 2000m
