@@ -17,7 +17,7 @@ Denne tjenesten gjør REST-kall mot følgende tjenester/registre:
 * [Funksjonell dokumentasjon](src/test/resources/dokumentasjon/README.md)
 
 ## URL til tjeneste
-* preprod: https://medlemskap-oppslag.nais.preprod.local
+* preprod: https://medlemskap-oppslag.dev.intern.nav.no
 * prod: https://medlemskap-oppslag.nais.adeo.no
 
 ## Autentisering
@@ -100,6 +100,15 @@ curl -X POST -H "Authorization: Bearer <AAD_TOKEN>" -H "Content-Type: applicatio
 curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d 'client_id=<clientid>>&scope=api://<clientid>/.default&client_secret=<clientsecret>&grant_type=client_credentials' 'https://login.microsoftonline.com/966ac572-f5b7-4bbe-aa88-c76419c0f851/oauth2/v2.0/token'
 ```
 Der `clientid` og `clientsecret` kan hentes fra vault under `azuread`
+
+## Kalle tjenesten fra laptop, for eksempel med Postman:
+* Angi POST
+* Angi URL localhost:8080/
+* Authorization:
+  ** Type = Bearer Token
+  * Paste inn Token-verdi   
+    ** Body:
+* Request som angitt i LOVME.yaml
 
 ## Testing med jMeter
 En jMeter-test som henter ned MiniNorge populasjonen og gjør et kall mot medlemskap-oppslag for hver person kan kjøres med følgende script
