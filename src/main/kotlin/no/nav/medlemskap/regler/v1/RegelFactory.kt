@@ -80,6 +80,7 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_19_2 -> HarBrukerFlereOppholdstillatelserSomOverlapper.fraDatagrunnlag(datagrunnlag).regel
             REGEL_19_3 -> GyldigOppholdstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_19_3_1 -> DekkerOppholdstillatelseArbeidsperiodeRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_19_5 -> ErArbeidsadgangUavklartRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_19_6 -> GyldigArbeidstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_19_6_1 -> DekkerArbeidstillatelsenArbeidsperiodenRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_19_7 -> ErBrukerBritiskBorgerRegel.fraDatagrunnlag(datagrunnlag).regel
