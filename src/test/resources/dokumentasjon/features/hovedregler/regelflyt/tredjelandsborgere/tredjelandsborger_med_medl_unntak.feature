@@ -63,8 +63,8 @@ Egenskap: Tredjelandsborger med medl unntak.
       | REGEL_MEDL                     |
 
     Eksempler:
-      | Opphold til og med | Er medlem | Regel 19.3 | Medlemskap | Årsak  |
-      | 20.01.2019         | Ja        | Nei        | Uavklart   | 19.3.1 |
+      | Opphold til og med | Er medlem | Regel 19.3 | Medlemskap | Årsak |
+      | 20.01.2019         | Ja        | Nei        | Uavklart   | 19.7  |
 
 
   Scenariomal: Tredjelandsborger med medl unntak "Ja" skal få "Ja" på medlemskap hvis oppholdstillatelse er i orden.

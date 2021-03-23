@@ -20,42 +20,43 @@ class ReglerForOppholdstillatelse(
 
     override fun hentHovedflyt(): Regelflyt {
 
+        val erBrukerBritiskEllerSveitsiskBorgerRegelflyt = lagRegelflyt(
+            regel = hentRegel(REGEL_19_7),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE),
+            hvisNei = regelflytJa(ytelse, REGEL_OPPHOLDSTILLATELSE)
+        )
+
         val dekkerArbeidstillatelsenArbeidsperiodenRegelflyt = lagRegelflyt(
             regel = hentRegel(REGEL_19_6_1),
-            hvisJa = regelflytJa(ytelse, REGEL_OPPHOLDSTILLATELSE),
+            hvisJa = erBrukerBritiskEllerSveitsiskBorgerRegelflyt,
             hvisNei = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE)
         )
 
         val harBrukerGyldigArbeidstillatelseIKontrollperiodeRegelflyt = lagRegelflyt(
             regel = hentRegel(REGEL_19_6),
-            hvisJa = regelflytJa(ytelse, REGEL_OPPHOLDSTILLATELSE),
+            hvisJa = erBrukerBritiskEllerSveitsiskBorgerRegelflyt,
             hvisNei = dekkerArbeidstillatelsenArbeidsperiodenRegelflyt
         )
 
-        val erBrukerBritiskEllerSveitsiskBorgerRegelflyt = lagRegelflyt(
-            regel = hentRegel(REGEL_19_7),
+        val erArbeidsadgangUavklartRegelFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_19_5),
             hvisJa = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE),
-            hvisNei = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE)
+            hvisNei = harBrukerGyldigArbeidstillatelseIKontrollperiodeRegelflyt
         )
 
         val dekkerOppholdstillatelseArbeidsperiodeRegel = lagRegelflyt(
             regel = hentRegel(REGEL_19_3_1),
-            hvisJa = harBrukerGyldigArbeidstillatelseIKontrollperiodeRegelflyt,
-            hvisNei = erBrukerBritiskEllerSveitsiskBorgerRegelflyt
-        )
-
-        val harBrukerOppholdPåSammeVilkårFlagg = lagRegelflyt(
-            regel = hentRegel(REGEL_19_8),
-            hvisJa = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE),
-            hvisNei = dekkerOppholdstillatelseArbeidsperiodeRegel
+            hvisJa = erArbeidsadgangUavklartRegelFlyt,
+            hvisNei = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE)
         )
 
         val harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt = lagRegelflyt(
             regel = hentRegel(REGEL_19_3),
-            hvisJa = harBrukerGyldigArbeidstillatelseIKontrollperiodeRegelflyt,
-            hvisNei = harBrukerOppholdPåSammeVilkårFlagg,
+            hvisJa = erArbeidsadgangUavklartRegelFlyt,
+            hvisNei = dekkerOppholdstillatelseArbeidsperiodeRegel,
             hvisUavklart = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE)
         )
+
 
         val harBrukerFlereOppholdstillatelserSomOverlapper = lagRegelflyt(
             regel = hentRegel(REGEL_19_2),
@@ -63,10 +64,16 @@ class ReglerForOppholdstillatelse(
             hvisNei = harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt
         )
 
+        val harBrukerOppholdPaSammeVilkarFlagg = lagRegelflyt(
+            regel = hentRegel(REGEL_19_8),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE),
+            hvisNei = harBrukerFlereOppholdstillatelserSomOverlapper
+        )
+
         val erOppholdstillatelseUavklartRegelflyt = lagRegelflyt(
             regel = hentRegel(REGEL_19_1),
             hvisJa = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE),
-            hvisNei = harBrukerFlereOppholdstillatelserSomOverlapper
+            hvisNei = harBrukerOppholdPaSammeVilkarFlagg
         )
 
         return erOppholdstillatelseUavklartRegelflyt
