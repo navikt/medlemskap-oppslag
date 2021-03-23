@@ -11,15 +11,15 @@ Egenskap: Regelflyt for regel 19.7 og regel 9
 
     Og følgende oppholdstillatelse
       | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type      | Oppholdstillatelse på samme vilkår flagg |
-      | 01.01.2018        |                   | Ja             | PERMANENT | Nei                                      |
+      | 01.01.2017        | 20.01.2017        | Ja             | PERMANENT | Nei                                      |
 
     Og følgende arbeidsadgang
       | Gyldig fra og med | Gyldig til og med | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
-      | 01.01.2018        |                   | Ja            | GENERELL          | KUN_ARBEID_HELTID    |
+      | 01.01.2017        |                   | Ja            | GENERELL          | KUN_ARBEID_HELTID    |
 
     Og følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Arbeidsgiver Id |
-      | 10.10.1975      |                 | Organisasjon     | NORMALT             | 1               |
+      | 01.01.2017      | 30.01.2017      | Organisasjon     | NORMALT             | 1               |
 
     Og følgende arbeidsgiver i arbeidsforholdet
       | Identifikator       | Arbeidsgivertype | Landkode | Antall ansatte |
@@ -47,8 +47,8 @@ Egenskap: Regelflyt for regel 19.7 og regel 9
 
     Eksempler:
       | Statsborgerskap | Regel 19.7 | Arbeid utenfor Norge | Medlemskap |
-      | RUS             | Nei        | Nei                  | Ja         |
-      | USA             | Nei        | Nei                  | Ja         |
+      | RUS             | Nei        | Nei                  | Uavklart   |
+      | USA             | Nei        | Nei                  | Uavklart   |
       | RUS             | Nei        | Ja                   | Uavklart   |
       | USA             | Nei        | Ja                   | Uavklart   |
       | GBR             | Ja         | Nei                  | Uavklart   |
