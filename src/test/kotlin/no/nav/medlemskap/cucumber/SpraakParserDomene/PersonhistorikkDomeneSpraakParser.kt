@@ -127,6 +127,7 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
             return PersonhistorikkEktefelle(
                 ident = parseString(Domenebegrep.IDENT, rad),
                 barn = mutableListOf<String>(),
+                statsborgerskap = mutableListOf<Statsborgerskap>(),
                 bostedsadresser = bostedsadresser,
                 kontaktadresser = kontaktadresser,
                 oppholdsadresser = oppholdsadresser

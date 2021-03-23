@@ -147,7 +147,7 @@ object PdlMapper {
         )
     }
 
-    private fun mapStatsborgerskap(statsborgerskap: List<HentPerson.Statsborgerskap>): List<Statsborgerskap> {
+    fun mapStatsborgerskap(statsborgerskap: List<HentPerson.Statsborgerskap>): List<Statsborgerskap> {
         return statsborgerskap.map {
             Statsborgerskap(
                 landkode = it.land,

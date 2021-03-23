@@ -57,7 +57,6 @@ class ReglerForOppholdstillatelse(
             hvisUavklart = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE)
         )
 
-
         val harBrukerFlereOppholdstillatelserSomOverlapper = lagRegelflyt(
             regel = hentRegel(REGEL_19_2),
             hvisJa = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE),
