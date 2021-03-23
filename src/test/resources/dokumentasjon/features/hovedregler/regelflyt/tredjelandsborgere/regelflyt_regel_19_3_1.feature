@@ -49,5 +49,5 @@ Egenskap: Regelflyt for regel 19.3.1
     Eksempler:
       | Opphold til og med | Arbeid fra og med | Arbeid til og med | Regel 19.3.1 | Medlemskap | Årsaker |
       | 20.03.2017         | 01.01.2017        |                   | Ja           | Ja         |         |
-      | 20.01.2017         | 01.01.2017        | 30.01.2017        | Nei          | Uavklart   | 19.7    |
-      | 20.01.2017         | 31.12.2016        | 15.01.2017        | Nei          | Uavklart   | 19.7    |
+      | 20.01.2017         | 01.01.2017        | 30.01.2017        | Nei          | Uavklart   | 19.3.1  |
+      | 20.01.2017         | 31.12.2016        | 15.01.2017        | Nei          | Uavklart   | 19.3.1  |

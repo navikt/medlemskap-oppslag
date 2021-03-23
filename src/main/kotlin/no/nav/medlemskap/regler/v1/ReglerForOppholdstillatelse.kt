@@ -3,13 +3,10 @@ package no.nav.medlemskap.regler.v1
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.regler.common.RegelId
+import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.*
-import no.nav.medlemskap.regler.common.Regelflyt
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
-import no.nav.medlemskap.regler.common.Regler
-import no.nav.medlemskap.regler.common.Svar
 
 class ReglerForOppholdstillatelse(
     val periode: InputPeriode,
@@ -41,7 +38,8 @@ class ReglerForOppholdstillatelse(
         val erBrukerBritiskEllerSveitsiskBorgerRegelflyt = lagRegelflyt(
             regel = hentRegel(REGEL_19_7),
             hvisJa = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE),
-            hvisNei = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE)
+            hvisNei = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE),
+            årsak = Årsak(REGEL_19_3_1, REGEL_19_3_1.avklaring, Svar.UAVKLART)
         )
 
         val dekkerOppholdstillatelseArbeidsperiodeRegel = lagRegelflyt(
