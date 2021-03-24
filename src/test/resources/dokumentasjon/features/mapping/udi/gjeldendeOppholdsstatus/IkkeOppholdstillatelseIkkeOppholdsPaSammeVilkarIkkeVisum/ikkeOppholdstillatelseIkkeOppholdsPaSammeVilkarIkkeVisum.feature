@@ -15,8 +15,8 @@ Egenskap: Mapping av OppholdstillatelseEllerOppholdsPaSammeVilkar
 
   Scenariomal: Bruker har følgende fra IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
     Gitt følgende JaNeiUavklart fra UtvistMedInnreiseForbud
-      | JaNeiUavklart    |
-      | <JaNeiUavklart>  |
+      | JaNeiUavklart   |
+      | <JaNeiUavklart> |
 
     Og  avgjorelsesDato fra AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak
       | Avgjørelsesdato   |
@@ -27,8 +27,8 @@ Egenskap: Mapping av OppholdstillatelseEllerOppholdsPaSammeVilkar
       | <OvrigIkkeOppholdsKategori> |
 
     Og foresporselsfodselsnummer fra HentPersonstatusResultat
-      | Foresporselsfodselsnummer  |
-      | 20041276216                |
+      | Foresporselsfodselsnummer |
+      | 20041276216               |
 
     Og uttrekkstidspunkt fra HentPersonstatusResultat
       | Uttrekkstidspunkt       |
@@ -49,8 +49,8 @@ Egenskap: Mapping av OppholdstillatelseEllerOppholdsPaSammeVilkar
       | <OvrigIkkeOppholdsKategori> |
 
     Eksempler:
-      | JaNeiUavklart     | Avgjørelsesdato | OvrigIkkeOppholdsKategori                                                   |
-      | JA                | 2016-02-03      | OPPHEVET_INNREISEFORBUD                                                     |
-      | NEI               | 2016-02-03      | ANNULERING_AV_VISUM                                                         |
-      | UAVKLART          | 2016-02-03      | UTLOPT_OPPHOLDSTILLATELSE                                                   |
-      | JA                | 2016-02-03      | UTLOPT_EO_SELLER_EFTA_OPPHOLDSRETT_ELLER_EO_SELLER_EFTA_OPPHOLDSTILLATELSE  |
+      | JaNeiUavklart | Avgjørelsesdato | OvrigIkkeOppholdsKategori                                                  |
+      | JA            | 2016-02-03      | OPPHEVET_INNREISEFORBUD                                                    |
+      | NEI           | 2016-02-03      | ANNULERING_AV_VISUM                                                        |
+      | UAVKLART      | 2016-02-03      | UTLOPT_OPPHOLDSTILLATELSE                                                  |
+      | JA            | 2016-02-03      | UTLOPT_EO_SELLER_EFTA_OPPHOLDSRETT_ELLER_EO_SELLER_EFTA_OPPHOLDSTILLATELSE |

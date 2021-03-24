@@ -14,8 +14,8 @@ Egenskap: Regelflyt for regel 19.3
       | 10.10.1975      |                 | Organisasjon     | NORMALT             | 1               |
 
     Og følgende arbeidsgiver i arbeidsforholdet
-      | Identifikator       | Arbeidsgivertype | Landkode | Antall ansatte | Juridisk enhetstype |
-      | organisasjonsnummer | STAT             | NOR      | 10             | STAT                |
+      | Identifikator       | Arbeidsgivertype | Landkode | Antall ansatte |
+      | organisasjonsnummer | STAT             | NOR      | 10             |
 
     Og følgende detaljer om ansatte for arbeidsgiver
       | Antall ansatte | Gyldighetsperiode gyldig fra | Gyldighetsperiode gyldig til |
@@ -31,12 +31,12 @@ Egenskap: Regelflyt for regel 19.3
       | USA      | 10.10.1975      |                 |
 
     Og følgende oppholdstillatelse
-      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type      |
-      | 01.01.2018        | 20.03.2021        | Ja             | PERMANENT |
+      | Gyldig fra og med | Gyldig til og med    | Har tillatelse | Type      | Oppholdstillatelse på samme vilkår flagg |
+      | 01.01.2018        | <Opphold til og med> | Ja             | PERMANENT | Nei                                      |
 
     Og følgende arbeidsadgang
-      | Gyldig fra og med | Gyldig til og med          | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
-      | 01.01.2018        | <Arbeidsadgang til og med> | Ja            | GENERELL          | KUN_ARBEID_HELTID    |
+      | Gyldig fra og med | Gyldig til og med    | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
+      | 01.01.2018        | <Opphold til og med> | Ja            | GENERELL          | KUN_ARBEID_HELTID    |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
@@ -46,7 +46,7 @@ Egenskap: Regelflyt for regel 19.3
     Og skal regel "19.3" gi svaret "<Regel 19.3>"
 
     Eksempler:
-      | Arbeidsadgang til og med | Regel 19.3 | Medlemskap |
-      | 20.03.2021               | Ja         | Ja         |
-      | 20.01.2019               | Nei        | Uavklart   |
-      | 20.01.2019               | Nei        | Uavklart   |
+      | Opphold til og med | Regel 19.3 | Medlemskap |
+      | 20.03.2021         | Ja         | Ja         |
+      | 20.01.2019         | Nei        | Uavklart   |
+      | 20.01.2019         | Nei        | Uavklart   |

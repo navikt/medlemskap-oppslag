@@ -157,14 +157,14 @@ class UdiMapperSteps : No {
         }
 
         Så<DataTable>("skal mappede EOSEllerEFTAOpphold være") { dataTable: DataTable ->
-            val forventetEOSEllerEFTAOpphold = OppholdstillatelseDomeneSpraakParser.mapEOSElllerEFTAOpphold(dataTable)
+            val forventetEOSEllerEFTAOpphold = OppholdstillatelseDomeneSpraakParser.mapEOSElllerEFTAOppholdKlasse(dataTable)
             oppholdstillatelse?.gjeldendeOppholdsstatus?.eosellerEFTAOpphold.shouldBe(forventetEOSEllerEFTAOpphold)
         }
 
         Så<DataTable>(
             "skal mappede oppholdstillatelse med EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT"
         ) { dataTable: DataTable ->
-            val forventetEOSEllerEFTAOpphold = OppholdstillatelseDomeneSpraakParser.mapEOSElllerEFTAOpphold(dataTable)
+            val forventetEOSEllerEFTAOpphold = OppholdstillatelseDomeneSpraakParser.mapEOSElllerEFTAOppholdKlasse(dataTable)
             oppholdstillatelse?.gjeldendeOppholdsstatus?.eosellerEFTAOpphold.shouldBe(forventetEOSEllerEFTAOpphold)
         }
 

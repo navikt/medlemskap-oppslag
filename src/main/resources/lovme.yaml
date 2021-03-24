@@ -432,8 +432,8 @@ components:
           $ref: "#/components/schemas/Periode"
         harTillatelse:
           type: boolean
-        oppholdPaSammeVilkar:
-          $ref: "#/components/schemas/OppholdPaSammeVilkar"
+        soknadIkkeAvgjort:
+          $ref: "#/components/schemas/SoknadIkkeAvgjort"
         type:
           enum:
             - MIDLERTIDIG
@@ -528,9 +528,9 @@ components:
           $ref: "#/components/schemas/ValgfriDato"
         tom:
           $ref: "#/components/schemas/ValgfriDato"
-    OppholdPaSammeVilkar:
+    SoknadIkkeAvgjort:
       properties:
-        harOppholdPaSammeVilkar:
+        soknadIkkeAvgjort:
           type: boolean
     PermisjonPermittering:
       properties:
