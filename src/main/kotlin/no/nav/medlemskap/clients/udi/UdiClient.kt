@@ -7,7 +7,6 @@ import mu.KotlinLogging
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
 import no.nav.medlemskap.common.exceptions.OppholdstatusIkkeFunnetException
 import no.nav.medlemskap.common.exceptions.PersonErDoedUdi
-import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
 import no.nav.medlemskap.common.exceptions.PersonIkkeFunnetUDI
 import no.udi.mt_1067_nav_data.v1.HentPersonstatusParameter
 import no.udi.mt_1067_nav_data.v1.HentPersonstatusResultat
@@ -39,17 +38,18 @@ class UdiClient(
     }
 
     private suspend fun hentOppholdstatusRequest(fnr: String): HentPersonstatusResponseType? {
+
         return withContext(Dispatchers.Default) {
             secureLogger.info("Request: ${mapRequest(fnr)}")
 
             try {
                 mT1067NAVV1Interface.hentPersonstatus(mapRequest(fnr))
             } catch (hentPersonstatusFault: HentPersonstatusFault) {
-                val kodeId = hentPersonstatusFault.faultInfo.kodeId
-                if (kodeId == FEILKODE_PERSON_FINNES_IKKE) {
-                    throw PersonIkkeFunnetUDI( "Person ikke funnet i UDI")
+                val errorCode = hentPersonstatusFault.faultInfo.kodeId
+                if (errorCode == FEILKODE_PERSON_FINNES_IKKE) {
+                    throw PersonIkkeFunnetUDI("Person ikke funnet i UDI")
                 }
-                if (kodeId == FEILKODE_PERSON_ER_DOED) {
+                if (errorCode == FEILKODE_PERSON_ER_DOED) {
                     throw PersonErDoedUdi("Person er død fra udi", hentPersonstatusFault)
                 } else {
                     logger.warn("Kall mot UDI feilet ", hentPersonstatusFault)
@@ -58,7 +58,6 @@ class UdiClient(
             }
         }
     }
-
 
     fun mapRequest(fnr: String): HentPersonstatusRequestType {
         val type = HentPersonstatusRequestType()

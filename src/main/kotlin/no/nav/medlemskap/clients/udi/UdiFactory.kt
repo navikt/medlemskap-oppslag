@@ -6,6 +6,14 @@ import org.apache.cxf.jaxws.JaxWsProxyFactoryBean
 import org.apache.cxf.message.Message
 import v1.mt_1067_nav.no.udi.MT1067NAVV1Interface
 import javax.xml.namespace.QName
+import org.apache.cxf.frontend.ClientProxy
+
+import org.apache.cxf.ws.addressing.WSAddressingFeature
+
+import org.apache.cxf.phase.PhaseInterceptor
+
+
+
 
 object UdiFactory {
     private val ServiceClass = MT1067NAVV1Interface::class.java
@@ -24,4 +32,6 @@ object UdiFactory {
             this.features.addAll(features)
             this.outInterceptors.addAll(outInterceptors)
         }.create(ServiceClass)
+
+
 }
