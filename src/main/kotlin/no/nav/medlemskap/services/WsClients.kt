@@ -15,9 +15,8 @@ class WsClients(
     private val stsClientWs: STSClient,
     private val callIdGenerator: () -> String
 ) {
-    private val features get() = listOf(WSAddressingFeature(), LoggingFeature(), MetricFeature())
+    private val features = listOf(WSAddressingFeature(), LoggingFeature(), MetricFeature())
     private val outInterceptors get() = listOf(CallIdInterceptor(callIdGenerator))
-    private val logger = KotlinLogging.logger { }
     companion object {
         init {
             System.setProperty("javax.xml.soap.SAAJMetaFactory", "com.sun.xml.messaging.saaj.soap.SAAJMetaFactoryImpl")
