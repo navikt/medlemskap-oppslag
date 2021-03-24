@@ -16,6 +16,7 @@ import no.nav.medlemskap.common.healthcheck.HealthService
 import no.nav.medlemskap.common.healthcheck.HttpResponseHealthCheck
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.config.retryRegistry
+import no.nav.medlemskap.services.WsClients
 import no.nav.medlemskap.services.aareg.AaRegService
 import no.nav.medlemskap.services.medl.MedlService
 import no.nav.medlemskap.services.oppgave.OppgaveService
@@ -65,7 +66,7 @@ class Services(val configuration: Configuration) {
             configuration = configuration
         )
 
-        val wsClients = no.nav.medlemskap.wsClients.WsClients(
+        val wsClients = WsClients(
             stsClientWs = stsWsClient,
             callIdGenerator = callIdGenerator::get
         )

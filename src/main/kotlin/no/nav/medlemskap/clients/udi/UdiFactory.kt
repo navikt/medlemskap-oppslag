@@ -16,15 +16,16 @@ object UdiFactory {
     private val EndpointName = QName(Namespace, "MT_1067_NAV_v1Port")
     private val logger = KotlinLogging.logger { }
 
-    fun create(endpointUrl: String, features: List<Feature>, outInterceptors: List<Interceptor<Message>> = emptyList()) =
-        JaxWsProxyFactoryBean().apply {
+    fun create(endpointUrl: String, features: List<Feature>, outInterceptors: List<Interceptor<Message>> = emptyList()): MT1067NAVV1Interface {
+        logger.info("Features: $features")
+        return JaxWsProxyFactoryBean().apply {
             address = endpointUrl
             wsdlURL = Wsdl
             serviceName = ServiceName
             endpointName = EndpointName
             serviceClass = ServiceClass
             this.features.addAll(features)
-            logger.info { features }
             this.outInterceptors.addAll(outInterceptors)
         }.create(ServiceClass)
+    }
 }
