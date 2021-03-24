@@ -117,6 +117,11 @@ class RegelSteps : No {
             dataOmEktefelleBuilder.personhistorikkEktefelle = ektefelle[0]
         }
 
+        Gitt("følgende statsborgerskap for ektefelle fra PDL") { dataTable: DataTable ->
+            val statsborgerskap = PersonhistorikkDomeneSpraakParser.mapStatsborgerskap(dataTable)
+            personhistorikkEktefelleBuilder.statsborgerskap.addAll(statsborgerskap)
+        }
+
         Gitt("følgende barn i personhistorikk for ektefelle fra PDL") { dataTable: DataTable ->
             val barnTilEktefelle = PersonhistorikkDomeneSpraakParser.mapBarnTilEktefelle(dataTable)
             personhistorikkEktefelleBuilder.barn.addAll(barnTilEktefelle)
