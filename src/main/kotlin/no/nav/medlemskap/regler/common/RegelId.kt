@@ -51,6 +51,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_19_2("19.2", "Har bruker to ulike oppholdstillatelser som overlapper?", "Bruker har ikke to oppholdstillatelser som overlapper", "Bruker har to oppholdstillatelser som overlapper"),
     REGEL_19_3("19.3", "Har bruker en gyldig oppholdstillatelse 12 måneder bakover og 2 måned fremover i tid?", "Bruker har ikke gyldig oppholdstillatelse"),
     REGEL_19_3_1("19.3.1", "Dekker oppholdstillatelsen arbeidsperioden bakover i tid?", "Oppholdstillatelsen dekker ikke arbeidsperioden"),
+    REGEL_19_4("19.4", "Når brukers tillatelse er EØS eller EFTA; er brukers ektefelle statsborger i UK?", "brukers ektefelle er ikke statsborger i UK", "Brukers ektefelle er statsborger i UK"),
     REGEL_19_5("19.5", "Svarer UDI-tjenesten uavklart ift arbeidsadgang", "UDI-tjenesten svarer ikke uavklart", "UDI-tjenesten svarer uavklart"),
     REGEL_19_6("19.6", "Har bruker en gyldig arbeidstillatelse 12 måneder bakover og 2 måned fremover i tid?", "Bruker har ikke gyldig arbeidstillatelse"),
     REGEL_19_6_1("19.6.1", "Dekker arbeidstillatelsen arbeidsperioden bakover i tid?", "arbeidstillatelsen dekker ikke arbeidsperioden"),

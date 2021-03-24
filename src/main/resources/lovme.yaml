@@ -610,6 +610,10 @@ components:
       properties:
         ident:
           type: string
+        statsborgerskap:
+          type: array
+          items:
+            $ref: "#/components/schemas/Statsborgerskap"
         barn:
           type: array
           nullable: true
