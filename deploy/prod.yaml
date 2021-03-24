@@ -18,6 +18,11 @@ spec:
     path: isReady
     initialDelay: 30
     timeout: 1
+  accessPolicy:
+    inbound:
+      rules:
+        - application: sparkel-medlemskap
+          namespace: tbd
   resources:
     limits:
       cpu: 2000m
