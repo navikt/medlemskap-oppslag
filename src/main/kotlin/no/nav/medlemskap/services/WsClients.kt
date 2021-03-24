@@ -1,6 +1,7 @@
 package no.nav.medlemskap.wsClients
 
 import io.github.resilience4j.retry.Retry
+import mu.KotlinLogging
 import no.nav.medlemskap.clients.CallIdInterceptor
 import no.nav.medlemskap.clients.sts.configureFor
 import no.nav.medlemskap.clients.udi.UdiClient
@@ -16,7 +17,7 @@ class WsClients(
 ) {
     private val features get() = listOf(WSAddressingFeature(), LoggingFeature(), MetricFeature())
     private val outInterceptors get() = listOf(CallIdInterceptor(callIdGenerator))
-
+    private val logger = KotlinLogging.logger { }
     companion object {
         init {
             System.setProperty("javax.xml.soap.SAAJMetaFactory", "com.sun.xml.messaging.saaj.soap.SAAJMetaFactoryImpl")
