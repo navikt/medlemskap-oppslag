@@ -9,6 +9,7 @@ import no.nav.medlemskap.clients.saf.SafClient
 import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.clients.sts.stsClient
 import no.nav.medlemskap.clients.udi.UdiClient
+import no.nav.medlemskap.clients.wsClients.WsClients
 import no.nav.medlemskap.common.callIdGenerator
 import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.common.healthcheck.HealthReporter
@@ -16,7 +17,6 @@ import no.nav.medlemskap.common.healthcheck.HealthService
 import no.nav.medlemskap.common.healthcheck.HttpResponseHealthCheck
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.config.retryRegistry
-import no.nav.medlemskap.services.WsClients
 import no.nav.medlemskap.services.aareg.AaRegService
 import no.nav.medlemskap.services.medl.MedlService
 import no.nav.medlemskap.services.oppgave.OppgaveService

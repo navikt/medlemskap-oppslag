@@ -1,6 +1,5 @@
 package no.nav.medlemskap.clients.udi
 
-import mu.KotlinLogging
 import org.apache.cxf.feature.Feature
 import org.apache.cxf.interceptor.Interceptor
 import org.apache.cxf.jaxws.JaxWsProxyFactoryBean
@@ -14,7 +13,6 @@ object UdiFactory {
     private const val Namespace = "http://udi.no.MT_1067_NAV.v1"
     private val ServiceName = QName(Namespace, "MT_1067_NAV_v1Port")
     private val EndpointName = QName(Namespace, "MT_1067_NAV_v1Port")
-
 
     fun create(endpointUrl: String, features: List<Feature>, outInterceptors: List<Interceptor<Message>> = emptyList()): MT1067NAVV1Interface {
         return JaxWsProxyFactoryBean().apply {
