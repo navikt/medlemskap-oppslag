@@ -17,7 +17,7 @@ class WsClients(
     private val callIdGenerator: () -> String
 ) {
     private val wsAddressingFeature = createWsAdressingFeature()
-    private val features = listOf(wsAddressingFeature, LoggingFeature(), MetricFeature())
+    private val features = listOf(LoggingFeature(), MetricFeature())
     private val outInterceptors get() = listOf(CallIdInterceptor(callIdGenerator))
     private val logger = KotlinLogging.logger { }
 
