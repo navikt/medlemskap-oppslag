@@ -20,8 +20,8 @@ Egenskap: Regel 19.1: Er oppholdstillatelse uavklart?
   Scenario: Regel 19.1 - En avklart oppholdstillatelse av type OppholdstillaelsePaSammeVilkarType
 
     Gitt følgende oppholdstillatelse
-      | Gyldig fra og med | Gyldig til og med | Klasse                          | Type      |
-      | 27.01.2021        |                   | OppholdstillatelsePaSammeVilkar | PERMANENT |
+      | Gyldig fra og med | Gyldig til og med | Klasse                          | Type      | Oppholdstillatelse på samme vilkår flagg |
+      | 27.01.2021        |                   | OppholdstillatelsePaSammeVilkar | PERMANENT | Nei                                      |
 
     Når regel "19.1" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |

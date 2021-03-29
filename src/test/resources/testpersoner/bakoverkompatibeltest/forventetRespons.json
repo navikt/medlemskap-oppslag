@@ -208,7 +208,7 @@
           },
           "type" : "PERMANENT",
           "harTillatelse" : true,
-          "oppholdPaSammeVilkar" : false
+          "soknadIkkeAvgjort" : false
         },
         "eosellerEFTAOpphold" : null,
         "uavklart" : null,

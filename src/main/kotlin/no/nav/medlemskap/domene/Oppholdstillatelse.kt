@@ -16,14 +16,15 @@ data class Oppholdstillatelse(
     fun harGyldigArbeidstillatelseForPeriode(periode: Periode): Boolean {
         return arbeidsadgang != null && arbeidsadgang.harArbeidsadgang &&
             harGyldigArbeidsomfang() &&
-            arbeidsadgang.arbeidsadgangType != null && arbeidsadgang.arbeidsadgangType == ArbeidsadgangType.GENERELL &&
-            arbeidsadgang.periode.encloses(periode) &&
+            arbeidsadgang.arbeidsadgangType != null &&
+            arbeidsadgang.arbeidsadgangType == ArbeidsadgangType.GENERELL &&
+            arbeidsadgang.periode.enclosesAndFomNotNull(periode) &&
             gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar?.periode?.equals(arbeidsadgang.periode) ?: false
     }
 
     fun harGyldigOppholdstillatelseForPeriode(periode: Periode): Boolean {
         return gjeldendeOppholdsstatus != null && gjeldendeOppholdsstatus.oppholdstillatelsePaSammeVilkar?.harTillatelse == true &&
-            gjeldendeOppholdsstatus.oppholdstillatelsePaSammeVilkar.periode?.encloses(periode) ?: false
+            gjeldendeOppholdsstatus.oppholdstillatelsePaSammeVilkar.periode?.enclosesAndFomNotNull(periode) ?: false
     }
 
     private fun harGyldigArbeidsomfang(): Boolean {
@@ -41,6 +42,20 @@ data class Oppholdstillatelse(
             else -> false
         }
     }
+
+    fun overlapperOppholdsstatusPeriodene(): Boolean {
+        val oppholdPaSammeVilkarPeriode = gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar?.periode
+        val eosEllerEFTAPeriode = gjeldendeOppholdsstatus?.eosellerEFTAOpphold?.periode
+
+        if (harFlereOppholdsstatuser() && oppholdPaSammeVilkarPeriode != null && eosEllerEFTAPeriode != null) {
+            return oppholdPaSammeVilkarPeriode.overlapper(eosEllerEFTAPeriode)
+        }
+
+        return false
+    }
+
+    fun harFlereOppholdsstatuser(): Boolean =
+        (gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar != null && gjeldendeOppholdsstatus.eosellerEFTAOpphold != null)
 }
 
 data class Arbeidsadgang(
@@ -54,7 +69,7 @@ data class OppholdstillatelsePaSammeVilkar(
     val periode: Periode?,
     val type: OppholdstillaelsePaSammeVilkarType?,
     val harTillatelse: Boolean?,
-    val oppholdPaSammeVilkar: Boolean
+    val soknadIkkeAvgjort: Boolean
 )
 
 data class GjeldendeOppholdsstatus(

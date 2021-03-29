@@ -18,6 +18,12 @@ spec:
     path: isReady
     initialDelay: 30
     timeout: 1
+  accessPolicy:
+    inbound:
+      rules:
+        - application: medlemskap-oppslag-funksjonelle-tester
+        - application: sparkel-medlemskap
+          namespace: tbd
   resources:
     limits:
       cpu: 2000m
@@ -55,7 +61,7 @@ spec:
     - name: AZURE_AUTHORITY_ENDPOINT
       value: https://login.microsoftonline.com
     - name: SECURITY_TOKEN_SERVICE_URL
-      value: https://api-gw-q1.oera.no/SecurityTokenServiceProvider/
+      value: https://api-gw-q1.oera.no/sts/SecurityTokenServiceProvider/
     - name: SECURITY_TOKEN_SERVICE_REST_URL
       value: https://api-gw-q1.oera.no/security-token-service
     - name: MEDL2_BASE_URL

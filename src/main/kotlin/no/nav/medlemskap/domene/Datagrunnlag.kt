@@ -57,7 +57,7 @@ data class Datagrunnlag(
         return arbeidsforhold.aaRegUtenlandsoppholdPeriodeForKontrollperiode(kontrollPeriodeForArbeidsforhold).map { it?.tom }
     }
 
-    fun kombinasjonAvSkipsregisterFartsomradeOgSkipstype(): List<String> {
+    fun kombinasjonAvSkipsregisterFartsomradeOgSkipstype(): List<String?> {
         return arbeidsforhold.skipsregisterFartsomradeOgSkipstypeForKontrollperiode(kontrollPeriodeForArbeidsforhold)
     }
 

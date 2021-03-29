@@ -160,7 +160,8 @@ private fun loggResponse(fnr: String, response: Response) {
         kv("AaRegUtenlandsoppsholdPeriodeFom", response.datagrunnlag.gyldigeAaRegUtenlandsoppholdPeriodeFom().toString()),
         kv("AaRegUtenlandsoppsholdPeriodeTom", response.datagrunnlag.gyldigeAaRegUtenlandsoppholdPeriodeTom().toString()),
         kv("skipsinfo", response.datagrunnlag.kombinasjonAvSkipsregisterFartsomradeOgSkipstype()),
-        kv("response", objectMapper.writeValueAsString(response))
+        kv("response", objectMapper.writeValueAsString(response)),
+        kv("gjeldendeOppholdsstatus", response.datagrunnlag.oppholdstillatelse?.gjeldendeOppholdsstatus.toString())
     )
 
     if (årsaker.isNotEmpty()) {

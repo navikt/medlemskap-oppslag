@@ -16,7 +16,10 @@ import no.nav.medlemskap.cucumber.steps.BakoverkompabilitetHjelper.validerMedlem
 import no.nav.medlemskap.cucumber.steps.pdl.DataOmEktefelleBuilder
 import no.nav.medlemskap.cucumber.steps.pdl.PersonhistorikkBuilder
 import no.nav.medlemskap.cucumber.steps.pdl.PersonhistorikkEktefelleBuilder
+import no.nav.medlemskap.cucumber.steps.udi.EOSellerEFTAOppholdBuilder
+import no.nav.medlemskap.cucumber.steps.udi.GjeldendeOppholdsstatusBuilder
 import no.nav.medlemskap.cucumber.steps.udi.OppholdstillatelseBuilder
+import no.nav.medlemskap.cucumber.steps.udi.OppholdstillatelsePåSammeVilkårBuilder
 import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.arbeidsforhold.*
 import no.nav.medlemskap.domene.barn.DataOmBarn
@@ -48,7 +51,10 @@ class RegelSteps : No {
     private var personhistorikkEktefelleBuilder = PersonhistorikkEktefelleBuilder()
     private var dataOmEktefelleBuilder = DataOmEktefelleBuilder()
     private var oppholdstillatelseBuilder = OppholdstillatelseBuilder()
+    private var gjeldendeOppholdsstatusBuilder = GjeldendeOppholdsstatusBuilder()
+    private var oppholdstillatelsePaSammeVilkarBuilder = OppholdstillatelsePåSammeVilkårBuilder()
     private var medlemskap: List<Medlemskap> = emptyList()
+    private var eosEellerEFTAOppholdBuilder = EOSellerEFTAOppholdBuilder()
 
     private var dataOmBarn: List<DataOmBarn> = emptyList()
 
@@ -201,6 +207,23 @@ class RegelSteps : No {
 
         Gitt("følgende oppholdstillatelse") { dataTable: DataTable ->
             oppholdstillatelseBuilder.fromOppholdstillatelse(OppholdstillatelseDomeneSpraakParser.mapOppholdstillatelse(dataTable))
+        }
+
+        Gitt("følgende oppholdstillatelse med oppholdstillatelse på samme vilkår") { dataTable: DataTable ->
+            oppholdstillatelsePaSammeVilkarBuilder.harTillatelse = OppholdstillatelseDomeneSpraakParser.mapHarTillatelse(dataTable)
+            oppholdstillatelsePaSammeVilkarBuilder.periode = OppholdstillatelseDomeneSpraakParser.mapPeriode(dataTable)
+            oppholdstillatelsePaSammeVilkarBuilder.soknadIkkeAvgjort = OppholdstillatelseDomeneSpraakParser.mapSoknadIkkeAvgjort(dataTable)
+            oppholdstillatelsePaSammeVilkarBuilder.type = OppholdstillatelseDomeneSpraakParser.mapOppholdstillatelsePaSammeVilkarType(dataTable)
+            gjeldendeOppholdsstatusBuilder.oppholdstillatelsePaSammeVilkar = oppholdstillatelsePaSammeVilkarBuilder.build()
+        }
+
+        Gitt("følgende i EØSellerEFTAOpphold") { dataTable: DataTable ->
+            eosEellerEFTAOppholdBuilder.periode = OppholdstillatelseDomeneSpraakParser.mapPeriode(dataTable)
+            eosEellerEFTAOppholdBuilder.EOSellerEFTAGrunnlagskategoriOppholdsrettType = OppholdstillatelseDomeneSpraakParser.mapOppholdsrettType(dataTable)
+            eosEellerEFTAOppholdBuilder.EOSellerEFTAOppholdType = OppholdstillatelseDomeneSpraakParser.mapOppholdType(dataTable)
+            gjeldendeOppholdsstatusBuilder.eosellerEFTAOpphold = eosEellerEFTAOppholdBuilder.build()
+            oppholdstillatelseBuilder.gjeldendeOppholdsstatus = gjeldendeOppholdsstatusBuilder.build()
+            oppholdstillatelseBuilder.build()
         }
 
         Gitt("følgende arbeidsadgang") { dataTable: DataTable ->

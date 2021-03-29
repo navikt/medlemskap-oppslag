@@ -69,26 +69,26 @@ object UdiMapper {
                         fraJaNeiUavklartVerdi(
                             gjeldendeOppholdsstatus
                                 .ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
-                                .utvistMedInnreiseForbud
-                                .innreiseForbud
-                                .value()
+                                ?.utvistMedInnreiseForbud
+                                ?.innreiseForbud
+                                ?.value()
                         )
                 ),
                 avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak =
                     AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak(
                         gjeldendeOppholdsstatus
                             .ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
-                            .avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak
-                            .avgjorelsesDato
+                            ?.avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak
+                            ?.avgjorelsesDato
                             .asLocalDate()
                     ),
                 ovrigIkkeOpphold = OvrigIkkeOpphold(
                     ovrigIkkeOppholdsKategori = OvrigIkkeOppholdsKategori.fraOvrigIkkeOppholdsKategoriType(
                         gjeldendeOppholdsstatus
                             .ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
-                            .ovrigIkkeOpphold
-                            .arsak
-                            .value()
+                            ?.ovrigIkkeOpphold
+                            ?.arsak
+                            ?.value()
                     )
                 )
             )
@@ -181,12 +181,12 @@ object UdiMapper {
 
             val harTillatelse = gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar?.oppholdstillatelse?.oppholdstillatelseType != null
 
-            val oppholdPaSammeVilkar: Boolean = gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar.oppholdPaSammeVilkar != null
+            val soknadIkkeAvgjort: Boolean = gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar.oppholdPaSammeVilkar != null
 
             return OppholdstillatelsePaSammeVilkar(
                 periode = oppholdstillatelsePaSammeVilkarPeriode,
                 harTillatelse = harTillatelse,
-                oppholdPaSammeVilkar = oppholdPaSammeVilkar,
+                soknadIkkeAvgjort = soknadIkkeAvgjort,
                 type = oppholdstillatelsePaSammeVilkarType
             )
         }
