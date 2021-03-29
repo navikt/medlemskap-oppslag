@@ -40,6 +40,7 @@ spec:
   accessPolicy:
     inbound:
       rules:
+        - application: medlemskap-oppslag-funksjonelle-tester
         - application: sparkel-medlemskap
           namespace: tbd
     outbound:
