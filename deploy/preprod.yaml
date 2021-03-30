@@ -27,6 +27,7 @@ spec:
       memory: 128Mi
   ingresses:
     - https://medlemskap-oppslag.dev.intern.nav.no
+    - https://medlemskap-oppslag.dev.nav.no
   replicas:
     min: 1
     max: 2
