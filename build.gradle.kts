@@ -2,7 +2,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val ktorVersion = "1.5.1"
+val ktorVersion = "1.5.3"
 val jacksonVersion = "2.10.5"
 val prometheusVersion = "0.9.0"
 val logbackVersion = "1.2.3"
@@ -36,10 +36,9 @@ val swaggerUiVersion = "3.37.2"
 val nettyCodecVersion = "4.1.59.Final"
 val commonsCodecVersion = "3.2.2"
 val httpClientVersion = "4.5.13"
-val jettyWebAppVersion = "9.4.35.v20201120"
+val jettyWebAppVersion = "9.4.39"
 val jacksonDataformatYamlVersion = "2.10.4"
 val guavaVersion = "30.0-jre"
-val junitVersion = "4.13.1"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
