@@ -33,7 +33,7 @@ val kotestVersion = "4.2.5"
 val swaggerRequestValidatorVersion = "2.11.1"
 val swaggerUiVersion = "3.37.2"
 // Temporary to fix high severity Snyk vulnerabilities:
-val nettyCodecVersion = "4.1.59.Final"
+val nettyVersion = "4.1.63.Final"
 val commonsCodecVersion = "3.2.2"
 val httpClientVersion = "4.5.13"
 val jettyWebAppVersion = "9.4.39"
@@ -137,8 +137,10 @@ dependencies {
     swaggerUI("org.webjars:swagger-ui:$swaggerUiVersion")
 
     // Temporary to fix high severity Snyk vulernabilities:
-    implementation("io.netty:netty-codec:$nettyCodecVersion")
-    implementation("io.netty:netty-codec-http:$nettyCodecVersion")
+    implementation("io.netty:netty-codec:$nettyVersion")
+    implementation("io.netty:netty-codec-http:$nettyVersion")
+    implementation("io.netty:netty-codec-http2:$nettyVersion")
+    implementation("io.netty:netty-transport-native-epoll:$nettyVersion")
     implementation("commons-collections:commons-collections:$commonsCodecVersion")
     implementation("org.apache.httpcomponents:httpclient:$httpClientVersion")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonDataformatYamlVersion")
