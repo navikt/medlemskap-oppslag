@@ -36,7 +36,7 @@ val swaggerUiVersion = "3.37.2"
 val nettyVersion = "4.1.63.Final"
 val commonsCodecVersion = "3.2.2"
 val httpClientVersion = "4.5.13"
-val jettyWebAppVersion = "9.4.39"
+val jettyWebAppVersion = "9.4.39.v20210325"
 val jacksonDataformatYamlVersion = "2.10.4"
 val guavaVersion = "30.0-jre"
 
