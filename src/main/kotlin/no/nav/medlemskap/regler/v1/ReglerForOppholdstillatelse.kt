@@ -44,15 +44,21 @@ class ReglerForOppholdstillatelse(
             hvisNei = harBrukerGyldigArbeidstillatelseIKontrollperiodeRegelflyt
         )
 
+        val harBrukerEOSellerEFTAOppholdOgBritiskEktefelleRegelflyt = lagRegelflyt(
+            regel = hentRegel(REGEL_19_4),
+            hvisJa = erArbeidsadgangUavklartRegelFlyt,
+            hvisNei = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE)
+        )
+
         val dekkerOppholdstillatelseArbeidsperiodeRegel = lagRegelflyt(
             regel = hentRegel(REGEL_19_3_1),
-            hvisJa = erArbeidsadgangUavklartRegelFlyt,
+            hvisJa = harBrukerEOSellerEFTAOppholdOgBritiskEktefelleRegelflyt,
             hvisNei = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE)
         )
 
         val harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt = lagRegelflyt(
             regel = hentRegel(REGEL_19_3),
-            hvisJa = erArbeidsadgangUavklartRegelFlyt,
+            hvisJa = harBrukerEOSellerEFTAOppholdOgBritiskEktefelleRegelflyt,
             hvisNei = dekkerOppholdstillatelseArbeidsperiodeRegel,
             hvisUavklart = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE)
         )

@@ -107,7 +107,7 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
             val historisk = parseValgfriBoolean(PersonhistorikkDomenebegrep.HISTORISK.nøkkel(), rad) ?: false
 
             val statsborgerskap = mutableListOf<Statsborgerskap>()
-            val landkode = parseValgfriString(PersonhistorikkDomenebegrep.LANDKODE, rad)
+            val landkode = parseValgfriString(PersonhistorikkDomenebegrep.STATSBORGERSKAP, rad)
             if (landkode != null) {
                 statsborgerskap.add(Statsborgerskap(landkode, fraOgMedDato, tilOgMedDato, historisk))
             }
@@ -197,6 +197,7 @@ enum class PersonhistorikkDomenebegrep(val nøkkel: String) : Domenenøkkel {
     RELATERT_VED_SIVILSTAND("Relatert ved sivilstand"),
     RELATERT_PERSONS_ROLLE("Relatert persons rolle"),
     SIVILSTANDSTYPE("Sivilstandstype"),
+    STATSBORGERSKAP("Statsborgerskap"),
     TIL_OG_MED_DATO("Til og med dato");
 
     override fun nøkkel(): String {
