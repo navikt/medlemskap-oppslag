@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2021-03-04T07:31:37.777854",
+  "tidspunkt" : "2021-04-07T10:41:59.158035",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "datagrunnlag" : {
@@ -149,6 +149,7 @@
     "dataOmEktefelle" : {
       "personhistorikkEktefelle" : {
         "ident" : "0101197512345",
+        "statsborgerskap" : [ ],
         "barn" : [ ],
         "bostedsadresser" : [ {
           "landkode" : "NOR",

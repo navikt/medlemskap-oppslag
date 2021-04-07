@@ -28,7 +28,7 @@ Egenskap: Regelflyt for regel 19.4
 
     Og følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Arbeidsgiver Id |
-      | 01.01.2018      | 01.01.2018      | Organisasjon     | NORMALT             | 1               |
+      | 01.01.2019      | 01.01.2021      | Organisasjon     | NORMALT             | 1               |
 
     Og følgende arbeidsadgang
       | Gyldig fra og med | Gyldig til og med | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
@@ -44,17 +44,16 @@ Egenskap: Regelflyt for regel 19.4
 
     Og følgende oppholdstillatelse
       | Klasse              | Gyldig fra og med | Gyldig til og med | EOSEllerEFTAOpphold                       | EOSellerEFTAGrunnlagskategoriOppholdstillatelse |
-      | EOSellerEFTAOpphold | 01.01.2018        |                   | EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT | ARBEID                                          |
+      | EOSellerEFTAOpphold | 01.01.2019        |                   | EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT | ARBEID                                          |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 23.01.2020      | 30.01.2020      | Nei                           |
 
-    Så skal svaret være "<Medlemskap>"
-    Og skal regel "19.4" gi svaret "<Regel 19.4>"
+    Så skal regel "19.4" gi svaret "<Regel 19.4>"
     Og skal regel-årsaker være "<Årsaker>"
+    Og skal svaret være "<Medlemskap>"
 
     Eksempler:
       | Statsborgerskap | Regel 19.4 | Medlemskap | Årsaker |
-      | NOR             | Nei        | Ja         |         |
       | GBR             | Ja         | Uavklart   | 19.4    |
