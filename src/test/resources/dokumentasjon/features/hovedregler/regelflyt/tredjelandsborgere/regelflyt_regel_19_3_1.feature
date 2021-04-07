@@ -45,7 +45,7 @@ Egenskap: Regelflyt for regel 19.3.1
     Så skal svaret være "<Medlemskap>"
     Og skal regel "19.3.1" gi svaret "<Regel 19.3.1>"
     Og skal regel-årsaker være "<Årsaker>"
-    
+
     Eksempler:
       | Opphold til og med | Arbeid fra og med | Arbeid til og med | Regel 19.3.1 | Medlemskap | Årsaker |
       | 20.03.2017         | 01.01.2017        |                   | Ja           | Ja         |         |
