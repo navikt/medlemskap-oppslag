@@ -6,14 +6,6 @@ import org.apache.cxf.jaxws.JaxWsProxyFactoryBean
 import org.apache.cxf.message.Message
 import v1.mt_1067_nav.no.udi.MT1067NAVV1Interface
 import javax.xml.namespace.QName
-import org.apache.cxf.frontend.ClientProxy
-
-import org.apache.cxf.ws.addressing.WSAddressingFeature
-
-import org.apache.cxf.phase.PhaseInterceptor
-
-
-
 
 object UdiFactory {
     private val ServiceClass = MT1067NAVV1Interface::class.java
@@ -22,8 +14,8 @@ object UdiFactory {
     private val ServiceName = QName(Namespace, "MT_1067_NAV_v1Port")
     private val EndpointName = QName(Namespace, "MT_1067_NAV_v1Port")
 
-    fun create(endpointUrl: String, features: List<Feature> = emptyList(), outInterceptors: List<Interceptor<Message>> = emptyList()) =
-        JaxWsProxyFactoryBean().apply {
+    fun create(endpointUrl: String, features: List<Feature>, outInterceptors: List<Interceptor<Message>> = emptyList()): MT1067NAVV1Interface {
+        return JaxWsProxyFactoryBean().apply {
             address = endpointUrl
             wsdlURL = Wsdl
             serviceName = ServiceName
@@ -32,6 +24,5 @@ object UdiFactory {
             this.features.addAll(features)
             this.outInterceptors.addAll(outInterceptors)
         }.create(ServiceClass)
-
-
+    }
 }
