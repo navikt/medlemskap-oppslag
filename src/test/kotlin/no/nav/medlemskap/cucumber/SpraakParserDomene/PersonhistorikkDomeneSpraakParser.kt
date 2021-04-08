@@ -104,10 +104,16 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
         override fun mapRad(rad: Map<String, String>): PersonhistorikkEktefelle {
             val fraOgMedDato = parseValgfriDato(PersonhistorikkDomenebegrep.FRA_OG_MED_DATO, rad)
             val tilOgMedDato = parseValgfriDato(PersonhistorikkDomenebegrep.TIL_OG_MED_DATO, rad)
+            val historisk = parseValgfriBoolean(PersonhistorikkDomenebegrep.HISTORISK.nøkkel(), rad) ?: false
+
+            val statsborgerskap = mutableListOf<Statsborgerskap>()
+            val landkode = parseValgfriString(PersonhistorikkDomenebegrep.STATSBORGERSKAP, rad)
+            if (landkode != null) {
+                statsborgerskap.add(Statsborgerskap(landkode, fraOgMedDato, tilOgMedDato, historisk))
+            }
 
             val bostedsadresser = mutableListOf<Adresse>()
             val bostedsadresse = parseValgfriString(PersonhistorikkDomenebegrep.BOSTED, rad)
-            val historisk = parseValgfriBoolean(PersonhistorikkDomenebegrep.HISTORISK.nøkkel(), rad) ?: false
             if (bostedsadresse != null) {
                 bostedsadresser.add(Adresse(bostedsadresse, fraOgMedDato, tilOgMedDato, historisk))
             }
@@ -127,6 +133,7 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
             return PersonhistorikkEktefelle(
                 ident = parseString(Domenebegrep.IDENT, rad),
                 barn = mutableListOf<String>(),
+                statsborgerskap = statsborgerskap,
                 bostedsadresser = bostedsadresser,
                 kontaktadresser = kontaktadresser,
                 oppholdsadresser = oppholdsadresser
@@ -190,6 +197,7 @@ enum class PersonhistorikkDomenebegrep(val nøkkel: String) : Domenenøkkel {
     RELATERT_VED_SIVILSTAND("Relatert ved sivilstand"),
     RELATERT_PERSONS_ROLLE("Relatert persons rolle"),
     SIVILSTANDSTYPE("Sivilstandstype"),
+    STATSBORGERSKAP("Statsborgerskap"),
     TIL_OG_MED_DATO("Til og med dato");
 
     override fun nøkkel(): String {

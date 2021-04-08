@@ -129,6 +129,7 @@ internal class FamilieServiceTest {
         return PersonhistorikkEktefelle(
             ident = fnrEktefelle,
             barn = emptyList(),
+            statsborgerskap = emptyList(),
             bostedsadresser = emptyList(),
             kontaktadresser = emptyList(),
             oppholdsadresser = emptyList()
