@@ -173,11 +173,13 @@ private fun loggResponse(fnr: String, response: Response) {
 private fun validerRequest(request: Request, azp: String): Request {
     val ytelse = finnYtelse(request.ytelse, azp)
 
-    //if (ytelse != sykepenger && førsteDagForYtelse == null) {
-    //    throw UgyldigRequestException("Første dag for ytelse kan ikke være null (inputperiode skal ikke lenger brukes)", ytelse)
-    //}
+    val test = ytelse != Ytelse.SYKEPENGER || ytelse != Ytelse.LOVME
 
-    if (request.periode?.tom?.isBefore(request.periode.fom) == true) {
+    if (test && request.førsteDagForYtelse == null) {
+        throw UgyldigRequestException("Første dag for ytelse kan ikke være null (inputperiode skal ikke lenger brukes)", ytelse)
+    }
+
+    if (request.periode.tom.isBefore(request.periode.fom)) {
         throw UgyldigRequestException("Periode tom kan ikke være før periode fom", ytelse)
     }
 
