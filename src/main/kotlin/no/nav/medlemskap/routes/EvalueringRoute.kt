@@ -173,9 +173,7 @@ private fun loggResponse(fnr: String, response: Response) {
 private fun validerRequest(request: Request, azp: String): Request {
     val ytelse = finnYtelse(request.ytelse, azp)
 
-    val test = ytelse != Ytelse.SYKEPENGER || ytelse != Ytelse.LOVME
-
-    if (test && request.førsteDagForYtelse == null) {
+    if (ytelse != Ytelse.SYKEPENGER && request.førsteDagForYtelse == null) {
         throw UgyldigRequestException("Første dag for ytelse kan ikke være null (inputperiode skal ikke lenger brukes)", ytelse)
     }
 
