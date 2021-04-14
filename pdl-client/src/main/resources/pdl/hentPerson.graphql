@@ -5,6 +5,11 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
             relatertPersonsRolle
             minRolleForPerson
         },
+        forelderBarnRelasjon {
+                    relatertPersonsIdent
+                    relatertPersonsRolle
+                    minRolleForPerson
+        },
         statsborgerskap(historikk: $statsborgerskapHistorikk) {
             land,
             gyldigFraOgMed,
