@@ -1,7 +1,6 @@
 package no.nav.medlemskap.clients.wsClients
 
 import io.github.resilience4j.retry.Retry
-import mu.KotlinLogging
 import no.nav.medlemskap.clients.CallIdInterceptor
 import no.nav.medlemskap.clients.sts.configureFor
 import no.nav.medlemskap.clients.udi.UdiClient
@@ -36,6 +35,4 @@ class WsClients(
                 UdiClient(port, retry)
             }
     }
-
 }
-

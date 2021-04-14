@@ -90,7 +90,7 @@ data class UtvistMedInnreiseForbud(
 )
 
 data class AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak(
-    val avgjoerselsesDato: LocalDate?
+    val avgjorelsesDato: LocalDate?
 )
 
 data class OvrigIkkeOpphold(
