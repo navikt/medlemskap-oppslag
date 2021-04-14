@@ -3,7 +3,7 @@ package no.nav.medlemskap.services.pdl.mapper
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.personhistorikk.Adresse
-import no.nav.medlemskap.domene.personhistorikk.Familierelasjon
+import no.nav.medlemskap.domene.personhistorikk.ForelderBarnRelasjon
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapBostedsadresser
 import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapKontaktadresser
 
@@ -13,11 +13,11 @@ object PdlMapperBarn {
         val oppholdsadresse = PdlMapper.mapOppholdsadresser(barn.oppholdsadresse)
         val bostedsadresser: List<Adresse> = mapBostedsadresser(barn.bostedsadresse)
         val kontaktadresser: List<Adresse> = mapKontaktadresser(barn.kontaktadresse)
-        val familierelasjoner: List<Familierelasjon> = barn.familierelasjoner.map { PdlMapper.mapFamilierelasjon(it) }
+        val forelderBarnRelasjoner: List<ForelderBarnRelasjon> = barn.forelderBarnRelasjon.map { PdlMapper.mapFamilierelasjon(it) }
 
         return PersonhistorikkBarn(
             ident = fnr,
-            familierelasjoner = familierelasjoner,
+            forelderBarnRelasjon = forelderBarnRelasjoner,
             oppholdsadresser = oppholdsadresse,
             bostedsadresser = bostedsadresser,
             kontaktadresser = kontaktadresser

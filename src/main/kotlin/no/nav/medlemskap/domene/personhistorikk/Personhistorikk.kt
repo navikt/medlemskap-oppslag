@@ -10,7 +10,7 @@ data class Personhistorikk(
     val kontaktadresser: List<Adresse>,
     val oppholdsadresser: List<Adresse>,
     val sivilstand: List<Sivilstand>,
-    val familierelasjoner: List<Familierelasjon>,
+    val forelderBarnRelasjon: List<ForelderBarnRelasjon>,
     val doedsfall: List<LocalDate>
 ) {
 

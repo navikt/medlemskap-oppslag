@@ -130,7 +130,7 @@ class PdlMapperSteps : No {
 
         Så<DataTable>("skal mappede familierelasjoner være") { dataTable: DataTable ->
             val familierelasjonerForventet = PersonhistorikkDomeneSpraakParser.mapFamilierelasjoner(dataTable)
-            personhistorikk!!.familierelasjoner.shouldContainExactly(familierelasjonerForventet)
+            personhistorikk!!.forelderBarnRelasjon.shouldContainExactly(familierelasjonerForventet)
         }
 
         Så<DataTable>("skal mappede doedsfall være") { dataTable: DataTable ->
@@ -154,7 +154,7 @@ class PdlMapperSteps : No {
     }
 
     private fun mapTilPersonhistorikkBarn(): PersonhistorikkBarn {
-        val identBarn = personhistorikk?.familierelasjoner?.get(0)?.relatertPersonsIdent
+        val identBarn = personhistorikk?.forelderBarnRelasjon?.get(0)?.relatertPersonsIdent
             ?: throw BadRequestException("Ingen fnr registrert på barn i familierelasjoner")
         return PdlMapperBarn.mapPersonhistorikkTilBarn(identBarn, pdlPeronBuilderBarn.build())
     }
@@ -171,12 +171,12 @@ class PdlMapperSteps : No {
         var kontaktadresser: List<HentPerson.Kontaktadresse> = emptyList()
         var oppholdsadresser: List<HentPerson.Oppholdsadresse> = emptyList()
         var sivilstander: List<HentPerson.Sivilstand> = emptyList()
-        var familierelasjoner: List<HentPerson.Familierelasjon> = emptyList()
+        var familierelasjoner: List<HentPerson.ForelderBarnRelasjon> = emptyList()
         var doedsfall: List<HentPerson.Doedsfall> = emptyList()
 
         fun build(): HentPerson.Person {
             return HentPerson.Person(
-                familierelasjoner = familierelasjoner,
+                forelderBarnRelasjon = familierelasjoner,
                 statsborgerskap = statsborgerskap,
                 sivilstand = sivilstander,
                 bostedsadresse = bostedsadresser,

@@ -4,7 +4,7 @@ import no.bekk.bekkopen.person.FodselsnummerValidator
 import no.nav.medlemskap.domene.Fødselsnummer.Companion.hentBursdagsAar
 import java.time.LocalDate
 
-data class Familierelasjon(
+data class ForelderBarnRelasjon(
     val relatertPersonsIdent: String,
     val relatertPersonsRolle: Familierelasjonsrolle,
     val minRolleForPerson: Familierelasjonsrolle?
@@ -24,7 +24,7 @@ data class Familierelasjon(
             return fnrTilEktefelle
         }
 
-        fun hentFnrTilBarn(familierelasjoner: List<Familierelasjon>, førsteDatoForYtelse: LocalDate): List<String> {
+        fun hentFnrTilBarn(familierelasjoner: List<ForelderBarnRelasjon>, førsteDatoForYtelse: LocalDate): List<String> {
             return familierelasjoner
                 .filter { FodselsnummerValidator.isValid(it.relatertPersonsIdent) }
                 .filter { it.erBarn() }
@@ -32,6 +32,6 @@ data class Familierelasjon(
                 .map { it.relatertPersonsIdent }
         }
 
-        fun Familierelasjon.erBarn() = this.relatertPersonsRolle == Familierelasjonsrolle.BARN
+        fun ForelderBarnRelasjon.erBarn() = this.relatertPersonsRolle == Familierelasjonsrolle.BARN
     }
 }

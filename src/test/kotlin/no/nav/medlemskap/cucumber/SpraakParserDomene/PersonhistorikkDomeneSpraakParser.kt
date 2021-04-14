@@ -6,7 +6,7 @@ import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.domene.personhistorikk.Adresse
-import no.nav.medlemskap.domene.personhistorikk.Familierelasjon
+import no.nav.medlemskap.domene.personhistorikk.ForelderBarnRelasjon
 import no.nav.medlemskap.domene.personhistorikk.Sivilstand
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
 import java.time.LocalDate
@@ -29,7 +29,7 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, DoedsfallMapper())
     }
 
-    fun mapFamilierelasjoner(dataTable: DataTable): List<Familierelasjon> {
+    fun mapFamilierelasjoner(dataTable: DataTable): List<ForelderBarnRelasjon> {
         return mapDataTable(dataTable, FamilieRelasjonMapper())
     }
 
@@ -84,9 +84,9 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
         }
     }
 
-    class FamilieRelasjonMapper : RadMapper<Familierelasjon> {
-        override fun mapRad(rad: Map<String, String>): Familierelasjon {
-            return Familierelasjon(
+    class FamilieRelasjonMapper : RadMapper<ForelderBarnRelasjon> {
+        override fun mapRad(rad: Map<String, String>): ForelderBarnRelasjon {
+            return ForelderBarnRelasjon(
                 relatertPersonsIdent = parseString(PersonhistorikkDomenebegrep.RELATERT_PERSONS_IDENT, rad),
                 relatertPersonsRolle = DomenespråkParser.parseRolle(PersonhistorikkDomenebegrep.RELATERT_PERSONS_ROLLE, rad),
                 minRolleForPerson = DomenespråkParser.parseValgfriRolle(PersonhistorikkDomenebegrep.MIN_ROLLE_FOR_PERSON, rad)
@@ -169,11 +169,10 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
             return DataOmBarn(
                 PersonhistorikkBarn(
                     ident = parseString(PersonhistorikkDomenebegrep.IDENT, rad),
-                    familierelasjoner = mutableListOf<Familierelasjon>(),
+                    forelderBarnRelasjon = mutableListOf<ForelderBarnRelasjon>(),
                     bostedsadresser = bostedsadresser,
                     kontaktadresser = kontaktadresser,
                     oppholdsadresser = oppholdsadresser
-
                 )
             )
         }
