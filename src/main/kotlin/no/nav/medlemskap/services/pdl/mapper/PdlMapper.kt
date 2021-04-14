@@ -20,14 +20,14 @@ object PdlMapper {
         val kontaktadresser: List<Adresse> = mapKontaktadresser(person.kontaktadresse)
         val oppholdsadresser: List<Adresse> = mapOppholdsadresser(person.oppholdsadresse)
         val sivilstand: List<Sivilstand> = mapSivilstander(person.sivilstand)
-        val familierelasjoner: List<Familierelasjon> = mapFamilierelasjoner(person.familierelasjoner)
+        val forelderBarnRelasjoner: List<ForelderBarnRelasjon> = mapFamilierelasjoner(person.forelderBarnRelasjon)
         val doedsfall: List<LocalDate> = mapDoedsfall(person.doedsfall)
 
         return Personhistorikk(
             statsborgerskap = statsborgerskap,
             bostedsadresser = bostedsadresser,
             sivilstand = sivilstand,
-            familierelasjoner = familierelasjoner,
+            forelderBarnRelasjon = forelderBarnRelasjoner,
             kontaktadresser = kontaktadresser,
             oppholdsadresser = oppholdsadresser,
             doedsfall = doedsfall
@@ -63,12 +63,12 @@ object PdlMapper {
         )
     }
 
-    fun mapFamilierelasjoner(pdlFamilierelasjoner: List<HentPerson.Familierelasjon>): List<Familierelasjon> {
+    fun mapFamilierelasjoner(pdlFamilierelasjoner: List<HentPerson.ForelderBarnRelasjon>): List<ForelderBarnRelasjon> {
         return pdlFamilierelasjoner.map { mapFamilierelasjon(it) }
     }
 
-    fun mapFamilierelasjon(familierelasjon: HentPerson.Familierelasjon): Familierelasjon {
-        return Familierelasjon(
+    fun mapFamilierelasjon(familierelasjon: HentPerson.ForelderBarnRelasjon): ForelderBarnRelasjon {
+        return ForelderBarnRelasjon(
             relatertPersonsIdent = familierelasjon.relatertPersonsIdent,
             relatertPersonsRolle = mapFamileRelasjonsrolle(familierelasjon.relatertPersonsRolle)!!,
             minRolleForPerson = mapFamileRelasjonsrolle(familierelasjon.minRolleForPerson)

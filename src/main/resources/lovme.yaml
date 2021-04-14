@@ -578,10 +578,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Sivilstand"
-        familierelasjoner:
+        forelderBarnRelasjon:
           type: array
           items:
-            $ref: "#/components/schemas/Familierelasjon"
+            $ref: "#/components/schemas/ForelderBarnRelasjon"
         doedsfall:
           type: array
           items:
@@ -602,10 +602,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Adresse"
-        familierelasjoner:
+        forelderBarnRelasjon:
           type: array
           items:
-            $ref: "#/components/schemas/Familierelasjon"
+            $ref: "#/components/schemas/ForelderBarnRelasjon"
     PersonhistorikkEktefelle:
       properties:
         ident:

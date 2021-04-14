@@ -7,7 +7,7 @@ class PersonhistorikkBuilder {
     val statsborgerskap = mutableListOf<Statsborgerskap>()
     val bostedsadresser = mutableListOf<Adresse>()
     val sivilstand = mutableListOf<Sivilstand>()
-    val familierelasjoner = mutableListOf<Familierelasjon>()
+    val familierelasjoner = mutableListOf<ForelderBarnRelasjon>()
     val kontaktadresse = mutableListOf<Adresse>()
     val oppholdsadresse = mutableListOf<Adresse>()
     val doedsfall = mutableListOf<LocalDate>()
@@ -19,7 +19,7 @@ class PersonhistorikkBuilder {
             kontaktadresser = kontaktadresse,
             oppholdsadresser = oppholdsadresse,
             sivilstand = sivilstand,
-            familierelasjoner = familierelasjoner,
+            forelderBarnRelasjon = familierelasjoner,
             doedsfall = doedsfall
         )
     }

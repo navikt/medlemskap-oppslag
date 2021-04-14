@@ -122,7 +122,7 @@ class PdlClientHentPersonTest {
         {
             "data": {
                 "hentPerson": {
-                    "familierelasjoner":[],
+                    "forelderBarnRelasjon":[],
                     "statsborgerskap": [
                             {
                                 "land":"NOR",
