@@ -63,11 +63,11 @@ object PdlMapper {
         )
     }
 
-    fun mapFamilierelasjoner(pdlFamilierelasjoner: List<HentPerson.Familierelasjon>): List<Familierelasjon> {
+    fun mapFamilierelasjoner(pdlFamilierelasjoner: List<HentPerson.ForeldreBarnRelasjon>): List<Familierelasjon> {
         return pdlFamilierelasjoner.map { mapFamilierelasjon(it) }
     }
 
-    fun mapFamilierelasjon(familierelasjon: HentPerson.Familierelasjon): Familierelasjon {
+    fun mapFamilierelasjon(familierelasjon: HentPerson.ForeldreBarnRelasjon): Familierelasjon {
         return Familierelasjon(
             relatertPersonsIdent = familierelasjon.relatertPersonsIdent,
             relatertPersonsRolle = mapFamileRelasjonsrolle(familierelasjon.relatertPersonsRolle)!!,
