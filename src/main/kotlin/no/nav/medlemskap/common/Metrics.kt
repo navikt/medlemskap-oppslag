@@ -7,7 +7,6 @@ import io.micrometer.prometheus.PrometheusMeterRegistry
 import io.micrometer.prometheus.PrometheusRenameFilter
 import no.nav.medlemskap.common.influx.SensuInfluxConfig
 import no.nav.medlemskap.common.influx.SensuInfluxMeterRegistry
-import no.nav.medlemskap.domene.GjeldendeOppholdsstatus
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.regler.common.RegelId
@@ -110,30 +109,6 @@ fun merEnn10ArbeidsforholdCounter(ytelse: Ytelse): Counter = Counter
     .description("counter for brukere med flere enn 10 arbeidsforhold")
     .register(Metrics.globalRegistry)
 
-fun antallUnikeArbeidsforholdCounter(antallUnikeArbeidsforhold: Int, ytelse: Ytelse): Counter = Counter
-    .builder("unike_arbeidsforhold")
-    .tags("antall", antallUnikeArbeidsforhold.toString(), "ytelse", ytelse.name())
-    .description("Counter for unike arbeidsforhold til en bruker")
-    .register(Metrics.globalRegistry)
-
-fun antallTreffPåArbeidsgiver(orgnummer: String?, ytelse: Ytelse): Counter = Counter
-    .builder("treff_paa_arbeidsgiver")
-    .tags("orgnummer", orgnummer, "ytelse", ytelse.name())
-    .description("counter for antall treff på en arbeidsgiver")
-    .register(Metrics.globalRegistry)
-
-fun antallAnsatteHosJuridiskEnhetCounter(orgnummer: String, antall: String, ytelse: Ytelse): Counter = Counter
-    .builder("antall_ansatte_hos_juridisk_enhet")
-    .tags("orgnummer", orgnummer, "antall", antall, "ytelse", ytelse.name())
-    .description("counter for antall ansatte hos juridisk enhet")
-    .register(Metrics.globalRegistry)
-
-fun antallAnsatteTilUavklart(antall: String, ytelse: Ytelse): Counter = Counter
-    .builder("antall_ansatte_uavklart")
-    .tags("antall", antall, "ytelse", ytelse.name())
-    .description("counter for antall ansatte til uavklart for en arbeidsgiver")
-    .register(Metrics.globalRegistry)
-
 fun usammenhengendeArbeidsforholdCounter(ytelse: Ytelse): Counter = Counter
     .builder("usammenhengende_arbeidsforhold")
     .tags("ytelse", ytelse.name())
@@ -160,40 +135,10 @@ fun antallDagerMellomArbeidsforhold(ytelse: Ytelse): DistributionSummary = Distr
     .description("")
     .register(Metrics.globalRegistry)
 
-fun statsborgerskapUavklartForRegel(statsborgerskap: String, ytelse: Ytelse, regel: RegelId): Counter = Counter
-    .builder("statsborgerskap_uavklart_for_regel")
-    .tags("statsborgerskap", statsborgerskap, "ytelse", ytelse.name(), "regel", regel.identifikator)
-    .description("")
-    .register(Metrics.globalRegistry)
-
-fun flereStatsborgerskapCounter(antallStatsborgerskap: String, ytelse: Ytelse): Counter = Counter
-    .builder("flere_statsborgerskap")
-    .tags("statsborgerskap", antallStatsborgerskap, "ytelse", ytelse.name())
-    .description("")
-    .register(Metrics.globalRegistry)
-
-fun endretStatsborgerskapSisteÅretCounter(statsborgerskapEndretSisteÅret: Boolean, ytelse: Ytelse): Counter = Counter
-    .builder("endret_statsborgerskap_siste_aaret")
-    .tags("endret_statsborgerskap", mapEndretStatsborgerskapBooleanTilMetrikkVerdi(statsborgerskapEndretSisteÅret), "ytelse", ytelse.name())
-    .description("")
-    .register(Metrics.globalRegistry)
-
 fun dekningCounter(dekning: String, ytelse: String): Counter = Counter
     .builder("dekningstyper")
     .tags("dekningstyper", dekning, "ytelse", ytelse)
     .description("Ulike dekningskoder til brukere som har spurt tjenesten")
-    .register(Metrics.globalRegistry)
-
-fun enhetstypeCounter(enhetstype: String, ytelse: String): Counter = Counter
-    .builder("enhetstyper")
-    .tags("enhetstyper", enhetstype, "ytelse", ytelse)
-    .description("Ulike enhetstyper for arbeidsgivere")
-    .register(Metrics.globalRegistry)
-
-fun enhetstypeForJuridiskEnhet(enhetstype: String?, ytelse: String): Counter = Counter
-    .builder("enhetstype_juridisk_enhet")
-    .tags("juridiskEnhetstype", enhetstype ?: "N/A", "ytelse", ytelse)
-    .description("Ulike enhetstyper for juridiske enheter")
     .register(Metrics.globalRegistry)
 
 fun uavklartPåRegel(årsak: Årsak, ytelse: String): Counter = Counter
@@ -201,69 +146,6 @@ fun uavklartPåRegel(årsak: Årsak, ytelse: String): Counter = Counter
     .tags("regel", "${årsak.regelId} - ${årsak.avklaring}", "ytelse", ytelse)
     .description("Regler som gir uavklart")
     .register(Metrics.globalRegistry)
-
-fun arbeidsadgangtyperCounter(arbeidsadgangtype: String?): Counter = Counter
-    .builder("arbeidsadgangtyper")
-    .tags("arbeidsadgangtype", arbeidsadgangtype ?: "Ikke oppgitt")
-    .description("counter for ulike typer arbeidsadgang")
-    .register(Metrics.globalRegistry)
-
-fun oppholdstillatelseTypeCounter(oppholdstillatelseType: GjeldendeOppholdsstatus?): Counter = Counter
-    .builder("oppholdstillatelsetyper")
-    .tags("oppholdstillatelse", mapGjeldendeOppholdsstatusTilMetrikkVerdi(oppholdstillatelseType))
-    .description("counter for oppholdstillatelsetype")
-    .register(Metrics.globalRegistry)
-
-fun harTillatelseCounter(harTillatelse: Boolean?): Counter = Counter
-    .builder("har_tillatelse")
-    .tags("hartillatelse", mapHarTillatelseTilMetrikkVerdi(harTillatelse))
-    .description("counter for tillatelse")
-    .register(Metrics.globalRegistry)
-
-fun harArbeidsadgangCounter(harArbeidsadgang: Boolean?): Counter = Counter
-    .builder("har_arbeidsadgang")
-    .tags("hararbeidsadgang", mapHarArbeidsadgangTilMetrikkVerdi(harArbeidsadgang))
-    .description("counter for arbeidsadgang")
-    .register(Metrics.globalRegistry)
-
-private fun mapEndretStatsborgerskapBooleanTilMetrikkVerdi(statsborgerskapEndretSisteÅret: Boolean): String =
-    when (statsborgerskapEndretSisteÅret) {
-        true -> "endret"
-        false -> "uendret"
-    }
-
-private fun mapHarArbeidsadgangTilMetrikkVerdi(harArbeidsadgang: Boolean?): String =
-    when (harArbeidsadgang) {
-        true -> "har arbeidsadgang"
-        false -> "har ikke arbeidsadgang"
-        else -> "null"
-    }
-
-private fun mapHarTillatelseTilMetrikkVerdi(harTillatelse: Boolean?): String =
-    when (harTillatelse) {
-        true -> "har tillatelse"
-        false -> "har ikke tillatelse"
-        else -> "null"
-    }
-
-private fun mapGjeldendeOppholdsstatusTilMetrikkVerdi(oppholdstillatelseType: GjeldendeOppholdsstatus?): String =
-    when {
-        oppholdstillatelseType?.oppholdstillatelsePaSammeVilkar != null -> {
-            "Oppholdstillatelse på samme vilkår"
-        }
-        oppholdstillatelseType?.eosellerEFTAOpphold != null -> {
-            "EØS eller EFTA opphold"
-        }
-        oppholdstillatelseType?.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum != null -> {
-            "Ikke oppholdstillatelse, ikke oppholds på samme vilkår, ikke visum"
-        }
-        oppholdstillatelseType?.uavklart != null -> {
-            "uavklart"
-        }
-        else -> {
-            "null"
-        }
-    }
 
 private fun getStillingsprosentIntervall(stillingsprosent: Double): String {
     // Fjerner desimaler fremfor å runde av fordi regelsjekken godtar ikke f.eks. 24.9% stilling som høy nok til å regnes som 25% stilling.

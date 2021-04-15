@@ -101,17 +101,6 @@ data class Arbeidsforhold(
             arbeidsforholdForKontrollPeriode(kontrollPeriode).map { it.arbeidsgiver }
                 .filter { !it.ansatte?.finnesMindreEnn(6).isNullOrEmpty() }
 
-        fun List<Arbeidsforhold>.registrerAntallAnsatteHosJuridiskEnhet(ytelse: Ytelse) =
-            this.forEach { arbeidsforhold ->
-                arbeidsforhold.arbeidsgiver.juridiskeEnheter?.forEach { juridiskEnhet ->
-                    antallAnsatteHosJuridiskEnhetCounter(
-                        juridiskEnhet?.organisasjonsnummer ?: "Ikke oppgitt",
-                        juridiskEnhet?.antallAnsatte.toString(),
-                        ytelse
-                    ).increment()
-                }
-            }
-
         /**
          * Sjekk om arbeidsfoholdet er sammenhengende i kontrollperioden
          */
@@ -121,8 +110,6 @@ data class Arbeidsforhold(
         ): Boolean {
 
             val arbeidsforholdForNorskArbeidsgiver = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
-
-            antallUnikeArbeidsforholdCounter(arbeidsforholdForNorskArbeidsgiver.size, ytelse).increment()
 
             if (arbeidsforholdForNorskArbeidsgiver.size > 10) {
                 merEnn10ArbeidsforholdCounter(ytelse).increment()
