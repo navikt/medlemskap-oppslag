@@ -4,20 +4,16 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.FeatureToggles
-import no.nav.medlemskap.common.endretStatsborgerskapSisteÅretCounter
-import no.nav.medlemskap.common.flereStatsborgerskapCounter
 import no.nav.medlemskap.common.ytelseCounter
-import no.nav.medlemskap.domene.*
+import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.startDatoForYtelse
+import no.nav.medlemskap.domene.Request
+import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.fraOgMedDatoForArbeidsforhold
-import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.registrerAntallAnsatteHosJuridiskEnhet
 import no.nav.medlemskap.domene.personhistorikk.ForelderBarnRelasjon
-import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erAnnenStatsborger
-import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.harEndretSisteÅret
 import no.nav.medlemskap.services.FamilieService
-import java.time.LocalDate
 
 suspend fun defaultCreateDatagrunnlag(
     request: Request,
@@ -76,10 +72,6 @@ suspend fun defaultCreateDatagrunnlag(
 
     ytelseCounter(ytelse.name()).increment()
 
-    personHistorikk.statsborgerskap.registrerStatsborgerskapDataForGrafana(startDatoForYtelse, request.periode, ytelse)
-
-    arbeidsforhold.registrerAntallAnsatteHosJuridiskEnhet(ytelse)
-
     Datagrunnlag(
         periode = request.periode,
         førsteDagForYtelse = request.førsteDagForYtelse,
@@ -95,18 +87,4 @@ suspend fun defaultCreateDatagrunnlag(
         overstyrteRegler = request.overstyrteRegler,
         oppholdstillatelse = oppholdstillatelse
     )
-}
-
-private fun List<Statsborgerskap>.registrerStatsborgerskapDataForGrafana(
-    startDatoForYtelse: LocalDate,
-    periode: InputPeriode,
-    ytelse: Ytelse
-) {
-    if (size > 1) {
-        flereStatsborgerskapCounter(size.toString(), ytelse).increment()
-    }
-
-    val statsborgerskapEndretSisteÅret = harEndretSisteÅret(Kontrollperiode(fom = startDatoForYtelse.minusYears(1), tom = periode.tom))
-
-    endretStatsborgerskapSisteÅretCounter(statsborgerskapEndretSisteÅret, ytelse).increment()
 }

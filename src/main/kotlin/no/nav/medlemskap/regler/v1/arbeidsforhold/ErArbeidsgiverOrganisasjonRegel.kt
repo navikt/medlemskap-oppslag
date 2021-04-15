@@ -1,9 +1,7 @@
 package no.nav.medlemskap.regler.v1.arbeidsforhold
 
-import no.nav.medlemskap.common.enhetstypeForJuridiskEnhet
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.erAlleArbeidsgivereOrganisasjon
 import no.nav.medlemskap.regler.common.RegelId
@@ -20,18 +18,11 @@ class ErArbeidsgiverOrganisasjonRegel(
 ) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
-
-        registrerArbeidsgiverMetrics()
-
         return when {
             arbeidsforhold.isEmpty() -> nei(regelId)
             !arbeidsforhold.erAlleArbeidsgivereOrganisasjon(kontrollPeriodeForArbeidsforhold) -> nei(regelId)
             else -> ja(regelId)
         }
-    }
-
-    private fun registrerArbeidsgiverMetrics() {
-        arbeidsforhold.forEach { it.arbeidsgiver.juridiskeEnheter?.forEach { p -> enhetstypeForJuridiskEnhet(p?.enhetstype, ytelse.name()).increment() } }
     }
 
     companion object {
