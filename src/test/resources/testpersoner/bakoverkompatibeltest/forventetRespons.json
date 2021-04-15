@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2021-04-07T10:41:59.158035",
+  "tidspunkt" : "2021-04-13T08:22:42.442813",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "datagrunnlag" : {
@@ -7,7 +7,7 @@
       "fom" : "2019-01-01",
       "tom" : "2019-12-31"
     },
-    "førsteDagForYtelse" : null,
+    "førsteDagForYtelse" : "2019-01-01",
     "brukerinput" : {
       "arbeidUtenforNorge" : false
     },
@@ -42,7 +42,7 @@
         "gyldigTilOgMed" : "2020-08-01",
         "relatertVedSivilstand" : "0101197512345"
       } ],
-      "familierelasjoner" : [ ],
+      "forelderBarnRelasjon" : [ ],
       "doedsfall" : [ ]
     },
     "medlemskap" : [ {
@@ -143,7 +143,7 @@
           "historisk" : false
         } ],
         "oppholdsadresser" : [ ],
-        "familierelasjoner" : [ ]
+        "forelderBarnRelasjon" : [ ]
       }
     } ],
     "dataOmEktefelle" : {
@@ -227,7 +227,7 @@
       "uavklartFlyktningstatus" : null,
       "harFlyktningstatus" : null
     },
-    "startDatoForYtelse" : "2018-12-31"
+    "startDatoForYtelse" : "2019-01-01"
   },
   "resultat" : {
     "regelId" : "REGEL_MEDLEM_KONKLUSJON",

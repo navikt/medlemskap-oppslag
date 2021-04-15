@@ -33,7 +33,7 @@
     "kontaktadresser": [],
     "oppholdsadresser": [],
     "sivilstand": [],
-    "familierelasjoner": [
+    "forelderBarnRelasjon": [
       {
         "relatertPersonsIdent": "07014440415",
         "relatertPersonsRolle": "MOR",
@@ -870,7 +870,7 @@
         ],
         "kontaktadresser": [],
         "oppholdsadresser": [],
-        "familierelasjoner": [
+        "forelderBarnRelasjon": [
           {
             "relatertPersonsIdent": "16116343073",
             "relatertPersonsRolle": "MOR",

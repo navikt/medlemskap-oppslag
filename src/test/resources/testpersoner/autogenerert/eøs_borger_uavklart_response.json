@@ -32,7 +32,7 @@
       "relatertVedSivilstand" : "10108000398",
       "folkeregistermetadata" : null
     } ],
-    "familierelasjoner" : [ {
+    "forelderBarnRelasjon" : [ {
       "relatertPersonsIdent" : "09069534888",
       "relatertPersonsRolle" : "BARN",
       "minRolleForPerson" : "FAR",
@@ -83,7 +83,7 @@
       "bostedsadresser" : [ ],
       "kontaktadresser" : [ ],
       "oppholdsadresser" : [ ],
-      "familierelasjoner" : [ ]
+      "forelderBarnRelasjon" : [ ]
     }
   }, {
     "personhistorikkBarn" : {
@@ -95,7 +95,7 @@
       } ],
       "kontaktadresser" : [ ],
       "oppholdsadresser" : [ ],
-      "familierelasjoner" : [ ]
+      "forelderBarnRelasjon" : [ ]
     }
   } ],
   "dataOmEktefelle" : {
