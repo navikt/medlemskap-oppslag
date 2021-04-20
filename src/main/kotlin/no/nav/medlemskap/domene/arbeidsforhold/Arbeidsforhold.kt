@@ -52,12 +52,22 @@ data class Arbeidsforhold(
         ): Boolean =
             vektetOffentligSektorArbeidsforhold(arbeidsforhold, kontrollPeriode, ytelse)
 
-        fun List<Arbeidsforhold>.harUtenlandsopphold(kontrollPeriode: Kontrollperiode): Boolean {
-            val brukerHarUtenlandsopphold = this.isNotNullOrEmpty()
-            val harUtenlandsoppholdPeriode = this.all {
-                it.utenlandsopphold?.all { utenlandsopphold -> utenlandsopphold.periode != null } == true
-            }
-            return true
+        fun List<Arbeidsforhold>.harUtenlandsoppholdEnPeriodeOgErDenIKontrollperioden(kontrollPeriode: Kontrollperiode): Boolean {
+            val finnesUtenlandsopphold = this.any { it.utenlandsopphold != null }
+            val harUtenlandsoppholdIKontrollperiode = this.harUtenlandsoppholdIKontrollperiode(kontrollPeriode)
+            val harUtenlandsoppholdEnPeriode = harUtenlandsoppholdIKontrollperiode.harUtenlandsoppholdEnPeriode()
+
+            return finnesUtenlandsopphold && harUtenlandsoppholdEnPeriode
+        }
+
+        fun List<Arbeidsforhold>.harUtenlandsoppholdIKontrollperiode(kontrollPeriode: Kontrollperiode): List<Arbeidsforhold> {
+            return this.filter {
+                it.utenlandsopphold?.any { utenlandsopphold ->
+                utenlandsopphold.periode?.overlapper(kontrollPeriode.periode) == true } == true }
+        }
+
+        fun List<Arbeidsforhold>.harUtenlandsoppholdEnPeriode(): Boolean = this.any {
+                arbeidsforhold -> arbeidsforhold.utenlandsopphold?.any { it.periode != null } == true
         }
 
         private fun vektetOffentligSektorArbeidsforhold(
