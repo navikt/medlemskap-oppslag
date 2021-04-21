@@ -31,6 +31,10 @@ class PdlMapperSteps : No {
             pdlPersonBuilder.statsborgerskap = pdlDomenespråkParser.mapStatsborgerskap(dataTable)
         }
 
+        Gitt("følgende adressebeskyttelse fra PDL") { dataTable: DataTable ->
+            pdlPersonBuilder.adressebeskyttelse = pdlDomenespråkParser.mapAdressebeskyttelse(dataTable)
+        }
+
         Gitt<DataTable>("følgende bostedsadresser fra PDL:") { dataTable: DataTable ->
             pdlPersonBuilder.bostedsadresser = pdlDomenespråkParser.mapBostedsadresser(dataTable)
         }
@@ -64,6 +68,10 @@ class PdlMapperSteps : No {
         }
 
         Når("statsborgerskap mappes") {
+            personhistorikk = mapTilPersonhistorikk()
+        }
+
+        Når("adressebeskyttelse mappes") {
             personhistorikk = mapTilPersonhistorikk()
         }
 
@@ -106,6 +114,10 @@ class PdlMapperSteps : No {
         Så<DataTable>("skal mappet statsborgerskap være") { dataTable: DataTable ->
             val statsborgerskapForventet = PersonhistorikkDomeneSpraakParser.mapStatsborgerskap(dataTable)
             personhistorikk!!.statsborgerskap.shouldContainExactly(statsborgerskapForventet)
+        }
+
+        Så("skal mappede adressebeskyttelse være") { dataTable: DataTable ->
+            val adressebeskyttelse = PersonhistorikkDomeneSpraakParser.mapAdressebeskyttelse(dataTable)
         }
 
         Så<DataTable>("skal mappede bostedsadresser være") { dataTable: DataTable ->

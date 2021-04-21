@@ -17,6 +17,10 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, StatsborgerskapMapper())
     }
 
+    fun mapAdressebeskyttelse(dataTable: DataTable): List<HentPerson.Adressebeskyttelse> {
+        return mapDataTable(dataTable, AdressebeskyttelseMapper())
+    }
+
     fun mapBostedsadresser(dataTable: DataTable): List<HentPerson.Bostedsadresse> {
         return mapDataTable(dataTable, BostedsadresseMapper())
     }
@@ -52,6 +56,14 @@ class PdlDomenespråkParser : BasisDomeneParser() {
                 parseValgfriString(Domenebegrep.GYLDIG_TIL_OG_MED_DATO, rad),
                 HentPerson.Metadata(historisk)
             )
+        }
+    }
+
+    class AdressebeskyttelseMapper : RadMapper<HentPerson.Adressebeskyttelse> {
+        override fun mapRad(rad: Map<String, String>): HentPerson.Adressebeskyttelse {
+            val gradering = HentPerson.AdressebeskyttelseGradering.valueOf(parseString(Domenebegrep.GRADERING, rad))
+
+            return HentPerson.Adressebeskyttelse(gradering = gradering)
         }
     }
 
@@ -175,6 +187,7 @@ class PdlDomenespråkParser : BasisDomeneParser() {
     }
 
     enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
+        GRADERING("Gradering"),
         BEKREFTELSESDATO("Bekreftelsesdato"),
         DOEDSDATO("Dødsdato"),
         FØRSTE_DATO_FOR_YTELSE("Første dato for ytelse"),

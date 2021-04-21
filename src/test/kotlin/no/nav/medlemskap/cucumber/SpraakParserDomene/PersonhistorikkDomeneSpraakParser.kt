@@ -5,16 +5,17 @@ import no.nav.medlemskap.cucumber.*
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
-import no.nav.medlemskap.domene.personhistorikk.Adresse
-import no.nav.medlemskap.domene.personhistorikk.ForelderBarnRelasjon
-import no.nav.medlemskap.domene.personhistorikk.Sivilstand
-import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
+import no.nav.medlemskap.domene.personhistorikk.*
 import java.time.LocalDate
 
 object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
 
     fun mapStatsborgerskap(dataTable: DataTable): List<Statsborgerskap> {
         return mapDataTable(dataTable, StatsborgerskapMapper())
+    }
+
+    fun mapAdressebeskyttelse(dataTable: DataTable): List<Adressebeskyttelse> {
+        return mapDataTable(dataTable, AdressebeskyttelseMapper())
     }
 
     fun mapAdresser(dataTable: DataTable): List<Adresse> {
@@ -70,6 +71,12 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
     class DoedsfallMapper : RadMapper<LocalDate> {
         override fun mapRad(rad: Map<String, String>): LocalDate {
             return parseDato(PersonhistorikkDomenebegrep.DOEDSDATO, rad)
+        }
+    }
+
+    class AdressebeskyttelseMapper : RadMapper<Adressebeskyttelse> {
+        override fun mapRad(rad: Map<String, String>): Adressebeskyttelse {
+            return Adressebeskyttelse(gradering = DomenespråkParser.parseGradering(PersonhistorikkDomenebegrep.GRADERING, rad))
         }
     }
 
@@ -180,6 +187,7 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
 }
 
 enum class PersonhistorikkDomenebegrep(val nøkkel: String) : Domenenøkkel {
+    GRADERING("Gradering"),
     BOSTED("Bosted"),
     DOEDSDATO("Dødsdato"),
     FRA_OG_MED_DATO("Fra og med dato"),

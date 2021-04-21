@@ -10,6 +10,7 @@ import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.arbeidsforhold.Ansatte
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforholdstype
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsgiver
+import no.nav.medlemskap.domene.personhistorikk.AdressebeskyttelseGradering
 import no.nav.medlemskap.domene.personhistorikk.Familierelasjonsrolle
 import no.nav.medlemskap.domene.personhistorikk.Sivilstandstype
 import no.nav.medlemskap.regler.common.RegelId
@@ -117,6 +118,12 @@ object DomenespråkParser : BasisDomeneParser() {
         return Status.valueOf(verdi)
     }
 
+    fun parseGradering(domenebegrep: PersonhistorikkDomenebegrep, rad: Map<String, String>): AdressebeskyttelseGradering {
+        val verdi = verdi(domenebegrep.nøkkel, rad)
+
+        return AdressebeskyttelseGradering.valueOf(verdi)
+    }
+
     fun parseRolle(domenebegrep: PersonhistorikkDomenebegrep, rad: Map<String, String>): Familierelasjonsrolle {
         val verdi = verdi(domenebegrep.nøkkel, rad)
 
@@ -124,11 +131,7 @@ object DomenespråkParser : BasisDomeneParser() {
     }
 
     fun parseValgfriRolle(domenebegrep: PersonhistorikkDomenebegrep, rad: Map<String, String>): Familierelasjonsrolle? {
-        val verdi = valgfriVerdi(domenebegrep.nøkkel, rad)
-
-        if (verdi == null) {
-            return null
-        }
+        val verdi = valgfriVerdi(domenebegrep.nøkkel, rad) ?: return null
 
         return Familierelasjonsrolle.valueOf(verdi)
     }
