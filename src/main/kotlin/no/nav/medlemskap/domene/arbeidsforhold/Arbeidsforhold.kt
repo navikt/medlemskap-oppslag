@@ -53,11 +53,9 @@ data class Arbeidsforhold(
             vektetOffentligSektorArbeidsforhold(arbeidsforhold, kontrollPeriode, ytelse)
 
         fun List<Arbeidsforhold>.harUtenlandsoppholdEnPeriodeOgErDenIKontrollperioden(kontrollPeriode: Kontrollperiode): Boolean {
-            val finnesUtenlandsopphold = this.any { it.utenlandsopphold != null }
             val harUtenlandsoppholdIKontrollperiode = this.harUtenlandsoppholdIKontrollperiode(kontrollPeriode)
-            val harUtenlandsoppholdEnPeriode = harUtenlandsoppholdIKontrollperiode.harUtenlandsoppholdEnPeriode()
 
-            return finnesUtenlandsopphold && harUtenlandsoppholdEnPeriode
+            return harUtenlandsoppholdIKontrollperiode.harUtenlandsoppholdEnPeriode()
         }
 
         fun List<Arbeidsforhold>.harUtenlandsoppholdIKontrollperiode(kontrollPeriode: Kontrollperiode): List<Arbeidsforhold> {
