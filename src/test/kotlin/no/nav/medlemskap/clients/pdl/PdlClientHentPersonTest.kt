@@ -140,6 +140,11 @@ class PdlClientHentPersonTest {
                             "relatertVedSivilstand": null
                             }
                     ],
+                    "adressebeskyttelse": [
+                        {
+                            "gradering": "FORTROLIG"
+                        }
+                    ],
                     "bostedsadresse":[],
                     "kontaktadresse":[], 
                     "oppholdsadresse":[],

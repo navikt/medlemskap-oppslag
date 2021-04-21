@@ -36,6 +36,7 @@ class FamilierelasjonTest {
 
     private fun lagPersonhistorikk(
         statsborgerskap: List<Statsborgerskap> = listOf(lagStatsborgerskap()),
+        adressebeskyttelse: List<Adressebeskyttelse> = listOf(lagAdressebeskyttelse()),
         bostedsadresser: List<Adresse> = listOf(lagAdresse()),
         kontaktadresser: List<Adresse> = listOf(lagAdresse()),
         oppholdsadresser: List<Adresse> = listOf(lagAdresse()),
@@ -43,7 +44,13 @@ class FamilierelasjonTest {
         familierelasjoner: List<ForelderBarnRelasjon> = listOf(lagFamilierelasjon()),
         doedsfall: List<LocalDate> = emptyList()
     ): Personhistorikk =
-        Personhistorikk(statsborgerskap, bostedsadresser, kontaktadresser, oppholdsadresser, sivilstand, familierelasjoner, doedsfall)
+        Personhistorikk(statsborgerskap, adressebeskyttelse, bostedsadresser, kontaktadresser, oppholdsadresser, sivilstand, familierelasjoner, doedsfall)
+
+    private fun lagAdressebeskyttelse(): Adressebeskyttelse {
+        return Adressebeskyttelse(
+            gradering = AdressebeskyttelseGradering.UGRADERT
+        )
+    }
 
     private fun lagStatsborgerskap(landkode: String = "NOR", fom: LocalDate? = null, tom: LocalDate? = null): Statsborgerskap =
         Statsborgerskap(landkode = landkode, fom = fom, tom = tom, historisk = false)

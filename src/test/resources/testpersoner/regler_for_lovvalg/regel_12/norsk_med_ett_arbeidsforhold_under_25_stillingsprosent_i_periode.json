@@ -16,6 +16,11 @@
         "historisk": false
       }
     ],
+    "adressebeskyttelse": [
+      {
+        "gradering": "FORTROLIG"
+      }
+    ],
     "bostedsadresser": [
       {
         "landkode": "NOR",

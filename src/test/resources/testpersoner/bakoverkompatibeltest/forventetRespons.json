@@ -18,6 +18,7 @@
         "tom" : "2020-08-01",
         "historisk" : false
       } ],
+      "adressebeskyttelse" : [ ],
       "bostedsadresser" : [ {
         "landkode" : "NOR",
         "fom" : "1975-10-10",

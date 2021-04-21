@@ -16,6 +16,7 @@ object PdlMapper {
     fun mapTilPersonHistorikkTilBruker(person: HentPerson.Person): Personhistorikk {
 
         val statsborgerskap: List<Statsborgerskap> = mapStatsborgerskap(person.statsborgerskap)
+        val adressebeskyttelse: List<Adressebeskyttelse> = mapAdressebeskyttelseListe(person.adressebeskyttelse)
         val bostedsadresser: List<Adresse> = mapBostedsadresser(person.bostedsadresse)
         val kontaktadresser: List<Adresse> = mapKontaktadresser(person.kontaktadresse)
         val oppholdsadresser: List<Adresse> = mapOppholdsadresser(person.oppholdsadresse)
@@ -25,6 +26,7 @@ object PdlMapper {
 
         return Personhistorikk(
             statsborgerskap = statsborgerskap,
+            adressebeskyttelse = adressebeskyttelse,
             bostedsadresser = bostedsadresser,
             sivilstand = sivilstand,
             forelderBarnRelasjon = forelderBarnRelasjoner,
@@ -32,6 +34,26 @@ object PdlMapper {
             oppholdsadresser = oppholdsadresser,
             doedsfall = doedsfall
         )
+    }
+
+    private fun mapAdressebeskyttelseListe(adressebeskyttelse: List<HentPerson.Adressebeskyttelse>): List<Adressebeskyttelse> {
+        return adressebeskyttelse.map { mapAdressebeskyttelse(it) }
+    }
+
+    private fun mapAdressebeskyttelse(adressebeskyttelse: HentPerson.Adressebeskyttelse): Adressebeskyttelse {
+        return Adressebeskyttelse(mapAdressebeskyttelseGradering(adressebeskyttelse.gradering))
+    }
+
+    private fun mapAdressebeskyttelseGradering(adressebeskyttelseGradering: HentPerson.AdressebeskyttelseGradering): AdressebeskyttelseGradering {
+        return adressebeskyttelseGradering.let {
+            when (it) {
+                HentPerson.AdressebeskyttelseGradering.FORTROLIG -> AdressebeskyttelseGradering.FORTROLIG
+                HentPerson.AdressebeskyttelseGradering.STRENGT_FORTROLIG -> AdressebeskyttelseGradering.STRENGT_FORTROLIG
+                HentPerson.AdressebeskyttelseGradering.STRENGT_FORTROLIG_UTLAND -> AdressebeskyttelseGradering.STRENGT_FORTROLIG_UTLAND
+                HentPerson.AdressebeskyttelseGradering.UGRADERT -> AdressebeskyttelseGradering.UGRADERT
+                else -> throw DetteSkalAldriSkje("Denne graderingen er ikke tilgjengelig")
+            }
+        }
     }
 
     private fun mapDoedsfall(doedsfall: List<HentPerson.Doedsfall>): List<LocalDate> {

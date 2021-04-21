@@ -5,6 +5,7 @@ import java.time.LocalDate
 
 class PersonhistorikkBuilder {
     val statsborgerskap = mutableListOf<Statsborgerskap>()
+    val adressebeskyttelse = mutableListOf<Adressebeskyttelse>()
     val bostedsadresser = mutableListOf<Adresse>()
     val sivilstand = mutableListOf<Sivilstand>()
     val familierelasjoner = mutableListOf<ForelderBarnRelasjon>()
@@ -15,6 +16,7 @@ class PersonhistorikkBuilder {
     fun build(): Personhistorikk {
         return Personhistorikk(
             statsborgerskap = statsborgerskap,
+            adressebeskyttelse = adressebeskyttelse,
             bostedsadresser = bostedsadresser,
             kontaktadresser = kontaktadresse,
             oppholdsadresser = oppholdsadresse,

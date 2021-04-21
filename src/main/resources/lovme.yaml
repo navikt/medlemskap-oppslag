@@ -85,6 +85,13 @@ components:
       bearerFormat: "JWT"
       description: "AzureAd token. Dersom det logges inn med en ytelse som ikke har fått tilgang, enten ta kontakt med #team-p3-fellesfunksjoner eller definer gyldig ytelse i request"
   schemas:
+    Gradering:
+      type: string
+      enum:
+        - STRENGT_FORTROLIG_UTLAND
+        - STRENGT_FORTROLIG
+        - FORTROLIG
+        - UGRADERT
     Adresse:
       properties:
         landkode:
@@ -562,6 +569,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/FolkeregisterPersonstatus"
+        adressebeskyttelse:
+            type: array
+            items:
+              $ref: "#/components/schemas/Gradering"
         bostedsadresser:
           type: array
           items:

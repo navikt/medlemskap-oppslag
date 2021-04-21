@@ -19,6 +19,9 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
             bekreftelsesdato
             relatertVedSivilstand
         },
+        adressebeskyttelse(historikk: false) {
+              gradering
+        },
         bostedsadresse(historikk: true) {
             angittFlyttedato
             gyldigFraOgMed

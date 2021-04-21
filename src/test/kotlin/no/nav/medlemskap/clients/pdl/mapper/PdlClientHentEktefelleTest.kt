@@ -91,6 +91,11 @@ class PdlClientHentEktefelleTest {
                     }
                   }
                 ],
+                "adressebeskyttelse": [
+                    {
+                        "gradering": "FORTROLIG"
+                    }
+                ],
                 "sivilstand": [
                   {
                     "type": "GIFT",

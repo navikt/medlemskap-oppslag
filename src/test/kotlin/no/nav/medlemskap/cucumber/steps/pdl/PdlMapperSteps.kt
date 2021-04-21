@@ -167,6 +167,7 @@ class PdlMapperSteps : No {
 
     class PdlPersonBuilder {
         var statsborgerskap: List<HentPerson.Statsborgerskap> = emptyList()
+        var adressebeskyttelse: List<HentPerson.Adressebeskyttelse> = emptyList()
         var bostedsadresser: List<HentPerson.Bostedsadresse> = emptyList()
         var kontaktadresser: List<HentPerson.Kontaktadresse> = emptyList()
         var oppholdsadresser: List<HentPerson.Oppholdsadresse> = emptyList()
@@ -179,6 +180,7 @@ class PdlMapperSteps : No {
                 forelderBarnRelasjon = familierelasjoner,
                 statsborgerskap = statsborgerskap,
                 sivilstand = sivilstander,
+                adressebeskyttelse = adressebeskyttelse,
                 bostedsadresse = bostedsadresser,
                 kontaktadresse = kontaktadresser,
                 oppholdsadresse = oppholdsadresser,

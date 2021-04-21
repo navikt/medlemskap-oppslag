@@ -24,6 +24,11 @@ Egenskap: Man er medlem i Folketrygden hvis man er EØS-borger og bor og jobber 
         "historisk": false
       }
     ],
+    "adressebeskyttelse": [
+      {
+        "gradering": "FORTROLIG"
+      }
+    ],
     "bostedsadresser": [
        {
         "landkode": "NOR",

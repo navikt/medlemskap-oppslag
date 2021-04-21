@@ -6,6 +6,7 @@ import java.time.LocalDate
 
 data class Personhistorikk(
     val statsborgerskap: List<Statsborgerskap>,
+    val adressebeskyttelse: List<Adressebeskyttelse>,
     val bostedsadresser: List<Adresse>,
     val kontaktadresser: List<Adresse>,
     val oppholdsadresser: List<Adresse>,
