@@ -19,10 +19,17 @@ class ReglerForFellesArbeidsforhold(
 ) : Regler(ytelse, regelFactory, overstyrteRegler) {
 
     override fun hentHovedflyt(): Regelflyt {
+
+        val HarBrukerUtenlandsoppholdIArbeidsforholdetFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_22),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
+            hvisNei = regelflytJa(ytelse, REGEL_FELLES_ARBEIDSFORHOLD)
+        )
+
         val ErBrukerFrilanserFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_17_1),
             hvisJa = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
-            hvisNei = regelflytJa(ytelse, REGEL_FELLES_ARBEIDSFORHOLD)
+            hvisNei = HarBrukerUtenlandsoppholdIArbeidsforholdetFlyt
         )
 
         val HarBrukerArbeidsforholdFlyt = lagRegelflyt(

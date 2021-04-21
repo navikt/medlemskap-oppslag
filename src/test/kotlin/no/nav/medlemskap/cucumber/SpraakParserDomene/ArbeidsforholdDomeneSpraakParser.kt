@@ -314,8 +314,8 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
             return Utenlandsopphold(
                 landkode = parseString(Domenebegrep.LANDKODE, rad),
                 periode = Periode(
-                    parseDato(Domenebegrep.FRA_OG_MED_DATO, rad),
-                    parseDato(Domenebegrep.TIL_OG_MED_DATO, rad)
+                    parseValgfriDato(Domenebegrep.FRA_OG_MED_DATO, rad),
+                    parseValgfriDato(Domenebegrep.TIL_OG_MED_DATO, rad)
                 ),
                 rapporteringsperiode = DomenespråkParser.parseAarMaaned(Domenebegrep.RAPPORTERINGSPERIODE, rad)
             )
