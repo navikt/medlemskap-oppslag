@@ -3,14 +3,21 @@
 
 Egenskap: Mapping av adressebeskyttelse fra PDL HentPerson.Adressebeskyttelse
 
-  Scenario: En person med ugradert
+  Scenariomal: en person med gradering
 
     Gitt følgende adressebeskyttelse fra PDL
-      | Gradering |
-      | UGRADERT  |
+      | Gradering   |
+      | <Gradering> |
 
     Når adressebeskyttelse mappes
 
     Så skal mappede adressebeskyttelse være
-      | Gradering |
-      | UGRADERT  |
+      | Gradering   |
+      | <Gradering> |
+
+    Eksempler:
+      | Gradering                |
+      | UGRADERT                 |
+      | FORTROLIG                |
+      | STRENGT_FORTROLIG        |
+      | STRENGT_FORTROLIG_UTLAND |
