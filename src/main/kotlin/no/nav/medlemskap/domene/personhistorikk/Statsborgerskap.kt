@@ -67,6 +67,10 @@ data class Statsborgerskap(
             return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Landkode.erNorsk(it) }
         }
 
+        infix fun List<Statsborgerskap>.harNyligBlittNorskStatsborger(kontrollPeriode: Kontrollperiode): Boolean {
+            return this.statsborgerskapForKontrollperiode(kontrollPeriode).any { Landkode.erNorsk(it.landkode) }
+        }
+
         infix fun List<Statsborgerskap>.erNordiskBorger(
             kontrollPeriodeForPersonhistorikk: Kontrollperiode
         ): Boolean {
@@ -95,6 +99,10 @@ data class Statsborgerskap(
             kontrollPeriode.periode.encloses(Periode(fom = it.fom, tom = it.fom)) || kontrollPeriode.periode.encloses(
                 Periode(fom = it.tom, tom = it.tom)
             )
+
+        private fun List<Statsborgerskap>.statsborgerskapForKontrollperiode(kontrollPeriode: Kontrollperiode): List<Statsborgerskap> {
+            return this.filter { it.periode.overlapper(kontrollPeriode.periode) }
+        }
 
         fun List<Statsborgerskap>.erAnnenStatsborger(startDatoForYtelse: LocalDate): Boolean {
             val kontrollPeriodeForPersonhistorikk =
