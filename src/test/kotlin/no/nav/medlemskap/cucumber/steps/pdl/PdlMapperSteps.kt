@@ -173,6 +173,7 @@ class PdlMapperSteps : No {
         var sivilstander: List<HentPerson.Sivilstand> = emptyList()
         var familierelasjoner: List<HentPerson.ForelderBarnRelasjon> = emptyList()
         var doedsfall: List<HentPerson.Doedsfall> = emptyList()
+        var adressebeskyttelse: List<HentPerson.Adressebeskyttelse> = emptyList()
 
         fun build(): HentPerson.Person {
             return HentPerson.Person(
@@ -182,7 +183,8 @@ class PdlMapperSteps : No {
                 bostedsadresse = bostedsadresser,
                 kontaktadresse = kontaktadresser,
                 oppholdsadresse = oppholdsadresser,
-                doedsfall = doedsfall
+                doedsfall = doedsfall,
+                adressebeskyttelse = adressebeskyttelse
             )
         }
     }

@@ -111,6 +111,7 @@ class PdlClientHentEktefelleTest {
                     }
                   }
                 ],
+                "adressebeskyttelse":[],
                 "doedsfall": [],
                 "kontaktadresse": [],
                 "oppholdsadresse": []
