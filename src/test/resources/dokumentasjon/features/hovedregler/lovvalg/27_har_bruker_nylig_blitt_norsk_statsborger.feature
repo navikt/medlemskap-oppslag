@@ -20,8 +20,7 @@ Egenskap: Regel 27: Når bruker har to statsborgerskap og det ene er norsk, har 
     Eksempler:
       | Fra og med | Til og med | Svar |
       | 01.12.2019 |            | Ja   |
-      |            |            | Ja   |
-      | 01.01.2018 | 01.12.2018 | Nei  |
+      | 01.01.2017 |            | Nei  |
 
   Scenario: Regel 27 - bruker som ikke har norsk statsborgerskap får "Nei"
     Gitt følgende statsborgerskap i personhistorikken
