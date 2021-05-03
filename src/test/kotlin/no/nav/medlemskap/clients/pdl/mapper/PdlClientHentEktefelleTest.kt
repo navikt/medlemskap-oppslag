@@ -74,7 +74,7 @@ class PdlClientHentEktefelleTest {
      {
             "data": {
               "hentPerson": {
-                "familierelasjoner": [
+                "forelderBarnRelasjon": [
                   {
                     "relatertPersonsIdent": "20041276216",
                     "relatertPersonsRolle": "BARN",
@@ -111,6 +111,7 @@ class PdlClientHentEktefelleTest {
                     }
                   }
                 ],
+                "adressebeskyttelse":[],
                 "doedsfall": [],
                 "kontaktadresse": [],
                 "oppholdsadresse": []

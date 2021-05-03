@@ -101,17 +101,6 @@ data class Arbeidsforhold(
             arbeidsforholdForKontrollPeriode(kontrollPeriode).map { it.arbeidsgiver }
                 .filter { !it.ansatte?.finnesMindreEnn(6).isNullOrEmpty() }
 
-        fun List<Arbeidsforhold>.registrerAntallAnsatteHosJuridiskEnhet(ytelse: Ytelse) =
-            this.forEach { arbeidsforhold ->
-                arbeidsforhold.arbeidsgiver.juridiskeEnheter?.forEach { juridiskEnhet ->
-                    antallAnsatteHosJuridiskEnhetCounter(
-                        juridiskEnhet?.organisasjonsnummer ?: "Ikke oppgitt",
-                        juridiskEnhet?.antallAnsatte.toString(),
-                        ytelse
-                    ).increment()
-                }
-            }
-
         /**
          * Sjekk om arbeidsfoholdet er sammenhengende i kontrollperioden
          */
@@ -121,8 +110,6 @@ data class Arbeidsforhold(
         ): Boolean {
 
             val arbeidsforholdForNorskArbeidsgiver = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
-
-            antallUnikeArbeidsforholdCounter(arbeidsforholdForNorskArbeidsgiver.size, ytelse).increment()
 
             if (arbeidsforholdForNorskArbeidsgiver.size > 10) {
                 merEnn10ArbeidsforholdCounter(ytelse).increment()
@@ -290,18 +277,19 @@ data class Arbeidsforhold(
         }
 
         infix fun List<Arbeidsforhold>.aaRegUtenlandsoppholdLandkodeForKontrollperiode(kontrollPeriode: Kontrollperiode): List<String> {
-            return arbeidsforholdForKontrollPeriode(kontrollPeriode)
+            val landkoder = arbeidsforholdForKontrollPeriode(kontrollPeriode)
                 .flatMap {
                     it.utenlandsopphold?.hentLandkoder() ?: listOf("null")
                 }
+
+            return if (landkoder.all { it.equals(null) }) listOf("null") else landkoder
         }
 
         infix fun List<Arbeidsforhold>.aaRegUtenlandsoppholdPeriodeForKontrollperiode(kontrollPeriode: Kontrollperiode): List<Periode?> {
             val utenlandsopphold = arbeidsforholdForKontrollPeriode(kontrollPeriode).flatMap {
                 it.utenlandsopphold ?: listOf(null)
             }
-            val utenlandsOppholdPeriode = utenlandsopphold.map { it?.periode }
-            return utenlandsOppholdPeriode
+            return if (utenlandsopphold.all { it == null }) listOf(null) else utenlandsopphold.map { it?.periode }
         }
 
         infix fun List<Arbeidsforhold>.skipsregisterFartsomradeOgSkipstypeForKontrollperiode(kontrollPeriode: Kontrollperiode): List<String?> {

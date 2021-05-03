@@ -1,6 +1,6 @@
 query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolean!){
     hentPerson(ident: $ident) {
-        familierelasjoner {
+        forelderBarnRelasjon {
             relatertPersonsIdent
             relatertPersonsRolle
             minRolleForPerson
@@ -18,6 +18,9 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
             gyldigFraOgMed
             bekreftelsesdato
             relatertVedSivilstand
+        },
+        adressebeskyttelse {
+            gradering
         },
         bostedsadresse(historikk: true) {
             angittFlyttedato

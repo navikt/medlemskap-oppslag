@@ -82,8 +82,8 @@ Egenskap: Bakoverkompatibel test
       | SWE      | 10.10.1975      | 01.08.2020      | 2010-01              |
 
     Og følgende oppholdstillatelse
-      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Avgjørelse | Har flyktningstatus | Uavklart flyktningstatus | Type     | Oppholdstillatelse på samme vilkår flagg |
-      | 12.02.2019        | 12.02.2022        | Ja             |            |                     |                          | PERMANENT| Nei                                      |
+      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Avgjørelse | Har flyktningstatus | Uavklart flyktningstatus | Type      | Oppholdstillatelse på samme vilkår flagg |
+      | 12.02.2019        | 12.02.2022        | Ja             |            |                     |                          | PERMANENT | Nei                                      |
 
     Og følgende arbeidsadgang
       | Gyldig fra og med | Gyldig til og med | ArbeidsadgangType            | ArbeidomfangKategori | Arbeidsadgang |
@@ -91,8 +91,8 @@ Egenskap: Bakoverkompatibel test
 
   Scenario: Bakoverkompatibel test uten ytelse i request
     Når tjenestekall med følgende parametere behandles
-      | Fødselsnummer | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-      | 15076500565   | 01.01.2019      | 31.12.2019      | Nei                           |
+      | Fødselsnummer | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge | Første dag for ytelse |
+      | 15076500565   | 01.01.2019      | 31.12.2019      | Nei                           | 01.01.2019            |
 
     Så skal forventet json respons være "forventetRespons"
 

@@ -1,7 +1,7 @@
 package no.nav.medlemskap.domene.personhistorikk
 
-import no.nav.medlemskap.domene.personhistorikk.Familierelasjon.Companion.hentFnrTilBarn
-import no.nav.medlemskap.domene.personhistorikk.Familierelasjon.Companion.hentFnrTilEktefelle
+import no.nav.medlemskap.domene.personhistorikk.ForelderBarnRelasjon.Companion.hentFnrTilBarn
+import no.nav.medlemskap.domene.personhistorikk.ForelderBarnRelasjon.Companion.hentFnrTilEktefelle
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
@@ -40,7 +40,7 @@ class FamilierelasjonTest {
         kontaktadresser: List<Adresse> = listOf(lagAdresse()),
         oppholdsadresser: List<Adresse> = listOf(lagAdresse()),
         sivilstand: List<Sivilstand> = listOf(lagSivilstand()),
-        familierelasjoner: List<Familierelasjon> = listOf(lagFamilierelasjon()),
+        familierelasjoner: List<ForelderBarnRelasjon> = listOf(lagFamilierelasjon()),
         doedsfall: List<LocalDate> = emptyList()
     ): Personhistorikk =
         Personhistorikk(statsborgerskap, bostedsadresser, kontaktadresser, oppholdsadresser, sivilstand, familierelasjoner, doedsfall)
@@ -63,6 +63,6 @@ class FamilierelasjonTest {
         relatertPersonIdent: String = "12345678910",
         relatertPersonsRolle: Familierelasjonsrolle = Familierelasjonsrolle.BARN,
         minRolleForPerson: Familierelasjonsrolle? = null
-    ): Familierelasjon =
-        Familierelasjon(relatertPersonIdent, relatertPersonsRolle, minRolleForPerson)
+    ): ForelderBarnRelasjon =
+        ForelderBarnRelasjon(relatertPersonIdent, relatertPersonsRolle, minRolleForPerson)
 }

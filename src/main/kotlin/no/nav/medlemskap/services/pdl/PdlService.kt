@@ -3,6 +3,8 @@ package no.nav.medlemskap.services.pdl
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.pdl.PdlClient
 import no.nav.medlemskap.clients.pdl.generated.HentIdenter
+import no.nav.medlemskap.clients.pdl.generated.HentPerson
+import no.nav.medlemskap.common.exceptions.GradertAdresseException
 import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
 import no.nav.medlemskap.common.exceptions.PersonIkkeFunnet
@@ -41,6 +43,11 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
 
     suspend fun hentPersonHistorikkTilBruker(fnr: String, callId: String): Personhistorikk {
         val hentPersonhistorikkTilBrukerRespons = pdlClient.hentPerson(fnr, callId)
+        val adresseBeskyttelse = hentPersonhistorikkTilBrukerRespons.data?.hentPerson?.adressebeskyttelse
+
+        if (adresseBeskyttelse?.let { harAdressebeskyttelse(it) } == true) {
+            throw GradertAdresseException("PDL", coroutineContext.ytelse())
+        }
 
         hentPersonhistorikkTilBrukerRespons.errors?.forEach {
             if (it.message == "Fant ikke person") {
@@ -55,7 +62,11 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
 
     suspend fun hentPersonHistorikkTilEktefelle(fnrTilEktefelle: String, førsteDatoForYtelse: LocalDate, callId: String): PersonhistorikkEktefelle? {
         val hentPersonhistorikkTilEktefelleResponse = pdlClient.hentPerson(fnrTilEktefelle, callId)
+        val adresseBeskyttelse = hentPersonhistorikkTilEktefelleResponse.data?.hentPerson?.adressebeskyttelse
 
+        if (adresseBeskyttelse?.let { harAdressebeskyttelse(it) } == true) {
+            return null
+        }
         hentPersonhistorikkTilEktefelleResponse.errors?.forEach {
             if (it.message == "Fant ikke person") {
                 return null
@@ -75,6 +86,11 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
 
     suspend fun hentPersonHistorikkTilBarn(fnrTilBarn: String, callId: String): PersonhistorikkBarn? {
         val hentPersonHistorikkTilBarnRespons = pdlClient.hentPerson(fnrTilBarn, callId)
+        val adresseBeskyttelse = hentPersonHistorikkTilBarnRespons.data?.hentPerson?.adressebeskyttelse
+
+        if (adresseBeskyttelse?.let { harAdressebeskyttelse(it) } == true) {
+            return null
+        }
 
         hentPersonHistorikkTilBarnRespons.errors?.forEach {
             if (it.message == "Fant ikke person") {
@@ -92,5 +108,9 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
         }
 
         return null
+    }
+
+    fun harAdressebeskyttelse(adresseBeskyttelse: List<HentPerson.Adressebeskyttelse>): Boolean {
+        return adresseBeskyttelse.any { it.gradering != HentPerson.AdressebeskyttelseGradering.UGRADERT }
     }
 }

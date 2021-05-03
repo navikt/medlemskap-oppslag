@@ -161,7 +161,8 @@ private fun loggResponse(fnr: String, response: Response) {
         kv("AaRegUtenlandsoppsholdPeriodeTom", response.datagrunnlag.gyldigeAaRegUtenlandsoppholdPeriodeTom().toString()),
         kv("skipsinfo", response.datagrunnlag.kombinasjonAvSkipsregisterFartsomradeOgSkipstype()),
         kv("response", objectMapper.writeValueAsString(response)),
-        kv("gjeldendeOppholdsstatus", response.datagrunnlag.oppholdstillatelse?.gjeldendeOppholdsstatus.toString())
+        kv("gjeldendeOppholdsstatus", response.datagrunnlag.oppholdstillatelse?.gjeldendeOppholdsstatus.toString()),
+        kv("arbeidsadgangtype", response.datagrunnlag.oppholdstillatelse?.arbeidsadgang?.arbeidsadgangType)
     )
 
     if (årsaker.isNotEmpty()) {
@@ -172,6 +173,10 @@ private fun loggResponse(fnr: String, response: Response) {
 
 private fun validerRequest(request: Request, azp: String): Request {
     val ytelse = finnYtelse(request.ytelse, azp)
+
+    if (ytelse != Ytelse.SYKEPENGER && request.førsteDagForYtelse == null) {
+        throw UgyldigRequestException("Første dag for ytelse kan ikke være null (inputperiode skal ikke lenger brukes)", ytelse)
+    }
 
     if (request.periode.tom.isBefore(request.periode.fom)) {
         throw UgyldigRequestException("Periode tom kan ikke være før periode fom", ytelse)

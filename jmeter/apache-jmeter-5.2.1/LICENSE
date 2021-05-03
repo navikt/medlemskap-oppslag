@@ -233,7 +233,6 @@ Apache-2.0
 * com.helger:ph-css:6.2.0
 * com.jayway.jsonpath:json-path:2.4.0
 * net.minidev:accessors-smart:1.2
-* net.minidev:json-smart:2.3
 * org.apiguardian:apiguardian-api:1.1.0
 * org.freemarker:freemarker:2.3.29
 * org.mongodb:mongo-java-driver:2.11.3

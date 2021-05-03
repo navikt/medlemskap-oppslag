@@ -3,7 +3,7 @@ package no.nav.medlemskap.cucumber.steps.pdl
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.personhistorikk.Adresse
-import no.nav.medlemskap.domene.personhistorikk.Familierelasjon
+import no.nav.medlemskap.domene.personhistorikk.ForelderBarnRelasjon
 
 class DataOmBarnBuilder {
     var personhistorikkBarn = PersonhistorikkBarn(
@@ -11,7 +11,7 @@ class DataOmBarnBuilder {
         bostedsadresser = mutableListOf<Adresse>(),
         kontaktadresser = mutableListOf<Adresse>(),
         oppholdsadresser = mutableListOf<Adresse>(),
-        familierelasjoner = mutableListOf<Familierelasjon>()
+        forelderBarnRelasjon = mutableListOf<ForelderBarnRelasjon>()
 
     )
 

@@ -7,7 +7,7 @@ import no.nav.medlemskap.cucumber.SpraakParserDomene.OppholdstillatelseDomeneSpr
 import no.nav.medlemskap.cucumber.mapping.udi.UdiDomeneSpraakParser
 import no.nav.medlemskap.domene.Oppholdstillatelse
 import no.nav.medlemskap.services.udi.UdiMapper
-import no.udi.mt_1067_nav_data.v1.*
+import no.udi.mt_1067_nav_data.v1.HentPersonstatusResultat
 
 class UdiMapperSteps : No {
     private val udiDomenespraakParser = UdiDomeneSpraakParser()
@@ -211,7 +211,7 @@ class UdiMapperSteps : No {
             "mappede AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak i IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum i Oppholdstillatelse være"
         ) { dataTable: DataTable ->
             val forventetAvgjorelsesDato = OppholdstillatelseDomeneSpraakParser.mapAvgjorelseDato(dataTable)
-            oppholdstillatelse?.gjeldendeOppholdsstatus?.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum?.avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak?.avgjoerselsesDato.shouldBe(
+            oppholdstillatelse?.gjeldendeOppholdsstatus?.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum?.avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak?.avgjorelsesDato.shouldBe(
                 forventetAvgjorelsesDato
             )
         }

@@ -33,7 +33,7 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, SivilstandMapper())
     }
 
-    fun mapFamilierelasjoner(dataTable: DataTable): List<HentPerson.Familierelasjon> {
+    fun mapFamilierelasjoner(dataTable: DataTable): List<HentPerson.ForelderBarnRelasjon> {
         return mapDataTable(dataTable, FamilerelasjonMapper())
     }
 
@@ -145,9 +145,9 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         }
     }
 
-    class FamilerelasjonMapper : RadMapper<HentPerson.Familierelasjon> {
+    class FamilerelasjonMapper : RadMapper<HentPerson.ForelderBarnRelasjon> {
 
-        override fun mapRad(rad: Map<String, String>): HentPerson.Familierelasjon {
+        override fun mapRad(rad: Map<String, String>): HentPerson.ForelderBarnRelasjon {
             val relatertPersonsrolle = HentPerson.Familierelasjonsrolle.valueOf(parseString(Domenebegrep.RELATERT_PERSONS_ROLLE, rad))
             val minRolleForPersonStr = parseValgfriString(Domenebegrep.MIN_ROLLE_FOR_PERSON, rad)
 
@@ -157,7 +157,7 @@ class PdlDomenespråkParser : BasisDomeneParser() {
                 null
             }
 
-            return HentPerson.Familierelasjon(
+            return HentPerson.ForelderBarnRelasjon(
                 relatertPersonsIdent = parseString(Domenebegrep.RELATERT_PERSONS_IDENT, rad),
                 relatertPersonsRolle = relatertPersonsrolle,
                 minRolleForPerson = minRolleForPerson

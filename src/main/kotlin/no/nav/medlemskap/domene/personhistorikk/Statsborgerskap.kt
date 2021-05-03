@@ -1,11 +1,8 @@
 package no.nav.medlemskap.domene.personhistorikk
 
-import no.nav.medlemskap.common.statsborgerskapUavklartForRegel
 import no.nav.medlemskap.domene.Kontrollperiode
 import no.nav.medlemskap.domene.Landkode
 import no.nav.medlemskap.domene.Periode
-import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.regler.common.RegelId
 import java.time.LocalDate
 
 data class Statsborgerskap(
@@ -105,14 +102,5 @@ data class Statsborgerskap(
 
             return !erEøsBorger(kontrollPeriodeForPersonhistorikk)
         }
-
-        fun List<Statsborgerskap>.registrerStatsborgerskapGrafana(kontrollPeriode: Kontrollperiode, ytelse: Ytelse, regelId: RegelId) =
-            this.hentStatsborgerskapFor(kontrollPeriode.tom).forEach {
-                statsborgerskapUavklartForRegel(
-                    it,
-                    ytelse,
-                    regelId
-                ).increment()
-            }
     }
 }

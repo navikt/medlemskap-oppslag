@@ -126,7 +126,7 @@ class PdlClientHentPersonTest {
         {
             "data": {
                 "hentPerson": {
-                    "familierelasjoner":[],
+                    "forelderBarnRelasjon":[],
                     "statsborgerskap": [
                             {
                                 "land":"NOR",
@@ -137,6 +137,7 @@ class PdlClientHentPersonTest {
                                 }
                             }
                     ],
+                    "adressebeskyttelse": [], 
                     "sivilstand": [
                             {
                             "type": "UGIFT",

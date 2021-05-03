@@ -245,13 +245,14 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
                 parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad)
             )
 
-            val gjeldendeOppholdstillatelse = if (parseValgfriString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_KLASSE, rad) != null &&
-                parseValgfriString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_KLASSE, rad) == "Uavklart"
-            ) {
-                createGjeldendeOppholdstatusMedUavklartOppholdstillatelse()
-            } else {
-                createGjeldendeOppholdstatusMedOppholdstillatelsePaSammeVilkar(periode, rad)
-            }
+            val gjeldendeOppholdstillatelse =
+                when (
+                    parseValgfriString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_KLASSE, rad)
+                ) {
+                    "Uavklart" -> createGjeldendeOppholdstatusMedUavklartOppholdstillatelse()
+                    "EOSellerEFTAOpphold" -> createGjeldendeOppholdsstatusMedEOSellerEFTAOpphold(periode, rad)
+                    else -> createGjeldendeOppholdstatusMedOppholdstillatelsePaSammeVilkar(periode, rad)
+                }
 
             return Oppholdstillatelse(
                 null,
@@ -262,6 +263,30 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
                 parseValgfriBoolean(OppholdstillatelseDomenebegrep.UAVKLART_FLYKTNINGSTATUS.nøkkel(), rad),
                 parseValgfriBoolean(OppholdstillatelseDomenebegrep.HAR_FLYKTNINGSTATUS.nøkkel(), rad)
 
+            )
+        }
+
+        private fun createGjeldendeOppholdsstatusMedEOSellerEFTAOpphold(
+            periode: Periode,
+            rad: Map<String, String>
+        ): GjeldendeOppholdsstatus {
+            return GjeldendeOppholdsstatus(
+                oppholdstillatelsePaSammeVilkar = null,
+                ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum = null,
+                uavklart = null,
+                eosellerEFTAOpphold = EOSellerEFTAOpphold(
+                    periode = periode,
+                    EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.valueOf(
+                        parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_OPPHOLD, rad)
+                    ),
+                    EOSellerEFTAGrunnlagskategoriOppholdsrettType =
+                        parseValgfriString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT, rad)
+                            ?.let { EOSellerEFTAGrunnlagskategoriOppholdsrettType.valueOf(it) },
+                    EOSellerEFTAGrunnlagskategoriOppholdstillatelseType =
+                        EOSellerEFTAGrunnlagskategoriOppholdsTillatelseType.valueOf(
+                            parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSTILLATELSE, rad)
+                        )
+                )
             )
         }
 
