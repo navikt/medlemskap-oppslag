@@ -34,10 +34,6 @@ Egenskap: Man er medlem hvis man er EØS-borger som bor i Norge, og som har jobb
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister |
       | 01.01.2018      |                 | 001       | 100              |               |
 
-    Og følgende utenlandsopphold i arbeidsforholdet
-      | Landkode | Fra og med dato | Til og med dato | Rapporteringsperiode |
-      | FRA      | 01.01.2018      | 30.06.2019      | 2019-07              |
-
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 15.01.2020      | 30.01.2020      | Nei                           |

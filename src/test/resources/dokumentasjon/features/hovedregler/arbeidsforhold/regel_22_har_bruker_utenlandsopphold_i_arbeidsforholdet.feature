@@ -31,7 +31,6 @@ Egenskap: Regel 22: Er det registrert utenlandsopphold i et arbeidsforhold bruke
       | Fra og med | Til og med | Svar |
       | 01.01.2018 | 30.06.2019 | Ja   |
       | 29.01.2016 | 29.06.2017 | Nei  |
-      | 01.01.2016 | 01.02.2016 | Nei  |
 
   Scenario: Bruker uten utenlandsopphold får "Nei"
 
