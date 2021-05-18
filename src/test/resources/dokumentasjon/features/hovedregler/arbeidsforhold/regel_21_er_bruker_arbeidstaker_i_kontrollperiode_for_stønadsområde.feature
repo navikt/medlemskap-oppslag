@@ -1,7 +1,7 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regel 18: Er bruker hovedsaklig arbeidstaker?
+Egenskap: Regel 21: Er bruker arbeidstaker i kontrollperiode for stønadsområde?
 
   Regel: Regel 21: Er bruker arbeidstaker i kontrollperiode for stønadsområde?
 
@@ -9,14 +9,6 @@ Egenskap: Regel 18: Er bruker hovedsaklig arbeidstaker?
       Gitt følgende arbeidsforhold fra AAReg
         | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
         | <Fra og med>    | <Til og med>    | Organisasjon     | NORMALT             |
-
-      Og følgende arbeidsgiver i arbeidsforholdet
-        | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
-        | 1             | BEDR             | NOR      | 9              |
-
-      Og følgende arbeidsavtaler i arbeidsforholdet
-        | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
-        | 01.01.2018      |                 | 001       | 100              |
 
       Når regel "21" kjøres med følgende parametre
         | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
@@ -38,17 +30,9 @@ Egenskap: Regel 18: Er bruker hovedsaklig arbeidstaker?
         | <Første fra og med> | <Første til og med> | Organisasjon     | NORMALT             |
         | <Andre fra og med>  | <Andre til og med>  | Organisasjon     | NORMALT             |
 
-      Og følgende arbeidsgiver i arbeidsforholdet
-        | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
-        | 1             | BEDR             | NOR      | 9              |
-
-      Og følgende arbeidsavtaler i arbeidsforholdet
-        | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
-        | 01.01.2018      |                 | 001       | 100              |
-
       Når regel "21" kjøres med følgende parametre
         | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-        | 01.02.2020      | 01.01.2021      | Nei                           |
+        | 10.06.2020      | 10.06.2020      | Nei                           |
 
       Så skal svaret være "<Svar>"
       Og skal avklaringen være som definert i RegelId

@@ -148,7 +148,8 @@ data class Arbeidsforhold(
                     totaltAntallDagerDiff += antallDagerDiff
                     antallDagerMellomArbeidsforhold(ytelse).record(antallDagerDiff.toDouble())
                     usammenhengendeArbeidsforholdCounter(ytelse).increment()
-                    if (finnesDeltidArbeidsforhold || totaltAntallDagerDiff > 35) {
+
+                    if (finnesDeltidArbeidsforhold || totaltAntallDagerDiff > lovligAntallDagerBorte(ytelse, kontrollPeriode, tillatDagersHullIPeriode)) {
                         return false
                     }
                 }
@@ -167,6 +168,20 @@ data class Arbeidsforhold(
             }
 
             return true
+        }
+
+        private fun lovligAntallDagerBorte(ytelse: Ytelse, kontrollPeriode: Kontrollperiode, tillatDagersHullIPeriode: Long): Int {
+            when (ytelse) {
+                Ytelse.SYKEPENGER -> {
+                    // if kontrollperiode.isreferansePeriode >.
+                    if (!kontrollPeriode.isReferansePeriode)
+                        return 35
+                    else {
+                        return tillatDagersHullIPeriode.toInt()
+                    }
+                }
+                else -> return 35
+            }
         }
 
         infix fun List<Arbeidsforhold>.arbeidsforholdForDato(dato: LocalDate): List<Arbeidsforhold> =
