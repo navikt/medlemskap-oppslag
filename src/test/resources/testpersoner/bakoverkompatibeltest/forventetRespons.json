@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2021-04-13T08:22:42.442813",
+  "tidspunkt" : "2021-05-07T12:42:52.235455",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "datagrunnlag" : {
@@ -273,7 +273,7 @@
       "avklaring" : "Er det avklart om brukeren er død eller ikke?"
     }, {
       "regelId" : "REGEL_FELLES_ARBEIDSFORHOLD",
-      "svar" : "JA",
+      "svar" : "UAVKLART",
       "begrunnelse" : "",
       "harDekning" : null,
       "dekning" : "",
@@ -295,8 +295,22 @@
         "delresultat" : [ ],
         "årsaker" : [ ],
         "avklaring" : "Er bruker frilanser?"
+      }, {
+        "regelId" : "REGEL_22",
+        "svar" : "JA",
+        "begrunnelse" : "Det finnes utenlandsopphold i et av arbeidsforholdene de siste 12 månedene",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Arbeidsforhold siste 12 måneder: finnes det utenlandsopphold i et av disse arbeidsforholdene?"
       } ],
-      "årsaker" : [ ],
+      "årsaker" : [ {
+        "regelId" : "REGEL_22",
+        "avklaring" : "Arbeidsforhold siste 12 måneder: finnes det utenlandsopphold i et av disse arbeidsforholdene?",
+        "svar" : "JA",
+        "begrunnelse" : "Det finnes utenlandsopphold i et av arbeidsforholdene de siste 12 månedene"
+      } ],
       "avklaring" : "Er felles arbeidsforhold avklart?"
     }, {
       "regelId" : "REGEL_STATSBORGERSKAP",
@@ -485,6 +499,11 @@
       "avklaring" : "Er regler for norske borgere avklart?"
     } ],
     "årsaker" : [ {
+      "regelId" : "REGEL_22",
+      "avklaring" : "Arbeidsforhold siste 12 måneder: finnes det utenlandsopphold i et av disse arbeidsforholdene?",
+      "svar" : "JA",
+      "begrunnelse" : "Det finnes utenlandsopphold i et av arbeidsforholdene de siste 12 månedene"
+    }, {
       "regelId" : "REGEL_1_4",
       "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
       "svar" : "NEI",
