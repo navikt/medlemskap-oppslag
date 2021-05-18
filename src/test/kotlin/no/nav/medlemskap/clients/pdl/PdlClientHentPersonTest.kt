@@ -133,6 +133,7 @@ class PdlClientHentPersonTest {
                                 }
                             }
                     ],
+                    "adressebeskyttelse": [], 
                     "sivilstand": [
                             {
                             "type": "UGIFT",
