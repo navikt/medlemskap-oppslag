@@ -106,7 +106,8 @@ data class Arbeidsforhold(
          */
         fun List<Arbeidsforhold>.erSammenhengendeIKontrollPeriode(
             kontrollPeriode: Kontrollperiode,
-            ytelse: Ytelse
+            ytelse: Ytelse,
+            tillatDagersHullIPeriode: Long
         ): Boolean {
 
             val arbeidsforholdForNorskArbeidsgiver = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
@@ -142,7 +143,7 @@ data class Arbeidsforhold(
             var forrigeTilDato: LocalDate? = null
             val sortertArbeidsforholdEtterPeriode = arbeidsforholdForNorskArbeidsgiver.sorted()
             for (arbeidsforhold in sortertArbeidsforholdEtterPeriode) { // Sjekker at alle påfølgende arbeidsforhold er sammenhengende
-                if (forrigeTilDato != null && !erDatoerSammenhengende(forrigeTilDato, arbeidsforhold.periode.fom)) {
+                if (forrigeTilDato != null && !erDatoerSammenhengende(forrigeTilDato, arbeidsforhold.periode.fom, tillatDagersHullIPeriode)) {
                     val antallDagerDiff = abs(ChronoUnit.DAYS.between(forrigeTilDato, arbeidsforhold.periode.fom))
                     totaltAntallDagerDiff += antallDagerDiff
                     antallDagerMellomArbeidsforhold(ytelse).record(antallDagerDiff.toDouble())

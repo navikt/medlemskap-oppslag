@@ -11,6 +11,12 @@ data class Kontrollperiode(
     val antallDager = fom.until(tom, ChronoUnit.DAYS).toDouble() + 1
 
     companion object {
+        fun kontrollperiodeForSykepenger(startDatoForYtelse: LocalDate): Kontrollperiode =
+            Kontrollperiode(
+                fom = startDatoForYtelse.minusDays(28),
+                tom = startDatoForYtelse
+            )
+
         fun kontrollPeriodeForPersonhistorikk(startDatoForYtelse: LocalDate): Kontrollperiode {
             return Kontrollperiode(
                 fom = startDatoForYtelse.minusMonths(12),

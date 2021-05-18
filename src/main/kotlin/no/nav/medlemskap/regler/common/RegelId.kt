@@ -58,6 +58,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_19_7("19.7", "Er bruker britisk borger?", "", "Bruker er britisk borger"),
     REGEL_19_8("19.8", "Har bruker opphold på samme vilkår flagg", "Opphold på samme vilkår flagget er ikke satt", "Opphold på samme vilkår flagget er satt"),
     REGEL_20("20", "Har bruker mer enn 80% arbeid i Norge de siste 3 månedene?", "Bruker har ikke utført mer enn 80% arbeid de siste 3 månedene", "Bruker har utført mer enn 80% arbeid de siste 3 månedene"),
+    REGEL_21("21", "Er bruker arbeidstaker i kontrollperiode for stønadsområde?", "Nei, bruker er ikke arbeidstaker i kontrollperiode for stønadsområde", "Ja, bruker er arbeidstaker i kontrollperiode for stønadsområde"),
     REGEL_OPPLYSNINGER("OPPLYSNINGER", "Finnes det registrerte opplysninger på bruker?", "Alle de følgende ble NEI"),
     REGEL_A("OPPLYSNINGER-MEDL", "Finnes det registrerte opplysninger i MEDL?", "", "Det finnes registrert opplysninger i Medl"),
     REGEL_B("OPPLYSNINGER-GOSYS", "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?", "", "Det finnes registrerte opplysninger i GOSYS"),
