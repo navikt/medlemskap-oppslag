@@ -67,6 +67,17 @@ data class Statsborgerskap(
             return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Landkode.erNorsk(it) }
         }
 
+        infix fun List<Statsborgerskap>.harNyligBlittNorskStatsborger(kontrollPeriode: Kontrollperiode): Boolean {
+            return this.any {
+                Landkode.erNorsk(it.landkode) &&
+                    it.harFaattStatsborgerskapIKontrollperiode(kontrollPeriode) &&
+                    it.historisk == false
+            }
+        }
+
+        infix fun Statsborgerskap.harFaattStatsborgerskapIKontrollperiode(kontrollPeriode: Kontrollperiode): Boolean =
+            this.periode.fom?.isAfter(kontrollPeriode.fom) == true
+
         infix fun List<Statsborgerskap>.erNordiskBorger(
             kontrollPeriodeForPersonhistorikk: Kontrollperiode
         ): Boolean {
