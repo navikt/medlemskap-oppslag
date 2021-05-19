@@ -87,6 +87,8 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_19_7 -> ErBrukerBritiskBorgerRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_19_8 -> HarBrukerOppholdPåSammeVilkårFlagg.fraDatagrunnlag(datagrunnlag).regel
             REGEL_20 -> HarBrukerJobbet80ProsentEllerMerSiste3MånedeneRegel.fraDatagrunnlag(datagrunnlag, REGEL_20).regel
+            REGEL_22 -> HarBrukerUtenlandsoppholdIArbeidsforholdet.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_27 -> HarBrukerNyligBlittNorskStatsborgerRegel.fraDatagrunnlag(datagrunnlag).regel
             else -> throw java.lang.RuntimeException("Ukjent regel: $regelId")
         }
     }
