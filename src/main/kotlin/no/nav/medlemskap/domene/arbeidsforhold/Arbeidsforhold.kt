@@ -176,7 +176,6 @@ data class Arbeidsforhold(
         private fun lovligAntallDagerBorte(ytelse: Ytelse, kontrollPeriode: Kontrollperiode, tillatDagersHullIPeriode: Long): Int {
             when (ytelse) {
                 Ytelse.SYKEPENGER -> {
-                    // if kontrollperiode.isreferansePeriode >.
                     if (!kontrollPeriode.isReferansePeriode)
                         return 35
                     else {
