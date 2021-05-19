@@ -55,18 +55,12 @@ data class Arbeidsforhold(
         fun List<Arbeidsforhold>.harArbeidsforholdIKontrollperiodeUtenlandsopphold(kontrollPeriode: Kontrollperiode): Boolean =
             this.arbeidsforholdForKontrollPeriode(kontrollPeriode).any { it.utenlandsopphold.isNotNullOrEmpty() }
 
-        fun List<Arbeidsforhold>.harUtenlandsoppholdEnPeriode(): Boolean {
-            val finnesPeriodeIUtenlandsopphold = this.any {
-                arbeidsforhold -> arbeidsforhold.utenlandsopphold?.any {
-                    utenlandsopphold -> utenlandsopphold.periode != null } == true
+        fun List<Arbeidsforhold>.harUtenlandsoppholdEnPeriode(kontrollPeriode: Kontrollperiode): Boolean {
+            return this.arbeidsforholdForKontrollPeriode(kontrollPeriode).any { arbeidsforhold ->
+                arbeidsforhold.utenlandsopphold?.any { utenlandsopphold ->
+                    utenlandsopphold.periode?.erFomOgTomIkkeNull() == true
+                } == true
             }
-
-            val erFomOgTomNull = this.any {
-                arbeidsforhold -> arbeidsforhold.utenlandsopphold?.any {
-                    utenlandsopphold -> utenlandsopphold.periode?.fom != null && utenlandsopphold.periode.tom != null } == true
-            }
-
-            return finnesPeriodeIUtenlandsopphold && erFomOgTomNull
         }
 
         private fun vektetOffentligSektorArbeidsforhold(
