@@ -40,7 +40,7 @@ Egenskap: Regelflyt for regel 19.3.1
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-      | 05.01.2018      | 12.02.2018      | Nei                           |
+      | 01.01.2018      | 12.02.2018      | Nei                           |
 
     Så skal svaret være "<Medlemskap>"
     Og skal regel "19.3.1" gi svaret "<Regel 19.3.1>"
@@ -49,5 +49,5 @@ Egenskap: Regelflyt for regel 19.3.1
     Eksempler:
       | Opphold til og med | Arbeid fra og med | Arbeid til og med | Regel 19.3.1 | Medlemskap | Årsaker |
       | 20.03.2017         | 01.01.2017        |                   | Ja           | Ja         |         |
-      | 20.01.2017         | 01.01.2017        | 30.01.2017        | Nei          | Uavklart   | 19.3.1  |
-      | 20.01.2017         | 31.12.2016        | 15.01.2017        | Nei          | Uavklart   | 19.3.1  |
+      | 20.01.2017         | 01.01.2017        | 12.02.2018        | Nei          | Uavklart   | 19.3.1  |
+      | 20.01.2017         | 31.12.2016        | 12.02.2018        | Nei          | Uavklart   | 19.3.1  |

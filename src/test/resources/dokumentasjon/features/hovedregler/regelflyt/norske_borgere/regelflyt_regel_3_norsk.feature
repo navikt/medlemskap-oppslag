@@ -42,5 +42,4 @@ Egenskap: Regelflyt for regel 3
       | SYKEPENGER | 01.02.2019      | Ja      | Ja         |                    |
       | SYKEPENGER | 02.02.2019      | Ja      | Ja         | Regel 3 overstyres |
       | SYKEPENGER | 05.02.2019      | Ja      | Ja         | Regel 3 overstyres |
-      | SYKEPENGER |                 | Ja      | Ja         | Regel 3 overstyres |
       | DAGPENGER  | 02.02.2019      | Nei     | UAVKLART   |                    |
