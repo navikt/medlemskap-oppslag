@@ -10,7 +10,15 @@ data class Kontrollperiode(
     val periode = Periode(fom, tom)
     val antallDager = fom.until(tom, ChronoUnit.DAYS).toDouble() + 1
 
+    val isReferansePeriode = fom.until(tom, ChronoUnit.DAYS).toInt() == 28
+
     companion object {
+        fun kontrollperiodeForSykepenger(startDatoForYtelse: LocalDate): Kontrollperiode =
+            Kontrollperiode(
+                fom = startDatoForYtelse.minusDays(28),
+                tom = startDatoForYtelse
+            )
+
         fun kontrollPeriodeForPersonhistorikk(startDatoForYtelse: LocalDate): Kontrollperiode {
             return Kontrollperiode(
                 fom = startDatoForYtelse.minusMonths(12),

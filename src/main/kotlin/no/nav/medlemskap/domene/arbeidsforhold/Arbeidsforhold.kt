@@ -109,7 +109,8 @@ data class Arbeidsforhold(
          */
         fun List<Arbeidsforhold>.erSammenhengendeIKontrollPeriode(
             kontrollPeriode: Kontrollperiode,
-            ytelse: Ytelse
+            ytelse: Ytelse,
+            tillatDagersHullIPeriode: Long
         ): Boolean {
 
             val arbeidsforholdForNorskArbeidsgiver = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
@@ -145,12 +146,13 @@ data class Arbeidsforhold(
             var forrigeTilDato: LocalDate? = null
             val sortertArbeidsforholdEtterPeriode = arbeidsforholdForNorskArbeidsgiver.sorted()
             for (arbeidsforhold in sortertArbeidsforholdEtterPeriode) { // Sjekker at alle påfølgende arbeidsforhold er sammenhengende
-                if (forrigeTilDato != null && !erDatoerSammenhengende(forrigeTilDato, arbeidsforhold.periode.fom)) {
+                if (forrigeTilDato != null && !erDatoerSammenhengende(forrigeTilDato, arbeidsforhold.periode.fom, tillatDagersHullIPeriode)) {
                     val antallDagerDiff = abs(ChronoUnit.DAYS.between(forrigeTilDato, arbeidsforhold.periode.fom))
                     totaltAntallDagerDiff += antallDagerDiff
                     antallDagerMellomArbeidsforhold(ytelse).record(antallDagerDiff.toDouble())
                     usammenhengendeArbeidsforholdCounter(ytelse).increment()
-                    if (finnesDeltidArbeidsforhold || totaltAntallDagerDiff > 35) {
+
+                    if (finnesDeltidArbeidsforhold || totaltAntallDagerDiff > lovligAntallDagerBorte(ytelse, kontrollPeriode, tillatDagersHullIPeriode)) {
                         return false
                     }
                 }
@@ -169,6 +171,19 @@ data class Arbeidsforhold(
             }
 
             return true
+        }
+
+        private fun lovligAntallDagerBorte(ytelse: Ytelse, kontrollPeriode: Kontrollperiode, tillatDagersHullIPeriode: Long): Int {
+            when (ytelse) {
+                Ytelse.SYKEPENGER -> {
+                    if (!kontrollPeriode.isReferansePeriode)
+                        return 35
+                    else {
+                        return tillatDagersHullIPeriode.toInt()
+                    }
+                }
+                else -> return 35
+            }
         }
 
         infix fun List<Arbeidsforhold>.arbeidsforholdForDato(dato: LocalDate): List<Arbeidsforhold> =
