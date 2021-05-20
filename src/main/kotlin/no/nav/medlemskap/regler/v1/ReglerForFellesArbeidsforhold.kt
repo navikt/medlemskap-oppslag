@@ -21,9 +21,9 @@ class ReglerForFellesArbeidsforhold(
     override fun hentHovedflyt(): Regelflyt {
 
         val ErUtenlandsoppholdetUtenPeriodeRegelFlyt = lagRegelflyt(
-                regel = hentRegel(REGEL_23),
-                hvisJa = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
-                hvisNei = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD)
+            regel = hentRegel(REGEL_23),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
+            hvisNei = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD)
         )
 
         val HarBrukerUtenlandsoppholdIArbeidsforholdetFlyt = lagRegelflyt(
