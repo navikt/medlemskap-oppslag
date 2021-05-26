@@ -63,6 +63,16 @@ data class Arbeidsforhold(
             }
         }
 
+        fun List<Arbeidsforhold>.erUtenlandsoppholdInnenforKontrollperiode(kontrollPeriode: Kontrollperiode): Boolean {
+            val arbeidsforholdForKontrollperiode = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
+
+            arbeidsforholdForKontrollperiode.any {
+                arbeidsforhold -> arbeidsforhold.utenlandsopphold?.any {
+                utenlandsopphold -> utenlandsopphold.periode?.overlapper(kontrollPeriode.periode) == true
+                } == true }
+            return true
+        }
+
         private fun vektetOffentligSektorArbeidsforhold(
             arbeidsforhold: List<Arbeidsforhold>,
             kontrollPeriode: Kontrollperiode,
