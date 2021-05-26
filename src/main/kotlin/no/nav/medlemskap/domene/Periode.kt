@@ -66,6 +66,8 @@ data class Periode(
         else dato
     }
 
+    fun erFomOgTomIkkeNull() = this.fom != null && this.tom != null
+
     fun fomNotNull() = this.fom ?: LocalDate.MIN
 
     fun tomNotNull() = this.tom ?: LocalDate.MAX

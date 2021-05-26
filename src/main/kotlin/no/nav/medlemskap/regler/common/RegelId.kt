@@ -60,6 +60,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_20("20", "Har bruker mer enn 80% arbeid i Norge de siste 3 månedene?", "Bruker har ikke utført mer enn 80% arbeid de siste 3 månedene", "Bruker har utført mer enn 80% arbeid de siste 3 månedene"),
     REGEL_22("22", "Arbeidsforhold siste 12 måneder: finnes det utenlandsopphold i et av disse arbeidsforholdene?", "Det finnes ikke utenlandsopphold i et av arbeidsforholdene de siste 12 månedene", "Det finnes utenlandsopphold i et av arbeidsforholdene de siste 12 månedene"),
     REGEL_21("21", "Er bruker arbeidstaker i kontrollperiode for stønadsområde?", "Nei, bruker er ikke arbeidstaker i kontrollperiode for stønadsområde", "Ja, bruker er arbeidstaker i kontrollperiode for stønadsområde"),
+    REGEL_23("23", "Er utenlandsoppholdet uten periode?", "Utenlandsoppholdet har periode", "Utenlandsoppholdet er uten periode"),
     REGEL_27("27", "Når bruker har to statsborgerskap og det ene er norsk, har bruker nylig blitt norsk statsborger?", "Bruker har ikke blitt norsk statsborger", "Bruker har nylig blitt norsk statsborger"),
     REGEL_OPPLYSNINGER("OPPLYSNINGER", "Finnes det registrerte opplysninger på bruker?", "Alle de følgende ble NEI"),
     REGEL_A("OPPLYSNINGER-MEDL", "Finnes det registrerte opplysninger i MEDL?", "", "Det finnes registrert opplysninger i Medl"),

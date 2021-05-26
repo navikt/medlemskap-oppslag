@@ -35,7 +35,6 @@ Egenskap: Regelflyt for regel 22
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "UAVKLART"
-    Og skal regel-årsaker være "22"
     Og skal regel "22" gi svaret "Ja"
 
     Eksempler:
