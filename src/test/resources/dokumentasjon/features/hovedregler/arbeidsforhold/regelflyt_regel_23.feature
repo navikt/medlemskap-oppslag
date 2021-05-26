@@ -1,7 +1,7 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regelflyt for regel 18, for tredjelandsborger
+Egenskap: Regelflyt for regel 23
 
   Bakgrunn:
 
@@ -30,7 +30,7 @@ Egenskap: Regelflyt for regel 18, for tredjelandsborger
       | NOR      | 10.10.1975      |                 |
 
 
-  Scenariomal: Regelflyt regel 18, for tredjelandsborger
+  Scenariomal: Regelflyt regel 23
 
     Gitt følgende utenlandsopphold i arbeidsforholdet
       | Landkode | Fra og med dato | Til og med dato | Rapporteringsperiode |
