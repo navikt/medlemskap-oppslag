@@ -31,14 +31,13 @@ data class Oppholdstillatelse(
         val erOppholdstillatelsePermanent = gjeldendeOppholdsstatus
             ?.oppholdstillatelsePaSammeVilkar?.type == OppholdstillaelsePaSammeVilkarType.PERMANENT
         val erArbeidsomfangHeltid = arbeidsadgang?.arbeidsomfang == ArbeidomfangKategori.KUN_ARBEID_HELTID
+        val arbeidsadgangtypeErGenerellOgArbeidsomfangNull =
+            arbeidsadgang?.arbeidsadgangType == ArbeidsadgangType.GENERELL && arbeidsadgang.arbeidsomfang == null
 
         return when {
-            erOppholdstillatelsePermanent -> {
-                true
-            }
-            erArbeidsomfangHeltid -> {
-                true
-            }
+            erOppholdstillatelsePermanent -> true
+            erArbeidsomfangHeltid -> true
+            arbeidsadgangtypeErGenerellOgArbeidsomfangNull -> true
             else -> false
         }
     }
