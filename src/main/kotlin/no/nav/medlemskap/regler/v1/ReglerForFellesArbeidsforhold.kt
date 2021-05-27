@@ -26,10 +26,16 @@ class ReglerForFellesArbeidsforhold(
             hvisNei = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD)
         )
 
+        val ErPeriodenForUtenlandsoppholdetInnenforSiste12MånederFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_25),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
+            hvisNei = erBrukerArbeidstakerIkontrollperiodeForStønadsområdeFlyt,
+        )
+
         val ErUtenlandsoppholdetUtenPeriodeRegelFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_23),
             hvisJa = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
-            hvisNei = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD)
+            hvisNei = ErPeriodenForUtenlandsoppholdetInnenforSiste12MånederFlyt
         )
 
         val HarBrukerUtenlandsoppholdIArbeidsforholdetFlyt = lagRegelflyt(
