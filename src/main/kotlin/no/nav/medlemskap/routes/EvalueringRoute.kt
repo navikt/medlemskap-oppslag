@@ -16,12 +16,14 @@ import no.nav.medlemskap.common.apiCounter
 import no.nav.medlemskap.common.exceptions.KonsumentIkkeFunnet
 import no.nav.medlemskap.common.exceptions.UgyldigRequestException
 import no.nav.medlemskap.common.objectMapper
+import no.nav.medlemskap.common.uavklartPåRegel
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Fødselsnummer.Companion.gyldigFnr
 import no.nav.medlemskap.domene.Request
 import no.nav.medlemskap.domene.Response
 import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
 import java.time.LocalDateTime
@@ -161,6 +163,10 @@ private fun loggResponse(fnr: String, response: Response) {
         kv("gjeldendeOppholdsstatus", response.datagrunnlag.oppholdstillatelse?.gjeldendeOppholdsstatus.toString()),
         kv("arbeidsadgangtype", response.datagrunnlag.oppholdstillatelse?.arbeidsadgang?.arbeidsadgangType)
     )
+
+    if (årsaker.isNotEmpty()) {
+        uavklartPåRegel(årsaker.first(), response.datagrunnlag.ytelse.name()).increment()
+    }
 }
 
 private fun validerRequest(request: Request, azp: String): Request {
