@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2021-05-20T07:27:32.258343",
+  "tidspunkt" : "2021-05-27T08:46:18.586524",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "datagrunnlag" : {
@@ -313,12 +313,21 @@
         "delresultat" : [ ],
         "årsaker" : [ ],
         "avklaring" : "Er utenlandsoppholdet uten periode?"
+      }, {
+        "regelId" : "REGEL_25",
+        "svar" : "JA",
+        "begrunnelse" : "utenlandsoppholdet er innenfor siste 12 måneder",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Er perioden for utenlandsopphold innenfor siste 12 måneder?"
       } ],
       "årsaker" : [ {
-        "regelId" : "REGEL_23",
-        "avklaring" : "Er utenlandsoppholdet uten periode?",
-        "svar" : "NEI",
-        "begrunnelse" : "Utenlandsoppholdet har periode"
+        "regelId" : "REGEL_25",
+        "avklaring" : "Er perioden for utenlandsopphold innenfor siste 12 måneder?",
+        "svar" : "JA",
+        "begrunnelse" : "utenlandsoppholdet er innenfor siste 12 måneder"
       } ],
       "avklaring" : "Er felles arbeidsforhold avklart?"
     }, {
@@ -508,10 +517,10 @@
       "avklaring" : "Er regler for norske borgere avklart?"
     } ],
     "årsaker" : [ {
-      "regelId" : "REGEL_23",
-      "avklaring" : "Er utenlandsoppholdet uten periode?",
-      "svar" : "NEI",
-      "begrunnelse" : "Utenlandsoppholdet har periode"
+      "regelId" : "REGEL_25",
+      "avklaring" : "Er perioden for utenlandsopphold innenfor siste 12 måneder?",
+      "svar" : "JA",
+      "begrunnelse" : "utenlandsoppholdet er innenfor siste 12 måneder"
     }, {
       "regelId" : "REGEL_1_4",
       "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
