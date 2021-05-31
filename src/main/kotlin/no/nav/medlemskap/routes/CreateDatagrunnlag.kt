@@ -2,8 +2,11 @@ package no.nav.medlemskap.routes
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import mu.KotlinLogging
+import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.FeatureToggles
+import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.startDatoForYtelse
@@ -14,6 +17,9 @@ import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.fraOgMed
 import no.nav.medlemskap.domene.personhistorikk.ForelderBarnRelasjon
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erAnnenStatsborger
 import no.nav.medlemskap.services.FamilieService
+import v1.mt_1067_nav.no.udi.HentPersonstatusFault
+
+private val secureLogger = KotlinLogging.logger("tjenestekall")
 
 suspend fun defaultCreateDatagrunnlag(
     request: Request,
@@ -64,7 +70,36 @@ suspend fun defaultCreateDatagrunnlag(
     val oppholdstillatelse = if (FeatureToggles.FEATURE_UDI.enabled &&
         personHistorikk.statsborgerskap.erAnnenStatsborger(startDatoForYtelse)
     ) {
-        val oppholdsstatusRequest = async { services.udiService.hentOppholdstillatelseer(request.fnr) }
+        val oppholdsstatusRequest = async {
+            try {
+                services.udiService.hentOppholdstillatelseer(request.fnr)
+            } catch (hpf: HentPersonstatusFault) {
+                secureLogger.warn {
+                    kv("fnr", request.fnr)
+                    kv("NAV-call-id", callId)
+                    kv("datagrunnlag",
+                        objectMapper.writeValueAsString(
+                            Datagrunnlag(
+                                periode = request.periode,
+                                førsteDagForYtelse = request.førsteDagForYtelse,
+                                brukerinput = request.brukerinput,
+                                pdlpersonhistorikk = personHistorikk,
+                                medlemskap = medlemskap,
+                                arbeidsforhold = arbeidsforhold,
+                                oppgaver = oppgaver,
+                                dokument = journalPoster,
+                                ytelse = ytelse,
+                                dataOmBarn = dataOmBrukersBarn,
+                                dataOmEktefelle = dataOmEktefelle,
+                                overstyrteRegler = request.overstyrteRegler,
+                                oppholdstillatelse = null
+                            )
+                        )
+                    )
+                }
+                throw hpf
+            }
+        }
         oppholdsstatusRequest.await()
     } else {
         null
