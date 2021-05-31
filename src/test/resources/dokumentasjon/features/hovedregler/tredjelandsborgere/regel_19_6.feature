@@ -53,10 +53,12 @@ Egenskap: Regel 19.6: Har bruker arbeids- og oppholdstillatelse i kontrollperiod
     Så skal svaret være "<Svar>"
 
     Eksempler:
-      | Arbeidsadgang | Oppholdstype | ArbeidsadgangType | ArbeidomfangKategori | Svar |
-      | Ja            | PERMANENT    | GENERELL          |                      | Ja   |
-      | Ja            | MIDLERTIDIG  | GENERELL          | KUN_ARBEID_HELTID    | Ja   |
-      | Ja            | MIDLERTIDIG  | GENERELL          | KUN_ARBEID_DELTID    | Nei  |
+      | Arbeidsadgang | Oppholdstype | ArbeidsadgangType                        | ArbeidomfangKategori | Svar |
+      | Ja            | PERMANENT    | GENERELL                                 |                      | Ja   |
+      | Ja            | MIDLERTIDIG  | GENERELL                                 |                      | Ja   |
+      | Ja            | MIDLERTIDIG  | GENERELL                                 | KUN_ARBEID_HELTID    | Ja   |
+      | Ja            | MIDLERTIDIG  | GENERELL                                 | KUN_ARBEID_DELTID    | Nei  |
+      | Ja            | MIDLERTIDIG  | BESTEMT_ARBEIDSGIVER_ELLER_OPPDRAGSGIVER |                      | Nei  |
 
   Scenariomal: Regel 19.6 - Periode for oppholdstillatelse og arbeidsadgang er ulik
 

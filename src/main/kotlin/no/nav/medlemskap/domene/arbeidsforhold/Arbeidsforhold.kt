@@ -52,6 +52,29 @@ data class Arbeidsforhold(
         ): Boolean =
             vektetOffentligSektorArbeidsforhold(arbeidsforhold, kontrollPeriode, ytelse)
 
+        fun List<Arbeidsforhold>.harArbeidsforholdIKontrollperiodeUtenlandsopphold(kontrollPeriode: Kontrollperiode): Boolean =
+            this.arbeidsforholdForKontrollPeriode(kontrollPeriode).any { it.utenlandsopphold.isNotNullOrEmpty() }
+
+        fun List<Arbeidsforhold>.harUtenlandsoppholdEnPeriode(kontrollPeriode: Kontrollperiode): Boolean {
+            return this.arbeidsforholdForKontrollPeriode(kontrollPeriode).any { arbeidsforhold ->
+                arbeidsforhold.utenlandsopphold?.any { utenlandsopphold ->
+                    utenlandsopphold.periode?.erFomOgTomIkkeNull() == true
+                } == true
+            }
+        }
+
+        fun List<Arbeidsforhold>.erUtenlandsoppholdInnenforKontrollperiode(kontrollPeriode: Kontrollperiode): Boolean {
+            val arbeidsforholdForKontrollperiode = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
+
+            return arbeidsforholdForKontrollperiode.any {
+                arbeidsforhold ->
+                arbeidsforhold.utenlandsopphold?.any {
+                    utenlandsopphold ->
+                    utenlandsopphold.periode?.overlapper(kontrollPeriode.periode) == true
+                } == true
+            }
+        }
+
         private fun vektetOffentligSektorArbeidsforhold(
             arbeidsforhold: List<Arbeidsforhold>,
             kontrollPeriode: Kontrollperiode,
@@ -106,7 +129,8 @@ data class Arbeidsforhold(
          */
         fun List<Arbeidsforhold>.erSammenhengendeIKontrollPeriode(
             kontrollPeriode: Kontrollperiode,
-            ytelse: Ytelse
+            ytelse: Ytelse,
+            tillatDagersHullIPeriode: Long
         ): Boolean {
 
             val arbeidsforholdForNorskArbeidsgiver = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
@@ -142,12 +166,13 @@ data class Arbeidsforhold(
             var forrigeTilDato: LocalDate? = null
             val sortertArbeidsforholdEtterPeriode = arbeidsforholdForNorskArbeidsgiver.sorted()
             for (arbeidsforhold in sortertArbeidsforholdEtterPeriode) { // Sjekker at alle påfølgende arbeidsforhold er sammenhengende
-                if (forrigeTilDato != null && !erDatoerSammenhengende(forrigeTilDato, arbeidsforhold.periode.fom)) {
+                if (forrigeTilDato != null && !erDatoerSammenhengende(forrigeTilDato, arbeidsforhold.periode.fom, tillatDagersHullIPeriode)) {
                     val antallDagerDiff = abs(ChronoUnit.DAYS.between(forrigeTilDato, arbeidsforhold.periode.fom))
                     totaltAntallDagerDiff += antallDagerDiff
                     antallDagerMellomArbeidsforhold(ytelse).record(antallDagerDiff.toDouble())
                     usammenhengendeArbeidsforholdCounter(ytelse).increment()
-                    if (finnesDeltidArbeidsforhold || totaltAntallDagerDiff > 35) {
+
+                    if (finnesDeltidArbeidsforhold || totaltAntallDagerDiff > lovligAntallDagerBorte(ytelse, kontrollPeriode, tillatDagersHullIPeriode)) {
                         return false
                     }
                 }
@@ -166,6 +191,19 @@ data class Arbeidsforhold(
             }
 
             return true
+        }
+
+        private fun lovligAntallDagerBorte(ytelse: Ytelse, kontrollPeriode: Kontrollperiode, tillatDagersHullIPeriode: Long): Int {
+            when (ytelse) {
+                Ytelse.SYKEPENGER -> {
+                    if (!kontrollPeriode.isReferansePeriode)
+                        return 35
+                    else {
+                        return tillatDagersHullIPeriode.toInt()
+                    }
+                }
+                else -> return 35
+            }
         }
 
         infix fun List<Arbeidsforhold>.arbeidsforholdForDato(dato: LocalDate): List<Arbeidsforhold> =

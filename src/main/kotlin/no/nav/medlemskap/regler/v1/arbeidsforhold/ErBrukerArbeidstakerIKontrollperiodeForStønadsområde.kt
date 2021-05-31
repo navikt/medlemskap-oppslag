@@ -10,30 +10,28 @@ import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import java.time.LocalDate
 
-class HarBrukerSammenhengendeArbeidsforholdRegel(
+class ErBrukerArbeidstakerIKontrollperiodeForStønadsområde(
     ytelse: Ytelse,
     private val startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    // private val statsborgerskap: List<Statsborgerskap>,
-    regelId: RegelId = RegelId.REGEL_3
+    regelId: RegelId = RegelId.REGEL_21
 ) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
-        return if (!arbeidsforhold.erSammenhengendeIKontrollPeriode(kontrollPeriodeForArbeidsforhold, ytelse, 4)) {
-            nei(regelId)
-        } else {
+        return if (arbeidsforhold.erSammenhengendeIKontrollPeriode(kontrollperiodeForSykepenger, ytelse, 1)) {
             ja(regelId)
+        } else {
+            nei(regelId)
         }
     }
 
     companion object {
 
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerSammenhengendeArbeidsforholdRegel {
-            return HarBrukerSammenhengendeArbeidsforholdRegel(
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErBrukerArbeidstakerIKontrollperiodeForStønadsområde {
+            return ErBrukerArbeidstakerIKontrollperiodeForStønadsområde(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold,
-                // statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap
             )
         }
     }

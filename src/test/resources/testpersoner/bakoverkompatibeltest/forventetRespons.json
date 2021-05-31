@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2021-04-13T08:22:42.442813",
+  "tidspunkt" : "2021-05-27T08:46:18.586524",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "datagrunnlag" : {
@@ -273,7 +273,7 @@
       "avklaring" : "Er det avklart om brukeren er død eller ikke?"
     }, {
       "regelId" : "REGEL_FELLES_ARBEIDSFORHOLD",
-      "svar" : "JA",
+      "svar" : "UAVKLART",
       "begrunnelse" : "",
       "harDekning" : null,
       "dekning" : "",
@@ -295,8 +295,40 @@
         "delresultat" : [ ],
         "årsaker" : [ ],
         "avklaring" : "Er bruker frilanser?"
+      }, {
+        "regelId" : "REGEL_22",
+        "svar" : "JA",
+        "begrunnelse" : "Det finnes utenlandsopphold i et av arbeidsforholdene de siste 12 månedene",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Arbeidsforhold siste 12 måneder: finnes det utenlandsopphold i et av disse arbeidsforholdene?"
+      }, {
+        "regelId" : "REGEL_23",
+        "svar" : "NEI",
+        "begrunnelse" : "Utenlandsoppholdet har periode",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Er utenlandsoppholdet uten periode?"
+      }, {
+        "regelId" : "REGEL_25",
+        "svar" : "JA",
+        "begrunnelse" : "utenlandsoppholdet er innenfor siste 12 måneder",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Er perioden for utenlandsopphold innenfor siste 12 måneder?"
       } ],
-      "årsaker" : [ ],
+      "årsaker" : [ {
+        "regelId" : "REGEL_25",
+        "avklaring" : "Er perioden for utenlandsopphold innenfor siste 12 måneder?",
+        "svar" : "JA",
+        "begrunnelse" : "utenlandsoppholdet er innenfor siste 12 måneder"
+      } ],
       "avklaring" : "Er felles arbeidsforhold avklart?"
     }, {
       "regelId" : "REGEL_STATSBORGERSKAP",
@@ -485,6 +517,11 @@
       "avklaring" : "Er regler for norske borgere avklart?"
     } ],
     "årsaker" : [ {
+      "regelId" : "REGEL_25",
+      "avklaring" : "Er perioden for utenlandsopphold innenfor siste 12 måneder?",
+      "svar" : "JA",
+      "begrunnelse" : "utenlandsoppholdet er innenfor siste 12 måneder"
+    }, {
       "regelId" : "REGEL_1_4",
       "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
       "svar" : "NEI",

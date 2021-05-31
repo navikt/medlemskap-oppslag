@@ -19,10 +19,35 @@ class ReglerForFellesArbeidsforhold(
 ) : Regler(ytelse, regelFactory, overstyrteRegler) {
 
     override fun hentHovedflyt(): Regelflyt {
+
+        val erBrukerArbeidstakerIkontrollperiodeForStønadsområdeFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_21),
+            hvisJa = regelflytJa(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
+            hvisNei = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD)
+        )
+
+        val ErPeriodenForUtenlandsoppholdetInnenforSiste12MånederFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_25),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
+            hvisNei = erBrukerArbeidstakerIkontrollperiodeForStønadsområdeFlyt,
+        )
+
+        val ErUtenlandsoppholdetUtenPeriodeRegelFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_23),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
+            hvisNei = ErPeriodenForUtenlandsoppholdetInnenforSiste12MånederFlyt
+        )
+
+        val HarBrukerUtenlandsoppholdIArbeidsforholdetFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_22),
+            hvisJa = ErUtenlandsoppholdetUtenPeriodeRegelFlyt,
+            hvisNei = erBrukerArbeidstakerIkontrollperiodeForStønadsområdeFlyt
+        )
+
         val ErBrukerFrilanserFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_17_1),
             hvisJa = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
-            hvisNei = regelflytJa(ytelse, REGEL_FELLES_ARBEIDSFORHOLD)
+            hvisNei = HarBrukerUtenlandsoppholdIArbeidsforholdetFlyt
         )
 
         val HarBrukerArbeidsforholdFlyt = lagRegelflyt(
