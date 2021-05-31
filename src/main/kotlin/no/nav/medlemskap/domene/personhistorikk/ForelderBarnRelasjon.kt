@@ -6,8 +6,8 @@ import java.time.LocalDate
 
 data class ForelderBarnRelasjon(
     val relatertPersonsIdent: String,
-    val relatertPersonsRolle: Familierelasjonsrolle,
-    val minRolleForPerson: Familierelasjonsrolle?
+    val relatertPersonsRolle: ForelderBarnRelasjonRolle,
+    val minRolleForPerson: ForelderBarnRelasjonRolle?
 ) {
     companion object {
         fun String.erBarnUnder25Aar(førsteDatoForYtelse: LocalDate) =
@@ -32,6 +32,6 @@ data class ForelderBarnRelasjon(
                 .map { it.relatertPersonsIdent }
         }
 
-        fun ForelderBarnRelasjon.erBarn() = this.relatertPersonsRolle == Familierelasjonsrolle.BARN
+        fun ForelderBarnRelasjon.erBarn() = this.relatertPersonsRolle == ForelderBarnRelasjonRolle.BARN
     }
 }

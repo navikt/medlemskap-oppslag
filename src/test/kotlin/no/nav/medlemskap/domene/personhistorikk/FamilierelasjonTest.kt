@@ -22,9 +22,9 @@ class FamilierelasjonTest {
     @Test
     fun `hent fnr til barn`() {
         val familierelasjoner = listOf(
-            lagFamilierelasjon(relatertPersonIdent = "25079528660", minRolleForPerson = Familierelasjonsrolle.FAR),
-            lagFamilierelasjon(relatertPersonIdent = "26079447659", relatertPersonsRolle = Familierelasjonsrolle.MOR),
-            lagFamilierelasjon(relatertPersonIdent = "09069534888", minRolleForPerson = Familierelasjonsrolle.FAR)
+            lagFamilierelasjon(relatertPersonIdent = "25079528660", minRolleForPerson = ForelderBarnRelasjonRolle.FAR),
+            lagFamilierelasjon(relatertPersonIdent = "26079447659", relatertPersonsRolle = ForelderBarnRelasjonRolle.MOR),
+            lagFamilierelasjon(relatertPersonIdent = "09069534888", minRolleForPerson = ForelderBarnRelasjonRolle.FAR)
         )
 
         val førsteDatoForYtelse = LocalDate.of(2020, 12, 12)
@@ -61,8 +61,8 @@ class FamilierelasjonTest {
 
     private fun lagFamilierelasjon(
         relatertPersonIdent: String = "12345678910",
-        relatertPersonsRolle: Familierelasjonsrolle = Familierelasjonsrolle.BARN,
-        minRolleForPerson: Familierelasjonsrolle? = null
+        relatertPersonsRolle: ForelderBarnRelasjonRolle = ForelderBarnRelasjonRolle.BARN,
+        minRolleForPerson: ForelderBarnRelasjonRolle? = null
     ): ForelderBarnRelasjon =
         ForelderBarnRelasjon(relatertPersonIdent, relatertPersonsRolle, minRolleForPerson)
 }

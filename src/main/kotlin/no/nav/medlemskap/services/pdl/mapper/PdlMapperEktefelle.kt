@@ -31,7 +31,7 @@ object PdlMapperEktefelle {
 
     private fun mapFnrBarnTilBrukersEktefelle(familierelasjoner: List<HentPerson.ForelderBarnRelasjon>, førsteDatoForYtelse: LocalDate): List<String> {
         return familierelasjoner
-            .filter { it.relatertPersonsRolle == HentPerson.Familierelasjonsrolle.BARN }
+            .filter { it.relatertPersonsRolle == HentPerson.ForelderBarnRelasjonRolle.BARN }
             .filter { FodselsnummerValidator.isValid(it.relatertPersonsIdent) }
             .filter { it.relatertPersonsIdent.erBarnUnder25Aar(førsteDatoForYtelse) }
             .map { it.relatertPersonsIdent }
