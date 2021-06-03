@@ -158,13 +158,13 @@ object PdlMapper {
         }.sortedBy { it.fom }
     }
 
-    private fun mapFamileRelasjonsrolle(rolle: HentPerson.Familierelasjonsrolle?): Familierelasjonsrolle? {
+    private fun mapFamileRelasjonsrolle(rolle: HentPerson.ForelderBarnRelasjonRolle?): ForelderBarnRelasjonRolle? {
         return rolle.let {
             when (it) {
-                HentPerson.Familierelasjonsrolle.BARN -> Familierelasjonsrolle.BARN
-                HentPerson.Familierelasjonsrolle.MOR -> Familierelasjonsrolle.MOR
-                HentPerson.Familierelasjonsrolle.FAR -> Familierelasjonsrolle.FAR
-                HentPerson.Familierelasjonsrolle.MEDMOR -> Familierelasjonsrolle.MEDMOR
+                HentPerson.ForelderBarnRelasjonRolle.BARN -> ForelderBarnRelasjonRolle.BARN
+                HentPerson.ForelderBarnRelasjonRolle.MOR -> ForelderBarnRelasjonRolle.MOR
+                HentPerson.ForelderBarnRelasjonRolle.FAR -> ForelderBarnRelasjonRolle.FAR
+                HentPerson.ForelderBarnRelasjonRolle.MEDMOR -> ForelderBarnRelasjonRolle.MEDMOR
                 else -> throw DetteSkalAldriSkje("Denne familierelasjonen er ikke tilgjengelig")
             }
         }
