@@ -77,7 +77,8 @@ suspend fun defaultCreateDatagrunnlag(
                 secureLogger.warn {
                     kv("fnr", request.fnr)
                     kv("NAV-call-id", callId)
-                    kv("datagrunnlag",
+                    kv(
+                        "datagrunnlag",
                         objectMapper.writeValueAsString(
                             Datagrunnlag(
                                 periode = request.periode,
