@@ -14,7 +14,7 @@ class HealthReporterTest : ServerTest() {
             .then()
             .statusCode(503)
             .body("healthy", hasSize<Int>(0))
-            .and().body("unhealthy", hasSize<Int>(7))
-            .and().body("unhealthy.name", hasItems("AaReg", "Medl", "Oppg", "PDL", "SAF", "STS", "UDI"))
+            .and().body("unhealthy", hasSize<Int>(6))
+            .and().body("unhealthy.name", hasItems("AaReg", "Medl", "Oppg", "PDL", "SAF", "STS"))
     }
 }

@@ -15,7 +15,6 @@ import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.common.healthcheck.HealthReporter
 import no.nav.medlemskap.common.healthcheck.HealthService
 import no.nav.medlemskap.common.healthcheck.HttpResponseHealthCheck
-import no.nav.medlemskap.common.healthcheck.TryCatchHealthCheck
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.config.retryRegistry
 import no.nav.medlemskap.services.aareg.AaRegService
@@ -94,7 +93,7 @@ class Services(val configuration: Configuration) {
                 HttpResponseHealthCheck("PDL", { pdlClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("SAF", { safClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("STS", { stsRestClient.healthCheck() }, healthRetry),
-                TryCatchHealthCheck("UDI", { udiClient.healthCheck() }, healthRetry)
+                // TryCatchHealthCheck("UDI", { udiClient.healthCheck() }, healthRetry)
             )
         )
 
