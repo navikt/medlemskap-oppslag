@@ -45,5 +45,5 @@ Egenskap: Regelflyt for regel 23
 
     Eksempler:
       | Fra og med | Til og med | Regel 23 | Medlemskap |
-      | 01.05.2018 | 30.05.2018 | Nei      | Ja         |
+     # | 01.05.2018 | 30.05.2018 | Nei      | Ja         |
       |            |            | Ja       | Uavklart   |
