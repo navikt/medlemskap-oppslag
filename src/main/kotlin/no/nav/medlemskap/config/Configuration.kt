@@ -24,7 +24,7 @@ private val defaultProperties = ConfigurationMap(
         "NAIS_APP_NAME" to "",
         "NAIS_CLUSTER_NAME" to "",
         "NAIS_APP_IMAGE" to "",
-        "AZURE_CLIENT_ID" to "",
+        "AZURE_APP_CLIENT_ID" to "",
         "SAF_BASE_URL" to "",
         "SAF_API_KEY" to "",
         "OPPGAVE_BASE_URL" to "",
