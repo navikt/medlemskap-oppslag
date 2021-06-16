@@ -91,7 +91,7 @@ data class Configuration(
 
     data class AzureAd(
         val clientId: String = "NAIS_APP_NAME".configProperty(),
-        val jwtAudience: String = "AZURE_CLIENT_ID".configProperty(),
+        val jwtAudience: String = "AZURE_APP_CLIENT_ID".configProperty(),
         val tenant: String = "AZURE_TENANT".configProperty(),
         val authorityEndpoint: String = "AZURE_AUTHORITY_ENDPOINT".configProperty().removeSuffix("/")
     )
