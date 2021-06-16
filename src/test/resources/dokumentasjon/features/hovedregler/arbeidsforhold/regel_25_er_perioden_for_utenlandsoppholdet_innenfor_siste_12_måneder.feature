@@ -24,3 +24,6 @@ Egenskap: Regel 25: Er perioden for utenlandsoppholdet innenfor siste 12 månede
       | 01.05.2018 | 30.05.2018 | Ja   |
       | 15.01.2019 | 30.02.2019 | Ja   |
       | 01.01.2017 | 30.01.2017 | Nei  |
+      |            |            | Nei  |
+      | 01.01.2017 |            | Nei  |
+      |            | 01.01.2017 | Nei  |
