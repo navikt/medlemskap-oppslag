@@ -47,6 +47,7 @@ spec:
         - application: medlemskap-oppslag-funksjonelle-tester
         - application: sparkel-medlemskap
           namespace: tbd
+          cluster: dev-fss
     outbound:
       external:
         - host: api-gw-q1.oera.no
