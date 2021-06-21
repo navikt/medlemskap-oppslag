@@ -55,23 +55,21 @@ data class Arbeidsforhold(
         fun List<Arbeidsforhold>.harArbeidsforholdIKontrollperiodeUtenlandsopphold(kontrollPeriode: Kontrollperiode): Boolean =
             this.arbeidsforholdForKontrollPeriode(kontrollPeriode).any { it.utenlandsopphold.isNotNullOrEmpty() }
 
-        fun List<Arbeidsforhold>.harUtenlandsoppholdEnPeriode(kontrollPeriode: Kontrollperiode): Boolean {
-            return this.arbeidsforholdForKontrollPeriode(kontrollPeriode).any { arbeidsforhold ->
-                arbeidsforhold.utenlandsopphold?.any { utenlandsopphold ->
-                    utenlandsopphold.periode?.erFomOgTomIkkeNull() == true
-                } == true
-            }
-        }
-
         fun List<Arbeidsforhold>.erUtenlandsoppholdInnenforKontrollperiode(kontrollPeriode: Kontrollperiode): Boolean {
             val arbeidsforholdForKontrollperiode = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
+            val utenlandsopphold = arbeidsforholdForKontrollperiode.flatMap { it.utenlandsopphold ?: listOf() }
 
-            return arbeidsforholdForKontrollperiode.any {
-                arbeidsforhold ->
-                arbeidsforhold.utenlandsopphold?.any {
-                    utenlandsopphold ->
-                    utenlandsopphold.periode?.overlapper(kontrollPeriode.periode) == true
-                } == true
+            return utenlandsopphold.any {
+                (
+                    if (it.periode?.fom == null || it.periode.tom == null) {
+                        Periode(
+                            it.rapporteringsperiode.atDay(1),
+                            it.rapporteringsperiode.atEndOfMonth()
+                        ).overlapper(kontrollPeriode.periode)
+                    } else {
+                        it.periode.overlapper(kontrollPeriode.periode)
+                    }
+                    )
             }
         }
 
