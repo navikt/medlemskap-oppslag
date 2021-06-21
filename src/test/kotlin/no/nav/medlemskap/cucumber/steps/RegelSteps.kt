@@ -300,6 +300,8 @@ class RegelSteps : No {
 
             resultat = Response.fraJson(jsonResponse).resultat
 
+            println("resultat: $jsonResponse")
+
             JSONAssert.assertEquals(
                 forventetJsonResponse,
                 jsonResponse,

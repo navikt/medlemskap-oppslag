@@ -7,7 +7,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_1_2("1.2", "Er det periode både med og uten medlemskap innenfor 12 mnd?", "", "Fant periode både med og uten medlemskap"),
     REGEL_1_3("1.3", "Er det en periode med medlemskap?"),
     REGEL_1_3_1("1.3.1", "Er hele perioden uten medlemskap innenfor 12-måneders perioden?", "Deler av 12-måneders perioden har medlemskap"),
-    REGEL_1_3_2("1.3.2", "Er bruker uten medlemskap sin situasjon uendret?", "","Brukers arbeidsforhold er uendret"),
+    REGEL_1_3_2("1.3.2", "Er bruker uten medlemskap sin situasjon uendret?", "", "Brukers arbeidsforhold er uendret"),
     REGEL_1_4("1.4", "Er hele perioden med medlemskap innenfor 12-måneders perioden?", "Det finnes hull i 12-måneders perioden for medlemskap"),
     REGEL_1_5("1.5", "Er brukers arbeidsforhold uendret?", "", "Brukers arbeidsforhold er uendret"),
     REGEL_1_6("1.6", "Er brukers dekning uavklart?", "Kan ikke avklare dekning til bruker"),
@@ -78,7 +78,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_DOED("DOED", "Er det avklart om brukeren er død eller ikke?"),
     REGEL_REQUEST_VALIDERING("Validering", "Er input-dataene gyldige?"),
     REGEL_OVERSTYRING("OVERSTYRING", "Er overstyringsregler avklart?"),
-    REGEL_FELLES_ARBEIDSFORHOLD("FELLES ARBEIDSFORHOLD", "Er felles regler arbeidsforhold avklart?"),
+    REGEL_FELLES_ARBEIDSFORHOLD("FELLES ARBEIDSFORHOLD", "Er felles regler for arbeidsforhold avklart?"),
     REGEL_HOVEDSAKLIG_ARBEIDSTAKER("Hovedsaklig arbeidstaker", "Er arbeidstaker i hovedsak arbeidstaker?"),
     REGEL_OPPHOLDSTILLATELSE("Oppholdstillatelse", "Har bruker gyldig oppholdstillatelse?")
     ;
