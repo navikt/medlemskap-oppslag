@@ -34,7 +34,7 @@ Egenskap: Regelflyt for regel 25
 
     Gitt følgende utenlandsopphold i arbeidsforholdet
       | Landkode | Fra og med dato | Til og med dato | Rapporteringsperiode |
-      | JPN      | <Fra og med>    | <Til og med>    | 2019-07              |
+      | JPN      | <Fra og med>    | <Til og med>    | 2021-01              |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
@@ -47,3 +47,4 @@ Egenskap: Regelflyt for regel 25
       | Fra og med | Til og med | Regel 25 | Medlemskap |
       | 01.05.2020 | 30.05.2020 | Ja       | Uavklart   |
       | 01.01.2018 | 30.01.2018 | Nei      | Ja         |
+      |            |            | Ja       | Uavklart   |
