@@ -148,11 +148,11 @@ class PdlDomenespråkParser : BasisDomeneParser() {
     class FamilerelasjonMapper : RadMapper<HentPerson.ForelderBarnRelasjon> {
 
         override fun mapRad(rad: Map<String, String>): HentPerson.ForelderBarnRelasjon {
-            val relatertPersonsrolle = HentPerson.Familierelasjonsrolle.valueOf(parseString(Domenebegrep.RELATERT_PERSONS_ROLLE, rad))
+            val relatertPersonsrolle = HentPerson.ForelderBarnRelasjonRolle.valueOf(parseString(Domenebegrep.RELATERT_PERSONS_ROLLE, rad))
             val minRolleForPersonStr = parseValgfriString(Domenebegrep.MIN_ROLLE_FOR_PERSON, rad)
 
             val minRolleForPerson = if (minRolleForPersonStr != null) {
-                HentPerson.Familierelasjonsrolle.valueOf(minRolleForPersonStr)
+                HentPerson.ForelderBarnRelasjonRolle.valueOf(minRolleForPersonStr)
             } else {
                 null
             }

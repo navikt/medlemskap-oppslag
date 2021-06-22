@@ -10,7 +10,7 @@ import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.arbeidsforhold.Ansatte
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforholdstype
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsgiver
-import no.nav.medlemskap.domene.personhistorikk.Familierelasjonsrolle
+import no.nav.medlemskap.domene.personhistorikk.ForelderBarnRelasjonRolle
 import no.nav.medlemskap.domene.personhistorikk.Sivilstandstype
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Svar
@@ -117,20 +117,20 @@ object DomenespråkParser : BasisDomeneParser() {
         return Status.valueOf(verdi)
     }
 
-    fun parseRolle(domenebegrep: PersonhistorikkDomenebegrep, rad: Map<String, String>): Familierelasjonsrolle {
+    fun parseRolle(domenebegrep: PersonhistorikkDomenebegrep, rad: Map<String, String>): ForelderBarnRelasjonRolle {
         val verdi = verdi(domenebegrep.nøkkel, rad)
 
-        return Familierelasjonsrolle.valueOf(verdi)
+        return ForelderBarnRelasjonRolle.valueOf(verdi)
     }
 
-    fun parseValgfriRolle(domenebegrep: PersonhistorikkDomenebegrep, rad: Map<String, String>): Familierelasjonsrolle? {
+    fun parseValgfriRolle(domenebegrep: PersonhistorikkDomenebegrep, rad: Map<String, String>): ForelderBarnRelasjonRolle? {
         val verdi = valgfriVerdi(domenebegrep.nøkkel, rad)
 
         if (verdi == null) {
             return null
         }
 
-        return Familierelasjonsrolle.valueOf(verdi)
+        return ForelderBarnRelasjonRolle.valueOf(verdi)
     }
 
     fun mapMedlemskap(dataTable: DataTable): List<Medlemskap> {

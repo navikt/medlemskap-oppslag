@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2021-05-27T08:46:18.586524",
+  "tidspunkt" : "2021-06-16T08:32:44.09229",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "datagrunnlag" : {
@@ -304,15 +304,6 @@
         "delresultat" : [ ],
         "årsaker" : [ ],
         "avklaring" : "Arbeidsforhold siste 12 måneder: finnes det utenlandsopphold i et av disse arbeidsforholdene?"
-      }, {
-        "regelId" : "REGEL_23",
-        "svar" : "NEI",
-        "begrunnelse" : "Utenlandsoppholdet har periode",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Er utenlandsoppholdet uten periode?"
       }, {
         "regelId" : "REGEL_25",
         "svar" : "JA",
