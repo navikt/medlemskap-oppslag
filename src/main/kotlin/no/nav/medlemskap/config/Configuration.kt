@@ -33,7 +33,12 @@ private val defaultProperties = ConfigurationMap(
         "PDL_API_KEY" to "",
         "EREG_BASE_URL" to "",
         "EREG_API_KEY" to "",
-        "UDI_BASE_URL" to ""
+        "UDI_BASE_URL" to "",
+        "KAFKA_BROKERS" to "",
+        "KAFKA_TRUSTSTORE_PATH" to "",
+        "KAFKA_CREDSTORE_PASSWORD" to "",
+        "KAFKA_KEYSTORE_PATH" to "",
+        "KAFKA_CREDSTORE_PASSWORD" to ""
     )
 )
 
@@ -94,5 +99,17 @@ data class Configuration(
         val jwtAudience: String = "AZURE_APP_CLIENT_ID".configProperty(),
         val tenant: String = "AZURE_TENANT".configProperty(),
         val authorityEndpoint: String = "AZURE_AUTHORITY_ENDPOINT".configProperty().removeSuffix("/")
+    )
+
+    data class KafkaConfig(
+        val clientId: String = "NAIS_APP_NAME".configProperty(),
+        val bootstrapServers: String = "KAFKA_BROKERS".configProperty(),
+        val securityProtocol: String = "SSL",
+        val trustStorePath: String = "KAFKA_TRUSTSTORE_PATH".configProperty(),
+        val groupID: String = "medlemskap-oppslag",
+        val trustStorePassword: String = "KAFKA_CREDSTORE_PASSWORD".configProperty(),
+        val keystoreType: String = "PKCS12",
+        val keystoreLocation: String = "KAFKA_KEYSTORE_PATH".configProperty(),
+        val keystorePassword: String = "KAFKA_CREDSTORE_PASSWORD".configProperty()
     )
 }

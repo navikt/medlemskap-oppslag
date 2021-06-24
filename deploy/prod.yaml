@@ -44,6 +44,8 @@ spec:
   secureLogs:
     enabled: true
   webproxy: true
+  kafka:
+    pool: nav-prod
 
   env:
     - name: AZURE_TENANT

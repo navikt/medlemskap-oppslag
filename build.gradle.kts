@@ -3,6 +3,7 @@ import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransf
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val ktorVersion = "1.5.3"
+val kafkaVersion = "2.3.1"
 val jacksonVersion = "2.10.5"
 val prometheusVersion = "0.9.0"
 val logbackVersion = "1.2.3"
@@ -126,7 +127,7 @@ dependencies {
     implementation("com.sun.xml.ws:jaxws-tools:$jaxwsToolsVersion") {
         exclude(group = "com.sun.xml.ws", module = "policy")
     }
-
+    implementation("org.apache.kafka:kafka-clients:$kafkaVersion")
     implementation(tjenestespesifikasjon("udi-personstatus-v1"))
 
     implementation("io.github.resilience4j:resilience4j-retry:$resilience4jVersion")
