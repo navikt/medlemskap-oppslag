@@ -19,6 +19,7 @@ import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.config.retryRegistry
 import no.nav.medlemskap.services.aareg.AaRegService
 import no.nav.medlemskap.services.kafka.Heartbeat
+import no.nav.medlemskap.services.kafka.Producer
 import no.nav.medlemskap.services.medl.MedlService
 import no.nav.medlemskap.services.oppgave.OppgaveService
 import no.nav.medlemskap.services.pdl.PdlService
@@ -39,7 +40,7 @@ class Services(val configuration: Configuration) {
     private val eregClient: EregClient
     private val udiClient: UdiClient
     val udiService: UdiService
-    private val heartbeat: Heartbeat = Heartbeat()
+    private val heartbeat: Heartbeat
 
     val healthService: HealthService
     private val healthReporter: HealthReporter
@@ -100,7 +101,8 @@ class Services(val configuration: Configuration) {
             )
         )
 
-        heartbeat.run()
+        val producer = Producer().createProducer(configuration.kafkaConfig)
+        heartbeat = Heartbeat(producer)
         healthReporter = HealthReporter(healthService)
     }
 }

@@ -1,3 +1,5 @@
+package no.nav.medlemskap.services.kafka
+
 import no.nav.medlemskap.config.Configuration
 import org.apache.kafka.clients.CommonClientConfigs
 import org.apache.kafka.clients.producer.KafkaProducer
@@ -6,7 +8,7 @@ import java.util.*
 
 class Producer {
 
-    fun producer(producerConfig: Configuration.KafkaConfig): KafkaProducer<String, String> {
+    fun createProducer(producerConfig: Configuration.KafkaConfig): KafkaProducer<String, String> {
         val properties = Properties().apply {
             CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG to producerConfig.bootstrapServers
             CommonClientConfigs.SECURITY_PROTOCOL_CONFIG to producerConfig.securityProtocol

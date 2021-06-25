@@ -67,6 +67,7 @@ data class Configuration(
     val register: Register = Register(),
     val sts: Sts = Sts(),
     val azureAd: AzureAd = AzureAd(),
+    val kafkaConfig: KafkaConfig = KafkaConfig(),
     val cluster: String = "NAIS_CLUSTER_NAME".configProperty(),
     val commitSha: String = hentCommitSha("NAIS_APP_IMAGE".configProperty())
 ) {
