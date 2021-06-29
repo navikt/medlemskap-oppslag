@@ -8,7 +8,7 @@ import java.util.*
 
 class Producer {
 
-    fun createProducer(producerConfig: Configuration.KafkaConfig): KafkaProducer<String, String> {
+    fun createProducer(producerConfig: Configuration.   KafkaConfig): KafkaProducer<String, String> {
         val properties = Properties().apply {
             CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG to producerConfig.bootstrapServers
             CommonClientConfigs.SECURITY_PROTOCOL_CONFIG to producerConfig.securityProtocol
