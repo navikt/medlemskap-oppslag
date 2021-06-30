@@ -18,3 +18,6 @@ spec:
     - team: medlemskap
       application: medlemskap-oppslag
       access: readwrite
+    - team: medlemskap
+      application: medlemskap-joark-listener
+      access: read
