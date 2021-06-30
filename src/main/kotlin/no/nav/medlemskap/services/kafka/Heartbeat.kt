@@ -14,7 +14,9 @@ class Heartbeat(val producer: KafkaProducer<String, String>) {
 
     private suspend fun beat() {
         while (true) {
-            producer.send(createRecord("test-lovme-heartbeat", "heartbeat"))
+            val futureresult = producer.send(createRecord("test-lovme-heartbeat", "heartbeat"))
+            val result = futureresult.get()
+            println("message posted with offset: " + result.offset())
             delay(Duration.ofMinutes(1))
         }
     }

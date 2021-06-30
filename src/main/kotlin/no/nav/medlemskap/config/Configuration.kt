@@ -35,10 +35,10 @@ private val defaultProperties = ConfigurationMap(
         "EREG_API_KEY" to "",
         "UDI_BASE_URL" to "",
         "KAFKA_BROKERS" to "nav-dev-kafka-nav-dev.aivencloud.com:26484",
-        "KAFKA_TRUSTSTORE_PATH" to "",
-        "KAFKA_CREDSTORE_PASSWORD" to "",
-        "KAFKA_KEYSTORE_PATH" to "",
-        "KAFKA_CREDSTORE_PASSWORD" to ""
+        "KAFKA_TRUSTSTORE_PATH" to "/Users/stians.douzette/Downloads/secrets/client.truststore.jks",
+        "KAFKA_CREDSTORE_PASSWORD" to "changeme",
+        "KAFKA_KEYSTORE_PATH" to "/Users/stians.douzette/Downloads/secrets/client.keystore.p12",
+        "KAFKA_CREDSTORE_PASSWORD" to "changeme"
     )
 )
 
