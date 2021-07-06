@@ -25,6 +25,8 @@ private val defaultProperties = ConfigurationMap(
         "NAIS_CLUSTER_NAME" to "",
         "NAIS_APP_IMAGE" to "",
         "AZURE_APP_CLIENT_ID" to "",
+        "AZURE_APP_CLIENT_SECRET" to "",
+        "AZURE_OPENID_CONFIG_TOKEN_ENDPOINT" to "",
         "SAF_BASE_URL" to "",
         "SAF_API_KEY" to "",
         "OPPGAVE_BASE_URL" to "",
@@ -33,7 +35,9 @@ private val defaultProperties = ConfigurationMap(
         "PDL_API_KEY" to "",
         "EREG_BASE_URL" to "",
         "EREG_API_KEY" to "",
-        "UDI_BASE_URL" to ""
+        "UDI_BASE_URL" to "",
+        "UDI_PROXY_API_KEY" to "",
+        "UDI_PROXY_CLIENT_ID" to "",
     )
 )
 
@@ -78,6 +82,8 @@ data class Configuration(
         val pdlApiKey: String = "PDL_API_KEY".configProperty(),
         val eregBaseUrl: String = "EREG_BASE_URL".configProperty(),
         val eregApiKey: String = "EREG_API_KEY".configProperty(),
+        val udiProxyApiKey: String = "UDI_PROXY_API_KEY".configProperty(), //Venter på  bestilling - legges inn i secrets
+        val udiProxyClientId: String = "UDI_PROXY_CLIENT_ID".configProperty(),
         val udiBaseUrl: String = "UDI_BASE_URL".configProperty()
     )
 
@@ -90,8 +96,10 @@ data class Configuration(
     )
 
     data class AzureAd(
-        val clientId: String = "NAIS_APP_NAME".configProperty(),
+        val clientId: String = "AZURE_APP_CLIENT_ID".configProperty(),
+        val clientSecret: String = "AZURE_APP_CLIENT_SECRET".configProperty(),
         val jwtAudience: String = "AZURE_APP_CLIENT_ID".configProperty(),
+        val tokenEndpoint: String = "AZURE_OPENID_CONFIG_TOKEN_ENDPOINT".configProperty().removeSuffix("/"),
         val tenant: String = "AZURE_TENANT".configProperty(),
         val authorityEndpoint: String = "AZURE_AUTHORITY_ENDPOINT".configProperty().removeSuffix("/")
     )

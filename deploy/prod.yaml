@@ -67,4 +67,4 @@ spec:
     - name: EREG_BASE_URL
       value: https://api-gw.oera.no/ereg/api
     - name: UDI_BASE_URL
-      value: https://pep-gw.oera.no:9443/ekstern/udi/personstatus/medlemskapoppslag/v1
+      value: https://api-gw.oera.no/udi-proxy
