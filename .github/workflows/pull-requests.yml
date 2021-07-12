@@ -83,7 +83,7 @@ jobs:
         name: Run tests
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
-          IMAGE: docker.pkg.github.com/navikt/medlemskap-oppslag-funksjonelle-tester/medlemskap-oppslag-funksjonelle-tester:${{ steps.get-sha.outputs.sha }}
+          IMAGE: ghcr.io/navikt/medlemskap-oppslag-funksjonelle-tester:${{ steps.get-sha.outputs.sha }}
           CLUSTER: dev-gcp
           VAR: app=medlemskap-oppslag
           RESOURCE: nais/tests.yml
