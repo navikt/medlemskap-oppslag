@@ -73,7 +73,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        if: github.ref != 'refs/heads/main'
+        if: github.ref != 'refs/heads/master'
         uses: actions/checkout@v1
         with:
           repository: navikt/medlemskap-oppslag-funksjonelle-tester
