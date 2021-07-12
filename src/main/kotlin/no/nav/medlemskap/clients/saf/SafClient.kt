@@ -22,6 +22,7 @@ class SafClient(
     private val stsClient: StsRestClient,
     private val username: String,
     private val httpClient: HttpClient,
+    private val safApiKey: String,
     private val retry: Retry? = null
 ) {
     companion object {
@@ -48,6 +49,7 @@ class SafClient(
                 header(HttpHeaders.Accept, ContentType.Application.Json)
                 header("Nav-Callid", callId)
                 header("Nav-Consumer-Id", username)
+                header("x-nav-apiKey", safApiKey)
             }
 
             response.errors?.let { errors ->
@@ -64,6 +66,7 @@ class SafClient(
             header(HttpHeaders.ContentType, ContentType.Application.Json)
             header(HttpHeaders.Accept, ContentType.Application.Json)
             header("Nav-Consumer-Id", username)
+            header("x-nav-apiKey", safApiKey)
         }
     }
 }

@@ -1,15 +1,11 @@
 package no.nav.medlemskap.clients.medl
 
 import io.github.resilience4j.retry.Retry
-import io.ktor.client.HttpClient
-import io.ktor.client.features.ClientRequestException
-import io.ktor.client.request.get
-import io.ktor.client.request.header
-import io.ktor.client.request.parameter
-import io.ktor.client.request.url
-import io.ktor.client.statement.HttpResponse
-import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
+import io.ktor.client.*
+import io.ktor.client.features.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import io.ktor.http.*
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
 import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.config.Configuration
@@ -21,6 +17,7 @@ class MedlClient(
     private val stsClient: StsRestClient,
     private val configuration: Configuration,
     private val httpClient: HttpClient,
+    private val medlApiKey: String,
     private val retry: Retry? = null
 ) {
 
@@ -32,6 +29,7 @@ class MedlClient(
                     url("$baseUrl/api/v1/medlemskapsunntak")
                     header(HttpHeaders.Authorization, "Bearer $token")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
+                    header("x-nav-apiKey", medlApiKey)
                     header("Nav-Call-Id", callId)
                     header("Nav-Personident", ident)
                     header("Nav-Consumer-Id", configuration.sts.username)
@@ -63,6 +61,7 @@ class MedlClient(
             url("$baseUrl/api/ping")
             header("Nav-Consumer-Id", configuration.sts.username)
             header(HttpHeaders.Accept, ContentType.Application.Json)
+            header("x-nav-apiKey", medlApiKey)
         }
     }
 }
