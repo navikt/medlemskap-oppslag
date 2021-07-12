@@ -73,13 +73,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@migrere_til_sky
         with:
           repository: navikt/medlemskap-oppslag-funksjonelle-tester
       - id: get-sha
         run: |
           echo ::set-output name=sha::$( curl -u "u:${{secrets.GITHUB_TOKEN}}" https://api.github.com/repos/navikt/medlemskap-oppslag-funksjonelle-tester/git/origin/migrere_til_sky | jq .object.sha | tr -d '"' )
-      - uses: nais/deploy/actions/deploy@v1
+      - uses: nais/deploy/actions/deploy@migrere_til_sky
         name: Run tests
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
