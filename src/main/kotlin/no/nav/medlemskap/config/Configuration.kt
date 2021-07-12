@@ -40,7 +40,7 @@ private val defaultProperties = ConfigurationMap(
         "KAFKA_TRUSTSTORE_PATH" to "/Users/stians.douzette/Downloads/secrets/client.truststore.jks",
         "KAFKA_CREDSTORE_PASSWORD" to "changeme",
         "KAFKA_KEYSTORE_PATH" to "/Users/stians.douzette/Downloads/secrets/client.keystore.p12",
-        "KAFKA_CREDSTORE_PASSWORD" to "changeme"
+        "KAFKA_CREDSTORE_PASSWORD" to "changeme",
         "UDI_BASE_URL" to "",
         "UDI_PROXY_API_KEY" to "",
         "UDI_PROXY_CLIENT_ID" to "",
@@ -89,7 +89,7 @@ data class Configuration(
         val pdlApiKey: String = "PDL_API_KEY".configProperty(),
         val eregBaseUrl: String = "EREG_BASE_URL".configProperty(),
         val eregApiKey: String = "EREG_API_KEY".configProperty(),
-        val udiProxyApiKey: String = "UDI_PROXY_API_KEY".configProperty(), //Venter på  bestilling - legges inn i secrets
+        val udiProxyApiKey: String = "UDI_PROXY_API_KEY".configProperty(), // Venter på  bestilling - legges inn i secrets
         val udiProxyClientId: String = "UDI_PROXY_CLIENT_ID".configProperty(),
         val udiBaseUrl: String = "UDI_BASE_URL".configProperty()
     )
