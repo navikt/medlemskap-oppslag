@@ -73,7 +73,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        if: github.ref != 'refs/heads/master'
         uses: actions/checkout@v1
         with:
           repository: navikt/medlemskap-oppslag-funksjonelle-tester
@@ -84,7 +83,7 @@ jobs:
         name: Run tests
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
-          IMAGE: ghcr.io/navikt/medlemskap-oppslag-funksjonelle-tester:36fd6b1e9fc766db6887017889c393207acf16b213aab70e81f329681ffadd92
+          IMAGE: ghcr.io/navikt/medlemskap-oppslag-funksjonelle-tester:ac43a192b82f86524dec5cd3eca8779eb738f52d
           CLUSTER: dev-gcp
           VAR: app=medlemskap-oppslag
           RESOURCE: nais/tests.yml
