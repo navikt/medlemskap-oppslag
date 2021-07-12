@@ -73,10 +73,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
+        if: github.ref != 'refs/heads/main'
         uses: actions/checkout@v1
         with:
           repository: navikt/medlemskap-oppslag-funksjonelle-tester
-          branch: migrere_til_sky
       - id: get-sha
         run: |
           echo ::set-output name=sha::$( curl -u "u:${{secrets.GITHUB_TOKEN}}" https://api.github.com/repos/navikt/medlemskap-oppslag-funksjonelle-tester/git/origin/migrere_til_sky | jq .object.sha | tr -d '"' )
