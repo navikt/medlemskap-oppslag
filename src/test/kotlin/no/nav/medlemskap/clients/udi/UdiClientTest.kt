@@ -1,20 +1,6 @@
 package no.nav.medlemskap.clients.udi
 
-import com.fasterxml.jackson.databind.MapperFeature
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.dataformat.xml.JacksonXmlModule
-import com.fasterxml.jackson.dataformat.xml.XmlMapper
-import com.fasterxml.jackson.module.kotlin.readValue
-import io.mockk.coEvery
-import io.mockk.mockk
-import kotlinx.coroutines.runBlocking
-import no.nav.medlemskap.config.retryRegistry
-import no.udi.mt_1067_nav_data.v1.OppholdstillatelseKategori
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
-import v1.mt_1067_nav.no.udi.HentPersonstatusResponseType
-import v1.mt_1067_nav.no.udi.MT1067NAVV1Interface
-
+/*
 class UdiClientTest {
 
     @Test
@@ -86,3 +72,4 @@ class UdiClientTest {
         </ns4:HentUtvidetPersonstatusResponseType>
         """.trimIndent()
 }
+*/

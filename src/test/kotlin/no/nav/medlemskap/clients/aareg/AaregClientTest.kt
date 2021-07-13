@@ -56,7 +56,7 @@ class AaregClientTest {
             )
         )
 
-        val client = AaRegClient(server.baseUrl(), username, stsClient, cioHttpClient)
+        val client = createAaRegClient(stsClient)
 
         val response = runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
 
@@ -100,7 +100,7 @@ class AaregClientTest {
 
             )
         )
-        val client = AaRegClient(server.baseUrl(), username, stsClient, cioHttpClient)
+        val client = AaRegClient(server.baseUrl(), username, stsClient, cioHttpClient, "123")
 
         Assertions.assertThrows(ServerResponseException::class.java) {
             runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
@@ -122,7 +122,7 @@ class AaregClientTest {
             )
         )
 
-        val client = AaRegClient(server.baseUrl(), username, stsClient, cioHttpClient)
+        val client = createAaRegClient(stsClient)
 
         Assertions.assertThrows(ClientRequestException::class.java) {
             runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
@@ -144,10 +144,20 @@ class AaregClientTest {
             )
         )
 
-        val client = AaRegClient(server.baseUrl(), username, stsClient, cioHttpClient)
+        val client = createAaRegClient(stsClient)
         val response = runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
 
         Assertions.assertEquals(0, response.size)
+    }
+
+    private fun createAaRegClient(stsClient: StsRestClient): AaRegClient {
+        return AaRegClient(
+            baseUrl = server.baseUrl(),
+            username = username,
+            stsClient = stsClient,
+            httpClient = cioHttpClient,
+            aaRegApiKey = "123"
+        )
     }
 
     private val aaRegResponse =

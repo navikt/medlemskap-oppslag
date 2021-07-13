@@ -5,6 +5,7 @@ import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
 import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.clients.Services
+import no.nav.medlemskap.clients.udi.UdiRequest
 import no.nav.medlemskap.common.FeatureToggles
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.common.ytelseCounter
@@ -72,7 +73,7 @@ suspend fun defaultCreateDatagrunnlag(
     ) {
         val oppholdsstatusRequest = async {
             try {
-                services.udiService.hentOppholdstillatelseer(request.fnr)
+                services.udiClient.oppholdstillatelse(UdiRequest(request.fnr), callId)
             } catch (hpf: HentPersonstatusFault) {
                 secureLogger.warn {
                     kv("fnr", request.fnr)

@@ -4,9 +4,7 @@ import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
-import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
+import io.ktor.http.*
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -59,7 +57,7 @@ class SafClientTest {
                 )
         )
 
-        val safClient = SafClient(server.baseUrl(), stsClient, username, cioHttpClient)
+        val safClient = SafClient(server.baseUrl(), stsClient, username, cioHttpClient, "123")
 
         val safResponse = runBlocking { safClient.hentJournaldata("1234567890", callId) }
 

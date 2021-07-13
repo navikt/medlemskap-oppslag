@@ -17,7 +17,7 @@ Denne tjenesten gjør REST-kall mot følgende tjenester/registre:
 * [Funksjonell dokumentasjon](src/test/resources/dokumentasjon/README.md)
 
 ## URL til tjeneste
-* preprod: https://medlemskap-oppslag.nais.preprod.local
+* preprod: https://medlemskap-oppslag.dev.intern.nav.no
 * prod: https://medlemskap-oppslag.nais.adeo.no
 
 ## Autentisering
@@ -101,12 +101,21 @@ curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d 'client_id=
 ```
 Der `clientid` og `clientsecret` kan hentes fra vault under `azuread`
 
+## Kalle tjenesten fra laptop, for eksempel med Postman:
+* Angi POST
+* Angi URL localhost:8080/
+* Authorization:
+  ** Type = Bearer Token
+  * Paste inn Token-verdi   
+    ** Body:
+* Request som angitt i LOVME.yaml
+
 ## Testing med jMeter
 En jMeter-test som henter ned MiniNorge populasjonen og gjør et kall mot medlemskap-oppslag for hver person kan kjøres med følgende script
 ```
 jmeter/runJMeterTest.sh <AAD_TOKEN>
 ```
-jMeter-testen krever port-forwarding for medlemskap-oppslag satt opp på port 8080, og for testnorge-hodejegeren på port 8081. Dette kan enklest gjøres med "Kube Forwarder", hvor konfigurasjonen ligger på kube-forwarder-config/cluster-dev-fss — nais-user.kpf-export.v2.json
+jMeter-testen krever port-forwarding for medlemskap-oppslag satt opp på port 8080, og for testnorge-hodejegeren på port 8081. Dette kan enklest gjøres med "Kube Forwarder", hvor konfigurasjonen ligger på kube-forwarder-config/cluster-dev-gcp — nais-user.kpf-export.v2.json
 
 For å kjøre jMeter med GUI, enten fordi man liker det bedre eller fordi man skal redigere test planen, så kan følgende kommando kjøres:
 ```
