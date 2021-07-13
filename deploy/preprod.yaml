@@ -51,6 +51,10 @@ spec:
           namespace: tbd
           cluster: dev-fss
     outbound:
+      rules:
+        - application: udi-proxy
+          namespace: medlemskap
+          cluster: dev-fss
       external:
         - host: api-gw-q1.oera.no
         - host: api-gw-q2.oera.no
