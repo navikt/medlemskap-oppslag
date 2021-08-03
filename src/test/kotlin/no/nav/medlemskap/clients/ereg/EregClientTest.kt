@@ -69,7 +69,9 @@ class EregClientTest {
         assertEquals(19, response.organisasjonDetaljer?.ansatte?.get(0)?.antall)
     }
 
-    private val config = Configuration()
+    private val config = Configuration(
+        azureAd = Configuration.AzureAd(azureAppWellKnownUrl = "http://localhost")
+    )
     private val orgnummer = "977074010"
 
     private val queryMappingForHentOrganisasjon: MappingBuilder = WireMock.get(WireMock.urlPathEqualTo("/v1/organisasjon/$orgnummer"))

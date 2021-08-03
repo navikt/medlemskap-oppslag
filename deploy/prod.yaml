@@ -6,6 +6,9 @@ metadata:
   labels:
     team: medlemskap
 spec:
+  azure:
+    application:
+      enabled: true
   image: {{ image }}
   port: 7070
   liveness:
@@ -34,22 +37,24 @@ spec:
   prometheus:
     enabled: true
     path: /metrics
-  vault:
-    enabled: true
-    paths:
-      - mountPath: /var/run/secrets/nais.io/vault
-        kvPath: /kv/prod/fss/medlemskap-oppslag/default
-      - mountPath: /var/run/secrets/nais.io/azure
-        kvPath: /azuread/data/prod/creds/medlemskap-oppslag
   secureLogs:
     enabled: true
   webproxy: true
-
+  accessPolicy:
+    inbound:
+      rules:
+        - application: sparkel-medlemskap
+          namespace: tbd
+          cluster: prod-fss
+    outbound:
+      rules:
+        - application: udi-proxy
+          namespace: medlemskap
+          cluster: prod-fss
+      external:
+        - host: api-gw.oera.no
+        - host: login.microsoftonline.com
   env:
-    - name: AZURE_TENANT
-      value: 62366534-1ec3-4962-8869-9b5535279d0b
-    - name: AZURE_AUTHORITY_ENDPOINT
-      value: https://login.microsoftonline.com
     - name: SECURITY_TOKEN_SERVICE_URL
       value: https://api-gw.oera.no/sts/SecurityTokenServiceProvider/
     - name: SECURITY_TOKEN_SERVICE_REST_URL
@@ -68,3 +73,5 @@ spec:
       value: https://api-gw.oera.no/ereg/api
     - name: UDI_BASE_URL
       value: https://api-gw.oera.no/udi-proxy
+  envFrom:
+    - secret: medlemskap-oppslag

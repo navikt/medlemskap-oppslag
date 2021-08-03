@@ -9,8 +9,7 @@ private val logger = KotlinLogging.logger { }
 
 private val defaultProperties = ConfigurationMap(
     mapOf(
-        "AZURE_TENANT" to "",
-        "AZURE_AUTHORITY_ENDPOINT" to "",
+        "AZURE_APP_WELL_KNOWN_URL" to "",
         "SERVICE_USER_USERNAME" to "test",
         "MEDLEMSKAP_REGLER_URL" to "",
         "MEDL2_BASE_URL" to "",
@@ -82,7 +81,7 @@ data class Configuration(
         val pdlApiKey: String = "PDL_API_KEY".configProperty(),
         val eregBaseUrl: String = "EREG_BASE_URL".configProperty(),
         val eregApiKey: String = "EREG_API_KEY".configProperty(),
-        val udiProxyApiKey: String = "UDI_PROXY_API_KEY".configProperty(), //Venter på  bestilling - legges inn i secrets
+        val udiProxyApiKey: String = "UDI_PROXY_API_KEY".configProperty(), // Venter på  bestilling - legges inn i secrets
         val udiProxyClientId: String = "UDI_PROXY_CLIENT_ID".configProperty(),
         val udiBaseUrl: String = "UDI_BASE_URL".configProperty()
     )
@@ -100,7 +99,6 @@ data class Configuration(
         val clientSecret: String = "AZURE_APP_CLIENT_SECRET".configProperty(),
         val jwtAudience: String = "AZURE_APP_CLIENT_ID".configProperty(),
         val tokenEndpoint: String = "AZURE_OPENID_CONFIG_TOKEN_ENDPOINT".configProperty().removeSuffix("/"),
-        val tenant: String = "AZURE_TENANT".configProperty(),
-        val authorityEndpoint: String = "AZURE_AUTHORITY_ENDPOINT".configProperty().removeSuffix("/")
+        val azureAppWellKnownUrl: String = "AZURE_APP_WELL_KNOWN_URL".configProperty().removeSuffix("/")
     )
 }

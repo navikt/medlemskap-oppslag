@@ -1,6 +1,6 @@
 package no.nav.medlemskap.common
 
-import io.ktor.server.engine.ApplicationEngine
+import io.ktor.server.engine.*
 import io.restassured.RestAssured
 import io.restassured.config.ObjectMapperConfig.objectMapperConfig
 import io.restassured.config.RestAssuredConfig
@@ -27,7 +27,7 @@ open class ServerTest {
 
         private val configuration = Configuration(
             azureAd = Configuration.AzureAd(
-                authorityEndpoint = "http://localhost/"
+                azureAppWellKnownUrl = "http://localhost/"
             )
         )
         private val services = Services(configuration)
