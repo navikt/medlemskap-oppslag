@@ -98,7 +98,7 @@ jobs:
       - name: Fetch NAIS yaml
         uses: actions/download-artifact@v1
         with:
-          name: nais-prod-yaml
+          name: nais-dev-yaml
           path: deploy
       - uses: nais/deploy/actions/deploy@v1
         env:
