@@ -106,5 +106,5 @@ jobs:
           CLUSTER: prod-gcp
           RESOURCE: deploy/prod.yaml
           VARS: deploy/vars.yaml
-          VAR: alerts_slack_channel=#team-p3-medlemskap-notifications
+          #VAR: alerts_slack_channel=#team-p3-medlemskap-notifications
           PRINT_PAYLOAD: true
