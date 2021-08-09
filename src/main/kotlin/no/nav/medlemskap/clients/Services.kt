@@ -40,7 +40,6 @@ class Services(val configuration: Configuration) {
     private val healthRetry = retryRegistry.retry("Helsesjekker")
 
     private val stsRetry = retryRegistry.retry("STS")
-    private val udiRetry = retryRegistry.retry("UDI")
 
     init {
 
@@ -82,7 +81,6 @@ class Services(val configuration: Configuration) {
                 HttpResponseHealthCheck("PDL", { pdlClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("SAF", { safClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("STS", { stsRestClient.healthCheck() }, healthRetry),
-                // TryCatchHealthCheck("UDI", { udiClient.healthCheck() }, healthRetry)
             )
         )
 
