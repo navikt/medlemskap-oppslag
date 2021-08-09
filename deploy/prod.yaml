@@ -54,6 +54,7 @@ spec:
       external:
         - host: api-gw.oera.no
         - host: login.microsoftonline.com
+        - host: udi-proxy.prod-fss-pub.nais.io
   env:
     - name: SECURITY_TOKEN_SERVICE_URL
       value: https://api-gw.oera.no/sts/SecurityTokenServiceProvider/
@@ -72,6 +73,6 @@ spec:
     - name: EREG_BASE_URL
       value: https://api-gw.oera.no/ereg/api
     - name: UDI_BASE_URL
-      value: https://api-gw.oera.no/udi-proxy
+      value: https://udi-proxy.prod-fss-pub.nais.io
   envFrom:
     - secret: medlemskap-oppslag
