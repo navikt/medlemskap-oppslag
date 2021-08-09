@@ -21,6 +21,7 @@ class UdiClient(
         return runWithRetryAndMetrics("UDI-proxy", "Oppholdstillatelse", retry) {
             httpClient.post {
                 url("$baseUrl/udi/person")
+                header(HttpHeaders.Accept, ContentType.Application.Json)
                 header(HttpHeaders.Authorization, "Bearer $token")
                 header("X-Correlation-Id", callId)
                 header("x-nav-apiKey", udiProxyApiKey)
