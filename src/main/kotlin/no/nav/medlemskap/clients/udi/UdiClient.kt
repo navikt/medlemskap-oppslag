@@ -21,7 +21,7 @@ class UdiClient(
             httpClient.post {
                 url("$baseUrl/udi/person")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
-                header(HttpHeaders.Authorization, "Bearer $token")
+                header(HttpHeaders.Authorization, "Bearer ${token.token}")
                 header("Nav-Call-Id", callId)
                 header("X-Correlation-Id", callId)
                 body = udiRequest
