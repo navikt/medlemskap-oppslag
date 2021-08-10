@@ -10,6 +10,7 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.regler.v1.ReglerService
 import no.nav.medlemskap.services.kafka.Producer
 import org.apache.kafka.clients.producer.ProducerRecord
+import java.util.*
 
 fun Routing.reglerRoute() {
     route("/regler") {
@@ -30,16 +31,17 @@ fun Routing.reglerRoute() {
         }
     }
 
-    route("/produceTestMessage") {
-        get {
-            val producer = Producer().createProducer(Configuration().kafkaConfig)
-            val futureresult = producer.send(createRecord("test-lovme-heartbeat", "heartbeat"))
-            val result = futureresult.get()
-            call.respond("message posted with offset: " + result.offset())
+    route("/medlemskapVurdert") {
+        post {
+            val datagrunnlag: Datagrunnlag = call.receive()
+            val producer = Producer().createProducer((Configuration().kafkaConfig))
+            val reglerResultat = ReglerService.kjørRegler(datagrunnlag)
+            producer.send(createRecord("medlemskap-vurdert","", reglerResultat.tilJson()))
+            call.respond("Request prosessert OK")
         }
     }
 }
 
-private fun createRecord(topic: String, value: String): ProducerRecord<String, String> {
-    return ProducerRecord(topic, null, value)
+private fun createRecord(topic: String, key: String = UUID.randomUUID().toString(), value: String): ProducerRecord<String, String> {
+    return ProducerRecord(topic, key, value)
 }
