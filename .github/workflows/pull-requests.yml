@@ -9,7 +9,7 @@ jobs:
     name: Build and publish Docker image for PR-branch
     runs-on: ubuntu-latest
     env:
-      IMAGE: docker.pkg.github.com/${{ github.repository }}/medlemskap-oppslag:${{ github.sha }}
+      IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -38,7 +38,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           docker build -t $IMAGE .
-          docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
+          docker login ghcr.io -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
           docker push $IMAGE
       - name: Archive NAIS yaml
         uses: actions/upload-artifact@v1
@@ -51,7 +51,7 @@ jobs:
     needs: [build-branch]
     runs-on: ubuntu-latest
     env:
-      IMAGE: docker.pkg.github.com/${{ github.repository }}/medlemskap-oppslag:${{ github.sha }}
+      IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
     steps:
       - name: Fetch NAIS yaml
         uses: actions/download-artifact@v1
@@ -83,7 +83,7 @@ jobs:
         name: Run tests
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
-          IMAGE: docker.pkg.github.com/navikt/medlemskap-oppslag-funksjonelle-tester/medlemskap-oppslag-funksjonelle-tester:${{ steps.get-sha.outputs.sha }}
+          IMAGE: ghcr.io/navikt/medlemskap-oppslag-funksjonelle-tester:ac43a192b82f86524dec5cd3eca8779eb738f52d
           CLUSTER: dev-gcp
           VAR: app=medlemskap-oppslag
           RESOURCE: nais/tests.yml

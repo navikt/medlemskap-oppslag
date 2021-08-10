@@ -1,13 +1,13 @@
 package no.nav.medlemskap.clients.sts
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import no.nav.medlemskap.clients.Token
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
-import java.time.LocalDateTime
+import no.nav.medlemskap.clients.shouldBeRenewed
 import java.util.*
 
 class StsRestClient(
@@ -64,20 +64,4 @@ class StsRestClient(
     }
 
     private fun credentials() = Base64.getEncoder().encodeToString("$username:$password".toByteArray(Charsets.UTF_8))
-
-    private fun Token?.shouldBeRenewed(): Boolean = this?.hasExpired() ?: true
-
-    data class Token(
-        @JsonProperty(value = "access_token", required = true)
-        val token: String,
-        @JsonProperty(value = "token_type", required = true)
-        val type: String,
-        @JsonProperty(value = "expires_in", required = true)
-        val expiresIn: Int
-    ) {
-
-        private val expirationTime: LocalDateTime = LocalDateTime.now().plusSeconds(expiresIn - 20L)
-
-        fun hasExpired(): Boolean = expirationTime.isBefore(LocalDateTime.now())
-    }
 }
