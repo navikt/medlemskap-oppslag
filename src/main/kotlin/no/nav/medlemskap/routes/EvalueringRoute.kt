@@ -77,6 +77,42 @@ fun Routing.evalueringRoute(
 
             call.respond(response)
         }
+
+        post("/kafka") {
+            apiCounter().increment()
+
+            val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
+            val azp = callerPrincipal.payload.getClaim("azp").asString()
+            secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
+
+            val request = validerRequest(call.receive(), azp)
+            val callId = call.callId ?: UUID.randomUUID().toString()
+
+            val datagrunnlag = withContext(
+                requestContextService.getCoroutineContext(
+                    context = coroutineContext,
+                    ytelse = finnYtelse(request.ytelse, azp)
+                )
+            ) {
+                createDatagrunnlag.invoke(
+                    request,
+                    callId,
+                    services,
+                    azp
+                )
+            }
+            val resultat = evaluerData(datagrunnlag)
+
+            val response = lagResponse(
+                versjonTjeneste = configuration.commitSha,
+                datagrunnlag = datagrunnlag,
+                resultat = resultat
+            )
+
+            loggResponse(request.fnr, response)
+
+            call.respond(response)
+        }
     }
 }
 
