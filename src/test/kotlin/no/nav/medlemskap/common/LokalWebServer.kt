@@ -23,7 +23,7 @@ class LokalWebServer {
 
         private val configuration = Configuration(
             azureAd = Configuration.AzureAd(
-                authorityEndpoint = "http://localhost/"
+                azureAppWellKnownUrl = "http://localhost/"
             )
         )
         private val services = Services(configuration)

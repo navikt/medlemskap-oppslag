@@ -54,17 +54,17 @@ spec:
           namespace: tbd
           cluster: dev-fss
     outbound:
+      rules:
+        - application: udi-proxy
+          namespace: medlemskap
+          cluster: dev-fss
       external:
         - host: api-gw-q1.oera.no
         - host: api-gw-q2.oera.no
         - host: saf.dev-fss-pub.nais.io
         - host: login.microsoftonline.com
-        - host: udi-proxy.dev-fss.nais.io
+        - host: udi-proxy.dev-fss-pub.nais.io
   env:
-    - name: AZURE_TENANT
-      value: 966ac572-f5b7-4bbe-aa88-c76419c0f851
-    - name: AZURE_AUTHORITY_ENDPOINT
-      value: https://login.microsoftonline.com
     - name: SECURITY_TOKEN_SERVICE_URL
       value: https://api-gw-q1.oera.no/sts/SecurityTokenServiceProvider/
     - name: SECURITY_TOKEN_SERVICE_REST_URL
@@ -82,6 +82,6 @@ spec:
     - name: EREG_BASE_URL
       value: https://api-gw-q1.oera.no/ereg/api
     - name: UDI_BASE_URL
-      value: https://api-gw-q1.oera.no/udi-proxy/api
+      value: https://udi-proxy.dev-fss-pub.nais.io
   envFrom:
     - secret: medlemskap-oppslag

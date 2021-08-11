@@ -12,7 +12,6 @@ class UdiClient(
     private val baseUrl: String,
     private val azureAdClient: AzureAdClient,
     private val httpClient: HttpClient,
-    private val udiProxyApiKey: String,
     private val retry: Retry? = null
 ) {
 
@@ -21,9 +20,10 @@ class UdiClient(
         return runWithRetryAndMetrics("UDI-proxy", "Oppholdstillatelse", retry) {
             httpClient.post {
                 url("$baseUrl/udi/person")
-                header(HttpHeaders.Authorization, "Bearer $token")
+                header(HttpHeaders.ContentType, ContentType.Application.Json)
+                header(HttpHeaders.Authorization, "Bearer ${token.token}")
+                header("Nav-Call-Id", callId)
                 header("X-Correlation-Id", callId)
-                header("x-nav-apiKey", udiProxyApiKey)
                 body = udiRequest
             }
         }

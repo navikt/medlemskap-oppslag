@@ -9,8 +9,7 @@ private val logger = KotlinLogging.logger { }
 
 private val defaultProperties = ConfigurationMap(
     mapOf(
-        "AZURE_TENANT" to "",
-        "AZURE_AUTHORITY_ENDPOINT" to "",
+        "AZURE_APP_WELL_KNOWN_URL" to "",
         "SERVICE_USER_USERNAME" to "test",
         "MEDLEMSKAP_REGLER_URL" to "",
         "MEDL2_BASE_URL" to "",
@@ -107,8 +106,7 @@ data class Configuration(
         val clientSecret: String = "AZURE_APP_CLIENT_SECRET".configProperty(),
         val jwtAudience: String = "AZURE_APP_CLIENT_ID".configProperty(),
         val tokenEndpoint: String = "AZURE_OPENID_CONFIG_TOKEN_ENDPOINT".configProperty().removeSuffix("/"),
-        val tenant: String = "AZURE_TENANT".configProperty(),
-        val authorityEndpoint: String = "AZURE_AUTHORITY_ENDPOINT".configProperty().removeSuffix("/")
+        val azureAppWellKnownUrl: String = "AZURE_APP_WELL_KNOWN_URL".configProperty().removeSuffix("/")
     )
 
     data class KafkaConfig(
