@@ -36,7 +36,7 @@ fun Routing.reglerRoute() {
             val datagrunnlag: Datagrunnlag = call.receive()
             val producer = Producer().createProducer((Configuration().kafkaConfig))
             val reglerResultat = ReglerService.kjørRegler(datagrunnlag)
-            producer.send(createRecord("medlemskap-vurdert","", reglerResultat.tilJson()))
+            producer.send(createRecord("medlemskap-vurdert", "", reglerResultat.tilJson()))
             call.respond("Request prosessert OK")
         }
     }
