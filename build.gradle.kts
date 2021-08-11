@@ -2,7 +2,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val ktorVersion = "1.5.3"
+val ktorVersion = "1.5.4"
 val kafkaVersion = "2.3.1"
 val jacksonVersion = "2.10.5"
 val prometheusVersion = "0.9.0"
@@ -11,7 +11,7 @@ val logstashVersion = "6.4"
 val konfigVersion = "1.6.10.0"
 val kotlinLoggerVersion = "1.8.3"
 val tjenestespesifikasjonerVersion = "1.2019.12.18-12.22-ce897c4eb2c1"
-val cxfVersion = "3.3.8"
+val cxfVersion = "3.4.4"
 val coroutinesVersion = "1.3.9"
 val wireMockVersion = "2.28.1"
 val mockkVersion = "1.10.5"
@@ -31,13 +31,13 @@ val jaxwsToolsVersion = "2.3.1"
 val activationVersion = "1.1.1"
 val nvi18nVersion = "1.27"
 val kotestVersion = "4.2.5"
-val swaggerRequestValidatorVersion = "2.11.1"
+val swaggerRequestValidatorVersion = "2.11.3"
 val swaggerUiVersion = "3.37.2"
 // Temporary to fix high severity Snyk vulnerabilities:
 val nettyVersion = "4.1.63.Final"
 val commonsCodecVersion = "3.2.2"
 val httpClientVersion = "4.5.13"
-val jettyWebAppVersion = "9.4.39.v20210325"
+val jettyWebAppVersion = "9.4.43.v20210629"
 val jacksonDataformatYamlVersion = "2.10.4"
 val guavaVersion = "30.0-jre"
 
