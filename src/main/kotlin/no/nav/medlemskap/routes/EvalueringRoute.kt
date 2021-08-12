@@ -27,6 +27,8 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
+import no.nav.medlemskap.services.kafka.Producer
+import org.apache.kafka.clients.producer.ProducerRecord
 import java.time.LocalDateTime
 import java.util.*
 
@@ -79,11 +81,8 @@ fun Routing.evalueringRoute(
         }
 
         post("/kafka") {
-            apiCounter().increment()
-
             val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
             val azp = callerPrincipal.payload.getClaim("azp").asString()
-            secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
 
             val request = validerRequest(call.receive(), azp)
             val callId = call.callId ?: UUID.randomUUID().toString()
@@ -109,9 +108,12 @@ fun Routing.evalueringRoute(
                 resultat = resultat
             )
 
-            loggResponse(request.fnr, response)
+            val producer = Producer().createProducer((Configuration().kafkaConfig))
+            val futureresult = producer.send(createRecord("medlemskap-vurdert", "", objectMapper.writeValueAsString(response)))
+            futureresult.get()
+            producer.close()
 
-            call.respond(response)
+            call.respond("Kafka melding: OK")
         }
     }
 }
@@ -231,3 +233,7 @@ fun finnYtelse(ytelseFraRequest: Ytelse?, clientId: String?) =
 
 fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =
     Hovedregler(datagrunnlag).kjørHovedregler()
+
+private fun createRecord(topic: String, key: String = UUID.randomUUID().toString(), value: String): ProducerRecord<String, String> {
+    return ProducerRecord(topic, key, value)
+}
