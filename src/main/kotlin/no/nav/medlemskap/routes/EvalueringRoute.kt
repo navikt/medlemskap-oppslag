@@ -109,7 +109,7 @@ fun Routing.evalueringRoute(
             )
 
             val producer = Producer().createProducer((Configuration().kafkaConfig))
-            val futureresult = producer.send(createRecord("medlemskap-vurdert", "", objectMapper.writeValueAsString(response)))
+            val futureresult = producer.send(createRecord("medlemskap.medlemskap-vurdert", "", objectMapper.writeValueAsString(response)))
             futureresult.get()
             producer.close()
 
