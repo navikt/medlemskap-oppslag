@@ -49,8 +49,8 @@ fun Routing.evalueringRoute(
 
             val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
             val azp = callerPrincipal.payload.getClaim("azp").asString()
+            val endpoint = "/"
             secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
-
             val request = validerRequest(call.receive(), azp)
             val callId = call.callId ?: UUID.randomUUID().toString()
 
@@ -83,7 +83,7 @@ fun Routing.evalueringRoute(
         post("/kafka") {
             val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
             val azp = callerPrincipal.payload.getClaim("azp").asString()
-
+            val endpoint = "kafka"
             val request = validerRequest(call.receive(), azp)
             val callId = call.callId ?: UUID.randomUUID().toString()
 
@@ -112,7 +112,7 @@ fun Routing.evalueringRoute(
             val futureresult = producer.send(createRecord("medlemskap.medlemskap-vurdert", callId, objectMapper.writeValueAsString(response)))
             futureresult.get()
             producer.close()
-
+            loggResponse(request.fnr, response,endpoint)
             call.respond("Kafka melding: OK")
         }
     }
@@ -167,7 +167,7 @@ private fun lagResponse(datagrunnlag: Datagrunnlag, resultat: Resultat, versjonT
     )
 }
 
-private fun loggResponse(fnr: String, response: Response) {
+private fun loggResponse(fnr: String, response: Response,endpoint:String="/") {
     val resultat = response.resultat
     val årsaker = resultat.årsaker
     val årsakerSomRegelIdStr = årsaker.map { it.regelId.toString() }
@@ -200,7 +200,8 @@ private fun loggResponse(fnr: String, response: Response) {
         kv("skipsinfo", response.datagrunnlag.kombinasjonAvSkipsregisterFartsomradeOgSkipstype()),
         kv("response", objectMapper.writeValueAsString(response)),
         kv("gjeldendeOppholdsstatus", response.datagrunnlag.oppholdstillatelse?.gjeldendeOppholdsstatus.toString()),
-        kv("arbeidsadgangtype", response.datagrunnlag.oppholdstillatelse?.arbeidsadgang?.arbeidsadgangType)
+        kv("arbeidsadgangtype", response.datagrunnlag.oppholdstillatelse?.arbeidsadgang?.arbeidsadgangType),
+        kv("endpoint", endpoint)
     )
 
     if (årsaker.isNotEmpty()) {
