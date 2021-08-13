@@ -50,7 +50,7 @@ spec:
       rules:
         - application: medlemskap-oppslag
         - application: medlemskap-oppslag-funksjonelle-tester
-        - application: medlemskap-sykepenger-lytter
+        - application: medlemskap-sykepenger-listener
         - application: sparkel-medlemskap
           namespace: tbd
           cluster: dev-fss
