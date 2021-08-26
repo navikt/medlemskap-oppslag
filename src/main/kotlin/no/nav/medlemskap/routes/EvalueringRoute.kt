@@ -33,7 +33,7 @@ import java.time.LocalDateTime
 import java.util.*
 
 private val logger = KotlinLogging.logger { }
-smallprivate val secureLogger = KotlinLogging.logger("tjenestekall")
+private val secureLogger = KotlinLogging.logger("tjenestekall")
 private val TOPIC = "medlemskap.medlemskap-vurdert"
 
 fun Routing.evalueringRoute(
