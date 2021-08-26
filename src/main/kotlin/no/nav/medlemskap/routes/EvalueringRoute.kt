@@ -33,8 +33,8 @@ import java.time.LocalDateTime
 import java.util.*
 
 private val logger = KotlinLogging.logger { }
-
-private val secureLogger = KotlinLogging.logger("tjenestekall")
+smallprivate val secureLogger = KotlinLogging.logger("tjenestekall")
+private val TOPIC = "medlemskap.medlemskap-vurdert"
 
 fun Routing.evalueringRoute(
     services: Services,
@@ -109,10 +109,11 @@ fun Routing.evalueringRoute(
             )
 
             val producer = Producer().createProducer((Configuration().kafkaConfig))
-            val futureresult = producer.send(createRecord("medlemskap.medlemskap-vurdert", callId, objectMapper.writeValueAsString(response)))
+            val futureresult = producer.send(createRecord(TOPIC, callId, objectMapper.writeValueAsString(response)))
             futureresult.get()
             producer.close()
             loggResponse(request.fnr, response,endpoint)
+            logger.info("kafka request with id $callId processed ok and response published to $TOPIC ")
             call.respond("Kafka melding: OK")
         }
     }
