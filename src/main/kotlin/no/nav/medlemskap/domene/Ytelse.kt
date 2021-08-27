@@ -22,7 +22,7 @@ enum class Ytelse {
             "496b0ded-cfdb-4430-b7b6-b568504de005" to LOVME, // dev
             "2719da58-489e-4185-9ee6-74b7e93763d2" to LOVME_GCP, // dev
             "d24ecfa9-ffa7-48dc-a9f3-f8ae3138e603" to LOVME_FUNKSJONELLE_TESTER, // dev
-            "6c9dadf3-fc83-4f35-b9e5-b9f292bc7f52" to SYKEPENGER //sykepenger-lytter-dev
+            "ee472fd1-3621-4600-a6ac-69d3662e993f" to SYKEPENGER //sykepenger-lytter-dev
         )
 
         fun fromClientId(clientId: String?): Ytelse? = clientIdToYtelseMap[clientId]
