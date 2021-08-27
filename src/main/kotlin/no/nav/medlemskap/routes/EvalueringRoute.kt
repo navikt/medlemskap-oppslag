@@ -113,7 +113,9 @@ fun Routing.evalueringRoute(
             futureresult.get()
             producer.close()
             loggResponse(request.fnr, response,endpoint)
-            logger.info("kafka request with id $callId processed ok and response published to $TOPIC ")
+            logger.info("kafka request with id $callId processed ok and response published to $TOPIC "
+                ,kv("callId", callId)
+                )
             call.respond("Kafka melding: OK")
         }
     }
