@@ -3,6 +3,7 @@
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "datagrunnlag" : {
+    "fnr" : "15076500565",
     "periode" : {
       "fom" : "2019-01-01",
       "tom" : "2019-12-31"
