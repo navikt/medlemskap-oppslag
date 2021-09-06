@@ -65,3 +65,4 @@ data class Datagrunnlag(
         return objectMapper.writeValueAsString(this).trim()
     }
 }
+
