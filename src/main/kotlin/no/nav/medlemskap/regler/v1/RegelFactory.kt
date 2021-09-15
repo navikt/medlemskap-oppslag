@@ -52,7 +52,8 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_10 -> ErBrukerBosattINorgeRegel.fraDatagrunnlag(datagrunnlag).regel
 
             REGEL_11 -> HarBrukerNorskStatsborgerskapRegel.fraDatagrunnlag(datagrunnlag).regel
-            REGEL_11_2 -> HarBrukerEktefelleRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_11_2 -> HarBrukerEktefelleRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2).regel
+            REGEL_11_2_temp -> HarBrukerEktefelleRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_temp).regel
             REGEL_11_2_1 -> HarBrukerBarnRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_1).regel
             REGEL_11_2_2 -> HarBrukerBarnSomErFolkeregistrertRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_2).regel
             REGEL_11_2_2_1 -> HarBrukerJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_2_1).regel

@@ -53,14 +53,15 @@ Egenskap: Tredjelandsborger med medl unntak.
     Og skal regel-årsaker være "<Årsak>"
 
     Og skal resultat gi følgende delresultater:
-      | Regel                          |
-      | REGEL_OVERSTYRING              |
-      | REGEL_DOED                     |
-      | REGEL_FELLES_ARBEIDSFORHOLD    |
-      | REGEL_STATSBORGERSKAP          |
-      | REGEL_HOVEDSAKLIG_ARBEIDSTAKER |
-      | REGEL_OPPHOLDSTILLATELSE       |
-      | REGEL_MEDL                     |
+      | Regel                           |
+      | REGEL_OVERSTYRING               |
+      | REGEL_DOED                      |
+      | REGEL_FELLES_ARBEIDSFORHOLD     |
+      | REGEL_STATSBORGERSKAP           |
+      | REGEL_TREDJELANDSBORGER_FAMILIE |
+      | REGEL_HOVEDSAKLIG_ARBEIDSTAKER  |
+      | REGEL_OPPHOLDSTILLATELSE        |
+      | REGEL_MEDL                      |
 
     Eksempler:
       | Opphold til og med | Er medlem | Regel 19.3 | Medlemskap | Årsak  |
@@ -92,14 +93,15 @@ Egenskap: Tredjelandsborger med medl unntak.
     Så skal svaret være "<Medlemskap>"
 
     Og skal resultat gi følgende delresultater:
-      | Regel                          |
-      | REGEL_OVERSTYRING              |
-      | REGEL_DOED                     |
-      | REGEL_FELLES_ARBEIDSFORHOLD    |
-      | REGEL_STATSBORGERSKAP          |
-      | REGEL_HOVEDSAKLIG_ARBEIDSTAKER |
-      | REGEL_OPPHOLDSTILLATELSE       |
-      | REGEL_MEDL                     |
+      | Regel                           |
+      | REGEL_OVERSTYRING               |
+      | REGEL_DOED                      |
+      | REGEL_FELLES_ARBEIDSFORHOLD     |
+      | REGEL_STATSBORGERSKAP           |
+      | REGEL_TREDJELANDSBORGER_FAMILIE |
+      | REGEL_HOVEDSAKLIG_ARBEIDSTAKER  |
+      | REGEL_OPPHOLDSTILLATELSE        |
+      | REGEL_MEDL                      |
 
     Eksempler:
       | Opphold til og med | Medlemskap |
@@ -163,12 +165,13 @@ Egenskap: Tredjelandsborger med medl unntak.
     Så skal svaret være "Uavklart"
 
     Og skal resultat gi følgende delresultater:
-      | Regel                          |
-      | REGEL_OVERSTYRING              |
-      | REGEL_DOED                     |
-      | REGEL_FELLES_ARBEIDSFORHOLD    |
-      | REGEL_STATSBORGERSKAP          |
-      | REGEL_HOVEDSAKLIG_ARBEIDSTAKER |
-      | REGEL_OPPHOLDSTILLATELSE       |
-      | REGEL_MEDL                     |
-      | REGEL_ANDRE_BORGERE            |
+      | Regel                           |
+      | REGEL_OVERSTYRING               |
+      | REGEL_DOED                      |
+      | REGEL_FELLES_ARBEIDSFORHOLD     |
+      | REGEL_STATSBORGERSKAP           |
+      | REGEL_TREDJELANDSBORGER_FAMILIE |
+      | REGEL_HOVEDSAKLIG_ARBEIDSTAKER  |
+      | REGEL_OPPHOLDSTILLATELSE        |
+      | REGEL_MEDL                      |
+      | REGEL_ANDRE_BORGERE             |

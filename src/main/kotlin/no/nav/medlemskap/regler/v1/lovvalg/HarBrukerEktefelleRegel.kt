@@ -30,11 +30,12 @@ class HarBrukerEktefelleRegel(
 
     companion object {
 
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerEktefelleRegel {
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag, regelId: RegelId): HarBrukerEktefelleRegel {
             return HarBrukerEktefelleRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
-                dataOmEktefelle = datagrunnlag.dataOmEktefelle
+                dataOmEktefelle = datagrunnlag.dataOmEktefelle,
+                regelId = regelId
             )
         }
     }
