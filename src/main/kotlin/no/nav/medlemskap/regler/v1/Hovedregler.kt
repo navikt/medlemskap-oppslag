@@ -57,15 +57,14 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
     ): List<Resultat> {
         var statsborgerskapskategori = resultatStatsborgerskap.bestemStatsborgerskapskategori()
 
-        //TODO("Utkommentert kode feiler mange tester")
         if (resultatEOSFamilie?.svar == JA) {
-            // statsborgerskapskategori = Statsborgerskapskategori.TREDJELANDSBORGER_MED_EOS_FAMILIE
+            statsborgerskapskategori = Statsborgerskapskategori.TREDJELANDSBORGER_MED_EOS_FAMILIE
         }
 
         return when (statsborgerskapskategori) {
             Statsborgerskapskategori.TREDJELANDSBORGER -> kjørReglerForTredjelandsborgere()
             Statsborgerskapskategori.EØS_BORGER -> kjørReglerForEøsBorgere(reglerSomSkalOverstyres)
-            Statsborgerskapskategori.TREDJELANDSBORGER_MED_EOS_FAMILIE -> kjørReglerForEøsBorgere(reglerSomSkalOverstyres)
+            Statsborgerskapskategori.TREDJELANDSBORGER_MED_EOS_FAMILIE -> kjørReglerForTredjelandsborgere()
             Statsborgerskapskategori.NORSK_BORGER -> kjørReglerForNorskeBorgere(reglerSomSkalOverstyres)
         }
     }
