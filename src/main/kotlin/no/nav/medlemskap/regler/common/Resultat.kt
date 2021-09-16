@@ -53,7 +53,7 @@ data class Resultat(
     }
 
     fun erEktefelleEOS(): Boolean {
-        return finnRegelResultat(RegelId.REGEL_11_2_temp)?.svar == Svar.JA
+        return finnRegelResultat(RegelId.REGEL_28)?.svar == Svar.JA
     }
 
     fun erTredjelandsborger(): Boolean {
