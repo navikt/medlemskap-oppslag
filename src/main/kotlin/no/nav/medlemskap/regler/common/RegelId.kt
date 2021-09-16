@@ -62,7 +62,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_22("22", "Arbeidsforhold siste 12 måneder: finnes det utenlandsopphold i et av disse arbeidsforholdene?", "Det finnes ikke utenlandsopphold i et av arbeidsforholdene de siste 12 månedene", "Det finnes utenlandsopphold i et av arbeidsforholdene de siste 12 månedene"),
     REGEL_25("25", "Er perioden for utenlandsopphold innenfor siste 12 måneder?", "Utenlandsoppholdet er ikke innenfor siste 12 måneder", "utenlandsoppholdet er innenfor siste 12 måneder"),
     REGEL_27("27", "Når bruker har to statsborgerskap og det ene er norsk, har bruker nylig blitt norsk statsborger?", "Bruker har ikke blitt norsk statsborger", "Bruker har nylig blitt norsk statsborger"),
-    REGEL_28("11.2", "Har bruker ektefelle i PDL?", "Bruker har ikke ektefelle i PDL"),
+    REGEL_28("28", "Har bruker ektefelle i PDL?", "Bruker har ikke ektefelle i PDL"),
     REGEL_OPPLYSNINGER("OPPLYSNINGER", "Finnes det registrerte opplysninger på bruker?", "Alle de følgende ble NEI"),
     REGEL_A("OPPLYSNINGER-MEDL", "Finnes det registrerte opplysninger i MEDL?", "", "Det finnes registrert opplysninger i Medl"),
     REGEL_B("OPPLYSNINGER-GOSYS", "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?", "", "Det finnes registrerte opplysninger i GOSYS"),
