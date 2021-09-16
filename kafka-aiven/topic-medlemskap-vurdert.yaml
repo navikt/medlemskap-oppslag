@@ -24,3 +24,6 @@ spec:
     - team: medlemskap
       application: medlemskap-sykepenger-listener
       access: readwrite
+    - team: medlemskap
+      application: medlemskap-saga
+      access: readwrite
