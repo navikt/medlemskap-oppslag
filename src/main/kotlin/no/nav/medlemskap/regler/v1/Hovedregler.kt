@@ -18,6 +18,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
     private val reglerForRequestValidering = ReglerForRequestValidering.fraDatagrunnlag(datagrunnlag)
     private val reglerForOverstyring = ReglerForOverstyring.fraDatagrunnlag(datagrunnlag)
     private val reglerForStatsborgerskap = ReglerForStatsborgerskap.fraDatagrunnlag(datagrunnlag)
+    private val reglerForTredjelandsborgerFamlie = ReglerForTredjelandsborgerFamilie.fraDatagrunnlag(datagrunnlag)
 
     fun kjørHovedregler(): Resultat {
 
@@ -37,18 +38,33 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         val resultatStatsborgerskap = reglerForStatsborgerskap.kjørHovedflyt()
         resultater.add(resultatStatsborgerskap)
 
-        val resultaterForStatsborger = kjørReglerForStatsborgerskap(resultatStatsborgerskap, reglerSomSkalOverstyres)
+        var resultatEOSFamilie: Resultat? = null
+        if (!resultatStatsborgerskap.erNorskBorger() && !resultatStatsborgerskap.erEøsBorger()) {
+            resultatEOSFamilie = reglerForTredjelandsborgerFamlie.kjørHovedflyt()
+            resultater.add(resultatEOSFamilie)
+        }
+
+        val resultaterForStatsborger = kjørReglerForStatsborgerskap(resultatStatsborgerskap, resultatEOSFamilie, reglerSomSkalOverstyres)
         resultater.addAll(resultaterForStatsborger)
 
         return utledResultat(ytelse, resultater)
     }
 
-    private fun kjørReglerForStatsborgerskap(resultatStatsborgerskap: Resultat, reglerSomSkalOverstyres: Map<RegelId, Svar>): List<Resultat> {
-        val statsborgerskapskategori = resultatStatsborgerskap.bestemStatsborgerskapskategori()
+    private fun kjørReglerForStatsborgerskap(
+        resultatStatsborgerskap: Resultat,
+        resultatEOSFamilie: Resultat?,
+        reglerSomSkalOverstyres: Map<RegelId, Svar>
+    ): List<Resultat> {
+        var statsborgerskapskategori = resultatStatsborgerskap.bestemStatsborgerskapskategori()
+
+        if (resultatEOSFamilie?.svar == JA) {
+            statsborgerskapskategori = Statsborgerskapskategori.TREDJELANDSBORGER_MED_EOS_FAMILIE
+        }
 
         return when (statsborgerskapskategori) {
             Statsborgerskapskategori.TREDJELANDSBORGER -> kjørReglerForTredjelandsborgere()
             Statsborgerskapskategori.EØS_BORGER -> kjørReglerForEøsBorgere(reglerSomSkalOverstyres)
+            Statsborgerskapskategori.TREDJELANDSBORGER_MED_EOS_FAMILIE -> kjørReglerForTredjelandsborgere()
             Statsborgerskapskategori.NORSK_BORGER -> kjørReglerForNorskeBorgere(reglerSomSkalOverstyres)
         }
     }

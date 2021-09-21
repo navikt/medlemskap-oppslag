@@ -69,10 +69,9 @@ fun StatusPages.Configuration.exceptionHandler() {
             10623 -> call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
                 "Person er død og finnes ikke i UDI-tjenesten"
             }
-            else -> call.logErrorAndRespond(cause, HttpStatusCode.ServiceUnavailable){
+            else -> call.logErrorAndRespond(cause, HttpStatusCode.ServiceUnavailable) {
                 "Ukjent feil mot UDI tjenesten"
             }
-
         }
     }
 
