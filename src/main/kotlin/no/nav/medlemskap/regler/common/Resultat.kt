@@ -56,6 +56,13 @@ data class Resultat(
         return finnRegelResultat(RegelId.REGEL_28)?.svar == Svar.JA
     }
 
+    fun erFamilieEOS(): Boolean {
+        return when {
+            erEktefelleEOS() -> true
+            else -> false
+        }
+    }
+
     fun erTredjelandsborger(): Boolean {
         return !erEøsBorger()
     }
@@ -69,12 +76,6 @@ data class Resultat(
         }
     }
 
-    private fun erFamilieEOS(): Boolean {
-        return when {
-            erEktefelleEOS() -> true
-            else -> false
-        }
-    }
 
     fun tilJson(): String {
         return objectMapper.writeValueAsString(this)
