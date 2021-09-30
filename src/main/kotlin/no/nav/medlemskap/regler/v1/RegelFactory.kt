@@ -52,7 +52,7 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_10 -> ErBrukerBosattINorgeRegel.fraDatagrunnlag(datagrunnlag).regel
 
             REGEL_11 -> HarBrukerNorskStatsborgerskapRegel.fraDatagrunnlag(datagrunnlag).regel
-            REGEL_11_2 -> HarBrukerEktefelleRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_11_2 -> HarBrukerEktefelleRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2).regel
             REGEL_11_2_1 -> HarBrukerBarnRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_1).regel
             REGEL_11_2_2 -> HarBrukerBarnSomErFolkeregistrertRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_2).regel
             REGEL_11_2_2_1 -> HarBrukerJobbet100ProsentEllerMerRegel.fraDatagrunnlag(datagrunnlag, REGEL_11_2_2_1).regel
@@ -91,6 +91,8 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_21 -> ErBrukerArbeidstakerIKontrollperiodeForStønadsområde.fraDatagrunnlag(datagrunnlag).regel
             REGEL_25 -> ErPeriodenForUtenlandsoppholdetInnenforSiste12MånederRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_27 -> HarBrukerNyligBlittNorskStatsborgerRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_28 -> HarBrukerEktefelleRegel.fraDatagrunnlag(datagrunnlag, REGEL_28).regel
+            REGEL_29 -> ErBrukerEktefelleEOSRegel.fraDatagrunnlag(datagrunnlag).regel
             else -> throw java.lang.RuntimeException("Ukjent regel: $regelId")
         }
     }

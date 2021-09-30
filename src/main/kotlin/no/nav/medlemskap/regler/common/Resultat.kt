@@ -52,6 +52,17 @@ data class Resultat(
         return finnRegelResultat(RegelId.REGEL_11)?.svar == Svar.JA
     }
 
+    fun erEktefelleEOS(): Boolean {
+        return finnRegelResultat(RegelId.REGEL_28)?.svar == Svar.JA
+    }
+
+    fun erFamilieEOS(): Boolean {
+        return when {
+            erEktefelleEOS() -> true
+            else -> false
+        }
+    }
+
     fun erTredjelandsborger(): Boolean {
         return !erEøsBorger()
     }
@@ -60,9 +71,11 @@ data class Resultat(
         return when {
             erNorskBorger() -> Statsborgerskapskategori.NORSK_BORGER
             erEøsBorger() -> Statsborgerskapskategori.EØS_BORGER
+            // erFamilieEOS() -> Statsborgerskapskategori.EØS_BORGER
             else -> Statsborgerskapskategori.TREDJELANDSBORGER
         }
     }
+
 
     fun tilJson(): String {
         return objectMapper.writeValueAsString(this)

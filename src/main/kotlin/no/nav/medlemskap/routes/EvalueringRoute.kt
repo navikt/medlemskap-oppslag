@@ -197,6 +197,7 @@ private fun loggResponse(fnr: String, response: Response,endpoint:String="/") {
         kv("erTredjelandsborger", response.resultat.erTredjelandsborger()),
         kv("erEosBorger", response.resultat.erEøsBorger()),
         kv("erNorskBorger", response.resultat.erNorskBorger()),
+        kv("erTredjelandsborgerMedEØSFamilie", response.resultat.erFamilieEOS()),
         kv("AaRegUtenlandsoppholdLandkode", response.datagrunnlag.gyldigeAaRegUtenlandsopphold()),
         kv("AaRegUtenlandsoppsholdPeriodeFom", response.datagrunnlag.gyldigeAaRegUtenlandsoppholdPeriodeFom().toString()),
         kv("AaRegUtenlandsoppsholdPeriodeTom", response.datagrunnlag.gyldigeAaRegUtenlandsoppholdPeriodeTom().toString()),
