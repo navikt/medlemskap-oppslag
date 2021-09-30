@@ -447,6 +447,7 @@ class RegelSteps : No {
         }
 
         return Datagrunnlag(
+            fnr = medlemskapsparametre.fnr ?: "",
             periode = medlemskapsparametre.inputPeriode,
             førsteDagForYtelse = medlemskapsparametre.førsteDagForYtelse,
             brukerinput = Brukerinput(medlemskapsparametre.harHattArbeidUtenforNorge),
