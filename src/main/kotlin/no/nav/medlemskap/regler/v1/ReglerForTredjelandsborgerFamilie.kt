@@ -4,8 +4,7 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.RegelId
-import no.nav.medlemskap.regler.common.RegelId.REGEL_28
-import no.nav.medlemskap.regler.common.RegelId.REGEL_TREDJELANDSBORGER_FAMILIE
+import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.common.Regelflyt
 import no.nav.medlemskap.regler.common.Regler
 import no.nav.medlemskap.regler.common.Svar
@@ -19,13 +18,19 @@ class ReglerForTredjelandsborgerFamilie(
 
     override fun hentHovedflyt(): Regelflyt {
 
-        val erEktefelleEØSborgerFlyt = lagRegelflyt(
-            regel = hentRegel(REGEL_28),
+        val erEktefelleEOSborgerFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_29),
             hvisJa = Regelflyt.regelflytJa(ytelse, REGEL_TREDJELANDSBORGER_FAMILIE),
             hvisNei = Regelflyt.regelflytJa(ytelse, REGEL_TREDJELANDSBORGER_FAMILIE)
         )
 
-        return erEktefelleEØSborgerFlyt
+        val harBrukerEktefelleFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_28),
+            hvisJa = erEktefelleEOSborgerFlyt,
+            hvisNei = Regelflyt.regelflytJa(ytelse, REGEL_TREDJELANDSBORGER_FAMILIE)
+        )
+
+        return harBrukerEktefelleFlyt
     }
 
     companion object {
