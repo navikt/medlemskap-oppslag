@@ -151,6 +151,7 @@ private fun loggResponse(fnr: String, response: Response) {
         kv("årsaker", årsakerSomRegelIdStr),
         kv("aarsaksAnt", aarsaksAnt),
         kv("aarsaker", årsakerSomRegelIdStr.toString()),
+        kv("regleroverstyrt", response.resultat.erReglerOverstyrt()),
         kv("statsborgerskap", response.datagrunnlag.gyldigeStatsborgerskap().toString()),
         kv("statsborgerskapAnt", response.datagrunnlag.gyldigeStatsborgerskap().size),
         kv("erTredjelandsborger", response.resultat.erTredjelandsborger()),
