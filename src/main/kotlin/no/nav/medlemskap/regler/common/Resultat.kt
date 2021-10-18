@@ -44,6 +44,10 @@ data class Resultat(
         return årsak
     }
 
+    fun erReglerOverstyrt(): Svar {
+        return finnRegelResultat(RegelId.REGEL_0_5)?.svar!!
+    }
+
     fun erEøsBorger(): Boolean {
         return finnRegelResultat(RegelId.REGEL_2)?.svar == Svar.JA
     }
