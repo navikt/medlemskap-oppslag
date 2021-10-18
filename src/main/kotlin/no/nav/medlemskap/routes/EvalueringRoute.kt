@@ -10,7 +10,6 @@ import io.ktor.routing.*
 import kotlinx.coroutines.withContext
 import mu.KotlinLogging
 import net.logstash.logback.argument.StructuredArguments.kv
-import net.logstash.logback.marker.Markers.append
 import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.RequestContextService
 import no.nav.medlemskap.common.apiCounter
@@ -169,7 +168,6 @@ private fun loggResponse(fnr: String, response: Response) {
 
     if (årsaker.isNotEmpty()) {
         uavklartPåRegel(årsaker.first(), response.datagrunnlag.ytelse.name()).increment()
-        secureLogger.info(append("årsaker", årsaker), "Årsaker for bruker {}: {}", fnr, årsakerSomRegelIdStr)
     }
 }
 
