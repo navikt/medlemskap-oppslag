@@ -40,8 +40,8 @@ Egenskap: Regelflyt for regel 27, Når bruker har to statsborgerskap og det ene 
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
-    Så skal svaret være "<Svar>"
-    Og skal regel "27" gi svaret "<Regel 27>"
+    Så skal regel "27" gi svaret "<Regel 27>"
+    Og skal svaret være "<Svar>"
 
     Eksempler:
       | Fra og med | Til og med | Historisk | Svar     | Regel 27 |
