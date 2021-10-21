@@ -39,6 +39,7 @@ val httpClientVersion = "4.5.13"
 val jettyWebAppVersion = "9.4.43.v20210629"
 val jacksonDataformatYamlVersion = "2.10.4"
 val guavaVersion = "30.0-jre"
+val unleashVersion = "4.4.0"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
@@ -126,7 +127,7 @@ dependencies {
     implementation("com.sun.xml.ws:jaxws-tools:$jaxwsToolsVersion") {
         exclude(group = "com.sun.xml.ws", module = "policy")
     }
-
+    implementation("no.finn.unleash:unleash-client-java:$unleashVersion")
     implementation(tjenestespesifikasjon("udi-personstatus-v1"))
 
     implementation("io.github.resilience4j:resilience4j-retry:$resilience4jVersion")

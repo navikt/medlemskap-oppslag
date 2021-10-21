@@ -9,6 +9,8 @@ import no.nav.medlemskap.clients.saf.SafClient
 import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.clients.sts.stsClient
 import no.nav.medlemskap.clients.udi.UdiClient
+import no.nav.medlemskap.clients.unleash.UnleashService
+import no.nav.medlemskap.clients.unleash.FeatureToggle
 import no.nav.medlemskap.clients.wsClients.WsClients
 import no.nav.medlemskap.common.callIdGenerator
 import no.nav.medlemskap.common.cioHttpClient
@@ -45,7 +47,7 @@ class Services(val configuration: Configuration) {
 
     private val stsRetry = retryRegistry.retry("STS")
     private val udiRetry = retryRegistry.retry("UDI")
-
+    val unleashService: FeatureToggle
     init {
         val stsWsClient = stsClient(
             stsUrl = configuration.sts.endpointUrl,
@@ -71,6 +73,7 @@ class Services(val configuration: Configuration) {
             callIdGenerator = callIdGenerator::get
         )
 
+        unleashService = UnleashService(configuration)
         medlClient = restClients.medl2(configuration.register.medl2BaseUrl)
         medlService = MedlService(medlClient)
         pdlClient = restClients.pdl(configuration.register.pdlBaseUrl)

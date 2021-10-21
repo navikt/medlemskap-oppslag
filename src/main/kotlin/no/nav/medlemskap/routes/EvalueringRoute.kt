@@ -11,6 +11,7 @@ import kotlinx.coroutines.withContext
 import mu.KotlinLogging
 import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.clients.Services
+import no.nav.medlemskap.clients.unleash.Toggle
 import no.nav.medlemskap.common.RequestContextService
 import no.nav.medlemskap.common.apiCounter
 import no.nav.medlemskap.common.exceptions.KonsumentIkkeFunnet
@@ -43,14 +44,16 @@ fun Routing.evalueringRoute(
     authenticate("azureAuth") {
         post("/") {
             apiCounter().increment()
-
             val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
             val azp = callerPrincipal.payload.getClaim("azp").asString()
             secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
 
             val request = validerRequest(call.receive(), azp)
             val callId = call.callId ?: UUID.randomUUID().toString()
-
+            if (services.unleashService.IsEnabled(Toggle.SHADOW_PROSESSING)){
+                logger.info("Call forwarded to GCP for shaddow prosessing", kv("callId",callId))
+                //TODO: call gcp
+            }
             val datagrunnlag = withContext(
                 requestContextService.getCoroutineContext(
                     context = coroutineContext,

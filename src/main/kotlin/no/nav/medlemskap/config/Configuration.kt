@@ -20,8 +20,8 @@ private val defaultProperties = ConfigurationMap(
         "SECURITY_TOKEN_SERVICE_URL" to "",
         "SECURITY_TOKEN_SERVICE_REST_URL" to "",
         "SERVICE_USER_PASSWORD" to "",
-        "NAIS_APP_NAME" to "",
-        "NAIS_CLUSTER_NAME" to "",
+        "NAIS_APP_NAME" to "medlemskap-oppslag",
+        "NAIS_CLUSTER_NAME" to "LOCAL",
         "NAIS_APP_IMAGE" to "",
         "AZURE_CLIENT_ID" to "",
         "SAF_BASE_URL" to "",
@@ -54,6 +54,7 @@ private fun hentCommitSha(image: String): String {
 }
 
 data class Configuration(
+    val unleash: Unleash = Unleash(),
     val register: Register = Register(),
     val sts: Sts = Sts(),
     val azureAd: AzureAd = AzureAd(),
@@ -77,6 +78,12 @@ data class Configuration(
         val restUrl: String = "SECURITY_TOKEN_SERVICE_REST_URL".configProperty(),
         val username: String = "SERVICE_USER_USERNAME".configProperty(),
         val password: String = "SERVICE_USER_PASSWORD".configProperty()
+    )
+    data class Unleash(
+        val unleashUrl: String = "https://unleash.nais.io/api/",
+        val appName: String = "NAIS_APP_NAME".configProperty(),
+        val environment: String = "NAIS_CLUSTER_NAME".configProperty()
+
     )
 
     data class AzureAd(
