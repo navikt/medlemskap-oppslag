@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test
 @Ignore
 /**
  * Tests are just for verifying toggles and that they exists. should not be run as part of
- * builing process due to threadign issues in Junit
- * tests can be run locally by removinb @ignore and modify/add new tests
+ * building process due to threading issues in Junit
+ * tests can be run locally by removing @ignore and modify/add new tests
  * */
 class UnleashServiceTest {
     @Ignore
@@ -22,7 +22,7 @@ class UnleashServiceTest {
     @Test
     fun `Shadow prosessing skal svare ja ca 50% av tiden`() {
         val unleashService = UnleashService(Configuration())
-        //sov i 1 sekund for å håndtere initialisering av unleash (kjører i egen tråd)
+        //sleet for 1 second  to handle initialisation of unleash (runs in its own thread)
         Thread.sleep(1000)
         var list = mutableListOf<Boolean>()
         for (n in 1..10) {
