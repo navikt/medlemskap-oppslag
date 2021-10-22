@@ -28,7 +28,8 @@ private val defaultProperties = ConfigurationMap(
         "OPPGAVE_BASE_URL" to "",
         "PDL_BASE_URL" to "",
         "EREG_BASE_URL" to "",
-        "UDI_BASE_URL" to ""
+        "UDI_BASE_URL" to "",
+        "UNLEASH_BASE_URL" to "https://unleash.nais.io/api/"
     )
 )
 
@@ -80,7 +81,7 @@ data class Configuration(
         val password: String = "SERVICE_USER_PASSWORD".configProperty()
     )
     data class Unleash(
-        val unleashUrl: String = "https://unleash.nais.io/api/",
+        val unleashUrl: String = "UNLEASH_BASE_URL".configProperty(),
         val appName: String = "NAIS_APP_NAME".configProperty(),
         val environment: String = "NAIS_CLUSTER_NAME".configProperty()
 

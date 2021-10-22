@@ -79,3 +79,5 @@ spec:
       value: https://modapp-q0.adeo.no/ereg/api
     - name: UDI_BASE_URL
       value: https://pep-gw-q1.oera-q.local:9443/ekstern/udi/personstatus/medlemskapoppslag/v1
+    - name: UNLEASH_BASE_URL
+      value: https://unleash.nais.io/api/
