@@ -4,6 +4,7 @@ import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
 import io.ktor.features.*
+import io.ktor.http.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
@@ -51,8 +52,17 @@ fun Routing.evalueringRoute(
             val request = validerRequest(call.receive(), azp)
             val callId = call.callId ?: UUID.randomUUID().toString()
             if (services.unleashService.IsEnabled(Toggle.SHADOW_PROSESSING)){
-                logger.info("Call forwarded to GCP for shaddow prosessing", kv("callId",callId))
-                //TODO: call gcp
+                try{
+                    logger.info("Call forwarded to GCP for shaddow prosessing", kv("callId",callId))
+                    val token = call.request.headers.get(HttpHeaders.Authorization)
+                    callgcp(token,request)
+                    println(token)
+                    println(request)
+                    //TODO: call gcp
+                }
+                catch (t:Throwable){
+
+                }
             }
             val datagrunnlag = withContext(
                 requestContextService.getCoroutineContext(
@@ -81,6 +91,11 @@ fun Routing.evalueringRoute(
         }
     }
 }
+
+fun callgcp(token: String?, request: Request) {
+
+}
+
 
 fun Routing.evalueringTestRoute(
     services: Services,
