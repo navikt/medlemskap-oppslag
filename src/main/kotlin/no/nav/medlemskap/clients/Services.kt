@@ -77,10 +77,10 @@ class Services(val configuration: Configuration) {
             setOf(
                 // HttpResponseHealthCheck("AaReg", { aaRegClient.healthCheck() }),
                 HttpResponseHealthCheck("Medl", { medlClient.healthCheck() }, healthRetry),
-                HttpResponseHealthCheck("Oppg", { oppgaveClient.healthCheck() }, healthRetry),
+                // HttpResponseHealthCheck("Oppg", { oppgaveClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("PDL", { pdlClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("SAF", { safClient.healthCheck() }, healthRetry),
-                HttpResponseHealthCheck("STS", { stsRestClient.healthCheck() }, healthRetry),
+                // HttpResponseHealthCheck("STS", { stsRestClient.healthCheck() }, healthRetry),
             )
         )
 
