@@ -3,6 +3,7 @@ package no.nav.medlemskap.routes
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
+import io.ktor.client.request.*
 import io.ktor.features.*
 import io.ktor.http.*
 import io.ktor.request.*
@@ -13,12 +14,9 @@ import mu.KotlinLogging
 import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.clients.unleash.Toggle
-import no.nav.medlemskap.common.RequestContextService
-import no.nav.medlemskap.common.apiCounter
+import no.nav.medlemskap.common.*
 import no.nav.medlemskap.common.exceptions.KonsumentIkkeFunnet
 import no.nav.medlemskap.common.exceptions.UgyldigRequestException
-import no.nav.medlemskap.common.objectMapper
-import no.nav.medlemskap.common.uavklartPåRegel
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Fødselsnummer.Companion.gyldigFnr
@@ -55,13 +53,13 @@ fun Routing.evalueringRoute(
                 try{
                     logger.info("Call forwarded to GCP for shaddow prosessing", kv("callId",callId))
                     val token = call.request.headers.get(HttpHeaders.Authorization)
-                    callgcp(token,request)
+                    callgcp(token,request, callId)
                     println(token)
                     println(request)
                     //TODO: call gcp
                 }
                 catch (t:Throwable){
-
+                    logger.warn("")
                 }
             }
             val datagrunnlag = withContext(
@@ -92,8 +90,14 @@ fun Routing.evalueringRoute(
     }
 }
 
-fun callgcp(token: String?, request: Request) {
-
+suspend fun callgcp(token: String?, request: Request, callId: String) {
+    cioHttpClient.post<Response> {
+        url("https://medlemskap-oppslag.dev.intern.nav.no/")
+        header(HttpHeaders.Authorization, "Bearer $token")
+        header("Nav-Call-Id", callId)
+        contentType(ContentType.Application.Json)
+        body = request
+    }
 }
 
 
