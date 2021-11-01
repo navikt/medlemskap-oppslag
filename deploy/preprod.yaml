@@ -70,7 +70,7 @@ spec:
     - name: AAREG_BASE_URL
       value: https://modapp-q2.adeo.no/aareg-services/api
     - name: SAF_BASE_URL
-      value: http://saf.q1.svc.nais.local/graphql
+      value: http://saf-q1.teamdokumenthandtering/graphql
     - name: OPPGAVE_BASE_URL
       value: https://oppgave-q2.nais.preprod.local
     - name: PDL_BASE_URL
