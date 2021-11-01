@@ -2,7 +2,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val ktorVersion = "1.5.4"
+val ktorVersion = "1.6.4"
 val jacksonVersion = "2.10.5"
 val prometheusVersion = "0.9.0"
 val logbackVersion = "1.2.3"
