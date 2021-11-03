@@ -71,7 +71,7 @@ spec:
     - name: AAREG_BASE_URL
       value: https://api-gw-q1.oera.no/aareg-services/api
     - name: SAF_BASE_URL
-      value: https://saf.dev-fss-pub.nais.io/graphql
+      value: http://saf-q1.teamdokumenthandtering/graphql
     - name: OPPGAVE_BASE_URL
       value: https://api-gw-q1.oera.no/oppgave
     - name: PDL_BASE_URL
