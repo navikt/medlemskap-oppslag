@@ -58,7 +58,7 @@ spec:
       external:
         - host: api-gw-q1.oera.no
         - host: api-gw-q2.oera.no
-        - host: http://saf-q1.teamdokumenthandtering
+        - host: saf.dev-fss-pub.nais.io
         - host: login.microsoftonline.com
         - host: udi-proxy.dev-fss-pub.nais.io
   env:
@@ -71,7 +71,7 @@ spec:
     - name: AAREG_BASE_URL
       value: https://api-gw-q1.oera.no/aareg-services/api
     - name: SAF_BASE_URL
-      value: http://saf-q1.teamdokumenthandtering/graphql
+      value: https://saf.dev-fss-pub.nais.io/graphql
     - name: OPPGAVE_BASE_URL
       value: https://api-gw-q1.oera.no/oppgave
     - name: PDL_BASE_URL
