@@ -16,6 +16,7 @@ import no.nav.medlemskap.regler.common.Svar
 import java.time.LocalDate
 
 data class Datagrunnlag(
+    val fnr: String,
     val periode: InputPeriode,
     val førsteDagForYtelse: LocalDate?,
     val brukerinput: Brukerinput,

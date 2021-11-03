@@ -8,6 +8,7 @@ Egenskap: Man er medlem i Folketrygden hvis man er EØS-borger og bor og jobber 
     Gitt følgende datagrunnlag json
 """
 {
+  "fnr": "",
   "periode": {
     "fom": "2020-01-30",
     "tom": "2020-02-28"

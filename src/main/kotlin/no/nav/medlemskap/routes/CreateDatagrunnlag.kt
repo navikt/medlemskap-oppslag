@@ -82,6 +82,7 @@ suspend fun defaultCreateDatagrunnlag(
                         "datagrunnlag",
                         objectMapper.writeValueAsString(
                             Datagrunnlag(
+                                fnr = request.fnr,
                                 periode = request.periode,
                                 førsteDagForYtelse = request.førsteDagForYtelse,
                                 brukerinput = request.brukerinput,
@@ -110,6 +111,7 @@ suspend fun defaultCreateDatagrunnlag(
     ytelseCounter(ytelse.name()).increment()
 
     Datagrunnlag(
+        fnr = request.fnr,
         periode = request.periode,
         førsteDagForYtelse = request.førsteDagForYtelse,
         brukerinput = request.brukerinput,

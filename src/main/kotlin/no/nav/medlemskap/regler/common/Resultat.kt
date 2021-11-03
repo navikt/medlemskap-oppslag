@@ -44,12 +44,24 @@ data class Resultat(
         return årsak
     }
 
+    fun erReglerOverstyrt(): Svar {
+        return finnRegelResultat(RegelId.REGEL_0_5)?.svar!!
+    }
+
     fun erEøsBorger(): Boolean {
         return finnRegelResultat(RegelId.REGEL_2)?.svar == Svar.JA
     }
 
     fun erNorskBorger(): Boolean {
         return finnRegelResultat(RegelId.REGEL_11)?.svar == Svar.JA
+    }
+
+    fun erEktefelleEOS(): Boolean {
+        return finnRegelResultat(RegelId.REGEL_28)?.svar == Svar.JA && finnRegelResultat(RegelId.REGEL_29)?.svar == Svar.JA
+    }
+
+    fun erFamilieEOS(): Boolean {
+        return erEktefelleEOS()
     }
 
     fun erTredjelandsborger(): Boolean {
@@ -60,6 +72,7 @@ data class Resultat(
         return when {
             erNorskBorger() -> Statsborgerskapskategori.NORSK_BORGER
             erEøsBorger() -> Statsborgerskapskategori.EØS_BORGER
+            erFamilieEOS() -> Statsborgerskapskategori.TREDJELANDSBORGER_MED_EOS_FAMILIE
             else -> Statsborgerskapskategori.TREDJELANDSBORGER
         }
     }

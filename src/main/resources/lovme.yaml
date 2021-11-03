@@ -199,6 +199,8 @@ components:
           type: string
     Datagrunnlag:
       properties:
+        fnr:
+          type: string
         periode:
           $ref: "#/components/schemas/InputPeriode"
         førsteDagForYtelse:
