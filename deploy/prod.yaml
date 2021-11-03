@@ -59,7 +59,7 @@ spec:
     - name: SECURITY_TOKEN_SERVICE_URL
       value: https://api-gw.oera.no/sts/SecurityTokenServiceProvider/
     - name: SECURITY_TOKEN_SERVICE_REST_URL
-      value: https://api-gw.oera.no/legacy-sts
+      value: https://api-gw.oera.no/security-token-service
     - name: MEDL2_BASE_URL
       value: https://api-gw.oera.no/medl2
     - name: AAREG_BASE_URL

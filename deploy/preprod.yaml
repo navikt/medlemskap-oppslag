@@ -58,7 +58,7 @@ spec:
       external:
         - host: api-gw-q1.oera.no
         - host: api-gw-q2.oera.no
-        - host: saf.dev-fss-pub.nais.io
+        - host: http://saf-q1.teamdokumenthandtering
         - host: login.microsoftonline.com
         - host: udi-proxy.dev-fss-pub.nais.io
   env:
