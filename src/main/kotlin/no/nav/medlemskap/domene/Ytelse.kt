@@ -23,7 +23,8 @@ enum class Ytelse {
             "2719da58-489e-4185-9ee6-74b7e93763d2" to LOVME_GCP, // dev
             "d24ecfa9-ffa7-48dc-a9f3-f8ae3138e603" to LOVME_FUNKSJONELLE_TESTER, // dev
             "ee472fd1-3621-4600-a6ac-69d3662e993f" to SYKEPENGER, //sykepenger-lytter-dev
-            "23600ac9-019c-445d-87a4-2df4996e6f63" to LOVME_GCP //Prod verifisering
+            "60c58925-ad42-45b8-8ce7-0038abfb5dff" to SYKEPENGER,
+            "23600ac9-019c-445d-87a4-2df4996e6f63" to LOVME_GCP // Prod verifisering
         )
 
         fun fromClientId(clientId: String?): Ytelse? = clientIdToYtelseMap[clientId]
