@@ -4,7 +4,6 @@ import io.github.resilience4j.retry.Retry
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
@@ -61,6 +60,8 @@ class AaRegClient(
         )
     }
 
+    // Deaktivert pga. closed channel exceptions
+    /*
     suspend fun healthCheck(): HttpResponse {
         return httpClient.get {
             url("$baseUrl/ping")
@@ -69,6 +70,6 @@ class AaRegClient(
             header("x-nav-apiKey", aaRegApiKey)
         }
     }
-
+*/
     private fun LocalDate.tilIsoFormat() = this.format(DateTimeFormatter.ISO_LOCAL_DATE)
 }

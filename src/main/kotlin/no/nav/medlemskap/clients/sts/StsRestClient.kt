@@ -3,7 +3,6 @@ package no.nav.medlemskap.clients.sts
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
 import no.nav.medlemskap.clients.Token
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
@@ -37,6 +36,8 @@ class StsRestClient(
         return cachedOidcToken!!.token
     }
 
+    // Skrur av pga. 401 meldinger i kibana
+    /*
     suspend fun healthCheck(): HttpResponse {
         return httpClient.options {
             url("$baseUrl/ping")
@@ -44,6 +45,7 @@ class StsRestClient(
             header("x-nav-apiKey", apiKey)
         }
     }
+*/
 
     suspend fun samlToken(): String {
         if (cachedSamlToken.shouldBeRenewed()) {

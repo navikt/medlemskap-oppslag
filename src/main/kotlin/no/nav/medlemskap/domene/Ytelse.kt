@@ -6,7 +6,6 @@ enum class Ytelse {
     ENSLIG_FORSORGER,
     LOVME,
     LOVME_GCP,
-    SYKEPENGE_SOKNAD,
     LOVME_FUNKSJONELLE_TESTER;
 
     companion object {

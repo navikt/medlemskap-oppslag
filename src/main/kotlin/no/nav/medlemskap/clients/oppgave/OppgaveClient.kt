@@ -3,7 +3,6 @@ package no.nav.medlemskap.clients.oppgave
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
@@ -41,6 +40,8 @@ class OppgaveClient(
         }
     }
 
+    // skrur av pga. 404 meldinger i kibana
+    /*
     suspend fun healthCheck(): HttpResponse {
         val token = stsClient.oidcToken()
         return httpClient.get {
@@ -49,4 +50,5 @@ class OppgaveClient(
             header("x-nav-apiKey", oppgaveApiKey)
         }
     }
+     */
 }
