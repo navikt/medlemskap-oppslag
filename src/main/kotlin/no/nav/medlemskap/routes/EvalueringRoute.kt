@@ -205,7 +205,8 @@ private fun loggResponse(fnr: String, response: Response,endpoint:String="/") {
         kv("response", objectMapper.writeValueAsString(response)),
         kv("gjeldendeOppholdsstatus", response.datagrunnlag.oppholdstillatelse?.gjeldendeOppholdsstatus.toString()),
         kv("arbeidsadgangtype", response.datagrunnlag.oppholdstillatelse?.arbeidsadgang?.arbeidsadgangType),
-        kv("endpoint", endpoint)
+        kv("endpoint", endpoint),
+        kv("Enviroment", "GCP")
     )
 
     if (årsaker.isNotEmpty()) {
