@@ -8,7 +8,7 @@ fun main() {
     val applicationState = ApplicationState()
 
     val prometheusMeterRegistry = configurePrometheusMeterRegistry()
-    //configureSensuInfluxMeterRegistry()
+    // configureSensuInfluxMeterRegistry()
 
     val applicationServer = createHttpServer(applicationState = applicationState, prometheusRegistry = prometheusMeterRegistry)
 
