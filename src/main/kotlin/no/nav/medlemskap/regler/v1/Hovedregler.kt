@@ -55,7 +55,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         resultatEOSFamilie: Resultat?,
         reglerSomSkalOverstyres: Map<RegelId, Svar>
     ): List<Resultat> {
-        val statsborgerskapskategori = resultatStatsborgerskap.bestemStatsborgerskapskategori()
+        val statsborgerskapskategori = velgStatsborgerskapKategori(resultatStatsborgerskap, resultatEOSFamilie)
 
         return when (statsborgerskapskategori) {
             Statsborgerskapskategori.TREDJELANDSBORGER -> kjørReglerForTredjelandsborgere()
@@ -63,6 +63,12 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
             Statsborgerskapskategori.TREDJELANDSBORGER_MED_EOS_FAMILIE -> kjørReglerForEøsBorgere(reglerSomSkalOverstyres, resultatEOSFamilie)
             Statsborgerskapskategori.NORSK_BORGER -> kjørReglerForNorskeBorgere(reglerSomSkalOverstyres)
         }
+    }
+
+    private fun velgStatsborgerskapKategori(resultatStatsborgerskap: Resultat, resultatEOSFamilie: Resultat?): Statsborgerskapskategori {
+        if (resultatEOSFamilie?.svar == JA)
+            return resultatEOSFamilie.bestemStatsborgerskapskategori()
+        return resultatStatsborgerskap.bestemStatsborgerskapskategori()
     }
 
     private fun kjørReglerForTredjelandsborgere(): List<Resultat> {

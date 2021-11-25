@@ -25,10 +25,6 @@ Egenskap: Regelflyt for reglene 29 for bruker som har EØS ektefelle
       | Antall ansatte | Gyldighetsperiode gyldig fra | Gyldighetsperiode gyldig til |
       | 10             | 10.10.1975                   | 01.08.2021                   |
 
-    Og følgende statsborgerskap i personhistorikken
-      | Landkode | Fra og med dato | Til og med dato |
-      | JPN      | 10.10.1975      |                 |
-
     Og følgende oppholdstillatelse
       | Gyldig fra og med | Gyldig til og med | Klasse                          | Har tillatelse | Type      | Oppholdstillatelse på samme vilkår flagg |
       | 01.01.2020        |                   | OppholdstillatelsePaSammeVilkar | Ja             | PERMANENT | Nei                                      |
@@ -39,7 +35,11 @@ Egenskap: Regelflyt for reglene 29 for bruker som har EØS ektefelle
 
   Scenario: Regelflyt regel 29 er ektefelle EØS borger
 
-    Gitt følgende sivilstand i personhistorikk fra PDL
+    Gitt følgende statsborgerskap i personhistorikken
+      | Landkode | Fra og med dato | Til og med dato |
+      | JPN      | 10.10.1975      |                 |
+
+    Og følgende sivilstand i personhistorikk fra PDL
       | Sivilstandstype | Gyldig fra og med dato | Relatert ved sivilstand |
       | GIFT            | 29.06.2015             | 10108000398             |
 
@@ -53,4 +53,4 @@ Egenskap: Regelflyt for reglene 29 for bruker som har EØS ektefelle
 
     Så skal svaret være "Ja"
     Og skal regel "29" gi svaret "Ja"
-
+    Og skal regel "18" ikke finnes i resultatet
