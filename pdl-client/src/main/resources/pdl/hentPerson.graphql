@@ -5,6 +5,11 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
             relatertPersonsRolle
             minRolleForPerson
         },
+        navn{
+            fornavn
+            mellomnavn
+            etternavn
+        },
         statsborgerskap(historikk: $statsborgerskapHistorikk) {
             land,
             gyldigFraOgMed,
@@ -38,9 +43,9 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
                 historisk
             }
         },
-    	doedsfall{
-    			doedsdato
-  		},
+        doedsfall{
+            doedsdato
+        },
         kontaktadresse(historikk: true) {
             gyldigFraOgMed
             gyldigTilOgMed
