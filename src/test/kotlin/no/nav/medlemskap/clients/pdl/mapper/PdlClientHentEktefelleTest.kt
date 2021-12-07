@@ -81,6 +81,13 @@ class PdlClientHentEktefelleTest {
                     "minRolleForPerson": "FAR"
                   }
                 ],
+                "navn": [
+                            {
+                                "fornavn": "BLÅ",
+                                "mellomnavn": null,
+                                "etternavn": "MASKIN"
+                            }
+                ],
                 "statsborgerskap": [
                   {
                     "land": "NOR",

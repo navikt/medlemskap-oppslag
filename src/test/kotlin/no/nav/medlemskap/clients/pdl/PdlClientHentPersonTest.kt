@@ -127,6 +127,13 @@ class PdlClientHentPersonTest {
             "data": {
                 "hentPerson": {
                     "forelderBarnRelasjon":[],
+                    "navn": [
+                            {
+                                "fornavn": "BLÅ",
+                                "mellomnavn": null,
+                                "etternavn": "MASKIN"
+                            }
+                     ],
                     "statsborgerskap": [
                             {
                                 "land":"NOR",
