@@ -66,9 +66,10 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
     }
 
     private fun velgStatsborgerskapKategori(resultatStatsborgerskap: Resultat, resultatEOSFamilie: Resultat?): Statsborgerskapskategori {
-        if (resultatEOSFamilie?.svar == JA)
-            return resultatEOSFamilie.bestemStatsborgerskapskategori()
-        return resultatStatsborgerskap.bestemStatsborgerskapskategori()
+        return when (resultatEOSFamilie?.svar) {
+            JA -> resultatEOSFamilie.bestemStatsborgerskapskategori()
+            else -> resultatStatsborgerskap.bestemStatsborgerskapskategori()
+        }
     }
 
     private fun kjørReglerForTredjelandsborgere(): List<Resultat> {
