@@ -24,15 +24,15 @@ spec:
   resources:
     limits:
       cpu: 2000m
-      memory: 512Mi
+      memory: 1024Mi
     requests:
       cpu: 50m
       memory: 128Mi
   ingresses:
     - https://medlemskap-oppslag.intern.nav.no
   replicas:
-    min: 2
-    max: 3
+    min: 3
+    max: 4
     cpuThresholdPercentage: 90
   prometheus:
     enabled: true
