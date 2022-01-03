@@ -671,6 +671,8 @@ components:
           type: string
         versjonTjeneste:
           type: string
+        kanal:
+          type: string
     Resultat:
       required:
         - regelId

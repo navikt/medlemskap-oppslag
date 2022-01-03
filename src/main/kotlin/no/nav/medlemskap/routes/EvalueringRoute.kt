@@ -70,6 +70,7 @@ fun Routing.evalueringRoute(
 
             val response = lagResponse(
                 versjonTjeneste = configuration.commitSha,
+                endpoint = endpoint,
                 datagrunnlag = datagrunnlag,
                 resultat = resultat
             )
@@ -103,6 +104,7 @@ fun Routing.evalueringRoute(
 
             val response = lagResponse(
                 versjonTjeneste = configuration.commitSha,
+                endpoint = endpoint,
                 datagrunnlag = datagrunnlag,
                 resultat = resultat
             )
@@ -111,10 +113,10 @@ fun Routing.evalueringRoute(
             val futureresult = producer.send(createRecord(TOPIC, callId, objectMapper.writeValueAsString(response)))
             futureresult.get()
             producer.close()
-            loggResponse(request.fnr, response,endpoint)
-            logger.info("kafka request with id $callId processed ok and response published to $TOPIC "
-                ,kv("callId", callId)
-                )
+            loggResponse(request.fnr, response, endpoint)
+            logger.info(
+                "kafka request with id $callId processed ok and response published to $TOPIC ", kv("callId", callId)
+            )
             call.respond("Kafka melding: OK")
         }
     }
@@ -131,6 +133,7 @@ fun Routing.evalueringTestRoute(
         apiCounter().increment()
         val request = validerRequest(call.receive(), Ytelse.toMedlemskapClientId())
         val callId = call.callId ?: UUID.randomUUID().toString()
+        val endpoint = "/"
 
         val datagrunnlag = withContext(
             requestContextService.getCoroutineContext(
@@ -149,6 +152,7 @@ fun Routing.evalueringTestRoute(
 
         val response = lagResponse(
             versjonTjeneste = configuration.commitSha,
+            endpoint = endpoint,
             datagrunnlag = datagrunnlag,
             resultat = resultat
         )
@@ -159,17 +163,18 @@ fun Routing.evalueringTestRoute(
     }
 }
 
-private fun lagResponse(datagrunnlag: Datagrunnlag, resultat: Resultat, versjonTjeneste: String): Response {
+private fun lagResponse(datagrunnlag: Datagrunnlag, resultat: Resultat, versjonTjeneste: String, endpoint: String): Response {
     return Response(
         tidspunkt = LocalDateTime.now(),
         versjonRegler = "v1",
         versjonTjeneste = versjonTjeneste,
+        kanal = endpoint,
         datagrunnlag = datagrunnlag,
         resultat = resultat
     )
 }
 
-private fun loggResponse(fnr: String, response: Response,endpoint:String="/") {
+private fun loggResponse(fnr: String, response: Response, endpoint: String = "/") {
     val resultat = response.resultat
     val årsaker = resultat.årsaker
     val årsakerSomRegelIdStr = årsaker.map { it.regelId.toString() }
