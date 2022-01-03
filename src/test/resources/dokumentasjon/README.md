@@ -7,7 +7,7 @@ Dette er en tjeneste som finner ut lovvalg og medlemskap.
 * Periode (fra og med dato, til og med dato)
 * Brukerinput
     * arbeid utenfor Norge (Ja/Nei)
-* Ytelse utledes fra request.
+* Ytelse utledes fra request
 
 ## Datagrunnlag
 * Personhistorikk hentes fra PDL
