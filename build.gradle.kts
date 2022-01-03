@@ -62,8 +62,8 @@ allprojects {
     repositories {
         jcenter()
         mavenCentral()
-        maven("https://dl.bintray.com/kotlin/ktor")
-        maven("https://kotlin.bintray.com/kotlinx")
+        //maven("https://dl.bintray.com/kotlin/ktor")
+        //maven("https://kotlin.bintray.com/kotlinx")
         maven("https://jitpack.io")
         maven {
             url = uri("https://maven.pkg.github.com/navikt/tjenestespesifikasjoner")
