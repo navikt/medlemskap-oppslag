@@ -1,7 +1,10 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regelflyt for reglene 29 for bruker som har EØS ektefelle
+# language: no
+# encoding: UTF-8
+
+Egenskap: Statsborgerskapskategori
 
   Bakgrunn:
 
@@ -33,11 +36,11 @@ Egenskap: Regelflyt for reglene 29 for bruker som har EØS ektefelle
       | Gyldig fra og med | Gyldig til og med | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
       | 01.01.2020        |                   | Ja            | GENERELL          | KUN_ARBEID_HELTID    |
 
-  Scenario: Regelflyt regel 29 er ektefelle EØS borger
+  Scenariomal: Statsborgerskapskategori
 
     Gitt følgende statsborgerskap i personhistorikken
-      | Landkode | Fra og med dato | Til og med dato |
-      | JPN      | 10.10.1975      |                 |
+      | Landkode          | Fra og med dato | Til og med dato |
+      | <Statsborgerskap> | 10.10.1975      |                 |
 
     Og følgende sivilstand i personhistorikk fra PDL
       | Sivilstandstype | Gyldig fra og med dato | Relatert ved sivilstand |
@@ -51,6 +54,44 @@ Egenskap: Regelflyt for reglene 29 for bruker som har EØS ektefelle
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 27.01.2021      | 12.02.2021      | Nei                           |
 
-    Så skal svaret være "Ja"
-    Og skal regel "29" gi svaret "Ja"
-    Og skal regel "18" ikke finnes i resultatet
+    Så skal statsborgerskapskategorien være "<Statsborgerskapskategori>"
+
+    Eksempler:
+      | Statsborgerskap | Statsborgerskapskategori          |
+      | JPN             | TREDJELANDSBORGER_MED_EOS_FAMILIE |
+      | DEU             | EØS_BORGER                        |
+      | NOR             | NORSK_BORGER                      |
+
+
+  Scenario: Statsborgerskapskategori tredjelandsborger
+
+    Gitt følgende statsborgerskap i personhistorikken
+      | Landkode | Fra og med dato | Til og med dato |
+      | JPN      | 10.10.1975      |                 |
+
+    Når medlemskap beregnes med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 27.01.2021      | 12.02.2021      | Nei                           |
+
+    Så skal statsborgerskapskategorien være "TREDJELANDSBORGER"
+
+
+  Scenario: Statsborgerskapskategori tredjelandsborger med tredjelandsborger ektefelle
+
+    Gitt følgende statsborgerskap i personhistorikken
+      | Landkode | Fra og med dato | Til og med dato |
+      | JPN      | 10.10.1975      |                 |
+
+    Og følgende sivilstand i personhistorikk fra PDL
+      | Sivilstandstype | Gyldig fra og med dato | Relatert ved sivilstand |
+      | GIFT            | 29.06.2015             | 10108000398             |
+
+    Og følgende personhistorikk for ektefelle fra PDL
+      | Ident       | Bosted | Fra og med dato | Statsborgerskap |
+      | 10108000398 | NOR    | 29.06.2015      | JPN             |
+
+    Når medlemskap beregnes med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 27.01.2021      | 12.02.2021      | Nei                           |
+
+    Så skal statsborgerskapskategorien være "TREDJELANDSBORGER"

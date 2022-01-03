@@ -419,6 +419,10 @@ class RegelSteps : No {
         Så("skal JSON datagrunnlag genereres i filen {string}") { filnavn: String ->
             lagreJsonDatagrunnlag(filnavn)
         }
+
+        Så("skal statsborgerskapskategorien være {string}") { statsborgerskapskategori: String ->
+            assertEquals(statsborgerskapskategori, resultat?.bestemStatsborgerskapskategori()?.name)
+        }
     }
 
     private fun lagreJsonResultat(filnavn: String) {
