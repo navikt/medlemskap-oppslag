@@ -109,14 +109,14 @@ fun Routing.evalueringRoute(
                 resultat = resultat
             )
 
-            val producer = Producer().createProducer((Configuration().kafkaConfig))
-            val futureresult = producer.send(createRecord(TOPIC, callId, objectMapper.writeValueAsString(response)))
-            futureresult.get()
-            producer.close()
+            //val producer = Producer().createProducer((Configuration().kafkaConfig))
+            //val futureresult = producer.send(createRecord(TOPIC, callId, objectMapper.writeValueAsString(response)))
+            //futureresult.get()
+            //producer.close()
             loggResponse(request.fnr, response, endpoint)
-            logger.info(
-                "kafka request with id $callId processed ok and response published to $TOPIC ", kv("callId", callId)
-            )
+            //logger.info(
+            //    "kafka request with id $callId processed ok and response published to $TOPIC ", kv("callId", callId)
+            //)
             call.respond("Kafka melding: OK")
         }
     }
