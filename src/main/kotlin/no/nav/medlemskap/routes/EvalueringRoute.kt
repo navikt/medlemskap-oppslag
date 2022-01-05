@@ -26,8 +26,8 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
-import no.nav.medlemskap.services.kafka.Producer
 import org.apache.kafka.clients.producer.ProducerRecord
+import java.lang.management.ManagementFactory
 import java.time.LocalDateTime
 import java.util.*
 
@@ -93,6 +93,7 @@ fun Routing.evalueringRoute(
                     ytelse = finnYtelse(request.ytelse, azp)
                 )
             ) {
+
                 createDatagrunnlag.invoke(
                     request,
                     callId,
@@ -109,15 +110,20 @@ fun Routing.evalueringRoute(
                 resultat = resultat
             )
 
-            //val producer = Producer().createProducer((Configuration().kafkaConfig))
-            //val futureresult = producer.send(createRecord(TOPIC, callId, objectMapper.writeValueAsString(response)))
-            //futureresult.get()
-            //producer.close()
+            // val producer = Producer().createProducer((Configuration().kafkaConfig))
+            // val futureresult = producer.send(createRecord(TOPIC, callId, objectMapper.writeValueAsString(response)))
+            // futureresult.get()
+            // producer.close()
             loggResponse(request.fnr, response, endpoint)
-            //logger.info(
+            // logger.info(
             //    "kafka request with id $callId processed ok and response published to $TOPIC ", kv("callId", callId)
-            //)
-            call.respond("Kafka melding: OK")
+            // )
+            val numberofThreads = ManagementFactory.getThreadMXBean().threadCount
+            val  runtime = Runtime.getRuntime();
+            val  usedMemInMB=(runtime.totalMemory() - runtime.freeMemory()) / 1048576L;
+            val  maxHeapSizeInMB=runtime.maxMemory() / 1048576L;
+            val  availHeapSizeInMB = maxHeapSizeInMB - usedMemInMB;
+            call.respond("Kafka melding: OK, threads : $numberofThreads ,usedMemInMB: $usedMemInMB, maxHeapSizeInMB: $maxHeapSizeInMB, availHeapSizeInMB: $availHeapSizeInMB ")
         }
     }
 }
