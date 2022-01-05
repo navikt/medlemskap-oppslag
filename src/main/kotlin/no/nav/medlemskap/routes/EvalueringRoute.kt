@@ -7,6 +7,7 @@ import io.ktor.features.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import mu.KotlinLogging
 import net.logstash.logback.argument.StructuredArguments.kv
@@ -88,12 +89,7 @@ fun Routing.evalueringRoute(
             val request = validerRequest(call.receive(), azp)
             val callId = call.callId ?: UUID.randomUUID().toString()
 
-            val datagrunnlag = withContext(
-                requestContextService.getCoroutineContext(
-                    context = coroutineContext,
-                    ytelse = finnYtelse(request.ytelse, azp)
-                )
-            ) {
+            val datagrunnlag = coroutineScope {
 
                 createDatagrunnlag.invoke(
                     request,
