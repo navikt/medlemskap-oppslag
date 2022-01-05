@@ -7,7 +7,9 @@ import io.ktor.features.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import kotlinx.coroutines.cancelAndJoin
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mu.KotlinLogging
 import net.logstash.logback.argument.StructuredArguments.kv
@@ -89,14 +91,16 @@ fun Routing.evalueringRoute(
             val endpoint = "kafka"
             val request = validerRequest(call.receive(), azp)
             val callId = call.callId ?: UUID.randomUUID().toString()
-
-            val datagrunnlag =
+            var datagrunnlag: Datagrunnlag? = null
+            val job = launch { datagrunnlag=
                 createDatagrunnlag.invoke(
                     request,
                     callId,
                     services,
                     azp
-                )
+                ) }
+            job.cancelAndJoin()
+
            /*
             val resultat = evaluerData(datagrunnlag)
 
