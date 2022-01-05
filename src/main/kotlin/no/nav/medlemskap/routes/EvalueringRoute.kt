@@ -54,6 +54,7 @@ fun Routing.evalueringRoute(
             val request = validerRequest(call.receive(), azp)
             val callId = call.callId ?: UUID.randomUUID().toString()
 
+
             val datagrunnlag = withContext(
                 requestContextService.getCoroutineContext(
                     context = coroutineContext,
@@ -88,7 +89,7 @@ fun Routing.evalueringRoute(
             val endpoint = "kafka"
             val request = validerRequest(call.receive(), azp)
             val callId = call.callId ?: UUID.randomUUID().toString()
-
+            /*
             val datagrunnlag =
                 createDatagrunnlag.invoke(
                     request,
@@ -105,11 +106,14 @@ fun Routing.evalueringRoute(
                 resultat = resultat
             )
 
+             */
+
             // val producer = Producer().createProducer((Configuration().kafkaConfig))
             // val futureresult = producer.send(createRecord(TOPIC, callId, objectMapper.writeValueAsString(response)))
             // futureresult.get()
             // producer.close()
-            loggResponse(request.fnr, response, endpoint)
+
+            //loggResponse(request.fnr, response, endpoint)
             // logger.info(
             //    "kafka request with id $callId processed ok and response published to $TOPIC ", kv("callId", callId)
             // )
