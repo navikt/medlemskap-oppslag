@@ -2,6 +2,7 @@ package no.nav.medlemskap.routes
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.runBlocking
 import mu.KotlinLogging
 import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.clients.Services
@@ -27,7 +28,7 @@ suspend fun defaultCreateDatagrunnlag(
     callId: String,
     services: Services,
     clientId: String?
-): Datagrunnlag = coroutineScope {
+): Datagrunnlag = runBlocking  {
     val familieService = FamilieService(services.aaRegService, services.pdlService)
     val startDatoForYtelse = startDatoForYtelse(request.periode, request.førsteDagForYtelse)
 
