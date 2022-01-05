@@ -7,6 +7,7 @@ import io.ktor.features.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.withContext
 import mu.KotlinLogging
 import net.logstash.logback.argument.StructuredArguments.kv
@@ -66,6 +67,7 @@ fun Routing.evalueringRoute(
                     azp
                 )
             }
+
             val resultat = evaluerData(datagrunnlag)
 
             val response = lagResponse(
@@ -123,6 +125,7 @@ fun Routing.evalueringRoute(
             val  usedMemInMB=(runtime.totalMemory() - runtime.freeMemory()) / 1048576L;
             val  maxHeapSizeInMB=runtime.maxMemory() / 1048576L;
             val  availHeapSizeInMB = maxHeapSizeInMB - usedMemInMB;
+            coroutineContext.cancelChildren()
             call.respond("Kafka melding: OK, threads : $numberofThreads ,usedMemInMB: $usedMemInMB, maxHeapSizeInMB: $maxHeapSizeInMB, availHeapSizeInMB: $availHeapSizeInMB ")
         }
     }
