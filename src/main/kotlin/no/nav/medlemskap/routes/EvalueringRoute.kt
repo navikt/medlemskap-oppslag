@@ -91,15 +91,9 @@ fun Routing.evalueringRoute(
             val endpoint = "kafka"
             val request = validerRequest(call.receive(), azp)
             val callId = call.callId ?: UUID.randomUUID().toString()
-            var datagrunnlag: Datagrunnlag? = null
-            val job = launch { datagrunnlag=
-                createDatagrunnlag.invoke(
-                    request,
-                    callId,
-                    services,
-                    azp
-                ) }
-            job.cancelAndJoin()
+            //var datagrunnlag: Datagrunnlag? = null
+
+            val datagrunnlag = DatagrunnlagCreator().createDatagrunnlag(request,callId,services,azp)
 
            /*
             val resultat = evaluerData(datagrunnlag)
