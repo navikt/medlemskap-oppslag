@@ -92,10 +92,11 @@ fun Routing.evalueringRoute(
             val callId = call.callId ?: UUID.randomUUID().toString()
 
             val datagrunnlag = withContext(
-                requestContextService.getCoroutineContext(
-                    context = coroutineContext,
-                    ytelse = finnYtelse(request.ytelse, azp)
-                )
+                Dispatchers.Main
+                //requestContextService.getCoroutineContext(
+                //    context = coroutineContext,
+                //    ytelse = finnYtelse(request.ytelse, azp)
+                //)
             ) {
 
                 createDatagrunnlag.invoke(
