@@ -31,19 +31,18 @@ suspend fun defaultCreateDatagrunnlag(
     val familieService = FamilieService(services.aaRegService, services.pdlService)
     val startDatoForYtelse = startDatoForYtelse(request.periode, request.førsteDagForYtelse)
 
-    val arbeidsforholdRequest = async {
+    val arbeidsforholdRequest =
         services.aaRegService.hentArbeidsforhold(
             request.fnr,
             callId,
             fraOgMedDatoForArbeidsforhold(startDatoForYtelse),
             request.periode.tom
         )
-    }
 
     val aktorIder = services.pdlService.hentAlleAktorIder(request.fnr, callId)
-    val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(request.fnr, callId) }
-    val journalPosterRequest = async { services.safService.hentJournaldata(request.fnr, callId) }
-    val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktorIder, callId) }
+    val medlemskapsunntakRequest = services.medlService.hentMedlemskapsunntak(request.fnr, callId)
+    val journalPosterRequest = services.safService.hentJournaldata(request.fnr, callId)
+    val gosysOppgaver = services.oppgaveService.hentOppgaver(aktorIder, callId)
 
     val personHistorikk = services.pdlService.hentPersonHistorikkTilBruker(request.fnr, callId)
 
@@ -62,10 +61,10 @@ suspend fun defaultCreateDatagrunnlag(
         callId = callId
     )
 
-    val medlemskap = medlemskapsunntakRequest.await()
-    val arbeidsforhold = arbeidsforholdRequest.await()
-    val journalPoster = journalPosterRequest.await()
-    val oppgaver = gosysOppgaver.await()
+    val medlemskap = medlemskapsunntakRequest//.await()
+    val arbeidsforhold = arbeidsforholdRequest//.await()
+    val journalPoster = journalPosterRequest//.await()
+    val oppgaver = gosysOppgaver//.await()
     val ytelse: Ytelse = finnYtelse(request.ytelse, clientId)
 
     val oppholdstillatelse = if (FeatureToggles.FEATURE_UDI.enabled &&
