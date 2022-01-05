@@ -89,16 +89,13 @@ fun Routing.evalueringRoute(
             val request = validerRequest(call.receive(), azp)
             val callId = call.callId ?: UUID.randomUUID().toString()
 
-            val datagrunnlag = coroutineScope {
-
+            val datagrunnlag =
                 createDatagrunnlag.invoke(
                     request,
                     callId,
                     services,
                     azp
                 )
-            }
-
             val resultat = evaluerData(datagrunnlag)
 
             val response = lagResponse(
