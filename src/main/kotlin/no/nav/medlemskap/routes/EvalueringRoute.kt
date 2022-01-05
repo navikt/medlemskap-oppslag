@@ -7,8 +7,6 @@ import io.ktor.features.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.withContext
 import mu.KotlinLogging
 import net.logstash.logback.argument.StructuredArguments.kv
@@ -56,11 +54,10 @@ fun Routing.evalueringRoute(
             val callId = call.callId ?: UUID.randomUUID().toString()
 
             val datagrunnlag = withContext(
-                Dispatchers.Main
-                //requestContextService.getCoroutineContext(
-                //    context = coroutineContext,
-                //    ytelse = finnYtelse(request.ytelse, azp)
-                //)
+                requestContextService.getCoroutineContext(
+                    context = coroutineContext,
+                    ytelse = finnYtelse(request.ytelse, azp)
+                )
             ) {
                 createDatagrunnlag.invoke(
                     request,
@@ -92,11 +89,10 @@ fun Routing.evalueringRoute(
             val callId = call.callId ?: UUID.randomUUID().toString()
 
             val datagrunnlag = withContext(
-                Dispatchers.Main
-                //requestContextService.getCoroutineContext(
-                //    context = coroutineContext,
-                //    ytelse = finnYtelse(request.ytelse, azp)
-                //)
+                requestContextService.getCoroutineContext(
+                    context = coroutineContext,
+                    ytelse = finnYtelse(request.ytelse, azp)
+                )
             ) {
 
                 createDatagrunnlag.invoke(
