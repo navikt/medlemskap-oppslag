@@ -89,7 +89,7 @@ fun Routing.evalueringRoute(
             val endpoint = "kafka"
             val request = validerRequest(call.receive(), azp)
             val callId = call.callId ?: UUID.randomUUID().toString()
-            /*
+
             val datagrunnlag =
                 createDatagrunnlag.invoke(
                     request,
@@ -97,6 +97,7 @@ fun Routing.evalueringRoute(
                     services,
                     azp
                 )
+           /*
             val resultat = evaluerData(datagrunnlag)
 
             val response = lagResponse(
