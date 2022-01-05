@@ -24,7 +24,7 @@ class DatagrunnlagCreator () : CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Default + SupervisorJob()
 
-    override fun onStop() {
+     fun onStop() {
         coroutineContext.cancelChildren()
     }
     private val secureLogger = KotlinLogging.logger("tjenestekall")
