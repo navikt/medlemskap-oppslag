@@ -1,5 +1,5 @@
 val graphqlKotlinClientVersion = "4.0.0-alpha.12"
-val coroutinesVersion = "1.3.9"
+val coroutinesVersion = "1.6.0"
 
 plugins {
     kotlin("jvm")
