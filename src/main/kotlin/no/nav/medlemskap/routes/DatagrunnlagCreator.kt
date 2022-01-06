@@ -20,15 +20,14 @@ import no.nav.medlemskap.services.FamilieService
 import v1.mt_1067_nav.no.udi.HentPersonstatusFault
 import kotlin.coroutines.CoroutineContext
 
-class DatagrunnlagCreator () : CoroutineScope {
+class DatagrunnlagCreator() : CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.IO + SupervisorJob()
 
-     fun onStop() {
+    fun onStop() {
         coroutineContext.cancelChildren()
     }
     private val secureLogger = KotlinLogging.logger("tjenestekall")
-
 
     suspend fun createDatagrunnlag(
         request: Request,
@@ -36,7 +35,6 @@ class DatagrunnlagCreator () : CoroutineScope {
         services: Services,
         clientId: String?
     ): Datagrunnlag {
-
 
         val familieService = FamilieService(services.aaRegService, services.pdlService)
         val startDatoForYtelse = startDatoForYtelse(request.periode, request.førsteDagForYtelse)
@@ -138,4 +136,3 @@ class DatagrunnlagCreator () : CoroutineScope {
         )
     }
 }
-

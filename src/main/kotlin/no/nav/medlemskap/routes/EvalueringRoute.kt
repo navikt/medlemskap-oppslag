@@ -119,10 +119,10 @@ fun Routing.evalueringRoute(
             //    "kafka request with id $callId processed ok and response published to $TOPIC ", kv("callId", callId)
             // )
             val numberofThreads = ManagementFactory.getThreadMXBean().threadCount
-            val  runtime = Runtime.getRuntime();
-            val  usedMemInMB=(runtime.totalMemory() - runtime.freeMemory()) / 1048576L;
-            val  maxHeapSizeInMB=runtime.maxMemory() / 1048576L;
-            val  availHeapSizeInMB = maxHeapSizeInMB - usedMemInMB;
+            val runtime = Runtime.getRuntime()
+            val usedMemInMB = (runtime.totalMemory() - runtime.freeMemory()) / 1048576L
+            val maxHeapSizeInMB = runtime.maxMemory() / 1048576L
+            val availHeapSizeInMB = maxHeapSizeInMB - usedMemInMB
             call.respond("Kafka melding: OK, threads : $numberofThreads ,usedMemInMB: $usedMemInMB, maxHeapSizeInMB: $maxHeapSizeInMB, availHeapSizeInMB: $availHeapSizeInMB ")
         }
     }
