@@ -1,4 +1,4 @@
-val graphqlKotlinClientVersion = "5.3.0"
+val graphqlKotlinClientVersion = "4.2.0"
 val coroutinesVersion = "1.6.0"
 
 plugins {

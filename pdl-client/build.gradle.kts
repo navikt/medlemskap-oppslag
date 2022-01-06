@@ -1,6 +1,6 @@
-val graphqlKotlinClientVersion = "5.3.0"
+val graphqlKotlinClientVersion = "4.2.0"
 val coroutinesVersion = "1.6.0"
-
+val graphqlkotlintypesVersion = "3.7.0"
 plugins {
     kotlin("jvm")
     id("com.expediagroup.graphql")
@@ -9,6 +9,7 @@ plugins {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation("com.expediagroup:graphql-kotlin-ktor-client:$graphqlKotlinClientVersion")
+    implementation("com.expediagroup:graphql-kotlin-types:$graphqlkotlintypesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
 }

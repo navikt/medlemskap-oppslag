@@ -46,7 +46,7 @@ val mainClass = "no.nav.medlemskap.ApplicationKt"
 fun tjenestespesifikasjon(name: String) = "no.nav.tjenestespesifikasjoner:$name:$tjenestespesifikasjonerVersion"
 
 plugins {
-    kotlin("jvm") version "1.4.21"
+    kotlin("jvm") version "1.6.0"
     id("com.github.johnrengelman.shadow") version "6.0.0"
     id("com.expediagroup.graphql") version "4.0.0-alpha.12" apply false
     id("com.github.ben-manes.versions") version "0.29.0"
