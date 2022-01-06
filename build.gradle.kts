@@ -12,7 +12,7 @@ val konfigVersion = "1.6.10.0"
 val kotlinLoggerVersion = "1.8.3"
 val tjenestespesifikasjonerVersion = "1.2019.12.18-12.22-ce897c4eb2c1"
 val cxfVersion = "3.4.4"
-val coroutinesVersion = "1.3.9"
+val coroutinesVersion = "1.4.3"
 val wireMockVersion = "2.28.1"
 val mockkVersion = "1.10.5"
 val junitJupiterVersion = "5.7.0"
@@ -62,8 +62,8 @@ allprojects {
     repositories {
         jcenter()
         mavenCentral()
-        //maven("https://dl.bintray.com/kotlin/ktor")
-        //maven("https://kotlin.bintray.com/kotlinx")
+        // maven("https://dl.bintray.com/kotlin/ktor")
+        // maven("https://kotlin.bintray.com/kotlinx")
         maven("https://jitpack.io")
         maven {
             url = uri("https://maven.pkg.github.com/navikt/tjenestespesifikasjoner")
