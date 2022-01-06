@@ -7,9 +7,6 @@ import io.ktor.features.*
 import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
-import kotlinx.coroutines.cancelAndJoin
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mu.KotlinLogging
 import net.logstash.logback.argument.StructuredArguments.kv
@@ -56,7 +53,6 @@ fun Routing.evalueringRoute(
             val request = validerRequest(call.receive(), azp)
             val callId = call.callId ?: UUID.randomUUID().toString()
 
-
             val datagrunnlag = withContext(
                 requestContextService.getCoroutineContext(
                     context = coroutineContext,
@@ -70,7 +66,6 @@ fun Routing.evalueringRoute(
                     azp
                 )
             }
-
             val resultat = evaluerData(datagrunnlag)
 
             val response = lagResponse(
@@ -91,11 +86,21 @@ fun Routing.evalueringRoute(
             val endpoint = "kafka"
             val request = validerRequest(call.receive(), azp)
             val callId = call.callId ?: UUID.randomUUID().toString()
-            //var datagrunnlag: Datagrunnlag? = null
 
-            val datagrunnlag = DatagrunnlagCreator().createDatagrunnlag(request,callId,services,azp)
+            val datagrunnlag = withContext(
+                requestContextService.getCoroutineContext(
+                    context = coroutineContext,
+                    ytelse = finnYtelse(request.ytelse, azp)
+                )
+            ) {
 
-           /*
+                createDatagrunnlag.invoke(
+                    request,
+                    callId,
+                    services,
+                    azp
+                )
+            }
             val resultat = evaluerData(datagrunnlag)
 
             val response = lagResponse(
@@ -105,14 +110,11 @@ fun Routing.evalueringRoute(
                 resultat = resultat
             )
 
-             */
-
             // val producer = Producer().createProducer((Configuration().kafkaConfig))
             // val futureresult = producer.send(createRecord(TOPIC, callId, objectMapper.writeValueAsString(response)))
             // futureresult.get()
             // producer.close()
-
-            //loggResponse(request.fnr, response, endpoint)
+            loggResponse(request.fnr, response, endpoint)
             // logger.info(
             //    "kafka request with id $callId processed ok and response published to $TOPIC ", kv("callId", callId)
             // )
