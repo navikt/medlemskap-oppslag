@@ -31,8 +31,8 @@ suspend fun defaultCreateDatagrunnlag(
 ): Datagrunnlag = coroutineScope {
     val familieService = FamilieService(services.aaRegService, services.pdlService)
     val startDatoForYtelse = startDatoForYtelse(request.periode, request.førsteDagForYtelse)
-    val arbeidsforholdRequest =null
-    /*
+
+
     val arbeidsforholdRequest = async {
         services.aaRegService.hentArbeidsforhold(
             request.fnr,
@@ -41,7 +41,7 @@ suspend fun defaultCreateDatagrunnlag(
             request.periode.tom
         )
     }
-    */
+
     val aktorIder = null//= services.pdlService.hentAlleAktorIder(request.fnr, callId)
     val medlemskapsunntakRequest = null //async { services.medlService.hentMedlemskapsunntak(request.fnr, callId) }
     val journalPosterRequest =null// = async { services.safService.hentJournaldata(request.fnr, callId) }
@@ -74,7 +74,7 @@ suspend fun defaultCreateDatagrunnlag(
 
 
     //val medlemskap = medlemskapsunntakRequest.await()
-    //val arbeidsforhold = arbeidsforholdRequest.await()
+    val arbeidsforhold = arbeidsforholdRequest.await()
     //val journalPoster = journalPosterRequest.await()
     //val oppgaver = gosysOppgaver.await()
     val ytelse: Ytelse = finnYtelse(request.ytelse, clientId)
@@ -132,7 +132,7 @@ suspend fun defaultCreateDatagrunnlag(
         pdlpersonhistorikk = Personhistorikk(emptyList(), emptyList(), emptyList(), emptyList(), emptyList(), emptyList(),
             emptyList()),//personHistorikk,
         medlemskap = emptyList(),
-        arbeidsforhold = emptyList(),//arbeidsforhold,
+        arbeidsforhold = arbeidsforhold,
         oppgaver = emptyList(),
         dokument = emptyList(),
         ytelse = ytelse,
