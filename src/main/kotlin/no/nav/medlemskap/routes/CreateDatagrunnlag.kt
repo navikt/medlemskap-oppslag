@@ -16,6 +16,7 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.fraOgMedDatoForArbeidsforhold
 import no.nav.medlemskap.domene.personhistorikk.ForelderBarnRelasjon
+import no.nav.medlemskap.domene.personhistorikk.Personhistorikk
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erAnnenStatsborger
 import no.nav.medlemskap.services.FamilieService
 import v1.mt_1067_nav.no.udi.HentPersonstatusFault
@@ -30,7 +31,8 @@ suspend fun defaultCreateDatagrunnlag(
 ): Datagrunnlag = coroutineScope {
     val familieService = FamilieService(services.aaRegService, services.pdlService)
     val startDatoForYtelse = startDatoForYtelse(request.periode, request.førsteDagForYtelse)
-
+    val arbeidsforholdRequest =null
+    /*
     val arbeidsforholdRequest = async {
         services.aaRegService.hentArbeidsforhold(
             request.fnr,
@@ -39,14 +41,16 @@ suspend fun defaultCreateDatagrunnlag(
             request.periode.tom
         )
     }
-
+    */
     val aktorIder = services.pdlService.hentAlleAktorIder(request.fnr, callId)
-    val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(request.fnr, callId) }
-    val journalPosterRequest = async { services.safService.hentJournaldata(request.fnr, callId) }
-    val gosysOppgaver = async { services.oppgaveService.hentOppgaver(aktorIder, callId) }
+    val medlemskapsunntakRequest = null //async { services.medlService.hentMedlemskapsunntak(request.fnr, callId) }
+    val journalPosterRequest =null// = async { services.safService.hentJournaldata(request.fnr, callId) }
+    val gosysOppgaver =null//= async { services.oppgaveService.hentOppgaver(aktorIder, callId) }
 
-    val personHistorikk = services.pdlService.hentPersonHistorikkTilBruker(request.fnr, callId)
+    val personHistorikk = null//services.pdlService.hentPersonHistorikkTilBruker(request.fnr, callId)
 
+    val dataOmBrukersBarn = null
+    /*
     val dataOmBrukersBarn = familieService.hentDataOmBarn(
         ForelderBarnRelasjon.hentFnrTilBarn(
             personHistorikk.forelderBarnRelasjon,
@@ -55,6 +59,8 @@ suspend fun defaultCreateDatagrunnlag(
         callId
     )
 
+     */
+
     val dataOmEktefelle = familieService.hentDataOmEktefelle(
         fnrTilEktefelle = ForelderBarnRelasjon.hentFnrTilEktefelle(personHistorikk),
         periode = request.periode,
@@ -62,12 +68,14 @@ suspend fun defaultCreateDatagrunnlag(
         callId = callId
     )
 
-    val medlemskap = medlemskapsunntakRequest.await()
-    val arbeidsforhold = arbeidsforholdRequest.await()
-    val journalPoster = journalPosterRequest.await()
-    val oppgaver = gosysOppgaver.await()
+    //val medlemskap = medlemskapsunntakRequest.await()
+    //val arbeidsforhold = arbeidsforholdRequest.await()
+    //val journalPoster = journalPosterRequest.await()
+    //val oppgaver = gosysOppgaver.await()
     val ytelse: Ytelse = finnYtelse(request.ytelse, clientId)
 
+    val oppholdstillatelse = null
+    /*
     val oppholdstillatelse = if (FeatureToggles.FEATURE_UDI.enabled &&
         personHistorikk.statsborgerskap.erAnnenStatsborger(startDatoForYtelse)
     ) {
@@ -107,6 +115,7 @@ suspend fun defaultCreateDatagrunnlag(
     } else {
         null
     }
+    */
 
     ytelseCounter(ytelse.name()).increment()
 
@@ -115,11 +124,12 @@ suspend fun defaultCreateDatagrunnlag(
         periode = request.periode,
         førsteDagForYtelse = request.førsteDagForYtelse,
         brukerinput = request.brukerinput,
-        pdlpersonhistorikk = personHistorikk,
-        medlemskap = medlemskap,
-        arbeidsforhold = arbeidsforhold,
-        oppgaver = oppgaver,
-        dokument = journalPoster,
+        pdlpersonhistorikk = Personhistorikk(emptyList(), emptyList(), emptyList(), emptyList(), emptyList(), emptyList(),
+            emptyList()),//personHistorikk,
+        medlemskap = emptyList(),
+        arbeidsforhold = emptyList(),//arbeidsforhold,
+        oppgaver = emptyList(),
+        dokument = emptyList(),
         ytelse = ytelse,
         dataOmBarn = dataOmBrukersBarn,
         dataOmEktefelle = dataOmEktefelle,
