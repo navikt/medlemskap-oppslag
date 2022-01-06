@@ -42,7 +42,7 @@ suspend fun defaultCreateDatagrunnlag(
         )
     }
     */
-    val aktorIder = services.pdlService.hentAlleAktorIder(request.fnr, callId)
+    val aktorIder = null//= services.pdlService.hentAlleAktorIder(request.fnr, callId)
     val medlemskapsunntakRequest = null //async { services.medlService.hentMedlemskapsunntak(request.fnr, callId) }
     val journalPosterRequest =null// = async { services.safService.hentJournaldata(request.fnr, callId) }
     val gosysOppgaver =null//= async { services.oppgaveService.hentOppgaver(aktorIder, callId) }
@@ -61,12 +61,17 @@ suspend fun defaultCreateDatagrunnlag(
 
      */
 
+    val dataOmEktefelle=null
+    /*
+
     val dataOmEktefelle = familieService.hentDataOmEktefelle(
         fnrTilEktefelle = ForelderBarnRelasjon.hentFnrTilEktefelle(personHistorikk),
         periode = request.periode,
         startDatoForYtelse = startDatoForYtelse,
         callId = callId
     )
+    */
+
 
     //val medlemskap = medlemskapsunntakRequest.await()
     //val arbeidsforhold = arbeidsforholdRequest.await()
