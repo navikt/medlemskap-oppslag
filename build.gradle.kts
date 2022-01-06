@@ -12,7 +12,7 @@ val konfigVersion = "1.6.10.0"
 val kotlinLoggerVersion = "1.8.3"
 val tjenestespesifikasjonerVersion = "1.2019.12.18-12.22-ce897c4eb2c1"
 val cxfVersion = "3.4.4"
-val coroutinesVersion = "1.3.9"
+val coroutinesVersion = "1.6.0"
 val wireMockVersion = "2.28.1"
 val mockkVersion = "1.10.5"
 val junitJupiterVersion = "5.7.0"
@@ -89,6 +89,7 @@ dependencies {
     implementation(project(path = ":saf-client", configuration = "archives"))
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion") {
         exclude(group = "io.netty", module = "netty-codec")
