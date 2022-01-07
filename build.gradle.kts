@@ -23,7 +23,7 @@ val threetenVersion = "1.5.0"
 val kotlinReflectVersion = "1.4.21"
 val cucumberVersion = "6.8.2"
 val nocommonsVersion = "0.9.0"
-val graphqlKotlinClientVersion = "4.2.0"
+val graphqlKotlinClientVersion = "5.2.0"
 val archUnitVersion = "0.14.1"
 val jsonassertVersion = "1.5.0"
 val xmlSchemaVersion = "2.2.5"
@@ -61,9 +61,8 @@ val githubPassword: String by project
 allprojects {
     repositories {
         jcenter()
+        gradlePluginPortal()
         mavenCentral()
-        // maven("https://dl.bintray.com/kotlin/ktor")
-        // maven("https://kotlin.bintray.com/kotlinx")
         maven("https://jitpack.io")
         maven {
             url = uri("https://maven.pkg.github.com/navikt/tjenestespesifikasjoner")
@@ -94,7 +93,9 @@ dependencies {
         exclude(group = "io.netty", module = "netty-codec")
         exclude(group = "io.netty", module = "netty-codec-http")
     }
-    implementation("com.expediagroup:'graphql-kotlin-client':$graphqlKotlinClientVersion")
+    implementation("com.expediagroup:'graphql-kotlin-ktor-client':$graphqlKotlinClientVersion")
+    implementation("io.ktor:ktor-client-serialization-jvm:1.6.3")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.13.1")
     implementation("io.ktor:ktor-auth:$ktorVersion")
     implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")

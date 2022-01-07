@@ -1,4 +1,4 @@
-val graphqlKotlinClientVersion = "4.2.0"
+val graphqlKotlinClientVersion = "5.2.0"
 val coroutinesVersion = "1.5.2"
 
 plugins {
@@ -10,6 +10,8 @@ dependencies {
     implementation(kotlin("stdlib"))
     implementation("com.expediagroup:graphql-kotlin-ktor-client:$graphqlKotlinClientVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+    implementation("io.ktor:ktor-client-serialization-jvm:1.6.3")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.13.1")
 }
 
 graphql {

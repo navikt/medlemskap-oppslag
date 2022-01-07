@@ -1,4 +1,6 @@
-val graphqlKotlinClientVersion = "4.2.0"
+
+import com.expediagroup.graphql.plugin.gradle.config.GraphQLSerializer
+val graphqlKotlinClientVersion = "5.2.0"
 val coroutinesVersion = "1.5.2"
 
 plugins {
@@ -11,12 +13,13 @@ dependencies {
     implementation("com.expediagroup:graphql-kotlin-ktor-client:$graphqlKotlinClientVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
-    implementation( "com.expediagroup:'graphql-kotlin-client':$graphqlKotlinClientVersion")
+    implementation("io.ktor:ktor-client-serialization-jvm:1.6.3")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.13.1")
 }
 
-tasks.withType<com.expediagroup.graphql.plugin.gradle.tasks.GraphQLGenerateClientTask> {
+val graphqlGenerateClient by tasks.getting(com.expediagroup.graphql.plugin.gradle.tasks.GraphQLGenerateClientTask::class) {
     packageName.set("no.nav.medlemskap.clients.pdl.generated")
     schemaFile.set(file("${project.projectDir}/src/main/resources/pdl/pdl-api-sdl.graphqls"))
     queryFileDirectory.set("${project.projectDir}/src/main/resources/pdl")
-    //clientType.set(com.expediagroup.graphql.plugin.gradle.config.GraphQLClientType.KTOR)
+    serializer.set(GraphQLSerializer.JACKSON)
 }
