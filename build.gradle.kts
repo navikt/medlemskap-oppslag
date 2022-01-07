@@ -96,7 +96,7 @@ dependencies {
         exclude(group = "io.netty", module = "netty-codec")
         exclude(group = "io.netty", module = "netty-codec-http")
     }
-    implementation("com.expediagroup:'graphql-kotlin-ktor-client':$graphqlKotlinClientVersion")
+    implementation("com.expediagroup:graphql-kotlin-ktor-client:$graphqlKotlinClientVersion")
     implementation("io.ktor:ktor-client-serialization-jvm:1.6.3")
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.13.1")
     implementation("io.ktor:ktor-auth:$ktorVersion")
