@@ -44,6 +44,7 @@ suspend fun defaultCreateDatagrunnlag(
 
     val aktorIder = null//= services.pdlService.hentAlleAktorIder(request.fnr, callId)
     val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(request.fnr, callId) }
+    //dette kallet øker med 4 tråder for hver request
     val journalPosterRequest = async { services.safService.hentJournaldata(request.fnr, callId) }
     val gosysOppgaver =null//= async { services.oppgaveService.hentOppgaver(aktorIder, callId) }
 
@@ -76,6 +77,7 @@ suspend fun defaultCreateDatagrunnlag(
     val medlemskap = medlemskapsunntakRequest.await()
     val arbeidsforhold = arbeidsforholdRequest.await()
     val journalPoster = journalPosterRequest.await()
+    journalPosterRequest.join()
     //val oppgaver = gosysOppgaver.await()
     val ytelse: Ytelse = finnYtelse(request.ytelse, clientId)
 
