@@ -3,11 +3,7 @@ package no.nav.medlemskap.routes
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
-import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.clients.Services
-import no.nav.medlemskap.clients.udi.UdiRequest
-import no.nav.medlemskap.common.FeatureToggles
-import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.startDatoForYtelse
@@ -15,11 +11,8 @@ import no.nav.medlemskap.domene.Request
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.fraOgMedDatoForArbeidsforhold
-import no.nav.medlemskap.domene.personhistorikk.ForelderBarnRelasjon
 import no.nav.medlemskap.domene.personhistorikk.Personhistorikk
-import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erAnnenStatsborger
 import no.nav.medlemskap.services.FamilieService
-import v1.mt_1067_nav.no.udi.HentPersonstatusFault
 
 private val secureLogger = KotlinLogging.logger("tjenestekall")
 
@@ -32,7 +25,6 @@ suspend fun defaultCreateDatagrunnlag(
     val familieService = FamilieService(services.aaRegService, services.pdlService)
     val startDatoForYtelse = startDatoForYtelse(request.periode, request.førsteDagForYtelse)
 
-
     val arbeidsforholdRequest = async {
         services.aaRegService.hentArbeidsforhold(
             request.fnr,
@@ -42,13 +34,13 @@ suspend fun defaultCreateDatagrunnlag(
         )
     }
 
-    val aktorIder = null//= services.pdlService.hentAlleAktorIder(request.fnr, callId)
+    val aktorIder = null // = services.pdlService.hentAlleAktorIder(request.fnr, callId)
     val medlemskapsunntakRequest = async { services.medlService.hentMedlemskapsunntak(request.fnr, callId) }
-    //dette kallet øker med 4 tråder for hver request
+    // dette kallet øker med 4 tråder for hver request
     val journalPosterRequest = async { services.safService.hentJournaldata(request.fnr, callId) }
-    val gosysOppgaver =null//= async { services.oppgaveService.hentOppgaver(aktorIder, callId) }
+    val gosysOppgaver = null // = async { services.oppgaveService.hentOppgaver(aktorIder, callId) }
 
-    val personHistorikk = null//services.pdlService.hentPersonHistorikkTilBruker(request.fnr, callId)
+    val personHistorikk = null // services.pdlService.hentPersonHistorikkTilBruker(request.fnr, callId)
 
     val dataOmBrukersBarn = null
     /*
@@ -62,7 +54,7 @@ suspend fun defaultCreateDatagrunnlag(
 
      */
 
-    val dataOmEktefelle=null
+    val dataOmEktefelle = null
     /*
 
     val dataOmEktefelle = familieService.hentDataOmEktefelle(
@@ -73,12 +65,10 @@ suspend fun defaultCreateDatagrunnlag(
     )
     */
 
-
     val medlemskap = medlemskapsunntakRequest.await()
     val arbeidsforhold = arbeidsforholdRequest.await()
     val journalPoster = journalPosterRequest.await()
-    journalPosterRequest.join()
-    //val oppgaver = gosysOppgaver.await()
+    // val oppgaver = gosysOppgaver.await()
     val ytelse: Ytelse = finnYtelse(request.ytelse, clientId)
 
     val oppholdstillatelse = null
@@ -131,8 +121,10 @@ suspend fun defaultCreateDatagrunnlag(
         periode = request.periode,
         førsteDagForYtelse = request.førsteDagForYtelse,
         brukerinput = request.brukerinput,
-        pdlpersonhistorikk = Personhistorikk(emptyList(), emptyList(), emptyList(), emptyList(), emptyList(), emptyList(),
-            emptyList()),//personHistorikk,
+        pdlpersonhistorikk = Personhistorikk(
+            emptyList(), emptyList(), emptyList(), emptyList(), emptyList(), emptyList(),
+            emptyList()
+        ), // personHistorikk,
         medlemskap = medlemskap,
         arbeidsforhold = arbeidsforhold,
         oppgaver = emptyList(),

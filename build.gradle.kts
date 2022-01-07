@@ -23,7 +23,7 @@ val threetenVersion = "1.5.0"
 val kotlinReflectVersion = "1.4.21"
 val cucumberVersion = "6.8.2"
 val nocommonsVersion = "0.9.0"
-val graphqlKotlinClientVersion = "4.0.0-alpha.12"
+val graphqlKotlinClientVersion = "4.2.0"
 val archUnitVersion = "0.14.1"
 val jsonassertVersion = "1.5.0"
 val xmlSchemaVersion = "2.2.5"
@@ -48,7 +48,7 @@ fun tjenestespesifikasjon(name: String) = "no.nav.tjenestespesifikasjoner:$name:
 plugins {
     kotlin("jvm") version "1.4.21"
     id("com.github.johnrengelman.shadow") version "6.0.0"
-    id("com.expediagroup.graphql") version "4.0.0-alpha.12" apply false
+    id("com.expediagroup.graphql") version "4.0.0" apply false
     id("com.github.ben-manes.versions") version "0.29.0"
     id("org.jlleitschuh.gradle.ktlint") version "9.3.0"
     id("org.jlleitschuh.gradle.ktlint-idea") version "9.3.0"
@@ -94,6 +94,7 @@ dependencies {
         exclude(group = "io.netty", module = "netty-codec")
         exclude(group = "io.netty", module = "netty-codec-http")
     }
+    implementation("com.expediagroup:'graphql-kotlin-client':$graphqlKotlinClientVersion")
     implementation("io.ktor:ktor-auth:$ktorVersion")
     implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")

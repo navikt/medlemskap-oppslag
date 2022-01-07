@@ -1,4 +1,5 @@
-val graphqlKotlinClientVersion = "4.0.0-alpha.12"
+val graphqlKotlinClientVersion = "4.2.0"
+val coroutinesVersion = "1.5.2"
 
 plugins {
     kotlin("jvm")
@@ -8,6 +9,7 @@ plugins {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation("com.expediagroup:graphql-kotlin-ktor-client:$graphqlKotlinClientVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
 }
 
 graphql {
@@ -15,7 +17,7 @@ graphql {
         sdlEndpoint = "https://navikt.github.io/saf/saf-api-sdl.graphqls"
         packageName = "no.nav.medlemskap.clients.saf.generated"
         allowDeprecatedFields = false
-        clientType = com.expediagroup.graphql.plugin.gradle.config.GraphQLClientType.KTOR
+        //clientType = com.expediagroup.graphql.plugin.gradle.config.GraphQLClientType.KTOR
         queryFiles = listOf<File>(file("${project.projectDir}/src/main/resources/saf/dokumenter.graphql"))
     }
 }
