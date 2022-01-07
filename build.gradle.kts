@@ -70,6 +70,9 @@ allprojects {
                 username = githubUser
                 password = githubPassword
             }
+            content {
+                excludeGroup("com.expediagroup.graphql")
+            }
         }
     }
 
