@@ -1,7 +1,7 @@
 package no.nav.medlemskap.clients.pdl
 
 import com.expediagroup.graphql.client.ktor.GraphQLKtorClient
-import com.expediagroup.graphql.types.GraphQLResponse
+import com.expediagroup.graphql.client.types.GraphQLClientResponse
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.*
 import io.ktor.client.request.*
@@ -26,13 +26,23 @@ class PdlClient(
         private val logger = KotlinLogging.logger { }
     }
 
-    suspend fun hentIdenter(fnr: String, callId: String): GraphQLResponse<HentIdenter.Result> {
-        return runWithRetryAndMetrics("PDL", "HentIdenter", retry) {
-            val stsToken = stsClient.oidcToken()
-            val hentIdenterQuery = HentIdenter(GraphQLKtorClient(url = URL("$baseUrl")))
-            val variables = HentIdenter.Variables(fnr, null, true)
+    suspend fun hentIdenterv2(fnr: String, callId: String): GraphQLClientResponse<HentIdenter.Result> {
+        val client = GraphQLKtorClient(
+            url = URL(baseUrl),
+            httpClient = httpClient
+        )
 
-            val response: GraphQLResponse<HentIdenter.Result> = hentIdenterQuery.execute(variables) {
+        return runWithRetryAndMetrics("PDL", "HentIdenter", retry) {
+            logger.info("Pdl: Henter aktørId for person med fnr $fnr på url $baseUrl")
+            val stsToken = stsClient.oidcToken()
+            val query = HentIdenter(
+                variables = HentIdenter.Variables(
+                    fnr,
+                    null,
+                    true
+                )
+            )
+            val response: GraphQLClientResponse<HentIdenter.Result> = client.execute(query) {
                 header(HttpHeaders.Authorization, "Bearer $stsToken")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
@@ -41,25 +51,47 @@ class PdlClient(
                 header("Nav-Consumer-Id", username)
                 header("x-nav-apiKey", pdlApiKey)
             }
+
+            logger.info("Pdl: Ferdig med kallet")
+            logger.info(response.toString())
+            logger.info("Pdl: Data: " + response.data)
+            logger.info("Pdl: Errors: " + response.errors)
+            if (!response.errors.isNullOrEmpty()) {
+                logger.error("PDL response errors: ${response.errors}")
+                // TODO: utfør feil håndtering. Gjøres utenfor denne koden?
+            }
             response
         }
     }
 
-    suspend fun hentPerson(fnr: String, callId: String): GraphQLResponse<HentPerson.Result> {
+    suspend fun hentPersonV2(fnr: String, callId: String): GraphQLClientResponse<HentPerson.Result> {
+        val client = GraphQLKtorClient(
+            url = URL(baseUrl),
+            httpClient = httpClient
+        )
         return runWithRetryAndMetrics("PDL", "HentPerson", retry) {
             val stsToken = stsClient.oidcToken()
-            val hentPersonQuery = HentPerson(GraphQLKtorClient(url = URL("$baseUrl")))
-            val variables = HentPerson.Variables(fnr, true, true)
 
-            val response: GraphQLResponse<HentPerson.Result> = hentPersonQuery.execute(variables) {
+            val query = HentPerson(
+                variables = HentPerson.Variables(fnr, true, true)
+            )
+            val response: GraphQLClientResponse<HentPerson.Result> = client.execute(query) {
                 header(HttpHeaders.Authorization, "Bearer $stsToken")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
-                header("TEMA", "MED")
                 header("Nav-Call-Id", callId)
                 header("Nav-Consumer-Token", "Bearer $stsToken")
                 header("Nav-Consumer-Id", username)
                 header("x-nav-apiKey", pdlApiKey)
+            }
+
+            logger.info("Pdl: Ferdig med kallet")
+            logger.info(response.toString())
+            logger.info("Pdl: Data: " + response.data)
+            logger.info("Pdl: Errors: " + response.errors)
+            if (!response.errors.isNullOrEmpty()) {
+                logger.error("PDL response errors: ${response.errors}")
+                // TODO: utfør feil håndtering. Gjøres utenfor denne koden?
             }
             response
         }

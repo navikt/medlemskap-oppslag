@@ -58,7 +58,7 @@ class PdlClientHentEktefelleTest {
 
         val pdlClient = PdlClient(server.baseUrl(), stsClient, username, cioHttpClient, null, "123")
 
-        val pdlResponse = runBlocking { pdlClient.hentPerson("1234567890", callId) }
+        val pdlResponse = runBlocking { pdlClient.hentPersonV2("1234567890", callId) }
 
         assertEquals("NOR", pdlResponse.data?.hentPerson?.statsborgerskap?.first()?.land)
     }

@@ -1,7 +1,9 @@
 package no.nav.medlemskap.cucumber.mapping.saf
 
 import io.cucumber.datatable.DataTable
-import no.nav.medlemskap.clients.saf.generated.Dokumenter
+import no.nav.medlemskap.clients.saf.generated.enums.Journalposttype
+import no.nav.medlemskap.clients.saf.generated.enums.Journalstatus
+import no.nav.medlemskap.clients.saf.generated.enums.Tema
 import no.nav.medlemskap.cucumber.BasisDomeneParser
 import no.nav.medlemskap.cucumber.Domenenøkkel
 import no.nav.medlemskap.cucumber.RadMapper
@@ -11,7 +13,7 @@ class SafDomeneSpraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, DokumentInfoIdMapper())[0]
     }
 
-    fun mapJournalStatus(dataTable: DataTable): Dokumenter.Journalstatus {
+    fun mapJournalStatus(dataTable: DataTable): Journalstatus {
         return mapDataTable(dataTable, JournalStatusMapper())[0]
     }
 
@@ -23,29 +25,29 @@ class SafDomeneSpraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, JournalPostIdMapper())[0]
     }
 
-    fun mapJournalTema(dataTable: DataTable): Dokumenter.Tema {
+    fun mapJournalTema(dataTable: DataTable): Tema {
         return mapDataTable(dataTable, JournalTemaMappeer())[0]
     }
 
-    fun mapJournalPostType(dataTable: DataTable): Dokumenter.Journalposttype {
+    fun mapJournalPostType(dataTable: DataTable): Journalposttype {
         return mapDataTable(dataTable, JournalPostTypeMapper())[0]
     }
 
-    class JournalPostTypeMapper() : RadMapper<Dokumenter.Journalposttype> {
-        override fun mapRad(rad: Map<String, String>): Dokumenter.Journalposttype {
-            return Dokumenter.Journalposttype.valueOf(parseString(Domenebegrep.JOURNAL_POST_TYPE, rad))
+    class JournalPostTypeMapper() : RadMapper<Journalposttype> {
+        override fun mapRad(rad: Map<String, String>): Journalposttype {
+            return Journalposttype.valueOf(parseString(Domenebegrep.JOURNAL_POST_TYPE, rad))
         }
     }
 
-    class JournalTemaMappeer() : RadMapper<Dokumenter.Tema> {
-        override fun mapRad(rad: Map<String, String>): Dokumenter.Tema {
-            return Dokumenter.Tema.valueOf(parseString(Domenebegrep.TEMA, rad))
+    class JournalTemaMappeer() : RadMapper<Tema> {
+        override fun mapRad(rad: Map<String, String>): Tema {
+            return Tema.valueOf(parseString(Domenebegrep.TEMA, rad))
         }
     }
 
-    class JournalStatusMapper() : RadMapper<Dokumenter.Journalstatus> {
-        override fun mapRad(rad: Map<String, String>): Dokumenter.Journalstatus {
-            return Dokumenter.Journalstatus.valueOf(parseString(Domenebegrep.JOURNAL_STATUS, rad))
+    class JournalStatusMapper() : RadMapper<Journalstatus> {
+        override fun mapRad(rad: Map<String, String>): Journalstatus {
+            return Journalstatus.valueOf(parseString(Domenebegrep.JOURNAL_STATUS, rad))
         }
     }
 

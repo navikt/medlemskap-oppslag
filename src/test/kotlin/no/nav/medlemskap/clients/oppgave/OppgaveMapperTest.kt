@@ -1,7 +1,7 @@
 package no.nav.medlemskap.clients.oppgave
 
 import com.fasterxml.jackson.module.kotlin.readValue
-import no.nav.medlemskap.clients.saf.generated.Dokumenter
+import no.nav.medlemskap.clients.saf.generated.enums.Tema
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Prioritet
 import no.nav.medlemskap.domene.Status
@@ -22,7 +22,7 @@ class OppgaveMapperTest {
         Assert.assertEquals(LocalDate.parse("2010-01-01"), mappedOppgaveResultat.first().aktivDato)
         Assert.assertEquals(Prioritet.HOY, mappedOppgaveResultat.first().prioritet)
         Assert.assertEquals(Status.AAPNET, mappedOppgaveResultat.first().status)
-        Assert.assertEquals(Dokumenter.Tema.MED.name, mappedOppgaveResultat.first().tema)
+        Assert.assertEquals(Tema.MED.name, mappedOppgaveResultat.first().tema)
     }
 
     val oppgaveResponse =

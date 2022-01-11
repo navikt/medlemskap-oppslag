@@ -8,7 +8,9 @@ import io.ktor.http.*
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import no.nav.medlemskap.clients.saf.generated.Dokumenter
+import no.nav.medlemskap.clients.saf.generated.enums.Journalposttype
+import no.nav.medlemskap.clients.saf.generated.enums.Journalstatus
+import no.nav.medlemskap.clients.saf.generated.enums.Tema
 import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.cioHttpClient
 import org.junit.jupiter.api.AfterAll
@@ -59,13 +61,13 @@ class SafClientTest {
 
         val safClient = SafClient(server.baseUrl(), stsClient, username, cioHttpClient, "123")
 
-        val safResponse = runBlocking { safClient.hentJournaldata("1234567890", callId) }
+        val safResponse = runBlocking { safClient.hentJournaldatav2("1234567890", callId) }
 
         assertEquals("439560100", safResponse.dokumentoversiktBruker.journalposter.first()?.journalpostId)
         assertEquals("MASKERT_FELT", safResponse.dokumentoversiktBruker.journalposter.first()?.tittel)
-        assertEquals(Dokumenter.Journalposttype.I, safResponse.dokumentoversiktBruker.journalposter.first()?.journalposttype)
-        assertEquals(Dokumenter.Journalstatus.JOURNALFOERT, safResponse.dokumentoversiktBruker.journalposter.first()?.journalstatus)
-        assertEquals(Dokumenter.Tema.SYK, safResponse.dokumentoversiktBruker.journalposter.first()?.tema)
+        assertEquals(Journalposttype.I, safResponse.dokumentoversiktBruker.journalposter.first()?.journalposttype)
+        assertEquals(Journalstatus.JOURNALFOERT, safResponse.dokumentoversiktBruker.journalposter.first()?.journalstatus)
+        assertEquals(Tema.SYK, safResponse.dokumentoversiktBruker.journalposter.first()?.tema)
         assertEquals("453743887", safResponse.dokumentoversiktBruker.journalposter.first()?.dokumenter?.first()?.dokumentInfoId)
         assertEquals("MASKERT_FELT", safResponse.dokumentoversiktBruker.journalposter.first()?.dokumenter?.first()?.tittel)
     }
