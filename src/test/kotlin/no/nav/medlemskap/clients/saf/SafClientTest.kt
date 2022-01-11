@@ -16,7 +16,6 @@ import no.nav.medlemskap.common.cioHttpClient
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 
-@Disabled("Får Serializer for class 'Dokumenter' is not found, men objekter er serializable.. Merkelig...")
 class SafClientTest {
 
     companion object {

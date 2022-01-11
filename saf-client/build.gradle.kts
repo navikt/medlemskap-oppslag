@@ -21,5 +21,5 @@ val graphqlGenerateClient by tasks.getting(com.expediagroup.graphql.plugin.gradl
     packageName.set("no.nav.medlemskap.clients.saf.generated")
     schemaFile.set(file("${project.projectDir}/src/main/resources/saf/saf-api-sdl.graphqls"))
     queryFileDirectory.set("${project.projectDir}/src/main/resources/saf")
-    serializer.set(GraphQLSerializer.JACKSON)
+    serializer.set(GraphQLSerializer.KOTLINX)
 }
