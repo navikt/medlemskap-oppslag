@@ -5,7 +5,8 @@ val coroutinesVersion = "1.5.2"
 plugins {
     kotlin("jvm")
     id("com.expediagroup.graphql")
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.5.31"
+    id("org.jetbrains.kotlin.plugin.serialization")
+
 }
 
 dependencies {

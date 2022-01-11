@@ -133,13 +133,14 @@ class PdlClientHentPersonTest {
                                 "gyldigFraOgMed": "2010-10-21",
                                 "gyldigTilOgMed":  null,
                                 "metadata": {
-                                    "historisk": "true"
+                                    "historisk": true
                                 }
                             }
                     ],
                     "adressebeskyttelse": [], 
                     "sivilstand": [
                             {
+                            "bekreftelsesdato" : null,
                             "type": "UGIFT",
                             "gyldigFraOgMed": "2010-02-21",
                             "relatertVedSivilstand": null

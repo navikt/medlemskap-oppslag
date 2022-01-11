@@ -5,7 +5,7 @@ val coroutinesVersion = "1.5.2"
 plugins {
     kotlin("jvm")
     id("com.expediagroup.graphql")
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.5.31"
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 dependencies {
@@ -22,5 +22,4 @@ val graphqlGenerateClient by tasks.getting(com.expediagroup.graphql.plugin.gradl
     queryFileDirectory.set("${project.projectDir}/src/main/resources/pdl")
     serializer.set(GraphQLSerializer.KOTLINX)
     allowDeprecatedFields.set(true)
-
 }

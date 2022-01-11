@@ -93,24 +93,28 @@ class PdlClientHentEktefelleTest {
                 ],
                 "sivilstand": [
                   {
+                    "bekreftelsesdato": null
                     "type": "GIFT",
                     "gyldigFraOgMed": "2020-09-15",
                     "relatertVedSivilstand": "13128619857"
                   }
                 ],
                 "bostedsadresse": [
-                  {
-                    "angittFlyttedato": "1973-11-11",
-                    "vegadresse": {
-                      "postnummer": "4994"
-                    },
-                    "matrikkeladresse": null,
-                    "ukjentBosted": null,
-                    "metadata": {
-                        "historisk": false
-                    }
-                  }
-                ],
+				{
+					"angittFlyttedato": "1979-12-25",
+					"gyldigFraOgMed": "1979-12-25T00:00",
+					"gyldigTilOgMed": null,
+					"vegadresse": {
+						"postnummer": "9801"
+					},
+					"matrikkeladresse": null,
+					"ukjentBosted": null,
+					"utenlandskAdresse": null,
+					"metadata": {
+						"historisk": false
+					}
+				}
+			    ],
                 "adressebeskyttelse":[],
                 "doedsfall": [],
                 "kontaktadresse": [],

@@ -23,7 +23,7 @@ val threetenVersion = "1.5.0"
 val kotlinReflectVersion = "1.4.21"
 val cucumberVersion = "6.8.2"
 val nocommonsVersion = "0.9.0"
-val graphqlKotlinClientVersion = "5.2.0"
+val graphqlKotlinClientVersion = "5.3.1"
 val archUnitVersion = "0.14.1"
 val jsonassertVersion = "1.5.0"
 val xmlSchemaVersion = "2.2.5"
@@ -53,6 +53,7 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint") version "9.3.0"
     id("org.jlleitschuh.gradle.ktlint-idea") version "9.3.0"
     id("org.hidetake.swagger.generator") version "2.18.2" apply true
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.4.31"
 }
 
 val githubUser: String by project
@@ -96,6 +97,7 @@ dependencies {
         exclude(group = "io.netty", module = "netty-codec")
         exclude(group = "io.netty", module = "netty-codec-http")
     }
+
     implementation("com.expediagroup:graphql-kotlin-ktor-client:$graphqlKotlinClientVersion")
     implementation("io.ktor:ktor-client-serialization-jvm:1.6.3")
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.13.1")
