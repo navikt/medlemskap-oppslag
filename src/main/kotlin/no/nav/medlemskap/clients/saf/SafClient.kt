@@ -1,7 +1,6 @@
 package no.nav.medlemskap.clients.saf
 
 import com.expediagroup.graphql.client.ktor.GraphQLKtorClient
-import com.expediagroup.graphql.client.serialization.GraphQLClientKotlinxSerializer
 import com.expediagroup.graphql.client.types.GraphQLClientResponse
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.*
@@ -38,8 +37,7 @@ class SafClient(
     suspend fun hentJournaldatav2(fnr: String, callId: String): Dokumenter.Result {
         val client = GraphQLKtorClient(
             url = URL(baseUrl),
-            httpClient = httpClient,
-            serializer = GraphQLClientKotlinxSerializer()
+            httpClient = httpClient
         )
         return runWithRetryAndMetrics("SAF", "DokumentoversiktBruker", retry) {
 
