@@ -81,6 +81,7 @@ class PdlClient(
                 header(HttpHeaders.Authorization, "Bearer $stsToken")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
+                header("TEMA", "MED")
                 header("Nav-Call-Id", callId)
                 header("Nav-Consumer-Token", "Bearer $stsToken")
                 header("Nav-Consumer-Id", username)
