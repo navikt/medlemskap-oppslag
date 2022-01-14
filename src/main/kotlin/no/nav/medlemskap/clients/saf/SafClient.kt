@@ -1,7 +1,6 @@
 package no.nav.medlemskap.clients.saf
 
-import com.expediagroup.graphql.client.ktor.GraphQLKtorClient
-import com.expediagroup.graphql.client.types.GraphQLClientResponse
+import com.expediagroup.graphql.client.serialization.types.KotlinxGraphQLResponse
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.*
 import io.ktor.client.request.*
@@ -15,10 +14,10 @@ import no.nav.medlemskap.clients.saf.generated.enums.Journalstatus
 import no.nav.medlemskap.clients.saf.generated.enums.Tema
 import no.nav.medlemskap.clients.saf.generated.inputs.BrukerIdInput
 import no.nav.medlemskap.clients.sts.StsRestClient
+import no.nav.medlemskap.common.apacheHttpClient
 import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.common.ytelse
-import java.net.URL
 import kotlin.coroutines.coroutineContext
 
 class SafClient(
@@ -35,10 +34,7 @@ class SafClient(
     }
 
     suspend fun hentJournaldatav2(fnr: String, callId: String): Dokumenter.Result {
-        val client = GraphQLKtorClient(
-            url = URL(baseUrl),
-            httpClient = httpClient
-        )
+
         return runWithRetryAndMetrics("SAF", "DokumentoversiktBruker", retry) {
 
             val stsToken = stsClient.oidcToken()
@@ -51,7 +47,10 @@ class SafClient(
                 )
 
             )
-            val response: GraphQLClientResponse<Dokumenter.Result> = client.execute(dokumenterQuery) {
+
+            val response = apacheHttpClient.post<KotlinxGraphQLResponse<Dokumenter.Result>>() {
+                url(baseUrl)
+                body = dokumenterQuery
                 header(HttpHeaders.Authorization, "Bearer $stsToken")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
