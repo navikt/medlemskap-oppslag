@@ -48,7 +48,7 @@ class SafClient(
 
             )
 
-            val response = apacheHttpClient.post<KotlinxGraphQLResponse<Dokumenter.Result>>() {
+            val response = httpClient.post<KotlinxGraphQLResponse<Dokumenter.Result>>() {
                 url(baseUrl)
                 body = dokumenterQuery
                 header(HttpHeaders.Authorization, "Bearer $stsToken")
