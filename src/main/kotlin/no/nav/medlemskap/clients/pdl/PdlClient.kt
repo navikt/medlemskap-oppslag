@@ -42,7 +42,9 @@ class PdlClient(
                     true
                 )
             )
-            val response: GraphQLClientResponse<HentIdenter.Result> = client.execute(query) {
+            val response: GraphQLClientResponse<HentIdenter.Result> = httpClient.post() {
+                url(baseUrl)
+                body = query
                 header(HttpHeaders.Authorization, "Bearer $stsToken")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
@@ -65,17 +67,16 @@ class PdlClient(
     }
 
     suspend fun hentPersonV2(fnr: String, callId: String): GraphQLClientResponse<HentPerson.Result> {
-        val client = GraphQLKtorClient(
-            url = URL(baseUrl),
-            httpClient = httpClient
-        )
+
         return runWithRetryAndMetrics("PDL", "HentPerson", retry) {
             val stsToken = stsClient.oidcToken()
 
             val query = HentPerson(
                 variables = HentPerson.Variables(fnr, true, true)
             )
-            val response: GraphQLClientResponse<HentPerson.Result> = client.execute(query) {
+            val response: GraphQLClientResponse<HentPerson.Result> = httpClient.post() {
+                url(baseUrl)
+                body = query
                 header(HttpHeaders.Authorization, "Bearer $stsToken")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
