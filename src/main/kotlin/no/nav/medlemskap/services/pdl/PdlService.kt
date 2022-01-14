@@ -2,8 +2,9 @@ package no.nav.medlemskap.services.pdl
 
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.pdl.PdlClient
-import no.nav.medlemskap.clients.pdl.generated.HentIdenter
-import no.nav.medlemskap.clients.pdl.generated.HentPerson
+import no.nav.medlemskap.clients.pdl.generated.enums.AdressebeskyttelseGradering
+import no.nav.medlemskap.clients.pdl.generated.enums.IdentGruppe
+import no.nav.medlemskap.clients.pdl.generated.hentperson.Adressebeskyttelse
 import no.nav.medlemskap.common.exceptions.GradertAdresseException
 import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.exceptions.IdenterIkkeFunnet
@@ -24,7 +25,7 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
     private val logger = KotlinLogging.logger { }
 
     suspend fun hentAlleAktorIder(fnr: String, callId: String): List<String> {
-        val pdlResponse = pdlClient.hentIdenter(fnr, callId)
+        val pdlResponse = pdlClient.hentIdenterv2(fnr, callId)
 
         // Hack for å overleve manglende aktørID i ikke-konsistente data i Q2
         if (pdlResponse.errors != null && clusterName == "dev-gcp") {
@@ -37,12 +38,12 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
         }
 
         return pdlResponse.data?.hentIdenter?.identer
-            ?.filter { it.gruppe == HentIdenter.IdentGruppe.AKTORID }
+            ?.filter { it.gruppe == IdentGruppe.AKTORID }
             ?.map { it.ident } ?: throw IdenterIkkeFunnet(coroutineContext.ytelse())
     }
 
     suspend fun hentPersonHistorikkTilBruker(fnr: String, callId: String): Personhistorikk {
-        val hentPersonhistorikkTilBrukerRespons = pdlClient.hentPerson(fnr, callId)
+        val hentPersonhistorikkTilBrukerRespons = pdlClient.hentPersonV2(fnr, callId)
         val adresseBeskyttelse = hentPersonhistorikkTilBrukerRespons.data?.hentPerson?.adressebeskyttelse
 
         if (adresseBeskyttelse?.let { harAdressebeskyttelse(it) } == true) {
@@ -61,7 +62,7 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
     }
 
     suspend fun hentPersonHistorikkTilEktefelle(fnrTilEktefelle: String, førsteDatoForYtelse: LocalDate, callId: String): PersonhistorikkEktefelle? {
-        val hentPersonhistorikkTilEktefelleResponse = pdlClient.hentPerson(fnrTilEktefelle, callId)
+        val hentPersonhistorikkTilEktefelleResponse = pdlClient.hentPersonV2(fnrTilEktefelle, callId)
         val adresseBeskyttelse = hentPersonhistorikkTilEktefelleResponse.data?.hentPerson?.adressebeskyttelse
 
         if (adresseBeskyttelse?.let { harAdressebeskyttelse(it) } == true) {
@@ -85,7 +86,7 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
     }
 
     suspend fun hentPersonHistorikkTilBarn(fnrTilBarn: String, callId: String): PersonhistorikkBarn? {
-        val hentPersonHistorikkTilBarnRespons = pdlClient.hentPerson(fnrTilBarn, callId)
+        val hentPersonHistorikkTilBarnRespons = pdlClient.hentPersonV2(fnrTilBarn, callId)
         val adresseBeskyttelse = hentPersonHistorikkTilBarnRespons.data?.hentPerson?.adressebeskyttelse
 
         if (adresseBeskyttelse?.let { harAdressebeskyttelse(it) } == true) {
@@ -110,7 +111,7 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
         return null
     }
 
-    fun harAdressebeskyttelse(adresseBeskyttelse: List<HentPerson.Adressebeskyttelse>): Boolean {
-        return adresseBeskyttelse.any { it.gradering != HentPerson.AdressebeskyttelseGradering.UGRADERT }
+    fun harAdressebeskyttelse(adresseBeskyttelse: List<Adressebeskyttelse>): Boolean {
+        return adresseBeskyttelse.any { it.gradering != AdressebeskyttelseGradering.UGRADERT }
     }
 }

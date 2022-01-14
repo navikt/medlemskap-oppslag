@@ -150,7 +150,7 @@ data class Arbeidsforhold(
                     val antallDagerDiff = abs(
                         ChronoUnit.DAYS.between(
                             kontrollPeriode.fom,
-                            arbeidsforholdForNorskArbeidsgiver.min()!!.periode.fom
+                            arbeidsforholdForNorskArbeidsgiver.minOrNull()!!.periode.fom
                         )
                     )
                     antallDagerUtenArbeidsforhold(ytelse).record(antallDagerDiff.toDouble())

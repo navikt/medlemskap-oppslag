@@ -2,6 +2,9 @@ package no.nav.medlemskap.cucumber.mapping.pdl
 
 import io.cucumber.datatable.DataTable
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
+import no.nav.medlemskap.clients.pdl.generated.enums.ForelderBarnRelasjonRolle
+import no.nav.medlemskap.clients.pdl.generated.enums.Sivilstandstype
+import no.nav.medlemskap.clients.pdl.generated.hentperson.*
 import no.nav.medlemskap.cucumber.BasisDomeneParser
 import no.nav.medlemskap.cucumber.Domenenøkkel
 import no.nav.medlemskap.cucumber.RadMapper
@@ -13,59 +16,59 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, PdlParametreMapper()).get(0)
     }
 
-    fun mapStatsborgerskap(dataTable: DataTable): List<HentPerson.Statsborgerskap> {
+    fun mapStatsborgerskap(dataTable: DataTable): List<Statsborgerskap> {
         return mapDataTable(dataTable, StatsborgerskapMapper())
     }
 
-    fun mapBostedsadresser(dataTable: DataTable): List<HentPerson.Bostedsadresse> {
+    fun mapBostedsadresser(dataTable: DataTable): List<Bostedsadresse> {
         return mapDataTable(dataTable, BostedsadresseMapper())
     }
 
-    fun mapKontaktadresser(dataTable: DataTable): List<HentPerson.Kontaktadresse> {
+    fun mapKontaktadresser(dataTable: DataTable): List<Kontaktadresse> {
         return mapDataTable(dataTable, KontaktadresseMapper())
     }
 
-    fun mapOppholdsadresser(dataTable: DataTable): List<HentPerson.Oppholdsadresse> {
+    fun mapOppholdsadresser(dataTable: DataTable): List<Oppholdsadresse> {
         return mapDataTable(dataTable, OppholdsadresseMapper())
     }
 
-    fun mapSivilstander(dataTable: DataTable): List<HentPerson.Sivilstand> {
+    fun mapSivilstander(dataTable: DataTable): List<Sivilstand> {
         return mapDataTable(dataTable, SivilstandMapper())
     }
 
-    fun mapFamilierelasjoner(dataTable: DataTable): List<HentPerson.ForelderBarnRelasjon> {
+    fun mapFamilierelasjoner(dataTable: DataTable): List<ForelderBarnRelasjon> {
         return mapDataTable(dataTable, FamilerelasjonMapper())
     }
 
-    fun mapDoedsfall(dataTable: DataTable): List<HentPerson.Doedsfall> {
+    fun mapDoedsfall(dataTable: DataTable): List<Doedsfall> {
         return mapDataTable(dataTable, DoedsfallMapper())
     }
 
-    class StatsborgerskapMapper : RadMapper<HentPerson.Statsborgerskap> {
-        override fun mapRad(rad: Map<String, String>): HentPerson.Statsborgerskap {
+    class StatsborgerskapMapper : RadMapper<Statsborgerskap> {
+        override fun mapRad(rad: Map<String, String>): Statsborgerskap {
 
             val historisk = parseValgfriBoolean(Domenebegrep.HISTORISK.nøkkel(), rad) ?: false
 
-            return HentPerson.Statsborgerskap(
+            return Statsborgerskap(
                 parseString(Domenebegrep.LAND, rad),
                 parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED_DATO, rad),
                 parseValgfriString(Domenebegrep.GYLDIG_TIL_OG_MED_DATO, rad),
-                HentPerson.Metadata(historisk)
+                Metadata(historisk)
             )
         }
     }
 
-    class BostedsadresseMapper : RadMapper<HentPerson.Bostedsadresse> {
-        override fun mapRad(rad: Map<String, String>): HentPerson.Bostedsadresse {
+    class BostedsadresseMapper : RadMapper<Bostedsadresse> {
+        override fun mapRad(rad: Map<String, String>): Bostedsadresse {
             val utenlandskLandkode = parseValgfriString(Domenebegrep.UTENLANDSK_ADRESSE_LANDKODE, rad)
 
             val utenlandskAdresse = if (utenlandskLandkode != null) {
-                HentPerson.UtenlandskAdresse(utenlandskLandkode)
+                UtenlandskAdresse(utenlandskLandkode)
             } else {
                 null
             }
 
-            return HentPerson.Bostedsadresse(
+            return Bostedsadresse(
                 gyldigFraOgMed = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED, rad),
                 gyldigTilOgMed = parseValgfriString(Domenebegrep.GYLDIG_TIL_OG_MED, rad),
                 utenlandskAdresse = utenlandskAdresse,
@@ -73,17 +76,17 @@ class PdlDomenespråkParser : BasisDomeneParser() {
                 vegadresse = null,
                 matrikkeladresse = null,
                 ukjentBosted = null,
-                metadata = HentPerson.Metadata(false)
+                metadata = Metadata(false)
             )
         }
     }
 
-    class KontaktadresseMapper : RadMapper<HentPerson.Kontaktadresse> {
-        override fun mapRad(rad: Map<String, String>): HentPerson.Kontaktadresse {
+    class KontaktadresseMapper : RadMapper<Kontaktadresse> {
+        override fun mapRad(rad: Map<String, String>): Kontaktadresse {
             val utenlandskLandkode = parseValgfriString(Domenebegrep.UTENLANDSK_ADRESSE_LANDKODE, rad)
 
             val utenlandskAdresse = if (utenlandskLandkode != null) {
-                HentPerson.UtenlandskAdresse(utenlandskLandkode)
+                UtenlandskAdresse(utenlandskLandkode)
             } else {
                 null
             }
@@ -91,36 +94,36 @@ class PdlDomenespråkParser : BasisDomeneParser() {
             val utenlandskLandkodeFrittFormat = parseValgfriString(Domenebegrep.UTENLANDSK_ADRESSE_FRITT_FORMAT_LANDKODE, rad)
 
             val utenlandskAdresseFrittFormat = if (utenlandskLandkodeFrittFormat != null) {
-                HentPerson.UtenlandskAdresseIFrittFormat(utenlandskLandkodeFrittFormat)
+                UtenlandskAdresseIFrittFormat(utenlandskLandkodeFrittFormat)
             } else {
                 null
             }
 
-            return HentPerson.Kontaktadresse(
+            return Kontaktadresse(
                 gyldigFraOgMed = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED, rad),
                 gyldigTilOgMed = parseValgfriString(Domenebegrep.GYLDIG_TIL_OG_MED, rad),
                 utenlandskAdresse = utenlandskAdresse,
                 utenlandskAdresseIFrittFormat = utenlandskAdresseFrittFormat,
-                metadata = HentPerson.Metadata(false)
+                metadata = Metadata(false)
             )
         }
     }
 
-    class OppholdsadresseMapper : RadMapper<HentPerson.Oppholdsadresse> {
-        override fun mapRad(rad: Map<String, String>): HentPerson.Oppholdsadresse {
+    class OppholdsadresseMapper : RadMapper<Oppholdsadresse> {
+        override fun mapRad(rad: Map<String, String>): Oppholdsadresse {
             val utenlandskLandkode = parseValgfriString(Domenebegrep.UTENLANDSK_ADRESSE_LANDKODE, rad)
 
             val utenlandskAdresse = if (utenlandskLandkode != null) {
-                HentPerson.UtenlandskAdresse(utenlandskLandkode)
+                UtenlandskAdresse(utenlandskLandkode)
             } else {
                 null
             }
 
-            return HentPerson.Oppholdsadresse(
+            return Oppholdsadresse(
                 gyldigFraOgMed = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED, rad),
                 gyldigTilOgMed = parseValgfriString(Domenebegrep.GYLDIG_TIL_OG_MED, rad),
                 utenlandskAdresse = utenlandskAdresse,
-                metadata = HentPerson.Metadata(false)
+                metadata = Metadata(false)
             )
         }
     }
@@ -131,12 +134,12 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         }
     }
 
-    class SivilstandMapper : RadMapper<HentPerson.Sivilstand> {
+    class SivilstandMapper : RadMapper<Sivilstand> {
 
-        override fun mapRad(rad: Map<String, String>): HentPerson.Sivilstand {
-            val sivilstandstype = HentPerson.Sivilstandstype.valueOf(parseString(Domenebegrep.SIVILSTANDSTYPE, rad))
+        override fun mapRad(rad: Map<String, String>): Sivilstand {
+            val sivilstandstype = Sivilstandstype.valueOf(parseString(Domenebegrep.SIVILSTANDSTYPE, rad))
 
-            return HentPerson.Sivilstand(
+            return Sivilstand(
                 type = sivilstandstype,
                 gyldigFraOgMed = parseValgfriString(Domenebegrep.GYLDIG_FRA_OG_MED, rad),
                 bekreftelsesdato = parseValgfriString(Domenebegrep.BEKREFTELSESDATO, rad),
@@ -145,19 +148,19 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         }
     }
 
-    class FamilerelasjonMapper : RadMapper<HentPerson.ForelderBarnRelasjon> {
+    class FamilerelasjonMapper : RadMapper<ForelderBarnRelasjon> {
 
-        override fun mapRad(rad: Map<String, String>): HentPerson.ForelderBarnRelasjon {
-            val relatertPersonsrolle = HentPerson.ForelderBarnRelasjonRolle.valueOf(parseString(Domenebegrep.RELATERT_PERSONS_ROLLE, rad))
+        override fun mapRad(rad: Map<String, String>): ForelderBarnRelasjon {
+            val relatertPersonsrolle = ForelderBarnRelasjonRolle.valueOf(parseString(Domenebegrep.RELATERT_PERSONS_ROLLE, rad))
             val minRolleForPersonStr = parseValgfriString(Domenebegrep.MIN_ROLLE_FOR_PERSON, rad)
 
             val minRolleForPerson = if (minRolleForPersonStr != null) {
-                HentPerson.ForelderBarnRelasjonRolle.valueOf(minRolleForPersonStr)
+                ForelderBarnRelasjonRolle.valueOf(minRolleForPersonStr)
             } else {
                 null
             }
 
-            return HentPerson.ForelderBarnRelasjon(
+            return ForelderBarnRelasjon(
                 relatertPersonsIdent = parseString(Domenebegrep.RELATERT_PERSONS_IDENT, rad),
                 relatertPersonsRolle = relatertPersonsrolle,
                 minRolleForPerson = minRolleForPerson
@@ -165,10 +168,10 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         }
     }
 
-    class DoedsfallMapper : RadMapper<HentPerson.Doedsfall> {
+    class DoedsfallMapper : RadMapper<Doedsfall> {
 
-        override fun mapRad(rad: Map<String, String>): HentPerson.Doedsfall {
-            return HentPerson.Doedsfall(
+        override fun mapRad(rad: Map<String, String>): Doedsfall {
+            return Doedsfall(
                 doedsdato = parseValgfriString(Domenebegrep.DOEDSDATO, rad)
             )
         }

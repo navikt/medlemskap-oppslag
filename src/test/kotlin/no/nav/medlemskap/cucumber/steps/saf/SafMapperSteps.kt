@@ -3,7 +3,10 @@ package no.nav.medlemskap.cucumber.steps.saf
 import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
 import io.kotest.matchers.shouldBe
-import no.nav.medlemskap.clients.saf.generated.Dokumenter
+import no.nav.medlemskap.clients.saf.generated.dokumenter.DokumentInfo
+import no.nav.medlemskap.clients.saf.generated.enums.Journalposttype
+import no.nav.medlemskap.clients.saf.generated.enums.Journalstatus
+import no.nav.medlemskap.clients.saf.generated.enums.Tema
 import no.nav.medlemskap.cucumber.SpraakParserDomene.DokumentDomeneSpraakParser
 import no.nav.medlemskap.cucumber.mapping.saf.SafDomeneSpraakParser
 import no.nav.medlemskap.domene.Dokument
@@ -95,16 +98,16 @@ class SafMapperSteps : No {
 
         var dokumentInfoBuilder = DokumentInfoBuilder()
 
-        var tema = Dokumenter.Tema.AAP
+        var tema = Tema.AAP
         var journalpostId = String()
-        var journalStatus = Dokumenter.Journalstatus.FERDIGSTILT
-        var journalposttype = Dokumenter.Journalposttype.I
+        var journalStatus = Journalstatus.FERDIGSTILT
+        var journalposttype = Journalposttype.I
         var datoOpprettet = LocalDateTime.now().toString()
-        var dokumenter = listOf<Dokumenter.DokumentInfo?>(dokumentInfoBuilder.build())
+        var dokumenter = listOf<DokumentInfo?>(dokumentInfoBuilder.build())
         var tittel = String()
 
-        fun build(): Dokumenter.Journalpost {
-            return Dokumenter.Journalpost(
+        fun build(): no.nav.medlemskap.clients.saf.generated.dokumenter.Journalpost {
+            return no.nav.medlemskap.clients.saf.generated.dokumenter.Journalpost(
                 tema = tema,
                 journalpostId = journalpostId,
                 journalstatus = journalStatus,
@@ -119,8 +122,8 @@ class SafMapperSteps : No {
     class DokumentInfoBuilder {
         var dokumentInfoId = String()
         var tittel = String()
-        fun build(): Dokumenter.DokumentInfo? {
-            return Dokumenter.DokumentInfo(
+        fun build(): DokumentInfo? {
+            return DokumentInfo(
                 dokumentInfoId = dokumentInfoId,
                 tittel = tittel
             )

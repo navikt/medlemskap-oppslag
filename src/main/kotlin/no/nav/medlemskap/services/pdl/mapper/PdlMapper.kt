@@ -2,9 +2,12 @@ package no.nav.medlemskap.services.pdl.mapper
 
 import com.neovisionaries.i18n.CountryCode
 import mu.KotlinLogging
-import no.nav.medlemskap.clients.pdl.generated.HentPerson
+import no.nav.medlemskap.clients.pdl.generated.hentperson.*
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.domene.personhistorikk.*
+import no.nav.medlemskap.domene.personhistorikk.ForelderBarnRelasjon
+import no.nav.medlemskap.domene.personhistorikk.Sivilstand
+import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
 import no.nav.medlemskap.regler.common.Datohjelper.parseIsoDato
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
 import java.time.LocalDate
@@ -13,7 +16,7 @@ object PdlMapper {
 
     private val logger = KotlinLogging.logger { }
 
-    fun mapTilPersonHistorikkTilBruker(person: HentPerson.Person): Personhistorikk {
+    fun mapTilPersonHistorikkTilBruker(person: Person): Personhistorikk {
 
         val statsborgerskap: List<Statsborgerskap> = mapStatsborgerskap(person.statsborgerskap)
         val bostedsadresser: List<Adresse> = mapBostedsadresser(person.bostedsadresse)
@@ -34,13 +37,13 @@ object PdlMapper {
         )
     }
 
-    private fun mapDoedsfall(doedsfall: List<HentPerson.Doedsfall>): List<LocalDate> {
+    private fun mapDoedsfall(doedsfall: List<Doedsfall>): List<LocalDate> {
         return doedsfall.mapNotNull {
             parseIsoDato(it.doedsdato)
         }
     }
 
-    fun mapOppholdsadresser(pdlOppholdsadresser: List<HentPerson.Oppholdsadresse>): List<Adresse> {
+    fun mapOppholdsadresser(pdlOppholdsadresser: List<Oppholdsadresse>): List<Adresse> {
 
         if (pdlOppholdsadresser.size < 2) {
             return pdlOppholdsadresser.map {
@@ -54,7 +57,7 @@ object PdlMapper {
         }.plus(mapOppholdsadresse(sortertPdlOppholdsadresser.last()))
     }
 
-    fun mapOppholdsadresse(oppholdsadresse: HentPerson.Oppholdsadresse, gyldigTilOgMed: LocalDate? = null): Adresse {
+    fun mapOppholdsadresse(oppholdsadresse: Oppholdsadresse, gyldigTilOgMed: LocalDate? = null): Adresse {
         return Adresse(
             fom = parseIsoDato(oppholdsadresse.gyldigFraOgMed),
             tom = parseIsoDato(oppholdsadresse.gyldigTilOgMed) ?: gyldigTilOgMed,
@@ -63,11 +66,11 @@ object PdlMapper {
         )
     }
 
-    fun mapFamilierelasjoner(pdlFamilierelasjoner: List<HentPerson.ForelderBarnRelasjon>): List<ForelderBarnRelasjon> {
+    fun mapFamilierelasjoner(pdlFamilierelasjoner: List<no.nav.medlemskap.clients.pdl.generated.hentperson.ForelderBarnRelasjon>): List<ForelderBarnRelasjon> {
         return pdlFamilierelasjoner.map { mapFamilierelasjon(it) }
     }
 
-    fun mapFamilierelasjon(familierelasjon: HentPerson.ForelderBarnRelasjon): ForelderBarnRelasjon {
+    fun mapFamilierelasjon(familierelasjon: no.nav.medlemskap.clients.pdl.generated.hentperson.ForelderBarnRelasjon): ForelderBarnRelasjon {
         return ForelderBarnRelasjon(
             relatertPersonsIdent = familierelasjon.relatertPersonsIdent,
             relatertPersonsRolle = mapFamileRelasjonsrolle(familierelasjon.relatertPersonsRolle)!!,
@@ -75,7 +78,7 @@ object PdlMapper {
         )
     }
 
-    fun mapOppholdsadresse(oppholdsadresse: HentPerson.Oppholdsadresse): Adresse {
+    fun mapOppholdsadresse(oppholdsadresse: Oppholdsadresse): Adresse {
         return Adresse(
             fom = parseIsoDato(oppholdsadresse.gyldigFraOgMed),
             tom = parseIsoDato(oppholdsadresse.gyldigTilOgMed),
@@ -84,14 +87,14 @@ object PdlMapper {
         )
     }
 
-    fun mapLandkodeForOppholdsadresse(oppholdsadresse: HentPerson.Oppholdsadresse): String {
+    fun mapLandkodeForOppholdsadresse(oppholdsadresse: Oppholdsadresse): String {
         if (oppholdsadresse.utenlandskAdresse != null) {
             return mapLandkode(oppholdsadresse.utenlandskAdresse!!.landkode)
         }
         return CountryCode.NO.alpha3
     }
 
-    fun mapLandkodeForKontaktadresse(kontaktadresse: HentPerson.Kontaktadresse): String {
+    fun mapLandkodeForKontaktadresse(kontaktadresse: Kontaktadresse): String {
         if (kontaktadresse.utenlandskAdresse != null) {
             return mapLandkode(kontaktadresse.utenlandskAdresse!!.landkode)
         }
@@ -101,7 +104,7 @@ object PdlMapper {
         return CountryCode.NO.alpha3
     }
 
-    fun mapBostedsadresser(pdlBostedsadresser: List<HentPerson.Bostedsadresse>): List<Adresse> {
+    fun mapBostedsadresser(pdlBostedsadresser: List<Bostedsadresse>): List<Adresse> {
 
         if (pdlBostedsadresser.size < 2) {
             return pdlBostedsadresser.map {
@@ -114,7 +117,7 @@ object PdlMapper {
         }.plus(mapBostedadresse(sortertPdlBostedsadresser.last()))
     }
 
-    private fun mapBostedadresse(adresse: HentPerson.Bostedsadresse, gyldigTilOgMed: LocalDate? = null): Adresse {
+    private fun mapBostedadresse(adresse: Bostedsadresse, gyldigTilOgMed: LocalDate? = null): Adresse {
 
         return Adresse(
             landkode = adresse.utenlandskAdresse?.landkode ?: "NOR",
@@ -124,7 +127,7 @@ object PdlMapper {
         )
     }
 
-    fun mapKontaktadresser(pdlKontaktadresser: List<HentPerson.Kontaktadresse>): List<Adresse> {
+    fun mapKontaktadresser(pdlKontaktadresser: List<Kontaktadresse>): List<Adresse> {
 
         if (pdlKontaktadresser.size < 2) {
             return pdlKontaktadresser.map {
@@ -138,7 +141,7 @@ object PdlMapper {
         }.plus(mapKontaktadresse(sortertPdlKontaktadresser.last()))
     }
 
-    private fun mapKontaktadresse(pdlKontaktadresse: HentPerson.Kontaktadresse, gyldigTilOgMed: LocalDate? = null): Adresse {
+    private fun mapKontaktadresse(pdlKontaktadresse: Kontaktadresse, gyldigTilOgMed: LocalDate? = null): Adresse {
         return Adresse(
             fom = parseIsoDato(pdlKontaktadresse.gyldigFraOgMed),
             tom = parseIsoDato(pdlKontaktadresse.gyldigTilOgMed) ?: gyldigTilOgMed,
@@ -147,7 +150,7 @@ object PdlMapper {
         )
     }
 
-    fun mapStatsborgerskap(statsborgerskap: List<HentPerson.Statsborgerskap>): List<Statsborgerskap> {
+    fun mapStatsborgerskap(statsborgerskap: List<no.nav.medlemskap.clients.pdl.generated.hentperson.Statsborgerskap>): List<Statsborgerskap> {
         return statsborgerskap.map {
             Statsborgerskap(
                 landkode = it.land,
@@ -158,13 +161,13 @@ object PdlMapper {
         }.sortedBy { it.fom }
     }
 
-    private fun mapFamileRelasjonsrolle(rolle: HentPerson.ForelderBarnRelasjonRolle?): ForelderBarnRelasjonRolle? {
+    private fun mapFamileRelasjonsrolle(rolle: no.nav.medlemskap.clients.pdl.generated.enums.ForelderBarnRelasjonRolle?): ForelderBarnRelasjonRolle? {
         return rolle.let {
             when (it) {
-                HentPerson.ForelderBarnRelasjonRolle.BARN -> ForelderBarnRelasjonRolle.BARN
-                HentPerson.ForelderBarnRelasjonRolle.MOR -> ForelderBarnRelasjonRolle.MOR
-                HentPerson.ForelderBarnRelasjonRolle.FAR -> ForelderBarnRelasjonRolle.FAR
-                HentPerson.ForelderBarnRelasjonRolle.MEDMOR -> ForelderBarnRelasjonRolle.MEDMOR
+                no.nav.medlemskap.clients.pdl.generated.enums.ForelderBarnRelasjonRolle.BARN -> ForelderBarnRelasjonRolle.BARN
+                no.nav.medlemskap.clients.pdl.generated.enums.ForelderBarnRelasjonRolle.MOR -> ForelderBarnRelasjonRolle.MOR
+                no.nav.medlemskap.clients.pdl.generated.enums.ForelderBarnRelasjonRolle.FAR -> ForelderBarnRelasjonRolle.FAR
+                no.nav.medlemskap.clients.pdl.generated.enums.ForelderBarnRelasjonRolle.MEDMOR -> ForelderBarnRelasjonRolle.MEDMOR
                 else -> throw DetteSkalAldriSkje("Denne familierelasjonen er ikke tilgjengelig")
             }
         }
