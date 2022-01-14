@@ -1,6 +1,7 @@
 package no.nav.medlemskap.clients.pdl
 
 import com.expediagroup.graphql.client.ktor.GraphQLKtorClient
+import com.expediagroup.graphql.client.serialization.types.KotlinxGraphQLResponse
 import com.expediagroup.graphql.client.types.GraphQLClientResponse
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.*
@@ -42,7 +43,7 @@ class PdlClient(
                     true
                 )
             )
-            val response: GraphQLClientResponse<HentIdenter.Result> = httpClient.post() {
+            val response: KotlinxGraphQLResponse<HentIdenter.Result> = httpClient.post() {
                 url(baseUrl)
                 body = query
                 header(HttpHeaders.Authorization, "Bearer $stsToken")
@@ -74,7 +75,7 @@ class PdlClient(
             val query = HentPerson(
                 variables = HentPerson.Variables(fnr, true, true)
             )
-            val response: GraphQLClientResponse<HentPerson.Result> = httpClient.post() {
+            val response: KotlinxGraphQLResponse<HentPerson.Result> = httpClient.post() {
                 url(baseUrl)
                 body = query
                 header(HttpHeaders.Authorization, "Bearer $stsToken")

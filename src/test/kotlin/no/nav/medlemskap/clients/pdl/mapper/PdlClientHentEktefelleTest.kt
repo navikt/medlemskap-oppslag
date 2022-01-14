@@ -10,11 +10,8 @@ import kotlinx.coroutines.runBlocking
 import no.nav.medlemskap.clients.pdl.PdlClient
 import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.cioHttpClient
-import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
 
 class PdlClientHentEktefelleTest {
 
@@ -93,7 +90,7 @@ class PdlClientHentEktefelleTest {
                 ],
                 "sivilstand": [
                   {
-                    "bekreftelsesdato": null
+                    "bekreftelsesdato": null,
                     "type": "GIFT",
                     "gyldigFraOgMed": "2020-09-15",
                     "relatertVedSivilstand": "13128619857"
