@@ -28,10 +28,6 @@ class PdlClient(
     }
 
     suspend fun hentIdenterv2(fnr: String, callId: String): GraphQLClientResponse<HentIdenter.Result> {
-        val client = GraphQLKtorClient(
-            url = URL(baseUrl),
-            httpClient = httpClient
-        )
 
         return runWithRetryAndMetrics("PDL", "HentIdenter", retry) {
             logger.info("Pdl: Henter aktørId for person med fnr $fnr på url $baseUrl")
@@ -55,10 +51,6 @@ class PdlClient(
                 header("x-nav-apiKey", pdlApiKey)
             }
 
-            logger.info("Pdl: Ferdig med kallet")
-            logger.info(response.toString())
-            logger.info("Pdl: Data: " + response.data)
-            logger.info("Pdl: Errors: " + response.errors)
             if (!response.errors.isNullOrEmpty()) {
                 logger.error("PDL response errors: ${response.errors}")
                 // TODO: utfør feil håndtering. Gjøres utenfor denne koden?
@@ -88,10 +80,6 @@ class PdlClient(
                 header("x-nav-apiKey", pdlApiKey)
             }
 
-            logger.info("Pdl: Ferdig med kallet")
-            logger.info(response.toString())
-            logger.info("Pdl: Data: " + response.data)
-            logger.info("Pdl: Errors: " + response.errors)
             if (!response.errors.isNullOrEmpty()) {
                 logger.error("PDL response errors: ${response.errors}")
                 // TODO: utfør feil håndtering. Gjøres utenfor denne koden?
