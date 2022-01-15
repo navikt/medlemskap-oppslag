@@ -30,7 +30,6 @@ class PdlClient(
     suspend fun hentIdenterv2(fnr: String, callId: String): GraphQLClientResponse<HentIdenter.Result> {
 
         return runWithRetryAndMetrics("PDL", "HentIdenter", retry) {
-            logger.info("Pdl: Henter aktørId for person med fnr $fnr på url $baseUrl")
             val stsToken = stsClient.oidcToken()
             val query = HentIdenter(
                 variables = HentIdenter.Variables(
