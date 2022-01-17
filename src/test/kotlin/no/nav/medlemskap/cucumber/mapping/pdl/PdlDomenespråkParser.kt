@@ -1,7 +1,6 @@
 package no.nav.medlemskap.cucumber.mapping.pdl
 
 import io.cucumber.datatable.DataTable
-import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.clients.pdl.generated.enums.ForelderBarnRelasjonRolle
 import no.nav.medlemskap.clients.pdl.generated.enums.Sivilstandstype
 import no.nav.medlemskap.clients.pdl.generated.hentperson.*
