@@ -147,15 +147,9 @@ object UdiMapper {
         return EOSellerEFTAOpphold(
             periode = Periode(
                 fom =
-                    eoSellerEFTABeslutningOmOppholdsrett
-                        .oppholdsrettsPeriode
-                        .fra
-                        .asLocalDate(),
+                    eoSellerEFTABeslutningOmOppholdsrett.oppholdsrettsPeriode.fra.asLocalDate(),
                 tom =
-                    eoSellerEFTABeslutningOmOppholdsrett
-                        .oppholdsrettsPeriode
-                        .til
-                        .asLocalDate()
+                    eoSellerEFTABeslutningOmOppholdsrett.oppholdsrettsPeriode.til.asLocalDate()
             ),
             EOSellerEFTAGrunnlagskategoriOppholdstillatelseType = null,
             EOSellerEFTAGrunnlagskategoriOppholdsrettType =

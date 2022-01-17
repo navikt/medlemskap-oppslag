@@ -1,6 +1,5 @@
 package no.nav.medlemskap.clients.pdl
 
-import com.expediagroup.graphql.client.ktor.GraphQLKtorClient
 import com.expediagroup.graphql.client.serialization.types.KotlinxGraphQLResponse
 import com.expediagroup.graphql.client.types.GraphQLClientResponse
 import io.github.resilience4j.retry.Retry
@@ -13,7 +12,6 @@ import no.nav.medlemskap.clients.pdl.generated.HentIdenter
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
 import no.nav.medlemskap.clients.sts.StsRestClient
-import java.net.URL
 
 class PdlClient(
     private val baseUrl: String,

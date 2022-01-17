@@ -28,7 +28,6 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
 import no.nav.medlemskap.services.kafka.Producer
 import org.apache.kafka.clients.producer.ProducerRecord
-import java.lang.management.ManagementFactory
 import java.time.LocalDateTime
 import java.util.*
 
@@ -111,14 +110,14 @@ fun Routing.evalueringRoute(
                 resultat = resultat
             )
 
-             val producer = Producer().createProducer((Configuration().kafkaConfig))
-             val futureresult = producer.send(createRecord(TOPIC, callId, objectMapper.writeValueAsString(response)))
-             futureresult.get()
-             producer.close()
+            val producer = Producer().createProducer((Configuration().kafkaConfig))
+            val futureresult = producer.send(createRecord(TOPIC, callId, objectMapper.writeValueAsString(response)))
+            futureresult.get()
+            producer.close()
             loggResponse(request.fnr, response, endpoint)
-             logger.info(
+            logger.info(
                 "kafka request with id $callId processed ok and response published to $TOPIC ", kv("callId", callId)
-             )
+            )
             call.respond("Kafka melding: OK")
         }
     }
