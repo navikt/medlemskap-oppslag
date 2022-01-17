@@ -62,7 +62,7 @@ data class Medlemskap(
         private fun List<Medlemskap>.sammenhengendePerioder() = this.sorted().zipWithNext { a, b -> b.fraOgMed.isBefore(a.tilOgMed.plusDays(2)) }.all { it }
 
         infix fun List<Medlemskap>.tidligsteFraOgMedDatoForMedl(kontrollPeriode: Kontrollperiode): LocalDate =
-            this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).min()!!.fraOgMed
+            this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).minOrNull()!!.fraOgMed
 
         private fun List<Medlemskap>.medlemskapsPerioderOver12MndPeriode(erMedlem: Boolean, kontrollPeriode: Kontrollperiode): List<Medlemskap> =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).filter {

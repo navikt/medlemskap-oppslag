@@ -1,7 +1,8 @@
 package no.nav.medlemskap.clients.pdl
 
 import com.expediagroup.graphql.client.ktor.GraphQLKtorClient
-import com.expediagroup.graphql.types.GraphQLResponse
+import com.expediagroup.graphql.client.serialization.types.KotlinxGraphQLResponse
+import com.expediagroup.graphql.client.types.GraphQLClientResponse
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.*
 import io.ktor.client.request.*
@@ -26,13 +27,20 @@ class PdlClient(
         private val logger = KotlinLogging.logger { }
     }
 
-    suspend fun hentIdenter(fnr: String, callId: String): GraphQLResponse<HentIdenter.Result> {
+    suspend fun hentIdenterv2(fnr: String, callId: String): GraphQLClientResponse<HentIdenter.Result> {
+
         return runWithRetryAndMetrics("PDL", "HentIdenter", retry) {
             val stsToken = stsClient.oidcToken()
-            val hentIdenterQuery = HentIdenter(GraphQLKtorClient(url = URL("$baseUrl")))
-            val variables = HentIdenter.Variables(fnr, null, true)
-
-            val response: GraphQLResponse<HentIdenter.Result> = hentIdenterQuery.execute(variables) {
+            val query = HentIdenter(
+                variables = HentIdenter.Variables(
+                    fnr,
+                    null,
+                    true
+                )
+            )
+            val response: KotlinxGraphQLResponse<HentIdenter.Result> = httpClient.post() {
+                url(baseUrl)
+                body = query
                 header(HttpHeaders.Authorization, "Bearer $stsToken")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
@@ -41,17 +49,26 @@ class PdlClient(
                 header("Nav-Consumer-Id", username)
                 header("x-nav-apiKey", pdlApiKey)
             }
+
+            if (!response.errors.isNullOrEmpty()) {
+                logger.error("PDL response errors: ${response.errors}")
+                // TODO: utfør feil håndtering. Gjøres utenfor denne koden?
+            }
             response
         }
     }
 
-    suspend fun hentPerson(fnr: String, callId: String): GraphQLResponse<HentPerson.Result> {
+    suspend fun hentPersonV2(fnr: String, callId: String): GraphQLClientResponse<HentPerson.Result> {
+
         return runWithRetryAndMetrics("PDL", "HentPerson", retry) {
             val stsToken = stsClient.oidcToken()
-            val hentPersonQuery = HentPerson(GraphQLKtorClient(url = URL("$baseUrl")))
-            val variables = HentPerson.Variables(fnr, true, true)
 
-            val response: GraphQLResponse<HentPerson.Result> = hentPersonQuery.execute(variables) {
+            val query = HentPerson(
+                variables = HentPerson.Variables(fnr, true, true)
+            )
+            val response: KotlinxGraphQLResponse<HentPerson.Result> = httpClient.post() {
+                url(baseUrl)
+                body = query
                 header(HttpHeaders.Authorization, "Bearer $stsToken")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
@@ -60,6 +77,11 @@ class PdlClient(
                 header("Nav-Consumer-Token", "Bearer $stsToken")
                 header("Nav-Consumer-Id", username)
                 header("x-nav-apiKey", pdlApiKey)
+            }
+
+            if (!response.errors.isNullOrEmpty()) {
+                logger.error("PDL response errors: ${response.errors}")
+                // TODO: utfør feil håndtering. Gjøres utenfor denne koden?
             }
             response
         }

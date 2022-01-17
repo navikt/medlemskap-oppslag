@@ -10,11 +10,8 @@ import kotlinx.coroutines.runBlocking
 import no.nav.medlemskap.clients.pdl.PdlClient
 import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.cioHttpClient
-import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
 
 class PdlClientHentEktefelleTest {
 
@@ -58,7 +55,7 @@ class PdlClientHentEktefelleTest {
 
         val pdlClient = PdlClient(server.baseUrl(), stsClient, username, cioHttpClient, null, "123")
 
-        val pdlResponse = runBlocking { pdlClient.hentPerson("1234567890", callId) }
+        val pdlResponse = runBlocking { pdlClient.hentPersonV2("1234567890", callId) }
 
         assertEquals("NOR", pdlResponse.data?.hentPerson?.statsborgerskap?.first()?.land)
     }
@@ -93,24 +90,28 @@ class PdlClientHentEktefelleTest {
                 ],
                 "sivilstand": [
                   {
+                    "bekreftelsesdato": null,
                     "type": "GIFT",
                     "gyldigFraOgMed": "2020-09-15",
                     "relatertVedSivilstand": "13128619857"
                   }
                 ],
                 "bostedsadresse": [
-                  {
-                    "angittFlyttedato": "1973-11-11",
-                    "vegadresse": {
-                      "postnummer": "4994"
-                    },
-                    "matrikkeladresse": null,
-                    "ukjentBosted": null,
-                    "metadata": {
-                        "historisk": false
-                    }
-                  }
-                ],
+				{
+					"angittFlyttedato": "1979-12-25",
+					"gyldigFraOgMed": "1979-12-25T00:00",
+					"gyldigTilOgMed": null,
+					"vegadresse": {
+						"postnummer": "9801"
+					},
+					"matrikkeladresse": null,
+					"ukjentBosted": null,
+					"utenlandskAdresse": null,
+					"metadata": {
+						"historisk": false
+					}
+				}
+			    ],
                 "adressebeskyttelse":[],
                 "doedsfall": [],
                 "kontaktadresse": [],

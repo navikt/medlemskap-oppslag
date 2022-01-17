@@ -1,7 +1,9 @@
 package no.nav.medlemskap.services.pdl.mapper
 
 import no.bekk.bekkopen.person.FodselsnummerValidator
-import no.nav.medlemskap.clients.pdl.generated.HentPerson
+import no.nav.medlemskap.clients.pdl.generated.enums.ForelderBarnRelasjonRolle
+import no.nav.medlemskap.clients.pdl.generated.hentperson.ForelderBarnRelasjon
+import no.nav.medlemskap.clients.pdl.generated.hentperson.Person
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.domene.personhistorikk.Adresse
 import no.nav.medlemskap.domene.personhistorikk.ForelderBarnRelasjon.Companion.erBarnUnder25Aar
@@ -12,7 +14,7 @@ import java.time.LocalDate
 
 object PdlMapperEktefelle {
 
-    fun mapPersonhistorikkTilEktefelle(fnr: String, ektefelle: HentPerson.Person, førsteDatoForYtelse: LocalDate): PersonhistorikkEktefelle {
+    fun mapPersonhistorikkTilEktefelle(fnr: String, ektefelle: Person, førsteDatoForYtelse: LocalDate): PersonhistorikkEktefelle {
         val barn = mapFnrBarnTilBrukersEktefelle(ektefelle.forelderBarnRelasjon, førsteDatoForYtelse)
         val statsborgerskap: List<Statsborgerskap> = PdlMapper.mapStatsborgerskap(ektefelle.statsborgerskap)
         val oppholdsadresse = PdlMapper.mapOppholdsadresser(ektefelle.oppholdsadresse)
@@ -29,9 +31,9 @@ object PdlMapperEktefelle {
         )
     }
 
-    private fun mapFnrBarnTilBrukersEktefelle(familierelasjoner: List<HentPerson.ForelderBarnRelasjon>, førsteDatoForYtelse: LocalDate): List<String> {
+    private fun mapFnrBarnTilBrukersEktefelle(familierelasjoner: List<ForelderBarnRelasjon>, førsteDatoForYtelse: LocalDate): List<String> {
         return familierelasjoner
-            .filter { it.relatertPersonsRolle == HentPerson.ForelderBarnRelasjonRolle.BARN }
+            .filter { it.relatertPersonsRolle == ForelderBarnRelasjonRolle.BARN }
             .filter { FodselsnummerValidator.isValid(it.relatertPersonsIdent) }
             .filter { it.relatertPersonsIdent.erBarnUnder25Aar(førsteDatoForYtelse) }
             .map { it.relatertPersonsIdent }

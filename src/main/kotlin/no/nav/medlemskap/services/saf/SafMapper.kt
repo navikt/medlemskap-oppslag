@@ -7,7 +7,7 @@ import no.nav.medlemskap.domene.Journalpost
 fun mapDokumentoversiktBrukerResponse(response: Dokumenter.Result): List<Journalpost> =
     mapJournalResultat(response.dokumentoversiktBruker.journalposter)
 
-fun mapJournalResultat(journal: List<Dokumenter.Journalpost?>): List<Journalpost> {
+fun mapJournalResultat(journal: List<no.nav.medlemskap.clients.saf.generated.dokumenter.Journalpost?>): List<Journalpost> {
     return journal.filterNotNull().map {
         Journalpost(
             dokumenter = mapDokumenter(it),
@@ -20,7 +20,7 @@ fun mapJournalResultat(journal: List<Dokumenter.Journalpost?>): List<Journalpost
     }
 }
 
-fun mapDokumenter(journalPost: Dokumenter.Journalpost): List<Dokument> {
+fun mapDokumenter(journalPost: no.nav.medlemskap.clients.saf.generated.dokumenter.Journalpost): List<Dokument> {
     return journalPost.dokumenter?.filterNotNull()?.map {
         Dokument(
             dokumentId = it.dokumentInfoId,
