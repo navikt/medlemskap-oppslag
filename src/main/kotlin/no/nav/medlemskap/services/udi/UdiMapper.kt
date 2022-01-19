@@ -118,10 +118,10 @@ object UdiMapper {
                 fom = eoSellerEFTAVedtakOmVarigOppholdsrett.oppholdsrettsPeriode.fra.asLocalDate(),
                 tom = eoSellerEFTAVedtakOmVarigOppholdsrett.oppholdsrettsPeriode.til.asLocalDate()
             ),
-            EOSellerEFTAGrunnlagskategoriOppholdstillatelseType = null,
-            EOSellerEFTAGrunnlagskategoriOppholdsrettType = EOSellerEFTAGrunnlagskategoriOppholdsrettType
+            eosellerEFTAGrunnlagskategoriOppholdstillatelseType = null,
+            eosellerEFTAGrunnlagskategoriOppholdsrettType = EOSellerEFTAGrunnlagskategoriOppholdsrettType
                 .fraEOSellerEFTAGrunnlagskategoriOppholdsrettType(eoSellerEFTAVedtakOmVarigOppholdsrett.eosOppholdsgrunnlag.value()),
-            EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT
+            eosellerEFTAOppholdType = EOSellerEFTAOppholdType.EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT
         )
     }
 
@@ -132,13 +132,13 @@ object UdiMapper {
                 fom = eosEllerEftaOppholdstillatelse.oppholdstillatelsePeriode.fra.asLocalDate(),
                 tom = eosEllerEftaOppholdstillatelse.oppholdstillatelsePeriode.til.asLocalDate()
             ),
-            EOSellerEFTAGrunnlagskategoriOppholdsrettType = null,
-            EOSellerEFTAGrunnlagskategoriOppholdstillatelseType =
+            eosellerEFTAGrunnlagskategoriOppholdsrettType = null,
+            eosellerEFTAGrunnlagskategoriOppholdstillatelseType =
                 EOSellerEFTAGrunnlagskategoriOppholdsTillatelseType
                     .fraEOSellerEFTAGrunnlagskategoriOppholdsTillatelseType(
                         eosEllerEftaOppholdstillatelse.eosOppholdsgrunnlag.value()
                     ),
-            EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.EOS_ELLER_EFTA_OPPHOLDSTILLATELSE
+            eosellerEFTAOppholdType = EOSellerEFTAOppholdType.EOS_ELLER_EFTA_OPPHOLDSTILLATELSE
         )
     }
 
@@ -151,13 +151,13 @@ object UdiMapper {
                 tom =
                     eoSellerEFTABeslutningOmOppholdsrett.oppholdsrettsPeriode.til.asLocalDate()
             ),
-            EOSellerEFTAGrunnlagskategoriOppholdstillatelseType = null,
-            EOSellerEFTAGrunnlagskategoriOppholdsrettType =
+            eosellerEFTAGrunnlagskategoriOppholdstillatelseType = null,
+            eosellerEFTAGrunnlagskategoriOppholdsrettType =
                 EOSellerEFTAGrunnlagskategoriOppholdsrettType
                     .fraEOSellerEFTAGrunnlagskategoriOppholdsrettType(
                         eoSellerEFTABeslutningOmOppholdsrett.eosOppholdsgrunnlag.value()
                     ),
-            EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT
+            eosellerEFTAOppholdType = EOSellerEFTAOppholdType.EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT
         )
     }
 

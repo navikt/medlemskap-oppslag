@@ -102,9 +102,9 @@ data class Uavklart(
 
 data class EOSellerEFTAOpphold(
     val periode: Periode?,
-    val EOSellerEFTAOppholdType: EOSellerEFTAOppholdType,
-    val EOSellerEFTAGrunnlagskategoriOppholdsrettType: EOSellerEFTAGrunnlagskategoriOppholdsrettType?,
-    val EOSellerEFTAGrunnlagskategoriOppholdstillatelseType: EOSellerEFTAGrunnlagskategoriOppholdsTillatelseType?
+    val eosellerEFTAOppholdType: EOSellerEFTAOppholdType,
+    val eosellerEFTAGrunnlagskategoriOppholdsrettType: EOSellerEFTAGrunnlagskategoriOppholdsrettType?,
+    val eosellerEFTAGrunnlagskategoriOppholdstillatelseType: EOSellerEFTAGrunnlagskategoriOppholdsTillatelseType?
 )
 
 enum class EOSellerEFTAGrunnlagskategoriOppholdsrettType(val kodeverdi: String) {
