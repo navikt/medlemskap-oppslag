@@ -5,9 +5,7 @@ import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.stubbing.Scenario.STARTED
-import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
+import io.ktor.http.*
 import kotlinx.coroutines.runBlocking
 import no.nav.medlemskap.common.cioHttpClient
 import org.junit.jupiter.api.AfterAll
@@ -66,7 +64,7 @@ class StsRestClientTest {
                 .whenScenarioStateIs("token acquired")
         )
 
-        val authHelper = StsRestClient(baseUrl = server.baseUrl(), username = "foo", password = "bar", httpClient = cioHttpClient)
+        val authHelper = StsRestClient(baseUrl = server.baseUrl(), username = "foo", password = "bar", httpClient = cioHttpClient, apiKey = "stsApiKey")
         val first = runBlocking { authHelper.oidcToken() }
 
         val second: String = runBlocking { authHelper.oidcToken() }

@@ -6,7 +6,7 @@ on:
       - master
 
 env:
-  IMAGE: docker.pkg.github.com/${{ github.repository }}/medlemskap-oppslag:${{ github.sha }}
+  IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -28,7 +28,7 @@ jobs:
       - name: Build docker image
         run: docker build -t $IMAGE .
       - name: Login to Github package registry
-        run: docker login docker.pkg.github.com -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
+        run: docker login ghcr.io -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Push docker image
@@ -52,7 +52,7 @@ jobs:
       - uses: nais/deploy/actions/deploy@master
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
-          CLUSTER: dev-fss
+          CLUSTER: dev-gcp
           RESOURCE: deploy/preprod.yaml
       - name: Post failures to Slack
         if: failure()
@@ -73,7 +73,7 @@ jobs:
       - uses: nais/deploy/actions/deploy@master
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
-          CLUSTER: prod-fss
+          CLUSTER: prod-gcp
           RESOURCE: deploy/prod.yaml
       - name: Post failures to Slack
         if: failure()

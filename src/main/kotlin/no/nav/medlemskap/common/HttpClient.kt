@@ -9,6 +9,7 @@ import io.ktor.client.engine.apache.Apache
 import io.ktor.client.engine.cio.CIO
 import io.ktor.client.features.json.JacksonSerializer
 import io.ktor.client.features.json.JsonFeature
+import io.ktor.features.*
 import org.apache.http.impl.conn.SystemDefaultRoutePlanner
 import java.net.ProxySelector
 

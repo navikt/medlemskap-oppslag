@@ -4,11 +4,8 @@ import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock.*
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
-import io.ktor.client.features.ClientRequestException
-import io.ktor.client.features.ServerResponseException
-import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
+import io.ktor.client.features.*
+import io.ktor.http.*
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -58,7 +55,7 @@ class OppgaveClientTest {
                 )
         )
 
-        val oppgaveclient = OppgaveClient(server.baseUrl(), stsClient, cioHttpClient)
+        val oppgaveclient = createOppgaveClient(stsClient)
 
         val oppgaveResponse = runBlocking { oppgaveclient.hentOppgaver(listOf("1234567890"), callId) }
         val oppgave = oppgaveResponse.oppgaver[0]
@@ -88,7 +85,7 @@ class OppgaveClientTest {
             )
         )
 
-        val oppgaveclient = OppgaveClient(server.baseUrl(), stsClient, cioHttpClient)
+        val oppgaveclient = createOppgaveClient(stsClient)
 
         Assertions.assertThrows(ServerResponseException::class.java) {
             runBlocking { oppgaveclient.hentOppgaver(listOf("1234567890"), callId) }
@@ -110,11 +107,15 @@ class OppgaveClientTest {
             )
         )
 
-        val oppgaveclient = OppgaveClient(server.baseUrl(), stsClient, cioHttpClient)
+        val oppgaveclient = createOppgaveClient(stsClient)
 
         Assertions.assertThrows(ClientRequestException::class.java) {
             runBlocking { oppgaveclient.hentOppgaver(listOf("1234567890"), callId) }
         }
+    }
+
+    private fun createOppgaveClient(stsClient: StsRestClient): OppgaveClient {
+        return OppgaveClient(server.baseUrl(), stsClient, cioHttpClient, "123")
     }
 }
 

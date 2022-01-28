@@ -138,11 +138,11 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
                     fom = parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad),
                     tom = parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad)
                 ),
-                EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.valueOf(
+                eosellerEFTAOppholdType = EOSellerEFTAOppholdType.valueOf(
                     parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_OPPHOLD, rad)
                 ),
-                EOSellerEFTAGrunnlagskategoriOppholdsrettType = EOSellerEFTAGrunnlagskategoriOppholdsrettType,
-                EOSellerEFTAGrunnlagskategoriOppholdstillatelseType = EOSellerEFTAGrunnlagskategoriOppholdstillatelseType
+                eosellerEFTAGrunnlagskategoriOppholdsrettType = EOSellerEFTAGrunnlagskategoriOppholdsrettType,
+                eosellerEFTAGrunnlagskategoriOppholdstillatelseType = EOSellerEFTAGrunnlagskategoriOppholdstillatelseType
             )
         }
     }
@@ -276,13 +276,13 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
                 uavklart = null,
                 eosellerEFTAOpphold = EOSellerEFTAOpphold(
                     periode = periode,
-                    EOSellerEFTAOppholdType = EOSellerEFTAOppholdType.valueOf(
+                    eosellerEFTAOppholdType = EOSellerEFTAOppholdType.valueOf(
                         parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_OPPHOLD, rad)
                     ),
-                    EOSellerEFTAGrunnlagskategoriOppholdsrettType =
+                    eosellerEFTAGrunnlagskategoriOppholdsrettType =
                         parseValgfriString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT, rad)
                             ?.let { EOSellerEFTAGrunnlagskategoriOppholdsrettType.valueOf(it) },
-                    EOSellerEFTAGrunnlagskategoriOppholdstillatelseType =
+                    eosellerEFTAGrunnlagskategoriOppholdstillatelseType =
                         EOSellerEFTAGrunnlagskategoriOppholdsTillatelseType.valueOf(
                             parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSTILLATELSE, rad)
                         )

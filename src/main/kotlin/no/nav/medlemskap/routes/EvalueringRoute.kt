@@ -26,12 +26,14 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
+import no.nav.medlemskap.services.kafka.Producer
+import org.apache.kafka.clients.producer.ProducerRecord
 import java.time.LocalDateTime
 import java.util.*
 
 private val logger = KotlinLogging.logger { }
-
 private val secureLogger = KotlinLogging.logger("tjenestekall")
+private val TOPIC = "medlemskap.medlemskap-vurdert"
 
 fun Routing.evalueringRoute(
     services: Services,
@@ -46,8 +48,8 @@ fun Routing.evalueringRoute(
 
             val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
             val azp = callerPrincipal.payload.getClaim("azp").asString()
+            val endpoint = "/"
             secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
-
             val request = validerRequest(call.receive(), azp)
             val callId = call.callId ?: UUID.randomUUID().toString()
 
@@ -68,6 +70,7 @@ fun Routing.evalueringRoute(
 
             val response = lagResponse(
                 versjonTjeneste = configuration.commitSha,
+                endpoint = endpoint,
                 datagrunnlag = datagrunnlag,
                 resultat = resultat
             )
@@ -75,6 +78,47 @@ fun Routing.evalueringRoute(
             loggResponse(request.fnr, response)
 
             call.respond(response)
+        }
+
+        post("/kafka") {
+            val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
+            val azp = callerPrincipal.payload.getClaim("azp").asString()
+            val endpoint = "kafka"
+            val request = validerRequest(call.receive(), azp)
+            val callId = call.callId ?: UUID.randomUUID().toString()
+
+            val datagrunnlag = withContext(
+                requestContextService.getCoroutineContext(
+                    context = coroutineContext,
+                    ytelse = finnYtelse(request.ytelse, azp)
+                )
+            ) {
+
+                createDatagrunnlag.invoke(
+                    request,
+                    callId,
+                    services,
+                    azp
+                )
+            }
+            val resultat = evaluerData(datagrunnlag)
+
+            val response = lagResponse(
+                versjonTjeneste = configuration.commitSha,
+                endpoint = endpoint,
+                datagrunnlag = datagrunnlag,
+                resultat = resultat
+            )
+
+            val producer = Producer().createProducer((Configuration().kafkaConfig))
+            val futureresult = producer.send(createRecord(TOPIC, callId, objectMapper.writeValueAsString(response)))
+            futureresult.get()
+            producer.close()
+            loggResponse(request.fnr, response, endpoint)
+            logger.info(
+                "kafka request with id $callId processed ok and response published to $TOPIC ", kv("callId", callId)
+            )
+            call.respond("Kafka melding: OK")
         }
     }
 }
@@ -90,6 +134,7 @@ fun Routing.evalueringTestRoute(
         apiCounter().increment()
         val request = validerRequest(call.receive(), Ytelse.toMedlemskapClientId())
         val callId = call.callId ?: UUID.randomUUID().toString()
+        val endpoint = "/"
 
         val datagrunnlag = withContext(
             requestContextService.getCoroutineContext(
@@ -108,6 +153,7 @@ fun Routing.evalueringTestRoute(
 
         val response = lagResponse(
             versjonTjeneste = configuration.commitSha,
+            endpoint = endpoint,
             datagrunnlag = datagrunnlag,
             resultat = resultat
         )
@@ -118,17 +164,18 @@ fun Routing.evalueringTestRoute(
     }
 }
 
-private fun lagResponse(datagrunnlag: Datagrunnlag, resultat: Resultat, versjonTjeneste: String): Response {
+private fun lagResponse(datagrunnlag: Datagrunnlag, resultat: Resultat, versjonTjeneste: String, endpoint: String): Response {
     return Response(
         tidspunkt = LocalDateTime.now(),
         versjonRegler = "v1",
         versjonTjeneste = versjonTjeneste,
+        kanal = endpoint,
         datagrunnlag = datagrunnlag,
         resultat = resultat
     )
 }
 
-private fun loggResponse(fnr: String, response: Response) {
+private fun loggResponse(fnr: String, response: Response, endpoint: String = "/") {
     val resultat = response.resultat
     val årsaker = resultat.årsaker
     val årsakerSomRegelIdStr = årsaker.map { it.regelId.toString() }
@@ -163,7 +210,8 @@ private fun loggResponse(fnr: String, response: Response) {
         kv("skipsinfo", response.datagrunnlag.kombinasjonAvSkipsregisterFartsomradeOgSkipstype()),
         kv("response", objectMapper.writeValueAsString(response)),
         kv("gjeldendeOppholdsstatus", response.datagrunnlag.oppholdstillatelse?.gjeldendeOppholdsstatus.toString()),
-        kv("arbeidsadgangtype", response.datagrunnlag.oppholdstillatelse?.arbeidsadgang?.arbeidsadgangType)
+        kv("arbeidsadgangtype", response.datagrunnlag.oppholdstillatelse?.arbeidsadgang?.arbeidsadgangType),
+        kv("endpoint", endpoint)
     )
 
     if (årsaker.isNotEmpty()) {
@@ -195,3 +243,7 @@ fun finnYtelse(ytelseFraRequest: Ytelse?, clientId: String?) =
 
 fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =
     Hovedregler(datagrunnlag).kjørHovedregler()
+
+private fun createRecord(topic: String, key: String = UUID.randomUUID().toString(), value: String): ProducerRecord<String, String> {
+    return ProducerRecord(topic, key, value)
+}

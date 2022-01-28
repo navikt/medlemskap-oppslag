@@ -1,59 +1,31 @@
 package no.nav.medlemskap.clients.udi
 
 import io.github.resilience4j.retry.Retry
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import mu.KotlinLogging
+import io.ktor.client.*
+import io.ktor.client.request.*
+import io.ktor.http.*
+import no.nav.medlemskap.clients.azuread.AzureAdClient
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
-import no.udi.common.v2.PingRequestType
-import no.udi.mt_1067_nav_data.v1.HentPersonstatusParameter
-import no.udi.mt_1067_nav_data.v1.HentPersonstatusResultat
-import v1.mt_1067_nav.no.udi.HentPersonstatusRequestType
-import v1.mt_1067_nav.no.udi.HentPersonstatusResponseType
-import v1.mt_1067_nav.no.udi.MT1067NAVV1Interface
-import java.time.LocalDateTime
-import javax.xml.datatype.DatatypeFactory
+import no.nav.medlemskap.domene.Oppholdstillatelse
 
 class UdiClient(
-    private val mT1067NAVV1Interface: MT1067NAVV1Interface,
+    private val baseUrl: String,
+    private val azureAdClient: AzureAdClient,
+    private val httpClient: HttpClient,
     private val retry: Retry? = null
 ) {
-    private val secureLogger = KotlinLogging.logger("tjenestekall")
-    companion object {
-        val dataTypeFactory: DatatypeFactory = DatatypeFactory.newInstance()
-        private val logger = KotlinLogging.logger { }
-    }
 
-    suspend fun hentOppholdstatusResultat(fnr: String): HentPersonstatusResultat? {
-        return runWithRetryAndMetrics("UDI", "hentOppholdstillatelseV1", retry) {
-            hentOppholdstatusRequest(fnr)?.resultat
-        }
-    }
-
-    private suspend fun hentOppholdstatusRequest(fnr: String): HentPersonstatusResponseType? {
-
-        return withContext(Dispatchers.Default) {
-            secureLogger.info("Request: ${mapRequest(fnr)}")
-            mT1067NAVV1Interface.hentPersonstatus(mapRequest(fnr))
-        }
-    }
-
-    fun mapRequest(fnr: String): HentPersonstatusRequestType {
-        val type = HentPersonstatusRequestType()
-        val param = HentPersonstatusParameter()
-        param.fodselsnummer = fnr
-        param.isInkluderArbeidsadgang = true
-        param.isInkluderAvgjorelsehistorikk = true
-        param.isManuellOppgVedUavklartArbeidsadgang = true
-        param.isInkluderSoknadOmBeskyttelseUnderBehandling = true
-        param.avgjorelserFraDato = DatatypeFactory.newInstance().newXMLGregorianCalendar(LocalDateTime.now().minusYears(1).toString())
-        type.parameter = param
-        return type
-    }
-
-    suspend fun healthCheck() {
-        withContext(Dispatchers.Default) {
-            mT1067NAVV1Interface.ping(PingRequestType())
+    suspend fun oppholdstillatelse(udiRequest: UdiRequest, callId: String): Oppholdstillatelse {
+        val token = azureAdClient.hentTokenScopetMotUdiProxy()
+        return runWithRetryAndMetrics("UDI-proxy", "Oppholdstillatelse", retry) {
+            httpClient.post {
+                url("$baseUrl/udi/person")
+                header(HttpHeaders.ContentType, ContentType.Application.Json)
+                header(HttpHeaders.Authorization, "Bearer ${token.token}")
+                header("Nav-Call-Id", callId)
+                header("X-Correlation-Id", callId)
+                body = udiRequest
+            }
         }
     }
 }

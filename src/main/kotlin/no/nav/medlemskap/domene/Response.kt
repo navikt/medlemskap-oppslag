@@ -8,6 +8,7 @@ data class Response(
     val tidspunkt: LocalDateTime,
     val versjonTjeneste: String,
     val versjonRegler: String,
+    val kanal: String,
     val datagrunnlag: Datagrunnlag,
     val resultat: Resultat
 ) {

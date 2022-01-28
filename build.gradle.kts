@@ -2,7 +2,8 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val ktorVersion = "1.5.4"
+val ktorVersion = "1.6.0"
+val kafkaVersion = "2.3.1"
 val jacksonVersion = "2.10.5"
 val prometheusVersion = "0.9.0"
 val logbackVersion = "1.2.3"
@@ -11,7 +12,7 @@ val konfigVersion = "1.6.10.0"
 val kotlinLoggerVersion = "1.8.3"
 val tjenestespesifikasjonerVersion = "1.2019.12.18-12.22-ce897c4eb2c1"
 val cxfVersion = "3.4.4"
-val coroutinesVersion = "1.3.9"
+val coroutinesVersion = "1.5.2"
 val wireMockVersion = "2.28.1"
 val mockkVersion = "1.10.5"
 val junitJupiterVersion = "5.7.0"
@@ -22,7 +23,7 @@ val threetenVersion = "1.5.0"
 val kotlinReflectVersion = "1.4.21"
 val cucumberVersion = "6.8.2"
 val nocommonsVersion = "0.9.0"
-val graphqlKotlinClientVersion = "4.0.0-alpha.12"
+val graphqlKotlinClientVersion = "5.3.1"
 val archUnitVersion = "0.14.1"
 val jsonassertVersion = "1.5.0"
 val xmlSchemaVersion = "2.2.5"
@@ -45,13 +46,14 @@ val mainClass = "no.nav.medlemskap.ApplicationKt"
 fun tjenestespesifikasjon(name: String) = "no.nav.tjenestespesifikasjoner:$name:$tjenestespesifikasjonerVersion"
 
 plugins {
-    kotlin("jvm") version "1.4.21"
+    kotlin("jvm") version "1.4.31"
     id("com.github.johnrengelman.shadow") version "6.0.0"
-    id("com.expediagroup.graphql") version "4.0.0-alpha.12" apply false
+    id("com.expediagroup.graphql") version "4.0.0" apply false
     id("com.github.ben-manes.versions") version "0.29.0"
     id("org.jlleitschuh.gradle.ktlint") version "9.3.0"
     id("org.jlleitschuh.gradle.ktlint-idea") version "9.3.0"
     id("org.hidetake.swagger.generator") version "2.18.2" apply true
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.4.31"
 }
 
 val githubUser: String by project
@@ -60,15 +62,17 @@ val githubPassword: String by project
 allprojects {
     repositories {
         jcenter()
+        gradlePluginPortal()
         mavenCentral()
-        maven("https://dl.bintray.com/kotlin/ktor")
-        maven("https://kotlin.bintray.com/kotlinx")
         maven("https://jitpack.io")
         maven {
             url = uri("https://maven.pkg.github.com/navikt/tjenestespesifikasjoner")
             credentials {
                 username = githubUser
                 password = githubPassword
+            }
+            content {
+                excludeGroup("com.expediagroup")
             }
         }
     }
@@ -93,6 +97,10 @@ dependencies {
         exclude(group = "io.netty", module = "netty-codec")
         exclude(group = "io.netty", module = "netty-codec-http")
     }
+
+    implementation("com.expediagroup:graphql-kotlin-ktor-client:$graphqlKotlinClientVersion")
+    implementation("io.ktor:ktor-client-serialization-jvm:1.6.3")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.13.1")
     implementation("io.ktor:ktor-auth:$ktorVersion")
     implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
@@ -126,7 +134,7 @@ dependencies {
     implementation("com.sun.xml.ws:jaxws-tools:$jaxwsToolsVersion") {
         exclude(group = "com.sun.xml.ws", module = "policy")
     }
-
+    implementation("org.apache.kafka:kafka-clients:$kafkaVersion")
     implementation(tjenestespesifikasjon("udi-personstatus-v1"))
 
     implementation("io.github.resilience4j:resilience4j-retry:$resilience4jVersion")

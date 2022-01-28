@@ -4,7 +4,7 @@ import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
 import io.kotest.matchers.collections.shouldContainExactly
 import io.ktor.features.*
-import no.nav.medlemskap.clients.pdl.generated.HentPerson
+import no.nav.medlemskap.clients.pdl.generated.hentperson.*
 import no.nav.medlemskap.cucumber.SpraakParserDomene.PersonhistorikkDomeneSpraakParser
 import no.nav.medlemskap.cucumber.mapping.pdl.PdlDomenespråkParser
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
@@ -166,17 +166,17 @@ class PdlMapperSteps : No {
     }
 
     class PdlPersonBuilder {
-        var statsborgerskap: List<HentPerson.Statsborgerskap> = emptyList()
-        var bostedsadresser: List<HentPerson.Bostedsadresse> = emptyList()
-        var kontaktadresser: List<HentPerson.Kontaktadresse> = emptyList()
-        var oppholdsadresser: List<HentPerson.Oppholdsadresse> = emptyList()
-        var sivilstander: List<HentPerson.Sivilstand> = emptyList()
-        var familierelasjoner: List<HentPerson.ForelderBarnRelasjon> = emptyList()
-        var doedsfall: List<HentPerson.Doedsfall> = emptyList()
-        var adressebeskyttelse: List<HentPerson.Adressebeskyttelse> = emptyList()
+        var statsborgerskap: List<Statsborgerskap> = emptyList()
+        var bostedsadresser: List<Bostedsadresse> = emptyList()
+        var kontaktadresser: List<Kontaktadresse> = emptyList()
+        var oppholdsadresser: List<Oppholdsadresse> = emptyList()
+        var sivilstander: List<Sivilstand> = emptyList()
+        var familierelasjoner: List<ForelderBarnRelasjon> = emptyList()
+        var doedsfall: List<Doedsfall> = emptyList()
+        var adressebeskyttelse: List<Adressebeskyttelse> = emptyList()
 
-        fun build(): HentPerson.Person {
-            return HentPerson.Person(
+        fun build(): Person {
+            return Person(
                 forelderBarnRelasjon = familierelasjoner,
                 statsborgerskap = statsborgerskap,
                 sivilstand = sivilstander,

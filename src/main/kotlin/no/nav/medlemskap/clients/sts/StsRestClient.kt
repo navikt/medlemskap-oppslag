@@ -1,13 +1,12 @@
 package no.nav.medlemskap.clients.sts
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import io.github.resilience4j.retry.Retry
-import io.ktor.client.HttpClient
+import io.ktor.client.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.HttpResponse
-import io.ktor.http.HttpHeaders
+import io.ktor.http.*
+import no.nav.medlemskap.clients.Token
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
-import java.time.LocalDateTime
+import no.nav.medlemskap.clients.shouldBeRenewed
 import java.util.*
 
 class StsRestClient(
@@ -15,6 +14,7 @@ class StsRestClient(
     private val username: String,
     private val password: String,
     private val httpClient: HttpClient,
+    private val apiKey: String,
     private val retry: Retry? = null
 ) {
     private var cachedOidcToken: Token? = null
@@ -26,6 +26,7 @@ class StsRestClient(
                 httpClient.get<Token> {
                     url("$baseUrl/rest/v1/sts/token")
                     header(HttpHeaders.Authorization, "Basic ${credentials()}")
+                    header("x-nav-apiKey", apiKey)
                     parameter("grant_type", "client_credentials")
                     parameter("scope", "openid")
                 }
@@ -35,12 +36,16 @@ class StsRestClient(
         return cachedOidcToken!!.token
     }
 
+    // Skrur av pga. 401 meldinger i kibana
+    /*
     suspend fun healthCheck(): HttpResponse {
         return httpClient.options {
-            url("$baseUrl/isReady")
+            url("$baseUrl/ping")
             header("Nav-Consumer-Id", username)
+            header("x-nav-apiKey", apiKey)
         }
     }
+*/
 
     suspend fun samlToken(): String {
         if (cachedSamlToken.shouldBeRenewed()) {
@@ -61,20 +66,4 @@ class StsRestClient(
     }
 
     private fun credentials() = Base64.getEncoder().encodeToString("$username:$password".toByteArray(Charsets.UTF_8))
-
-    private fun Token?.shouldBeRenewed(): Boolean = this?.hasExpired() ?: true
-
-    data class Token(
-        @JsonProperty(value = "access_token", required = true)
-        val token: String,
-        @JsonProperty(value = "token_type", required = true)
-        val type: String,
-        @JsonProperty(value = "expires_in", required = true)
-        val expiresIn: Int
-    ) {
-
-        private val expirationTime: LocalDateTime = LocalDateTime.now().plusSeconds(expiresIn - 20L)
-
-        fun hasExpired(): Boolean = expirationTime.isBefore(LocalDateTime.now())
-    }
 }

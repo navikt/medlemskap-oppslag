@@ -1,16 +1,14 @@
 package no.nav.medlemskap.clients
 
 import no.nav.medlemskap.clients.aareg.AaRegClient
+import no.nav.medlemskap.clients.azuread.AzureAdClient
 import no.nav.medlemskap.clients.ereg.EregClient
 import no.nav.medlemskap.clients.medl.MedlClient
 import no.nav.medlemskap.clients.oppgave.OppgaveClient
 import no.nav.medlemskap.clients.pdl.PdlClient
 import no.nav.medlemskap.clients.saf.SafClient
 import no.nav.medlemskap.clients.sts.StsRestClient
-import no.nav.medlemskap.clients.sts.stsClient
 import no.nav.medlemskap.clients.udi.UdiClient
-import no.nav.medlemskap.clients.wsClients.WsClients
-import no.nav.medlemskap.common.callIdGenerator
 import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.common.healthcheck.HealthReporter
 import no.nav.medlemskap.common.healthcheck.HealthService
@@ -22,7 +20,6 @@ import no.nav.medlemskap.services.medl.MedlService
 import no.nav.medlemskap.services.oppgave.OppgaveService
 import no.nav.medlemskap.services.pdl.PdlService
 import no.nav.medlemskap.services.saf.SafService
-import no.nav.medlemskap.services.udi.UdiService
 
 class Services(val configuration: Configuration) {
     private val medlClient: MedlClient
@@ -36,39 +33,31 @@ class Services(val configuration: Configuration) {
     private val pdlClient: PdlClient
     val pdlService: PdlService
     private val eregClient: EregClient
-    private val udiClient: UdiClient
-    val udiService: UdiService
+    val udiClient: UdiClient
 
     val healthService: HealthService
     private val healthReporter: HealthReporter
     private val healthRetry = retryRegistry.retry("Helsesjekker")
 
     private val stsRetry = retryRegistry.retry("STS")
-    private val udiRetry = retryRegistry.retry("UDI")
 
     init {
-        val stsWsClient = stsClient(
-            stsUrl = configuration.sts.endpointUrl,
-            username = configuration.sts.username,
-            password = configuration.sts.password
-        )
 
         val stsRestClient = StsRestClient(
             baseUrl = configuration.sts.restUrl,
             username = configuration.sts.username,
             password = configuration.sts.password,
+            apiKey = configuration.sts.apiKey,
             retry = stsRetry,
             httpClient = cioHttpClient
         )
 
+        val azureAdClient = AzureAdClient(configuration)
+
         val restClients = RestClients(
             stsClientRest = stsRestClient,
+            azureAdClient = azureAdClient,
             configuration = configuration
-        )
-
-        val wsClients = WsClients(
-            stsClientWs = stsWsClient,
-            callIdGenerator = callIdGenerator::get
         )
 
         medlClient = restClients.medl2(configuration.register.medl2BaseUrl)
@@ -82,18 +71,16 @@ class Services(val configuration: Configuration) {
         safService = SafService(safClient)
         oppgaveClient = restClients.oppgaver(configuration.register.oppgaveBaseUrl)
         oppgaveService = OppgaveService(oppgaveClient)
-        udiClient = wsClients.oppholdstillatelse(configuration.register.udiBaseUrl, udiRetry)
-        udiService = UdiService(udiClient)
+        udiClient = restClients.udi(configuration.register.udiBaseUrl)
 
         healthService = HealthService(
             setOf(
-                HttpResponseHealthCheck("AaReg", { aaRegClient.healthCheck() }),
+                // HttpResponseHealthCheck("AaReg", { aaRegClient.healthCheck() }),
                 HttpResponseHealthCheck("Medl", { medlClient.healthCheck() }, healthRetry),
-                HttpResponseHealthCheck("Oppg", { oppgaveClient.healthCheck() }, healthRetry),
+                // HttpResponseHealthCheck("Oppg", { oppgaveClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("PDL", { pdlClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("SAF", { safClient.healthCheck() }, healthRetry),
-                HttpResponseHealthCheck("STS", { stsRestClient.healthCheck() }, healthRetry),
-                // TryCatchHealthCheck("UDI", { udiClient.healthCheck() }, healthRetry)
+                // HttpResponseHealthCheck("STS", { stsRestClient.healthCheck() }, healthRetry),
             )
         )
 

@@ -1,7 +1,8 @@
 {
-  "tidspunkt" : "2021-06-21T10:44:52.913729",
+  "tidspunkt" : "2021-11-22T09:30:21.849167",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
+  "kanal" : "/",
   "datagrunnlag" : {
     "fnr" : "15076500565",
     "periode" : {

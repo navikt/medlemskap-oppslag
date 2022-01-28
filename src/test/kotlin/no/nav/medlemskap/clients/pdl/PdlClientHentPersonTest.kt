@@ -55,9 +55,13 @@ class PdlClientHentPersonTest {
                 )
         )
 
-        val pdlClient = PdlClient(server.baseUrl(), stsClient, username, cioHttpClient)
-        val pdlResponse = runBlocking { pdlClient.hentPerson("1234", callId) }
+        val pdlClient = createPdlClient(stsClient, username)
+        val pdlResponse = runBlocking { pdlClient.hentPersonV2("1234", callId) }
         assertEquals("Fant ikke person", pdlResponse.errors?.get(0)?.message)
+    }
+
+    private fun createPdlClient(stsClient: StsRestClient, username: String): PdlClient {
+        return PdlClient(server.baseUrl(), stsClient, username, cioHttpClient, null, "123")
     }
 
     @Test
@@ -77,9 +81,9 @@ class PdlClientHentPersonTest {
                 )
         )
 
-        val pdlClient = PdlClient(server.baseUrl(), stsClient, username, cioHttpClient)
+        val pdlClient = createPdlClient(stsClient, username)
 
-        val pdlResponse = runBlocking { pdlClient.hentPerson("1234567890", callId) }
+        val pdlResponse = runBlocking { pdlClient.hentPersonV2("1234567890", callId) }
 
         assertEquals("NOR", pdlResponse.data?.hentPerson?.statsborgerskap?.first()?.land)
     }
@@ -129,13 +133,14 @@ class PdlClientHentPersonTest {
                                 "gyldigFraOgMed": "2010-10-21",
                                 "gyldigTilOgMed":  null,
                                 "metadata": {
-                                    "historisk": "true"
+                                    "historisk": true
                                 }
                             }
                     ],
                     "adressebeskyttelse": [], 
                     "sivilstand": [
                             {
+                            "bekreftelsesdato" : null,
                             "type": "UGIFT",
                             "gyldigFraOgMed": "2010-02-21",
                             "relatertVedSivilstand": null

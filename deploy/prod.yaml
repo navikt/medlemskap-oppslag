@@ -6,6 +6,9 @@ metadata:
   labels:
     team: medlemskap
 spec:
+  azure:
+    application:
+      enabled: true
   image: {{ image }}
   port: 7070
   liveness:
@@ -21,54 +24,59 @@ spec:
   resources:
     limits:
       cpu: 2000m
-      memory: 512Mi
+      memory: 2048Mi
     requests:
       cpu: 50m
       memory: 128Mi
   ingresses:
-    - https://medlemskap-oppslag.nais.adeo.no
+    - https://medlemskap-oppslag.intern.nav.no
   replicas:
-    min: 2
-    max: 3
+    min: 3
+    max: 4
     cpuThresholdPercentage: 90
   prometheus:
     enabled: true
     path: /metrics
-  vault:
-    enabled: true
-    paths:
-      - mountPath: /var/run/secrets/nais.io/vault
-        kvPath: /kv/prod/fss/medlemskap-oppslag/default
-      - mountPath: /var/run/secrets/nais.io/azure
-        kvPath: /azuread/data/prod/creds/medlemskap-oppslag
   secureLogs:
     enabled: true
   webproxy: true
+  accessPolicy:
+    inbound:
+      rules:
+        - application: medlemskap-sykepenger-listener
+        - application: sparkel-medlemskap
+          namespace: tbd
+          cluster: prod-fss
+    outbound:
+      rules:
+        - application: udi-proxy
+          namespace: medlemskap
+          cluster: prod-fss
+      external:
+        - host: api-gw.oera.no
+        - host: login.microsoftonline.com
+        - host: udi-proxy.prod-fss-pub.nais.io
+  kafka:
+    pool: nav-prod
 
   env:
-    - name: AZURE_TENANT
-      value: 62366534-1ec3-4962-8869-9b5535279d0b
-    - name: AZURE_AUTHORITY_ENDPOINT
-      value: https://login.microsoftonline.com
     - name: SECURITY_TOKEN_SERVICE_URL
-      value: https://sts.adeo.no/SecurityTokenServiceProvider/
+      value: https://api-gw.oera.no/sts/SecurityTokenServiceProvider/
     - name: SECURITY_TOKEN_SERVICE_REST_URL
-      value: https://security-token-service.nais.adeo.no
-    - name: TPSWS_URL
-      value: https://wasapp.adeo.no/tpsws/ws/Person/v3
-    - name: INNTEKT_BASE_URL
-      value: https://app.adeo.no/inntektskomponenten-ws
+      value: https://api-gw.oera.no/security-token-service
     - name: MEDL2_BASE_URL
-      value: https://app.adeo.no/medl2
+      value: https://api-gw.oera.no/medl2
     - name: AAREG_BASE_URL
-      value: https://modapp.adeo.no/aareg-services/api
+      value: https://api-gw.oera.no/aareg-services/api
     - name: SAF_BASE_URL
-      value: http://saf.teamdokumenthandtering/graphql
+      value: https://saf.prod-fss-pub.nais.io/graphql
     - name: OPPGAVE_BASE_URL
-      value: http://oppgave.default.svc.nais.local
+      value: https://api-gw.oera.no/oppgave
     - name: PDL_BASE_URL
-      value: http://pdl-api.default.svc.nais.local/graphql
+      value: https://api-gw.oera.no/pdl-api/graphql
     - name: EREG_BASE_URL
-      value: https://modapp.adeo.no/ereg/api
+      value: https://api-gw.oera.no/ereg/api
     - name: UDI_BASE_URL
-      value: https://pep-gw.oera.no:9443/ekstern/udi/personstatus/medlemskapoppslag/v1
+      value: https://udi-proxy.prod-fss-pub.nais.io
+  envFrom:
+    - secret: medlemskap-oppslag

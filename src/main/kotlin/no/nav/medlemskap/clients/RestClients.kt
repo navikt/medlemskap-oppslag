@@ -1,18 +1,21 @@
 package no.nav.medlemskap.clients
 
 import no.nav.medlemskap.clients.aareg.AaRegClient
+import no.nav.medlemskap.clients.azuread.AzureAdClient
 import no.nav.medlemskap.clients.ereg.EregClient
 import no.nav.medlemskap.clients.medl.MedlClient
 import no.nav.medlemskap.clients.oppgave.OppgaveClient
 import no.nav.medlemskap.clients.pdl.PdlClient
 import no.nav.medlemskap.clients.saf.SafClient
 import no.nav.medlemskap.clients.sts.StsRestClient
+import no.nav.medlemskap.clients.udi.UdiClient
 import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.config.retryRegistry
 
 class RestClients(
     private val stsClientRest: StsRestClient,
+    private val azureAdClient: AzureAdClient,
     private val configuration: Configuration
 ) {
 
@@ -22,13 +25,15 @@ class RestClients(
     private val pdlRetry = retryRegistry.retry("PDL")
     private val safRetry = retryRegistry.retry("Saf")
     private val eregRetry = retryRegistry.retry("Ereg")
+    private val udiRetry = retryRegistry.retry("UDI")
 
     private val httpClient = cioHttpClient
 
-    fun aaReg(endpointUrl: String) = AaRegClient(endpointUrl, configuration.sts.username, stsClientRest, httpClient, aaRegRetry)
-    fun medl2(endpointBaseUrl: String) = MedlClient(endpointBaseUrl, stsClientRest, configuration, httpClient, medlRetry)
-    fun saf(endpointBaseUrl: String) = SafClient(endpointBaseUrl, stsClientRest, configuration.sts.username, httpClient, safRetry)
-    fun oppgaver(endpointBaseUrl: String) = OppgaveClient(endpointBaseUrl, stsClientRest, httpClient, oppgaveRetry)
-    fun pdl(endpointBaseURl: String) = PdlClient(endpointBaseURl, stsClientRest, configuration.sts.username, httpClient, pdlRetry)
-    fun ereg(endpointBaseUrl: String) = EregClient(endpointBaseUrl, httpClient, configuration, eregRetry)
+    fun aaReg(endpointUrl: String) = AaRegClient(endpointUrl, configuration.sts.username, stsClientRest, httpClient, configuration.register.aaRegApiKey, aaRegRetry)
+    fun medl2(endpointBaseUrl: String) = MedlClient(endpointBaseUrl, stsClientRest, configuration, httpClient, configuration.register.medl2ApiKey, medlRetry)
+    fun saf(endpointBaseUrl: String) = SafClient(endpointBaseUrl, stsClientRest, configuration.sts.username, httpClient, configuration.register.safApiKey, safRetry)
+    fun oppgaver(endpointBaseUrl: String) = OppgaveClient(endpointBaseUrl, stsClientRest, httpClient, configuration.register.oppgaveApiKey, oppgaveRetry)
+    fun pdl(endpointBaseURl: String) = PdlClient(endpointBaseURl, stsClientRest, configuration.sts.username, httpClient, pdlRetry, configuration.register.pdlApiKey)
+    fun ereg(endpointBaseUrl: String) = EregClient(endpointBaseUrl, httpClient, configuration, configuration.register.eregApiKey, eregRetry)
+    fun udi(endpointBaseUrl: String) = UdiClient(endpointBaseUrl, azureAdClient, httpClient, udiRetry)
 }

@@ -6,6 +6,10 @@ metadata:
   labels:
     team: medlemskap
 spec:
+  azure:
+    application:
+      enabled: true
+      tenant: trygdeetaten.no
   image: {{ image }}
   port: 7070
   liveness:
@@ -18,12 +22,6 @@ spec:
     path: isReady
     initialDelay: 30
     timeout: 1
-  accessPolicy:
-    inbound:
-      rules:
-        - application: medlemskap-oppslag-funksjonelle-tester
-        - application: sparkel-medlemskap
-          namespace: tbd
   resources:
     limits:
       cpu: 2000m
@@ -32,8 +30,8 @@ spec:
       cpu: 50m
       memory: 128Mi
   ingresses:
-    - https://medlemskap-oppslag.nais.preprod.local
-    - https://medlemskap-oppslag.dev.adeo.no
+    - https://medlemskap-oppslag.dev.intern.nav.no
+    - https://medlemskap-oppslag.dev.nav.no
   replicas:
     min: 1
     max: 2
@@ -41,41 +39,50 @@ spec:
   prometheus:
     enabled: true
     path: /metrics
-  vault:
-    enabled: true
-    paths:
-      - mountPath: /var/run/secrets/nais.io/vault
-        kvPath: /kv/preprod/fss/medlemskap-oppslag/default
-      - mountPath: /var/run/secrets/nais.io/azure
-        kvPath: /azuread/data/dev/creds/medlemskap-oppslag
   secureLogs:
     enabled: true
   webproxy: true
+  kafka:
+    pool: nav-dev
 
+  accessPolicy:
+    inbound:
+      rules:
+        - application: medlemskap-oppslag
+        - application: medlemskap-oppslag-funksjonelle-tester
+        - application: medlemskap-sykepenger-listener
+        - application: sparkel-medlemskap
+          namespace: tbd
+          cluster: dev-fss
+    outbound:
+      rules:
+        - application: udi-proxy
+          namespace: medlemskap
+          cluster: dev-fss
+      external:
+        - host: api-gw-q1.oera.no
+        - host: api-gw-q2.oera.no
+        - host: saf.dev-fss-pub.nais.io
+        - host: login.microsoftonline.com
+        - host: udi-proxy.dev-fss-pub.nais.io
   env:
-    - name: AZURE_TENANT
-      value: 966ac572-f5b7-4bbe-aa88-c76419c0f851
-    - name: AZURE_AUTHORITY_ENDPOINT
-      value: https://login.microsoftonline.com
     - name: SECURITY_TOKEN_SERVICE_URL
-      value: https://sts-q1.preprod.local/SecurityTokenServiceProvider/
+      value: https://api-gw-q1.oera.no/sts/SecurityTokenServiceProvider/
     - name: SECURITY_TOKEN_SERVICE_REST_URL
-      value: http://security-token-service.default.svc.nais.local
-    - name: TPSWS_URL
-      value: https://wasapp-q2.adeo.no/tpsws/ws/Person/v3
-    - name: INNTEKT_BASE_URL
-      value: https://app-q2.adeo.no/inntektskomponenten-ws
+      value: https://api-gw-q1.oera.no/security-token-service
     - name: MEDL2_BASE_URL
-      value: https://app-q2.adeo.no/medl2
+      value: https://api-gw-q1.oera.no/medl2
     - name: AAREG_BASE_URL
-      value: https://modapp-q2.adeo.no/aareg-services/api
+      value: https://api-gw-q1.oera.no/aareg-services/api
     - name: SAF_BASE_URL
-      value: http://saf-q1.teamdokumenthandtering/graphql
+      value: https://saf.dev-fss-pub.nais.io/graphql
     - name: OPPGAVE_BASE_URL
-      value: https://oppgave-q2.nais.preprod.local
+      value: https://api-gw-q1.oera.no/oppgave
     - name: PDL_BASE_URL
-      value: http://pdl-api.default.svc.nais.local/graphql
+      value: https://api-gw-q1.oera.no/pdl-api/graphql
     - name: EREG_BASE_URL
-      value: https://modapp-q0.adeo.no/ereg/api
+      value: https://api-gw-q1.oera.no/ereg/api
     - name: UDI_BASE_URL
-      value: https://pep-gw-q1.oera-q.local:9443/ekstern/udi/personstatus/medlemskapoppslag/v1
+      value: https://udi-proxy.dev-fss-pub.nais.io
+  envFrom:
+    - secret: medlemskap-oppslag

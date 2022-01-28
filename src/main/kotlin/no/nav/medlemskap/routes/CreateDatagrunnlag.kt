@@ -5,7 +5,9 @@ import kotlinx.coroutines.coroutineScope
 import mu.KotlinLogging
 import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.clients.Services
+import no.nav.medlemskap.clients.udi.UdiRequest
 import no.nav.medlemskap.common.FeatureToggles
+import no.nav.medlemskap.common.exceptions.UdiHentPersonstatusFaultException
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.domene.Datagrunnlag
@@ -72,7 +74,7 @@ suspend fun defaultCreateDatagrunnlag(
     ) {
         val oppholdsstatusRequest = async {
             try {
-                services.udiService.hentOppholdstillatelseer(request.fnr)
+                services.udiClient.oppholdstillatelse(UdiRequest(request.fnr), callId)
             } catch (hpf: HentPersonstatusFault) {
                 secureLogger.warn {
                     kv("fnr", request.fnr)
@@ -99,7 +101,17 @@ suspend fun defaultCreateDatagrunnlag(
                         )
                     )
                 }
-                throw hpf
+                secureLogger.error {
+                    "Kall mot UDI feilet for fnr: ${request.fnr}"
+                    kv("NAV-call-id", callId)
+                    kv("fault-info", hpf.faultInfo)
+                    kv("localized-message", hpf.localizedMessage)
+                    kv("suppressed", hpf.suppressed)
+                    kv("stacktrace", hpf.stackTrace)
+                    kv("cause", hpf.cause)
+                    kv("message", hpf.message)
+                }
+                throw UdiHentPersonstatusFaultException(ytelse)
             }
         }
         oppholdsstatusRequest.await()

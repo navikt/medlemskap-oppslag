@@ -4,7 +4,6 @@ import io.github.resilience4j.retry.Retry
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
@@ -17,6 +16,7 @@ class AaRegClient(
     private val username: String,
     private val stsClient: StsRestClient,
     private val httpClient: HttpClient,
+    private val aaRegApiKey: String,
     private val retry: Retry? = null
 ) {
 
@@ -36,6 +36,7 @@ class AaRegClient(
                     header("Nav-Call-Id", callId)
                     header("Nav-Personident", fnr)
                     header("Nav-Consumer-Token", "Bearer $oidcToken")
+                    header("x-nav-apiKey", aaRegApiKey)
                     fraOgMed?.let { parameter("ansettelsesperiodeFom", fraOgMed.tilIsoFormat()) }
                     tilOgMed?.let { parameter("ansettelsesperiodeTom", tilOgMed.tilIsoFormat()) }
                     parameter("historikk", "true")
@@ -59,13 +60,16 @@ class AaRegClient(
         )
     }
 
+    // Deaktivert pga. closed channel exceptions
+    /*
     suspend fun healthCheck(): HttpResponse {
         return httpClient.get {
             url("$baseUrl/ping")
             header(HttpHeaders.Accept, ContentType.Text.Plain)
             header("Nav-Consumer-Id", username)
+            header("x-nav-apiKey", aaRegApiKey)
         }
     }
-
+*/
     private fun LocalDate.tilIsoFormat() = this.format(DateTimeFormatter.ISO_LOCAL_DATE)
 }
