@@ -102,6 +102,34 @@ suspend fun defaultCreateDatagrunnlag(
                 }
                 throw hpf
             }
+            catch (e:Throwable){
+                secureLogger.error {
+                    kv("fnr", request.fnr)
+                    kv("NAV-call-id", callId)
+                    kv(
+                        "datagrunnlag",
+                        objectMapper.writeValueAsString(
+                            Datagrunnlag(
+                                fnr = request.fnr,
+                                periode = request.periode,
+                                førsteDagForYtelse = request.førsteDagForYtelse,
+                                brukerinput = request.brukerinput,
+                                pdlpersonhistorikk = personHistorikk,
+                                medlemskap = medlemskap,
+                                arbeidsforhold = arbeidsforhold,
+                                oppgaver = oppgaver,
+                                dokument = journalPoster,
+                                ytelse = ytelse,
+                                dataOmBarn = dataOmBrukersBarn,
+                                dataOmEktefelle = dataOmEktefelle,
+                                overstyrteRegler = request.overstyrteRegler,
+                                oppholdstillatelse = null
+                            )
+                        )
+                    )
+                }
+                throw e
+            }
         }
         oppholdsstatusRequest.await()
     } else {
