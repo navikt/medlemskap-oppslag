@@ -18,7 +18,7 @@ class ErBrukerArbeidstakerIKontrollperiodeForStønadsområde(
 ) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
-        return if (arbeidsforhold.erSammenhengendeIKontrollPeriode(kontrollperiodeForSykepenger, ytelse, 1)) {
+        return if (arbeidsforhold.erSammenhengendeIKontrollPeriode(kontrollperiodeForSykepenger, ytelse, 0)) {
             ja(regelId)
         } else {
             nei(regelId)
