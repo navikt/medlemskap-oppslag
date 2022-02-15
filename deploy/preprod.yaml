@@ -71,7 +71,7 @@ spec:
     - name: SECURITY_TOKEN_SERVICE_REST_URL
       value: https://api-gw-q1.oera.no/security-token-service
     - name: MEDL2_BASE_URL
-      value: https://api-gw-q1.oera.no/medl2
+      value: https://medlemskap-medl-api.dev.intern.nav.no/
     - name: AAREG_BASE_URL
       value: https://api-gw-q1.oera.no/aareg-services/api
     - name: SAF_BASE_URL
