@@ -133,32 +133,18 @@ data class Arbeidsforhold(
 
             val arbeidsforholdForNorskArbeidsgiver = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
 
-            if (arbeidsforholdForNorskArbeidsgiver.size > 10) {
-                merEnn10ArbeidsforholdCounter(ytelse).increment()
+            if (!validerArbeidsforholdIKontrollperiode(arbeidsforholdForNorskArbeidsgiver, kontrollPeriode, ytelse))
                 return false
-            }
 
-            if (arbeidsforholdForNorskArbeidsgiver.any { it.periode.fom == null }) {
-                harIkkeArbeidsforhold12MndTilbakeCounter(ytelse).increment()
-                return false
-            }
+            return erAvvikIArbeidsforhold(arbeidsforholdForNorskArbeidsgiver, tillatDagersHullIPeriode, kontrollPeriode, ytelse)
+        }
 
-            if (arbeidsforholdForNorskArbeidsgiver.none { it.periode.fom?.isBefore(kontrollPeriode.fom.plusDays(4))!! }) {
-                harIkkeArbeidsforhold12MndTilbakeCounter(ytelse).increment()
-
-                if (arbeidsforholdForNorskArbeidsgiver.isNotEmpty()) {
-                    val antallDagerDiff = abs(
-                        ChronoUnit.DAYS.between(
-                            kontrollPeriode.fom,
-                            arbeidsforholdForNorskArbeidsgiver.minOrNull()!!.periode.fom
-                        )
-                    )
-                    antallDagerUtenArbeidsforhold(ytelse).record(antallDagerDiff.toDouble())
-                }
-
-                return false
-            }
-
+        private fun erAvvikIArbeidsforhold(
+            arbeidsforholdForNorskArbeidsgiver: List<Arbeidsforhold>,
+            tillatDagersHullIPeriode: Long,
+            kontrollPeriode: Kontrollperiode,
+            ytelse: Ytelse
+        ): Boolean {
             var totaltAntallDagerDiff: Long = 0
             val finnesDeltidArbeidsforhold = arbeidsforholdForNorskArbeidsgiver.finnesDeltidArbeidsforhold()
             var forrigeTilDato: LocalDate? = null
@@ -187,20 +173,51 @@ data class Arbeidsforhold(
             if (forrigeTilDato != null) {
                 return !forrigeTilDato.isBefore(kontrollPeriode.tom)
             }
+            return true
+        }
 
+        private fun validerArbeidsforholdIKontrollperiode(
+            arbeidsforholdForNorskArbeidsgiver: List<Arbeidsforhold>,
+            kontrollPeriode: Kontrollperiode,
+            ytelse: Ytelse
+        ): Boolean {
+            if (arbeidsforholdForNorskArbeidsgiver.size > 10) {
+                merEnn10ArbeidsforholdCounter(ytelse).increment()
+                return false
+            }
+
+            if (arbeidsforholdForNorskArbeidsgiver.any { it.periode.fom == null }) {
+                harIkkeArbeidsforhold12MndTilbakeCounter(ytelse).increment()
+                return false
+            }
+
+            if (arbeidsforholdForNorskArbeidsgiver.none { it.periode.fom?.isBefore(kontrollPeriode.fom.plusDays(4))!! }) {
+                harIkkeArbeidsforhold12MndTilbakeCounter(ytelse).increment()
+
+                if (arbeidsforholdForNorskArbeidsgiver.isNotEmpty()) {
+                    val antallDagerDiff = abs(
+                        ChronoUnit.DAYS.between(
+                            kontrollPeriode.fom,
+                            arbeidsforholdForNorskArbeidsgiver.minOrNull()!!.periode.fom
+                        )
+                    )
+                    antallDagerUtenArbeidsforhold(ytelse).record(antallDagerDiff.toDouble())
+                }
+                return false
+            }
             return true
         }
 
         private fun lovligAntallDagerBorte(ytelse: Ytelse, kontrollPeriode: Kontrollperiode, tillatDagersHullIPeriode: Long): Int {
-            when (ytelse) {
+            return when (ytelse) {
                 Ytelse.SYKEPENGER -> {
                     if (!kontrollPeriode.isReferansePeriode)
-                        return 35
+                        35
                     else {
-                        return tillatDagersHullIPeriode.toInt()
+                        tillatDagersHullIPeriode.toInt()
                     }
                 }
-                else -> return 35
+                else -> 35
             }
         }
 

@@ -41,5 +41,5 @@ Egenskap: Regel 21: Er bruker arbeidstaker i kontrollperiode for stønadsområde
       Eksempler:
         | Første fra og med | Første til og med | Andre fra og med | Andre til og med | Svar |
         | 01.01.2020        |                   | 01.01.2020       |                  | Ja   |
-        | 01.01.2020        | 01.06.2020        | 02.06.2020       |                  | Ja   |
+        | 01.01.2020        | 01.06.2020        | 01.06.2020       |                  | Ja   |
         | 01.01.2020        | 01.06.2020        | 04.06.2020       |                  | Nei  |
