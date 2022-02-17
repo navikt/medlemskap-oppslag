@@ -74,7 +74,7 @@ fun Routing.evalueringRoute(
                 datagrunnlag = datagrunnlag,
                 resultat = resultat
             )
-
+            publishMedlemskapVurdertEvent(callId, response)
             loggResponse(request.fnr, response)
 
             call.respond(response)
@@ -110,17 +110,21 @@ fun Routing.evalueringRoute(
                 resultat = resultat
             )
 
-            val producer = Producer().createProducer((Configuration().kafkaConfig))
-            val futureresult = producer.send(createRecord(TOPIC, callId, objectMapper.writeValueAsString(response)))
-            futureresult.get()
-            producer.close()
+            publishMedlemskapVurdertEvent(callId, response)
             loggResponse(request.fnr, response, endpoint)
-            logger.info(
-                "kafka request with id $callId processed ok and response published to $TOPIC ", kv("callId", callId)
-            )
             call.respond("Kafka melding: OK")
         }
     }
+}
+
+private fun publishMedlemskapVurdertEvent(callId: String, response: Response) {
+    val producer = Producer().createProducer((Configuration().kafkaConfig))
+    val futureresult = producer.send(createRecord(TOPIC, callId, objectMapper.writeValueAsString(response)))
+    futureresult.get()
+    producer.close()
+    logger.info(
+        "kafka request with id $callId processed ok and response published to $TOPIC ", kv("callId", callId)
+    )
 }
 
 fun Routing.evalueringTestRoute(
