@@ -12,7 +12,7 @@ Egenskap: Regel 21: Er bruker arbeidstaker i kontrollperiode for stønadsområde
 
       Når regel "21" kjøres med følgende parametre
         | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-        | 30.01.2020      | 30.01.2021      | Nei                           |
+        | 01.02.2020      | 28.02.2020      | Nei                           |
 
       Så skal svaret være "<Svar>"
       Og skal avklaringen være som definert i RegelId
@@ -21,7 +21,7 @@ Egenskap: Regel 21: Er bruker arbeidstaker i kontrollperiode for stønadsområde
       Eksempler:
         | Fra og med | Til og med | Svar |
         | 01.01.2018 |            | Ja   |
-        | 01.01.2018 | 01.02.2018 | Nei  |
+        | 01.01.2018 | 15.01.2020 | Nei  |
 
 
     Scenariomal: Person med to arbeidsforhold som har jobbet sammenhengende de siste 28 dagene får "Ja"
@@ -32,7 +32,7 @@ Egenskap: Regel 21: Er bruker arbeidstaker i kontrollperiode for stønadsområde
 
       Når regel "21" kjøres med følgende parametre
         | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-        | 10.06.2020      | 10.06.2020      | Nei                           |
+        | 01.02.2020      | 28.02.2020      | Nei                           |
 
       Så skal svaret være "<Svar>"
       Og skal avklaringen være som definert i RegelId
