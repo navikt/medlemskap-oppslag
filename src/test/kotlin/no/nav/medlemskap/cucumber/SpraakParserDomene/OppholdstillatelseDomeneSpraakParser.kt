@@ -200,7 +200,7 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
                 ),
                 harTillatelse = parseBooleanMedBooleanVerdi(OppholdstillatelseDomenebegrep.HAR_OPPHOLD, rad),
                 type = OppholdstillaelsePaSammeVilkarType.valueOf(parseString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_TYPE, rad)),
-                soknadIkkeAvgjort = false
+                soknadIkkeAvgjort = null
 
             )
         }
