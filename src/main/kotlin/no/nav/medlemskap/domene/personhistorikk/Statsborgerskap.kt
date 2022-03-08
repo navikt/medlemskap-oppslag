@@ -87,10 +87,6 @@ data class Statsborgerskap(
         infix fun List<Statsborgerskap>.erEøsBorger(
             kontrollPeriodeForPersonhistorikk: Kontrollperiode
         ): Boolean {
-            if (erBrukerBritiskBorgerUtenAnnetEøsStatsborgerskap(this, kontrollPeriodeForPersonhistorikk)) {
-                return kontrollPeriodeForPersonhistorikk.tom.isBefore(LocalDate.of(2021, 1, 1))
-            }
-
             return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Landkode.erEØSland(it) }
         }
 
