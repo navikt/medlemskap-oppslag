@@ -66,18 +66,23 @@ fun Routing.evalueringRoute(
                     azp
                 )
             }
+            try {
             val resultat = evaluerData(datagrunnlag)
-
-            val response = lagResponse(
+                val response = lagResponse(
                 versjonTjeneste = configuration.commitSha,
                 endpoint = endpoint,
                 datagrunnlag = datagrunnlag,
                 resultat = resultat
             )
-            publishMedlemskapVurdertEvent(callId, response)
-            loggResponse(request.fnr, response)
+                publishMedlemskapVurdertEvent(callId, response)
+                loggResponse(request.fnr, response)
 
-            call.respond(response)
+                call.respond(response)
+            }
+            catch (t:Throwable) {
+                loggError(fnr = request.fnr, datagrunnlag = datagrunnlag, endpoint = endpoint, throwable = t)
+                throw t
+            }
         }
 
         post("/kafka") {
@@ -222,6 +227,25 @@ private fun loggResponse(fnr: String, response: Response, endpoint: String = "/"
         uavklartPåRegel(årsaker.first(), response.datagrunnlag.ytelse.name()).increment()
     }
 }
+
+private fun loggError(fnr: String, datagrunnlag: Datagrunnlag, endpoint: String = "/", throwable: Throwable) {
+    secureLogger.error(
+        "teknisk feil i regelkjøring for bruker {}, ytelse {}", fnr, datagrunnlag.ytelse,
+        kv("fnr", fnr),
+        kv("fom", datagrunnlag.periode.fom.toString()),
+        kv("tom", datagrunnlag.periode.tom.toString()),
+        kv("førsteDagForYtelse", datagrunnlag.førsteDagForYtelse.toString()),
+        kv("brukerInput", datagrunnlag.brukerinput.toString()),
+        kv("startdatoForYtelse", datagrunnlag.startDatoForYtelse.toString()),
+        kv("ytelse", datagrunnlag.ytelse),
+        kv("statsborgerskap", datagrunnlag.gyldigeStatsborgerskap().toString()),
+        kv("statsborgerskapAnt", datagrunnlag.gyldigeStatsborgerskap().size),
+        kv("datagrunnlag", objectMapper.writeValueAsString(datagrunnlag)),
+        kv("endpoint", endpoint),
+        kv("stacktrace", throwable.stackTrace)
+    )
+}
+
 
 private fun validerRequest(request: Request, azp: String): Request {
     val ytelse = finnYtelse(request.ytelse, azp)
