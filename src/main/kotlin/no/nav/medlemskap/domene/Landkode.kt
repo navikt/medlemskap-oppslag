@@ -32,12 +32,12 @@ enum class Landkode(val landkode: String, val erEøsland: Boolean) {
     HUN("UNGARN", true),
     AUT("ØSTERRIKE", true),
     CHE("SVEITS", true),
-    GBR("STORBRITANNIA", true);
+    GBR("STORBRITANNIA", false);
 
     companion object {
         fun erEØSland(landkode: String): Boolean {
             return values()
-                .filter { it.erEøsland == true }
+                .filter { it.erEøsland }
                 .any { it.name == landkode }
         }
 

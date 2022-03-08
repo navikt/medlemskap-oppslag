@@ -50,7 +50,7 @@ Egenskap: Eøs-land
       | HUN  | UNGARN        | Ja   |
       | AUT  | ØSTERRIKE     | Ja   |
       | CHE  | SVEITS        | Ja   |
-      | GBR  | STORBRITANNIA | Ja   |
+      | GBR  | STORBRITANNIA | Nei  |
       | USA  | USA           | Nei  |
 
 

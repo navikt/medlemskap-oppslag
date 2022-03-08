@@ -61,10 +61,16 @@ class ReglerForOppholdstillatelse(
             hvisNei = harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt
         )
 
+        val harBritiskBrukerEOSellerEFTAOppholdRegelFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_30),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE),
+            hvisNei = harBrukerEOSellerEFTAOppholdOgBritiskEktefelleRegelflyt
+        )
+
         val harBrukerFlereOppholdstillatelserSomOverlapper = lagRegelflyt(
             regel = hentRegel(REGEL_19_2),
             hvisJa = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE),
-            hvisNei = harBrukerEOSellerEFTAOppholdOgBritiskEktefelleRegelflyt
+            hvisNei = harBritiskBrukerEOSellerEFTAOppholdRegelFlyt
         )
 
         val harBrukerOppholdPaSammeVilkarFlagg = lagRegelflyt(
