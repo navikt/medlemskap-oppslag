@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2021-11-22T09:30:21.849167",
+  "tidspunkt" : "2022-03-09T10:41:41.700482",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "kanal" : "/",
@@ -211,7 +211,7 @@
           },
           "type" : "PERMANENT",
           "harTillatelse" : true,
-          "soknadIkkeAvgjort" : false
+          "soknadIkkeAvgjort" : null
         },
         "eosellerEFTAOpphold" : null,
         "uavklart" : null,
