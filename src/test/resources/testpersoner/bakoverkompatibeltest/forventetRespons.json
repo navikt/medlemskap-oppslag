@@ -211,7 +211,7 @@
           },
           "type" : "PERMANENT",
           "harTillatelse" : true,
-          "soknadIkkeAvgjort" : null
+          "soknadIkkeAvgjort" : false
         },
         "eosellerEFTAOpphold" : null,
         "uavklart" : null,
