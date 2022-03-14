@@ -177,12 +177,23 @@ object UdiMapper {
 
             val soknadIkkeAvgjort: Boolean = gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar.oppholdPaSammeVilkar != null
 
-            return OppholdstillatelsePaSammeVilkar(
-                periode = oppholdstillatelsePaSammeVilkarPeriode,
-                harTillatelse = harTillatelse,
-                soknadIkkeAvgjort = soknadIkkeAvgjort,
-                type = oppholdstillatelsePaSammeVilkarType
-            )
+            return when (soknadIkkeAvgjort) {
+                true -> OppholdstillatelsePaSammeVilkar(
+                    periode = oppholdstillatelsePaSammeVilkarPeriode,
+                    harTillatelse = harTillatelse,
+                    soknadIkkeAvgjort = SoknadIkkeAvgjort(
+                        soknadOppholdstillatelseType = oppholdstillatelsePaSammeVilkarType,
+                        soknadPeriode = oppholdstillatelsePaSammeVilkarPeriode
+                    ),
+                    type = oppholdstillatelsePaSammeVilkarType
+                )
+                else -> OppholdstillatelsePaSammeVilkar(
+                    periode = oppholdstillatelsePaSammeVilkarPeriode,
+                    harTillatelse = harTillatelse,
+                    soknadIkkeAvgjort = null,
+                    type = oppholdstillatelsePaSammeVilkarType
+                )
+            }
         }
         return null
     }
