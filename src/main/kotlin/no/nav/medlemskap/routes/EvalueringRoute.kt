@@ -67,19 +67,18 @@ fun Routing.evalueringRoute(
                 )
             }
             try {
-            val resultat = evaluerData(datagrunnlag)
+                val resultat = evaluerData(datagrunnlag)
                 val response = lagResponse(
-                versjonTjeneste = configuration.commitSha,
-                endpoint = endpoint,
-                datagrunnlag = datagrunnlag,
-                resultat = resultat
-            )
+                    versjonTjeneste = configuration.commitSha,
+                    endpoint = endpoint,
+                    datagrunnlag = datagrunnlag,
+                    resultat = resultat
+                )
                 publishMedlemskapVurdertEvent(callId, response)
                 loggResponse(request.fnr, response)
 
                 call.respond(response)
-            }
-            catch (t:Throwable) {
+            } catch (t: Throwable) {
                 loggError(fnr = request.fnr, datagrunnlag = datagrunnlag, endpoint = endpoint, throwable = t)
                 throw t
             }
@@ -245,7 +244,6 @@ private fun loggError(fnr: String, datagrunnlag: Datagrunnlag, endpoint: String 
         kv("stacktrace", throwable.stackTrace)
     )
 }
-
 
 private fun validerRequest(request: Request, azp: String): Request {
     val ytelse = finnYtelse(request.ytelse, azp)

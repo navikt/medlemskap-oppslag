@@ -532,8 +532,10 @@ components:
           $ref: "#/components/schemas/ValgfriDato"
     SoknadIkkeAvgjort:
       properties:
-        soknadIkkeAvgjort:
-          type: boolean
+        soknadPeriode:
+          $ref: "#/components/schemas/Periode"
+        soknadOppholdstillatelseType:
+          $ref: "#/components/schemas/OppholdstillatelsePaSammeVilkar/type"
     PermisjonPermittering:
       properties:
         periode:
