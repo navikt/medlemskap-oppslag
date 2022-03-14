@@ -16,7 +16,7 @@ class HarBrukerOppholdPåSammeVilkårFlagg(
 ) : BasisRegel(regelId, ytelse) {
 
     override fun operasjon(): Resultat {
-        if (oppholdstillatelse?.gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar?.soknadIkkeAvgjort != null) {
+        if (oppholdstillatelse?.gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar?.soknadIkkeAvgjort == true) {
             return ja(regelId)
         }
 

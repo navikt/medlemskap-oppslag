@@ -83,7 +83,7 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, HarTillatelseMapper())[0]
     }
 
-    fun mapSoknadIkkeAvgjort(dataTable: DataTable): SoknadIkkeAvgjort {
+    fun mapSoknadIkkeAvgjort(dataTable: DataTable): Boolean {
         return mapDataTable(dataTable, HarSoknadIkkeAvgjortMapper())[0]
     }
 
@@ -108,12 +108,9 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
         }
     }
 
-    class HarSoknadIkkeAvgjortMapper() : RadMapper<SoknadIkkeAvgjort> {
-        override fun mapRad(rad: Map<String, String>): SoknadIkkeAvgjort {
-            return SoknadIkkeAvgjort(
-                OppholdstillaelsePaSammeVilkarType.valueOf(parseString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_TYPE, rad)),
-                Periode(parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad), parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad))
-            )
+    class HarSoknadIkkeAvgjortMapper() : RadMapper<Boolean> {
+        override fun mapRad(rad: Map<String, String>): Boolean {
+            return parseBoolean(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_PÅ_SAMME_VILKÅR_FLAGG, rad)
         }
     }
 
@@ -203,7 +200,7 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
                 ),
                 harTillatelse = parseBooleanMedBooleanVerdi(OppholdstillatelseDomenebegrep.HAR_OPPHOLD, rad),
                 type = OppholdstillaelsePaSammeVilkarType.valueOf(parseString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_TYPE, rad)),
-                soknadIkkeAvgjort = null
+                soknadIkkeAvgjort = false
 
             )
         }
@@ -302,11 +299,7 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
                     periode = periode,
                     harTillatelse = parseValgfriBoolean(OppholdstillatelseDomenebegrep.HAR_OPPHOLDSTILLATELSE.nøkkel(), rad),
                     type = OppholdstillaelsePaSammeVilkarType.valueOf(parseString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_TYPE, rad)),
-                    soknadIkkeAvgjort = parseSoknadIkkeAvgjort(
-                        parseBoolean(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_PÅ_SAMME_VILKÅR_FLAGG, rad),
-                        periode,
-                        OppholdstillaelsePaSammeVilkarType.valueOf(parseString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_TYPE, rad)),
-                    )
+                    soknadIkkeAvgjort = parseBoolean(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_PÅ_SAMME_VILKÅR_FLAGG, rad)
                 ),
                 ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum = null,
                 eosellerEFTAOpphold = null,
@@ -322,17 +315,6 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
                 uavklart = Uavklart()
             )
         }
-    }
-
-    private fun parseSoknadIkkeAvgjort(
-        parseBoolean: Boolean,
-        periode: Periode,
-        oppholdstillatelsePaSammeVilkarType: OppholdstillaelsePaSammeVilkarType
-    ): SoknadIkkeAvgjort? {
-        if (parseBoolean) {
-            return SoknadIkkeAvgjort(oppholdstillatelsePaSammeVilkarType, periode)
-        }
-        return null
     }
 
     class ArbeidsadgangMapper : RadMapper<Arbeidsadgang> {
