@@ -5,6 +5,7 @@ import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import mu.KotlinLogging
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
 import no.nav.medlemskap.config.Configuration
 
@@ -15,6 +16,7 @@ class EregClient(
     private val eregApiKey: String,
     private val retry: Retry? = null
 ) {
+    private val logger = KotlinLogging.logger { }
 
     suspend fun hentOrganisasjon(orgnummer: String?, callId: String): Organisasjon {
         val organisasjonsInfo = kotlin.runCatching {
@@ -46,7 +48,10 @@ class EregClient(
                             throw error
                         }
                     }
-                    else -> throw error
+                    else -> {
+                        logger.error("${this.javaClass.name} failed with error ${error.message}")
+                        throw error
+                    }
                 }
             }
 
