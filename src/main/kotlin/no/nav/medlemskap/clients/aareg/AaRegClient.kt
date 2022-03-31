@@ -54,7 +54,10 @@ class AaRegClient(
                             throw error
                         }
                     }
-                    else -> throw error
+                    else -> {
+                        logger.error("${this.javaClass.name} failed with error ${error.message}")
+                        throw error
+                    }
                 }
             }
         )
