@@ -27,61 +27,71 @@ class PdlClient(
 
     suspend fun hentIdenterv2(fnr: String, callId: String): GraphQLClientResponse<HentIdenter.Result> {
 
-        return runWithRetryAndMetrics("PDL", "HentIdenter", retry) {
-            val stsToken = stsClient.oidcToken()
-            val query = HentIdenter(
-                variables = HentIdenter.Variables(
-                    fnr,
-                    null,
-                    true
+        try {
+            return runWithRetryAndMetrics("PDL", "HentIdenter", retry) {
+                val stsToken = stsClient.oidcToken()
+                val query = HentIdenter(
+                    variables = HentIdenter.Variables(
+                        fnr,
+                        null,
+                        true
+                    )
                 )
-            )
-            val response: KotlinxGraphQLResponse<HentIdenter.Result> = httpClient.post() {
-                url(baseUrl)
-                body = query
-                header(HttpHeaders.Authorization, "Bearer $stsToken")
-                header(HttpHeaders.ContentType, ContentType.Application.Json)
-                header(HttpHeaders.Accept, ContentType.Application.Json)
-                header("Nav-Call-Id", callId)
-                header("Nav-Consumer-Token", "Bearer $stsToken")
-                header("Nav-Consumer-Id", username)
-                header("x-nav-apiKey", pdlApiKey)
-            }
+                val response: KotlinxGraphQLResponse<HentIdenter.Result> = httpClient.post() {
+                    url(baseUrl)
+                    body = query
+                    header(HttpHeaders.Authorization, "Bearer $stsToken")
+                    header(HttpHeaders.ContentType, ContentType.Application.Json)
+                    header(HttpHeaders.Accept, ContentType.Application.Json)
+                    header("Nav-Call-Id", callId)
+                    header("Nav-Consumer-Token", "Bearer $stsToken")
+                    header("Nav-Consumer-Id", username)
+                    header("x-nav-apiKey", pdlApiKey)
+                }
 
-            if (!response.errors.isNullOrEmpty()) {
-                logger.error("PDL response errors: ${response.errors}")
-                // TODO: utfør feil håndtering. Gjøres utenfor denne koden?
+                if (!response.errors.isNullOrEmpty()) {
+                    logger.error("PDL response errors: ${response.errors}")
+                    // TODO: utfør feil håndtering. Gjøres utenfor denne koden?
+                }
+                response
             }
-            response
+        } catch (error: Throwable) {
+            logger.error("${this.javaClass.name} failed with error ${error.message}")
+            throw error
         }
     }
 
     suspend fun hentPersonV2(fnr: String, callId: String): GraphQLClientResponse<HentPerson.Result> {
 
-        return runWithRetryAndMetrics("PDL", "HentPerson", retry) {
-            val stsToken = stsClient.oidcToken()
+        try {
+            return runWithRetryAndMetrics("PDL", "HentPerson", retry) {
+                val stsToken = stsClient.oidcToken()
 
-            val query = HentPerson(
-                variables = HentPerson.Variables(fnr, true, true)
-            )
-            val response: KotlinxGraphQLResponse<HentPerson.Result> = httpClient.post() {
-                url(baseUrl)
-                body = query
-                header(HttpHeaders.Authorization, "Bearer $stsToken")
-                header(HttpHeaders.ContentType, ContentType.Application.Json)
-                header(HttpHeaders.Accept, ContentType.Application.Json)
-                header("TEMA", "MED")
-                header("Nav-Call-Id", callId)
-                header("Nav-Consumer-Token", "Bearer $stsToken")
-                header("Nav-Consumer-Id", username)
-                header("x-nav-apiKey", pdlApiKey)
-            }
+                val query = HentPerson(
+                    variables = HentPerson.Variables(fnr, true, true)
+                )
+                val response: KotlinxGraphQLResponse<HentPerson.Result> = httpClient.post() {
+                    url(baseUrl)
+                    body = query
+                    header(HttpHeaders.Authorization, "Bearer $stsToken")
+                    header(HttpHeaders.ContentType, ContentType.Application.Json)
+                    header(HttpHeaders.Accept, ContentType.Application.Json)
+                    header("TEMA", "MED")
+                    header("Nav-Call-Id", callId)
+                    header("Nav-Consumer-Token", "Bearer $stsToken")
+                    header("Nav-Consumer-Id", username)
+                    header("x-nav-apiKey", pdlApiKey)
+                }
 
-            if (!response.errors.isNullOrEmpty()) {
-                logger.error("PDL response errors: ${response.errors}")
-                // TODO: utfør feil håndtering. Gjøres utenfor denne koden?
+                if (!response.errors.isNullOrEmpty()) {
+                    logger.error("PDL response errors: ${response.errors}")
+                    // TODO: utfør feil håndtering. Gjøres utenfor denne koden?
+                }
+                response
             }
-            response
+        } catch (error: Throwable) {
+            logger.error("${this.javaClass.name} failed with error ${error.message}")
+            throw error
         }
     }
 
