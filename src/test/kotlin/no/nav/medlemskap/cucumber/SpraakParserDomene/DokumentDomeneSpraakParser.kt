@@ -11,6 +11,10 @@ object DokumentDomeneSpraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, JournalPostIdMapper())[0]
     }
 
+    fun mapJournalfortAvNavn(dataTable: DataTable): String {
+        return mapDataTable(dataTable, JournalfortAvNavnMapper())[0]
+    }
+
     fun mapJournalstatus(dataTable: DataTable): String {
         return mapDataTable(dataTable, JournalStatusMapper())[0]
     }
@@ -71,10 +75,17 @@ object DokumentDomeneSpraakParser : BasisDomeneParser() {
         }
     }
 
+    class JournalfortAvNavnMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(DokumentDomenebegrep.JOURNALFORT_AV_NAVN, rad)
+        }
+    }
+
     class JournalpostMapper : RadMapper<Journalpost> {
         override fun mapRad(rad: Map<String, String>): Journalpost {
             return Journalpost(
                 parseString(DokumentDomenebegrep.JOURNALPOST_ID, rad),
+                parseValgfriString(DokumentDomenebegrep.JOURNALFORT_AV_NAVN, rad),
                 parseValgfriString(DokumentDomenebegrep.TITTEL, rad),
                 parseValgfriString(DokumentDomenebegrep.JOURNALPOST_TYPE, rad),
                 parseValgfriString(DokumentDomenebegrep.JOURNAL_STATUS, rad),
@@ -90,6 +101,7 @@ object DokumentDomeneSpraakParser : BasisDomeneParser() {
         JOURNALPOST_TYPE("JournalpostType"),
         JOURNAL_POST_ID("JournalpostId"),
         JOURNALPOST_ID("JournalpostId"),
+        JOURNALFORT_AV_NAVN("Journalført av"),
         PROSENT("Prosent"),
         RELATERT_VED_SIVILSTAND("Relatert ved sivilstand"),
         TEMA("Tema"),

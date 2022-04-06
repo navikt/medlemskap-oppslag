@@ -7,6 +7,7 @@ import no.nav.medlemskap.regler.common.Funksjoner.erDelAv
  */
 data class Journalpost(
     val journalpostId: String,
+    val journalfortAvNavn: String?,
     val tittel: String?,
     val journalposttype: String?,
     val journalstatus: String?,

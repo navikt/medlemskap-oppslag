@@ -339,6 +339,9 @@ components:
       properties:
         journalpostId:
           type: string
+        journalfortAvNavn:
+          type: string
+          nullable: true
         tittel:
           type: string
           nullable: true

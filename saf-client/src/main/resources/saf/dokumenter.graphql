@@ -6,6 +6,7 @@ query($brukerId: BrukerIdInput!, $tema: [Tema!], $journalstatuser: [Journalstatu
         foerste: $foerste) {
         journalposter {
             journalpostId
+            journalfortAvNavn
             tittel
             journalposttype
             journalstatus

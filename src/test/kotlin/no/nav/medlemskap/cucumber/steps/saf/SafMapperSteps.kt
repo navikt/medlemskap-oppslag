@@ -38,6 +38,10 @@ class SafMapperSteps : No {
             safDokumentBuilder.journalpostId = safDomenespråkParser.mapJournalPostId(dataTable)
         }
 
+        Gitt<DataTable>("følgende journalført av navn fra journalpost") { dataTable: DataTable ->
+            safDokumentBuilder.journalfortAvNavn = safDomenespråkParser.mapJournalfortAvNavn(dataTable)
+        }
+
         Gitt<DataTable>("følgende journalposttype fra journalpost") { dataTable: DataTable ->
             safDokumentBuilder.journalposttype = safDomenespråkParser.mapJournalPostType(dataTable)
         }
@@ -49,6 +53,7 @@ class SafMapperSteps : No {
         Gitt<DataTable>("følgende journalstatus fra journalpost") { dataTable: DataTable ->
             safDokumentBuilder.journalStatus = safDomenespråkParser.mapJournalStatus(dataTable)
         }
+
         Når("journalposter mappes") {
             dokumenter = mapTilDokumenter()
         }
@@ -56,6 +61,11 @@ class SafMapperSteps : No {
         Så<DataTable>("skal mappede journalpostid være") { dataTable: DataTable ->
             val journalpostIdForventet = DokumentDomeneSpraakParser.mapJournalpostId(dataTable)
             dokumenter?.get(0)?.journalpostId.shouldBe(journalpostIdForventet)
+        }
+
+        Så<DataTable>("skal mappede journalført av navn være") { dataTable: DataTable ->
+            val forventetJournalfortAvNavn = DokumentDomeneSpraakParser.mapJournalfortAvNavn(dataTable)
+            dokumenter?.get(0)?.journalfortAvNavn.shouldBe(forventetJournalfortAvNavn)
         }
 
         Så<DataTable>("skal mappede journalstatus være") { dataTable: DataTable ->
@@ -100,6 +110,7 @@ class SafMapperSteps : No {
 
         var tema = Tema.AAP
         var journalpostId = String()
+        var journalfortAvNavn = String()
         var journalStatus = Journalstatus.FERDIGSTILT
         var journalposttype = Journalposttype.I
         var datoOpprettet = LocalDateTime.now().toString()
@@ -110,6 +121,7 @@ class SafMapperSteps : No {
             return no.nav.medlemskap.clients.saf.generated.dokumenter.Journalpost(
                 tema = tema,
                 journalpostId = journalpostId,
+                journalfortAvNavn = journalfortAvNavn,
                 journalstatus = journalStatus,
                 journalposttype = journalposttype,
                 dokumenter = dokumenter,
