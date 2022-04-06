@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2022-03-09T10:41:41.700482",
+  "tidspunkt" : "2022-04-06T07:19:27.381011",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "kanal" : "/",
@@ -122,6 +122,7 @@
     } ],
     "dokument" : [ {
       "journalpostId" : "Id",
+      "journalfortAvNavn" : null,
       "tittel" : "Tittel",
       "journalposttype" : "Posttype",
       "journalstatus" : "Status",

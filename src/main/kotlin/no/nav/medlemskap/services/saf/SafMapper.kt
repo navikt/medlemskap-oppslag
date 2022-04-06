@@ -12,6 +12,7 @@ fun mapJournalResultat(journal: List<no.nav.medlemskap.clients.saf.generated.dok
         Journalpost(
             dokumenter = mapDokumenter(it),
             journalpostId = it.journalpostId,
+            journalfortAvNavn = it.journalfortAvNavn,
             journalposttype = it.journalposttype.toString(),
             journalstatus = it.journalstatus.toString(),
             tema = it.tema.toString(),
