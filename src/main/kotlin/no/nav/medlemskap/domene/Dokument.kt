@@ -22,6 +22,7 @@ data class Journalpost(
 
         fun List<Journalpost>.dokumenterMedTillatteTemaer(): List<Journalpost> =
             this.filter { it.tema erDelAv tillatteTemaer }
+                .filter { (it.journalfortAvNavn.isNullOrEmpty() || !it.journalfortAvNavn.contains("medlemskap-joark")) }
     }
 }
 
