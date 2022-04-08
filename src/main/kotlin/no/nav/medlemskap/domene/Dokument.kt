@@ -21,7 +21,8 @@ data class Journalpost(
             this.dokumenterMedTillatteTemaer().isNotEmpty()
 
         fun List<Journalpost>.dokumenterMedTillatteTemaer(): List<Journalpost> =
-            this.filter { it.tema erDelAv tillatteTemaer && !it.journalfortAvNavn?.contains("medlemskap-joark")!! }
+            this.filter { it.tema erDelAv tillatteTemaer }
+                .filter { (it.journalfortAvNavn.isNullOrEmpty() || !it.journalfortAvNavn.contains("medlemskap-joark")) }
     }
 }
 
