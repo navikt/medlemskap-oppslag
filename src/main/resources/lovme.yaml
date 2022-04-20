@@ -591,6 +591,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ValgfriDato"
+        navn:
+          type: array
+          items:
+            $ref: "#/components/schemas/Navn"
     PersonhistorikkBarn:
       properties:
         ident:
@@ -738,6 +742,15 @@ components:
             $ref: "#/components/schemas/ValgfriDato"
           historisk:
             type: boolean
+    Navn:
+      properties:
+        fornavn:
+          type: string
+        mellomnavn:
+          type: string
+          nullable: true
+        etternavn:
+          type: string
     Svar:
       type: string
       enum:
