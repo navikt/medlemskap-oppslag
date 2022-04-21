@@ -6,6 +6,7 @@ import no.nav.medlemskap.clients.pdl.generated.hentperson.*
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.domene.personhistorikk.*
 import no.nav.medlemskap.domene.personhistorikk.ForelderBarnRelasjon
+import no.nav.medlemskap.domene.personhistorikk.Navn
 import no.nav.medlemskap.domene.personhistorikk.Sivilstand
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
 import no.nav.medlemskap.regler.common.Datohjelper.parseIsoDato
@@ -25,6 +26,7 @@ object PdlMapper {
         val sivilstand: List<Sivilstand> = mapSivilstander(person.sivilstand)
         val forelderBarnRelasjoner: List<ForelderBarnRelasjon> = mapFamilierelasjoner(person.forelderBarnRelasjon)
         val doedsfall: List<LocalDate> = mapDoedsfall(person.doedsfall)
+        val navn: List<Navn> = mapNavn(person.navn)
 
         return Personhistorikk(
             statsborgerskap = statsborgerskap,
@@ -33,8 +35,23 @@ object PdlMapper {
             forelderBarnRelasjon = forelderBarnRelasjoner,
             kontaktadresser = kontaktadresser,
             oppholdsadresser = oppholdsadresser,
-            doedsfall = doedsfall
+            doedsfall = doedsfall,
+            navn = navn
         )
+    }
+
+    private fun mapNavn(navn: List<no.nav.medlemskap.clients.pdl.generated.hentperson.Navn>): List<Navn> {
+        return mapPersonNavn(navn)
+    }
+
+    private fun mapPersonNavn(navn: List<no.nav.medlemskap.clients.pdl.generated.hentperson.Navn>): List<Navn> {
+        return navn.map {
+            Navn(
+                fornavn = it.fornavn,
+                mellomnavn = it.mellomnavn,
+                etternavn = it.etternavn
+            )
+        }
     }
 
     private fun mapDoedsfall(doedsfall: List<Doedsfall>): List<LocalDate> {

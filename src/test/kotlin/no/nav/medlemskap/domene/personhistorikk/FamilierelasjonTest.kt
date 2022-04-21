@@ -41,9 +41,10 @@ class FamilierelasjonTest {
         oppholdsadresser: List<Adresse> = listOf(lagAdresse()),
         sivilstand: List<Sivilstand> = listOf(lagSivilstand()),
         familierelasjoner: List<ForelderBarnRelasjon> = listOf(lagFamilierelasjon()),
-        doedsfall: List<LocalDate> = emptyList()
+        doedsfall: List<LocalDate> = emptyList(),
+        navn: List<Navn> = emptyList()
     ): Personhistorikk =
-        Personhistorikk(statsborgerskap, bostedsadresser, kontaktadresser, oppholdsadresser, sivilstand, familierelasjoner, doedsfall)
+        Personhistorikk(statsborgerskap, bostedsadresser, kontaktadresser, oppholdsadresser, sivilstand, familierelasjoner, doedsfall, navn)
 
     private fun lagStatsborgerskap(landkode: String = "NOR", fom: LocalDate? = null, tom: LocalDate? = null): Statsborgerskap =
         Statsborgerskap(landkode = landkode, fom = fom, tom = tom, historisk = false)

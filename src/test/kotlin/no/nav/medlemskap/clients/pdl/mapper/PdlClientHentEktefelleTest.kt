@@ -10,8 +10,11 @@ import kotlinx.coroutines.runBlocking
 import no.nav.medlemskap.clients.pdl.PdlClient
 import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.cioHttpClient
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 class PdlClientHentEktefelleTest {
 
@@ -115,7 +118,14 @@ class PdlClientHentEktefelleTest {
                 "adressebeskyttelse":[],
                 "doedsfall": [],
                 "kontaktadresse": [],
-                "oppholdsadresse": []
+                "oppholdsadresse": [],
+                "navn": [
+                    {
+                        "fornavn": "test",
+                        "mellomnavn": null,
+                        "etternavn": "person"
+                    }
+                ]
               }
             }
 }  

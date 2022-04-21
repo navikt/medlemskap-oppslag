@@ -63,6 +63,10 @@ class PdlMapperSteps : No {
             pdlPersonBuilderEktefelle.bostedsadresser = pdlDomenespråkParser.mapBostedsadresser(dataTable)
         }
 
+        Gitt<DataTable>("følgende navn fra PDL") { dataTable: DataTable ->
+            pdlPersonBuilder.navn = pdlDomenespråkParser.mapNavn(dataTable)
+        }
+
         Når("statsborgerskap mappes") {
             personhistorikk = mapTilPersonhistorikk()
         }
@@ -88,6 +92,10 @@ class PdlMapperSteps : No {
         }
 
         Når("familierelasjoner mappes") {
+            personhistorikk = mapTilPersonhistorikk()
+        }
+
+        Når("navn mappes") {
             personhistorikk = mapTilPersonhistorikk()
         }
 
@@ -147,6 +155,11 @@ class PdlMapperSteps : No {
             val bostedsadresseForventet = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
             personhistorikkEktefelle?.bostedsadresser.shouldContainExactly(bostedsadresseForventet)
         }
+
+        Så("skal mappet navn være") { dataTable: DataTable ->
+            val navn = PersonhistorikkDomeneSpraakParser.mapNavn(dataTable)
+            personhistorikk?.navn.shouldContainExactly(navn)
+        }
     }
 
     private fun mapTilPersonhistorikk(): Personhistorikk {
@@ -174,6 +187,7 @@ class PdlMapperSteps : No {
         var familierelasjoner: List<ForelderBarnRelasjon> = emptyList()
         var doedsfall: List<Doedsfall> = emptyList()
         var adressebeskyttelse: List<Adressebeskyttelse> = emptyList()
+        var navn: List<Navn> = emptyList()
 
         fun build(): Person {
             return Person(
@@ -184,7 +198,8 @@ class PdlMapperSteps : No {
                 kontaktadresse = kontaktadresser,
                 oppholdsadresse = oppholdsadresser,
                 doedsfall = doedsfall,
-                adressebeskyttelse = adressebeskyttelse
+                adressebeskyttelse = adressebeskyttelse,
+                navn = navn
             )
         }
     }

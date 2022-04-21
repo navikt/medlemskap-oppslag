@@ -43,6 +43,20 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         return mapDataTable(dataTable, DoedsfallMapper())
     }
 
+    fun mapNavn(dataTable: DataTable): List<Navn> {
+        return mapDataTable(dataTable, NavnMapper())
+    }
+
+    class NavnMapper : RadMapper<Navn> {
+        override fun mapRad(rad: Map<String, String>): Navn {
+            return Navn(
+                parseString(Domenebegrep.FORNAVN, rad),
+                parseValgfriString(Domenebegrep.MELLOMNAVN, rad),
+                parseString(Domenebegrep.ETTERNAVN, rad)
+            )
+        }
+    }
+
     class StatsborgerskapMapper : RadMapper<Statsborgerskap> {
         override fun mapRad(rad: Map<String, String>): Statsborgerskap {
 
@@ -192,7 +206,10 @@ class PdlDomenespråkParser : BasisDomeneParser() {
         RELATERT_VED_SIVILSTAND("Relatert ved sivilstand"),
         SIVILSTANDSTYPE("Type"),
         UTENLANDSK_ADRESSE_LANDKODE("Utenlandsk adresse landkode"),
-        UTENLANDSK_ADRESSE_FRITT_FORMAT_LANDKODE("Utenlandsk adresse frittformat landkode");
+        UTENLANDSK_ADRESSE_FRITT_FORMAT_LANDKODE("Utenlandsk adresse frittformat landkode"),
+        FORNAVN("Fornavn"),
+        MELLOMNAVN("Mellomnavn"),
+        ETTERNAVN("Etternavn");
 
         override fun nøkkel(): String {
             return nøkkel
