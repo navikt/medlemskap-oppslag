@@ -63,6 +63,10 @@ class PdlMapperSteps : No {
             pdlPersonBuilderEktefelle.bostedsadresser = pdlDomenespråkParser.mapBostedsadresser(dataTable)
         }
 
+        Gitt<DataTable>("følgende navn fra PDL") { dataTable: DataTable ->
+            pdlPersonBuilder.navn = pdlDomenespråkParser.mapNavn(dataTable)
+        }
+
         Når("statsborgerskap mappes") {
             personhistorikk = mapTilPersonhistorikk()
         }
@@ -88,6 +92,10 @@ class PdlMapperSteps : No {
         }
 
         Når("familierelasjoner mappes") {
+            personhistorikk = mapTilPersonhistorikk()
+        }
+
+        Når("navn mappes") {
             personhistorikk = mapTilPersonhistorikk()
         }
 
@@ -146,6 +154,11 @@ class PdlMapperSteps : No {
         Så<DataTable>("følgende bostedsadresse til ektefelle være") { dataTable: DataTable ->
             val bostedsadresseForventet = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
             personhistorikkEktefelle?.bostedsadresser.shouldContainExactly(bostedsadresseForventet)
+        }
+
+        Så("skal mappet navn være") { dataTable: DataTable ->
+            val navn = PersonhistorikkDomeneSpraakParser.mapNavn(dataTable)
+            personhistorikk?.navn.shouldContainExactly(navn)
         }
     }
 

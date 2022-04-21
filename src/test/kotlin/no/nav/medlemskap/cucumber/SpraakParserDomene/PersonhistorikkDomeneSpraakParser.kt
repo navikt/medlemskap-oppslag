@@ -5,10 +5,7 @@ import no.nav.medlemskap.cucumber.*
 import no.nav.medlemskap.domene.barn.DataOmBarn
 import no.nav.medlemskap.domene.barn.PersonhistorikkBarn
 import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
-import no.nav.medlemskap.domene.personhistorikk.Adresse
-import no.nav.medlemskap.domene.personhistorikk.ForelderBarnRelasjon
-import no.nav.medlemskap.domene.personhistorikk.Sivilstand
-import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
+import no.nav.medlemskap.domene.personhistorikk.*
 import java.time.LocalDate
 
 object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
@@ -43,6 +40,20 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
 
     fun mapBarnTilEktefelle(dataTable: DataTable): List<String> {
         return mapDataTable(dataTable, BarnTilEktefelleMapper())
+    }
+
+    fun mapNavn(dataTable: DataTable): List<Navn> {
+        return mapDataTable(dataTable, NavnMapper())
+    }
+
+    class NavnMapper : RadMapper<Navn> {
+        override fun mapRad(rad: Map<String, String>): Navn {
+            return Navn(
+                parseString(PersonhistorikkDomenebegrep.FORNAVN, rad),
+                parseValgfriString(PersonhistorikkDomenebegrep.MELLOMNAVN, rad),
+                parseString(PersonhistorikkDomenebegrep.ETTERNAVN, rad)
+            )
+        }
     }
 
     class StatsborgerskapMapper : RadMapper<Statsborgerskap> {
@@ -197,7 +208,10 @@ enum class PersonhistorikkDomenebegrep(val nøkkel: String) : Domenenøkkel {
     RELATERT_PERSONS_ROLLE("Relatert persons rolle"),
     SIVILSTANDSTYPE("Sivilstandstype"),
     STATSBORGERSKAP("Statsborgerskap"),
-    TIL_OG_MED_DATO("Til og med dato");
+    TIL_OG_MED_DATO("Til og med dato"),
+    FORNAVN("Fornavn"),
+    MELLOMNAVN("Mellomnavn"),
+    ETTERNAVN("Etternavn");
 
     override fun nøkkel(): String {
         return nøkkel
