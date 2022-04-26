@@ -116,7 +116,7 @@ fun Routing.evalueringRoute(
 
             publishMedlemskapVurdertEvent(callId, response)
             loggResponse(request.fnr, response, endpoint)
-            call.respond("Kafka melding: OK")
+            call.respond(response)
         }
     }
 }
