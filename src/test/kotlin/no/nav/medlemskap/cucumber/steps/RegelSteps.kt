@@ -83,6 +83,11 @@ class RegelSteps : No {
             pdlPersonhistorikkBuilder.statsborgerskap.addAll(statsborgerskap)
         }
 
+        Gitt("følgende navn i personhistorikken") { dataTable: DataTable ->
+            val navn = PersonhistorikkDomeneSpraakParser.mapNavn(dataTable)
+            pdlPersonhistorikkBuilder.navn.addAll(navn)
+        }
+
         Gitt("følgende bostedsadresser i personhistorikken") { dataTable: DataTable ->
             val bostedsadresser = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
             pdlPersonhistorikkBuilder.bostedsadresser.addAll(bostedsadresser)
