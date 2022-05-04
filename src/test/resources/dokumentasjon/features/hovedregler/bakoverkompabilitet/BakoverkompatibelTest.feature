@@ -21,6 +21,10 @@ Egenskap: Bakoverkompatibel test
       | Landkode | Fra og med dato | Til og med dato |
       | NOR      | 10.10.1975      | 01.08.2020      |
 
+    Og følgende navn i personhistorikken
+      | Fornavn | Etternavn |
+      | Test    | Person    |
+
     Og følgende kontaktadresser i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
       | NOR      | 10.10.1975      | 01.08.2020      |

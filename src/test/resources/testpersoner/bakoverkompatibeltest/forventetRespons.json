@@ -46,7 +46,11 @@
       } ],
       "forelderBarnRelasjon" : [ ],
       "doedsfall" : [ ],
-      "navn" : [ ]
+      "navn" : [ {
+        "fornavn" : "Test",
+        "mellomnavn" : null,
+        "etternavn" : "Person"
+      } ]
     },
     "medlemskap" : [ {
       "dekning" : "dekning",
