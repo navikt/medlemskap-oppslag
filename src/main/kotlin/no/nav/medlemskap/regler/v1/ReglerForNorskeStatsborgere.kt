@@ -20,19 +20,19 @@ class ReglerForNorskeStatsborgere(
 ) : Regler(ytelse, regelFactory, overstyrteRegler) {
 
     override fun hentHovedflyt(): Regelflyt {
-        val harBrukerJobbetUtenforNorgeFlyt = lagRegelflyt(
-            regel = hentRegel(RegelId.REGEL_9),
-            hvisJa = regelflytUavklart(ytelse, REGEL_NORSK),
-            hvisNei = regelflytJa(ytelse, REGEL_NORSK)
-        )
 
         val harBrukerJobbet25ProsentEllerMerFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_12),
             hvisJa = regelflytJa(ytelse, REGEL_NORSK),
-            hvisNei = harBrukerJobbetUtenforNorgeFlyt
+            hvisNei = regelflytUavklart(ytelse, REGEL_NORSK)
+        )
+        val harBrukerJobbetUtenforNorgeFlyt = lagRegelflyt(
+            regel = hentRegel(RegelId.REGEL_9),
+            hvisJa = regelflytUavklart(ytelse, REGEL_NORSK),
+            hvisNei = harBrukerJobbet25ProsentEllerMerFlyt
         )
 
-        return harBrukerJobbet25ProsentEllerMerFlyt
+        return harBrukerJobbetUtenforNorgeFlyt
     }
 
     companion object {

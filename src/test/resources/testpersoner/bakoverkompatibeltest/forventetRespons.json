@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2022-04-06T07:19:27.381011",
+  "tidspunkt" : "2022-05-09T12:26:50.34193",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "kanal" : "/",
@@ -503,6 +503,15 @@
       "harDekning" : null,
       "dekning" : "",
       "delresultat" : [ {
+        "regelId" : "REGEL_9",
+        "svar" : "NEI",
+        "begrunnelse" : "",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Har bruker utført arbeid utenfor Norge?"
+      }, {
         "regelId" : "REGEL_12",
         "svar" : "JA",
         "begrunnelse" : "",

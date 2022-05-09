@@ -44,5 +44,5 @@ Egenskap: Regelflyt for regel 12
       | Ytelse     | Stillingsprosent | Jobbet utenfor Norge | Regel 12 | Medlemskap | Årsaker | Forklaring          |
       | SYKEPENGER | 100              | Nei                  | Ja       | Ja         |         |                     |
       | SYKEPENGER | 20               | Nei                  | Ja       | Ja         |         | Regel 12 overstyres |
-      | DAGPENGER  | 20               | Nei                  | Nei      | Ja         |         |                     |
-      | SYKEPENGER | 20               | Ja                   | Nei      | UAVKLART   | 9       |                     |
+      | DAGPENGER  | 20               | Nei                  | Nei      | UAVKLART   | 12      |                     |
+      | DAGPENGER  | 25               | Nei                  | Ja       | Ja         |         |                     |
