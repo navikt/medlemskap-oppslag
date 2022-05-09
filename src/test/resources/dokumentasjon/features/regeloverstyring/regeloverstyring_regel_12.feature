@@ -40,11 +40,9 @@ Egenskap: Overstyring av regelsvar for regel 12
 
     Så skal svaret være "<Medlemskap>"
 
-    Og skal regel "12" gi svaret "<Regel 12 svar>"
-    Og skal regel "12" gi begrunnelse "<Regel 12 begrunnelse>"
 
     Eksempler:
-      | Overstyrt svar | Regel 12 svar | Regel 12 begrunnelse                                      | Har jobbet utenfor Norge | Medlemskap |
-      |                | Nei           | Bruker har ikke jobbet 25% eller mer i løpet av perioden. | Ja                       | UAVKLART   |
-      | Ja             | Ja            |                                                           | Nei                      | Ja         |
-      | Nei            | Nei           | Bruker har ikke jobbet 25% eller mer i løpet av perioden. | Ja                       | UAVKLART   |
+      | Overstyrt svar | Har jobbet utenfor Norge | Medlemskap |
+      |                | Ja                       | UAVKLART   |
+      | Ja             | Nei                      | Ja         |
+      | Nei            | Ja                       | UAVKLART   |

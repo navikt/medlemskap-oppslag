@@ -29,7 +29,7 @@ Egenskap: Regelflyt for regel 9, for norske borgere
 
     Og følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister |
-      | 01.01.2018      |                 | 001       | 20               |               |
+      | 01.01.2018      |                 | 001       | 25               |               |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge   | Ytelse   |
@@ -46,21 +46,3 @@ Egenskap: Regelflyt for regel 9, for norske borgere
       | DAGPENGER  | Ja                            | Ja      | UAVKLART   | 9       |
       | SYKEPENGER | Ja                            | Ja      | UAVKLART   | 9       |
 
-
-  Scenario: Regelflyt for regel 9, for norske borgere: Ytelse sykepenger, bruker som svarer nei på spørsmålet "Har hatt arbeid utenfor Norge"
-    Gitt følgende arbeidsforhold fra AAReg
-      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
-      | 01.01.2018      |                 | Organisasjon     | NORMALT             |
-      | 01.01.2018      |                 | Organisasjon     | NORMALT             |
-
-    Og følgende arbeidsavtaler i arbeidsforholdet
-      | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent | Skipsregister |
-      | 01.01.2018      |                 | 001       | 20               |               |
-
-    Når medlemskap beregnes med følgende parametre
-      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge | Ytelse     |
-      | 30.01.2020      | 30.01.2021      | Nei                           | SYKEPENGER |
-
-    Så skal svaret være "Ja"
-    Og skal regel-årsaker være ""
-    Og skal regel "9" ikke finnes i resultatet
