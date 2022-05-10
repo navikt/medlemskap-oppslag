@@ -105,18 +105,23 @@ fun Routing.evalueringRoute(
                     azp
                 )
             }
-            val resultat = evaluerData(datagrunnlag)
+            try {
+                val resultat = evaluerData(datagrunnlag)
 
-            val response = lagResponse(
-                versjonTjeneste = configuration.commitSha,
-                endpoint = endpoint,
-                datagrunnlag = datagrunnlag,
-                resultat = resultat
-            )
+                val response = lagResponse(
+                    versjonTjeneste = configuration.commitSha,
+                    endpoint = endpoint,
+                    datagrunnlag = datagrunnlag,
+                    resultat = resultat
+                )
 
-            publishMedlemskapVurdertEvent(callId, response)
-            loggResponse(request.fnr, response, endpoint)
-            call.respond(response)
+                publishMedlemskapVurdertEvent(callId, response)
+                loggResponse(request.fnr, response, endpoint)
+                call.respond(response)
+            } catch (t:Throwable){
+                loggError(fnr = request.fnr, datagrunnlag = datagrunnlag, endpoint = endpoint, throwable = t)
+                throw t
+            }
         }
     }
 }
