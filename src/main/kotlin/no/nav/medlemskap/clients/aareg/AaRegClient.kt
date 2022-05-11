@@ -49,6 +49,7 @@ class AaRegClient(
                 when (error) {
                     is ClientRequestException -> {
                         if (error.response.status.value == 404) {
+                            logger.warn("404, fra AAREG på url (GET) $baseUrl/v1/arbeidstaker/arbeidsforhold")
                             listOf()
                         } else {
                             throw error
