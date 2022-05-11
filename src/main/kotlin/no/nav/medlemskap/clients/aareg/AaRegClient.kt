@@ -30,7 +30,7 @@ class AaRegClient(
         return runCatching {
             runWithRetryAndMetrics("AaReg", "ArbeidsforholdV1", retry) {
                 httpClient.get<List<AaRegArbeidsforhold>> {
-                    url("$baseUrl/v1/arbeidstaker/arbeidsforhold")
+                    url("$baseUrl/api/v1/arbeidstaker/arbeidsforhold")
                     header(HttpHeaders.Authorization, "Bearer $oidcToken")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
                     header("Nav-Call-Id", callId)
