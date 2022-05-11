@@ -65,6 +65,8 @@ spec:
         - host: saf.dev-fss-pub.nais.io
         - host: login.microsoftonline.com
         - host: udi-proxy.dev-fss-pub.nais.io
+        - host: aareg-services-q1.dev-fss-pub.nais.io
+        - host: ereg-services.dev.intern.nav.no
   env:
     - name: SECURITY_TOKEN_SERVICE_URL
       value: https://api-gw-q1.oera.no/sts/SecurityTokenServiceProvider/
