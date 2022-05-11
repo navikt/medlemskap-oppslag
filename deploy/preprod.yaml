@@ -75,7 +75,7 @@ spec:
     - name: MEDL2_BASE_URL
       value: https://api-gw-q2.oera.no/medlemskap-medl-api
     - name: AAREG_BASE_URL
-      value: https://aareg-services-q1.dev-fss-pub.nais.io
+      value: https://aareg-services-q1.dev-fss-pub.nais.io/api
     - name: SAF_BASE_URL
       value: https://saf.dev-fss-pub.nais.io/graphql
     - name: OPPGAVE_BASE_URL
@@ -83,7 +83,7 @@ spec:
     - name: PDL_BASE_URL
       value: https://api-gw-q1.oera.no/pdl-api/graphql
     - name: EREG_BASE_URL
-      value: https://ereg-services.dev.intern.nav.no/api/v1
+      value: https://ereg-services.dev.intern.nav.no/api
     - name: UDI_BASE_URL
       value: https://udi-proxy.dev-fss-pub.nais.io
   envFrom:
