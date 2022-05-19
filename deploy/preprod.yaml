@@ -83,7 +83,7 @@ spec:
     - name: PDL_BASE_URL
       value: https://api-gw-q1.oera.no/pdl-api/graphql
     - name: EREG_BASE_URL
-      value: https://ereg-services.dev.intern.nav.no
+      value: https://api-gw-q1.oera.no/ereg/api
     - name: UDI_BASE_URL
       value: https://udi-proxy.dev-fss-pub.nais.io
   envFrom:
