@@ -56,6 +56,8 @@ spec:
         - host: api-gw.oera.no
         - host: login.microsoftonline.com
         - host: udi-proxy.prod-fss-pub.nais.io
+        - host: aareg-services-q1.dev-fss-pub.nais.io
+        - host: ereg-services.dev.intern.nav.no
   kafka:
     pool: nav-prod
 
@@ -67,7 +69,7 @@ spec:
     - name: MEDL2_BASE_URL
       value: https://api-gw.oera.no/medlemskap-medl-api
     - name: AAREG_BASE_URL
-      value: https://api-gw.oera.no/aareg-services/api
+      value: https://aareg-services-q1.dev-fss-pub.nais.io/api
     - name: SAF_BASE_URL
       value: https://saf.prod-fss-pub.nais.io/graphql
     - name: OPPGAVE_BASE_URL
@@ -75,7 +77,7 @@ spec:
     - name: PDL_BASE_URL
       value: https://api-gw.oera.no/pdl-api/graphql
     - name: EREG_BASE_URL
-      value: https://api-gw.oera.no/ereg/api
+      value: https://api-gw-q1.oera.no/ereg-services/api
     - name: UDI_BASE_URL
       value: https://udi-proxy.prod-fss-pub.nais.io
   envFrom:
