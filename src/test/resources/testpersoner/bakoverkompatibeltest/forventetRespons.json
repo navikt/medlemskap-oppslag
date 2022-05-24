@@ -1,5 +1,5 @@
 {
-  "tidspunkt" : "2022-05-09T12:26:50.34193",
+  "tidspunkt" : "2022-05-24T08:32:26.867882",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "kanal" : "/",
@@ -132,6 +132,7 @@
       "journalposttype" : "Posttype",
       "journalstatus" : "Status",
       "tema" : "Tema",
+      "sak" : null,
       "dokumenter" : null
     } ],
     "ytelse" : "SYKEPENGER",

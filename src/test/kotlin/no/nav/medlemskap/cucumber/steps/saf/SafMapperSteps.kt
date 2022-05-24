@@ -116,6 +116,7 @@ class SafMapperSteps : No {
         var datoOpprettet = LocalDateTime.now().toString()
         var dokumenter = listOf<DokumentInfo?>(dokumentInfoBuilder.build())
         var tittel = String()
+        var sak = null
 
         fun build(): no.nav.medlemskap.clients.saf.generated.dokumenter.Journalpost {
             return no.nav.medlemskap.clients.saf.generated.dokumenter.Journalpost(
@@ -126,7 +127,8 @@ class SafMapperSteps : No {
                 journalposttype = journalposttype,
                 dokumenter = dokumenter,
                 datoOpprettet = datoOpprettet,
-                tittel = tittel
+                tittel = tittel,
+                sak = sak
             )
         }
     }

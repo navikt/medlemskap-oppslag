@@ -11,6 +11,9 @@ query($brukerId: BrukerIdInput!, $tema: [Tema!], $journalstatuser: [Journalstatu
             journalposttype
             journalstatus
             tema
+            sak {
+                fagsakId
+            }
             datoOpprettet
             dokumenter {
                 dokumentInfoId

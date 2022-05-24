@@ -90,6 +90,7 @@ object DokumentDomeneSpraakParser : BasisDomeneParser() {
                 parseValgfriString(DokumentDomenebegrep.JOURNALPOST_TYPE, rad),
                 parseValgfriString(DokumentDomenebegrep.JOURNAL_STATUS, rad),
                 parseValgfriString(DokumentDomenebegrep.TEMA, rad),
+                null,
                 null
             )
         }
