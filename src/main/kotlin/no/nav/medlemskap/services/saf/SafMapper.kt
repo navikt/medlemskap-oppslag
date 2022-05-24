@@ -23,7 +23,9 @@ fun mapJournalResultat(journal: List<no.nav.medlemskap.clients.saf.generated.dok
     }
 }
 
-fun mapSak(journalPost: no.nav.medlemskap.clients.saf.generated.dokumenter.Journalpost): Sak = Sak(journalPost.sak?.fagsakId)
+fun mapSak(journalPost: no.nav.medlemskap.clients.saf.generated.dokumenter.Journalpost): Sak {
+    return Sak(fagsakId = journalPost.sak?.fagsakId)
+}
 
 fun mapDokumenter(journalPost: no.nav.medlemskap.clients.saf.generated.dokumenter.Journalpost): List<Dokument> {
     return journalPost.dokumenter?.filterNotNull()?.map {

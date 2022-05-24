@@ -13,6 +13,10 @@ class SafDomeneSpraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, DokumentInfoIdMapper())[0]
     }
 
+    fun mapFagsakId(dataTable: DataTable): String {
+        return mapDataTable(dataTable, fagsakIdMapper())[0]
+    }
+
     fun mapJournalStatus(dataTable: DataTable): Journalstatus {
         return mapDataTable(dataTable, JournalStatusMapper())[0]
     }
@@ -78,6 +82,12 @@ class SafDomeneSpraakParser : BasisDomeneParser() {
             return parseString(Domenebegrep.DOKUMENT_INFO_ID, rad)
         }
     }
+
+    class fagsakIdMapper() : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(Domenebegrep.FAGSAKID, rad)
+        }
+    }
 }
 
 enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
@@ -86,6 +96,7 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     JOURNALFORT_AV_NAVN("Journalført av"),
     JOURNAL_POST_TYPE("Journalposttype"),
     JOURNAL_STATUS("Journalstatus"),
+    FAGSAKID("fagsakId"),
     TEMA("Tema"),
     TITTEL("Tittel")
     ;

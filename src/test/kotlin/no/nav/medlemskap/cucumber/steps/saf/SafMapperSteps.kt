@@ -26,8 +26,13 @@ class SafMapperSteps : No {
         Gitt<DataTable>("følgende tittel fra journalpost") { dataTable: DataTable ->
             safDokumentBuilder.tittel = safDomenespråkParser.mapDokumentTittel(dataTable)
         }
+
         Gitt<DataTable>("følgende dokumentInfoId fra dokument") { dataTable: DataTable ->
             dokumentInfoBuilder.dokumentInfoId = safDomenespråkParser.mapDokumentInfoId(dataTable)
+        }
+
+        Gitt<DataTable>("følgende fagsakId fra dokument") { dataTable: DataTable ->
+            safDokumentBuilder.fagsakId = safDomenespråkParser.mapFagsakId(dataTable)
         }
 
         Gitt<DataTable>("følgende tittel fra dokument") { dataTable: DataTable ->
@@ -78,6 +83,11 @@ class SafMapperSteps : No {
             dokumenter?.get(0)?.dokumenter?.get(0)?.dokumentId.shouldBe(dokumentInfoIdForventet)
         }
 
+        Så("skal mappede fagsakId være") { dataTable: DataTable ->
+            val forventetFagsakId = DokumentDomeneSpraakParser.mapFagsakId(dataTable)
+            dokumenter?.get(0)?.sak?.fagsakId.shouldBe(forventetFagsakId)
+        }
+
         Så<DataTable>("mappede tittel være") { dataTable: DataTable ->
             val tittelForventet = DokumentDomeneSpraakParser.mapTittel(dataTable)
             dokumenter?.get(0)?.dokumenter?.get(0)?.tittel.shouldBe(tittelForventet)
@@ -116,7 +126,8 @@ class SafMapperSteps : No {
         var datoOpprettet = LocalDateTime.now().toString()
         var dokumenter = listOf<DokumentInfo?>(dokumentInfoBuilder.build())
         var tittel = String()
-        var sak = null
+        var fagsakId = ""
+        var sak = no.nav.medlemskap.clients.saf.generated.dokumenter.Sak(fagsakId)
 
         fun build(): no.nav.medlemskap.clients.saf.generated.dokumenter.Journalpost {
             return no.nav.medlemskap.clients.saf.generated.dokumenter.Journalpost(

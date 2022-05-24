@@ -27,6 +27,10 @@ object DokumentDomeneSpraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, DokumentInfoIdMapper())[0]
     }
 
+    fun mapFagsakId(dataTable: DataTable): String {
+        return mapDataTable(dataTable, FagsakIdMapper())[0]
+    }
+
     fun mapTittel(dataTable: DataTable): String {
         return mapDataTable(dataTable, TittelMapper())[0]
     }
@@ -54,6 +58,12 @@ object DokumentDomeneSpraakParser : BasisDomeneParser() {
     class DokumentInfoIdMapper : RadMapper<String> {
         override fun mapRad(rad: Map<String, String>): String {
             return parseString(DokumentDomenebegrep.DOKUMENT_INFO_ID, rad)
+        }
+    }
+
+    class FagsakIdMapper : RadMapper<String> {
+        override fun mapRad(rad: Map<String, String>): String {
+            return parseString(DokumentDomenebegrep.FAG_SAK_ID, rad)
         }
     }
 
@@ -98,6 +108,7 @@ object DokumentDomeneSpraakParser : BasisDomeneParser() {
 
     enum class DokumentDomenebegrep(val nøkkel: String) : Domenenøkkel {
         DOKUMENT_INFO_ID("DokumentInfoId"),
+        FAG_SAK_ID("fagsakId"),
         JOURNAL_STATUS("Journalstatus"),
         JOURNALPOST_TYPE("JournalpostType"),
         JOURNAL_POST_ID("JournalpostId"),
