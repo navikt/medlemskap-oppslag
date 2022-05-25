@@ -4,6 +4,7 @@ import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
 import io.kotest.matchers.shouldBe
 import no.nav.medlemskap.clients.saf.generated.dokumenter.DokumentInfo
+import no.nav.medlemskap.clients.saf.generated.dokumenter.Sak
 import no.nav.medlemskap.clients.saf.generated.enums.Journalposttype
 import no.nav.medlemskap.clients.saf.generated.enums.Journalstatus
 import no.nav.medlemskap.clients.saf.generated.enums.Tema
@@ -32,7 +33,7 @@ class SafMapperSteps : No {
         }
 
         Gitt<DataTable>("følgende fagsakId fra dokument") { dataTable: DataTable ->
-            safDokumentBuilder.fagsakId = safDomenespråkParser.mapFagsakId(dataTable)
+            safDokumentBuilder.sak = Sak(safDomenespråkParser.mapFagsakId(dataTable))
         }
 
         Gitt<DataTable>("følgende tittel fra dokument") { dataTable: DataTable ->
