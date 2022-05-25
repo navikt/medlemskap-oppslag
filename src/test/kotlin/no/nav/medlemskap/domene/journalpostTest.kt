@@ -15,6 +15,7 @@ class journalpostTest {
                 journalstatus = "",
                 tittel = "",
                 tema = "",
+                sak = null,
                 dokumenter = null
             )
         )
@@ -33,6 +34,7 @@ class journalpostTest {
                 journalstatus = "",
                 tittel = "",
                 tema = "MED",
+                sak = null,
                 dokumenter = null
             )
         )
@@ -51,6 +53,7 @@ class journalpostTest {
                 journalstatus = "",
                 tittel = "",
                 tema = "MED",
+                sak = null,
                 dokumenter = null
             )
         )
@@ -69,6 +72,7 @@ class journalpostTest {
                 journalstatus = "",
                 tittel = "",
                 tema = "MED",
+                sak = null,
                 dokumenter = null
             )
         )

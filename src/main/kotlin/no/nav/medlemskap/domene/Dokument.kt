@@ -12,6 +12,7 @@ data class Journalpost(
     val journalposttype: String?,
     val journalstatus: String?,
     val tema: String?,
+    val sak: Sak?,
     val dokumenter: List<Dokument>?
 ) {
     companion object {
@@ -33,3 +34,5 @@ data class Dokument(
     val dokumentId: String,
     val tittel: String?
 )
+
+data class Sak(val fagsakId: String?)

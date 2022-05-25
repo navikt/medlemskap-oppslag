@@ -118,7 +118,7 @@ fun Routing.evalueringRoute(
                 publishMedlemskapVurdertEvent(callId, response)
                 loggResponse(request.fnr, response, endpoint)
                 call.respond(response)
-            } catch (t:Throwable){
+            } catch (t: Throwable) {
                 loggError(fnr = request.fnr, datagrunnlag = datagrunnlag, endpoint = endpoint, throwable = t)
                 throw t
             }
