@@ -24,6 +24,10 @@ data class Journalpost(
         fun List<Journalpost>.dokumenterMedTillatteTemaer(): List<Journalpost> =
             this.filter { it.tema erDelAv tillatteTemaer }
                 .filter { (it.journalfortAvNavn.isNullOrEmpty() || !it.journalfortAvNavn.contains("medlemskap-joark")) }
+
+        fun List<Journalpost>.alleFagsakIDer(): List<String> {
+            return this.map { journalpost -> journalpost.sak?.fagsakId.toString() }
+        }
     }
 }
 
