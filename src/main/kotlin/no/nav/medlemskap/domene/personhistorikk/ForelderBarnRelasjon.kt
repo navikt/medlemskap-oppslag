@@ -5,7 +5,7 @@ import no.nav.medlemskap.domene.Fødselsnummer.Companion.hentBursdagsAar
 import java.time.LocalDate
 
 data class ForelderBarnRelasjon(
-    val relatertPersonsIdent: String,
+    val relatertPersonsIdent: String?,
     val relatertPersonsRolle: ForelderBarnRelasjonRolle,
     val minRolleForPerson: ForelderBarnRelasjonRolle?
 ) {
@@ -28,8 +28,8 @@ data class ForelderBarnRelasjon(
             return familierelasjoner
                 .filter { FodselsnummerValidator.isValid(it.relatertPersonsIdent) }
                 .filter { it.erBarn() }
-                .filter { it.relatertPersonsIdent.erBarnUnder25Aar(førsteDatoForYtelse) }
-                .map { it.relatertPersonsIdent }
+                .filter { it.relatertPersonsIdent != null && it.relatertPersonsIdent.erBarnUnder25Aar(førsteDatoForYtelse) }
+                .map { it.relatertPersonsIdent!! }
         }
 
         fun ForelderBarnRelasjon.erBarn() = this.relatertPersonsRolle == ForelderBarnRelasjonRolle.BARN
