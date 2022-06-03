@@ -35,7 +35,7 @@ object PdlMapperEktefelle {
         return familierelasjoner
             .filter { it.relatertPersonsRolle == ForelderBarnRelasjonRolle.BARN }
             .filter { FodselsnummerValidator.isValid(it.relatertPersonsIdent) }
-            .filter { it.relatertPersonsIdent.erBarnUnder25Aar(førsteDatoForYtelse) }
-            .map { it.relatertPersonsIdent }
+            .filter { it.relatertPersonsIdent != null && it.relatertPersonsIdent!!.erBarnUnder25Aar(førsteDatoForYtelse) }
+            .map { it.relatertPersonsIdent!! }
     }
 }

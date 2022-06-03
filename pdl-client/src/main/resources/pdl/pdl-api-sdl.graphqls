@@ -323,7 +323,7 @@ type Familierelasjon {
 }
 
 type ForelderBarnRelasjon {
-    relatertPersonsIdent: String!
+    relatertPersonsIdent: String
     relatertPersonsRolle: ForelderBarnRelasjonRolle!
     minRolleForPerson: ForelderBarnRelasjonRolle
 
