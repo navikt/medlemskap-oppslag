@@ -1,6 +1,7 @@
 package no.nav.medlemskap.domene
 
 import no.nav.medlemskap.regler.common.Funksjoner.erDelAv
+import no.nav.medlemskap.regler.common.Funksjoner.isNotNullOrEmpty
 
 /**
  * Journalpost fra Joark
@@ -24,6 +25,8 @@ data class Journalpost(
         fun List<Journalpost>.dokumenterMedTillatteTemaer(): List<Journalpost> =
             this.filter { it.tema erDelAv tillatteTemaer }
                 .filter { (it.journalfortAvNavn.isNullOrEmpty() || !it.journalfortAvNavn.contains("medlemskap-joark")) }
+
+        fun List<Journalpost>.harDokument(): Boolean = this.isNotNullOrEmpty()
 
         fun List<Journalpost>.alleFagsakIDer(): List<String> {
             return this.map { journalpost -> journalpost.sak?.fagsakId.toString() }

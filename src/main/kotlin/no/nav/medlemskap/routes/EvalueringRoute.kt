@@ -21,6 +21,7 @@ import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Fødselsnummer.Companion.gyldigFnr
 import no.nav.medlemskap.domene.Journalpost.Companion.alleFagsakIDer
+import no.nav.medlemskap.domene.Journalpost.Companion.harDokument
 import no.nav.medlemskap.domene.Request
 import no.nav.medlemskap.domene.Response
 import no.nav.medlemskap.domene.Ytelse
@@ -226,6 +227,7 @@ private fun loggResponse(fnr: String, response: Response, endpoint: String = "/"
         kv("gjeldendeOppholdsstatus", response.datagrunnlag.oppholdstillatelse?.gjeldendeOppholdsstatus.toString()),
         kv("arbeidsadgangtype", response.datagrunnlag.oppholdstillatelse?.arbeidsadgang?.arbeidsadgangType.toString()),
         kv("fagsak_id", response.datagrunnlag.dokument.alleFagsakIDer()),
+        kv("har_dokument", response.datagrunnlag.dokument.harDokument()),
         kv("endpoint", endpoint)
     )
 
