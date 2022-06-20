@@ -95,6 +95,7 @@ object DokumentDomeneSpraakParser : BasisDomeneParser() {
     class JournalpostMapper : RadMapper<Journalpost> {
         override fun mapRad(rad: Map<String, String>): Journalpost {
             return Journalpost(
+                "null",
                 parseString(DokumentDomenebegrep.JOURNALPOST_ID, rad),
                 parseValgfriString(DokumentDomenebegrep.JOURNALFORT_AV_NAVN, rad),
                 parseValgfriString(DokumentDomenebegrep.TITTEL, rad),
