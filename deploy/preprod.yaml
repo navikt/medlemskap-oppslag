@@ -56,7 +56,7 @@ spec:
           cluster: dev-fss
         - application: hm-brille-api
           namespace: teamdigihot
-          cluster: dev-gcpN
+          cluster: dev-gcp
     outbound:
       rules:
         - application: udi-proxy
