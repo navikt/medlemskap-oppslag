@@ -54,6 +54,9 @@ spec:
         - application: sparkel-medlemskap
           namespace: tbd
           cluster: dev-fss
+        - application: hm-brille-api
+          namespace: teamdigihot
+          cluster: dev-gcp
     outbound:
       rules:
         - application: udi-proxy
