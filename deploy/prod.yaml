@@ -48,8 +48,8 @@ spec:
           namespace: tbd
           cluster: prod-fss
         - application: hm-brille-api
-            namespace: teamdigihot
-            cluster: prod-gcp
+          namespace: teamdigihot
+          cluster: prod-gcp
     outbound:
       rules:
         - application: udi-proxy
