@@ -11,6 +11,7 @@ fun mapDokumentoversiktBrukerResponse(response: Dokumenter.Result): List<Journal
 fun mapJournalResultat(journal: List<no.nav.medlemskap.clients.saf.generated.dokumenter.Journalpost?>): List<Journalpost> {
     return journal.filterNotNull().map {
         Journalpost(
+            datoOpprettet = it.datoOpprettet,
             dokumenter = mapDokumenter(it),
             journalpostId = it.journalpostId,
             journalfortAvNavn = it.journalfortAvNavn,

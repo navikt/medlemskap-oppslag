@@ -5,6 +5,7 @@ import no.nav.medlemskap.cucumber.BasisDomeneParser
 import no.nav.medlemskap.cucumber.Domenenøkkel
 import no.nav.medlemskap.cucumber.RadMapper
 import no.nav.medlemskap.domene.Journalpost
+import no.nav.medlemskap.domene.Sak
 
 object DokumentDomeneSpraakParser : BasisDomeneParser() {
     fun mapJournalpostId(dataTable: DataTable): String {
@@ -94,13 +95,14 @@ object DokumentDomeneSpraakParser : BasisDomeneParser() {
     class JournalpostMapper : RadMapper<Journalpost> {
         override fun mapRad(rad: Map<String, String>): Journalpost {
             return Journalpost(
+                "null",
                 parseString(DokumentDomenebegrep.JOURNALPOST_ID, rad),
                 parseValgfriString(DokumentDomenebegrep.JOURNALFORT_AV_NAVN, rad),
                 parseValgfriString(DokumentDomenebegrep.TITTEL, rad),
                 parseValgfriString(DokumentDomenebegrep.JOURNALPOST_TYPE, rad),
                 parseValgfriString(DokumentDomenebegrep.JOURNAL_STATUS, rad),
                 parseValgfriString(DokumentDomenebegrep.TEMA, rad),
-                null,
+                Sak(parseValgfriString(DokumentDomenebegrep.FAG_SAK_ID, rad)),
                 null
             )
         }

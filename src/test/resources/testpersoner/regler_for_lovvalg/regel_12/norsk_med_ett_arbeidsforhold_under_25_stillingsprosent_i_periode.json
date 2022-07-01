@@ -804,6 +804,10 @@
       "journalposttype": "U",
       "journalstatus": "FERDIGSTILT",
       "tema": "MED",
+      "sak": {
+        "fagsakId": null
+      },
+      "datoOpprettet": "2021-09-13T14:50:43",
       "dokumenter": [
         {
           "dokumentId": "464516942",
@@ -817,6 +821,10 @@
       "journalposttype": "I",
       "journalstatus": "JOURNALFOERT",
       "tema": "MED",
+      "sak": {
+        "fagsakId": null
+      },
+      "datoOpprettet": "2021-09-13T14:50:43",
       "dokumenter": [
         {
           "dokumentId": "464397847",
@@ -830,6 +838,10 @@
       "journalposttype": "U",
       "journalstatus": "FERDIGSTILT",
       "tema": "MED",
+      "sak": {
+        "fagsakId": null
+      },
+      "datoOpprettet": "2021-09-13T14:50:43",
       "dokumenter": [
         {
           "dokumentId": "462684318",
@@ -843,6 +855,10 @@
       "journalposttype": "I",
       "journalstatus": "JOURNALFOERT",
       "tema": "MED",
+      "sak": {
+        "fagsakId": null
+      },
+      "datoOpprettet": "2021-09-13T14:50:43",
       "dokumenter": [
         {
           "dokumentId": "462595275",
