@@ -26,7 +26,7 @@ enum class Ytelse {
             "60c58925-ad42-45b8-8ce7-0038abfb5dff" to SYKEPENGER, // sykepenger-lytter-prod
             "23600ac9-019c-445d-87a4-2df4996e6f63" to LOVME_GCP, // Prod verifisering
             "27266322-a9c0-4ae5-829a-ba8890e84e19" to BARNE_BRILLER, // dev
-            "7d749e9b-f20a-4579-bd6c-0143fe74bbbb" to BARNE_BRILLER // prod
+            "df226766-a7c2-4372-81e1-354ec75ffd55" to BARNE_BRILLER // prod
         )
 
         fun fromClientId(clientId: String?): Ytelse? = clientIdToYtelseMap[clientId]
