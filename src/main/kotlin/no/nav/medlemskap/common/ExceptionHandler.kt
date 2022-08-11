@@ -74,6 +74,12 @@ fun StatusPages.Configuration.exceptionHandler() {
             }
         }
     }
+    exception<GradertAdresseException> { cause ->
+
+        call.logWarningAndRespond(cause, HttpStatusCode.ServiceUnavailable) {
+            "GradertAdresse. Lovme skal ikke  kalles for personer med kode 6/7"
+        }
+    }
 
     exception<BadRequestException> { cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
@@ -107,6 +113,22 @@ private suspend inline fun ApplicationCall.logErrorAndRespond(
 ) {
     val message = lazyMessage()
     logger.error(cause) { message }
+    val response = HttpErrorResponse(
+        url = this.request.uri,
+        cause = cause.toString(),
+        message = message,
+        code = status,
+        callId = getCorrelationId()
+    )
+    this.respond(status, response)
+}
+private suspend inline fun ApplicationCall.logWarningAndRespond(
+    cause: Throwable,
+    status: HttpStatusCode = HttpStatusCode.InternalServerError,
+    lazyMessage: () -> String
+) {
+    val message = lazyMessage()
+    logger.warn(cause) { message }
     val response = HttpErrorResponse(
         url = this.request.uri,
         cause = cause.toString(),
