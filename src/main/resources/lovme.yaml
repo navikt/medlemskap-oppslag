@@ -342,6 +342,8 @@ components:
       description: Perioden ytelsen gjelder, for sykepenger er det for eksempel sykemeldingsperioden
     Journalpost:
       properties:
+        datoOpprettet:
+          type: string
         journalpostId:
           type: string
         journalfortAvNavn:
@@ -362,7 +364,7 @@ components:
         sak:
           type: object
           nullable: true
-          items:
+          additionalProperties:
             $ref: "#/components/schemas/Sak"
         dokumenter:
           type: array

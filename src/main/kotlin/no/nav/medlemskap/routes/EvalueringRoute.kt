@@ -26,6 +26,7 @@ import no.nav.medlemskap.domene.Request
 import no.nav.medlemskap.domene.Response
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.alleAktiveYrkeskoderDerTomErNull
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
 import no.nav.medlemskap.services.kafka.Producer
@@ -228,6 +229,7 @@ private fun loggResponse(fnr: String, response: Response, endpoint: String = "/"
         kv("arbeidsadgangtype", response.datagrunnlag.oppholdstillatelse?.arbeidsadgang?.arbeidsadgangType.toString()),
         kv("fagsak_id", response.datagrunnlag.dokument.alleFagsakIDer()),
         kv("har_dokument", response.datagrunnlag.dokument.harDokument()),
+        kv("yrkeskoder", response.datagrunnlag.arbeidsforhold.alleAktiveYrkeskoderDerTomErNull()),
         kv("endpoint", endpoint)
     )
 

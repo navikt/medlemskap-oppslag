@@ -45,6 +45,16 @@ data class Arbeidsforhold(
     companion object {
         private val offentligSektorJuridiskeEnhetstyper = listOf("STAT", "FKF", "FYLK", "KF", "KOMM", "SF", "SÆR")
 
+        fun List<Arbeidsforhold>.alleAktiveYrkeskoderDerTomErNull(): List<String> {
+            return this.flatMap { arbeidsforhold -> arbeidsforhold.arbeidsavtaler.alleAktiveArbeidsavtalerDerTomErNull()
+                .map { arbeidsavtale -> arbeidsavtale.yrkeskode }
+            }
+        }
+
+        fun List<Arbeidsavtale>.alleAktiveArbeidsavtalerDerTomErNull(): List<Arbeidsavtale> {
+            return this.filter { it.periode.tom == null }
+        }
+
         fun erArbeidsforholdetOffentligSektor(
             arbeidsforhold: List<Arbeidsforhold>,
             kontrollPeriode: Kontrollperiode,

@@ -30,6 +30,19 @@ Egenskap: Regel "Finnes det registrerte opplysninger på bruker?"
       | MED               | UAVKLART |
       | Ikke tillatt tema | Nei      |
 
+
+  Scenario: Ser bort fra journalposter med MEL fagsak id
+    Gitt følgende journalposter fra Joark
+      | JournalpostId | Tittel | Journalposttype | Journalstatus | Tema              | fagsakid |
+      | 123           | Test   | T               | AAPEN         | Ikke tillatt tema | MEL-     |
+
+    Når regel "OPPLYSNINGER" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 15.01.2020      | 30.01.2020      | Nei                           |
+
+    Så skal svaret være "Nei"
+
+
   Scenariomal: Det finnes opplysninger i Gosys
     Gitt følgende oppgaver fra Gosys
       | Aktiv dato | Prioritet | Status   | Tema   |

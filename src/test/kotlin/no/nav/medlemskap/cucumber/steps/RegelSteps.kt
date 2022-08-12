@@ -303,8 +303,6 @@ class RegelSteps : No {
 
             val jsonResponse = medlemskapRequest(medlemskapsparametre)
 
-            println(jsonResponse)
-
             resultat = Response.fraJson(jsonResponse).resultat
 
             JSONAssert.assertEquals(

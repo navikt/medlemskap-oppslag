@@ -2,6 +2,7 @@ package no.nav.medlemskap.domene
 
 enum class Ytelse {
     SYKEPENGER,
+    BARNE_BRILLER,
     DAGPENGER,
     ENSLIG_FORSORGER,
     LOVME,
@@ -23,7 +24,9 @@ enum class Ytelse {
             "d24ecfa9-ffa7-48dc-a9f3-f8ae3138e603" to LOVME_FUNKSJONELLE_TESTER, // dev
             "ee472fd1-3621-4600-a6ac-69d3662e993f" to SYKEPENGER, // sykepenger-lytter-dev
             "60c58925-ad42-45b8-8ce7-0038abfb5dff" to SYKEPENGER, // sykepenger-lytter-prod
-            "23600ac9-019c-445d-87a4-2df4996e6f63" to LOVME_GCP // Prod verifisering
+            "23600ac9-019c-445d-87a4-2df4996e6f63" to LOVME_GCP, // Prod verifisering
+            "27266322-a9c0-4ae5-829a-ba8890e84e19" to BARNE_BRILLER, // dev
+            "df226766-a7c2-4372-81e1-354ec75ffd55" to BARNE_BRILLER // prod
         )
 
         fun fromClientId(clientId: String?): Ytelse? = clientIdToYtelseMap[clientId]
