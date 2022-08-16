@@ -2,7 +2,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val ktorVersion = "1.6.0"
+val ktorVersion = "2.1.0"
 val kafkaVersion = "2.3.1"
 val jacksonVersion = "2.10.5"
 val prometheusVersion = "0.9.0"
@@ -99,7 +99,7 @@ dependencies {
     }
 
     implementation("com.expediagroup:graphql-kotlin-ktor-client:$graphqlKotlinClientVersion")
-    implementation("io.ktor:ktor-client-serialization-jvm:1.6.3")
+    implementation("io.ktor:ktor-client-serialization-jvm:2.1.o")
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.13.1")
     implementation("io.ktor:ktor-auth:$ktorVersion")
     implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
