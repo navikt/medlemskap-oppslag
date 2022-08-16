@@ -109,7 +109,7 @@ dependencies {
     implementation("io.ktor:ktor-client-json:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
-    implementation("io.ktor:ktor-metrics-micrometer:$ktorVersion")
+    implementation("io.ktor:ktor-server-metrics-micrometer:$ktorVersion")
     implementation("io.micrometer:micrometer-registry-prometheus:latest.release")
     implementation("io.micrometer:micrometer-registry-influx:latest.release")
     implementation("io.prometheus:simpleclient_hotspot:$prometheusVersion")
