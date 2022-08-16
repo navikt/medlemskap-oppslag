@@ -20,7 +20,7 @@ val assertkVersion = "0.23"
 val restAssuredVersion = "4.3.3"
 val resilience4jVersion = "1.5.0"
 val threetenVersion = "1.5.0"
-val kotlinReflectVersion = "1.4.21"
+val kotlinReflectVersion = "1.7.10"
 val cucumberVersion = "6.8.2"
 val nocommonsVersion = "0.9.0"
 val graphqlKotlinClientVersion = "5.3.1"
@@ -46,14 +46,14 @@ val mainClass = "no.nav.medlemskap.ApplicationKt"
 fun tjenestespesifikasjon(name: String) = "no.nav.tjenestespesifikasjoner:$name:$tjenestespesifikasjonerVersion"
 
 plugins {
-    kotlin("jvm") version "1.4.31"
+    kotlin("jvm") version "1.7.10"
     id("com.github.johnrengelman.shadow") version "6.0.0"
     id("com.expediagroup.graphql") version "4.0.0" apply false
     id("com.github.ben-manes.versions") version "0.29.0"
     id("org.jlleitschuh.gradle.ktlint") version "9.3.0"
     id("org.jlleitschuh.gradle.ktlint-idea") version "9.3.0"
     id("org.hidetake.swagger.generator") version "2.18.2" apply true
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.4.31"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.7.10"
 }
 
 val githubUser: String by project
