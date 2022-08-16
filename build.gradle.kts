@@ -99,7 +99,7 @@ dependencies {
     }
 
     implementation("com.expediagroup:graphql-kotlin-ktor-client:$graphqlKotlinClientVersion")
-    implementation("io.ktor:ktor-client-serialization-jvm:2.1.o")
+    implementation("io.ktor:ktor-client-serialization-jvm:2.1.0")
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.13.1")
     implementation("io.ktor:ktor-auth:$ktorVersion")
     implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
