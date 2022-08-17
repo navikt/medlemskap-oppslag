@@ -1,5 +1,6 @@
 package no.nav.medlemskap.common
 
+import io.ktor.server.plugins.callid.*
 import org.slf4j.MDC
 import java.util.*
 
@@ -13,5 +14,9 @@ class CorrelationId(private val id: String) {
     override fun toString(): String = id
 }
 
-internal fun getCorrelationId(): CorrelationId =
-    CorrelationId(MDC.get(MDC_CALL_ID))
+internal fun getCorrelationId(): CorrelationId {
+    if (MDC.get(MDC_CALL_ID) == null) {
+        return CorrelationId(callIdGenerator.get())
+    }
+    return CorrelationId(MDC.get(MDC_CALL_ID))
+}
