@@ -2,6 +2,7 @@ package no.nav.medlemskap.clients.oppgave
 
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import mu.KotlinLogging
@@ -26,8 +27,8 @@ class OppgaveClient(
 
     suspend fun hentOppgaver(aktorIder: List<String>, callId: String): FinnOppgaverResponse {
         val token = stsClient.oidcToken()
-        return runWithRetryAndMetrics("Oppgave", "OppgaverV1", retry) {
-            httpClient.get<FinnOppgaverResponse> {
+        return runWithRetryAndMetrics<FinnOppgaverResponse>("Oppgave", "OppgaverV1", retry) {
+            httpClient.get() {
                 url("$baseUrl/api/v1/oppgaver")
                 header(HttpHeaders.Authorization, "Bearer $token")
                 header("X-Correlation-Id", callId)
@@ -36,7 +37,7 @@ class OppgaveClient(
                 parameter("tema", TEMA_MEDLEMSKAP)
                 parameter("tema", TEMA_UNNTAK_FRA_MEDLEMSKAP)
                 parameter("tema", TEMA_TRYGDEAVGIFT)
-            }
+            }.body()
         }
     }
 

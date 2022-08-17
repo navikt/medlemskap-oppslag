@@ -1,5 +1,6 @@
 package no.nav.medlemskap.common
 
+import io.ktor.client.call.*
 import io.ktor.client.request.get
 import io.ktor.client.request.url
 import kotlinx.coroutines.CancellationException
@@ -17,9 +18,9 @@ class ApacheHttpClientJobCancellationExceptionTest {
 
         assertThrows<CancellationException> {
             runBlocking {
-                apacheHttpClient.get<String> {
+                apacheHttpClient.get {
                     url("http://localhost:9987/finnesIkke")
-                }
+                }.body()
             }
         }
     }

@@ -5,7 +5,7 @@ import io.cucumber.java8.No
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
-import io.ktor.features.*
+import io.ktor.server.plugins.*
 import no.nav.medlemskap.common.LokalWebServer
 import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.Medlemskapsparametre

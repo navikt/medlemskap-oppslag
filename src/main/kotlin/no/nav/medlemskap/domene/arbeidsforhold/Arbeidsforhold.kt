@@ -46,8 +46,9 @@ data class Arbeidsforhold(
         private val offentligSektorJuridiskeEnhetstyper = listOf("STAT", "FKF", "FYLK", "KF", "KOMM", "SF", "SÆR")
 
         fun List<Arbeidsforhold>.alleAktiveYrkeskoderDerTomErNull(): List<String> {
-            return this.flatMap { arbeidsforhold -> arbeidsforhold.arbeidsavtaler.alleAktiveArbeidsavtalerDerTomErNull()
-                .map { arbeidsavtale -> arbeidsavtale.yrkeskode }
+            return this.flatMap { arbeidsforhold ->
+                arbeidsforhold.arbeidsavtaler.alleAktiveArbeidsavtalerDerTomErNull()
+                    .map { arbeidsavtale -> arbeidsavtale.yrkeskode }
             }
         }
 

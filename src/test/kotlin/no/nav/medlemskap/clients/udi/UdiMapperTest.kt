@@ -32,6 +32,7 @@ class UdiMapperTest {
     }
 
     private fun readFromTilHentPersonstatusResponseTypeString(): HentPersonstatusResponseType {
+
         val xmlMapper = XmlMapper(
             JacksonXmlModule().apply {
                 setDefaultUseWrapper(false)
