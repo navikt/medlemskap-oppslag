@@ -11,6 +11,7 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import mu.KotlinLogging
+import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.common.exceptions.*
 import v1.mt_1067_nav.no.udi.HentPersonstatusFault
 
@@ -114,7 +115,11 @@ private suspend inline fun ApplicationCall.logErrorAndRespond(
 ) {
 
     val message = lazyMessage()
-    logger.error(cause) { message }
+    logger.error(
+        message,
+        kv("cause", cause),
+        kv("callId", callId)
+    )
     val response = HttpErrorResponse(
         url = this.request.uri,
         cause = cause.toString(),
