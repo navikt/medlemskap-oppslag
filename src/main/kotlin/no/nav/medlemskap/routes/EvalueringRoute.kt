@@ -28,7 +28,6 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
 import no.nav.medlemskap.services.kafka.Producer
 import org.apache.kafka.clients.producer.ProducerRecord
-import org.slf4j.MDC
 import java.time.LocalDateTime
 import java.util.*
 
@@ -52,7 +51,7 @@ fun Routing.evalueringRoute(
             val endpoint = "/"
             secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
             val callId = call.callId ?: UUID.randomUUID().toString()
-            val request = validerRequest(call.receive(), azp, callId)
+            val request = validerRequest(call.receive(), azp)
 
             val datagrunnlag = withContext(
                 requestContextService.getCoroutineContext(
@@ -90,7 +89,7 @@ fun Routing.evalueringRoute(
             val azp = callerPrincipal.payload.getClaim("azp").asString()
             val endpoint = "kafka"
             val callId = call.callId ?: UUID.randomUUID().toString()
-            val request = validerRequest(call.receive(), azp, callId)
+            val request = validerRequest(call.receive(), azp)
 
             val datagrunnlag = withContext(
                 requestContextService.getCoroutineContext(
@@ -147,7 +146,7 @@ fun Routing.evalueringTestRoute(
     post("/") {
         apiCounter().increment()
         val callId = call.callId ?: UUID.randomUUID().toString()
-        val request = validerRequest(call.receive(), Ytelse.toMedlemskapClientId(), callId)
+        val request = validerRequest(call.receive(), Ytelse.toMedlemskapClientId())
 
         val endpoint = "/"
 
@@ -255,8 +254,7 @@ private fun loggError(fnr: String, datagrunnlag: Datagrunnlag, endpoint: String 
     )
 }
 
-private fun validerRequest(request: Request, azp: String, callId: String): Request {
-    MDC.put(MDC_CALL_ID, callId)
+private fun validerRequest(request: Request, azp: String): Request {
     val ytelse = finnYtelse(request.ytelse, azp)
     if (ytelse != Ytelse.SYKEPENGER && request.førsteDagForYtelse == null) {
         throw UgyldigRequestException("Første dag for ytelse kan ikke være null (inputperiode skal ikke lenger brukes)", ytelse)

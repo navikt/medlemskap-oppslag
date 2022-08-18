@@ -135,13 +135,17 @@ private suspend inline fun ApplicationCall.logWarningAndRespond(
     lazyMessage: () -> String
 ) {
     val message = lazyMessage()
-    logger.warn(cause) { message }
+    logger.warn(
+        message,
+        kv("cause", cause),
+        kv("callId", callId)
+    )
     val response = HttpErrorResponse(
         url = this.request.uri,
         cause = cause.toString(),
         message = message,
         code = status,
-        callId = getCorrelationId()
+        callId = getCorrelationId(callId)
     )
     this.respond(status, response)
 }
