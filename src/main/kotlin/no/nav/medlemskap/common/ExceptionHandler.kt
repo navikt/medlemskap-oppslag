@@ -6,6 +6,7 @@ import io.ktor.client.plugins.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.*
+import io.ktor.server.plugins.callid.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -111,6 +112,7 @@ private suspend inline fun ApplicationCall.logErrorAndRespond(
     status: HttpStatusCode = HttpStatusCode.InternalServerError,
     lazyMessage: () -> String
 ) {
+
     val message = lazyMessage()
     logger.error(cause) { message }
     val response = HttpErrorResponse(
@@ -118,7 +120,7 @@ private suspend inline fun ApplicationCall.logErrorAndRespond(
         cause = cause.toString(),
         message = message,
         code = status,
-        callId = getCorrelationId()
+        callId = getCorrelationId(callId)
     )
     this.respond(status, response)
 }

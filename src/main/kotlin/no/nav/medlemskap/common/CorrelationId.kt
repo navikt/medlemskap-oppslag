@@ -1,6 +1,7 @@
 package no.nav.medlemskap.common
 
-import io.ktor.server.plugins.callid.*
+import io.ktor.client.engine.*
+import io.ktor.server.application.*
 import org.slf4j.MDC
 import java.util.*
 
@@ -19,4 +20,10 @@ internal fun getCorrelationId(): CorrelationId {
         return CorrelationId(callIdGenerator.get())
     }
     return CorrelationId(MDC.get(MDC_CALL_ID))
+}
+internal fun getCorrelationId(callId: String?): CorrelationId {
+    if (callId == null) {
+        return CorrelationId(callIdGenerator.get())
+    }
+    return CorrelationId(callId)
 }
