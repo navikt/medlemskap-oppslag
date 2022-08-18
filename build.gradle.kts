@@ -130,7 +130,7 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
-    // implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.3")
+
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
     implementation("org.threeten:threeten-extra:$threetenVersion")
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinReflectVersion")
@@ -154,14 +154,8 @@ dependencies {
     implementation("com.neovisionaries:nv-i18n:$nvi18nVersion")
     swaggerUI("org.webjars:swagger-ui:$swaggerUiVersion")
 
-    // Temporary to fix high severity Snyk vulernabilities:
-    // implementation("io.netty:netty-codec:$nettyVersion")
-    // implementation("io.netty:netty-codec-http:$nettyVersion")
-    // implementation("io.netty:netty-codec-http2:$nettyVersion")
-    // implementation("io.netty:netty-transport-native-epoll:$nettyVersion")
     implementation("commons-collections:commons-collections:$commonsCodecVersion")
     implementation("org.apache.httpcomponents:httpclient:$httpClientVersion")
-    // implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonDataformatYamlVersion")
     implementation("com.google.guava:guava:$guavaVersion")
     testImplementation("org.eclipse.jetty:jetty-webapp:$jettyWebAppVersion")
 
