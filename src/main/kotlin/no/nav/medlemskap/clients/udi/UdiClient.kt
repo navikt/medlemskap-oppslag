@@ -2,6 +2,7 @@ package no.nav.medlemskap.clients.udi
 
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import no.nav.medlemskap.clients.azuread.AzureAdClient
@@ -24,8 +25,8 @@ class UdiClient(
                 header(HttpHeaders.Authorization, "Bearer ${token.token}")
                 header("Nav-Call-Id", callId)
                 header("X-Correlation-Id", callId)
-                body = udiRequest
-            }
+                setBody(udiRequest)
+            }.body()
         }
     }
 }

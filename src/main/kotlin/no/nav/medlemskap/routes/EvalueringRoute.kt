@@ -1,22 +1,19 @@
 package no.nav.medlemskap.routes
 
-import io.ktor.application.*
-import io.ktor.auth.*
-import io.ktor.auth.jwt.*
-import io.ktor.features.*
-import io.ktor.request.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.server.application.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
+import io.ktor.server.plugins.callid.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import kotlinx.coroutines.withContext
 import mu.KotlinLogging
 import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.clients.Services
-import no.nav.medlemskap.common.RequestContextService
-import no.nav.medlemskap.common.apiCounter
+import no.nav.medlemskap.common.*
 import no.nav.medlemskap.common.exceptions.KonsumentIkkeFunnet
 import no.nav.medlemskap.common.exceptions.UgyldigRequestException
-import no.nav.medlemskap.common.objectMapper
-import no.nav.medlemskap.common.uavklartPåRegel
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Fødselsnummer.Companion.gyldigFnr
@@ -53,8 +50,8 @@ fun Routing.evalueringRoute(
             val azp = callerPrincipal.payload.getClaim("azp").asString()
             val endpoint = "/"
             secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
-            val request = validerRequest(call.receive(), azp)
             val callId = call.callId ?: UUID.randomUUID().toString()
+            val request = validerRequest(call.receive(), azp)
 
             val datagrunnlag = withContext(
                 requestContextService.getCoroutineContext(
@@ -91,8 +88,8 @@ fun Routing.evalueringRoute(
             val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
             val azp = callerPrincipal.payload.getClaim("azp").asString()
             val endpoint = "kafka"
-            val request = validerRequest(call.receive(), azp)
             val callId = call.callId ?: UUID.randomUUID().toString()
+            val request = validerRequest(call.receive(), azp)
 
             val datagrunnlag = withContext(
                 requestContextService.getCoroutineContext(
@@ -148,8 +145,9 @@ fun Routing.evalueringTestRoute(
     logger.info("autentiserer IKKE kallet")
     post("/") {
         apiCounter().increment()
-        val request = validerRequest(call.receive(), Ytelse.toMedlemskapClientId())
         val callId = call.callId ?: UUID.randomUUID().toString()
+        val request = validerRequest(call.receive(), Ytelse.toMedlemskapClientId())
+
         val endpoint = "/"
 
         val datagrunnlag = withContext(
@@ -258,7 +256,6 @@ private fun loggError(fnr: String, datagrunnlag: Datagrunnlag, endpoint: String 
 
 private fun validerRequest(request: Request, azp: String): Request {
     val ytelse = finnYtelse(request.ytelse, azp)
-
     if (ytelse != Ytelse.SYKEPENGER && request.førsteDagForYtelse == null) {
         throw UgyldigRequestException("Første dag for ytelse kan ikke være null (inputperiode skal ikke lenger brukes)", ytelse)
     }

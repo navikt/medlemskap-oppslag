@@ -2,7 +2,8 @@ package no.nav.medlemskap.clients.medl
 
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.*
-import io.ktor.client.features.*
+import io.ktor.client.call.*
+import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -24,8 +25,8 @@ class MedlClient(
     suspend fun hentMedlemskapsunntak(ident: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<MedlMedlemskapsunntak> {
         val token = stsClient.oidcToken()
         return runCatching {
-            runWithRetryAndMetrics("Medl", "MedlemskapsunntakV1", retry) {
-                httpClient.get<List<MedlMedlemskapsunntak>> {
+            runWithRetryAndMetrics<List<MedlMedlemskapsunntak>>("Medl", "MedlemskapsunntakV1", retry) {
+                httpClient.get() {
                     url("$baseUrl/api/v1/medlemskapsunntak")
                     header(HttpHeaders.Authorization, "Bearer $token")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
@@ -35,10 +36,10 @@ class MedlClient(
                     header("Nav-Consumer-Id", configuration.sts.username)
                     fraOgMed?.let { parameter("fraOgMed", fraOgMed.tilIsoFormat()) }
                     tilOgMed?.let { parameter("tilOgMed", tilOgMed.tilIsoFormat()) }
-                }
+                }.body()
             }
         }.fold(
-            onSuccess = { liste -> liste },
+            onSuccess = { it },
             onFailure = { error ->
                 when (error) {
                     is ClientRequestException -> {

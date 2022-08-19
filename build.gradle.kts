@@ -2,12 +2,12 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val ktorVersion = "1.6.0"
+val ktorVersion = "2.1.0"
 val kafkaVersion = "2.3.1"
-val jacksonVersion = "2.10.5"
+val jacksonVersion = "2.13.3"
 val prometheusVersion = "0.9.0"
-val logbackVersion = "1.2.3"
-val logstashVersion = "6.4"
+val logbackVersion = "1.2.11"
+val logstashVersion = "7.2"
 val konfigVersion = "1.6.10.0"
 val kotlinLoggerVersion = "1.8.3"
 val tjenestespesifikasjonerVersion = "1.2019.12.18-12.22-ce897c4eb2c1"
@@ -20,8 +20,8 @@ val assertkVersion = "0.23"
 val restAssuredVersion = "4.3.3"
 val resilience4jVersion = "1.5.0"
 val threetenVersion = "1.5.0"
-val kotlinReflectVersion = "1.4.21"
-val cucumberVersion = "6.8.2"
+val kotlinReflectVersion = "1.7.10"
+val cucumberVersion = "7.6.0"
 val nocommonsVersion = "0.9.0"
 val graphqlKotlinClientVersion = "5.3.1"
 val archUnitVersion = "0.14.1"
@@ -46,14 +46,14 @@ val mainClass = "no.nav.medlemskap.ApplicationKt"
 fun tjenestespesifikasjon(name: String) = "no.nav.tjenestespesifikasjoner:$name:$tjenestespesifikasjonerVersion"
 
 plugins {
-    kotlin("jvm") version "1.4.31"
+    kotlin("jvm") version "1.7.10"
     id("com.github.johnrengelman.shadow") version "6.0.0"
     id("com.expediagroup.graphql") version "4.0.0" apply false
     id("com.github.ben-manes.versions") version "0.29.0"
     id("org.jlleitschuh.gradle.ktlint") version "9.3.0"
     id("org.jlleitschuh.gradle.ktlint-idea") version "9.3.0"
     id("org.hidetake.swagger.generator") version "2.18.2" apply true
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.4.31"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.7.10"
 }
 
 val githubUser: String by project
@@ -97,19 +97,24 @@ dependencies {
         exclude(group = "io.netty", module = "netty-codec")
         exclude(group = "io.netty", module = "netty-codec-http")
     }
-
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
+    implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
+    implementation("io.ktor:ktor-server-call-logging-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-call-id-jvm:$ktorVersion")
     implementation("com.expediagroup:graphql-kotlin-ktor-client:$graphqlKotlinClientVersion")
-    implementation("io.ktor:ktor-client-serialization-jvm:1.6.3")
+    implementation("io.ktor:ktor-client-serialization-jvm:2.1.0")
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.13.1")
-    implementation("io.ktor:ktor-auth:$ktorVersion")
-    implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
+    implementation("io.ktor:ktor-server-auth:$ktorVersion")
+    implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-client-apache:$ktorVersion")
     implementation("io.ktor:ktor-client-cio:$ktorVersion")
     implementation("io.ktor:ktor-client-json:$ktorVersion")
-    implementation("io.ktor:ktor-client-jackson:$ktorVersion")
-    implementation("io.ktor:ktor-jackson:$ktorVersion")
-    implementation("io.ktor:ktor-metrics-micrometer:$ktorVersion")
+    implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-server-metrics-micrometer:$ktorVersion")
     implementation("io.micrometer:micrometer-registry-prometheus:latest.release")
     implementation("io.micrometer:micrometer-registry-influx:latest.release")
     implementation("io.prometheus:simpleclient_hotspot:$prometheusVersion")
@@ -119,8 +124,13 @@ dependencies {
     implementation("com.natpryce:konfig:$konfigVersion")
     implementation("io.github.microutils:kotlin-logging:$kotlinLoggerVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+    implementation("io.ktor:ktor-server-auth-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-auth-jwt-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
     implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
+
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
     implementation("org.threeten:threeten-extra:$threetenVersion")
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinReflectVersion")
@@ -144,14 +154,8 @@ dependencies {
     implementation("com.neovisionaries:nv-i18n:$nvi18nVersion")
     swaggerUI("org.webjars:swagger-ui:$swaggerUiVersion")
 
-    // Temporary to fix high severity Snyk vulernabilities:
-    implementation("io.netty:netty-codec:$nettyVersion")
-    implementation("io.netty:netty-codec-http:$nettyVersion")
-    implementation("io.netty:netty-codec-http2:$nettyVersion")
-    implementation("io.netty:netty-transport-native-epoll:$nettyVersion")
     implementation("commons-collections:commons-collections:$commonsCodecVersion")
     implementation("org.apache.httpcomponents:httpclient:$httpClientVersion")
-    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:$jacksonDataformatYamlVersion")
     implementation("com.google.guava:guava:$guavaVersion")
     testImplementation("org.eclipse.jetty:jetty-webapp:$jettyWebAppVersion")
 
@@ -163,7 +167,7 @@ dependencies {
         exclude(group = "org.eclipse.jetty", module = "jetty-server")
     }
     testImplementation("io.mockk:mockk:$mockkVersion")
-    testImplementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
+    // testImplementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:$assertkVersion")
     testImplementation("io.rest-assured:rest-assured:$restAssuredVersion")
 

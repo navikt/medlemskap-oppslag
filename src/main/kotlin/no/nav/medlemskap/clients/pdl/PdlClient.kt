@@ -4,6 +4,7 @@ import com.expediagroup.graphql.client.serialization.types.KotlinxGraphQLRespons
 import com.expediagroup.graphql.client.types.GraphQLClientResponse
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -38,7 +39,7 @@ class PdlClient(
             )
             val response: KotlinxGraphQLResponse<HentIdenter.Result> = httpClient.post() {
                 url(baseUrl)
-                body = query
+                setBody(query)
                 header(HttpHeaders.Authorization, "Bearer $stsToken")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
@@ -46,7 +47,7 @@ class PdlClient(
                 header("Nav-Consumer-Token", "Bearer $stsToken")
                 header("Nav-Consumer-Id", username)
                 header("x-nav-apiKey", pdlApiKey)
-            }
+            }.body()
 
             if (!response.errors.isNullOrEmpty()) {
                 logger.error("PDL response errors: ${response.errors}")
@@ -66,7 +67,7 @@ class PdlClient(
             )
             val response: KotlinxGraphQLResponse<HentPerson.Result> = httpClient.post() {
                 url(baseUrl)
-                body = query
+                setBody(query)
                 header(HttpHeaders.Authorization, "Bearer $stsToken")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
@@ -75,7 +76,7 @@ class PdlClient(
                 header("Nav-Consumer-Token", "Bearer $stsToken")
                 header("Nav-Consumer-Id", username)
                 header("x-nav-apiKey", pdlApiKey)
-            }
+            }.body()
 
             if (!response.errors.isNullOrEmpty()) {
                 logger.error("PDL response errors: ${response.errors}")

@@ -2,7 +2,8 @@ package no.nav.medlemskap.clients.ereg
 
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.*
-import io.ktor.client.features.*
+import io.ktor.client.call.*
+import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import mu.KotlinLogging
@@ -19,16 +20,16 @@ class EregClient(
     private val logger = KotlinLogging.logger { }
 
     suspend fun hentOrganisasjon(orgnummer: String?, callId: String): Organisasjon {
-        val organisasjonsInfo = kotlin.runCatching {
-            runWithRetryAndMetrics("Ereg", "hentOrganisasjon", retry) {
-                httpClient.get<Organisasjon> {
+        val organisasjonsInfo: Organisasjon = kotlin.runCatching {
+            runWithRetryAndMetrics<Organisasjon>("Ereg", "hentOrganisasjon", retry) {
+                httpClient.get() {
                     url("$baseUrl/v1/organisasjon/$orgnummer")
                     parameter("inkluderHierarki", true)
                     header(HttpHeaders.Accept, ContentType.Application.Json)
                     header("Nav-Call-Id", callId)
                     header("Nav-Consumer-Id", configuration.sts.username)
                     header("x-nav-apiKey", eregApiKey)
-                }
+                }.body()
             }
         }.fold(
             onSuccess = { it },

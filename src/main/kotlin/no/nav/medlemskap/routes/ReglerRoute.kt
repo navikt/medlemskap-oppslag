@@ -1,9 +1,9 @@
 package no.nav.medlemskap.routes
 
-import io.ktor.application.*
-import io.ktor.request.*
-import io.ktor.response.*
-import io.ktor.routing.*
+import io.ktor.server.application.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
+import io.ktor.server.routing.*
 import no.nav.medlemskap.common.hentVersjoner
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.Datagrunnlag
@@ -11,6 +11,7 @@ import no.nav.medlemskap.regler.v1.ReglerService
 import no.nav.medlemskap.services.kafka.Producer
 import org.apache.kafka.clients.producer.ProducerRecord
 import java.util.*
+import kotlin.text.get
 
 fun Routing.reglerRoute() {
     route("/regler") {

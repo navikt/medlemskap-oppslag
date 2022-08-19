@@ -2,65 +2,67 @@ package no.nav.medlemskap.common
 
 import com.fasterxml.jackson.databind.exc.MismatchedInputException
 import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
-import io.ktor.application.*
-import io.ktor.client.features.*
-import io.ktor.features.BadRequestException
-import io.ktor.features.StatusPages
+import io.ktor.client.plugins.*
 import io.ktor.http.*
-import io.ktor.request.*
-import io.ktor.response.*
+import io.ktor.server.application.*
+import io.ktor.server.plugins.*
+import io.ktor.server.plugins.callid.*
+import io.ktor.server.plugins.statuspages.*
+import io.ktor.server.request.*
+import io.ktor.server.response.*
 import mu.KotlinLogging
+import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.common.exceptions.*
 import v1.mt_1067_nav.no.udi.HentPersonstatusFault
 
 private val logger = KotlinLogging.logger { }
 
-fun StatusPages.Configuration.exceptionHandler() {
-    exception<GraphqlError> { cause ->
+fun StatusPagesConfig.exceptionHandler() {
+    exception<GraphqlError> { call, cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.InternalServerError) {
             "Feil fra graphql i ${cause.system}: ${cause.errorAsJson()} for konsument ${cause.ytelse}"
         }
     }
 
-    exception<IdenterIkkeFunnet> { cause ->
+    exception<IdenterIkkeFunnet> { call, cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.NotFound) {
             "Fant ingen aktør-id for fødselsnummer for konsument ${cause.ytelse}"
         }
     }
 
-    exception<PersonIkkeFunnet> { cause ->
+    exception<PersonIkkeFunnet> { call, cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.NotFound) {
             "Person ikke funnet i ${cause.system} for konsument ${cause.ytelse}"
         }
     }
 
-    exception<Sikkerhetsbegrensing> { cause ->
+    exception<Sikkerhetsbegrensing> { call, cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.Forbidden) {
             "Personen har sikkerhetsbegrensing i ${cause.system}"
         }
     }
 
-    exception<ClientRequestException> { cause ->
+    exception<ClientRequestException> { call, cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.InternalServerError) {
             val url = cause.response.call.request.url
             "Kall mot $url feilet"
         }
     }
 
-    exception<ServerResponseException> { cause ->
+    exception<ServerResponseException> { call, cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.InternalServerError) {
             val url = cause.response.call.request.url
             "Kall mot $url feilet"
         }
     }
 
-    exception<UgyldigRequestException> { cause ->
+    exception<UgyldigRequestException> { call, cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
             "${cause.message!!} for konsument ${cause.ytelse}"
         }
     }
 
-    exception<HentPersonstatusFault> { cause ->
+    exception<HentPersonstatusFault> { call, cause ->
 
         when (cause.faultInfo.kodeId) {
             10003 -> call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
@@ -74,32 +76,32 @@ fun StatusPages.Configuration.exceptionHandler() {
             }
         }
     }
-    exception<GradertAdresseException> { cause ->
+    exception<GradertAdresseException> { call, cause ->
 
         call.logWarningAndRespond(cause, HttpStatusCode.ServiceUnavailable) {
             "GradertAdresse. Lovme skal ikke  kalles for personer med kode 6/7"
         }
     }
 
-    exception<BadRequestException> { cause ->
+    exception<BadRequestException> { call, cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
             cause.message!!
         }
     }
 
-    exception<MissingKotlinParameterException> { cause ->
+    exception<MissingKotlinParameterException> { call, cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
             cause.message!!
         }
     }
 
-    exception<MismatchedInputException> { cause ->
+    exception<MismatchedInputException> { call, cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
             cause.message!!
         }
     }
 
-    exception<Throwable> { cause ->
+    exception<Throwable> { call, cause ->
         call.logErrorAndRespond(cause) {
             "An internal error occurred during routing"
         }
@@ -111,14 +113,19 @@ private suspend inline fun ApplicationCall.logErrorAndRespond(
     status: HttpStatusCode = HttpStatusCode.InternalServerError,
     lazyMessage: () -> String
 ) {
+
     val message = lazyMessage()
-    logger.error(cause) { message }
+    logger.error(
+        message,
+        kv("cause", cause),
+        kv("callId", callId)
+    )
     val response = HttpErrorResponse(
         url = this.request.uri,
         cause = cause.toString(),
         message = message,
         code = status,
-        callId = getCorrelationId()
+        callId = getCorrelationId(callId)
     )
     this.respond(status, response)
 }
@@ -128,13 +135,17 @@ private suspend inline fun ApplicationCall.logWarningAndRespond(
     lazyMessage: () -> String
 ) {
     val message = lazyMessage()
-    logger.warn(cause) { message }
+    logger.warn(
+        message,
+        kv("cause", cause),
+        kv("callId", callId)
+    )
     val response = HttpErrorResponse(
         url = this.request.uri,
         cause = cause.toString(),
         message = message,
         code = status,
-        callId = getCorrelationId()
+        callId = getCorrelationId(callId)
     )
     this.respond(status, response)
 }

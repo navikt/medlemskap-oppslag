@@ -2,6 +2,7 @@ package no.nav.medlemskap.clients.sts
 
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import no.nav.medlemskap.clients.Token
@@ -22,14 +23,14 @@ class StsRestClient(
 
     suspend fun oidcToken(): String {
         if (cachedOidcToken.shouldBeRenewed()) {
-            cachedOidcToken = runWithRetryAndMetrics("STS", "TokenV1", retry) {
-                httpClient.get<Token> {
+            cachedOidcToken = runWithRetryAndMetrics<Token>("STS", "TokenV1", retry) {
+                httpClient.get() {
                     url("$baseUrl/rest/v1/sts/token")
                     header(HttpHeaders.Authorization, "Basic ${credentials()}")
                     header("x-nav-apiKey", apiKey)
                     parameter("grant_type", "client_credentials")
                     parameter("scope", "openid")
-                }
+                }.body()
             }
         }
 
@@ -49,11 +50,11 @@ class StsRestClient(
 
     suspend fun samlToken(): String {
         if (cachedSamlToken.shouldBeRenewed()) {
-            cachedSamlToken = runWithRetryAndMetrics("STS", "SamlTokenV1", retry) {
-                httpClient.get<Token> {
+            cachedSamlToken = runWithRetryAndMetrics<Token>("STS", "SamlTokenV1", retry) {
+                httpClient.get() {
                     url("$baseUrl/rest/v1/sts/samltoken")
                     header(HttpHeaders.Authorization, "Basic ${credentials()}")
-                }
+                }.body()
             }
         }
 

@@ -2,12 +2,9 @@ package no.nav.medlemskap.clients.inntekt
 
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.HttpClient
-import io.ktor.client.features.ClientRequestException
-import io.ktor.client.features.ServerResponseException
-import io.ktor.client.request.header
-import io.ktor.client.request.options
-import io.ktor.client.request.post
-import io.ktor.client.request.url
+import io.ktor.client.call.*
+import io.ktor.client.plugins.*
+import io.ktor.client.request.*
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
@@ -31,24 +28,26 @@ class InntektClient(
     suspend fun hentInntektListe(ident: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): InntektskomponentResponse {
         val token = stsClient.oidcToken()
         return runCatching {
-            runWithRetryAndMetrics("Inntekt", "HentinntektlisteV1", retry) {
-                httpClient.post<InntektskomponentResponse> {
+            runWithRetryAndMetrics<InntektskomponentResponse>("Inntekt", "HentinntektlisteV1", retry) {
+                httpClient.post() {
                     url("$baseUrl/rs/api/v1/hentinntektliste")
                     header(HttpHeaders.Authorization, "Bearer $token")
                     header(HttpHeaders.ContentType, ContentType.Application.Json)
                     header("Nav-Consumer-Id", configuration.sts.username)
                     header("Nav-Call-Id", callId)
-                    body = HentInntektListeRequest(
-                        ident = Ident(ident, "NATURLIG_IDENT"),
-                        ainntektsfilter = "MedlemskapA-inntekt",
-                        maanedFom = fraOgMed?.tilAarOgMnd(),
-                        maanedTom = tilOgMed?.tilAarOgMnd(),
-                        formaal = "Medlemskap"
+                    setBody(
+                        HentInntektListeRequest(
+                            ident = Ident(ident, "NATURLIG_IDENT"),
+                            ainntektsfilter = "MedlemskapA-inntekt",
+                            maanedFom = fraOgMed?.tilAarOgMnd(),
+                            maanedTom = tilOgMed?.tilAarOgMnd(),
+                            formaal = "Medlemskap"
+                        )
                     ) // Må diskutere med Helle om vi skal bruke Medlemskap eller sykepenger som formål
-                }
+                }.body()
             }
         }.fold(
-            onSuccess = { response -> response },
+            onSuccess = { it },
             onFailure = { error ->
                 when (error) {
                     is ClientRequestException -> {

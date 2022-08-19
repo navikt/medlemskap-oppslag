@@ -2,7 +2,8 @@ package no.nav.medlemskap.clients.aareg
 
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.*
-import io.ktor.client.features.*
+import io.ktor.client.call.*
+import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import mu.KotlinLogging
@@ -29,7 +30,7 @@ class AaRegClient(
         val oidcToken = stsClient.oidcToken()
         return runCatching {
             runWithRetryAndMetrics("AaReg", "ArbeidsforholdV1", retry) {
-                httpClient.get<List<AaRegArbeidsforhold>> {
+                httpClient.get() {
                     url("$baseUrl/v1/arbeidstaker/arbeidsforhold")
                     header(HttpHeaders.Authorization, "Bearer $oidcToken")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
@@ -41,10 +42,10 @@ class AaRegClient(
                     tilOgMed?.let { parameter("ansettelsesperiodeTom", tilOgMed.tilIsoFormat()) }
                     parameter("historikk", "true")
                     parameter("regelverk", "ALLE")
-                }
+                }.body<List<AaRegArbeidsforhold>>()
             }
         }.fold(
-            onSuccess = { liste -> liste },
+            onSuccess = { it },
             onFailure = { error ->
                 when (error) {
                     is ClientRequestException -> {

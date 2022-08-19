@@ -3,7 +3,7 @@ package no.nav.medlemskap.cucumber.steps.pdl
 import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
 import io.kotest.matchers.collections.shouldContainExactly
-import io.ktor.features.*
+import io.ktor.server.plugins.*
 import no.nav.medlemskap.clients.pdl.generated.hentperson.*
 import no.nav.medlemskap.cucumber.SpraakParserDomene.PersonhistorikkDomeneSpraakParser
 import no.nav.medlemskap.cucumber.mapping.pdl.PdlDomenespråkParser

@@ -3,6 +3,7 @@ package no.nav.medlemskap.clients.saf
 import com.expediagroup.graphql.client.serialization.types.KotlinxGraphQLResponse
 import io.github.resilience4j.retry.Retry
 import io.ktor.client.*
+import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -47,16 +48,16 @@ class SafClient(
 
             )
 
-            val response = httpClient.post<KotlinxGraphQLResponse<Dokumenter.Result>>() {
+            val response: KotlinxGraphQLResponse<Dokumenter.Result> = httpClient.post() {
                 url(baseUrl)
-                body = dokumenterQuery
+                setBody(dokumenterQuery)
                 header(HttpHeaders.Authorization, "Bearer $stsToken")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
                 header("Nav-Callid", callId)
                 header("Nav-Consumer-Id", username)
                 header("x-nav-apiKey", safApiKey)
-            }
+            }.body()
 
             response.errors?.let { errors ->
                 logger.warn { "Fikk følgende feil fra Saf: ${objectMapper.writeValueAsString(errors)}" }
