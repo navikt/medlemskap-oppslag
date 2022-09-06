@@ -31,7 +31,7 @@ val jaxwsToolsVersion = "2.3.1"
 val activationVersion = "1.1.1"
 val nvi18nVersion = "1.27"
 val kotestVersion = "4.2.5"
-val swaggerRequestValidatorVersion = "2.11.3"
+val swaggerRequestValidatorVersion = "2.28.2"
 val swaggerUiVersion = "3.37.2"
 // Temporary to fix high severity Snyk vulnerabilities:
 val nettyVersion = "4.1.63.Final"
