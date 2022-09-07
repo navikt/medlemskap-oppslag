@@ -397,15 +397,17 @@ components:
           $ref: "#/components/schemas/OppholdstillatelsePaSammeVilkar"
         eosellerEFTAOpphold:
           $ref: "#/components/schemas/EOSellerEFTAOpphold"
+          nullable: true
         uavklart:
           $ref: "#/components/schemas/Uavklart"
+          nullable: true
         ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum:
           $ref: "#/components/schemas/IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum"
       nullable: true
     Uavklart:
-      properties:
-        uavklart:
-          $ref: string
+      type: string
+      nullable: true
+
     IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum:
       properties:
         utvistMedInnreiseForbud:
@@ -435,6 +437,7 @@ components:
             - NEI
             - UAVKLART
     EOSellerEFTAOpphold:
+      nullable: true
       properties:
         periode:
           $ref: "#/components/schemas/Periode"
@@ -450,7 +453,7 @@ components:
         harTillatelse:
           type: boolean
         soknadIkkeAvgjort:
-          $ref: "#/components/schemas/SoknadIkkeAvgjort"
+          type: boolean
         type:
           enum:
             - MIDLERTIDIG
