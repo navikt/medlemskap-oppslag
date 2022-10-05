@@ -159,6 +159,7 @@
       {
         "datoOpprettet": "null",
         "journalpostId": "Id",
+        "relevanteDatoer" : null,
         "journalfortAvNavn": null,
         "tittel": "Tittel",
         "journalposttype": "Posttype",

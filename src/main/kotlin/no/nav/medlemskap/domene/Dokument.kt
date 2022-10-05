@@ -9,6 +9,7 @@ import java.time.LocalDateTime
  */
 data class Journalpost(
     val datoOpprettet: String,
+    val relevanteDatoer: List<RelevantDato>?,
     val journalpostId: String,
     val journalfortAvNavn: String?,
     val tittel: String?,
@@ -61,4 +62,21 @@ data class Dokument(
     val tittel: String?
 )
 
+data class RelevantDato(
+    val dato: String,
+    val datotype: Datotype
+)
+enum class Datotype {
+    DATO_OPPRETTET,
+    DATO_SENDT_PRINT,
+    DATO_EKSPEDERT,
+    DATO_JOURNALFOERT,
+    DATO_REGISTRERT,
+    DATO_AVS_RETUR,
+    DATO_DOKUMENT,
+    /**
+     * This is a default enum value that will be used when attempting to deserialize unknown value.
+     */
+    __UNKNOWN_VALUE,
+}
 data class Sak(val fagsakId: String?)

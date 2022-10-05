@@ -4,7 +4,9 @@ import io.cucumber.datatable.DataTable
 import io.cucumber.java8.No
 import io.kotest.matchers.shouldBe
 import no.nav.medlemskap.clients.saf.generated.dokumenter.DokumentInfo
+import no.nav.medlemskap.clients.saf.generated.dokumenter.RelevantDato
 import no.nav.medlemskap.clients.saf.generated.dokumenter.Sak
+import no.nav.medlemskap.clients.saf.generated.enums.Datotype
 import no.nav.medlemskap.clients.saf.generated.enums.Journalposttype
 import no.nav.medlemskap.clients.saf.generated.enums.Journalstatus
 import no.nav.medlemskap.clients.saf.generated.enums.Tema
@@ -118,11 +120,13 @@ class SafMapperSteps : No {
     class SafDokumentBuilder {
 
         var dokumentInfoBuilder = DokumentInfoBuilder()
+        var relevantDatoBuilder = RelevantDatoBuilder()
 
         var tema = Tema.AAP
         var journalpostId = String()
         var journalfortAvNavn = String()
         var journalStatus = Journalstatus.FERDIGSTILT
+        var relevanteDatoer = listOf<RelevantDato?>(relevantDatoBuilder.build())
         var journalposttype = Journalposttype.I
         var datoOpprettet = LocalDateTime.now().toString()
         var dokumenter = listOf<DokumentInfo?>(dokumentInfoBuilder.build())
@@ -139,6 +143,7 @@ class SafMapperSteps : No {
                 journalposttype = journalposttype,
                 dokumenter = dokumenter,
                 datoOpprettet = datoOpprettet,
+                relevanteDatoer = relevanteDatoer,
                 tittel = tittel,
                 sak = sak
             )
@@ -152,6 +157,16 @@ class SafMapperSteps : No {
             return DokumentInfo(
                 dokumentInfoId = dokumentInfoId,
                 tittel = tittel
+            )
+        }
+    }
+    class RelevantDatoBuilder {
+        var dato = String()
+        var datotype = Datotype.__UNKNOWN_VALUE
+        fun build(): RelevantDato? {
+            return RelevantDato(
+                dato = dato,
+                datotype = datotype
             )
         }
     }
