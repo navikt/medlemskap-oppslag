@@ -2,7 +2,9 @@ package no.nav.medlemskap.domene
 
 import no.nav.medlemskap.regler.common.Funksjoner.erDelAv
 import no.nav.medlemskap.regler.common.Funksjoner.isNotNullOrEmpty
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 /**
  * Journalpost fra Joark
@@ -17,16 +19,37 @@ data class Journalpost(
     val journalstatus: String?,
     val tema: String?,
     val sak: Sak?,
-    val dokumenter: List<Dokument>?
+    val dokumenter: List<Dokument>?,
 ) {
+
     companion object {
         private val tillatteTemaer = listOf("MED", "UFM", "TRY")
+
+        fun Journalpost.erMindreEnn1AarGammelt(): Boolean {
+            val today = LocalDate.now()
+            val reldato = this.relevanteDatoer?.find { it.datotype == Datotype.DATO_JOURNALFOERT }
+            if (reldato != null) {
+                val date = LocalDate.parse(reldato.dato, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                return date.isAfter(today.minusYears(1))
+            }
+            return true
+        }
+
+        fun Journalpost.hentJorurnalFoertDato(): String {
+            val journalfoertDato = this.relevanteDatoer?.find { it.datotype == Datotype.DATO_JOURNALFOERT }
+            return if (journalfoertDato != null)
+                journalfoertDato!!.dato
+            else {
+                this.datoOpprettet
+            }
+        }
 
         fun List<Journalpost>.finnesDokumenterMedTillatteTeamer(): Boolean =
             this.dokumenterMedTillatteTemaer().isNotEmpty()
 
         fun List<Journalpost>.dokumenterMedTillatteTemaer(): List<Journalpost> =
-            this.filtrerVekkGamleMEDjournalposterBasertPaaNyesteMELsak()
+            this.filtrerVekkGamleUrelevanteDokumenter()
+                .filtrerVekkGamleMEDjournalposterBasertPaaNyesteMELsak()
                 .filterNot { it.sak?.fagsakId?.contains("MEL-") == true }
                 .filter { it.tema erDelAv tillatteTemaer }
                 .filter { (it.journalfortAvNavn.isNullOrEmpty() || !it.journalfortAvNavn.contains("medlemskap-joark")) }
@@ -37,6 +60,9 @@ data class Journalpost(
             return this.map { journalpost -> journalpost.sak?.fagsakId.toString() }
         }
 
+        fun List<Journalpost>.filtrerVekkGamleUrelevanteDokumenter(): List<Journalpost> {
+            return this.filter { it.erMindreEnn1AarGammelt() }
+        }
         fun List<Journalpost>.filtrerVekkGamleMEDjournalposterBasertPaaNyesteMELsak(): List<Journalpost> {
             var nyesteDato: LocalDateTime? = null
 

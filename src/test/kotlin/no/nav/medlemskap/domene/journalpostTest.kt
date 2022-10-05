@@ -69,6 +69,26 @@ class journalpostTest {
     }
 
     @Test
+    fun `filtrerer  ut dokumenter der journalpostDato er mer en 1 år gammelt`() {
+        val dokument = listOf(
+            Journalpost(
+                datoOpprettet = "",
+                relevanteDatoer = listOf(RelevantDato("2020-05-25T19:43:43", Datotype.DATO_JOURNALFOERT)),
+                journalpostId = "",
+                journalfortAvNavn = null,
+                journalposttype = "",
+                journalstatus = "",
+                tittel = "",
+                tema = "MED",
+                sak = null,
+                dokumenter = null
+            )
+        )
+        val finnesDokument = dokument.finnesDokumenterMedTillatteTeamer()
+
+        Assertions.assertFalse(finnesDokument)
+    }
+    @Test
     fun `filtrerer ikke ut dokumenter med null verdi i journalført av navn`() {
         val dokument = listOf(
             Journalpost(
