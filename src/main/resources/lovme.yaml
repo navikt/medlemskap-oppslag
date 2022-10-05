@@ -270,6 +270,20 @@ components:
         tittel:
           type: string
           nullable: true
+    RelevantDato:
+      properties:
+        dato:
+          type: string
+        datotype:
+              enum:
+                - DATO_OPPRETTET
+                - DATO_SENDT_PRINT
+                - DATO_EKSPEDERT
+                - DATO_JOURNALFOERT
+                - DATO_REGISTRERT
+                - DATO_AVS_RETUR
+                - DATO_DOKUMENT
+                - __UNKNOWN_VALUE
     Sak:
       properties:
         fagsakId:
@@ -344,6 +358,11 @@ components:
       properties:
         datoOpprettet:
           type: string
+        relevanteDatoer:
+          type: object
+          additionalProperties:
+            $ref: "#/components/schemas/RelevantDato"
+          nullable: true
         journalpostId:
           type: string
         journalfortAvNavn:

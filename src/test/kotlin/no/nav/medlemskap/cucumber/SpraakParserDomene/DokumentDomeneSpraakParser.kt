@@ -96,6 +96,7 @@ object DokumentDomeneSpraakParser : BasisDomeneParser() {
         override fun mapRad(rad: Map<String, String>): Journalpost {
             return Journalpost(
                 "null",
+                null,
                 parseString(DokumentDomenebegrep.JOURNALPOST_ID, rad),
                 parseValgfriString(DokumentDomenebegrep.JOURNALFORT_AV_NAVN, rad),
                 parseValgfriString(DokumentDomenebegrep.TITTEL, rad),
@@ -110,6 +111,8 @@ object DokumentDomeneSpraakParser : BasisDomeneParser() {
 
     enum class DokumentDomenebegrep(val nøkkel: String) : Domenenøkkel {
         DOKUMENT_INFO_ID("DokumentInfoId"),
+        RELEVANT_DATO("relevantDato"),
+        RELEVANT_DATO_TYPE("relevantDatoType"),
         FAG_SAK_ID("fagsakId"),
         JOURNAL_STATUS("Journalstatus"),
         JOURNALPOST_TYPE("JournalpostType"),

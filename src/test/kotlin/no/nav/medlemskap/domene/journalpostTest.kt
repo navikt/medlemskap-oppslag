@@ -9,6 +9,7 @@ class journalpostTest {
     fun `filtrerer ut dokumenter som ikke er relevante`() {
         val dokument = listOf(
             Journalpost(
+                relevanteDatoer = null,
                 datoOpprettet = "",
                 journalpostId = "",
                 journalfortAvNavn = "",
@@ -30,6 +31,7 @@ class journalpostTest {
         val dokument = listOf(
             Journalpost(
                 datoOpprettet = "",
+                relevanteDatoer = null,
                 journalpostId = "",
                 journalfortAvNavn = "",
                 journalposttype = "",
@@ -50,6 +52,7 @@ class journalpostTest {
         val dokument = listOf(
             Journalpost(
                 datoOpprettet = "",
+                relevanteDatoer = null,
                 journalpostId = "",
                 journalfortAvNavn = "medlemskap-joark-listener",
                 journalposttype = "",
@@ -70,6 +73,7 @@ class journalpostTest {
         val dokument = listOf(
             Journalpost(
                 datoOpprettet = "",
+                relevanteDatoer = null,
                 journalpostId = "",
                 journalfortAvNavn = null,
                 journalposttype = "",
@@ -90,6 +94,7 @@ class journalpostTest {
         val dokument = listOf(
             Journalpost(
                 datoOpprettet = "2021-09-13T14:50:43",
+                relevanteDatoer = null,
                 journalpostId = "",
                 journalfortAvNavn = null,
                 journalposttype = "",
@@ -101,6 +106,7 @@ class journalpostTest {
             ),
             Journalpost(
                 datoOpprettet = "2021-08-13T14:50:43",
+                relevanteDatoer = null,
                 journalpostId = "",
                 journalfortAvNavn = null,
                 journalposttype = "",
@@ -112,6 +118,7 @@ class journalpostTest {
             ),
             Journalpost(
                 datoOpprettet = "2021-07-13T14:50:43",
+                relevanteDatoer = null,
                 journalpostId = "",
                 journalfortAvNavn = null,
                 journalposttype = "",
@@ -123,6 +130,7 @@ class journalpostTest {
             ),
             Journalpost(
                 datoOpprettet = "2021-06-13T14:50:43",
+                relevanteDatoer = null,
                 journalpostId = "",
                 journalfortAvNavn = null,
                 journalposttype = "",
@@ -134,6 +142,7 @@ class journalpostTest {
             ),
             Journalpost(
                 datoOpprettet = "2021-05-13T14:50:43",
+                relevanteDatoer = null,
                 journalpostId = "",
                 journalfortAvNavn = null,
                 journalposttype = "",
