@@ -48,8 +48,8 @@ data class Journalpost(
             this.dokumenterMedTillatteTemaer().isNotEmpty()
 
         fun List<Journalpost>.dokumenterMedTillatteTemaer(): List<Journalpost> =
-            this.filtrerVekkGamleUrelevanteDokumenter()
-                .filtrerVekkGamleMEDjournalposterBasertPaaNyesteMELsak()
+            // this.filtrerVekkGamleUrelevanteDokumenter()
+            this.filtrerVekkGamleMEDjournalposterBasertPaaNyesteMELsak()
                 .filterNot { it.sak?.fagsakId?.contains("MEL-") == true }
                 .filter { it.tema erDelAv tillatteTemaer }
                 .filter { (it.journalfortAvNavn.isNullOrEmpty() || !it.journalfortAvNavn.contains("medlemskap-joark")) }
