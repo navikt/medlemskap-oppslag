@@ -2,8 +2,8 @@ package no.nav.medlemskap.domene
 
 import no.nav.medlemskap.regler.common.Funksjoner.erDelAv
 import no.nav.medlemskap.regler.common.Funksjoner.isNotNullOrEmpty
-import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.Month
 import java.time.format.DateTimeFormatter
 
 /**
@@ -25,14 +25,21 @@ data class Journalpost(
     companion object {
         private val tillatteTemaer = listOf("MED", "UFM", "TRY")
 
-        fun Journalpost.erMindreEnn1AarGammelt(): Boolean {
-            val today = LocalDate.now()
-            val reldato = this.relevanteDatoer?.find { it.datotype == Datotype.DATO_JOURNALFOERT }
-            if (reldato != null) {
-                val date = LocalDate.parse(reldato.dato, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
-                return date.isAfter(today.minusYears(1))
+        fun Journalpost.erEtter20110101(): Boolean {
+            val firstDayOf2011 = LocalDateTime.of(2011, Month.JANUARY, 1, 0, 0, 0, 0)
+            var datoOpprettet: LocalDateTime
+            try {
+                datoOpprettet = LocalDateTime.parse(this.datoOpprettet, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+            } catch (e: Throwable) {
+                datoOpprettet = LocalDateTime.now()
             }
-            return true
+            val relevantDatoJournalFort = this.relevanteDatoer?.find { it.datotype == Datotype.DATO_JOURNALFOERT }
+            if (relevantDatoJournalFort != null) {
+                val journalfortDato = LocalDateTime.parse(relevantDatoJournalFort.dato, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+                return journalfortDato.isAfter(firstDayOf2011)
+            } else {
+                return return datoOpprettet.isAfter(firstDayOf2011)
+            }
         }
 
         fun Journalpost.hentJorurnalFoertDato(): String {
@@ -48,8 +55,8 @@ data class Journalpost(
             this.dokumenterMedTillatteTemaer().isNotEmpty()
 
         fun List<Journalpost>.dokumenterMedTillatteTemaer(): List<Journalpost> =
-            // this.filtrerVekkGamleUrelevanteDokumenter()
-            this.filtrerVekkGamleMEDjournalposterBasertPaaNyesteMELsak()
+            this.filtrerVekkGamleUrelevanteDokumenter()
+                .filtrerVekkGamleMEDjournalposterBasertPaaNyesteMELsak()
                 .filterNot { it.sak?.fagsakId?.contains("MEL-") == true }
                 .filter { it.tema erDelAv tillatteTemaer }
                 .filter { (it.journalfortAvNavn.isNullOrEmpty() || !it.journalfortAvNavn.contains("medlemskap-joark")) }
@@ -61,7 +68,7 @@ data class Journalpost(
         }
 
         fun List<Journalpost>.filtrerVekkGamleUrelevanteDokumenter(): List<Journalpost> {
-            return this.filter { it.erMindreEnn1AarGammelt() }
+            return this.filter { it.erEtter20110101() }
         }
         fun List<Journalpost>.filtrerVekkGamleMEDjournalposterBasertPaaNyesteMELsak(): List<Journalpost> {
             var nyesteDato: LocalDateTime? = null
