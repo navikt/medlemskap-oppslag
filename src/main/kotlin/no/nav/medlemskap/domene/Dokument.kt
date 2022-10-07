@@ -25,8 +25,8 @@ data class Journalpost(
     companion object {
         private val tillatteTemaer = listOf("MED", "UFM", "TRY")
 
-        fun Journalpost.erEtter20110101(): Boolean {
-            val firstDayOf2011 = LocalDateTime.of(2011, Month.JANUARY, 1, 0, 0, 0, 0)
+        fun Journalpost.harJournalFortDatoEtter(localDateTime: LocalDateTime): Boolean {
+            val firstDayOf2011 = localDateTime
             var datoOpprettet: LocalDateTime
             try {
                 datoOpprettet = LocalDateTime.parse(this.datoOpprettet, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
@@ -41,13 +41,11 @@ data class Journalpost(
                 return return datoOpprettet.isAfter(firstDayOf2011)
             }
         }
-
-        fun Journalpost.hentJorurnalFoertDato(): String {
-            val journalfoertDato = this.relevanteDatoer?.find { it.datotype == Datotype.DATO_JOURNALFOERT }
-            return if (journalfoertDato != null)
-                journalfoertDato!!.dato
-            else {
-                this.datoOpprettet
+        fun String.asLocalDatetime(): LocalDateTime {
+            return try {
+                LocalDateTime.parse(this, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+            } catch (e: Throwable) {
+                LocalDateTime.now()
             }
         }
 
@@ -55,7 +53,8 @@ data class Journalpost(
             this.dokumenterMedTillatteTemaer().isNotEmpty()
 
         fun List<Journalpost>.dokumenterMedTillatteTemaer(): List<Journalpost> =
-            this.filtrerVekkGamleUrelevanteDokumenter()
+
+            this.filtrervekkDokumenterMedJournalDatofør(LocalDateTime.of(2011, Month.JANUARY, 1, 0, 0))
                 .filtrerVekkGamleMEDjournalposterBasertPaaNyesteMELsak()
                 .filterNot { it.sak?.fagsakId?.contains("MEL-") == true }
                 .filter { it.tema erDelAv tillatteTemaer }
@@ -68,7 +67,10 @@ data class Journalpost(
         }
 
         fun List<Journalpost>.filtrerVekkGamleUrelevanteDokumenter(): List<Journalpost> {
-            return this.filter { it.erEtter20110101() }
+            return this.filter { it.harJournalFortDatoEtter(LocalDateTime.of(2011, Month.JANUARY, 1, 0, 0)) }
+        }
+        fun List<Journalpost>.filtrervekkDokumenterMedJournalDatofør(dato: LocalDateTime): List<Journalpost> {
+            return this.filter { it.harJournalFortDatoEtter(dato) }
         }
         fun List<Journalpost>.filtrerVekkGamleMEDjournalposterBasertPaaNyesteMELsak(): List<Journalpost> {
             var nyesteDato: LocalDateTime? = null
