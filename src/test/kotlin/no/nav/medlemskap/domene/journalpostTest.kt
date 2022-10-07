@@ -69,12 +69,12 @@ class journalpostTest {
         Assertions.assertFalse(finnesDokument)
     }
 
-    // TODO: legg inn igjen når vi skal adressere dette problemet@Test()
-    fun `filtrerer  ut dokumenter der journalpostDato er mer en 1 år gammelt`() {
+    @Test
+    fun `filtrerer  ut dokumenter der journalpostDato er eldre en 2011_01_01`() {
         val dokument = listOf(
             Journalpost(
                 datoOpprettet = LocalDateTime.now().toString(),
-                relevanteDatoer = listOf(RelevantDato("2020-05-25T19:43:43", Datotype.DATO_JOURNALFOERT)),
+                relevanteDatoer = listOf(RelevantDato("2010-05-25T19:43:43", Datotype.DATO_JOURNALFOERT)),
                 journalpostId = "",
                 journalfortAvNavn = null,
                 journalposttype = "",
@@ -88,6 +88,26 @@ class journalpostTest {
         val finnesDokument = dokument.finnesDokumenterMedTillatteTeamer()
 
         Assertions.assertFalse(finnesDokument)
+    }
+    @Test
+    fun `beholder dokumenter der journalpostDato er nyere en 2011_01_01`() {
+        val dokument = listOf(
+            Journalpost(
+                datoOpprettet = LocalDateTime.now().toString(),
+                relevanteDatoer = listOf(RelevantDato("2012-05-25T19:43:43", Datotype.DATO_JOURNALFOERT)),
+                journalpostId = "",
+                journalfortAvNavn = null,
+                journalposttype = "",
+                journalstatus = "",
+                tittel = "",
+                tema = "MED",
+                sak = null,
+                dokumenter = null
+            )
+        )
+        val finnesDokument = dokument.finnesDokumenterMedTillatteTeamer()
+
+        Assertions.assertTrue(finnesDokument)
     }
     @Test
     fun `filtrerer ikke ut dokumenter med null verdi i journalført av navn`() {
