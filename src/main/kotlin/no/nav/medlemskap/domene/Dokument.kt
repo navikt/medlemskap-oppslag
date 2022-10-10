@@ -19,7 +19,7 @@ data class Journalpost(
     val journalstatus: String?,
     val tema: String?,
     val sak: Sak?,
-    val dokumenter: List<Dokument>?,
+    val dokumenter: List<Dokument>?
 ) {
 
     companion object {
@@ -38,7 +38,7 @@ data class Journalpost(
                 val journalfortDato = LocalDateTime.parse(relevantDatoJournalFort.dato, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
                 return journalfortDato.isAfter(firstDayOf2011)
             } else {
-                return return datoOpprettet.isAfter(firstDayOf2011)
+                return datoOpprettet.isAfter(firstDayOf2011)
             }
         }
         fun String.asLocalDatetime(): LocalDateTime {
