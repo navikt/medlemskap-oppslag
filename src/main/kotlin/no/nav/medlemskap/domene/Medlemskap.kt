@@ -25,7 +25,7 @@ data class Medlemskap(
     companion object {
         infix fun List<Medlemskap>.finnesPersonIMedlForKontrollPeriode(kontrollPeriode: Kontrollperiode): Boolean =
             this.filter {
-                it.overlapper(kontrollPeriode.periode)
+                it.overlapper(kontrollPeriode.periode) && it.periodeStatus != PeriodeStatus.AVST
             }.isNotEmpty()
 
         infix fun List<Medlemskap>.finnesUavklartePerioder(kontrollPeriode: Kontrollperiode): Boolean =
