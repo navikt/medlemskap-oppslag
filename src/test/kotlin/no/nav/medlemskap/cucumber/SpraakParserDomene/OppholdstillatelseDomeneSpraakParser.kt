@@ -251,6 +251,8 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
                 ) {
                     "Uavklart" -> createGjeldendeOppholdstatusMedUavklartOppholdstillatelse()
                     "EOSellerEFTAOpphold" -> createGjeldendeOppholdsstatusMedEOSellerEFTAOpphold(periode, rad)
+                    "IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum" ->
+                        createGjeldendeOppholdstatusMedIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(periode, rad)
                     else -> createGjeldendeOppholdstatusMedOppholdstillatelsePaSammeVilkar(periode, rad)
                 }
 
@@ -307,6 +309,31 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
             )
         }
 
+        private fun createGjeldendeOppholdstatusMedIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(
+            periode: Periode,
+            rad: Map<String, String>
+        ): GjeldendeOppholdsstatus {
+            return GjeldendeOppholdsstatus(
+                oppholdstillatelsePaSammeVilkar = null,
+                ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum =
+                    IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(
+                        utvistMedInnreiseForbud = UtvistMedInnreiseForbud(
+                            JaNeiUavklart.valueOf(parseString(OppholdstillatelseDomenebegrep.UTVISTMEDINNREISEFORBUD, rad))
+                        ),
+                        avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak =
+                            AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak(avgjorelsesDato = periode.fom),
+                        ovrigIkkeOpphold = OvrigIkkeOpphold(
+                            ovrigIkkeOppholdsKategori =
+                                OvrigIkkeOppholdsKategori.valueOf(
+                                    parseString(OppholdstillatelseDomenebegrep.OVRIG_IKKE_OPPHOLD_KATEGORI, rad)
+                                )
+                        )
+                    ),
+                eosellerEFTAOpphold = null,
+                uavklart = null
+            )
+        }
+
         private fun createGjeldendeOppholdstatusMedUavklartOppholdstillatelse(): GjeldendeOppholdsstatus {
             return GjeldendeOppholdsstatus(
                 oppholdstillatelsePaSammeVilkar = null,
@@ -358,7 +385,8 @@ enum class OppholdstillatelseDomenebegrep(val nøkkel: String) : Domenenøkkel {
     FORESPORSELSFODSELSNUMMER("Foresporselsfodselsnummer"),
     UAVKLART("Uavklart"),
     UAVKLART_FLYKTNINGSTATUS("Uavklart flyktningstatus"),
-    UTTREKKSTIDSPUNKT("Uttrekkstidspunkt")
+    UTTREKKSTIDSPUNKT("Uttrekkstidspunkt"),
+    UTVISTMEDINNREISEFORBUD("Utvist med innreiseforbud")
     ;
 
     override fun nøkkel(): String {
