@@ -37,8 +37,8 @@ Egenskap: Man er medlem i Folketrygden hvis man er EØS-borger og bor og jobber 
     "oppholdsadresser": [],
     "sivilstand": [],
     "forelderBarnRelasjon": [],
-    "innflytting": [],
-    "utflytting": [],
+    "innflyttingTilNorge": [],
+    "utflyttingFraNorge": [],
     "navn": []
   },
   "medlemskap": [],

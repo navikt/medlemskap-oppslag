@@ -67,6 +67,9 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
         innflyttingTilNorge{
             fraflyttingsland,
             fraflyttingsstedIUtlandet,
+            metadata{
+                historisk
+            },
             folkeregistermetadata {
                 ajourholdstidspunkt,
                 gyldighetstidspunkt,
@@ -76,7 +79,10 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
         utflyttingFraNorge{
             tilflyttingsland,
             tilflyttingsstedIUtlandet,
-            utflyttingsdato
+            utflyttingsdato,
+            metadata {
+                historisk
+            }
         },
         navn(historikk: false) {
             fornavn,

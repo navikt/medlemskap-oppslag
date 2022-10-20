@@ -56,8 +56,8 @@
       ],
       "forelderBarnRelasjon": [],
       "doedsfall": [],
-      "innflytting": [],
-      "utflytting": [],
+      "innflyttingTilNorge": [],
+      "utflyttingFraNorge": [],
       "navn": [
         {
           "fornavn": "Test",

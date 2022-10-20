@@ -51,8 +51,8 @@
         "minRolleForPerson": "BARN"
       }
     ],
-    "innflytting": [],
-    "utflytting": [],
+    "innflyttingTilNorge": [],
+    "utflyttingFraNorge": [],
     "navn": [],
     "doedsfall": []
   },
