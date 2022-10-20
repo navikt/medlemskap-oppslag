@@ -150,6 +150,8 @@ class PdlClientHentPersonTest {
                     "kontaktadresse":[], 
                     "oppholdsadresse":[],
                     "doedsfall": [],
+                    "innflyttingTilNorge": [],
+                    "utflyttingFraNorge": [],
                     "navn": []
                  }   
              }     

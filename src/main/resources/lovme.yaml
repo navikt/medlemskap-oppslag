@@ -326,6 +326,10 @@ components:
         opphoerstidspunkt:
           $ref: "#/components/schemas/ValgfriDatoTid"
       nullable: true
+    Metadata:
+      properties:
+        historisk:
+          type: boolean
     FolkeregisterPersonstatus:
       properties:
         personstatus:
@@ -625,6 +629,14 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ValgfriDato"
+        innflyttingTilNorge:
+          type: array
+          items:
+            $ref: "#/components/schemas/innflyttingTilNorge"
+        utflyttingFraNorge:
+          type: array
+          items:
+            $ref: "#/components/schemas/utflyttingFraNorge"
         navn:
           type: array
           items:
@@ -776,6 +788,28 @@ components:
             $ref: "#/components/schemas/ValgfriDato"
           historisk:
             type: boolean
+    innflyttingTilNorge:
+      properties:
+        fraflyttingsland:
+          type: string
+          nullable: true
+        fraflyttingsstedIUtlandet:
+          type: string
+          nullable: true
+        folkeregistermetadata:
+          $ref: "#/components/schemas/Folkeregistermetadata"
+        metadata:
+          $ref: "#/components/schemas/Metadata"
+    utflyttingFraNorge:
+      properties:
+        tilflyttingsland:
+          type: string
+        tilflyttingsstedIUtlandet:
+          type: string
+        utflyttingsdato:
+          $ref: "#/components/schemas/Dato"
+        metadata:
+          $ref: "#/components/schemas/Metadata"
     Navn:
       properties:
         fornavn:

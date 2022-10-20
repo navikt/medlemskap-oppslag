@@ -119,6 +119,8 @@ class PdlClientHentEktefelleTest {
                 "doedsfall": [],
                 "kontaktadresse": [],
                 "oppholdsadresse": [],
+                "innflyttingTilNorge": [],
+                "utflyttingFraNorge": [],
                 "navn": [
                     {
                         "fornavn": "test",

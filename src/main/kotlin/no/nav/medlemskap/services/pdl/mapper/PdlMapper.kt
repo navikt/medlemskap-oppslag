@@ -5,12 +5,18 @@ import mu.KotlinLogging
 import no.nav.medlemskap.clients.pdl.generated.hentperson.*
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.domene.personhistorikk.*
+import no.nav.medlemskap.domene.personhistorikk.Folkeregistermetadata
 import no.nav.medlemskap.domene.personhistorikk.ForelderBarnRelasjon
+import no.nav.medlemskap.domene.personhistorikk.InnflyttingTilNorge
+import no.nav.medlemskap.domene.personhistorikk.Metadata
 import no.nav.medlemskap.domene.personhistorikk.Navn
 import no.nav.medlemskap.domene.personhistorikk.Sivilstand
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
+import no.nav.medlemskap.domene.personhistorikk.UtflyttingFraNorge
+import no.nav.medlemskap.regler.common.Datohjelper
 import no.nav.medlemskap.regler.common.Datohjelper.parseIsoDato
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
+import org.joda.time.DateTime
 import java.time.LocalDate
 
 object PdlMapper {
@@ -26,6 +32,8 @@ object PdlMapper {
         val sivilstand: List<Sivilstand> = mapSivilstander(person.sivilstand)
         val forelderBarnRelasjoner: List<ForelderBarnRelasjon> = mapFamilierelasjoner(person.forelderBarnRelasjon)
         val doedsfall: List<LocalDate> = mapDoedsfall(person.doedsfall)
+        val innflyttingTilNorge: List<InnflyttingTilNorge> = mapInnflyttingTilNorge(person.innflyttingTilNorge)
+        val utflyttingFraNorge: List<UtflyttingFraNorge> = mapUtflyttingFraNorge(person.utflyttingFraNorge)
         val navn: List<Navn> = mapNavn(person.navn)
 
         return Personhistorikk(
@@ -36,8 +44,41 @@ object PdlMapper {
             kontaktadresser = kontaktadresser,
             oppholdsadresser = oppholdsadresser,
             doedsfall = doedsfall,
+            innflyttingTilNorge = innflyttingTilNorge,
+            utflyttingFraNorge = utflyttingFraNorge,
             navn = navn
         )
+    }
+
+    private fun mapInnflyttingTilNorge(innflyttingTilNorge: List<no.nav.medlemskap.clients.pdl.generated.hentperson.InnflyttingTilNorge>): List<InnflyttingTilNorge> {
+        return innflyttingTilNorge.map {
+            InnflyttingTilNorge(
+                fraflyttingsland = it.fraflyttingsland,
+                fraflyttingsstedIUtlandet = it.fraflyttingsstedIUtlandet,
+                folkeregistermetadata = mapFolkeregistermetadata(it.folkeregistermetadata),
+                metadata = Metadata(it.metadata.historisk)
+            )
+        }
+    }
+
+    private fun mapFolkeregistermetadata(folkeregistermetadata: no.nav.medlemskap.clients.pdl.generated.hentperson.Folkeregistermetadata?): Folkeregistermetadata {
+        return Folkeregistermetadata(
+            ajourholdstidspunkt = DateTime(folkeregistermetadata?.ajourholdstidspunkt),
+            gyldighetstidspunkt = DateTime(folkeregistermetadata?.gyldighetstidspunkt),
+            opphoerstidspunkt = DateTime(folkeregistermetadata?.opphoerstidspunkt)
+
+        )
+    }
+
+    private fun mapUtflyttingFraNorge(utflyttingFraNorge: List<no.nav.medlemskap.clients.pdl.generated.hentperson.UtflyttingFraNorge>): List<UtflyttingFraNorge> {
+        return utflyttingFraNorge.map {
+            UtflyttingFraNorge(
+                tilflyttingsland = it.tilflyttingsland,
+                tilflyttingsstedIUtlandet = it.tilflyttingsstedIUtlandet,
+                utflyttingsDato = Datohjelper.parseDato(it.utflyttingsdato.toString()),
+                metadata = Metadata(it.metadata.historisk)
+            )
+        }
     }
 
     private fun mapNavn(navn: List<no.nav.medlemskap.clients.pdl.generated.hentperson.Navn>): List<Navn> {

@@ -11,6 +11,8 @@ class PersonhistorikkBuilder {
     val kontaktadresse = mutableListOf<Adresse>()
     val oppholdsadresse = mutableListOf<Adresse>()
     val doedsfall = mutableListOf<LocalDate>()
+    val innflytting = mutableListOf<InnflyttingTilNorge>()
+    val utflytting = mutableListOf<UtflyttingFraNorge>()
     val navn = mutableListOf<Navn>()
 
     fun build(): Personhistorikk {
@@ -22,6 +24,8 @@ class PersonhistorikkBuilder {
             sivilstand = sivilstand,
             forelderBarnRelasjon = familierelasjoner,
             doedsfall = doedsfall,
+            innflyttingTilNorge = innflytting,
+            utflyttingFraNorge = utflytting,
             navn = navn
         )
     }
