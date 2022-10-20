@@ -625,6 +625,14 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/ValgfriDato"
+        innflytting:
+          type: array
+          items:
+            $ref: "#/components/schemas/innflytting"
+        utflytting:
+          type: array
+          items:
+            $ref: "#/components/schemas/utflytting"
         navn:
           type: array
           items:
@@ -776,6 +784,24 @@ components:
             $ref: "#/components/schemas/ValgfriDato"
           historisk:
             type: boolean
+    innflytting:
+      properties:
+        fraflyttingsland:
+          type: string
+          nullable: true
+        fraflyttingsstedIUtlandet:
+          type: string
+          nullable: true
+        folkeregistermetadata:
+          $ref: "#/components/schemas/Folkeregistermetadata"
+    utflytting:
+      properties:
+        tilflyttingsland:
+          type: string
+        tilflyttingsstedIUtlandet:
+          type: string
+        utflyttingsdato:
+          $ref: "#/components/schemas/Dato"
     Navn:
       properties:
         fornavn:

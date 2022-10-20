@@ -12,6 +12,8 @@ data class Personhistorikk(
     val sivilstand: List<Sivilstand>,
     val forelderBarnRelasjon: List<ForelderBarnRelasjon>,
     val doedsfall: List<LocalDate>,
+    val innflytting: List<Innflytting>,
+    val utflytting: List<Utflytting>,
     val navn: List<Navn>
 ) {
 

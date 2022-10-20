@@ -1,6 +1,6 @@
 query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolean!){
     hentPerson(ident: $ident) {
-    		forelderBarnRelasjon {
+        forelderBarnRelasjon {
             relatertPersonsIdent
             relatertPersonsRolle
             minRolleForPerson
@@ -19,9 +19,9 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
             bekreftelsesdato
             relatertVedSivilstand
         },
-    adressebeskyttelse(historikk: false) {
-      gradering
-    },
+        adressebeskyttelse(historikk: false) {
+            gradering
+        },
         bostedsadresse(historikk: true) {
             angittFlyttedato
             gyldigFraOgMed
@@ -38,9 +38,9 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
                 historisk
             }
         },
-    	doedsfall{
-    			doedsdato
-  		},
+        doedsfall{
+            doedsdato
+        },
         kontaktadresse(historikk: true) {
             gyldigFraOgMed
             gyldigTilOgMed
@@ -63,11 +63,25 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
             metadata {
                 historisk
             }
-    },
-    		navn(historikk: false) {
-      			fornavn,
-      			mellomnavn,
-      			etternavn
-    }
+        },
+        innflyttingTilNorge{
+            fraflyttingsland,
+            fraflyttingsstedIUtlandet,
+            folkeregistermetadata {
+                ajourholdstidspunkt,
+                gyldighetstidspunkt,
+                opphoerstidspunkt
+            }
+        },
+        utflyttingFraNorge{
+            tilflyttingsland,
+            tilflyttingsstedIUtlandet,
+            utflyttingsdato
+        },
+        navn(historikk: false) {
+            fornavn,
+            mellomnavn,
+            etternavn
+        }
     }
 }
