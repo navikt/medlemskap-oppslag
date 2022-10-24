@@ -103,7 +103,7 @@ fun StatusPagesConfig.exceptionHandler() {
 
     exception<Throwable> { call, cause ->
         call.logErrorAndRespond(cause) {
-            "An internal error occurred during routing"
+            "An internal error occurred during routing: reason ${cause.message}"
         }
     }
 }
@@ -117,8 +117,6 @@ private suspend inline fun ApplicationCall.logErrorAndRespond(
     val message = lazyMessage()
     logger.error(
         message,
-        kv("cause", cause),
-        kv("callId", callId),
         kv("stacktrace", cause.stackTrace)
     )
     val response = HttpErrorResponse(
