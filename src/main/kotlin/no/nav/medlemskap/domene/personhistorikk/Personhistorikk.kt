@@ -24,4 +24,12 @@ data class Personhistorikk(
     fun erBrukerDoedEtterPeriode(inputPeriode: InputPeriode): Boolean {
         return erBrukerDoed() && doedsfall.all { it.isAfter(inputPeriode.tom) }
     }
+
+    fun harInnflyttingTilNorge(): Boolean {
+        return innflyttingTilNorge.isNotNullOrEmpty()
+    }
+
+    fun harUtflyttingFraNorge(): Boolean {
+        return utflyttingFraNorge.isNotNullOrEmpty()
+    }
 }
