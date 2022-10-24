@@ -118,7 +118,8 @@ private suspend inline fun ApplicationCall.logErrorAndRespond(
     logger.error(
         message,
         kv("cause", cause),
-        kv("callId", callId)
+        kv("callId", callId),
+        kv("stacktrace", cause.stackTrace)
     )
     val response = HttpErrorResponse(
         url = this.request.uri,
