@@ -16,8 +16,8 @@ import no.nav.medlemskap.domene.personhistorikk.UtflyttingFraNorge
 import no.nav.medlemskap.regler.common.Datohjelper
 import no.nav.medlemskap.regler.common.Datohjelper.parseIsoDato
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
-import org.joda.time.DateTime
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 object PdlMapper {
 
@@ -63,10 +63,9 @@ object PdlMapper {
 
     private fun mapFolkeregistermetadata(folkeregistermetadata: no.nav.medlemskap.clients.pdl.generated.hentperson.Folkeregistermetadata?): Folkeregistermetadata {
         return Folkeregistermetadata(
-            ajourholdstidspunkt = DateTime(folkeregistermetadata?.ajourholdstidspunkt),
-            gyldighetstidspunkt = DateTime(folkeregistermetadata?.gyldighetstidspunkt),
-            opphoerstidspunkt = DateTime(folkeregistermetadata?.opphoerstidspunkt)
-
+            ajourholdstidspunkt = LocalDateTime.parse(folkeregistermetadata?.ajourholdstidspunkt),
+            gyldighetstidspunkt = LocalDateTime.parse(folkeregistermetadata?.gyldighetstidspunkt),
+            opphoerstidspunkt = LocalDateTime.parse(folkeregistermetadata?.opphoerstidspunkt)
         )
     }
 
