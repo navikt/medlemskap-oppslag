@@ -11,9 +11,12 @@ import kotlinx.coroutines.withContext
 import mu.KotlinLogging
 import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.clients.Services
-import no.nav.medlemskap.common.*
+import no.nav.medlemskap.common.RequestContextService
+import no.nav.medlemskap.common.apiCounter
 import no.nav.medlemskap.common.exceptions.KonsumentIkkeFunnet
 import no.nav.medlemskap.common.exceptions.UgyldigRequestException
+import no.nav.medlemskap.common.objectMapper
+import no.nav.medlemskap.common.uavklartPåRegel
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Fødselsnummer.Companion.gyldigFnr
@@ -227,6 +230,8 @@ private fun loggResponse(fnr: String, response: Response, endpoint: String = "/"
         kv("arbeidsadgangtype", response.datagrunnlag.oppholdstillatelse?.arbeidsadgang?.arbeidsadgangType.toString()),
         kv("fagsak_id", response.datagrunnlag.dokument.alleFagsakIDer()),
         kv("har_dokument", response.datagrunnlag.dokument.harDokument()),
+        kv("har_innflytting", response.datagrunnlag.pdlpersonhistorikk.harInnflyttingTilNorge()),
+        kv("har_utflytting", response.datagrunnlag.pdlpersonhistorikk.harUtflyttingFraNorge()),
         kv("yrkeskoder", response.datagrunnlag.arbeidsforhold.alleAktiveYrkeskoderDerTomErNull()),
         kv("endpoint", endpoint)
     )
