@@ -2,6 +2,7 @@ package no.nav.medlemskap.services.pdl.mapper
 
 import com.neovisionaries.i18n.CountryCode
 import mu.KotlinLogging
+import no.nav.medlemskap.clients.pdl.generated.DateTime
 import no.nav.medlemskap.clients.pdl.generated.hentperson.*
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.domene.personhistorikk.*
@@ -63,9 +64,9 @@ object PdlMapper {
 
     private fun mapFolkeregistermetadata(folkeregistermetadata: no.nav.medlemskap.clients.pdl.generated.hentperson.Folkeregistermetadata?): Folkeregistermetadata {
         return Folkeregistermetadata(
-            ajourholdstidspunkt = LocalDateTime.parse(folkeregistermetadata?.ajourholdstidspunkt),
-            gyldighetstidspunkt = LocalDateTime.parse(folkeregistermetadata?.gyldighetstidspunkt),
-            opphoerstidspunkt = LocalDateTime.parse(folkeregistermetadata?.opphoerstidspunkt)
+            ajourholdstidspunkt = parseNullableDateFraPDL(folkeregistermetadata?.ajourholdstidspunkt),
+            gyldighetstidspunkt = parseNullableDateFraPDL(folkeregistermetadata?.gyldighetstidspunkt),
+            opphoerstidspunkt = parseNullableDateFraPDL(folkeregistermetadata?.opphoerstidspunkt)
         )
     }
 
@@ -239,6 +240,14 @@ object PdlMapper {
         } catch (e: Exception) {
             logger.warn("Klarte ikke å mappe {}", landkode, e)
             "UKJENT"
+        }
+    }
+
+    private fun parseNullableDateFraPDL(date: DateTime?): LocalDateTime? {
+        return if (date != null) {
+            LocalDateTime.parse(date)
+        } else {
+            null
         }
     }
 }
