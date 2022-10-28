@@ -1,6 +1,5 @@
 package no.nav.medlemskap.regler.common
 
-import no.nav.medlemskap.clients.pdl.generated.DateTime
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -43,11 +42,3 @@ fun erDatoerSammenhengende(sluttDato: LocalDate, startDato: LocalDate?, tillatDa
     sluttDato.isAfter(startDato?.minusDays(tillatDagersHullIPeriode))
 
 fun LocalDate.startOfDayInstant() = this.atStartOfDay(ZoneId.systemDefault()).toInstant()
-
-fun parseNullableDateFraPDL(date: DateTime?): LocalDateTime? {
-    return if (date != null) {
-        LocalDateTime.parse(date)
-    } else {
-        null
-    }
-}

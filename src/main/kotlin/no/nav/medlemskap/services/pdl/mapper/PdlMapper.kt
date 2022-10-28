@@ -2,6 +2,7 @@ package no.nav.medlemskap.services.pdl.mapper
 
 import com.neovisionaries.i18n.CountryCode
 import mu.KotlinLogging
+import no.nav.medlemskap.clients.pdl.generated.DateTime
 import no.nav.medlemskap.clients.pdl.generated.hentperson.*
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.domene.personhistorikk.*
@@ -15,9 +16,9 @@ import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
 import no.nav.medlemskap.domene.personhistorikk.UtflyttingFraNorge
 import no.nav.medlemskap.regler.common.Datohjelper
 import no.nav.medlemskap.regler.common.Datohjelper.parseIsoDato
-import no.nav.medlemskap.regler.common.parseNullableDateFraPDL
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 object PdlMapper {
 
@@ -239,6 +240,14 @@ object PdlMapper {
         } catch (e: Exception) {
             logger.warn("Klarte ikke å mappe {}", landkode, e)
             "UKJENT"
+        }
+    }
+
+    private fun parseNullableDateFraPDL(date: DateTime?): LocalDateTime? {
+        return if (date != null) {
+            LocalDateTime.parse(date)
+        } else {
+            null
         }
     }
 }
