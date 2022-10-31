@@ -61,7 +61,6 @@ val githubPassword: String by project
 
 allprojects {
     repositories {
-        jcenter()
         gradlePluginPortal()
         mavenCentral()
         maven("https://jitpack.io")
