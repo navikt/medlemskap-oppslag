@@ -2,6 +2,7 @@ package no.nav.medlemskap.services.pdl.mapper
 
 import com.neovisionaries.i18n.CountryCode
 import mu.KotlinLogging
+import no.nav.medlemskap.clients.pdl.generated.DateTime
 import no.nav.medlemskap.clients.pdl.generated.hentperson.*
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.domene.personhistorikk.*
@@ -63,10 +64,18 @@ object PdlMapper {
 
     private fun mapFolkeregistermetadata(folkeregistermetadata: no.nav.medlemskap.clients.pdl.generated.hentperson.Folkeregistermetadata?): Folkeregistermetadata {
         return Folkeregistermetadata(
-            ajourholdstidspunkt = LocalDateTime.parse(folkeregistermetadata?.ajourholdstidspunkt),
-            gyldighetstidspunkt = LocalDateTime.parse(folkeregistermetadata?.gyldighetstidspunkt),
-            opphoerstidspunkt = LocalDateTime.parse(folkeregistermetadata?.opphoerstidspunkt)
+            ajourholdstidspunkt = parseNullableDate(folkeregistermetadata?.ajourholdstidspunkt),
+            gyldighetstidspunkt = parseNullableDate(folkeregistermetadata?.gyldighetstidspunkt),
+            opphoerstidspunkt = parseNullableDate(folkeregistermetadata?.opphoerstidspunkt)
         )
+    }
+
+    private fun parseNullableDate(date: DateTime?): LocalDateTime? {
+        if (date != null) {
+            return LocalDateTime.parse(date)
+        } else {
+            return null
+        }
     }
 
     private fun mapUtflyttingFraNorge(utflyttingFraNorge: List<no.nav.medlemskap.clients.pdl.generated.hentperson.UtflyttingFraNorge>): List<UtflyttingFraNorge> {
@@ -74,7 +83,7 @@ object PdlMapper {
             UtflyttingFraNorge(
                 tilflyttingsland = it.tilflyttingsland,
                 tilflyttingsstedIUtlandet = it.tilflyttingsstedIUtlandet,
-                utflyttingsDato = Datohjelper.parseDato(it.utflyttingsdato.toString()),
+                utflyttingsDato = parseNullableDate(it.utflyttingsdato.toString())?.toLocalDate(),
                 metadata = Metadata(it.metadata.historisk)
             )
         }
