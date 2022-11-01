@@ -14,7 +14,6 @@ import no.nav.medlemskap.domene.personhistorikk.Navn
 import no.nav.medlemskap.domene.personhistorikk.Sivilstand
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
 import no.nav.medlemskap.domene.personhistorikk.UtflyttingFraNorge
-import no.nav.medlemskap.regler.common.Datohjelper
 import no.nav.medlemskap.regler.common.Datohjelper.parseIsoDato
 import no.nav.medlemskap.services.pdl.PdlSivilstandMapper.mapSivilstander
 import java.time.LocalDate
@@ -75,7 +74,7 @@ object PdlMapper {
             UtflyttingFraNorge(
                 tilflyttingsland = it.tilflyttingsland,
                 tilflyttingsstedIUtlandet = it.tilflyttingsstedIUtlandet,
-                utflyttingsDato = parseNullableDateFraPDL(it.utflyttingsdato.toString())?.toLocalDate(),
+                utflyttingsDato = parseNullableDateStringFraPDL(it.utflyttingsdato.toString()),
                 metadata = Metadata(it.metadata.historisk)
             )
         }
@@ -246,6 +245,13 @@ object PdlMapper {
     private fun parseNullableDateFraPDL(date: DateTime?): LocalDateTime? {
         return if (date != null) {
             LocalDateTime.parse(date)
+        } else {
+            null
+        }
+    }
+    private fun parseNullableDateStringFraPDL(date: String?): LocalDate? {
+        return if (date != null) {
+            LocalDate.parse(date)
         } else {
             null
         }
