@@ -75,7 +75,7 @@ object PdlMapper {
             UtflyttingFraNorge(
                 tilflyttingsland = it.tilflyttingsland,
                 tilflyttingsstedIUtlandet = it.tilflyttingsstedIUtlandet,
-                utflyttingsDato = Datohjelper.parseDato(it.utflyttingsdato.toString()),
+                utflyttingsDato = parseNullableDateFraPDL(it.utflyttingsdato.toString())?.toLocalDate(),
                 metadata = Metadata(it.metadata.historisk)
             )
         }
