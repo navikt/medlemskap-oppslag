@@ -105,7 +105,6 @@ fun StatusPagesConfig.exceptionHandler() {
         call.logErrorAndRespond(cause) {
             "An internal error occurred during routing: reason ${cause.message}"
         }
-
     }
 }
 

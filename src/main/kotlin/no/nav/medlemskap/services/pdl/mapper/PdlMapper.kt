@@ -63,9 +63,9 @@ object PdlMapper {
 
     private fun mapFolkeregistermetadata(folkeregistermetadata: no.nav.medlemskap.clients.pdl.generated.hentperson.Folkeregistermetadata?): Folkeregistermetadata {
         return Folkeregistermetadata(
-            ajourholdstidspunkt = parseNullableDateFraPDL(folkeregistermetadata?.ajourholdstidspunkt),
-            gyldighetstidspunkt = parseNullableDateFraPDL(folkeregistermetadata?.gyldighetstidspunkt),
-            opphoerstidspunkt = parseNullableDateFraPDL(folkeregistermetadata?.opphoerstidspunkt)
+            ajourholdstidspunkt = parseNullableDateTimeFraPDL(folkeregistermetadata?.ajourholdstidspunkt),
+            gyldighetstidspunkt = parseNullableDateTimeFraPDL(folkeregistermetadata?.gyldighetstidspunkt),
+            opphoerstidspunkt = parseNullableDateTimeFraPDL(folkeregistermetadata?.opphoerstidspunkt)
         )
     }
 
@@ -74,7 +74,7 @@ object PdlMapper {
             UtflyttingFraNorge(
                 tilflyttingsland = it.tilflyttingsland,
                 tilflyttingsstedIUtlandet = it.tilflyttingsstedIUtlandet,
-                utflyttingsDato = parseNullableDateStringFraPDL(it.utflyttingsdato.toString()),
+                utflyttingsDato = parseNullableDateStringFraPDL(it.utflyttingsdato),
                 metadata = Metadata(it.metadata.historisk)
             )
         }
@@ -242,14 +242,14 @@ object PdlMapper {
         }
     }
 
-    private fun parseNullableDateFraPDL(date: DateTime?): LocalDateTime? {
+    private fun parseNullableDateTimeFraPDL(date: DateTime?): LocalDateTime? {
         return if (date != null) {
             LocalDateTime.parse(date)
         } else {
             null
         }
     }
-    private fun parseNullableDateStringFraPDL(date: String?): LocalDate? {
+    private fun parseNullableDateStringFraPDL(date: no.nav.medlemskap.clients.pdl.generated.Date?): LocalDate? {
         return if (date != null) {
             LocalDate.parse(date)
         } else {
