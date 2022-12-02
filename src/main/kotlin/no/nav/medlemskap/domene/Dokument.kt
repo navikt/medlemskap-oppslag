@@ -109,6 +109,7 @@ enum class Datotype {
     DATO_REGISTRERT,
     DATO_AVS_RETUR,
     DATO_DOKUMENT,
+    DATO_LEST,
     /**
      * This is a default enum value that will be used when attempting to deserialize unknown value.
      */
