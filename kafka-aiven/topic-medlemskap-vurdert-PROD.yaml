@@ -19,6 +19,9 @@ spec:
       application: medlemskap-oppslag
       access: readwrite
     - team: medlemskap
+      application: medlemskap-dagpengelytter
+      access: readwrite
+    - team: medlemskap
       application: medlemskap-joark-listener
       access: read
     - team: medlemskap
