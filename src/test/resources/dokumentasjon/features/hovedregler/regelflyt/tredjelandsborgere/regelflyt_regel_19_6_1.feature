@@ -31,8 +31,8 @@ Egenskap: Regelflyt for regel 19.6.1.
       | <Arbeid fra og med> | <Arbeid til og med> | Organisasjon     | NORMALT             | 1               |
 
     Og følgende oppholdstillatelse
-      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type      | Oppholdstillatelse på samme vilkår flagg |
-      | 01.01.2017        |                   | Ja             | PERMANENT | Nei                                      |
+      | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type        | Oppholdstillatelse på samme vilkår flagg |
+      | 01.01.2017        |                   | Ja             | MIDLERTIDIG | Nei                                      |
 
     Og følgende arbeidsadgang
       | Gyldig fra og med | Gyldig til og med          | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |

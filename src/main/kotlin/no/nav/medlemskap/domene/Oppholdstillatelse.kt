@@ -13,6 +13,11 @@ data class Oppholdstillatelse(
     val harFlyktningstatus: Boolean?
 ) {
 
+    fun harPermanentOppholdstillatelse(periode: Periode): Boolean {
+        return gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar?.periode?.encloses(periode) == true &&
+            gjeldendeOppholdsstatus.oppholdstillatelsePaSammeVilkar.type == OppholdstillaelsePaSammeVilkarType.PERMANENT
+    }
+
     fun harGyldigArbeidstillatelseForPeriode(periode: Periode): Boolean {
         return arbeidsadgang != null && arbeidsadgang.harArbeidsadgang &&
             harGyldigArbeidsomfang() &&
@@ -28,14 +33,11 @@ data class Oppholdstillatelse(
     }
 
     private fun harGyldigArbeidsomfang(): Boolean {
-        val erOppholdstillatelsePermanent = gjeldendeOppholdsstatus
-            ?.oppholdstillatelsePaSammeVilkar?.type == OppholdstillaelsePaSammeVilkarType.PERMANENT
         val erArbeidsomfangHeltid = arbeidsadgang?.arbeidsomfang == ArbeidomfangKategori.KUN_ARBEID_HELTID
         val arbeidsadgangtypeErGenerellOgArbeidsomfangNull =
             arbeidsadgang?.arbeidsadgangType == ArbeidsadgangType.GENERELL && arbeidsadgang.arbeidsomfang == null
 
         return when {
-            erOppholdstillatelsePermanent -> true
             erArbeidsomfangHeltid -> true
             arbeidsadgangtypeErGenerellOgArbeidsomfangNull -> true
             else -> false
