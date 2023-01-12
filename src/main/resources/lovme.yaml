@@ -590,8 +590,10 @@ components:
             - PERMISJON_MED_FORELDREPENGER
             - PERMISJON_VED_MILITAERTJENESTE
             - PERMITTERING
-            - UTDANNINGSPERMISJON
-            - VELFERDSPERMISJON
+            - ANDRE_IKKE_LOVFESTEDE_PERMISJONER
+            - ANDRE_LOVFESTEDE_PERMISJONER
+            - UTDANNINGSPERMISJON_IKKE_LOVFESTET
+            - UTDANNINGSPERMISJON_LOVFESTET
             - ANNET
         varslingskode:
           type: string
