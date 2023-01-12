@@ -10,7 +10,7 @@ class AaRegPermisjonsPermitteringerBuilder {
     var periode = periodeBuilder.buildAaregPeriode()
     var permisjonsPermitteringId = String()
     var sporingsinformasjon = sporingsinformasjonBuilder.build()
-    var type = PermisjonPermitteringType.VELFERDSPERMISJON.kodeverdi
+    var type = PermisjonPermitteringType.PERMISJON.kodeverdi
     var varslingkode = String()
     var prosent = 1.0
 
