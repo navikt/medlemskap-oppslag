@@ -331,7 +331,7 @@
           },
           "permisjonPermitteringId": "0302-20200623",
           "prosent": 26.67,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -521,7 +521,7 @@
           },
           "permisjonPermitteringId": "0302-20191202",
           "prosent": 13.33,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -531,7 +531,7 @@
           },
           "permisjonPermitteringId": "0302-20190628",
           "prosent": 13.33,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -541,7 +541,7 @@
           },
           "permisjonPermitteringId": "0302-20200917",
           "prosent": 33.33,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -551,7 +551,7 @@
           },
           "permisjonPermitteringId": "0302-20180209",
           "prosent": 26.67,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -561,7 +561,7 @@
           },
           "permisjonPermitteringId": "0201-20180323",
           "prosent": 53.33,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -571,7 +571,7 @@
           },
           "permisjonPermitteringId": "0320-20180417",
           "prosent": 46.67,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -581,7 +581,7 @@
           },
           "permisjonPermitteringId": "0302-20200828",
           "prosent": 100.0,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -591,7 +591,7 @@
           },
           "permisjonPermitteringId": "0302-20200424",
           "prosent": 66.67,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -601,7 +601,7 @@
           },
           "permisjonPermitteringId": "0302-20200227",
           "prosent": 46.67,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -611,7 +611,7 @@
           },
           "permisjonPermitteringId": "0302-20200116",
           "prosent": 100.0,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -621,7 +621,7 @@
           },
           "permisjonPermitteringId": "0302-20200121",
           "prosent": 13.33,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -631,7 +631,7 @@
           },
           "permisjonPermitteringId": "0302-20190826",
           "prosent": 33.33,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -641,7 +641,7 @@
           },
           "permisjonPermitteringId": "0302-20190919",
           "prosent": 80.0,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -651,7 +651,7 @@
           },
           "permisjonPermitteringId": "0201-20190604",
           "prosent": 86.67,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -661,7 +661,7 @@
           },
           "permisjonPermitteringId": "0302-20190614",
           "prosent": 46.67,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -671,7 +671,7 @@
           },
           "permisjonPermitteringId": "0302-20190712",
           "prosent": 60.0,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -681,7 +681,7 @@
           },
           "permisjonPermitteringId": "0302-20190111",
           "prosent": 13.33,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -691,7 +691,7 @@
           },
           "permisjonPermitteringId": "0201-20190117",
           "prosent": 46.67,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -701,7 +701,7 @@
           },
           "permisjonPermitteringId": "0302-20181022",
           "prosent": 33.33,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -711,7 +711,7 @@
           },
           "permisjonPermitteringId": "0302-20210208",
           "prosent": 13.33,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -721,7 +721,7 @@
           },
           "permisjonPermitteringId": "0302-20200811",
           "prosent": 33.33,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -731,7 +731,7 @@
           },
           "permisjonPermitteringId": "0302-20210120",
           "prosent": 20.0,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -741,7 +741,7 @@
           },
           "permisjonPermitteringId": "0302-20180914",
           "prosent": 20.0,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -751,7 +751,7 @@
           },
           "permisjonPermitteringId": "0201-20180814",
           "prosent": 40.0,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         },
         {
@@ -761,7 +761,7 @@
           },
           "permisjonPermitteringId": "0302-20200826",
           "prosent": 66.67,
-          "type": "VELFERDSPERMISJON",
+          "type": "PERMISJON",
           "varslingskode": null
         }
       ]
