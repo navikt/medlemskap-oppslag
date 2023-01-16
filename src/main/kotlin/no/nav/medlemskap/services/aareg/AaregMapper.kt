@@ -37,6 +37,12 @@ fun mapArbeidsforhold(arbeidsforholdMedOrganisasjon: List<ArbeidsforholdOrganisa
 }
 fun mapPermisjonsPermittering(arbeidsforhold: AaRegArbeidsforhold): List<PermisjonPermittering>? {
     return arbeidsforhold.permisjonPermitteringer?.map {
+        try {
+            val type = PermisjonPermitteringType.fraPermisjonPermitteringVerdi(it.type)
+        } catch (e: Exception) {
+            logger.warn("Ukjent permisjonspermiterings verdi: ${it.type}")
+        }
+
         PermisjonPermittering(
             periode = mapPeriodeTilPermisjonsPermitteringer(it),
             type = PermisjonPermitteringType.fraPermisjonPermitteringVerdi(it.type),
