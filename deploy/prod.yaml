@@ -44,6 +44,7 @@ spec:
     inbound:
       rules:
         - application: medlemskap-sykepenger-listener
+        - application: medlemskap-dagpengelytter
         - application: sparkel-medlemskap
           namespace: tbd
           cluster: prod-fss
