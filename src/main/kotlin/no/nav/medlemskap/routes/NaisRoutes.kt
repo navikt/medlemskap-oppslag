@@ -21,6 +21,13 @@ fun Routing.naisRoutes(
             call.respondText("Not alive", status = HttpStatusCode.InternalServerError)
         }
     }
+    get("/health") {
+        if (livenessCheck()) {
+            call.respond(HttpStatusCode.OK,Health(Status.OK,null,null))
+        } else {
+            call.respond(HttpStatusCode.OK,Health(Status.DOWN,null,null))
+        }
+    }
 
     get("/isReady") {
         if (readinessCheck()) {
@@ -36,4 +43,10 @@ fun Routing.naisRoutes(
             TextFormat.write004(this, collectorRegistry.filteredMetricFamilySamples(names))
         }
     }
+}
+data class Health(val status: Status, val description:String?,val logLink:String?)
+enum class Status(){
+    OK,
+    DOWN,
+    ISSUE
 }
