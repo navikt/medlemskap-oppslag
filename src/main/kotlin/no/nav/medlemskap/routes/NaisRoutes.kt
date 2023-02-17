@@ -21,6 +21,17 @@ fun Routing.naisRoutes(
             call.respondText("Not alive", status = HttpStatusCode.InternalServerError)
         }
     }
+    get("/health") {
+        if (livenessCheck()) {
+            call.respondText("{\n" +
+                    "\"status\": \"OK\"," +
+                    "}")
+        } else {
+            call.respondText("{\n" +
+                    "\"status\": \"DOWN\"," +
+                    "}")
+        }
+    }
 
     get("/isReady") {
         if (readinessCheck()) {
