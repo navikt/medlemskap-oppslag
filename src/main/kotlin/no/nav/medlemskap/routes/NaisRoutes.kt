@@ -25,9 +25,7 @@ fun Routing.naisRoutes(
         if (livenessCheck()) {
             call.respond(HttpStatusCode.OK,Health(Status.OK,null,null))
         } else {
-            call.respondText("{\n" +
-                    "\"status\": \"DOWN\"," +
-                    "}")
+            call.respond(HttpStatusCode.OK,Health(Status.DOWN,null,null))
         }
     }
 
