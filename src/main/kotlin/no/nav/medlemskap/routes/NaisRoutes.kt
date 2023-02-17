@@ -23,9 +23,7 @@ fun Routing.naisRoutes(
     }
     get("/health") {
         if (livenessCheck()) {
-            call.respondText("{\n" +
-                    "\"status\": \"OK\"," +
-                    "}")
+            call.respond(HttpStatusCode.OK,Health(Status.OK,null,null))
         } else {
             call.respondText("{\n" +
                     "\"status\": \"DOWN\"," +
@@ -47,4 +45,10 @@ fun Routing.naisRoutes(
             TextFormat.write004(this, collectorRegistry.filteredMetricFamilySamples(names))
         }
     }
+}
+data class Health(val status: Status, val description:String?,val logLink:String?)
+enum class Status(){
+    OK,
+    DOWN,
+    ISSUE
 }
