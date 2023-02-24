@@ -690,6 +690,24 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Adresse"
+    ForelderBarnRelasjon:
+      properties:
+        relatertPersonsIdent:
+          type: string
+        relatertPersonsRolle:
+          items:
+            $ref: "#/components/schemas/relatertPersonsRolle"
+        minRolleForPerson:
+          items:
+            $ref: "#/components/schemas/relatertPersonsRolle"
+          nullable: true
+    relatertPersonsRolle:
+      type: string
+      enum:
+        - BARN
+        - MOR
+        - FAR
+        - MEDMOR
     RegelId:
       type: string
       description: Identifiserer en regel.

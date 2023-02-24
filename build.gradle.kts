@@ -4,14 +4,14 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val ktorVersion = "2.1.3"
 val kafkaVersion = "3.3.1"
-val jacksonVersion = "2.14.0"
+val jacksonVersion = "2.14.1"
 val prometheusVersion = "0.9.0"
 val logbackVersion = "1.2.11"
 val logstashVersion = "7.2"
 val konfigVersion = "1.6.10.0"
 val kotlinLoggerVersion = "1.8.3"
 val tjenestespesifikasjonerVersion = "1.2019.12.18-12.22-ce897c4eb2c1"
-val cxfVersion = "3.5.4"
+val cxfVersion = "4.0.0"
 val coroutinesVersion = "1.5.2"
 val wireMockVersion = "2.35.0"
 val mockkVersion = "1.10.5"
@@ -21,7 +21,7 @@ val restAssuredVersion = "4.3.3"
 val resilience4jVersion = "1.5.0"
 val threetenVersion = "1.5.0"
 val kotlinReflectVersion = "1.7.21"
-val cucumberVersion = "7.9.0"
+val cucumberVersion = "7.11.0"
 val nocommonsVersion = "0.9.0"
 val graphqlKotlinClientVersion = "5.3.1"
 val archUnitVersion = "0.14.1"
@@ -31,10 +31,10 @@ val jaxwsToolsVersion = "2.3.1"
 val activationVersion = "1.1.1"
 val nvi18nVersion = "1.27"
 val kotestVersion = "4.2.5"
-val swaggerRequestValidatorVersion = "2.30.0"
+val swaggerRequestValidatorVersion = "2.32.0"
 val swaggerUiVersion = "4.15.0"
 // Temporary to fix high severity Snyk vulnerabilities:
-val nettyVersion = "4.1.63.Final"
+val nettyVersion = "4.1.68.Final"
 val commonsCodecVersion = "3.2.2"
 val httpClientVersion = "4.5.13"
 val jettyWebAppVersion = "9.4.43.v20210629"
@@ -64,6 +64,7 @@ allprojects {
         gradlePluginPortal()
         mavenCentral()
         maven("https://jitpack.io")
+        maven("https://build.shibboleth.net/nexus/content/repositories/releases/")
         maven {
             url = uri("https://maven.pkg.github.com/navikt/tjenestespesifikasjoner")
             credentials {
