@@ -64,6 +64,7 @@ allprojects {
         gradlePluginPortal()
         mavenCentral()
         maven("https://jitpack.io")
+        maven("https://build.shibboleth.net/nexus/content/repositories/releases/")
         maven {
             url = uri("https://maven.pkg.github.com/navikt/tjenestespesifikasjoner")
             credentials {
