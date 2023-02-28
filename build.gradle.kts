@@ -163,7 +163,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
     testImplementation("com.github.tomakehurst:wiremock-jre8:$wireMockVersion") {
-        implementation("implementation(\"commons-fileupload:commons-fileupload:1.5\")")
+        implementation("commons-fileupload:commons-fileupload:1.5")
         exclude(group = "junit")
         exclude(group = "org.eclipse.jetty", module = "jetty-server")
     }
