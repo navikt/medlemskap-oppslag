@@ -180,6 +180,7 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
 
     testImplementation("com.atlassian.oai:swagger-request-validator-core:$swaggerRequestValidatorVersion") {
+        implementation("org.mozilla:rhino:1.7.14")
         exclude(group = "com.fasterxml.jackson.dataformat", module = "jackson-dataformat-yaml")
     }
     testImplementation("com.atlassian.oai:swagger-request-validator-restassured:$swaggerRequestValidatorVersion")
