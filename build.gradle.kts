@@ -31,7 +31,7 @@ val jaxwsToolsVersion = "2.3.1"
 val activationVersion = "1.1.1"
 val nvi18nVersion = "1.27"
 val kotestVersion = "4.2.5"
-val swaggerRequestValidatorVersion = "2.32.0"
+val swaggerRequestValidatorVersion = "2.33.1"
 val swaggerUiVersion = "4.15.0"
 // Temporary to fix high severity Snyk vulnerabilities:
 val nettyVersion = "4.1.68.Final"
@@ -163,6 +163,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
     testImplementation("com.github.tomakehurst:wiremock-jre8:$wireMockVersion") {
+        implementation("commons-fileupload:commons-fileupload:1.5")
         exclude(group = "junit")
         exclude(group = "org.eclipse.jetty", module = "jetty-server")
     }
@@ -179,6 +180,7 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
 
     testImplementation("com.atlassian.oai:swagger-request-validator-core:$swaggerRequestValidatorVersion") {
+        implementation("org.mozilla:rhino:1.7.14")
         exclude(group = "com.fasterxml.jackson.dataformat", module = "jackson-dataformat-yaml")
     }
     testImplementation("com.atlassian.oai:swagger-request-validator-restassured:$swaggerRequestValidatorVersion")

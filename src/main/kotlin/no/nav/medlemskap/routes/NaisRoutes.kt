@@ -1,7 +1,6 @@
 package no.nav.medlemskap.routes
 
-import io.ktor.http.ContentType
-import io.ktor.http.HttpStatusCode
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -23,9 +22,9 @@ fun Routing.naisRoutes(
     }
     get("/health") {
         if (livenessCheck()) {
-            call.respond(HttpStatusCode.OK,Health(Status.OK,null,null))
+            call.respond(HttpStatusCode.OK, Health(Status.OK, null, null))
         } else {
-            call.respond(HttpStatusCode.OK,Health(Status.DOWN,null,null))
+            call.respond(HttpStatusCode.OK, Health(Status.DOWN, null, null))
         }
     }
 
@@ -44,8 +43,8 @@ fun Routing.naisRoutes(
         }
     }
 }
-data class Health(val status: Status, val description:String?,val logLink:String?)
-enum class Status(){
+data class Health(val status: Status, val description: String?, val logLink: String?)
+enum class Status() {
     OK,
     DOWN,
     ISSUE
