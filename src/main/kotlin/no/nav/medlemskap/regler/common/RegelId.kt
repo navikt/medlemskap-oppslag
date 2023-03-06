@@ -47,7 +47,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_17("17", "Har bruker arbeidsforhold?", "Bruker har ikke arbeidsforhold"),
     REGEL_17_1("17.1", "Er bruker frilanser?", "Bruker er ikke frilanser"),
     REGEL_18("18", "Er bruker i hovedsak arbeidstaker?", "Bruker er ikke arbeidstaker"),
-    REGEL_19_1("19.1", "Er oppholdstillatelsen uavklart?", "", "UDI-tjenesten returnerte uavklart oppholdstillatelse, og må derfor behandles manuelt av UDI"),
+    REGEL_19_1("19.1", "Er oppholdstillatelsen uavklart?", "", "UDI-tjenesten kan ikke gi et automatisk svar"),
     REGEL_19_2("19.2", "Har bruker to ulike oppholdstillatelser som overlapper?", "Bruker har ikke to oppholdstillatelser som overlapper", "Bruker har to oppholdstillatelser som overlapper"),
     REGEL_19_3("19.3", "Har bruker en gyldig oppholdstillatelse 12 måneder bakover og 2 måned fremover i tid?", "Bruker har ikke gyldig oppholdstillatelse"),
     REGEL_19_3_1("19.3.1", "Dekker oppholdstillatelsen arbeidsperioden bakover i tid?", "Oppholdstillatelsen dekker ikke arbeidsperioden"),
