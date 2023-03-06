@@ -6,7 +6,7 @@ val ktorVersion = "2.1.3"
 val kafkaVersion = "3.3.1"
 val jacksonVersion = "2.14.1"
 val prometheusVersion = "0.9.0"
-val logbackVersion = "1.2.11"
+val logbackVersion = "1.4.5"
 val logstashVersion = "7.2"
 val konfigVersion = "1.6.10.0"
 val kotlinLoggerVersion = "1.8.3"
@@ -92,6 +92,7 @@ dependencies {
     implementation(project(path = ":saf-client", configuration = "archives"))
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion") {
         exclude(group = "io.netty", module = "netty-codec")
