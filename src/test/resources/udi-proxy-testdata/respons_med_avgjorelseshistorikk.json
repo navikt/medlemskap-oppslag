@@ -1,0 +1,67 @@
+{
+  "uttrekkstidspunkt" : "2022-11-14T10:04:45.27",
+  "foresporselsfodselsnummer" : "12345678901",
+  "avgjoerelse" : null,
+  "gjeldendeOppholdsstatus" : {
+    "oppholdstillatelsePaSammeVilkar" : {
+      "periode" : {
+        "fom" : "2021-03-05",
+        "tom" : "2023-03-05"
+      },
+      "type" : "MIDLERTIDIG",
+      "harTillatelse" : true,
+      "soknadIkkeAvgjort" : false
+    },
+    "eosellerEFTAOpphold" : null,
+    "uavklart" : null,
+    "ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum" : null
+  },
+  "arbeidsadgang" : {
+    "periode" : {
+      "fom" : "2021-03-05",
+      "tom" : "2023-03-05"
+    },
+    "harArbeidsadgang" : true,
+    "arbeidsadgangType" : "GENERELL",
+    "arbeidsomfang" : null
+  },
+  "uavklartFlyktningstatus" : null,
+  "harFlyktningstatus" : null,
+  "avgjorelser" : {
+    "avgjorelseListe" : [ {
+      "avgjorelseId" : "12345",
+      "avgjorelsestype" : {
+        "utfallstypeKode" : null,
+        "grunntypeKode" : {
+          "kode" : "FAMMAKEEKTE",
+          "type" : "GRUNN",
+          "visningsnavn" : "Familieinnvandring med ektefelle"
+        },
+        "tillatelseKode" : {
+          "kode" : "MOTORD",
+          "type" : "TILLATELSE",
+          "visningsnavn" : "Midlertidig oppholdstillatelse, ordinær"
+        }
+      },
+      "omgjortavAvgjorelseId" : null,
+      "erPositiv" : true,
+      "avgjorelseDato" : "2021-01-11",
+      "effektueringsDato" : "2021-01-29",
+      "iverksettelseDato" : null,
+      "utreisefristDato" : null,
+      "tilatelse" : {
+        "varighetKode" : null,
+        "varighet" : null,
+        "gyldighetsperiode" : {
+          "fom" : "2021-03-05",
+          "tom" : "2023-03-05"
+        }
+      },
+      "saksnummer" : "003",
+      "etat" : "pol",
+      "flyktingstatus" : null,
+      "uavklartFlyktningstatus" : null
+    } ],
+    "uavklart" : false
+  }
+}

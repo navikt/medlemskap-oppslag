@@ -10,11 +10,13 @@ import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.cioHttpClient
+import no.nav.medlemskap.services.pdl.mapper.PdlMapper
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.util.*
 
 class PdlClientHentPersonTest {
 
@@ -85,6 +87,29 @@ class PdlClientHentPersonTest {
 
         val pdlResponse = runBlocking { pdlClient.hentPersonV2("1234567890", callId) }
 
+        assertEquals("NOR", pdlResponse.data?.hentPerson?.statsborgerskap?.first()?.land)
+    }
+    @Test
+    fun `henter personMedInnflyttingTilNorge`() {
+        val pdlResponsMedInflyttingTilNorge = this::class.java.classLoader.getResource("PdlResponseMedInnflyttingTilNorge.json").readText(Charsets.UTF_8)
+        val callId = "123456"
+        val username = "whatever"
+        val stsClient: StsRestClient = mockk()
+        coEvery { stsClient.oidcToken() } returns "dummytoken"
+
+        stubFor(
+            pdlRequestMapping
+                .willReturn(
+                    aResponse()
+                        .withStatus(HttpStatusCode.OK.value)
+                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                        .withBody(pdlResponsMedInflyttingTilNorge)
+                )
+        )
+
+        val pdlClient = createPdlClient(stsClient, username)
+        val pdlResponse = runBlocking { pdlClient.hentPersonV2("1234567890", callId) }
+        PdlMapper.mapTilPersonHistorikkTilBruker(pdlResponse.data?.hentPerson!!)
         assertEquals("NOR", pdlResponse.data?.hentPerson?.statsborgerskap?.first()?.land)
     }
 

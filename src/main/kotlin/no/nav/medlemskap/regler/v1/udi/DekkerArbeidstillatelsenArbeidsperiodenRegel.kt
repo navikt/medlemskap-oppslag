@@ -28,9 +28,11 @@ class DekkerArbeidstillatelsenArbeidsperiodenRegel(
         val arbeidsadgang = oppholdstillatelse.arbeidsadgang
 
         val dekkerArbeidstillatelsenArbeidsperioden = arbeidsforhold.any {
-            arbeidsadgang.periode.encloses(
-                Periode(it.periode.fom, it.periode.tom ?: arbeidsadgang.periode.tom)
-            )
+            runCatching {
+                arbeidsadgang.periode.encloses(
+                    Periode(it.periode.fom, it.periode.tom ?: arbeidsadgang.periode.tom)
+                )
+            }.getOrElse { false }
         }
 
         return if (dekkerArbeidstillatelsenArbeidsperioden) {

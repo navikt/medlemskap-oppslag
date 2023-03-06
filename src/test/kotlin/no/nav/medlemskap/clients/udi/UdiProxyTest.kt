@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import no.nav.medlemskap.domene.*
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
@@ -40,6 +41,12 @@ class UdiProxyTest {
         )
 
         assertEquals(res, forventetOppholdstillatelse)
+    }
+    @Test
+    fun `mapping avgjorelseshistorikk`() {
+        val fileContent = this::class.java.classLoader.getResource("udi-proxy-testdata/respons_med_avgjorelseshistorikk.json").readText(Charsets.UTF_8)
+        val res = JacksonParser().parse(fileContent)
+        assertNotNull(res.gjeldendeOppholdsstatus)
     }
 }
 

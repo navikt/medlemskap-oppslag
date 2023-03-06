@@ -28,6 +28,7 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.alleAktiveYrkeskoderDerTomErNull
 import no.nav.medlemskap.regler.common.Resultat
+import no.nav.medlemskap.regler.v1.DagPengeRegler
 import no.nav.medlemskap.regler.v1.Hovedregler
 import no.nav.medlemskap.services.kafka.Producer
 import org.apache.kafka.clients.producer.ProducerRecord
@@ -80,6 +81,44 @@ fun Routing.evalueringRoute(
                 publishMedlemskapVurdertEvent(callId, response)
                 loggResponse(request.fnr, response)
 
+                call.respond(response)
+            } catch (t: Throwable) {
+                loggError(fnr = request.fnr, datagrunnlag = datagrunnlag, endpoint = endpoint, throwable = t)
+                throw t
+            }
+        }
+
+        post("/dagpenger") {
+            val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
+            val azp = callerPrincipal.payload.getClaim("azp").asString()
+            val endpoint = "dagpenger"
+            val callId = call.callId ?: UUID.randomUUID().toString()
+            val request = validerRequest(call.receive(), azp)
+
+            val datagrunnlag = withContext(
+                requestContextService.getCoroutineContext(
+                    context = coroutineContext,
+                    ytelse = finnYtelse(request.ytelse, azp)
+                )
+            ) {
+
+                createDatagrunnlag.invoke(
+                    request,
+                    callId,
+                    services,
+                    azp
+                )
+            }
+            try {
+                val resultat = evaluerDatav2(datagrunnlag)
+
+                val response = lagResponse(
+                    versjonTjeneste = configuration.commitSha,
+                    endpoint = endpoint,
+                    datagrunnlag = datagrunnlag,
+                    resultat = resultat
+                )
+                loggResponse(request.fnr, response, endpoint)
                 call.respond(response)
             } catch (t: Throwable) {
                 loggError(fnr = request.fnr, datagrunnlag = datagrunnlag, endpoint = endpoint, throwable = t)
@@ -319,6 +358,14 @@ fun finnYtelse(ytelseFraRequest: Ytelse?, clientId: String?) =
 
 fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =
     Hovedregler(datagrunnlag).kjørHovedregler()
+fun evaluerDatav2(datagrunnlag: Datagrunnlag): Resultat {
+    when (datagrunnlag.ytelse) {
+        Ytelse.SYKEPENGER -> return Hovedregler(datagrunnlag).kjørHovedregler()
+        Ytelse.DAGPENGER -> return DagPengeRegler(datagrunnlag).kjørHovedregler()
+        else -> print("")
+    }
+    return Hovedregler(datagrunnlag).kjørHovedregler()
+}
 
 private fun createRecord(topic: String, key: String = UUID.randomUUID().toString(), value: String): ProducerRecord<String, String> {
     return ProducerRecord(topic, key, value)
