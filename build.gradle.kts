@@ -2,8 +2,8 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val ktorVersion = "2.1.3"
-val kafkaVersion = "3.3.1"
+val ktorVersion = "2.2.4"
+val kafkaVersion = "3.4.0"
 val jacksonVersion = "2.14.1"
 val prometheusVersion = "0.9.0"
 val logbackVersion = "1.4.5"
@@ -20,8 +20,8 @@ val assertkVersion = "0.23"
 val restAssuredVersion = "4.3.3"
 val resilience4jVersion = "1.5.0"
 val threetenVersion = "1.5.0"
-val kotlinReflectVersion = "1.7.21"
-val cucumberVersion = "7.11.0"
+val kotlinReflectVersion = "1.8.10"
+val cucumberVersion = "7.11.1"
 val nocommonsVersion = "0.9.0"
 val graphqlKotlinClientVersion = "5.3.1"
 val archUnitVersion = "0.14.1"
@@ -53,7 +53,7 @@ plugins {
     id("org.jlleitschuh.gradle.ktlint") version "9.3.0"
     id("org.jlleitschuh.gradle.ktlint-idea") version "9.3.0"
     id("org.hidetake.swagger.generator") version "2.18.2" apply true
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.7.10"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.8.10"
 }
 
 val githubUser: String by project
