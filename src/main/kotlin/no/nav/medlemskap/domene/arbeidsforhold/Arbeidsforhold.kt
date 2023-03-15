@@ -368,6 +368,9 @@ data class Arbeidsforhold(
             return if (skipsinfo.all { it == null }) listOf("null") else skipsinfo
         }
 
+        infix fun List<Arbeidsforhold>.HarBrukerArbeidsforholdInnenforKontrollperiode(kontrollperiode: Kontrollperiode): Boolean =
+            this.arbeidsforholdForKontrollPeriode(kontrollperiode).isNotNullOrEmpty()
+
         private fun List<Utenlandsopphold>.hentLandkoder(): List<String> =
             this.map { it.landkode }
 

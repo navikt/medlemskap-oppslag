@@ -2,7 +2,9 @@ package no.nav.medlemskap.domene
 
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.startDatoForYtelse
+import no.nav.medlemskap.domene.Medlemskap.Companion.harMedlPeriodeUtenMedlemskap
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.HarBrukerArbeidsforholdInnenforKontrollperiode
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.aaRegUtenlandsoppholdLandkodeForKontrollperiode
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.aaRegUtenlandsoppholdPeriodeForKontrollperiode
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.orgnummerForKontrollperiode
@@ -38,6 +40,9 @@ data class Datagrunnlag(
     private val kontrollPeriodeForArbeidsforhold =
         Kontrollperiode.kontrollPeriodeForArbeidsforhold(startDatoForYtelse)
 
+    private val kontrollperiodeForMedl =
+        Kontrollperiode.kontrollPeriodeForMedl(startDatoForYtelse)
+
     fun gyldigeStatsborgerskap(): List<String> {
         return pdlpersonhistorikk.statsborgerskap.gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk)
     }
@@ -61,6 +66,10 @@ data class Datagrunnlag(
     fun kombinasjonAvSkipsregisterFartsomradeOgSkipstype(): List<String?> {
         return arbeidsforhold.skipsregisterFartsomradeOgSkipstypeForKontrollperiode(kontrollPeriodeForArbeidsforhold)
     }
+
+    fun harPeriodeUtenMedlemskapOgUtenArbeidsforhold(): Boolean =
+        arbeidsforhold.HarBrukerArbeidsforholdInnenforKontrollperiode(kontrollPeriodeForArbeidsforhold)
+                && medlemskap.harMedlPeriodeUtenMedlemskap(kontrollperiodeForMedl)
 
     fun tilJson(): String {
         return objectMapper.writeValueAsString(this).trim()
