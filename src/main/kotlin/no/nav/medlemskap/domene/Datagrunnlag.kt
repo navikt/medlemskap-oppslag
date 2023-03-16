@@ -2,11 +2,11 @@ package no.nav.medlemskap.domene
 
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.startDatoForYtelse
-import no.nav.medlemskap.domene.Medlemskap.Companion.harMedlPeriodeUtenMedlemskap
+import no.nav.medlemskap.domene.Medlemskap.Companion.harPeriodeUtenMedlemskap
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
-import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.HarBrukerArbeidsforholdInnenforKontrollperiode
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.aaRegUtenlandsoppholdLandkodeForKontrollperiode
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.aaRegUtenlandsoppholdPeriodeForKontrollperiode
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harBrukerArbeidsforholdInnenforKontrollperiode
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.orgnummerForKontrollperiode
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.skipsregisterFartsomradeOgSkipstypeForKontrollperiode
 import no.nav.medlemskap.domene.barn.DataOmBarn
@@ -67,9 +67,9 @@ data class Datagrunnlag(
         return arbeidsforhold.skipsregisterFartsomradeOgSkipstypeForKontrollperiode(kontrollPeriodeForArbeidsforhold)
     }
 
-    fun harPeriodeUtenMedlemskapOgUtenArbeidsforhold(): Boolean =
-        arbeidsforhold.HarBrukerArbeidsforholdInnenforKontrollperiode(kontrollPeriodeForArbeidsforhold)
-                && medlemskap.harMedlPeriodeUtenMedlemskap(kontrollperiodeForMedl)
+    fun harPeriodeUtenMedlemskapOgIkkeArbeidsforhold(): Boolean =
+        arbeidsforhold.harBrukerArbeidsforholdInnenforKontrollperiode(kontrollPeriodeForArbeidsforhold)
+                && medlemskap.harPeriodeUtenMedlemskap(kontrollperiodeForMedl)
 
     fun tilJson(): String {
         return objectMapper.writeValueAsString(this).trim()
