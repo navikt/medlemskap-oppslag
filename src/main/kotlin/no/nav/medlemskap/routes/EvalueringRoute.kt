@@ -126,6 +126,7 @@ fun Routing.evalueringRoute(
                 throw t
             }
         }
+        //kjører regel motor, men publiserer ikke resultat til kafka
         post("/kafka_v2") {
             val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
             val azp = callerPrincipal.payload.getClaim("azp").asString()
