@@ -49,6 +49,7 @@ spec:
     inbound:
       rules:
         - application: medlemskap-oppslag
+        - application: medlemskap-barnebriller
         - application: medlemskap-oppslag-funksjonelle-tester
         - application: medlemskap-sykepenger-listener
         - application: medlemskap-dagpengelytter
