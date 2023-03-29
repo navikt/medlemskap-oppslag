@@ -47,6 +47,10 @@ data class Medlemskap(
         infix fun List<Medlemskap>.harPeriodeUtenMedlemskap(kontrollPeriode: Kontrollperiode): Boolean =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).any { !it.erMedlem }
 
+        infix fun List<Medlemskap>.erLovvalgslandUSAellerCAN(kontrollPeriode: Kontrollperiode): Boolean =
+            this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).filter { !it.erMedlem }
+                .any { it.lovvalgsland.equals("USA") || it.lovvalgsland.equals("CAN") }
+
         infix fun List<Medlemskap>.harGyldigeMedlemskapsperioder(kontrollPeriode: Kontrollperiode): Boolean =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).none { it.tilOgMed.isAfter(it.fraOgMed.plusYears(5)) }
 

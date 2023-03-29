@@ -68,8 +68,8 @@ data class Datagrunnlag(
     }
 
     fun harPeriodeUtenMedlemskapOgIkkeArbeidsforhold(): Boolean =
-        arbeidsforhold.harBrukerArbeidsforholdInnenforKontrollperiode(kontrollPeriodeForArbeidsforhold)
-                && medlemskap.harPeriodeUtenMedlemskap(kontrollperiodeForMedl)
+        arbeidsforhold.harBrukerArbeidsforholdInnenforKontrollperiode(kontrollPeriodeForArbeidsforhold) &&
+            medlemskap.harPeriodeUtenMedlemskap(kontrollperiodeForMedl)
 
     fun tilJson(): String {
         return objectMapper.writeValueAsString(this).trim()
