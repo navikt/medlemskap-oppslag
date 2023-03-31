@@ -47,8 +47,8 @@ data class Medlemskap(
         infix fun List<Medlemskap>.harPeriodeUtenMedlemskap(kontrollPeriode: Kontrollperiode): Boolean =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).any { !it.erMedlem }
 
-        infix fun List<Medlemskap>.erLovvalgslandUSAellerCANmedKontrollperiodeInnenforUnntaksperiode(kontrollPeriode: Kontrollperiode): Boolean =
-            this.kontrollperiodenInnenforMedlUnntaksperiode(kontrollPeriode)
+        infix fun List<Medlemskap>.harUSAellerCANunntakiKontrollperiode(kontrollPeriode: Kontrollperiode): Boolean =
+            this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).filter { !it.erMedlem }
                 .any { it.lovvalgsland.equals("USA") || it.lovvalgsland.equals("CAN") }
 
         infix fun List<Medlemskap>.harGyldigeMedlemskapsperioder(kontrollPeriode: Kontrollperiode): Boolean =
@@ -65,10 +65,6 @@ data class Medlemskap(
             this.any { it.fraOgMed.isBefore(kontrollPeriode.fom.plusDays(1)) } &&
                 this.any { it.tilOgMed.isAfter(kontrollPeriode.tom.minusDays(1)) } &&
                 this.sammenhengendePerioder()
-
-        private fun List<Medlemskap>.kontrollperiodenInnenforMedlUnntaksperiode(kontrollPeriode: Kontrollperiode) =
-            this.filter { !it.erMedlem }
-                .filter { kontrollPeriode.fom.isAfter(it.fraOgMed) && kontrollPeriode.fom.isBefore(it.tilOgMed) }
 
         private fun List<Medlemskap>.sammenhengendePerioder() = this.sorted().zipWithNext { a, b -> b.fraOgMed.isBefore(a.tilOgMed.plusDays(2)) }.all { it }
 

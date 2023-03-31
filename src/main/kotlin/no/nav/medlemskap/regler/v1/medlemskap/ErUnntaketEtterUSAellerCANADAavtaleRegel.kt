@@ -2,7 +2,7 @@ package no.nav.medlemskap.regler.v1.medlemskap
 
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Medlemskap
-import no.nav.medlemskap.domene.Medlemskap.Companion.erLovvalgslandUSAellerCANmedKontrollperiodeInnenforUnntaksperiode
+import no.nav.medlemskap.domene.Medlemskap.Companion.harUSAellerCANunntakiKontrollperiode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
@@ -18,7 +18,7 @@ class ErUnntaketEtterUSAellerCANADAavtaleRegel(
 
     override fun operasjon(): Resultat {
         return when {
-            medlemskap.erLovvalgslandUSAellerCANmedKontrollperiodeInnenforUnntaksperiode(kontrollPeriodeForMedl) -> ja(regelId)
+            medlemskap.harUSAellerCANunntakiKontrollperiode(kontrollPeriodeForMedl) -> ja(regelId)
             else -> nei(regelId)
         }
     }
