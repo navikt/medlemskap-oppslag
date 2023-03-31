@@ -56,10 +56,16 @@ class ReglerForMedl(
             hvisNei = konklusjonUavklart(ytelse, REGEL_MEDL)
         )
 
+        val unntakEtterUSAellerCANADAavtaleFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_1_3_3),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_MEDL),
+            hvisNei = erPeriodeUtenMedlemskapInnenfor12MndPeriodeFlyt
+        )
+
         val periodeMedMedlemskapFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_1_3),
             hvisJa = erPeriodeMedMedlemskapInnenfor12MndPeriodeFlyt,
-            hvisNei = erPeriodeUtenMedlemskapInnenfor12MndPeriodeFlyt
+            hvisNei = unntakEtterUSAellerCANADAavtaleFlyt
         )
 
         val periodeMedOgUtenMedlemskapFlyt = lagRegelflyt(
