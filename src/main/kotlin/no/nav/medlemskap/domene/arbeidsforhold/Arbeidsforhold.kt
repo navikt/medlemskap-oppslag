@@ -52,6 +52,9 @@ data class Arbeidsforhold(
             }
         }
 
+        fun List<Arbeidsforhold>.AlleArbeidsforholdPerioderIKontrollperiode(kontrollPeriode: Kontrollperiode) =
+            this.arbeidsforholdForKontrollPeriode(kontrollPeriode).map { it.periode }
+
         fun List<Arbeidsavtale>.alleAktiveArbeidsavtalerDerTomErNull(): List<Arbeidsavtale> {
             return this.filter { it.periode.tom == null }
         }
