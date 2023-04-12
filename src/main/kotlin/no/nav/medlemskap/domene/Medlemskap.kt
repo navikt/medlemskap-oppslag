@@ -41,6 +41,11 @@ data class Medlemskap(
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).any { it.erMedlem } &&
                 this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).any { !it.erMedlem }
 
+        fun List<Medlemskap>.harUnntakInnenforAngittePerioder(kontrollPeriode: Kontrollperiode, perioder: List<Periode>): Boolean =
+            this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode)
+                .filter { !it.erMedlem }
+                .any { unntak -> perioder.any { it.overlapper(unntak.periode) } }
+
         infix fun List<Medlemskap>.harPeriodeMedMedlemskap(kontrollPeriode: Kontrollperiode): Boolean =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).any { it.erMedlem && it.lovvalgsland er "NOR" }
 
