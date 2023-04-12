@@ -1,7 +1,7 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Tredjelandsborger med medl unntak.
+Egenskap: Har Arbeidsforhold innenfor unntaksperiode
 
   Bakgrunn:
 
@@ -30,7 +30,7 @@ Egenskap: Tredjelandsborger med medl unntak.
       | 01.01.2020        | 20.01.2023        | Ja            | GENERELL          | KUN_ARBEID_HELTID    |
 
 
-  Scenariomal: Tredjelandsborger med medl unntak "Ja" skal få uavklart medlemskap hvis oppholdstillatelse ikke er i orden.
+  Scenariomal: Bruker med arbeidsforhold innenfor medl unntak får "Ja" og skal få uavklart medlemskap.
 
     Gitt følgende medlemsunntak fra MEDL
       | Dekning             | Fra og med dato | Til og med dato | Er medlem | Lovvalg | Lovvalgsland | Periodestatus |
