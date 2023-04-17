@@ -42,9 +42,21 @@ data class Medlemskap(
                 this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).any { !it.erMedlem }
 
         fun List<Medlemskap>.harUnntakInnenforAngittePerioder(kontrollPeriode: Kontrollperiode, perioder: List<Periode>): Boolean =
-            this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode)
-                .filter { !it.erMedlem }
+            this.unntakIMedlForKontrollperiode(kontrollPeriode)
                 .any { unntak -> perioder.any { it.overlapper(unntak.periode) } }
+
+        fun List<Medlemskap>.angittePerioderSammenfallerMedUnntaksperioder(kontrollPeriode: Kontrollperiode, perioder: List<Periode>): Boolean {
+            val unntakStartdatoMedSlingringsmonn = this.unntakIMedlForKontrollperiode(kontrollPeriode)
+                .map { Periode(it.periode.fom?.minusDays(7), it.periode.fom) }
+
+            return unntakStartdatoMedSlingringsmonn.any { unntaksperiode ->
+                perioder.any {
+                    (it.fom?.isAfter(unntaksperiode.fom) == true && it.fom.isBefore(unntaksperiode.tom)) ||
+                        (it.fom?.isEqual(unntaksperiode.fom) == true) ||
+                        (it.fom?.isEqual(unntaksperiode.tom) == true)
+                }
+            }
+        }
 
         infix fun List<Medlemskap>.harPeriodeMedMedlemskap(kontrollPeriode: Kontrollperiode): Boolean =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).any { it.erMedlem && it.lovvalgsland er "NOR" }
@@ -75,6 +87,10 @@ data class Medlemskap(
 
         infix fun List<Medlemskap>.tidligsteFraOgMedDatoForMedl(kontrollPeriode: Kontrollperiode): LocalDate =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).minOrNull()!!.fraOgMed
+
+        private fun List<Medlemskap>.unntakIMedlForKontrollperiode(kontrollperiode: Kontrollperiode): List<Medlemskap> =
+            this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollperiode)
+                .filter { !it.erMedlem }
 
         private fun List<Medlemskap>.medlemskapsPerioderOver12MndPeriode(erMedlem: Boolean, kontrollPeriode: Kontrollperiode): List<Medlemskap> =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).filter {

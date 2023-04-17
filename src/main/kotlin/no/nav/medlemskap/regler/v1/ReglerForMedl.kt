@@ -50,9 +50,15 @@ class ReglerForMedl(
             hvisNei = konklusjonUavklart(ytelse, REGEL_MEDL)
         )
 
+        val erArbeidsforholdetSammenfallendeMedPeriodenUtenMedlemskapRegelFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_1_3_5),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_MEDL),
+            hvisNei = konklusjonUavklart(ytelse, REGEL_MEDL)
+        )
+
         val erDetArbeidsforholdiAaregInnenforUnntaksperiodeFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_1_3_4),
-            hvisJa = erArbeidsforholdUendretForBrukerUtenMedlemskapFlyt,
+            hvisJa = erArbeidsforholdetSammenfallendeMedPeriodenUtenMedlemskapRegelFlyt,
             hvisNei = konklusjonUavklart(ytelse, REGEL_MEDL)
         )
 
