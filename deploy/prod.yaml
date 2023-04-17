@@ -43,7 +43,7 @@ spec:
   accessPolicy:
     inbound:
       rules:
-        - application: medlemskap-barnebriller
+        - application: medlemskap-barn
         - application: medlemskap-sykepenger-listener
         - application: medlemskap-dagpengelytter
         - application: sparkel-medlemskap
