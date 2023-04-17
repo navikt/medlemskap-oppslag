@@ -45,9 +45,9 @@ data class Medlemskap(
             this.unntakIMedlForKontrollperiode(kontrollPeriode)
                 .any { unntak -> perioder.any { it.overlapper(unntak.periode) } }
 
-        fun List<Medlemskap>.angittePerioderSammenfallerMedUnntaksperioder(kontrollPeriode: Kontrollperiode, perioder: List<Periode>): Boolean {
+        fun List<Medlemskap>.angittePerioderSammenfallerMedUnntaksperioder(kontrollPeriode: Kontrollperiode, perioder: List<Periode>, dagersSlingringsrom: Long): Boolean {
             val unntakStartdatoMedSlingringsmonn = this.unntakIMedlForKontrollperiode(kontrollPeriode)
-                .map { Periode(it.periode.fom?.minusDays(7), it.periode.fom) }
+                .map { Periode(it.periode.fom?.minusDays(dagersSlingringsrom), it.periode.fom) }
 
             return unntakStartdatoMedSlingringsmonn.any { unntaksperiode ->
                 perioder.any {

@@ -23,7 +23,7 @@ class ErArbeidsforholdetSammenfallendeMedPeriodenUtenMedlemskapRegel(
         val arbeidsforholdsperioder = arbeidsforhold.AlleArbeidsforholdPerioderIKontrollperiode(kontrollPeriodeForMedl)
 
         return when {
-            medlemskap.angittePerioderSammenfallerMedUnntaksperioder(kontrollPeriodeForMedl, arbeidsforholdsperioder) -> ja(regelId)
+            medlemskap.angittePerioderSammenfallerMedUnntaksperioder(kontrollPeriodeForMedl, arbeidsforholdsperioder, 7) -> ja(regelId)
             else -> nei(regelId)
         }
     }
