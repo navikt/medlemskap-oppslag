@@ -7,6 +7,7 @@ enum class Ytelse {
     ENSLIG_FORSORGER,
     LOVME,
     LOVME_GCP,
+    MEDLEMSKAP_BARN,
     LOVME_FUNKSJONELLE_TESTER;
 
     companion object {
@@ -27,8 +28,8 @@ enum class Ytelse {
             "23600ac9-019c-445d-87a4-2df4996e6f63" to LOVME_GCP, // Prod verifisering
             "27266322-a9c0-4ae5-829a-ba8890e84e19" to BARNE_BRILLER, // dev
             "df226766-a7c2-4372-81e1-354ec75ffd55" to BARNE_BRILLER, // prod
-            "3ca50883-c8e4-4d11-b9ad-29121aa83c17" to BARNE_BRILLER, // dev-medlemskap-barnebriller
-            "b6920b1c-2765-4ba8-9764-9f748b986e57" to BARNE_BRILLER // PROD-medlemskap-barnebriller
+            "35b73682-a318-443d-8557-2e241e3c5ab3" to BARNE_BRILLER, // dev-medlemskap-barn
+            "a3482af9-c083-474a-9fc5-35fced197aef" to BARNE_BRILLER, // PROD-medlemskap-barn
         )
 
         fun fromClientId(clientId: String?): Ytelse? = clientIdToYtelseMap[clientId]
