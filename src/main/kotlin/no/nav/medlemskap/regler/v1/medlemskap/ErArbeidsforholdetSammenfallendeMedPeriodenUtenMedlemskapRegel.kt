@@ -2,7 +2,7 @@ package no.nav.medlemskap.regler.v1.medlemskap
 
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Medlemskap
-import no.nav.medlemskap.domene.Medlemskap.Companion.angittePerioderSammenfallerMedUnntaksperioder
+import no.nav.medlemskap.domene.Medlemskap.Companion.erPeriodeSammenfallendeMedUnntak
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.AlleArbeidsforholdPerioderIKontrollperiode
@@ -23,7 +23,7 @@ class ErArbeidsforholdetSammenfallendeMedPeriodenUtenMedlemskapRegel(
         val arbeidsforholdsperioder = arbeidsforhold.AlleArbeidsforholdPerioderIKontrollperiode(kontrollPeriodeForMedl)
 
         return when {
-            medlemskap.angittePerioderSammenfallerMedUnntaksperioder(kontrollPeriodeForMedl, arbeidsforholdsperioder, 7) -> ja(regelId)
+            medlemskap.erPeriodeSammenfallendeMedUnntak(kontrollPeriodeForMedl, arbeidsforholdsperioder, 7) -> ja(regelId)
             else -> nei(regelId)
         }
     }
