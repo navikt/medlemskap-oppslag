@@ -10,6 +10,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_1_3_2("1.3.2", "Er bruker uten medlemskap sin situasjon uendret?", "", "Brukers arbeidsforhold er uendret"),
     REGEL_1_3_3("1.3.3", "Er unntaket etter USA- eller Canada-avtalen?", "", ""),
     REGEL_1_3_4("1.3.4", "Finnes det arbeidsforhold i Aareg i samme periode som unntaket?", "", ""),
+    REGEL_1_3_5("1.3.5", "Er arbeidsforholdet sammenfallende med perioden uten medlemskap?", "", ""),
     REGEL_1_4("1.4", "Er hele perioden med medlemskap innenfor 12-måneders perioden?", "Det finnes hull i 12-måneders perioden for medlemskap"),
     REGEL_1_5("1.5", "Er brukers arbeidsforhold uendret?", "", "Brukers arbeidsforhold er uendret"),
     REGEL_1_6("1.6", "Er brukers dekning uavklart?", "Kan ikke avklare dekning til bruker"),

@@ -1,5 +1,7 @@
 package no.nav.medlemskap.domene
 
+import no.nav.medlemskap.domene.Medlemskap.Companion.angittePerioderSammenfallerMedUnntaksperioderInnenforAngittSlingringsrom
+import no.nav.medlemskap.domene.Medlemskap.Companion.unntakIMedlForKontrollperiode
 import no.nav.medlemskap.regler.common.Funksjoner.er
 import java.time.LocalDate
 
@@ -42,9 +44,31 @@ data class Medlemskap(
                 this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).any { !it.erMedlem }
 
         fun List<Medlemskap>.harUnntakInnenforAngittePerioder(kontrollPeriode: Kontrollperiode, perioder: List<Periode>): Boolean =
-            this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode)
-                .filter { !it.erMedlem }
+            this.unntakIMedlForKontrollperiode(kontrollPeriode)
                 .any { unntak -> perioder.any { it.overlapper(unntak.periode) } }
+
+        fun List<Medlemskap>.erPeriodeSammenfallendeMedUnntak(kontrollPeriode: Kontrollperiode, perioder: List<Periode>, dagersSlingringsrom: Long): Boolean {
+            val unntakIKontrollperiode = this.unntakIMedlForKontrollperiode(kontrollPeriode)
+
+            return angittePerioderSammenfallerMedUnntaksperioderInnenforAngittSlingringsrom(unntakIKontrollperiode, perioder, dagersSlingringsrom) ||
+                erFomOgTomIUnntaksperiodeLikAngittPeriode(unntakIKontrollperiode, perioder)
+        }
+
+        private fun angittePerioderSammenfallerMedUnntaksperioderInnenforAngittSlingringsrom(unntak: List<Medlemskap>, perioder: List<Periode>, dagersSlingringsrom: Long): Boolean {
+            val unntakStartdatoMedSlingringsmonn = unntak
+                .map { Periode(it.periode.fom?.minusDays(dagersSlingringsrom), it.periode.fom?.plusDays(dagersSlingringsrom)) }
+
+            return unntakStartdatoMedSlingringsmonn.any { unntaksperiode ->
+                perioder.any {
+                    (it.fom?.isAfter(unntaksperiode.fom) == true && it.fom.isBefore(unntaksperiode.tom))
+                }
+            }
+        }
+
+        private fun erFomOgTomIUnntaksperiodeLikAngittPeriode(unntak: List<Medlemskap>, perioder: List<Periode>) =
+            unntak.any { unntaksperiode ->
+                perioder.any { it.fom?.isEqual(unntaksperiode.fraOgMed) == true }
+            }
 
         infix fun List<Medlemskap>.harPeriodeMedMedlemskap(kontrollPeriode: Kontrollperiode): Boolean =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).any { it.erMedlem && it.lovvalgsland er "NOR" }
@@ -75,6 +99,10 @@ data class Medlemskap(
 
         infix fun List<Medlemskap>.tidligsteFraOgMedDatoForMedl(kontrollPeriode: Kontrollperiode): LocalDate =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).minOrNull()!!.fraOgMed
+
+        private fun List<Medlemskap>.unntakIMedlForKontrollperiode(kontrollperiode: Kontrollperiode): List<Medlemskap> =
+            this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollperiode)
+                .filter { !it.erMedlem }
 
         private fun List<Medlemskap>.medlemskapsPerioderOver12MndPeriode(erMedlem: Boolean, kontrollPeriode: Kontrollperiode): List<Medlemskap> =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).filter {
