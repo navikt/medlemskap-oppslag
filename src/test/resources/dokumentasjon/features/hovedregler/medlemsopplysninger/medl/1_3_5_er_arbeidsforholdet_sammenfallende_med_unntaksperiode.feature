@@ -27,3 +27,5 @@ Egenskap: Regel 1.3.5: Er arbeidsforholdet sammenfallende med perioden uten medl
       | 05.08.2019 |            | Ja   | Arbeidsforhold starter i uken før unntaket
       | 12.08.2019 |            | Ja   | Arbeidsforhold starter i uken etter unntaket
       | 01.01.2022 |            | Nei  | Arbeidsforholdsperiode etter unntaket er avsluttet
+      | 21.08.2019 |            | Nei  | Arbeidsforhold starter mer enn 1 uke før unntaket
+      | 24.07.2019 |            | Nei  | Arbeidsforhold starter mer enn 1 uke etter unntaket starter
