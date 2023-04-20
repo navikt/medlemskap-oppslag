@@ -109,7 +109,6 @@ class ReglerForMedl(
 
         private fun lagRegelMap(datagrunnlag: Datagrunnlag): Map<RegelId, Regel> {
             val regelListe = listOf(
-                ErArbeidsforholdUendretRegel.fraDatagrunnlag(datagrunnlag, REGEL_1_3_2),
                 ErArbeidsforholdUendretRegel.fraDatagrunnlag(datagrunnlag, REGEL_1_5),
                 ErBrukersDekningUavklartRegel.fraDatagrunnlag(datagrunnlag),
                 ErPeriodeMedMedlemskapInnenfor12MndPeriodeRegel.fraDatagrunnlag(datagrunnlag),
