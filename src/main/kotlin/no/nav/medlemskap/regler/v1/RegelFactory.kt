@@ -32,7 +32,6 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_1_2 -> PeriodeMedOgUtenMedlemskapRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_1_3 -> PeriodeMedMedlemskapRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_1_3_1 -> ErPeriodeUtenMedlemskapInnenfor12MndPeriodeRegel.fraDatagrunnlag(datagrunnlag).regel
-            REGEL_1_3_2 -> ErArbeidsforholdUendretRegel.fraDatagrunnlag(datagrunnlag, REGEL_1_3_2).regel
             REGEL_1_3_3 -> ErUnntaketEtterUSAellerCANADAavtaleRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_1_3_4 -> ErDetArbeidsforholdiAaregInnenforUnntaksperiodeRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_1_3_5 -> ErArbeidsforholdetSammenfallendeMedPeriodenUtenMedlemskapRegel.fraDatagrunnlag(datagrunnlag).regel
