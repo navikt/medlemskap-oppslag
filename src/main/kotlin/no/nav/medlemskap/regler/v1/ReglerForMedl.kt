@@ -5,6 +5,7 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonJa
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonNei
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
 import no.nav.medlemskap.regler.v1.medlemskap.*
@@ -46,14 +47,14 @@ class ReglerForMedl(
 
         val erArbeidsforholdetSammenfallendeMedPeriodenUtenMedlemskapRegelFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_1_3_5),
-            hvisJa = konklusjonUavklart(ytelse, REGEL_MEDL),
+            hvisJa = konklusjonNei(ytelse, REGEL_MEDL),
             hvisNei = konklusjonUavklart(ytelse, REGEL_MEDL)
         )
 
         val erDetArbeidsforholdiAaregInnenforUnntaksperiodeFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_1_3_4),
             hvisJa = erArbeidsforholdetSammenfallendeMedPeriodenUtenMedlemskapRegelFlyt,
-            hvisNei = konklusjonUavklart(ytelse, REGEL_MEDL)
+            hvisNei = konklusjonNei(ytelse, REGEL_MEDL)
         )
 
         val erPeriodeUtenMedlemskapInnenfor12MndPeriodeFlyt = lagRegelflyt(
