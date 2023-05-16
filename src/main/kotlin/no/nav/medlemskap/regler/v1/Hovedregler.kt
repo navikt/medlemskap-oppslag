@@ -44,7 +44,8 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
             resultater.add(resultatEOSFamilie)
         }
 
-        val resultaterForStatsborger = kjørReglerForStatsborgerskap(resultatStatsborgerskap, resultatEOSFamilie, reglerSomSkalOverstyres)
+        val resultaterForStatsborger =
+            kjørReglerForStatsborgerskap(resultatStatsborgerskap, resultatEOSFamilie, reglerSomSkalOverstyres)
         resultater.addAll(resultaterForStatsborger)
 
         return utledResultat(ytelse, resultater)
@@ -60,12 +61,19 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         return when (statsborgerskapskategori) {
             Statsborgerskapskategori.TREDJELANDSBORGER -> kjørReglerForTredjelandsborgere()
             Statsborgerskapskategori.EØS_BORGER -> kjørReglerForEøsBorgere(reglerSomSkalOverstyres, resultatEOSFamilie)
-            Statsborgerskapskategori.TREDJELANDSBORGER_MED_EOS_FAMILIE -> kjørReglerForEøsBorgere(reglerSomSkalOverstyres, resultatEOSFamilie)
+            Statsborgerskapskategori.TREDJELANDSBORGER_MED_EOS_FAMILIE -> kjørReglerForEøsBorgere(
+                reglerSomSkalOverstyres,
+                resultatEOSFamilie
+            )
+
             Statsborgerskapskategori.NORSK_BORGER -> kjørReglerForNorskeBorgere(reglerSomSkalOverstyres)
         }
     }
 
-    private fun velgStatsborgerskapKategori(resultatStatsborgerskap: Resultat, resultatEOSFamilie: Resultat?): Statsborgerskapskategori {
+    private fun velgStatsborgerskapKategori(
+        resultatStatsborgerskap: Resultat,
+        resultatEOSFamilie: Resultat?
+    ): Statsborgerskapskategori {
         return when (resultatEOSFamilie?.svar) {
             JA -> resultatEOSFamilie.bestemStatsborgerskapskategori()
             else -> resultatStatsborgerskap.bestemStatsborgerskapskategori()
@@ -97,7 +105,10 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
         ).map { it.kjørHovedflyt() }
     }
 
-    private fun kjørReglerForEøsBorgere(overstyrteRegler: Map<RegelId, Svar>, resultatEOSFamilie: Resultat?): List<Resultat> {
+    private fun kjørReglerForEøsBorgere(
+        overstyrteRegler: Map<RegelId, Svar>,
+        resultatEOSFamilie: Resultat?
+    ): List<Resultat> {
         val resultater = mutableListOf<Resultat>()
 
         if (resultatEOSFamilie?.svar == JA) {
@@ -127,6 +138,11 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
     companion object {
         private fun utledResultat(ytelse: Ytelse, resultater: List<Resultat>): Resultat {
 
+            val førsteNei = resultater.find { it.svar == NEI }
+            if (førsteNei != null) {
+                return lagKonklusjon(neiResultat(ytelse), resultater)
+            }
+
             val medlemskonklusjon = resultater.find { it.erMedlemskonklusjon() }
             if (medlemskonklusjon != null) {
                 return lagKonklusjon(konklusjon(ytelse, medlemskonklusjon), resultater)
@@ -134,11 +150,6 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
 
             if (resultater.all { it.svar == JA }) {
                 return lagKonklusjon(jaResultat(ytelse), resultater)
-            }
-
-            val førsteNei = resultater.find { it.svar == NEI }
-            if (førsteNei != null) {
-                return lagKonklusjon(neiResultat(ytelse), resultater)
             }
 
             return lagKonklusjon(uavklartResultat(ytelse), resultater)
@@ -156,7 +167,9 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
             return when (resultat.svar) {
                 JA -> jaKonklusjon(ytelse).utfør().copy(harDekning = resultat.harDekning, dekning = resultat.dekning)
                 NEI -> neiKonklusjon(ytelse).utfør().copy(harDekning = resultat.harDekning, dekning = resultat.dekning)
-                UAVKLART -> uavklartKonklusjon(ytelse).utfør().copy(harDekning = resultat.harDekning, dekning = resultat.dekning)
+                UAVKLART ->
+                    uavklartKonklusjon(ytelse).utfør()
+                        .copy(harDekning = resultat.harDekning, dekning = resultat.dekning)
             }
         }
 
