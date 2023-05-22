@@ -167,9 +167,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
             return when (resultat.svar) {
                 JA -> jaKonklusjon(ytelse).utfør().copy(harDekning = resultat.harDekning, dekning = resultat.dekning)
                 NEI -> neiKonklusjon(ytelse).utfør().copy(harDekning = resultat.harDekning, dekning = resultat.dekning)
-                UAVKLART ->
-                    uavklartKonklusjon(ytelse).utfør()
-                        .copy(harDekning = resultat.harDekning, dekning = resultat.dekning)
+                UAVKLART -> uavklartKonklusjon(ytelse).utfør().copy(harDekning = resultat.harDekning, dekning = resultat.dekning)
             }
         }
 
