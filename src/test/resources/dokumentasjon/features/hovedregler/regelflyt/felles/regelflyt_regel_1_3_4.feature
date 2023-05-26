@@ -48,9 +48,9 @@ Egenskap: Har Arbeidsforhold innenfor unntaksperiode
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 10.02.2020      | Nei                           |
 
-    Så skal svaret være "<Medlemskap>"
-    Og skal regel "1.3.4" gi svaret "<Regel 1.3.4>"
+    Så skal regel "1.3.4" gi svaret "<Regel 1.3.4>"
+    Og skal svaret være "<Medlemskap>"
 
     Eksempler:
       | Fra og med | Til og med | Medlemskap | Regel 1.3.4 |
-      | 01.01.2018 | 16.09.2018 | Uavklart   | NEI         |
+      | 01.01.2018 | 16.09.2018 | Nei        | NEI         |

@@ -53,7 +53,7 @@ Egenskap: Er arbeidsforholdet sammenfallende med perioden uten medlemskap?
 
     Eksempler:
       | Fra og med | Til og med | Medlemskap | Regel 1.3.5 | Kommentar
-      | 09.01.2019 |            | Uavklart   | JA          | Arbeidsforhold starter samme dato som unntaket
-      | 05.01.2019 |            | Uavklart   | Ja          | Arbeidsforhold starter i uken før unntaket
-      | 13.01.2019 |            | Uavklart   | Ja          | Arbeidsforhold starter i uken etter unntaket
+      | 09.01.2019 |            | Nei        | JA          | Arbeidsforhold starter samme dato som unntaket
+      | 05.01.2019 |            | Nei        | Ja          | Arbeidsforhold starter i uken før unntaket
+      | 13.01.2019 |            | Nei        | Ja          | Arbeidsforhold starter i uken etter unntaket
       | 15.02.2019 |            | Uavklart   | Nei         | Arbeidsforhold starter innenfor unntaksperiode
