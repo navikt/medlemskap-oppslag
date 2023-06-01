@@ -164,7 +164,7 @@ fun Routing.evalueringRoute(
                 throw t
             }
         }
-        post("/brukerspørsmål") {
+        post("/brukersporsmaal") {
             val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
             val azp = callerPrincipal.payload.getClaim("azp").asString()
             val endpoint = "brukerspørsmål"
