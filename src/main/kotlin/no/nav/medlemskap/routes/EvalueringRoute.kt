@@ -273,44 +273,47 @@ private fun loggResponse(fnr: String, response: Response, endpoint: String = "/"
     val årsakerSomRegelIdStr = årsaker.map { it.regelId.toString() }
     val årsak = årsaker.map { it.regelId.toString() }.firstOrNull()
     val aarsaksAnt = årsaker.size
-
-    secureLogger.info(
-        "{} konklusjon gitt for bruker {}, ytelse {}", resultat.svar.name, fnr, response.datagrunnlag.ytelse,
-        kv("fnr", fnr),
-        kv("orgnummer", response.datagrunnlag.gyldigeOrgnummer()),
-        kv("fom", response.datagrunnlag.periode.fom.toString()),
-        kv("tom", response.datagrunnlag.periode.tom.toString()),
-        kv("førsteDagForYtelse", response.datagrunnlag.førsteDagForYtelse.toString()),
-        kv("brukerInput", response.datagrunnlag.brukerinput.toString()),
-        kv("startdatoForYtelse", response.datagrunnlag.startDatoForYtelse.toString()),
-        kv("ytelse", response.datagrunnlag.ytelse),
-        kv("svar", response.resultat.svar),
-        kv("årsak", årsak),
-        kv("årsaker", årsakerSomRegelIdStr),
-        kv("aarsaksAnt", aarsaksAnt),
-        kv("aarsaker", årsakerSomRegelIdStr.toString()),
-        kv("regleroverstyrt", response.resultat.erReglerOverstyrt()),
-        kv("statsborgerskap", response.datagrunnlag.gyldigeStatsborgerskap().toString()),
-        kv("statsborgerskapAnt", response.datagrunnlag.gyldigeStatsborgerskap().size),
-        kv("erTredjelandsborger", response.resultat.erTredjelandsborger()),
-        kv("erEosBorger", response.resultat.erEøsBorger()),
-        kv("erNorskBorger", response.resultat.erNorskBorger()),
-        kv("erTredjelandsborgerMedEØSFamilie", response.resultat.erFamilieEOS()),
-        kv("AaRegUtenlandsoppholdLandkode", response.datagrunnlag.gyldigeAaRegUtenlandsopphold()),
-        kv("AaRegUtenlandsoppsholdPeriodeFom", response.datagrunnlag.gyldigeAaRegUtenlandsoppholdPeriodeFom().toString()),
-        kv("AaRegUtenlandsoppsholdPeriodeTom", response.datagrunnlag.gyldigeAaRegUtenlandsoppholdPeriodeTom().toString()),
-        kv("skipsinfo", response.datagrunnlag.kombinasjonAvSkipsregisterFartsomradeOgSkipstype()),
-        kv("response", objectMapper.writeValueAsString(response)),
-        kv("gjeldendeOppholdsstatus", response.datagrunnlag.oppholdstillatelse?.gjeldendeOppholdsstatus.toString()),
-        kv("arbeidsadgangtype", response.datagrunnlag.oppholdstillatelse?.arbeidsadgang?.arbeidsadgangType.toString()),
-        kv("fagsak_id", response.datagrunnlag.dokument.alleFagsakIDer()),
-        kv("har_dokument", response.datagrunnlag.dokument.harDokument()),
-        kv("har_innflytting", response.datagrunnlag.pdlpersonhistorikk.harInnflyttingTilNorge()),
-        kv("har_utflytting", response.datagrunnlag.pdlpersonhistorikk.harUtflyttingFraNorge()),
-        kv("yrkeskoder", response.datagrunnlag.arbeidsforhold.alleAktiveYrkeskoderDerTomErNull()),
-        kv("har_medlperiode_uten_arbeidsforhold", response.datagrunnlag.harPeriodeUtenMedlemskapOgIkkeArbeidsforhold()),
-        kv("endpoint", endpoint)
-    )
+    runCatching {
+        secureLogger.info(
+            "{} konklusjon gitt for bruker {}, ytelse {}", resultat.svar.name, fnr, response.datagrunnlag.ytelse,
+            kv("fnr", fnr),
+            kv("orgnummer", response.datagrunnlag.gyldigeOrgnummer()),
+            kv("fom", response.datagrunnlag.periode.fom.toString()),
+            kv("tom", response.datagrunnlag.periode.tom.toString()),
+            kv("førsteDagForYtelse", response.datagrunnlag.førsteDagForYtelse.toString()),
+            kv("brukerInput", response.datagrunnlag.brukerinput.toString()),
+            kv("startdatoForYtelse", response.datagrunnlag.startDatoForYtelse.toString()),
+            kv("ytelse", response.datagrunnlag.ytelse),
+            kv("svar", response.resultat.svar),
+            kv("årsak", årsak),
+            kv("årsaker", årsakerSomRegelIdStr),
+            kv("aarsaksAnt", aarsaksAnt),
+            kv("aarsaker", årsakerSomRegelIdStr.toString()),
+            kv("regleroverstyrt", response.resultat.erReglerOverstyrt()),
+            kv("statsborgerskap", response.datagrunnlag.gyldigeStatsborgerskap().toString()),
+            kv("statsborgerskapAnt", response.datagrunnlag.gyldigeStatsborgerskap().size),
+            kv("erTredjelandsborger", response.resultat.erTredjelandsborger()),
+            kv("erEosBorger", response.resultat.erEøsBorger()),
+            kv("erNorskBorger", response.resultat.erNorskBorger()),
+            kv("erTredjelandsborgerMedEØSFamilie", response.resultat.erFamilieEOS()),
+            kv("AaRegUtenlandsoppholdLandkode", response.datagrunnlag.gyldigeAaRegUtenlandsopphold()),
+            kv("AaRegUtenlandsoppsholdPeriodeFom", response.datagrunnlag.gyldigeAaRegUtenlandsoppholdPeriodeFom().toString()),
+            kv("AaRegUtenlandsoppsholdPeriodeTom", response.datagrunnlag.gyldigeAaRegUtenlandsoppholdPeriodeTom().toString()),
+            kv("skipsinfo", response.datagrunnlag.kombinasjonAvSkipsregisterFartsomradeOgSkipstype()),
+            kv("response", objectMapper.writeValueAsString(response)),
+            kv("gjeldendeOppholdsstatus", response.datagrunnlag.oppholdstillatelse?.gjeldendeOppholdsstatus.toString()),
+            kv("arbeidsadgangtype", response.datagrunnlag.oppholdstillatelse?.arbeidsadgang?.arbeidsadgangType.toString()),
+            kv("fagsak_id", response.datagrunnlag.dokument.alleFagsakIDer()),
+            kv("har_dokument", response.datagrunnlag.dokument.harDokument()),
+            kv("har_innflytting", response.datagrunnlag.pdlpersonhistorikk.harInnflyttingTilNorge()),
+            kv("har_utflytting", response.datagrunnlag.pdlpersonhistorikk.harUtflyttingFraNorge()),
+            kv("yrkeskoder", response.datagrunnlag.arbeidsforhold.alleAktiveYrkeskoderDerTomErNull()),
+            kv("har_medlperiode_uten_arbeidsforhold", response.datagrunnlag.harPeriodeUtenMedlemskapOgIkkeArbeidsforhold()),
+            kv("endpoint", endpoint)
+        )
+    }.onFailure {
+        loggError(fnr, datagrunnlag = response.datagrunnlag, endpoint, it)
+    }
 
     if (årsaker.isNotEmpty()) {
         uavklartPåRegel(årsaker.first(), response.datagrunnlag.ytelse.name()).increment()
