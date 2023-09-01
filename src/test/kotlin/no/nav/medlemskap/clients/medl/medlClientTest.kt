@@ -10,8 +10,8 @@ import io.ktor.http.*
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import no.nav.medlemskap.clients.azuread.AzureAdClient
 import no.nav.medlemskap.clients.medl.MedlClient
-import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.config.Configuration
 import org.junit.jupiter.api.*
@@ -45,8 +45,8 @@ class medlClientTest {
     @Test
     fun `tester response 200 OK`() {
         val callId = "12345"
-        val stsClient: StsRestClient = mockk()
-        coEvery { stsClient.oidcToken() } returns "dummytoken"
+        val azureAdClient: AzureAdClient = mockk()
+        coEvery { azureAdClient.oidcToken() } returns "dummytoken"
 
         WireMock.stubFor(
             queryMapping.willReturn(
@@ -57,7 +57,7 @@ class medlClientTest {
             )
         )
 
-        val client = createMedlClient(stsClient)
+        val client = createMedlClient(azureAdClient)
         val response = runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
 
         Assertions.assertEquals("Full", response[0].dekning)
@@ -91,8 +91,8 @@ class medlClientTest {
     @Test
     fun `tester ServerResponseException`() {
         val callId = "12345"
-        val stsClient: StsRestClient = mockk()
-        coEvery { stsClient.oidcToken() } returns "dummytoken"
+        val azureAdClient: AzureAdClient = mockk()
+        coEvery { azureAdClient.oidcToken() } returns "dummytoken"
 
         WireMock.stubFor(
             queryMapping.willReturn(
@@ -103,7 +103,7 @@ class medlClientTest {
             )
         )
 
-        val client = createMedlClient(stsClient)
+        val client = createMedlClient(azureAdClient)
 
         Assertions.assertThrows(ServerResponseException::class.java) {
             runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
@@ -114,8 +114,8 @@ class medlClientTest {
     fun `tester ClientRequestException`() {
 
         val callId = "12345"
-        val stsClient: StsRestClient = mockk()
-        coEvery { stsClient.oidcToken() } returns "dummytoken"
+        val azureAdClient: AzureAdClient = mockk()
+        coEvery { azureAdClient.oidcToken() } returns "dummytoken"
 
         WireMock.stubFor(
             queryMapping.willReturn(
@@ -126,7 +126,7 @@ class medlClientTest {
             )
         )
 
-        val client = createMedlClient(stsClient)
+        val client = createMedlClient(azureAdClient)
 
         Assertions.assertThrows(ClientRequestException::class.java) {
             runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
@@ -136,8 +136,8 @@ class medlClientTest {
     @Test
     fun `404 gir tom liste`() {
         val callId = "12345"
-        val stsClient: StsRestClient = mockk()
-        coEvery { stsClient.oidcToken() } returns "dummytoken"
+        val azureAdClient: AzureAdClient = mockk()
+        coEvery { azureAdClient.oidcToken() } returns "dummytoken"
 
         WireMock.stubFor(
             queryMapping.willReturn(
@@ -148,14 +148,14 @@ class medlClientTest {
             )
         )
 
-        val client = createMedlClient(stsClient)
+        val client = createMedlClient(azureAdClient)
         val response = runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
 
         Assertions.assertEquals(0, response.size)
     }
 
-    private fun createMedlClient(stsClient: StsRestClient): MedlClient {
-        return MedlClient(server.baseUrl(), stsClient, config, cioHttpClient, "123")
+    private fun createMedlClient(azureAdClient: AzureAdClient): MedlClient {
+        return MedlClient(server.baseUrl(), azureAdClient, config, cioHttpClient, "123")
     }
 
     private val queryMapping: MappingBuilder = WireMock.get(WireMock.urlPathEqualTo("/api/v1/medlemskapsunntak"))
