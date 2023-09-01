@@ -89,8 +89,9 @@ data class Configuration(
         val eregBaseUrl: String = "EREG_BASE_URL".configProperty(),
         val eregApiKey: String = "EREG_API_KEY".configProperty(),
         val udiProxyApiKey: String = "UDI_PROXY_API_KEY".configProperty(), // Venter på  bestilling - legges inn i secrets
-        val udiProxyClientId: String = "UDI_PROXY_CLIENT_ID".configProperty(),
-        val udiBaseUrl: String = "UDI_BASE_URL".configProperty()
+        val udiBaseUrl: String = "UDI_BASE_URL".configProperty(),
+        val udiScope: String = "AZURE_SCOPE_UDI".configProperty(),
+        val medlScope: String = "AZURE_SCOPE_MEDL".configProperty()
     )
 
     data class Sts(

@@ -7,15 +7,15 @@ import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import no.nav.medlemskap.clients.azuread.AzureAdClient
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
-import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.config.Configuration
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class MedlClient(
     private val baseUrl: String,
-    private val stsClient: StsRestClient,
+    private val azureAdClient: AzureAdClient,
     private val configuration: Configuration,
     private val httpClient: HttpClient,
     private val medlApiKey: String,
@@ -23,7 +23,7 @@ class MedlClient(
 ) {
 
     suspend fun hentMedlemskapsunntak(ident: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<MedlMedlemskapsunntak> {
-        val token = stsClient.oidcToken()
+        val token = azureAdClient.hentToken(configuration.register.medlScope)
         return runCatching {
             runWithRetryAndMetrics<List<MedlMedlemskapsunntak>>("Medl", "MedlemskapsunntakV1", retry) {
                 httpClient.get() {
