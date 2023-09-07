@@ -43,6 +43,8 @@ private val defaultProperties = ConfigurationMap(
         "UDI_BASE_URL" to "",
         "UDI_PROXY_API_KEY" to "",
         "UDI_PROXY_CLIENT_ID" to "",
+        "AZURE_SCOPE_UDI" to "",
+        "AZURE_SCOPE_MEDL" to ""
     )
 )
 
