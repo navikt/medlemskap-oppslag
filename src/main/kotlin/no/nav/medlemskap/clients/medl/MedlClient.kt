@@ -26,12 +26,12 @@ class MedlClient(
     private val logger = KotlinLogging.logger { }
 
     suspend fun hentMedlemskapsunntak(ident: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<MedlMedlemskapsunntak> {
-        val token = azureAdClient.hentToken(configuration.register.medlScope).token
+        val token = azureAdClient.hentToken(configuration.register.medlScope)
         return runCatching {
             runWithRetryAndMetrics<List<MedlMedlemskapsunntak>>("Medl", "MedlemskapsunntakV1", retry) {
                 httpClient.get() {
                     url("$baseUrl/api/v1/medlemskapsunntak")
-                    header(HttpHeaders.Authorization, "Bearer $token")
+                    header(HttpHeaders.Authorization, "Bearer ${token.token}")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
                     header("x-nav-apiKey", medlApiKey)
                     header("Nav-Call-Id", callId)
@@ -64,9 +64,10 @@ class MedlClient(
     private fun LocalDate.tilIsoFormat() = this.format(DateTimeFormatter.ISO_DATE)
 
     suspend fun healthCheck(): HttpResponse {
+        val token = azureAdClient.hentToken(configuration.register.medlScope)
         return httpClient.get {
             url("$baseUrl/api/ping")
-            header("Nav-Consumer-Id", configuration.sts.username)
+            header(HttpHeaders.Authorization, "Bearer ${token.token}")
             header(HttpHeaders.Accept, ContentType.Application.Json)
             header("x-nav-apiKey", medlApiKey)
         }
