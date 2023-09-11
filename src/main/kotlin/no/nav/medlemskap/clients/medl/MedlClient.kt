@@ -26,7 +26,7 @@ class MedlClient(
     private val logger = KotlinLogging.logger { }
 
     suspend fun hentMedlemskapsunntak(ident: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<MedlMedlemskapsunntak> {
-        val token = azureAdClient.hentToken(configuration.register.medlScope)
+        val token = azureAdClient.hentToken(configuration.register.medlScope).token
         return runCatching {
             runWithRetryAndMetrics<List<MedlMedlemskapsunntak>>("Medl", "MedlemskapsunntakV1", retry) {
                 httpClient.get() {
@@ -48,11 +48,10 @@ class MedlClient(
                     is ClientRequestException -> {
                         if (error.response.status.value == 404) {
                             listOf()
-                        } else if (error.response.status.value == 401){
+                        } else if (error.response.status.value == 401) {
                             logger.error("Error from MEDL: {}", error.response.headers.get("WWW-Authenticate"))
                             throw error
-                        }
-                        else {
+                        } else {
                             throw error
                         }
                     }
