@@ -7,6 +7,7 @@ import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import mu.KotlinLogging
 import no.nav.medlemskap.clients.azuread.AzureAdClient
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
 import no.nav.medlemskap.config.Configuration
@@ -21,6 +22,8 @@ class MedlClient(
     private val medlApiKey: String,
     private val retry: Retry? = null
 ) {
+
+    private val logger = KotlinLogging.logger { }
 
     suspend fun hentMedlemskapsunntak(ident: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<MedlMedlemskapsunntak> {
         val token = azureAdClient.hentToken(configuration.register.medlScope)
@@ -45,7 +48,11 @@ class MedlClient(
                     is ClientRequestException -> {
                         if (error.response.status.value == 404) {
                             listOf()
-                        } else {
+                        } else if (error.response.status.value == 401){
+                            logger.error("Error from MEDL: {}", error.response.headers.get("WWW-Authenticate"))
+                            throw error
+                        }
+                        else {
                             throw error
                         }
                     }
