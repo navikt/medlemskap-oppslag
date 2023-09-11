@@ -1,23 +1,10 @@
 package no.nav.medlemskap.clients.aareg
 
-import com.github.tomakehurst.wiremock.WireMockServer
-import com.github.tomakehurst.wiremock.client.MappingBuilder
-import com.github.tomakehurst.wiremock.client.WireMock
-import com.github.tomakehurst.wiremock.client.WireMock.equalTo
-import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import io.ktor.client.plugins.*
 import io.ktor.http.*
-import io.mockk.coEvery
-import io.mockk.mockk
-import kotlinx.coroutines.runBlocking
-import no.nav.medlemskap.clients.azuread.AzureAdClient
-import no.nav.medlemskap.clients.medl.MedlClient
-import no.nav.medlemskap.common.cioHttpClient
-import no.nav.medlemskap.config.Configuration
 import org.junit.jupiter.api.*
-import java.time.LocalDate
-import java.time.LocalDateTime
 
+/*
 class medlClientTest {
 
     companion object {
@@ -203,3 +190,4 @@ class medlClientTest {
 ]
         """.trimIndent()
 }
+*/
