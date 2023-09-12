@@ -1,10 +1,24 @@
 package no.nav.medlemskap.clients.aareg
 
+import com.github.tomakehurst.wiremock.WireMockServer
+import com.github.tomakehurst.wiremock.client.MappingBuilder
+import com.github.tomakehurst.wiremock.client.WireMock
+import com.github.tomakehurst.wiremock.client.WireMock.equalTo
+import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import io.ktor.client.plugins.*
 import io.ktor.http.*
+import io.mockk.coEvery
+import io.mockk.mockk
+import kotlinx.coroutines.runBlocking
+import no.nav.medlemskap.clients.Token
+import no.nav.medlemskap.clients.azuread.AzureAdClient
+import no.nav.medlemskap.clients.medl.MedlClient
+import no.nav.medlemskap.common.cioHttpClient
+import no.nav.medlemskap.config.Configuration
 import org.junit.jupiter.api.*
+import java.time.LocalDate
+import java.time.LocalDateTime
 
-/*
 class medlClientTest {
 
     companion object {
@@ -34,7 +48,7 @@ class medlClientTest {
         val callId = "12345"
         val azureAdClient: AzureAdClient = mockk()
 
-        coEvery { azureAdClient.hentToken(config.register.medlScope).toString() } returns "dummytoken"
+        coEvery { azureAdClient.hentToken(config.register.medlScope) } returns Token("dummytoken", "", 1)
 
         WireMock.stubFor(
             queryMapping.willReturn(
@@ -80,7 +94,7 @@ class medlClientTest {
     fun `tester ServerResponseException`() {
         val callId = "12345"
         val azureAdClient: AzureAdClient = mockk()
-        coEvery { azureAdClient.hentToken(config.register.medlScope).toString() } returns "dummytoken"
+        coEvery { azureAdClient.hentToken(config.register.medlScope) } returns Token("dummytoken", "", 1)
 
         WireMock.stubFor(
             queryMapping.willReturn(
@@ -103,7 +117,7 @@ class medlClientTest {
 
         val callId = "12345"
         val azureAdClient: AzureAdClient = mockk()
-        coEvery { azureAdClient.hentToken(config.register.medlScope).toString() } returns "dummytoken"
+        coEvery { azureAdClient.hentToken(config.register.medlScope) } returns Token("dummytoken", "", 1)
 
         WireMock.stubFor(
             queryMapping.willReturn(
@@ -125,7 +139,7 @@ class medlClientTest {
     fun `404 gir tom liste`() {
         val callId = "12345"
         val azureAdClient: AzureAdClient = mockk()
-        coEvery { azureAdClient.hentToken(config.register.medlScope).toString() } returns "dummytoken"
+        coEvery { azureAdClient.hentToken(config.register.medlScope) } returns Token("dummytoken", "", 1)
 
         WireMock.stubFor(
             queryMapping.willReturn(
@@ -143,14 +157,13 @@ class medlClientTest {
     }
 
     private fun createMedlClient(azureAdClient: AzureAdClient): MedlClient {
-        return MedlClient(server.baseUrl(), azureAdClient, config, cioHttpClient, "123")
+        return MedlClient(server.baseUrl(), azureAdClient, config, cioHttpClient)
     }
 
     private val queryMapping: MappingBuilder = WireMock.get(WireMock.urlPathEqualTo("/api/v1/medlemskapsunntak"))
         .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
         .withHeader("Nav-Personident", equalTo("10109000398"))
         .withHeader("Nav-Call-Id", equalTo("12345"))
-        .withHeader("Nav-Consumer-Id", equalTo("test"))
         .withQueryParam("fraOgMed", equalTo("2010-01-01"))
         .withQueryParam("fraOgMed", equalTo("2010-01-01"))
 
@@ -190,4 +203,3 @@ class medlClientTest {
 ]
         """.trimIndent()
 }
-*/
