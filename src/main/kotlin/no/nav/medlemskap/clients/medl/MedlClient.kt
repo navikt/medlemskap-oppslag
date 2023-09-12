@@ -19,7 +19,6 @@ class MedlClient(
     private val azureAdClient: AzureAdClient,
     private val configuration: Configuration,
     private val httpClient: HttpClient,
-    private val medlApiKey: String,
     private val retry: Retry? = null
 ) {
 
@@ -33,10 +32,8 @@ class MedlClient(
                     url("$baseUrl/api/v1/medlemskapsunntak")
                     header(HttpHeaders.Authorization, "Bearer ${token.token}")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
-                    header("x-nav-apiKey", medlApiKey)
                     header("Nav-Call-Id", callId)
                     header("Nav-Personident", ident)
-                    header("Nav-Consumer-Id", configuration.sts.username)
                     fraOgMed?.let { parameter("fraOgMed", fraOgMed.tilIsoFormat()) }
                     tilOgMed?.let { parameter("tilOgMed", tilOgMed.tilIsoFormat()) }
                 }.body()
@@ -69,7 +66,6 @@ class MedlClient(
             url("$baseUrl/api/ping")
             header(HttpHeaders.Authorization, "Bearer ${token.token}")
             header(HttpHeaders.Accept, ContentType.Application.Json)
-            header("x-nav-apiKey", medlApiKey)
         }
     }
 }
