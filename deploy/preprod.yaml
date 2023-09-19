@@ -31,7 +31,6 @@ spec:
       memory: 128Mi
   ingresses:
     - https://medlemskap-oppslag.intern.dev.nav.no
-    - https://medlemskap-oppslag.dev.nav.no
   replicas:
     min: 1
     max: 2
@@ -72,13 +71,14 @@ spec:
         - host: udi-proxy.dev-fss-pub.nais.io
         - host: aareg-services-q1.dev-fss-pub.nais.io
         - host: ereg-services.dev.intern.nav.no
+        - host: medlemskap-medl-proxy.dev-fss-pub.nais.io
   env:
     - name: SECURITY_TOKEN_SERVICE_URL
       value: https://api-gw-q1.oera.no/sts/SecurityTokenServiceProvider/
     - name: SECURITY_TOKEN_SERVICE_REST_URL
       value: https://api-gw-q1.oera.no/security-token-service
     - name: MEDL2_BASE_URL
-      value: https://api-gw-q2.oera.no/medlemskap-medl-api
+      value: https://medlemskap-medl-proxy.dev-fss-pub.nais.io
     - name: AAREG_BASE_URL
       value: https://aareg-services-q1.dev-fss-pub.nais.io/api
     - name: SAF_BASE_URL
@@ -91,5 +91,9 @@ spec:
       value: https://api-gw-q1.oera.no/ereg-services/api
     - name: UDI_BASE_URL
       value: https://udi-proxy.dev-fss-pub.nais.io
+    - name: AZURE_SCOPE_UDI
+      value: api://dev-fss.medlemskap.udi-proxy/.default
+    - name: AZURE_SCOPE_MEDL
+      value: api://dev-fss.team-rocket.medlemskap-medl-api/.default
   envFrom:
     - secret: medlemskap-oppslag

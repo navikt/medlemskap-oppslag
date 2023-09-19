@@ -63,6 +63,7 @@ spec:
         - host: udi-proxy.prod-fss-pub.nais.io
         - host: aareg-services.prod-fss-pub.nais.io
         - host: ereg-services.dev.intern.nav.no
+        - host: medlemskap-medl-proxy.prod-fss-pub.nais.io
   kafka:
     pool: nav-prod
 
@@ -72,7 +73,7 @@ spec:
     - name: SECURITY_TOKEN_SERVICE_REST_URL
       value: https://api-gw.oera.no/security-token-service
     - name: MEDL2_BASE_URL
-      value: https://api-gw.oera.no/medlemskap-medl-api
+      value: https://medlemskap-medl-proxy.prod-fss-pub.nais.io
     - name: AAREG_BASE_URL
       value: https://aareg-services.prod-fss-pub.nais.io/api
     - name: SAF_BASE_URL
@@ -85,5 +86,9 @@ spec:
       value: https://api-gw.oera.no/ereg-services/api
     - name: UDI_BASE_URL
       value: https://udi-proxy.prod-fss-pub.nais.io
+    - name: AZURE_SCOPE_UDI
+      value: api://prod-fss.medlemskap.udi-proxy/.default
+    - name: AZURE_SCOPE_MEDL
+      value: api://prod-fss.team-rocket.medlemskap-medl-api/.default
   envFrom:
     - secret: medlemskap-oppslag

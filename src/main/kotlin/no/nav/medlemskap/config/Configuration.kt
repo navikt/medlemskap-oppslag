@@ -13,7 +13,6 @@ private val defaultProperties = ConfigurationMap(
         "SERVICE_USER_USERNAME" to "test",
         "MEDLEMSKAP_REGLER_URL" to "",
         "MEDL2_BASE_URL" to "",
-        "MEDL2_API_KEY" to "",
         "AAREG_BASE_URL" to "",
         "AAREG_API_KEY" to "",
         "SECURITY_TOKEN_SERVICE_URL" to "",
@@ -43,6 +42,8 @@ private val defaultProperties = ConfigurationMap(
         "UDI_BASE_URL" to "",
         "UDI_PROXY_API_KEY" to "",
         "UDI_PROXY_CLIENT_ID" to "",
+        "AZURE_SCOPE_UDI" to "",
+        "AZURE_SCOPE_MEDL" to ""
     )
 )
 
@@ -77,7 +78,6 @@ data class Configuration(
 ) {
     data class Register(
         val medl2BaseUrl: String = "MEDL2_BASE_URL".configProperty(),
-        val medl2ApiKey: String = "MEDL2_API_KEY".configProperty(),
         val aaRegBaseUrl: String = "AAREG_BASE_URL".configProperty(),
         val aaRegApiKey: String = "AAREG_API_KEY".configProperty(),
         val safBaseUrl: String = "SAF_BASE_URL".configProperty(),
@@ -89,8 +89,9 @@ data class Configuration(
         val eregBaseUrl: String = "EREG_BASE_URL".configProperty(),
         val eregApiKey: String = "EREG_API_KEY".configProperty(),
         val udiProxyApiKey: String = "UDI_PROXY_API_KEY".configProperty(), // Venter på  bestilling - legges inn i secrets
-        val udiProxyClientId: String = "UDI_PROXY_CLIENT_ID".configProperty(),
-        val udiBaseUrl: String = "UDI_BASE_URL".configProperty()
+        val udiBaseUrl: String = "UDI_BASE_URL".configProperty(),
+        val udiScope: String = "AZURE_SCOPE_UDI".configProperty(),
+        val medlScope: String = "AZURE_SCOPE_MEDL".configProperty()
     )
 
     data class Sts(
