@@ -29,10 +29,11 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
 
         val ytelse = reglerForRequestValidering.ytelse
         val resultater = mutableListOf<Resultat>()
-        val resultatForOverstyring = reglerForOverstyring.kjørHovedflyt()
-        val reglerSomSkalOverstyres = reglerForOverstyring.reglerSomSkalOverstyres(resultatForOverstyring)
+        // val resultatForOverstyring = reglerForOverstyring.kjørHovedflyt()
+        // val reglerSomSkalOverstyres = reglerForOverstyring.reglerSomSkalOverstyres(resultatForOverstyring)
+        val reglerSomSkalOverstyres = emptyMap<RegelId, Svar>()
 
-        resultater.add(resultatForOverstyring)
+        // resultater.add(resultatForOverstyring)
         resultater.addAll(kjørFellesRegler())
 
         val resultatStatsborgerskap = reglerForStatsborgerskap.kjørHovedflyt()

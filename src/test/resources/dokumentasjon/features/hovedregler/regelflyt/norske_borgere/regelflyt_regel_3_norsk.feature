@@ -13,7 +13,7 @@ Egenskap: Regelflyt for regel 3
       | NOR      | 01.01.2000      |                 |
 
   Scenariomal: Regelflyt regel 3 for norske borgere: Bruker får "ja" på spørsmålet om medlemskap hvis det er sammenhengende arbeidsforhold i
-  hele kontrollperioden ,UAVKLART ellers. Men for sykepenger skal regel 3 overstyres til ja i dette tilfellet.
+  hele kontrollperioden ,UAVKLART ellers.
 
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato   | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Arbeidsgiver Id |
@@ -35,11 +35,9 @@ Egenskap: Regelflyt for regel 3
     Og skal regel "3" gi svaret "<Regel 3>"
 
     Eksempler:
-      | Ytelse     | Fra og med dato | Regel 3 | Medlemskap | Forklaring         |
-      | SYKEPENGER | 01.01.2018      | Ja      | Ja         |                    |
-      | SYKEPENGER | 29.01.2019      | Ja      | Ja         |                    |
-      | SYKEPENGER | 30.01.2019      | Ja      | Ja         |                    |
-      | SYKEPENGER | 01.02.2019      | Ja      | Ja         |                    |
-      | SYKEPENGER | 02.02.2019      | Ja      | Ja         | Regel 3 overstyres |
-      | SYKEPENGER | 05.02.2019      | Ja      | Ja         | Regel 3 overstyres |
-      | DAGPENGER  | 02.02.2019      | Nei     | UAVKLART   |                    |
+      | Ytelse     | Fra og med dato | Regel 3 | Medlemskap |
+      | SYKEPENGER | 01.01.2018      | Ja      | Ja         |
+      | SYKEPENGER | 29.01.2019      | Ja      | Ja         |
+      | SYKEPENGER | 30.01.2019      | Ja      | Ja         |
+      | SYKEPENGER | 01.02.2019      | Ja      | Ja         |
+      | DAGPENGER  | 02.02.2019      | Nei     | UAVKLART   |

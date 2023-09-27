@@ -38,7 +38,5 @@ Egenskap: Regelflyt for regel 5 for norske borgere
       | Ytelse     | Antall ansatte | Regel 5 | Medlemskap | Forklaring         |
       | DAGPENGER  | 4              | Nei     | UAVKLART   |                    |
       | DAGPENGER  | 5              | Nei     | UAVKLART   |                    |
-      | SYKEPENGER | 4              | Ja      | Ja         | Regel 5 overstyres |
-      | SYKEPENGER | 5              | Ja      | Ja         | Regel 5 overstyres |
       | SYKEPENGER | 6              | Ja      | Ja         |                    |
       | SYKEPENGER | 9              | Ja      | Ja         |                    |

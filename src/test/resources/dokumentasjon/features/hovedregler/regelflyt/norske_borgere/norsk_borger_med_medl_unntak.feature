@@ -43,7 +43,7 @@ Egenskap: Norsk borger med medl unntak.
 
     Og skal resultat gi følgende delresultater:
       | Regel                 |
-      | OVERSTYRING           |
+      #| OVERSTYRING           |
       | DOED                  |
       | FELLES ARBEIDSFORHOLD |
       | STATSBORGERSKAP       |
