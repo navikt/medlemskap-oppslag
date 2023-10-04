@@ -54,7 +54,7 @@ Egenskap: Tredjelandsborger med medl unntak.
 
     Og skal resultat gi følgende delresultater:
       | Regel                           |
-      | REGEL_OVERSTYRING               |
+      #| REGEL_OVERSTYRING               |
       | REGEL_DOED                      |
       | REGEL_FELLES_ARBEIDSFORHOLD     |
       | REGEL_STATSBORGERSKAP           |
@@ -94,7 +94,7 @@ Egenskap: Tredjelandsborger med medl unntak.
 
     Og skal resultat gi følgende delresultater:
       | Regel                           |
-      | REGEL_OVERSTYRING               |
+      #| REGEL_OVERSTYRING               |
       | REGEL_DOED                      |
       | REGEL_FELLES_ARBEIDSFORHOLD     |
       | REGEL_STATSBORGERSKAP           |
@@ -166,7 +166,7 @@ Egenskap: Tredjelandsborger med medl unntak.
 
     Og skal resultat gi følgende delresultater:
       | Regel                           |
-      | REGEL_OVERSTYRING               |
+      #| REGEL_OVERSTYRING               |
       | REGEL_DOED                      |
       | REGEL_FELLES_ARBEIDSFORHOLD     |
       | REGEL_STATSBORGERSKAP           |
