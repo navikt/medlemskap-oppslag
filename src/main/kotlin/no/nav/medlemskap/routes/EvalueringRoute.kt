@@ -289,7 +289,6 @@ private fun loggResponse(fnr: String, response: Response, endpoint: String = "/"
             kv("årsaker", årsakerSomRegelIdStr),
             kv("aarsaksAnt", aarsaksAnt),
             kv("aarsaker", årsakerSomRegelIdStr.toString()),
-            kv("regleroverstyrt", response.resultat.erReglerOverstyrt()),
             kv("statsborgerskap", response.datagrunnlag.gyldigeStatsborgerskap().toString()),
             kv("statsborgerskapAnt", response.datagrunnlag.gyldigeStatsborgerskap().size),
             kv("erTredjelandsborger", response.resultat.erTredjelandsborger()),
@@ -309,7 +308,8 @@ private fun loggResponse(fnr: String, response: Response, endpoint: String = "/"
             kv("har_utflytting", response.datagrunnlag.pdlpersonhistorikk.harUtflyttingFraNorge()),
             kv("yrkeskoder", response.datagrunnlag.arbeidsforhold.alleAktiveYrkeskoderDerTomErNull()),
             kv("har_medlperiode_uten_arbeidsforhold", response.datagrunnlag.harPeriodeUtenMedlemskapOgIkkeArbeidsforhold()),
-            kv("endpoint", endpoint)
+            kv("endpoint", endpoint),
+            //kv("regleroverstyrt", response.resultat.erReglerOverstyrt())
         )
     }.onFailure {
         loggError(fnr, datagrunnlag = response.datagrunnlag, endpoint, it)
