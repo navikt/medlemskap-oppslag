@@ -184,6 +184,18 @@ components:
       properties:
         arbeidUtenforNorge:
           type: boolean
+        oppholdUtenforEos:
+          type: object
+          nullable: true
+        oppholdUtenforNorge:
+          type: object
+          nullable: true
+        oppholdstilatelse:
+          type: object
+          nullable: true
+        utfortAarbeidUtenforNorge:
+          type: object
+          nullable: true
     Bruksperiode:
       properties:
         fom:

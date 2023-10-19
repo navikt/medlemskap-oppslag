@@ -11,7 +11,11 @@
     },
     "førsteDagForYtelse" : "2019-01-01",
     "brukerinput" : {
-      "arbeidUtenforNorge" : false
+      "arbeidUtenforNorge" : false,
+      "oppholdUtenforEos" : null,
+      "oppholdUtenforNorge" : null,
+      "oppholdstilatelse" : null,
+      "utfortAarbeidUtenforNorge" : null
     },
     "pdlpersonhistorikk" : {
       "statsborgerskap" : [ {
