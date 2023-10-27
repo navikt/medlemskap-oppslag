@@ -43,6 +43,13 @@ jobs:
           MESSAGE: "Bygg feilet"
           CHANNEL: "#team-p3-medlemskap-notifications"
           WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+      - uses: actions/checkout@v3
+      - name: Setup Gradle to generate and submit dependency graphs
+        uses: gradle/gradle-build-action@v2
+        with:
+          dependency-graph: generate-and-submit
+      - name: Run a build, generating the dependency graph snapshot which will be submitted
+        run: ./gradlew build
   deploypreprod:
     name: Deploy to Preprod
     needs: build
