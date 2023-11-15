@@ -30,3 +30,6 @@ spec:
     - team: medlemskap
       application: medlemskap-dagpengelytter
       access: readwrite
+    - team: medlemskap
+      application: medlemskap-sykepenger-brukersporsmaalhandler
+      access: readwrite
