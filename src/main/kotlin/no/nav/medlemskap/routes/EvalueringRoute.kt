@@ -36,7 +36,7 @@ import java.util.*
 
 private val logger = KotlinLogging.logger { }
 private val secureLogger = KotlinLogging.logger("tjenestekall")
-private val TOPIC = "medlemskap.medlemskap-vurdert"
+private val TOPIC = "medlemskap.medlemskap-stage1"
 
 fun Routing.evalueringRoute(
     services: Services,
