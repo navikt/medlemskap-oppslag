@@ -72,6 +72,7 @@ fun Routing.evalueringRoute(
             try {
                 val resultat = evaluerData(datagrunnlag)
                 val response = lagResponse(
+                    callid = callId,
                     versjonTjeneste = configuration.commitSha,
                     endpoint = endpoint,
                     datagrunnlag = datagrunnlag,
@@ -112,6 +113,7 @@ fun Routing.evalueringRoute(
                 val resultat = evaluerData(datagrunnlag)
 
                 val response = lagResponse(
+                    callid = callId,
                     versjonTjeneste = configuration.commitSha,
                     endpoint = endpoint,
                     datagrunnlag = datagrunnlag,
@@ -152,6 +154,7 @@ fun Routing.evalueringRoute(
                 val resultat = evaluerData(datagrunnlag)
 
                 val response = lagResponse(
+                    callid = callId,
                     versjonTjeneste = configuration.commitSha,
                     endpoint = endpoint,
                     datagrunnlag = datagrunnlag,
@@ -189,6 +192,7 @@ fun Routing.evalueringRoute(
                 val resultat = evaluerData(datagrunnlag)
 
                 val response = lagResponse(
+                    callid = callId,
                     versjonTjeneste = configuration.commitSha,
                     endpoint = endpoint,
                     datagrunnlag = datagrunnlag,
@@ -244,6 +248,7 @@ fun Routing.evalueringTestRoute(
         val resultat = evaluerData(datagrunnlag)
 
         val response = lagResponse(
+            callid = callId,
             versjonTjeneste = configuration.commitSha,
             endpoint = endpoint,
             datagrunnlag = datagrunnlag,
@@ -256,8 +261,9 @@ fun Routing.evalueringTestRoute(
     }
 }
 
-private fun lagResponse(datagrunnlag: Datagrunnlag, resultat: Resultat, versjonTjeneste: String, endpoint: String): Response {
+private fun lagResponse(callid: String, datagrunnlag: Datagrunnlag, resultat: Resultat, versjonTjeneste: String, endpoint: String): Response {
     return Response(
+        vurderingsID = callid,
         tidspunkt = LocalDateTime.now(),
         versjonRegler = "v1",
         versjonTjeneste = versjonTjeneste,
@@ -309,7 +315,7 @@ private fun loggResponse(fnr: String, response: Response, endpoint: String = "/"
             kv("yrkeskoder", response.datagrunnlag.arbeidsforhold.alleAktiveYrkeskoderDerTomErNull()),
             kv("har_medlperiode_uten_arbeidsforhold", response.datagrunnlag.harPeriodeUtenMedlemskapOgIkkeArbeidsforhold()),
             kv("endpoint", endpoint)
-            //kv("regleroverstyrt", response.resultat.erReglerOverstyrt())
+            // kv("regleroverstyrt", response.resultat.erReglerOverstyrt())
         )
     }.onFailure {
         loggError(fnr, datagrunnlag = response.datagrunnlag, endpoint, it)

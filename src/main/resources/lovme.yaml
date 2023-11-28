@@ -752,6 +752,8 @@ components:
           $ref: "#/components/schemas/Datagrunnlag"
         resultat:
           $ref: "#/components/schemas/Resultat"
+        vurderingsID:
+          type: string
         versjonRegler:
           type: string
         tidspunkt:
