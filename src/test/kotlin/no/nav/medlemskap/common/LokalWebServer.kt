@@ -83,6 +83,7 @@ class LokalWebServer {
             return given()
                 .body(medlemskapsparametre.tilJson())
                 .header(Header("Content-Type", "application/json"))
+                .header(Header("Nav-Call-Id", "7b006d2c-ff75-4404-9663-7babf23f45de"))
                 .post("/")
                 .then()
                 .statusCode(200)

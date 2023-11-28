@@ -5,6 +5,7 @@ import no.nav.medlemskap.regler.common.Resultat
 import java.time.LocalDateTime
 
 data class Response(
+    val vurderingsID: String?,
     val tidspunkt: LocalDateTime,
     val versjonTjeneste: String,
     val versjonRegler: String,
