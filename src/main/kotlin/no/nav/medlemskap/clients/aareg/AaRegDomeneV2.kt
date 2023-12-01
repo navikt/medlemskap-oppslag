@@ -1,5 +1,9 @@
 package no.nav.medlemskap.clients.aareg
 
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.YearMonth
+
 enum class Identtype {
     AKTORID, FOLKEREGISTERIDENT, ORGANISASJONSNUMMER
 }
@@ -34,16 +38,16 @@ data class Opplysningspliktig(
 )
 
 data class Ansettelsesperiode(
-    val startdato: String, // LocalDate
-    val sluttdato: String?, // LocalDate
+    val startdato: LocalDate,
+    val sluttdato: LocalDate?,
     val sluttaarsak: Kodeverksentitet?,
     val varsling: Kodeverksentitet?,
     val sporingsinformasjon: Sporingsinformasjon
 )
 
 data class Rapporteringsmaaneder(
-    val fra: String, // YearMonth
-    val til: String?, // YearMonth
+    val fra: YearMonth,
+    val til: YearMonth?,
 )
 
 data class Bruksperiode(
@@ -58,8 +62,8 @@ data class Ansettelsesdetaljer(
     val yrke: Kodeverksentitet,
     val antallTimerPrUke: Double?,
     val avtaltStillingsprosent: Double?,
-    val sisteStillingsprosentendring: String?, // LocalDate
-    val sisteLoennsendring: String?, // LocalDate
+    val sisteStillingsprosentendring: LocalDate?,
+    val sisteLoennsendring: LocalDate?,
     val rapporteringsmaaneder: Rapporteringsmaaneder, // v1.gyldighetsperiode
     val sporingsinformasjon: Sporingsinformasjon
 )
@@ -82,9 +86,9 @@ data class Arbeidsforhold(
     val navArbeidsforholdId: Int,
     val navVersjon: Int,
     val navUuid: String,
-    val opprettet: String, // LocalDateTime
-    val sistBekreftet: String, // LocalDateTime
-    val sistEndret: String, // LocalDateTime
+    val opprettet: LocalDateTime,
+    val sistBekreftet: LocalDateTime,
+    val sistEndret: LocalDateTime,
     val bruksperiode: Bruksperiode,
     val sporingsinformasjon: Sporingsinformasjon
     )
@@ -96,8 +100,8 @@ data class Varsel(
 
 data class Utenlandsopphold(
     val land: Kodeverksentitet,
-    val startdato: String,
-    val sluttdato: String?,
+    val startdato: LocalDate,
+    val sluttdato: LocalDate?,
     val rapporteringsmaaneder: Rapporteringsmaaneder,
     val sporingsinformasjon: Sporingsinformasjon
 )
@@ -113,8 +117,8 @@ data class TimerMedTimeloenn(
 data class PermisjonPermittering(
     val id: String?,
     val type: Kodeverksentitet,
-    val startdato: String, // LocalDate
-    val sluttdato: String?, // LocalDate
+    val startdato: LocalDate,
+    val sluttdato: LocalDate?,
     val prosent: Double,
     val varsling: Kodeverksentitet?,
     val idHistorikk: List<IdHistorikk>,
@@ -127,11 +131,11 @@ data class IdHistorikk (
 )
 
 data class Sporingsinformasjon(
-    val opprettetTidspunkt: String, //LocalDateTime
+    val opprettetTidspunkt: LocalDateTime,
     val opprettetAv: String,
     val opprettetKilde: String,
     val opprettetKildereferanse: String,
-    val endretTidspunkt: String, //LocalDateTime
+    val endretTidspunkt: LocalDateTime,
     val endretAv: String,
     val endretKilde: String,
     val endretKildereferanse: String

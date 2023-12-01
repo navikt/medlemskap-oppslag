@@ -62,7 +62,7 @@ class AaRegClient(
         )
     }
 
-    suspend fun hentArbeidsforholdV2(fnr: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<AaRegArbeidsforhold> {
+    suspend fun hentArbeidsforholdV2(fnr: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold> {
         val oidcToken = stsClient.oidcToken()
         return runCatching {
             runWithRetryAndMetrics("AaReg", "ArbeidsforholdV1", retry) {
@@ -77,7 +77,7 @@ class AaRegClient(
                     parameter("historikk", "true")
                     parameter("arbeidsforholdstatus", listOf("AKTIV", "AVSLUTTET", "FREMTIDIG"))
                     parameter("rapporteringsordning", listOf("FOER_A_ORDNINGEN", "A_ORDNINGEN"))
-                }.body<List<AaRegArbeidsforhold>>()
+                }.body<List<Arbeidsforhold>>()
             }
         }.fold(
             onSuccess = { it },

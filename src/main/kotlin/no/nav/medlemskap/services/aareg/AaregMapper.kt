@@ -4,6 +4,9 @@ import mu.KotlinLogging
 import no.nav.medlemskap.clients.aareg.*
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.arbeidsforhold.*
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
+import no.nav.medlemskap.domene.arbeidsforhold.PermisjonPermittering
+import no.nav.medlemskap.domene.arbeidsforhold.Utenlandsopphold
 import no.nav.medlemskap.services.ereg.mapOrganisasjonTilArbeidsgiver
 
 private val logger = KotlinLogging.logger { }
