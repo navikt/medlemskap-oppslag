@@ -459,7 +459,7 @@ class RegelSteps : No {
             fnr = medlemskapsparametre.fnr ?: "",
             periode = medlemskapsparametre.inputPeriode,
             førsteDagForYtelse = medlemskapsparametre.førsteDagForYtelse,
-            brukerinput = Brukerinput(medlemskapsparametre.harHattArbeidUtenforNorge),
+            brukerinput = medlemskapsparametre.brukerinput,
             pdlpersonhistorikk = pdlPersonhistorikkBuilder.build(),
             medlemskap = medlemskap,
             arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgiverMap, arbeidsavtaleMap, utenlandsoppholdMap, ansatteMap, permisjonPermitteringMap),

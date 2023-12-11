@@ -19,7 +19,8 @@ import java.time.YearMonth
 
 object DomenespråkParser : BasisDomeneParser() {
     val ANSATTE_9 = listOf(Ansatte(9, null))
-    val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(organisasjonsnummer = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskeEnheter = null)
+    val VANLIG_NORSK_ARBEIDSGIVER =
+        Arbeidsgiver(organisasjonsnummer = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskeEnheter = null)
 
     fun parseValgfriYtelse(domenebegrep: Domenebegrep, rad: Map<String, String>): Ytelse? {
         val valgfriVerdi = valgfriVerdi(domenebegrep.nøkkel, rad)
@@ -123,7 +124,10 @@ object DomenespråkParser : BasisDomeneParser() {
         return ForelderBarnRelasjonRolle.valueOf(verdi)
     }
 
-    fun parseValgfriRolle(domenebegrep: PersonhistorikkDomenebegrep, rad: Map<String, String>): ForelderBarnRelasjonRolle? {
+    fun parseValgfriRolle(
+        domenebegrep: PersonhistorikkDomenebegrep,
+        rad: Map<String, String>
+    ): ForelderBarnRelasjonRolle? {
         val verdi = valgfriVerdi(domenebegrep.nøkkel, rad)
 
         if (verdi == null) {
@@ -182,8 +186,76 @@ object DomenespråkParser : BasisDomeneParser() {
                     parseDato(TIL_OG_MED_DATO, rad)
                 ),
                 førsteDagForYtelse = parseValgfriDato(FØRSTE_DAG_FOR_YTELSE, rad),
-                harHattArbeidUtenforNorge = parseBoolean(HAR_HATT_ARBEID_UTENFOR_NORGE, rad),
+                brukerinput = parseBrukerinput(rad),
                 ytelse = parseValgfriYtelse(YTELSE, rad)
+            )
+        }
+    }
+
+    private fun parseBrukerinput(rad: Map<String, String>): Brukerinput {
+        return Brukerinput(
+            arbeidUtenforNorge = parseBoolean(HAR_HATT_ARBEID_UTENFOR_NORGE, rad),
+            oppholdstilatelse = parseValgfriOppholdstillatelse(rad),
+            utfortAarbeidUtenforNorge = parseValgfriUtfortArbeidUtenforNorge(rad),
+            oppholdUtenforNorge = parseValgfriOppholdUtenforNorge(rad),
+            oppholdUtenforEos = parseValgfriOppholdUtenforEOS(rad)
+        )
+    }
+
+    private fun parseValgfriOppholdUtenforEOS(rad: Map<String, String>): OppholdUtenforEos? {
+        val oppholdUtenforEOS = parseValgfriBoolean(HAR_OPPHOLD_UTENFOR_EOS.nøkkel, rad)
+        return if (oppholdUtenforEOS == null) {
+            null
+        } else {
+            OppholdUtenforEos(
+                svar = oppholdUtenforEOS,
+                id = "null",
+                sporsmalstekst = null,
+                oppholdUtenforEOS = listOf()
+            )
+        }
+    }
+
+    private fun parseValgfriOppholdUtenforNorge(rad: Map<String, String>): OppholdUtenforNorge? {
+        val oppholdUtenforNorge = parseValgfriBoolean(HAR_OPPHOLD_UTENFOR_NORGE.nøkkel, rad)
+        return if (oppholdUtenforNorge == null) {
+            null
+        } else {
+            OppholdUtenforNorge(
+                svar = oppholdUtenforNorge,
+                id = "null",
+                sporsmalstekst = null,
+                oppholdUtenforNorge = listOf()
+            )
+        }
+    }
+
+    private fun parseValgfriUtfortArbeidUtenforNorge(rad: Map<String, String>): UtfortAarbeidUtenforNorge? {
+        val utfortArbeidUtenforNorge = parseValgfriBoolean(HAR_UTFORT_ARBEID_UTENFOR_NORGE.nøkkel, rad)
+        return if (utfortArbeidUtenforNorge == null) {
+            null
+        } else {
+            UtfortAarbeidUtenforNorge(
+                svar = utfortArbeidUtenforNorge,
+                id = "null",
+                sporsmalstekst = null,
+                arbeidUtenforNorge = listOf()
+            )
+        }
+    }
+
+    private fun parseValgfriOppholdstillatelse(rad: Map<String, String>): Oppholdstilatelse? {
+        val oppholdstillatelse = parseValgfriBoolean(HAR_BRUKER_OPPHOLDSTILLATELSE.nøkkel, rad)
+        return if (oppholdstillatelse == null) {
+            null
+        } else {
+            Oppholdstilatelse(
+                svar = oppholdstillatelse,
+                id = "null",
+                sporsmalstekst = null,
+                vedtaksTypePermanent = false,
+                vedtaksdato = LocalDate.MIN
+
             )
         }
     }
@@ -220,6 +292,10 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     GYLDIGHETSPERIODE_FRA_OG_MED("Gyldighetsperiode gyldig fra"),
     GYLDIGHETSPERIODE_TIL_OG_MED("Gyldighetsperiode gyldig til"),
     HAR_HATT_ARBEID_UTENFOR_NORGE("Har hatt arbeid utenfor Norge"),
+    HAR_BRUKER_OPPHOLDSTILLATELSE("Har oppholdstillatelse"),
+    HAR_UTFORT_ARBEID_UTENFOR_NORGE("Utført Arbeid Utenfor Norge"),
+    HAR_OPPHOLD_UTENFOR_NORGE("Opphold utenfor Norge"),
+    HAR_OPPHOLD_UTENFOR_EOS("Opphold utenfor EØS"),
     IDENT("Ident"),
     JURIDISK_ANTALL_ANSATTE("Antall ansatte i juridisk enhet"),
     JURIDISK_ENHETSTYPE("Juridisk enhetstype"),
@@ -244,7 +320,7 @@ data class Medlemskapsparametre(
     val fnr: String?,
     val inputPeriode: InputPeriode,
     val førsteDagForYtelse: LocalDate?,
-    val harHattArbeidUtenforNorge: Boolean,
+    val brukerinput: Brukerinput,
     val ytelse: Ytelse?
 ) {
 
@@ -253,7 +329,7 @@ data class Medlemskapsparametre(
             Request(
                 fnr = fnr!!,
                 periode = inputPeriode,
-                brukerinput = Brukerinput(harHattArbeidUtenforNorge),
+                brukerinput = brukerinput,
                 førsteDagForYtelse = førsteDagForYtelse,
                 ytelse = ytelse
             )

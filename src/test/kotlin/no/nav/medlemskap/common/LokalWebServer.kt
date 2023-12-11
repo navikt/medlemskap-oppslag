@@ -14,7 +14,6 @@ import no.nav.medlemskap.config.AzureAdOpenIdConfiguration
 import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.createHttpServer
 import no.nav.medlemskap.cucumber.Medlemskapsparametre
-import no.nav.medlemskap.domene.Brukerinput
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Request
 
@@ -72,7 +71,7 @@ class LokalWebServer {
                 Request(
                     fnr = medlemskapsparametre.fnr!!,
                     periode = medlemskapsparametre.inputPeriode,
-                    brukerinput = Brukerinput(medlemskapsparametre.harHattArbeidUtenforNorge),
+                    brukerinput = medlemskapsparametre.brukerinput,
                     førsteDagForYtelse = medlemskapsparametre.førsteDagForYtelse,
                     ytelse = medlemskapsparametre.ytelse
                 )

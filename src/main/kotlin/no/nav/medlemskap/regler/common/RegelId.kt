@@ -23,7 +23,6 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_7_1("7.1", "Er bruker ansatt på et NOR-skip eller NIS-skip med innenriks fartsområde?", "Bruker har maritimt arbeidsforhold, men ikke på et NOR-skip eller NIS-skip med innenriks fartsområde"),
     REGEL_8("8", "Er bruker pilot eller kabinansatt?", "Bruker er ikke pilot eller kabinansatt", "Bruker er pilot eller kabinansatt"),
     REGEL_9("9", "Har bruker utført arbeid utenfor Norge?"),
-    REGEL_0_2("0.2", "Har bruker fått nye brukerspørsmål?"),
     REGEL_10("10", "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?", "Ikke alle adressene til bruker er norske, eller bruker mangler bostedsadresse"),
     REGEL_11("11", "Er bruker norsk statsborger?", "Brukeren er ikke norsk statsborger"),
     REGEL_11_2("11.2", "Har bruker ektefelle i PDL?", "Bruker har ikke ektefelle i PDL"),

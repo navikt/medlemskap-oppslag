@@ -50,7 +50,6 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_7_1 -> JobberBrukerPaaNorskSkipRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_8 -> ErBrukerPilotEllerKabinansattRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_9 -> HarBrukerJobbetUtenforNorgeRegel.fraDatagrunnlag(datagrunnlag).regel
-            REGEL_0_2 -> HarBrukerFaattNyeBrukerSpoersmaalRegel.fraDatagrunnlag(datagrunnlag).regel
 
             REGEL_10 -> ErBrukerBosattINorgeRegel.fraDatagrunnlag(datagrunnlag).regel
 

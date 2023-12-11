@@ -18,15 +18,17 @@ class HarBrukerJobbetUtenforNorgeRegel(
 ) : LovvalgRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
-        if(brukerInput.oppholdstilatelse?.equals(null) == false ||
-                brukerInput.oppholdUtenforNorge?.equals(null) == false ||
-                brukerInput.oppholdUtenforEos?.equals(null) == false ||
-                brukerInput.utfortAarbeidUtenforNorge?.equals(null) == false)
+        if (brukerInput.oppholdstilatelse?.svar != null ||
+            brukerInput.utfortAarbeidUtenforNorge?.svar != null ||
+            brukerInput.oppholdUtenforNorge?.svar != null ||
+            brukerInput.oppholdUtenforEos?.svar != null
+        ) {
+            return nei(regelId)
+        }
         return when {
             arbeidUtenforNorge -> ja(regelId)
             else -> nei(regelId)
         }
-        return nei(regelId)
     }
 
     companion object {
@@ -36,7 +38,7 @@ class HarBrukerJobbetUtenforNorgeRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 arbeidUtenforNorge = datagrunnlag.brukerinput.arbeidUtenforNorge,
-                    brukerInput = datagrunnlag.brukerinput
+                brukerInput = datagrunnlag.brukerinput
             )
         }
     }
