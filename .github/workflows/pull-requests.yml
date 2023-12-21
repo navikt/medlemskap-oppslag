@@ -43,7 +43,7 @@ jobs:
           docker login ghcr.io -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
           docker push $IMAGE
       - name: Archive NAIS yaml
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: nais-dev-yaml
           path: deploy
