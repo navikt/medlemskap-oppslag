@@ -56,7 +56,7 @@ jobs:
       IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
     steps:
       - name: Fetch NAIS yaml
-        uses: actions/download-artifact@v1
+        uses: actions/download-artifact@v4
         with:
           name: nais-dev-yaml
           path: deploy
