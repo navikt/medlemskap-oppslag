@@ -58,7 +58,7 @@ data class Bruksperiode(
 data class Ansettelsesdetaljer(
     val type: String, // "Ordinaer,Maritim,Forenklet,Frilanser"
     val arbeidstidsordning: Kodeverksentitet?,
-    val ansettelsesform :Kodeverksentitet?,
+    val ansettelsesform: Kodeverksentitet?,
     val yrke: Kodeverksentitet,
     val antallTimerPrUke: Double?,
     val avtaltStillingsprosent: Double?,
@@ -91,7 +91,7 @@ data class Arbeidsforhold(
     val sistEndret: LocalDateTime,
     val bruksperiode: Bruksperiode,
     val sporingsinformasjon: Sporingsinformasjon
-    )
+)
 
 data class Varsel(
     val entitet: Entitet,
@@ -125,7 +125,7 @@ data class PermisjonPermittering(
     val sporingsinformasjon: Sporingsinformasjon
 )
 
-data class IdHistorikk (
+data class IdHistorikk(
     val id: String,
     val bruksperiode: Bruksperiode
 )

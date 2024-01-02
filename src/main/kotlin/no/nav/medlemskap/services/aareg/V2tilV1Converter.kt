@@ -6,7 +6,6 @@ import no.nav.medlemskap.clients.aareg.Opplysningspliktig
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.arbeidsforhold.*
 
-
 fun List<Arbeidsforhold>.mapTilV1(): List<no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold> {
     return this.map {
         no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold(
@@ -14,7 +13,7 @@ fun List<Arbeidsforhold>.mapTilV1(): List<no.nav.medlemskap.domene.arbeidsforhol
             utenlandsopphold = mapUtenlandsoppholdTilV1(it),
             arbeidsgivertype = mapOpplysningspliktigTypeTilV1(it.opplysningspliktig),
             arbeidsgiver = Arbeidsgiver(null, null, null, null),
-            arbeidsforholdstype = mapArbeidsforholdstypeTilV1(it.ansettelsesdetaljer),
+            arbeidsforholdstype = mapArbeidsforholdstypeTilV1(it.ansettelsesdetaljer.sortedBy { it.rapporteringsmaaneder.fra }.last()),
             arbeidsavtaler = mapAnsettelsesdetaljerTilArbeidsavtaler(it.ansettelsesdetaljer),
             permisjonPermittering = mapPermisjonPermitteringTilV1(it)
         )
@@ -54,7 +53,7 @@ private fun mapOpplysningspliktigTypeTilV1(v2: Opplysningspliktig): Opplysningsp
 }
 
 private fun mapArbeidsforholdstypeTilV1(v2: Ansettelsesdetaljer): Arbeidsforholdstype {
-    return when(v2.type) {
+    return when (v2.type) {
         "Ordinaer" -> Arbeidsforholdstype.NORMALT
         "Maritim" -> Arbeidsforholdstype.MARITIMT
         "Forenklet" -> Arbeidsforholdstype.FORENKLET
@@ -66,7 +65,7 @@ private fun mapArbeidsforholdstypeTilV1(v2: Ansettelsesdetaljer): Arbeidsforhold
 private fun mapAnsettelsesdetaljerTilArbeidsavtaler(ansettelsesdetaljer: List<Ansettelsesdetaljer>): List<Arbeidsavtale> {
     return ansettelsesdetaljer.map {
         Arbeidsavtale(
-            periode = Periode(null,null),
+            periode = Periode(null, null),
             gyldighetsperiode = Periode(null, null),
             yrkeskode = it.yrke.kode,
             skipsregister = null,

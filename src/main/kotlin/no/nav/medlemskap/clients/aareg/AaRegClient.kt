@@ -62,10 +62,10 @@ class AaRegClient(
         )
     }
 
-    suspend fun hentArbeidsforholdV2(fnr: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold> {
+    suspend fun hentArbeidsforholdV2(fnr: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<no.nav.medlemskap.clients.aareg.Arbeidsforhold> {
         val oidcToken = stsClient.oidcToken()
         return runCatching {
-            runWithRetryAndMetrics("AaReg", "ArbeidsforholdV1", retry) {
+            runWithRetryAndMetrics("AaReg", "ArbeidsforholdV2", retry) {
                 httpClient.get() {
                     url("$baseUrl/v2/arbeidstaker/arbeidsforhold")
                     header(HttpHeaders.Authorization, "Bearer $oidcToken")
