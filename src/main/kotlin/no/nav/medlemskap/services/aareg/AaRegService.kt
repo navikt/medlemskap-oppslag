@@ -11,6 +11,7 @@ import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import java.time.LocalDate
 
 private val secureLogger = KotlinLogging.logger("tjenestekall")
+private val logger = KotlinLogging.logger {}
 
 class AaRegService(
     private val aaRegClient: AaRegClient,
@@ -34,7 +35,14 @@ class AaRegService(
             }
         }
 
-        val arbeidsforholdV2 = aaRegClient.hentArbeidsforholdV2(fnr, callId, fraOgMed, tilOgMed)
+        var arbeidsforholdV2: List<no.nav.medlemskap.clients.aareg.Arbeidsforhold> = listOf()
+
+        try {
+            arbeidsforholdV2 = aaRegClient.hentArbeidsforholdV2(fnr, callId, fraOgMed, tilOgMed)
+        } catch (error: Throwable) {
+            logger.error("Kall mot Aareg v2 feilet", kv("stacktrace", error.stackTrace))
+        }
+
 
         secureLogger.info {
             kv("fnr", fnr)
