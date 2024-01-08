@@ -4,6 +4,7 @@ import com.fasterxml.jackson.module.kotlin.readValue
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.arbeidsforhold.*
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.services.aareg.mapAaregResultat
 import org.junit.Assert
 import org.junit.Test
@@ -15,7 +16,7 @@ class AaregMapperTest {
     @Test
     fun parseV2() {
         val fileContent = this::class.java.classLoader.getResource("AaregV2respons.json").readText(Charsets.UTF_8)
-        val aaRegArbeidsforhold = objectMapper.readTree(fileContent)
+        val aaRegArbeidsforhold: List<no.nav.medlemskap.clients.aareg.Arbeidsforhold> = objectMapper.readValue(fileContent)
 
         val list1 = listOf("1", "2", "3")
         val list2 = listOf(1, 2, 3)

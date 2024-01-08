@@ -76,7 +76,7 @@ class AaRegClient(
                     header("x-nav-apiKey", aaRegApiKey)
                     parameter("historikk", "true")
                     parameter("arbeidsforholdstatus", listOf("AKTIV", "AVSLUTTET", "FREMTIDIG"))
-                    parameter("rapporteringsordning", listOf("FOER_A_ORDNINGEN", "A_ORDNINGEN"))
+                    parameter("rapporteringsordning", listOf("A_ORDNINGEN"))
                 }.body<List<Arbeidsforhold>>()
             }
         }.fold(
@@ -85,7 +85,7 @@ class AaRegClient(
                 when (error) {
                     is ClientRequestException -> {
                         if (error.response.status.value == 404) {
-                            logger.warn("404, fra AAREG på url (GET) $baseUrl/v1/arbeidstaker/arbeidsforhold")
+                            logger.warn("404, fra AAREG på url (GET) $baseUrl/v2/arbeidstaker/arbeidsforhold")
                             listOf()
                         } else {
                             throw error

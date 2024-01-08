@@ -1,7 +1,6 @@
 package no.nav.medlemskap.services.aareg
 
 import mu.KotlinLogging
-import net.logstash.logback.argument.StructuredArguments
 import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.clients.aareg.AaRegArbeidsforhold
 import no.nav.medlemskap.clients.aareg.AaRegClient
