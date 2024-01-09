@@ -1,7 +1,6 @@
 package no.nav.medlemskap.services.aareg
 
 import mu.KotlinLogging
-import net.logstash.logback.argument.StructuredArguments
 import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.clients.aareg.AaRegArbeidsforhold
 import no.nav.medlemskap.clients.aareg.AaRegClient
@@ -42,7 +41,6 @@ class AaRegService(
         } catch (error: Throwable) {
             logger.error("Kall mot Aareg v2 feilet", kv("stacktrace", error.stackTrace))
         }
-
 
         secureLogger.info {
             kv("fnr", fnr)
