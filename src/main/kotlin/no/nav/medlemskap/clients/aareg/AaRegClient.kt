@@ -75,7 +75,7 @@ class AaRegClient(
                     header("Nav-Consumer-Token", "Bearer $oidcToken")
                     header("x-nav-apiKey", aaRegApiKey)
                     parameter("historikk", "true")
-                    parameter("arbeidsforholdstatus", listOf("AKTIV", "AVSLUTTET", "FREMTIDIG"))
+                    parameter("arbeidsforholdstatus", "AKTIV,AVSLUTTET,FREMTIDIG")
                 }.body<List<Arbeidsforhold>>()
             }
         }.fold(
