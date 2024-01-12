@@ -88,7 +88,7 @@ data class Arbeidsforhold(
     val navUuid: String,
     val opprettet: LocalDateTime,
     val sistBekreftet: LocalDateTime,
-    val sistEndret: LocalDateTime,
+    val sistEndret: LocalDateTime?,
     val bruksperiode: Bruksperiode,
     val sporingsinformasjon: Sporingsinformasjon?
 )
