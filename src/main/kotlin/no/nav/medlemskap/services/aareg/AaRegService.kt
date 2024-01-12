@@ -47,7 +47,8 @@ class AaRegService(
             kv("fnr", fnr),
             kv("NAV-call-id", callId),
             kv("Aareg v2", arbeidsforholdV2),
-            kv("Aareg v1", arbeidsforhold)
+            kv("Aareg v1", arbeidsforhold),
+            kv("V2 mappet til V1", arbeidsforholdV2.mapTilV1())
         )
 
         return mapArbeidsforhold(arbeidsforholdMedOrganisasjon)
