@@ -5,6 +5,8 @@ import no.nav.medlemskap.clients.aareg.Arbeidsforhold
 import no.nav.medlemskap.clients.aareg.Opplysningspliktig
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.arbeidsforhold.*
+import java.time.LocalDate
+import java.time.YearMonth
 
 fun List<Arbeidsforhold>.mapTilV1(): List<no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold> {
     return this.map {
@@ -28,11 +30,13 @@ private fun mapAnsettelsesperiodeTilV1(v2: Arbeidsforhold): Periode {
 }
 
 private fun mapUtenlandsoppholdTilV1(v2: Arbeidsforhold): List<Utenlandsopphold>? {
-    return v2.utenlandsopphold.map {
+    return v2.utenlandsopphold?.map {
         Utenlandsopphold(
-            landkode = it.land.kode,
+            landkode = it.land?.kode ?: "null",
             periode = mapUtenlandsoppholdsperiodeTilV1(it),
-            rapporteringsperiode = it.rapporteringsmaaneder.fra
+            rapporteringsperiode = it.rapporteringsmaaneder?.fra
+                ?: it.rapporteringsmaaneder?.til
+                ?: YearMonth.of(LocalDate.EPOCH.year, LocalDate.EPOCH.month)
         )
     }
 }
@@ -78,8 +82,11 @@ private fun mapAnsettelsesdetaljerTilArbeidsavtaler(ansettelsesdetaljer: List<An
 }
 
 private fun mapPermisjonPermitteringTilV1(v2: Arbeidsforhold): List<PermisjonPermittering> {
-    val permisjoner = v2.permisjoner.flatMap { lagPermisjoner(v2.permisjoner) }
-    val permittering = v2.permitteringer.flatMap { lagPermitteringer(v2.permitteringer) }
+    val permisjoner = v2.permisjoner?.flatMap { lagPermisjoner(v2.permisjoner) }
+    val permittering = v2.permitteringer?.flatMap { lagPermitteringer(v2.permitteringer) }
+
+    if (permisjoner == null || permittering == null)
+        return listOf()
 
     return permisjoner.plus(permittering)
 }

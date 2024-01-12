@@ -42,7 +42,7 @@ data class Ansettelsesperiode(
     val sluttdato: LocalDate?,
     val sluttaarsak: Kodeverksentitet?,
     val varsling: Kodeverksentitet?,
-    val sporingsinformasjon: Sporingsinformasjon
+    val sporingsinformasjon: Sporingsinformasjon?
 )
 
 data class Rapporteringsmaaneder(
@@ -65,7 +65,7 @@ data class Ansettelsesdetaljer(
     val sisteStillingsprosentendring: LocalDate?,
     val sisteLoennsendring: LocalDate?,
     val rapporteringsmaaneder: Rapporteringsmaaneder, // v1.gyldighetsperiode
-    val sporingsinformasjon: Sporingsinformasjon
+    val sporingsinformasjon: Sporingsinformasjon?
 )
 
 data class Arbeidsforhold(
@@ -76,12 +76,12 @@ data class Arbeidsforhold(
     val opplysningspliktig: Opplysningspliktig,
     val ansettelsesperiode: Ansettelsesperiode,
     val ansettelsesdetaljer: List<Ansettelsesdetaljer>,
-    val permisjoner: List<PermisjonPermittering>,
-    val permitteringer: List<PermisjonPermittering>,
-    val timerMedTimeloenn: List<TimerMedTimeloenn>,
-    val utenlandsopphold: List<Utenlandsopphold>,
-    val idHistorikk: List<IdHistorikk>,
-    val varsler: List<Varsel>,
+    val permisjoner: List<PermisjonPermittering>?,
+    val permitteringer: List<PermisjonPermittering>?,
+    val timerMedTimeloenn: List<TimerMedTimeloenn>?,
+    val utenlandsopphold: List<Utenlandsopphold>?,
+    val idHistorikk: List<IdHistorikk>?,
+    val varsler: List<Varsel>?,
     val rapporteringsordning: Kodeverksentitet,
     val navArbeidsforholdId: Int,
     val navVersjon: Int,
@@ -90,28 +90,28 @@ data class Arbeidsforhold(
     val sistBekreftet: LocalDateTime,
     val sistEndret: LocalDateTime,
     val bruksperiode: Bruksperiode,
-    val sporingsinformasjon: Sporingsinformasjon
+    val sporingsinformasjon: Sporingsinformasjon?
 )
 
 data class Varsel(
     val entitet: Entitet,
-    val varsling: Kodeverksentitet
+    val varsling: Kodeverksentitet?
 )
 
 data class Utenlandsopphold(
-    val land: Kodeverksentitet,
+    val land: Kodeverksentitet?,
     val startdato: LocalDate,
     val sluttdato: LocalDate?,
-    val rapporteringsmaaneder: Rapporteringsmaaneder,
-    val sporingsinformasjon: Sporingsinformasjon
+    val rapporteringsmaaneder: Rapporteringsmaaneder?,
+    val sporingsinformasjon: Sporingsinformasjon?
 )
 
 data class TimerMedTimeloenn(
     val antall: Double,
     val startdato: String,
     val sluttdato: String?,
-    val rapporteringsmaaneder: Rapporteringsmaaneder,
-    val sporingsinformasjon: Sporingsinformasjon
+    val rapporteringsmaaneder: Rapporteringsmaaneder?,
+    val sporingsinformasjon: Sporingsinformasjon?
 )
 
 data class PermisjonPermittering(
@@ -121,8 +121,8 @@ data class PermisjonPermittering(
     val sluttdato: LocalDate?,
     val prosent: Double,
     val varsling: Kodeverksentitet?,
-    val idHistorikk: List<IdHistorikk>,
-    val sporingsinformasjon: Sporingsinformasjon
+    val idHistorikk: List<IdHistorikk>?,
+    val sporingsinformasjon: Sporingsinformasjon?
 )
 
 data class IdHistorikk(
