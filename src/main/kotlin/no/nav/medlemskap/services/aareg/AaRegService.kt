@@ -39,7 +39,11 @@ class AaRegService(
         try {
             arbeidsforholdV2 = aaRegClient.hentArbeidsforholdV2(fnr, callId, fraOgMed, tilOgMed)
         } catch (error: Throwable) {
-            logger.error("Kall mot Aareg v2 feilet", kv("stacktrace", error.stackTrace))
+            logger.error(
+                "Kall mot Aareg v2 feilet",
+                kv("stacktrace", error.stackTrace),
+                kv("message", error.message)
+            )
         }
 
         secureLogger.info(
