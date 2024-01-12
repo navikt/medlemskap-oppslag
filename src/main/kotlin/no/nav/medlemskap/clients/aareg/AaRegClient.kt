@@ -76,6 +76,7 @@ class AaRegClient(
                     header("x-nav-apiKey", aaRegApiKey)
                     parameter("historikk", "true")
                     parameter("arbeidsforholdstatus", "AKTIV,AVSLUTTET,FREMTIDIG")
+                    parameter("rapporteringsordning","FOER_A_ORDNINGEN, A_ORDNINGEN")
                 }.body<List<Arbeidsforhold>>()
             }
         }.fold(
