@@ -42,7 +42,8 @@ class AaRegService(
             logger.error(
                 "Kall mot Aareg v2 feilet",
                 kv("stacktrace", error.stackTrace),
-                kv("message", error.message)
+                kv("message", error.message),
+                kv("cause", error.cause)
             )
         }
 
