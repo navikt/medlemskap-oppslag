@@ -42,12 +42,13 @@ class AaRegService(
             logger.error("Kall mot Aareg v2 feilet", kv("stacktrace", error.stackTrace))
         }
 
-        secureLogger.info {
-            kv("fnr", fnr)
-            kv("NAV-call-id", callId)
-            kv("Aareg v2", arbeidsforholdV2)
+        secureLogger.info(
+            "Aareg kall",
+            kv("fnr", fnr),
+            kv("NAV-call-id", callId),
+            kv("Aareg v2", arbeidsforholdV2),
             kv("Aareg v1", arbeidsforhold)
-        }
+        )
 
         return mapArbeidsforhold(arbeidsforholdMedOrganisasjon)
     }
