@@ -100,7 +100,7 @@ data class Varsel(
 
 data class Utenlandsopphold(
     val land: Kodeverksentitet?,
-    val startdato: LocalDate,
+    val startdato: LocalDate?,
     val sluttdato: LocalDate?,
     val rapporteringsmaaneder: Rapporteringsmaaneder?,
     val sporingsinformasjon: Sporingsinformasjon?
