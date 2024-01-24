@@ -28,6 +28,8 @@ spec:
     requests:
       cpu: 50m
       memory: 128Mi
+    envFrom:
+      - secret: medlemskap-oppslag
   ingresses:
     - https://medlemskap-oppslag.intern.nav.no
   replicas:
@@ -90,5 +92,3 @@ spec:
       value: api://prod-fss.medlemskap.udi-proxy/.default
     - name: AZURE_SCOPE_MEDL
       value: api://prod-fss.team-rocket.medlemskap-medl-api/.default
-  envFrom:
-    - secret: medlemskap-oppslag
