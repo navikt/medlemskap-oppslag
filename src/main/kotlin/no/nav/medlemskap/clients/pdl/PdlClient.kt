@@ -9,6 +9,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import mu.KotlinLogging
+import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.clients.pdl.generated.HentIdenter
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
@@ -79,6 +80,10 @@ class PdlClient(
             }.body()
 
             if (!response.errors.isNullOrEmpty()) {
+                logger.warn(
+                    "extension fra PDL:",
+                    kv("extensions", response.extensions)
+                )
                 logger.error("PDL response errors: ${response.errors}")
                 // TODO: utfør feil håndtering. Gjøres utenfor denne koden?
             }
