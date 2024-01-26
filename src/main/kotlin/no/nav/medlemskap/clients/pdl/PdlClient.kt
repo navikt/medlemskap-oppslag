@@ -82,7 +82,7 @@ class PdlClient(
             if (!response.extensions.isNullOrEmpty()) {
                 logger.warn(
                     "extension fra PDL:",
-                    kv("extensions", response.extensions)
+                    kv("extensions", response.extensions.toString())
                 )
             }
 
