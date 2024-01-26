@@ -79,11 +79,14 @@ class PdlClient(
                 header("x-nav-apiKey", pdlApiKey)
             }.body()
 
-            if (!response.errors.isNullOrEmpty()) {
+            if (!response.extensions.isNullOrEmpty()) {
                 logger.warn(
                     "extension fra PDL:",
                     kv("extensions", response.extensions)
                 )
+            }
+
+            if (!response.errors.isNullOrEmpty()) {
                 logger.error("PDL response errors: ${response.errors}")
                 // TODO: utfør feil håndtering. Gjøres utenfor denne koden?
             }
