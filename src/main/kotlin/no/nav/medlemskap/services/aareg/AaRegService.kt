@@ -6,6 +6,7 @@ import no.nav.medlemskap.clients.aareg.AaRegArbeidsforhold
 import no.nav.medlemskap.clients.aareg.AaRegClient
 import no.nav.medlemskap.clients.ereg.EregClient
 import no.nav.medlemskap.clients.ereg.Organisasjon
+import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import java.time.LocalDate
 
@@ -51,9 +52,9 @@ class AaRegService(
             "Aareg kall",
             kv("fnr", fnr),
             kv("NAV-call-id", callId),
-            kv("Aareg v2", arbeidsforholdV2),
-            kv("Aareg v1", arbeidsforhold),
-            kv("V2 mappet til V1", arbeidsforholdV2.mapTilV1())
+            kv("Aareg v2", objectMapper.writeValueAsString(arbeidsforholdV2)),
+            kv("Aareg v1", objectMapper.writeValueAsString(arbeidsforhold)),
+            kv("V2 mappet til V1", objectMapper.writeValueAsString(arbeidsforholdV2.mapTilV1()))
         )
 
         return mapArbeidsforhold(arbeidsforholdMedOrganisasjon)
