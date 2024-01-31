@@ -35,6 +35,8 @@ class AaRegService(
             }
         }
 
+        //Midlertidig fjernet for å minimere tidsbruk
+        /*
         var arbeidsforholdV2: List<no.nav.medlemskap.clients.aareg.Arbeidsforhold> = listOf()
 
         try {
@@ -56,6 +58,8 @@ class AaRegService(
             kv("Aareg v1", objectMapper.writeValueAsString(arbeidsforhold)),
             kv("V2 mappet til V1", objectMapper.writeValueAsString(arbeidsforholdV2.mapTilV1()))
         )
+
+         */
 
         return mapArbeidsforhold(arbeidsforholdMedOrganisasjon)
     }
