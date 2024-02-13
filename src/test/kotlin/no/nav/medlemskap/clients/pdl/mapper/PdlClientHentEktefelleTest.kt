@@ -7,9 +7,11 @@ import io.ktor.http.*
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import no.nav.medlemskap.clients.Token
+import no.nav.medlemskap.clients.azuread.AzureAdClient
 import no.nav.medlemskap.clients.pdl.PdlClient
-import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.cioHttpClient
+import no.nav.medlemskap.config.Configuration
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeAll
@@ -17,6 +19,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class PdlClientHentEktefelleTest {
+    private val config: Configuration = Configuration()
 
     companion object {
         val server: WireMockServer = WireMockServer(WireMockConfiguration.options().dynamicPort())
@@ -43,8 +46,8 @@ class PdlClientHentEktefelleTest {
     fun `henter person`() {
         val callId = "123456"
         val username = "whatever"
-        val stsClient: StsRestClient = mockk()
-        coEvery { stsClient.oidcToken() } returns "dummytoken"
+        val azureAdClient: AzureAdClient = mockk()
+        coEvery { azureAdClient.hentToken(config.register.pdlScope) } returns Token("dummytoken", "", 1)
 
         stubFor(
             pdlRequestMapping
@@ -56,7 +59,7 @@ class PdlClientHentEktefelleTest {
                 )
         )
 
-        val pdlClient = PdlClient(server.baseUrl(), stsClient, username, cioHttpClient, null, "123")
+        val pdlClient = PdlClient(server.baseUrl(), azureAdClient, config, username, cioHttpClient, null, "123")
 
         val pdlResponse = runBlocking { pdlClient.hentPersonV2("1234567890", callId) }
 
@@ -66,7 +69,6 @@ class PdlClientHentEktefelleTest {
     val pdlRequestMapping: MappingBuilder = post(urlPathEqualTo("/"))
         .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
         .withHeader("Accept", containing("application/json"))
-        .withHeader("Nav-Consumer-Token", equalTo("Bearer dummytoken"))
 // .withRequestBody()
 
     val pdlResponse =
