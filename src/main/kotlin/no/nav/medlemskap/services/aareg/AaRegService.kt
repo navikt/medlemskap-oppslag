@@ -1,12 +1,10 @@
 package no.nav.medlemskap.services.aareg
 
 import mu.KotlinLogging
-import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.clients.aareg.AaRegArbeidsforhold
 import no.nav.medlemskap.clients.aareg.AaRegClient
 import no.nav.medlemskap.clients.ereg.EregClient
 import no.nav.medlemskap.clients.ereg.Organisasjon
-import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import java.time.LocalDate
 
@@ -35,7 +33,7 @@ class AaRegService(
             }
         }
 
-        //Midlertidig fjernet for å minimere tidsbruk
+        // Midlertidig fjernet for å minimere tidsbruk
         /*
         var arbeidsforholdV2: List<no.nav.medlemskap.clients.aareg.Arbeidsforhold> = listOf()
 
