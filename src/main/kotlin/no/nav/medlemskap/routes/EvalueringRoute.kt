@@ -18,15 +18,14 @@ import no.nav.medlemskap.common.exceptions.UgyldigRequestException
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.common.uavklartPåRegel
 import no.nav.medlemskap.config.Configuration
-import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.*
 import no.nav.medlemskap.domene.Fødselsnummer.Companion.gyldigFnr
 import no.nav.medlemskap.domene.Journalpost.Companion.alleFagsakIDer
 import no.nav.medlemskap.domene.Journalpost.Companion.harDokument
-import no.nav.medlemskap.domene.Request
-import no.nav.medlemskap.domene.Response
-import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.alleAktiveYrkeskoderDerTomErNull
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.antallAnsatteHosArbeidsgivere
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.antallAnsatteHosArbeidsgiversJuridiskeEnheter
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
 import no.nav.medlemskap.services.kafka.Producer
@@ -314,6 +313,10 @@ private fun loggResponse(fnr: String, response: Response, endpoint: String = "/"
             kv("har_utflytting", response.datagrunnlag.pdlpersonhistorikk.harUtflyttingFraNorge()),
             kv("yrkeskoder", response.datagrunnlag.arbeidsforhold.alleAktiveYrkeskoderDerTomErNull()),
             kv("har_medlperiode_uten_arbeidsforhold", response.datagrunnlag.harPeriodeUtenMedlemskapOgIkkeArbeidsforhold()),
+            kv("Antall ansatte hos arbeidsgiver", response.datagrunnlag.arbeidsforhold.antallAnsatteHosArbeidsgivere(
+                Kontrollperiode.kontrollPeriodeForArbeidsforhold(response.datagrunnlag.startDatoForYtelse))),
+            kv("antall ansatte for juridiske enheter", response.datagrunnlag.arbeidsforhold.antallAnsatteHosArbeidsgiversJuridiskeEnheter(
+                Kontrollperiode.kontrollPeriodeForArbeidsforhold(response.datagrunnlag.startDatoForYtelse))),
             kv("endpoint", endpoint)
             // kv("regleroverstyrt", response.resultat.erReglerOverstyrt())
         )
