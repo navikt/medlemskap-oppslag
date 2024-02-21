@@ -9,14 +9,17 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import mu.KotlinLogging
+import net.logstash.logback.argument.StructuredArguments.kv
+import no.nav.medlemskap.clients.azuread.AzureAdClient
 import no.nav.medlemskap.clients.pdl.generated.HentIdenter
 import no.nav.medlemskap.clients.pdl.generated.HentPerson
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
-import no.nav.medlemskap.clients.sts.StsRestClient
+import no.nav.medlemskap.config.Configuration
 
 class PdlClient(
     private val baseUrl: String,
-    private val stsClient: StsRestClient,
+    private val azureAdClient: AzureAdClient,
+    private val configuration: Configuration,
     private val username: String,
     private val httpClient: HttpClient,
     private val retry: Retry? = null,
@@ -29,7 +32,7 @@ class PdlClient(
     suspend fun hentIdenterv2(fnr: String, callId: String): GraphQLClientResponse<HentIdenter.Result> {
 
         return runWithRetryAndMetrics("PDL", "HentIdenter", retry) {
-            val stsToken = stsClient.oidcToken()
+            val token = azureAdClient.hentToken(configuration.register.pdlScope)
             val query = HentIdenter(
                 variables = HentIdenter.Variables(
                     fnr,
@@ -40,12 +43,11 @@ class PdlClient(
             val response: KotlinxGraphQLResponse<HentIdenter.Result> = httpClient.post() {
                 url(baseUrl)
                 setBody(query)
-                header(HttpHeaders.Authorization, "Bearer $stsToken")
+                header(HttpHeaders.Authorization, "Bearer ${token.token}")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
                 header("Nav-Call-Id", callId)
-                header("Nav-Consumer-Token", "Bearer $stsToken")
-                header("Nav-Consumer-Id", username)
+                header("Nav-Consumer-Id", configuration.azureAd.clientId)
                 header("x-nav-apiKey", pdlApiKey)
             }.body()
 
@@ -60,7 +62,7 @@ class PdlClient(
     suspend fun hentPersonV2(fnr: String, callId: String): GraphQLClientResponse<HentPerson.Result> {
 
         return runWithRetryAndMetrics("PDL", "HentPerson", retry) {
-            val stsToken = stsClient.oidcToken()
+            val token = azureAdClient.hentToken(configuration.register.pdlScope)
 
             val query = HentPerson(
                 variables = HentPerson.Variables(fnr, true, true)
@@ -68,15 +70,21 @@ class PdlClient(
             val response: KotlinxGraphQLResponse<HentPerson.Result> = httpClient.post() {
                 url(baseUrl)
                 setBody(query)
-                header(HttpHeaders.Authorization, "Bearer $stsToken")
+                header(HttpHeaders.Authorization, "Bearer ${token.token}")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
-                header("TEMA", "MED")
+                header("behandlingsnummer", "B451")
                 header("Nav-Call-Id", callId)
-                header("Nav-Consumer-Token", "Bearer $stsToken")
-                header("Nav-Consumer-Id", username)
+                header("Nav-Consumer-Id", configuration.azureAd.clientId)
                 header("x-nav-apiKey", pdlApiKey)
             }.body()
+
+            if (!response.extensions.isNullOrEmpty()) {
+                logger.warn(
+                    "extension fra PDL:",
+                    kv("extensions", response.extensions.toString())
+                )
+            }
 
             if (!response.errors.isNullOrEmpty()) {
                 logger.error("PDL response errors: ${response.errors}")
@@ -91,7 +99,7 @@ class PdlClient(
             url(baseUrl)
             header(HttpHeaders.Accept, ContentType.Application.Json)
             header("x-nav-apiKey", pdlApiKey)
-            header("Nav-Consumer-Id", username)
+            header("Nav-Consumer-Id", configuration.azureAd.clientId)
         }
     }
 }

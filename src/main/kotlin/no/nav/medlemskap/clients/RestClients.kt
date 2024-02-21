@@ -33,7 +33,7 @@ class RestClients(
     fun medl2(endpointBaseUrl: String) = MedlClient(endpointBaseUrl, azureAdClient, configuration, httpClient, medlRetry)
     fun saf(endpointBaseUrl: String) = SafClient(endpointBaseUrl, stsClientRest, configuration.sts.username, httpClient, configuration.register.safApiKey, safRetry)
     fun oppgaver(endpointBaseUrl: String) = OppgaveClient(endpointBaseUrl, stsClientRest, httpClient, configuration.register.oppgaveApiKey, oppgaveRetry)
-    fun pdl(endpointBaseURl: String) = PdlClient(endpointBaseURl, stsClientRest, configuration.sts.username, httpClient, pdlRetry, configuration.register.pdlApiKey)
+    fun pdl(endpointBaseURl: String) = PdlClient(endpointBaseURl, azureAdClient, configuration, configuration.sts.username, httpClient, pdlRetry, configuration.register.pdlApiKey)
     fun ereg(endpointBaseUrl: String) = EregClient(endpointBaseUrl, httpClient, configuration, configuration.register.eregApiKey, eregRetry)
     fun udi(endpointBaseUrl: String) = UdiClient(endpointBaseUrl, azureAdClient, httpClient, udiRetry)
 }

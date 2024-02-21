@@ -86,7 +86,7 @@ spec:
     - name: OPPGAVE_BASE_URL
       value: https://api-gw-q1.oera.no/oppgave
     - name: PDL_BASE_URL
-      value: https://api-gw-q1.oera.no/pdl-api/graphql
+      value: https://pdl-api.dev-fss-pub.nais.io/graphql
     - name: EREG_BASE_URL
       value: https://api-gw-q1.oera.no/ereg-services/api
     - name: UDI_BASE_URL
@@ -95,5 +95,8 @@ spec:
       value: api://dev-fss.medlemskap.udi-proxy/.default
     - name: AZURE_SCOPE_MEDL
       value: api://dev-fss.team-rocket.medlemskap-medl-api/.default
+    - name: AZURE_SCOPE_PDL
+      value: api://dev-fss.pdl.pdl-api/.default
+
   envFrom:
     - secret: medlemskap-oppslag
