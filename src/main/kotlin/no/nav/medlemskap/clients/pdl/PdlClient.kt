@@ -43,7 +43,7 @@ class PdlClient(
             val response: KotlinxGraphQLResponse<HentIdenter.Result> = httpClient.post() {
                 url(baseUrl)
                 setBody(query)
-                header(HttpHeaders.Authorization, "Bearer $token")
+                header(HttpHeaders.Authorization, "Bearer ${token.token}")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
                 header("Nav-Call-Id", callId)
