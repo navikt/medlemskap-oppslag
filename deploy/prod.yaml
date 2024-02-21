@@ -83,7 +83,7 @@ spec:
     - name: OPPGAVE_BASE_URL
       value: https://api-gw.oera.no/oppgave
     - name: PDL_BASE_URL
-      value: https://api-gw.oera.no/pdl-api/graphql
+      value: https://pdl-api.prod-fss-pub.nais.io/graphql
     - name: EREG_BASE_URL
       value: https://api-gw.oera.no/ereg-services/api
     - name: UDI_BASE_URL
@@ -92,3 +92,5 @@ spec:
       value: api://prod-fss.medlemskap.udi-proxy/.default
     - name: AZURE_SCOPE_MEDL
       value: api://prod-fss.team-rocket.medlemskap-medl-api/.default
+    - name: AZURE_SCOPE_PDL
+      value: api://prod-fss.pdl.pdl-api/.default
