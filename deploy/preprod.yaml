@@ -31,6 +31,8 @@ spec:
       memory: 128Mi
   ingresses:
     - https://medlemskap-oppslag.intern.dev.nav.no
+  envFrom:
+    - secret: medlemskap-oppslag
   replicas:
     min: 1
     max: 2
@@ -97,6 +99,3 @@ spec:
       value: api://dev-fss.team-rocket.medlemskap-medl-api/.default
     - name: AZURE_SCOPE_PDL
       value: api://dev-fss.pdl.pdl-api/.default
-
-  envFrom:
-    - secret: medlemskap-oppslag
