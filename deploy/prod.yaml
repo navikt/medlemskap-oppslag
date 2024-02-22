@@ -28,10 +28,10 @@ spec:
     requests:
       cpu: 50m
       memory: 128Mi
-    envFrom:
-      - secret: medlemskap-oppslag
   ingresses:
     - https://medlemskap-oppslag.intern.nav.no
+  envFrom:
+    - secret: medlemskap-oppslag
   replicas:
     min: 3
     max: 4
