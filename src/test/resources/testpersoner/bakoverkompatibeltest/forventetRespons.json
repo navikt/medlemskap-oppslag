@@ -1,6 +1,6 @@
 {
-  "tidspunkt" : "2023-09-27T11:04:57.238412",
-  "vurderingsID": "7b006d2c-ff75-4404-9663-7babf23f45de",
+  "vurderingsID" : "7b006d2c-ff75-4404-9663-7babf23f45de",
+  "tidspunkt" : "2024-02-26T09:46:08.89591",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "kanal" : "/",
@@ -13,10 +13,10 @@
     "førsteDagForYtelse" : "2019-01-01",
     "brukerinput" : {
       "arbeidUtenforNorge" : false,
-      "oppholdUtenforEos" : null,
-      "oppholdUtenforNorge" : null,
       "oppholdstilatelse" : null,
-      "utfortAarbeidUtenforNorge" : null
+      "utfortAarbeidUtenforNorge" : null,
+      "oppholdUtenforEos" : null,
+      "oppholdUtenforNorge" : null
     },
     "pdlpersonhistorikk" : {
       "statsborgerskap" : [ {
@@ -83,6 +83,7 @@
       } ],
       "arbeidsgivertype" : "Organisasjon",
       "arbeidsgiver" : {
+        "navn" : null,
         "organisasjonsnummer" : "organisasjonsnummer",
         "ansatte" : [ {
           "antall" : 10,
@@ -188,6 +189,7 @@
         "utenlandsopphold" : [ ],
         "arbeidsgivertype" : "Organisasjon",
         "arbeidsgiver" : {
+          "navn" : "null",
           "organisasjonsnummer" : "1",
           "ansatte" : [ {
             "antall" : 9,

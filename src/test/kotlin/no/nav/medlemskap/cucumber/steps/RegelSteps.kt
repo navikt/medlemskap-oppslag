@@ -40,6 +40,7 @@ import java.io.File
 class RegelSteps : No {
     private val ANSATTE_9 = listOf(Ansatte(9, null))
     private val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(
+        navn = "null",
         organisasjonsnummer = "1",
         ansatte = ANSATTE_9,
         konkursStatus = null,
@@ -302,6 +303,8 @@ class RegelSteps : No {
                 .getResource("/testpersoner/bakoverkompatibeltest/$filnavn.json").readText()
 
             val jsonResponse = medlemskapRequest(medlemskapsparametre)
+
+            println(jsonResponse)
 
             resultat = Response.fraJson(jsonResponse).resultat
 

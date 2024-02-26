@@ -1,5 +1,6 @@
 package no.nav.medlemskap.services.ereg
 
+import no.nav.medlemskap.clients.ereg.Navn
 import no.nav.medlemskap.clients.ereg.Organisasjon
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.arbeidsforhold.Ansatte
@@ -11,6 +12,7 @@ fun mapOrganisasjonTilArbeidsgiver(organisasjon: Organisasjon, juridiskeEnheter:
     val ansatte = organisasjon.organisasjonDetaljer?.ansatte
     val konkursStatus = organisasjon.organisasjonDetaljer?.statuser?.map { it -> it?.kode }
     return Arbeidsgiver(
+        navn = finnOrgNavn(organisasjon.navn),
         organisasjonsnummer = organisasjon.organisasjonsnummer,
         ansatte = mapAnsatte(ansatte),
         konkursStatus = konkursStatus,
@@ -41,3 +43,13 @@ fun mapGyldighetsperiode(gyldighetsperiode: no.nav.medlemskap.clients.ereg.Gyldi
 
 fun mapBruksperiode(bruksperiode: no.nav.medlemskap.clients.ereg.Bruksperiode?): Periode? =
     bruksperiode?.let { Periode(fom = it.fom, tom = it.tom) }
+
+fun finnOrgNavn(orgNavn: Navn?): String {
+    return orgNavn?.navnelinje1
+        ?: orgNavn?.navnelinje2
+        ?: orgNavn?.navnelinje3
+        ?: orgNavn?.navnelinje4
+        ?: orgNavn?.navnelinje5
+        ?: orgNavn?.redigertnavn
+        ?: "null"
+}
