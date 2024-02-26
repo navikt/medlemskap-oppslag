@@ -162,6 +162,9 @@ components:
             $ref: "#/components/schemas/PermisjonPermittering"
     Arbeidsgiver:
       properties:
+        navn:
+          type: string
+          nullable: true
         organisasjonsnummer:
           type: string
           nullable: true

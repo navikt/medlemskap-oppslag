@@ -30,6 +30,7 @@ class AaregMapperTest {
         juridiskEnhetOrgnummerEnhetstype["123456789"] = "AS"
 
         val arbeidsgiver = Arbeidsgiver(
+            navn = "null",
             organisasjonsnummer = "985672744",
             ansatte = listOf(
                 Ansatte(

@@ -8,7 +8,7 @@ import java.time.YearMonth
 
 object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
     val ANSATTE_9 = listOf(Ansatte(9, null))
-    val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(organisasjonsnummer = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskeEnheter = null)
+    val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(navn = "null", organisasjonsnummer = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskeEnheter = null)
 
     fun mapArbeidsforhold(
         dataTable: DataTable,
@@ -301,6 +301,7 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
             }
 
             return Arbeidsgiver(
+                navn = parseValgfriString(ArbeidDomenebegrep.Navn, rad),
                 organisasjonsnummer = parseValgfriString(ArbeidDomenebegrep.IDENTIFIKATOR, rad),
                 ansatte = listOf(Ansatte(parseValgfriInt(ArbeidDomenebegrep.ANTALL_ANSATTE, rad), null)),
                 konkursStatus = konkursStatuser,
@@ -339,6 +340,7 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
 }
 
 enum class ArbeidDomenebegrep(val nøkkel: String) : Domenenøkkel {
+    Navn("Navn"),
     ANTALL_ANSATTE("Antall ansatte"),
     ARBEIDSFORHOLDSTYPE("Arbeidsforholdstype"),
     ARBEIDSGIVER_ID("Arbeidsgiver Id"),

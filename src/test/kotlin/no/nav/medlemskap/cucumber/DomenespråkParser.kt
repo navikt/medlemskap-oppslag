@@ -20,7 +20,7 @@ import java.time.YearMonth
 object DomenespråkParser : BasisDomeneParser() {
     val ANSATTE_9 = listOf(Ansatte(9, null))
     val VANLIG_NORSK_ARBEIDSGIVER =
-        Arbeidsgiver(organisasjonsnummer = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskeEnheter = null)
+        Arbeidsgiver(navn = "null", organisasjonsnummer = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskeEnheter = null)
 
     fun parseValgfriYtelse(domenebegrep: Domenebegrep, rad: Map<String, String>): Ytelse? {
         val valgfriVerdi = valgfriVerdi(domenebegrep.nøkkel, rad)

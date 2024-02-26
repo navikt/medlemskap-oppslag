@@ -14,7 +14,7 @@ fun List<Arbeidsforhold>.mapTilV1(): List<no.nav.medlemskap.domene.arbeidsforhol
             periode = mapAnsettelsesperiodeTilV1(it),
             utenlandsopphold = mapUtenlandsoppholdTilV1(it),
             arbeidsgivertype = mapOpplysningspliktigTypeTilV1(it.opplysningspliktig),
-            arbeidsgiver = Arbeidsgiver(null, null, null, null),
+            arbeidsgiver = Arbeidsgiver(null, null, null, null, null),
             arbeidsforholdstype = mapArbeidsforholdstypeTilV1(it.ansettelsesdetaljer.sortedBy { it.rapporteringsmaaneder.fra }.last()),
             arbeidsavtaler = mapAnsettelsesdetaljerTilArbeidsavtaler(it.ansettelsesdetaljer),
             permisjonPermittering = mapPermisjonPermitteringTilV1(it)

@@ -313,10 +313,18 @@ private fun loggResponse(fnr: String, response: Response, endpoint: String = "/"
             kv("har_utflytting", response.datagrunnlag.pdlpersonhistorikk.harUtflyttingFraNorge()),
             kv("yrkeskoder", response.datagrunnlag.arbeidsforhold.alleAktiveYrkeskoderDerTomErNull()),
             kv("har_medlperiode_uten_arbeidsforhold", response.datagrunnlag.harPeriodeUtenMedlemskapOgIkkeArbeidsforhold()),
-            kv("Antall_ansatte_hos_arbeidsgiver", response.datagrunnlag.arbeidsforhold.antallAnsatteHosArbeidsgivere(
-                Kontrollperiode.kontrollPeriodeForArbeidsforhold(response.datagrunnlag.startDatoForYtelse))),
-            kv("antall_ansatte_for_juridiske_enheter", response.datagrunnlag.arbeidsforhold.antallAnsatteHosArbeidsgiversJuridiskeEnheter(
-                Kontrollperiode.kontrollPeriodeForArbeidsforhold(response.datagrunnlag.startDatoForYtelse))),
+            kv(
+                "Antall_ansatte_hos_arbeidsgiver",
+                response.datagrunnlag.arbeidsforhold.antallAnsatteHosArbeidsgivere(
+                    Kontrollperiode.kontrollPeriodeForArbeidsforhold(response.datagrunnlag.startDatoForYtelse)
+                )
+            ),
+            kv(
+                "antall_ansatte_for_juridiske_enheter",
+                response.datagrunnlag.arbeidsforhold.antallAnsatteHosArbeidsgiversJuridiskeEnheter(
+                    Kontrollperiode.kontrollPeriodeForArbeidsforhold(response.datagrunnlag.startDatoForYtelse)
+                )
+            ),
             kv("endpoint", endpoint)
             // kv("regleroverstyrt", response.resultat.erReglerOverstyrt())
         )
