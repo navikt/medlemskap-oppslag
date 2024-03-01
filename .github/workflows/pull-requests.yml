@@ -45,7 +45,7 @@ jobs:
       - name: Archive NAIS yaml
         uses: actions/upload-artifact@v4
         with:
-          name: nais-dev-yaml
+          name: nais-yaml
           path: deploy
 
   deploypreprod:
@@ -58,7 +58,7 @@ jobs:
       - name: Fetch NAIS yaml
         uses: actions/download-artifact@v4
         with:
-          name: nais-dev-yaml
+          name: nais-yaml
           path: deploy
 
       - uses: nais/deploy/actions/deploy@v1
