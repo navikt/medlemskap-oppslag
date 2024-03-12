@@ -49,6 +49,7 @@ spec:
   accessPolicy:
     inbound:
       rules:
+        - application: diva-client
         - application: medlemskap-oppslag
         - application: medlemskap-barn
         - application: medlemskap-oppslag-funksjonelle-tester

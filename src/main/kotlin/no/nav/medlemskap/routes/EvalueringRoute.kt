@@ -166,6 +166,45 @@ fun Routing.evalueringRoute(
                 throw t
             }
         }
+        // kjører regel motor, men publiserer ikke resultat til kafka
+        post("/vurdering") {
+            val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
+            val azp = callerPrincipal.payload.getClaim("azp").asString()
+            val endpoint = "vurdering"
+            val callId = call.callId ?: UUID.randomUUID().toString()
+            val request = validerRequest(call.receive(), azp)
+
+            val datagrunnlag = withContext(
+                requestContextService.getCoroutineContext(
+                    context = coroutineContext,
+                    ytelse = finnYtelse(request.ytelse, azp)
+                )
+            ) {
+
+                createDatagrunnlag.invoke(
+                    request,
+                    callId,
+                    services,
+                    azp
+                )
+            }
+            try {
+                val resultat = evaluerData(datagrunnlag)
+
+                val response = lagResponse(
+                    callid = callId,
+                    versjonTjeneste = configuration.commitSha,
+                    endpoint = endpoint,
+                    datagrunnlag = datagrunnlag,
+                    resultat = resultat
+                )
+                loggResponse(request.fnr, response, endpoint)
+                call.respond(response)
+            } catch (t: Throwable) {
+                loggError(fnr = request.fnr, datagrunnlag = datagrunnlag, endpoint = endpoint, throwable = t)
+                throw t
+            }
+        }
         post("/brukersporsmaal") {
             val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
             val azp = callerPrincipal.payload.getClaim("azp").asString()
