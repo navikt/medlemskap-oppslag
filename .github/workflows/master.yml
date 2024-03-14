@@ -16,7 +16,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
       - name: Cache
-        uses: actions/cache@v1.1.2
+        uses: actions/cache@v4
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
