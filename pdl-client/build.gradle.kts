@@ -1,5 +1,5 @@
 import com.expediagroup.graphql.plugin.gradle.config.GraphQLSerializer
-val graphqlKotlinClientVersion = "5.3.1"
+val graphqlKotlinClientVersion = "7.0.2"
 val coroutinesVersion = "1.5.2"
 
 plugins {
