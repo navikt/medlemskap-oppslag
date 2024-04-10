@@ -46,7 +46,7 @@ val mainClass = "no.nav.medlemskap.ApplicationKt"
 fun tjenestespesifikasjon(name: String) = "no.nav.tjenestespesifikasjoner:$name:$tjenestespesifikasjonerVersion"
 
 plugins {
-    kotlin("jvm") version "1.7.10"
+    kotlin("jvm") version "1.9.20"
     id("com.github.johnrengelman.shadow") version "6.0.0"
     id("com.expediagroup.graphql") version "4.0.0" apply false
     id("com.github.ben-manes.versions") version "0.29.0"
@@ -82,7 +82,7 @@ allprojects {
     }
 
     tasks.withType<Wrapper> {
-        gradleVersion = "6.8.1"
+        gradleVersion = "8.6"
     }
 }
 
@@ -191,8 +191,8 @@ dependencies {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_20
+    targetCompatibility = JavaVersion.VERSION_20
 }
 
 swaggerSources {
@@ -203,7 +203,7 @@ swaggerSources {
 
 tasks {
     withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.jvmTarget = "20"
         dependsOn("ktlintFormat")
     }
 
