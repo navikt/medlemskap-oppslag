@@ -47,7 +47,7 @@ fun tjenestespesifikasjon(name: String) = "no.nav.tjenestespesifikasjoner:$name:
 
 plugins {
     kotlin("jvm") version "1.9.20"
-    id("com.github.johnrengelman.shadow") version "6.0.0"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
     id("com.expediagroup.graphql") version "4.0.0" apply false
     id("com.github.ben-manes.versions") version "0.29.0"
     id("org.jlleitschuh.gradle.ktlint") version "9.3.0"
@@ -78,7 +78,7 @@ allprojects {
     }
 
     tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.jvmTarget = "20"
     }
 
     tasks.withType<Wrapper> {
