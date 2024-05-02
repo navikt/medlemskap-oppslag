@@ -42,6 +42,7 @@ private val defaultProperties = ConfigurationMap(
         "UDI_BASE_URL" to "",
         "UDI_PROXY_API_KEY" to "",
         "UDI_PROXY_CLIENT_ID" to "",
+        "AZURE_SCOPE_OPPGAVE" to "",
         "AZURE_SCOPE_UDI" to "",
         "AZURE_SCOPE_MEDL" to "",
         "AZURE_SCOPE_PDL" to ""
@@ -91,6 +92,7 @@ data class Configuration(
         val eregApiKey: String = "EREG_API_KEY".configProperty(),
         val udiProxyApiKey: String = "UDI_PROXY_API_KEY".configProperty(), // Venter på  bestilling - legges inn i secrets
         val udiBaseUrl: String = "UDI_BASE_URL".configProperty(),
+        val oppgaveScope: String = "AZURE_SCOPE_OPPGAVE".configProperty(),
         val udiScope: String = "AZURE_SCOPE_UDI".configProperty(),
         val medlScope: String = "AZURE_SCOPE_MEDL".configProperty(),
         val pdlScope: String = "AZURE_SCOPE_PDL".configProperty()

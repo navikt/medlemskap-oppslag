@@ -94,6 +94,8 @@ spec:
       value: https://api-gw-q1.oera.no/ereg-services/api
     - name: UDI_BASE_URL
       value: https://udi-proxy.dev-fss-pub.nais.io
+    - name: AZURE_SCOPE_OPPGAVE
+      value: api://dev-fss.oppgavehandtering.oppgave/.default
     - name: AZURE_SCOPE_UDI
       value: api://dev-fss.medlemskap.udi-proxy/.default
     - name: AZURE_SCOPE_MEDL
