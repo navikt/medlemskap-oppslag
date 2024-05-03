@@ -119,7 +119,7 @@ class OppgaveClientTest {
     }
 
     private fun createOppgaveClient(azureAdClient: AzureAdClient): OppgaveClient {
-        return OppgaveClient(server.baseUrl(), azureAdClient, config, cioHttpClient)
+        return OppgaveClient(server.baseUrl(), azureAdClient, config, cioHttpClient, "123")
     }
 }
 

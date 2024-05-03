@@ -19,6 +19,7 @@ class OppgaveClient(
     private val azureAdClient: AzureAdClient,
     private val configuration: Configuration,
     private val httpClient: HttpClient,
+    private val oppgaveApiKey: String,
     private val retry: Retry? = null
 ) {
 
@@ -33,6 +34,7 @@ class OppgaveClient(
                 url("$baseUrl/api/v1/oppgaver")
                 header(HttpHeaders.Authorization, "Bearer ${token.token}")
                 header("X-Correlation-Id", callId)
+                header("x-nav-apiKey", oppgaveApiKey)
                 aktorIder.forEach { parameter("aktoerId", it) }
                 parameter("tema", TEMA_MEDLEMSKAP)
                 parameter("tema", TEMA_UNNTAK_FRA_MEDLEMSKAP)
