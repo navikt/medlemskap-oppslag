@@ -75,6 +75,7 @@ spec:
         - host: aareg-services-q1.dev-fss-pub.nais.io
         - host: ereg-services.dev.intern.nav.no
         - host: medlemskap-medl-proxy.dev-fss-pub.nais.io
+        - host: oppgave.dev-fss-pub.nais.io
   env:
     - name: SECURITY_TOKEN_SERVICE_URL
       value: https://api-gw-q1.oera.no/sts/SecurityTokenServiceProvider/
@@ -87,7 +88,7 @@ spec:
     - name: SAF_BASE_URL
       value: https://saf.dev-fss-pub.nais.io/graphql
     - name: OPPGAVE_BASE_URL
-      value: https://api-gw-q1.oera.no/oppgave
+      value: https://oppgave.dev-fss-pub.nais.io
     - name: PDL_BASE_URL
       value: https://pdl-api.dev-fss-pub.nais.io/graphql
     - name: EREG_BASE_URL

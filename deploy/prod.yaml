@@ -66,6 +66,7 @@ spec:
         - host: aareg-services.prod-fss-pub.nais.io
         - host: ereg-services.dev.intern.nav.no
         - host: medlemskap-medl-proxy.prod-fss-pub.nais.io
+        - host: oppgave.prod-fss-pub.nais.io
   kafka:
     pool: nav-prod
 
@@ -81,13 +82,15 @@ spec:
     - name: SAF_BASE_URL
       value: https://saf.prod-fss-pub.nais.io/graphql
     - name: OPPGAVE_BASE_URL
-      value: https://api-gw.oera.no/oppgave
+      value: https://oppgave.prod-fss-pub.nais.io
     - name: PDL_BASE_URL
       value: https://pdl-api.prod-fss-pub.nais.io/graphql
     - name: EREG_BASE_URL
       value: https://api-gw.oera.no/ereg-services/api
     - name: UDI_BASE_URL
       value: https://udi-proxy.prod-fss-pub.nais.io
+    - name: AZURE_SCOPE_OPPGAVE
+      value: api://prod-fss.oppgavehandtering.oppgave/.default
     - name: AZURE_SCOPE_UDI
       value: api://prod-fss.medlemskap.udi-proxy/.default
     - name: AZURE_SCOPE_MEDL
