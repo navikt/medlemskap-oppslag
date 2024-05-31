@@ -5,13 +5,12 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 val ktorVersion = "2.1.3"
 val kafkaVersion = "3.3.1"
 val jacksonVersion = "2.14.1"
-val prometheusVersion = "0.9.0"
+val prometheusVersion = "0.16.0"
 val logbackVersion = "1.4.5"
 val logstashVersion = "7.2"
 val konfigVersion = "1.6.10.0"
 val kotlinLoggerVersion = "1.8.3"
 val tjenestespesifikasjonerVersion = "1.2019.12.18-12.22-ce897c4eb2c1"
-val cxfVersion = "4.0.0"
 val coroutinesVersion = "1.5.2"
 val wireMockVersion = "2.35.0"
 val mockkVersion = "1.10.5"
@@ -21,7 +20,7 @@ val restAssuredVersion = "4.3.3"
 val resilience4jVersion = "1.5.0"
 val threetenVersion = "1.5.0"
 val kotlinReflectVersion = "1.7.21"
-val cucumberVersion = "7.11.0"
+val cucumberVersion = "7.17.0"
 val nocommonsVersion = "0.9.0"
 val graphqlKotlinClientVersion = "5.3.1"
 val archUnitVersion = "0.14.1"
@@ -50,8 +49,6 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.0.0"
     id("com.expediagroup.graphql") version "4.0.0" apply false
     id("com.github.ben-manes.versions") version "0.29.0"
-    id("org.jlleitschuh.gradle.ktlint") version "9.3.0"
-    id("org.jlleitschuh.gradle.ktlint-idea") version "9.3.0"
     id("org.hidetake.swagger.generator") version "2.18.2" apply true
     id("org.jetbrains.kotlin.plugin.serialization") version "1.7.10"
 }
@@ -136,10 +133,6 @@ dependencies {
     implementation("org.threeten:threeten-extra:$threetenVersion")
     implementation("org.jetbrains.kotlin:kotlin-reflect:$kotlinReflectVersion")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:$kotlinReflectVersion")
-    implementation("org.apache.cxf:cxf-rt-ws-security:$cxfVersion")
-    implementation("org.apache.cxf:cxf-rt-frontend-jaxws:$cxfVersion")
-    implementation("org.apache.cxf:cxf-rt-features-logging:$cxfVersion")
-    implementation("org.apache.cxf:cxf-rt-transports-http:$cxfVersion")
     implementation("javax.activation:activation:$activationVersion")
     implementation("org.apache.ws.xmlschema:xmlschema-core:$xmlSchemaVersion")
     implementation("com.sun.xml.ws:jaxws-tools:$jaxwsToolsVersion") {
@@ -174,7 +167,7 @@ dependencies {
     testImplementation("io.rest-assured:rest-assured:$restAssuredVersion")
 
     testImplementation("io.cucumber:cucumber-junit:$cucumberVersion")
-    testImplementation("io.cucumber:cucumber-java8:$cucumberVersion")
+    testImplementation("io.cucumber:cucumber-java:$cucumberVersion")
     testImplementation("com.tngtech.archunit:archunit:$archUnitVersion")
     testImplementation("com.tngtech.archunit:archunit-junit5:$archUnitVersion")
     testImplementation("org.skyscreamer:jsonassert:$jsonassertVersion")
@@ -204,7 +197,6 @@ swaggerSources {
 tasks {
     withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "20"
-        dependsOn("ktlintFormat")
     }
 
     withType<Test> {
@@ -229,17 +221,14 @@ tasks {
                 )
             )
         }
-        transform(ServiceFileTransformer::class.java) {
-            setPath("META-INF/cxf")
-            include("bus-extensions.txt")
-        }
     }
-}
 
-ktlint {
-    disabledRules.set(setOf("no-wildcard-imports"))
-    filter {
-        exclude("**/generated/**")
-        include("**/kotlin/**")
+    test {
+        useJUnitPlatform()
+        //Trengs inntil videre for bytebuddy med java 16, som brukes av mockk.
+        jvmArgs = listOf("-Dnet.bytebuddy.experimental=true")
+        java.targetCompatibility = JavaVersion.VERSION_20
+        java.sourceCompatibility = JavaVersion.VERSION_20
     }
+
 }

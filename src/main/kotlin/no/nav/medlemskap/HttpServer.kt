@@ -21,8 +21,9 @@ import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics
 import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics
 import io.micrometer.core.instrument.binder.system.FileDescriptorMetrics
 import io.micrometer.core.instrument.binder.system.ProcessorMetrics
-import io.micrometer.prometheus.PrometheusConfig
-import io.micrometer.prometheus.PrometheusMeterRegistry
+import io.micrometer.prometheusmetrics.PrometheusConfig
+import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
+import io.prometheus.client.CollectorRegistry
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.*
@@ -101,7 +102,7 @@ createHttpServer(
     val requestContextService = RequestContextService()
     if (useAuthentication) {
         routing {
-            naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = prometheusRegistry.prometheusRegistry)
+            naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = CollectorRegistry.defaultRegistry)
             if (services.configuration.cluster == "dev-gcp") setupSwaggerDocApi()
             evalueringRoute(services, configuration, requestContextService, createDatagrunnlag)
             reglerRoute()
@@ -109,7 +110,7 @@ createHttpServer(
         }
     } else {
         routing {
-            naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = prometheusRegistry.prometheusRegistry)
+            naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = CollectorRegistry.defaultRegistry)
             if (services.configuration.cluster == "dev-gcp") setupSwaggerDocApi()
             evalueringTestRoute(services, configuration, requestContextService, createDatagrunnlag)
             reglerRoute()

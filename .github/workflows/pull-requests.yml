@@ -23,7 +23,7 @@ jobs:
         with:
           java-version: '20'
           distribution: 'temurin'
-
+          check-latest: true
       - name: Cache gradle dependencies
         uses: actions/cache@v1
         with:
