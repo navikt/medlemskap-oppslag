@@ -7,7 +7,8 @@ data class Opphold(
     val type: OppholdstillatelseType,
     val oppholdFra: LocalDate?,
     val oppholdTil: LocalDate?,
-    val medtadata: OppholdMetadata
+    val medtadata: OppholdMetadata,
+    val folkeregistermetadata: Folkeregistermetadata
 )
 
 enum class OppholdstillatelseType {

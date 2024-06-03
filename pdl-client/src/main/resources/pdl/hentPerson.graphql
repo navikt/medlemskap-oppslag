@@ -53,6 +53,13 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
                     systemkilde
                 }
             }
+            folkeregistermetadata {
+                aarsak,
+                ajourholdstidspunkt,
+                gyldighetstidspunkt,
+                opphoerstidspunkt,
+                kilde
+            }
         },
         doedsfall{
             doedsdato
@@ -87,9 +94,11 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
                 historisk
             },
             folkeregistermetadata {
+                aarsak
                 ajourholdstidspunkt,
                 gyldighetstidspunkt,
-                opphoerstidspunkt
+                opphoerstidspunkt,
+                kilde
             }
         },
         utflyttingFraNorge{

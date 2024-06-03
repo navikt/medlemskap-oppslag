@@ -62,7 +62,8 @@ object PdlMapper {
                 type = OppholdstillatelseType.valueOf(it.type.name),
                 oppholdFra = mapDate(it.oppholdFra),
                 oppholdTil = mapDate(it.oppholdTil),
-                medtadata = OppholdMetadata(it.metadata.historisk, it.metadata.master, mapEnringer(it.metadata.endringer))
+                medtadata = OppholdMetadata(it.metadata.historisk, it.metadata.master, mapEnringer(it.metadata.endringer)),
+                folkeregistermetadata = mapFolkeregistermetadata(it.folkeregistermetadata)
             )
         }
     }
@@ -105,7 +106,8 @@ object PdlMapper {
         return Folkeregistermetadata(
             ajourholdstidspunkt = parseNullableDateTimeFraPDL(folkeregistermetadata?.ajourholdstidspunkt),
             gyldighetstidspunkt = parseNullableDateTimeFraPDL(folkeregistermetadata?.gyldighetstidspunkt),
-            opphoerstidspunkt = parseNullableDateTimeFraPDL(folkeregistermetadata?.opphoerstidspunkt)
+            opphoerstidspunkt = parseNullableDateTimeFraPDL(folkeregistermetadata?.opphoerstidspunkt),
+            aarsak = null
         )
     }
 
