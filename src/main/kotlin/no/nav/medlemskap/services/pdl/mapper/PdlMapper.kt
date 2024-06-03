@@ -107,7 +107,7 @@ object PdlMapper {
             ajourholdstidspunkt = parseNullableDateTimeFraPDL(folkeregistermetadata?.ajourholdstidspunkt),
             gyldighetstidspunkt = parseNullableDateTimeFraPDL(folkeregistermetadata?.gyldighetstidspunkt),
             opphoerstidspunkt = parseNullableDateTimeFraPDL(folkeregistermetadata?.opphoerstidspunkt),
-            aarsak = null
+            aarsak = folkeregistermetadata?.aarsak
         )
     }
 
