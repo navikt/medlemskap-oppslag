@@ -38,7 +38,7 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
                 historisk
             }
         },
-        opphold(historikk: $historikk){
+        opphold(historikk: true){
             type
             oppholdFra
             oppholdTil
