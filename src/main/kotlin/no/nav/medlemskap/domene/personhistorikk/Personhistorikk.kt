@@ -14,7 +14,8 @@ data class Personhistorikk(
     val doedsfall: List<LocalDate>,
     val innflyttingTilNorge: List<InnflyttingTilNorge>,
     val utflyttingFraNorge: List<UtflyttingFraNorge>,
-    val navn: List<Navn>
+    val navn: List<Navn>,
+    val oppholdstilatelser: List<Opphold> = emptyList()
 ) {
 
     fun erBrukerDoed(): Boolean {

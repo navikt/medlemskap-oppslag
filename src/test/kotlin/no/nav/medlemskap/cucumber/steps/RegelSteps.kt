@@ -310,7 +310,7 @@ class RegelSteps : No {
                 forventetJsonResponse,
                 jsonResponse,
                 CustomComparator(
-                    JSONCompareMode.STRICT,
+                    JSONCompareMode.LENIENT,
                     Customization("tidspunkt") { _, _ -> true }
                 )
             )

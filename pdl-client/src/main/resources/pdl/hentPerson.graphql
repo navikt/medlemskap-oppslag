@@ -38,6 +38,22 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
                 historisk
             }
         },
+        opphold(historikk: $historikk){
+            type
+            oppholdFra
+            oppholdTil
+            metadata{
+                historisk
+                master
+                endringer{
+                    type,
+                    kilde,
+                    registrert,
+                    registrertAv,
+                    systemkilde
+                }
+            }
+        },
         doedsfall{
             doedsdato
         },

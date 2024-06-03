@@ -6,11 +6,13 @@ import no.nav.medlemskap.clients.pdl.generated.DateTime
 import no.nav.medlemskap.clients.pdl.generated.hentperson.*
 import no.nav.medlemskap.common.exceptions.DetteSkalAldriSkje
 import no.nav.medlemskap.domene.personhistorikk.*
+import no.nav.medlemskap.domene.personhistorikk.Endring
 import no.nav.medlemskap.domene.personhistorikk.Folkeregistermetadata
 import no.nav.medlemskap.domene.personhistorikk.ForelderBarnRelasjon
 import no.nav.medlemskap.domene.personhistorikk.InnflyttingTilNorge
 import no.nav.medlemskap.domene.personhistorikk.Metadata
 import no.nav.medlemskap.domene.personhistorikk.Navn
+import no.nav.medlemskap.domene.personhistorikk.Opphold
 import no.nav.medlemskap.domene.personhistorikk.Sivilstand
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
 import no.nav.medlemskap.domene.personhistorikk.UtflyttingFraNorge
@@ -35,6 +37,7 @@ object PdlMapper {
         val innflyttingTilNorge: List<InnflyttingTilNorge> = mapInnflyttingTilNorge(person.innflyttingTilNorge)
         val utflyttingFraNorge: List<UtflyttingFraNorge> = mapUtflyttingFraNorge(person.utflyttingFraNorge)
         val navn: List<Navn> = mapNavn(person.navn)
+        val opphold: List<Opphold> = mapOppholdsTilatelser(person.opphold)
 
         return Personhistorikk(
             statsborgerskap = statsborgerskap,
@@ -46,8 +49,45 @@ object PdlMapper {
             doedsfall = doedsfall,
             innflyttingTilNorge = innflyttingTilNorge,
             utflyttingFraNorge = utflyttingFraNorge,
-            navn = navn
+            navn = navn,
+            oppholdstilatelser = opphold
+
         )
+    }
+
+    private fun mapOppholdsTilatelser(opphold: List<no.nav.medlemskap.clients.pdl.generated.hentperson.Opphold>): List<Opphold> {
+
+        return opphold.map {
+            Opphold(
+                type = OppholdstillatelseType.valueOf(it.type.name),
+                oppholdFra = mapDate(it.oppholdFra),
+                oppholdTil = mapDate(it.oppholdTil),
+                medtadata = OppholdMetadata(it.metadata.historisk, it.metadata.master, mapEnringer(it.metadata.endringer))
+            )
+        }
+    }
+
+    private fun mapDateTime(registrert: String): LocalDateTime {
+        return LocalDateTime.parse(registrert)
+    }
+
+    private fun mapEnringer(endringer: List<no.nav.medlemskap.clients.pdl.generated.hentperson.Endring>): List<Endring> {
+        return endringer.map {
+            Endring(
+                type = Endringstype.valueOf(it.type.name),
+                kilde = it.kilde,
+                registrert = mapDateTime(it.registrert),
+                registrertAv = it.registrertAv,
+                systemkilde = it.systemkilde
+            )
+        }
+    }
+
+    private fun mapDate(dato: String?): LocalDate? {
+        if (dato != null) {
+            return LocalDate.parse(dato)
+        }
+        return null
     }
 
     private fun mapInnflyttingTilNorge(innflyttingTilNorge: List<no.nav.medlemskap.clients.pdl.generated.hentperson.InnflyttingTilNorge>): List<InnflyttingTilNorge> {
