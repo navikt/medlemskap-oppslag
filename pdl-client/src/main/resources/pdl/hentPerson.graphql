@@ -38,6 +38,29 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
                 historisk
             }
         },
+        opphold(historikk: true){
+            type
+            oppholdFra
+            oppholdTil
+            metadata{
+                historisk
+                master
+                endringer{
+                    type,
+                    kilde,
+                    registrert,
+                    registrertAv,
+                    systemkilde
+                }
+            }
+            folkeregistermetadata {
+                aarsak,
+                ajourholdstidspunkt,
+                gyldighetstidspunkt,
+                opphoerstidspunkt,
+                kilde
+            }
+        },
         doedsfall{
             doedsdato
         },
@@ -71,9 +94,11 @@ query($ident: ID!, $bostedHistorikk: Boolean!, $statsborgerskapHistorikk: Boolea
                 historisk
             },
             folkeregistermetadata {
+                aarsak
                 ajourholdstidspunkt,
                 gyldighetstidspunkt,
-                opphoerstidspunkt
+                opphoerstidspunkt,
+                kilde
             }
         },
         utflyttingFraNorge{

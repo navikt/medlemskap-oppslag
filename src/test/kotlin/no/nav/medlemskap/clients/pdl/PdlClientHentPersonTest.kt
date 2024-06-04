@@ -139,6 +139,7 @@ class PdlClientHentPersonTest {
                                 }
                             }
                     ],
+                    "opphold":[],
                     "adressebeskyttelse": [], 
                     "sivilstand": [
                             {

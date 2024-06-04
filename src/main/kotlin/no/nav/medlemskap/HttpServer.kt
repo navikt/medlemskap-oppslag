@@ -12,8 +12,6 @@ import io.ktor.server.plugins.callid.*
 import io.ktor.server.plugins.callloging.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.statuspages.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.micrometer.core.instrument.binder.jvm.ClassLoaderMetrics
 import io.micrometer.core.instrument.binder.jvm.JvmGcMetrics
@@ -21,8 +19,9 @@ import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics
 import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics
 import io.micrometer.core.instrument.binder.system.FileDescriptorMetrics
 import io.micrometer.core.instrument.binder.system.ProcessorMetrics
-import io.micrometer.prometheus.PrometheusConfig
-import io.micrometer.prometheus.PrometheusMeterRegistry
+import io.micrometer.prometheusmetrics.PrometheusConfig
+import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
+import io.prometheus.client.CollectorRegistry
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.Services
 import no.nav.medlemskap.common.*
@@ -34,7 +33,6 @@ import no.nav.medlemskap.config.getAadConfig
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Request
 import no.nav.medlemskap.routes.*
-import org.slf4j.event.*
 import org.slf4j.event.Level
 import java.util.*
 
@@ -101,7 +99,9 @@ createHttpServer(
     val requestContextService = RequestContextService()
     if (useAuthentication) {
         routing {
-            naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = prometheusRegistry.prometheusRegistry)
+            naisRoutes(
+                readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = CollectorRegistry.defaultRegistry
+            )
             if (services.configuration.cluster == "dev-gcp") setupSwaggerDocApi()
             evalueringRoute(services, configuration, requestContextService, createDatagrunnlag)
             reglerRoute()
@@ -109,7 +109,7 @@ createHttpServer(
         }
     } else {
         routing {
-            naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = prometheusRegistry.prometheusRegistry)
+            naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = CollectorRegistry.defaultRegistry)
             if (services.configuration.cluster == "dev-gcp") setupSwaggerDocApi()
             evalueringTestRoute(services, configuration, requestContextService, createDatagrunnlag)
             reglerRoute()

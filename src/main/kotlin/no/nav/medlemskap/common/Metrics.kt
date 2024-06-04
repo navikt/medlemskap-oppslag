@@ -2,9 +2,9 @@ package no.nav.medlemskap.common
 
 import io.micrometer.core.instrument.*
 import io.micrometer.core.instrument.config.MeterFilter
-import io.micrometer.prometheus.PrometheusConfig
-import io.micrometer.prometheus.PrometheusMeterRegistry
-import io.micrometer.prometheus.PrometheusRenameFilter
+import io.micrometer.prometheusmetrics.PrometheusConfig
+import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
+import io.micrometer.prometheusmetrics.PrometheusRenameFilter
 import no.nav.medlemskap.common.influx.SensuInfluxConfig
 import no.nav.medlemskap.common.influx.SensuInfluxMeterRegistry
 import no.nav.medlemskap.domene.Ytelse
