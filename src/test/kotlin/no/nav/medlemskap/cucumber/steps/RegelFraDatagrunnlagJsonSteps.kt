@@ -23,11 +23,6 @@ class RegelFraDatagrunnlagJsonSteps {
             }
         }
 
-        @Gitt("I have entered {int} into the calculator")
-        fun iHaveEnteredNumberIntoTheCalculator(number: Int) {
-            //result += number
-        }
-
         @Når("lovvalg og medlemskap beregnes fra datagrunnlag json") {
             resultat = ReglerService.kjørRegler(datagrunnlag!!)
         }
