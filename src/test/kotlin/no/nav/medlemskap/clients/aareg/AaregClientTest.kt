@@ -750,7 +750,6 @@ class AaregClientTest {
 
     private val queryMapping: MappingBuilder = WireMock.get(WireMock.urlPathEqualTo("/v1/arbeidstaker/arbeidsforhold"))
         .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
-        .withHeader("Nav-Consumer-Token", equalTo("Bearer dummytoken"))
         .withHeader("Nav-Personident", equalTo("26104635775"))
         .withHeader("Nav-Call-Id", equalTo("12345"))
         .withQueryParam("ansettelsesperiodeFom", equalTo("2010-01-01"))
