@@ -21,7 +21,7 @@ import java.time.LocalDateTime
 class AaregClientTest {
 
     private val config = Configuration()
-    val username = "Stian"
+
     companion object {
         val server: WireMockServer = WireMockServer(WireMockConfiguration.options().dynamicPort())
 

@@ -37,7 +37,6 @@ class AaRegClient(
                     header(HttpHeaders.Accept, ContentType.Application.Json)
                     header("Nav-Call-Id", callId)
                     header("Nav-Personident", fnr)
-                    header("Nav-Consumer-Token", "Bearer ${token.token}")
                     header("x-nav-apiKey", aaRegApiKey)
                     fraOgMed?.let { parameter("ansettelsesperiodeFom", fraOgMed.tilIsoFormat()) }
                     tilOgMed?.let { parameter("ansettelsesperiodeTom", tilOgMed.tilIsoFormat()) }
@@ -73,7 +72,6 @@ class AaRegClient(
                     header(HttpHeaders.Accept, ContentType.Application.Json)
                     header("Nav-Call-Id", callId)
                     header("Nav-Personident", fnr)
-                    header("Nav-Consumer-Token", "Bearer ${token.token}")
                     header("x-nav-apiKey", aaRegApiKey)
                     parameter("historikk", "true")
                     parameter("arbeidsforholdstatus", "AKTIV,AVSLUTTET,FREMTIDIG")
