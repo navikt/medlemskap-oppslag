@@ -103,3 +103,5 @@ spec:
       value: api://dev-fss.team-rocket.medlemskap-medl-api/.default
     - name: AZURE_SCOPE_PDL
       value: api://dev-fss.pdl.pdl-api/.default
+    - name: AZURE_SCOPE_AAREG
+      value: api://dev-fss.arbeidsforhold.aareg-services-nais/.default

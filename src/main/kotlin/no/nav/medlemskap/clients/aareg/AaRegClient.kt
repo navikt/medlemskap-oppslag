@@ -7,16 +7,17 @@ import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import mu.KotlinLogging
+import no.nav.medlemskap.clients.azuread.AzureAdClient
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
-import no.nav.medlemskap.clients.sts.StsRestClient
+import no.nav.medlemskap.config.Configuration
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 class AaRegClient(
     private val baseUrl: String,
-    private val username: String,
-    private val stsClient: StsRestClient,
+    private val azureAdClient: AzureAdClient,
     private val httpClient: HttpClient,
+    private val configuration: Configuration,
     private val aaRegApiKey: String,
     private val retry: Retry? = null
 ) {
@@ -27,16 +28,16 @@ class AaRegClient(
     }
 
     suspend fun hentArbeidsforhold(fnr: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<AaRegArbeidsforhold> {
-        val oidcToken = stsClient.oidcToken()
+        val token = azureAdClient.hentToken(configuration.register.aaregScope)
         return runCatching {
             runWithRetryAndMetrics("AaReg", "ArbeidsforholdV1", retry) {
                 httpClient.get() {
                     url("$baseUrl/v1/arbeidstaker/arbeidsforhold")
-                    header(HttpHeaders.Authorization, "Bearer $oidcToken")
+                    header(HttpHeaders.Authorization, "Bearer ${token.token}")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
                     header("Nav-Call-Id", callId)
                     header("Nav-Personident", fnr)
-                    header("Nav-Consumer-Token", "Bearer $oidcToken")
+                    header("Nav-Consumer-Token", "Bearer ${token.token}")
                     header("x-nav-apiKey", aaRegApiKey)
                     fraOgMed?.let { parameter("ansettelsesperiodeFom", fraOgMed.tilIsoFormat()) }
                     tilOgMed?.let { parameter("ansettelsesperiodeTom", tilOgMed.tilIsoFormat()) }
@@ -63,16 +64,16 @@ class AaRegClient(
     }
 
     suspend fun hentArbeidsforholdV2(fnr: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<no.nav.medlemskap.clients.aareg.Arbeidsforhold> {
-        val oidcToken = stsClient.oidcToken()
+        val token = azureAdClient.hentToken(configuration.register.aaregScope)
         return runCatching {
             runWithRetryAndMetrics("AaReg", "ArbeidsforholdV2", retry) {
                 httpClient.get() {
                     url("$baseUrl/v2/arbeidstaker/arbeidsforhold")
-                    header(HttpHeaders.Authorization, "Bearer $oidcToken")
+                    header(HttpHeaders.Authorization, "Bearer ${token.token}")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
                     header("Nav-Call-Id", callId)
                     header("Nav-Personident", fnr)
-                    header("Nav-Consumer-Token", "Bearer $oidcToken")
+                    header("Nav-Consumer-Token", "Bearer ${token.token}")
                     header("x-nav-apiKey", aaRegApiKey)
                     parameter("historikk", "true")
                     parameter("arbeidsforholdstatus", "AKTIV,AVSLUTTET,FREMTIDIG")

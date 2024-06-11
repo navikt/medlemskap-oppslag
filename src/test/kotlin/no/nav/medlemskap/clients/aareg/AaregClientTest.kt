@@ -7,17 +7,20 @@ import com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import io.ktor.client.plugins.*
 import io.ktor.http.*
+import io.ktor.serialization.*
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import no.nav.medlemskap.clients.sts.StsRestClient
+import no.nav.medlemskap.clients.azuread.AzureAdClient
 import no.nav.medlemskap.common.cioHttpClient
+import no.nav.medlemskap.config.Configuration
 import org.junit.jupiter.api.*
 import java.time.LocalDate
 import java.time.LocalDateTime
 
 class AaregClientTest {
 
+    private val config = Configuration()
     val username = "Stian"
     companion object {
         val server: WireMockServer = WireMockServer(WireMockConfiguration.options().dynamicPort())
@@ -44,8 +47,8 @@ class AaregClientTest {
     fun `tester response`() {
         val callId = "12345"
 
-        val stsClient: StsRestClient = mockk()
-        coEvery { stsClient.oidcToken() } returns "dummytoken"
+        val azureAdClient: AzureAdClient = mockk()
+        coEvery { azureAdClient.hentToken(config.register.aaregScope).token } returns "dummytoken"
 
         WireMock.stubFor(
             queryMapping.willReturn(
@@ -56,7 +59,7 @@ class AaregClientTest {
             )
         )
 
-        val client = createAaRegClient(stsClient)
+        val client = createAaRegClient(azureAdClient)
 
         val response = runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
 
@@ -89,8 +92,8 @@ class AaregClientTest {
     @Test
     fun `tester ServerResponseException`() {
         val callId = "12345"
-        val stsClient: StsRestClient = mockk()
-        coEvery { stsClient.oidcToken() } returns "dummytoken"
+        val azureAdClient: AzureAdClient = mockk()
+        coEvery { azureAdClient.hentToken(config.register.aaregScope).token } returns "dummytoken"
 
         WireMock.stubFor(
             queryMapping.willReturn(
@@ -100,7 +103,7 @@ class AaregClientTest {
 
             )
         )
-        val client = AaRegClient(server.baseUrl(), username, stsClient, cioHttpClient, "123")
+        val client = AaRegClient(server.baseUrl(), azureAdClient, cioHttpClient, config, "123")
 
         Assertions.assertThrows(ServerResponseException::class.java) {
             runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
@@ -110,8 +113,8 @@ class AaregClientTest {
     @Test
     fun `tester ClientRequestException`() {
         val callId = "12345"
-        val stsClient: StsRestClient = mockk()
-        coEvery { stsClient.oidcToken() } returns "dummytoken"
+        val azureAdClient: AzureAdClient = mockk()
+        coEvery { azureAdClient.hentToken(config.register.aaregScope).token } returns "dummytoken"
 
         WireMock.stubFor(
             queryMapping.willReturn(
@@ -122,7 +125,7 @@ class AaregClientTest {
             )
         )
 
-        val client = createAaRegClient(stsClient)
+        val client = createAaRegClient(azureAdClient)
 
         Assertions.assertThrows(ClientRequestException::class.java) {
             runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
@@ -132,8 +135,8 @@ class AaregClientTest {
     @Test
     fun `404 gir tom liste`() {
         val callId = "12345"
-        val stsClient: StsRestClient = mockk()
-        coEvery { stsClient.oidcToken() } returns "dummytoken"
+        val azureAdClient: AzureAdClient = mockk()
+        coEvery { azureAdClient.hentToken(config.register.aaregScope).token } returns "dummytoken"
 
         WireMock.stubFor(
             queryMapping.willReturn(
@@ -144,17 +147,17 @@ class AaregClientTest {
             )
         )
 
-        val client = createAaRegClient(stsClient)
+        val client = createAaRegClient(azureAdClient)
         val response = runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
 
         Assertions.assertEquals(0, response.size)
     }
 
-    private fun createAaRegClient(stsClient: StsRestClient): AaRegClient {
+    private fun createAaRegClient(azureAdClient: AzureAdClient): AaRegClient {
         return AaRegClient(
             baseUrl = server.baseUrl(),
-            username = username,
-            stsClient = stsClient,
+            azureAdClient = azureAdClient,
+            configuration = config,
             httpClient = cioHttpClient,
             aaRegApiKey = "123"
         )
