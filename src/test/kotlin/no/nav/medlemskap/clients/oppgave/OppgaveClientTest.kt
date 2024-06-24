@@ -9,13 +9,17 @@ import io.ktor.http.*
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import no.nav.medlemskap.clients.sts.StsRestClient
+import no.nav.medlemskap.clients.Token
+import no.nav.medlemskap.clients.azuread.AzureAdClient
 import no.nav.medlemskap.common.cioHttpClient
+import no.nav.medlemskap.config.Configuration
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 import java.time.LocalDate
 
 class OppgaveClientTest {
+
+    private val config = Configuration()
 
     companion object {
         val server: WireMockServer = WireMockServer(WireMockConfiguration.options().dynamicPort())
@@ -42,8 +46,8 @@ class OppgaveClientTest {
     fun `henter oppgaver`() {
         val callId = "123456"
 
-        val stsClient: StsRestClient = mockk()
-        coEvery { stsClient.oidcToken() } returns "dummytoken"
+        val azureAdClient: AzureAdClient = mockk()
+        coEvery { azureAdClient.hentToken(config.register.oppgaveScope) } returns Token("dummytoken", "", 1)
 
         stubFor(
             oppgaveRequestMapping
@@ -55,7 +59,7 @@ class OppgaveClientTest {
                 )
         )
 
-        val oppgaveclient = createOppgaveClient(stsClient)
+        val oppgaveclient = createOppgaveClient(azureAdClient)
 
         val oppgaveResponse = runBlocking { oppgaveclient.hentOppgaver(listOf("1234567890"), callId) }
         val oppgave = oppgaveResponse.oppgaver[0]
@@ -73,8 +77,8 @@ class OppgaveClientTest {
     @Test
     fun `tester ServerResponseException`() {
         val callId = "123456"
-        val stsClient: StsRestClient = mockk()
-        coEvery { stsClient.oidcToken() } returns "dummytoken"
+        val azureAdClient: AzureAdClient = mockk()
+        coEvery { azureAdClient.hentToken(config.register.oppgaveScope) } returns Token("dummytoken", "", 1)
 
         stubFor(
             oppgaveRequestMapping.willReturn(
@@ -85,7 +89,7 @@ class OppgaveClientTest {
             )
         )
 
-        val oppgaveclient = createOppgaveClient(stsClient)
+        val oppgaveclient = createOppgaveClient(azureAdClient)
 
         Assertions.assertThrows(ServerResponseException::class.java) {
             runBlocking { oppgaveclient.hentOppgaver(listOf("1234567890"), callId) }
@@ -95,8 +99,8 @@ class OppgaveClientTest {
     @Test
     fun `tester ClientRequestException`() {
         val callId = "123456"
-        val stsClient: StsRestClient = mockk()
-        coEvery { stsClient.oidcToken() } returns "dummytoken"
+        val azureAdClient: AzureAdClient = mockk()
+        coEvery { azureAdClient.hentToken(config.register.oppgaveScope) } returns Token("dummytoken", "", 1)
 
         stubFor(
             oppgaveRequestMapping.willReturn(
@@ -107,15 +111,15 @@ class OppgaveClientTest {
             )
         )
 
-        val oppgaveclient = createOppgaveClient(stsClient)
+        val oppgaveclient = createOppgaveClient(azureAdClient)
 
         Assertions.assertThrows(ClientRequestException::class.java) {
             runBlocking { oppgaveclient.hentOppgaver(listOf("1234567890"), callId) }
         }
     }
 
-    private fun createOppgaveClient(stsClient: StsRestClient): OppgaveClient {
-        return OppgaveClient(server.baseUrl(), stsClient, cioHttpClient, "123")
+    private fun createOppgaveClient(azureAdClient: AzureAdClient): OppgaveClient {
+        return OppgaveClient(server.baseUrl(), azureAdClient, config, cioHttpClient)
     }
 }
 

@@ -83,6 +83,7 @@ class PdlClientHentEktefelleTest {
                     "minRolleForPerson": "FAR"
                   }
                 ],
+                "opphold":[],
                 "statsborgerskap": [
                   {
                     "land": "NOR",
