@@ -166,8 +166,12 @@ dependencies {
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:$assertkVersion")
     testImplementation("io.rest-assured:rest-assured:$restAssuredVersion")
 
+    testImplementation(platform("io.cucumber:cucumber-bom:7.11.0"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("io.cucumber:cucumber-junit-platform-engine")
+    testImplementation("org.junit.platform:junit-platform-suite")
     testImplementation("io.cucumber:cucumber-junit:$cucumberVersion")
-    testImplementation("io.cucumber:cucumber-java:$cucumberVersion")
+    testImplementation("io.cucumber:cucumber-java8:$cucumberVersion")
     testImplementation("com.tngtech.archunit:archunit:$archUnitVersion")
     testImplementation("com.tngtech.archunit:archunit-junit5:$archUnitVersion")
     testImplementation("org.skyscreamer:jsonassert:$jsonassertVersion")

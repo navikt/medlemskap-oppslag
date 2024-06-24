@@ -1,9 +1,7 @@
 package no.nav.medlemskap.cucumber.steps.saf
 
 import io.cucumber.datatable.DataTable
-import io.cucumber.java.no.Gitt
-import io.cucumber.java.no.Når
-import io.cucumber.java.no.Så
+import io.cucumber.java8.No
 import io.kotest.matchers.shouldBe
 import no.nav.medlemskap.clients.saf.generated.dokumenter.DokumentInfo
 import no.nav.medlemskap.clients.saf.generated.dokumenter.RelevantDato
@@ -19,7 +17,7 @@ import no.nav.medlemskap.domene.Journalpost
 import no.nav.medlemskap.services.saf.mapJournalResultat
 import java.time.LocalDateTime
 
-class SafMapperSteps {
+class SafMapperSteps : No {
 
     private val safDomenespråkParser = SafDomeneSpraakParser()
     private val safDokumentBuilder = SafDokumentBuilder()
@@ -28,87 +26,87 @@ class SafMapperSteps {
     private var dokumenter: List<Journalpost>? = null
 
     init {
-        @Gitt("følgende tittel fra journalpost") { dataTable: DataTable ->
+        Gitt("følgende tittel fra journalpost") { dataTable: DataTable ->
             safDokumentBuilder.tittel = safDomenespråkParser.mapDokumentTittel(dataTable)
         }
 
-        @Gitt("følgende dokumentInfoId fra dokument") { dataTable: DataTable ->
+        Gitt("følgende dokumentInfoId fra dokument") { dataTable: DataTable ->
             dokumentInfoBuilder.dokumentInfoId = safDomenespråkParser.mapDokumentInfoId(dataTable)
         }
 
-        @Gitt("følgende fagsakId fra dokument") { dataTable: DataTable ->
+        Gitt("følgende fagsakId fra dokument") { dataTable: DataTable ->
             safDokumentBuilder.sak = Sak(safDomenespråkParser.mapFagsakId(dataTable))
         }
 
-        @Gitt("følgende tittel fra dokument") { dataTable: DataTable ->
+        Gitt("følgende tittel fra dokument") { dataTable: DataTable ->
             dokumentInfoBuilder.tittel = safDomenespråkParser.mapDokumentTittel(dataTable)
         }
 
-        @Gitt("følgende journalpostId fra journalpost") { dataTable: DataTable ->
+        Gitt("følgende journalpostId fra journalpost") { dataTable: DataTable ->
             safDokumentBuilder.journalpostId = safDomenespråkParser.mapJournalPostId(dataTable)
         }
 
-        @Gitt("følgende journalført av navn fra journalpost") { dataTable: DataTable ->
+        Gitt("følgende journalført av navn fra journalpost") { dataTable: DataTable ->
             safDokumentBuilder.journalfortAvNavn = safDomenespråkParser.mapJournalfortAvNavn(dataTable)
         }
 
-        @Gitt("følgende journalposttype fra journalpost") { dataTable: DataTable ->
+        Gitt("følgende journalposttype fra journalpost") { dataTable: DataTable ->
             safDokumentBuilder.journalposttype = safDomenespråkParser.mapJournalPostType(dataTable)
         }
 
-        @Gitt("følgende tema fra journalpost") { dataTable: DataTable ->
+        Gitt("følgende tema fra journalpost") { dataTable: DataTable ->
             safDokumentBuilder.tema = safDomenespråkParser.mapJournalTema(dataTable)
         }
 
-        @Gitt("følgende journalstatus fra journalpost") { dataTable: DataTable ->
+        Gitt("følgende journalstatus fra journalpost") { dataTable: DataTable ->
             safDokumentBuilder.journalStatus = safDomenespråkParser.mapJournalStatus(dataTable)
         }
 
-        @Når("journalposter mappes") {
+        Når("journalposter mappes") {
             dokumenter = mapTilDokumenter()
         }
 
-        @Så("skal mappede journalpostid være") { dataTable: DataTable ->
+        Så("skal mappede journalpostid være") { dataTable: DataTable ->
             val journalpostIdForventet = DokumentDomeneSpraakParser.mapJournalpostId(dataTable)
             dokumenter?.get(0)?.journalpostId.shouldBe(journalpostIdForventet)
         }
 
-        @Så("skal mappede journalført av navn være") { dataTable: DataTable ->
+        Så("skal mappede journalført av navn være") { dataTable: DataTable ->
             val forventetJournalfortAvNavn = DokumentDomeneSpraakParser.mapJournalfortAvNavn(dataTable)
             dokumenter?.get(0)?.journalfortAvNavn.shouldBe(forventetJournalfortAvNavn)
         }
 
-        @Så("skal mappede journalstatus være") { dataTable: DataTable ->
+        Så("skal mappede journalstatus være") { dataTable: DataTable ->
             val journalstatusForventet = DokumentDomeneSpraakParser.mapJournalstatus(dataTable)
             dokumenter?.get(0)?.journalstatus.shouldBe(journalstatusForventet)
         }
 
-        @Så("skal mappede dokumentInfoId være") { dataTable: DataTable ->
+        Så("skal mappede dokumentInfoId være") { dataTable: DataTable ->
             val dokumentInfoIdForventet = DokumentDomeneSpraakParser.mapDokumentInfoId(dataTable)
             dokumenter?.get(0)?.dokumenter?.get(0)?.dokumentId.shouldBe(dokumentInfoIdForventet)
         }
 
-        @Så("skal mappede fagsakId være") { dataTable: DataTable ->
+        Så("skal mappede fagsakId være") { dataTable: DataTable ->
             val forventetFagsakId = DokumentDomeneSpraakParser.mapFagsakId(dataTable)
             dokumenter?.get(0)?.sak?.fagsakId.shouldBe(forventetFagsakId)
         }
 
-        @Så("mappede tittel være") { dataTable: DataTable ->
+        Så("mappede tittel være") { dataTable: DataTable ->
             val tittelForventet = DokumentDomeneSpraakParser.mapTittel(dataTable)
             dokumenter?.get(0)?.dokumenter?.get(0)?.tittel.shouldBe(tittelForventet)
         }
 
-        @Så("skal mappede tema være") { dataTable: DataTable ->
+        Så("skal mappede tema være") { dataTable: DataTable ->
             val temaForventet = DokumentDomeneSpraakParser.mapTema(dataTable)
             dokumenter?.get(0)?.tema.shouldBe(temaForventet)
         }
 
-        @Så("skal mappede tittel i journalpost være") { dataTable: DataTable ->
+        Så("skal mappede tittel i journalpost være") { dataTable: DataTable ->
             val tittelForventet = DokumentDomeneSpraakParser.mapTittel(dataTable)
             dokumenter?.get(0)?.tittel.shouldBe(tittelForventet)
         }
 
-        @Så("skal mappede journalposttype være") { dataTable: DataTable ->
+        Så("skal mappede journalposttype være") { dataTable: DataTable ->
             val journalposttypeForventet = DokumentDomeneSpraakParser.mapJournalposttype(dataTable)
             dokumenter?.get(0)?.journalposttype.shouldBe(journalposttypeForventet)
         }

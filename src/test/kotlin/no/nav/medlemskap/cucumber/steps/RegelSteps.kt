@@ -1,9 +1,7 @@
 package no.nav.medlemskap.cucumber.steps
 
 import io.cucumber.datatable.DataTable
-import io.cucumber.java.no.Gitt
-import io.cucumber.java.no.Når
-import io.cucumber.java.no.Så
+import io.cucumber.java8.No
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.collections.shouldContainExactly
 import io.kotest.matchers.shouldBe
@@ -39,7 +37,7 @@ import org.skyscreamer.jsonassert.JSONCompareMode
 import org.skyscreamer.jsonassert.comparator.CustomComparator
 import java.io.File
 
-class RegelSteps {
+class RegelSteps : No {
     private val ANSATTE_9 = listOf(Ansatte(9, null))
     private val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(
         navn = "null",
@@ -81,144 +79,145 @@ class RegelSteps {
     var overstyrteRegler: Map<RegelId, Svar> = mapOf()
 
     init {
-        @Gitt("følgende statsborgerskap i personhistorikken") { dataTable: DataTable ->
+        Gitt("følgende statsborgerskap i personhistorikken") { dataTable: DataTable ->
             val statsborgerskap = PersonhistorikkDomeneSpraakParser.mapStatsborgerskap(dataTable)
             pdlPersonhistorikkBuilder.statsborgerskap.addAll(statsborgerskap)
         }
 
-        @Gitt("følgende navn i personhistorikken") { dataTable: DataTable ->
+        Gitt("følgende navn i personhistorikken") { dataTable: DataTable ->
             val navn = PersonhistorikkDomeneSpraakParser.mapNavn(dataTable)
             pdlPersonhistorikkBuilder.navn.addAll(navn)
         }
 
-        @Gitt("følgende bostedsadresser i personhistorikken") { dataTable: DataTable ->
+        Gitt("følgende bostedsadresser i personhistorikken") { dataTable: DataTable ->
             val bostedsadresser = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
             pdlPersonhistorikkBuilder.bostedsadresser.addAll(bostedsadresser)
         }
-        @Gitt("følgende opplysninger om dødsfall i personhistorikken:") { dataTable: DataTable ->
+
+        Gitt("følgende opplysninger om dødsfall i personhistorikken:") { dataTable: DataTable ->
             val doedsfall = PersonhistorikkDomeneSpraakParser.mapDoedsfall(dataTable)
             pdlPersonhistorikkBuilder.doedsfall.addAll(doedsfall)
         }
 
-        @Gitt("følgende kontaktadresser i personhistorikken") { dataTable: DataTable ->
+        Gitt("følgende kontaktadresser i personhistorikken") { dataTable: DataTable ->
             val kontaktadresser = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
             pdlPersonhistorikkBuilder.kontaktadresse.addAll(kontaktadresser)
         }
 
-        @Gitt("følgende oppholdsadresser i personhistorikken") { dataTable: DataTable ->
+        Gitt("følgende oppholdsadresser i personhistorikken") { dataTable: DataTable ->
             val oppholdsadresse = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
             pdlPersonhistorikkBuilder.oppholdsadresse.addAll(oppholdsadresse)
         }
 
-        @Gitt("følgende sivilstand i personhistorikk fra PDL") { dataTable: DataTable ->
+        Gitt("følgende sivilstand i personhistorikk fra PDL") { dataTable: DataTable ->
             val sivilstand = PersonhistorikkDomeneSpraakParser.mapSivilstander(dataTable)
             pdlPersonhistorikkBuilder.sivilstand.addAll(sivilstand)
         }
 
-        @Gitt("følgende familerelasjoner i personhistorikk fra PDL") { dataTable: DataTable ->
+        Gitt("følgende familerelasjoner i personhistorikk fra PDL") { dataTable: DataTable ->
             val familierelasjoner = PersonhistorikkDomeneSpraakParser.mapFamilierelasjoner(dataTable)
             pdlPersonhistorikkBuilder.familierelasjoner.addAll(familierelasjoner)
         }
 
-        @Gitt("følgende personhistorikk for ektefelle fra PDL") { dataTable: DataTable ->
+        Gitt("følgende personhistorikk for ektefelle fra PDL") { dataTable: DataTable ->
             val ektefelle = PersonhistorikkDomeneSpraakParser.mapPersonhistorikkEktefelle(dataTable)
             dataOmEktefelleBuilder.personhistorikkEktefelle = ektefelle[0]
         }
 
-        @Gitt("følgende statsborgerskap for ektefelle fra PDL") { dataTable: DataTable ->
+        Gitt("følgende statsborgerskap for ektefelle fra PDL") { dataTable: DataTable ->
             val statsborgerskap = PersonhistorikkDomeneSpraakParser.mapStatsborgerskap(dataTable)
             personhistorikkEktefelleBuilder.statsborgerskap.addAll(statsborgerskap)
         }
 
-        @Gitt("følgende barn i personhistorikk for ektefelle fra PDL") { dataTable: DataTable ->
+        Gitt("følgende barn i personhistorikk for ektefelle fra PDL") { dataTable: DataTable ->
             val barnTilEktefelle = PersonhistorikkDomeneSpraakParser.mapBarnTilEktefelle(dataTable)
             personhistorikkEktefelleBuilder.barn.addAll(barnTilEktefelle)
         }
 
-        @Gitt("følgende personhistorikk for barn fra PDL") { dataTable: DataTable ->
+        Gitt("følgende personhistorikk for barn fra PDL") { dataTable: DataTable ->
             val barnTilBruker = PersonhistorikkDomeneSpraakParser.mapPersonhistorikkBarn(dataTable)
             dataOmBarn = barnTilBruker
         }
 
-        @Gitt("følgende medlemsunntak fra MEDL") { dataTable: DataTable ->
+        Gitt("følgende medlemsunntak fra MEDL") { dataTable: DataTable ->
             medlemskap = domenespråkParser.mapMedlemskap(dataTable)
         }
 
-        @Gitt("følgende arbeidsforhold fra AAReg") { dataTable: DataTable ->
+        Gitt("følgende arbeidsforhold fra AAReg") { dataTable: DataTable ->
             arbeidsforhold = ArbeidsforholdDomeneSpraakParser.mapArbeidsforhold(dataTable)
         }
 
-        @Gitt("følgende arbeidsgiver i arbeidsforholdet") { dataTable: DataTable ->
+        Gitt("følgende arbeidsgiver i arbeidsforholdet") { dataTable: DataTable ->
             val arbeidsgivere = ArbeidsforholdDomeneSpraakParser.mapArbeidsgivere(dataTable)
             arbeidsgiverMap[0] = arbeidsgivere[0]
         }
 
-        @Gitt("følgende arbeidsgiver i arbeidsforhold {int}") { arbeidsforholdRad: Int, dataTable: DataTable ->
+        Gitt("følgende arbeidsgiver i arbeidsforhold {int}") { arbeidsforholdRad: Int, dataTable: DataTable ->
             val arbeidsgivere = ArbeidsforholdDomeneSpraakParser.mapArbeidsgivere(dataTable)
             val arbeidsforholdIndeks = arbeidsforholdIndeks(arbeidsforholdRad)
             arbeidsgiverMap[arbeidsforholdIndeks] = arbeidsgivere[0]
         }
 
-        @Gitt("følgende detaljer om ansatte for arbeidsgiver med org.nr {string}") { orgnr: String, dataTable: DataTable ->
+        Gitt("følgende detaljer om ansatte for arbeidsgiver med org.nr {string}") { orgnr: String, dataTable: DataTable ->
             val ansatte = ArbeidsforholdDomeneSpraakParser.mapAnsatte(dataTable)
             if (ansatte.isNotEmpty()) {
                 ansatteMap.put(orgnr, ansatte)
             }
         }
 
-        @Gitt("følgende detaljer om ansatte for arbeidsgiver") { dataTable: DataTable ->
+        Gitt("følgende detaljer om ansatte for arbeidsgiver") { dataTable: DataTable ->
             val ansatte = ArbeidsforholdDomeneSpraakParser.mapAnsatte(dataTable)
             if (ansatte.isNotEmpty()) {
                 ansatteMap.put(null, ansatte)
             }
         }
 
-        @Gitt("følgende permisjonspermitteringer i arbeidsforholdet") { dataTable: DataTable ->
+        Gitt("følgende permisjonspermitteringer i arbeidsforholdet") { dataTable: DataTable ->
             permisjonPermitteringMap[0] = ArbeidsforholdDomeneSpraakParser.mapPermisjonspermitteringer(dataTable)
         }
 
-        @Gitt("følgende arbeidsavtaler i arbeidsforholdet") { dataTable: DataTable ->
+        Gitt("følgende arbeidsavtaler i arbeidsforholdet") { dataTable: DataTable ->
             arbeidsavtaleMap[0] = ArbeidsforholdDomeneSpraakParser.mapArbeidsavtaler(dataTable)
         }
 
-        @Gitt("følgende arbeidsavtaler i arbeidsforhold {int}") { arbeidsforholdRad: Int, dataTable: DataTable ->
+        Gitt("følgende arbeidsavtaler i arbeidsforhold {int}") { arbeidsforholdRad: Int, dataTable: DataTable ->
             val arbeidsavtaler = ArbeidsforholdDomeneSpraakParser.mapArbeidsavtaler(dataTable)
             val arbeidsforholdIndeks = arbeidsforholdIndeks(arbeidsforholdRad)
             arbeidsavtaleMap[arbeidsforholdIndeks] = arbeidsavtaler
         }
 
-        @Gitt("følgende utenlandsopphold i arbeidsforholdet") { dataTable: DataTable ->
+        Gitt("følgende utenlandsopphold i arbeidsforholdet") { dataTable: DataTable ->
             utenlandsoppholdMap[0] = ArbeidsforholdDomeneSpraakParser.mapUtenlandsopphold(dataTable)
         }
 
-        @Gitt("følgende utenlandsopphold i arbeidsforhold {int}") { arbeidsforholdRad: Int, dataTable: DataTable ->
+        Gitt("følgende utenlandsopphold i arbeidsforhold {int}") { arbeidsforholdRad: Int, dataTable: DataTable ->
             val arbeidsforholdIndeks = arbeidsforholdIndeks(arbeidsforholdRad)
             utenlandsoppholdMap[arbeidsforholdIndeks] = ArbeidsforholdDomeneSpraakParser.mapUtenlandsopphold(dataTable)
         }
 
-        @Gitt("følgende oppgaver fra Gosys") { dataTable: DataTable ->
+        Gitt("følgende oppgaver fra Gosys") { dataTable: DataTable ->
             oppgaverFraGosys = OppgaverDomeneSpraakParser.mapOppgaverFraGosys(dataTable)
         }
 
-        @Gitt("følgende journalposter fra Joark") { dataTable: DataTable ->
+        Gitt("følgende journalposter fra Joark") { dataTable: DataTable ->
             journalPosterFraJoArk = DokumentDomeneSpraakParser.mapJournalposter(dataTable)
         }
 
-        @Gitt("følgende arbeidsforhold til ektefelle fra AAReg") { dataTable: DataTable ->
+        Gitt("følgende arbeidsforhold til ektefelle fra AAReg") { dataTable: DataTable ->
             val arbeidsforholdEktefelle = ArbeidsforholdDomeneSpraakParser.mapArbeidsforhold(dataTable)
             dataOmEktefelleBuilder.arbeidsforholdEktefelle = arbeidsforholdEktefelle
         }
 
-        @Gitt("følgende arbeidsavtaler til ektefelle i arbeidsforholdet") { dataTable: DataTable ->
+        Gitt("følgende arbeidsavtaler til ektefelle i arbeidsforholdet") { dataTable: DataTable ->
             arbeidsavtaleEktefelleMap[0] = ArbeidsforholdDomeneSpraakParser.mapArbeidsavtaler(dataTable)
             dataOmEktefelleBuilder.arbeidsforholdEktefelle.get(0).arbeidsavtaler = arbeidsavtaleEktefelleMap[0]!!
         }
 
-        @Gitt("med følgende regeloverstyringer") { dataTable: DataTable ->
+        Gitt("med følgende regeloverstyringer") { dataTable: DataTable ->
             overstyrteRegler = domenespråkParser.mapOverstyrteRegler(dataTable)
         }
 
-        @Gitt("følgende oppholdstillatelse") { dataTable: DataTable ->
+        Gitt("følgende oppholdstillatelse") { dataTable: DataTable ->
             oppholdstillatelseBuilder.fromOppholdstillatelse(
                 OppholdstillatelseDomeneSpraakParser.mapOppholdstillatelse(
                     dataTable
@@ -226,7 +225,7 @@ class RegelSteps {
             )
         }
 
-        @Gitt("følgende oppholdstillatelse med oppholdstillatelse på samme vilkår") { dataTable: DataTable ->
+        Gitt("følgende oppholdstillatelse med oppholdstillatelse på samme vilkår") { dataTable: DataTable ->
             oppholdstillatelsePaSammeVilkarBuilder.harTillatelse =
                 OppholdstillatelseDomeneSpraakParser.mapHarTillatelse(dataTable)
             oppholdstillatelsePaSammeVilkarBuilder.periode = OppholdstillatelseDomeneSpraakParser.mapPeriode(dataTable)
@@ -238,7 +237,7 @@ class RegelSteps {
                 oppholdstillatelsePaSammeVilkarBuilder.build()
         }
 
-        @Gitt("følgende i EØSellerEFTAOpphold") { dataTable: DataTable ->
+        Gitt("følgende i EØSellerEFTAOpphold") { dataTable: DataTable ->
             eosEellerEFTAOppholdBuilder.periode = OppholdstillatelseDomeneSpraakParser.mapPeriode(dataTable)
             eosEellerEFTAOppholdBuilder.EOSellerEFTAGrunnlagskategoriOppholdsrettType =
                 OppholdstillatelseDomeneSpraakParser.mapOppholdsrettType(dataTable)
@@ -249,18 +248,18 @@ class RegelSteps {
             oppholdstillatelseBuilder.build()
         }
 
-        @Gitt("følgende arbeidsadgang") { dataTable: DataTable ->
+        Gitt("følgende arbeidsadgang") { dataTable: DataTable ->
             oppholdstillatelseBuilder.arbeidsadgang = OppholdstillatelseDomeneSpraakParser.mapArbeidstilgang(dataTable)
         }
 
-        @Når("medlemskap beregnes med følgende parametre") { dataTable: DataTable ->
+        Når("medlemskap beregnes med følgende parametre") { dataTable: DataTable ->
             medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
 
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
             resultat = ReglerService.kjørRegler(hentDatagrunnlag())
         }
 
-        @Når("regel {string} kjøres med følgende parametre, skal valideringsfeil være {string}") { regelId: String, forventetValideringsfeil: String, dataTable: DataTable ->
+        Når("regel {string} kjøres med følgende parametre, skal valideringsfeil være {string}") { regelId: String, forventetValideringsfeil: String, dataTable: DataTable ->
             medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
 
@@ -274,7 +273,7 @@ class RegelSteps {
             exception.message shouldBe forventetValideringsfeil
         }
 
-        @Når("regel {string} kjøres med følgende parametre, skal svaret være {string}") { regelId: String, forventetSvar: String, dataTable: DataTable ->
+        Når("regel {string} kjøres med følgende parametre, skal svaret være {string}") { regelId: String, forventetSvar: String, dataTable: DataTable ->
             medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
 
@@ -285,7 +284,7 @@ class RegelSteps {
             assertEquals(forventetSvar, faktiskSvar.svar.name)
         }
 
-        @Når("regel {string} kjøres med følgende parametre") { regelId: String, dataTable: DataTable ->
+        Når("regel {string} kjøres med følgende parametre") { regelId: String, dataTable: DataTable ->
             medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
 
@@ -295,7 +294,7 @@ class RegelSteps {
             resultat = regel.utfør()
         }
 
-        @Når("tjenestekall med følgende parametere behandles") { dataTable: DataTable ->
+        Når("tjenestekall med følgende parametere behandles") { dataTable: DataTable ->
             medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
 
@@ -303,14 +302,14 @@ class RegelSteps {
             LokalWebServer.startServer()
         }
 
-        @Når("tjenestekall for regler med følgende parametere behandles") { dataTable: DataTable ->
+        Når("tjenestekall for regler med følgende parametere behandles") { dataTable: DataTable ->
             medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
 
             LokalWebServer.startServer()
         }
 
-        @Så("skal forventet json respons være {string}") { filnavn: String ->
+        Så("skal forventet json respons være {string}") { filnavn: String ->
             val forventetJsonResponse = RegelSteps::class.java
                 .getResource("/testpersoner/bakoverkompatibeltest/$filnavn.json").readText()
 
@@ -328,37 +327,37 @@ class RegelSteps {
             )
         }
 
-        @Så("Skal kontrakt være OK") {
+        Så("Skal kontrakt være OK") {
             validerMedlemRequestMotKontrakt(medlemskapsparametre!!)
         }
 
-        @Så("Skal kontrakt for Regler fra datagrunnlag være OK") {
+        Så("Skal kontrakt for Regler fra datagrunnlag være OK") {
             validerDatagrunnlagMotKontrakt(datagrunnlag)
         }
 
-        @Så("Skal input {string} gi statuskoden {int}") { filnavn: String, statusKode: Int ->
+        Så("Skal input {string} gi statuskoden {int}") { filnavn: String, statusKode: Int ->
             val input = RegelSteps::class.java.getResource("/testpersoner/testinput/$filnavn.json").readText()
             LokalWebServer.testResponsKode(input, statusKode)
         }
 
-        @Så("Skal feilmeldingen med inputen {string} inneholde konsumenten {string}") { filnavn: String, konsument: String ->
+        Så("Skal feilmeldingen med inputen {string} inneholde konsumenten {string}") { filnavn: String, konsument: String ->
             val input = RegelSteps::class.java.getResource("/testpersoner/testinput/$filnavn.json").readText()
             val respons = LokalWebServer.responsUtenStatuskodeSjekk(input)
 
             assertTrue(respons.contains("for konsument $konsument"))
         }
 
-        @Så("skal svaret være {string}") { forventetVerdi: String ->
+        Så("skal svaret være {string}") { forventetVerdi: String ->
             val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
 
             assertEquals(forventetSvar, hentResultat().svar)
         }
 
-        @Så("skal avklaringen være som definert i RegelId") {
+        Så("skal avklaringen være som definert i RegelId") {
             assertEquals(hentResultat().regelId.avklaring, hentResultat().avklaring)
         }
 
-        @Så("skal begrunnelsen være som definert i RegelId") {
+        Så("skal begrunnelsen være som definert i RegelId") {
             if (hentResultat().svar == Svar.JA) {
                 assertEquals(hentResultat().regelId.jaBegrunnelse, hentResultat().begrunnelse)
             } else {
@@ -366,7 +365,7 @@ class RegelSteps {
             }
         }
 
-        @Så("skal regel-årsaker være {string}") { forventedeÅrsaker: String ->
+        Så("skal regel-årsaker være {string}") { forventedeÅrsaker: String ->
             assertEquals(
                 forventedeÅrsaker.trim(),
                 hentResultat().årsaker.map { it.regelId.identifikator }.toString().filter { it != '[' && it != ']' }
@@ -374,26 +373,26 @@ class RegelSteps {
             )
         }
 
-        @Så("skal svaret være Ja på medlemskap og {string} på harDekning") { forventetVerdi: String ->
+        Så("skal svaret være Ja på medlemskap og {string} på harDekning") { forventetVerdi: String ->
             val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
             assertEquals(Svar.JA, hentResultat().svar)
             assertEquals(forventetSvar, hentResultat().harDekning)
         }
 
-        @Så("skal svaret være {string} på medlemskap og {string} på harDekning") { forventetMedlemskap: String, forventetVerdi: String ->
+        Så("skal svaret være {string} på medlemskap og {string} på harDekning") { forventetMedlemskap: String, forventetVerdi: String ->
             val forventetSvarMedlemskap = domenespråkParser.parseSvar(forventetMedlemskap)
             assertEquals(forventetSvarMedlemskap, hentResultat().svar)
             val forventetSvar = domenespråkParser.parseSvar(forventetVerdi)
             assertEquals(forventetSvar, hentResultat().harDekning)
         }
 
-        @Så("skal regel {string} gi svaret {string}") { regelIdStr: String?, forventetSvar: String? ->
+        Så("skal regel {string} gi svaret {string}") { regelIdStr: String?, forventetSvar: String? ->
             val regelId = domenespråkParser.parseRegelId(regelIdStr!!)
 
             assertDelresultat(regelId, domenespråkParser.parseSvar(forventetSvar!!), hentResultat())
         }
 
-        @Så("skal regel {string} gi begrunnelse {string}") {
+        Så("skal regel {string} gi begrunnelse {string}") {
             fun regelGiBegrunnelse(regelIdStr:String, forventetBegrunnelse:String) {
                 val regelId = domenespråkParser.parseRegelId(regelIdStr!!)
 
@@ -402,14 +401,14 @@ class RegelSteps {
 
         }
 
-        @Så("skal regel {string} ikke finnes i resultatet") { regelIdStr: String ->
+        Så("skal regel {string} ikke finnes i resultatet") { regelIdStr: String ->
             val regelId = domenespråkParser.parseRegelId(regelIdStr)
             val regelResultat = hentResultat().finnRegelResultat(regelId)
 
             assertNull(regelResultat)
         }
 
-        @Så("skal regel {string} inneholde følgende delresultater:") { regelIdStr: String, dataTable: DataTable ->
+        Så("skal regel {string} inneholde følgende delresultater:") { regelIdStr: String, dataTable: DataTable ->
             val regelIdListe = domenespråkParser.mapRegelId(dataTable)
             val regelId = domenespråkParser.parseRegelId(regelIdStr)
 
@@ -419,14 +418,14 @@ class RegelSteps {
             assertTrue(regelResultat.delresultat.map { it.regelId }.containsAll(regelIdListe))
         }
 
-        @Så("skal resultat gi følgende delresultater:") { dataTable: DataTable ->
+        Så("skal resultat gi følgende delresultater:") { dataTable: DataTable ->
             val forventedeRegler = domenespråkParser.mapRegelId(dataTable)
             val faktiskeRegler = hentResultat().delresultat.map { it.regelId }
 
             faktiskeRegler.shouldContainExactly(forventedeRegler)
         }
 
-        @Så("skal JSON datagrunnlag og resultat genereres i filen {string}") { filnavn: String ->
+        Så("skal JSON datagrunnlag og resultat genereres i filen {string}") { filnavn: String ->
             val datagrunnlagJson: String = hentDatagrunnlag().tilJson()
             val resultatJson = hentResultat().tilJson()
             val responseJson =
@@ -435,15 +434,15 @@ class RegelSteps {
             lagreJson(filnavn, responseJson)
         }
 
-        @Så("skal JSON resultat genereres i filen {string}") { filnavn: String ->
+        Så("skal JSON resultat genereres i filen {string}") { filnavn: String ->
             lagreJsonResultat(filnavn)
         }
 
-        @Så("skal JSON datagrunnlag genereres i filen {string}") { filnavn: String ->
+        Så("skal JSON datagrunnlag genereres i filen {string}") { filnavn: String ->
             lagreJsonDatagrunnlag(filnavn)
         }
 
-        @Så("skal statsborgerskapskategorien være {string}") { statsborgerskapskategori: String ->
+        Så("skal statsborgerskapskategorien være {string}") { statsborgerskapskategori: String ->
             assertEquals(statsborgerskapskategori, resultat?.bestemStatsborgerskapskategori()?.name)
         }
     }
