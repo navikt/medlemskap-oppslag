@@ -47,8 +47,6 @@ plugins {
     kotlin("jvm") version "1.9.20"
     id("com.github.johnrengelman.shadow") version "7.0.0"
     id("com.expediagroup.graphql") version "4.0.0" apply false
-    id("org.jlleitschuh.gradle.ktlint") version "9.3.0"
-    id("org.jlleitschuh.gradle.ktlint-idea") version "9.3.0"
     id("com.github.ben-manes.versions") version "0.29.0"
     id("org.hidetake.swagger.generator") version "2.18.2" apply true
     id("org.jetbrains.kotlin.plugin.serialization") version "1.7.10"
@@ -202,7 +200,6 @@ swaggerSources {
 tasks {
     withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "20"
-        dependsOn("ktlintFormat")
     }
 
     withType<Test> {
@@ -237,12 +234,4 @@ tasks {
         java.sourceCompatibility = JavaVersion.VERSION_20
     }
 
-}
-
-ktlint {
-    disabledRules.set(setOf("no-wildcard-imports"))
-    filter {
-        exclude("**/generated/**")
-        include("**/kotlin/**")
-    }
 }
