@@ -660,6 +660,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/Navn"
+        oppholdstilatelser:
+          type: array
+          items:
+            nullable: true
     PersonhistorikkBarn:
       properties:
         ident:
