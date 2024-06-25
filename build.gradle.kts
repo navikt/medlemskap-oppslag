@@ -202,6 +202,7 @@ swaggerSources {
 tasks {
     withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "20"
+        dependsOn("ktlintFormat")
     }
 
     withType<Test> {
