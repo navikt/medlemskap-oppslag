@@ -30,7 +30,6 @@ val activationVersion = "1.1.1"
 val nvi18nVersion = "1.27"
 val kotestVersion = "4.2.5"
 val swaggerRequestValidatorVersion = "2.33.1"
-val swaggerUiVersion = "4.15.0"
 // Temporary to fix high severity Snyk vulnerabilities:
 val nettyVersion = "4.1.68.Final"
 val commonsCodecVersion = "3.2.2"
@@ -48,7 +47,6 @@ plugins {
     id("com.github.johnrengelman.shadow") version "7.0.0"
     id("com.expediagroup.graphql") version "4.0.0" apply false
     id("com.github.ben-manes.versions") version "0.29.0"
-    id("org.hidetake.swagger.generator") version "2.18.2" apply true
     id("org.jetbrains.kotlin.plugin.serialization") version "1.7.10"
 }
 
@@ -145,7 +143,6 @@ dependencies {
     implementation("no.bekk.bekkopen:nocommons:$nocommonsVersion")
     implementation("com.expediagroup:graphql-kotlin-ktor-client:$graphqlKotlinClientVersion")
     implementation("com.neovisionaries:nv-i18n:$nvi18nVersion")
-    swaggerUI("org.webjars:swagger-ui:$swaggerUiVersion")
 
     implementation("commons-collections:commons-collections:$commonsCodecVersion")
     implementation("org.apache.httpcomponents:httpclient:$httpClientVersion")
@@ -191,12 +188,6 @@ java {
     targetCompatibility = JavaVersion.VERSION_20
 }
 
-swaggerSources {
-    create("lovme-api").apply {
-        setInputFile(file("src/main/resources/lovme.yaml"))
-    }
-}
-
 tasks {
     withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "20"
@@ -209,12 +200,7 @@ tasks {
         }
     }
 
-    withType<org.hidetake.gradle.swagger.generator.GenerateSwaggerUI> {
-        outputDir = File(buildDir.path + "/resources/main/api")
-    }
-
     withType<ShadowJar> {
-        dependsOn("generateSwaggerUI")
         archiveBaseName.set("app")
         archiveClassifier.set("")
         manifest {
