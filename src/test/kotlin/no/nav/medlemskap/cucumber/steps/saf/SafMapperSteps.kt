@@ -26,39 +26,39 @@ class SafMapperSteps : No {
     private var dokumenter: List<Journalpost>? = null
 
     init {
-        Gitt<DataTable>("følgende tittel fra journalpost") { dataTable: DataTable ->
+        Gitt("følgende tittel fra journalpost") { dataTable: DataTable ->
             safDokumentBuilder.tittel = safDomenespråkParser.mapDokumentTittel(dataTable)
         }
 
-        Gitt<DataTable>("følgende dokumentInfoId fra dokument") { dataTable: DataTable ->
+        Gitt("følgende dokumentInfoId fra dokument") { dataTable: DataTable ->
             dokumentInfoBuilder.dokumentInfoId = safDomenespråkParser.mapDokumentInfoId(dataTable)
         }
 
-        Gitt<DataTable>("følgende fagsakId fra dokument") { dataTable: DataTable ->
+        Gitt("følgende fagsakId fra dokument") { dataTable: DataTable ->
             safDokumentBuilder.sak = Sak(safDomenespråkParser.mapFagsakId(dataTable))
         }
 
-        Gitt<DataTable>("følgende tittel fra dokument") { dataTable: DataTable ->
+        Gitt("følgende tittel fra dokument") { dataTable: DataTable ->
             dokumentInfoBuilder.tittel = safDomenespråkParser.mapDokumentTittel(dataTable)
         }
 
-        Gitt<DataTable>("følgende journalpostId fra journalpost") { dataTable: DataTable ->
+        Gitt("følgende journalpostId fra journalpost") { dataTable: DataTable ->
             safDokumentBuilder.journalpostId = safDomenespråkParser.mapJournalPostId(dataTable)
         }
 
-        Gitt<DataTable>("følgende journalført av navn fra journalpost") { dataTable: DataTable ->
+        Gitt("følgende journalført av navn fra journalpost") { dataTable: DataTable ->
             safDokumentBuilder.journalfortAvNavn = safDomenespråkParser.mapJournalfortAvNavn(dataTable)
         }
 
-        Gitt<DataTable>("følgende journalposttype fra journalpost") { dataTable: DataTable ->
+        Gitt("følgende journalposttype fra journalpost") { dataTable: DataTable ->
             safDokumentBuilder.journalposttype = safDomenespråkParser.mapJournalPostType(dataTable)
         }
 
-        Gitt<DataTable>("følgende tema fra journalpost") { dataTable: DataTable ->
+        Gitt("følgende tema fra journalpost") { dataTable: DataTable ->
             safDokumentBuilder.tema = safDomenespråkParser.mapJournalTema(dataTable)
         }
 
-        Gitt<DataTable>("følgende journalstatus fra journalpost") { dataTable: DataTable ->
+        Gitt("følgende journalstatus fra journalpost") { dataTable: DataTable ->
             safDokumentBuilder.journalStatus = safDomenespråkParser.mapJournalStatus(dataTable)
         }
 
@@ -66,22 +66,22 @@ class SafMapperSteps : No {
             dokumenter = mapTilDokumenter()
         }
 
-        Så<DataTable>("skal mappede journalpostid være") { dataTable: DataTable ->
+        Så("skal mappede journalpostid være") { dataTable: DataTable ->
             val journalpostIdForventet = DokumentDomeneSpraakParser.mapJournalpostId(dataTable)
             dokumenter?.get(0)?.journalpostId.shouldBe(journalpostIdForventet)
         }
 
-        Så<DataTable>("skal mappede journalført av navn være") { dataTable: DataTable ->
+        Så("skal mappede journalført av navn være") { dataTable: DataTable ->
             val forventetJournalfortAvNavn = DokumentDomeneSpraakParser.mapJournalfortAvNavn(dataTable)
             dokumenter?.get(0)?.journalfortAvNavn.shouldBe(forventetJournalfortAvNavn)
         }
 
-        Så<DataTable>("skal mappede journalstatus være") { dataTable: DataTable ->
+        Så("skal mappede journalstatus være") { dataTable: DataTable ->
             val journalstatusForventet = DokumentDomeneSpraakParser.mapJournalstatus(dataTable)
             dokumenter?.get(0)?.journalstatus.shouldBe(journalstatusForventet)
         }
 
-        Så<DataTable>("skal mappede dokumentInfoId være") { dataTable: DataTable ->
+        Så("skal mappede dokumentInfoId være") { dataTable: DataTable ->
             val dokumentInfoIdForventet = DokumentDomeneSpraakParser.mapDokumentInfoId(dataTable)
             dokumenter?.get(0)?.dokumenter?.get(0)?.dokumentId.shouldBe(dokumentInfoIdForventet)
         }
@@ -91,22 +91,22 @@ class SafMapperSteps : No {
             dokumenter?.get(0)?.sak?.fagsakId.shouldBe(forventetFagsakId)
         }
 
-        Så<DataTable>("mappede tittel være") { dataTable: DataTable ->
+        Så("mappede tittel være") { dataTable: DataTable ->
             val tittelForventet = DokumentDomeneSpraakParser.mapTittel(dataTable)
             dokumenter?.get(0)?.dokumenter?.get(0)?.tittel.shouldBe(tittelForventet)
         }
 
-        Så<DataTable>("skal mappede tema være") { dataTable: DataTable ->
+        Så("skal mappede tema være") { dataTable: DataTable ->
             val temaForventet = DokumentDomeneSpraakParser.mapTema(dataTable)
             dokumenter?.get(0)?.tema.shouldBe(temaForventet)
         }
 
-        Så<DataTable>("skal mappede tittel i journalpost være") { dataTable: DataTable ->
+        Så("skal mappede tittel i journalpost være") { dataTable: DataTable ->
             val tittelForventet = DokumentDomeneSpraakParser.mapTittel(dataTable)
             dokumenter?.get(0)?.tittel.shouldBe(tittelForventet)
         }
 
-        Så<DataTable>("skal mappede journalposttype være") { dataTable: DataTable ->
+        Så("skal mappede journalposttype være") { dataTable: DataTable ->
             val journalposttypeForventet = DokumentDomeneSpraakParser.mapJournalposttype(dataTable)
             dokumenter?.get(0)?.journalposttype.shouldBe(journalposttypeForventet)
         }

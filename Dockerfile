@@ -1,4 +1,4 @@
-FROM navikt/java:11
+FROM ghcr.io/navikt/baseimages/temurin:21
 
 COPY build/libs/*.jar ./
 USER root

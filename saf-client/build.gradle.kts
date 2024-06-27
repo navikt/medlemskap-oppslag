@@ -1,4 +1,6 @@
 import com.expediagroup.graphql.plugin.gradle.config.GraphQLSerializer
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 val graphqlKotlinClientVersion = "5.3.1"
 val coroutinesVersion = "1.5.2"
 
@@ -22,4 +24,15 @@ val graphqlGenerateClient by tasks.getting(com.expediagroup.graphql.plugin.gradl
     schemaFile.set(file("${project.projectDir}/src/main/resources/saf/saf-api-sdl.graphqls"))
     queryFileDirectory.set("${project.projectDir}/src/main/resources/saf")
     serializer.set(GraphQLSerializer.KOTLINX)
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_20
+    targetCompatibility = JavaVersion.VERSION_20
+}
+
+tasks {
+    withType<KotlinCompile> {
+        kotlinOptions.jvmTarget = "20"
+    }
 }

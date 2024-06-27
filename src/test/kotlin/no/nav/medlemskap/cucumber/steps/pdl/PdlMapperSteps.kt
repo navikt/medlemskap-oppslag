@@ -27,43 +27,43 @@ class PdlMapperSteps : No {
     private var personhistorikkBarn: PersonhistorikkBarn? = null
 
     init {
-        Gitt<DataTable>("følgende statsborgerskap fra PDL:") { dataTable: DataTable ->
+        Gitt("følgende statsborgerskap fra PDL:") { dataTable: DataTable ->
             pdlPersonBuilder.statsborgerskap = pdlDomenespråkParser.mapStatsborgerskap(dataTable)
         }
 
-        Gitt<DataTable>("følgende bostedsadresser fra PDL:") { dataTable: DataTable ->
+        Gitt("følgende bostedsadresser fra PDL:") { dataTable: DataTable ->
             pdlPersonBuilder.bostedsadresser = pdlDomenespråkParser.mapBostedsadresser(dataTable)
         }
 
-        Gitt<DataTable>("følgende kontaktadresser fra PDL:") { dataTable: DataTable ->
+        Gitt("følgende kontaktadresser fra PDL:") { dataTable: DataTable ->
             pdlPersonBuilder.kontaktadresser = pdlDomenespråkParser.mapKontaktadresser(dataTable)
         }
 
-        Gitt<DataTable>("følgende oppholdsadresser fra PDL:") { dataTable: DataTable ->
+        Gitt("følgende oppholdsadresser fra PDL:") { dataTable: DataTable ->
             pdlPersonBuilder.oppholdsadresser = pdlDomenespråkParser.mapOppholdsadresser(dataTable)
         }
 
-        Gitt<DataTable>("følgende sivilstander fra PDL:") { dataTable: DataTable ->
+        Gitt("følgende sivilstander fra PDL:") { dataTable: DataTable ->
             pdlPersonBuilder.sivilstander = pdlDomenespråkParser.mapSivilstander(dataTable)
         }
 
-        Gitt<DataTable>("følgende familierelasjoner fra PDL:") { dataTable: DataTable ->
+        Gitt("følgende familierelasjoner fra PDL:") { dataTable: DataTable ->
             pdlPersonBuilder.familierelasjoner = pdlDomenespråkParser.mapFamilierelasjoner(dataTable)
         }
 
-        Gitt<DataTable>("følgende opplysninger om doedsfall fra PDL:") { dataTable: DataTable ->
+        Gitt("følgende opplysninger om doedsfall fra PDL:") { dataTable: DataTable ->
             pdlPersonBuilder.doedsfall = pdlDomenespråkParser.mapDoedsfall(dataTable)
         }
 
-        Gitt<DataTable>("følgende bostedsadresse i barnets personhistorikk") { dataTable: DataTable ->
+        Gitt("følgende bostedsadresse i barnets personhistorikk") { dataTable: DataTable ->
             pdlPeronBuilderBarn.bostedsadresser = pdlDomenespråkParser.mapBostedsadresser(dataTable)
         }
 
-        Gitt<DataTable>("følgende bostedsadresse til ektefelles personhistorikk") { dataTable: DataTable ->
+        Gitt("følgende bostedsadresse til ektefelles personhistorikk") { dataTable: DataTable ->
             pdlPersonBuilderEktefelle.bostedsadresser = pdlDomenespråkParser.mapBostedsadresser(dataTable)
         }
 
-        Gitt<DataTable>("følgende navn fra PDL") { dataTable: DataTable ->
+        Gitt("følgende navn fra PDL") { dataTable: DataTable ->
             pdlPersonBuilder.navn = pdlDomenespråkParser.mapNavn(dataTable)
         }
 
@@ -103,7 +103,7 @@ class PdlMapperSteps : No {
             personhistorikk = mapTilPersonhistorikk()
         }
 
-        Når<DataTable>("personhistorikken til bruker, ektefelle og barn mappes med følgende parametre") { dataTable: DataTable ->
+        Når("personhistorikken til bruker, ektefelle og barn mappes med følgende parametre") { dataTable: DataTable ->
             val pdlParametre = pdlDomenespråkParser.mapPdlParametre(dataTable)
 
             personhistorikk = mapTilPersonhistorikk()
@@ -111,47 +111,47 @@ class PdlMapperSteps : No {
             personhistorikkEktefelle = mapTilPersonhistorikkEktefelle(pdlParametre.førsteDatoForYtelse)
         }
 
-        Så<DataTable>("skal mappet statsborgerskap være") { dataTable: DataTable ->
+        Så("skal mappet statsborgerskap være") { dataTable: DataTable ->
             val statsborgerskapForventet = PersonhistorikkDomeneSpraakParser.mapStatsborgerskap(dataTable)
             personhistorikk!!.statsborgerskap.shouldContainExactly(statsborgerskapForventet)
         }
 
-        Så<DataTable>("skal mappede bostedsadresser være") { dataTable: DataTable ->
+        Så("skal mappede bostedsadresser være") { dataTable: DataTable ->
             val bostedsadresserForventet = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
             personhistorikk!!.bostedsadresser.shouldContainExactly(bostedsadresserForventet)
         }
 
-        Så<DataTable>("skal mappede kontaktadresser være") { dataTable: DataTable ->
+        Så("skal mappede kontaktadresser være") { dataTable: DataTable ->
             val kontaktadresserForventet = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
             personhistorikk!!.kontaktadresser.shouldContainExactly(kontaktadresserForventet)
         }
 
-        Så<DataTable>("skal mappede oppholdsadresser være") { dataTable: DataTable ->
+        Så("skal mappede oppholdsadresser være") { dataTable: DataTable ->
             val oppholdsadresserForventet = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
             personhistorikk!!.oppholdsadresser.shouldContainExactly(oppholdsadresserForventet)
         }
 
-        Så<DataTable>("skal mappede sivilstander være") { dataTable: DataTable ->
+        Så("skal mappede sivilstander være") { dataTable: DataTable ->
             val sivilstanderForventet = PersonhistorikkDomeneSpraakParser.mapSivilstander(dataTable)
             personhistorikk!!.sivilstand.shouldContainExactly(sivilstanderForventet)
         }
 
-        Så<DataTable>("skal mappede familierelasjoner være") { dataTable: DataTable ->
+        Så("skal mappede familierelasjoner være") { dataTable: DataTable ->
             val familierelasjonerForventet = PersonhistorikkDomeneSpraakParser.mapFamilierelasjoner(dataTable)
             personhistorikk!!.forelderBarnRelasjon.shouldContainExactly(familierelasjonerForventet)
         }
 
-        Så<DataTable>("skal mappede doedsfall være") { dataTable: DataTable ->
+        Så("skal mappede doedsfall være") { dataTable: DataTable ->
             val doedsfallForventet = PersonhistorikkDomeneSpraakParser.mapDoedsfall(dataTable)
             personhistorikk?.doedsfall.shouldContainExactly(doedsfallForventet)
         }
 
-        Så<DataTable>("mappede bostedadresse til barnet være") { dataTable: DataTable ->
+        Så("mappede bostedadresse til barnet være") { dataTable: DataTable ->
             val bostedsadresseForventet = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
             personhistorikkBarn?.bostedsadresser.shouldContainExactly(bostedsadresseForventet)
         }
 
-        Så<DataTable>("følgende bostedsadresse til ektefelle være") { dataTable: DataTable ->
+        Så("følgende bostedsadresse til ektefelle være") { dataTable: DataTable ->
             val bostedsadresseForventet = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
             personhistorikkEktefelle?.bostedsadresser.shouldContainExactly(bostedsadresseForventet)
         }

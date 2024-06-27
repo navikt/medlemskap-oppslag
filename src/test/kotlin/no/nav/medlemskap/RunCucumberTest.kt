@@ -1,15 +1,16 @@
 package no.nav.medlemskap
 
-import io.cucumber.junit.Cucumber
-import io.cucumber.junit.CucumberOptions
-import org.junit.runner.RunWith
+import io.cucumber.junit.platform.engine.Constants
+import org.junit.platform.suite.api.ConfigurationParameter
+import org.junit.platform.suite.api.IncludeEngines
+import org.junit.platform.suite.api.SelectClasspathResource
+import org.junit.platform.suite.api.Suite
 
-@RunWith(Cucumber::class)
-@CucumberOptions(
-    features = ["src/test/resources/dokumentasjon/features"],
-    glue = ["no.nav.medlemskap.cucumber.steps"],
-    plugin = ["pretty", "html:build/cucumber.html"],
-    tags = "not @ignored",
-    monochrome = false
-)
+
+@Suite
+@IncludeEngines("cucumber")
+@SelectClasspathResource("cucumber")
+@ConfigurationParameter(key = Constants.PLUGIN_PROPERTY_NAME, value = "pretty")
+@ConfigurationParameter(key = Constants.FEATURES_PROPERTY_NAME, value = "src/test/resources/dokumentasjon/features")
+@ConfigurationParameter(key = Constants.GLUE_PROPERTY_NAME, value = "no.nav.medlemskap.cucumber.steps")
 class RunCucumberTest

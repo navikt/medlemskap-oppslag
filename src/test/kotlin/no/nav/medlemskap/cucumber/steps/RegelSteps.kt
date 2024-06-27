@@ -93,6 +93,7 @@ class RegelSteps : No {
             val bostedsadresser = PersonhistorikkDomeneSpraakParser.mapAdresser(dataTable)
             pdlPersonhistorikkBuilder.bostedsadresser.addAll(bostedsadresser)
         }
+
         Gitt("følgende opplysninger om dødsfall i personhistorikken:") { dataTable: DataTable ->
             val doedsfall = PersonhistorikkDomeneSpraakParser.mapDoedsfall(dataTable)
             pdlPersonhistorikkBuilder.doedsfall.addAll(doedsfall)
@@ -212,26 +213,36 @@ class RegelSteps : No {
             dataOmEktefelleBuilder.arbeidsforholdEktefelle.get(0).arbeidsavtaler = arbeidsavtaleEktefelleMap[0]!!
         }
 
-        Gitt<DataTable>("med følgende regeloverstyringer") { dataTable ->
+        Gitt("med følgende regeloverstyringer") { dataTable: DataTable ->
             overstyrteRegler = domenespråkParser.mapOverstyrteRegler(dataTable)
         }
 
         Gitt("følgende oppholdstillatelse") { dataTable: DataTable ->
-            oppholdstillatelseBuilder.fromOppholdstillatelse(OppholdstillatelseDomeneSpraakParser.mapOppholdstillatelse(dataTable))
+            oppholdstillatelseBuilder.fromOppholdstillatelse(
+                OppholdstillatelseDomeneSpraakParser.mapOppholdstillatelse(
+                    dataTable
+                )
+            )
         }
 
         Gitt("følgende oppholdstillatelse med oppholdstillatelse på samme vilkår") { dataTable: DataTable ->
-            oppholdstillatelsePaSammeVilkarBuilder.harTillatelse = OppholdstillatelseDomeneSpraakParser.mapHarTillatelse(dataTable)
+            oppholdstillatelsePaSammeVilkarBuilder.harTillatelse =
+                OppholdstillatelseDomeneSpraakParser.mapHarTillatelse(dataTable)
             oppholdstillatelsePaSammeVilkarBuilder.periode = OppholdstillatelseDomeneSpraakParser.mapPeriode(dataTable)
-            oppholdstillatelsePaSammeVilkarBuilder.soknadIkkeAvgjort = OppholdstillatelseDomeneSpraakParser.mapSoknadIkkeAvgjort(dataTable)
-            oppholdstillatelsePaSammeVilkarBuilder.type = OppholdstillatelseDomeneSpraakParser.mapOppholdstillatelsePaSammeVilkarType(dataTable)
-            gjeldendeOppholdsstatusBuilder.oppholdstillatelsePaSammeVilkar = oppholdstillatelsePaSammeVilkarBuilder.build()
+            oppholdstillatelsePaSammeVilkarBuilder.soknadIkkeAvgjort =
+                OppholdstillatelseDomeneSpraakParser.mapSoknadIkkeAvgjort(dataTable)
+            oppholdstillatelsePaSammeVilkarBuilder.type =
+                OppholdstillatelseDomeneSpraakParser.mapOppholdstillatelsePaSammeVilkarType(dataTable)
+            gjeldendeOppholdsstatusBuilder.oppholdstillatelsePaSammeVilkar =
+                oppholdstillatelsePaSammeVilkarBuilder.build()
         }
 
         Gitt("følgende i EØSellerEFTAOpphold") { dataTable: DataTable ->
             eosEellerEFTAOppholdBuilder.periode = OppholdstillatelseDomeneSpraakParser.mapPeriode(dataTable)
-            eosEellerEFTAOppholdBuilder.EOSellerEFTAGrunnlagskategoriOppholdsrettType = OppholdstillatelseDomeneSpraakParser.mapOppholdsrettType(dataTable)
-            eosEellerEFTAOppholdBuilder.EOSellerEFTAOppholdType = OppholdstillatelseDomeneSpraakParser.mapOppholdType(dataTable)
+            eosEellerEFTAOppholdBuilder.EOSellerEFTAGrunnlagskategoriOppholdsrettType =
+                OppholdstillatelseDomeneSpraakParser.mapOppholdsrettType(dataTable)
+            eosEellerEFTAOppholdBuilder.EOSellerEFTAOppholdType =
+                OppholdstillatelseDomeneSpraakParser.mapOppholdType(dataTable)
             gjeldendeOppholdsstatusBuilder.eosellerEFTAOpphold = eosEellerEFTAOppholdBuilder.build()
             oppholdstillatelseBuilder.gjeldendeOppholdsstatus = gjeldendeOppholdsstatusBuilder.build()
             oppholdstillatelseBuilder.build()
@@ -357,7 +368,8 @@ class RegelSteps : No {
         Så("skal regel-årsaker være {string}") { forventedeÅrsaker: String ->
             assertEquals(
                 forventedeÅrsaker.trim(),
-                hentResultat().årsaker.map { it.regelId.identifikator }.toString().filter { it != '[' && it != ']' }.trim()
+                hentResultat().årsaker.map { it.regelId.identifikator }.toString().filter { it != '[' && it != ']' }
+                    .trim()
             )
         }
 
@@ -380,10 +392,13 @@ class RegelSteps : No {
             assertDelresultat(regelId, domenespråkParser.parseSvar(forventetSvar!!), hentResultat())
         }
 
-        Så<String, String>("skal regel {string} gi begrunnelse {string}") { regelIdStr, forventetBegrunnelse ->
-            val regelId = domenespråkParser.parseRegelId(regelIdStr!!)
+        Så("skal regel {string} gi begrunnelse {string}") {
+            fun regelGiBegrunnelse(regelIdStr:String, forventetBegrunnelse:String) {
+                val regelId = domenespråkParser.parseRegelId(regelIdStr!!)
 
-            assertBegrunnelse(regelId, forventetBegrunnelse, hentResultat())
+                assertBegrunnelse(regelId, forventetBegrunnelse, hentResultat())
+            }
+
         }
 
         Så("skal regel {string} ikke finnes i resultatet") { regelIdStr: String ->
@@ -413,7 +428,8 @@ class RegelSteps : No {
         Så("skal JSON datagrunnlag og resultat genereres i filen {string}") { filnavn: String ->
             val datagrunnlagJson: String = hentDatagrunnlag().tilJson()
             val resultatJson = hentResultat().tilJson()
-            val responseJson = datagrunnlagJson.substring(0, datagrunnlagJson.length - 2) + ",\n \"resultat\" : " + resultatJson + "}"
+            val responseJson =
+                datagrunnlagJson.substring(0, datagrunnlagJson.length - 2) + ",\n \"resultat\" : " + resultatJson + "}"
 
             lagreJson(filnavn, responseJson)
         }
@@ -463,7 +479,14 @@ class RegelSteps : No {
             brukerinput = medlemskapsparametre.brukerinput,
             pdlpersonhistorikk = pdlPersonhistorikkBuilder.build(),
             medlemskap = medlemskap,
-            arbeidsforhold = byggArbeidsforhold(arbeidsforhold, arbeidsgiverMap, arbeidsavtaleMap, utenlandsoppholdMap, ansatteMap, permisjonPermitteringMap),
+            arbeidsforhold = byggArbeidsforhold(
+                arbeidsforhold,
+                arbeidsgiverMap,
+                arbeidsavtaleMap,
+                utenlandsoppholdMap,
+                ansatteMap,
+                permisjonPermitteringMap
+            ),
             oppgaver = oppgaverFraGosys,
             dokument = journalPosterFraJoArk,
             ytelse = medlemskapsparametre.ytelse ?: Ytelse.SYKEPENGER,
