@@ -22,12 +22,14 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - name: test and build
+      - name: Set up JDK 20
         uses: actions/setup-java@v4.2.1
         with:
           distribution: 'adopt'
           java-version: '20'
           check-latest: true
+          cache: 'gradle'
+      - name: Bygg med gradle
         run: ./gradlew test shadowJar
         env:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
