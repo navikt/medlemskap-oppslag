@@ -16,6 +16,7 @@ import no.nav.medlemskap.common.exceptions.*
 import v1.mt_1067_nav.no.udi.HentPersonstatusFault
 
 private val logger = KotlinLogging.logger { }
+private val secureLogger = KotlinLogging.logger("tjenestekall")
 
 fun StatusPagesConfig.exceptionHandler() {
     exception<GraphqlError> { call, cause ->
@@ -78,7 +79,7 @@ fun StatusPagesConfig.exceptionHandler() {
     }
     exception<GradertAdresseException> { call, cause ->
 
-        call.logWarningAndRespond(cause, HttpStatusCode.ServiceUnavailable) {
+        call.logSecureWarningAndRespond(cause, HttpStatusCode.ServiceUnavailable) {
             "GradertAdresse. Lovme skal ikke  kalles for personer med kode 6/7"
         }
     }
@@ -136,6 +137,26 @@ private suspend inline fun ApplicationCall.logWarningAndRespond(
 ) {
     val message = lazyMessage()
     logger.warn(
+        message,
+        kv("cause", cause),
+        kv("callId", callId)
+    )
+    val response = HttpErrorResponse(
+        url = this.request.uri,
+        cause = cause.toString(),
+        message = message,
+        code = status,
+        callId = getCorrelationId(callId)
+    )
+    this.respond(status, response)
+}
+private suspend inline fun ApplicationCall.logSecureWarningAndRespond(
+    cause: Throwable,
+    status: HttpStatusCode = HttpStatusCode.InternalServerError,
+    lazyMessage: () -> String
+) {
+    val message = lazyMessage()
+    secureLogger.warn(
         message,
         kv("cause", cause),
         kv("callId", callId)
