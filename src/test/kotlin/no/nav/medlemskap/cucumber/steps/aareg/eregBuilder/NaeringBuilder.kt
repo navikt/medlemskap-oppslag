@@ -16,6 +16,6 @@ class NaeringBuilder {
             bruksperiode = bruksperiode,
             gyldighetsperiode = gyldighetsperiode,
             hjelpeenhet = hjelpeenhet,
-            naeringskode = naeringskode
+            naeringskode = naeringskode,
         )
 }

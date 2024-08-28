@@ -16,22 +16,21 @@ class DekkerOppholdstillatelseArbeidsperiodeRegel(
     ytelse: Ytelse,
     private val oppholdstillatelse: Oppholdstillatelse?,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    regelId: RegelId = RegelId.REGEL_19_3_1
+    regelId: RegelId = RegelId.REGEL_19_3_1,
 ) : BasisRegel(regelId, ytelse) {
-
     override fun operasjon(): Resultat {
-
         if (oppholdstillatelse?.gjeldendeOppholdsstatus == null) {
             return uavklart(regelId)
         }
 
         val oppholdstillatelse = oppholdstillatelse.gjeldendeOppholdsstatus.oppholdstillatelsePaSammeVilkar
 
-        val dekkerOppholdstillatelseArbeidsperioden = arbeidsforhold.any {
-            oppholdstillatelse?.periode?.encloses(
-                Periode(it.periode.fom, it.periode.tom ?: oppholdstillatelse.periode.tom)
-            ) == true
-        }
+        val dekkerOppholdstillatelseArbeidsperioden =
+            arbeidsforhold.any {
+                oppholdstillatelse?.periode?.encloses(
+                    Periode(it.periode.fom, it.periode.tom ?: oppholdstillatelse.periode.tom),
+                ) == true
+            }
 
         return if (dekkerOppholdstillatelseArbeidsperioden) {
             ja(regelId)
@@ -41,12 +40,11 @@ class DekkerOppholdstillatelseArbeidsperiodeRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): DekkerOppholdstillatelseArbeidsperiodeRegel {
             return DekkerOppholdstillatelseArbeidsperiodeRegel(
                 ytelse = datagrunnlag.ytelse,
                 oppholdstillatelse = datagrunnlag.oppholdstillatelse,
-                arbeidsforhold = datagrunnlag.arbeidsforhold
+                arbeidsforhold = datagrunnlag.arbeidsforhold,
             )
         }
     }

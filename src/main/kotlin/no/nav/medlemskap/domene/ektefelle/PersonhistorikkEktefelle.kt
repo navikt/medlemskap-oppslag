@@ -9,5 +9,5 @@ data class PersonhistorikkEktefelle(
     val barn: List<String>?,
     val bostedsadresser: List<Adresse>,
     val kontaktadresser: List<Adresse>,
-    val oppholdsadresser: List<Adresse>
+    val oppholdsadresser: List<Adresse>,
 )

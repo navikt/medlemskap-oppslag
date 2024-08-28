@@ -35,7 +35,6 @@ class AaRegArbeidsforholdBuilder {
     var utenlandsopphold = mutableListOf(utenlandsoppholdBuilder.build())
 
     fun build(): AaRegArbeidsforhold {
-
         return AaRegArbeidsforhold(
             ansettelsesperiode = ansettelsesperiode,
             antallTimerForTimeloennet = antallTimerForLoennet,
@@ -51,7 +50,7 @@ class AaRegArbeidsforholdBuilder {
             sistBekreftet = sistBekreftet,
             sporingsinformasjon = sporingsinformasjon,
             type = type,
-            utenlandsopphold = utenlandsopphold
+            utenlandsopphold = utenlandsopphold,
         )
     }
 }

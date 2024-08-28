@@ -11,7 +11,6 @@ import org.junit.jupiter.api.assertThrows
 
 @Disabled("Fikk ConnectException på GHA-bygget.. Merkelig...")
 class ApacheHttpClientJobCancellationExceptionTest {
-
     @Test
     fun `JobCancellationException kastes naar backend service ikke naas`() {
         // Ref https://github.com/ktorio/ktor/issues/1592

@@ -40,30 +40,35 @@ import java.util.regex.Pattern
  */
 class SensuInfluxNamingConvention
 /**
- * By default, telegraf's configuration option for `metric_separator`
- * is an underscore, which corresponds to [NamingConvention.snakeCase].
- */
-@JvmOverloads constructor(private val delegate: NamingConvention = NamingConvention.snakeCase) : NamingConvention {
-    override fun name(name: String, type: Meter.Type, baseUnit: String?): String {
-        return escape(delegate.name(name, type, baseUnit).replace("=", "_"))
-    }
+     * By default, telegraf's configuration option for `metric_separator`
+     * is an underscore, which corresponds to [NamingConvention.snakeCase].
+     */
+    @JvmOverloads
+    constructor(private val delegate: NamingConvention = NamingConvention.snakeCase) : NamingConvention {
+        override fun name(
+            name: String,
+            type: Meter.Type,
+            baseUnit: String?,
+        ): String {
+            return escape(delegate.name(name, type, baseUnit).replace("=", "_"))
+        }
 
-    override fun tagKey(key: String): String { // `time` cannot be a field key or tag key
-        require(key != "time") { "'time' is an invalid tag key in InfluxDB" }
-        return escape(delegate.tagKey(key))
-    }
+        override fun tagKey(key: String): String { // `time` cannot be a field key or tag key
+            require(key != "time") { "'time' is an invalid tag key in InfluxDB" }
+            return escape(delegate.tagKey(key))
+        }
 
-    override fun tagValue(value: String): String { // `time` cannot be a field key or tag key
-        require(value != "time") { "'time' is an invalid tag value in InfluxDB" }
-        return escape(delegate.tagValue(value))
-    }
+        override fun tagValue(value: String): String { // `time` cannot be a field key or tag key
+            require(value != "time") { "'time' is an invalid tag value in InfluxDB" }
+            return escape(delegate.tagValue(value))
+        }
 
-    private fun escape(string: String): String {
-        return PATTERN_SPECIAL_CHARACTERS.matcher(string).replaceAll("\\\\$1")
-    }
+        private fun escape(string: String): String {
+            return PATTERN_SPECIAL_CHARACTERS.matcher(string).replaceAll("\\\\$1")
+        }
 
-    companion object {
-        // https://docs.influxdata.com/influxdb/v1.3/write_protocols/line_protocol_reference/#special-characters
-        private val PATTERN_SPECIAL_CHARACTERS = Pattern.compile("([, =\"])")
+        companion object {
+            // https://docs.influxdata.com/influxdb/v1.3/write_protocols/line_protocol_reference/#special-characters
+            private val PATTERN_SPECIAL_CHARACTERS = Pattern.compile("([, =\"])")
+        }
     }
-}

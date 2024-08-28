@@ -7,17 +7,25 @@ import no.nav.medlemskap.regler.common.Datohjelper
 import java.time.LocalDate
 
 abstract class BasisDomeneParser {
-
     companion object {
-        fun parseDato(domenebegrep: Domenenøkkel, rad: Map<String, String>): LocalDate {
+        fun parseDato(
+            domenebegrep: Domenenøkkel,
+            rad: Map<String, String>,
+        ): LocalDate {
             return parseDato(domenebegrep.nøkkel(), rad)
         }
 
-        fun parseValgfriDato(domenebegrep: Domenenøkkel, rad: Map<String, String?>): LocalDate? {
+        fun parseValgfriDato(
+            domenebegrep: Domenenøkkel,
+            rad: Map<String, String?>,
+        ): LocalDate? {
             return parseValgfriDato(domenebegrep.nøkkel(), rad)
         }
 
-        fun parseString(domenebegrep: Domenenøkkel, rad: Map<String, String>): String {
+        fun parseString(
+            domenebegrep: Domenenøkkel,
+            rad: Map<String, String>,
+        ): String {
             return verdi(domenebegrep.nøkkel(), rad)
         }
 
@@ -46,11 +54,17 @@ abstract class BasisDomeneParser {
             return Arbeidsforholdstype.valueOf(verdi)
         }
 
-        fun parseValgfriString(domenebegrep: Domenenøkkel, rad: Map<String, String>): String? {
+        fun parseValgfriString(
+            domenebegrep: Domenenøkkel,
+            rad: Map<String, String>,
+        ): String? {
             return valgfriVerdi(domenebegrep.nøkkel(), rad)
         }
 
-        fun parseBooleanMedBooleanVerdi(domenebegrep: Domenenøkkel, rad: Map<String, String>): Boolean {
+        fun parseBooleanMedBooleanVerdi(
+            domenebegrep: Domenenøkkel,
+            rad: Map<String, String>,
+        ): Boolean {
             val verdi = verdi(domenebegrep.nøkkel(), rad)
 
             return when (verdi) {
@@ -59,7 +73,10 @@ abstract class BasisDomeneParser {
             }
         }
 
-        fun parseBoolean(domenebegrep: Domenenøkkel, rad: Map<String, String>): Boolean {
+        fun parseBoolean(
+            domenebegrep: Domenenøkkel,
+            rad: Map<String, String>,
+        ): Boolean {
             val verdi = verdi(domenebegrep.nøkkel(), rad)
 
             return when (verdi) {
@@ -68,8 +85,10 @@ abstract class BasisDomeneParser {
             }
         }
 
-        fun parseValgfriBoolean(domenebegrep: String, rad: Map<String, String?>): Boolean? {
-
+        fun parseValgfriBoolean(
+            domenebegrep: String,
+            rad: Map<String, String?>,
+        ): Boolean? {
             if (rad.get(domenebegrep) == null || rad.get(domenebegrep) == "") {
                 return null
             }
@@ -81,11 +100,17 @@ abstract class BasisDomeneParser {
             }
         }
 
-        fun parseDato(domenebegrep: String, rad: Map<String, String>): LocalDate {
+        fun parseDato(
+            domenebegrep: String,
+            rad: Map<String, String>,
+        ): LocalDate {
             return Datohjelper.parseDato(verdi(domenebegrep, rad))
         }
 
-        fun parseValgfriDato(domenebegrep: String, rad: Map<String, String?>): LocalDate? {
+        fun parseValgfriDato(
+            domenebegrep: String,
+            rad: Map<String, String?>,
+        ): LocalDate? {
             if (rad.get(domenebegrep) == null || rad.get(domenebegrep) == "") {
                 return null
             }
@@ -93,7 +118,10 @@ abstract class BasisDomeneParser {
             return Datohjelper.parseDato(rad.get(domenebegrep)!!)
         }
 
-        fun verdi(nøkkel: String, rad: Map<String, String>): String {
+        fun verdi(
+            nøkkel: String,
+            rad: Map<String, String>,
+        ): String {
             val verdi = rad.get(nøkkel)
 
             if (verdi == null || verdi == "") {
@@ -103,28 +131,43 @@ abstract class BasisDomeneParser {
             return verdi
         }
 
-        fun valgfriVerdi(nøkkel: String, rad: Map<String, String>): String? {
+        fun valgfriVerdi(
+            nøkkel: String,
+            rad: Map<String, String>,
+        ): String? {
             val verdi = rad.get(nøkkel)
 
             return verdi
         }
 
-        fun parseInt(domenebegrep: Domenenøkkel, rad: Map<String, String>): Int {
+        fun parseInt(
+            domenebegrep: Domenenøkkel,
+            rad: Map<String, String>,
+        ): Int {
             val verdi = verdi(domenebegrep.nøkkel(), rad)
 
             return Integer.parseInt(verdi)
         }
 
-        fun parseDouble(domenebegrep: Domenenøkkel, rad: Map<String, String>): Double {
+        fun parseDouble(
+            domenebegrep: Domenenøkkel,
+            rad: Map<String, String>,
+        ): Double {
             val verdi = verdi(domenebegrep.nøkkel(), rad)
             return verdi.toDouble()
         }
 
-        fun parseValgfriDouble(domenebegrep: Domenenøkkel, rad: Map<String, String>): Double? {
+        fun parseValgfriDouble(
+            domenebegrep: Domenenøkkel,
+            rad: Map<String, String>,
+        ): Double? {
             return valgfriVerdi(domenebegrep.nøkkel(), rad)?.toDouble() ?: return null
         }
 
-        fun parseValgfriInt(domenebegrep: Domenenøkkel, rad: Map<String, String>): Int? {
+        fun parseValgfriInt(
+            domenebegrep: Domenenøkkel,
+            rad: Map<String, String>,
+        ): Int? {
             val verdi = valgfriVerdi(domenebegrep.nøkkel(), rad)
             if (verdi == null) {
                 return null
@@ -133,7 +176,10 @@ abstract class BasisDomeneParser {
             return parseInt(domenebegrep, rad)
         }
 
-        fun <T> mapDataTable(dataTable: DataTable, radMapper: RadMapper<T>): List<T> {
+        fun <T> mapDataTable(
+            dataTable: DataTable,
+            radMapper: RadMapper<T>,
+        ): List<T> {
             return dataTable.asMaps().map { radMapper.mapRad(it) }
         }
     }

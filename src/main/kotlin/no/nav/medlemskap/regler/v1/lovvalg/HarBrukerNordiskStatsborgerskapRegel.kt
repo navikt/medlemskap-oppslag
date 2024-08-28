@@ -14,11 +14,9 @@ class HarBrukerNordiskStatsborgerskapRegel(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val statsborgerskap: List<Statsborgerskap>,
-    regelId: RegelId = RegelId.REGEL_11
+    regelId: RegelId = RegelId.REGEL_11,
 ) : LovvalgRegel(regelId, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
-
         return when {
             statsborgerskap.erNordiskBorger(kontrollPeriodeForPersonhistorikk) -> ja(regelId)
             else -> nei(regelId)
@@ -26,12 +24,11 @@ class HarBrukerNordiskStatsborgerskapRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerNordiskStatsborgerskapRegel {
             return HarBrukerNordiskStatsborgerskapRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
-                statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap
+                statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap,
             )
         }
     }

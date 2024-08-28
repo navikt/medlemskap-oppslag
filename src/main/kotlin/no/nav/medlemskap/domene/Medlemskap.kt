@@ -12,7 +12,7 @@ data class Medlemskap(
     val erMedlem: Boolean,
     val lovvalg: Lovvalg?,
     val lovvalgsland: String?,
-    val periodeStatus: PeriodeStatus?
+    val periodeStatus: PeriodeStatus?,
 ) : Comparable<Medlemskap> {
     private val periode = Periode(fraOgMed, tilOgMed)
 
@@ -36,27 +36,39 @@ data class Medlemskap(
                     (
                         (it.lovvalg != null && it.lovvalg != Lovvalg.ENDL) ||
                             (it.periodeStatus != null && it.periodeStatus != PeriodeStatus.GYLD)
-                        )
+                    )
             }.isNotEmpty()
 
         infix fun List<Medlemskap>.harMedlPeriodeMedOgUtenMedlemskap(kontrollPeriode: Kontrollperiode): Boolean =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).any { it.erMedlem } &&
                 this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).any { !it.erMedlem }
 
-        fun List<Medlemskap>.harUnntakInnenforAngittePerioder(kontrollPeriode: Kontrollperiode, perioder: List<Periode>): Boolean =
+        fun List<Medlemskap>.harUnntakInnenforAngittePerioder(
+            kontrollPeriode: Kontrollperiode,
+            perioder: List<Periode>,
+        ): Boolean =
             this.unntakIMedlForKontrollperiode(kontrollPeriode)
                 .any { unntak -> perioder.any { it.overlapper(unntak.periode) } }
 
-        fun List<Medlemskap>.erPeriodeSammenfallendeMedUnntak(kontrollPeriode: Kontrollperiode, perioder: List<Periode>, dagersSlingringsrom: Long): Boolean {
+        fun List<Medlemskap>.erPeriodeSammenfallendeMedUnntak(
+            kontrollPeriode: Kontrollperiode,
+            perioder: List<Periode>,
+            dagersSlingringsrom: Long,
+        ): Boolean {
             val unntakIKontrollperiode = this.unntakIMedlForKontrollperiode(kontrollPeriode)
 
             return angittePerioderSammenfallerMedUnntaksperioderInnenforAngittSlingringsrom(unntakIKontrollperiode, perioder, dagersSlingringsrom) ||
                 erFomOgTomIUnntaksperiodeLikAngittPeriode(unntakIKontrollperiode, perioder)
         }
 
-        private fun angittePerioderSammenfallerMedUnntaksperioderInnenforAngittSlingringsrom(unntak: List<Medlemskap>, perioder: List<Periode>, dagersSlingringsrom: Long): Boolean {
-            val unntakStartdatoMedSlingringsmonn = unntak
-                .map { Periode(it.periode.fom?.minusDays(dagersSlingringsrom), it.periode.fom?.plusDays(dagersSlingringsrom)) }
+        private fun angittePerioderSammenfallerMedUnntaksperioderInnenforAngittSlingringsrom(
+            unntak: List<Medlemskap>,
+            perioder: List<Periode>,
+            dagersSlingringsrom: Long,
+        ): Boolean {
+            val unntakStartdatoMedSlingringsmonn =
+                unntak
+                    .map { Periode(it.periode.fom?.minusDays(dagersSlingringsrom), it.periode.fom?.plusDays(dagersSlingringsrom)) }
 
             return unntakStartdatoMedSlingringsmonn.any { unntaksperiode ->
                 perioder.any {
@@ -65,10 +77,12 @@ data class Medlemskap(
             }
         }
 
-        private fun erFomOgTomIUnntaksperiodeLikAngittPeriode(unntak: List<Medlemskap>, perioder: List<Periode>) =
-            unntak.any { unntaksperiode ->
-                perioder.any { it.fom?.isEqual(unntaksperiode.fraOgMed) == true }
-            }
+        private fun erFomOgTomIUnntaksperiodeLikAngittPeriode(
+            unntak: List<Medlemskap>,
+            perioder: List<Periode>,
+        ) = unntak.any { unntaksperiode ->
+            perioder.any { it.fom?.isEqual(unntaksperiode.fraOgMed) == true }
+        }
 
         infix fun List<Medlemskap>.harPeriodeMedMedlemskap(kontrollPeriode: Kontrollperiode): Boolean =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).any { it.erMedlem && it.lovvalgsland er "NOR" }
@@ -83,7 +97,10 @@ data class Medlemskap(
         infix fun List<Medlemskap>.harGyldigeMedlemskapsperioder(kontrollPeriode: Kontrollperiode): Boolean =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).none { it.tilOgMed.isAfter(it.fraOgMed.plusYears(5)) }
 
-        fun List<Medlemskap>.erMedlemskapsperioderOver12Mnd(erMedlem: Boolean, kontrollPeriode: Kontrollperiode): Boolean =
+        fun List<Medlemskap>.erMedlemskapsperioderOver12Mnd(
+            erMedlem: Boolean,
+            kontrollPeriode: Kontrollperiode,
+        ): Boolean =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).filter { it.erMedlem == erMedlem }
                 .harSammenhengendeMedlemskapIHeleGittPeriode(kontrollPeriode)
 
@@ -95,7 +112,14 @@ data class Medlemskap(
                 this.any { it.tilOgMed.isAfter(kontrollPeriode.tom.minusDays(1)) } &&
                 this.sammenhengendePerioder()
 
-        private fun List<Medlemskap>.sammenhengendePerioder() = this.sorted().zipWithNext { a, b -> b.fraOgMed.isBefore(a.tilOgMed.plusDays(2)) }.all { it }
+        private fun List<Medlemskap>.sammenhengendePerioder() =
+            this.sorted().zipWithNext { a, b ->
+                b.fraOgMed.isBefore(
+                    a.tilOgMed.plusDays(2),
+                )
+            }.all {
+                it
+            }
 
         infix fun List<Medlemskap>.tidligsteFraOgMedDatoForMedl(kontrollPeriode: Kontrollperiode): LocalDate =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).minOrNull()!!.fraOgMed
@@ -104,7 +128,10 @@ data class Medlemskap(
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollperiode)
                 .filter { !it.erMedlem }
 
-        private fun List<Medlemskap>.medlemskapsPerioderOver12MndPeriode(erMedlem: Boolean, kontrollPeriode: Kontrollperiode): List<Medlemskap> =
+        private fun List<Medlemskap>.medlemskapsPerioderOver12MndPeriode(
+            erMedlem: Boolean,
+            kontrollPeriode: Kontrollperiode,
+        ): List<Medlemskap> =
             this.brukerensMedlemskapsperioderIMedlForPeriode(kontrollPeriode).filter {
                 it.erMedlem == erMedlem
             }
@@ -119,11 +146,15 @@ data class Medlemskap(
 }
 
 enum class Lovvalg() {
-    ENDL, FORL, UAVK
+    ENDL,
+    FORL,
+    UAVK,
 }
 
 enum class PeriodeStatus() {
-    GYLD, AVST, UAVK
+    GYLD,
+    AVST,
+    UAVK,
 }
 
 enum class Dekning(val dekningKodeverdi: String) {
@@ -142,21 +173,23 @@ enum class Dekning(val dekningKodeverdi: String) {
     IKKEPENDEL("IKKEPENDEL"),
     OPPHOR("Opphor"),
     PENDEL("PENDEL"),
-    UNNTATT("Unntatt");
+    UNNTATT("Unntatt"),
+    ;
 
     companion object {
+        private val dekningForYtelseMap: Map<Ytelse, List<Dekning>> =
+            hashMapOf(
+                Ytelse.SYKEPENGER to dekningForSykepenger(),
+                Ytelse.DAGPENGER to dekningForDagpenger(),
+                Ytelse.ENSLIG_FORSORGER to dekningForEnsligForsorger(),
+            )
 
-        private val dekningForYtelseMap: Map<Ytelse, List<Dekning>> = hashMapOf(
-            Ytelse.SYKEPENGER to dekningForSykepenger(),
-            Ytelse.DAGPENGER to dekningForDagpenger(),
-            Ytelse.ENSLIG_FORSORGER to dekningForEnsligForsorger()
-        )
-
-        private val uavklarteDekningerForYtelseMap: Map<Ytelse, List<Dekning>> = hashMapOf(
-            Ytelse.SYKEPENGER to uavklarteDekningerForSykepenger(),
-            Ytelse.DAGPENGER to fellesUavklarteDekninger(),
-            Ytelse.ENSLIG_FORSORGER to fellesUavklarteDekninger()
-        )
+        private val uavklarteDekningerForYtelseMap: Map<Ytelse, List<Dekning>> =
+            hashMapOf(
+                Ytelse.SYKEPENGER to uavklarteDekningerForSykepenger(),
+                Ytelse.DAGPENGER to fellesUavklarteDekninger(),
+                Ytelse.ENSLIG_FORSORGER to fellesUavklarteDekninger(),
+            )
 
         private fun dekningForSykepenger(): List<Dekning> =
             listOf(
@@ -164,7 +197,7 @@ enum class Dekning(val dekningKodeverdi: String) {
                 FOLKETRYGDLOVEN2_6,
                 FOLKETRYGDLOVEN2_7_3A,
                 FOLKETRYGDLOVEN2_9_2_1A,
-                FOLKETRYGDLOVEN2_9_2_1C
+                FOLKETRYGDLOVEN2_9_2_1C,
             )
 
         private fun dekningForDagpenger(): List<Dekning> =
@@ -175,7 +208,7 @@ enum class Dekning(val dekningKodeverdi: String) {
                 FOLKETRYGDLOVEN2_9_1B,
                 FOLKETRYGDLOVEN2_9_1C,
                 FOLKETRYGDLOVEN2_9_2_1A,
-                FOLKETRYGDLOVEN2_9_2_1C
+                FOLKETRYGDLOVEN2_9_2_1C,
             )
 
         private fun dekningForEnsligForsorger(): List<Dekning> =
@@ -186,7 +219,7 @@ enum class Dekning(val dekningKodeverdi: String) {
                 FOLKETRYGDLOVEN2_9_1B,
                 FOLKETRYGDLOVEN2_9_1C,
                 FOLKETRYGDLOVEN2_9_2_1A,
-                FOLKETRYGDLOVEN2_9_2_1C
+                FOLKETRYGDLOVEN2_9_2_1C,
             )
 
         private fun uavklarteDekningerForSykepenger(): List<Dekning> =
@@ -197,7 +230,7 @@ enum class Dekning(val dekningKodeverdi: String) {
                 IHT_AVTALE,
                 IKKEPENDEL,
                 PENDEL,
-                OPPHOR
+                OPPHOR,
             )
 
         fun Dekning.uavklartForYtelse(ytelse: Ytelse): Boolean = uavklarteDekningerForYtelseMap[ytelse]?.contains(this) ?: false

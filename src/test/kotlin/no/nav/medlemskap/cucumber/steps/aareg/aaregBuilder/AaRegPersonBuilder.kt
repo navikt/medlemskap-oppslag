@@ -12,6 +12,6 @@ class AaRegPersonBuilder {
         AaRegPerson(
             offentligIdent = offentligIdent,
             type = type,
-            aktoerId = aktoerId
+            aktoerId = aktoerId,
         )
 }

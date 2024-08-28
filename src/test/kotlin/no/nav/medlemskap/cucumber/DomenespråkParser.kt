@@ -22,7 +22,10 @@ object DomenespråkParser : BasisDomeneParser() {
     val VANLIG_NORSK_ARBEIDSGIVER =
         Arbeidsgiver(navn = "null", organisasjonsnummer = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskeEnheter = null)
 
-    fun parseValgfriYtelse(domenebegrep: Domenebegrep, rad: Map<String, String>): Ytelse? {
+    fun parseValgfriYtelse(
+        domenebegrep: Domenebegrep,
+        rad: Map<String, String>,
+    ): Ytelse? {
         val valgfriVerdi = valgfriVerdi(domenebegrep.nøkkel, rad)
 
         return if (valgfriVerdi == null) {
@@ -32,7 +35,10 @@ object DomenespråkParser : BasisDomeneParser() {
         }
     }
 
-    fun parseValgfriPeriodeStatus(domenebegrep: Domenebegrep, rad: Map<String, String>): PeriodeStatus? {
+    fun parseValgfriPeriodeStatus(
+        domenebegrep: Domenebegrep,
+        rad: Map<String, String>,
+    ): PeriodeStatus? {
         val valgfriVerdi = valgfriVerdi(domenebegrep.nøkkel, rad)
 
         return if (valgfriVerdi == null) {
@@ -42,7 +48,10 @@ object DomenespråkParser : BasisDomeneParser() {
         }
     }
 
-    fun parseValgfriLovvalg(domenebegrep: MedlemskapDomenebegrep, rad: Map<String, String>): Lovvalg? {
+    fun parseValgfriLovvalg(
+        domenebegrep: MedlemskapDomenebegrep,
+        rad: Map<String, String>,
+    ): Lovvalg? {
         val valgfriVerdi = valgfriVerdi(domenebegrep.nøkkel, rad)
 
         return if (valgfriVerdi == null) {
@@ -52,7 +61,10 @@ object DomenespråkParser : BasisDomeneParser() {
         }
     }
 
-    fun parseRegelId(domenebegrep: Domenebegrep, rad: Map<String, String>): RegelId {
+    fun parseRegelId(
+        domenebegrep: Domenebegrep,
+        rad: Map<String, String>,
+    ): RegelId {
         val verdi = verdi(domenebegrep.nøkkel, rad)
 
         return parseRegelId(verdi)
@@ -67,12 +79,18 @@ object DomenespråkParser : BasisDomeneParser() {
         return regelId
     }
 
-    fun parseSvar(domenebegrep: Domenenøkkel, rad: Map<String, String>): Svar {
+    fun parseSvar(
+        domenebegrep: Domenenøkkel,
+        rad: Map<String, String>,
+    ): Svar {
         val verdi = verdi(domenebegrep.nøkkel(), rad)
         return parseSvar(verdi)
     }
 
-    fun parseValgfrittSvar(domenebegrep: Domenenøkkel, rad: Map<String, String>): Svar? {
+    fun parseValgfrittSvar(
+        domenebegrep: Domenenøkkel,
+        rad: Map<String, String>,
+    ): Svar? {
         val valgfriVerdi = valgfriVerdi(domenebegrep.nøkkel(), rad)
 
         if (valgfriVerdi == null) {
@@ -90,7 +108,10 @@ object DomenespråkParser : BasisDomeneParser() {
         }
     }
 
-    fun parseAarMaaned(domenebegrep: Domenebegrep, rad: Map<String, String>): YearMonth {
+    fun parseAarMaaned(
+        domenebegrep: Domenebegrep,
+        rad: Map<String, String>,
+    ): YearMonth {
         return YearMonth.parse(rad.get(domenebegrep.nøkkel)!!)
     }
 
@@ -100,25 +121,37 @@ object DomenespråkParser : BasisDomeneParser() {
         return Arbeidsforholdstype.valueOf(verdi)
     }
 
-    fun parseSivilstandstype(domenebegrep: PersonhistorikkDomenebegrep, rad: Map<String, String>): Sivilstandstype {
+    fun parseSivilstandstype(
+        domenebegrep: PersonhistorikkDomenebegrep,
+        rad: Map<String, String>,
+    ): Sivilstandstype {
         val verdi = verdi(domenebegrep.nøkkel, rad)
 
         return Sivilstandstype.valueOf(verdi)
     }
 
-    fun parsePrioritet(domenebegrep: OppgaveDomenebegrep, rad: Map<String, String>): Prioritet {
+    fun parsePrioritet(
+        domenebegrep: OppgaveDomenebegrep,
+        rad: Map<String, String>,
+    ): Prioritet {
         val verdi = verdi(domenebegrep.nøkkel, rad)
 
         return Prioritet.valueOf(verdi)
     }
 
-    fun parseStatus(domenebegrep: Domenebegrep, rad: Map<String, String>): Status {
+    fun parseStatus(
+        domenebegrep: Domenebegrep,
+        rad: Map<String, String>,
+    ): Status {
         val verdi = verdi(domenebegrep.nøkkel, rad)
 
         return Status.valueOf(verdi)
     }
 
-    fun parseRolle(domenebegrep: PersonhistorikkDomenebegrep, rad: Map<String, String>): ForelderBarnRelasjonRolle {
+    fun parseRolle(
+        domenebegrep: PersonhistorikkDomenebegrep,
+        rad: Map<String, String>,
+    ): ForelderBarnRelasjonRolle {
         val verdi = verdi(domenebegrep.nøkkel, rad)
 
         return ForelderBarnRelasjonRolle.valueOf(verdi)
@@ -126,7 +159,7 @@ object DomenespråkParser : BasisDomeneParser() {
 
     fun parseValgfriRolle(
         domenebegrep: PersonhistorikkDomenebegrep,
-        rad: Map<String, String>
+        rad: Map<String, String>,
     ): ForelderBarnRelasjonRolle? {
         val verdi = valgfriVerdi(domenebegrep.nøkkel, rad)
 
@@ -163,7 +196,6 @@ object DomenespråkParser : BasisDomeneParser() {
 
     class RegelIdMapper : RadMapper<RegelId> {
         override fun mapRad(rad: Map<String, String>): RegelId {
-
             return parseRegelId(REGEL, rad)
         }
     }
@@ -172,7 +204,7 @@ object DomenespråkParser : BasisDomeneParser() {
         override fun mapRad(rad: Map<String, String>): InputPeriode {
             return InputPeriode(
                 parseDato(FRA_OG_MED_DATO, rad),
-                parseDato(TIL_OG_MED_DATO, rad)
+                parseDato(TIL_OG_MED_DATO, rad),
             )
         }
     }
@@ -181,13 +213,14 @@ object DomenespråkParser : BasisDomeneParser() {
         override fun mapRad(rad: Map<String, String>): Medlemskapsparametre {
             return Medlemskapsparametre(
                 fnr = parseValgfriString(FØDSELSNUMMER, rad),
-                inputPeriode = InputPeriode(
-                    parseDato(FRA_OG_MED_DATO, rad),
-                    parseDato(TIL_OG_MED_DATO, rad)
-                ),
+                inputPeriode =
+                    InputPeriode(
+                        parseDato(FRA_OG_MED_DATO, rad),
+                        parseDato(TIL_OG_MED_DATO, rad),
+                    ),
                 førsteDagForYtelse = parseValgfriDato(FØRSTE_DAG_FOR_YTELSE, rad),
                 brukerinput = parseBrukerinput(rad),
-                ytelse = parseValgfriYtelse(YTELSE, rad)
+                ytelse = parseValgfriYtelse(YTELSE, rad),
             )
         }
     }
@@ -198,7 +231,7 @@ object DomenespråkParser : BasisDomeneParser() {
             oppholdstilatelse = parseValgfriOppholdstillatelse(rad),
             utfortAarbeidUtenforNorge = parseValgfriUtfortArbeidUtenforNorge(rad),
             oppholdUtenforNorge = parseValgfriOppholdUtenforNorge(rad),
-            oppholdUtenforEos = parseValgfriOppholdUtenforEOS(rad)
+            oppholdUtenforEos = parseValgfriOppholdUtenforEOS(rad),
         )
     }
 
@@ -211,7 +244,7 @@ object DomenespråkParser : BasisDomeneParser() {
                 svar = oppholdUtenforEOS,
                 id = "null",
                 sporsmalstekst = null,
-                oppholdUtenforEOS = listOf()
+                oppholdUtenforEOS = listOf(),
             )
         }
     }
@@ -225,7 +258,7 @@ object DomenespråkParser : BasisDomeneParser() {
                 svar = oppholdUtenforNorge,
                 id = "null",
                 sporsmalstekst = null,
-                oppholdUtenforNorge = listOf()
+                oppholdUtenforNorge = listOf(),
             )
         }
     }
@@ -239,7 +272,7 @@ object DomenespråkParser : BasisDomeneParser() {
                 svar = utfortArbeidUtenforNorge,
                 id = "null",
                 sporsmalstekst = null,
-                arbeidUtenforNorge = listOf()
+                arbeidUtenforNorge = listOf(),
             )
         }
     }
@@ -254,8 +287,7 @@ object DomenespråkParser : BasisDomeneParser() {
                 id = "null",
                 sporsmalstekst = null,
                 vedtaksTypePermanent = false,
-                vedtaksdato = LocalDate.MIN
-
+                vedtaksdato = LocalDate.MIN,
             )
         }
     }
@@ -275,7 +307,7 @@ object DomenespråkParser : BasisDomeneParser() {
                 parseBoolean(ER_MEDLEM, rad),
                 parseValgfriLovvalg(MedlemskapDomenebegrep.LOVVALG, rad),
                 parseValgfriString(LOVVALGSLAND, rad),
-                parseValgfriPeriodeStatus(PERIODESTATUS, rad)
+                parseValgfriPeriodeStatus(PERIODESTATUS, rad),
             )
         }
     }
@@ -309,7 +341,8 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     STATUS("Status"),
     SVAR("Svar"),
     TIL_OG_MED_DATO("Til og med dato"),
-    YTELSE("Ytelse");
+    YTELSE("Ytelse"),
+    ;
 
     override fun nøkkel(): String {
         return nøkkel
@@ -321,9 +354,8 @@ data class Medlemskapsparametre(
     val inputPeriode: InputPeriode,
     val førsteDagForYtelse: LocalDate?,
     val brukerinput: Brukerinput,
-    val ytelse: Ytelse?
+    val ytelse: Ytelse?,
 ) {
-
     fun tilJson(): String {
         return objectMapper.writeValueAsString(
             Request(
@@ -331,8 +363,8 @@ data class Medlemskapsparametre(
                 periode = inputPeriode,
                 brukerinput = brukerinput,
                 førsteDagForYtelse = førsteDagForYtelse,
-                ytelse = ytelse
-            )
+                ytelse = ytelse,
+            ),
         )
     }
 }

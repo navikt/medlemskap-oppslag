@@ -24,6 +24,6 @@ class NavnBuilder {
             navnelinje3 = navnelinje3,
             navnelinje4 = navnelinje4,
             navnelinje5 = navnelinje5,
-            redigertnavn = redigertNavn
+            redigertnavn = redigertNavn,
         )
 }

@@ -26,6 +26,6 @@ class PostadresseBuilder {
             kommunenr = kommunenr,
             landkode = landkode,
             poststed = poststed,
-            postnummer = postnummer
+            postnummer = postnummer,
         )
 }

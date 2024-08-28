@@ -17,16 +17,17 @@ data class AzureAdOpenIdConfiguration(
     @JsonProperty("token_endpoint")
     val tokenEndpoint: String,
     @JsonProperty("authorization_endpoint")
-    val authorizationEndpoint: String
+    val authorizationEndpoint: String,
 )
 
 private val logger = KotlinLogging.logger { }
 
-fun getAadConfig(azureAdConfig: Configuration.AzureAd): AzureAdOpenIdConfiguration = runBlocking<AzureAdOpenIdConfiguration> {
-    apacheHttpClient.get() {
-        url(azureAdConfig.azureAppWellKnownUrl)
-    }.body<AzureAdOpenIdConfiguration>()
-        .also {
-            logger.info { it }
-        }
-}
+fun getAadConfig(azureAdConfig: Configuration.AzureAd): AzureAdOpenIdConfiguration =
+    runBlocking<AzureAdOpenIdConfiguration> {
+        apacheHttpClient.get {
+            url(azureAdConfig.azureAppWellKnownUrl)
+        }.body<AzureAdOpenIdConfiguration>()
+            .also {
+                logger.info { it }
+            }
+    }

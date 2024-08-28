@@ -4,7 +4,6 @@ import no.nav.medlemskap.clients.aareg.AaRegSporingsinformasjon
 import java.time.LocalDateTime
 
 class AaRegSporingsinformasjonBuilder {
-
     var endretAv = String()
     var endretKilde = String()
     var endretKildeReferanse = String()
@@ -23,7 +22,7 @@ class AaRegSporingsinformasjonBuilder {
             opprettetTidspunkt = opprettetTidspunkt,
             opprettetKildereferanse = opprettetKildereferanse,
             opprettetKilde = opprettetKilde,
-            opprettetAv = opprettetAv
+            opprettetAv = opprettetAv,
         )
     }
 }

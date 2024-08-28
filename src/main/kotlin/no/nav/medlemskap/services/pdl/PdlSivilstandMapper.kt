@@ -7,7 +7,6 @@ import no.nav.medlemskap.regler.common.Datohjelper.parseIsoDato
 import java.time.LocalDate
 
 object PdlSivilstandMapper {
-
     fun mapSivilstander(pdlSivilstander: List<no.nav.medlemskap.clients.pdl.generated.hentperson.Sivilstand>): List<Sivilstand> {
         val sivilstander =
             pdlSivilstander.filter {
@@ -28,18 +27,22 @@ object PdlSivilstandMapper {
             }.plus(mapSivilstand(sivilstander.last()))
     }
 
-    private fun mapSivilstand(sivilstand: no.nav.medlemskap.clients.pdl.generated.hentperson.Sivilstand, gyldigTilOgMed: LocalDate? = null): Sivilstand {
-        val gyldigFraOgMed = if (sivilstand.gyldigFraOgMed == null) {
-            parseIsoDato(sivilstand.bekreftelsesdato)
-        } else {
-            parseIsoDato(sivilstand.gyldigFraOgMed)
-        }
+    private fun mapSivilstand(
+        sivilstand: no.nav.medlemskap.clients.pdl.generated.hentperson.Sivilstand,
+        gyldigTilOgMed: LocalDate? = null,
+    ): Sivilstand {
+        val gyldigFraOgMed =
+            if (sivilstand.gyldigFraOgMed == null) {
+                parseIsoDato(sivilstand.bekreftelsesdato)
+            } else {
+                parseIsoDato(sivilstand.gyldigFraOgMed)
+            }
 
         return Sivilstand(
             type = mapSivilstandType(sivilstand.type),
             gyldigFraOgMed = gyldigFraOgMed,
             gyldigTilOgMed = gyldigTilOgMed,
-            relatertVedSivilstand = sivilstand.relatertVedSivilstand
+            relatertVedSivilstand = sivilstand.relatertVedSivilstand,
         )
     }
 

@@ -14,6 +14,6 @@ class InternettadresseBuilder {
         Internettadresse(
             adresse = adresse,
             bruksperiode = bruksperiode,
-            gyldighetsperiode = gyldighetsperiode
+            gyldighetsperiode = gyldighetsperiode,
         )
 }

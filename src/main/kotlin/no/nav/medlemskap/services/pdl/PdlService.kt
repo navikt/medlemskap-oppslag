@@ -21,10 +21,12 @@ import java.time.LocalDate
 import kotlin.coroutines.coroutineContext
 
 class PdlService(private val pdlClient: PdlClient, private val clusterName: String = "dev-gcp") {
-
     private val logger = KotlinLogging.logger { }
 
-    suspend fun hentAlleAktorIder(fnr: String, callId: String): List<String> {
+    suspend fun hentAlleAktorIder(
+        fnr: String,
+        callId: String,
+    ): List<String> {
         val pdlResponse = pdlClient.hentIdenterv2(fnr, callId)
 
         // Hack for å overleve manglende aktørID i ikke-konsistente data i Q2
@@ -42,7 +44,10 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
             ?.map { it.ident } ?: throw IdenterIkkeFunnet(coroutineContext.ytelse())
     }
 
-    suspend fun hentPersonHistorikkTilBruker(fnr: String, callId: String): Personhistorikk {
+    suspend fun hentPersonHistorikkTilBruker(
+        fnr: String,
+        callId: String,
+    ): Personhistorikk {
         val hentPersonhistorikkTilBrukerRespons = pdlClient.hentPersonV2(fnr, callId)
         val adresseBeskyttelse = hentPersonhistorikkTilBrukerRespons.data?.hentPerson?.adressebeskyttelse
 
@@ -58,10 +63,16 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
 
         if (hentPersonhistorikkTilBrukerRespons.data?.hentPerson != null) {
             return PdlMapper.mapTilPersonHistorikkTilBruker(hentPersonhistorikkTilBrukerRespons.data?.hentPerson!!)
-        } else throw PersonIkkeFunnet("PDL", coroutineContext.ytelse())
+        } else {
+            throw PersonIkkeFunnet("PDL", coroutineContext.ytelse())
+        }
     }
 
-    suspend fun hentPersonHistorikkTilEktefelle(fnrTilEktefelle: String, førsteDatoForYtelse: LocalDate, callId: String): PersonhistorikkEktefelle? {
+    suspend fun hentPersonHistorikkTilEktefelle(
+        fnrTilEktefelle: String,
+        førsteDatoForYtelse: LocalDate,
+        callId: String,
+    ): PersonhistorikkEktefelle? {
         val hentPersonhistorikkTilEktefelleResponse = pdlClient.hentPersonV2(fnrTilEktefelle, callId)
         val adresseBeskyttelse = hentPersonhistorikkTilEktefelleResponse.data?.hentPerson?.adressebeskyttelse
 
@@ -80,12 +91,19 @@ class PdlService(private val pdlClient: PdlClient, private val clusterName: Stri
         }
 
         if (hentPersonhistorikkTilEktefelleResponse.data?.hentPerson != null) {
-            return PdlMapperEktefelle.mapPersonhistorikkTilEktefelle(fnrTilEktefelle, hentPersonhistorikkTilEktefelleResponse.data?.hentPerson!!, førsteDatoForYtelse)
+            return PdlMapperEktefelle.mapPersonhistorikkTilEktefelle(
+                fnrTilEktefelle,
+                hentPersonhistorikkTilEktefelleResponse.data?.hentPerson!!,
+                førsteDatoForYtelse,
+            )
         }
         return null
     }
 
-    suspend fun hentPersonHistorikkTilBarn(fnrTilBarn: String, callId: String): PersonhistorikkBarn? {
+    suspend fun hentPersonHistorikkTilBarn(
+        fnrTilBarn: String,
+        callId: String,
+    ): PersonhistorikkBarn? {
         val hentPersonHistorikkTilBarnRespons = pdlClient.hentPersonV2(fnrTilBarn, callId)
         val adresseBeskyttelse = hentPersonHistorikkTilBarnRespons.data?.hentPerson?.adressebeskyttelse
 

@@ -19,9 +19,8 @@ class FinnesOpplysningerIMedlRegel(
     ytelse: Ytelse,
     val periode: InputPeriode,
     val førsteDagForYtelse: LocalDate?,
-    val medlemskap: List<Medlemskap> = emptyList()
+    val medlemskap: List<Medlemskap> = emptyList(),
 ) : BasisRegel(RegelId.REGEL_A, ytelse) {
-
     override fun operasjon(): Resultat {
         val kontrollPeriodeForMedl = kontrollPeriodeForMedl(startDatoForYtelse(periode, førsteDagForYtelse))
         if (medlemskap.isNotEmpty()) medlCounter().increment()
@@ -37,7 +36,7 @@ class FinnesOpplysningerIMedlRegel(
                 ytelse = datagrunnlag.ytelse,
                 periode = datagrunnlag.periode,
                 førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
-                medlemskap = datagrunnlag.medlemskap
+                medlemskap = datagrunnlag.medlemskap,
             )
         }
     }

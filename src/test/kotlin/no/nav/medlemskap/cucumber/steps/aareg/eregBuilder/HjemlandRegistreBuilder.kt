@@ -23,6 +23,6 @@ class HjemlandRegistreBuilder {
             navn2 = navn2,
             navn3 = navn3,
             postAdresse = postadresse,
-            registernummer = registernummer
+            registernummer = registernummer,
         )
 }

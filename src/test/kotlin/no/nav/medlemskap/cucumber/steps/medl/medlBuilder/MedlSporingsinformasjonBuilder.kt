@@ -5,7 +5,6 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 class MedlSporingsinformasjonBuilder {
-
     var besluttet = LocalDate.MIN
     var kilde = String()
     var kildedokument = String()
@@ -26,7 +25,7 @@ class MedlSporingsinformasjonBuilder {
             registrert = registrert,
             sistEndret = sistEndret,
             sistEndretAv = sistEndretAv,
-            versjon = versjon
+            versjon = versjon,
         )
     }
 }

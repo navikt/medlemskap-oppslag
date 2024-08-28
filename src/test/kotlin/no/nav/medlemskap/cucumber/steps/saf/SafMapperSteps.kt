@@ -18,7 +18,6 @@ import no.nav.medlemskap.services.saf.mapJournalResultat
 import java.time.LocalDateTime
 
 class SafMapperSteps : No {
-
     private val safDomenespråkParser = SafDomeneSpraakParser()
     private val safDokumentBuilder = SafDokumentBuilder()
     private var dokumentInfoBuilder = DokumentInfoBuilder()
@@ -118,7 +117,6 @@ class SafMapperSteps : No {
     }
 
     class SafDokumentBuilder {
-
         var dokumentInfoBuilder = DokumentInfoBuilder()
         var relevantDatoBuilder = RelevantDatoBuilder()
 
@@ -145,7 +143,7 @@ class SafMapperSteps : No {
                 datoOpprettet = datoOpprettet,
                 relevanteDatoer = relevanteDatoer,
                 tittel = tittel,
-                sak = sak
+                sak = sak,
             )
         }
     }
@@ -153,20 +151,23 @@ class SafMapperSteps : No {
     class DokumentInfoBuilder {
         var dokumentInfoId = String()
         var tittel = String()
+
         fun build(): DokumentInfo? {
             return DokumentInfo(
                 dokumentInfoId = dokumentInfoId,
-                tittel = tittel
+                tittel = tittel,
             )
         }
     }
+
     class RelevantDatoBuilder {
         var dato = String()
         var datotype = Datotype.__UNKNOWN_VALUE
+
         fun build(): RelevantDato? {
             return RelevantDato(
                 dato = dato,
-                datotype = datotype
+                datotype = datotype,
             )
         }
     }

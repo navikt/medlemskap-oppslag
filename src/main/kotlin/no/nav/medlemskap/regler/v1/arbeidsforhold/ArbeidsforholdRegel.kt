@@ -10,7 +10,7 @@ import java.time.LocalDate
 abstract class ArbeidsforholdRegel(
     regelId: RegelId,
     ytelse: Ytelse,
-    startDatoForYtelse: LocalDate
+    startDatoForYtelse: LocalDate,
 ) : BasisRegel(regelId, ytelse) {
     val kontrollPeriodeForArbeidsforhold = kontrollPeriodeForArbeidsforhold(startDatoForYtelse)
     val kontrollperiodeForSykepenger = kontrollperiodeForSykepenger(startDatoForYtelse)

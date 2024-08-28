@@ -11,15 +11,15 @@ import no.nav.medlemskap.regler.common.Svar
 class ReglerForDoedsfall(
     ytelse: Ytelse,
     regelFactory: RegelFactory,
-    overstyrteRegler: Map<RegelId, Svar>
+    overstyrteRegler: Map<RegelId, Svar>,
 ) : Regler(ytelse, regelFactory, overstyrteRegler) {
-
     override fun hentHovedflyt(): Regelflyt {
-        val erBrukerDoedRegelFlyt = lagRegelflyt(
-            regel = hentRegel(RegelId.REGEL_13),
-            hvisJa = regelflytJa(ytelse, RegelId.REGEL_DOED),
-            hvisNei = regelflytJa(ytelse, RegelId.REGEL_DOED)
-        )
+        val erBrukerDoedRegelFlyt =
+            lagRegelflyt(
+                regel = hentRegel(RegelId.REGEL_13),
+                hvisJa = regelflytJa(ytelse, RegelId.REGEL_DOED),
+                hvisNei = regelflytJa(ytelse, RegelId.REGEL_DOED),
+            )
         return erBrukerDoedRegelFlyt
     }
 
@@ -29,7 +29,7 @@ class ReglerForDoedsfall(
                 return ReglerForDoedsfall(
                     ytelse = ytelse,
                     regelFactory = RegelFactory(datagrunnlag),
-                    overstyrteRegler = datagrunnlag.overstyrteRegler
+                    overstyrteRegler = datagrunnlag.overstyrteRegler,
                 )
             }
         }

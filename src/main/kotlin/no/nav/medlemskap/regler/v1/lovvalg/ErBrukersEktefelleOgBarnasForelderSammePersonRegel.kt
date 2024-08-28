@@ -16,9 +16,8 @@ class ErBrukersEktefelleOgBarnasForelderSammePersonRegel(
     startDatoForYtelse: LocalDate,
     private val dataOmEktefelle: DataOmEktefelle?,
     private val dataOmBarn: List<DataOmBarn>?,
-    regelId: RegelId = RegelId.REGEL_11_5_1
+    regelId: RegelId = RegelId.REGEL_11_5_1,
 ) : LovvalgRegel(regelId, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
         val ektefellesBarn = dataOmEktefelle?.personhistorikkEktefelle?.barn
         val brukersBarn = dataOmBarn
@@ -33,13 +32,12 @@ class ErBrukersEktefelleOgBarnasForelderSammePersonRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErBrukersEktefelleOgBarnasForelderSammePersonRegel {
             return ErBrukersEktefelleOgBarnasForelderSammePersonRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 dataOmEktefelle = datagrunnlag.dataOmEktefelle,
-                dataOmBarn = datagrunnlag.dataOmBarn
+                dataOmBarn = datagrunnlag.dataOmBarn,
             )
         }
     }

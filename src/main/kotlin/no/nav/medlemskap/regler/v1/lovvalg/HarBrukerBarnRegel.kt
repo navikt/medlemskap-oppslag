@@ -14,9 +14,8 @@ class HarBrukerBarnRegel(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val dataOmBarn: List<DataOmBarn>?,
-    regelId: RegelId = RegelId.REGEL_11_2_1
+    regelId: RegelId = RegelId.REGEL_11_2_1,
 ) : LovvalgRegel(regelId, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
         val barn = dataOmBarn
 
@@ -27,13 +26,15 @@ class HarBrukerBarnRegel(
     }
 
     companion object {
-
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag, regelId: RegelId): HarBrukerBarnRegel {
+        fun fraDatagrunnlag(
+            datagrunnlag: Datagrunnlag,
+            regelId: RegelId,
+        ): HarBrukerBarnRegel {
             return HarBrukerBarnRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 dataOmBarn = datagrunnlag.dataOmBarn,
-                regelId = regelId
+                regelId = regelId,
             )
         }
     }

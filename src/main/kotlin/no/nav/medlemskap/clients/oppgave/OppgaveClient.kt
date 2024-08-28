@@ -19,17 +19,19 @@ class OppgaveClient(
     private val azureAdClient: AzureAdClient,
     private val configuration: Configuration,
     private val httpClient: HttpClient,
-    private val retry: Retry? = null
+    private val retry: Retry? = null,
 ) {
-
     companion object {
         private val logger = KotlinLogging.logger { }
     }
 
-    suspend fun hentOppgaver(aktorIder: List<String>, callId: String): FinnOppgaverResponse {
+    suspend fun hentOppgaver(
+        aktorIder: List<String>,
+        callId: String,
+    ): FinnOppgaverResponse {
         val token = azureAdClient.hentToken(configuration.register.oppgaveScope)
         return runWithRetryAndMetrics<FinnOppgaverResponse>("Oppgave", "OppgaverV1", retry) {
-            httpClient.get() {
+            httpClient.get {
                 url("$baseUrl/api/v1/oppgaver")
                 header(HttpHeaders.Authorization, "Bearer ${token.token}")
                 header("X-Correlation-Id", callId)
@@ -42,6 +44,7 @@ class OppgaveClient(
     }
 
     // skrur av pga. 404 meldinger i kibana
+
     /*
     suspend fun healthCheck(): HttpResponse {
         val token = stsClient.oidcToken()

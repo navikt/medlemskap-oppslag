@@ -22,11 +22,9 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 object PdlMapper {
-
     private val logger = KotlinLogging.logger { }
 
     fun mapTilPersonHistorikkTilBruker(person: Person): Personhistorikk {
-
         val statsborgerskap: List<Statsborgerskap> = mapStatsborgerskap(person.statsborgerskap)
         val bostedsadresser: List<Adresse> = mapBostedsadresser(person.bostedsadresse)
         val kontaktadresser: List<Adresse> = mapKontaktadresser(person.kontaktadresse)
@@ -50,20 +48,18 @@ object PdlMapper {
             innflyttingTilNorge = innflyttingTilNorge,
             utflyttingFraNorge = utflyttingFraNorge,
             navn = navn,
-            oppholdstilatelser = opphold
-
+            oppholdstilatelser = opphold,
         )
     }
 
     private fun mapOppholdsTilatelser(opphold: List<no.nav.medlemskap.clients.pdl.generated.hentperson.Opphold>): List<Opphold> {
-
         return opphold.map {
             Opphold(
                 type = OppholdstillatelseType.valueOf(it.type.name),
                 oppholdFra = mapDate(it.oppholdFra),
                 oppholdTil = mapDate(it.oppholdTil),
                 medtadata = OppholdMetadata(it.metadata.historisk, it.metadata.master, mapEnringer(it.metadata.endringer)),
-                folkeregistermetadata = mapFolkeregistermetadata(it.folkeregistermetadata)
+                folkeregistermetadata = mapFolkeregistermetadata(it.folkeregistermetadata),
             )
         }
     }
@@ -79,7 +75,7 @@ object PdlMapper {
                 kilde = it.kilde,
                 registrert = mapDateTime(it.registrert),
                 registrertAv = it.registrertAv,
-                systemkilde = it.systemkilde
+                systemkilde = it.systemkilde,
             )
         }
     }
@@ -91,33 +87,39 @@ object PdlMapper {
         return null
     }
 
-    private fun mapInnflyttingTilNorge(innflyttingTilNorge: List<no.nav.medlemskap.clients.pdl.generated.hentperson.InnflyttingTilNorge>): List<InnflyttingTilNorge> {
+    private fun mapInnflyttingTilNorge(
+        innflyttingTilNorge: List<no.nav.medlemskap.clients.pdl.generated.hentperson.InnflyttingTilNorge>,
+    ): List<InnflyttingTilNorge> {
         return innflyttingTilNorge.map {
             InnflyttingTilNorge(
                 fraflyttingsland = it.fraflyttingsland,
                 fraflyttingsstedIUtlandet = it.fraflyttingsstedIUtlandet,
                 folkeregistermetadata = mapFolkeregistermetadata(it.folkeregistermetadata),
-                metadata = Metadata(it.metadata.historisk)
+                metadata = Metadata(it.metadata.historisk),
             )
         }
     }
 
-    private fun mapFolkeregistermetadata(folkeregistermetadata: no.nav.medlemskap.clients.pdl.generated.hentperson.Folkeregistermetadata?): Folkeregistermetadata {
+    private fun mapFolkeregistermetadata(
+        folkeregistermetadata: no.nav.medlemskap.clients.pdl.generated.hentperson.Folkeregistermetadata?,
+    ): Folkeregistermetadata {
         return Folkeregistermetadata(
             ajourholdstidspunkt = parseNullableDateTimeFraPDL(folkeregistermetadata?.ajourholdstidspunkt),
             gyldighetstidspunkt = parseNullableDateTimeFraPDL(folkeregistermetadata?.gyldighetstidspunkt),
             opphoerstidspunkt = parseNullableDateTimeFraPDL(folkeregistermetadata?.opphoerstidspunkt),
-            aarsak = folkeregistermetadata?.aarsak
+            aarsak = folkeregistermetadata?.aarsak,
         )
     }
 
-    private fun mapUtflyttingFraNorge(utflyttingFraNorge: List<no.nav.medlemskap.clients.pdl.generated.hentperson.UtflyttingFraNorge>): List<UtflyttingFraNorge> {
+    private fun mapUtflyttingFraNorge(
+        utflyttingFraNorge: List<no.nav.medlemskap.clients.pdl.generated.hentperson.UtflyttingFraNorge>,
+    ): List<UtflyttingFraNorge> {
         return utflyttingFraNorge.map {
             UtflyttingFraNorge(
                 tilflyttingsland = it.tilflyttingsland,
                 tilflyttingsstedIUtlandet = it.tilflyttingsstedIUtlandet,
                 utflyttingsDato = parseNullableDateStringFraPDL(it.utflyttingsdato),
-                metadata = Metadata(it.metadata.historisk)
+                metadata = Metadata(it.metadata.historisk),
             )
         }
     }
@@ -131,7 +133,7 @@ object PdlMapper {
             Navn(
                 fornavn = it.fornavn,
                 mellomnavn = it.mellomnavn,
-                etternavn = it.etternavn
+                etternavn = it.etternavn,
             )
         }
     }
@@ -143,7 +145,6 @@ object PdlMapper {
     }
 
     fun mapOppholdsadresser(pdlOppholdsadresser: List<Oppholdsadresse>): List<Adresse> {
-
         if (pdlOppholdsadresser.size < 2) {
             return pdlOppholdsadresser.map {
                 mapOppholdsadresse(it)
@@ -156,16 +157,21 @@ object PdlMapper {
         }.plus(mapOppholdsadresse(sortertPdlOppholdsadresser.last()))
     }
 
-    fun mapOppholdsadresse(oppholdsadresse: Oppholdsadresse, gyldigTilOgMed: LocalDate? = null): Adresse {
+    fun mapOppholdsadresse(
+        oppholdsadresse: Oppholdsadresse,
+        gyldigTilOgMed: LocalDate? = null,
+    ): Adresse {
         return Adresse(
             fom = parseIsoDato(oppholdsadresse.gyldigFraOgMed),
             tom = parseIsoDato(oppholdsadresse.gyldigTilOgMed) ?: gyldigTilOgMed,
             landkode = mapLandkodeForOppholdsadresse(oppholdsadresse),
-            historisk = oppholdsadresse.metadata.historisk
+            historisk = oppholdsadresse.metadata.historisk,
         )
     }
 
-    fun mapFamilierelasjoner(pdlFamilierelasjoner: List<no.nav.medlemskap.clients.pdl.generated.hentperson.ForelderBarnRelasjon>): List<ForelderBarnRelasjon> {
+    fun mapFamilierelasjoner(
+        pdlFamilierelasjoner: List<no.nav.medlemskap.clients.pdl.generated.hentperson.ForelderBarnRelasjon>,
+    ): List<ForelderBarnRelasjon> {
         return pdlFamilierelasjoner.map { mapFamilierelasjon(it) }
     }
 
@@ -173,7 +179,7 @@ object PdlMapper {
         return ForelderBarnRelasjon(
             relatertPersonsIdent = familierelasjon.relatertPersonsIdent,
             relatertPersonsRolle = mapFamileRelasjonsrolle(familierelasjon.relatertPersonsRolle)!!,
-            minRolleForPerson = mapFamileRelasjonsrolle(familierelasjon.minRolleForPerson)
+            minRolleForPerson = mapFamileRelasjonsrolle(familierelasjon.minRolleForPerson),
         )
     }
 
@@ -182,7 +188,7 @@ object PdlMapper {
             fom = parseIsoDato(oppholdsadresse.gyldigFraOgMed),
             tom = parseIsoDato(oppholdsadresse.gyldigTilOgMed),
             landkode = mapLandkodeForOppholdsadresse(oppholdsadresse),
-            historisk = oppholdsadresse.metadata.historisk
+            historisk = oppholdsadresse.metadata.historisk,
         )
     }
 
@@ -204,7 +210,6 @@ object PdlMapper {
     }
 
     fun mapBostedsadresser(pdlBostedsadresser: List<Bostedsadresse>): List<Adresse> {
-
         if (pdlBostedsadresser.size < 2) {
             return pdlBostedsadresser.map {
                 mapBostedadresse(it)
@@ -216,18 +221,19 @@ object PdlMapper {
         }.plus(mapBostedadresse(sortertPdlBostedsadresser.last()))
     }
 
-    private fun mapBostedadresse(adresse: Bostedsadresse, gyldigTilOgMed: LocalDate? = null): Adresse {
-
+    private fun mapBostedadresse(
+        adresse: Bostedsadresse,
+        gyldigTilOgMed: LocalDate? = null,
+    ): Adresse {
         return Adresse(
             landkode = adresse.utenlandskAdresse?.landkode ?: "NOR",
             fom = parseIsoDato(adresse.gyldigFraOgMed),
             tom = parseIsoDato(adresse.gyldigTilOgMed) ?: gyldigTilOgMed,
-            historisk = adresse.metadata.historisk
+            historisk = adresse.metadata.historisk,
         )
     }
 
     fun mapKontaktadresser(pdlKontaktadresser: List<Kontaktadresse>): List<Adresse> {
-
         if (pdlKontaktadresser.size < 2) {
             return pdlKontaktadresser.map {
                 mapKontaktadresse(it)
@@ -240,27 +246,34 @@ object PdlMapper {
         }.plus(mapKontaktadresse(sortertPdlKontaktadresser.last()))
     }
 
-    private fun mapKontaktadresse(pdlKontaktadresse: Kontaktadresse, gyldigTilOgMed: LocalDate? = null): Adresse {
+    private fun mapKontaktadresse(
+        pdlKontaktadresse: Kontaktadresse,
+        gyldigTilOgMed: LocalDate? = null,
+    ): Adresse {
         return Adresse(
             fom = parseIsoDato(pdlKontaktadresse.gyldigFraOgMed),
             tom = parseIsoDato(pdlKontaktadresse.gyldigTilOgMed) ?: gyldigTilOgMed,
             landkode = mapLandkodeForKontaktadresse(pdlKontaktadresse),
-            historisk = pdlKontaktadresse.metadata.historisk
+            historisk = pdlKontaktadresse.metadata.historisk,
         )
     }
 
-    fun mapStatsborgerskap(statsborgerskap: List<no.nav.medlemskap.clients.pdl.generated.hentperson.Statsborgerskap>): List<Statsborgerskap> {
+    fun mapStatsborgerskap(
+        statsborgerskap: List<no.nav.medlemskap.clients.pdl.generated.hentperson.Statsborgerskap>,
+    ): List<Statsborgerskap> {
         return statsborgerskap.map {
             Statsborgerskap(
                 landkode = it.land,
                 fom = parseIsoDato(it.gyldigFraOgMed),
                 tom = parseIsoDato(it.gyldigTilOgMed),
-                historisk = it.metadata.historisk
+                historisk = it.metadata.historisk,
             )
         }.sortedBy { it.fom }
     }
 
-    private fun mapFamileRelasjonsrolle(rolle: no.nav.medlemskap.clients.pdl.generated.enums.ForelderBarnRelasjonRolle?): ForelderBarnRelasjonRolle? {
+    private fun mapFamileRelasjonsrolle(
+        rolle: no.nav.medlemskap.clients.pdl.generated.enums.ForelderBarnRelasjonRolle?,
+    ): ForelderBarnRelasjonRolle? {
         return rolle.let {
             when (it) {
                 no.nav.medlemskap.clients.pdl.generated.enums.ForelderBarnRelasjonRolle.BARN -> ForelderBarnRelasjonRolle.BARN
@@ -291,6 +304,7 @@ object PdlMapper {
             null
         }
     }
+
     private fun parseNullableDateStringFraPDL(date: no.nav.medlemskap.clients.pdl.generated.Date?): LocalDate? {
         return if (date != null) {
             LocalDate.parse(date)

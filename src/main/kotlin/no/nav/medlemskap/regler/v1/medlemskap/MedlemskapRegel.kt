@@ -16,14 +16,14 @@ abstract class MedlemskapRegel(
     regelId: RegelId,
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
-    private val medlemskap: List<Medlemskap>
+    private val medlemskap: List<Medlemskap>,
 ) : BasisRegel(regelId, ytelse) {
     val kontrollPeriodeForMedl = kontrollPeriodeForMedl(startDatoForYtelse)
 
     protected fun erMedlemskapPeriodeOver12MndPeriode(finnPeriodeMedMedlemskap: Boolean): Resultat {
         return when {
-            medlemskap.erMedlemskapsperioderOver12Mnd(finnPeriodeMedMedlemskap, kontrollPeriodeForMedl)
-                && medlemskap harGyldigeMedlemskapsperioder kontrollPeriodeForMedl -> ja(regelId)
+            medlemskap.erMedlemskapsperioderOver12Mnd(finnPeriodeMedMedlemskap, kontrollPeriodeForMedl) &&
+                medlemskap harGyldigeMedlemskapsperioder kontrollPeriodeForMedl -> ja(regelId)
             else -> nei(regelId)
         }
     }

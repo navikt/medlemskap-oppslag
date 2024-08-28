@@ -7,11 +7,10 @@ import java.time.LocalDate
 data class ForelderBarnRelasjon(
     val relatertPersonsIdent: String?,
     val relatertPersonsRolle: ForelderBarnRelasjonRolle,
-    val minRolleForPerson: ForelderBarnRelasjonRolle?
+    val minRolleForPerson: ForelderBarnRelasjonRolle?,
 ) {
     companion object {
-        fun String.erBarnUnder25Aar(førsteDatoForYtelse: LocalDate) =
-            (førsteDatoForYtelse.year - this.hentBursdagsAar().toInt()) <= 25
+        fun String.erBarnUnder25Aar(førsteDatoForYtelse: LocalDate) = (førsteDatoForYtelse.year - this.hentBursdagsAar().toInt()) <= 25
 
         fun hentFnrTilEktefelle(personHistorikkFraPdl: Personhistorikk?): String? {
             val fnrTilEktefelle =
@@ -24,7 +23,10 @@ data class ForelderBarnRelasjon(
             return fnrTilEktefelle
         }
 
-        fun hentFnrTilBarn(familierelasjoner: List<ForelderBarnRelasjon>, førsteDatoForYtelse: LocalDate): List<String> {
+        fun hentFnrTilBarn(
+            familierelasjoner: List<ForelderBarnRelasjon>,
+            førsteDatoForYtelse: LocalDate,
+        ): List<String> {
             return familierelasjoner
                 .filter { FodselsnummerValidator.isValid(it.relatertPersonsIdent) }
                 .filter { it.erBarn() }

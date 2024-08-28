@@ -18,7 +18,7 @@ class EOSellerEFTAOppholdBuilder {
             periode,
             EOSellerEFTAOppholdType,
             EOSellerEFTAGrunnlagskategoriOppholdsrettType,
-            EOSellerEFTAGrunnlagskategoriOppholdstillatelseType
+            EOSellerEFTAGrunnlagskategoriOppholdstillatelseType,
         )
     }
 }

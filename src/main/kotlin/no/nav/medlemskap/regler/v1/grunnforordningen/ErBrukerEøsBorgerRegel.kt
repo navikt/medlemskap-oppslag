@@ -14,9 +14,8 @@ import java.time.LocalDate
 class ErBrukerEøsBorgerRegel(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
-    val statsborgerskap: List<Statsborgerskap>
+    val statsborgerskap: List<Statsborgerskap>,
 ) : LovvalgRegel(RegelId.REGEL_2, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
         return if (statsborgerskap.erEøsBorger(kontrollPeriodeForPersonhistorikk)) {
             ja(regelId)
@@ -30,7 +29,7 @@ class ErBrukerEøsBorgerRegel(
             return ErBrukerEøsBorgerRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
-                statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap
+                statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap,
             )
         }
     }

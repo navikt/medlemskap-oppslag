@@ -6,5 +6,5 @@ data class UtflyttingFraNorge(
     val tilflyttingsland: String?,
     val tilflyttingsstedIUtlandet: String?,
     val utflyttingsDato: LocalDate?,
-    val metadata: Metadata
+    val metadata: Metadata,
 )

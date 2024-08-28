@@ -16,9 +16,8 @@ class FinnesOpplysningerIJoarkRegel(
     ytelse: Ytelse,
     val periode: InputPeriode,
     val førsteDagForYtelse: LocalDate?,
-    private val dokument: List<Journalpost> = emptyList()
+    private val dokument: List<Journalpost> = emptyList(),
 ) : BasisRegel(RegelId.REGEL_C, ytelse) {
-
     override fun operasjon(): Resultat {
         return when {
             dokument.finnesDokumenterMedTillatteTeamer() -> ja(regelId)
@@ -27,14 +26,12 @@ class FinnesOpplysningerIJoarkRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): FinnesOpplysningerIJoarkRegel {
             return FinnesOpplysningerIJoarkRegel(
                 ytelse = datagrunnlag.ytelse,
                 dokument = datagrunnlag.dokument,
                 periode = datagrunnlag.periode,
-                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse
-
+                førsteDagForYtelse = datagrunnlag.førsteDagForYtelse,
             )
         }
     }

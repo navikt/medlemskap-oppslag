@@ -37,87 +37,94 @@ internal class FamilieServiceTest {
     }
 
     @Test
-    fun hentDataOmBarn() = runBlockingTest {
-        val fnrTilBarnUnder25år = "25079528660"
-        val callId = "12"
+    fun hentDataOmBarn() =
+        runBlockingTest {
+            val fnrTilBarnUnder25år = "25079528660"
+            val callId = "12"
 
-        coEvery { pdlService.hentPersonHistorikkTilBarn(fnrTilBarnUnder25år, callId) } returns personhistorikkBarn(
-            fnrTilBarnUnder25år
-        )
+            coEvery { pdlService.hentPersonHistorikkTilBarn(fnrTilBarnUnder25år, callId) } returns
+                personhistorikkBarn(
+                    fnrTilBarnUnder25år,
+                )
 
-        val dataOmBarn = familieService.hentDataOmBarn(listOf(fnrTilBarnUnder25år), callId)
+            val dataOmBarn = familieService.hentDataOmBarn(listOf(fnrTilBarnUnder25år), callId)
 
-        dataOmBarn.map { it.personhistorikkBarn.ident }.shouldContainExactly(fnrTilBarnUnder25år)
-    }
-
-    @Test
-    fun hentDataOmEktefelle_som_finnes_i_pdl_uten_arbeidsforhold() = runBlockingTest {
-        val fnrEktefelle = "10019448164"
-        val callId = "12"
-        val startDatoForYtelse = LocalDate.of(2020, 1, 1)
-        val periode = InputPeriode(startDatoForYtelse, startDatoForYtelse.plusDays(10))
-
-        coEvery { pdlService.hentPersonHistorikkTilEktefelle(fnrEktefelle, startDatoForYtelse, callId) } returns personhistorikkEktefelle(
-            fnrEktefelle
-        )
-
-        coEvery {
-            aaRegService.hentArbeidsforhold(
-                fnr = fnrEktefelle,
-                fraOgMed = Arbeidsforhold.fraOgMedDatoForArbeidsforhold(startDatoForYtelse),
-                tilOgMed = periode.tom,
-                callId = callId
-            )
-        } returns emptyList()
-
-        val ektefelle =
-            familieService.hentDataOmEktefelle(fnrEktefelle, callId, periode, startDatoForYtelse)
-
-        assertThat { ektefelle?.personhistorikkEktefelle?.ident == fnrEktefelle }
-        assertThat { ektefelle?.arbeidsforholdEktefelle?.isEmpty() }
-    }
+            dataOmBarn.map { it.personhistorikkBarn.ident }.shouldContainExactly(fnrTilBarnUnder25år)
+        }
 
     @Test
-    fun hentDataOmEktefelle_som_finnes_i_pdl_og_har_arbeidsforhold() = runBlockingTest {
-        val fnrEktefelle = "10019448164"
-        val callId = "12"
-        val startDatoForYtelse = LocalDate.of(2020, 1, 1)
-        val periode = InputPeriode(startDatoForYtelse, startDatoForYtelse.plusDays(10))
+    fun hentDataOmEktefelle_som_finnes_i_pdl_uten_arbeidsforhold() =
+        runBlockingTest {
+            val fnrEktefelle = "10019448164"
+            val callId = "12"
+            val startDatoForYtelse = LocalDate.of(2020, 1, 1)
+            val periode = InputPeriode(startDatoForYtelse, startDatoForYtelse.plusDays(10))
 
-        coEvery { pdlService.hentPersonHistorikkTilEktefelle(fnrEktefelle, startDatoForYtelse, callId) } returns personhistorikkEktefelle(
-            fnrEktefelle
-        )
+            coEvery { pdlService.hentPersonHistorikkTilEktefelle(fnrEktefelle, startDatoForYtelse, callId) } returns
+                personhistorikkEktefelle(
+                    fnrEktefelle,
+                )
 
-        coEvery {
-            aaRegService.hentArbeidsforhold(
-                fnr = fnrEktefelle,
-                fraOgMed = Arbeidsforhold.fraOgMedDatoForArbeidsforhold(startDatoForYtelse),
-                tilOgMed = periode.tom,
-                callId = callId
-            )
-        } returns listOf(arbeidsforhold())
+            coEvery {
+                aaRegService.hentArbeidsforhold(
+                    fnr = fnrEktefelle,
+                    fraOgMed = Arbeidsforhold.fraOgMedDatoForArbeidsforhold(startDatoForYtelse),
+                    tilOgMed = periode.tom,
+                    callId = callId,
+                )
+            } returns emptyList()
 
-        val ektefelle =
-            familieService.hentDataOmEktefelle(fnrEktefelle, callId, periode, startDatoForYtelse)
+            val ektefelle =
+                familieService.hentDataOmEktefelle(fnrEktefelle, callId, periode, startDatoForYtelse)
 
-        assertThat { ektefelle?.personhistorikkEktefelle?.ident == fnrEktefelle }
-        assertThat { ektefelle?.arbeidsforholdEktefelle?.size == 1 }
-    }
+            assertThat { ektefelle?.personhistorikkEktefelle?.ident == fnrEktefelle }
+            assertThat { ektefelle?.arbeidsforholdEktefelle?.isEmpty() }
+        }
 
     @Test
-    fun hentDataOmEktefelle_som_ikke_finnes_i_pdl() = runBlockingTest {
-        val fnrEktefelle = "10019448164"
-        val callId = "12"
-        val startDatoForYtelse = LocalDate.of(2020, 1, 1)
-        val periode = InputPeriode(startDatoForYtelse, startDatoForYtelse.plusDays(10))
+    fun hentDataOmEktefelle_som_finnes_i_pdl_og_har_arbeidsforhold() =
+        runBlockingTest {
+            val fnrEktefelle = "10019448164"
+            val callId = "12"
+            val startDatoForYtelse = LocalDate.of(2020, 1, 1)
+            val periode = InputPeriode(startDatoForYtelse, startDatoForYtelse.plusDays(10))
 
-        coEvery { pdlService.hentPersonHistorikkTilEktefelle(fnrEktefelle, startDatoForYtelse, callId) } returns null
+            coEvery { pdlService.hentPersonHistorikkTilEktefelle(fnrEktefelle, startDatoForYtelse, callId) } returns
+                personhistorikkEktefelle(
+                    fnrEktefelle,
+                )
 
-        val ektefelle =
-            familieService.hentDataOmEktefelle(fnrEktefelle, callId, periode, startDatoForYtelse)
+            coEvery {
+                aaRegService.hentArbeidsforhold(
+                    fnr = fnrEktefelle,
+                    fraOgMed = Arbeidsforhold.fraOgMedDatoForArbeidsforhold(startDatoForYtelse),
+                    tilOgMed = periode.tom,
+                    callId = callId,
+                )
+            } returns listOf(arbeidsforhold())
 
-        assertThat { ektefelle == null }
-    }
+            val ektefelle =
+                familieService.hentDataOmEktefelle(fnrEktefelle, callId, periode, startDatoForYtelse)
+
+            assertThat { ektefelle?.personhistorikkEktefelle?.ident == fnrEktefelle }
+            assertThat { ektefelle?.arbeidsforholdEktefelle?.size == 1 }
+        }
+
+    @Test
+    fun hentDataOmEktefelle_som_ikke_finnes_i_pdl() =
+        runBlockingTest {
+            val fnrEktefelle = "10019448164"
+            val callId = "12"
+            val startDatoForYtelse = LocalDate.of(2020, 1, 1)
+            val periode = InputPeriode(startDatoForYtelse, startDatoForYtelse.plusDays(10))
+
+            coEvery { pdlService.hentPersonHistorikkTilEktefelle(fnrEktefelle, startDatoForYtelse, callId) } returns null
+
+            val ektefelle =
+                familieService.hentDataOmEktefelle(fnrEktefelle, callId, periode, startDatoForYtelse)
+
+            assertThat { ektefelle == null }
+        }
 
     private fun personhistorikkBarn(ident: String): PersonhistorikkBarn {
         val barn = PersonhistorikkBarn(ident, listOf(Adresse("NOR", null, null, false)), emptyList(), emptyList(), emptyList())
@@ -132,12 +139,11 @@ internal class FamilieServiceTest {
             statsborgerskap = emptyList(),
             bostedsadresser = emptyList(),
             kontaktadresser = emptyList(),
-            oppholdsadresser = emptyList()
+            oppholdsadresser = emptyList(),
         )
     }
 
     private fun arbeidsforhold(): Arbeidsforhold {
-
         return Arbeidsforhold(
             periode = Periode(null, null),
             utenlandsopphold = null,
@@ -145,7 +151,7 @@ internal class FamilieServiceTest {
             arbeidsgiver = Arbeidsgiver("Navn", "123", listOf(Ansatte(5, null)), null, null),
             arbeidsforholdstype = Arbeidsforholdstype.NORMALT,
             arbeidsavtaler = emptyList(),
-            permisjonPermittering = null
+            permisjonPermittering = null,
         )
     }
 }

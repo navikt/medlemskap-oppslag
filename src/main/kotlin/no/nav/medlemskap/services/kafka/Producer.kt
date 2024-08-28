@@ -9,7 +9,6 @@ import org.apache.kafka.common.serialization.StringSerializer
 import java.util.*
 
 class Producer {
-
     fun createProducer(producerConfig: Configuration.KafkaConfig): KafkaProducer<String, String> {
         val properties = Properties()
         properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer::class.java)

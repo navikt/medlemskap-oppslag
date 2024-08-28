@@ -8,14 +8,14 @@ data class AaRegAnsettelsesperiode(
     val bruksperiode: AaRegBruksperiode,
     val periode: AaRegPeriode,
     val sporingsinformasjon: AaRegSporingsinformasjon,
-    val varslingskode: String?
+    val varslingskode: String?,
 )
 
 data class AaRegAntallTimerForTimeloennet(
     val antallTimer: Double,
     val periode: AaRegPeriode?,
     val rapporteringsperiode: YearMonth,
-    val sporingsinformasjon: AaRegSporingsinformasjon
+    val sporingsinformasjon: AaRegSporingsinformasjon,
 )
 
 data class AaRegArbeidsavtale(
@@ -31,8 +31,7 @@ data class AaRegArbeidsavtale(
     val yrke: String,
     val fartsomraade: String?,
     val skipsregister: String?,
-    val skipstype: String?
-
+    val skipstype: String?,
 )
 
 data class AaRegArbeidsforhold(
@@ -50,47 +49,48 @@ data class AaRegArbeidsforhold(
     val sistBekreftet: LocalDateTime?,
     val sporingsinformasjon: AaRegSporingsinformasjon,
     val type: String,
-    val utenlandsopphold: List<AaRegUtenlandsopphold>?
+    val utenlandsopphold: List<AaRegUtenlandsopphold>?,
 )
 
 data class AaRegArbeidsgiverArbeidsforhold(
     val antall: Int,
-    val arbeidsforhold: List<AaRegArbeidsforhold>
+    val arbeidsforhold: List<AaRegArbeidsforhold>,
 )
 
 data class AaRegBruksperiode(
     val fom: LocalDateTime,
-    val tom: LocalDateTime?
+    val tom: LocalDateTime?,
 )
 
 enum class AaRegOpplysningspliktigArbeidsgiverType {
-    Organisasjon, Person
+    Organisasjon,
+    Person,
 }
 
 data class AaRegGyldighetsperiode(
     val fom: LocalDate,
-    val tom: LocalDate?
+    val tom: LocalDate?,
 )
 
 data class AaRegOpplysningspliktigArbeidsgiver(
     val type: AaRegOpplysningspliktigArbeidsgiverType,
     val organisasjonsnummer: String?,
     val aktoerId: String?,
-    val offentligIdent: String?
+    val offentligIdent: String?,
 )
 
 enum class AaRegOrganisasjonType {
-    Organisasjon
+    Organisasjon,
 }
 
 data class AaRegOrganisasjon(
     val type: AaRegOrganisasjonType,
-    val organisasjonsnummer: String
+    val organisasjonsnummer: String,
 )
 
 data class AaRegPeriode(
     val fom: LocalDate?,
-    val tom: LocalDate?
+    val tom: LocalDate?,
 )
 
 data class AaRegPermisjonPermittering(
@@ -99,17 +99,17 @@ data class AaRegPermisjonPermittering(
     val prosent: Double?,
     val sporingsinformasjon: AaRegSporingsinformasjon,
     val type: String,
-    val varslingskode: String?
+    val varslingskode: String?,
 )
 
 enum class AaRegPersonType {
-    Person
+    Person,
 }
 
 data class AaRegPerson(
     val type: AaRegPersonType,
     val aktoerId: String,
-    val offentligIdent: String
+    val offentligIdent: String,
 )
 
 data class AaRegSporingsinformasjon(
@@ -120,16 +120,16 @@ data class AaRegSporingsinformasjon(
     val opprettetAv: String,
     val opprettetKilde: String?,
     val opprettetKildereferanse: String?,
-    val opprettetTidspunkt: LocalDateTime?
+    val opprettetTidspunkt: LocalDateTime?,
 )
 
 data class AaRegTjenestefeilResponse(
-    val melding: String
+    val melding: String,
 )
 
 data class AaRegUtenlandsopphold(
     val landkode: String,
     val periode: AaRegPeriode?,
     val rapporteringsperiode: YearMonth,
-    val sporingsinformasjon: AaRegSporingsinformasjon
+    val sporingsinformasjon: AaRegSporingsinformasjon,
 )

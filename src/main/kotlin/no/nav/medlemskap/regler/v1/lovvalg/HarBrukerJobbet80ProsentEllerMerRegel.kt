@@ -14,24 +14,29 @@ class HarBrukerJobbet80ProsentEllerMerRegel(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    regelId: RegelId = RegelId.REGEL_11_2_3
+    regelId: RegelId = RegelId.REGEL_11_2_3,
 ) : LovvalgRegel(regelId, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
         return when {
-            arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(80.0, kontrollPeriodeForArbeidsforhold, ytelse) -> ja(regelId)
+            arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(
+                80.0,
+                kontrollPeriodeForArbeidsforhold,
+                ytelse,
+            ) -> ja(regelId)
             else -> nei(regelId)
         }
     }
 
     companion object {
-
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag, regelId: RegelId): HarBrukerJobbet80ProsentEllerMerRegel {
+        fun fraDatagrunnlag(
+            datagrunnlag: Datagrunnlag,
+            regelId: RegelId,
+        ): HarBrukerJobbet80ProsentEllerMerRegel {
             return HarBrukerJobbet80ProsentEllerMerRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold,
-                regelId = regelId
+                regelId = regelId,
             )
         }
     }

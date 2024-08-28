@@ -88,7 +88,9 @@ class UdiMapperSteps : No {
                 .ovrigIkkeOpphold.arsak = udiDomenespraakParser.mapOvrigIkkeOpphold(dataTable)
         }
 
-        Gitt("følgende periode fra EOSellerEFTABeslutningOmOppholdsrett fra EOSEllerEFTAOpphold med følgende type") { dataTable: DataTable ->
+        Gitt(
+            "følgende periode fra EOSellerEFTABeslutningOmOppholdsrett fra EOSEllerEFTAOpphold med følgende type",
+        ) { dataTable: DataTable ->
             hentPersonstatusResultatEOSellerEFTABeslutningOmOppholdsrett.gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTABeslutningOmOppholdsrett
                 .oppholdsrettsPeriode = udiDomenespraakParser.mapPeriode(dataTable)
         }
@@ -98,7 +100,9 @@ class UdiMapperSteps : No {
                 .oppholdstillatelsePeriode = udiDomenespraakParser.mapPeriode(dataTable)
         }
 
-        Gitt("følgende oppholdsrettsPeriode fra EOSellerEFTAVedtakOmVarigOppholdsrett fra EOSEllerEFTAOpphold med følgende type") { dataTable: DataTable ->
+        Gitt(
+            "følgende oppholdsrettsPeriode fra EOSellerEFTAVedtakOmVarigOppholdsrett fra EOSEllerEFTAOpphold med følgende type",
+        ) { dataTable: DataTable ->
             hentPersonstatusResultatEOSellerEFTAVarigOppholdsrett.gjeldendeOppholdsstatus.eoSellerEFTAOpphold.eoSellerEFTAVedtakOmVarigOppholdsrett
                 .oppholdsrettsPeriode = udiDomenespraakParser.mapPeriode(dataTable)
         }
@@ -109,8 +113,8 @@ class UdiMapperSteps : No {
         }
 
         Gitt("følgende EOSellerEFTAGrunnlagskategoriOppholdsrett fra EOSellerEFTAVedtakOmVarigOppholdsrett") { dataTable: DataTable ->
-            hentPersonstatusResultatEOSellerEFTAVarigOppholdsrett.gjeldendeOppholdsstatus.eoSellerEFTAOpphold.
-            eoSellerEFTAVedtakOmVarigOppholdsrett.eosOppholdsgrunnlag = udiDomenespraakParser.mapEOsOpppholdgrunnlagOppholdsrett(dataTable)
+            hentPersonstatusResultatEOSellerEFTAVarigOppholdsrett.gjeldendeOppholdsstatus.eoSellerEFTAOpphold
+                .eoSellerEFTAVedtakOmVarigOppholdsrett.eosOppholdsgrunnlag = udiDomenespraakParser.mapEOsOpppholdgrunnlagOppholdsrett(dataTable)
         }
 
         Gitt("følgende EOSellerEFTAGrunnlagskategoriOppholdsrett fra EOSellerEFTAOppholdstillatelse") { dataTable: DataTable ->
@@ -161,7 +165,7 @@ class UdiMapperSteps : No {
         }
 
         Så(
-            "skal mappede oppholdstillatelse med EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT"
+            "skal mappede oppholdstillatelse med EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT",
         ) { dataTable: DataTable ->
             val forventetEOSEllerEFTAOpphold = OppholdstillatelseDomeneSpraakParser.mapEOSElllerEFTAOppholdKlasse(dataTable)
             oppholdstillatelse?.gjeldendeOppholdsstatus?.eosellerEFTAOpphold.shouldBe(forventetEOSEllerEFTAOpphold)
@@ -171,10 +175,12 @@ class UdiMapperSteps : No {
             oppholdstillatelse = mapTilOppholdstillatelse(hentPersonstatusResultatMedGjeldendeOppholdsstatusUavklart)
         }
 
-        Så("skal mappede UtvistMedInnreiseForbud i IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum i Oppholdstillatelse være") { dataTable: DataTable ->
+        Så(
+            "skal mappede UtvistMedInnreiseForbud i IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum i Oppholdstillatelse være",
+        ) { dataTable: DataTable ->
             val forventetInnreiseForbud = OppholdstillatelseDomeneSpraakParser.mapJaNeiUavklart(dataTable)
             oppholdstillatelse?.gjeldendeOppholdsstatus?.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum?.utvistMedInnreiseForbud?.innreiseForbud.shouldBe(
-                forventetInnreiseForbud
+                forventetInnreiseForbud,
             )
         }
 
@@ -207,11 +213,11 @@ class UdiMapperSteps : No {
         }
 
         Så(
-            "mappede AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak i IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum i Oppholdstillatelse være"
+            "mappede AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak i IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum i Oppholdstillatelse være",
         ) { dataTable: DataTable ->
             val forventetAvgjorelsesDato = OppholdstillatelseDomeneSpraakParser.mapAvgjorelseDato(dataTable)
             oppholdstillatelse?.gjeldendeOppholdsstatus?.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum?.avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak?.avgjorelsesDato.shouldBe(
-                forventetAvgjorelsesDato
+                forventetAvgjorelsesDato,
             )
         }
 
@@ -220,18 +226,23 @@ class UdiMapperSteps : No {
             oppholdstillatelse?.arbeidsadgang?.periode.shouldBe(periodeForventet)
         }
 
-        Så("mappede OvrigIkkeOppholdsKategori i IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum i Oppholdstillatelse være") { dataTable: DataTable ->
+        Så(
+            "mappede OvrigIkkeOppholdsKategori i IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum i Oppholdstillatelse være",
+        ) { dataTable: DataTable ->
             val ovrigIkkeOppholdsKategoriForventet =
                 OppholdstillatelseDomeneSpraakParser.mapOvrigIkkeOppholdsKategori(dataTable)
             oppholdstillatelse?.gjeldendeOppholdsstatus?.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum?.ovrigIkkeOpphold?.ovrigIkkeOppholdsKategori.shouldBe(
-                ovrigIkkeOppholdsKategoriForventet
+                ovrigIkkeOppholdsKategoriForventet,
             )
         }
 
         Så("skal mappede OppholdstillatelsePaSammeVilkar være") { dataTable: DataTable ->
-            val forventetOppholdstillatelsePaSammeVilkar = OppholdstillatelseDomeneSpraakParser.mapOppholdstillatelsePaSammeVilkar(dataTable)
+            val forventetOppholdstillatelsePaSammeVilkar =
+                OppholdstillatelseDomeneSpraakParser.mapOppholdstillatelsePaSammeVilkar(
+                    dataTable,
+                )
             oppholdstillatelse?.gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar.shouldBe(
-                forventetOppholdstillatelsePaSammeVilkar
+                forventetOppholdstillatelsePaSammeVilkar,
             )
         }
 

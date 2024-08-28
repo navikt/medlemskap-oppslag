@@ -3,7 +3,8 @@ package no.nav.medlemskap.domene.arbeidsforhold
 enum class Skipstype {
     ANNET,
     BOREPLATTFORM,
-    TURIST;
+    TURIST,
+    ;
 
     companion object {
         fun fraSkipstypeVerdi(skipstypeValue: String?): Skipstype? {

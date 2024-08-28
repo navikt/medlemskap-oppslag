@@ -15,9 +15,8 @@ data class Personhistorikk(
     val innflyttingTilNorge: List<InnflyttingTilNorge>,
     val utflyttingFraNorge: List<UtflyttingFraNorge>,
     val navn: List<Navn>,
-    val oppholdstilatelser: List<Opphold> = emptyList()
+    val oppholdstilatelser: List<Opphold> = emptyList(),
 ) {
-
     fun erBrukerDoed(): Boolean {
         return doedsfall.isNotNullOrEmpty()
     }

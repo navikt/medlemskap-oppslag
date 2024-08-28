@@ -15,16 +15,17 @@ class UtvistMedInnreiseForbudNullTest {
                 .withGjeldendeOppholdsstatus(
                     GjeldendeOppholdsstatus()
                         .withIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(
-                            IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum()
-                        )
+                            IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(),
+                        ),
                 )
 
         val mappetUtvistMedInnreiseForbud = UdiMapper.mapTilOppholdstillatelse(utvistMedInnreiseforbudNull)
-        val utvistMedInnreiseForbud = mappetUtvistMedInnreiseForbud
-            .gjeldendeOppholdsstatus
-            ?.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
-            ?.utvistMedInnreiseForbud
-            ?.innreiseForbud
+        val utvistMedInnreiseForbud =
+            mappetUtvistMedInnreiseForbud
+                .gjeldendeOppholdsstatus
+                ?.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
+                ?.utvistMedInnreiseForbud
+                ?.innreiseForbud
 
         assertNull(utvistMedInnreiseForbud)
     }

@@ -8,20 +8,20 @@ data class Opphold(
     val oppholdFra: LocalDate?,
     val oppholdTil: LocalDate?,
     val medtadata: OppholdMetadata,
-    val folkeregistermetadata: Folkeregistermetadata
+    val folkeregistermetadata: Folkeregistermetadata,
 )
 
 enum class OppholdstillatelseType {
     MIDLERTIDIG,
     PERMANENT,
     OPPLYSNING_MANGLER,
-    __UNKNOWN_VALUE
+    __UNKNOWN_VALUE,
 }
 
 data class OppholdMetadata(
     val historisk: Boolean,
     val master: String,
-    val endringer: List<Endring>
+    val endringer: List<Endring>,
 )
 
 data class Endring(
@@ -29,13 +29,14 @@ data class Endring(
     val kilde: String,
     val registrert: LocalDateTime,
     val registrertAv: String,
-    val systemkilde: String
-
+    val systemkilde: String,
 )
+
 enum class Endringstype {
     OPPRETT,
     KORRIGER,
     OPPHOER,
+
     /**
      * This is a default enum value that will be used when attempting to deserialize unknown value.
      */

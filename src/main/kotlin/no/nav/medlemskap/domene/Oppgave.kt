@@ -7,7 +7,7 @@ data class Oppgave(
     val aktivDato: LocalDate,
     val prioritet: Prioritet,
     val status: Status,
-    val tema: String?
+    val tema: String?,
 ) {
     companion object {
         fun List<Oppgave>.finnesAapneOppgaver(): Boolean = this.aapneOppgaver().isNotEmpty()
@@ -21,9 +21,15 @@ data class Oppgave(
 }
 
 enum class Prioritet {
-    HOY, NORM, LAV
+    HOY,
+    NORM,
+    LAV,
 }
 
 enum class Status {
-    OPPRETTET, AAPNET, UNDER_BEHANDLING, FERDIGSTILT, FEILREGISTRERT
+    OPPRETTET,
+    AAPNET,
+    UNDER_BEHANDLING,
+    FERDIGSTILT,
+    FEILREGISTRERT,
 }

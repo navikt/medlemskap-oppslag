@@ -20,7 +20,6 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 class medlClientTest {
-
     companion object {
         val server: WireMockServer = WireMockServer(WireMockConfiguration.options().dynamicPort())
         private val config = Configuration()
@@ -55,12 +54,13 @@ class medlClientTest {
                 WireMock.aResponse()
                     .withStatus(HttpStatusCode.OK.value)
                     .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-                    .withBody(medlResponse)
-            )
+                    .withBody(medlResponse),
+            ),
         )
 
         val client = createMedlClient(azureAdClient)
-        val response = runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
+        val response =
+            runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
 
         Assertions.assertEquals("Full", response[0].dekning)
         Assertions.assertEquals(100064642, response[0].unntakId)
@@ -100,9 +100,8 @@ class medlClientTest {
             queryMapping.willReturn(
                 WireMock.aResponse()
                     .withStatus(HttpStatusCode.InternalServerError.value)
-                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-
-            )
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString()),
+            ),
         )
 
         val client = createMedlClient(azureAdClient)
@@ -114,7 +113,6 @@ class medlClientTest {
 
     @Test
     fun `tester ClientRequestException`() {
-
         val callId = "12345"
         val azureAdClient: AzureAdClient = mockk()
         coEvery { azureAdClient.hentToken(config.register.medlScope) } returns Token("dummytoken", "", 1)
@@ -123,9 +121,8 @@ class medlClientTest {
             queryMapping.willReturn(
                 WireMock.aResponse()
                     .withStatus(HttpStatusCode.Forbidden.value)
-                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-
-            )
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString()),
+            ),
         )
 
         val client = createMedlClient(azureAdClient)
@@ -145,13 +142,13 @@ class medlClientTest {
             queryMapping.willReturn(
                 WireMock.aResponse()
                     .withStatus(HttpStatusCode.NotFound.value)
-                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-
-            )
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString()),
+            ),
         )
 
         val client = createMedlClient(azureAdClient)
-        val response = runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
+        val response =
+            runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
 
         Assertions.assertEquals(0, response.size)
     }
@@ -160,46 +157,47 @@ class medlClientTest {
         return MedlClient(server.baseUrl(), azureAdClient, config, cioHttpClient)
     }
 
-    private val queryMapping: MappingBuilder = WireMock.get(WireMock.urlPathEqualTo("/api/v1/medlemskapsunntak"))
-        .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
-        .withHeader("Nav-Personident", equalTo("10109000398"))
-        .withHeader("Nav-Call-Id", equalTo("12345"))
-        .withQueryParam("fraOgMed", equalTo("2010-01-01"))
-        .withQueryParam("fraOgMed", equalTo("2010-01-01"))
+    private val queryMapping: MappingBuilder =
+        WireMock.get(WireMock.urlPathEqualTo("/api/v1/medlemskapsunntak"))
+            .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
+            .withHeader("Nav-Personident", equalTo("10109000398"))
+            .withHeader("Nav-Call-Id", equalTo("12345"))
+            .withQueryParam("fraOgMed", equalTo("2010-01-01"))
+            .withQueryParam("fraOgMed", equalTo("2010-01-01"))
 
     private val medlResponse =
         """
-[
-  {
-    "unntakId": 100064642,
-    "ident": "25109209177",
-    "fraOgMed": "2018-08-16",
-    "tilOgMed": "2019-06-15",
-    "status": "GYLD",
-    "dekning": "Full",
-    "helsedel": true,
-    "medlem": true,
-    "lovvalgsland": "NOR",
-    "lovvalg": "ENDL",
-    "grunnlag": "FTL_2-5",
-    "sporingsinformasjon": {
-      "versjon": 0,
-      "registrert": "2018-06-03",
-      "besluttet": "2018-07-16",
-      "kilde": "LAANEKASSEN",
-      "kildedokument": "Henv_Soknad",
-      "opprettet": "2017-01-05T12:20:38",
-      "opprettetAv": "BMEDL2003",
-      "sistEndret": "2018-06-28T12:20:38",
-      "sistEndretAv": "REG-150"
-    },
-    "studieinformasjon": {
-      "statsborgerland": "NOR",
-      "studieland": "USA",
-      "delstudie": true,
-      "soeknadInnvilget": true
-    }
-  }
-]
+        [
+          {
+            "unntakId": 100064642,
+            "ident": "25109209177",
+            "fraOgMed": "2018-08-16",
+            "tilOgMed": "2019-06-15",
+            "status": "GYLD",
+            "dekning": "Full",
+            "helsedel": true,
+            "medlem": true,
+            "lovvalgsland": "NOR",
+            "lovvalg": "ENDL",
+            "grunnlag": "FTL_2-5",
+            "sporingsinformasjon": {
+              "versjon": 0,
+              "registrert": "2018-06-03",
+              "besluttet": "2018-07-16",
+              "kilde": "LAANEKASSEN",
+              "kildedokument": "Henv_Soknad",
+              "opprettet": "2017-01-05T12:20:38",
+              "opprettetAv": "BMEDL2003",
+              "sistEndret": "2018-06-28T12:20:38",
+              "sistEndretAv": "REG-150"
+            },
+            "studieinformasjon": {
+              "statsborgerland": "NOR",
+              "studieland": "USA",
+              "delstudie": true,
+              "soeknadInnvilget": true
+            }
+          }
+        ]
         """.trimIndent()
 }

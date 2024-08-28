@@ -10,6 +10,6 @@ class AaRegGyldighetsperiodeBuilder {
     fun build(): AaRegGyldighetsperiode =
         AaRegGyldighetsperiode(
             fom = fom,
-            tom = tom
+            tom = tom,
         )
 }

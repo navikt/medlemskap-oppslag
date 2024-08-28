@@ -23,33 +23,38 @@ class PdlClient(
     private val username: String,
     private val httpClient: HttpClient,
     private val retry: Retry? = null,
-    private val pdlApiKey: String
+    private val pdlApiKey: String,
 ) {
     companion object {
         private val logger = KotlinLogging.logger { }
     }
 
-    suspend fun hentIdenterv2(fnr: String, callId: String): GraphQLClientResponse<HentIdenter.Result> {
-
+    suspend fun hentIdenterv2(
+        fnr: String,
+        callId: String,
+    ): GraphQLClientResponse<HentIdenter.Result> {
         return runWithRetryAndMetrics("PDL", "HentIdenter", retry) {
             val token = azureAdClient.hentToken(configuration.register.pdlScope)
-            val query = HentIdenter(
-                variables = HentIdenter.Variables(
-                    fnr,
-                    null,
-                    true
+            val query =
+                HentIdenter(
+                    variables =
+                        HentIdenter.Variables(
+                            fnr,
+                            null,
+                            true,
+                        ),
                 )
-            )
-            val response: KotlinxGraphQLResponse<HentIdenter.Result> = httpClient.post() {
-                url(baseUrl)
-                setBody(query)
-                header(HttpHeaders.Authorization, "Bearer ${token.token}")
-                header(HttpHeaders.ContentType, ContentType.Application.Json)
-                header(HttpHeaders.Accept, ContentType.Application.Json)
-                header("Nav-Call-Id", callId)
-                header("Nav-Consumer-Id", configuration.azureAd.clientId)
-                header("x-nav-apiKey", pdlApiKey)
-            }.body()
+            val response: KotlinxGraphQLResponse<HentIdenter.Result> =
+                httpClient.post {
+                    url(baseUrl)
+                    setBody(query)
+                    header(HttpHeaders.Authorization, "Bearer ${token.token}")
+                    header(HttpHeaders.ContentType, ContentType.Application.Json)
+                    header(HttpHeaders.Accept, ContentType.Application.Json)
+                    header("Nav-Call-Id", callId)
+                    header("Nav-Consumer-Id", configuration.azureAd.clientId)
+                    header("x-nav-apiKey", pdlApiKey)
+                }.body()
 
             if (!response.errors.isNullOrEmpty()) {
                 logger.error("PDL response errors: ${response.errors}")
@@ -59,30 +64,34 @@ class PdlClient(
         }
     }
 
-    suspend fun hentPersonV2(fnr: String, callId: String): GraphQLClientResponse<HentPerson.Result> {
-
+    suspend fun hentPersonV2(
+        fnr: String,
+        callId: String,
+    ): GraphQLClientResponse<HentPerson.Result> {
         return runWithRetryAndMetrics("PDL", "HentPerson", retry) {
             val token = azureAdClient.hentToken(configuration.register.pdlScope)
 
-            val query = HentPerson(
-                variables = HentPerson.Variables(fnr, true, true)
-            )
-            val response: KotlinxGraphQLResponse<HentPerson.Result> = httpClient.post() {
-                url(baseUrl)
-                setBody(query)
-                header(HttpHeaders.Authorization, "Bearer ${token.token}")
-                header(HttpHeaders.ContentType, ContentType.Application.Json)
-                header(HttpHeaders.Accept, ContentType.Application.Json)
-                header("behandlingsnummer", "B451")
-                header("Nav-Call-Id", callId)
-                header("Nav-Consumer-Id", configuration.azureAd.clientId)
-                header("x-nav-apiKey", pdlApiKey)
-            }.body()
+            val query =
+                HentPerson(
+                    variables = HentPerson.Variables(fnr, true, true),
+                )
+            val response: KotlinxGraphQLResponse<HentPerson.Result> =
+                httpClient.post {
+                    url(baseUrl)
+                    setBody(query)
+                    header(HttpHeaders.Authorization, "Bearer ${token.token}")
+                    header(HttpHeaders.ContentType, ContentType.Application.Json)
+                    header(HttpHeaders.Accept, ContentType.Application.Json)
+                    header("behandlingsnummer", "B451")
+                    header("Nav-Call-Id", callId)
+                    header("Nav-Consumer-Id", configuration.azureAd.clientId)
+                    header("x-nav-apiKey", pdlApiKey)
+                }.body()
 
             if (!response.extensions.isNullOrEmpty()) {
                 logger.warn(
                     "extension fra PDL:",
-                    kv("extensions", response.extensions.toString())
+                    kv("extensions", response.extensions.toString()),
                 )
             }
 

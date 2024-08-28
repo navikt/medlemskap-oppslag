@@ -32,7 +32,8 @@ enum class Landkode(val landkode: String, val erEøsland: Boolean) {
     HUN("UNGARN", true),
     AUT("ØSTERRIKE", true),
     CHE("SVEITS", true),
-    GBR("STORBRITANNIA", false);
+    GBR("STORBRITANNIA", false),
+    ;
 
     companion object {
         fun erEØSland(landkode: String): Boolean {
@@ -57,15 +58,16 @@ enum class Landkode(val landkode: String, val erEøsland: Boolean) {
             return landkode == "GBR"
         }
 
-        private val nordiskeLandkoder = setOf(
-            "DNK",
-            "FIN",
-            "ISL",
-            "SWE",
-            "NOR",
-            "FRO",
-            "GRL",
-            "ALA"
-        )
+        private val nordiskeLandkoder =
+            setOf(
+                "DNK",
+                "FIN",
+                "ISL",
+                "SWE",
+                "NOR",
+                "FRO",
+                "GRL",
+                "ALA",
+            )
     }
 }

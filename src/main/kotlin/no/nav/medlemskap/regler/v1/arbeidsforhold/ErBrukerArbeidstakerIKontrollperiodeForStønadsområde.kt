@@ -14,9 +14,8 @@ class ErBrukerArbeidstakerIKontrollperiodeForStønadsområde(
     ytelse: Ytelse,
     private val startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    regelId: RegelId = RegelId.REGEL_21
+    regelId: RegelId = RegelId.REGEL_21,
 ) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
         return if (arbeidsforhold.erSammenhengendeIKontrollPeriode(kontrollperiodeForSykepenger, ytelse, 1)) {
             ja(regelId)
@@ -26,7 +25,6 @@ class ErBrukerArbeidstakerIKontrollperiodeForStønadsområde(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErBrukerArbeidstakerIKontrollperiodeForStønadsområde {
             return ErBrukerArbeidstakerIKontrollperiodeForStønadsområde(
                 ytelse = datagrunnlag.ytelse,

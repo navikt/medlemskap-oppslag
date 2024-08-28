@@ -16,26 +16,25 @@ class ErArbeidsforholdetMaritimtRegel(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    regelId: RegelId = RegelId.REGEL_7
+    regelId: RegelId = RegelId.REGEL_7,
 ) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
         return when {
             arbeidsforhold.isEmpty() -> nei(regelId)
-            arbeidsforhold.arbeidsforholdForYrkestype(kontrollPeriodeForArbeidsforhold) alleEr Arbeidsforholdstype.MARITIMT -> ja(
-                regelId
-            )
+            arbeidsforhold.arbeidsforholdForYrkestype(kontrollPeriodeForArbeidsforhold) alleEr Arbeidsforholdstype.MARITIMT ->
+                ja(
+                    regelId,
+                )
             else -> nei(regelId)
         }
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErArbeidsforholdetMaritimtRegel {
             return ErArbeidsforholdetMaritimtRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
-                arbeidsforhold = datagrunnlag.arbeidsforhold
+                arbeidsforhold = datagrunnlag.arbeidsforhold,
             )
         }
     }

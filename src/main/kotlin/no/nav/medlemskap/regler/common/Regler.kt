@@ -12,9 +12,8 @@ import no.nav.medlemskap.regler.v1.RegelFactory
 abstract class Regler(
     val ytelse: Ytelse,
     val regelFactory: RegelFactory,
-    val overstyrteRegler: Map<RegelId, Svar>
+    val overstyrteRegler: Map<RegelId, Svar>,
 ) {
-
     abstract fun hentHovedflyt(): Regelflyt
 
     fun kjørHovedflyt(): Resultat {
@@ -30,7 +29,7 @@ abstract class Regler(
         hvisJa: Regelflyt? = null,
         hvisNei: Regelflyt? = null,
         hvisUavklart: Regelflyt = medlemskonklusjonUavklart(ytelse),
-        årsak: Årsak? = null
+        årsak: Årsak? = null,
     ): Regelflyt {
         return Regelflyt(
             regel = regel,
@@ -38,7 +37,7 @@ abstract class Regler(
             hvisNei = hvisNei,
             hvisUavklart = hvisUavklart,
             overstyrteRegler = overstyrteRegler,
-            årsak = årsak
+            årsak = årsak,
         )
     }
 
@@ -48,10 +47,11 @@ abstract class Regler(
 
     companion object {
         private fun utledResultat(resultater: Map<RegelId, Resultat>): Resultat {
-
             return when {
                 resultater[RegelId.REGEL_A]?.svar == JA && resultater[RegelId.REGEL_B]?.svar == NEI -> ja(RegelId.REGEL_OPPLYSNINGER)
-                resultater.values.any { it.svar == JA } -> uavklart(RegelId.REGEL_OPPLYSNINGER, årsak = Årsak.fraResultat(resultater.values.first { it.svar == JA }))
+                resultater.values.any {
+                    it.svar == JA
+                } -> uavklart(RegelId.REGEL_OPPLYSNINGER, årsak = Årsak.fraResultat(resultater.values.first { it.svar == JA }))
                 else -> nei(RegelId.REGEL_OPPLYSNINGER)
             }
         }
@@ -60,7 +60,7 @@ abstract class Regler(
             val delresultatMap = regler.map { it.regelId to it.utfør() }.toMap()
 
             return utledResultat(delresultatMap).copy(
-                delresultat = delresultatMap.values.toList()
+                delresultat = delresultatMap.values.toList(),
             )
         }
     }

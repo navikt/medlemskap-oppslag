@@ -16,23 +16,24 @@ class Regelflyt(
     val hvisNei: Regelflyt? = null,
     val hvisUavklart: Regelflyt? = null,
     val overstyrteRegler: Map<RegelId, Svar> = mapOf(),
-    val årsak: Årsak? = null
+    val årsak: Årsak? = null,
 ) {
     val ytelse = regel.ytelse
 
     private fun utfør(
         resultatliste: MutableList<Resultat>,
         harDekning: Svar? = null,
-        dekning: String = ""
+        dekning: String = "",
     ): Resultat {
         val regelResultat = regel.utfør()
 
         val overstyrtSvar = overstyrteRegler[regel.regelId]
-        val resultat = if (overstyrtSvar != null) {
-            regelResultat.copy(svar = overstyrtSvar, begrunnelse = regel.regelId.begrunnelse(overstyrtSvar))
-        } else {
-            regelResultat.copy(årsak = bestemÅrsak(regelResultat, årsak, resultatliste))
-        }
+        val resultat =
+            if (overstyrtSvar != null) {
+                regelResultat.copy(svar = overstyrtSvar, begrunnelse = regel.regelId.begrunnelse(overstyrtSvar))
+            } else {
+                regelResultat.copy(årsak = bestemÅrsak(regelResultat, årsak, resultatliste))
+            }
 
         resultatliste.add(resultat)
 
@@ -43,7 +44,10 @@ class Regelflyt(
                 return nesteResultat.copy(årsak = årsak, årsaker = resultatliste.finnÅrsaker())
             }
 
-            return nesteResultat.copy(årsak = bestemÅrsakFraRegelResultat(nesteResultat, regelResultat), årsaker = resultatliste.finnÅrsaker())
+            return nesteResultat.copy(
+                årsak = bestemÅrsakFraRegelResultat(nesteResultat, regelResultat),
+                årsaker = resultatliste.finnÅrsaker(),
+            )
         }
 
         if (resultat.hentÅrsak() == null && resultat.erKonklusjon()) {
@@ -51,14 +55,17 @@ class Regelflyt(
                 harDekning = harDekning,
                 dekning = dekning,
                 årsak = resultatliste.mapNotNull { it.hentÅrsak() }.firstOrNull(),
-                årsaker = resultatliste.finnÅrsaker()
+                årsaker = resultatliste.finnÅrsaker(),
             )
         }
 
         return resultat.copy(harDekning = harDekning, dekning = dekning)
     }
 
-    fun utfør(harDekning: Svar? = null, dekning: String = ""): Resultat {
+    fun utfør(
+        harDekning: Svar? = null,
+        dekning: String = "",
+    ): Resultat {
         val resultatliste = mutableListOf<Resultat>()
 
         val resultat = utfør(resultatliste, harDekning, dekning)
@@ -76,13 +83,17 @@ class Regelflyt(
         } else {
             if (resultat.svar == Svar.NEI && hvisNei != null) {
                 hvisNei
-            } else
+            } else {
                 hvisUavklart
+            }
         }
     }
 
     companion object {
-        private fun bestemÅrsakFraRegelResultat(resultat: Resultat, regelResultat: Resultat): Årsak? {
+        private fun bestemÅrsakFraRegelResultat(
+            resultat: Resultat,
+            regelResultat: Resultat,
+        ): Årsak? {
             return if (resultat.erKonklusjon() &&
                 resultat.svar != Svar.JA &&
                 resultat.hentÅrsak() == null
@@ -93,7 +104,11 @@ class Regelflyt(
             }
         }
 
-        private fun bestemÅrsak(resultat: Resultat, årsak: Årsak?, delResultater: List<Resultat>): Årsak? {
+        private fun bestemÅrsak(
+            resultat: Resultat,
+            årsak: Årsak?,
+            delResultater: List<Resultat>,
+        ): Årsak? {
             return when {
                 resultat.hentÅrsak() != null -> resultat.hentÅrsak()
                 resultat.erKonklusjon() && resultat.svar == Svar.JA -> null
@@ -107,27 +122,45 @@ class Regelflyt(
             return Regelflyt(uavklartKonklusjon(ytelse, RegelId.REGEL_MEDLEM_KONKLUSJON))
         }
 
-        fun regelflytJa(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
+        fun regelflytJa(
+            ytelse: Ytelse,
+            regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON,
+        ): Regelflyt {
             return Regelflyt(regelJa(ytelse, regelId, REGELFLYT))
         }
 
-        fun regelflytNei(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
+        fun regelflytNei(
+            ytelse: Ytelse,
+            regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON,
+        ): Regelflyt {
             return Regelflyt(regelNei(ytelse, regelId, REGELFLYT))
         }
 
-        fun regelflytUavklart(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON): Regelflyt {
+        fun regelflytUavklart(
+            ytelse: Ytelse,
+            regelId: RegelId = RegelId.REGEL_FLYT_KONKLUSJON,
+        ): Regelflyt {
             return Regelflyt(regelUavklart(ytelse, regelId, REGELFLYT))
         }
 
-        fun konklusjonJa(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_MEDLEM_KONKLUSJON): Regelflyt {
+        fun konklusjonJa(
+            ytelse: Ytelse,
+            regelId: RegelId = RegelId.REGEL_MEDLEM_KONKLUSJON,
+        ): Regelflyt {
             return Regelflyt(regelJa(ytelse, regelId, MEDLEM))
         }
 
-        fun konklusjonNei(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_MEDLEM_KONKLUSJON): Regelflyt {
+        fun konklusjonNei(
+            ytelse: Ytelse,
+            regelId: RegelId = RegelId.REGEL_MEDLEM_KONKLUSJON,
+        ): Regelflyt {
             return Regelflyt(regelNei(ytelse, regelId, MEDLEM))
         }
 
-        fun konklusjonUavklart(ytelse: Ytelse, regelId: RegelId = RegelId.REGEL_MEDLEM_KONKLUSJON): Regelflyt {
+        fun konklusjonUavklart(
+            ytelse: Ytelse,
+            regelId: RegelId = RegelId.REGEL_MEDLEM_KONKLUSJON,
+        ): Regelflyt {
             return Regelflyt(regelUavklart(ytelse, regelId, MEDLEM))
         }
     }

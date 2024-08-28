@@ -39,13 +39,14 @@ import java.io.File
 
 class RegelSteps : No {
     private val ANSATTE_9 = listOf(Ansatte(9, null))
-    private val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(
-        navn = "null",
-        organisasjonsnummer = "1",
-        ansatte = ANSATTE_9,
-        konkursStatus = null,
-        juridiskeEnheter = null
-    )
+    private val VANLIG_NORSK_ARBEIDSGIVER =
+        Arbeidsgiver(
+            navn = "null",
+            organisasjonsnummer = "1",
+            ansatte = ANSATTE_9,
+            konkursStatus = null,
+            juridiskeEnheter = null,
+        )
 
     private val pdlPersonhistorikkBuilder = PersonhistorikkBuilder()
 
@@ -220,8 +221,8 @@ class RegelSteps : No {
         Gitt("følgende oppholdstillatelse") { dataTable: DataTable ->
             oppholdstillatelseBuilder.fromOppholdstillatelse(
                 OppholdstillatelseDomeneSpraakParser.mapOppholdstillatelse(
-                    dataTable
-                )
+                    dataTable,
+                ),
             )
         }
 
@@ -259,21 +260,26 @@ class RegelSteps : No {
             resultat = ReglerService.kjørRegler(hentDatagrunnlag())
         }
 
-        Når("regel {string} kjøres med følgende parametre, skal valideringsfeil være {string}") { regelId: String, forventetValideringsfeil: String, dataTable: DataTable ->
+        Når(
+            "regel {string} kjøres med følgende parametre, skal valideringsfeil være {string}",
+        ) { regelId: String, forventetValideringsfeil: String, dataTable: DataTable ->
             medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
 
             val regelFactory = RegelFactory(hentDatagrunnlag())
             val regel = regelFactory.create(regelId)
 
-            val exception = shouldThrow<BadRequestException> {
-                regel.utfør()
-            }
+            val exception =
+                shouldThrow<BadRequestException> {
+                    regel.utfør()
+                }
 
             exception.message shouldBe forventetValideringsfeil
         }
 
-        Når("regel {string} kjøres med følgende parametre, skal svaret være {string}") { regelId: String, forventetSvar: String, dataTable: DataTable ->
+        Når(
+            "regel {string} kjøres med følgende parametre, skal svaret være {string}",
+        ) { regelId: String, forventetSvar: String, dataTable: DataTable ->
             medlemskapsparametre = domenespråkParser.mapMedlemskapsparametre(dataTable)
             datagrunnlag = byggDatagrunnlag(medlemskapsparametre)
 
@@ -310,8 +316,9 @@ class RegelSteps : No {
         }
 
         Så("skal forventet json respons være {string}") { filnavn: String ->
-            val forventetJsonResponse = RegelSteps::class.java
-                .getResource("/testpersoner/bakoverkompatibeltest/$filnavn.json").readText()
+            val forventetJsonResponse =
+                RegelSteps::class.java
+                    .getResource("/testpersoner/bakoverkompatibeltest/$filnavn.json").readText()
 
             val jsonResponse = medlemskapRequest(medlemskapsparametre)
 
@@ -322,8 +329,8 @@ class RegelSteps : No {
                 jsonResponse,
                 CustomComparator(
                     JSONCompareMode.STRICT,
-                    Customization("tidspunkt") { _, _ -> true }
-                )
+                    Customization("tidspunkt") { _, _ -> true },
+                ),
             )
         }
 
@@ -369,7 +376,7 @@ class RegelSteps : No {
             assertEquals(
                 forventedeÅrsaker.trim(),
                 hentResultat().årsaker.map { it.regelId.identifikator }.toString().filter { it != '[' && it != ']' }
-                    .trim()
+                    .trim(),
             )
         }
 
@@ -393,12 +400,14 @@ class RegelSteps : No {
         }
 
         Så("skal regel {string} gi begrunnelse {string}") {
-            fun regelGiBegrunnelse(regelIdStr:String, forventetBegrunnelse:String) {
+            fun regelGiBegrunnelse(
+                regelIdStr: String,
+                forventetBegrunnelse: String,
+            ) {
                 val regelId = domenespråkParser.parseRegelId(regelIdStr!!)
 
                 assertBegrunnelse(regelId, forventetBegrunnelse, hentResultat())
             }
-
         }
 
         Så("skal regel {string} ikke finnes i resultatet") { regelIdStr: String ->
@@ -412,8 +421,9 @@ class RegelSteps : No {
             val regelIdListe = domenespråkParser.mapRegelId(dataTable)
             val regelId = domenespråkParser.parseRegelId(regelIdStr)
 
-            val regelResultat = hentResultat().finnRegelResultat(regelId)
-                ?: throw java.lang.RuntimeException("Fant ikke regelresultat for regel {regelIdStr}")
+            val regelResultat =
+                hentResultat().finnRegelResultat(regelId)
+                    ?: throw java.lang.RuntimeException("Fant ikke regelresultat for regel {regelIdStr}")
 
             assertTrue(regelResultat.delresultat.map { it.regelId }.containsAll(regelIdListe))
         }
@@ -455,7 +465,10 @@ class RegelSteps : No {
         lagreJson(filnavn, hentDatagrunnlag().tilJson())
     }
 
-    private fun lagreJson(filnavn: String, json: String) {
+    private fun lagreJson(
+        filnavn: String,
+        json: String,
+    ) {
         val katalog = File("build", "cucumberjson")
         katalog.mkdir()
 
@@ -479,21 +492,22 @@ class RegelSteps : No {
             brukerinput = medlemskapsparametre.brukerinput,
             pdlpersonhistorikk = pdlPersonhistorikkBuilder.build(),
             medlemskap = medlemskap,
-            arbeidsforhold = byggArbeidsforhold(
-                arbeidsforhold,
-                arbeidsgiverMap,
-                arbeidsavtaleMap,
-                utenlandsoppholdMap,
-                ansatteMap,
-                permisjonPermitteringMap
-            ),
+            arbeidsforhold =
+                byggArbeidsforhold(
+                    arbeidsforhold,
+                    arbeidsgiverMap,
+                    arbeidsavtaleMap,
+                    utenlandsoppholdMap,
+                    ansatteMap,
+                    permisjonPermitteringMap,
+                ),
             oppgaver = oppgaverFraGosys,
             dokument = journalPosterFraJoArk,
             ytelse = medlemskapsparametre.ytelse ?: Ytelse.SYKEPENGER,
             dataOmBarn = dataOmBarn,
             dataOmEktefelle = dataOmEktefelleBuilder.build(),
             overstyrteRegler = overstyrteRegler,
-            oppholdstillatelse = oppholdstillatelseBuilder.build()
+            oppholdstillatelse = oppholdstillatelseBuilder.build(),
         )
     }
 
@@ -503,7 +517,7 @@ class RegelSteps : No {
         arbeidsavtaleMap: Map<Int, List<Arbeidsavtale>>,
         utenlandsoppholdMap: Map<Int, List<Utenlandsopphold>>,
         ansatteMap: Map<String?, List<Ansatte>>,
-        permisjonPermitteringMap: Map<Int, List<PermisjonPermittering>>
+        permisjonPermitteringMap: Map<Int, List<PermisjonPermittering>>,
     ): List<Arbeidsforhold> {
         return arbeidsforholdListe
             .mapIndexed { index, arbeidsforhold ->
@@ -511,12 +525,15 @@ class RegelSteps : No {
                     utenlandsopphold = utenlandsoppholdMap[index] ?: emptyList(),
                     arbeidsgiver = byggArbeidsgiver(arbeidsgiverMap[index], ansatteMap) ?: VANLIG_NORSK_ARBEIDSGIVER,
                     arbeidsavtaler = arbeidsavtaleMap[index] ?: emptyList(),
-                    permisjonPermittering = permisjonPermitteringMap[index] ?: emptyList()
+                    permisjonPermittering = permisjonPermitteringMap[index] ?: emptyList(),
                 )
             }
     }
 
-    private fun byggArbeidsgiver(arbeidsgiver: Arbeidsgiver?, ansatteMap: Map<String?, List<Ansatte>>): Arbeidsgiver? {
+    private fun byggArbeidsgiver(
+        arbeidsgiver: Arbeidsgiver?,
+        ansatteMap: Map<String?, List<Ansatte>>,
+    ): Arbeidsgiver? {
         if (arbeidsgiver == null) {
             return null
         }
@@ -539,7 +556,6 @@ class RegelSteps : No {
 }
 
 private object BakoverkompabilitetHjelper {
-
     fun medlemskapRequest(medlemskapsparametre: Medlemskapsparametre?): String {
         if (medlemskapsparametre == null) {
             throw RuntimeException("Medlemskapsparametre er null")

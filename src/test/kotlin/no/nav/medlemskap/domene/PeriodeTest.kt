@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 internal class PeriodeTest {
-
     @Test
     fun periode_er_gyldig_hvis_fom_er_før_tom() {
         val periode = Periode(fom = LocalDate.of(2018, 2, 1), tom = LocalDate.of(2018, 2, 10))

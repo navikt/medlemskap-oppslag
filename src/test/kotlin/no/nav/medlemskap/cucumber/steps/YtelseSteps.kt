@@ -45,7 +45,7 @@ class YtelseSteps : No {
         }
 
         Når(
-            "kontrollperiode for oppholdstillatelse beregnes med følgende parametre:"
+            "kontrollperiode for oppholdstillatelse beregnes med følgende parametre:",
         ) { dataTable: DataTable ->
             val parametreKontrollperiode = ytelseDomenespråkParser.mapParametreKontrollperiode(dataTable)
 

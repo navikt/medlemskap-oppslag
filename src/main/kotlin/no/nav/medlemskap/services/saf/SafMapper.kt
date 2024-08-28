@@ -18,7 +18,7 @@ fun mapJournalResultat(journal: List<no.nav.medlemskap.clients.saf.generated.dok
             journalstatus = it.journalstatus.toString(),
             tema = it.tema.toString(),
             sak = mapSak(it),
-            tittel = it.tittel
+            tittel = it.tittel,
         )
     }
 }
@@ -28,16 +28,16 @@ fun mapSak(journalPost: no.nav.medlemskap.clients.saf.generated.dokumenter.Journ
 }
 
 fun mapRelevanteDatoer(journalPost: no.nav.medlemskap.clients.saf.generated.dokumenter.Journalpost): List<RelevantDato> {
-
     return journalPost.relevanteDatoer?.filterNotNull()?.map {
         RelevantDato(it.dato, Datotype.valueOf(it.datotype.name))
     } ?: emptyList()
 }
+
 fun mapDokumenter(journalPost: no.nav.medlemskap.clients.saf.generated.dokumenter.Journalpost): List<Dokument> {
     return journalPost.dokumenter?.filterNotNull()?.map {
         Dokument(
             dokumentId = it.dokumentInfoId,
-            tittel = it.tittel
+            tittel = it.tittel,
         )
     } ?: emptyList()
 }

@@ -8,5 +8,5 @@ data class PersonhistorikkBarn(
     val bostedsadresser: List<Adresse>,
     val kontaktadresser: List<Adresse>,
     val oppholdsadresser: List<Adresse>,
-    val forelderBarnRelasjon: List<ForelderBarnRelasjon?>
+    val forelderBarnRelasjon: List<ForelderBarnRelasjon?>,
 )

@@ -13,9 +13,8 @@ class HarBrukerArbeidsforholdRegel(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    regelId: RegelId = RegelId.REGEL_17
+    regelId: RegelId = RegelId.REGEL_17,
 ) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
         return when {
             arbeidsforhold.isEmpty() -> nei(regelId)
@@ -24,12 +23,11 @@ class HarBrukerArbeidsforholdRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerArbeidsforholdRegel {
             return HarBrukerArbeidsforholdRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
-                arbeidsforhold = datagrunnlag.arbeidsforhold
+                arbeidsforhold = datagrunnlag.arbeidsforhold,
             )
         }
     }

@@ -14,16 +14,15 @@ class ReglerForBosatt(
     val periode: InputPeriode,
     ytelse: Ytelse,
     regelFactory: RegelFactory,
-    overstyrteRegler: Map<RegelId, Svar>
+    overstyrteRegler: Map<RegelId, Svar>,
 ) : Regler(ytelse, regelFactory, overstyrteRegler) {
-
     override fun hentHovedflyt(): Regelflyt {
-
-        val erBrukerBosattINorgeFlyt = lagRegelflyt(
-            regel = hentRegel(RegelId.REGEL_10),
-            hvisJa = regelflytJa(ytelse, RegelId.REGEL_BOSATT),
-            hvisNei = regelflytUavklart(ytelse, RegelId.REGEL_BOSATT)
-        )
+        val erBrukerBosattINorgeFlyt =
+            lagRegelflyt(
+                regel = hentRegel(RegelId.REGEL_10),
+                hvisJa = regelflytJa(ytelse, RegelId.REGEL_BOSATT),
+                hvisNei = regelflytUavklart(ytelse, RegelId.REGEL_BOSATT),
+            )
 
         return erBrukerBosattINorgeFlyt
     }
@@ -35,7 +34,7 @@ class ReglerForBosatt(
                     periode = periode,
                     ytelse = ytelse,
                     regelFactory = RegelFactory(datagrunnlag),
-                    overstyrteRegler = datagrunnlag.overstyrteRegler
+                    overstyrteRegler = datagrunnlag.overstyrteRegler,
                 )
             }
         }

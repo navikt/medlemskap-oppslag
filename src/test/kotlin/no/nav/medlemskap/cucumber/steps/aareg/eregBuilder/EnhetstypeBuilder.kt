@@ -14,6 +14,6 @@ class EnhetstypeBuilder {
         Enhetstyper(
             enhetstype = enhetstype,
             bruksperiode = bruksperiode,
-            gyldighetsperiode = gyldighetsperiode
+            gyldighetsperiode = gyldighetsperiode,
         )
 }

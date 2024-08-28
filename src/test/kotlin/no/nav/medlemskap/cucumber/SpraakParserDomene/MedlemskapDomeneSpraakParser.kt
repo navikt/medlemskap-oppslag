@@ -8,7 +8,6 @@ import no.nav.medlemskap.domene.PeriodeStatus
 import java.time.LocalDate
 
 object MedlemskapDomeneSpraakParser : BasisDomeneParser() {
-
     fun mapDekning(dataTable: DataTable): String {
         return mapDataTable(dataTable, DekningMapper())[0]
     }
@@ -92,7 +91,7 @@ object MedlemskapDomeneSpraakParser : BasisDomeneParser() {
                 parseBoolean(MedlemskapDomenebegrep.ER_MEDLEM, rad),
                 DomenespråkParser.parseValgfriLovvalg(MedlemskapDomenebegrep.LOVVALG, rad),
                 parseValgfriString(MedlemskapDomenebegrep.LOVVALGSLAND, rad),
-                DomenespråkParser.parseValgfriPeriodeStatus(Domenebegrep.PERIODESTATUS, rad)
+                DomenespråkParser.parseValgfriPeriodeStatus(Domenebegrep.PERIODESTATUS, rad),
             )
         }
     }
@@ -110,7 +109,8 @@ enum class MedlemskapDomenebegrep(val nøkkel: String) : Domenenøkkel {
     PERIODESTATUS("Periodestatus"),
     PROSENT("Prosent"),
     RELATERT_VED_SIVILSTAND("Relatert ved sivilstand"),
-    TIL_OG_MED_DATO("Til og med dato");
+    TIL_OG_MED_DATO("Til og med dato"),
+    ;
 
     override fun nøkkel(): String {
         return nøkkel

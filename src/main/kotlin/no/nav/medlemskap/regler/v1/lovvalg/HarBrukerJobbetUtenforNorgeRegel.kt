@@ -14,9 +14,8 @@ class HarBrukerJobbetUtenforNorgeRegel(
     startDatoForYtelse: LocalDate,
     private val arbeidUtenforNorge: Boolean,
     private val brukerInput: Brukerinput,
-    regelId: RegelId = RegelId.REGEL_9
+    regelId: RegelId = RegelId.REGEL_9,
 ) : LovvalgRegel(regelId, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
         if (brukerInput.oppholdstilatelse?.svar != null ||
             brukerInput.utfortAarbeidUtenforNorge?.svar != null ||
@@ -32,13 +31,12 @@ class HarBrukerJobbetUtenforNorgeRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerJobbetUtenforNorgeRegel {
             return HarBrukerJobbetUtenforNorgeRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 arbeidUtenforNorge = datagrunnlag.brukerinput.arbeidUtenforNorge,
-                brukerInput = datagrunnlag.brukerinput
+                brukerInput = datagrunnlag.brukerinput,
             )
         }
     }

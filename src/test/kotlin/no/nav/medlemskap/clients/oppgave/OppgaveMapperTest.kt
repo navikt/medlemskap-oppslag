@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 class OppgaveMapperTest {
-
     @Test
     fun mapOppgaveResultatTilOppgave() {
-
         val oppgaverResponse = objectMapper.readValue<FinnOppgaverResponse>(oppgaveResponse)
         val mappedOppgaveResultat = mapOppgaveResultat(oppgaverResponse.oppgaver)
 

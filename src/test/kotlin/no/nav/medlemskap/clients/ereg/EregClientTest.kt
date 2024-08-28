@@ -19,7 +19,6 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class EregClientTest {
-
     companion object {
         val server: WireMockServer = WireMockServer(WireMockConfiguration.options().dynamicPort())
         val httpClient = cioHttpClient
@@ -55,8 +54,8 @@ class EregClientTest {
                     .withStatus(HttpStatusCode.OK.value)
                     .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
                     .withTransformerParameter("inkluderHierarki", true)
-                    .withBody(eregHentOrganisasjonResponse)
-            )
+                    .withBody(eregHentOrganisasjonResponse),
+            ),
         )
 
         val client = EregClient(server.baseUrl(), httpClient, config, "123")
@@ -69,14 +68,16 @@ class EregClientTest {
         assertEquals(19, response.organisasjonDetaljer?.ansatte?.get(0)?.antall)
     }
 
-    private val config = Configuration(
-        azureAd = Configuration.AzureAd(azureAppWellKnownUrl = "http://localhost")
-    )
+    private val config =
+        Configuration(
+            azureAd = Configuration.AzureAd(azureAppWellKnownUrl = "http://localhost"),
+        )
     private val orgnummer = "977074010"
 
-    private val queryMappingForHentOrganisasjon: MappingBuilder = WireMock.get(WireMock.urlPathEqualTo("/v1/organisasjon/$orgnummer"))
-        .withHeader("Nav-Call-Id", equalTo("12345"))
-        .withHeader("Nav-Consumer-Id", equalTo("test"))
+    private val queryMappingForHentOrganisasjon: MappingBuilder =
+        WireMock.get(WireMock.urlPathEqualTo("/v1/organisasjon/$orgnummer"))
+            .withHeader("Nav-Call-Id", equalTo("12345"))
+            .withHeader("Nav-Consumer-Id", equalTo("test"))
 
     private val eregHentOrganisasjonResponse =
         """

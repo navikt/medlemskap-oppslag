@@ -16,11 +16,9 @@ class GyldigOppholdstillatelseIKontrollperiodeRegel(
     ytelse: Ytelse,
     private val oppholdstillatelse: Oppholdstillatelse?,
     private val startDatoForYtelse: LocalDate,
-    regelId: RegelId = RegelId.REGEL_19_3
+    regelId: RegelId = RegelId.REGEL_19_3,
 ) : BasisRegel(regelId, ytelse) {
-
     override fun operasjon(): Resultat {
-
         if (oppholdstillatelse?.gjeldendeOppholdsstatus == null || oppholdstillatelse.arbeidsadgang == null) {
             return uavklart(regelId)
         }
@@ -34,12 +32,11 @@ class GyldigOppholdstillatelseIKontrollperiodeRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): GyldigOppholdstillatelseIKontrollperiodeRegel {
             return GyldigOppholdstillatelseIKontrollperiodeRegel(
                 ytelse = datagrunnlag.ytelse,
                 oppholdstillatelse = datagrunnlag.oppholdstillatelse,
-                startDatoForYtelse = datagrunnlag.startDatoForYtelse
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse,
             )
         }
     }

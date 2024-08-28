@@ -4,5 +4,5 @@ import no.nav.medlemskap.domene.Periode
 
 data class Ansatte(
     val antall: Int?,
-    val gyldighetsperiode: Periode?
+    val gyldighetsperiode: Periode?,
 )

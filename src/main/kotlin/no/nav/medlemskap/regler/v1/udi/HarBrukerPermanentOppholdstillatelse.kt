@@ -17,9 +17,8 @@ class HarBrukerPermanentOppholdstillatelse(
     private val statsborgerskap: List<Statsborgerskap>,
     private val oppholdstillatelse: Oppholdstillatelse?,
     startDatoForYtelse: LocalDate,
-    regelId: RegelId = RegelId.REGEL_31
+    regelId: RegelId = RegelId.REGEL_31,
 ) : LovvalgRegel(regelId, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
         val kontrollperiode = Kontrollperiode.kontrollPeriodeForOppholdstillatelse(startDatoForYtelse)
         if (oppholdstillatelse?.harPermanentOppholdstillatelse(kontrollperiode.periode) == true) {
@@ -30,13 +29,12 @@ class HarBrukerPermanentOppholdstillatelse(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerPermanentOppholdstillatelse {
             return HarBrukerPermanentOppholdstillatelse(
                 ytelse = datagrunnlag.ytelse,
                 oppholdstillatelse = datagrunnlag.oppholdstillatelse,
                 statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap,
-                startDatoForYtelse = datagrunnlag.startDatoForYtelse
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse,
             )
         }
     }

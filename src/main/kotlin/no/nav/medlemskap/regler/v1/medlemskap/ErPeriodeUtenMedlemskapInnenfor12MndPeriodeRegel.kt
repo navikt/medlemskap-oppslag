@@ -10,9 +10,8 @@ import java.time.LocalDate
 class ErPeriodeUtenMedlemskapInnenfor12MndPeriodeRegel(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
-    medlemskap: List<Medlemskap>
+    medlemskap: List<Medlemskap>,
 ) : MedlemskapRegel(RegelId.REGEL_1_3_1, ytelse, startDatoForYtelse, medlemskap) {
-
     override fun operasjon(): Resultat {
         return erMedlemskapPeriodeOver12MndPeriode(false)
     }
@@ -22,7 +21,7 @@ class ErPeriodeUtenMedlemskapInnenfor12MndPeriodeRegel(
             return ErPeriodeUtenMedlemskapInnenfor12MndPeriodeRegel(
                 ytelse = datagrunnlag.ytelse,
                 medlemskap = datagrunnlag.medlemskap,
-                startDatoForYtelse = datagrunnlag.startDatoForYtelse
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse,
             )
         }
     }

@@ -32,7 +32,7 @@ class OppholdstillatelseBuilder {
             gjeldendeOppholdsstatus,
             arbeidsadgang,
             uavklartFlyktningstatus,
-            harFlyktningstatus
+            harFlyktningstatus,
         )
     }
 }

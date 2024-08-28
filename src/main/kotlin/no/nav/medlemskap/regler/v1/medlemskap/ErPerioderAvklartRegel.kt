@@ -13,9 +13,8 @@ import java.time.LocalDate
 class ErPerioderAvklartRegel(
     ytelse: Ytelse,
     val medlemskap: List<Medlemskap>,
-    startDatoForYtelse: LocalDate
+    startDatoForYtelse: LocalDate,
 ) : MedlemskapRegel(RegelId.REGEL_1_1, ytelse, startDatoForYtelse, medlemskap) {
-
     override fun operasjon(): Resultat {
         return when {
             medlemskap finnesUavklartePerioder kontrollPeriodeForMedl -> nei(regelId)
@@ -24,12 +23,11 @@ class ErPerioderAvklartRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErPerioderAvklartRegel {
             return ErPerioderAvklartRegel(
                 ytelse = datagrunnlag.ytelse,
                 medlemskap = datagrunnlag.medlemskap,
-                startDatoForYtelse = datagrunnlag.startDatoForYtelse
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse,
             )
         }
     }

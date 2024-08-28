@@ -31,7 +31,7 @@ data class Datagrunnlag(
     val dataOmBarn: List<DataOmBarn>?,
     val dataOmEktefelle: DataOmEktefelle?,
     val overstyrteRegler: Map<RegelId, Svar> = mapOf(),
-    val oppholdstillatelse: Oppholdstillatelse?
+    val oppholdstillatelse: Oppholdstillatelse?,
 ) {
     val startDatoForYtelse = startDatoForYtelse(periode, førsteDagForYtelse)
     private val kontrollPeriodeForPersonhistorikk =

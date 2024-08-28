@@ -98,8 +98,9 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     JOURNAL_STATUS("Journalstatus"),
     FAGSAKID("fagsakId"),
     TEMA("Tema"),
-    TITTEL("Tittel")
+    TITTEL("Tittel"),
     ;
+
     override fun nøkkel(): String {
         return nøkkel
     }

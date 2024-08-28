@@ -13,9 +13,8 @@ import java.time.LocalDate
 class PeriodeMedMedlemskapRegel(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
-    private val medlemskap: List<Medlemskap>
+    private val medlemskap: List<Medlemskap>,
 ) : MedlemskapRegel(RegelId.REGEL_1_3, ytelse, startDatoForYtelse, medlemskap) {
-
     override fun operasjon(): Resultat {
         return when {
             medlemskap harPeriodeMedMedlemskap kontrollPeriodeForMedl -> ja(regelId)
@@ -24,12 +23,11 @@ class PeriodeMedMedlemskapRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): PeriodeMedMedlemskapRegel {
             return PeriodeMedMedlemskapRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
-                medlemskap = datagrunnlag.medlemskap
+                medlemskap = datagrunnlag.medlemskap,
             )
         }
     }

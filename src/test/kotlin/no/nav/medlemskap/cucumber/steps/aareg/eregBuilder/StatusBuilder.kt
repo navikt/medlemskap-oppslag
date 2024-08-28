@@ -9,10 +9,11 @@ class StatusBuilder {
     var kode = String()
     var bruksperiode = bruksperiodeBuilder.build()
     var gyldighetsperiode = gyldighetsperiodeBuilder.build()
+
     fun build(): Status =
         Status(
             kode = kode,
             bruksperiode = bruksperiode,
-            gyldighetsperiode = gyldighetsperiode
+            gyldighetsperiode = gyldighetsperiode,
         )
 }

@@ -133,6 +133,7 @@ class AaregDomenespraakParser : BasisDomeneParser() {
             return parseDouble(Domenebegrep.BEREGNET_ANTALL_TIMER, rad)
         }
     }
+
     class StillingsprosentMapper : RadMapper<Double> {
         override fun mapRad(rad: Map<String, String>): Double {
             return parseDouble(Domenebegrep.STILLINGSPROSENT, rad)
@@ -161,7 +162,7 @@ class AaregDomenespraakParser : BasisDomeneParser() {
         override fun mapRad(rad: Map<String, String>): AaRegGyldighetsperiode {
             return AaRegGyldighetsperiode(
                 parseValgfriDato(Domenebegrep.GYLDIG_FRA_OG_MED_DATO, rad)!!,
-                parseValgfriDato(Domenebegrep.GYLDIG_TIL_OG_MED_DATO, rad)
+                parseValgfriDato(Domenebegrep.GYLDIG_TIL_OG_MED_DATO, rad),
             )
         }
     }
@@ -170,7 +171,7 @@ class AaregDomenespraakParser : BasisDomeneParser() {
         override fun mapRad(rad: Map<String, String>): AaRegBruksperiode {
             return AaRegBruksperiode(
                 Datohjelper.parseIsoDatoTid(parseString(Domenebegrep.GYLDIG_FRA_OG_MED_DATO, rad))!!,
-                Datohjelper.parseIsoDatoTid(parseString(Domenebegrep.GYLDIG_TIL_OG_MED_DATO, rad))
+                Datohjelper.parseIsoDatoTid(parseString(Domenebegrep.GYLDIG_TIL_OG_MED_DATO, rad)),
             )
         }
     }
@@ -180,7 +181,7 @@ class AaregDomenespraakParser : BasisDomeneParser() {
             return Status(
                 null,
                 null,
-                parseString(Domenebegrep.STATUS, rad)
+                parseString(Domenebegrep.STATUS, rad),
             )
         }
     }
@@ -191,12 +192,12 @@ class AaregDomenespraakParser : BasisDomeneParser() {
                 parseInt(Domenebegrep.ANTALL_ANSATTE, rad),
                 no.nav.medlemskap.clients.ereg.Bruksperiode(
                     parseDato(Domenebegrep.BRUKSPERIODE_GYLDIG_FRA, rad),
-                    parseDato(Domenebegrep.BRUKSPERIODE_GYLDIG_TIL, rad)
+                    parseDato(Domenebegrep.BRUKSPERIODE_GYLDIG_TIL, rad),
                 ),
                 no.nav.medlemskap.clients.ereg.Gyldighetsperiode(
                     parseDato(no.nav.medlemskap.cucumber.Domenebegrep.GYLDIGHETSPERIODE_FRA_OG_MED, rad),
-                    parseDato(no.nav.medlemskap.cucumber.Domenebegrep.GYLDIGHETSPERIODE_TIL_OG_MED, rad)
-                )
+                    parseDato(no.nav.medlemskap.cucumber.Domenebegrep.GYLDIGHETSPERIODE_TIL_OG_MED, rad),
+                ),
             )
         }
     }
@@ -229,7 +230,7 @@ class AaregDomenespraakParser : BasisDomeneParser() {
         override fun mapRad(rad: Map<String, String>): AaRegPeriode {
             return AaRegPeriode(
                 parseValgfriDato(Domenebegrep.GYLDIG_FRA_OG_MED_DATO, rad),
-                parseValgfriDato(Domenebegrep.GYLDIG_TIL_OG_MED_DATO, rad)
+                parseValgfriDato(Domenebegrep.GYLDIG_TIL_OG_MED_DATO, rad),
             )
         }
     }
@@ -245,6 +246,7 @@ class AaregDomenespraakParser : BasisDomeneParser() {
             return AaRegOpplysningspliktigArbeidsgiverType.valueOf(parseString(Domenebegrep.ARBEIDSGIVERTYPE, rad))
         }
     }
+
     enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
         ANTALL_ANSATTE("Antall"),
         ARBEIDSGIVERTYPE("Arbeidsgivertype"),
@@ -274,7 +276,8 @@ class AaregDomenespraakParser : BasisDomeneParser() {
         GYLDIG_FRA_OG_MED("Gyldig fra og med"),
         GYLDIG_TIL_OG_MED("Gyldig til og med"),
         FOLKE_REG_GYLDIGHETSTIDSPUNKT("Folkeregistermetadata gyldighetstidspunkt"),
-        FOLKE_REG_OPPHOERSTIDSPUNKT("Folkeregistermetadata opphoerstidspunkt");
+        FOLKE_REG_OPPHOERSTIDSPUNKT("Folkeregistermetadata opphoerstidspunkt"),
+        ;
 
         override fun nøkkel(): String {
             return nøkkel

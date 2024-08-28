@@ -7,5 +7,5 @@ data class PermisjonPermittering(
     val permisjonPermitteringId: String,
     val prosent: Double?,
     val type: PermisjonPermitteringType,
-    val varslingskode: String?
+    val varslingskode: String?,
 )

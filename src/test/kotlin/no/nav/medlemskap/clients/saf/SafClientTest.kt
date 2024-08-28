@@ -17,7 +17,6 @@ import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
 
 class SafClientTest {
-
     companion object {
         val server: WireMockServer = WireMockServer(WireMockConfiguration.options().dynamicPort())
 
@@ -52,8 +51,8 @@ class SafClientTest {
                     aResponse()
                         .withStatus(HttpStatusCode.OK.value)
                         .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-                        .withBody(safResponse)
-                )
+                        .withBody(safResponse),
+                ),
         )
 
         val safClient = SafClient(server.baseUrl(), stsClient, username, cioHttpClient, "123")
@@ -69,13 +68,15 @@ class SafClientTest {
         assertEquals("MASKERT_FELT", safResponse.dokumentoversiktBruker.journalposter.first()?.dokumenter?.first()?.tittel)
     }
 
-    val safRequestMapping: MappingBuilder = post(urlPathEqualTo("/"))
-        .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
-        .withHeader("Accept", containing("application/json"))
-        .withHeader("Nav-Consumer-Id", equalTo("whatever"))
+    val safRequestMapping: MappingBuilder =
+        post(urlPathEqualTo("/"))
+            .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
+            .withHeader("Accept", containing("application/json"))
+            .withHeader("Nav-Consumer-Id", equalTo("whatever"))
 
     val safResponse =
-        """{
+        """
+        {
             "data":
             {
                 "dokumentoversiktBruker":{

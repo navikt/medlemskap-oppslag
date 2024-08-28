@@ -17,6 +17,6 @@ class AaRegAnsettelsesPeriodeBuilder {
             bruksperiode = bruksperiode,
             periode = periode,
             varslingskode = varslingskode,
-            sporingsinformasjon = sporingsinformasjon
+            sporingsinformasjon = sporingsinformasjon,
         )
 }

@@ -10,7 +10,12 @@ import no.nav.medlemskap.common.clientTimer
 
 private val logger = KotlinLogging.logger { }
 
-suspend fun <T> runWithRetryAndMetrics(service: String, operation: String, retry: Retry?, block: suspend () -> T): T {
+suspend fun <T> runWithRetryAndMetrics(
+    service: String,
+    operation: String,
+    retry: Retry?,
+    block: suspend () -> T,
+): T {
     try {
         retry?.let {
             return it.executeSuspendFunction {
@@ -27,7 +32,11 @@ suspend fun <T> runWithRetryAndMetrics(service: String, operation: String, retry
     }
 }
 
-suspend fun <T> runWithMetrics(service: String, operation: String, block: suspend () -> T): T {
+suspend fun <T> runWithMetrics(
+    service: String,
+    operation: String,
+    block: suspend () -> T,
+): T {
     var timer: Timer.Sample? = null
     try {
         timer = Timer.start()

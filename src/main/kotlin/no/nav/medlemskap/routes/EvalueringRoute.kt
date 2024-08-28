@@ -41,9 +41,8 @@ fun Routing.evalueringRoute(
     services: Services,
     configuration: Configuration,
     requestContextService: RequestContextService,
-    createDatagrunnlag: suspend (request: Request, callId: String, services: Services, clientId: String?) -> Datagrunnlag
+    createDatagrunnlag: suspend (request: Request, callId: String, services: Services, clientId: String?) -> Datagrunnlag,
 ) {
-
     authenticate("azureAuth") {
         post("/") {
             apiCounter().increment()
@@ -55,28 +54,30 @@ fun Routing.evalueringRoute(
             val callId = call.callId ?: UUID.randomUUID().toString()
             val request = validerRequest(call.receive(), azp)
 
-            val datagrunnlag = withContext(
-                requestContextService.getCoroutineContext(
-                    context = coroutineContext,
-                    ytelse = finnYtelse(request.ytelse, azp)
-                )
-            ) {
-                createDatagrunnlag.invoke(
-                    request,
-                    callId,
-                    services,
-                    azp
-                )
-            }
+            val datagrunnlag =
+                withContext(
+                    requestContextService.getCoroutineContext(
+                        context = coroutineContext,
+                        ytelse = finnYtelse(request.ytelse, azp),
+                    ),
+                ) {
+                    createDatagrunnlag.invoke(
+                        request,
+                        callId,
+                        services,
+                        azp,
+                    )
+                }
             try {
                 val resultat = evaluerData(datagrunnlag)
-                val response = lagResponse(
-                    callid = callId,
-                    versjonTjeneste = configuration.commitSha,
-                    endpoint = endpoint,
-                    datagrunnlag = datagrunnlag,
-                    resultat = resultat
-                )
+                val response =
+                    lagResponse(
+                        callid = callId,
+                        versjonTjeneste = configuration.commitSha,
+                        endpoint = endpoint,
+                        datagrunnlag = datagrunnlag,
+                        resultat = resultat,
+                    )
                 publishMedlemskapVurdertEvent(callId, response)
                 loggResponse(request.fnr, response)
 
@@ -94,30 +95,31 @@ fun Routing.evalueringRoute(
             val callId = call.callId ?: UUID.randomUUID().toString()
             val request = validerRequest(call.receive(), azp)
 
-            val datagrunnlag = withContext(
-                requestContextService.getCoroutineContext(
-                    context = coroutineContext,
-                    ytelse = finnYtelse(request.ytelse, azp)
-                )
-            ) {
-
-                createDatagrunnlag.invoke(
-                    request,
-                    callId,
-                    services,
-                    azp
-                )
-            }
+            val datagrunnlag =
+                withContext(
+                    requestContextService.getCoroutineContext(
+                        context = coroutineContext,
+                        ytelse = finnYtelse(request.ytelse, azp),
+                    ),
+                ) {
+                    createDatagrunnlag.invoke(
+                        request,
+                        callId,
+                        services,
+                        azp,
+                    )
+                }
             try {
                 val resultat = evaluerData(datagrunnlag)
 
-                val response = lagResponse(
-                    callid = callId,
-                    versjonTjeneste = configuration.commitSha,
-                    endpoint = endpoint,
-                    datagrunnlag = datagrunnlag,
-                    resultat = resultat
-                )
+                val response =
+                    lagResponse(
+                        callid = callId,
+                        versjonTjeneste = configuration.commitSha,
+                        endpoint = endpoint,
+                        datagrunnlag = datagrunnlag,
+                        resultat = resultat,
+                    )
 
                 publishMedlemskapVurdertEvent(callId, response)
                 loggResponse(request.fnr, response, endpoint)
@@ -135,30 +137,31 @@ fun Routing.evalueringRoute(
             val callId = call.callId ?: UUID.randomUUID().toString()
             val request = validerRequest(call.receive(), azp)
 
-            val datagrunnlag = withContext(
-                requestContextService.getCoroutineContext(
-                    context = coroutineContext,
-                    ytelse = finnYtelse(request.ytelse, azp)
-                )
-            ) {
-
-                createDatagrunnlag.invoke(
-                    request,
-                    callId,
-                    services,
-                    azp
-                )
-            }
+            val datagrunnlag =
+                withContext(
+                    requestContextService.getCoroutineContext(
+                        context = coroutineContext,
+                        ytelse = finnYtelse(request.ytelse, azp),
+                    ),
+                ) {
+                    createDatagrunnlag.invoke(
+                        request,
+                        callId,
+                        services,
+                        azp,
+                    )
+                }
             try {
                 val resultat = evaluerData(datagrunnlag)
 
-                val response = lagResponse(
-                    callid = callId,
-                    versjonTjeneste = configuration.commitSha,
-                    endpoint = endpoint,
-                    datagrunnlag = datagrunnlag,
-                    resultat = resultat
-                )
+                val response =
+                    lagResponse(
+                        callid = callId,
+                        versjonTjeneste = configuration.commitSha,
+                        endpoint = endpoint,
+                        datagrunnlag = datagrunnlag,
+                        resultat = resultat,
+                    )
                 loggResponse(request.fnr, response, endpoint)
                 call.respond(response)
             } catch (t: Throwable) {
@@ -174,30 +177,31 @@ fun Routing.evalueringRoute(
             val callId = call.callId ?: UUID.randomUUID().toString()
             val request = validerRequest(call.receive(), azp)
 
-            val datagrunnlag = withContext(
-                requestContextService.getCoroutineContext(
-                    context = coroutineContext,
-                    ytelse = finnYtelse(request.ytelse, azp)
-                )
-            ) {
-
-                createDatagrunnlag.invoke(
-                    request,
-                    callId,
-                    services,
-                    azp
-                )
-            }
+            val datagrunnlag =
+                withContext(
+                    requestContextService.getCoroutineContext(
+                        context = coroutineContext,
+                        ytelse = finnYtelse(request.ytelse, azp),
+                    ),
+                ) {
+                    createDatagrunnlag.invoke(
+                        request,
+                        callId,
+                        services,
+                        azp,
+                    )
+                }
             try {
                 val resultat = evaluerData(datagrunnlag)
 
-                val response = lagResponse(
-                    callid = callId,
-                    versjonTjeneste = configuration.commitSha,
-                    endpoint = endpoint,
-                    datagrunnlag = datagrunnlag,
-                    resultat = resultat
-                )
+                val response =
+                    lagResponse(
+                        callid = callId,
+                        versjonTjeneste = configuration.commitSha,
+                        endpoint = endpoint,
+                        datagrunnlag = datagrunnlag,
+                        resultat = resultat,
+                    )
                 loggResponse(request.fnr, response, endpoint)
                 call.respond(response)
             } catch (t: Throwable) {
@@ -212,30 +216,31 @@ fun Routing.evalueringRoute(
             val callId = call.callId ?: UUID.randomUUID().toString()
             val request = validerRequest(call.receive(), azp)
 
-            val datagrunnlag = withContext(
-                requestContextService.getCoroutineContext(
-                    context = coroutineContext,
-                    ytelse = finnYtelse(request.ytelse, azp)
-                )
-            ) {
-
-                createDatagrunnlag.invoke(
-                    request,
-                    callId,
-                    services,
-                    azp
-                )
-            }
+            val datagrunnlag =
+                withContext(
+                    requestContextService.getCoroutineContext(
+                        context = coroutineContext,
+                        ytelse = finnYtelse(request.ytelse, azp),
+                    ),
+                ) {
+                    createDatagrunnlag.invoke(
+                        request,
+                        callId,
+                        services,
+                        azp,
+                    )
+                }
             try {
                 val resultat = evaluerData(datagrunnlag)
 
-                val response = lagResponse(
-                    callid = callId,
-                    versjonTjeneste = configuration.commitSha,
-                    endpoint = endpoint,
-                    datagrunnlag = datagrunnlag,
-                    resultat = resultat
-                )
+                val response =
+                    lagResponse(
+                        callid = callId,
+                        versjonTjeneste = configuration.commitSha,
+                        endpoint = endpoint,
+                        datagrunnlag = datagrunnlag,
+                        resultat = resultat,
+                    )
                 loggResponse(request.fnr, response, endpoint)
                 call.respond(response)
             } catch (t: Throwable) {
@@ -246,13 +251,17 @@ fun Routing.evalueringRoute(
     }
 }
 
-private fun publishMedlemskapVurdertEvent(callId: String, response: Response) {
+private fun publishMedlemskapVurdertEvent(
+    callId: String,
+    response: Response,
+) {
     val producer = Producer().createProducer((Configuration().kafkaConfig))
     val futureresult = producer.send(createRecord(TOPIC, callId, objectMapper.writeValueAsString(response)))
     futureresult.get()
     producer.close()
     logger.info(
-        "kafka request with id $callId processed ok and response published to $TOPIC ", kv("callId", callId)
+        "kafka request with id $callId processed ok and response published to $TOPIC ",
+        kv("callId", callId),
     )
 }
 
@@ -260,7 +269,7 @@ fun Routing.evalueringTestRoute(
     services: Services,
     configuration: Configuration,
     requestContextService: RequestContextService,
-    createDatagrunnlag: suspend (request: Request, callId: String, services: Services, clientId: String?) -> Datagrunnlag
+    createDatagrunnlag: suspend (request: Request, callId: String, services: Services, clientId: String?) -> Datagrunnlag,
 ) {
     logger.info("autentiserer IKKE kallet")
     post("/") {
@@ -270,28 +279,30 @@ fun Routing.evalueringTestRoute(
 
         val endpoint = "/"
 
-        val datagrunnlag = withContext(
-            requestContextService.getCoroutineContext(
-                context = coroutineContext,
-                ytelse = finnYtelse(request.ytelse, Ytelse.toMedlemskapClientId())
-            )
-        ) {
-            createDatagrunnlag.invoke(
-                request,
-                callId,
-                services,
-                Ytelse.toMedlemskapClientId()
-            )
-        }
+        val datagrunnlag =
+            withContext(
+                requestContextService.getCoroutineContext(
+                    context = coroutineContext,
+                    ytelse = finnYtelse(request.ytelse, Ytelse.toMedlemskapClientId()),
+                ),
+            ) {
+                createDatagrunnlag.invoke(
+                    request,
+                    callId,
+                    services,
+                    Ytelse.toMedlemskapClientId(),
+                )
+            }
         val resultat = evaluerData(datagrunnlag)
 
-        val response = lagResponse(
-            callid = callId,
-            versjonTjeneste = configuration.commitSha,
-            endpoint = endpoint,
-            datagrunnlag = datagrunnlag,
-            resultat = resultat
-        )
+        val response =
+            lagResponse(
+                callid = callId,
+                versjonTjeneste = configuration.commitSha,
+                endpoint = endpoint,
+                datagrunnlag = datagrunnlag,
+                resultat = resultat,
+            )
 
         loggResponse(request.fnr, response)
 
@@ -299,7 +310,13 @@ fun Routing.evalueringTestRoute(
     }
 }
 
-private fun lagResponse(callid: String, datagrunnlag: Datagrunnlag, resultat: Resultat, versjonTjeneste: String, endpoint: String): Response {
+private fun lagResponse(
+    callid: String,
+    datagrunnlag: Datagrunnlag,
+    resultat: Resultat,
+    versjonTjeneste: String,
+    endpoint: String,
+): Response {
     return Response(
         vurderingsID = callid,
         tidspunkt = LocalDateTime.now(),
@@ -307,11 +324,15 @@ private fun lagResponse(callid: String, datagrunnlag: Datagrunnlag, resultat: Re
         versjonTjeneste = versjonTjeneste,
         kanal = endpoint,
         datagrunnlag = datagrunnlag,
-        resultat = resultat
+        resultat = resultat,
     )
 }
 
-private fun loggResponse(fnr: String, response: Response, endpoint: String = "/") {
+private fun loggResponse(
+    fnr: String,
+    response: Response,
+    endpoint: String = "/",
+) {
     val resultat = response.resultat
     val årsaker = resultat.årsaker
     val årsakerSomRegelIdStr = årsaker.map { it.regelId.toString() }
@@ -355,16 +376,16 @@ private fun loggResponse(fnr: String, response: Response, endpoint: String = "/"
             kv(
                 "Antall_ansatte_hos_arbeidsgiver",
                 response.datagrunnlag.arbeidsforhold.antallAnsatteHosArbeidsgivere(
-                    Kontrollperiode.kontrollPeriodeForArbeidsforhold(response.datagrunnlag.startDatoForYtelse)
-                )
+                    Kontrollperiode.kontrollPeriodeForArbeidsforhold(response.datagrunnlag.startDatoForYtelse),
+                ),
             ),
             kv(
                 "antall_ansatte_for_juridiske_enheter",
                 response.datagrunnlag.arbeidsforhold.antallAnsatteHosArbeidsgiversJuridiskeEnheter(
-                    Kontrollperiode.kontrollPeriodeForArbeidsforhold(response.datagrunnlag.startDatoForYtelse)
-                )
+                    Kontrollperiode.kontrollPeriodeForArbeidsforhold(response.datagrunnlag.startDatoForYtelse),
+                ),
             ),
-            kv("endpoint", endpoint)
+            kv("endpoint", endpoint),
             // kv("regleroverstyrt", response.resultat.erReglerOverstyrt())
         )
     }.onFailure {
@@ -376,7 +397,12 @@ private fun loggResponse(fnr: String, response: Response, endpoint: String = "/"
     }
 }
 
-private fun loggError(fnr: String, datagrunnlag: Datagrunnlag, endpoint: String = "/", throwable: Throwable) {
+private fun loggError(
+    fnr: String,
+    datagrunnlag: Datagrunnlag,
+    endpoint: String = "/",
+    throwable: Throwable,
+) {
     secureLogger.error(
         "teknisk feil i regelkjøring for bruker {}, ytelse {}", fnr, datagrunnlag.ytelse,
         kv("fnr", fnr),
@@ -390,11 +416,14 @@ private fun loggError(fnr: String, datagrunnlag: Datagrunnlag, endpoint: String 
         kv("statsborgerskapAnt", datagrunnlag.gyldigeStatsborgerskap().size),
         kv("datagrunnlag", objectMapper.writeValueAsString(datagrunnlag)),
         kv("endpoint", endpoint),
-        kv("stacktrace", throwable.stackTrace)
+        kv("stacktrace", throwable.stackTrace),
     )
 }
 
-private fun validerRequest(request: Request, azp: String): Request {
+private fun validerRequest(
+    request: Request,
+    azp: String,
+): Request {
     val ytelse = finnYtelse(request.ytelse, azp)
     if (ytelse != Ytelse.SYKEPENGER && request.førsteDagForYtelse == null) {
         throw UgyldigRequestException("Første dag for ytelse kan ikke være null (inputperiode skal ikke lenger brukes)", ytelse)
@@ -411,13 +440,18 @@ private fun validerRequest(request: Request, azp: String): Request {
     return request
 }
 
-fun finnYtelse(ytelseFraRequest: Ytelse?, clientId: String?) =
-    (ytelseFraRequest ?: Ytelse.fromClientId(clientId))
-        ?: throw KonsumentIkkeFunnet("Fant ikke clientId i mapping til ytelse. Ta kontakt med medlemskap-teamet for tilgang til tjenesten.")
+fun finnYtelse(
+    ytelseFraRequest: Ytelse?,
+    clientId: String?,
+) = (ytelseFraRequest ?: Ytelse.fromClientId(clientId))
+    ?: throw KonsumentIkkeFunnet("Fant ikke clientId i mapping til ytelse. Ta kontakt med medlemskap-teamet for tilgang til tjenesten.")
 
-fun evaluerData(datagrunnlag: Datagrunnlag): Resultat =
-    Hovedregler(datagrunnlag).kjørHovedregler()
+fun evaluerData(datagrunnlag: Datagrunnlag): Resultat = Hovedregler(datagrunnlag).kjørHovedregler()
 
-private fun createRecord(topic: String, key: String = UUID.randomUUID().toString(), value: String): ProducerRecord<String, String> {
+private fun createRecord(
+    topic: String,
+    key: String = UUID.randomUUID().toString(),
+    value: String,
+): ProducerRecord<String, String> {
     return ProducerRecord(topic, key, value)
 }

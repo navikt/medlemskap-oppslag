@@ -11,9 +11,8 @@ data class Response(
     val versjonRegler: String,
     val kanal: String,
     val datagrunnlag: Datagrunnlag,
-    val resultat: Resultat
+    val resultat: Resultat,
 ) {
-
     companion object {
         fun fraJson(responseJson: String): Response {
             return objectMapper.readValue(responseJson, Response::class.java)

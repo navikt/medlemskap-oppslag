@@ -9,9 +9,8 @@ data class Token(
     @JsonProperty(value = "token_type", required = true)
     val type: String,
     @JsonProperty(value = "expires_in", required = true)
-    val expiresIn: Int
+    val expiresIn: Int,
 ) {
-
     private val expirationTime: LocalDateTime = LocalDateTime.now().plusSeconds(expiresIn - 20L)
 
     fun hasExpired(): Boolean = expirationTime.isBefore(LocalDateTime.now())

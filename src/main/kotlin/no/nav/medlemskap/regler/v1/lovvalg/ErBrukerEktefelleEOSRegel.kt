@@ -14,9 +14,8 @@ class ErBrukerEktefelleEOSRegel(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val dataOmEktefelle: DataOmEktefelle?,
-    regelId: RegelId = RegelId.REGEL_29
+    regelId: RegelId = RegelId.REGEL_29,
 ) : LovvalgRegel(regelId, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
         val ektefelle = dataOmEktefelle?.personhistorikkEktefelle
 
@@ -30,12 +29,11 @@ class ErBrukerEktefelleEOSRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErBrukerEktefelleEOSRegel {
             return ErBrukerEktefelleEOSRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
-                dataOmEktefelle = datagrunnlag.dataOmEktefelle
+                dataOmEktefelle = datagrunnlag.dataOmEktefelle,
             )
         }
     }

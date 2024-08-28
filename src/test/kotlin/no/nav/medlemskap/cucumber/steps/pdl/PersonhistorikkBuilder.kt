@@ -26,7 +26,7 @@ class PersonhistorikkBuilder {
             doedsfall = doedsfall,
             innflyttingTilNorge = innflytting,
             utflyttingFraNorge = utflytting,
-            navn = navn
+            navn = navn,
         )
     }
 }

@@ -9,22 +9,20 @@ import no.nav.medlemskap.common.objectMapper
 import org.junit.jupiter.api.Test
 
 internal class RequestTest {
-
     @Test
     fun `request skal kunne mappes selv om ytelse ikke er angitt`() {
-
         val json =
             """
-        {
-            "fnr": "123456789",
-            "periode": {
-                "fom": "2019-01-01",
-                "tom": "2019-12-31"
-            },
-            "brukerinput": {
-                "arbeidUtenforNorge": false
-            }
-        }    
+            {
+                "fnr": "123456789",
+                "periode": {
+                    "fom": "2019-01-01",
+                    "tom": "2019-12-31"
+                },
+                "brukerinput": {
+                    "arbeidUtenforNorge": false
+                }
+            }    
             """.trimIndent()
 
         val objekt = objectMapper.readValue<Request>(json)
@@ -35,20 +33,19 @@ internal class RequestTest {
 
     @Test
     fun `request skal kunne mappes når ytelse er angitt`() {
-
         val json =
             """
-        {
-            "fnr": "123456789",
-            "periode": {
-                "fom": "2019-01-01",
-                "tom": "2019-12-31"
-            },
-            "brukerinput": {
-                "arbeidUtenforNorge": false
-            },
-            "ytelse": "SYKEPENGER"
-        }    
+            {
+                "fnr": "123456789",
+                "periode": {
+                    "fom": "2019-01-01",
+                    "tom": "2019-12-31"
+                },
+                "brukerinput": {
+                    "arbeidUtenforNorge": false
+                },
+                "ytelse": "SYKEPENGER"
+            }    
             """.trimIndent()
 
         val objekt = objectMapper.readValue<Request>(json)
@@ -59,20 +56,19 @@ internal class RequestTest {
 
     @Test
     fun `mapping skal feile hvis ytelse er angitt feil`() {
-
         val json =
             """
-        {
-            "fnr": "123456789",
-            "periode": {
-                "fom": "2019-01-01",
-                "tom": "2019-12-31"
-            },
-            "brukerinput": {
-                "arbeidUtenforNorge": false
-            },
-            "ytelse": "IKKE-SYKEPENGER"
-        }    
+            {
+                "fnr": "123456789",
+                "periode": {
+                    "fom": "2019-01-01",
+                    "tom": "2019-12-31"
+                },
+                "brukerinput": {
+                    "arbeidUtenforNorge": false
+                },
+                "ytelse": "IKKE-SYKEPENGER"
+            }    
             """.trimIndent()
 
         assertThat {

@@ -14,6 +14,6 @@ class NavSpesifikkInformasjonBuilder {
         NAVSpesifikkInformasjon(
             bruksperiode = bruksperiode,
             erIA = erIA,
-            gyldighetsperiode = gyldighetsperiode
+            gyldighetsperiode = gyldighetsperiode,
         )
 }

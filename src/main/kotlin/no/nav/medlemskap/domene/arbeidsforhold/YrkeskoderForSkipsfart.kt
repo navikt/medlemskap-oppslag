@@ -42,5 +42,5 @@ enum class YrkeskoderForSkipsfart(val yrkesKode: String) {
     LETTMATROS("8341106"),
     MATROS("8341107"),
     MATROSLÆRLING("8341108"),
-    PUMPEMANN("8341109")
+    PUMPEMANN("8341109"),
 }

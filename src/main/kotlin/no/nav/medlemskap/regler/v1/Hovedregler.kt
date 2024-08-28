@@ -21,7 +21,6 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
     private val reglerForTredjelandsborgerFamlie = ReglerForTredjelandsborgerFamilie.fraDatagrunnlag(datagrunnlag)
 
     fun kjørHovedregler(): Resultat {
-
         val requestValideringResultat = reglerForRequestValidering.kjørRegel()
         if (requestValideringResultat.svar != JA) {
             return requestValideringResultat
@@ -55,17 +54,18 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
     private fun kjørReglerForStatsborgerskap(
         resultatStatsborgerskap: Resultat,
         resultatEOSFamilie: Resultat?,
-        reglerSomSkalOverstyres: Map<RegelId, Svar>
+        reglerSomSkalOverstyres: Map<RegelId, Svar>,
     ): List<Resultat> {
         val statsborgerskapskategori = velgStatsborgerskapKategori(resultatStatsborgerskap, resultatEOSFamilie)
 
         return when (statsborgerskapskategori) {
             Statsborgerskapskategori.TREDJELANDSBORGER -> kjørReglerForTredjelandsborgere()
             Statsborgerskapskategori.EØS_BORGER -> kjørReglerForEøsBorgere(reglerSomSkalOverstyres, resultatEOSFamilie)
-            Statsborgerskapskategori.TREDJELANDSBORGER_MED_EOS_FAMILIE -> kjørReglerForEøsBorgere(
-                reglerSomSkalOverstyres,
-                resultatEOSFamilie
-            )
+            Statsborgerskapskategori.TREDJELANDSBORGER_MED_EOS_FAMILIE ->
+                kjørReglerForEøsBorgere(
+                    reglerSomSkalOverstyres,
+                    resultatEOSFamilie,
+                )
 
             Statsborgerskapskategori.NORSK_BORGER -> kjørReglerForNorskeBorgere(reglerSomSkalOverstyres)
         }
@@ -73,7 +73,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
 
     private fun velgStatsborgerskapKategori(
         resultatStatsborgerskap: Resultat,
-        resultatEOSFamilie: Resultat?
+        resultatEOSFamilie: Resultat?,
     ): Statsborgerskapskategori {
         return when (resultatEOSFamilie?.svar) {
             JA -> resultatEOSFamilie.bestemStatsborgerskapskategori()
@@ -102,25 +102,26 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
             ReglerForMedl.fraDatagrunnlag(datagrunnlag),
             ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler),
             ReglerForBosatt.fraDatagrunnlag(datagrunnlag),
-            ReglerForNorskeStatsborgere.fraDatagrunnlag(datagrunnlag, overstyrteRegler)
+            ReglerForNorskeStatsborgere.fraDatagrunnlag(datagrunnlag, overstyrteRegler),
         ).map { it.kjørHovedflyt() }
     }
 
     private fun kjørReglerForEøsBorgere(
         overstyrteRegler: Map<RegelId, Svar>,
-        resultatEOSFamilie: Resultat?
+        resultatEOSFamilie: Resultat?,
     ): List<Resultat> {
         val resultater = mutableListOf<Resultat>()
 
         if (resultatEOSFamilie?.svar == JA) {
             resultater.add(ReglerForOppholdstillatelse.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         }
-        val reglerForEØSBorgerResultater = listOf(
-            ReglerForMedl.fraDatagrunnlag(datagrunnlag).kjørHovedflyt(),
-            ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler).kjørHovedflyt(),
-            ReglerForBosatt.fraDatagrunnlag(datagrunnlag).kjørHovedflyt(),
-            ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt()
-        )
+        val reglerForEØSBorgerResultater =
+            listOf(
+                ReglerForMedl.fraDatagrunnlag(datagrunnlag).kjørHovedflyt(),
+                ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler).kjørHovedflyt(),
+                ReglerForBosatt.fraDatagrunnlag(datagrunnlag).kjørHovedflyt(),
+                ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt(),
+            )
 
         resultater.addAll(reglerForEØSBorgerResultater)
 
@@ -128,17 +129,20 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
     }
 
     private fun kjørFellesRegler(): List<Resultat> {
-        val fellesRegler = listOf(
-            ReglerForDoedsfall.fraDatagrunnlag(datagrunnlag),
-            ReglerForFellesArbeidsforhold.fraDatagrunnlag(datagrunnlag)
-        )
+        val fellesRegler =
+            listOf(
+                ReglerForDoedsfall.fraDatagrunnlag(datagrunnlag),
+                ReglerForFellesArbeidsforhold.fraDatagrunnlag(datagrunnlag),
+            )
 
         return fellesRegler.map(Regler::kjørHovedflyt)
     }
 
     companion object {
-        private fun utledResultat(ytelse: Ytelse, resultater: List<Resultat>): Resultat {
-
+        private fun utledResultat(
+            ytelse: Ytelse,
+            resultater: List<Resultat>,
+        ): Resultat {
             val førsteNei = resultater.find { it.svar == NEI }
             if (førsteNei != null) {
                 return lagKonklusjon(neiResultat(ytelse), resultater)
@@ -156,15 +160,23 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
             return lagKonklusjon(uavklartResultat(ytelse), resultater)
         }
 
-        private fun lagKonklusjon(konklusjon: Resultat, resultater: List<Resultat>): Resultat {
+        private fun lagKonklusjon(
+            konklusjon: Resultat,
+            resultater: List<Resultat>,
+        ): Resultat {
             return konklusjon.copy(delresultat = lagDelresultat(resultater), årsaker = resultater.finnÅrsaker())
         }
 
         private fun lagDelresultat(resultater: List<Resultat>): List<Resultat> {
-            return resultater.map { if (it.regelId == RegelId.REGEL_FLYT_KONKLUSJON || it.regelId == RegelId.REGEL_MEDLEM_KONKLUSJON && it.delresultat.isNotEmpty()) it.delresultat.first() else it }
+            return resultater.map {
+                if (it.regelId == RegelId.REGEL_FLYT_KONKLUSJON || it.regelId == RegelId.REGEL_MEDLEM_KONKLUSJON && it.delresultat.isNotEmpty()) it.delresultat.first() else it
+            }
         }
 
-        private fun konklusjon(ytelse: Ytelse, resultat: Resultat): Resultat {
+        private fun konklusjon(
+            ytelse: Ytelse,
+            resultat: Resultat,
+        ): Resultat {
             return when (resultat.svar) {
                 JA -> jaKonklusjon(ytelse).utfør().copy(harDekning = resultat.harDekning, dekning = resultat.dekning)
                 NEI -> neiKonklusjon(ytelse).utfør().copy(harDekning = resultat.harDekning, dekning = resultat.dekning)

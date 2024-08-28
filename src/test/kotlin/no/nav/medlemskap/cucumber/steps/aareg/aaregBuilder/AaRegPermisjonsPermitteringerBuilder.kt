@@ -21,6 +21,6 @@ class AaRegPermisjonsPermitteringerBuilder {
             sporingsinformasjon = sporingsinformasjon,
             type = type,
             varslingskode = varslingkode,
-            prosent = prosent
+            prosent = prosent,
         )
 }

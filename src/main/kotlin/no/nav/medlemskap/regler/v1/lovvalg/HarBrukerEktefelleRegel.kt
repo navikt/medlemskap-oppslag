@@ -13,9 +13,8 @@ class HarBrukerEktefelleRegel(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val dataOmEktefelle: DataOmEktefelle?,
-    regelId: RegelId = RegelId.REGEL_11_2
+    regelId: RegelId = RegelId.REGEL_11_2,
 ) : LovvalgRegel(regelId, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
         val ektefelle = dataOmEktefelle?.personhistorikkEktefelle
 
@@ -29,13 +28,15 @@ class HarBrukerEktefelleRegel(
     }
 
     companion object {
-
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag, regelId: RegelId): HarBrukerEktefelleRegel {
+        fun fraDatagrunnlag(
+            datagrunnlag: Datagrunnlag,
+            regelId: RegelId,
+        ): HarBrukerEktefelleRegel {
             return HarBrukerEktefelleRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 dataOmEktefelle = datagrunnlag.dataOmEktefelle,
-                regelId = regelId
+                regelId = regelId,
             )
         }
     }

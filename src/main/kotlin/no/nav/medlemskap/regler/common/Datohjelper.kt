@@ -25,7 +25,7 @@ object Datohjelper {
 
         return LocalDate.parse(
             dato.substring(0, min(dato.length, 10)),
-            isoDatoFormatter
+            isoDatoFormatter,
         )
     }
 
@@ -38,7 +38,10 @@ object Datohjelper {
     }
 }
 
-fun erDatoerSammenhengende(sluttDato: LocalDate, startDato: LocalDate?, tillatDagersHullIPeriode: Long): Boolean =
-    sluttDato.isAfter(startDato?.minusDays(tillatDagersHullIPeriode))
+fun erDatoerSammenhengende(
+    sluttDato: LocalDate,
+    startDato: LocalDate?,
+    tillatDagersHullIPeriode: Long,
+): Boolean = sluttDato.isAfter(startDato?.minusDays(tillatDagersHullIPeriode))
 
 fun LocalDate.startOfDayInstant() = this.atStartOfDay(ZoneId.systemDefault()).toInstant()

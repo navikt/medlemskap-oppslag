@@ -16,6 +16,6 @@ class TelefonnummerBuilder {
             nummer = nummer,
             bruksperiode = bruksperiode,
             gyldighetsperiode = gyldighetsperiode,
-            Telefontype = telefontype
+            Telefontype = telefontype,
         )
 }

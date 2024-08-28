@@ -8,12 +8,13 @@ import java.time.YearMonth
 
 object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
     val ANSATTE_9 = listOf(Ansatte(9, null))
-    val VANLIG_NORSK_ARBEIDSGIVER = Arbeidsgiver(navn = "null", organisasjonsnummer = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskeEnheter = null)
+    val VANLIG_NORSK_ARBEIDSGIVER =
+        Arbeidsgiver(navn = "null", organisasjonsnummer = "1", ansatte = ANSATTE_9, konkursStatus = null, juridiskeEnheter = null)
 
     fun mapArbeidsforhold(
         dataTable: DataTable,
         utenlandsopphold: List<Utenlandsopphold> = emptyList(),
-        arbeidsgiver: Arbeidsgiver = VANLIG_NORSK_ARBEIDSGIVER
+        arbeidsgiver: Arbeidsgiver = VANLIG_NORSK_ARBEIDSGIVER,
     ): List<Arbeidsforhold> {
         return dataTable.asMaps().map {
             ArbeidsforholdMapper().mapRad(it, utenlandsopphold, arbeidsgiver)
@@ -152,10 +153,11 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
         override fun mapRad(rad: Map<String, String>): Ansatte {
             return Ansatte(
                 antall = parseInt(ArbeidDomenebegrep.ANTALL_ANSATTE, rad),
-                gyldighetsperiode = Periode(
-                    parseDato(ArbeidDomenebegrep.GYLDIGHETSPERIODE_FRA_OG_MED, rad),
-                    parseDato(ArbeidDomenebegrep.GYLDIGHETSPERIODE_TIL_OG_MED, rad)
-                )
+                gyldighetsperiode =
+                    Periode(
+                        parseDato(ArbeidDomenebegrep.GYLDIGHETSPERIODE_FRA_OG_MED, rad),
+                        parseDato(ArbeidDomenebegrep.GYLDIGHETSPERIODE_TIL_OG_MED, rad),
+                    ),
             )
         }
     }
@@ -194,7 +196,7 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
         override fun mapRad(rad: Map<String, String>): Periode {
             return Periode(
                 parseValgfriDato(ArbeidDomenebegrep.FRA_OG_MED_DATO, rad),
-                parseValgfriDato(ArbeidDomenebegrep.TIL_OG_MED_DATO, rad)
+                parseValgfriDato(ArbeidDomenebegrep.TIL_OG_MED_DATO, rad),
             )
         }
     }
@@ -251,12 +253,13 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
         fun mapRad(
             rad: Map<String, String>,
             utenlandsopphold: List<Utenlandsopphold> = emptyList(),
-            arbeidsgiver: Arbeidsgiver?
+            arbeidsgiver: Arbeidsgiver?,
         ): Arbeidsforhold {
-            val periode = Periode(
-                parseValgfriDato(ArbeidDomenebegrep.FRA_OG_MED_DATO, rad),
-                parseValgfriDato(ArbeidDomenebegrep.TIL_OG_MED_DATO, rad)
-            )
+            val periode =
+                Periode(
+                    parseValgfriDato(ArbeidDomenebegrep.FRA_OG_MED_DATO, rad),
+                    parseValgfriDato(ArbeidDomenebegrep.TIL_OG_MED_DATO, rad),
+                )
 
             return Arbeidsforhold(
                 periode = periode,
@@ -265,7 +268,7 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
                 arbeidsgiver = arbeidsgiver ?: VANLIG_NORSK_ARBEIDSGIVER,
                 arbeidsforholdstype = parseArbeidsforholdstype(rad),
                 arbeidsavtaler = emptyList(),
-                permisjonPermittering = emptyList()
+                permisjonPermittering = emptyList(),
             )
         }
     }
@@ -275,18 +278,18 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
             return Arbeidsavtale(
                 Periode(
                     parseDato(ArbeidDomenebegrep.FRA_OG_MED_DATO, rad),
-                    parseValgfriDato(ArbeidDomenebegrep.TIL_OG_MED_DATO, rad)
+                    parseValgfriDato(ArbeidDomenebegrep.TIL_OG_MED_DATO, rad),
                 ),
                 Periode(
                     parseDato(ArbeidDomenebegrep.FRA_OG_MED_DATO, rad),
-                    parseValgfriDato(ArbeidDomenebegrep.TIL_OG_MED_DATO, rad)
+                    parseValgfriDato(ArbeidDomenebegrep.TIL_OG_MED_DATO, rad),
                 ),
                 parseString(ArbeidDomenebegrep.YRKESKODE, rad),
                 parseSkipsregister(rad),
                 parseFartsområde(rad),
                 parseDouble(ArbeidDomenebegrep.STILLINGSPROSENT, rad),
                 parseValgfriDouble(ArbeidDomenebegrep.BEREGNET_ANTALL_TIMER_PR_UKE, rad),
-                parseSkipstype(rad)
+                parseSkipstype(rad),
             )
         }
     }
@@ -294,18 +297,26 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
     class ArbeidsgiverMapper : RadMapper<Arbeidsgiver> {
         override fun mapRad(rad: Map<String, String>): Arbeidsgiver {
             val konkursStatus = parseValgfriString(ArbeidDomenebegrep.KONKURSSTATUS, rad)
-            val konkursStatuser = if (konkursStatus == null) {
-                null
-            } else {
-                listOf(konkursStatus)
-            }
+            val konkursStatuser =
+                if (konkursStatus == null) {
+                    null
+                } else {
+                    listOf(konkursStatus)
+                }
 
             return Arbeidsgiver(
                 navn = parseValgfriString(ArbeidDomenebegrep.Navn, rad),
                 organisasjonsnummer = parseValgfriString(ArbeidDomenebegrep.IDENTIFIKATOR, rad),
                 ansatte = listOf(Ansatte(parseValgfriInt(ArbeidDomenebegrep.ANTALL_ANSATTE, rad), null)),
                 konkursStatus = konkursStatuser,
-                juridiskeEnheter = listOf(JuridiskEnhet(parseValgfriString(ArbeidDomenebegrep.JURIDISK_ORG_NR, rad), parseValgfriString(Domenebegrep.JURIDISK_ENHETSTYPE, rad), parseValgfriInt(Domenebegrep.JURIDISK_ANTALL_ANSATTE, rad)))
+                juridiskeEnheter =
+                    listOf(
+                        JuridiskEnhet(
+                            parseValgfriString(ArbeidDomenebegrep.JURIDISK_ORG_NR, rad),
+                            parseValgfriString(Domenebegrep.JURIDISK_ENHETSTYPE, rad),
+                            parseValgfriInt(Domenebegrep.JURIDISK_ANTALL_ANSATTE, rad),
+                        ),
+                    ),
             )
         }
     }
@@ -314,11 +325,12 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
         override fun mapRad(rad: Map<String, String>): Utenlandsopphold {
             return Utenlandsopphold(
                 landkode = parseString(Domenebegrep.LANDKODE, rad),
-                periode = Periode(
-                    parseValgfriDato(Domenebegrep.FRA_OG_MED_DATO, rad),
-                    parseValgfriDato(Domenebegrep.TIL_OG_MED_DATO, rad)
-                ),
-                rapporteringsperiode = DomenespråkParser.parseAarMaaned(Domenebegrep.RAPPORTERINGSPERIODE, rad)
+                periode =
+                    Periode(
+                        parseValgfriDato(Domenebegrep.FRA_OG_MED_DATO, rad),
+                        parseValgfriDato(Domenebegrep.TIL_OG_MED_DATO, rad),
+                    ),
+                rapporteringsperiode = DomenespråkParser.parseAarMaaned(Domenebegrep.RAPPORTERINGSPERIODE, rad),
             )
         }
     }
@@ -326,14 +338,15 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
     class PermisjonsPermitteringMapper : RadMapper<PermisjonPermittering> {
         override fun mapRad(rad: Map<String, String>): PermisjonPermittering {
             return PermisjonPermittering(
-                periode = Periode(
-                    parseDato(Domenebegrep.FRA_OG_MED_DATO, rad),
-                    parseDato(Domenebegrep.TIL_OG_MED_DATO, rad)
-                ),
+                periode =
+                    Periode(
+                        parseDato(Domenebegrep.FRA_OG_MED_DATO, rad),
+                        parseDato(Domenebegrep.TIL_OG_MED_DATO, rad),
+                    ),
                 permisjonPermitteringId = parseString(ArbeidDomenebegrep.PERMISJONPERMITTERINGSID, rad),
                 prosent = parseDouble(Domenebegrep.PROSENT, rad),
                 type = parsePermisjonPermitteringType(rad),
-                varslingskode = parseValgfriString(ArbeidDomenebegrep.VARSLINGSKODE, rad)
+                varslingskode = parseValgfriString(ArbeidDomenebegrep.VARSLINGSKODE, rad),
             )
         }
     }
@@ -366,7 +379,8 @@ enum class ArbeidDomenebegrep(val nøkkel: String) : Domenenøkkel {
     STILLINGSPROSENT("Stillingsprosent"),
     STATUS("Status"),
     VARSLINGSKODE("Varslingkode"),
-    YRKESKODE("Yrkeskode");
+    YRKESKODE("Yrkeskode"),
+    ;
 
     override fun nøkkel(): String {
         return nøkkel

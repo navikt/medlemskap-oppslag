@@ -10,7 +10,6 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
-
     fun mapHarArbeidstilgang(dataTable: DataTable): Boolean {
         return mapDataTable(dataTable, HarArbeidstilgangMapper())[0]
     }
@@ -96,9 +95,12 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
             return OppholdstillaelsePaSammeVilkarType.valueOf(parseString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_TYPE, rad))
         }
     }
+
     class OppholdsrettTypeMapper() : RadMapper<EOSellerEFTAGrunnlagskategoriOppholdsrettType> {
         override fun mapRad(rad: Map<String, String>): EOSellerEFTAGrunnlagskategoriOppholdsrettType {
-            return EOSellerEFTAGrunnlagskategoriOppholdsrettType.valueOf(parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT, rad))
+            return EOSellerEFTAGrunnlagskategoriOppholdsrettType.valueOf(
+                parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT, rad),
+            )
         }
     }
 
@@ -122,27 +124,38 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
 
     class EOSElllerEFTAOppholdKlasseMapper() : RadMapper<EOSellerEFTAOpphold> {
         override fun mapRad(rad: Map<String, String>): EOSellerEFTAOpphold {
+            val EOSellerEFTAGrunnlagskategoriOppholdsrettType =
+                if (parseValgfriString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT, rad) != null
+                ) {
+                    EOSellerEFTAGrunnlagskategoriOppholdsrettType.valueOf(
+                        parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT, rad),
+                    )
+                } else {
+                    null
+                }
 
-            val EOSellerEFTAGrunnlagskategoriOppholdsrettType = if (parseValgfriString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT, rad) != null
-            ) {
-                EOSellerEFTAGrunnlagskategoriOppholdsrettType.valueOf(parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT, rad))
-            } else { null }
-
-            val EOSellerEFTAGrunnlagskategoriOppholdstillatelseType = if (parseValgfriString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSTILLATELSE, rad) != null
-            ) {
-                EOSellerEFTAGrunnlagskategoriOppholdsTillatelseType.valueOf(parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSTILLATELSE, rad))
-            } else { null }
+            val EOSellerEFTAGrunnlagskategoriOppholdstillatelseType =
+                if (parseValgfriString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSTILLATELSE, rad) != null
+                ) {
+                    EOSellerEFTAGrunnlagskategoriOppholdsTillatelseType.valueOf(
+                        parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSTILLATELSE, rad),
+                    )
+                } else {
+                    null
+                }
 
             return EOSellerEFTAOpphold(
-                periode = Periode(
-                    fom = parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad),
-                    tom = parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad)
-                ),
-                eosellerEFTAOppholdType = EOSellerEFTAOppholdType.valueOf(
-                    parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_OPPHOLD, rad)
-                ),
+                periode =
+                    Periode(
+                        fom = parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad),
+                        tom = parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad),
+                    ),
+                eosellerEFTAOppholdType =
+                    EOSellerEFTAOppholdType.valueOf(
+                        parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_OPPHOLD, rad),
+                    ),
                 eosellerEFTAGrunnlagskategoriOppholdsrettType = EOSellerEFTAGrunnlagskategoriOppholdsrettType,
-                eosellerEFTAGrunnlagskategoriOppholdstillatelseType = EOSellerEFTAGrunnlagskategoriOppholdstillatelseType
+                eosellerEFTAGrunnlagskategoriOppholdstillatelseType = EOSellerEFTAGrunnlagskategoriOppholdstillatelseType,
             )
         }
     }
@@ -150,7 +163,7 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
     class UavklartMapper() : RadMapper<Uavklart> {
         override fun mapRad(rad: Map<String, String>): Uavklart {
             return Uavklart(
-                parseBooleanMedBooleanVerdi(OppholdstillatelseDomenebegrep.UAVKLART, rad)
+                parseBooleanMedBooleanVerdi(OppholdstillatelseDomenebegrep.UAVKLART, rad),
             )
         }
     }
@@ -165,7 +178,7 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
         override fun mapRad(rad: Map<String, String>): Periode {
             return Periode(
                 fom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad),
-                tom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad)
+                tom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad),
             )
         }
     }
@@ -174,7 +187,7 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
         override fun mapRad(rad: Map<String, String>): Periode {
             return Periode(
                 fom = parseDato(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_PERIODE_FOM, rad),
-                tom = parseDato(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_PERIODE_TOM, rad)
+                tom = parseDato(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_PERIODE_TOM, rad),
             )
         }
     }
@@ -194,14 +207,14 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
     class HarOppholdMapper() : RadMapper<OppholdstillatelsePaSammeVilkar> {
         override fun mapRad(rad: Map<String, String>): OppholdstillatelsePaSammeVilkar {
             return OppholdstillatelsePaSammeVilkar(
-                periode = Periode(
-                    fom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad),
-                    tom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad)
-                ),
+                periode =
+                    Periode(
+                        fom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad),
+                        tom = parseDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad),
+                    ),
                 harTillatelse = parseBooleanMedBooleanVerdi(OppholdstillatelseDomenebegrep.HAR_OPPHOLD, rad),
                 type = OppholdstillaelsePaSammeVilkarType.valueOf(parseString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_TYPE, rad)),
-                soknadIkkeAvgjort = false
-
+                soknadIkkeAvgjort = false,
             )
         }
     }
@@ -240,10 +253,11 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
 
     class OppholdstillatelseMapper : RadMapper<Oppholdstillatelse> {
         override fun mapRad(rad: Map<String, String>): Oppholdstillatelse {
-            val periode = Periode(
-                parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad),
-                parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad)
-            )
+            val periode =
+                Periode(
+                    parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad),
+                    parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad),
+                )
 
             val gjeldendeOppholdstillatelse =
                 when (
@@ -263,74 +277,81 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
                 gjeldendeOppholdstillatelse,
                 Arbeidsadgang(periode, true, null, null),
                 parseValgfriBoolean(OppholdstillatelseDomenebegrep.UAVKLART_FLYKTNINGSTATUS.nøkkel(), rad),
-                parseValgfriBoolean(OppholdstillatelseDomenebegrep.HAR_FLYKTNINGSTATUS.nøkkel(), rad)
-
+                parseValgfriBoolean(OppholdstillatelseDomenebegrep.HAR_FLYKTNINGSTATUS.nøkkel(), rad),
             )
         }
 
         private fun createGjeldendeOppholdsstatusMedEOSellerEFTAOpphold(
             periode: Periode,
-            rad: Map<String, String>
+            rad: Map<String, String>,
         ): GjeldendeOppholdsstatus {
             return GjeldendeOppholdsstatus(
                 oppholdstillatelsePaSammeVilkar = null,
                 ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum = null,
                 uavklart = null,
-                eosellerEFTAOpphold = EOSellerEFTAOpphold(
-                    periode = periode,
-                    eosellerEFTAOppholdType = EOSellerEFTAOppholdType.valueOf(
-                        parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_OPPHOLD, rad)
+                eosellerEFTAOpphold =
+                    EOSellerEFTAOpphold(
+                        periode = periode,
+                        eosellerEFTAOppholdType =
+                            EOSellerEFTAOppholdType.valueOf(
+                                parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_OPPHOLD, rad),
+                            ),
+                        eosellerEFTAGrunnlagskategoriOppholdsrettType =
+                            parseValgfriString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT, rad)
+                                ?.let { EOSellerEFTAGrunnlagskategoriOppholdsrettType.valueOf(it) },
+                        eosellerEFTAGrunnlagskategoriOppholdstillatelseType =
+                            EOSellerEFTAGrunnlagskategoriOppholdsTillatelseType.valueOf(
+                                parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSTILLATELSE, rad),
+                            ),
                     ),
-                    eosellerEFTAGrunnlagskategoriOppholdsrettType =
-                        parseValgfriString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT, rad)
-                            ?.let { EOSellerEFTAGrunnlagskategoriOppholdsrettType.valueOf(it) },
-                    eosellerEFTAGrunnlagskategoriOppholdstillatelseType =
-                        EOSellerEFTAGrunnlagskategoriOppholdsTillatelseType.valueOf(
-                            parseString(OppholdstillatelseDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSTILLATELSE, rad)
-                        )
-                )
             )
         }
 
         private fun createGjeldendeOppholdstatusMedOppholdstillatelsePaSammeVilkar(
             periode: Periode,
-            rad: Map<String, String>
+            rad: Map<String, String>,
         ): GjeldendeOppholdsstatus {
             return GjeldendeOppholdsstatus(
-                oppholdstillatelsePaSammeVilkar = OppholdstillatelsePaSammeVilkar(
-                    periode = periode,
-                    harTillatelse = parseValgfriBoolean(OppholdstillatelseDomenebegrep.HAR_OPPHOLDSTILLATELSE.nøkkel(), rad),
-                    type = OppholdstillaelsePaSammeVilkarType.valueOf(parseString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_TYPE, rad)),
-                    soknadIkkeAvgjort = parseBoolean(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_PÅ_SAMME_VILKÅR_FLAGG, rad)
-                ),
+                oppholdstillatelsePaSammeVilkar =
+                    OppholdstillatelsePaSammeVilkar(
+                        periode = periode,
+                        harTillatelse = parseValgfriBoolean(OppholdstillatelseDomenebegrep.HAR_OPPHOLDSTILLATELSE.nøkkel(), rad),
+                        type =
+                            OppholdstillaelsePaSammeVilkarType.valueOf(
+                                parseString(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_TYPE, rad),
+                            ),
+                        soknadIkkeAvgjort = parseBoolean(OppholdstillatelseDomenebegrep.OPPHOLDSTILLATELSE_PÅ_SAMME_VILKÅR_FLAGG, rad),
+                    ),
                 ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum = null,
                 eosellerEFTAOpphold = null,
-                uavklart = null
+                uavklart = null,
             )
         }
 
         private fun createGjeldendeOppholdstatusMedIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(
             periode: Periode,
-            rad: Map<String, String>
+            rad: Map<String, String>,
         ): GjeldendeOppholdsstatus {
             return GjeldendeOppholdsstatus(
                 oppholdstillatelsePaSammeVilkar = null,
                 ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum =
                     IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(
-                        utvistMedInnreiseForbud = UtvistMedInnreiseForbud(
-                            JaNeiUavklart.valueOf(parseString(OppholdstillatelseDomenebegrep.UTVISTMEDINNREISEFORBUD, rad))
-                        ),
+                        utvistMedInnreiseForbud =
+                            UtvistMedInnreiseForbud(
+                                JaNeiUavklart.valueOf(parseString(OppholdstillatelseDomenebegrep.UTVISTMEDINNREISEFORBUD, rad)),
+                            ),
                         avslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak =
                             AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak(avgjorelsesDato = periode.fom),
-                        ovrigIkkeOpphold = OvrigIkkeOpphold(
-                            ovrigIkkeOppholdsKategori =
-                                OvrigIkkeOppholdsKategori.valueOf(
-                                    parseString(OppholdstillatelseDomenebegrep.OVRIG_IKKE_OPPHOLD_KATEGORI, rad)
-                                )
-                        )
+                        ovrigIkkeOpphold =
+                            OvrigIkkeOpphold(
+                                ovrigIkkeOppholdsKategori =
+                                    OvrigIkkeOppholdsKategori.valueOf(
+                                        parseString(OppholdstillatelseDomenebegrep.OVRIG_IKKE_OPPHOLD_KATEGORI, rad),
+                                    ),
+                            ),
                     ),
                 eosellerEFTAOpphold = null,
-                uavklart = null
+                uavklart = null,
             )
         }
 
@@ -339,23 +360,24 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
                 oppholdstillatelsePaSammeVilkar = null,
                 ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum = null,
                 eosellerEFTAOpphold = null,
-                uavklart = Uavklart()
+                uavklart = Uavklart(),
             )
         }
     }
 
     class ArbeidsadgangMapper : RadMapper<Arbeidsadgang> {
         override fun mapRad(rad: Map<String, String>): Arbeidsadgang {
-            val periode = Periode(
-                parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad),
-                parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad)
-            )
+            val periode =
+                Periode(
+                    parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_FRA_OG_MED, rad),
+                    parseValgfriDato(OppholdstillatelseDomenebegrep.GYLDIG_TIL_OG_MED, rad),
+                )
 
             return Arbeidsadgang(
                 periode,
                 parseBoolean(OppholdstillatelseDomenebegrep.ARBEIDSADGANG, rad),
                 ArbeidsadgangTypeMapper().mapRad(rad),
-                ArbeidsomfangKategoriMapper().mapRad(rad)
+                ArbeidsomfangKategoriMapper().mapRad(rad),
             )
         }
     }
@@ -386,7 +408,7 @@ enum class OppholdstillatelseDomenebegrep(val nøkkel: String) : Domenenøkkel {
     UAVKLART("Uavklart"),
     UAVKLART_FLYKTNINGSTATUS("Uavklart flyktningstatus"),
     UTTREKKSTIDSPUNKT("Uttrekkstidspunkt"),
-    UTVISTMEDINNREISEFORBUD("Utvist med innreiseforbud")
+    UTVISTMEDINNREISEFORBUD("Utvist med innreiseforbud"),
     ;
 
     override fun nøkkel(): String {

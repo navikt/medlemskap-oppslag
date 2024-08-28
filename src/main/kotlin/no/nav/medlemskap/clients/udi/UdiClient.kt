@@ -14,11 +14,14 @@ class UdiClient(
     private val baseUrl: String,
     private val azureAdClient: AzureAdClient,
     private val httpClient: HttpClient,
-    private val retry: Retry? = null
+    private val retry: Retry? = null,
 ) {
     val configuration: Configuration = Configuration()
 
-    suspend fun oppholdstillatelse(udiRequest: UdiRequest, callId: String): Oppholdstillatelse {
+    suspend fun oppholdstillatelse(
+        udiRequest: UdiRequest,
+        callId: String,
+    ): Oppholdstillatelse {
         val token = azureAdClient.hentToken(configuration.register.udiScope)
         return runWithRetryAndMetrics("UDI-proxy", "Oppholdstillatelse", retry) {
             httpClient.post {

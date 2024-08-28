@@ -4,5 +4,5 @@ data class InnflyttingTilNorge(
     val fraflyttingsland: String?,
     val fraflyttingsstedIUtlandet: String?,
     val folkeregistermetadata: Folkeregistermetadata,
-    val metadata: Metadata
+    val metadata: Metadata,
 )

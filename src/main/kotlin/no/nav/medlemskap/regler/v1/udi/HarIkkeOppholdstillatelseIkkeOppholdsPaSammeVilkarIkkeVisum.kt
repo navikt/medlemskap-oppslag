@@ -12,9 +12,8 @@ import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 class HarIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(
     ytelse: Ytelse,
     private val oppholdstillatelse: Oppholdstillatelse?,
-    regelId: RegelId = RegelId.REGEL_23
+    regelId: RegelId = RegelId.REGEL_23,
 ) : BasisRegel(regelId, ytelse) {
-
     override fun operasjon(): Resultat {
         if (oppholdstillatelse?.gjeldendeOppholdsstatus?.ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum != null) {
             return ja(regelId)
@@ -24,11 +23,10 @@ class HarIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum {
             return HarIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(
                 ytelse = datagrunnlag.ytelse,
-                oppholdstillatelse = datagrunnlag.oppholdstillatelse
+                oppholdstillatelse = datagrunnlag.oppholdstillatelse,
             )
         }
     }

@@ -35,6 +35,6 @@ class AaRegArbeidsavtaleBuilder {
             yrke = yrke,
             sporingsinformasjon = sporingsinformasjon,
             stillingsprosent = stillingsprosent,
-            sistLoennsendring = String()
+            sistLoennsendring = String(),
         )
 }

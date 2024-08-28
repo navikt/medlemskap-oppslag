@@ -8,43 +8,42 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 class PersonhistorikkTest {
-
     @Test
     fun `Liste med dødsfall før periode gir false`() {
-
         val personhistorikkBuilder = PersonhistorikkBuilder()
         personhistorikkBuilder.doedsfall.add(doedsfallFoerInputPeriode)
-        val kontrollperiode = InputPeriode(
-            fom = LocalDate.of(2019, 1, 1),
-            tom = LocalDate.of(2019, 12, 31)
-        )
+        val kontrollperiode =
+            InputPeriode(
+                fom = LocalDate.of(2019, 1, 1),
+                tom = LocalDate.of(2019, 12, 31),
+            )
         assertFalse(personhistorikkBuilder.build().erBrukerDoedEtterPeriode(kontrollperiode))
     }
 
     @Test
     fun `Liste med dødsfall i periode gir false`() {
-
         val personhistorikkBuilder = PersonhistorikkBuilder()
         personhistorikkBuilder.doedsfall.add(doedsfallEtterInputPeriode)
 
-        val kontrollperiode = InputPeriode(
-            fom = LocalDate.of(2019, 1, 1),
-            tom = LocalDate.of(2019, 12, 31)
-        )
+        val kontrollperiode =
+            InputPeriode(
+                fom = LocalDate.of(2019, 1, 1),
+                tom = LocalDate.of(2019, 12, 31),
+            )
 
         assertTrue(personhistorikkBuilder.build().erBrukerDoedEtterPeriode(kontrollperiode))
     }
 
     @Test
     fun `Liste med dødsfall i etter gir true`() {
-
         val personhistorikkBuilder = PersonhistorikkBuilder()
         personhistorikkBuilder.doedsfall.add(doedsfallFoerInputPeriode)
 
-        val kontrollperiode = InputPeriode(
-            fom = LocalDate.of(2019, 1, 1),
-            tom = LocalDate.of(2019, 12, 31)
-        )
+        val kontrollperiode =
+            InputPeriode(
+                fom = LocalDate.of(2019, 1, 1),
+                tom = LocalDate.of(2019, 12, 31),
+            )
 
         assertFalse(personhistorikkBuilder.build().erBrukerDoedEtterPeriode(kontrollperiode))
     }
@@ -55,10 +54,11 @@ class PersonhistorikkTest {
         personhistorikkBuilder.doedsfall.add(doedsfallFoerInputPeriode)
         personhistorikkBuilder.doedsfall.add(doedsfallEtterInputPeriode)
 
-        val kontrollperiode = InputPeriode(
-            fom = LocalDate.of(2019, 1, 1),
-            tom = LocalDate.of(2019, 12, 31)
-        )
+        val kontrollperiode =
+            InputPeriode(
+                fom = LocalDate.of(2019, 1, 1),
+                tom = LocalDate.of(2019, 12, 31),
+            )
 
         assertFalse(personhistorikkBuilder.build().erBrukerDoedEtterPeriode(kontrollperiode))
     }

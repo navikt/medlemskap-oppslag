@@ -1,7 +1,6 @@
 package no.nav.medlemskap.domene
 
 data class Fødselsnummer(val fnr: String) {
-
     fun hentBursdagsAar(): String {
         return hentAarHundre() + hent2DigitBursdagsAar()
     }

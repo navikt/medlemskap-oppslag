@@ -11,7 +11,7 @@ enum class PermisjonPermitteringType(val kodeverdi: String) {
     ANDRE_LOVFESTEDE_PERMISJONER("andreLovfestedePermisjoner"),
     UTDANNINGSPERMISJON_IKKE_LOVFESTET("utdanningspermisjonIkkeLovfestet"),
     UTDANNINGSPERMISJON_LOVFESTET("utdanningspermisjonLovfestet"),
-    ANNET("Annet")
+    ANNET("Annet"),
     ;
 
     companion object {

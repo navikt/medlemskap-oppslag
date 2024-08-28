@@ -15,27 +15,29 @@ class ReglerForAndreStatsborgere(
     val periode: InputPeriode,
     ytelse: Ytelse,
     regelFactory: RegelFactory,
-    overstyrteRegler: Map<RegelId, Svar>
+    overstyrteRegler: Map<RegelId, Svar>,
 ) : Regler(ytelse, regelFactory, overstyrteRegler) {
-
     override fun hentHovedflyt(): Regelflyt {
-        val arbeidUtenforNorgeRegelflyt = lagRegelflyt(
-            regel = hentRegel(REGEL_9),
-            hvisJa = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE),
-            hvisNei = regelflytJa(ytelse, REGEL_ANDRE_BORGERE)
-        )
+        val arbeidUtenforNorgeRegelflyt =
+            lagRegelflyt(
+                regel = hentRegel(REGEL_9),
+                hvisJa = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE),
+                hvisNei = regelflytJa(ytelse, REGEL_ANDRE_BORGERE),
+            )
 
-        val harBrukerJobbet80ProsentEllerMerSiste3Månedeneflyt = lagRegelflyt(
-            regel = hentRegel(REGEL_20),
-            hvisJa = arbeidUtenforNorgeRegelflyt,
-            hvisNei = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE)
-        )
+        val harBrukerJobbet80ProsentEllerMerSiste3Månedeneflyt =
+            lagRegelflyt(
+                regel = hentRegel(REGEL_20),
+                hvisJa = arbeidUtenforNorgeRegelflyt,
+                hvisNei = regelflytUavklart(ytelse, REGEL_ANDRE_BORGERE),
+            )
 
-        val erBrukerBosattINorgeRegelflyt = lagRegelflyt(
-            regel = hentRegel(REGEL_10),
-            hvisJa = arbeidUtenforNorgeRegelflyt,
-            hvisNei = harBrukerJobbet80ProsentEllerMerSiste3Månedeneflyt
-        )
+        val erBrukerBosattINorgeRegelflyt =
+            lagRegelflyt(
+                regel = hentRegel(REGEL_10),
+                hvisJa = arbeidUtenforNorgeRegelflyt,
+                hvisNei = harBrukerJobbet80ProsentEllerMerSiste3Månedeneflyt,
+            )
 
         return erBrukerBosattINorgeRegelflyt
     }
@@ -47,7 +49,7 @@ class ReglerForAndreStatsborgere(
                     periode = periode,
                     ytelse = ytelse,
                     regelFactory = RegelFactory(datagrunnlag),
-                    overstyrteRegler = overstyrteRegler
+                    overstyrteRegler = overstyrteRegler,
                 )
             }
         }

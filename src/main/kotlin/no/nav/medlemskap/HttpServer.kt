@@ -38,8 +38,7 @@ import java.util.*
 
 private val logger = KotlinLogging.logger { }
 
-fun
-createHttpServer(
+fun createHttpServer(
     applicationState: ApplicationState,
     useAuthentication: Boolean = true,
     configuration: Configuration = Configuration(),
@@ -47,75 +46,85 @@ createHttpServer(
     services: Services = Services(configuration),
     port: Int = 7070,
     prometheusRegistry: PrometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT),
-    createDatagrunnlag: suspend (request: Request, callId: String, services: Services, clientId: String?) -> Datagrunnlag = ::defaultCreateDatagrunnlag
-): ApplicationEngine = embeddedServer(Netty, port) {
+    createDatagrunnlag: suspend (
+        request: Request,
+        callId: String,
+        services: Services,
+        clientId: String?,
+    ) -> Datagrunnlag = ::defaultCreateDatagrunnlag,
+): ApplicationEngine =
+    embeddedServer(Netty, port) {
+        install(StatusPages) {
+            exceptionHandler()
+        }
 
-    install(StatusPages) {
-        exceptionHandler()
-    }
+        install(CallLogging) {
+            level = Level.INFO
+            callIdMdc(MDC_CALL_ID)
+        }
 
-    install(CallLogging) {
-        level = Level.INFO
-        callIdMdc(MDC_CALL_ID)
-    }
+        install(ContentNegotiation) {
+            register(ContentType.Application.Json, JacksonConverter(objectMapper))
+        }
 
-    install(ContentNegotiation) {
-        register(ContentType.Application.Json, JacksonConverter(objectMapper))
-    }
+        install(CallId) {
+            header(MDC_CALL_ID)
+            generate { UUID.randomUUID().toString() }
+            verify { callId: String -> callId.isNotEmpty() }
+        }
 
-    install(CallId) {
-        header(MDC_CALL_ID)
-        generate { UUID.randomUUID().toString() }
-        verify { callId: String -> callId.isNotEmpty() }
-    }
-
-    if (useAuthentication) {
-        logger.info { "Installerer authentication" }
-        install(Authentication) {
-            jwt("azureAuth") {
-                val jwtConfig = JwtConfig(configuration, azureAdOpenIdConfiguration)
-                realm = REALM
-                verifier(jwtConfig.jwkProvider, azureAdOpenIdConfiguration.issuer)
-                validate { credentials ->
-                    jwtConfig.validate(credentials)
+        if (useAuthentication) {
+            logger.info { "Installerer authentication" }
+            install(Authentication) {
+                jwt("azureAuth") {
+                    val jwtConfig = JwtConfig(configuration, azureAdOpenIdConfiguration)
+                    realm = REALM
+                    verifier(jwtConfig.jwkProvider, azureAdOpenIdConfiguration.issuer)
+                    validate { credentials ->
+                        jwtConfig.validate(credentials)
+                    }
                 }
             }
+        } else {
+            logger.info { "Installerer IKKE authentication" }
         }
-    } else {
-        logger.info { "Installerer IKKE authentication" }
-    }
 
-    install(MicrometerMetrics) {
-        registry = prometheusRegistry
-        meterBinders = listOf(
-            ClassLoaderMetrics(),
-            JvmMemoryMetrics(),
-            JvmGcMetrics(),
-            ProcessorMetrics(),
-            JvmThreadMetrics(),
-            FileDescriptorMetrics()
-        )
-    }
-    val requestContextService = RequestContextService()
-    if (useAuthentication) {
-        routing {
-            naisRoutes(
-                readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = CollectorRegistry.defaultRegistry
-            )
-            if (services.configuration.cluster == "dev-gcp") setupSwaggerDocApi()
-            evalueringRoute(services, configuration, requestContextService, createDatagrunnlag)
-            reglerRoute()
-            healthRoute("/healthCheck", services.healthService)
+        install(MicrometerMetrics) {
+            registry = prometheusRegistry
+            meterBinders =
+                listOf(
+                    ClassLoaderMetrics(),
+                    JvmMemoryMetrics(),
+                    JvmGcMetrics(),
+                    ProcessorMetrics(),
+                    JvmThreadMetrics(),
+                    FileDescriptorMetrics(),
+                )
         }
-    } else {
-        routing {
-            naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = CollectorRegistry.defaultRegistry)
-            if (services.configuration.cluster == "dev-gcp") setupSwaggerDocApi()
-            evalueringTestRoute(services, configuration, requestContextService, createDatagrunnlag)
-            reglerRoute()
-            healthRoute("/healthCheck", services.healthService)
+        val requestContextService = RequestContextService()
+        if (useAuthentication) {
+            routing {
+                naisRoutes(
+                    readinessCheck = { applicationState.initialized },
+                    livenessCheck = { applicationState.running },
+                    collectorRegistry = CollectorRegistry.defaultRegistry,
+                )
+                if (services.configuration.cluster == "dev-gcp") setupSwaggerDocApi()
+                evalueringRoute(services, configuration, requestContextService, createDatagrunnlag)
+                reglerRoute()
+                healthRoute("/healthCheck", services.healthService)
+            }
+        } else {
+            routing {
+                naisRoutes(readinessCheck = {
+                    applicationState.initialized
+                }, livenessCheck = { applicationState.running }, collectorRegistry = CollectorRegistry.defaultRegistry)
+                if (services.configuration.cluster == "dev-gcp") setupSwaggerDocApi()
+                evalueringTestRoute(services, configuration, requestContextService, createDatagrunnlag)
+                reglerRoute()
+                healthRoute("/healthCheck", services.healthService)
+            }
         }
-    }
 
-    applicationState.initialized = true
-}
+        applicationState.initialized = true
+    }

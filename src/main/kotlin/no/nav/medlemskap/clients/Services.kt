@@ -43,22 +43,24 @@ class Services(val configuration: Configuration) {
 
     init {
 
-        val stsRestClient = StsRestClient(
-            baseUrl = configuration.sts.restUrl,
-            username = configuration.sts.username,
-            password = configuration.sts.password,
-            apiKey = configuration.sts.apiKey,
-            retry = stsRetry,
-            httpClient = cioHttpClient
-        )
+        val stsRestClient =
+            StsRestClient(
+                baseUrl = configuration.sts.restUrl,
+                username = configuration.sts.username,
+                password = configuration.sts.password,
+                apiKey = configuration.sts.apiKey,
+                retry = stsRetry,
+                httpClient = cioHttpClient,
+            )
 
         val azureAdClient = AzureAdClient(configuration)
 
-        val restClients = RestClients(
-            stsClientRest = stsRestClient,
-            azureAdClient = azureAdClient,
-            configuration = configuration
-        )
+        val restClients =
+            RestClients(
+                stsClientRest = stsRestClient,
+                azureAdClient = azureAdClient,
+                configuration = configuration,
+            )
 
         medlClient = restClients.medl2(configuration.register.medl2BaseUrl)
         medlService = MedlService(medlClient)
@@ -73,16 +75,17 @@ class Services(val configuration: Configuration) {
         oppgaveService = OppgaveService(oppgaveClient)
         udiClient = restClients.udi(configuration.register.udiBaseUrl)
 
-        healthService = HealthService(
-            setOf(
-                // HttpResponseHealthCheck("AaReg", { aaRegClient.healthCheck() }),
-                HttpResponseHealthCheck("Medl", { medlClient.healthCheck() }, healthRetry),
-                // HttpResponseHealthCheck("Oppg", { oppgaveClient.healthCheck() }, healthRetry),
-                HttpResponseHealthCheck("PDL", { pdlClient.healthCheck() }, healthRetry),
-                HttpResponseHealthCheck("SAF", { safClient.healthCheck() }, healthRetry),
-                // HttpResponseHealthCheck("STS", { stsRestClient.healthCheck() }, healthRetry),
+        healthService =
+            HealthService(
+                setOf(
+                    // HttpResponseHealthCheck("AaReg", { aaRegClient.healthCheck() }),
+                    HttpResponseHealthCheck("Medl", { medlClient.healthCheck() }, healthRetry),
+                    // HttpResponseHealthCheck("Oppg", { oppgaveClient.healthCheck() }, healthRetry),
+                    HttpResponseHealthCheck("PDL", { pdlClient.healthCheck() }, healthRetry),
+                    HttpResponseHealthCheck("SAF", { safClient.healthCheck() }, healthRetry),
+                    // HttpResponseHealthCheck("STS", { stsRestClient.healthCheck() }, healthRetry),
+                ),
             )
-        )
 
         healthReporter = HealthReporter(healthService)
     }

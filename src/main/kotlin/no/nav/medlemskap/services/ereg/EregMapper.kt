@@ -7,8 +7,10 @@ import no.nav.medlemskap.domene.arbeidsforhold.Ansatte
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsgiver
 import no.nav.medlemskap.domene.arbeidsforhold.JuridiskEnhet
 
-fun mapOrganisasjonTilArbeidsgiver(organisasjon: Organisasjon, juridiskeEnheter: List<Organisasjon>?): Arbeidsgiver {
-
+fun mapOrganisasjonTilArbeidsgiver(
+    organisasjon: Organisasjon,
+    juridiskeEnheter: List<Organisasjon>?,
+): Arbeidsgiver {
     val ansatte = organisasjon.organisasjonDetaljer?.ansatte
     val konkursStatus = organisasjon.organisasjonDetaljer?.statuser?.map { it -> it?.kode }
     return Arbeidsgiver(
@@ -16,7 +18,7 @@ fun mapOrganisasjonTilArbeidsgiver(organisasjon: Organisasjon, juridiskeEnheter:
         organisasjonsnummer = organisasjon.organisasjonsnummer,
         ansatte = mapAnsatte(ansatte),
         konkursStatus = konkursStatus,
-        juridiskeEnheter = mapJuridiskeEnheter(juridiskeEnheter)
+        juridiskeEnheter = mapJuridiskeEnheter(juridiskeEnheter),
     )
 }
 
@@ -25,7 +27,7 @@ fun mapJuridiskeEnheter(juridiskeEnheter: List<Organisasjon>?): List<JuridiskEnh
         JuridiskEnhet(
             organisasjonsnummer = it.organisasjonsnummer,
             enhetstype = it.organisasjonDetaljer?.enhetstyper?.first()?.enhetstype,
-            antallAnsatte = it.organisasjonDetaljer?.ansatte?.first()?.antall
+            antallAnsatte = it.organisasjonDetaljer?.ansatte?.first()?.antall,
         )
     }
 }
@@ -34,7 +36,7 @@ fun mapAnsatte(ansatte: List<no.nav.medlemskap.clients.ereg.Ansatte>?): List<Ans
     ansatte?.map {
         Ansatte(
             antall = it.antall,
-            gyldighetsperiode = mapGyldighetsperiode(it.gyldighetsperiode)
+            gyldighetsperiode = mapGyldighetsperiode(it.gyldighetsperiode),
         )
     }
 

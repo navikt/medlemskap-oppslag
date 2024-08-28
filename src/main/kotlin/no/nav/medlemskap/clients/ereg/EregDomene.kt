@@ -29,7 +29,7 @@ data class Organisasjonsdetaljer(
     val telefaksnummer: List<Telefonnummer?>?,
     val telefonnummer: List<Telefonnummer?>?,
     val underlagtHjemlandLovgivningForetaksform: List<UnderlagtHjemlandLovgivningForetaksform>?,
-    val inngaarIJuridiskEnheter: List<JuridiskEnhet?>?
+    val inngaarIJuridiskEnheter: List<JuridiskEnhet?>?,
 )
 
 data class UnderlagtHjemlandLovgivningForetaksform(
@@ -38,46 +38,45 @@ data class UnderlagtHjemlandLovgivningForetaksform(
     val bruksperiode: Bruksperiode?,
     val foretaksform: String?,
     val gyldighetsperiode: Gyldighetsperiode?,
-    val landkode: String?
+    val landkode: String?,
 )
 
 data class Status(
     val bruksperiode: Bruksperiode?,
     val gyldighetsperiode: Gyldighetsperiode?,
-    val kode: String?
+    val kode: String?,
 )
 
 data class MVA(
     val registrertIMVA: String?,
     val bruksperiode: Bruksperiode?,
-    val gyldighetsperiode: Gyldighetsperiode?
-
+    val gyldighetsperiode: Gyldighetsperiode?,
 )
 
 data class NAVSpesifikkInformasjon(
     val bruksperiode: Bruksperiode?,
     val erIA: Boolean?,
-    val gyldighetsperiode: Gyldighetsperiode?
+    val gyldighetsperiode: Gyldighetsperiode?,
 )
 
 data class Naering(
     val bruksperiode: Bruksperiode?,
     val gyldighetsperiode: Gyldighetsperiode?,
     val hjelpeenhet: Boolean?,
-    val naeringskode: String?
+    val naeringskode: String?,
 )
 
 data class Internettadresse(
     val adresse: String?,
     val bruksperiode: Bruksperiode?,
-    val gyldighetsperiode: Gyldighetsperiode?
+    val gyldighetsperiode: Gyldighetsperiode?,
 )
 
 data class Telefonnummer(
     val nummer: String?,
     val bruksperiode: Bruksperiode?,
     val gyldighetsperiode: Gyldighetsperiode?,
-    val Telefontype: String?
+    val Telefontype: String?,
 )
 
 data class Hjemlandregistre(
@@ -87,7 +86,7 @@ data class Hjemlandregistre(
     val navn2: String?,
     val navn3: String?,
     val postAdresse: Postadresse?,
-    val registernummer: String?
+    val registernummer: String?,
 )
 
 data class Postadresse(
@@ -99,7 +98,7 @@ data class Postadresse(
     val kommunenr: String?,
     val landkode: String?,
     val postnummer: String?,
-    val poststed: String?
+    val poststed: String?,
 )
 
 data class ForretningsAdresser(
@@ -111,47 +110,45 @@ data class ForretningsAdresser(
     val kommunenr: String?,
     val landkode: String?,
     val postnummer: String?,
-    val poststed: String?
-
+    val poststed: String?,
 )
 
 data class Formaal(
     val bruksperiode: Bruksperiode?,
     val formaal: String?,
-    val gyldighetsperiode: Gyldighetsperiode?
+    val gyldighetsperiode: Gyldighetsperiode?,
 )
 
 data class Epostadresse(
     val adresse: String?,
     val bruksperiode: Bruksperiode?,
-    val gyldighetsperiode: Gyldighetsperiode?
+    val gyldighetsperiode: Gyldighetsperiode?,
 )
 
 data class Enhetstyper(
     val bruksperiode: Bruksperiode?,
     val enhetstype: String?,
-    val gyldighetsperiode: Gyldighetsperiode?
+    val gyldighetsperiode: Gyldighetsperiode?,
 )
 
 data class Ansatte(
     val antall: Int?,
     val bruksperiode: Bruksperiode?,
-    val gyldighetsperiode: Gyldighetsperiode?
+    val gyldighetsperiode: Gyldighetsperiode?,
 ) {
     companion object {
-        fun List<no.nav.medlemskap.domene.arbeidsforhold.Ansatte>.finnesMindreEnn(tall: Int) =
-            this.filter { it.antall ?: 0 < tall }
+        fun List<no.nav.medlemskap.domene.arbeidsforhold.Ansatte>.finnesMindreEnn(tall: Int) = this.filter { it.antall ?: 0 < tall }
     }
 }
 
 data class Bruksperiode(
     val fom: LocalDate?,
-    val tom: LocalDate?
+    val tom: LocalDate?,
 )
 
 data class Gyldighetsperiode(
     val fom: LocalDate?,
-    val tom: LocalDate?
+    val tom: LocalDate?,
 )
 
 data class Organisasjon(
@@ -160,10 +157,9 @@ data class Organisasjon(
     val organisasjonsnummer: String?,
     val type: String?,
     val bestaarAvOrganisasjonsledd: List<BestaarAvOrganisasjonsledd?>?,
-    val inngaarIJuridiskEnheter: List<JuridiskEnhet?>?
+    val inngaarIJuridiskEnheter: List<JuridiskEnhet?>?,
 ) {
     fun getOrganisasjonsnumreJuridiskeEnheter(): List<String> {
-
         val orgnumre = ArrayList<String>()
         bestaarAvOrganisasjonsledd?.forEach { p ->
             p?.organisasjonsledd?.organisasjonsleddOver?.forEach { r ->
@@ -178,23 +174,23 @@ data class Organisasjon(
 }
 
 data class BestaarAvOrganisasjonsledd(
-    val organisasjonsledd: Organisasjonsledd?
+    val organisasjonsledd: Organisasjonsledd?,
 )
 
 data class Organisasjonsledd(
-    val organisasjonsleddOver: List<OrganisasjonsleddOver?>?
+    val organisasjonsleddOver: List<OrganisasjonsleddOver?>?,
 )
 
 data class OrganisasjonsleddOver(
-    val organisasjonsledd: OrganisasjonsleddOverOrganisasjon?
+    val organisasjonsledd: OrganisasjonsleddOverOrganisasjon?,
 )
 
 data class OrganisasjonsleddOverOrganisasjon(
-    val inngaarIJuridiskEnheter: List<JuridiskEnhet?>?
+    val inngaarIJuridiskEnheter: List<JuridiskEnhet?>?,
 )
 
 data class JuridiskEnhet(
-    val organisasjonsnummer: String?
+    val organisasjonsnummer: String?,
 )
 
 data class Navn(
@@ -205,11 +201,11 @@ data class Navn(
     val navnelinje3: String?,
     val navnelinje4: String?,
     val navnelinje5: String?,
-    val redigertnavn: String?
+    val redigertnavn: String?,
 )
 
 enum class Organisasjonstype {
     VIRKSOMHET,
     JURDISKENHET,
-    ORGANISASJONSLEDD
+    ORGANISASJONSLEDD,
 }

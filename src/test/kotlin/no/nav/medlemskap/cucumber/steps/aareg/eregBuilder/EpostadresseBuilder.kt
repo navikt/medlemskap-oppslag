@@ -14,6 +14,6 @@ class EpostadresseBuilder {
         Epostadresse(
             adresse = String(),
             bruksperiode = bruksperiode,
-            gyldighetsperiode = gyldighetsperiode
+            gyldighetsperiode = gyldighetsperiode,
         )
 }

@@ -13,22 +13,22 @@ class ReglerForTredjelandsborgerFamilie(
     val periode: InputPeriode,
     ytelse: Ytelse,
     regelFactory: RegelFactory,
-    overstyrteRegler: Map<RegelId, Svar>
+    overstyrteRegler: Map<RegelId, Svar>,
 ) : Regler(ytelse, regelFactory, overstyrteRegler) {
-
     override fun hentHovedflyt(): Regelflyt {
+        val erEktefelleEOSborgerFlyt =
+            lagRegelflyt(
+                regel = hentRegel(REGEL_29),
+                hvisJa = Regelflyt.regelflytJa(ytelse, REGEL_TREDJELANDSBORGER_FAMILIE),
+                hvisNei = Regelflyt.regelflytJa(ytelse, REGEL_TREDJELANDSBORGER_FAMILIE),
+            )
 
-        val erEktefelleEOSborgerFlyt = lagRegelflyt(
-            regel = hentRegel(REGEL_29),
-            hvisJa = Regelflyt.regelflytJa(ytelse, REGEL_TREDJELANDSBORGER_FAMILIE),
-            hvisNei = Regelflyt.regelflytJa(ytelse, REGEL_TREDJELANDSBORGER_FAMILIE)
-        )
-
-        val harBrukerEktefelleFlyt = lagRegelflyt(
-            regel = hentRegel(REGEL_28),
-            hvisJa = erEktefelleEOSborgerFlyt,
-            hvisNei = Regelflyt.regelflytJa(ytelse, REGEL_TREDJELANDSBORGER_FAMILIE)
-        )
+        val harBrukerEktefelleFlyt =
+            lagRegelflyt(
+                regel = hentRegel(REGEL_28),
+                hvisJa = erEktefelleEOSborgerFlyt,
+                hvisNei = Regelflyt.regelflytJa(ytelse, REGEL_TREDJELANDSBORGER_FAMILIE),
+            )
 
         return harBrukerEktefelleFlyt
     }
@@ -40,7 +40,7 @@ class ReglerForTredjelandsborgerFamilie(
                     periode = periode,
                     ytelse = ytelse,
                     regelFactory = RegelFactory(datagrunnlag),
-                    overstyrteRegler = datagrunnlag.overstyrteRegler
+                    overstyrteRegler = datagrunnlag.overstyrteRegler,
                 )
             }
         }

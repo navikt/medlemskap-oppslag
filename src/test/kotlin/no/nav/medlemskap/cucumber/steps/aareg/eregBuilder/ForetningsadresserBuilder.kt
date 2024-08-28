@@ -26,6 +26,6 @@ class ForetningsadresserBuilder {
             kommunenr = kommunenr,
             landkode = landkode,
             postnummer = postnummer,
-            poststed = poststed
+            poststed = poststed,
         )
 }

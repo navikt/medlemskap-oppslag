@@ -72,15 +72,20 @@ class UdiDomeneSpraakParser {
 
     class BeslutninOmOppholdsrettMapper() : RadMapper<EOSellerEFTAGrunnlagskategoriOppholdsrett> {
         override fun mapRad(rad: Map<String, String>): EOSellerEFTAGrunnlagskategoriOppholdsrett {
-            return EOSellerEFTAGrunnlagskategoriOppholdsrett.valueOf(BasisDomeneParser.parseString(UdiDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT, rad))
+            return EOSellerEFTAGrunnlagskategoriOppholdsrett.valueOf(
+                BasisDomeneParser.parseString(UdiDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSRETT, rad),
+            )
         }
     }
 
     class KategoriOppholdstillatelseMapper() : RadMapper<EOSellerEFTAGrunnlagskategoriOppholdstillatelse> {
         override fun mapRad(rad: Map<String, String>): EOSellerEFTAGrunnlagskategoriOppholdstillatelse {
-            return EOSellerEFTAGrunnlagskategoriOppholdstillatelse.valueOf(BasisDomeneParser.parseString(UdiDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSTILLATELSE, rad))
+            return EOSellerEFTAGrunnlagskategoriOppholdstillatelse.valueOf(
+                BasisDomeneParser.parseString(UdiDomenebegrep.EOS_ELLER_EFTA_KATEGORI_OPPHOLDSTILLATELSE, rad),
+            )
         }
     }
+
     class UavklartMapper() : RadMapper<Uavklart> {
         override fun mapRad(rad: Map<String, String>): Uavklart {
             val uavklart = Uavklart()
@@ -103,6 +108,7 @@ class UdiDomeneSpraakParser {
             return DatatypeFactory.newInstance().newXMLGregorianCalendar(avgjorelseLocalDateTime)
         }
     }
+
     class JaNeiUavklartMapper() : RadMapper<JaNeiUavklart> {
         override fun mapRad(rad: Map<String, String>): JaNeiUavklart {
             return JaNeiUavklart.valueOf(BasisDomeneParser.parseString(UdiDomenebegrep.JA_NEI_UAVKLART, rad))
@@ -168,7 +174,6 @@ class UdiDomeneSpraakParser {
 
     class UttrekkstidspunktMapper() : RadMapper<XMLGregorianCalendar> {
         override fun mapRad(rad: Map<String, String>): XMLGregorianCalendar {
-
             val uttrekkstidpunktLocalDateTime = BasisDomeneParser.parseString(UdiDomenebegrep.UTTREKKSTIDSPUNKT, rad)
             return DatatypeFactory.newInstance().newXMLGregorianCalendar(uttrekkstidpunktLocalDateTime)
         }
@@ -176,7 +181,6 @@ class UdiDomeneSpraakParser {
 
     class EffektueringsdatoMapper() : RadMapper<XMLGregorianCalendar> {
         override fun mapRad(rad: Map<String, String>): XMLGregorianCalendar {
-
             val uttrekkstidpunktLocalDateTime = BasisDomeneParser.parseString(UdiDomenebegrep.EFFEKTUERINGSDATO, rad)
             return DatatypeFactory.newInstance().newXMLGregorianCalendar(uttrekkstidpunktLocalDateTime)
         }
@@ -200,7 +204,7 @@ enum class UdiDomenebegrep(val nøkkel: String) : Domenenøkkel {
     GYLDIG_FRA_OG_MED("Gyldig fra og med"),
     GYLDIG_TIL_OG_MED("Gyldig til og med"),
     UTTREKKSTIDSPUNKT("Uttrekkstidspunkt"),
-    VEDTAKSDATO("Vedtaksdato")
+    VEDTAKSDATO("Vedtaksdato"),
     ;
 
     override fun nøkkel(): String {

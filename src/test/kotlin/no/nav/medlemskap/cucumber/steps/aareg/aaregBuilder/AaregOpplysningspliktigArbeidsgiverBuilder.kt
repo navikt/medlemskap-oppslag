@@ -14,6 +14,6 @@ class AaregOpplysningspliktigArbeidsgiverBuilder {
             type = type,
             organisasjonsnummer = organisasjonsnummer,
             aktoerId = aktoerId,
-            offentligIdent = offentligIdent
+            offentligIdent = offentligIdent,
         )
 }

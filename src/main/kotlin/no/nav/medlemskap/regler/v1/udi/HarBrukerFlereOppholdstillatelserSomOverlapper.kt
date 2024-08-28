@@ -12,11 +12,9 @@ import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 class HarBrukerFlereOppholdstillatelserSomOverlapper(
     ytelse: Ytelse,
     private val oppholdstillatelse: Oppholdstillatelse?,
-    regelId: RegelId = RegelId.REGEL_19_2
+    regelId: RegelId = RegelId.REGEL_19_2,
 ) : BasisRegel(regelId, ytelse) {
-
     override fun operasjon(): Resultat {
-
         if (oppholdstillatelse?.overlapperOppholdsstatusPeriodene() == true) {
             return ja(regelId)
         }
@@ -25,11 +23,10 @@ class HarBrukerFlereOppholdstillatelserSomOverlapper(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerFlereOppholdstillatelserSomOverlapper {
             return HarBrukerFlereOppholdstillatelserSomOverlapper(
                 ytelse = datagrunnlag.ytelse,
-                oppholdstillatelse = datagrunnlag.oppholdstillatelse
+                oppholdstillatelse = datagrunnlag.oppholdstillatelse,
             )
         }
     }

@@ -1,7 +1,6 @@
 package no.nav.medlemskap.regler.common
 
 object Funksjoner {
-
     val List<Any>.antall: Number
         get() = size
 

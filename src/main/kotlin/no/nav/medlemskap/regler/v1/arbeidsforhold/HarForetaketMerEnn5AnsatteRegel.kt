@@ -19,12 +19,13 @@ class HarForetaketMerEnn5AnsatteRegel(
     startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
     private val statsborgerskap: List<Statsborgerskap>,
-    regelId: RegelId = RegelId.REGEL_5
+    regelId: RegelId = RegelId.REGEL_5,
 ) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
-
-        val arbeidsforholdMedMinstEnArbeidsavtaleOver0Stillingsprosent = arbeidsforhold.arbeidsforholdForKontrollPeriodeMedStillingsprosentOver0(kontrollPeriodeForArbeidsforhold)
+        val arbeidsforholdMedMinstEnArbeidsavtaleOver0Stillingsprosent =
+            arbeidsforhold.arbeidsforholdForKontrollPeriodeMedStillingsprosentOver0(
+                kontrollPeriodeForArbeidsforhold,
+            )
 
         val finnesMindreEnn6AnsatteIArbeidsgivernesForetak = arbeidsforholdMedMinstEnArbeidsavtaleOver0Stillingsprosent.antallAnsatteHosArbeidsgivere(kontrollPeriodeForArbeidsforhold) finnesMindreEnn 6
         val finnesMindreEnn6AnsatteIArbeidsgivernesJuridiskeEnheter = arbeidsforholdMedMinstEnArbeidsavtaleOver0Stillingsprosent.antallAnsatteHosArbeidsgiversJuridiskeEnheter(kontrollPeriodeForArbeidsforhold) finnesMindreEnn 6
@@ -37,13 +38,12 @@ class HarForetaketMerEnn5AnsatteRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarForetaketMerEnn5AnsatteRegel {
             return HarForetaketMerEnn5AnsatteRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold,
-                statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap
+                statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap,
             )
         }
     }

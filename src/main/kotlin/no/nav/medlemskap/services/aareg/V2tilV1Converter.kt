@@ -17,7 +17,7 @@ fun List<Arbeidsforhold>.mapTilV1(): List<no.nav.medlemskap.domene.arbeidsforhol
             arbeidsgiver = Arbeidsgiver(null, null, null, null, null),
             arbeidsforholdstype = mapArbeidsforholdstypeTilV1(it.ansettelsesdetaljer.sortedBy { it.rapporteringsmaaneder.fra }.last()),
             arbeidsavtaler = mapAnsettelsesdetaljerTilArbeidsavtaler(it.ansettelsesdetaljer),
-            permisjonPermittering = mapPermisjonPermitteringTilV1(it)
+            permisjonPermittering = mapPermisjonPermitteringTilV1(it),
         )
     }
 }
@@ -25,7 +25,7 @@ fun List<Arbeidsforhold>.mapTilV1(): List<no.nav.medlemskap.domene.arbeidsforhol
 private fun mapAnsettelsesperiodeTilV1(v2: Arbeidsforhold): Periode {
     return Periode(
         fom = v2.ansettelsesperiode.startdato,
-        tom = v2.ansettelsesperiode.sluttdato
+        tom = v2.ansettelsesperiode.sluttdato,
     )
 }
 
@@ -34,9 +34,10 @@ private fun mapUtenlandsoppholdTilV1(v2: Arbeidsforhold): List<Utenlandsopphold>
         Utenlandsopphold(
             landkode = it.land?.kode ?: "null",
             periode = mapUtenlandsoppholdsperiodeTilV1(it),
-            rapporteringsperiode = it.rapporteringsmaaneder?.fra
-                ?: it.rapporteringsmaaneder?.til
-                ?: YearMonth.of(LocalDate.EPOCH.year, LocalDate.EPOCH.month)
+            rapporteringsperiode =
+                it.rapporteringsmaaneder?.fra
+                    ?: it.rapporteringsmaaneder?.til
+                    ?: YearMonth.of(LocalDate.EPOCH.year, LocalDate.EPOCH.month),
         )
     }
 }
@@ -44,7 +45,7 @@ private fun mapUtenlandsoppholdTilV1(v2: Arbeidsforhold): List<Utenlandsopphold>
 private fun mapUtenlandsoppholdsperiodeTilV1(v2: no.nav.medlemskap.clients.aareg.Utenlandsopphold): Periode {
     return Periode(
         fom = v2.startdato,
-        tom = v2.sluttdato
+        tom = v2.sluttdato,
     )
 }
 
@@ -76,7 +77,7 @@ private fun mapAnsettelsesdetaljerTilArbeidsavtaler(ansettelsesdetaljer: List<An
             fartsomraade = null,
             stillingsprosent = it.avtaltStillingsprosent,
             beregnetAntallTimerPrUke = it.antallTimerPrUke,
-            skipstype = null
+            skipstype = null,
         )
     }
 }
@@ -85,8 +86,9 @@ private fun mapPermisjonPermitteringTilV1(v2: Arbeidsforhold): List<PermisjonPer
     val permisjoner = v2.permisjoner?.flatMap { lagPermisjoner(v2.permisjoner) }
     val permittering = v2.permitteringer?.flatMap { lagPermitteringer(v2.permitteringer) }
 
-    if (permisjoner == null || permittering == null)
+    if (permisjoner == null || permittering == null) {
         return listOf()
+    }
 
     return permisjoner.plus(permittering)
 }
@@ -98,7 +100,7 @@ private fun lagPermisjoner(permisjoner: List<no.nav.medlemskap.clients.aareg.Per
             permisjonPermitteringId = it.id ?: "null",
             prosent = it.prosent,
             type = mapPermisjonstypeTilV1(it),
-            varslingskode = it.varsling?.kode
+            varslingskode = it.varsling?.kode,
         )
     }
 }
@@ -110,7 +112,7 @@ private fun lagPermitteringer(permitteringer: List<no.nav.medlemskap.clients.aar
             permisjonPermitteringId = it.id ?: "null",
             prosent = it.prosent,
             type = mapPermisjonstypeTilV1(it),
-            varslingskode = it.varsling?.kode
+            varslingskode = it.varsling?.kode,
         )
     }
 }

@@ -8,7 +8,6 @@ import no.nav.medlemskap.domene.Status
 import java.time.LocalDate
 
 object OppgaverDomeneSpraakParser : BasisDomeneParser() {
-
     fun mapOppgavePrioritet(dataTable: DataTable): Prioritet {
         return mapDataTable(dataTable, PrioritetMapper())[0]
     }
@@ -53,7 +52,7 @@ object OppgaverDomeneSpraakParser : BasisDomeneParser() {
                 aktivDato = parseDato(OppgaveDomenebegrep.AKTIV_DATO, rad),
                 prioritet = DomenespråkParser.parsePrioritet(OppgaveDomenebegrep.PRIORITET, rad),
                 status = DomenespråkParser.parseStatus(Domenebegrep.STATUS, rad),
-                tema = parseValgfriString(OppgaveDomenebegrep.TEMA, rad)
+                tema = parseValgfriString(OppgaveDomenebegrep.TEMA, rad),
             )
         }
     }
@@ -71,7 +70,8 @@ enum class OppgaveDomenebegrep(val nøkkel: String) : Domenenøkkel {
     PRIORITET("Prioritet"),
     PROSENT("Prosent"),
     STATUS("Status"),
-    TEMA("Tema");
+    TEMA("Tema"),
+    ;
 
     override fun nøkkel(): String {
         return nøkkel

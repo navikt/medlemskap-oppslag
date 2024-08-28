@@ -14,6 +14,6 @@ class AnsattBuilder {
         Ansatte(
             antall = antall,
             gyldighetsperiode = gyldighetsperiode,
-            bruksperiode = bruksperiode
+            bruksperiode = bruksperiode,
         )
 }

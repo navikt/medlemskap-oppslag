@@ -9,10 +9,8 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 class DatohjelperTest {
-
     @Test
     fun `to perioder med datoer etter hverandre skal være connected`() {
-
         val nå = LocalDate.now()
         val toDagerSiden: LocalDate = nå.minusDays(2)
         val enDagSiden: LocalDate = nå.minusDays(1)
@@ -27,7 +25,6 @@ class DatohjelperTest {
 
     @Test
     fun `en periode contains sin egen startdato`() {
-
         val nå = LocalDate.now()
         val toDagerSiden: LocalDate = nå.minusDays(2)
         val enDagSiden: LocalDate = nå.minusDays(1)
@@ -40,7 +37,6 @@ class DatohjelperTest {
 
     @Test
     fun `en periode contains sin egen sluttdato`() {
-
         val nå = LocalDate.now()
         val toDagerSiden: LocalDate = nå.minusDays(2)
         val enDagSiden: LocalDate = nå.minusDays(1)
@@ -53,7 +49,6 @@ class DatohjelperTest {
 
     @Test
     fun `en periode med tom fraogmed contains sin egen startdato`() {
-
         val nå = LocalDate.now()
         val enDagSiden: LocalDate = nå.minusDays(1)
 
@@ -64,7 +59,6 @@ class DatohjelperTest {
 
     @Test
     fun `en periode med tom tilogmed contains sin egen sluttdato`() {
-
         val nå = LocalDate.now()
         val toDagerSiden: LocalDate = nå.minusDays(2)
 
@@ -75,7 +69,6 @@ class DatohjelperTest {
 
     @Test
     fun `en periode med tom tilogmed er unbounded`() {
-
         val nå = LocalDate.now()
         val toDagerSiden: LocalDate = nå.minusDays(2)
 

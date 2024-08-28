@@ -24,6 +24,6 @@ class OrganisasjonsnavnBuilder {
             navnelinje3 = navnelinje3,
             navnelinje4 = navnelinje4,
             navnelinje5 = navnelinje5,
-            redigertnavn = redigertnavn
+            redigertnavn = redigertnavn,
         )
 }

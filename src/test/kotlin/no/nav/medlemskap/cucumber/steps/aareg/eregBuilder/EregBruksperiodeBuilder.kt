@@ -10,6 +10,6 @@ class EregBruksperiodeBuilder {
     fun build(): Bruksperiode =
         Bruksperiode(
             fom = fom,
-            tom = tom
+            tom = tom,
         )
 }

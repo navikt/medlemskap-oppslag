@@ -16,28 +16,30 @@ class StsRestClient(
     private val password: String,
     private val httpClient: HttpClient,
     private val apiKey: String,
-    private val retry: Retry? = null
+    private val retry: Retry? = null,
 ) {
     private var cachedOidcToken: Token? = null
     private var cachedSamlToken: Token? = null
 
     suspend fun oidcToken(): String {
         if (cachedOidcToken.shouldBeRenewed()) {
-            cachedOidcToken = runWithRetryAndMetrics<Token>("STS", "TokenV1", retry) {
-                httpClient.get() {
-                    url("$baseUrl/rest/v1/sts/token")
-                    header(HttpHeaders.Authorization, "Basic ${credentials()}")
-                    header("x-nav-apiKey", apiKey)
-                    parameter("grant_type", "client_credentials")
-                    parameter("scope", "openid")
-                }.body()
-            }
+            cachedOidcToken =
+                runWithRetryAndMetrics<Token>("STS", "TokenV1", retry) {
+                    httpClient.get {
+                        url("$baseUrl/rest/v1/sts/token")
+                        header(HttpHeaders.Authorization, "Basic ${credentials()}")
+                        header("x-nav-apiKey", apiKey)
+                        parameter("grant_type", "client_credentials")
+                        parameter("scope", "openid")
+                    }.body()
+                }
         }
 
         return cachedOidcToken!!.token
     }
 
     // Skrur av pga. 401 meldinger i kibana
+
     /*
     suspend fun healthCheck(): HttpResponse {
         return httpClient.options {
@@ -50,18 +52,20 @@ class StsRestClient(
 
     suspend fun samlToken(): String {
         if (cachedSamlToken.shouldBeRenewed()) {
-            cachedSamlToken = runWithRetryAndMetrics<Token>("STS", "SamlTokenV1", retry) {
-                httpClient.get() {
-                    url("$baseUrl/rest/v1/sts/samltoken")
-                    header(HttpHeaders.Authorization, "Basic ${credentials()}")
-                }.body()
-            }
+            cachedSamlToken =
+                runWithRetryAndMetrics<Token>("STS", "SamlTokenV1", retry) {
+                    httpClient.get {
+                        url("$baseUrl/rest/v1/sts/samltoken")
+                        header(HttpHeaders.Authorization, "Basic ${credentials()}")
+                    }.body()
+                }
         }
 
-        val urldecodedBase64 = cachedSamlToken!!.token
-            .replace('-', '+')
-            .replace('_', '/')
-            .plus("=".repeat(cachedSamlToken!!.token.length % 4))
+        val urldecodedBase64 =
+            cachedSamlToken!!.token
+                .replace('-', '+')
+                .replace('_', '/')
+                .plus("=".repeat(cachedSamlToken!!.token.length % 4))
 
         return String(Base64.getDecoder().decode(urldecodedBase64))
     }

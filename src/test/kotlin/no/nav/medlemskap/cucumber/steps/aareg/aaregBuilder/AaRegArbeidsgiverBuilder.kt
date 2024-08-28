@@ -14,7 +14,7 @@ class AaRegArbeidsgiverBuilder {
             type = type,
             organisasjonsnummer = organisasjonsnummer,
             aktoerId = aktoerId,
-            offentligIdent = offentligIdent
+            offentligIdent = offentligIdent,
         )
     }
 }

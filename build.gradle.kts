@@ -48,6 +48,7 @@ plugins {
     id("com.expediagroup.graphql") version "4.0.0" apply false
     id("com.github.ben-manes.versions") version "0.29.0"
     id("org.jetbrains.kotlin.plugin.serialization") version "1.7.10"
+    id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
 }
 
 val githubUser: String by project
@@ -68,6 +69,15 @@ allprojects {
             content {
                 excludeGroup("com.expediagroup")
             }
+        }
+    }
+
+    apply(plugin = "org.jlleitschuh.gradle.ktlint")
+
+    ktlint {
+        filter {
+            exclude("**/generated/**")
+            include("**/kotlin/**")
         }
     }
 
@@ -206,18 +216,17 @@ tasks {
         manifest {
             attributes(
                 mapOf(
-                    "Main-Class" to mainClass
-                )
+                    "Main-Class" to mainClass,
+                ),
             )
         }
     }
 
     test {
         useJUnitPlatform()
-        //Trengs inntil videre for bytebuddy med java 16, som brukes av mockk.
+        // Trengs inntil videre for bytebuddy med java 16, som brukes av mockk.
         jvmArgs = listOf("-Dnet.bytebuddy.experimental=true")
         java.targetCompatibility = JavaVersion.VERSION_20
         java.sourceCompatibility = JavaVersion.VERSION_20
     }
-
 }

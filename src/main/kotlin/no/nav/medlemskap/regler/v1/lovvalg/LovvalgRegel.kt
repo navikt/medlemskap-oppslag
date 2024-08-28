@@ -18,7 +18,7 @@ import java.time.LocalDate
 abstract class LovvalgRegel(
     regelId: RegelId,
     ytelse: Ytelse,
-    val startDatoForYtelse: LocalDate
+    val startDatoForYtelse: LocalDate,
 ) : BasisRegel(regelId, ytelse) {
     val kontrollPeriodeForArbeidsforhold = kontrollPeriodeForArbeidsforhold(startDatoForYtelse)
     val kontrollPeriodeForPersonhistorikk = kontrollPeriodeForPersonhistorikk(startDatoForYtelse)
@@ -26,7 +26,7 @@ abstract class LovvalgRegel(
     protected fun erPersonBosattINorge(
         boadadresse: List<Adresse>,
         postadresseLandkoder: List<String>,
-        midlertidigAdresseLandkoder: List<String>
+        midlertidigAdresseLandkoder: List<String>,
     ): Boolean {
         return boadadresse.brukerHarNorskBostedsadresse() && boadadresse.alleErNorske() &&
             personHarIngenEllerNorskPostadresse(postadresseLandkoder) &&

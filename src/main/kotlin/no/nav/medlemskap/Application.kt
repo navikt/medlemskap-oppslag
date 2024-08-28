@@ -16,7 +16,7 @@ fun main() {
         Thread {
             applicationState.initialized = false
             applicationServer.stop(5000, 5000)
-        }
+        },
     )
 
     applicationServer.start(wait = true)

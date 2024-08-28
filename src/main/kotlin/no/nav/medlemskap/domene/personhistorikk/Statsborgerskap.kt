@@ -9,7 +9,7 @@ data class Statsborgerskap(
     val landkode: String,
     val fom: LocalDate?,
     val tom: LocalDate?,
-    val historisk: Boolean?
+    val historisk: Boolean?,
 ) {
     private val periode = Periode(fom, tom)
 
@@ -18,7 +18,10 @@ data class Statsborgerskap(
     }
 
     companion object {
-        protected fun erBrukerBritiskBorgerUtenAnnetEøsStatsborgerskap(statsborgerskap: List<Statsborgerskap>, kontrollPeriodeForPersonhistorikk: Kontrollperiode): Boolean {
+        protected fun erBrukerBritiskBorgerUtenAnnetEøsStatsborgerskap(
+            statsborgerskap: List<Statsborgerskap>,
+            kontrollPeriodeForPersonhistorikk: Kontrollperiode,
+        ): Boolean {
             if (!statsborgerskap.erBritiskBorger(kontrollPeriodeForPersonhistorikk)) {
                 return false
             }
@@ -42,28 +45,20 @@ data class Statsborgerskap(
                 .toSet()
         }
 
-        infix fun List<Statsborgerskap>.gyldigeStatsborgerskap(
-            kontrollPeriodeForPersonhistorikk: Kontrollperiode
-        ): List<String> {
+        infix fun List<Statsborgerskap>.gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk: Kontrollperiode): List<String> {
             return statsborgerskapFørst(kontrollPeriodeForPersonhistorikk)
                 .filter { statsborgerskapSist(kontrollPeriodeForPersonhistorikk).contains(it) }
         }
 
-        infix fun List<Statsborgerskap>.erSveitsiskBorger(
-            kontrollPeriodeForPersonhistorikk: Kontrollperiode
-        ): Boolean {
+        infix fun List<Statsborgerskap>.erSveitsiskBorger(kontrollPeriodeForPersonhistorikk: Kontrollperiode): Boolean {
             return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Landkode.erSveitsisk(it) }
         }
 
-        infix fun List<Statsborgerskap>.erBritiskBorger(
-            kontrollPeriodeForPersonhistorikk: Kontrollperiode
-        ): Boolean {
+        infix fun List<Statsborgerskap>.erBritiskBorger(kontrollPeriodeForPersonhistorikk: Kontrollperiode): Boolean {
             return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Landkode.erBritisk(it) }
         }
 
-        infix fun List<Statsborgerskap>.erNorskBorger(
-            kontrollPeriodeForPersonhistorikk: Kontrollperiode
-        ): Boolean {
+        infix fun List<Statsborgerskap>.erNorskBorger(kontrollPeriodeForPersonhistorikk: Kontrollperiode): Boolean {
             return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Landkode.erNorsk(it) }
         }
 
@@ -78,15 +73,11 @@ data class Statsborgerskap(
         infix fun Statsborgerskap.harFaattStatsborgerskapIKontrollperiode(kontrollPeriode: Kontrollperiode): Boolean =
             this.periode.fom?.isAfter(kontrollPeriode.fom) == true
 
-        infix fun List<Statsborgerskap>.erNordiskBorger(
-            kontrollPeriodeForPersonhistorikk: Kontrollperiode
-        ): Boolean {
+        infix fun List<Statsborgerskap>.erNordiskBorger(kontrollPeriodeForPersonhistorikk: Kontrollperiode): Boolean {
             return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Landkode.erNordisk(it) }
         }
 
-        infix fun List<Statsborgerskap>.erEøsBorger(
-            kontrollPeriodeForPersonhistorikk: Kontrollperiode
-        ): Boolean {
+        infix fun List<Statsborgerskap>.erEøsBorger(kontrollPeriodeForPersonhistorikk: Kontrollperiode): Boolean {
             return gyldigeStatsborgerskap(kontrollPeriodeForPersonhistorikk).any { Landkode.erEØSland(it) }
         }
 
@@ -98,10 +89,14 @@ data class Statsborgerskap(
         infix fun List<Statsborgerskap>.harEndretSisteÅret(kontrollPeriode: Kontrollperiode): Boolean =
             this.any { erStatsborgerskapetInnenforPerioden(it, kontrollPeriode) }
 
-        private fun erStatsborgerskapetInnenforPerioden(it: Statsborgerskap, kontrollPeriode: Kontrollperiode): Boolean =
-            kontrollPeriode.periode.encloses(Periode(fom = it.fom, tom = it.fom)) || kontrollPeriode.periode.encloses(
-                Periode(fom = it.tom, tom = it.tom)
-            )
+        private fun erStatsborgerskapetInnenforPerioden(
+            it: Statsborgerskap,
+            kontrollPeriode: Kontrollperiode,
+        ): Boolean =
+            kontrollPeriode.periode.encloses(Periode(fom = it.fom, tom = it.fom)) ||
+                kontrollPeriode.periode.encloses(
+                    Periode(fom = it.tom, tom = it.tom),
+                )
 
         fun List<Statsborgerskap>.erAnnenStatsborger(startDatoForYtelse: LocalDate): Boolean {
             val kontrollPeriodeForPersonhistorikk =

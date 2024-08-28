@@ -7,7 +7,6 @@ import org.hamcrest.Matchers.hasSize
 import org.junit.jupiter.api.Test
 
 class HealthReporterTest : ServerTest() {
-
     @Test
     fun testHealthCheckResponse() {
         get("/healthCheck")

@@ -3,7 +3,6 @@ package no.nav.medlemskap.cucumber.steps.udi
 import no.udi.mt_1067_nav_data.v1.*
 
 class HentResultatBuilder {
-
     val hentPersonstatusResultatMedArbeidsadgang: HentPersonstatusResultat =
         HentPersonstatusResultat()
             .withArbeidsadgang(Arbeidsadgang())
@@ -15,8 +14,8 @@ class HentResultatBuilder {
         HentPersonstatusResultat()
             .withGjeldendeOppholdsstatus(
                 GjeldendeOppholdsstatus().withOppholdstillatelseEllerOppholdsPaSammeVilkar(
-                    OppholdstillatelseEllerOppholdsPaSammeVilkar()
-                )
+                    OppholdstillatelseEllerOppholdsPaSammeVilkar(),
+                ),
             )
 
     val hentPersonstatusResultatIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum: HentPersonstatusResultat =
@@ -26,11 +25,11 @@ class HentResultatBuilder {
                     .withIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum(
                         IkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum()
                             .withAvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak(
-                                AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak()
+                                AvslagEllerBortfallAvPOBOSellerTilbakekallEllerFormeltVedtak(),
                             )
                             .withUtvistMedInnreiseForbud(UtvistMedInnreiseForbud())
-                            .withOvrigIkkeOpphold(OvrigIkkeOpphold())
-                    )
+                            .withOvrigIkkeOpphold(OvrigIkkeOpphold()),
+                    ),
             )
 
     val hentPersonstatusResultatEOSellerEFTABeslutningOmOppholdsrett: HentPersonstatusResultat =
@@ -39,8 +38,8 @@ class HentResultatBuilder {
                 GjeldendeOppholdsstatus()
                     .withEOSellerEFTAOpphold(
                         EOSellerEFTAOpphold()
-                            .withEOSellerEFTABeslutningOmOppholdsrett(EOSellerEFTABeslutningOmOppholdsrett())
-                    )
+                            .withEOSellerEFTABeslutningOmOppholdsrett(EOSellerEFTABeslutningOmOppholdsrett()),
+                    ),
             )
 
     val hentPersonstatusResultatEOSellerEFTAOppholdstillatelse: HentPersonstatusResultat =
@@ -49,8 +48,8 @@ class HentResultatBuilder {
                 GjeldendeOppholdsstatus()
                     .withEOSellerEFTAOpphold(
                         EOSellerEFTAOpphold()
-                            .withEOSellerEFTAOppholdstillatelse(EOSellerEFTAOppholdstillatelse())
-                    )
+                            .withEOSellerEFTAOppholdstillatelse(EOSellerEFTAOppholdstillatelse()),
+                    ),
             )
 
     val hentPersonstatusResultatEOSellerEFTAVarigOppholdsrett: HentPersonstatusResultat =
@@ -59,7 +58,7 @@ class HentResultatBuilder {
                 GjeldendeOppholdsstatus()
                     .withEOSellerEFTAOpphold(
                         EOSellerEFTAOpphold()
-                            .withEOSellerEFTAVedtakOmVarigOppholdsrett(EOSellerEFTAVedtakOmVarigOppholdsrett())
-                    )
+                            .withEOSellerEFTAVedtakOmVarigOppholdsrett(EOSellerEFTAVedtakOmVarigOppholdsrett()),
+                    ),
             )
 }

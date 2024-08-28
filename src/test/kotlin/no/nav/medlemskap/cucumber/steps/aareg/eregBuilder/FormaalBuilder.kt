@@ -14,6 +14,6 @@ class FormaalBuilder {
         Formaal(
             bruksperiode = bruksperiode,
             formaal = formaal,
-            gyldighetsperiode = gyldighetsperiode
+            gyldighetsperiode = gyldighetsperiode,
         )
 }

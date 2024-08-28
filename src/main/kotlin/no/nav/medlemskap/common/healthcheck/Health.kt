@@ -18,13 +18,14 @@ data class UnHealthy(override val name: String, override val result: String) : R
 
 interface HealthCheck {
     val name: String
+
     suspend fun check(): Result
 }
 
 class TryCatchHealthCheck(
     override val name: String,
     private val block: suspend () -> Unit,
-    private val retry: Retry? = null
+    private val retry: Retry? = null,
 ) : HealthCheck {
     override suspend fun check(): Result {
         return try {
@@ -47,19 +48,21 @@ class TryCatchHealthCheck(
 class HttpResponseHealthCheck(
     override val name: String,
     private val block: suspend () -> HttpResponse,
-    private val retry: Retry? = null
+    private val retry: Retry? = null,
 ) : HealthCheck {
     override suspend fun check(): Result {
         return try {
-            val httpResponse = if (retry != null) {
-                retry.executeSuspendFunction { block.invoke() }
-            } else {
-                block.invoke()
-            }
-            if (httpResponse.status.value in 200..299)
+            val httpResponse =
+                if (retry != null) {
+                    retry.executeSuspendFunction { block.invoke() }
+                } else {
+                    block.invoke()
+                }
+            if (httpResponse.status.value in 200..299) {
                 Healthy(name = name, result = "${httpResponse.status.value} (${httpResponse.status.description})")
-            else
+            } else {
                 UnHealthy(name = name, result = "${httpResponse.status.value} (${httpResponse.status.description})")
+            }
         } catch (cause: Throwable) {
             logger.error("Feil under helsesjekk mot $name", cause)
             UnHealthy(name = name, result = cause.message ?: "Unhealthy!")

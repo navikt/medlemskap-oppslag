@@ -13,8 +13,11 @@ import no.nav.medlemskap.services.pdl.mapper.PdlMapper.mapKontaktadresser
 import java.time.LocalDate
 
 object PdlMapperEktefelle {
-
-    fun mapPersonhistorikkTilEktefelle(fnr: String, ektefelle: Person, førsteDatoForYtelse: LocalDate): PersonhistorikkEktefelle {
+    fun mapPersonhistorikkTilEktefelle(
+        fnr: String,
+        ektefelle: Person,
+        førsteDatoForYtelse: LocalDate,
+    ): PersonhistorikkEktefelle {
         val barn = mapFnrBarnTilBrukersEktefelle(ektefelle.forelderBarnRelasjon, førsteDatoForYtelse)
         val statsborgerskap: List<Statsborgerskap> = PdlMapper.mapStatsborgerskap(ektefelle.statsborgerskap)
         val oppholdsadresse = PdlMapper.mapOppholdsadresser(ektefelle.oppholdsadresse)
@@ -27,11 +30,14 @@ object PdlMapperEktefelle {
             statsborgerskap = statsborgerskap,
             oppholdsadresser = oppholdsadresse,
             bostedsadresser = bostedsadresser,
-            kontaktadresser = kontaktadresser
+            kontaktadresser = kontaktadresser,
         )
     }
 
-    private fun mapFnrBarnTilBrukersEktefelle(familierelasjoner: List<ForelderBarnRelasjon>, førsteDatoForYtelse: LocalDate): List<String> {
+    private fun mapFnrBarnTilBrukersEktefelle(
+        familierelasjoner: List<ForelderBarnRelasjon>,
+        førsteDatoForYtelse: LocalDate,
+    ): List<String> {
         return familierelasjoner
             .filter { it.relatertPersonsRolle == ForelderBarnRelasjonRolle.BARN }
             .filter { FodselsnummerValidator.isValid(it.relatertPersonsIdent) }

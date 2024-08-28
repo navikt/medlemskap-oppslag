@@ -4,7 +4,6 @@ import no.nav.medlemskap.clients.medl.MedlMedlemskapsunntak
 import java.time.LocalDate
 
 class MedlMedlemskapsunntakBuilder {
-
     var medlSporingsinformasjonBuilder = MedlSporingsinformasjonBuilder()
 
     var dekning = String()
@@ -38,8 +37,8 @@ class MedlMedlemskapsunntakBuilder {
                 tilOgMed = tilOgMed,
                 unntakId = untakId,
                 sporingsinformasjon = sporingsinformasjon,
-                studieinformasjon = studieinformasjon
-            )
+                studieinformasjon = studieinformasjon,
+            ),
         )
     }
 }

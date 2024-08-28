@@ -17,6 +17,6 @@ class AaRegUtenlandsoppholdBuilder {
             landkode = landkode,
             rapporteringsperiode = rapporteringsperiode,
             sporingsinformasjon = sportingsinformasjon,
-            periode = periode
+            periode = periode,
         )
 }

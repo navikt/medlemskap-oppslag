@@ -8,7 +8,7 @@ class HarBrukerRegistrerteOpplysningerRegel(
     ytelse: Ytelse,
     val regelMedl: Regel,
     val regelJoark: Regel,
-    val regelGsak: Regel
+    val regelGsak: Regel,
 ) : BasisRegel(RegelId.REGEL_OPPLYSNINGER, ytelse) {
     override fun operasjon(): Resultat {
         return Regler.minstEnAvDisse(regelMedl, regelJoark, regelGsak)
@@ -20,7 +20,7 @@ class HarBrukerRegistrerteOpplysningerRegel(
                 ytelse = datagrunnlag.ytelse,
                 regelMedl = FinnesOpplysningerIMedlRegel.fraDatagrunnlag(datagrunnlag).regel,
                 regelJoark = FinnesOpplysningerIJoarkRegel.fraDatagrunnlag(datagrunnlag).regel,
-                regelGsak = FinnesOpplysningerIGosysRegel.fraDatagrunnlag(datagrunnlag).regel
+                regelGsak = FinnesOpplysningerIGosysRegel.fraDatagrunnlag(datagrunnlag).regel,
             )
         }
     }

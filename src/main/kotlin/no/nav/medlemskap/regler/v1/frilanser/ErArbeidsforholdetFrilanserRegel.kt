@@ -16,9 +16,8 @@ class ErArbeidsforholdetFrilanserRegel(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    regelId: RegelId = RegelId.REGEL_17_1
+    regelId: RegelId = RegelId.REGEL_17_1,
 ) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
         return when {
             arbeidsforhold.arbeidsforholdForYrkestype(kontrollPeriodeForArbeidsforhold)
@@ -28,12 +27,11 @@ class ErArbeidsforholdetFrilanserRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErArbeidsforholdetFrilanserRegel {
             return ErArbeidsforholdetFrilanserRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
-                arbeidsforhold = datagrunnlag.arbeidsforhold
+                arbeidsforhold = datagrunnlag.arbeidsforhold,
             )
         }
     }

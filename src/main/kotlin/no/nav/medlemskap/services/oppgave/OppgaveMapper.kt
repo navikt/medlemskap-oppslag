@@ -13,7 +13,7 @@ fun mapOppgaveResultat(oppgaver: List<OppgOppgave>): List<Oppgave> {
             aktivDato = it.aktivDato,
             prioritet = mapPrioritert(it),
             status = mapStatus(it),
-            tema = it.tema
+            tema = it.tema,
         )
     }
 }

@@ -16,33 +16,35 @@ class ReglerForNorskeStatsborgere(
     val periode: InputPeriode,
     ytelse: Ytelse,
     regelFactory: RegelFactory,
-    overstyrteRegler: Map<RegelId, Svar>
+    overstyrteRegler: Map<RegelId, Svar>,
 ) : Regler(ytelse, regelFactory, overstyrteRegler) {
-
     override fun hentHovedflyt(): Regelflyt {
-
-        val harBrukerJobbet25ProsentEllerMerFlyt = lagRegelflyt(
-            regel = hentRegel(REGEL_12),
-            hvisJa = regelflytJa(ytelse, REGEL_NORSK),
-            hvisNei = regelflytUavklart(ytelse, REGEL_NORSK)
-        )
-        val harBrukerJobbetUtenforNorgeFlyt = lagRegelflyt(
-            regel = hentRegel(RegelId.REGEL_9),
-            hvisJa = regelflytUavklart(ytelse, REGEL_NORSK),
-            hvisNei = harBrukerJobbet25ProsentEllerMerFlyt
-        )
+        val harBrukerJobbet25ProsentEllerMerFlyt =
+            lagRegelflyt(
+                regel = hentRegel(REGEL_12),
+                hvisJa = regelflytJa(ytelse, REGEL_NORSK),
+                hvisNei = regelflytUavklart(ytelse, REGEL_NORSK),
+            )
+        val harBrukerJobbetUtenforNorgeFlyt =
+            lagRegelflyt(
+                regel = hentRegel(RegelId.REGEL_9),
+                hvisJa = regelflytUavklart(ytelse, REGEL_NORSK),
+                hvisNei = harBrukerJobbet25ProsentEllerMerFlyt,
+            )
 
         return harBrukerJobbetUtenforNorgeFlyt
     }
 
     companion object {
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag, overstyrteRegler: Map<RegelId, Svar> = emptyMap()): ReglerForNorskeStatsborgere {
-
+        fun fraDatagrunnlag(
+            datagrunnlag: Datagrunnlag,
+            overstyrteRegler: Map<RegelId, Svar> = emptyMap(),
+        ): ReglerForNorskeStatsborgere {
             return ReglerForNorskeStatsborgere(
                 periode = datagrunnlag.periode,
                 ytelse = datagrunnlag.ytelse,
                 regelFactory = RegelFactory(datagrunnlag),
-                overstyrteRegler = overstyrteRegler
+                overstyrteRegler = overstyrteRegler,
             )
         }
     }

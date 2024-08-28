@@ -14,9 +14,8 @@ class HarBrukerUtenlandsoppholdIArbeidsforholdet(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    regelId: RegelId = RegelId.REGEL_22
+    regelId: RegelId = RegelId.REGEL_22,
 ) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
         return when {
             arbeidsforhold.harArbeidsforholdIKontrollperiodeUtenlandsopphold(kontrollPeriodeForArbeidsforhold) -> ja(regelId)
@@ -25,12 +24,11 @@ class HarBrukerUtenlandsoppholdIArbeidsforholdet(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerUtenlandsoppholdIArbeidsforholdet {
             return HarBrukerUtenlandsoppholdIArbeidsforholdet(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
-                arbeidsforhold = datagrunnlag.arbeidsforhold
+                arbeidsforhold = datagrunnlag.arbeidsforhold,
             )
         }
     }

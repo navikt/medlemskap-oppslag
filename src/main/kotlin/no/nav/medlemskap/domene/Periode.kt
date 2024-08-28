@@ -7,7 +7,7 @@ import java.time.LocalDate
 
 data class Periode(
     val fom: LocalDate?,
-    val tom: LocalDate?
+    val tom: LocalDate?,
 ) {
     fun erGyldigPeriode(): Boolean {
         return (fomNotNull().isBefore(tomNotNull()) || fomNotNull().isEqual(tomNotNull()))
@@ -57,13 +57,19 @@ data class Periode(
     }
 
     private fun LocalDate.eldsteDato(dato: LocalDate): LocalDate {
-        return if (this.isBefore(dato)) this
-        else dato
+        return if (this.isBefore(dato)) {
+            this
+        } else {
+            dato
+        }
     }
 
     private fun LocalDate.nyesteDato(dato: LocalDate): LocalDate {
-        return if (this.isAfter(dato)) this
-        else dato
+        return if (this.isAfter(dato)) {
+            this
+        } else {
+            dato
+        }
     }
 
     fun erFomOgTomIkkeNull() = this.fom != null && this.tom != null

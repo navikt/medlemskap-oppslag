@@ -12,7 +12,7 @@ import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 
 class FinnesOpplysningerIGosysRegel(
     ytelse: Ytelse,
-    val oppgaver: List<Oppgave> = emptyList()
+    val oppgaver: List<Oppgave> = emptyList(),
 ) : BasisRegel(RegelId.REGEL_B, ytelse) {
     override fun operasjon(): Resultat {
         return when {
@@ -22,11 +22,10 @@ class FinnesOpplysningerIGosysRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): FinnesOpplysningerIGosysRegel {
             return FinnesOpplysningerIGosysRegel(
                 ytelse = datagrunnlag.ytelse,
-                oppgaver = datagrunnlag.oppgaver
+                oppgaver = datagrunnlag.oppgaver,
             )
         }
     }

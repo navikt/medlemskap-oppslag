@@ -5,11 +5,16 @@ import java.time.LocalDateTime
 import java.time.YearMonth
 
 enum class Identtype {
-    AKTORID, FOLKEREGISTERIDENT, ORGANISASJONSNUMMER
+    AKTORID,
+    FOLKEREGISTERIDENT,
+    ORGANISASJONSNUMMER,
 }
 
 enum class Entitet {
-    Arbeidsforhold, Ansettelsesperiode, Permisjon, Permittering
+    Arbeidsforhold,
+    Ansettelsesperiode,
+    Permisjon,
+    Permittering,
 }
 
 data class Ident(
@@ -19,7 +24,7 @@ data class Ident(
 )
 
 data class Identer(
-    val identer: List<Ident>
+    val identer: List<Ident>,
 )
 
 data class Kodeverksentitet(
@@ -29,12 +34,12 @@ data class Kodeverksentitet(
 
 data class Arbeidssted(
     val type: String, // "Underenhet,Person"
-    val identer: List<Ident>
+    val identer: List<Ident>,
 )
 
 data class Opplysningspliktig(
     val type: String, // "Hovedenhet,Person"
-    val identer: List<Ident>
+    val identer: List<Ident>,
 )
 
 data class Ansettelsesperiode(
@@ -42,7 +47,7 @@ data class Ansettelsesperiode(
     val sluttdato: LocalDate?,
     val sluttaarsak: Kodeverksentitet?,
     val varsling: Kodeverksentitet?,
-    val sporingsinformasjon: Sporingsinformasjon?
+    val sporingsinformasjon: Sporingsinformasjon?,
 )
 
 data class Rapporteringsmaaneder(
@@ -65,7 +70,7 @@ data class Ansettelsesdetaljer(
     val sisteStillingsprosentendring: LocalDate?,
     val sisteLoennsendring: LocalDate?,
     val rapporteringsmaaneder: Rapporteringsmaaneder, // v1.gyldighetsperiode
-    val sporingsinformasjon: Sporingsinformasjon?
+    val sporingsinformasjon: Sporingsinformasjon?,
 )
 
 data class Arbeidsforhold(
@@ -90,12 +95,12 @@ data class Arbeidsforhold(
     val sistBekreftet: LocalDateTime,
     val sistEndret: LocalDateTime?,
     val bruksperiode: Bruksperiode,
-    val sporingsinformasjon: Sporingsinformasjon?
+    val sporingsinformasjon: Sporingsinformasjon?,
 )
 
 data class Varsel(
     val entitet: Entitet,
-    val varsling: Kodeverksentitet?
+    val varsling: Kodeverksentitet?,
 )
 
 data class Utenlandsopphold(
@@ -103,7 +108,7 @@ data class Utenlandsopphold(
     val startdato: LocalDate?,
     val sluttdato: LocalDate?,
     val rapporteringsmaaneder: Rapporteringsmaaneder?,
-    val sporingsinformasjon: Sporingsinformasjon?
+    val sporingsinformasjon: Sporingsinformasjon?,
 )
 
 data class TimerMedTimeloenn(
@@ -111,7 +116,7 @@ data class TimerMedTimeloenn(
     val startdato: String?,
     val sluttdato: String?,
     val rapporteringsmaaneder: Rapporteringsmaaneder?,
-    val sporingsinformasjon: Sporingsinformasjon?
+    val sporingsinformasjon: Sporingsinformasjon?,
 )
 
 data class PermisjonPermittering(
@@ -122,12 +127,12 @@ data class PermisjonPermittering(
     val prosent: Double,
     val varsling: Kodeverksentitet?,
     val idHistorikk: List<IdHistorikk>?,
-    val sporingsinformasjon: Sporingsinformasjon?
+    val sporingsinformasjon: Sporingsinformasjon?,
 )
 
 data class IdHistorikk(
     val id: String?,
-    val bruksperiode: Bruksperiode?
+    val bruksperiode: Bruksperiode?,
 )
 
 data class Sporingsinformasjon(
@@ -138,5 +143,5 @@ data class Sporingsinformasjon(
     val endretTidspunkt: LocalDateTime,
     val endretAv: String,
     val endretKilde: String,
-    val endretKildereferanse: String
+    val endretKildereferanse: String,
 )

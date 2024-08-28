@@ -19,7 +19,7 @@ class ErArbeidsforholdUendretRegel(
     startDatoForYtelse: LocalDate,
     private val medlemskap: List<Medlemskap>,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    regelId: RegelId
+    regelId: RegelId,
 ) : MedlemskapRegel(regelId, ytelse, startDatoForYtelse, medlemskap) {
     override fun operasjon(): Resultat {
         return erBrukersArbeidsforholdUendret(regelId)
@@ -47,24 +47,28 @@ class ErArbeidsforholdUendretRegel(
                 ulikeArbeidsforholdMenSammeArbeidsgiver() ||
                     arbeidsforhold.arbeidsforholdForDato(medlemskap.tidligsteFraOgMedDatoForMedl(kontrollPeriodeForMedl)) ==
                     arbeidsforhold.arbeidsforholdForDato(kontrollPeriodeForMedl.tom.plusDays(1))
-                )
+            )
 
     private fun ulikeArbeidsforholdMenSammeArbeidsgiver() =
         (
             arbeidsforhold.arbeidsforholdForDato(medlemskap.tidligsteFraOgMedDatoForMedl(kontrollPeriodeForMedl)) != arbeidsforhold.arbeidsforholdForDato(kontrollPeriodeForMedl.tom) &&
-                arbeidsforhold.arbeidsforholdForDato(medlemskap.tidligsteFraOgMedDatoForMedl(kontrollPeriodeForMedl)).map { it.arbeidsgiver.organisasjonsnummer } ==
+                arbeidsforhold.arbeidsforholdForDato(medlemskap.tidligsteFraOgMedDatoForMedl(kontrollPeriodeForMedl)).map {
+                    it.arbeidsgiver.organisasjonsnummer
+                } ==
                 arbeidsforhold.arbeidsforholdForDato(kontrollPeriodeForMedl.tom.plusDays(1)).map { it.arbeidsgiver.organisasjonsnummer }
-            )
+        )
 
     companion object {
-
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag, regelId: RegelId): ErArbeidsforholdUendretRegel {
+        fun fraDatagrunnlag(
+            datagrunnlag: Datagrunnlag,
+            regelId: RegelId,
+        ): ErArbeidsforholdUendretRegel {
             return ErArbeidsforholdUendretRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 medlemskap = datagrunnlag.medlemskap,
                 arbeidsforhold = datagrunnlag.arbeidsforhold,
-                regelId = regelId
+                regelId = regelId,
             )
         }
     }

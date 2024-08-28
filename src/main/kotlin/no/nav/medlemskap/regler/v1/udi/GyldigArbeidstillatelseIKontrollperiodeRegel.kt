@@ -15,11 +15,9 @@ class GyldigArbeidstillatelseIKontrollperiodeRegel(
     ytelse: Ytelse,
     private val oppholdstillatelse: Oppholdstillatelse?,
     private val startDatoForYtelse: LocalDate,
-    regelId: RegelId = RegelId.REGEL_19_6
+    regelId: RegelId = RegelId.REGEL_19_6,
 ) : BasisRegel(regelId, ytelse) {
-
     override fun operasjon(): Resultat {
-
         val kontrollperiode = Kontrollperiode.kontrollPeriodeForOppholdstillatelse(startDatoForYtelse)
         if (oppholdstillatelse != null &&
             oppholdstillatelse.harGyldigArbeidstillatelseForPeriode(kontrollperiode.periode)
@@ -31,12 +29,11 @@ class GyldigArbeidstillatelseIKontrollperiodeRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): GyldigArbeidstillatelseIKontrollperiodeRegel {
             return GyldigArbeidstillatelseIKontrollperiodeRegel(
                 ytelse = datagrunnlag.ytelse,
                 oppholdstillatelse = datagrunnlag.oppholdstillatelse,
-                startDatoForYtelse = datagrunnlag.startDatoForYtelse
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse,
             )
         }
     }

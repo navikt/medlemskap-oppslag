@@ -19,9 +19,8 @@ data class Journalpost(
     val journalstatus: String?,
     val tema: String?,
     val sak: Sak?,
-    val dokumenter: List<Dokument>?
+    val dokumenter: List<Dokument>?,
 ) {
-
     companion object {
         private val tillatteTemaer = listOf("MED", "UFM", "TRY")
 
@@ -41,6 +40,7 @@ data class Journalpost(
                 return datoOpprettet.isAfter(firstDayOf2011)
             }
         }
+
         fun String.asLocalDatetime(): LocalDateTime {
             return try {
                 LocalDateTime.parse(this, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
@@ -49,8 +49,7 @@ data class Journalpost(
             }
         }
 
-        fun List<Journalpost>.finnesDokumenterMedTillatteTeamer(): Boolean =
-            this.dokumenterMedTillatteTemaer().isNotEmpty()
+        fun List<Journalpost>.finnesDokumenterMedTillatteTeamer(): Boolean = this.dokumenterMedTillatteTemaer().isNotEmpty()
 
         fun List<Journalpost>.dokumenterMedTillatteTemaer(): List<Journalpost> =
 
@@ -69,19 +68,23 @@ data class Journalpost(
         fun List<Journalpost>.filtrerVekkGamleUrelevanteDokumenter(): List<Journalpost> {
             return this.filter { it.harJournalFortDatoEtter(LocalDateTime.of(2011, Month.JANUARY, 1, 0, 0)) }
         }
+
         fun List<Journalpost>.filtrervekkDokumenterMedJournalDatofør(dato: LocalDateTime): List<Journalpost> {
             return this.filter { it.harJournalFortDatoEtter(dato) }
         }
+
         fun List<Journalpost>.filtrerVekkGamleMEDjournalposterBasertPaaNyesteMELsak(): List<Journalpost> {
             var nyesteDato: LocalDateTime? = null
 
-            if (this.any { it.datoOpprettet == "null" || it.datoOpprettet.isEmpty() })
+            if (this.any { it.datoOpprettet == "null" || it.datoOpprettet.isEmpty() }) {
                 return this
+            }
 
             this.forEach {
                 val dato = LocalDateTime.parse(it.datoOpprettet)
-                if (it.sak?.fagsakId?.contains("MEL") == true && (nyesteDato == null || dato.isAfter(nyesteDato)))
+                if (it.sak?.fagsakId?.contains("MEL") == true && (nyesteDato == null || dato.isAfter(nyesteDato))) {
                     nyesteDato = LocalDateTime.parse(it.datoOpprettet)
+                }
             }
 
             return this.filterNot { it.tema.equals("MED") && nyesteDato?.isAfter(LocalDateTime.parse(it.datoOpprettet)) == true }
@@ -94,13 +97,14 @@ data class Journalpost(
  */
 data class Dokument(
     val dokumentId: String,
-    val tittel: String?
+    val tittel: String?,
 )
 
 data class RelevantDato(
     val dato: String,
-    val datotype: Datotype
+    val datotype: Datotype,
 )
+
 enum class Datotype {
     DATO_OPPRETTET,
     DATO_SENDT_PRINT,
@@ -110,9 +114,11 @@ enum class Datotype {
     DATO_AVS_RETUR,
     DATO_DOKUMENT,
     DATO_LEST,
+
     /**
      * This is a default enum value that will be used when attempting to deserialize unknown value.
      */
     __UNKNOWN_VALUE,
 }
+
 data class Sak(val fagsakId: String?)

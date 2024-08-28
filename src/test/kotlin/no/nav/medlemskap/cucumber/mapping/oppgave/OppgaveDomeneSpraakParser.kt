@@ -9,7 +9,6 @@ import no.nav.medlemskap.cucumber.RadMapper
 import java.time.LocalDate
 
 class OppgaveDomeneSpraakParser : BasisDomeneParser() {
-
     fun mapAktivDato(dataTable: DataTable): LocalDate {
         return mapDataTable(dataTable, AktivDatoMapper())[0]
     }
@@ -55,7 +54,8 @@ enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
     AKTIV_DATO("AktivDato"),
     PRIORITET("Prioritet"),
     TEMA("Tema"),
-    STATUS("Status");
+    STATUS("Status"),
+    ;
 
     override fun nøkkel(): String {
         return nøkkel

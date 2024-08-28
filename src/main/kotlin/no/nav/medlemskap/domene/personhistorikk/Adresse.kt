@@ -8,7 +8,7 @@ data class Adresse(
     val landkode: String,
     val fom: LocalDate?,
     val tom: LocalDate?,
-    val historisk: Boolean
+    val historisk: Boolean,
 ) {
     private val periode = Periode(fom, tom)
 

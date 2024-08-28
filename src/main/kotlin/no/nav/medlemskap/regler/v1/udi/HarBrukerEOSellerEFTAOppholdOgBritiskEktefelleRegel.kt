@@ -17,9 +17,8 @@ class HarBrukerEOSellerEFTAOppholdOgBritiskEktefelleRegel(
     private val oppholdstillatelse: Oppholdstillatelse?,
     private val dataOmEktefelle: DataOmEktefelle?,
     startDatoForYtelse: LocalDate,
-    regelId: RegelId = RegelId.REGEL_19_4
+    regelId: RegelId = RegelId.REGEL_19_4,
 ) : LovvalgRegel(regelId, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
         if (oppholdstillatelse?.gjeldendeOppholdsstatus?.eosellerEFTAOpphold != null &&
             dataOmEktefelle?.personhistorikkEktefelle?.statsborgerskap?.erBritiskBorger(kontrollPeriodeForPersonhistorikk) == true
@@ -31,13 +30,12 @@ class HarBrukerEOSellerEFTAOppholdOgBritiskEktefelleRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerEOSellerEFTAOppholdOgBritiskEktefelleRegel {
             return HarBrukerEOSellerEFTAOppholdOgBritiskEktefelleRegel(
                 ytelse = datagrunnlag.ytelse,
                 dataOmEktefelle = datagrunnlag.dataOmEktefelle,
                 oppholdstillatelse = datagrunnlag.oppholdstillatelse,
-                startDatoForYtelse = datagrunnlag.startDatoForYtelse
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse,
             )
         }
     }

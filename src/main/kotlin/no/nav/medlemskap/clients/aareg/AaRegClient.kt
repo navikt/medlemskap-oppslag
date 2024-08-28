@@ -19,19 +19,23 @@ class AaRegClient(
     private val httpClient: HttpClient,
     private val configuration: Configuration,
     private val aaRegApiKey: String,
-    private val retry: Retry? = null
+    private val retry: Retry? = null,
 ) {
-
     companion object {
         private val logger = KotlinLogging.logger { }
         private const val IKKE_EKSISTERENDE_FNR = "01010100000"
     }
 
-    suspend fun hentArbeidsforhold(fnr: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<AaRegArbeidsforhold> {
+    suspend fun hentArbeidsforhold(
+        fnr: String,
+        callId: String,
+        fraOgMed: LocalDate? = null,
+        tilOgMed: LocalDate? = null,
+    ): List<AaRegArbeidsforhold> {
         val token = azureAdClient.hentToken(configuration.register.aaregScope)
         return runCatching {
             runWithRetryAndMetrics("AaReg", "ArbeidsforholdV1", retry) {
-                httpClient.get() {
+                httpClient.get {
                     url("$baseUrl/v1/arbeidstaker/arbeidsforhold")
                     header(HttpHeaders.Authorization, "Bearer ${token.token}")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
@@ -58,15 +62,20 @@ class AaRegClient(
                     }
                     else -> throw error
                 }
-            }
+            },
         )
     }
 
-    suspend fun hentArbeidsforholdV2(fnr: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<no.nav.medlemskap.clients.aareg.Arbeidsforhold> {
+    suspend fun hentArbeidsforholdV2(
+        fnr: String,
+        callId: String,
+        fraOgMed: LocalDate? = null,
+        tilOgMed: LocalDate? = null,
+    ): List<no.nav.medlemskap.clients.aareg.Arbeidsforhold> {
         val token = azureAdClient.hentToken(configuration.register.aaregScope)
         return runCatching {
             runWithRetryAndMetrics("AaReg", "ArbeidsforholdV2", retry) {
-                httpClient.get() {
+                httpClient.get {
                     url("$baseUrl/v2/arbeidstaker/arbeidsforhold")
                     header(HttpHeaders.Authorization, "Bearer ${token.token}")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
@@ -92,11 +101,12 @@ class AaRegClient(
                     }
                     else -> throw error
                 }
-            }
+            },
         )
     }
 
     // Deaktivert pga. closed channel exceptions
+
     /*
     suspend fun healthCheck(): HttpResponse {
         return httpClient.get {

@@ -5,7 +5,6 @@ import no.nav.medlemskap.clients.ereg.Organisasjon
 import java.time.LocalDate
 
 class OrganisasjonsDetaljerBuilder {
-
     var bruksperiodeBuilder = EregBruksperiodeBuilder()
     var gyldighetsperiodeBuilder = EregGyldighetsperiodeBuilder()
     var ansattBuilder = AnsattBuilder()
@@ -79,6 +78,6 @@ class OrganisasjonsDetaljerBuilder {
             postAdresse = postAdresse,
             telefaksnummer = telefaksnummer,
             inngaarIJuridiskEnheter = inngaarIJuridiskEnheter,
-            underlagtHjemlandLovgivningForetaksform = underlagtHjemlandLovgivningForetaksform
+            underlagtHjemlandLovgivningForetaksform = underlagtHjemlandLovgivningForetaksform,
         )
 }

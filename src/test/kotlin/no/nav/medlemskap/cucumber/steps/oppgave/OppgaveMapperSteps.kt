@@ -80,7 +80,7 @@ class OppgaveMapperSteps : No {
                 versjon = versjon,
                 tilordnetRessurs = tilordnetRessurs,
                 tema = tema,
-                beskrivelse = beskrivelse
+                beskrivelse = beskrivelse,
             )
         }
     }

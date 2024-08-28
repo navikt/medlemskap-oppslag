@@ -10,6 +10,6 @@ class AaRegBruksperiodeBuilder {
     fun build(): AaRegBruksperiode =
         AaRegBruksperiode(
             fom = fom,
-            tom = tom
+            tom = tom,
         )
 }

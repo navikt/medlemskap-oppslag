@@ -14,24 +14,28 @@ import no.nav.medlemskap.regler.v1.RegelFactory
 class ReglerForHovedsakligArbeidstaker(
     ytelse: Ytelse,
     regelFactory: RegelFactory,
-    overstyrteRegler: Map<RegelId, Svar>
+    overstyrteRegler: Map<RegelId, Svar>,
 ) : Regler(ytelse, regelFactory, overstyrteRegler) {
     override fun hentHovedflyt(): Regelflyt {
-        val hovedsakligArbeidstakerFlyt = lagRegelflyt(
-            regel = hentRegel(RegelId.REGEL_18),
-            hvisJa = regelflytJa(ytelse, REGEL_HOVEDSAKLIG_ARBEIDSTAKER),
-            hvisNei = konklusjonUavklart(ytelse, REGEL_HOVEDSAKLIG_ARBEIDSTAKER)
-        )
+        val hovedsakligArbeidstakerFlyt =
+            lagRegelflyt(
+                regel = hentRegel(RegelId.REGEL_18),
+                hvisJa = regelflytJa(ytelse, REGEL_HOVEDSAKLIG_ARBEIDSTAKER),
+                hvisNei = konklusjonUavklart(ytelse, REGEL_HOVEDSAKLIG_ARBEIDSTAKER),
+            )
 
         return hovedsakligArbeidstakerFlyt
     }
 
     companion object {
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag, overstyrteRegler: Map<RegelId, Svar> = emptyMap()): ReglerForHovedsakligArbeidstaker {
+        fun fraDatagrunnlag(
+            datagrunnlag: Datagrunnlag,
+            overstyrteRegler: Map<RegelId, Svar> = emptyMap(),
+        ): ReglerForHovedsakligArbeidstaker {
             return ReglerForHovedsakligArbeidstaker(
                 ytelse = datagrunnlag.ytelse,
                 regelFactory = RegelFactory(datagrunnlag),
-                overstyrteRegler = overstyrteRegler
+                overstyrteRegler = overstyrteRegler,
             )
         }
     }

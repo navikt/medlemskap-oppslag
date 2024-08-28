@@ -19,18 +19,23 @@ class ErBrukerBosattINorgeRegel(
     val bostedsadresser: List<Adresse>,
     val oppholdsadresser: List<Adresse>,
     ytelse: Ytelse,
-    startDatoForYtelse: LocalDate
+    startDatoForYtelse: LocalDate,
 ) : LovvalgRegel(REGEL_10, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
         val landkoderBostedsadresser = bostedsadresser.landkodeTilAdresserForKontrollPeriode(kontrollPeriodeForPersonhistorikk)
-        val kontaktadresserLandkoder = kontaktadresser.landkodeForIkkeHistoriskeAdresserForKontrollperiode(kontrollPeriodeForPersonhistorikk)
-        val oppholsadresserLandkoder = oppholdsadresser.landkodeForIkkeHistoriskeAdresserForKontrollperiode(kontrollPeriodeForPersonhistorikk)
+        val kontaktadresserLandkoder =
+            kontaktadresser.landkodeForIkkeHistoriskeAdresserForKontrollperiode(
+                kontrollPeriodeForPersonhistorikk,
+            )
+        val oppholsadresserLandkoder =
+            oppholdsadresser.landkodeForIkkeHistoriskeAdresserForKontrollperiode(
+                kontrollPeriodeForPersonhistorikk,
+            )
 
         return when {
             landkoderBostedsadresser.erIkkeTom() && landkoderBostedsadresser.all { Landkode.erNorsk(it) } &&
-                (kontaktadresserLandkoder.all { Landkode.erNorsk(it) } || kontaktadresserLandkoder.erTom())
-                && (oppholsadresserLandkoder.all { Landkode.erNorsk(it) } || oppholsadresserLandkoder.erTom()) -> ja(regelId)
+                (kontaktadresserLandkoder.all { Landkode.erNorsk(it) } || kontaktadresserLandkoder.erTom()) &&
+                (oppholsadresserLandkoder.all { Landkode.erNorsk(it) } || oppholsadresserLandkoder.erTom()) -> ja(regelId)
             else -> nei(regelId)
         }
     }
@@ -42,7 +47,7 @@ class ErBrukerBosattINorgeRegel(
                 bostedsadresser = datagrunnlag.pdlpersonhistorikk.bostedsadresser,
                 oppholdsadresser = datagrunnlag.pdlpersonhistorikk.oppholdsadresser,
                 ytelse = datagrunnlag.ytelse,
-                startDatoForYtelse = datagrunnlag.startDatoForYtelse
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse,
             )
         }
     }

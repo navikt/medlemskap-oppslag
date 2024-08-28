@@ -104,7 +104,7 @@ object DokumentDomeneSpraakParser : BasisDomeneParser() {
                 parseValgfriString(DokumentDomenebegrep.JOURNAL_STATUS, rad),
                 parseValgfriString(DokumentDomenebegrep.TEMA, rad),
                 Sak(parseValgfriString(DokumentDomenebegrep.FAG_SAK_ID, rad)),
-                null
+                null,
             )
         }
     }
@@ -122,7 +122,8 @@ object DokumentDomeneSpraakParser : BasisDomeneParser() {
         PROSENT("Prosent"),
         RELATERT_VED_SIVILSTAND("Relatert ved sivilstand"),
         TEMA("Tema"),
-        TITTEL("Tittel");
+        TITTEL("Tittel"),
+        ;
 
         override fun nøkkel(): String {
             return nøkkel

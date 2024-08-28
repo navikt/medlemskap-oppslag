@@ -14,6 +14,6 @@ class MVABuilder {
         MVA(
             registrertIMVA = registrertIMVA,
             bruksperiode = bruksperiode,
-            gyldighetsperiode = gyldighetsperiode
+            gyldighetsperiode = gyldighetsperiode,
         )
 }

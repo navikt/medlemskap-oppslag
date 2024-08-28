@@ -9,10 +9,9 @@ import no.nav.medlemskap.services.pdl.PdlService
 import java.time.LocalDate
 
 class FamilieService(private val aaRegService: AaRegService, private val pdlService: PdlService) {
-
     suspend fun hentDataOmBarn(
         fnrTilBarn: List<String>,
-        callId: String
+        callId: String,
     ): List<DataOmBarn> {
         return fnrTilBarn
             .mapNotNull { pdlService.hentPersonHistorikkTilBarn(it, callId) }
@@ -23,7 +22,7 @@ class FamilieService(private val aaRegService: AaRegService, private val pdlServ
         fnrTilEktefelle: String?,
         callId: String,
         periode: InputPeriode,
-        startDatoForYtelse: LocalDate
+        startDatoForYtelse: LocalDate,
     ): DataOmEktefelle? {
         if (fnrTilEktefelle == null) {
             return null
@@ -31,20 +30,21 @@ class FamilieService(private val aaRegService: AaRegService, private val pdlServ
 
         val personhistorikkEktefelle =
             pdlService.hentPersonHistorikkTilEktefelle(fnrTilEktefelle, startDatoForYtelse, callId) ?: return null
-        val arbeidsforholdEktefelle = try {
-            aaRegService.hentArbeidsforhold(
-                fnr = fnrTilEktefelle,
-                fraOgMed = Arbeidsforhold.fraOgMedDatoForArbeidsforhold(startDatoForYtelse),
-                tilOgMed = periode.tom,
-                callId = callId
-            )
-        } catch (t: Exception) {
-            emptyList<Arbeidsforhold>()
-        }
+        val arbeidsforholdEktefelle =
+            try {
+                aaRegService.hentArbeidsforhold(
+                    fnr = fnrTilEktefelle,
+                    fraOgMed = Arbeidsforhold.fraOgMedDatoForArbeidsforhold(startDatoForYtelse),
+                    tilOgMed = periode.tom,
+                    callId = callId,
+                )
+            } catch (t: Exception) {
+                emptyList<Arbeidsforhold>()
+            }
 
         return DataOmEktefelle(
             personhistorikkEktefelle = personhistorikkEktefelle,
-            arbeidsforholdEktefelle = arbeidsforholdEktefelle
+            arbeidsforholdEktefelle = arbeidsforholdEktefelle,
         )
     }
 }

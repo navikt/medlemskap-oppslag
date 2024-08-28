@@ -15,7 +15,7 @@ class GjeldendeOppholdsstatusBuilder {
             eosellerEFTAOpphold = eosellerEFTAOpphold,
             oppholdstillatelsePaSammeVilkar = oppholdstillatelsePaSammeVilkar,
             uavklart = uavklart,
-            ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum = ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum
+            ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum = ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum,
         )
     }
 }

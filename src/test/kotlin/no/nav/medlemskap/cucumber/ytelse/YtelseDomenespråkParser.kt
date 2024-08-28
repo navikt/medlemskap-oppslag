@@ -11,7 +11,6 @@ import no.nav.medlemskap.domene.Ytelse
 import java.time.LocalDate
 
 object YtelseDomenespråkParser : BasisDomeneParser() {
-
     fun parseYtelse(rad: Map<String, String>): Ytelse {
         return Ytelse.valueOf(verdi(YTELSE.nøkkel(), rad))
     }
@@ -28,7 +27,7 @@ object YtelseDomenespråkParser : BasisDomeneParser() {
         override fun mapRad(rad: Map<String, String>): Kontrollperiode {
             return Kontrollperiode(
                 parseDato(Domenebegrep.FRA_OG_MED_DATO, rad),
-                parseDato(Domenebegrep.TIL_OG_MED_DATO, rad)
+                parseDato(Domenebegrep.TIL_OG_MED_DATO, rad),
             )
         }
     }
@@ -39,9 +38,9 @@ object YtelseDomenespråkParser : BasisDomeneParser() {
                 parseYtelse(rad),
                 InputPeriode(
                     parseDato(Domenebegrep.FRA_OG_MED_DATO, rad),
-                    parseDato(Domenebegrep.TIL_OG_MED_DATO, rad)
+                    parseDato(Domenebegrep.TIL_OG_MED_DATO, rad),
                 ),
-                parseValgfriDato(Domenebegrep.FØRSTE_DAG_FOR_YTELSE, rad)
+                parseValgfriDato(Domenebegrep.FØRSTE_DAG_FOR_YTELSE, rad),
             )
         }
     }
@@ -49,7 +48,7 @@ object YtelseDomenespråkParser : BasisDomeneParser() {
     data class ParametreKontrollperiode(
         val ytelse: Ytelse,
         val iputPeriode: InputPeriode,
-        val førsteDagForYtelse: LocalDate?
+        val førsteDagForYtelse: LocalDate?,
     )
 
     enum class Domenebegrep(val nøkkel: String) : Domenenøkkel {
@@ -57,7 +56,8 @@ object YtelseDomenespråkParser : BasisDomeneParser() {
         FØRSTE_DAG_FOR_YTELSE("Første dag for ytelse"),
         START_DATO_FOR_YTELSE("Start dato for ytelse"),
         TIL_OG_MED_DATO("Til og med dato"),
-        YTELSE("Ytelse");
+        YTELSE("Ytelse"),
+        ;
 
         override fun nøkkel(): String {
             return nøkkel

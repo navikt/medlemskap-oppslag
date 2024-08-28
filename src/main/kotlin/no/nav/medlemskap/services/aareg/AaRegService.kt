@@ -13,9 +13,14 @@ private val logger = KotlinLogging.logger {}
 
 class AaRegService(
     private val aaRegClient: AaRegClient,
-    private val eregClient: EregClient
+    private val eregClient: EregClient,
 ) {
-    suspend fun hentArbeidsforhold(fnr: String, callId: String, fraOgMed: LocalDate, tilOgMed: LocalDate): List<Arbeidsforhold> {
+    suspend fun hentArbeidsforhold(
+        fnr: String,
+        callId: String,
+        fraOgMed: LocalDate,
+        tilOgMed: LocalDate,
+    ): List<Arbeidsforhold> {
         // val arbeidsgiverPerson = ArbeidsgiverPerson(aaRegClient) - Tar ikke hensyn til person-arbeidsgivere inntil videre
 
         val arbeidsforhold = aaRegClient.hentArbeidsforhold(fnr, callId, fraOgMed, tilOgMed)
@@ -34,6 +39,7 @@ class AaRegService(
         }
 
         // Midlertidig fjernet for å minimere tidsbruk
+
         /*
         var arbeidsforholdV2: List<no.nav.medlemskap.clients.aareg.Arbeidsforhold> = listOf()
 
@@ -66,5 +72,5 @@ class AaRegService(
 data class ArbeidsforholdOrganisasjon(
     val arbeidsforhold: AaRegArbeidsforhold,
     val organisasjon: Organisasjon,
-    val juridiskeEnheter: List<Organisasjon>
+    val juridiskeEnheter: List<Organisasjon>,
 )

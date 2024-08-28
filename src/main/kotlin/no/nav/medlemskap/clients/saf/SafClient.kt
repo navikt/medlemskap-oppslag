@@ -26,38 +26,51 @@ class SafClient(
     private val username: String,
     private val httpClient: HttpClient,
     private val safApiKey: String,
-    private val retry: Retry? = null
+    private val retry: Retry? = null,
 ) {
     companion object {
         private val logger = KotlinLogging.logger { }
         private const val ANTALL_JOURNALPOSTER = 10
     }
 
-    suspend fun hentJournaldatav2(fnr: String, callId: String): Dokumenter.Result {
-
+    suspend fun hentJournaldatav2(
+        fnr: String,
+        callId: String,
+    ): Dokumenter.Result {
         return runWithRetryAndMetrics("SAF", "DokumentoversiktBruker", retry) {
-
             val stsToken = stsClient.oidcToken()
-            val dokumenterQuery = Dokumenter(
-                variables = Dokumenter.Variables(
-                    brukerId = BrukerIdInput(id = fnr, type = BrukerIdType.FNR),
-                    foerste = ANTALL_JOURNALPOSTER,
-                    tema = listOf(Tema.MED, Tema.UFM, Tema.TRY),
-                    journalstatuser = listOf(Journalstatus.MOTTATT, Journalstatus.JOURNALFOERT, Journalstatus.FERDIGSTILT, Journalstatus.EKSPEDERT, Journalstatus.UNDER_ARBEID, Journalstatus.RESERVERT, Journalstatus.OPPLASTING_DOKUMENT, Journalstatus.UKJENT)
+            val dokumenterQuery =
+                Dokumenter(
+                    variables =
+                        Dokumenter.Variables(
+                            brukerId = BrukerIdInput(id = fnr, type = BrukerIdType.FNR),
+                            foerste = ANTALL_JOURNALPOSTER,
+                            tema = listOf(Tema.MED, Tema.UFM, Tema.TRY),
+                            journalstatuser =
+                                listOf(
+                                    Journalstatus.MOTTATT,
+                                    Journalstatus.JOURNALFOERT,
+                                    Journalstatus.FERDIGSTILT,
+                                    Journalstatus.EKSPEDERT,
+                                    Journalstatus.UNDER_ARBEID,
+                                    Journalstatus.RESERVERT,
+                                    Journalstatus.OPPLASTING_DOKUMENT,
+                                    Journalstatus.UKJENT,
+                                ),
+                        ),
                 )
 
-            )
-
-            val response: KotlinxGraphQLResponse<Dokumenter.Result> = httpClient.post() {
-                url(baseUrl)
-                setBody(dokumenterQuery)
-                header(HttpHeaders.Authorization, "Bearer $stsToken")
-                header(HttpHeaders.ContentType, ContentType.Application.Json)
-                header(HttpHeaders.Accept, ContentType.Application.Json)
-                header("Nav-Callid", callId)
-                header("Nav-Consumer-Id", username)
-                header("x-nav-apiKey", safApiKey)
-            }.body()
+            val response: KotlinxGraphQLResponse<Dokumenter.Result> =
+                httpClient.post {
+                    url(baseUrl)
+                    setBody(dokumenterQuery)
+                    header(HttpHeaders.Authorization, "Bearer $stsToken")
+                    header(HttpHeaders.ContentType, ContentType.Application.Json)
+                    header(HttpHeaders.Accept, ContentType.Application.Json)
+                    header("Nav-Callid", callId)
+                    header("Nav-Consumer-Id", username)
+                    header("x-nav-apiKey", safApiKey)
+                }.body()
 
             response.errors?.let { errors ->
                 logger.warn { "Fikk følgende feil fra Saf: ${objectMapper.writeValueAsString(errors)}" }

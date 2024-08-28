@@ -14,15 +14,14 @@ class ErBrukerHovedsakligArbeidstakerRegel(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    regelId: RegelId = RegelId.REGEL_18
+    regelId: RegelId = RegelId.REGEL_18,
 ) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
         if (arbeidsforhold.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(
-            51.0,
-            kontrollPeriodeForArbeidsforhold,
-            ytelse
-        )
+                51.0,
+                kontrollPeriodeForArbeidsforhold,
+                ytelse,
+            )
         ) {
             return ja(regelId)
         }
@@ -31,12 +30,11 @@ class ErBrukerHovedsakligArbeidstakerRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErBrukerHovedsakligArbeidstakerRegel {
             return ErBrukerHovedsakligArbeidstakerRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
-                arbeidsforhold = datagrunnlag.arbeidsforhold
+                arbeidsforhold = datagrunnlag.arbeidsforhold,
             )
         }
     }

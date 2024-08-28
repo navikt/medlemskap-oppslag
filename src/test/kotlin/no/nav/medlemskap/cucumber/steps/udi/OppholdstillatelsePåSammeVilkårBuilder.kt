@@ -16,7 +16,7 @@ class OppholdstillatelsePåSammeVilkårBuilder {
             periode,
             type,
             harTillatelse,
-            soknadIkkeAvgjort
+            soknadIkkeAvgjort,
         )
     }
 }

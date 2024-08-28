@@ -10,9 +10,8 @@ import io.prometheus.client.exporter.common.TextFormat
 fun Routing.naisRoutes(
     readinessCheck: () -> Boolean,
     livenessCheck: () -> Boolean = { true },
-    collectorRegistry: CollectorRegistry = CollectorRegistry.defaultRegistry
+    collectorRegistry: CollectorRegistry = CollectorRegistry.defaultRegistry,
 ) {
-
     get("/isAlive") {
         if (livenessCheck()) {
             call.respondText("Alive")
@@ -43,9 +42,11 @@ fun Routing.naisRoutes(
         }
     }
 }
+
 data class Health(val status: Status, val description: String?, val logLink: String?)
+
 enum class Status() {
     OK,
     DOWN,
-    ISSUE
+    ISSUE,
 }

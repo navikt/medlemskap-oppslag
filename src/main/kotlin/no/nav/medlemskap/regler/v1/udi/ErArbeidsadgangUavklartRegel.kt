@@ -13,9 +13,8 @@ import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 class ErArbeidsadgangUavklartRegel(
     ytelse: Ytelse,
     private val oppholdstillatelse: Oppholdstillatelse?,
-    regelId: RegelId = RegelId.REGEL_19_5
+    regelId: RegelId = RegelId.REGEL_19_5,
 ) : BasisRegel(regelId, ytelse) {
-
     override fun operasjon(): Resultat {
         if (oppholdstillatelse?.arbeidsadgang?.arbeidsadgangType == ArbeidsadgangType.UAVKLART) {
             return ja(regelId)
@@ -25,11 +24,10 @@ class ErArbeidsadgangUavklartRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErArbeidsadgangUavklartRegel {
             return ErArbeidsadgangUavklartRegel(
                 ytelse = datagrunnlag.ytelse,
-                oppholdstillatelse = datagrunnlag.oppholdstillatelse
+                oppholdstillatelse = datagrunnlag.oppholdstillatelse,
             )
         }
     }

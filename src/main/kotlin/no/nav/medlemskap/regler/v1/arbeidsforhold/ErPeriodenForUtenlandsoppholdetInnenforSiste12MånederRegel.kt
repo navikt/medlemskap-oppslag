@@ -14,9 +14,8 @@ class ErPeriodenForUtenlandsoppholdetInnenforSiste12MånederRegel(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    regelId: RegelId = RegelId.REGEL_25
+    regelId: RegelId = RegelId.REGEL_25,
 ) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
         return if (arbeidsforhold.erUtenlandsoppholdInnenforKontrollperiode(kontrollPeriodeForArbeidsforhold)) {
             ja(regelId)
@@ -26,12 +25,11 @@ class ErPeriodenForUtenlandsoppholdetInnenforSiste12MånederRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErPeriodenForUtenlandsoppholdetInnenforSiste12MånederRegel {
             return ErPeriodenForUtenlandsoppholdetInnenforSiste12MånederRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
-                arbeidsforhold = datagrunnlag.arbeidsforhold
+                arbeidsforhold = datagrunnlag.arbeidsforhold,
             )
         }
     }

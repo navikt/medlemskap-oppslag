@@ -6,5 +6,5 @@ data class Folkeregistermetadata(
     val ajourholdstidspunkt: LocalDateTime?,
     val gyldighetstidspunkt: LocalDateTime?,
     val opphoerstidspunkt: LocalDateTime?,
-    val aarsak: String?
+    val aarsak: String?,
 )

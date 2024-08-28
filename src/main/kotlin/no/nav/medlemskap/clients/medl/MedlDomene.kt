@@ -17,7 +17,7 @@ data class MedlMedlemskapsunntak(
     val tilOgMed: LocalDate,
     val unntakId: Int,
     val sporingsinformasjon: MedlSporingsinformasjon?,
-    val studieinformasjon: MedlStudieinformasjon?
+    val studieinformasjon: MedlStudieinformasjon?,
 )
 
 data class MedlSporingsinformasjon(
@@ -29,12 +29,12 @@ data class MedlSporingsinformasjon(
     val registrert: LocalDate?,
     val sistEndret: LocalDateTime,
     val sistEndretAv: String,
-    val versjon: String
+    val versjon: String,
 )
 
 data class MedlStudieinformasjon(
     val delstudie: Boolean,
     val soeknadInnvilget: Boolean,
     val statsborgerland: String,
-    val studieland: String?
+    val studieland: String?,
 )

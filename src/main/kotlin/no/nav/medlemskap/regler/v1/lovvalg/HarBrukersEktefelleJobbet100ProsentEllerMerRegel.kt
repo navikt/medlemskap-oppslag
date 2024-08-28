@@ -14,24 +14,25 @@ class HarBrukersEktefelleJobbet100ProsentEllerMerRegel(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val arbeidsforholdEktefelle: List<Arbeidsforhold>,
-    regelId: RegelId = RegelId.REGEL_11_6_1
+    regelId: RegelId = RegelId.REGEL_11_6_1,
 ) : LovvalgRegel(regelId, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
-
         return when {
-            arbeidsforholdEktefelle.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(100.0, kontrollPeriodeForArbeidsforhold, ytelse) -> ja(regelId)
+            arbeidsforholdEktefelle.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(
+                100.0,
+                kontrollPeriodeForArbeidsforhold,
+                ytelse,
+            ) -> ja(regelId)
             else -> nei(regelId)
         }
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukersEktefelleJobbet100ProsentEllerMerRegel {
             return HarBrukersEktefelleJobbet100ProsentEllerMerRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
-                arbeidsforholdEktefelle = datagrunnlag.dataOmEktefelle?.arbeidsforholdEktefelle ?: emptyList()
+                arbeidsforholdEktefelle = datagrunnlag.dataOmEktefelle?.arbeidsforholdEktefelle ?: emptyList(),
             )
         }
     }

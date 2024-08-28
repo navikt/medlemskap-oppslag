@@ -5,7 +5,8 @@ enum class Arbeidsforholdstype(val kodeverdi: String) {
     MARITIMT("maritimtArbeidsforhold"),
     NORMALT("ordinaertArbeidsforhold"),
     FORENKLET("forenkletOppgjoersordning"),
-    ANDRE("pensjonOgAndreTyperYtelserUtenAnsettelsesforhold");
+    ANDRE("pensjonOgAndreTyperYtelserUtenAnsettelsesforhold"),
+    ;
 
     companion object {
         fun fraArbeidsforholdtypeVerdi(arbeidsforholdstypeVerdi: String): Arbeidsforholdstype {

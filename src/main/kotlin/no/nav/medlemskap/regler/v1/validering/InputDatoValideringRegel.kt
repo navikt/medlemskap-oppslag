@@ -13,9 +13,8 @@ import java.time.LocalDate
 class InputDatoValideringRegel(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
-    val statsborgerskap: List<Statsborgerskap>
+    val statsborgerskap: List<Statsborgerskap>,
 ) : LovvalgRegel(RegelId.REGEL_0_1, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
         val førsteGyldigeDato = bestemFørsteGyldigeDato()
 
@@ -45,7 +44,7 @@ class InputDatoValideringRegel(
             return InputDatoValideringRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
-                statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap
+                statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap,
             )
         }
     }

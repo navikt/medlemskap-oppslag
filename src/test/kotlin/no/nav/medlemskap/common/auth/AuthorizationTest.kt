@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test
 
 @Disabled
 class AuthorizationTest : ServerTest() {
-
     @Test
     fun `Gitt kall uten Authorization-header når tjeneste kalles så gis det 401 unauthorized`() {
         given()

@@ -17,7 +17,7 @@ class AaRegAntallTimerForLoennetBuilder {
             antallTimer = antallTimerForTimeloennet,
             periode = periode,
             rapporteringsperiode = rapporteringsperiode,
-            sporingsinformasjon = sporingsinformasjon
+            sporingsinformasjon = sporingsinformasjon,
         )
     }
 }

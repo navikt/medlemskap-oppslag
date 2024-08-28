@@ -15,8 +15,8 @@ class AaregBuilder() {
             ArbeidsforholdOrganisasjon(
                 arbeidsforhold = arbeidsforhold,
                 organisasjon = organisasjon,
-                juridiskeEnheter = juridiskEnhet
-            )
+                juridiskeEnheter = juridiskEnhet,
+            ),
         )
     }
 }

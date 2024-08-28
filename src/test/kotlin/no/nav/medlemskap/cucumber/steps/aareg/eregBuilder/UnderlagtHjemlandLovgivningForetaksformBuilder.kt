@@ -20,6 +20,6 @@ class UnderlagtHjemlandLovgivningForetaksformBuilder {
             bruksperiode = bruksperiode,
             foretaksform = foretaksform,
             gyldighetsperiode = gyldighetsperiode,
-            landkode = landkode
+            landkode = landkode,
         )
 }

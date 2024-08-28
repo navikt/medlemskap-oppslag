@@ -6,5 +6,5 @@ import java.time.YearMonth
 data class Utenlandsopphold(
     val landkode: String,
     val periode: Periode?,
-    val rapporteringsperiode: YearMonth
+    val rapporteringsperiode: YearMonth,
 )

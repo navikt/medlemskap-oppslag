@@ -66,15 +66,18 @@ fun StatusPagesConfig.exceptionHandler() {
     exception<HentPersonstatusFault> { call, cause ->
 
         when (cause.faultInfo.kodeId) {
-            10003 -> call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
-                "Person ikke funnet i UDI-tjenesten"
-            }
-            10623 -> call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
-                "Person er død og finnes ikke i UDI-tjenesten"
-            }
-            else -> call.logErrorAndRespond(cause, HttpStatusCode.ServiceUnavailable) {
-                "Ukjent feil mot UDI tjenesten"
-            }
+            10003 ->
+                call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
+                    "Person ikke funnet i UDI-tjenesten"
+                }
+            10623 ->
+                call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
+                    "Person er død og finnes ikke i UDI-tjenesten"
+                }
+            else ->
+                call.logErrorAndRespond(cause, HttpStatusCode.ServiceUnavailable) {
+                    "Ukjent feil mot UDI tjenesten"
+                }
         }
     }
     exception<GradertAdresseException> { call, cause ->
@@ -112,62 +115,66 @@ fun StatusPagesConfig.exceptionHandler() {
 private suspend inline fun ApplicationCall.logErrorAndRespond(
     cause: Throwable,
     status: HttpStatusCode = HttpStatusCode.InternalServerError,
-    lazyMessage: () -> String
+    lazyMessage: () -> String,
 ) {
-
     val message = lazyMessage()
     logger.error(
         message,
-        kv("stacktrace", cause.stackTraceToString())
+        kv("stacktrace", cause.stackTraceToString()),
     )
     logger.error(cause.stackTraceToString())
-    val response = HttpErrorResponse(
-        url = this.request.uri,
-        cause = cause.toString(),
-        message = message,
-        code = status,
-        callId = getCorrelationId(callId)
-    )
+    val response =
+        HttpErrorResponse(
+            url = this.request.uri,
+            cause = cause.toString(),
+            message = message,
+            code = status,
+            callId = getCorrelationId(callId),
+        )
     this.respond(status, response)
 }
+
 private suspend inline fun ApplicationCall.logWarningAndRespond(
     cause: Throwable,
     status: HttpStatusCode = HttpStatusCode.InternalServerError,
-    lazyMessage: () -> String
+    lazyMessage: () -> String,
 ) {
     val message = lazyMessage()
     logger.warn(
         message,
         kv("cause", cause),
-        kv("callId", callId)
+        kv("callId", callId),
     )
-    val response = HttpErrorResponse(
-        url = this.request.uri,
-        cause = cause.toString(),
-        message = message,
-        code = status,
-        callId = getCorrelationId(callId)
-    )
+    val response =
+        HttpErrorResponse(
+            url = this.request.uri,
+            cause = cause.toString(),
+            message = message,
+            code = status,
+            callId = getCorrelationId(callId),
+        )
     this.respond(status, response)
 }
+
 private suspend inline fun ApplicationCall.logSecureWarningAndRespond(
     cause: Throwable,
     status: HttpStatusCode = HttpStatusCode.InternalServerError,
-    lazyMessage: () -> String
+    lazyMessage: () -> String,
 ) {
     val message = lazyMessage()
     secureLogger.warn(
         message,
         kv("cause", cause),
-        kv("callId", callId)
+        kv("callId", callId),
     )
-    val response = HttpErrorResponse(
-        url = this.request.uri,
-        cause = cause.toString(),
-        message = message,
-        code = status,
-        callId = getCorrelationId(callId)
-    )
+    val response =
+        HttpErrorResponse(
+            url = this.request.uri,
+            cause = cause.toString(),
+            message = message,
+            code = status,
+            callId = getCorrelationId(callId),
+        )
     this.respond(status, response)
 }
 
@@ -176,5 +183,5 @@ internal data class HttpErrorResponse(
     val message: String? = null,
     val cause: String? = null,
     val code: HttpStatusCode = HttpStatusCode.InternalServerError,
-    val callId: CorrelationId? = null
+    val callId: CorrelationId? = null,
 )

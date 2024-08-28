@@ -54,8 +54,8 @@ class PdlClientHentPersonTest {
                     aResponse()
                         .withStatus(HttpStatusCode.OK.value)
                         .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-                        .withBody(pdlResponseNotFound)
-                )
+                        .withBody(pdlResponseNotFound),
+                ),
         )
 
         val pdlClient = createPdlClient(azureAdClient, username)
@@ -63,7 +63,10 @@ class PdlClientHentPersonTest {
         assertEquals("Fant ikke person", pdlResponse.errors?.get(0)?.message)
     }
 
-    private fun createPdlClient(azureAdClient: AzureAdClient, username: String): PdlClient {
+    private fun createPdlClient(
+        azureAdClient: AzureAdClient,
+        username: String,
+    ): PdlClient {
         return PdlClient(server.baseUrl(), azureAdClient, config, username, cioHttpClient, null, "123")
     }
 
@@ -80,8 +83,8 @@ class PdlClientHentPersonTest {
                     aResponse()
                         .withStatus(HttpStatusCode.OK.value)
                         .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-                        .withBody(pdlResponse)
-                )
+                        .withBody(pdlResponse),
+                ),
         )
 
         val pdlClient = createPdlClient(azureAdClient, username)
@@ -91,36 +94,37 @@ class PdlClientHentPersonTest {
         assertEquals("NOR", pdlResponse.data?.hentPerson?.statsborgerskap?.first()?.land)
     }
 
-    val pdlRequestMapping: MappingBuilder = post(urlPathEqualTo("/"))
-        .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
-        .withHeader("Accept", containing("application/json"))
+    val pdlRequestMapping: MappingBuilder =
+        post(urlPathEqualTo("/"))
+            .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
+            .withHeader("Accept", containing("application/json"))
 // .withRequestBody()
 
     val pdlResponseNotFound =
         """
-      {
-            "errors": [
-            {
-                "message": "Fant ikke person",
-                "locations": [
-                {
-                    "line": 2,
-                    "column": 5
-                }
-                ],
-                "path": [
-                "hentPerson"
-                ],
-                "extensions": {
-                "code": "not_found",
-                "classification": "ExecutionAborted"
-            }
-            }
-            ],
-            "data": {
-            "hentPerson": null
-        }
-        }
+        {
+              "errors": [
+              {
+                  "message": "Fant ikke person",
+                  "locations": [
+                  {
+                      "line": 2,
+                      "column": 5
+                  }
+                  ],
+                  "path": [
+                  "hentPerson"
+                  ],
+                  "extensions": {
+                  "code": "not_found",
+                  "classification": "ExecutionAborted"
+              }
+              }
+              ],
+              "data": {
+              "hentPerson": null
+          }
+          }
         """.trimIndent()
 
     val pdlResponse =

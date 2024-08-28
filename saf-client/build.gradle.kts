@@ -8,7 +8,6 @@ plugins {
     kotlin("jvm")
     id("com.expediagroup.graphql")
     id("org.jetbrains.kotlin.plugin.serialization")
-
 }
 
 dependencies {

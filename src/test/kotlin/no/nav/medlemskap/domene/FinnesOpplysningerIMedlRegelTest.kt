@@ -15,28 +15,34 @@ class FinnesOpplysningerIMedlRegelTest {
     @Test
     fun `Regel A skal ikke slå ut for MEDL perioder som er mer en 1 år gamle OG for perioder med status AVSLÅTT `() {
         val fileContent = this::class.java.classLoader.getResource("Regel_A_Invalid_MEDL_Perioder.json").readText(Charsets.UTF_8)
-        val mapper: ObjectMapper = ObjectMapper()
-            .registerKotlinModule()
-            .findAndRegisterModules()
-            .configure(SerializationFeature.INDENT_OUTPUT, true)
-            .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true)
+        val mapper: ObjectMapper =
+            ObjectMapper()
+                .registerKotlinModule()
+                .findAndRegisterModules()
+                .configure(SerializationFeature.INDENT_OUTPUT, true)
+                .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true)
         val datagrunnlag = mapper.readValue<Datagrunnlag>(fileContent)
         var resultat = FinnesOpplysningerIMedlRegel.fraDatagrunnlag(datagrunnlag).utfør()
 
         Assertions.assertEquals(Svar.NEI, resultat.svar)
     }
+
     @Test
     fun `Regel A skal  slå ut for MEDL perioder som IKKE mer en 1 år gamle OG for perioder med status IKKE AVSLÅTT `() {
-        val fileContent = this::class.java.classLoader.getResource("Regel_A_GYLDIG_MEDL_Perioder_i_kontrollPeriode.json").readText(Charsets.UTF_8)
-        val mapper: ObjectMapper = ObjectMapper()
-            .registerKotlinModule()
-            .findAndRegisterModules()
-            .configure(SerializationFeature.INDENT_OUTPUT, true)
-            .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true)
+        val fileContent =
+            this::class.java.classLoader.getResource(
+                "Regel_A_GYLDIG_MEDL_Perioder_i_kontrollPeriode.json",
+            ).readText(Charsets.UTF_8)
+        val mapper: ObjectMapper =
+            ObjectMapper()
+                .registerKotlinModule()
+                .findAndRegisterModules()
+                .configure(SerializationFeature.INDENT_OUTPUT, true)
+                .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true)
         val datagrunnlag = mapper.readValue<Datagrunnlag>(fileContent)
         var resultat = FinnesOpplysningerIMedlRegel.fraDatagrunnlag(datagrunnlag).utfør()
 

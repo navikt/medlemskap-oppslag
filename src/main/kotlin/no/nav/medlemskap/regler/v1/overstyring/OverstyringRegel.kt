@@ -18,9 +18,8 @@ class OverstyringRegel(
     private val brukerInput: Brukerinput,
     startDatoForYtelse: LocalDate,
     private val statsborgerskap: List<Statsborgerskap>,
-    regelId: RegelId = RegelId.REGEL_0_5
+    regelId: RegelId = RegelId.REGEL_0_5,
 ) : LovvalgRegel(regelId, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
         if (!brukerInput.arbeidUtenforNorge &&
             ytelse == Ytelse.SYKEPENGER &&
@@ -33,13 +32,12 @@ class OverstyringRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): OverstyringRegel {
             return OverstyringRegel(
                 ytelse = datagrunnlag.ytelse,
                 brukerInput = datagrunnlag.brukerinput,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
-                statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap
+                statsborgerskap = datagrunnlag.pdlpersonhistorikk.statsborgerskap,
             )
         }
 

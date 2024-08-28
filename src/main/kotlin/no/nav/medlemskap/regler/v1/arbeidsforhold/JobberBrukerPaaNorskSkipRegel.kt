@@ -14,14 +14,14 @@ class JobberBrukerPaaNorskSkipRegel(
     ytelse: Ytelse,
     private val startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    regelId: RegelId = RegelId.REGEL_7_1
+    regelId: RegelId = RegelId.REGEL_7_1,
 ) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
         return when {
-            arbeidsforhold skipsregisterErNOREllerNISOgFartsområdeErInnenriks kontrollPeriodeForArbeidsforhold -> ja(
-                regelId
-            )
+            arbeidsforhold skipsregisterErNOREllerNISOgFartsområdeErInnenriks kontrollPeriodeForArbeidsforhold ->
+                ja(
+                    regelId,
+                )
             else -> nei(regelId)
         }
     }
@@ -31,7 +31,7 @@ class JobberBrukerPaaNorskSkipRegel(
             return JobberBrukerPaaNorskSkipRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
-                arbeidsforhold = datagrunnlag.arbeidsforhold
+                arbeidsforhold = datagrunnlag.arbeidsforhold,
             )
         }
     }

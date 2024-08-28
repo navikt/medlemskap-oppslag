@@ -19,12 +19,13 @@ import no.nav.medlemskap.domene.Request
 
 class LokalWebServer {
     companion object {
-
-        private val configuration = Configuration(
-            azureAd = Configuration.AzureAd(
-                azureAppWellKnownUrl = "http://localhost/"
+        private val configuration =
+            Configuration(
+                azureAd =
+                    Configuration.AzureAd(
+                        azureAppWellKnownUrl = "http://localhost/",
+                    ),
             )
-        )
         private val services = Services(configuration)
         private val openIdConfiguration = AzureAdOpenIdConfiguration("http://localhost", "", "", "")
 
@@ -33,23 +34,23 @@ class LokalWebServer {
         var testDatagrunnlag: Datagrunnlag? = null
 
         fun startServer() {
-
             if (!applicationState.running) {
-                val applicationServer = createHttpServer(
-                    applicationState = applicationState,
-                    useAuthentication = false,
-                    configuration = configuration,
-                    azureAdOpenIdConfiguration = openIdConfiguration,
-                    services = services,
-                    port = 7071,
-                    createDatagrunnlag = ::mockCreateDatagrunnlag
-                )
+                val applicationServer =
+                    createHttpServer(
+                        applicationState = applicationState,
+                        useAuthentication = false,
+                        configuration = configuration,
+                        azureAdOpenIdConfiguration = openIdConfiguration,
+                        services = services,
+                        port = 7071,
+                        createDatagrunnlag = ::mockCreateDatagrunnlag,
+                    )
 
                 Runtime.getRuntime().addShutdownHook(
                     Thread {
                         applicationState.initialized = false
                         applicationServer.stop(5000, 5000)
-                    }
+                    },
                 )
 
                 applicationServer.start()
@@ -59,10 +60,11 @@ class LokalWebServer {
                 RestAssured.baseURI = "http://localhost"
                 RestAssured.basePath = "/"
                 RestAssured.port = 7071
-                RestAssured.config = RestAssuredConfig.config().objectMapperConfig(
-                    ObjectMapperConfig.objectMapperConfig()
-                        .jackson2ObjectMapperFactory { _, _ -> objectMapper }
-                )
+                RestAssured.config =
+                    RestAssuredConfig.config().objectMapperConfig(
+                        ObjectMapperConfig.objectMapperConfig()
+                            .jackson2ObjectMapperFactory { _, _ -> objectMapper },
+                    )
             }
         }
 
@@ -73,8 +75,8 @@ class LokalWebServer {
                     periode = medlemskapsparametre.inputPeriode,
                     brukerinput = medlemskapsparametre.brukerinput,
                     førsteDagForYtelse = medlemskapsparametre.førsteDagForYtelse,
-                    ytelse = medlemskapsparametre.ytelse
-                )
+                    ytelse = medlemskapsparametre.ytelse,
+                ),
             )
         }
 
@@ -114,19 +116,23 @@ class LokalWebServer {
         fun validerKontraktRegler(datagrunnlag: Datagrunnlag): ValidatableResponse {
             val validationFilter = OpenApiValidationFilter("src/main/resources/lovme.yaml")
 
-            val response = given()
-                .filter(validationFilter)
-                .body(datagrunnlag.tilJson())
-                .header(Header("Content-Type", "application/json"))
-                .header(Header("Authorization", "Bearer dummytoken"))
-                .post("regler")
-                .then()
-                .statusCode(200)
+            val response =
+                given()
+                    .filter(validationFilter)
+                    .body(datagrunnlag.tilJson())
+                    .header(Header("Content-Type", "application/json"))
+                    .header(Header("Authorization", "Bearer dummytoken"))
+                    .post("regler")
+                    .then()
+                    .statusCode(200)
 
             return response
         }
 
-        fun testResponsKode(input: String, statusKode: Int): String {
+        fun testResponsKode(
+            input: String,
+            statusKode: Int,
+        ): String {
             return given()
                 .body(input)
                 .header(Header("Content-Type", "application/json"))
@@ -140,13 +146,14 @@ class LokalWebServer {
             request: Request,
             callId: String,
             services: Services,
-            clientId: String?
-        ): Datagrunnlag = runBlocking {
-            if (testDatagrunnlag == null) {
-                throw RuntimeException("testDatagrunnlag er null")
-            }
+            clientId: String?,
+        ): Datagrunnlag =
+            runBlocking {
+                if (testDatagrunnlag == null) {
+                    throw RuntimeException("testDatagrunnlag er null")
+                }
 
-            testDatagrunnlag!!
-        }
+                testDatagrunnlag!!
+            }
     }
 }

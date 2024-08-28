@@ -13,9 +13,8 @@ import java.time.LocalDate
 class ErUnntaketEtterUSAellerCANADAavtaleRegel(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
-    val medlemskap: List<Medlemskap>
+    val medlemskap: List<Medlemskap>,
 ) : MedlemskapRegel(RegelId.REGEL_1_3_3, ytelse, startDatoForYtelse, medlemskap) {
-
     override fun operasjon(): Resultat {
         return when {
             medlemskap.harUSAellerCANunntakiKontrollperiode(kontrollPeriodeForMedl) -> ja(regelId)
@@ -28,7 +27,7 @@ class ErUnntaketEtterUSAellerCANADAavtaleRegel(
             return ErUnntaketEtterUSAellerCANADAavtaleRegel(
                 ytelse = datagrunnlag.ytelse,
                 medlemskap = datagrunnlag.medlemskap,
-                startDatoForYtelse = datagrunnlag.startDatoForYtelse
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse,
             )
         }
     }

@@ -11,12 +11,12 @@ class PeriodeBuilder {
     fun build(): Periode =
         Periode(
             fom = fom,
-            tom = tom
+            tom = tom,
         )
 
     fun buildAaregPeriode(): AaRegPeriode =
         AaRegPeriode(
             fom = fom,
-            tom = tom
+            tom = tom,
         )
 }

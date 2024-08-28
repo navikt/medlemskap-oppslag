@@ -16,7 +16,6 @@ import no.nav.medlemskap.services.pdl.mapper.PdlMapperEktefelle
 import java.time.LocalDate
 
 class PdlMapperSteps : No {
-
     private val pdlDomenespråkParser = PdlDomenespråkParser()
 
     private var pdlPersonBuilder = PdlPersonBuilder()
@@ -167,14 +166,16 @@ class PdlMapperSteps : No {
     }
 
     private fun mapTilPersonhistorikkBarn(): PersonhistorikkBarn {
-        val identBarn = personhistorikk?.forelderBarnRelasjon?.get(0)?.relatertPersonsIdent
-            ?: throw BadRequestException("Ingen fnr registrert på barn i familierelasjoner")
+        val identBarn =
+            personhistorikk?.forelderBarnRelasjon?.get(0)?.relatertPersonsIdent
+                ?: throw BadRequestException("Ingen fnr registrert på barn i familierelasjoner")
         return PdlMapperBarn.mapPersonhistorikkTilBarn(identBarn, pdlPeronBuilderBarn.build())
     }
 
     private fun mapTilPersonhistorikkEktefelle(førsteDatoForYtelse: LocalDate): PersonhistorikkEktefelle {
-        val identEktefelle = personhistorikk?.sivilstand?.get(0)?.relatertVedSivilstand
-            ?: throw BadRequestException("Ingen fnr registrert på ektefelle i sivilstand")
+        val identEktefelle =
+            personhistorikk?.sivilstand?.get(0)?.relatertVedSivilstand
+                ?: throw BadRequestException("Ingen fnr registrert på ektefelle i sivilstand")
         return PdlMapperEktefelle.mapPersonhistorikkTilEktefelle(identEktefelle, pdlPersonBuilderEktefelle.build(), førsteDatoForYtelse)
     }
 
@@ -204,7 +205,7 @@ class PdlMapperSteps : No {
                 innflyttingTilNorge = innflyttingTilNorge,
                 utflyttingFraNorge = utflyttingFraNorge,
                 navn = navn,
-                opphold = emptyList()
+                opphold = emptyList(),
             )
         }
     }

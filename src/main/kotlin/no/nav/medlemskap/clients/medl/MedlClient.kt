@@ -19,16 +19,20 @@ class MedlClient(
     private val azureAdClient: AzureAdClient,
     private val configuration: Configuration,
     private val httpClient: HttpClient,
-    private val retry: Retry? = null
+    private val retry: Retry? = null,
 ) {
-
     private val logger = KotlinLogging.logger { }
 
-    suspend fun hentMedlemskapsunntak(ident: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<MedlMedlemskapsunntak> {
+    suspend fun hentMedlemskapsunntak(
+        ident: String,
+        callId: String,
+        fraOgMed: LocalDate? = null,
+        tilOgMed: LocalDate? = null,
+    ): List<MedlMedlemskapsunntak> {
         val token = azureAdClient.hentToken(configuration.register.medlScope)
         return runCatching {
             runWithRetryAndMetrics<List<MedlMedlemskapsunntak>>("Medl", "MedlemskapsunntakV1", retry) {
-                httpClient.get() {
+                httpClient.get {
                     url("$baseUrl/api/v1/medlemskapsunntak")
                     header(HttpHeaders.Authorization, "Bearer ${token.token}")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
@@ -54,7 +58,7 @@ class MedlClient(
                     }
                     else -> throw error
                 }
-            }
+            },
         )
     }
 

@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import java.time.LocalDate
 
 class OppgaveClientTest {
-
     private val config = Configuration()
 
     companion object {
@@ -55,8 +54,8 @@ class OppgaveClientTest {
                     aResponse()
                         .withStatus(HttpStatusCode.OK.value)
                         .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-                        .withBody(oppgaveResponse)
-                )
+                        .withBody(oppgaveResponse),
+                ),
         )
 
         val oppgaveclient = createOppgaveClient(azureAdClient)
@@ -84,9 +83,8 @@ class OppgaveClientTest {
             oppgaveRequestMapping.willReturn(
                 aResponse()
                     .withStatus(HttpStatusCode.InternalServerError.value)
-                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-
-            )
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString()),
+            ),
         )
 
         val oppgaveclient = createOppgaveClient(azureAdClient)
@@ -106,9 +104,8 @@ class OppgaveClientTest {
             oppgaveRequestMapping.willReturn(
                 aResponse()
                     .withStatus(HttpStatusCode.Forbidden.value)
-                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-
-            )
+                    .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString()),
+            ),
         )
 
         val oppgaveclient = createOppgaveClient(azureAdClient)
@@ -123,14 +120,15 @@ class OppgaveClientTest {
     }
 }
 
-val oppgaveRequestMapping: MappingBuilder = get(urlPathEqualTo("/api/v1/oppgaver"))
-    .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
-    .withHeader("Accept", equalTo("application/json"))
-    .withHeader("X-Correlation-Id", equalTo("123456"))
-    .withQueryParam("aktoerId", equalTo("1234567890"))
-    .withQueryParam("tema", equalTo("MED"))
-    .withQueryParam("tema", equalTo("UFM"))
-    .withQueryParam("tema", equalTo("TRY"))
+val oppgaveRequestMapping: MappingBuilder =
+    get(urlPathEqualTo("/api/v1/oppgaver"))
+        .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
+        .withHeader("Accept", equalTo("application/json"))
+        .withHeader("X-Correlation-Id", equalTo("123456"))
+        .withQueryParam("aktoerId", equalTo("1234567890"))
+        .withQueryParam("tema", equalTo("MED"))
+        .withQueryParam("tema", equalTo("UFM"))
+        .withQueryParam("tema", equalTo("TRY"))
 
 val oppgaveResponse =
     """

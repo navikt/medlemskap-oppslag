@@ -10,9 +10,8 @@ import kotlin.concurrent.fixedRateTimer
 
 class HealthReporter(
     private val healthService: HealthService,
-    frequency: Duration = Duration.ofSeconds(30)
+    frequency: Duration = Duration.ofSeconds(30),
 ) {
-
     private companion object {
         private const val HEALTHY = 0
         private const val UNHEALTHY = 1
@@ -24,20 +23,21 @@ class HealthReporter(
     private val timer: Timer
 
     init {
-        timer = fixedRateTimer(
-            name = "health_reporter",
-            initialDelay = Duration.ofMinutes(1).toMillis(),
-            period = frequency.toMillis()
-        ) {
-            val results = runBlocking { healthService.check() }
-            results.setTotalStatus(totalGauge)
-            results.setClientStatus(clientGauges)
-        }
+        timer =
+            fixedRateTimer(
+                name = "health_reporter",
+                initialDelay = Duration.ofMinutes(1).toMillis(),
+                period = frequency.toMillis(),
+            ) {
+                val results = runBlocking { healthService.check() }
+                results.setTotalStatus(totalGauge)
+                results.setClientStatus(clientGauges)
+            }
 
         Runtime.getRuntime().addShutdownHook(
             Thread {
                 timer.cancel()
-            }
+            },
         )
     }
 

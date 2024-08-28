@@ -15,9 +15,8 @@ import java.time.LocalDate
 class ErBrukersDekningUavklartRegel(
     ytelse: Ytelse,
     val medlemskap: List<Medlemskap>,
-    startDatoForYtelse: LocalDate
+    startDatoForYtelse: LocalDate,
 ) : MedlemskapRegel(RegelId.REGEL_1_6, ytelse, startDatoForYtelse, medlemskap) {
-
     override fun operasjon(): Resultat {
         val gjeldendeDekning = medlemskap.gjeldendeDekning(kontrollPeriodeForMedl)
         val dekning = Dekning.from(gjeldendeDekning)
@@ -29,12 +28,11 @@ class ErBrukersDekningUavklartRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErBrukersDekningUavklartRegel {
             return ErBrukersDekningUavklartRegel(
                 ytelse = datagrunnlag.ytelse,
                 medlemskap = datagrunnlag.medlemskap,
-                startDatoForYtelse = datagrunnlag.startDatoForYtelse
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse,
             )
         }
     }

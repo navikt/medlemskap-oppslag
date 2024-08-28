@@ -16,7 +16,6 @@ import no.nav.medlemskap.regler.v1.udi.*
 import no.nav.medlemskap.regler.v1.validering.InputDatoValideringRegel
 
 class RegelFactory(private val datagrunnlag: Datagrunnlag) {
-
     fun create(regelIdentifikator: String): Regel {
         val regelId = RegelId.fraRegelIdString(regelIdentifikator)
 

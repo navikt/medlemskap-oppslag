@@ -5,7 +5,6 @@ import no.nav.medlemskap.domene.personhistorikk.Adresse
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
 
 class PersonhistorikkEktefelleBuilder {
-
     var ident = String()
     var barn = mutableListOf<String>()
     val statsborgerskap = mutableListOf<Statsborgerskap>()
@@ -20,7 +19,7 @@ class PersonhistorikkEktefelleBuilder {
             statsborgerskap = statsborgerskap,
             bostedsadresser = bostedsadresse,
             kontaktadresser = kontaktadresse,
-            oppholdsadresser = oppholdsadresse
+            oppholdsadresser = oppholdsadresse,
         )
     }
 }

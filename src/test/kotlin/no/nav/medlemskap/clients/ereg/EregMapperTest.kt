@@ -8,10 +8,8 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 class EregMapperTest {
-
     @Test
     fun mapOrganisasjonTilArbeidsgiver() {
-
         val organisasjon = objectMapper.readValue<Organisasjon>(eregHentOrganisasjonResponse)
 
         val mappedArbeidsgiverFraOrganisasjon = mapOrganisasjonTilArbeidsgiver(organisasjon, null)
@@ -27,11 +25,14 @@ class EregMapperTest {
 
     @Test
     fun mapOrganisasjonSomInngaarIJuridiskEnhetTilArbeidsgiver() {
-
-        val organisasjonMedTilknyttetJuridiskEnhet = objectMapper.readValue<Organisasjon>(eregHentOrganisasjonResponseMedInngaarIJuridiskEnhet)
+        val organisasjonMedTilknyttetJuridiskEnhet =
+            objectMapper.readValue<Organisasjon>(
+                eregHentOrganisasjonResponseMedInngaarIJuridiskEnhet,
+            )
         val tilknyttetJuridiskEnhet = objectMapper.readValue<Organisasjon>(juridiskEnhetResponse)
 
-        val mappedArbeidsgiverFraOrganisasjon = mapOrganisasjonTilArbeidsgiver(organisasjonMedTilknyttetJuridiskEnhet, listOf(tilknyttetJuridiskEnhet))
+        val mappedArbeidsgiverFraOrganisasjon =
+            mapOrganisasjonTilArbeidsgiver(organisasjonMedTilknyttetJuridiskEnhet, listOf(tilknyttetJuridiskEnhet))
 
         Assert.assertEquals("873159642", mappedArbeidsgiverFraOrganisasjon.organisasjonsnummer)
         Assert.assertEquals(1, mappedArbeidsgiverFraOrganisasjon.juridiskeEnheter?.size)

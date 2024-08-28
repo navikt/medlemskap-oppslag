@@ -12,9 +12,8 @@ import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 class HarBrukerOppholdPåSammeVilkårFlagg(
     ytelse: Ytelse,
     private val oppholdstillatelse: Oppholdstillatelse?,
-    regelId: RegelId = RegelId.REGEL_19_8
+    regelId: RegelId = RegelId.REGEL_19_8,
 ) : BasisRegel(regelId, ytelse) {
-
     override fun operasjon(): Resultat {
         if (oppholdstillatelse?.gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar?.soknadIkkeAvgjort == true) {
             return ja(regelId)
@@ -24,11 +23,10 @@ class HarBrukerOppholdPåSammeVilkårFlagg(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerOppholdPåSammeVilkårFlagg {
             return HarBrukerOppholdPåSammeVilkårFlagg(
                 ytelse = datagrunnlag.ytelse,
-                oppholdstillatelse = datagrunnlag.oppholdstillatelse
+                oppholdstillatelse = datagrunnlag.oppholdstillatelse,
             )
         }
     }

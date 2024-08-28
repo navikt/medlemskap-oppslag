@@ -33,5 +33,5 @@ enum class YrkeskoderForLuftFart(val styrk: String) {
     PILOT("3143107"),
     FLYKAPTEIN("3143108"),
     FLYSTYRMANN("3143109"),
-    TRAFIKKFLYGER("3143110")
+    TRAFIKKFLYGER("3143110"),
 }

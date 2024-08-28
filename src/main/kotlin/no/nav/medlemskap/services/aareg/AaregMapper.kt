@@ -11,7 +11,10 @@ import no.nav.medlemskap.services.ereg.mapOrganisasjonTilArbeidsgiver
 
 private val logger = KotlinLogging.logger { }
 
-fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, mappedOrganisasjonAsArbeidsgiver: List<Arbeidsgiver>): List<Arbeidsforhold> {
+fun mapAaregResultat(
+    arbeidsforhold: List<AaRegArbeidsforhold>,
+    mappedOrganisasjonAsArbeidsgiver: List<Arbeidsgiver>,
+): List<Arbeidsforhold> {
     return arbeidsforhold.map {
         Arbeidsforhold(
             periode = mapPeriodeFraArbeidsforhold(it),
@@ -20,7 +23,7 @@ fun mapAaregResultat(arbeidsforhold: List<AaRegArbeidsforhold>, mappedOrganisasj
             arbeidsgivertype = mapArbeidsgiverType(it.arbeidsgiver.type),
             arbeidsgiver = mappedOrganisasjonAsArbeidsgiver.first { p -> p.organisasjonsnummer == it.arbeidsgiver.organisasjonsnummer },
             arbeidsavtaler = mapArbeidsAvtaler(it),
-            permisjonPermittering = mapPermisjonsPermittering(it)
+            permisjonPermittering = mapPermisjonsPermittering(it),
         )
     }
 }
@@ -34,10 +37,11 @@ fun mapArbeidsforhold(arbeidsforholdMedOrganisasjon: List<ArbeidsforholdOrganisa
             arbeidsgivertype = mapArbeidsgiverType(it.arbeidsforhold.arbeidsgiver.type),
             arbeidsgiver = mapOrganisasjonTilArbeidsgiver(it.organisasjon, it.juridiskeEnheter),
             arbeidsavtaler = mapArbeidsAvtaler(it.arbeidsforhold),
-            permisjonPermittering = mapPermisjonsPermittering(it.arbeidsforhold)
+            permisjonPermittering = mapPermisjonsPermittering(it.arbeidsforhold),
         )
     }
 }
+
 fun mapPermisjonsPermittering(arbeidsforhold: AaRegArbeidsforhold): List<PermisjonPermittering>? {
     return arbeidsforhold.permisjonPermitteringer?.map {
         try {
@@ -51,7 +55,7 @@ fun mapPermisjonsPermittering(arbeidsforhold: AaRegArbeidsforhold): List<Permisj
             type = PermisjonPermitteringType.fraPermisjonPermitteringVerdi(it.type),
             varslingskode = it.varslingskode,
             permisjonPermitteringId = it.permisjonPermitteringId,
-            prosent = it.prosent
+            prosent = it.prosent,
         )
     }
 }
@@ -65,7 +69,7 @@ fun mapArbeidsgiverType(type: AaRegOpplysningspliktigArbeidsgiverType): Opplysni
 fun mapPeriodeFraArbeidsforhold(arbeidsforhold: AaRegArbeidsforhold): Periode {
     return Periode(
         fom = arbeidsforhold.ansettelsesperiode.periode.fom,
-        tom = arbeidsforhold.ansettelsesperiode.periode.tom
+        tom = arbeidsforhold.ansettelsesperiode.periode.tom,
     )
 }
 
@@ -75,12 +79,11 @@ fun mapArbeidsAvtaler(arbeidsforhold: AaRegArbeidsforhold): List<Arbeidsavtale> 
             periode = mapPeriodeTilArbeidsavtale(it),
             gyldighetsperiode = Periode(it.gyldighetsperiode.fom, it.gyldighetsperiode.tom),
             skipsregister = Skipsregister.fraSkipsregisterVerdi(it.skipsregister),
-
             beregnetAntallTimerPrUke = it.beregnetAntallTimerPrUke,
             stillingsprosent = it.stillingsprosent,
             yrkeskode = it.yrke,
             fartsomraade = Fartsomraade.fraFartsomraadeVerdi(it.fartsomraade),
-            skipstype = Skipstype.fraSkipstypeVerdi(it.skipstype)
+            skipstype = Skipstype.fraSkipstypeVerdi(it.skipstype),
         )
     }
 }
@@ -88,7 +91,7 @@ fun mapArbeidsAvtaler(arbeidsforhold: AaRegArbeidsforhold): List<Arbeidsavtale> 
 fun mapPeriodeTilArbeidsavtale(arbeidsavtale: AaRegArbeidsavtale): Periode {
     return Periode(
         fom = arbeidsavtale.bruksperiode.fom.toLocalDate(),
-        tom = arbeidsavtale.bruksperiode.tom?.toLocalDate()
+        tom = arbeidsavtale.bruksperiode.tom?.toLocalDate(),
     )
 }
 
@@ -97,7 +100,7 @@ fun mapUtenlandsopphold(arbeidsforhold: AaRegArbeidsforhold): List<Utenlandsopph
         Utenlandsopphold(
             landkode = it.landkode,
             periode = mapPeriodeTilUtenlandsopphold(it),
-            rapporteringsperiode = it.rapporteringsperiode
+            rapporteringsperiode = it.rapporteringsperiode,
         )
     }
 }
@@ -105,13 +108,13 @@ fun mapUtenlandsopphold(arbeidsforhold: AaRegArbeidsforhold): List<Utenlandsopph
 fun mapPeriodeTilUtenlandsopphold(utenlandsopphold: AaRegUtenlandsopphold): Periode {
     return Periode(
         fom = utenlandsopphold.periode?.fom,
-        tom = utenlandsopphold.periode?.tom
+        tom = utenlandsopphold.periode?.tom,
     )
 }
 
 fun mapPeriodeTilPermisjonsPermitteringer(permittering: AaRegPermisjonPermittering): Periode {
     return Periode(
         fom = permittering.periode?.fom,
-        tom = permittering.periode?.tom
+        tom = permittering.periode?.tom,
     )
 }

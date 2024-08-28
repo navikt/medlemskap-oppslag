@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test
 import v1.mt_1067_nav.no.udi.HentPersonstatusResponseType
 
 class UdiMapperTest {
-
     @Test
     fun mapUdiResponseTest() {
         val hentPersonstatusResponseTypeObject = readFromTilHentPersonstatusResponseTypeString()
@@ -25,21 +24,29 @@ class UdiMapperTest {
 
         val oppholdstillatelsePeriode =
             resultat.gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar.oppholdstillatelsePeriode
-        Assertions.assertEquals(mappedOppholdstillatelser.gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar?.periode?.fom, oppholdstillatelsePeriode.fra.toGregorianCalendar().toZonedDateTime().toLocalDate())
-        Assertions.assertEquals(mappedOppholdstillatelser.gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar?.periode?.tom, oppholdstillatelsePeriode.til.toGregorianCalendar().toZonedDateTime().toLocalDate())
-        Assertions.assertNotNull(resultat.gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar.oppholdstillatelse.oppholdstillatelseType)
+        Assertions.assertEquals(
+            mappedOppholdstillatelser.gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar?.periode?.fom,
+            oppholdstillatelsePeriode.fra.toGregorianCalendar().toZonedDateTime().toLocalDate(),
+        )
+        Assertions.assertEquals(
+            mappedOppholdstillatelser.gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar?.periode?.tom,
+            oppholdstillatelsePeriode.til.toGregorianCalendar().toZonedDateTime().toLocalDate(),
+        )
+        Assertions.assertNotNull(
+            resultat.gjeldendeOppholdsstatus.oppholdstillatelseEllerOppholdsPaSammeVilkar.oppholdstillatelse.oppholdstillatelseType,
+        )
         Assertions.assertTrue(mappedOppholdstillatelser.gjeldendeOppholdsstatus?.oppholdstillatelsePaSammeVilkar?.harTillatelse!!)
     }
 
     private fun readFromTilHentPersonstatusResponseTypeString(): HentPersonstatusResponseType {
-
-        val xmlMapper = XmlMapper(
-            JacksonXmlModule().apply {
-                setDefaultUseWrapper(false)
+        val xmlMapper =
+            XmlMapper(
+                JacksonXmlModule().apply {
+                    setDefaultUseWrapper(false)
+                },
+            ).apply {
+                enable(SerializationFeature.INDENT_OUTPUT)
             }
-        ).apply {
-            enable(SerializationFeature.INDENT_OUTPUT)
-        }
         xmlMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
         xmlMapper.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_ENUMS, true)
 

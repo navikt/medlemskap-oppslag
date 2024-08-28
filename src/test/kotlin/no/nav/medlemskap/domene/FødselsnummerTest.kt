@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 internal class FødselsnummerTest {
-
     @Test
     fun hentBursdagsAar() {
         assertEquals("1979", FNR_AREMARK.hentBursdagsAar())

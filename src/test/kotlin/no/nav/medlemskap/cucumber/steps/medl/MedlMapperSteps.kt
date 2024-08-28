@@ -10,7 +10,6 @@ import no.nav.medlemskap.domene.Medlemskap
 import no.nav.medlemskap.services.medl.mapMedlemskapResultat
 
 class MedlMapperSteps : No {
-
     private val medlDomenespråkParser = MedlDomenespraakParser()
 
     private var medlBuilder = MedlMedlemskapsunntakBuilder()

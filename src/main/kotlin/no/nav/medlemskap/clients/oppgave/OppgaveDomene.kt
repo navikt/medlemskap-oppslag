@@ -6,7 +6,7 @@ import java.time.LocalDate
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class FinnOppgaverResponse(
     val antallTreffTotalt: Int,
-    val oppgaver: List<OppgOppgave>
+    val oppgaver: List<OppgOppgave>,
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -17,13 +17,19 @@ data class OppgOppgave(
     val versjon: Int,
     val tilordnetRessurs: String?,
     val tema: String?,
-    val beskrivelse: String?
+    val beskrivelse: String?,
 )
 
 enum class OppgPrioritet {
-    HOY, NORM, LAV
+    HOY,
+    NORM,
+    LAV,
 }
 
 enum class OppgStatus {
-    OPPRETTET, AAPNET, UNDER_BEHANDLING, FERDIGSTILT, FEILREGISTRERT
+    OPPRETTET,
+    AAPNET,
+    UNDER_BEHANDLING,
+    FERDIGSTILT,
+    FEILREGISTRERT,
 }

@@ -15,9 +15,8 @@ class HarBrukerSammenhengendeArbeidsforholdRegel(
     private val startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
     // private val statsborgerskap: List<Statsborgerskap>,
-    regelId: RegelId = RegelId.REGEL_3
+    regelId: RegelId = RegelId.REGEL_3,
 ) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
         return if (!arbeidsforhold.erSammenhengendeIKontrollPeriode(kontrollPeriodeForArbeidsforhold, ytelse, 4)) {
             nei(regelId)
@@ -27,7 +26,6 @@ class HarBrukerSammenhengendeArbeidsforholdRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerSammenhengendeArbeidsforholdRegel {
             return HarBrukerSammenhengendeArbeidsforholdRegel(
                 ytelse = datagrunnlag.ytelse,

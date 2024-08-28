@@ -15,11 +15,9 @@ class ErBrukersEktefelleBosattINorgeRegel(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val dataOmEktefelle: DataOmEktefelle?,
-    regelId: RegelId = RegelId.REGEL_11_3_1
+    regelId: RegelId = RegelId.REGEL_11_3_1,
 ) : LovvalgRegel(regelId, ytelse, startDatoForYtelse) {
-
     override fun operasjon(): Resultat {
-
         if (dataOmEktefelle != null) {
             val ektefelle = dataOmEktefelle.personhistorikkEktefelle
 
@@ -34,7 +32,7 @@ class ErBrukersEktefelleBosattINorgeRegel(
                 erPersonBosattINorge(
                     bostedsadresserTilEktefelle,
                     kontaktadresseTilEktefelle,
-                    oppholdsadresseTilEktefelle
+                    oppholdsadresseTilEktefelle,
                 ) -> ja(RegelId.REGEL_11_3_1)
                 else -> nei(regelId)
             }
@@ -44,13 +42,15 @@ class ErBrukersEktefelleBosattINorgeRegel(
     }
 
     companion object {
-
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag, regelId: RegelId): ErBrukersEktefelleBosattINorgeRegel {
+        fun fraDatagrunnlag(
+            datagrunnlag: Datagrunnlag,
+            regelId: RegelId,
+        ): ErBrukersEktefelleBosattINorgeRegel {
             return ErBrukersEktefelleBosattINorgeRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 dataOmEktefelle = datagrunnlag.dataOmEktefelle,
-                regelId = regelId
+                regelId = regelId,
             )
         }
     }

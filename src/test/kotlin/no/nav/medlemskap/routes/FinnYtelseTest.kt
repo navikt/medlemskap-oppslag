@@ -9,10 +9,8 @@ import no.nav.medlemskap.domene.Ytelse
 import org.junit.jupiter.api.Test
 
 internal class FinnYtelseTest {
-
     @Test
     fun `ytelse skal hentes fra request når den er satt`() {
-
         val ytelseFraRequest = Ytelse.DAGPENGER
         val clientId = "a16f1075-4482-4577-baab-d2a7323655fa" // =SYKEPENGER
 
@@ -22,7 +20,6 @@ internal class FinnYtelseTest {
 
     @Test
     fun `ytelse skal hentes fra clientId når den ikke er satt i request`() {
-
         val ytelseFraRequest = null
         val clientId = "a16f1075-4482-4577-baab-d2a7323655fa" // =SYKEPENGER
 

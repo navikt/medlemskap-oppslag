@@ -11,7 +11,6 @@ import no.nav.medlemskap.regler.v1.ReglerService
 import no.nav.medlemskap.services.kafka.Producer
 import org.apache.kafka.clients.producer.ProducerRecord
 import java.util.*
-import kotlin.text.get
 
 fun Routing.reglerRoute() {
     route("/regler") {
@@ -45,6 +44,10 @@ fun Routing.reglerRoute() {
     }
 }
 
-private fun createRecord(topic: String, key: String = UUID.randomUUID().toString(), value: String): ProducerRecord<String, String> {
+private fun createRecord(
+    topic: String,
+    key: String = UUID.randomUUID().toString(),
+    value: String,
+): ProducerRecord<String, String> {
     return ProducerRecord(topic, key, value)
 }

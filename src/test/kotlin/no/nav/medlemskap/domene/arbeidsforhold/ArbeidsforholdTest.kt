@@ -17,11 +17,11 @@ import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
 class ArbeidsforholdTest {
-
-    private val kontrollperiodeFra2019Til2020 = Kontrollperiode(
-        fom = LocalDate.of(2019, 1, 1),
-        tom = LocalDate.of(2020, 1, 1)
-    )
+    private val kontrollperiodeFra2019Til2020 =
+        Kontrollperiode(
+            fom = LocalDate.of(2019, 1, 1),
+            tom = LocalDate.of(2020, 1, 1),
+        )
 
     @Test
     fun `Filtrerer ut arbeidsgiver med flere enn 6 ansatte der arbeidsgiver med flest ansatte ligger sist`() {
@@ -49,11 +49,11 @@ class ArbeidsforholdTest {
 
     @Test
     fun `Bruker med 100 i stillingsprosent gjennom halve kontrollperioden blir vektet til 50 prosent`() {
-
-        val arbeidsforholdPeriode = Periode(
-            fom = LocalDate.of(2019, 7, 3),
-            tom = kontrollperiodeFra2019Til2020.tom
-        )
+        val arbeidsforholdPeriode =
+            Periode(
+                fom = LocalDate.of(2019, 7, 3),
+                tom = kontrollperiodeFra2019Til2020.tom,
+            )
 
         val arbeidsforhold = listOf(createArbeidsforhold(arbeidsforholdPeriode))
         assertEquals(50.0, arbeidsforhold.beregnGjennomsnittligStillingsprosentForGrafana(kontrollperiodeFra2019Til2020))
@@ -61,7 +61,6 @@ class ArbeidsforholdTest {
 
     @Test
     fun `Beregn vektet stillingsprosent for arbeidsforhold med arbeidsavtale med lik periode`() {
-
         val arbeidsforholdPeriode = kontrollperiodeFra2019Til2020.periode
         val arbeidsforhold = createArbeidsforhold(arbeidsforholdPeriode, 25.0)
 
@@ -70,13 +69,13 @@ class ArbeidsforholdTest {
 
     @Test
     fun `Beregn vektet stillingsprosent for arbeidsforhold med arbeidsavtale i deler av periode`() {
-
         val arbeidsforholdPeriode = kontrollperiodeFra2019Til2020.periode
 
-        val arbeidsavtalePeriode = Periode(
-            fom = LocalDate.of(2019, 7, 2),
-            tom = LocalDate.of(2019, 12, 31)
-        )
+        val arbeidsavtalePeriode =
+            Periode(
+                fom = LocalDate.of(2019, 7, 2),
+                tom = LocalDate.of(2019, 12, 31),
+            )
         val arbeidsforhold = createArbeidsforhold(arbeidsforholdPeriode, 25.0, arbeidsavtalePeriode)
 
         assertEquals(12.5, listOf(arbeidsforhold).first().vektetStillingsprosentForArbeidsforhold(kontrollperiodeFra2019Til2020))
@@ -84,15 +83,25 @@ class ArbeidsforholdTest {
 
     @Test
     fun `Beregn vektet stillingsprosent for arbeidsforhold med to arbeidsavtaler i deler av arbeidsforholdperiode`() {
-
         val arbeidsforholdPeriode = kontrollperiodeFra2019Til2020.periode
 
-        val arbeidsavtalePeriode = Periode(
-            fom = LocalDate.of(2019, 7, 2),
-            tom = LocalDate.of(2020, 1, 1)
-        )
+        val arbeidsavtalePeriode =
+            Periode(
+                fom = LocalDate.of(2019, 7, 2),
+                tom = LocalDate.of(2020, 1, 1),
+            )
 
-        val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode, arbeidsavtalePeriode, "1234", Skipsregister.NOR, Fartsomraade.INNENRIKS, 25.0, 9.0, skipstype = null)
+        val arbeidsavtale =
+            Arbeidsavtale(
+                arbeidsavtalePeriode,
+                arbeidsavtalePeriode,
+                "1234",
+                Skipsregister.NOR,
+                Fartsomraade.INNENRIKS,
+                25.0,
+                9.0,
+                skipstype = null,
+            )
         val arbeidsavtale2 = Arbeidsavtale(arbeidsavtalePeriode, arbeidsavtalePeriode, "4321", null, null, 35.0, 9.0, skipstype = null)
 
         val arbeidsforhold = createArbeidsforhold(arbeidsforholdPeriode)
@@ -106,20 +115,31 @@ class ArbeidsforholdTest {
 
     @Test
     fun `Beregn vektet stillingsprosent for arbeidsforhold med to sammenhengende arbeidsavtaler i hele arbeidsforholdperiode`() {
-
         val arbeidsforholdPeriode = kontrollperiodeFra2019Til2020.periode
 
-        val arbeidsavtalePeriode1 = Periode(
-            fom = LocalDate.of(2018, 1, 1),
-            tom = LocalDate.of(2019, 6, 30)
-        )
+        val arbeidsavtalePeriode1 =
+            Periode(
+                fom = LocalDate.of(2018, 1, 1),
+                tom = LocalDate.of(2019, 6, 30),
+            )
 
-        val arbeidsavtalePeriode2 = Periode(
-            fom = LocalDate.of(2019, 7, 1),
-            tom = LocalDate.of(2020, 1, 1)
-        )
+        val arbeidsavtalePeriode2 =
+            Periode(
+                fom = LocalDate.of(2019, 7, 1),
+                tom = LocalDate.of(2020, 1, 1),
+            )
 
-        val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode1, arbeidsavtalePeriode1, "1234", Skipsregister.NOR, Fartsomraade.INNENRIKS, 100.0, 37.5, skipstype = null)
+        val arbeidsavtale =
+            Arbeidsavtale(
+                arbeidsavtalePeriode1,
+                arbeidsavtalePeriode1,
+                "1234",
+                Skipsregister.NOR,
+                Fartsomraade.INNENRIKS,
+                100.0,
+                37.5,
+                skipstype = null,
+            )
         val arbeidsavtale2 = Arbeidsavtale(arbeidsavtalePeriode2, arbeidsavtalePeriode2, "4321", null, null, 100.0, 37.5, skipstype = null)
 
         val arbeidsforhold = createArbeidsforhold(arbeidsforholdPeriode)
@@ -133,25 +153,37 @@ class ArbeidsforholdTest {
 
     @Test
     fun `Beregn vektet stillingsprosent for arbeidsforhold med tre sammenhengende arbeidsavtaler i hele arbeidsforholdperiode`() {
-
         val arbeidsforholdPeriode = kontrollperiodeFra2019Til2020.periode
 
-        val arbeidsavtalePeriode1 = Periode(
-            fom = LocalDate.of(2018, 1, 1),
-            tom = LocalDate.of(2019, 6, 30)
-        )
+        val arbeidsavtalePeriode1 =
+            Periode(
+                fom = LocalDate.of(2018, 1, 1),
+                tom = LocalDate.of(2019, 6, 30),
+            )
 
-        val arbeidsavtalePeriode2 = Periode(
-            fom = LocalDate.of(2019, 7, 1),
-            tom = LocalDate.of(2019, 9, 30)
-        )
+        val arbeidsavtalePeriode2 =
+            Periode(
+                fom = LocalDate.of(2019, 7, 1),
+                tom = LocalDate.of(2019, 9, 30),
+            )
 
-        val arbeidsavtalePeriode3 = Periode(
-            fom = LocalDate.of(2019, 10, 1),
-            tom = LocalDate.of(2020, 1, 1)
-        )
+        val arbeidsavtalePeriode3 =
+            Periode(
+                fom = LocalDate.of(2019, 10, 1),
+                tom = LocalDate.of(2020, 1, 1),
+            )
 
-        val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode1, arbeidsavtalePeriode1, "1234", Skipsregister.NOR, Fartsomraade.INNENRIKS, 100.0, 37.5, skipstype = null)
+        val arbeidsavtale =
+            Arbeidsavtale(
+                arbeidsavtalePeriode1,
+                arbeidsavtalePeriode1,
+                "1234",
+                Skipsregister.NOR,
+                Fartsomraade.INNENRIKS,
+                100.0,
+                37.5,
+                skipstype = null,
+            )
         val arbeidsavtale2 = Arbeidsavtale(arbeidsavtalePeriode2, arbeidsavtalePeriode2, "4321", null, null, 100.0, 37.5, skipstype = null)
         val arbeidsavtale3 = Arbeidsavtale(arbeidsavtalePeriode3, arbeidsavtalePeriode3, "4321", null, null, 100.0, 37.5, skipstype = null)
 
@@ -166,14 +198,16 @@ class ArbeidsforholdTest {
 
     @Test
     fun `Beregn vektet stillingsprosent for et arbeidsforhold som kun varer i først halvdel av kontrollperioden`() {
-        val kontrollperiode = Kontrollperiode(
-            fom = LocalDate.of(2019, 7, 1),
-            tom = LocalDate.of(2020, 7, 1)
-        )
-        val arbeidsforholdPeriode = Periode(
-            fom = LocalDate.of(2019, 1, 1),
-            tom = LocalDate.of(2019, 12, 31)
-        )
+        val kontrollperiode =
+            Kontrollperiode(
+                fom = LocalDate.of(2019, 7, 1),
+                tom = LocalDate.of(2020, 7, 1),
+            )
+        val arbeidsforholdPeriode =
+            Periode(
+                fom = LocalDate.of(2019, 1, 1),
+                tom = LocalDate.of(2019, 12, 31),
+            )
 
         val arbeidsforholdMock = createArbeidsforhold(arbeidsforholdPeriode, 25.0)
         val arbeidsforhold = listOf(arbeidsforholdMock)
@@ -184,14 +218,16 @@ class ArbeidsforholdTest {
 
     @Test
     fun `Beregn vektet stillingsprosent for et arbeidsforhold som kun varer i siste halvdel av kontrollperioden`() {
-        val kontrollperiode = Kontrollperiode(
-            fom = LocalDate.of(2018, 12, 31),
-            tom = LocalDate.of(2019, 12, 31)
-        )
-        val arbeidsforholdPeriode = Periode(
-            fom = LocalDate.of(2019, 7, 2),
-            tom = LocalDate.of(2020, 7, 2)
-        )
+        val kontrollperiode =
+            Kontrollperiode(
+                fom = LocalDate.of(2018, 12, 31),
+                tom = LocalDate.of(2019, 12, 31),
+            )
+        val arbeidsforholdPeriode =
+            Periode(
+                fom = LocalDate.of(2019, 7, 2),
+                tom = LocalDate.of(2020, 7, 2),
+            )
 
         val arbeidsforholdMock = createArbeidsforhold(arbeidsforholdPeriode, 25.0)
         val arbeidsforholdList = listOf(arbeidsforholdMock)
@@ -202,20 +238,22 @@ class ArbeidsforholdTest {
 
     @Test
     fun `Beregn vektet stillingsprosent for to parallelle arbeidsforhold`() {
+        val kontrollperiode =
+            Kontrollperiode(
+                fom = LocalDate.of(2018, 12, 31),
+                tom = LocalDate.of(2019, 12, 31),
+            )
+        val arbeidsforholdPeriode =
+            Periode(
+                fom = LocalDate.of(2018, 7, 1),
+                tom = null,
+            )
 
-        val kontrollperiode = Kontrollperiode(
-            fom = LocalDate.of(2018, 12, 31),
-            tom = LocalDate.of(2019, 12, 31)
-        )
-        val arbeidsforholdPeriode = Periode(
-            fom = LocalDate.of(2018, 7, 1),
-            tom = null
-        )
-
-        val arbeidsavtalePeriode = Periode(
-            fom = LocalDate.of(2018, 7, 1),
-            tom = LocalDate.of(2021, 7, 1)
-        )
+        val arbeidsavtalePeriode =
+            Periode(
+                fom = LocalDate.of(2018, 7, 1),
+                tom = LocalDate.of(2021, 7, 1),
+            )
 
         val arbeidsforhold = createArbeidsforhold(arbeidsforholdPeriode, 20.0, arbeidsforholdPeriode)
         val arbeidsforhold2 = createArbeidsforhold(arbeidsforholdPeriode, 20.0, arbeidsavtalePeriode)
@@ -229,20 +267,22 @@ class ArbeidsforholdTest {
 
     @Test
     fun `Beregn vektet stillingsprosent med parallelt arbeid med 0% stilling`() {
+        val kontrollperiode =
+            Kontrollperiode(
+                fom = LocalDate.of(2018, 12, 31),
+                tom = LocalDate.of(2019, 12, 31),
+            )
+        val arbeidsforholdPeriode =
+            Periode(
+                fom = LocalDate.of(2018, 7, 1),
+                tom = null,
+            )
 
-        val kontrollperiode = Kontrollperiode(
-            fom = LocalDate.of(2018, 12, 31),
-            tom = LocalDate.of(2019, 12, 31)
-        )
-        val arbeidsforholdPeriode = Periode(
-            fom = LocalDate.of(2018, 7, 1),
-            tom = null
-        )
-
-        val arbeidsavtalePeriode = Periode(
-            fom = LocalDate.of(2018, 7, 1),
-            tom = LocalDate.of(2021, 7, 1)
-        )
+        val arbeidsavtalePeriode =
+            Periode(
+                fom = LocalDate.of(2018, 7, 1),
+                tom = LocalDate.of(2021, 7, 1),
+            )
 
         val arbeidsforhold = createArbeidsforhold(arbeidsforholdPeriode, 100.0, arbeidsforholdPeriode)
         val arbeidsforhold2 = createArbeidsforhold(arbeidsforholdPeriode, 0.0, arbeidsavtalePeriode)
@@ -256,19 +296,21 @@ class ArbeidsforholdTest {
 
     @Test
     fun `Beregn vektet stillingsprosent for to delvis parallelle arbeidsforhold`() {
-
-        val kontrollperiode = Kontrollperiode(
-            fom = LocalDate.of(2018, 12, 31),
-            tom = LocalDate.of(2019, 12, 31)
-        )
-        val arbeidsforholdPeriode = Periode(
-            fom = LocalDate.of(2018, 7, 1),
-            tom = null
-        )
-        val arbeidsforhold2Periode = Periode(
-            fom = LocalDate.of(2019, 7, 1),
-            tom = null
-        )
+        val kontrollperiode =
+            Kontrollperiode(
+                fom = LocalDate.of(2018, 12, 31),
+                tom = LocalDate.of(2019, 12, 31),
+            )
+        val arbeidsforholdPeriode =
+            Periode(
+                fom = LocalDate.of(2018, 7, 1),
+                tom = null,
+            )
+        val arbeidsforhold2Periode =
+            Periode(
+                fom = LocalDate.of(2019, 7, 1),
+                tom = null,
+            )
 
         val arbeidsforholdMock = createArbeidsforhold(arbeidsforholdPeriode, 20.0)
         val arbeidsforhold2Mock = createArbeidsforhold(arbeidsforhold2Periode, 20.0)
@@ -308,81 +350,96 @@ class ArbeidsforholdTest {
 
     @Test
     fun `Statlig arbeidsforhold med mindre enn 25% stilling får false`() {
-
-        val statligArbeidsforholdMedMindreEnn25Stillingsprosent = listOf(
-            lagArbeidsforhold(
-                arbeidsavtaleList = listOf(createArbeidsavtale(kontrollperiodeFra2019Til2020.periode, 10.0)),
-                juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20))
+        val statligArbeidsforholdMedMindreEnn25Stillingsprosent =
+            listOf(
+                lagArbeidsforhold(
+                    arbeidsavtaleList = listOf(createArbeidsavtale(kontrollperiodeFra2019Til2020.periode, 10.0)),
+                    juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20)),
+                ),
             )
-        )
 
-        assertFalse(erArbeidsforholdetOffentligSektor(statligArbeidsforholdMedMindreEnn25Stillingsprosent, kontrollperiodeFra2019Til2020, Ytelse.SYKEPENGER))
+        assertFalse(
+            erArbeidsforholdetOffentligSektor(
+                statligArbeidsforholdMedMindreEnn25Stillingsprosent,
+                kontrollperiodeFra2019Til2020,
+                Ytelse.SYKEPENGER,
+            ),
+        )
     }
 
     @Test
     fun `Statlig arbeidsforhold med 25% stilling får true`() {
-
-        val statligArbeidsforholdMed25Stillingsprosent = listOf(
-            lagArbeidsforhold(
-                arbeidsavtaleList = listOf(
-                    Arbeidsavtale(
-                        periode = kontrollperiodeFra2019Til2020.periode,
-                        gyldighetsperiode = kontrollperiodeFra2019Til2020.periode,
-                        yrkeskode = "Yrkeskode",
-                        fartsomraade = null,
-                        skipsregister = null,
-                        stillingsprosent = 25.0,
-                        beregnetAntallTimerPrUke = null,
-                        skipstype = null
-                    )
+        val statligArbeidsforholdMed25Stillingsprosent =
+            listOf(
+                lagArbeidsforhold(
+                    arbeidsavtaleList =
+                        listOf(
+                            Arbeidsavtale(
+                                periode = kontrollperiodeFra2019Til2020.periode,
+                                gyldighetsperiode = kontrollperiodeFra2019Til2020.periode,
+                                yrkeskode = "Yrkeskode",
+                                fartsomraade = null,
+                                skipsregister = null,
+                                stillingsprosent = 25.0,
+                                beregnetAntallTimerPrUke = null,
+                                skipstype = null,
+                            ),
+                        ),
+                    juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20)),
                 ),
-                juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20))
             )
-        )
 
-        val sjekkStatligArbeidsforhold = erArbeidsforholdetOffentligSektor(
-            statligArbeidsforholdMed25Stillingsprosent,
-            kontrollperiodeFra2019Til2020,
-            Ytelse.SYKEPENGER
-        )
+        val sjekkStatligArbeidsforhold =
+            erArbeidsforholdetOffentligSektor(
+                statligArbeidsforholdMed25Stillingsprosent,
+                kontrollperiodeFra2019Til2020,
+                Ytelse.SYKEPENGER,
+            )
         assertTrue(sjekkStatligArbeidsforhold)
     }
 
     @Test
     fun `antallAnsatteHosArbeidsgiversJuridiskeEnheter returnerer 5`() {
-
-        val statligArbeidsforholdMed25Stillingsprosent = listOf(
-            lagArbeidsforhold(
-                arbeidsavtaleList = listOf(createArbeidsavtale(kontrollperiodeFra2019Til2020.periode)),
-                juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20))
+        val statligArbeidsforholdMed25Stillingsprosent =
+            listOf(
+                lagArbeidsforhold(
+                    arbeidsavtaleList = listOf(createArbeidsavtale(kontrollperiodeFra2019Til2020.periode)),
+                    juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20)),
+                ),
             )
-        )
 
-        val antallAnsatteHosArbeidsgiversJuridiskeEnheter = statligArbeidsforholdMed25Stillingsprosent.antallAnsatteHosArbeidsgiversJuridiskeEnheter(kontrollperiodeFra2019Til2020)
+        val antallAnsatteHosArbeidsgiversJuridiskeEnheter =
+            statligArbeidsforholdMed25Stillingsprosent.antallAnsatteHosArbeidsgiversJuridiskeEnheter(
+                kontrollperiodeFra2019Til2020,
+            )
         assertEquals(20, antallAnsatteHosArbeidsgiversJuridiskeEnheter.first())
     }
 
     @Test
     fun `To statlige arbeidsforhold med 25% stilling etter hverandre får true`() {
-        val periode1 = Periode(
-            fom = LocalDate.of(2019, 6, 1),
-            tom = LocalDate.of(2020, 1, 1)
-        )
+        val periode1 =
+            Periode(
+                fom = LocalDate.of(2019, 6, 1),
+                tom = LocalDate.of(2020, 1, 1),
+            )
 
-        val periode2 = Periode(
-            fom = LocalDate.of(2019, 1, 1),
-            tom = LocalDate.of(2019, 6, 1)
-        )
+        val periode2 =
+            Periode(
+                fom = LocalDate.of(2019, 1, 1),
+                tom = LocalDate.of(2019, 6, 1),
+            )
 
-        val statligArbeidsforholdMed25Stillingsprosent1 = lagArbeidsforhold(
-            arbeidsavtaleList = listOf(createArbeidsavtale(periode1, 25.0)),
-            juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20))
-        )
+        val statligArbeidsforholdMed25Stillingsprosent1 =
+            lagArbeidsforhold(
+                arbeidsavtaleList = listOf(createArbeidsavtale(periode1, 25.0)),
+                juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20)),
+            )
 
-        val statligArbeidsforholdMed25Stillingsprosent2 = lagArbeidsforhold(
-            arbeidsavtaleList = listOf(createArbeidsavtale(periode2, 25.0)),
-            juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20))
-        )
+        val statligArbeidsforholdMed25Stillingsprosent2 =
+            lagArbeidsforhold(
+                arbeidsavtaleList = listOf(createArbeidsavtale(periode2, 25.0)),
+                juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20)),
+            )
 
         val arbeidsforhold = listOf(statligArbeidsforholdMed25Stillingsprosent1, statligArbeidsforholdMed25Stillingsprosent2)
         val sjekkStatligArbeidsforhold = erArbeidsforholdetOffentligSektor(arbeidsforhold, kontrollperiodeFra2019Til2020, Ytelse.SYKEPENGER)
@@ -391,20 +448,23 @@ class ArbeidsforholdTest {
 
     @Test
     fun `To arbeidsforhold med ett med 25% stilling som går gjennom hele perioden får true`() {
-        val periode2 = Periode(
-            fom = LocalDate.of(2019, 1, 1),
-            tom = LocalDate.of(2019, 6, 1)
-        )
+        val periode2 =
+            Periode(
+                fom = LocalDate.of(2019, 1, 1),
+                tom = LocalDate.of(2019, 6, 1),
+            )
 
-        val statligArbeidsforholdMed25Stillingsprosent1 = lagArbeidsforhold(
-            arbeidsavtaleList = listOf(createArbeidsavtale(kontrollperiodeFra2019Til2020.periode, 25.0)),
-            juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20))
-        )
+        val statligArbeidsforholdMed25Stillingsprosent1 =
+            lagArbeidsforhold(
+                arbeidsavtaleList = listOf(createArbeidsavtale(kontrollperiodeFra2019Til2020.periode, 25.0)),
+                juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20)),
+            )
 
-        val statligArbeidsforholdMed10Stillingsprosent2 = lagArbeidsforhold(
-            arbeidsavtaleList = listOf(createArbeidsavtale(periode2, 10.0)),
-            juridiskeEnheter = listOf(JuridiskEnhet("1", "AS", 20))
-        )
+        val statligArbeidsforholdMed10Stillingsprosent2 =
+            lagArbeidsforhold(
+                arbeidsavtaleList = listOf(createArbeidsavtale(periode2, 10.0)),
+                juridiskeEnheter = listOf(JuridiskEnhet("1", "AS", 20)),
+            )
 
         val arbeidsforhold = listOf(statligArbeidsforholdMed25Stillingsprosent1, statligArbeidsforholdMed10Stillingsprosent2)
         val sjekkStatligArbeidsforhold = erArbeidsforholdetOffentligSektor(arbeidsforhold, kontrollperiodeFra2019Til2020, Ytelse.SYKEPENGER)
@@ -419,23 +479,41 @@ class ArbeidsforholdTest {
         assertThat(fomArbeidsforhold).isEqualTo(LocalDate.of(2017, 12, 31))
     }
 
-    private fun createArbeidsforhold(arbeidsforholdPeriode: Periode, stillingsprosent: Double = 100.0, arbeidsavtalePeriode: Periode = arbeidsforholdPeriode): Arbeidsforhold {
-        val arbeidsavtale = Arbeidsavtale(arbeidsavtalePeriode, arbeidsavtalePeriode, "11111", Skipsregister.NOR, Fartsomraade.INNENRIKS, stillingsprosent, null, skipstype = null)
+    private fun createArbeidsforhold(
+        arbeidsforholdPeriode: Periode,
+        stillingsprosent: Double = 100.0,
+        arbeidsavtalePeriode: Periode = arbeidsforholdPeriode,
+    ): Arbeidsforhold {
+        val arbeidsavtale =
+            Arbeidsavtale(
+                arbeidsavtalePeriode,
+                arbeidsavtalePeriode,
+                "11111",
+                Skipsregister.NOR,
+                Fartsomraade.INNENRIKS,
+                stillingsprosent,
+                null,
+                skipstype = null,
+            )
 
-        val arbeidsforhold = Arbeidsforhold(
-            arbeidsforholdPeriode,
-            null,
-            OpplysningspliktigArbeidsgiverType.Organisasjon,
-            Arbeidsgiver(null, null, listOf(Ansatte(antall = 10, gyldighetsperiode = null)), null, null),
-            Arbeidsforholdstype.NORMALT,
-            listOf(arbeidsavtale),
-            emptyList()
-        )
+        val arbeidsforhold =
+            Arbeidsforhold(
+                arbeidsforholdPeriode,
+                null,
+                OpplysningspliktigArbeidsgiverType.Organisasjon,
+                Arbeidsgiver(null, null, listOf(Ansatte(antall = 10, gyldighetsperiode = null)), null, null),
+                Arbeidsforholdstype.NORMALT,
+                listOf(arbeidsavtale),
+                emptyList(),
+            )
 
         return arbeidsforhold
     }
 
-    private fun createArbeidsavtale(periode: Periode, stillingsprosent: Double = 100.0): Arbeidsavtale {
+    private fun createArbeidsavtale(
+        periode: Periode,
+        stillingsprosent: Double = 100.0,
+    ): Arbeidsavtale {
         return Arbeidsavtale(periode, periode, "11111", null, null, stillingsprosent, 37.5, skipstype = null)
     }
 
@@ -445,32 +523,35 @@ class ArbeidsforholdTest {
     private val arbeidsforholdMed5Ansatte = lagArbeidsforhold(5)
 
     val arbeidsforholdMedStatligJuridiskEnhetstype = lagArbeidsforhold(juridiskeEnheter = listOf(JuridiskEnhet("1", "STAT", 20)))
-    val arbeidsforholdMedIkkeStatligEllerKommunalJuridiskEnhetstype = lagArbeidsforhold(
-        juridiskeEnheter = listOf(
-            JuridiskEnhet("1", "AS", 20)
+    val arbeidsforholdMedIkkeStatligEllerKommunalJuridiskEnhetstype =
+        lagArbeidsforhold(
+            juridiskeEnheter =
+                listOf(
+                    JuridiskEnhet("1", "AS", 20),
+                ),
         )
-    )
 
     private fun lagArbeidsforhold(
         antall: Int = 10,
         periode: Periode = Periode(LocalDate.of(2019, 1, 1), LocalDate.of(2019, 12, 31)),
         arbeidsavtaleList: List<Arbeidsavtale> = listOf(createArbeidsavtale(Periode(null, null), 100.0)),
-        juridiskeEnheter: List<JuridiskEnhet?>? = listOf(JuridiskEnhet("1", "AS", 20))
+        juridiskeEnheter: List<JuridiskEnhet?>? = listOf(JuridiskEnhet("1", "AS", 20)),
     ): Arbeidsforhold {
         return Arbeidsforhold(
             periode = periode,
             utenlandsopphold = null,
             arbeidsgivertype = OpplysningspliktigArbeidsgiverType.Organisasjon,
-            arbeidsgiver = Arbeidsgiver(
-                navn = null,
-                organisasjonsnummer = null,
-                ansatte = listOf(Ansatte(antall = antall, gyldighetsperiode = null)),
-                konkursStatus = null,
-                juridiskeEnheter = juridiskeEnheter
-            ),
+            arbeidsgiver =
+                Arbeidsgiver(
+                    navn = null,
+                    organisasjonsnummer = null,
+                    ansatte = listOf(Ansatte(antall = antall, gyldighetsperiode = null)),
+                    konkursStatus = null,
+                    juridiskeEnheter = juridiskeEnheter,
+                ),
             arbeidsforholdstype = Arbeidsforholdstype.NORMALT,
             arbeidsavtaler = arbeidsavtaleList,
-            permisjonPermittering = emptyList()
+            permisjonPermittering = emptyList(),
         )
     }
 }

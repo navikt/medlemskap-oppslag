@@ -19,15 +19,13 @@ data class Arbeidsforhold(
     val arbeidsgiver: Arbeidsgiver,
     val arbeidsforholdstype: Arbeidsforholdstype,
     var arbeidsavtaler: List<Arbeidsavtale>,
-    val permisjonPermittering: List<PermisjonPermittering>?
+    val permisjonPermittering: List<PermisjonPermittering>?,
 ) : Comparable<Arbeidsforhold> {
-
     /**
      * Comparator som sorterer arbeidsforhold etter periode.
      * Null-verdier regnes som høyere, slik at aktive arbeidsforhold vil havne sist i listen.
      */
     override fun compareTo(other: Arbeidsforhold): Int {
-
         if (this.periode.fom != null && other.periode.fom != null && this.periode.fom != other.periode.fom) {
             return this.periode.fom.compareTo(other.periode.fom)
         }
@@ -52,7 +50,7 @@ data class Arbeidsforhold(
             }
         }
 
-        fun List<Arbeidsforhold>.AlleArbeidsforholdPerioderIKontrollperiode(kontrollPeriode: Kontrollperiode) =
+        fun List<Arbeidsforhold>.alleArbeidsforholdPerioderIKontrollperiode(kontrollPeriode: Kontrollperiode) =
             this.arbeidsforholdForKontrollPeriode(kontrollPeriode).map { it.periode }
 
         fun List<Arbeidsavtale>.alleAktiveArbeidsavtalerDerTomErNull(): List<Arbeidsavtale> {
@@ -62,9 +60,8 @@ data class Arbeidsforhold(
         fun erArbeidsforholdetOffentligSektor(
             arbeidsforhold: List<Arbeidsforhold>,
             kontrollPeriode: Kontrollperiode,
-            ytelse: Ytelse
-        ): Boolean =
-            vektetOffentligSektorArbeidsforhold(arbeidsforhold, kontrollPeriode, ytelse)
+            ytelse: Ytelse,
+        ): Boolean = vektetOffentligSektorArbeidsforhold(arbeidsforhold, kontrollPeriode, ytelse)
 
         fun List<Arbeidsforhold>.harArbeidsforholdIKontrollperiodeUtenlandsopphold(kontrollPeriode: Kontrollperiode): Boolean =
             this.arbeidsforholdForKontrollPeriode(kontrollPeriode).any { it.utenlandsopphold.isNotNullOrEmpty() }
@@ -78,23 +75,26 @@ data class Arbeidsforhold(
                     if (it.periode?.fom == null || it.periode.tom == null) {
                         Periode(
                             it.rapporteringsperiode.atDay(1),
-                            it.rapporteringsperiode.atEndOfMonth()
+                            it.rapporteringsperiode.atEndOfMonth(),
                         ).overlapper(kontrollPeriode.periode)
                     } else {
                         it.periode.overlapper(kontrollPeriode.periode)
                     }
-                    )
+                )
             }
         }
 
         private fun vektetOffentligSektorArbeidsforhold(
             arbeidsforhold: List<Arbeidsforhold>,
             kontrollPeriode: Kontrollperiode,
-            ytelse: Ytelse
+            ytelse: Ytelse,
         ): Boolean =
             arbeidsforhold.filter {
                 it.arbeidsgiver.juridiskeEnheter != null &&
-                    it.arbeidsgiver.juridiskeEnheter.all { enhetstype -> enhetstype != null && enhetstype.enhetstype in offentligSektorJuridiskeEnhetstyper }
+                    it.arbeidsgiver.juridiskeEnheter.all {
+                            enhetstype ->
+                        enhetstype != null && enhetstype.enhetstype in offentligSektorJuridiskeEnhetstyper
+                    }
             }.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollPeriode, ytelse)
 
         infix fun List<Arbeidsforhold>.erAlleArbeidsgivereOrganisasjon(kontrollPeriode: Kontrollperiode): Boolean {
@@ -142,13 +142,13 @@ data class Arbeidsforhold(
         fun List<Arbeidsforhold>.erSammenhengendeIKontrollPeriode(
             kontrollPeriode: Kontrollperiode,
             ytelse: Ytelse,
-            tillatDagersHullIPeriode: Long
+            tillatDagersHullIPeriode: Long,
         ): Boolean {
-
             val arbeidsforholdForNorskArbeidsgiver = this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
 
-            if (!validerArbeidsforholdIKontrollperiode(arbeidsforholdForNorskArbeidsgiver, kontrollPeriode, ytelse))
+            if (!validerArbeidsforholdIKontrollperiode(arbeidsforholdForNorskArbeidsgiver, kontrollPeriode, ytelse)) {
                 return false
+            }
 
             return erAvvikIArbeidsforhold(arbeidsforholdForNorskArbeidsgiver, tillatDagersHullIPeriode, kontrollPeriode, ytelse)
         }
@@ -157,7 +157,7 @@ data class Arbeidsforhold(
             arbeidsforholdForNorskArbeidsgiver: List<Arbeidsforhold>,
             tillatDagersHullIPeriode: Long,
             kontrollPeriode: Kontrollperiode,
-            ytelse: Ytelse
+            ytelse: Ytelse,
         ): Boolean {
             var totaltAntallDagerDiff: Long = 0
             val finnesDeltidArbeidsforhold = arbeidsforholdForNorskArbeidsgiver.finnesDeltidArbeidsforhold()
@@ -174,9 +174,10 @@ data class Arbeidsforhold(
                         return false
                     }
                 }
-                if (arbeidsforhold.periode.tom == null || forrigeTilDato == null || arbeidsforhold.periode.tom.isAfter(
-                    forrigeTilDato
-                )
+                if (arbeidsforhold.periode.tom == null || forrigeTilDato == null ||
+                    arbeidsforhold.periode.tom.isAfter(
+                        forrigeTilDato,
+                    )
                 ) {
                     forrigeTilDato = arbeidsforhold.periode.tom
                 }
@@ -193,7 +194,7 @@ data class Arbeidsforhold(
         private fun validerArbeidsforholdIKontrollperiode(
             arbeidsforholdForNorskArbeidsgiver: List<Arbeidsforhold>,
             kontrollPeriode: Kontrollperiode,
-            ytelse: Ytelse
+            ytelse: Ytelse,
         ): Boolean {
             if (arbeidsforholdForNorskArbeidsgiver.size > 10) {
                 merEnn10ArbeidsforholdCounter(ytelse).increment()
@@ -209,12 +210,13 @@ data class Arbeidsforhold(
                 harIkkeArbeidsforhold12MndTilbakeCounter(ytelse).increment()
 
                 if (arbeidsforholdForNorskArbeidsgiver.isNotEmpty()) {
-                    val antallDagerDiff = abs(
-                        ChronoUnit.DAYS.between(
-                            kontrollPeriode.fom,
-                            arbeidsforholdForNorskArbeidsgiver.minOrNull()!!.periode.fom
+                    val antallDagerDiff =
+                        abs(
+                            ChronoUnit.DAYS.between(
+                                kontrollPeriode.fom,
+                                arbeidsforholdForNorskArbeidsgiver.minOrNull()!!.periode.fom,
+                            ),
                         )
-                    )
                     antallDagerUtenArbeidsforhold(ytelse).record(antallDagerDiff.toDouble())
                 }
                 return false
@@ -222,12 +224,16 @@ data class Arbeidsforhold(
             return true
         }
 
-        private fun lovligAntallDagerBorte(ytelse: Ytelse, kontrollPeriode: Kontrollperiode, tillatDagersHullIPeriode: Long): Int {
+        private fun lovligAntallDagerBorte(
+            ytelse: Ytelse,
+            kontrollPeriode: Kontrollperiode,
+            tillatDagersHullIPeriode: Long,
+        ): Int {
             return when (ytelse) {
                 Ytelse.SYKEPENGER -> {
-                    if (!kontrollPeriode.isReferansePeriode)
+                    if (!kontrollPeriode.isReferansePeriode) {
                         35
-                    else {
+                    } else {
                         tillatDagersHullIPeriode.toInt()
                     }
                 }
@@ -246,7 +252,7 @@ data class Arbeidsforhold(
         fun List<Arbeidsforhold>.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(
             gittStillingsprosent: Double,
             kontrollPeriode: Kontrollperiode,
-            ytelse: Ytelse
+            ytelse: Ytelse,
         ): Boolean {
             val arbeidsforholdForKontrollPeriode =
                 this.arbeidsforholdForKontrollPeriodeMedStillingsprosentOver0(kontrollPeriode)
@@ -259,7 +265,7 @@ data class Arbeidsforhold(
 
                 list.addAll(
                     this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
-                        .parallelleArbeidsforhold(arbeidsforhold, kontrollPeriode)
+                        .parallelleArbeidsforhold(arbeidsforhold, kontrollPeriode),
                 )
                 if (vektetStillingsprosentForArbeidsforhold < gittStillingsprosent &&
                     this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
@@ -277,17 +283,22 @@ data class Arbeidsforhold(
 
         fun Arbeidsforhold.vektetStillingsprosentForArbeidsforhold(
             kontrollPeriode: Kontrollperiode,
-            beregnGjennomsnittForKontrollperioden: Boolean = false
+            beregnGjennomsnittForKontrollperioden: Boolean = false,
         ): Double {
-
             val arbeidsforholdKontrollperiodeIntersection = this.periode.intersection(kontrollPeriode)
-            val totaltAntallDager = if (beregnGjennomsnittForKontrollperioden) kontrollPeriode.antallDager
-            else arbeidsforholdKontrollperiodeIntersection.antallDager
+            val totaltAntallDager =
+                if (beregnGjennomsnittForKontrollperioden) {
+                    kontrollPeriode.antallDager
+                } else {
+                    arbeidsforholdKontrollperiodeIntersection.antallDager
+                }
 
             var vektetStillingsprosentForArbeidsforhold = 0.0
 
             this.arbeidsavtaler
-                .filter { it.gyldighetsperiode.overlapper(arbeidsforholdKontrollperiodeIntersection.periode) && (it.stillingsprosent == null || it.stillingsprosent > 0.0) }
+                .filter {
+                    it.gyldighetsperiode.overlapper(arbeidsforholdKontrollperiodeIntersection.periode) && (it.stillingsprosent == null || it.stillingsprosent > 0.0)
+                }
                 .map { (it.gyldighetsperiode.intersection(arbeidsforholdKontrollperiodeIntersection).antallDager to (it.getStillingsprosent())) }
                 .forEach { vektetStillingsprosentForArbeidsforhold += ((it.first / totaltAntallDager) * it.second) }
 
@@ -306,13 +317,13 @@ data class Arbeidsforhold(
 
         private fun List<Arbeidsforhold>.ingenAndreParallelleArbeidsforhold(
             arbeidsforhold: Arbeidsforhold,
-            kontrollPeriode: Kontrollperiode
+            kontrollPeriode: Kontrollperiode,
         ): Boolean =
             this.none {
                 it.periode.intersection(kontrollPeriode).periode.encloses(
                     arbeidsforhold.periode.intersection(
-                        kontrollPeriode
-                    ).periode
+                        kontrollPeriode,
+                    ).periode,
                 ) &&
                     it != arbeidsforhold &&
                     it.arbeidsavtaler.any { p -> p.stillingsprosent == null || p.stillingsprosent > 0.0 }
@@ -320,13 +331,13 @@ data class Arbeidsforhold(
 
         private fun List<Arbeidsforhold>.parallelleArbeidsforhold(
             arbeidsforhold: Arbeidsforhold,
-            kontrollPeriode: Kontrollperiode
+            kontrollPeriode: Kontrollperiode,
         ): List<Arbeidsforhold> =
             this.filter {
                 it.periode.intersection(kontrollPeriode).periode.encloses(
                     arbeidsforhold.periode.intersection(
-                        kontrollPeriode
-                    ).periode
+                        kontrollPeriode,
+                    ).periode,
                 ) &&
                     it != arbeidsforhold &&
                     it.arbeidsavtaler.any { p -> p.stillingsprosent == null || p.stillingsprosent > 0.0 }
@@ -335,7 +346,9 @@ data class Arbeidsforhold(
         private infix fun List<Arbeidsforhold>.ansatteHosArbeidsgivere(kontrollPeriode: Kontrollperiode): List<Ansatte> =
             arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(kontrollPeriode).mapNotNull { it.ansatte }.flatten()
 
-        private infix fun List<Arbeidsforhold>.arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(kontrollPeriode: Kontrollperiode): List<Arbeidsgiver> {
+        private infix fun List<Arbeidsforhold>.arbeidsgivereIArbeidsforholdForNorskArbeidsgiver(
+            kontrollPeriode: Kontrollperiode,
+        ): List<Arbeidsgiver> {
             return arbeidsforholdForKontrollPeriode(kontrollPeriode).map { it.arbeidsgiver }
         }
 
@@ -344,29 +357,34 @@ data class Arbeidsforhold(
         }
 
         infix fun List<Arbeidsforhold>.aaRegUtenlandsoppholdLandkodeForKontrollperiode(kontrollPeriode: Kontrollperiode): List<String> {
-            val landkoder = arbeidsforholdForKontrollPeriode(kontrollPeriode)
-                .flatMap {
-                    it.utenlandsopphold?.hentLandkoder() ?: listOf("null")
-                }
+            val landkoder =
+                arbeidsforholdForKontrollPeriode(kontrollPeriode)
+                    .flatMap {
+                        it.utenlandsopphold?.hentLandkoder() ?: listOf("null")
+                    }
 
             return if (landkoder.all { it.equals(null) }) listOf("null") else landkoder
         }
 
         infix fun List<Arbeidsforhold>.aaRegUtenlandsoppholdPeriodeForKontrollperiode(kontrollPeriode: Kontrollperiode): List<Periode?> {
-            val utenlandsopphold = arbeidsforholdForKontrollPeriode(kontrollPeriode).flatMap {
-                it.utenlandsopphold ?: listOf(null)
-            }
+            val utenlandsopphold =
+                arbeidsforholdForKontrollPeriode(kontrollPeriode).flatMap {
+                    it.utenlandsopphold ?: listOf(null)
+                }
             return if (utenlandsopphold.all { it == null }) listOf(null) else utenlandsopphold.map { it?.periode }
         }
 
-        infix fun List<Arbeidsforhold>.skipsregisterFartsomradeOgSkipstypeForKontrollperiode(kontrollPeriode: Kontrollperiode): List<String?> {
-            val skipsinfo = arbeidsavtalerForKontrollperiode(kontrollPeriode).map {
-                listOf(
-                    it.skipsregister?.name,
-                    it.fartsomraade?.name,
-                    it.skipstype?.name
-                )
-            }.flatten()
+        infix fun List<Arbeidsforhold>.skipsregisterFartsomradeOgSkipstypeForKontrollperiode(
+            kontrollPeriode: Kontrollperiode,
+        ): List<String?> {
+            val skipsinfo =
+                arbeidsavtalerForKontrollperiode(kontrollPeriode).map {
+                    listOf(
+                        it.skipsregister?.name,
+                        it.fartsomraade?.name,
+                        it.skipstype?.name,
+                    )
+                }.flatten()
 
             return if (skipsinfo.all { it == null }) listOf("null") else skipsinfo
         }
@@ -374,8 +392,7 @@ data class Arbeidsforhold(
         infix fun List<Arbeidsforhold>.harBrukerArbeidsforholdInnenforKontrollperiode(kontrollperiode: Kontrollperiode): Boolean =
             this.arbeidsforholdForKontrollPeriode(kontrollperiode).isNotNullOrEmpty()
 
-        private fun List<Utenlandsopphold>.hentLandkoder(): List<String> =
-            this.map { it.landkode }
+        private fun List<Utenlandsopphold>.hentLandkoder(): List<String> = this.map { it.landkode }
 
         private fun List<Arbeidsforhold>.arbeidsforholdForKontrollPeriode(kontrollPeriode: Kontrollperiode) =
             this.filter {

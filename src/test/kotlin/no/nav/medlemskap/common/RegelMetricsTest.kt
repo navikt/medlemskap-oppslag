@@ -24,7 +24,6 @@ import kotlin.math.absoluteValue
 @Disabled
 @TestInstance(PER_CLASS)
 class RegelMetricsTest {
-
     /*
      * Inspirasjon tatt fra
      * https://github.com/micrometer-metrics/micrometer/blob/master/micrometer-test/src/main/java/io/micrometer/core/tck/CounterTest.java
@@ -45,7 +44,6 @@ class RegelMetricsTest {
     @Test
     @Ignore
     fun `evaluering av bruker gir en metrikk for medlemskapskonklusjon`() {
-
         evaluer(personleser.brukerIkkeFolkeregistrertSomBosattINorge())
 
         assertTrue(simpleRegistry.meters.map { it.id.name }.contains("regel_calls_total"))

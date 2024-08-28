@@ -17,9 +17,8 @@ import java.time.LocalDate
 class HarBrukerDekningIMedlRegel(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
-    private val medlemskap: List<Medlemskap>
+    private val medlemskap: List<Medlemskap>,
 ) : MedlemskapRegel(RegelId.REGEL_1_7, ytelse, startDatoForYtelse, medlemskap) {
-
     override fun operasjon(): Resultat {
         val dekning = medlemskap gjeldendeDekning kontrollPeriodeForMedl
 
@@ -32,12 +31,11 @@ class HarBrukerDekningIMedlRegel(
     }
 
     companion object {
-
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerDekningIMedlRegel {
             return HarBrukerDekningIMedlRegel(
                 ytelse = datagrunnlag.ytelse,
                 medlemskap = datagrunnlag.medlemskap,
-                startDatoForYtelse = datagrunnlag.startDatoForYtelse
+                startDatoForYtelse = datagrunnlag.startDatoForYtelse,
             )
         }
     }

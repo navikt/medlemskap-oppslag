@@ -22,6 +22,6 @@ class OrganisasjonBuilder {
             type = type,
             bestaarAvOrganisasjonsledd = bestaarAvOrganisasjonsledd,
             inngaarIJuridiskEnheter = inngarIJuridiskEnhet,
-            organisasjonDetaljer = originasjonsDetaljer
+            organisasjonDetaljer = originasjonsDetaljer,
         )
 }

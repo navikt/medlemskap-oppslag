@@ -9,7 +9,6 @@ import no.nav.medlemskap.domene.personhistorikk.*
 import java.time.LocalDate
 
 object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
-
     fun mapStatsborgerskap(dataTable: DataTable): List<Statsborgerskap> {
         return mapDataTable(dataTable, StatsborgerskapMapper())
     }
@@ -51,7 +50,7 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
             return Navn(
                 parseString(PersonhistorikkDomenebegrep.FORNAVN, rad),
                 parseValgfriString(PersonhistorikkDomenebegrep.MELLOMNAVN, rad),
-                parseString(PersonhistorikkDomenebegrep.ETTERNAVN, rad)
+                parseString(PersonhistorikkDomenebegrep.ETTERNAVN, rad),
             )
         }
     }
@@ -62,7 +61,7 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
                 parseString(PersonhistorikkDomenebegrep.LANDKODE, rad),
                 parseValgfriDato(PersonhistorikkDomenebegrep.FRA_OG_MED_DATO, rad),
                 parseValgfriDato(PersonhistorikkDomenebegrep.TIL_OG_MED_DATO, rad),
-                parseValgfriBoolean(PersonhistorikkDomenebegrep.HISTORISK.nøkkel(), rad) ?: false
+                parseValgfriBoolean(PersonhistorikkDomenebegrep.HISTORISK.nøkkel(), rad) ?: false,
             )
         }
     }
@@ -73,7 +72,7 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
                 type = DomenespråkParser.parseSivilstandstype(PersonhistorikkDomenebegrep.SIVILSTANDSTYPE, rad),
                 gyldigFraOgMed = parseValgfriDato(PersonhistorikkDomenebegrep.GYLDIG_FRA_OG_MED, rad),
                 gyldigTilOgMed = parseValgfriDato(PersonhistorikkDomenebegrep.GYLDIG_TIL_OG_MED, rad),
-                relatertVedSivilstand = parseValgfriString(PersonhistorikkDomenebegrep.RELATERT_VED_SIVILSTAND, rad)
+                relatertVedSivilstand = parseValgfriString(PersonhistorikkDomenebegrep.RELATERT_VED_SIVILSTAND, rad),
             )
         }
     }
@@ -90,7 +89,7 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
                 parseString(PersonhistorikkDomenebegrep.LANDKODE, rad),
                 parseValgfriDato(PersonhistorikkDomenebegrep.FRA_OG_MED_DATO, rad),
                 parseValgfriDato(PersonhistorikkDomenebegrep.TIL_OG_MED_DATO, rad),
-                parseValgfriBoolean(PersonhistorikkDomenebegrep.HISTORISK.nøkkel(), rad) ?: false
+                parseValgfriBoolean(PersonhistorikkDomenebegrep.HISTORISK.nøkkel(), rad) ?: false,
             )
         }
     }
@@ -100,7 +99,7 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
             return ForelderBarnRelasjon(
                 relatertPersonsIdent = parseString(PersonhistorikkDomenebegrep.RELATERT_PERSONS_IDENT, rad),
                 relatertPersonsRolle = DomenespråkParser.parseRolle(PersonhistorikkDomenebegrep.RELATERT_PERSONS_ROLLE, rad),
-                minRolleForPerson = DomenespråkParser.parseValgfriRolle(PersonhistorikkDomenebegrep.MIN_ROLLE_FOR_PERSON, rad)
+                minRolleForPerson = DomenespråkParser.parseValgfriRolle(PersonhistorikkDomenebegrep.MIN_ROLLE_FOR_PERSON, rad),
             )
         }
     }
@@ -147,8 +146,7 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
                 statsborgerskap = statsborgerskap,
                 bostedsadresser = bostedsadresser,
                 kontaktadresser = kontaktadresser,
-                oppholdsadresser = oppholdsadresser
-
+                oppholdsadresser = oppholdsadresser,
             )
         }
     }
@@ -183,8 +181,8 @@ object PersonhistorikkDomeneSpraakParser : BasisDomeneParser() {
                     forelderBarnRelasjon = mutableListOf<ForelderBarnRelasjon>(),
                     bostedsadresser = bostedsadresser,
                     kontaktadresser = kontaktadresser,
-                    oppholdsadresser = oppholdsadresser
-                )
+                    oppholdsadresser = oppholdsadresser,
+                ),
             )
         }
     }
@@ -211,7 +209,8 @@ enum class PersonhistorikkDomenebegrep(val nøkkel: String) : Domenenøkkel {
     TIL_OG_MED_DATO("Til og med dato"),
     FORNAVN("Fornavn"),
     MELLOMNAVN("Mellomnavn"),
-    ETTERNAVN("Etternavn");
+    ETTERNAVN("Etternavn"),
+    ;
 
     override fun nøkkel(): String {
         return nøkkel
