@@ -9,24 +9,24 @@ Denne tjenesten gjør REST-kall mot følgende tjenester/registre:
 * GSAK: Saksbehandlingsløsning
 * JOARK: Journalarkiv
 * PDL: Ny persondataløsning, mangler foreløpig utenlandsopphold 
+* UDI: Oppholds- og arbeidstillatelse fra Utenlendingsdirektoratet
 
 # OpenAPI spesifikasjon for tjenesten
 [OpenAPI spesifikasjon](src/main/resources/lovme.yaml)
 
 # Funksjonell dokumentasjon
-* [Funksjonell dokumentasjon](src/test/resources/dokumentasjon/README.md)
+* [Overordnet funksjonell dokumentasjon](https://confluence.adeo.no/display/TLM/3.+Dokumentasjon+av+LovMe-tjenesten)
+* [Funksjonell dokumentasjon av regler](https://confluence.adeo.no/pages/viewpage.action?pageId=441067001)
 
 ## URL til tjeneste
-* preprod: https://medlemskap-oppslag.dev.intern.nav.no
-* prod: https://medlemskap-oppslag.nais.adeo.no
+* preprod: https://medlemskap-oppslag.intern.dev.nav.no
+* prod: https://medlemskap-oppslag.intern.nav.no
 
 ## Autentisering
 Forventer et AzureAD-token utstedt til servicebruker, satt Authorization-header (Bearer)
 
 Hvordan hente ut et AzureAD-token for servicebruker:
 `curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d 'client_id=<client_id>&scope=api://<client_id>/.default&client_secret=<client_secret>&grant_type=client_credentials' 'https://login.microsoftonline.com/966ac572-f5b7-4bbe-aa88-c76419c0f851/oauth2/v2.0/token'`
-
-Client ID og passord hentes fra Vault: `azuread / dev / creds / medlemskap-oppslag`
 
 ## Headere
 I tillegg til Authorization-headeren kreves det at Content-Type er satt til application/json
@@ -75,10 +75,14 @@ Resultat inneholder:
         val svar: Svar,
         var harDekning: Svar? = null,
         var dekning: String = "",
-        val delresultat: List<Resultat> = listOf()
+        val delresultat: List<Resultat> = listOf(),
+        val årsaker: List<Årsak>
 
-Feltene harDekning og dekning er ikke i bruk inntil konsumenter kan håndtere dekning funksjonelt. Dekning sier noe om brukeren har rett på ytelse.
-Inntil videre vil alle som ikke har dekning gå til uavklart.
+Feltene harDekning og dekning er ikke i bruk inntil konsumenter kan håndtere dekning funksjonelt. 
+Personer som er medlemmer i folketrygden kan ha et medlemskap som er begrenset.
+I feltet «dekning» kommer det fram hvilken medlemskapstype personen har, dvs. om det omfatter hele folketrygden eller om det er begrenset til noen deler av folketrygden.
+I feltet «harDekning» kommer det fram om medlemskapstypen omfatter konsumentens ytelse.
+Svaralternativene i «harDekning» er Ja, Nei eller Uavklart. Ja betyr at medlemskapet omfatter konsumentens ytelse.
 
 ## Eksempel på kall med CURL, gitt at port-forwarding er satt opp på port 8080:
 ```
@@ -89,38 +93,20 @@ curl -X POST -H "Authorization: Bearer <AAD_TOKEN>" -H "Content-Type: applicatio
 * [norsk borger](src/test/resources/testpersoner/autogenerert/norsk_borger_response.json)
 * [eøs-borger som er uavklart](src/test/resources/testpersoner/autogenerert/eøs_borger_uavklart_response.json)
 
-## Kjøre fra laptop
-* Naisdevice må være koblet opp
-* Kubeconfig riktig satt opp
-* `kubectl port-forward <pod-navn> 8080:7070`
-* Endepunktet er nå tilgjengelig på `localhost:8080
-
 ## Hvordan skaffe token i preprod
 ```
 curl -X POST -H "Content-Type: application/x-www-form-urlencoded" -d 'client_id=<clientid>>&scope=api://<clientid>/.default&client_secret=<clientsecret>&grant_type=client_credentials' 'https://login.microsoftonline.com/966ac572-f5b7-4bbe-aa88-c76419c0f851/oauth2/v2.0/token'
 ```
-Der `clientid` og `clientsecret` kan hentes fra vault under `azuread`
+Der `clientid` og `clientsecret` kan hentes fra kubernetes instansens miljøvariabler
 
 ## Kalle tjenesten fra laptop, for eksempel med Postman:
 * Angi POST
-* Angi URL localhost:8080/
+* Angi URL https://medlemskap-oppslag.intern.dev.nav.no/
 * Authorization:
   ** Type = Bearer Token
   * Paste inn Token-verdi   
     ** Body:
 * Request som angitt i LOVME.yaml
-
-## Testing med jMeter
-En jMeter-test som henter ned MiniNorge populasjonen og gjør et kall mot medlemskap-oppslag for hver person kan kjøres med følgende script
-```
-jmeter/runJMeterTest.sh <AAD_TOKEN>
-```
-jMeter-testen krever port-forwarding for medlemskap-oppslag satt opp på port 8080, og for testnorge-hodejegeren på port 8081. Dette kan enklest gjøres med "Kube Forwarder", hvor konfigurasjonen ligger på kube-forwarder-config/cluster-dev-gcp — nais-user.kpf-export.v2.json
-
-For å kjøre jMeter med GUI, enten fordi man liker det bedre eller fordi man skal redigere test planen, så kan følgende kommando kjøres:
-```
-jmeter/apache-jmeter-5.2.1/bin/jmeter -JAAD_TOKEN=<AAD_TOKEN> -t jmeter/MedlemskapOppslagMedMiniNorge.jmx
-```
 
 # Autentisere klienter
 Klienter som ønsker å kalle oss må generere et token med vår klientid som scope
