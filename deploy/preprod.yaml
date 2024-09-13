@@ -55,6 +55,7 @@ spec:
         - application: medlemskap-oppslag-funksjonelle-tester
         - application: medlemskap-sykepenger-listener
         - application: medlemskap-dagpengelytter
+        - application: medlemskap-hjelpemidler
         - application: sparkel-medlemskap
           namespace: tbd
           cluster: dev-fss
