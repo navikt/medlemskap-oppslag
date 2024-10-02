@@ -46,6 +46,11 @@ data class Arbeidsforhold(
     companion object {
         private val offentligSektorJuridiskeEnhetstyper = listOf("STAT", "FKF", "FYLK", "KF", "KOMM", "SF", "SÆR")
 
+        fun List<Arbeidsforhold>.harPermitteringerSiste12Måneder(kontrollPeriode: Kontrollperiode):Boolean {
+            val permisjonPermitteringer = this.arbeidsforholdForKontrollPeriode(kontrollPeriode).filter { it.permisjonPermittering.isNotNullOrEmpty() }
+            return permisjonPermitteringer.flatMap { it.permisjonPermittering!! }.any { it.type.equals(PermisjonPermitteringType.PERMITTERING) }
+        }
+
         fun List<Arbeidsforhold>.alleAktiveYrkeskoderDerTomErNull(): List<String> {
             return this.flatMap { arbeidsforhold ->
                 arbeidsforhold.arbeidsavtaler.alleAktiveArbeidsavtalerDerTomErNull()
