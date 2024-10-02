@@ -4,6 +4,7 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.erArbeidsforholdetOffentligSektor
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harPermitteringerSiste12Måneder
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
@@ -19,7 +20,8 @@ class HarPermitteringSiste12Måneder(
 
     override fun operasjon(): Resultat {
         return when {
-            erArbeidsforholdetOffentligSektor(arbeidsforhold, kontrollPeriodeForArbeidsforhold, ytelse) -> ja(regelId)
+            harPermitteringerSiste12Måneder(arbeidsforhold = arbeidsforhold,
+                kontrollPeriode = kontrollPeriodeForArbeidsforhold) -> ja(regelId)
             else -> nei(regelId)
         }
     }
