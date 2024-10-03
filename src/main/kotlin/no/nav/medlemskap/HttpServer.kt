@@ -102,7 +102,6 @@ createHttpServer(
             naisRoutes(
                 readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = CollectorRegistry.defaultRegistry
             )
-            if (services.configuration.cluster == "dev-gcp") setupSwaggerDocApi()
             evalueringRoute(services, configuration, requestContextService, createDatagrunnlag)
             reglerRoute()
             healthRoute("/healthCheck", services.healthService)
@@ -110,7 +109,6 @@ createHttpServer(
     } else {
         routing {
             naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = CollectorRegistry.defaultRegistry)
-            if (services.configuration.cluster == "dev-gcp") setupSwaggerDocApi()
             evalueringTestRoute(services, configuration, requestContextService, createDatagrunnlag)
             reglerRoute()
             healthRoute("/healthCheck", services.healthService)
