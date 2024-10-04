@@ -47,6 +47,7 @@ spec:
       rules:
         - application: medlemskap-barn
         - application: medlemskap-sykepenger-listener
+        - application: medlemskap-popp
         - application: medlemskap-dagpengelytter
         - application: sparkel-medlemskap
           namespace: tbd
