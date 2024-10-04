@@ -20,3 +20,5 @@ Egenskap: Regel 17: Har bruker arbeidsforhold?
     Når regel "17" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
+
+    Så skal svaret være "Ja"
