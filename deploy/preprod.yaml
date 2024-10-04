@@ -52,6 +52,7 @@ spec:
         - application: diva-client
         - application: medlemskap-oppslag
         - application: medlemskap-barn
+        - application: medlemskap-popp
         - application: medlemskap-oppslag-funksjonelle-tester
         - application: medlemskap-sykepenger-listener
         - application: medlemskap-dagpengelytter
