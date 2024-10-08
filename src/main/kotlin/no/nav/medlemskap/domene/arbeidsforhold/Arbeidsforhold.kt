@@ -6,6 +6,7 @@ import no.nav.medlemskap.domene.Kontrollperiode
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.arbeidsforholdForKontrollPeriode
 import no.nav.medlemskap.regler.common.Funksjoner.isNotNullOrEmpty
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
 import java.time.LocalDate
@@ -45,13 +46,24 @@ data class Arbeidsforhold(
     companion object {
         private val offentligSektorJuridiskeEnhetstyper = listOf("STAT", "FKF", "FYLK", "KF", "KOMM", "SF", "SÆR")
 
-        fun harPermitteringerSiste12Måneder(arbeidsforhold: List<Arbeidsforhold>, kontrollPeriode: Kontrollperiode): Boolean {
-            return arbeidsforhold.arbeidsforholdForKontrollPeriode(kontrollPeriode).harPermitteringer()
+        fun harPermitteringerSiste12Måneder(
+            arbeidsforhold: List<Arbeidsforhold>,
+            kontrollPeriode: Kontrollperiode
+        ): Boolean {
+            return arbeidsforhold.harPermitteringer(kontrollPeriode)
         }
 
-        private fun List<Arbeidsforhold>.harPermitteringer():Boolean {
+        private fun List<Arbeidsforhold>.harPermitteringer(kontrollPeriode: Kontrollperiode): Boolean {
             val permisjonPermitteringer = this.filter { it.permisjonPermittering.isNotNullOrEmpty() }
-            return permisjonPermitteringer.flatMap { it.permisjonPermittering!! }.any { it.type == PermisjonPermitteringType.PERMITTERING }
+            return permisjonPermitteringer.flatMap { it.permisjonPermittering!! }
+                .permisjonPermitteringerForKontrollPeriode(kontrollPeriode)
+                .any { it.type == PermisjonPermitteringType.PERMITTERING }
+        }
+
+        private fun List<PermisjonPermittering>.permisjonPermitteringerForKontrollPeriode(kontrollPeriode: Kontrollperiode): List<PermisjonPermittering> {
+            return this.filter {
+                it.periode.overlapper(kontrollPeriode.periode)
+            }
         }
 
         fun List<Arbeidsforhold>.alleAktiveYrkeskoderDerTomErNull(): List<String> {
@@ -84,15 +96,15 @@ data class Arbeidsforhold(
 
             return utenlandsopphold.any {
                 (
-                    if (it.periode?.fom == null || it.periode.tom == null) {
-                        Periode(
-                            it.rapporteringsperiode.atDay(1),
-                            it.rapporteringsperiode.atEndOfMonth()
-                        ).overlapper(kontrollPeriode.periode)
-                    } else {
-                        it.periode.overlapper(kontrollPeriode.periode)
-                    }
-                    )
+                        if (it.periode?.fom == null || it.periode.tom == null) {
+                            Periode(
+                                it.rapporteringsperiode.atDay(1),
+                                it.rapporteringsperiode.atEndOfMonth()
+                            ).overlapper(kontrollPeriode.periode)
+                        } else {
+                            it.periode.overlapper(kontrollPeriode.periode)
+                        }
+                        )
             }
         }
 
@@ -103,7 +115,7 @@ data class Arbeidsforhold(
         ): Boolean =
             arbeidsforhold.filter {
                 it.arbeidsgiver.juridiskeEnheter != null &&
-                    it.arbeidsgiver.juridiskeEnheter.all { enhetstype -> enhetstype != null && enhetstype.enhetstype in offentligSektorJuridiskeEnhetstyper }
+                        it.arbeidsgiver.juridiskeEnheter.all { enhetstype -> enhetstype != null && enhetstype.enhetstype in offentligSektorJuridiskeEnhetstyper }
             }.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid(25.0, kontrollPeriode, ytelse)
 
         infix fun List<Arbeidsforhold>.erAlleArbeidsgivereOrganisasjon(kontrollPeriode: Kontrollperiode): Boolean {
@@ -132,8 +144,8 @@ data class Arbeidsforhold(
                 .flatMap { it.arbeidsavtaler }
                 .all {
                     it.skipsregister == Skipsregister.NOR ||
-                        (it.skipsregister == Skipsregister.NIS && it.fartsomraade == Fartsomraade.INNENRIKS) ||
-                        (it.skipsregister == Skipsregister.NIS && it.yrkeskode in yrkeskoderForSkipsfart)
+                            (it.skipsregister == Skipsregister.NIS && it.fartsomraade == Fartsomraade.INNENRIKS) ||
+                            (it.skipsregister == Skipsregister.NIS && it.yrkeskode in yrkeskoderForSkipsfart)
                 }
         }
 
@@ -159,7 +171,12 @@ data class Arbeidsforhold(
             if (!validerArbeidsforholdIKontrollperiode(arbeidsforholdForNorskArbeidsgiver, kontrollPeriode, ytelse))
                 return false
 
-            return erAvvikIArbeidsforhold(arbeidsforholdForNorskArbeidsgiver, tillatDagersHullIPeriode, kontrollPeriode, ytelse)
+            return erAvvikIArbeidsforhold(
+                arbeidsforholdForNorskArbeidsgiver,
+                tillatDagersHullIPeriode,
+                kontrollPeriode,
+                ytelse
+            )
         }
 
         private fun erAvvikIArbeidsforhold(
@@ -173,19 +190,29 @@ data class Arbeidsforhold(
             var forrigeTilDato: LocalDate? = null
             val sortertArbeidsforholdEtterPeriode = arbeidsforholdForNorskArbeidsgiver.sorted()
             for (arbeidsforhold in sortertArbeidsforholdEtterPeriode) { // Sjekker at alle påfølgende arbeidsforhold er sammenhengende
-                if (forrigeTilDato != null && !erDatoerSammenhengende(forrigeTilDato, arbeidsforhold.periode.fom, tillatDagersHullIPeriode)) {
+                if (forrigeTilDato != null && !erDatoerSammenhengende(
+                        forrigeTilDato,
+                        arbeidsforhold.periode.fom,
+                        tillatDagersHullIPeriode
+                    )
+                ) {
                     val antallDagerDiff = abs(ChronoUnit.DAYS.between(forrigeTilDato, arbeidsforhold.periode.fom))
                     totaltAntallDagerDiff += antallDagerDiff
                     antallDagerMellomArbeidsforhold(ytelse).record(antallDagerDiff.toDouble())
                     usammenhengendeArbeidsforholdCounter(ytelse).increment()
 
-                    if (finnesDeltidArbeidsforhold || totaltAntallDagerDiff > lovligAntallDagerBorte(ytelse, kontrollPeriode, tillatDagersHullIPeriode)) {
+                    if (finnesDeltidArbeidsforhold || totaltAntallDagerDiff > lovligAntallDagerBorte(
+                            ytelse,
+                            kontrollPeriode,
+                            tillatDagersHullIPeriode
+                        )
+                    ) {
                         return false
                     }
                 }
                 if (arbeidsforhold.periode.tom == null || forrigeTilDato == null || arbeidsforhold.periode.tom.isAfter(
-                    forrigeTilDato
-                )
+                        forrigeTilDato
+                    )
                 ) {
                     forrigeTilDato = arbeidsforhold.periode.tom
                 }
@@ -231,7 +258,11 @@ data class Arbeidsforhold(
             return true
         }
 
-        private fun lovligAntallDagerBorte(ytelse: Ytelse, kontrollPeriode: Kontrollperiode, tillatDagersHullIPeriode: Long): Int {
+        private fun lovligAntallDagerBorte(
+            ytelse: Ytelse,
+            kontrollPeriode: Kontrollperiode,
+            tillatDagersHullIPeriode: Long
+        ): Int {
             return when (ytelse) {
                 Ytelse.SYKEPENGER -> {
                     if (!kontrollPeriode.isReferansePeriode)
@@ -240,6 +271,7 @@ data class Arbeidsforhold(
                         tillatDagersHullIPeriode.toInt()
                     }
                 }
+
                 else -> 35
             }
         }
@@ -323,8 +355,8 @@ data class Arbeidsforhold(
                         kontrollPeriode
                     ).periode
                 ) &&
-                    it != arbeidsforhold &&
-                    it.arbeidsavtaler.any { p -> p.stillingsprosent == null || p.stillingsprosent > 0.0 }
+                        it != arbeidsforhold &&
+                        it.arbeidsavtaler.any { p -> p.stillingsprosent == null || p.stillingsprosent > 0.0 }
             }
 
         private fun List<Arbeidsforhold>.parallelleArbeidsforhold(
@@ -337,8 +369,8 @@ data class Arbeidsforhold(
                         kontrollPeriode
                     ).periode
                 ) &&
-                    it != arbeidsforhold &&
-                    it.arbeidsavtaler.any { p -> p.stillingsprosent == null || p.stillingsprosent > 0.0 }
+                        it != arbeidsforhold &&
+                        it.arbeidsavtaler.any { p -> p.stillingsprosent == null || p.stillingsprosent > 0.0 }
             }
 
         private infix fun List<Arbeidsforhold>.ansatteHosArbeidsgivere(kontrollPeriode: Kontrollperiode): List<Ansatte> =
@@ -349,7 +381,9 @@ data class Arbeidsforhold(
         }
 
         infix fun List<Arbeidsforhold>.orgnummerForKontrollperiode(kontrollPeriode: Kontrollperiode): List<String> {
-            return arbeidsforholdForKontrollPeriode(kontrollPeriode).map { it.arbeidsgiver.organisasjonsnummer ?: "null" }
+            return arbeidsforholdForKontrollPeriode(kontrollPeriode).map {
+                it.arbeidsgiver.organisasjonsnummer ?: "null"
+            }
         }
 
         infix fun List<Arbeidsforhold>.aaRegUtenlandsoppholdLandkodeForKontrollperiode(kontrollPeriode: Kontrollperiode): List<String> {
@@ -398,7 +432,7 @@ data class Arbeidsforhold(
         fun List<Arbeidsforhold>.arbeidsforholdForKontrollPeriodeMedStillingsprosentOver0(kontrollPeriode: Kontrollperiode) =
             this.filter {
                 it.periode.overlapper(kontrollPeriode.periode) &&
-                    it.arbeidsavtaler.any { p -> p.stillingsprosent == null || p.stillingsprosent > 0.0 }
+                        it.arbeidsavtaler.any { p -> p.stillingsprosent == null || p.stillingsprosent > 0.0 }
             }
 
         fun fraOgMedDatoForArbeidsforhold(førsteDatoForYtelse: LocalDate): LocalDate {
