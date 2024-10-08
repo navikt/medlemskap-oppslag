@@ -46,6 +46,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_12("12", "Har bruker vært i minst 25% stilling de siste 12 mnd?", "Bruker har ikke jobbet 25% eller mer i løpet av perioden."),
     REGEL_13("13", "Er bruker død?", "", "Bruker har dødsdato etter inputperiode, men det påvirker ikke medlemskapet", "Bruker er død, men i eller før inputperiode."),
     REGEL_14("14", "Er bruker ansatt i staten eller i en kommune?", "Bruker er ikke ansatt i staten eller i en kommune", "Bruker er ansatt i staten eller i en kommune"),
+    REGEL_15("15", "Arbeidsforhold siste 12 måneder: Finnes det en periode med permittering i et av disse arbeidsforholdene?","Bruker har permittering i siste 12 mnd"),
     REGEL_17("17", "Har bruker arbeidsforhold?", "Bruker har ikke arbeidsforhold"),
     REGEL_17_1("17.1", "Er bruker frilanser?", "Bruker er ikke frilanser"),
     REGEL_18("18", "Er bruker i hovedsak arbeidstaker?", "Bruker er ikke arbeidstaker"),

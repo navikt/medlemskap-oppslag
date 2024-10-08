@@ -1,3 +1,5 @@
+@file:Suppress("DANGEROUS_CHARACTERS")
+
 package no.nav.medlemskap.domene.arbeidsforhold
 
 import assertk.assertThat
