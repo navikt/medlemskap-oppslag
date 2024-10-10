@@ -39,7 +39,7 @@ class PermisjonPermiteringTest {
         val funnet = finnOverlappendePerioder(mutableListOf(permisjonPermittering), kontrollperiode)
         Assertions.assertTrue(funnet.isEmpty())
     }
-    /*Sjekker overlappende eller samme dato*/
+    /*Sjekker overlappende eller samme dato.*/
     @Test
     fun finnOverlappendePerioderTest_DerPermisjonpermitteringStarterForKontrollperiodeOgEnderI() {
         val kontrollperiode = Periode(fom = LocalDate.now(), tom = LocalDate.now())
