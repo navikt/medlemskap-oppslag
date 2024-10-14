@@ -8,6 +8,7 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.regler.common.Funksjoner.isNotNullOrEmpty
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
+import no.nav.medlemskap.regler.v1.arbeidsforhold.harPermisjoner
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import kotlin.math.abs
@@ -50,6 +51,10 @@ data class Arbeidsforhold(
                 arbeidsforhold.arbeidsavtaler.alleAktiveArbeidsavtalerDerTomErNull()
                     .map { arbeidsavtale -> arbeidsavtale.yrkeskode }
             }
+        }
+
+        fun List<Arbeidsforhold>.harPermisjoner(): Boolean {
+            return this.filter { it.harPermisjoner() }.isEmpty()
         }
 
         fun List<Arbeidsforhold>.AlleArbeidsforholdPerioderIKontrollperiode(kontrollPeriode: Kontrollperiode) =

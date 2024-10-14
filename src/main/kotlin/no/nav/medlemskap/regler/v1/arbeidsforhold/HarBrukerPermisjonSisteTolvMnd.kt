@@ -4,6 +4,7 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harPermisjoner
 import no.nav.medlemskap.domene.arbeidsforhold.PermisjonPermittering
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
@@ -23,7 +24,7 @@ class HarBrukerPermisjonSiste12Måneder(
         if (arbeidsforhold.size > 1) {
             //32-d
             // TODO verifiser med Helle at dette er korrekt
-            if (arbeidsforhold.filter { it.harPermisjoner() }.isEmpty()){
+            if (arbeidsforhold.harPermisjoner()){
                 return nei(regelId)
             }
                 return ja(regelId)
