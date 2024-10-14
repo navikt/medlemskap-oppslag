@@ -1,8 +1,6 @@
 package no.nav.medlemskap.domene.arbeidsforhold
 
-import no.nav.medlemskap.clients.aareg.Entitet
 import no.nav.medlemskap.domene.Periode
-import no.nav.medlemskap.regler.v1.arbeidsforhold.HarPermisjonSiste12Måneder
 import no.nav.medlemskap.regler.v1.arbeidsforhold.finnOverlappendePerioder
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test

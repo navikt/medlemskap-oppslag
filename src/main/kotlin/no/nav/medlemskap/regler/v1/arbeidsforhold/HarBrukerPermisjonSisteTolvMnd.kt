@@ -11,7 +11,7 @@ import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import java.time.LocalDate
 
-class HarPermisjonSiste12Måneder(
+class HarBrukerPermisjonSiste12Måneder(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
@@ -22,6 +22,7 @@ class HarPermisjonSiste12Måneder(
     override fun operasjon(): Resultat {
         if (arbeidsforhold.size > 1) {
             //32-d
+            // TODO verifiser med Helle at dette er korrekt
             if (arbeidsforhold.filter { it.harPermisjoner() }.isEmpty()){
                 return nei(regelId)
             }
@@ -53,8 +54,8 @@ class HarPermisjonSiste12Måneder(
 
     companion object {
 
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarPermisjonSiste12Måneder {
-            return HarPermisjonSiste12Måneder(
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerPermisjonSiste12Måneder {
+            return HarBrukerPermisjonSiste12Måneder(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold,
@@ -65,7 +66,10 @@ class HarPermisjonSiste12Måneder(
 }
 
 fun Arbeidsforhold.harPermisjoner(): Boolean{
-    return permisjonPermittering?.isEmpty() ?: false
+    if (permisjonPermittering == null){
+        return false
+    }
+    return permisjonPermittering.isNotEmpty()
 }
 
 fun finnOverlappendePerioder(permisjoner: MutableList<PermisjonPermittering>, kontrollperiode: Periode): List<PermisjonPermittering> {

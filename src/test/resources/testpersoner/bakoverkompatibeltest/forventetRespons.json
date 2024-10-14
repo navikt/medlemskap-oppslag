@@ -1,6 +1,6 @@
 {
   "vurderingsID" : "7b006d2c-ff75-4404-9663-7babf23f45de",
-  "tidspunkt" : "2024-02-26T09:46:08.89591",
+  "tidspunkt" : "2024-10-10T14:35:02.606841",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "kanal" : "/",
@@ -301,29 +301,20 @@
         "årsaker" : [ ],
         "avklaring" : "Er bruker frilanser?"
       }, {
-        "regelId" : "REGEL_22",
+        "regelId" : "REGEL_32",
         "svar" : "JA",
-        "begrunnelse" : "Det finnes utenlandsopphold i et av arbeidsforholdene de siste 12 månedene",
+        "begrunnelse" : "Bruker har hatt permisjon de siste 12 måneder",
         "harDekning" : null,
         "dekning" : "",
         "delresultat" : [ ],
         "årsaker" : [ ],
-        "avklaring" : "Arbeidsforhold siste 12 måneder: finnes det utenlandsopphold i et av disse arbeidsforholdene?"
-      }, {
-        "regelId" : "REGEL_25",
-        "svar" : "JA",
-        "begrunnelse" : "utenlandsoppholdet er innenfor siste 12 måneder",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Er perioden for utenlandsopphold innenfor siste 12 måneder?"
+        "avklaring" : "Har bruker vært permitert siste 12 måneder?"
       } ],
       "årsaker" : [ {
-        "regelId" : "REGEL_25",
-        "avklaring" : "Er perioden for utenlandsopphold innenfor siste 12 måneder?",
+        "regelId" : "REGEL_32",
+        "avklaring" : "Har bruker vært permitert siste 12 måneder?",
         "svar" : "JA",
-        "begrunnelse" : "utenlandsoppholdet er innenfor siste 12 måneder"
+        "begrunnelse" : "Bruker har hatt permisjon de siste 12 måneder"
       } ],
       "avklaring" : "Er felles regler for arbeidsforhold avklart?"
     }, {
@@ -522,10 +513,10 @@
       "avklaring" : "Er regler for norske borgere avklart?"
     } ],
     "årsaker" : [ {
-      "regelId" : "REGEL_25",
-      "avklaring" : "Er perioden for utenlandsopphold innenfor siste 12 måneder?",
+      "regelId" : "REGEL_32",
+      "avklaring" : "Har bruker vært permitert siste 12 måneder?",
       "svar" : "JA",
-      "begrunnelse" : "utenlandsoppholdet er innenfor siste 12 måneder"
+      "begrunnelse" : "Bruker har hatt permisjon de siste 12 måneder"
     }, {
       "regelId" : "REGEL_1_4",
       "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
