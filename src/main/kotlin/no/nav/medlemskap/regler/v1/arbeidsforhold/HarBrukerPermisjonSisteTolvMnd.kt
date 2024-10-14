@@ -4,6 +4,8 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.finnOverlappendePermisjoner
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harNoenArbeidsforhold100ProsentPermisjon
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harPermisjoner
 import no.nav.medlemskap.domene.arbeidsforhold.PermisjonPermittering
 import no.nav.medlemskap.regler.common.RegelId
@@ -24,28 +26,18 @@ class HarBrukerPermisjonSiste12Måneder(
         if (arbeidsforhold.size > 1) {
             //32-d
             // TODO verifiser med Helle at dette er korrekt
-            if (arbeidsforhold.harPermisjoner()){
+            if (arbeidsforhold.harPermisjoner()) {
                 return nei(regelId)
             }
-                return ja(regelId)
+            return ja(regelId)
         }
         //val permisjoner = arbeidsforhold.flatMap { it.permisjonPermittering!! }
-        val permisjoner: MutableList<PermisjonPermittering> = mutableListOf()
-        arbeidsforhold.forEach {
-            if (it.permisjonPermittering != null) {
-                permisjoner.addAll(it.permisjonPermittering)
-            }
+        if (!arbeidsforhold.harNoenArbeidsforhold100ProsentPermisjon()) {
 
-        }
-        //32-b
-        val funnet = permisjoner.find { it.prosent == 100.0 }
-
-        if (funnet == null) {
             return nei(regelId)
         }
         //32-c
-        val overlappende = finnOverlappendePerioder(permisjoner, kontrollperiode)
-        if (overlappende.isEmpty()) {
+        if (arbeidsforhold.finnOverlappendePermisjoner(kontrollperiode).isEmpty()) {
             return nei(regelId)
         }
 
@@ -66,13 +58,16 @@ class HarBrukerPermisjonSiste12Måneder(
     }
 }
 
-fun Arbeidsforhold.harPermisjoner(): Boolean{
-    if (permisjonPermittering == null){
+fun Arbeidsforhold.harPermisjoner(): Boolean {
+    if (permisjonPermittering == null) {
         return false
     }
     return permisjonPermittering.isNotEmpty()
 }
 
-fun finnOverlappendePerioder(permisjoner: MutableList<PermisjonPermittering>, kontrollperiode: Periode): List<PermisjonPermittering> {
+fun finnOverlappendePerioder(
+    permisjoner: MutableList<PermisjonPermittering>,
+    kontrollperiode: Periode
+): List<PermisjonPermittering> {
     return permisjoner.filter { it.periode.overlapper(kontrollperiode) }
 }
