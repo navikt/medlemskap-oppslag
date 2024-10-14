@@ -3,9 +3,9 @@
 
 Egenskap: Regel 32: Har bruker permisjoner?
 
-  Regel: Regel 32: Har bruker bare et arbeidsforhold?
+  Regel: Regel 32: Har bruker bare ett arbeidsforhold?
 
-    Scenariomal: Person som har et arbeidsforhold uten permisjoner får "Ja"
+    Scenariomal: Person som har ett arbeidsforhold uten permisjoner får "Ja"
       Gitt følgende arbeidsforhold fra AAReg
         | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
         | <Fra og med>    | <Til og med>    | Organisasjon     | NORMALT             |
@@ -16,8 +16,6 @@ Egenskap: Regel 32: Har bruker permisjoner?
         | 30.01.2020      | 30.01.2021      | Nei                           |
 
       Så skal svaret være "<Svar>"
-      Og skal avklaringen være som definert i RegelId
-      Og skal begrunnelsen være som definert i RegelId
 
       Eksempler:
         | Fra og med | Til og med | Svar |
@@ -25,7 +23,7 @@ Egenskap: Regel 32: Har bruker permisjoner?
 
 
 
-    Scenariomal: Person med et arbeidsforhold og permisjon med 60% får "Nei"
+    Scenariomal: Person med ett arbeidsforhold og permisjon med 60% får "Nei"
       Gitt følgende arbeidsforhold fra AAReg
         | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
         | <Fra og med>    | <Til og med>    | Organisasjon     | NORMALT             |
@@ -39,13 +37,13 @@ Egenskap: Regel 32: Har bruker permisjoner?
         | 30.01.2020      | 30.01.2021      | Nei                           |
 
       Så skal svaret være "<Svar>"
-      Og skal avklaringen være som definert i RegelId
-      Og skal begrunnelsen være som definert i RegelId
 
       Eksempler:
         | Fra og med | Til og med | Svar | PROSENT |
         | 01.01.2018 |            | Nei  | 60      |
         | 01.01.2018 |            | Ja   | 100     |
+        | 01.01.2018 |            | Nei  | 99      |
+
 
     Scenariomal: Person med to arbeidsforhold og permisjon 100% langt tilbake i tid får "Ja"
       Gitt følgende arbeidsforhold fra AAReg
@@ -62,12 +60,11 @@ Egenskap: Regel 32: Har bruker permisjoner?
         | 30.01.2020      | 30.01.2021      | Nei                           |
 
       Så skal svaret være "<Svar>"
-      Og skal avklaringen være som definert i RegelId
-      Og skal begrunnelsen være som definert i RegelId
 
       Eksempler:
         | Fra og med | Til og med | Svar | PROSENT |
         | 01.01.2018 |            | Ja   | 100     |
+
 
     Scenariomal: Person med flere arbeidsforhold og permisjoner får "Nei"
       Gitt følgende arbeidsforhold fra AAReg
@@ -85,8 +82,6 @@ Egenskap: Regel 32: Har bruker permisjoner?
         | 30.01.2020      | 30.01.2021      | Nei                           |
 
       Så skal svaret være "<Svar>"
-      Og skal avklaringen være som definert i RegelId
-      Og skal begrunnelsen være som definert i RegelId
 
       Eksempler:
         | Fra og med | Til og med | Svar | PROSENT |

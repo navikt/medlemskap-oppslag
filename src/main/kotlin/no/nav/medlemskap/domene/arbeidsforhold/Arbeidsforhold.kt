@@ -54,7 +54,7 @@ data class Arbeidsforhold(
         }
 
         fun List<Arbeidsforhold>.harPermisjoner(): Boolean {
-            return this.filter { it.harPermisjoner() }.isEmpty()
+            return this.filter { it.harPermisjoner() }.isNotEmpty()
         }
 
         fun List<Arbeidsforhold>.harNoenArbeidsforhold100ProsentPermisjon(): Boolean {
