@@ -78,9 +78,3 @@ fun Arbeidsforhold.harPermisjoner(): Boolean {
     return permisjonPermittering.isNotEmpty()
 }
 
-fun finnOverlappendePerioder(
-    permisjoner: MutableList<PermisjonPermittering>,
-    kontrollperiode: Periode
-): List<PermisjonPermittering> {
-    return permisjoner.filter { it.periode.overlapper(kontrollperiode) }
-}

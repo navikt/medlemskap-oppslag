@@ -1,7 +1,7 @@
 package no.nav.medlemskap.domene.arbeidsforhold
 
 import no.nav.medlemskap.domene.Periode
-import no.nav.medlemskap.regler.v1.arbeidsforhold.finnOverlappendePerioder
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.finnOverlappendePermisjoner
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
@@ -19,7 +19,8 @@ class PermisjonPermiteringTest {
                 PermisjonPermitteringType.PERMISJON,
                 varslingskode = "",
             )
-        val funnet = finnOverlappendePerioder(mutableListOf(permisjonPermittering), kontrollperiode)
+        val arbeidsforhold = genererDummyArbeidsforhold(permisjonPermittering)
+        val funnet = listOf(arbeidsforhold).finnOverlappendePermisjoner(kontrollPeriode = kontrollperiode)
         Assertions.assertTrue(funnet.isNotEmpty())
     }
 
@@ -34,7 +35,8 @@ class PermisjonPermiteringTest {
             PermisjonPermitteringType.PERMISJON,
             varslingskode = "",
         )
-        val funnet = finnOverlappendePerioder(mutableListOf(permisjonPermittering), kontrollperiode)
+        val arbeidsforhold = genererDummyArbeidsforhold(permisjonPermittering)
+        val funnet = listOf(arbeidsforhold).finnOverlappendePermisjoner(kontrollPeriode = kontrollperiode)
         Assertions.assertTrue(funnet.isEmpty())
     }
     /*Sjekker overlappende eller samme dato.*/
@@ -49,7 +51,8 @@ class PermisjonPermiteringTest {
             PermisjonPermitteringType.PERMISJON,
             varslingskode = "",
         )
-        val funnet = finnOverlappendePerioder(mutableListOf(permisjonPermittering), kontrollperiode)
+        val arbeidsforhold = genererDummyArbeidsforhold(permisjonPermittering)
+        val funnet = listOf(arbeidsforhold).finnOverlappendePermisjoner(kontrollPeriode = kontrollperiode)
         Assertions.assertTrue(funnet.isNotEmpty())
     }
 
@@ -64,8 +67,28 @@ class PermisjonPermiteringTest {
             PermisjonPermitteringType.PERMISJON,
             varslingskode = "",
         )
-        val funnet = finnOverlappendePerioder(mutableListOf(permisjonPermittering), kontrollperiode)
+        val arbeidsforhold = genererDummyArbeidsforhold(permisjonPermittering)
+        val funnet = listOf(arbeidsforhold).finnOverlappendePermisjoner(kontrollPeriode = kontrollperiode)
         Assertions.assertTrue(funnet.isNotEmpty())
+    }
+
+    private fun genererDummyArbeidsforhold(permisjonPermittering: PermisjonPermittering): Arbeidsforhold {
+        val arbeidsforhold = Arbeidsforhold(
+            periode = Periode(fom = LocalDate.now(), tom = LocalDate.now()),
+            utenlandsopphold = emptyList(),
+            arbeidsgivertype = OpplysningspliktigArbeidsgiverType.Organisasjon,
+            arbeidsgiver = Arbeidsgiver(
+                navn = "",
+                organisasjonsnummer = "",
+                ansatte = emptyList(),
+                konkursStatus = emptyList(),
+                juridiskeEnheter = emptyList()
+            ),
+            arbeidsforholdstype = Arbeidsforholdstype.NORMALT,
+            arbeidsavtaler = emptyList(),
+            permisjonPermittering = listOf(permisjonPermittering),
+        )
+        return arbeidsforhold
     }
 
 }
