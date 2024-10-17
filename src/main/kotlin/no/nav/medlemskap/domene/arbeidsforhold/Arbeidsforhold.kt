@@ -6,6 +6,7 @@ import no.nav.medlemskap.domene.Kontrollperiode
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.arbeidsforholdForKontrollPeriode
 import no.nav.medlemskap.regler.common.Funksjoner.isNotNullOrEmpty
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
 import no.nav.medlemskap.regler.v1.arbeidsforhold.harPermisjoner
@@ -45,6 +46,26 @@ data class Arbeidsforhold(
 
     companion object {
         private val offentligSektorJuridiskeEnhetstyper = listOf("STAT", "FKF", "FYLK", "KF", "KOMM", "SF", "SÆR")
+
+        fun harPermitteringerSiste12Måneder(
+            arbeidsforhold: List<Arbeidsforhold>,
+            kontrollPeriode: Kontrollperiode
+        ): Boolean {
+            return arbeidsforhold.harPermitteringer(kontrollPeriode)
+        }
+
+        private fun List<Arbeidsforhold>.harPermitteringer(kontrollPeriode: Kontrollperiode): Boolean {
+            val permisjonPermitteringer = this.filter { it.permisjonPermittering.isNotNullOrEmpty() }
+            return permisjonPermitteringer.flatMap { it.permisjonPermittering!! }
+                .permisjonPermitteringerForKontrollPeriode(kontrollPeriode)
+                .any { it.type == PermisjonPermitteringType.PERMITTERING }
+        }
+
+        private fun List<PermisjonPermittering>.permisjonPermitteringerForKontrollPeriode(kontrollPeriode: Kontrollperiode): List<PermisjonPermittering> {
+            return this.filter {
+                it.periode.overlapper(kontrollPeriode.periode)
+            }
+        }
 
         fun List<Arbeidsforhold>.alleAktiveYrkeskoderDerTomErNull(): List<String> {
             return this.flatMap { arbeidsforhold ->
