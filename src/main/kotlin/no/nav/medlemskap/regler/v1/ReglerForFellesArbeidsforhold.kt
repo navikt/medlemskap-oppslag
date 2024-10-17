@@ -54,7 +54,7 @@ class ReglerForFellesArbeidsforhold(
         val ErBrukerFrilanserFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_17_1),
             hvisJa = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
-            hvisNei = HarBrukerUtenlandsoppholdIArbeidsforholdetFlyt
+            hvisNei = HarPermitteringSiste12MånederFlyt
         )
 
 
