@@ -69,6 +69,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_29("29", "Er ektefellen en EØS-borger?", "Ektefelle til bruker er ikke EØS-borger"),
     REGEL_30("30", "Har britisk bruker EØS eller EFTA oppholdstillatelse?", "Britisk bruker har ikke EØS eller EFTA oppholdstillatelse", "Britisk bruker har EØS eller EFTA oppholdstillatelse"),
     REGEL_31("31", "Har bruker en permanent oppholdstillatelse?", "Bruker har ikke permanent oppholdstillatelse", "Bruker har permanent oppholdstillatelse"),
+    REGEL_32("32", "Har bruker hatt permisjon siste 12 måneder?", "Bruker har ikke hatt permisjon siste 12 måneder", "Bruker har hatt permisjon de siste 12 måneder"),
     REGEL_OPPLYSNINGER("OPPLYSNINGER", "Finnes det registrerte opplysninger på bruker?", "Alle de følgende ble NEI"),
     REGEL_A("OPPLYSNINGER-MEDL", "Finnes det registrerte opplysninger i MEDL?", "", "Det finnes registrert opplysninger i Medl"),
     REGEL_B("OPPLYSNINGER-GOSYS", "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?", "", "Det finnes registrerte opplysninger i GOSYS"),

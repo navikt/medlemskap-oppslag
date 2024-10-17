@@ -32,17 +32,25 @@ class ReglerForFellesArbeidsforhold(
             hvisNei = erBrukerArbeidstakerIkontrollperiodeForStønadsområdeFlyt,
         )
 
+
         val HarBrukerUtenlandsoppholdIArbeidsforholdetFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_22),
             hvisJa = ErPeriodenForUtenlandsoppholdetInnenforSiste12MånederFlyt,
             hvisNei = erBrukerArbeidstakerIkontrollperiodeForStønadsområdeFlyt
         )
 
-        val ErBrukerFrilanserFlyt = lagRegelflyt(
-            regel = hentRegel(REGEL_17_1),
+        val HarBrukerPermisjonSiste12MånederFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_32),
             hvisJa = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
             hvisNei = HarBrukerUtenlandsoppholdIArbeidsforholdetFlyt
         )
+
+        val ErBrukerFrilanserFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_17_1),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
+            hvisNei = HarBrukerPermisjonSiste12MånederFlyt
+        )
+
 
         val HarBrukerArbeidsforholdFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_17),

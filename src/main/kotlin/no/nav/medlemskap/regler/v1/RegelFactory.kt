@@ -98,6 +98,7 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_29 -> ErBrukerEktefelleEOSRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_30 -> HarBritiskBrukerEOSellerEFTAOpphold.fraDatagrunnlag(datagrunnlag).regel
             REGEL_31 -> HarBrukerPermanentOppholdstillatelse.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_32 -> HarBrukerPermisjonSiste12Måneder.fraDatagrunnlag(datagrunnlag).regel
             else -> throw java.lang.RuntimeException("Ukjent regel: $regelId")
         }
     }
