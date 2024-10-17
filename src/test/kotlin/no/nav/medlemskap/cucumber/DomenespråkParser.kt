@@ -275,7 +275,8 @@ object DomenespråkParser : BasisDomeneParser() {
                 parseBoolean(ER_MEDLEM, rad),
                 parseValgfriLovvalg(MedlemskapDomenebegrep.LOVVALG, rad),
                 parseValgfriString(LOVVALGSLAND, rad),
-                parseValgfriPeriodeStatus(PERIODESTATUS, rad)
+                parseValgfriPeriodeStatus(PERIODESTATUS, rad),
+                "FTL_2-8_1_ledd_a"
             )
         }
     }
