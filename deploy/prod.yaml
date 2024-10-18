@@ -48,6 +48,7 @@ spec:
         - application: medlemskap-barn
         - application: medlemskap-sykepenger-listener
         - application: medlemskap-dagpengelytter
+        - application: medlemskap-popp
         - application: sparkel-medlemskap
           namespace: tbd
           cluster: prod-fss
