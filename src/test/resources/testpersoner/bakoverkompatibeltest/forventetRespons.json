@@ -1,6 +1,6 @@
 {
   "vurderingsID" : "7b006d2c-ff75-4404-9663-7babf23f45de",
-  "tidspunkt" : "2024-10-17T15:25:50.1424639",
+  "tidspunkt" : "2024-10-18T09:36:30.883366",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "kanal" : "/",
@@ -301,6 +301,15 @@
         "delresultat" : [ ],
         "årsaker" : [ ],
         "avklaring" : "Er bruker frilanser?"
+      }, {
+        "regelId" : "REGEL_15",
+        "svar" : "NEI",
+        "begrunnelse" : "Bruker har permittering i siste 12 mnd",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Arbeidsforhold siste 12 måneder: Finnes det en periode med permittering i et av disse arbeidsforholdene?"
       }, {
         "regelId" : "REGEL_32",
         "svar" : "JA",
