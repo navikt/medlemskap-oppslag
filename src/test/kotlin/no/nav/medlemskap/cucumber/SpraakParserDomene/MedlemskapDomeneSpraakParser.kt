@@ -92,7 +92,8 @@ object MedlemskapDomeneSpraakParser : BasisDomeneParser() {
                 parseBoolean(MedlemskapDomenebegrep.ER_MEDLEM, rad),
                 DomenespråkParser.parseValgfriLovvalg(MedlemskapDomenebegrep.LOVVALG, rad),
                 parseValgfriString(MedlemskapDomenebegrep.LOVVALGSLAND, rad),
-                DomenespråkParser.parseValgfriPeriodeStatus(Domenebegrep.PERIODESTATUS, rad)
+                DomenespråkParser.parseValgfriPeriodeStatus(Domenebegrep.PERIODESTATUS, rad),
+                "FTL_2-8_1_ledd_a"
             )
         }
     }

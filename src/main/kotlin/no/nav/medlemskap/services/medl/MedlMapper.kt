@@ -14,7 +14,8 @@ fun mapMedlemskapResultat(medlemskapsunntak: List<MedlMedlemskapsunntak>): List<
             it.medlem,
             Lovvalg.valueOf(it.lovvalg),
             it.lovvalgsland,
-            PeriodeStatus.valueOf(it.status)
+            PeriodeStatus.valueOf(it.status),
+            it.grunnlag
         )
     }
 }

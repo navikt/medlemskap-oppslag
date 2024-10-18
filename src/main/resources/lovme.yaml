@@ -553,6 +553,9 @@ components:
         periodeStatus:
           type: string
           nullable: true
+        grunnlag:
+          type: string
+          nullable: true
     Oppgave:
       properties:
         aktivDato:

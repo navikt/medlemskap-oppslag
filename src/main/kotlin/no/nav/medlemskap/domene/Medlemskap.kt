@@ -12,7 +12,8 @@ data class Medlemskap(
     val erMedlem: Boolean,
     val lovvalg: Lovvalg?,
     val lovvalgsland: String?,
-    val periodeStatus: PeriodeStatus?
+    val periodeStatus: PeriodeStatus?,
+    val grunnlag:String?
 ) : Comparable<Medlemskap> {
     private val periode = Periode(fraOgMed, tilOgMed)
 
