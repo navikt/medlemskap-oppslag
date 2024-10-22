@@ -30,7 +30,6 @@ class HarBrukerPermisjonSiste12Måneder(
     override fun operasjon(): Resultat {
         if (arbeidsforhold.size > 1) {
             //32-d
-            // TODO verifiser med Helle at dette er korrekt
             if (arbeidsforhold.harPermisjoner()) {
                 secureLogger.info(
                     "Regelbrudd 32-d. Bruker har flere arbeidsforhold og permisjon.",

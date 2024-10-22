@@ -67,11 +67,21 @@ data class Arbeidsforhold(
             }
         }
 
+         fun List<PermisjonPermittering>.totaltantallDager(): Int {
+
+            val antallDagerIHverPermisjon = this.map { ChronoUnit.DAYS.between(it.periode.fom,it.periode.tom) }
+            return antallDagerIHverPermisjon.sum().toInt()
+        }
+
         fun List<Arbeidsforhold>.alleAktiveYrkeskoderDerTomErNull(): List<String> {
             return this.flatMap { arbeidsforhold ->
                 arbeidsforhold.arbeidsavtaler.alleAktiveArbeidsavtalerDerTomErNull()
                     .map { arbeidsavtale -> arbeidsavtale.yrkeskode }
             }
+        }
+
+        fun List<Arbeidsforhold>.totaltAntallPermisjonsDager(): Int {
+            return this.hentAllePermisjoner().totaltantallDager()
         }
 
         fun List<Arbeidsforhold>.harPermisjoner(): Boolean {
@@ -86,6 +96,8 @@ data class Arbeidsforhold(
             return this.hentAllePermisjoner().filter { it.periode.overlapper(kontrollPeriode) }
         }
 
+
+
         fun List<Arbeidsforhold>.hentAllePermisjoner(): List<PermisjonPermittering> {
             val permisjoner: MutableList<PermisjonPermittering> = mutableListOf()
             this.forEach {
@@ -94,6 +106,15 @@ data class Arbeidsforhold(
                 }
             }
             return permisjoner
+        }
+        fun List<Arbeidsforhold>.hentAllePermisjonerSiden(dato:LocalDate): List<PermisjonPermittering> {
+            val permisjoner: MutableList<PermisjonPermittering> = mutableListOf()
+            this.forEach {
+                if (it.permisjonPermittering != null) {
+                    permisjoner.addAll(it.permisjonPermittering)
+                }
+            }
+            return permisjoner.filter { it.periode.tom == null || it.periode.tom.isAfter(dato) }
         }
 
         fun List<Arbeidsforhold>.AlleArbeidsforholdPerioderIKontrollperiode(kontrollPeriode: Kontrollperiode) =

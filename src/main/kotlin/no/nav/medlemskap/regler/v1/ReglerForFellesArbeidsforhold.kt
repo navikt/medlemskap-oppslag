@@ -10,6 +10,7 @@ import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
 import no.nav.medlemskap.regler.common.Regler
 import no.nav.medlemskap.regler.common.Svar
+import no.nav.medlemskap.regler.v1.arbeidsforhold.ErSummenAvPermisjonenMerEnn30DagerSiste12Mnd
 
 class ReglerForFellesArbeidsforhold(
     val periode: InputPeriode,
@@ -39,12 +40,17 @@ class ReglerForFellesArbeidsforhold(
             hvisNei = erBrukerArbeidstakerIkontrollperiodeForStønadsområdeFlyt
         )
 
-        val HarBrukerPermisjonSiste12MånederFlyt = lagRegelflyt(
-            regel = hentRegel(REGEL_32),
+        val ErSummenAvPermisjonenMerEnn30DagerSiste12Mnd = lagRegelflyt(
+            regel = hentRegel(REGEL_33),
             hvisJa = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
             hvisNei = HarBrukerUtenlandsoppholdIArbeidsforholdetFlyt
         )
 
+        val HarBrukerPermisjonSiste12MånederFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_32),
+            hvisJa = ErSummenAvPermisjonenMerEnn30DagerSiste12Mnd,
+            hvisNei = HarBrukerUtenlandsoppholdIArbeidsforholdetFlyt
+        )
         val HarPermitteringSiste12MånederFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_15),
             hvisJa = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
