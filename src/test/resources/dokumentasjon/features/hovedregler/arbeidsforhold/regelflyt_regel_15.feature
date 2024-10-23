@@ -42,13 +42,13 @@ Egenskap: Regelflyt for regel 15
     Eksempler:
       | permisjonstype                     | Regel 15 | Medlemskap | Årsak |
       | PERMITTERING                       | Ja       | Uavklart   | 15    |
-      | PERMISJON                          | Nei      | Uavklart   | 32    |
-      | PERMISJON_MED_FORELDREPENGER       | Nei      | Uavklart   | 32    |
-      | PERMISJON_VED_MILITAERTJENESTE     | Nei      | Uavklart   | 32    |
-      | UTDANNINGSPERMISJON                | Nei      | Uavklart   | 32    |
-      | VELFERDSPERMISJON                  | Nei      | Uavklart   | 32    |
-      | ANDRE_IKKE_LOVFESTEDE_PERMISJONER  | Nei      | Uavklart   | 32    |
-      | ANDRE_LOVFESTEDE_PERMISJONER       | Nei      | Uavklart   | 32    |
-      | UTDANNINGSPERMISJON_IKKE_LOVFESTET | Nei      | Uavklart   | 32    |
-      | UTDANNINGSPERMISJON_LOVFESTET      | Nei      | Uavklart   | 32    |
-      | ANNET                              | Nei      | Uavklart   | 32    |
+      | PERMISJON                          | Nei      | Uavklart   | 33    |
+      | PERMISJON_MED_FORELDREPENGER       | Nei      | Uavklart   | 33    |
+      | PERMISJON_VED_MILITAERTJENESTE     | Nei      | Uavklart   | 33    |
+      | UTDANNINGSPERMISJON                | Nei      | Uavklart   | 33    |
+      | VELFERDSPERMISJON                  | Nei      | Uavklart   | 33    |
+      | ANDRE_IKKE_LOVFESTEDE_PERMISJONER  | Nei      | Uavklart   | 33    |
+      | ANDRE_LOVFESTEDE_PERMISJONER       | Nei      | Uavklart   | 33    |
+      | UTDANNINGSPERMISJON_IKKE_LOVFESTET | Nei      | Uavklart   | 33    |
+      | UTDANNINGSPERMISJON_LOVFESTET      | Nei      | Uavklart   | 33    |
+      | ANNET                              | Nei      | Uavklart   | 33    |
