@@ -69,7 +69,17 @@ data class Arbeidsforhold(
 
          fun List<PermisjonPermittering>.totaltantallDager(): Int {
 
-            val antallDagerIHverPermisjon = this.map { ChronoUnit.DAYS.between(it.periode.fom,it.periode.tom) }
+            val antallDagerIHverPermisjon = this.map {
+                var fom = it.periode.fom
+                var tom = it.periode.tom
+                if (fom == null){
+                    fom = LocalDate.now().minusYears(1)
+                }
+                if (tom == null){
+                    tom = LocalDate.now()
+                }
+                ChronoUnit.DAYS.between(fom,tom)
+            }
             return antallDagerIHverPermisjon.sum().toInt()
         }
 
@@ -105,7 +115,7 @@ data class Arbeidsforhold(
                     permisjoner.addAll(it.permisjonPermittering)
                 }
             }
-            return permisjoner
+            return permisjoner.filter { it.type!= PermisjonPermitteringType.PERMITTERING }
         }
         fun List<Arbeidsforhold>.hentAllePermisjonerSiden(dato:LocalDate): List<PermisjonPermittering> {
             val permisjoner: MutableList<PermisjonPermittering> = mutableListOf()
