@@ -2,7 +2,6 @@ package no.nav.medlemskap.domene.arbeidsforhold
 
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.finnOverlappendePermisjoner
-import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.totaltAntallPermisjonsDager
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.totaltantallDager
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test

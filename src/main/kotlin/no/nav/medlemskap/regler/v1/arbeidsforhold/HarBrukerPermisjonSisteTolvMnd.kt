@@ -3,13 +3,14 @@ package no.nav.medlemskap.regler.v1.arbeidsforhold
 import mu.KotlinLogging
 import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.Kontrollperiode
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.finnOverlappendePermisjoner
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harNoenArbeidsforhold100ProsentPermisjon
-import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harPermisjoner
-import no.nav.medlemskap.domene.arbeidsforhold.PermisjonPermittering
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harNoenArbeidsforhold100ProsentPermisjonIKontrollPerioden
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harPermisjonerIKontrollPerioden
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
@@ -20,7 +21,7 @@ private val secureLogger = KotlinLogging.logger("tjenestekall")
 
 class HarBrukerPermisjonSiste12Måneder(
     ytelse: Ytelse,
-    startDatoForYtelse: LocalDate,
+    private val startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
     private val kontrollperiode: Periode,
     private val fnr: String,
@@ -30,7 +31,7 @@ class HarBrukerPermisjonSiste12Måneder(
     override fun operasjon(): Resultat {
         if (arbeidsforhold.size > 1) {
             //32-d
-            if (arbeidsforhold.harPermisjoner()) {
+            if (arbeidsforhold.harPermisjonerIKontrollPerioden(kontrollPeriodeForArbeidsforhold)) {
                 secureLogger.info(
                     "Regelbrudd 32-d. Bruker har flere arbeidsforhold og permisjon.",
                     kv("fnr", fnr)
@@ -40,7 +41,7 @@ class HarBrukerPermisjonSiste12Måneder(
             return nei(regelId)
         }
 
-        if (!arbeidsforhold.harNoenArbeidsforhold100ProsentPermisjon()) {
+        if (!arbeidsforhold.harNoenArbeidsforhold100ProsentPermisjonIKontrollPerioden(kontrollPeriodeForArbeidsforhold)) {
 
             return nei(regelId)
         }
@@ -70,10 +71,4 @@ class HarBrukerPermisjonSiste12Måneder(
     }
 }
 
-fun Arbeidsforhold.harPermisjoner(): Boolean {
-    if (permisjonPermittering == null) {
-        return false
-    }
-    return permisjonPermittering.isNotEmpty()
-}
 

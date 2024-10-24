@@ -6,10 +6,8 @@ import no.nav.medlemskap.domene.Kontrollperiode
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
-import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.arbeidsforholdForKontrollPeriode
 import no.nav.medlemskap.regler.common.Funksjoner.isNotNullOrEmpty
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
-import no.nav.medlemskap.regler.v1.arbeidsforhold.harPermisjoner
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import kotlin.math.abs
@@ -84,12 +82,23 @@ data class Arbeidsforhold(
             }
         }
 
-        fun List<Arbeidsforhold>.harPermisjoner(): Boolean {
-            return this.filter { it.harPermisjoner() }.isNotEmpty()
+        fun List<Arbeidsforhold>.harPermisjonerIKontrollPerioden(kontrollPeriode: Kontrollperiode): Boolean {
+            return this.filter { it.harPermisjonerIKontrollPerioden(kontrollPeriode) }.isNotEmpty()
+        }
+        fun Arbeidsforhold.harPermisjonerIKontrollPerioden(kontrollPeriode: Kontrollperiode): Boolean {
+
+            if (permisjonPermittering == null) {
+                return false
+            }
+            return permisjonPermittering.permisjonPermitteringerForKontrollPeriode(kontrollPeriode).filter { it.type != PermisjonPermitteringType.PERMITTERING }.isNotEmpty()
         }
 
         fun List<Arbeidsforhold>.harNoenArbeidsforhold100ProsentPermisjon(): Boolean {
             return this.hentAllePermisjoner().any { it.prosent == 100.0 }
+        }
+        fun List<Arbeidsforhold>.harNoenArbeidsforhold100ProsentPermisjonIKontrollPerioden(kontrollPeriode: Kontrollperiode): Boolean {
+            return this.hentAllePermisjoner().permisjonPermitteringerForKontrollPeriode(kontrollPeriode).any { it.prosent == 100.0 }
+
         }
 
         fun List<Arbeidsforhold>.finnOverlappendePermisjoner(kontrollPeriode: Periode): List<PermisjonPermittering> {
