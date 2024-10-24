@@ -70,14 +70,8 @@ data class Arbeidsforhold(
          fun List<PermisjonPermittering>.totaltantallDager(): Int {
 
             val antallDagerIHverPermisjon = this.map {
-                var fom = it.periode.fom
-                var tom = it.periode.tom
-                if (fom == null){
-                    fom = LocalDate.now().minusYears(1)
-                }
-                if (tom == null){
-                    tom = LocalDate.now()
-                }
+                val fom = it.periode.fom ?: LocalDate.now().minusYears(1)
+                val tom = it.periode.tom ?: LocalDate.now()
                 ChronoUnit.DAYS.between(fom,tom)
             }
             return antallDagerIHverPermisjon.sum().toInt()
@@ -88,10 +82,6 @@ data class Arbeidsforhold(
                 arbeidsforhold.arbeidsavtaler.alleAktiveArbeidsavtalerDerTomErNull()
                     .map { arbeidsavtale -> arbeidsavtale.yrkeskode }
             }
-        }
-
-        fun List<Arbeidsforhold>.totaltAntallPermisjonsDager(): Int {
-            return this.hentAllePermisjoner().totaltantallDager()
         }
 
         fun List<Arbeidsforhold>.harPermisjoner(): Boolean {
@@ -124,7 +114,7 @@ data class Arbeidsforhold(
                     permisjoner.addAll(it.permisjonPermittering)
                 }
             }
-            return permisjoner.filter { it.periode.tom == null || it.periode.tom.isAfter(dato) }
+            return permisjoner.filter { (it.periode.tom == null || it.periode.tom.isAfter(dato)) && it.type != PermisjonPermitteringType.PERMITTERING }
         }
 
         fun List<Arbeidsforhold>.AlleArbeidsforholdPerioderIKontrollperiode(kontrollPeriode: Kontrollperiode) =
