@@ -6,10 +6,8 @@ import no.nav.medlemskap.domene.Kontrollperiode
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
-import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.arbeidsforholdForKontrollPeriode
 import no.nav.medlemskap.regler.common.Funksjoner.isNotNullOrEmpty
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
-import no.nav.medlemskap.regler.v1.arbeidsforhold.harPermisjoner
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import kotlin.math.abs
@@ -69,7 +67,11 @@ data class Arbeidsforhold(
 
          fun List<PermisjonPermittering>.totaltantallDager(): Int {
 
-            val antallDagerIHverPermisjon = this.map { ChronoUnit.DAYS.between(it.periode.fom,it.periode.tom) }
+            val antallDagerIHverPermisjon = this.map {
+                val fom = it.periode.fom ?: LocalDate.now().minusYears(1)
+                val tom = it.periode.tom ?: LocalDate.now()
+                ChronoUnit.DAYS.between(fom,tom)
+            }
             return antallDagerIHverPermisjon.sum().toInt()
         }
 
@@ -80,16 +82,23 @@ data class Arbeidsforhold(
             }
         }
 
-        fun List<Arbeidsforhold>.totaltAntallPermisjonsDager(): Int {
-            return this.hentAllePermisjoner().totaltantallDager()
+        fun List<Arbeidsforhold>.harPermisjonerIKontrollPerioden(kontrollPeriode: Kontrollperiode): Boolean {
+            return this.filter { it.harPermisjonerIKontrollPerioden(kontrollPeriode) }.isNotEmpty()
         }
+        fun Arbeidsforhold.harPermisjonerIKontrollPerioden(kontrollPeriode: Kontrollperiode): Boolean {
 
-        fun List<Arbeidsforhold>.harPermisjoner(): Boolean {
-            return this.filter { it.harPermisjoner() }.isNotEmpty()
+            if (permisjonPermittering == null) {
+                return false
+            }
+            return permisjonPermittering.permisjonPermitteringerForKontrollPeriode(kontrollPeriode).filter { it.type != PermisjonPermitteringType.PERMITTERING }.isNotEmpty()
         }
 
         fun List<Arbeidsforhold>.harNoenArbeidsforhold100ProsentPermisjon(): Boolean {
             return this.hentAllePermisjoner().any { it.prosent == 100.0 }
+        }
+        fun List<Arbeidsforhold>.harNoenArbeidsforhold100ProsentPermisjonIKontrollPerioden(kontrollPeriode: Kontrollperiode): Boolean {
+            return this.hentAllePermisjoner().permisjonPermitteringerForKontrollPeriode(kontrollPeriode).any { it.prosent == 100.0 }
+
         }
 
         fun List<Arbeidsforhold>.finnOverlappendePermisjoner(kontrollPeriode: Periode): List<PermisjonPermittering> {
@@ -105,7 +114,7 @@ data class Arbeidsforhold(
                     permisjoner.addAll(it.permisjonPermittering)
                 }
             }
-            return permisjoner
+            return permisjoner.filter { it.type!= PermisjonPermitteringType.PERMITTERING }
         }
         fun List<Arbeidsforhold>.hentAllePermisjonerSiden(dato:LocalDate): List<PermisjonPermittering> {
             val permisjoner: MutableList<PermisjonPermittering> = mutableListOf()
@@ -114,7 +123,7 @@ data class Arbeidsforhold(
                     permisjoner.addAll(it.permisjonPermittering)
                 }
             }
-            return permisjoner.filter { it.periode.tom == null || it.periode.tom.isAfter(dato) }
+            return permisjoner.filter { (it.periode.tom == null || it.periode.tom.isAfter(dato)) && it.type != PermisjonPermitteringType.PERMITTERING }
         }
 
         fun List<Arbeidsforhold>.AlleArbeidsforholdPerioderIKontrollperiode(kontrollPeriode: Kontrollperiode) =

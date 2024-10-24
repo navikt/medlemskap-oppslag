@@ -4,6 +4,7 @@ package no.nav.medlemskap.domene.arbeidsforhold
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import kotlinx.serialization.builtins.LongArraySerializer
 import no.nav.medlemskap.domene.Kontrollperiode
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Ytelse
@@ -13,10 +14,13 @@ import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.erArbeid
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.filtrerUtArbeidsgivereMedFærreEnn6Ansatte
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.fraOgMedDatoForArbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.totaltantallDager
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.vektetStillingsprosentForArbeidsforhold
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
+import java.util.UUID
 
 class ArbeidsforholdTest {
 
@@ -32,6 +36,80 @@ class ArbeidsforholdTest {
         assertEquals(2, arbeidsforhold.size)
         assertEquals(1, filtrertArbeidsforhold.size)
     }
+
+    @Test
+    fun `Tell antall dager med Permisjoner i PermisjonsPermiteringsLista uten null verdier`() {
+        val permisjon = PermisjonPermittering(
+            Periode(
+                fom = LocalDate.now().minusDays(10),
+                tom = LocalDate.now(),
+            ),
+            permisjonPermitteringId = UUID.randomUUID().toString(),
+            prosent = 10.0,
+            PermisjonPermitteringType.ANDRE_IKKE_LOVFESTEDE_PERMISJONER,
+            varslingskode = ""
+        )
+        val antall_dager = listOf<PermisjonPermittering>(permisjon).totaltantallDager()
+        Assertions.assertEquals(10,antall_dager)
+    }
+    @Test
+    fun `Tell antall dager med Permisjoner i PermisjonsPermiteringsLista med null verdi i tom`() {
+        val permisjon = PermisjonPermittering(
+            Periode(
+                fom = LocalDate.now().minusDays(10),
+                tom = null,
+            ),
+            permisjonPermitteringId = UUID.randomUUID().toString(),
+            prosent = 10.0,
+            PermisjonPermitteringType.ANDRE_IKKE_LOVFESTEDE_PERMISJONER,
+            varslingskode = ""
+        )
+        val antall_dager = listOf<PermisjonPermittering>(permisjon).totaltantallDager()
+        Assertions.assertEquals(10,antall_dager)
+    }
+    @Test
+    fun `Tell antall dager med Permisjoner i PermisjonsPermiteringsLista med null verdi i fom`() {
+        val permisjon = PermisjonPermittering(
+            Periode(
+                fom = null,
+                tom = LocalDate.now().minusYears(1).plusDays(20),
+            ),
+            permisjonPermitteringId = UUID.randomUUID().toString(),
+            prosent = 10.0,
+            PermisjonPermitteringType.ANDRE_IKKE_LOVFESTEDE_PERMISJONER,
+            varslingskode = ""
+        )
+        val antall_dager = listOf<PermisjonPermittering>(permisjon).totaltantallDager()
+        Assertions.assertEquals(20,antall_dager)
+    }
+
+    @Test
+    fun `Tell antall dager med Permisjoner i PermisjonsPermiteringsLista med flere verdier null verdi i tom`() {
+        val permisjon = PermisjonPermittering(
+            Periode(
+                fom = LocalDate.now().minusDays(10),
+                tom = null,
+            ),
+            permisjonPermitteringId = UUID.randomUUID().toString(),
+            prosent = 10.0,
+            PermisjonPermitteringType.ANDRE_IKKE_LOVFESTEDE_PERMISJONER,
+            varslingskode = ""
+        )
+        val permitering = PermisjonPermittering(
+            Periode(
+                fom = LocalDate.now().minusDays(10),
+                tom = LocalDate.now().minusDays(2),
+            ),
+            permisjonPermitteringId = UUID.randomUUID().toString(),
+            prosent = 10.0,
+            PermisjonPermitteringType.ANDRE_LOVFESTEDE_PERMISJONER,
+            varslingskode = ""
+        )
+        val antall_dager = listOf<PermisjonPermittering>(permisjon,permitering).totaltantallDager()
+        Assertions.assertEquals(18,antall_dager)
+    }
+
+
 
     @Test
     fun `Filtrerer ut arbeidsgiver med flere enn 6 ansatte der arbeidsgiver med flest ansatte ligger først`() {

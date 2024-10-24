@@ -63,7 +63,7 @@ Egenskap: Regel 32: Har bruker permisjoner?
 
       Eksempler:
         | Fra og med | Til og med | Svar | PROSENT |
-        | 01.01.2018 |            | Ja   | 100     |
+        | 01.01.2018 |            | Nei   | 100     |
 
 
     Scenariomal: Person med flere arbeidsforhold og permisjoner får "Nei"
