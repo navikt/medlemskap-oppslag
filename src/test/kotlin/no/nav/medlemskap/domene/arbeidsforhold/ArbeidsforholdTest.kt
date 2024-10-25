@@ -4,7 +4,6 @@ package no.nav.medlemskap.domene.arbeidsforhold
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
-import kotlinx.serialization.builtins.LongArraySerializer
 import no.nav.medlemskap.domene.Kontrollperiode
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Ytelse
@@ -14,7 +13,7 @@ import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.erArbeid
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.filtrerUtArbeidsgivereMedFærreEnn6Ansatte
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.fraOgMedDatoForArbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harBrukerJobbetMerEnnGittStillingsprosentTilEnhverTid
-import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.totaltantallDager
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.totaltantallDagerIKontrollPeriode
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.vektetStillingsprosentForArbeidsforhold
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.*
@@ -39,6 +38,7 @@ class ArbeidsforholdTest {
 
     @Test
     fun `Tell antall dager med Permisjoner i PermisjonsPermiteringsLista uten null verdier`() {
+        val kontrollperiode = Kontrollperiode(LocalDate.now().minusYears(1), LocalDate.now())
         val permisjon = PermisjonPermittering(
             Periode(
                 fom = LocalDate.now().minusDays(10),
@@ -49,11 +49,12 @@ class ArbeidsforholdTest {
             PermisjonPermitteringType.ANDRE_IKKE_LOVFESTEDE_PERMISJONER,
             varslingskode = ""
         )
-        val antall_dager = listOf<PermisjonPermittering>(permisjon).totaltantallDager()
+        val antall_dager = listOf<PermisjonPermittering>(permisjon).totaltantallDagerIKontrollPeriode(kontrollperiode)
         Assertions.assertEquals(10,antall_dager)
     }
     @Test
     fun `Tell antall dager med Permisjoner i PermisjonsPermiteringsLista med null verdi i tom`() {
+        val kontrollperiode = Kontrollperiode(LocalDate.now().minusYears(1), LocalDate.now())
         val permisjon = PermisjonPermittering(
             Periode(
                 fom = LocalDate.now().minusDays(10),
@@ -64,11 +65,12 @@ class ArbeidsforholdTest {
             PermisjonPermitteringType.ANDRE_IKKE_LOVFESTEDE_PERMISJONER,
             varslingskode = ""
         )
-        val antall_dager = listOf<PermisjonPermittering>(permisjon).totaltantallDager()
+        val antall_dager = listOf<PermisjonPermittering>(permisjon).totaltantallDagerIKontrollPeriode(kontrollperiode)
         Assertions.assertEquals(10,antall_dager)
     }
     @Test
     fun `Tell antall dager med Permisjoner i PermisjonsPermiteringsLista med null verdi i fom`() {
+        val kontrollperiode = Kontrollperiode(LocalDate.now().minusYears(1), LocalDate.now())
         val permisjon = PermisjonPermittering(
             Periode(
                 fom = null,
@@ -79,12 +81,13 @@ class ArbeidsforholdTest {
             PermisjonPermitteringType.ANDRE_IKKE_LOVFESTEDE_PERMISJONER,
             varslingskode = ""
         )
-        val antall_dager = listOf<PermisjonPermittering>(permisjon).totaltantallDager()
+        val antall_dager = listOf<PermisjonPermittering>(permisjon).totaltantallDagerIKontrollPeriode(kontrollperiode)
         Assertions.assertEquals(20,antall_dager)
     }
 
     @Test
     fun `Tell antall dager med Permisjoner i PermisjonsPermiteringsLista med flere verdier null verdi i tom`() {
+        val kontrollperiode = Kontrollperiode(LocalDate.now().minusYears(1), LocalDate.now())
         val permisjon = PermisjonPermittering(
             Periode(
                 fom = LocalDate.now().minusDays(10),
@@ -105,8 +108,44 @@ class ArbeidsforholdTest {
             PermisjonPermitteringType.ANDRE_LOVFESTEDE_PERMISJONER,
             varslingskode = ""
         )
-        val antall_dager = listOf<PermisjonPermittering>(permisjon,permitering).totaltantallDager()
+        val antall_dager = listOf<PermisjonPermittering>(permisjon,permitering).totaltantallDagerIKontrollPeriode(kontrollperiode)
         Assertions.assertEquals(18,antall_dager)
+    }
+
+    @Test
+    fun `Tell antall dager skal kunn tele dager innenfor kontrollPerioden`() {
+        val kontrollperiode = Kontrollperiode(LocalDate.now().minusYears(1), LocalDate.now())
+        val permisjon = PermisjonPermittering(
+            Periode(
+                fom = LocalDate.now().minusYears(1).minusMonths(3),
+                tom = LocalDate.now().minusYears(1).plusDays(10),
+            ),
+            permisjonPermitteringId = UUID.randomUUID().toString(),
+            prosent = 10.0,
+            PermisjonPermitteringType.ANDRE_IKKE_LOVFESTEDE_PERMISJONER,
+            varslingskode = ""
+        )
+
+        val antall_dager = listOf<PermisjonPermittering>(permisjon).totaltantallDagerIKontrollPeriode(kontrollperiode)
+        Assertions.assertEquals(10,antall_dager)
+    }
+
+    @Test
+    fun `Tell antall dager skal kunn telle dager innenfor kontrollPerioden permisjon starter i kontroll periode`() {
+        val kontrollperiode = Kontrollperiode(LocalDate.now().minusYears(1), LocalDate.now())
+        val permisjon = PermisjonPermittering(
+            Periode(
+                fom = LocalDate.now().minusMonths(2),
+                tom = LocalDate.now().minusMonths(2).plusDays(10),
+            ),
+            permisjonPermitteringId = UUID.randomUUID().toString(),
+            prosent = 10.0,
+            PermisjonPermitteringType.ANDRE_IKKE_LOVFESTEDE_PERMISJONER,
+            varslingskode = ""
+        )
+
+        val antall_dager = listOf<PermisjonPermittering>(permisjon).totaltantallDagerIKontrollPeriode(kontrollperiode)
+        Assertions.assertEquals(10,antall_dager)
     }
 
 
