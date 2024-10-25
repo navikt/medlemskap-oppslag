@@ -1,12 +1,11 @@
 package no.nav.medlemskap.regler.v1.arbeidsforhold
 
-import mu.KotlinLogging
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.hentAllePermisjonerSiden
-import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.totaltantallDager
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.totaltantallDagerIKontrollPeriode
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
@@ -26,7 +25,7 @@ class ErSummenAvPermisjonenMerEnn30DagerSiste12Mnd(
 
 
         val allePermisjonerSomLøperForMindreEnEtÅrSiden = arbeidsforhold.hentAllePermisjonerSiden(startDatoForYtelse.minusYears(1))
-        val totaltAntallDagerPermisjon = allePermisjonerSomLøperForMindreEnEtÅrSiden.totaltantallDager()
+        val totaltAntallDagerPermisjon = allePermisjonerSomLøperForMindreEnEtÅrSiden.totaltantallDagerIKontrollPeriode(kontrollPeriodeForArbeidsforhold)
         if (totaltAntallDagerPermisjon > 30){
             return ja(regelId)
         }

@@ -1,8 +1,10 @@
 package no.nav.medlemskap.domene.arbeidsforhold
 
+import no.nav.medlemskap.domene.Kontrollperiode
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.finnOverlappendePermisjoner
-import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.totaltantallDager
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.totaltantallDagerIKontrollPeriode
+
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
@@ -74,6 +76,7 @@ class PermisjonPermiteringTest {
     }
     @Test
     fun TellAlleDagerIPermisjonsTestMedEnPermitering() {
+        val kontrollperiode = Kontrollperiode(LocalDate.now().minusYears(1), LocalDate.now())
         val permisjonPermittering = PermisjonPermittering(
             Periode(fom = LocalDate.now().minusDays(10),
                 tom = LocalDate.now().plusDays(10)),
@@ -83,11 +86,12 @@ class PermisjonPermiteringTest {
             varslingskode = "",
         )
 
-        val antallDagerPermisjon = listOf(permisjonPermittering).totaltantallDager()
+        val antallDagerPermisjon = listOf(permisjonPermittering).totaltantallDagerIKontrollPeriode(kontrollperiode)
         Assertions.assertEquals(20,antallDagerPermisjon,"Totalt antall dager er ikke kalkulert korrekt")
     }
     @Test
     fun TellAlleDagerIPermisjonsTestFlerePermiteringer() {
+        val kontrollperiode = Kontrollperiode(LocalDate.now().minusYears(1), LocalDate.now())
         val permisjonPermittering = PermisjonPermittering(
             Periode(fom = LocalDate.now().minusDays(10),
                 tom = LocalDate.now().plusDays(10)),
@@ -97,7 +101,7 @@ class PermisjonPermiteringTest {
             varslingskode = "",
         )
 
-        val antallDagerPermisjon = listOf(permisjonPermittering,permisjonPermittering).totaltantallDager()
+        val antallDagerPermisjon = listOf(permisjonPermittering,permisjonPermittering).totaltantallDagerIKontrollPeriode(kontrollperiode)
         Assertions.assertEquals(40,antallDagerPermisjon,"Totalt antall dager er ikke kalkulert korrekt")
     }
 
