@@ -13,6 +13,16 @@ data class Periode(
         return (fomNotNull().isBefore(tomNotNull()) || fomNotNull().isEqual(tomNotNull()))
     }
 
+    fun overlapper(annenPeriode: Kontrollperiode): Boolean {
+        val periode = Periode(annenPeriode.fom, annenPeriode.tom)
+        if (!erGyldigPeriode()) {
+            return false
+        }
+
+        return interval().overlaps(periode.interval())
+    }
+
+
     fun overlapper(annenPeriode: Periode): Boolean {
         if (!erGyldigPeriode()) {
             return false

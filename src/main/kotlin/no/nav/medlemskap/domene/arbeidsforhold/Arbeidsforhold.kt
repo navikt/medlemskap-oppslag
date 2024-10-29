@@ -1,16 +1,22 @@
 package no.nav.medlemskap.domene.arbeidsforhold
 
+import mu.KotlinLogging
+import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.clients.ereg.Ansatte.Companion.finnesMindreEnn
 import no.nav.medlemskap.common.*
 import no.nav.medlemskap.domene.Kontrollperiode
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harFlereArbeidsforholdIKontrollperiode
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harPermisjonerIKontrollPerioden
 import no.nav.medlemskap.regler.common.Funksjoner.isNotNullOrEmpty
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import kotlin.math.abs
+
+private val secureLogger = KotlinLogging.logger("tjenestekall")
 
 data class Arbeidsforhold(
     val periode: Periode,
@@ -45,6 +51,38 @@ data class Arbeidsforhold(
     companion object {
         private val offentligSektorJuridiskeEnhetstyper = listOf("STAT", "FKF", "FYLK", "KF", "KOMM", "SF", "SÆR")
 
+        private fun loggTilInfoSecurelogs(melding: String, fnr: String) {
+            secureLogger.info(
+                melding,
+                kv("fnr", fnr)
+            )
+        }
+
+        fun harPermisjonerSiste12Måneder(
+            fnr: String,
+            arbeidsforhold: List<Arbeidsforhold>,
+            kontrollPeriode: Kontrollperiode
+        ): Boolean {
+            return if (arbeidsforhold.harKunEttArbeidsforholdMedPermisjoner(kontrollPeriode)) {
+                //32-d
+                loggTilInfoSecurelogs("Regelbrudd 32-d. Bruker har flere arbeidsforhold og permisjon.", fnr)
+                true
+            } else if (!arbeidsforhold.harNoenArbeidsforhold100ProsentPermisjonIKontrollPerioden(kontrollPeriode)) {
+                false
+            } else if (arbeidsforhold.finnOverlappendePermisjoner(kontrollPeriode).isEmpty()) {
+                //32-c
+                loggTilInfoSecurelogs("Regelbrudd 32-c. Bruker har 100% permisjon i arbeidsforhold.", fnr)
+                false
+            } else {
+                true
+            }
+        }
+
+        fun List<Arbeidsforhold>.harKunEttArbeidsforholdMedPermisjoner(kontrollPeriode: Kontrollperiode): Boolean {
+            return this.harFlereArbeidsforholdIKontrollperiode(kontrollPeriode)
+                    && this.harPermisjonerIKontrollPerioden(kontrollPeriode)
+        }
+
         fun harPermitteringerSiste12Måneder(
             arbeidsforhold: List<Arbeidsforhold>,
             kontrollPeriode: Kontrollperiode
@@ -65,29 +103,33 @@ data class Arbeidsforhold(
             }
         }
 
-         fun List<PermisjonPermittering>.totaltantallDager(): Int {
+        fun List<PermisjonPermittering>.totaltantallDager(): Int {
 
             val antallDagerIHverPermisjon = this.map {
                 val fom = it.periode.fom ?: LocalDate.now().minusYears(1)
                 val tom = it.periode.tom ?: LocalDate.now()
-                ChronoUnit.DAYS.between(fom,tom)
+                ChronoUnit.DAYS.between(fom, tom)
             }
             return antallDagerIHverPermisjon.sum().toInt()
         }
+
         fun List<PermisjonPermittering>.totaltantallDagerIKontrollPeriode(kontrollPeriode: Kontrollperiode): Int {
 
             val antallDagerIHverPermisjon = this.map {
 
                 var fom = kontrollPeriode.fom
-                if (it.periode.fom != null &&  it.periode.fom.isAfter(kontrollPeriode.periode.fom)){
+                if (it.periode.fom != null && it.periode.fom.isAfter(kontrollPeriode.periode.fom)) {
                     fom = it.periode.fom
                 }
                 val tom = it.periode.tom ?: LocalDate.now()
-                ChronoUnit.DAYS.between(fom,tom)
+                ChronoUnit.DAYS.between(fom, tom)
             }
             return antallDagerIHverPermisjon.sum().toInt()
         }
 
+        fun List<Arbeidsforhold>.harFlereArbeidsforholdIKontrollperiode(kontrollPeriode: Kontrollperiode): Boolean {
+            return this.arbeidsforholdForKontrollPeriode(kontrollPeriode).size > 1
+        }
 
         fun List<Arbeidsforhold>.alleAktiveYrkeskoderDerTomErNull(): List<String> {
             return this.flatMap { arbeidsforhold ->
@@ -99,26 +141,28 @@ data class Arbeidsforhold(
         fun List<Arbeidsforhold>.harPermisjonerIKontrollPerioden(kontrollPeriode: Kontrollperiode): Boolean {
             return this.filter { it.harPermisjonerIKontrollPerioden(kontrollPeriode) }.isNotEmpty()
         }
-        fun Arbeidsforhold.harPermisjonerIKontrollPerioden(kontrollPeriode: Kontrollperiode): Boolean {
 
+        fun Arbeidsforhold.harPermisjonerIKontrollPerioden(kontrollPeriode: Kontrollperiode): Boolean {
             if (permisjonPermittering == null) {
                 return false
             }
-            return permisjonPermittering.permisjonPermitteringerForKontrollPeriode(kontrollPeriode).filter { it.type != PermisjonPermitteringType.PERMITTERING }.isNotEmpty()
+            return permisjonPermittering.permisjonPermitteringerForKontrollPeriode(kontrollPeriode)
+                .filter { it.type != PermisjonPermitteringType.PERMITTERING }.isNotEmpty()
         }
 
         fun List<Arbeidsforhold>.harNoenArbeidsforhold100ProsentPermisjon(): Boolean {
             return this.hentAllePermisjoner().any { it.prosent == 100.0 }
         }
+
         fun List<Arbeidsforhold>.harNoenArbeidsforhold100ProsentPermisjonIKontrollPerioden(kontrollPeriode: Kontrollperiode): Boolean {
-            return this.hentAllePermisjoner().permisjonPermitteringerForKontrollPeriode(kontrollPeriode).any { it.prosent == 100.0 }
+            return this.hentAllePermisjoner().permisjonPermitteringerForKontrollPeriode(kontrollPeriode)
+                .any { it.prosent == 100.0 }
 
         }
 
-        fun List<Arbeidsforhold>.finnOverlappendePermisjoner(kontrollPeriode: Periode): List<PermisjonPermittering> {
+        fun List<Arbeidsforhold>.finnOverlappendePermisjoner(kontrollPeriode: Kontrollperiode): List<PermisjonPermittering> {
             return this.hentAllePermisjoner().filter { it.periode.overlapper(kontrollPeriode) }
         }
-
 
 
         fun List<Arbeidsforhold>.hentAllePermisjoner(): List<PermisjonPermittering> {
@@ -128,9 +172,10 @@ data class Arbeidsforhold(
                     permisjoner.addAll(it.permisjonPermittering)
                 }
             }
-            return permisjoner.filter { it.type!= PermisjonPermitteringType.PERMITTERING }
+            return permisjoner.filter { it.type != PermisjonPermitteringType.PERMITTERING }
         }
-        fun List<Arbeidsforhold>.hentAllePermisjonerSiden(dato:LocalDate): List<PermisjonPermittering> {
+
+        fun List<Arbeidsforhold>.hentAllePermisjonerSiden(dato: LocalDate): List<PermisjonPermittering> {
             val permisjoner: MutableList<PermisjonPermittering> = mutableListOf()
             this.forEach {
                 if (it.permisjonPermittering != null) {
