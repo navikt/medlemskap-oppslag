@@ -51,7 +51,25 @@ Egenskap: Regel 11: Har bruker norsk statsborgerskap?
     Og følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
       | NOR      | 01.01.2000      |                 |
+      | SWE      | 01.01.2000      |                 |
     Når regel "11" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
     Så skal svaret være "Ja"
+
+  Scenario: USA
+    Gitt følgende bostedsadresser i personhistorikken
+      | Adresse | Landkode | Fra og med dato | Til og med dato |
+      | Seattle | USA      | 01.01.2000      |                 |
+      | Oslo    | NOR      | 30.01.2020      |                 |
+
+    Og følgende statsborgerskap i personhistorikken
+      | Landkode | Fra og med dato | Til og med dato |
+      | NOR      | 01.02.2019      |                 |
+      | USA      | 01.01.2020      |                 |
+    Når regel "11" kjøres med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+      | 30.01.2020      | 30.01.2021      | Nei                           |
+    Så skal svaret være "Nei"
+
+
