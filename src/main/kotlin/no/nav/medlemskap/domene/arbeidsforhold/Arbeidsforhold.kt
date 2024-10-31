@@ -431,7 +431,7 @@ data class Arbeidsforhold(
             val list = mutableListOf<Arbeidsforhold>()
             for (arbeidsforhold in arbeidsforholdForKontrollPeriode) {
                 val vektetStillingsprosentForArbeidsforhold =
-                    arbeidsforhold.vektetStillingsprosentForArbeidsforhold(kontrollPeriode, false)
+                    arbeidsforhold.vektetStillingsprosentForArbeidsforhold(kontrollPeriode, true)
 
                 list.addAll(
                     this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
