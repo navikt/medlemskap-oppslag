@@ -59,19 +59,14 @@ data class Arbeidsforhold(
         }
 
         fun harPermisjonerSiste12Måneder(
-            fnr: String,
             arbeidsforhold: List<Arbeidsforhold>,
             kontrollPeriode: Kontrollperiode
         ): Boolean {
             return if (arbeidsforhold.harKunEttArbeidsforholdMedPermisjoner(kontrollPeriode)) {
-                //32-d
-                loggTilInfoSecurelogs("Regelbrudd 32-d. Bruker har flere arbeidsforhold og permisjon.", fnr)
                 true
             } else if (!arbeidsforhold.harNoenArbeidsforhold100ProsentPermisjonIKontrollPerioden(kontrollPeriode)) {
                 false
             } else if (arbeidsforhold.finnOverlappendePermisjoner(kontrollPeriode).isEmpty()) {
-                //32-c
-                loggTilInfoSecurelogs("Regelbrudd 32-c. Bruker har 100% permisjon i arbeidsforhold.", fnr)
                 false
             } else {
                 true

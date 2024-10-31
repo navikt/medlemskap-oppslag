@@ -18,12 +18,11 @@ class HarBrukerPermisjonSiste12Måneder(
     ytelse: Ytelse,
     private val startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    private val fnr: String,
     regelId: RegelId = RegelId.REGEL_32,
 ) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
-        if (harPermisjonerSiste12Måneder(fnr, arbeidsforhold, kontrollPeriodeForArbeidsforhold)) {
+        if (harPermisjonerSiste12Måneder(arbeidsforhold, kontrollPeriodeForArbeidsforhold)) {
             return ja(regelId)
         }
         return nei(regelId)
@@ -36,8 +35,7 @@ class HarBrukerPermisjonSiste12Måneder(
             return HarBrukerPermisjonSiste12Måneder(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
-                arbeidsforhold = datagrunnlag.arbeidsforhold,
-                fnr = datagrunnlag.fnr,
+                arbeidsforhold = datagrunnlag.arbeidsforhold
             )
         }
     }
