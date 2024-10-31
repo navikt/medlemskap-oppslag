@@ -383,6 +383,27 @@ data class Arbeidsforhold(
             return samletStillingsprosent >= gittStillingsprosent
         }
 
+        fun List<Arbeidsforhold>.summVektetStilingsProsentIKontrollPeriode(kontrollPeriode: Kontrollperiode):Double{
+            val arbeidsforholdForKontrollPeriode =
+                this.arbeidsforholdForKontrollPeriodeMedStillingsprosentOver0(kontrollPeriode)
+            var samletStillingsprosent = 0.0
+
+            val list = mutableListOf<Arbeidsforhold>()
+            for (arbeidsforhold in arbeidsforholdForKontrollPeriode) {
+                val vektetStillingsprosentForArbeidsforhold =
+                    arbeidsforhold.vektetStillingsprosentForArbeidsforhold(kontrollPeriode, false)
+
+                list.addAll(
+                    this.arbeidsforholdForKontrollPeriode(kontrollPeriode)
+                        .parallelleArbeidsforhold(arbeidsforhold, kontrollPeriode)
+                )
+                samletStillingsprosent += vektetStillingsprosentForArbeidsforhold
+            }
+
+            return samletStillingsprosent
+
+        }
+
         fun Arbeidsforhold.vektetStillingsprosentForArbeidsforhold(
             kontrollPeriode: Kontrollperiode,
             beregnGjennomsnittForKontrollperioden: Boolean = false

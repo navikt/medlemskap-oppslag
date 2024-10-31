@@ -26,6 +26,7 @@ import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.alleAktiveYrkeskoderDerTomErNull
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.antallAnsatteHosArbeidsgivere
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.antallAnsatteHosArbeidsgiversJuridiskeEnheter
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.summVektetStilingsProsentIKontrollPeriode
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
 import no.nav.medlemskap.services.kafka.Producer
@@ -312,6 +313,8 @@ private fun lagResponse(callid: String, datagrunnlag: Datagrunnlag, resultat: Re
 }
 
 private fun loggResponse(fnr: String, response: Response, endpoint: String = "/") {
+    val startDatoForYtelse = response.datagrunnlag.startDatoForYtelse
+    val kontrollperiode:Kontrollperiode = Kontrollperiode(startDatoForYtelse.minusMonths(12),startDatoForYtelse)
     val resultat = response.resultat
     val årsaker = resultat.årsaker
     val årsakerSomRegelIdStr = årsaker.map { it.regelId.toString() }
@@ -351,6 +354,7 @@ private fun loggResponse(fnr: String, response: Response, endpoint: String = "/"
             kv("har_innflytting", response.datagrunnlag.pdlpersonhistorikk.harInnflyttingTilNorge()),
             kv("har_utflytting", response.datagrunnlag.pdlpersonhistorikk.harUtflyttingFraNorge()),
             kv("yrkeskoder", response.datagrunnlag.arbeidsforhold.alleAktiveYrkeskoderDerTomErNull()),
+            kv("vektetStillingsProsent", response.datagrunnlag.arbeidsforhold.summVektetStilingsProsentIKontrollPeriode(kontrollperiode)),
             kv("har_medlperiode_uten_arbeidsforhold", response.datagrunnlag.harPeriodeUtenMedlemskapOgIkkeArbeidsforhold()),
             kv(
                 "Antall_ansatte_hos_arbeidsgiver",
