@@ -42,7 +42,7 @@ Egenskap: Tredjelandsborger med medl unntak.
 
     Og følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
-      | 10.10.1975      | 01.08.2020      | yrkeskode | 100              |
+      | 10.10.1975      | 01.08.2021      | yrkeskode | 100              |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
@@ -84,7 +84,7 @@ Egenskap: Tredjelandsborger med medl unntak.
 
     Og følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
-      | 10.10.1975      | 01.08.2020      | yrkeskode | 100              |
+      | 10.10.1975      | 01.08.2021      | yrkeskode | 100              |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
@@ -125,7 +125,7 @@ Egenskap: Tredjelandsborger med medl unntak.
 
     Og følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   |
-      | 10.10.1975      | 01.08.2020      | yrkeskode | <Stillingsprosent> |
+      | 10.10.1975      | 01.08.2021      | yrkeskode | <Stillingsprosent> |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
