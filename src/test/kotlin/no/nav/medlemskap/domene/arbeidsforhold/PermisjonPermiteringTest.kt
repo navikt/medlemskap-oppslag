@@ -13,7 +13,7 @@ class PermisjonPermiteringTest {
 
     @Test
     fun finnOverlappendePerioderTest_medLikKontrollperiodeSomPermisjonspermittering() {
-        val kontrollperiode = Periode(fom = LocalDate.now(), tom = LocalDate.now())
+        val kontrollperiode = Kontrollperiode(fom = LocalDate.now(), tom = LocalDate.now())
         val permisjonPermittering = PermisjonPermittering(
             Periode(fom = LocalDate.now(),
                 tom = LocalDate.now()),
@@ -29,7 +29,7 @@ class PermisjonPermiteringTest {
 
     @Test
     fun finnOverlappendePerioderTest_DerPermisjonpermitteringErForKontrollperiode() {
-        val kontrollperiode = Periode(fom = LocalDate.now(), tom = LocalDate.now())
+        val kontrollperiode = Kontrollperiode(fom = LocalDate.now(), tom = LocalDate.now())
         val permisjonPermittering = PermisjonPermittering(
             Periode(fom = LocalDate.now().minusYears(1),
                 tom = LocalDate.now().minusDays(1)),
@@ -45,7 +45,7 @@ class PermisjonPermiteringTest {
     /*Sjekker overlappende eller samme dato.*/
     @Test
     fun finnOverlappendePerioderTest_DerPermisjonpermitteringStarterForKontrollperiodeOgEnderI() {
-        val kontrollperiode = Periode(fom = LocalDate.now(), tom = LocalDate.now())
+        val kontrollperiode = Kontrollperiode(fom = LocalDate.now(), tom = LocalDate.now())
         val permisjonPermittering = PermisjonPermittering(
             Periode(fom = LocalDate.now().minusYears(1),
                 tom = LocalDate.now()),
@@ -61,7 +61,7 @@ class PermisjonPermiteringTest {
 
     @Test
     fun finnOverlappendePerioderTest_DerPermisjonpermitteringStarterForKontrollperiodeOgEnderEtter() {
-        val kontrollperiode = Periode(fom = LocalDate.now(), tom = LocalDate.now())
+        val kontrollperiode = Kontrollperiode(fom = LocalDate.now(), tom = LocalDate.now())
         val permisjonPermittering = PermisjonPermittering(
             Periode(fom = LocalDate.now().minusYears(1),
                 tom = LocalDate.now().plusYears(1)),
