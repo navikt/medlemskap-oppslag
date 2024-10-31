@@ -548,7 +548,7 @@ data class Arbeidsforhold(
         private fun List<Utenlandsopphold>.hentLandkoder(): List<String> =
             this.map { it.landkode }
 
-        private fun List<Arbeidsforhold>.arbeidsforholdForKontrollPeriode(kontrollPeriode: Kontrollperiode) =
+        fun List<Arbeidsforhold>.arbeidsforholdForKontrollPeriode(kontrollPeriode: Kontrollperiode) =
             this.filter {
                 it.periode.overlapper(kontrollPeriode.periode)
             }
