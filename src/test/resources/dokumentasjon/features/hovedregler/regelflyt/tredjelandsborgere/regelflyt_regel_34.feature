@@ -44,9 +44,9 @@ Egenskap: Regelflyt for regel 34
       | 27.01.2021      | 12.02.2021      | Nei                           |
 
     Så skal svaret være "<Medlemskap>"
-    Og skal regel "18" gi svaret "<Regel 34>"
+    Og skal regel "34" gi svaret "<Regel 34>"
 
     Eksempler:
       | Stillingsprosent | Regel 34 | Medlemskap |
-      | 50               | Nei      | Uavklart   |
+      | 55               | Nei      | Uavklart   |
       | 60               | Ja       | Ja         |
