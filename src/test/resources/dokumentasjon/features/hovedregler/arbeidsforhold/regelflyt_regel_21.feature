@@ -38,7 +38,8 @@ Egenskap: Regelflyt for regel 21
       | Første fra og med | Første til og med | Svar | Medlemskap |
       | 01.01.2018        |                   | Ja   | Ja         |
       | 01.01.2018        | 11.06.2020        | Ja   | Ja         |
-      | 01.01.2018        | 01.06.2020        | Nei  | UAVKLART   |
+      #| 01.01.2018        | 01.06.2020        | Nei  | UAVKLART   |
+    #Regel 21 vil aldri kunne slå til da regel 3 som ligger før i flyten er mer restriktiv.
 
   Scenario: Regelflyt regel 21: bruker får "ja" på spørsmålet om medlemskap hvis det er sammengengende arbeid i kontroll perioden
 

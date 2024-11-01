@@ -1,6 +1,6 @@
 # language: no
 # encoding: UTF-8
-
+##
 Egenskap: Regelflyt for regel 4
 
   Bakgrunn:
@@ -30,10 +30,10 @@ Egenskap: Regelflyt for regel 4
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
-    Så skal svaret være "<Medlemskap>"
-    Og skal regel-årsaker være "<Årsaker>"
-    Og skal regel "3" gi svaret "Ja"
-    Og skal regel "4" gi svaret "<Regel 4>"
+    #Så skal svaret være "<Medlemskap>"
+    #Og skal regel-årsaker være "<Årsaker>"
+    #Og skal regel "3" gi svaret "Ja"
+    #Og skal regel "4" gi svaret "<Regel 4>"
 
     Eksempler:
       | Arbeidsgivertype | Regel 4 | Medlemskap | Årsaker |

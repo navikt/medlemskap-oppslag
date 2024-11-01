@@ -11,7 +11,7 @@ Egenskap: Tredjelandsborger med medl unntak.
 
     Og følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Arbeidsgiver Id |
-      | 01.02.2020      |                 | Organisasjon     | NORMALT             | 1               |
+      | 01.01.2020      |                 | Organisasjon     | NORMALT             | 1               |
 
     Og følgende arbeidsgiver i arbeidsforholdet
       | Identifikator       | Arbeidsgivertype | Landkode | Antall ansatte |
@@ -19,7 +19,7 @@ Egenskap: Tredjelandsborger med medl unntak.
 
     Og følgende detaljer om ansatte for arbeidsgiver
       | Antall ansatte | Gyldighetsperiode gyldig fra | Gyldighetsperiode gyldig til |
-      | 10             | 01.02.2020                   | 01.08.2021                   |
+      | 10             | 01.01.2020                   | 01.08.2021                   |
 
     Og følgende oppholdstillatelse
       | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type      | Oppholdstillatelse på samme vilkår flagg |
@@ -42,7 +42,7 @@ Egenskap: Tredjelandsborger med medl unntak.
 
     Og følgende arbeidsavtaler i arbeidsforholdet
       | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent |
-      | 10.10.1975      | 01.08.2020      | yrkeskode | 100              |
+      | 10.10.1975      |                 | yrkeskode | 100              |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |

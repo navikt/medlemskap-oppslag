@@ -1,6 +1,6 @@
 {
   "vurderingsID" : "7b006d2c-ff75-4404-9663-7babf23f45de",
-  "tidspunkt" : "2024-10-24T13:40:58.3712412",
+  "tidspunkt" : "2024-11-01T15:30:39.807952",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "kanal" : "/",
@@ -465,24 +465,6 @@
       "harDekning" : null,
       "dekning" : "",
       "delresultat" : [ {
-        "regelId" : "REGEL_3",
-        "svar" : "JA",
-        "begrunnelse" : "",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?"
-      }, {
-        "regelId" : "REGEL_4",
-        "svar" : "JA",
-        "begrunnelse" : "",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Er foretaket registrert i foretaksregisteret?"
-      }, {
         "regelId" : "REGEL_14",
         "svar" : "JA",
         "begrunnelse" : "Bruker er ansatt i staten eller i en kommune",
