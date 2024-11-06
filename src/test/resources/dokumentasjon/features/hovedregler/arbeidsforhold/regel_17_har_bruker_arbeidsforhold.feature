@@ -11,7 +11,7 @@ Egenskap: Regel 17: Har bruker arbeidsforhold?
 
     Så skal svaret være "Nei"
 
-  Scenario: Bruker med arbeidsforhold får "Ja"
+  Scenario: Bruker med arbeidsforhold i kontrollperioden får "Ja"
 
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
