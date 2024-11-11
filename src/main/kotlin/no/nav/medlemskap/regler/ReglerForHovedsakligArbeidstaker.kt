@@ -17,9 +17,15 @@ class ReglerForHovedsakligArbeidstaker(
     overstyrteRegler: Map<RegelId, Svar>
 ) : Regler(ytelse, regelFactory, overstyrteRegler) {
     override fun hentHovedflyt(): Regelflyt {
+        val minst60ProsentStillingRegelFlyt = lagRegelflyt(
+            regel = hentRegel(RegelId.REGEL_34),
+            hvisJa = regelflytJa(ytelse, REGEL_HOVEDSAKLIG_ARBEIDSTAKER),
+            hvisNei = konklusjonUavklart(ytelse, REGEL_HOVEDSAKLIG_ARBEIDSTAKER)
+        )
+
         val hovedsakligArbeidstakerFlyt = lagRegelflyt(
             regel = hentRegel(RegelId.REGEL_18),
-            hvisJa = regelflytJa(ytelse, REGEL_HOVEDSAKLIG_ARBEIDSTAKER),
+            hvisJa = minst60ProsentStillingRegelFlyt,
             hvisNei = konklusjonUavklart(ytelse, REGEL_HOVEDSAKLIG_ARBEIDSTAKER)
         )
 
