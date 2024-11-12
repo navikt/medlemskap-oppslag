@@ -38,8 +38,7 @@ Egenskap: Regelflyt for regel 21
       | Første fra og med | Første til og med | Svar | Medlemskap |
       | 01.01.2018        |                   | Ja   | Ja         |
       | 01.01.2018        | 11.06.2020        | Ja   | Ja         |
-      #| 01.01.2018        | 01.06.2020        | Nei  | UAVKLART   |
-    #Regel 21 vil aldri kunne slå til da regel 3 som ligger før i flyten er mer restriktiv.
+      | 01.01.2018        | 01.06.2020        | Nei  | UAVKLART   |
 
   Scenario: Regelflyt regel 21: bruker får "ja" på spørsmålet om medlemskap hvis det er sammengengende arbeid i kontroll perioden
 
@@ -49,8 +48,39 @@ Egenskap: Regelflyt for regel 21
 
 
     Når medlemskap beregnes med følgende parametre
-      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-      | 30.01.2020      | 30.01.2021      | Nei                           |
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge | Ytelse     |
+      | 30.01.2020      | 30.01.2021      | Nei                           | SYKEPENGER |
+
 
     Så skal svaret være "Ja"
     Og skal regel "21" gi svaret "Ja"
+
+  Scenario: Regelflyt regel 21: bruker får "Ja" for regel 21, hvis bruker har hatt kontinuerlig arbeidsforhold i minst 2 dager for barnebriller.
+
+    Gitt  følgende arbeidsforhold fra AAReg
+      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Arbeidsgiver Id |
+      | 29.01.2020      |                 | Organisasjon     | NORMALT             | 1               |
+
+
+    Når medlemskap beregnes med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge | Ytelse        |
+      | 30.01.2020      | 30.01.2021      | Nei                           | BARNE_BRILLER |
+
+
+    Så skal svaret være "UAVKLART"
+    Og skal regel "21" gi svaret "Ja"
+
+  Scenario: Regelflyt regel 21: bruker får "Nei" for regel 21, hvis bruker har hatt kontinuerlig arbeidsforhold i minst 2 dager for barnebriller.
+
+    Gitt  følgende arbeidsforhold fra AAReg
+      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Arbeidsgiver Id |
+      | 30.01.2020      |                 | Organisasjon     | NORMALT             | 1               |
+
+
+    Når medlemskap beregnes med følgende parametre
+      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge | Ytelse        |
+      | 30.01.2020      | 30.01.2021      | Nei                           | BARNE_BRILLER |
+
+
+    Så skal svaret være "UAVKLART"
+    Og skal regel "21" gi svaret "Nei"

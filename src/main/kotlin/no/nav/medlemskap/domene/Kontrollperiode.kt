@@ -20,7 +20,7 @@ data class Kontrollperiode(
             )
         fun kontrollperiodeForBarneBriller(startDatoForYtelse: LocalDate): Kontrollperiode =
             Kontrollperiode(
-                fom = startDatoForYtelse.minusDays(28),
+                fom = startDatoForYtelse.minusDays(0),
                 tom = startDatoForYtelse
             )
 
