@@ -57,6 +57,7 @@ Egenskap: Tredjelandsborger med medl unntak.
       #| REGEL_OVERSTYRING               |
       | REGEL_DOED                      |
       | REGEL_FELLES_ARBEIDSFORHOLD     |
+      | REGEL_YTELSER                   |
       | REGEL_STATSBORGERSKAP           |
       | REGEL_TREDJELANDSBORGER_FAMILIE |
       | REGEL_HOVEDSAKLIG_ARBEIDSTAKER  |
@@ -97,6 +98,7 @@ Egenskap: Tredjelandsborger med medl unntak.
       #| REGEL_OVERSTYRING               |
       | REGEL_DOED                      |
       | REGEL_FELLES_ARBEIDSFORHOLD     |
+      | REGEL_YTELSER                   |
       | REGEL_STATSBORGERSKAP           |
       | REGEL_TREDJELANDSBORGER_FAMILIE |
       | REGEL_HOVEDSAKLIG_ARBEIDSTAKER  |
@@ -169,6 +171,7 @@ Egenskap: Tredjelandsborger med medl unntak.
       #| REGEL_OVERSTYRING               |
       | REGEL_DOED                      |
       | REGEL_FELLES_ARBEIDSFORHOLD     |
+      | REGEL_YTELSER                   |
       | REGEL_STATSBORGERSKAP           |
       | REGEL_TREDJELANDSBORGER_FAMILIE |
       | REGEL_HOVEDSAKLIG_ARBEIDSTAKER  |

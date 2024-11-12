@@ -1,6 +1,8 @@
 package no.nav.medlemskap.regler.v1.arbeidsforhold
 
 import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.Kontrollperiode
+import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollperiodeForBarneBriller
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.erSammenhengendeIKontrollPeriode
@@ -18,7 +20,10 @@ class ErBrukerArbeidstakerIKontrollperiodeForStønadsområde(
 ) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
-        return if (arbeidsforhold.erSammenhengendeIKontrollPeriode(kontrollperiodeForSykepenger, ytelse, 1)) {
+
+        val kontrollPeriode = finnKOntrollPeriode(ytelse)
+
+        return if (arbeidsforhold.erSammenhengendeIKontrollPeriode(kontrollPeriode, ytelse, 1)) {
             ja(regelId)
         } else {
             nei(regelId)

@@ -21,15 +21,18 @@ class ReglerForFellesArbeidsforhold(
 
     override fun hentHovedflyt(): Regelflyt {
 
+        /*
         val erBrukerArbeidstakerIkontrollperiodeForStønadsområdeFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_21),
             hvisJa = regelflytJa(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
             hvisNei = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD)
         )
 
+         */
+
         val HarBrukerSammenhengendeArbeidsforholdRegelFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_3),
-            hvisJa = erBrukerArbeidstakerIkontrollperiodeForStønadsområdeFlyt,
+            hvisJa = regelflytJa(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
             hvisNei = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
         )
 

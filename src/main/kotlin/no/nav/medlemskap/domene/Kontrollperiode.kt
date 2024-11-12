@@ -18,6 +18,11 @@ data class Kontrollperiode(
                 fom = startDatoForYtelse.minusDays(28),
                 tom = startDatoForYtelse
             )
+        fun kontrollperiodeForBarneBriller(startDatoForYtelse: LocalDate): Kontrollperiode =
+            Kontrollperiode(
+                fom = startDatoForYtelse.minusDays(28),
+                tom = startDatoForYtelse
+            )
 
         fun kontrollPeriodeForPersonhistorikk(startDatoForYtelse: LocalDate): Kontrollperiode {
             return Kontrollperiode(
@@ -54,5 +59,7 @@ data class Kontrollperiode(
                 return inputPeriode.fom.minusDays(1)
             }
         }
+
+
     }
 }
