@@ -1,6 +1,6 @@
 {
   "vurderingsID" : "7b006d2c-ff75-4404-9663-7babf23f45de",
-  "tidspunkt" : "2024-11-12T10:31:59.6754308",
+  "tidspunkt" : "2024-11-15T12:53:44.1734035",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "kanal" : "/",
@@ -249,7 +249,8 @@
         "arbeidsomfang" : "KUN_ARBEID_HELTID"
       },
       "uavklartFlyktningstatus" : null,
-      "harFlyktningstatus" : null
+      "harFlyktningstatus" : null,
+      "udiFeilKode" : null
     },
     "startDatoForYtelse" : "2019-01-01"
   },
