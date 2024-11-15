@@ -46,6 +46,7 @@ Egenskap: EØS-borger med medl unntak.
       #| REGEL_OVERSTYRING           |
       | REGEL_DOED                  |
       | REGEL_FELLES_ARBEIDSFORHOLD |
+      | REGEL_YTELSER               |
       | REGEL_STATSBORGERSKAP       |
       | REGEL_MEDL                  |
       | REGEL_ARBEIDSFORHOLD        |

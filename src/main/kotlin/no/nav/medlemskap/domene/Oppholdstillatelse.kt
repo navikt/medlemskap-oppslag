@@ -10,7 +10,8 @@ data class Oppholdstillatelse(
     val gjeldendeOppholdsstatus: GjeldendeOppholdsstatus?,
     val arbeidsadgang: Arbeidsadgang?,
     val uavklartFlyktningstatus: Boolean?,
-    val harFlyktningstatus: Boolean?
+    val harFlyktningstatus: Boolean?,
+    val udiFeilKode: Int? = null
 ) {
 
     fun harPermanentOppholdstillatelse(periode: Periode): Boolean {

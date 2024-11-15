@@ -35,15 +35,15 @@ class ReglerForArbeidsforhold(
             hvisNei = erBrukerPilotEllerKabinansattFlyt
         )
 
-        val erForetakAktivtFlyt = lagRegelflyt(
+        /*val erForetakAktivtFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_6),
             hvisJa = erArbeidsforholdetMaritimtFlyt,
             hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD)
-        )
+        )*/
 
         val harForetakMerEnn5AnsatteFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_5),
-            hvisJa = erForetakAktivtFlyt,
+            hvisJa = erArbeidsforholdetMaritimtFlyt,
             hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD)
         )
 
@@ -53,7 +53,7 @@ class ReglerForArbeidsforhold(
             hvisNei = harForetakMerEnn5AnsatteFlyt
         )
 
-        val erArbeidsgiverOrganisasjonFlyt = lagRegelflyt(
+        /*val erArbeidsgiverOrganisasjonFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_4),
             hvisJa = erArbeidsgiverOffentligSektor,
             hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD)
@@ -63,9 +63,9 @@ class ReglerForArbeidsforhold(
             regel = hentRegel(REGEL_3),
             hvisJa = erArbeidsgiverOrganisasjonFlyt,
             hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD)
-        )
+        )*/
 
-        return harBrukerSammenhengendeArbeidsforholdSiste12MndFlyt
+        return erArbeidsgiverOffentligSektor
     }
 
     companion object {

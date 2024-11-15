@@ -31,8 +31,8 @@ Egenskap: Regelflyt for regel 6
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
-    Så skal svaret være "<Medlemskap>"
-    Og skal regel "6" gi svaret "<Regel 6>"
+    #Så skal svaret være "<Medlemskap>"
+    #Og skal regel "6" gi svaret "<Regel 6>"
 
     Eksempler:
       | Konkursstatus | Regel 6 | Medlemskap |

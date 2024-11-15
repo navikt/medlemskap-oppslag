@@ -91,6 +91,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_REQUEST_VALIDERING("Validering", "Er input-dataene gyldige?"),
     REGEL_OVERSTYRING("OVERSTYRING", "Er overstyringsregler avklart?"),
     REGEL_FELLES_ARBEIDSFORHOLD("FELLES ARBEIDSFORHOLD", "Er felles regler for arbeidsforhold avklart?"),
+    REGEL_YTELSER("REGLER YTELSER", "Er felles regler for ytelser avklart?"),
     REGEL_HOVEDSAKLIG_ARBEIDSTAKER("Hovedsaklig arbeidstaker", "Er arbeidstaker i hovedsak arbeidstaker?"),
     REGEL_OPPHOLDSTILLATELSE("Oppholdstillatelse", "Har bruker gyldig oppholdstillatelse?")
     ;

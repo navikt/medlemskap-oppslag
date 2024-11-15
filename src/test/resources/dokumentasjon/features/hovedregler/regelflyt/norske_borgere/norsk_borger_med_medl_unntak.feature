@@ -46,6 +46,7 @@ Egenskap: Norsk borger med medl unntak.
       #| OVERSTYRING           |
       | DOED                  |
       | FELLES ARBEIDSFORHOLD |
+      | REGEL_YTELSER         |
       | STATSBORGERSKAP       |
       | MEDL                  |
       | ARBEIDSFORHOLD        |

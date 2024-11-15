@@ -428,6 +428,9 @@ components:
         harFlyktningstatus:
           type: boolean
           nullable: true
+        udiFeilKode:
+          type: integer
+          nullable: true
       nullable: true
     GjeldendeOppholdsstatus:
       properties:
