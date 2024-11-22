@@ -9,7 +9,7 @@ jobs:
     name: Build and publish Docker image for PR-branch
     runs-on: ubuntu-latest
     permissions:
-      contents: "read"lege
+      contents: "read"
       packages: write
       id-token: "write"
     env:
