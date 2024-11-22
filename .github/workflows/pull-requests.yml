@@ -9,7 +9,9 @@ jobs:
     name: Build and publish Docker image for PR-branch
     runs-on: ubuntu-latest
     permissions:
+      contents: "read"lege
       packages: write
+      id-token: "write"
     env:
       IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
     steps:
