@@ -4,14 +4,14 @@ on: [ pull_request ]
 
 env:
   APP: medlemskap-oppslag
+permissions:
+  contents: "read"
+  id-token: "write"
+  packages: "write"
 jobs:
   build_and_push:
     name: Build and publish Docker image for PR-branch
     runs-on: ubuntu-latest
-    permissions:
-      contents: "read"
-      packages: write
-      id-token: "write"
     env:
       IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
     steps:
