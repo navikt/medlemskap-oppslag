@@ -35,11 +35,6 @@ class ReglerForArbeidsforhold(
             hvisNei = erBrukerPilotEllerKabinansattFlyt
         )
 
-        /*val erForetakAktivtFlyt = lagRegelflyt(
-            regel = hentRegel(REGEL_6),
-            hvisJa = erArbeidsforholdetMaritimtFlyt,
-            hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD)
-        )*/
 
         val harForetakMerEnn5AnsatteFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_5),
@@ -53,17 +48,6 @@ class ReglerForArbeidsforhold(
             hvisNei = harForetakMerEnn5AnsatteFlyt
         )
 
-        /*val erArbeidsgiverOrganisasjonFlyt = lagRegelflyt(
-            regel = hentRegel(REGEL_4),
-            hvisJa = erArbeidsgiverOffentligSektor,
-            hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD)
-        )
-
-        val harBrukerSammenhengendeArbeidsforholdSiste12MndFlyt = lagRegelflyt(
-            regel = hentRegel(REGEL_3),
-            hvisJa = erArbeidsgiverOrganisasjonFlyt,
-            hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD)
-        )*/
 
         return erArbeidsgiverOffentligSektor
     }
