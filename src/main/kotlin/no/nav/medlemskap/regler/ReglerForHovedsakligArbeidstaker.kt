@@ -23,13 +23,7 @@ class ReglerForHovedsakligArbeidstaker(
             hvisNei = konklusjonUavklart(ytelse, REGEL_HOVEDSAKLIG_ARBEIDSTAKER)
         )
 
-        val hovedsakligArbeidstakerFlyt = lagRegelflyt(
-            regel = hentRegel(RegelId.REGEL_18),
-            hvisJa = minst60ProsentStillingRegelFlyt,
-            hvisNei = konklusjonUavklart(ytelse, REGEL_HOVEDSAKLIG_ARBEIDSTAKER)
-        )
-
-        return hovedsakligArbeidstakerFlyt
+        return minst60ProsentStillingRegelFlyt
     }
 
     companion object {

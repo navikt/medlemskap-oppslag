@@ -49,5 +49,6 @@ Egenskap: Regelflyt for regel 34
     Eksempler:
       | Stillingsprosent | Regel 34 | Medlemskap |
       | 55               | Nei      | Uavklart   |
+      | 40               | Nei      | Uavklart   |
       | 60               | Ja       | Ja         |
       | 65               | Ja       | Ja         |
