@@ -139,7 +139,7 @@ Egenskap: Tredjelandsborger med medl unntak.
 
     Eksempler:
       | Stillingsprosent | Medlemskap | Årsaker |
-      | 50               | Uavklart   | 18      |
+      | 50               | Uavklart   | 34      |
       | 100              | Ja         |         |
 
   Scenario: Tredjelandsborger med medl unntak "Nei" skal få "Uavklart" på medlemskap selv om oppholdstillatelse er i orden.
