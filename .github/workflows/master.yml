@@ -64,11 +64,12 @@ jobs:
           IMAGE: ${{ needs.build_and_push.outputs.image }}
           TELEMETRY: ${{ needs.build_and_push.outputs.telemetry }}
   deployprod:
-    name: Deploy PR-branch to dev
+    name: Deploy to prod
     needs: [ build_and_push ]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        name: Checkout code
       - uses: nais/deploy/actions/deploy@v2
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
@@ -76,11 +77,3 @@ jobs:
           RESOURCE: deploy/prod.yaml
           IMAGE: ${{ needs.build_and_push.outputs.image }}
           TELEMETRY: ${{ needs.build_and_push.outputs.telemetry }}
-      - name: Post failures to Slack
-        if: failure()
-        run: |
-            curl -X POST --data-urlencode "payload={\"channel\": \"$CHANNEL\", \"text\": \"$MESSAGE\", \"icon_emoji\": \":ghost:\"}" $WEBHOOK_URL
-          env:
-            MESSAGE: "Deploy til prod feilet"
-            CHANNEL: "#team-p3-medlemskap-notifications"
-            WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
