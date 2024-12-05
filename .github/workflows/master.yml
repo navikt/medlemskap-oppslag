@@ -51,7 +51,7 @@ jobs:
       image: ${{ steps.docker-push.outputs.image }}
 
   deploypreprod:
-    name: Deploy to to production
+    name: Deploy to preprod production
     needs: [build_and_push]
     runs-on: ubuntu-latest
     steps:
