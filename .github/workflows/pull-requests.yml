@@ -4,17 +4,19 @@ on: [ pull_request ]
 
 env:
   APP: medlemskap-oppslag
+permissions:
+  contents: "read"
+  id-token: "write"
+  packages: "write"
 jobs:
-  build-branch:
+  build_and_push:
     name: Build and publish Docker image for PR-branch
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
     env:
       IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.sha }}
 
@@ -36,40 +38,28 @@ jobs:
         env:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and Publish Docker image
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          docker build -t $IMAGE .
-          docker login ghcr.io -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
-          docker push $IMAGE
-      - name: Archive NAIS yaml
-        uses: actions/upload-artifact@v4
+      - uses: nais/docker-build-push@v0
+        id: docker-push
         with:
-          name: nais-yaml
-          path: deploy
+          team: medlemskap # required
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }} # required, but is defined as an organization variable
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }} # required, but is defined as an organization secret
+    outputs:
+      image: ${{ steps.docker-push.outputs.image }}
 
   deploypreprod:
     name: Deploy PR-branch to dev
-    needs: [build-branch]
+    needs: [build_and_push]
     runs-on: ubuntu-latest
-    env:
-      IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
     steps:
-      - name: Fetch NAIS yaml
-        uses: actions/download-artifact@v4
-        with:
-          name: nais-yaml
-          path: deploy
-
+      - uses: actions/checkout@v4
       - uses: nais/deploy/actions/deploy@v2
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
           CLUSTER: dev-gcp
           RESOURCE: deploy/preprod.yaml
-          VARS: deploy/vars.yaml
-          VAR: alerts_slack_channel=#team-p3-medlemskap-notifications
-          PRINT_PAYLOAD: true
+          IMAGE: ${{ needs.build_and_push.outputs.image }}
+          TELEMETRY: ${{ needs.build_and_push.outputs.telemetry }}
   acceptance-tests:
     name: Run acceptance tests
     needs: deploypreprod
