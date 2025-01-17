@@ -62,40 +62,6 @@ class AaRegClient(
         )
     }
 
-    suspend fun hentArbeidsforholdV2(fnr: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<no.nav.medlemskap.clients.aareg.Arbeidsforhold> {
-        val token = azureAdClient.hentToken(configuration.register.aaregScope)
-        return runCatching {
-            runWithRetryAndMetrics("AaReg", "ArbeidsforholdV2", retry) {
-                httpClient.get() {
-                    url("$baseUrl/v2/arbeidstaker/arbeidsforhold")
-                    header(HttpHeaders.Authorization, "Bearer ${token.token}")
-                    header(HttpHeaders.Accept, ContentType.Application.Json)
-                    header("Nav-Call-Id", callId)
-                    header("Nav-Personident", fnr)
-                    header("x-nav-apiKey", aaRegApiKey)
-                    parameter("historikk", "true")
-                    parameter("arbeidsforholdstatus", "AKTIV,AVSLUTTET,FREMTIDIG")
-                    parameter("rapporteringsordning", "FOER_A_ORDNINGEN, A_ORDNINGEN")
-                }.body<List<Arbeidsforhold>>()
-            }
-        }.fold(
-            onSuccess = { it },
-            onFailure = { error ->
-                when (error) {
-                    is ClientRequestException -> {
-                        if (error.response.status.value == 404) {
-                            logger.warn("404, fra AAREG på url (GET) $baseUrl/v1/arbeidstaker/arbeidsforhold")
-                            listOf()
-                        } else {
-                            throw error
-                        }
-                    }
-                    else -> throw error
-                }
-            }
-        )
-    }
-
     // Deaktivert pga. closed channel exceptions
     /*
     suspend fun healthCheck(): HttpResponse {

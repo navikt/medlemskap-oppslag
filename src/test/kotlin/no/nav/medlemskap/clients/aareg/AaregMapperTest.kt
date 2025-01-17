@@ -13,15 +13,6 @@ import java.time.YearMonth
 class AaregMapperTest {
 
     @Test
-    fun parseV2() {
-        val fileContent = this::class.java.classLoader.getResource("AaregV2respons.json").readText(Charsets.UTF_8)
-        val aaRegArbeidsforhold: List<Arbeidsforhold> = objectMapper.readValue(fileContent)
-
-        val list1 = listOf("1", "2", "3")
-        val list2 = listOf(1, 2, 3)
-    }
-
-    @Test
     fun mapAaregResultatTilArbeidsforhold() {
 
         val aaRegArbeidsforhold = objectMapper.readValue<AaRegArbeidsforhold>(jsonStringAaRegArbeidsforholdList)
