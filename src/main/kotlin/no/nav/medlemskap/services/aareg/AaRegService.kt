@@ -32,33 +32,6 @@ class AaRegService(
                 arbeidsforholdMedOrganisasjon.add(ArbeidsforholdOrganisasjon(aaRegArbeidsforhold, organisasjon, juridiskeEnheter))
             }
         }
-
-        // Midlertidig fjernet for å minimere tidsbruk
-        /*
-        var arbeidsforholdV2: List<no.nav.medlemskap.clients.aareg.Arbeidsforhold> = listOf()
-
-        try {
-            arbeidsforholdV2 = aaRegClient.hentArbeidsforholdV2(fnr, callId, fraOgMed, tilOgMed)
-        } catch (error: Throwable) {
-            logger.error(
-                "Kall mot Aareg v2 feilet",
-                kv("stacktrace", error.stackTrace),
-                kv("message", error.message),
-                kv("cause", error.cause)
-            )
-        }
-
-        secureLogger.info(
-            "Aareg kall",
-            kv("fnr", fnr),
-            kv("NAV-call-id", callId),
-            kv("Aareg v2", objectMapper.writeValueAsString(arbeidsforholdV2)),
-            kv("Aareg v1", objectMapper.writeValueAsString(arbeidsforhold)),
-            kv("V2 mappet til V1", objectMapper.writeValueAsString(arbeidsforholdV2.mapTilV1()))
-        )
-
-         */
-
         return mapArbeidsforhold(arbeidsforholdMedOrganisasjon)
     }
 }
