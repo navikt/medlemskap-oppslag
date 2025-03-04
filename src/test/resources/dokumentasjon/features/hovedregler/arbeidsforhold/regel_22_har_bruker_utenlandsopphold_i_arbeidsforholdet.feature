@@ -18,19 +18,19 @@ Egenskap: Regel 22: Er det registrert utenlandsopphold i et arbeidsforhold bruke
       | 01.01.2018      |                 | 001       | 100              |               |
 
     Og følgende utenlandsopphold i arbeidsforholdet
-      | Landkode | Fra og med dato | Til og med dato | Rapporteringsperiode |
-      | FRA      |                 |                 | 2019-07              |
+      | Landkode   | Fra og med dato | Til og med dato | Rapporteringsperiode   |
+      | <landkode> |                 |                 | <rapporteringsperiode> |
 
     Når regel "22" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-      | 30.01.2019      | 30.01.2020      | Nei                           |
+      | 30.01.2019      | 30.01.2020      | Ja                            |
 
     Så skal svaret være "<Svar>"
 
     Eksempler:
-      | Fra og med | Til og med | Svar |
-      | 01.01.2018 | 30.06.2019 | Ja   |
-      | 29.01.2016 | 29.06.2017 | Nei  |
+      | Fra og med | Til og med | rapporteringsperiode | landkode | Svar |
+      | 01.01.2018 | 31.08.2019 | 2019-07              | FRA      | Ja   |
+      | 29.01.2016 | 29.06.2017 | 2017-03              | GER      | Nei  |
 
   Scenario: Bruker uten utenlandsopphold får "Nei"
 
