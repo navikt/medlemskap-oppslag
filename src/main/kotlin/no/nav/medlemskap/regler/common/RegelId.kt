@@ -80,6 +80,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_MEDLEM_KONKLUSJON("LOVME", "Er bruker medlem?", "Kan ikke konkludere med medlemskap", "Bruker er medlem", "Kan ikke konkludere med medlemskap"),
     REGEL_FLYT_KONKLUSJON("RFK", "Svar på regelflyt", "Regelflyt konkluderer med NEI"),
     REGEL_ARBEIDSFORHOLD("ARBEIDSFORHOLD", "Er arbeidsforhold avklart?"),
+    REGEL_MARITIM("MARITIM","er arbeidsforholdet maritimt?"),
     REGEL_EØS_BOSATT("EØS-BOSATT", "Er EØS-borger bosatt i Norge?"),
     REGEL_ANDRE_BORGERE("ANDRE BORGERE", "Er regler for andre borgere avklart?"),
     REGEL_NORSK("NORSK", "Er regler for norske borgere avklart?"),
