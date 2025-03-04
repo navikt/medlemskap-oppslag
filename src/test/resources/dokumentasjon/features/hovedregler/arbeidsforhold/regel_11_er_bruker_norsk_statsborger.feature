@@ -11,9 +11,11 @@ Egenskap: Regel 11: Har bruker norsk statsborgerskap?
     Og følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
       | NOR      | 01.01.2000      |                 |
+
     Når regel "11" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
+
     Så skal svaret være "Ja"
 
   Scenario: Bruker har ikke norsk statsborgerskap
@@ -24,9 +26,11 @@ Egenskap: Regel 11: Har bruker norsk statsborgerskap?
     Og følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
       | SWE      | 01.01.2000      |                 |
+
     Når regel "11" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
+
     Så skal svaret være "Nei"
 
   Scenario: Bruker har hatt norsk statsborgerskap tidligere
@@ -37,9 +41,11 @@ Egenskap: Regel 11: Har bruker norsk statsborgerskap?
     Og følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
       | NOR      | 01.01.2000      | 01.01.2020      |
+
     Når regel "11" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
+
     Så skal svaret være "Nei"
 
   Scenario: Bruker har dobbelt statsborgerskap
@@ -52,12 +58,14 @@ Egenskap: Regel 11: Har bruker norsk statsborgerskap?
       | Landkode | Fra og med dato | Til og med dato |
       | NOR      | 01.01.2000      |                 |
       | SWE      | 01.01.2000      |                 |
+
     Når regel "11" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
+
     Så skal svaret være "Ja"
 
-  Scenario: USA
+  Scenario: Ikke norsk statsborgerskap i hele kontrollperioden
     Gitt følgende bostedsadresser i personhistorikken
       | Adresse | Landkode | Fra og med dato | Til og med dato |
       | Seattle | USA      | 01.01.2000      |                 |
@@ -67,9 +75,11 @@ Egenskap: Regel 11: Har bruker norsk statsborgerskap?
       | Landkode | Fra og med dato | Til og med dato |
       | NOR      | 01.02.2019      |                 |
       | USA      | 01.01.2020      |                 |
+
     Når regel "11" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
+
     Så skal svaret være "Nei"
 
 
