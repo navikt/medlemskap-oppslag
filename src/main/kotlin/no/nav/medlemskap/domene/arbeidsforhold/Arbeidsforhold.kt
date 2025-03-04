@@ -73,6 +73,11 @@ data class Arbeidsforhold(
             }
         }
 
+        fun List<Arbeidsforhold>.harMaritimtArbeidsforholdDagenFørStartDatoForYtelse(startDatoForYtelse: LocalDate): Boolean {
+            val startdatoForYtelseMinus1Dag = startDatoForYtelse.minusDays(1)
+            return this.arbeidsforholdForDato(startdatoForYtelseMinus1Dag).any { it.arbeidsforholdstype == Arbeidsforholdstype.MARITIMT }
+        }
+
         fun List<Arbeidsforhold>.harKunEttArbeidsforholdMedPermisjoner(kontrollPeriode: Kontrollperiode): Boolean {
             return this.harFlereArbeidsforholdIKontrollperiode(kontrollPeriode)
                     && this.harPermisjonerIKontrollPerioden(kontrollPeriode)

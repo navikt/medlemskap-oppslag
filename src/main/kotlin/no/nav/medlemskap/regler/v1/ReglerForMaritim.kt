@@ -19,12 +19,13 @@ class ReglerForMaritim(
 
     override fun hentHovedflyt(): Regelflyt {
 
-        val erBrukerEØSborgerFlyt = lagRegelflyt(
-            regel = hentRegel(REGEL_7),
+        val erBrukerIMaritimtArbeidsforholdDagenFørStartdatoForYtelseMinus1DagFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_35),
             hvisJa = konklusjonUavklart(ytelse, REGEL_MARITIM),
             hvisNei = konklusjonUavklart(ytelse, REGEL_MARITIM),
         )
-        return erBrukerEØSborgerFlyt
+
+        return erBrukerIMaritimtArbeidsforholdDagenFørStartdatoForYtelseMinus1DagFlyt
     }
 
     companion object {
