@@ -20,10 +20,16 @@ class ReglerForMaritim(
 
     override fun hentHovedflyt(): Regelflyt {
 
+        val harBrukerMaritimtArbeidsforholdSiste12Månederflyt = lagRegelflyt(
+            regel = hentRegel(REGEL_42),
+            hvisJa = regelflytUavklart(ytelse, REGEL_MARITIM),
+            hvisNei = regelflytUavklart(ytelse, REGEL_MARITIM)
+        )
+
         val erBrukerIMaritimtArbeidsforholdDagenFørStartdatoForYtelseMinus1DagFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_35),
             hvisJa = regelflytUavklart(ytelse, REGEL_MARITIM),
-            hvisNei = regelflytUavklart(ytelse, REGEL_MARITIM)
+            hvisNei = harBrukerMaritimtArbeidsforholdSiste12Månederflyt
         )
 
         return erBrukerIMaritimtArbeidsforholdDagenFørStartdatoForYtelseMinus1DagFlyt

@@ -1,7 +1,7 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regelflyt for regel 35
+Egenskap: Regelflyt for regel 42
 
   Bakgrunn:
     Gitt følgende bostedsadresser i personhistorikken
@@ -13,11 +13,11 @@ Egenskap: Regelflyt for regel 35
       | NOR      | 01.01.2000      |                 |
 
 
-  Scenariomal: Regelflyt regel 35
+  Scenariomal: Regelflyt regel 42
 
     Gitt følgende arbeidsforhold fra AAReg
-      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype   | Arbeidsgiver Id |
-      | 20.01.2020      |                 | Organisasjon     | <Arbeidsforholdstype> | 1               |
+      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Arbeidsgiver Id |
+      | 20.01.2018      | <tom>           | Organisasjon     | MARITIMT            | 1               |
 
     Og følgende arbeidsgiver i arbeidsforholdet
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
@@ -32,9 +32,9 @@ Egenskap: Regelflyt for regel 35
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Medlemskap>"
-    Og skal regel "35" gi svaret "<Regel 35>"
+    Og skal regel "42" gi svaret "<Regel 42>"
 
     Eksempler:
-      | Arbeidsforholdstype | Regel 35 | Medlemskap |
-      | NORMALT             | Nei      | UAVKLART   |
-      | MARITIMT            | Ja       | UAVKLART   |
+      | tom        | Regel 42 | Medlemskap |
+      | 31.12.2018 | Nei      | UAVKLART   |
+      | 28.01.2020 | Ja       | UAVKLART   |
