@@ -8,6 +8,7 @@ import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.common.Regelflyt
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytUavklart
 import no.nav.medlemskap.regler.common.Regler
 import no.nav.medlemskap.regler.common.Svar
 
@@ -21,8 +22,8 @@ class ReglerForMaritim(
 
         val erBrukerIMaritimtArbeidsforholdDagenFørStartdatoForYtelseMinus1DagFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_35),
-            hvisJa = konklusjonUavklart(ytelse, REGEL_MARITIM),
-            hvisNei = konklusjonUavklart(ytelse, REGEL_MARITIM),
+            hvisJa = regelflytUavklart(ytelse, REGEL_MARITIM),
+            hvisNei = regelflytUavklart(ytelse, REGEL_MARITIM)
         )
 
         return erBrukerIMaritimtArbeidsforholdDagenFørStartdatoForYtelseMinus1DagFlyt

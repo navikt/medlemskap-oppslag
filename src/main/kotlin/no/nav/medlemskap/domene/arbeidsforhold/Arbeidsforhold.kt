@@ -74,8 +74,7 @@ data class Arbeidsforhold(
         }
 
         fun List<Arbeidsforhold>.harMaritimtArbeidsforholdDagenFørStartDatoForYtelse(startDatoForYtelse: LocalDate): Boolean {
-            val startdatoForYtelseMinus1Dag = startDatoForYtelse.minusDays(1)
-            return this.arbeidsforholdForDato(startdatoForYtelseMinus1Dag).any { it.arbeidsforholdstype == Arbeidsforholdstype.MARITIMT }
+            return this.arbeidsforholdForDato(startDatoForYtelse).any { it.arbeidsforholdstype == Arbeidsforholdstype.MARITIMT }
         }
 
         fun List<Arbeidsforhold>.harKunEttArbeidsforholdMedPermisjoner(kontrollPeriode: Kontrollperiode): Boolean {
@@ -557,6 +556,10 @@ data class Arbeidsforhold(
             this.filter {
                 it.periode.overlapper(kontrollPeriode.periode)
             }
+
+        fun List<Arbeidsforhold>.maritimeArbeidsforholdForKontrollPeriode(kontrollPeriode: Kontrollperiode): List<Arbeidsforhold> =
+            this.filter { it.arbeidsforholdstype == Arbeidsforholdstype.MARITIMT }
+                .filter { it.periode.overlapper(kontrollPeriode.periode) }
 
         private fun List<Arbeidsforhold>.arbeidsavtalerForKontrollperiode(kontrollPeriode: Kontrollperiode): List<Arbeidsavtale> {
             return arbeidsforholdForKontrollPeriode(kontrollPeriode).flatMap { it.arbeidsavtaler }

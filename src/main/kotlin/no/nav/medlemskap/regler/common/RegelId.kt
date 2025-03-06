@@ -74,6 +74,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_33("33", "Er summen av permisjonsdager mer enn 30 siste 12 måneder?", "Summen av permisjonsdager er ikke mer enn 30 siste 12 måneder", "summen av permisjonsdager er mer enn 30 siste 12 måneder?"),
     REGEL_34("34","Har bruker vært i minst 60 % stilling de siste 12 måneder?","Bruker har mindre enn 60% stilling de siste 12 måneder.","Bruker har 60% stilling eller mer de siste 12 måneder."),
     REGEL_35("35","Er bruker i et maritimt arbeidsforhold på tidspunktet inputdato minus 1 dag?"),
+    REGEL_36("36","Har bruker hattet sammenhengende maritimt arbeidsforhold på et NOR-skip i løpet avde siste 12 månedene?"),
     REGEL_OPPLYSNINGER("OPPLYSNINGER", "Finnes det registrerte opplysninger på bruker?", "Alle de følgende ble NEI"),
     REGEL_A("OPPLYSNINGER-MEDL", "Finnes det registrerte opplysninger i MEDL?", "", "Det finnes registrert opplysninger i Medl"),
     REGEL_B("OPPLYSNINGER-GOSYS", "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?", "", "Det finnes registrerte opplysninger i GOSYS"),
