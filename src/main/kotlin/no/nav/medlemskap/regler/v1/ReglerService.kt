@@ -10,8 +10,8 @@ import no.nav.medlemskap.selvstendignaringsdrivende.HovedreglerForSelvstendigNar
 
 object ReglerService {
 
-    fun kjørRegler(datagrunnlag: Datagrunnlag): Resultat {
-        return Hovedregler(datagrunnlag).kjørHovedregler()
+    fun kjørRegler(datagrunnlag: Datagrunnlag,resultat: Resultat? = null): Resultat {
+        return Hovedregler(datagrunnlag,resultat).kjørHovedregler()
     }
 
     fun kjørReglerForSelvstendigNæringsdrivende(datagrunnlag: Datagrunnlag,resultat: Resultat): Resultat {
@@ -22,7 +22,7 @@ object ReglerService {
         val harBrukerArbeidsforhold = ReglerForBrukerGruppe.fraDatagrunnlag(datagrunnlag).kjørHovedflyt()
         val arbeidstager = harBrukerArbeidsforhold.finnRegelResultat(RegelId.REGEL_17)!!.svar
         if (arbeidstager == Svar.JA) {
-            return kjørRegler(datagrunnlag)
+            return kjørRegler(datagrunnlag,harBrukerArbeidsforhold)
         }
         else{
             return kjørReglerForSelvstendigNæringsdrivende(datagrunnlag,harBrukerArbeidsforhold)
