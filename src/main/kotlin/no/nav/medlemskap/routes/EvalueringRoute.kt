@@ -29,6 +29,7 @@ import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.antallAn
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.summVektetStilingsProsentIKontrollPeriode
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
+import no.nav.medlemskap.regler.v1.ReglerService
 import no.nav.medlemskap.services.kafka.Producer
 import org.apache.kafka.clients.producer.ProducerRecord
 import java.time.LocalDateTime
@@ -191,6 +192,44 @@ fun Routing.evalueringRoute(
             }
             try {
                 val resultat = evaluerData(datagrunnlag)
+
+                val response = lagResponse(
+                    callid = callId,
+                    versjonTjeneste = configuration.commitSha,
+                    endpoint = endpoint,
+                    datagrunnlag = datagrunnlag,
+                    resultat = resultat
+                )
+                loggResponse(request.fnr, response, endpoint)
+                call.respond(response)
+            } catch (t: Throwable) {
+                loggError(fnr = request.fnr, datagrunnlag = datagrunnlag, endpoint = endpoint, throwable = t)
+                throw t
+            }
+        }
+        post("/selvstendignaringsdrivende") {
+            val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
+            val azp = callerPrincipal.payload.getClaim("azp").asString()
+            val endpoint = "selvstendignaringsdrivende"
+            val callId = call.callId ?: UUID.randomUUID().toString()
+            val request = validerRequest(call.receive(), azp)
+
+            val datagrunnlag = withContext(
+                requestContextService.getCoroutineContext(
+                    context = coroutineContext,
+                    ytelse = finnYtelse(request.ytelse, azp)
+                )
+            ) {
+
+                createDatagrunnlag.invoke(
+                    request,
+                    callId,
+                    services,
+                    azp
+                )
+            }
+            try {
+                val resultat = ReglerService.kjørReglerv2(datagrunnlag)
 
                 val response = lagResponse(
                     callid = callId,
