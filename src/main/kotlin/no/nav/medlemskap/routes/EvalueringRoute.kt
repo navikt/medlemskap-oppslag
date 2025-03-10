@@ -29,6 +29,7 @@ import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.antallAn
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.summVektetStilingsProsentIKontrollPeriode
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
+import no.nav.medlemskap.regler.v1.ReglerService
 import no.nav.medlemskap.services.kafka.Producer
 import org.apache.kafka.clients.producer.ProducerRecord
 import java.time.LocalDateTime
@@ -191,6 +192,44 @@ fun Routing.evalueringRoute(
             }
             try {
                 val resultat = evaluerData(datagrunnlag)
+
+                val response = lagResponse(
+                    callid = callId,
+                    versjonTjeneste = configuration.commitSha,
+                    endpoint = endpoint,
+                    datagrunnlag = datagrunnlag,
+                    resultat = resultat
+                )
+                loggResponse(request.fnr, response, endpoint)
+                call.respond(response)
+            } catch (t: Throwable) {
+                loggError(fnr = request.fnr, datagrunnlag = datagrunnlag, endpoint = endpoint, throwable = t)
+                throw t
+            }
+        }
+        post("/selvstendignaringsdrivende") {
+            val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
+            val azp = callerPrincipal.payload.getClaim("azp").asString()
+            val endpoint = "selvstendignaringsdrivende"
+            val callId = call.callId ?: UUID.randomUUID().toString()
+            val request = validerRequestV2(call.receive(), azp)
+
+            val datagrunnlag = withContext(
+                requestContextService.getCoroutineContext(
+                    context = coroutineContext,
+                    ytelse = finnYtelse(request.ytelse, azp)
+                )
+            ) {
+                //TODO: Dette må vi rette på før vi går i produksjon
+                createDatagrunnlag.invoke(
+                    Request(request.fnr,request.førsteDagForYtelse,request.periode,request.brukerinput,request.ytelse),
+                    callId,
+                    services,
+                    azp
+                )
+            }
+            try {
+                val resultat = ReglerService.kjørReglerv2(datagrunnlag)
 
                 val response = lagResponse(
                     callid = callId,
@@ -399,6 +438,23 @@ private fun loggError(fnr: String, datagrunnlag: Datagrunnlag, endpoint: String 
 }
 
 private fun validerRequest(request: Request, azp: String): Request {
+    val ytelse = finnYtelse(request.ytelse, azp)
+    if (ytelse != Ytelse.SYKEPENGER && request.førsteDagForYtelse == null) {
+        throw UgyldigRequestException("Første dag for ytelse kan ikke være null (inputperiode skal ikke lenger brukes)", ytelse)
+    }
+
+    if (request.periode.tom.isBefore(request.periode.fom)) {
+        throw UgyldigRequestException("Periode tom kan ikke være før periode fom", ytelse)
+    }
+
+    if (!gyldigFnr(request.fnr)) {
+        throw UgyldigRequestException("Ugyldig fødselsnummer", ytelse)
+    }
+
+    return request
+}
+
+private fun validerRequestV2(request: RequestV2, azp: String): RequestV2 {
     val ytelse = finnYtelse(request.ytelse, azp)
     if (ytelse != Ytelse.SYKEPENGER && request.førsteDagForYtelse == null) {
         throw UgyldigRequestException("Første dag for ytelse kan ikke være null (inputperiode skal ikke lenger brukes)", ytelse)

@@ -87,6 +87,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_STATSBORGERSKAP("STATSBORGERSKAP", "Er statsborgerskap avklart?"),
     REGEL_TREDJELANDSBORGER_FAMILIE("TREDJELANDSBORGER-FAMILIE", "Er tredjelandsborgers familie EØS medlem?"),
     REGEL_BOSATT("BOSATT", "Er det avklart om bruker bor i Norge?"),
+    REGEL_BRUKERGRUPPE("BRUKERGRUPPE", "Er det avklart om brukeren er har en brukerGruppe eller ikke?"),
     REGEL_DOED("DOED", "Er det avklart om brukeren er død eller ikke?"),
     REGEL_REQUEST_VALIDERING("Validering", "Er input-dataene gyldige?"),
     REGEL_OVERSTYRING("OVERSTYRING", "Er overstyringsregler avklart?"),
