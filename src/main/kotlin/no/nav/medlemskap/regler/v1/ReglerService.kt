@@ -19,14 +19,28 @@ object ReglerService {
     }
 
     fun kjørReglerv2(datagrunnlag: Datagrunnlag): Resultat {
-        val harBrukerArbeidsforhold = ReglerForBrukerGruppe.fraDatagrunnlag(datagrunnlag).kjørHovedflyt()
-        val arbeidstager = harBrukerArbeidsforhold.finnRegelResultat(RegelId.REGEL_17)!!.svar
-        if (arbeidstager == Svar.JA) {
-            return kjørRegler(datagrunnlag,harBrukerArbeidsforhold)
-        }
-        else{
-            return kjørReglerForSelvstendigNæringsdrivende(datagrunnlag,harBrukerArbeidsforhold)
+        val brukerGruppRegelkjøring = ReglerForBrukerGruppe.fraDatagrunnlag(datagrunnlag).kjørHovedflyt()
+        when (avklarBrukerGruppe(brukerGruppRegelkjøring)){
+            BrukerGruppe.Arbeidstager -> return kjørRegler(datagrunnlag,brukerGruppRegelkjøring)
+            BrukerGruppe.Selvstendig_næringsdrivende -> return kjørReglerForSelvstendigNæringsdrivende(datagrunnlag,brukerGruppRegelkjøring)
+            BrukerGruppe.Barn -> TODO()
+            BrukerGruppe.Annet -> TODO()
         }
 
+    }
+    private fun avklarBrukerGruppe(resultat: Resultat): BrukerGruppe{
+        if (resultat.finnRegelResultat(RegelId.REGEL_17)!!.svar == Svar.JA) {
+            return BrukerGruppe.Arbeidstager
+        }
+        else{
+            return BrukerGruppe.Selvstendig_næringsdrivende
+        }
+
+    }
+    enum class BrukerGruppe{
+        Arbeidstager,
+        Selvstendig_næringsdrivende,
+        Barn,
+        Annet
     }
 }
