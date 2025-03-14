@@ -94,7 +94,8 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_FELLES_ARBEIDSFORHOLD("FELLES ARBEIDSFORHOLD", "Er felles regler for arbeidsforhold avklart?"),
     REGEL_YTELSER("REGLER YTELSER", "Er felles regler for ytelser avklart?"),
     REGEL_HOVEDSAKLIG_ARBEIDSTAKER("Hovedsaklig arbeidstaker", "Er arbeidstaker i hovedsak arbeidstaker?"),
-    REGEL_OPPHOLDSTILLATELSE("Oppholdstillatelse", "Har bruker gyldig oppholdstillatelse?")
+    REGEL_OPPHOLDSTILLATELSE("Oppholdstillatelse", "Har bruker gyldig oppholdstillatelse?"),
+    REGEL_UTENLANDSFORHOLD("Utenlandsforhold", "Finnes det utenlandsforhold i noen av arbeidsforholdene?")
     ;
 
     fun begrunnelse(svar: Svar): String {
