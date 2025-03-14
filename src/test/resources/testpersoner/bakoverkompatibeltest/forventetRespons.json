@@ -1,6 +1,6 @@
 {
   "vurderingsID" : "7b006d2c-ff75-4404-9663-7babf23f45de",
-  "tidspunkt" : "2024-11-15T12:53:44.1734035",
+  "tidspunkt" : "2025-03-14T10:24:33.511353",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "kanal" : "/",
@@ -280,7 +280,7 @@
       "avklaring" : "Er det avklart om brukeren er død eller ikke?"
     }, {
       "regelId" : "REGEL_FELLES_ARBEIDSFORHOLD",
-      "svar" : "UAVKLART",
+      "svar" : "JA",
       "begrunnelse" : "",
       "harDekning" : null,
       "dekning" : "",
@@ -321,6 +321,24 @@
         "årsaker" : [ ],
         "avklaring" : "Har bruker hatt permisjon siste 12 måneder?"
       }, {
+        "regelId" : "REGEL_3",
+        "svar" : "JA",
+        "begrunnelse" : "",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?"
+      } ],
+      "årsaker" : [ ],
+      "avklaring" : "Er felles regler for arbeidsforhold avklart?"
+    }, {
+      "regelId" : "REGEL_UTENLANDSFORHOLD",
+      "svar" : "UAVKLART",
+      "begrunnelse" : "",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
         "regelId" : "REGEL_22",
         "svar" : "JA",
         "begrunnelse" : "Det finnes utenlandsopphold i et av arbeidsforholdene de siste 12 månedene",
@@ -345,7 +363,7 @@
         "svar" : "JA",
         "begrunnelse" : "utenlandsoppholdet er innenfor siste 12 måneder"
       } ],
-      "avklaring" : "Er felles regler for arbeidsforhold avklart?"
+      "avklaring" : "Finnes det utenlandsforhold i noen av arbeidsforholdene?"
     }, {
       "regelId" : "REGEL_YTELSER",
       "svar" : "JA",
