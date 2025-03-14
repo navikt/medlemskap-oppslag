@@ -14,7 +14,7 @@ import no.nav.medlemskap.regler.common.Resultat.Companion.finnÅrsaker
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.common.Svar.*
 
-class Hovedregler(private val datagrunnlag: Datagrunnlag) {
+class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResultat: Resultat? =null) {
     private val reglerForRequestValidering = ReglerForRequestValidering.fraDatagrunnlag(datagrunnlag)
     private val reglerForOverstyring = ReglerForOverstyring.fraDatagrunnlag(datagrunnlag)
     private val reglerForStatsborgerskap = ReglerForStatsborgerskap.fraDatagrunnlag(datagrunnlag)
@@ -29,6 +29,9 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag) {
 
         val ytelse = reglerForRequestValidering.ytelse
         val resultater = mutableListOf<Resultat>()
+        if (brukerGrupeResultat!=null){
+            resultater.add(brukerGrupeResultat)
+        }
         // val resultatForOverstyring = reglerForOverstyring.kjørHovedflyt()
         // val reglerSomSkalOverstyres = reglerForOverstyring.reglerSomSkalOverstyres(resultatForOverstyring)
         val reglerSomSkalOverstyres = emptyMap<RegelId, Svar>()

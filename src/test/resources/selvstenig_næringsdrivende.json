@@ -1,0 +1,94 @@
+{
+  "fnr" : "12345678998",
+  "periode" : {
+    "fom" : "2025-02-17",
+    "tom" : "2025-02-26"
+  },
+  "førsteDagForYtelse" : "2025-02-17",
+  "brukerinput" : {
+    "arbeidUtenforNorge" : false,
+    "oppholdstilatelse" : null,
+    "utfortAarbeidUtenforNorge" : {
+      "id" : "e483a57a-e9b7-37c0-9753-0ea8500da633",
+      "sporsmalstekst" : "Har du arbeidet utenfor Norge i løpet av de siste 12 månedene før du ble syk?",
+      "svar" : false,
+      "arbeidUtenforNorge" : [ ]
+    },
+    "oppholdUtenforEos" : {
+      "id" : "0f2d9855-92fe-39dd-8b97-8f7ba9bc1ba6",
+      "sporsmalstekst" : "Har du oppholdt deg utenfor EU/EØS eller Sveits i løpet av de siste 12 månedene før du ble syk?",
+      "svar" : false,
+      "oppholdUtenforEOS" : [ ]
+    },
+    "oppholdUtenforNorge" : null
+  },
+  "pdlpersonhistorikk" : {
+    "statsborgerskap" : [ {
+      "landkode" : "NOR",
+      "fom" : null,
+      "tom" : null,
+      "historisk" : false
+    } ],
+    "bostedsadresser" : [ {
+      "landkode" : "NOR",
+      "fom" : "1991-07-30",
+      "tom" : "1993-11-30",
+      "historisk" : true
+    }, {
+      "landkode" : "NOR",
+      "fom" : "1993-12-01",
+      "tom" : "2010-10-16",
+      "historisk" : true
+    }, {
+      "landkode" : "NOR",
+      "fom" : "2010-10-17",
+      "tom" : "2012-03-30",
+      "historisk" : true
+    }, {
+      "landkode" : "NOR",
+      "fom" : "2012-03-31",
+      "tom" : null,
+      "historisk" : false
+    } ],
+    "kontaktadresser" : [ ],
+    "oppholdsadresser" : [ ],
+    "sivilstand" : [ {
+      "type" : "SKILT",
+      "gyldigFraOgMed" : "1990-03-23",
+      "gyldigTilOgMed" : null,
+      "relatertVedSivilstand" : "123231213"
+    } ],
+    "forelderBarnRelasjon" : [ {
+      "relatertPersonsIdent" : "321312",
+      "relatertPersonsRolle" : "FAR",
+      "minRolleForPerson" : "BARN"
+    }, {
+      "relatertPersonsIdent" : "2123132123",
+      "relatertPersonsRolle" : "MOR",
+      "minRolleForPerson" : "BARN"
+    }, {
+      "relatertPersonsIdent" : "32132123132",
+      "relatertPersonsRolle" : "BARN",
+      "minRolleForPerson" : "MOR"
+    } ],
+    "doedsfall" : [ ],
+    "innflyttingTilNorge" : [ ],
+    "utflyttingFraNorge" : [ ],
+    "navn" : [ {
+      "fornavn" : "NAVN",
+      "mellomnavn" : "NAVN",
+      "etternavn" : "NAVN"
+    } ],
+    "oppholdstilatelser" : [ ]
+  },
+  "medlemskap" : [ ],
+  "arbeidsforhold" : [],
+  "oppgaver" : [ ],
+  "dokument" : [ ],
+  "ytelse" : "SYKEPENGER",
+  "dataOmBarn" : [ ],
+  "dataOmEktefelle" : null,
+  "overstyrteRegler" : { },
+  "oppholdstillatelse" : null,
+  "startDatoForYtelse" : "2025-02-17"
+}
