@@ -12,7 +12,7 @@ import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import java.time.LocalDate
 
-class ErSummenAvPermisjonenMerEnn30DagerSiste12Mnd(
+class ErSummenAvPermisjonenMerEnn60DagerSiste12Mnd(
     ytelse: Ytelse,
     private val startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
@@ -26,7 +26,7 @@ class ErSummenAvPermisjonenMerEnn30DagerSiste12Mnd(
 
         val allePermisjonerSomLøperForMindreEnEtÅrSiden = arbeidsforhold.hentAllePermisjonerSiden(startDatoForYtelse.minusYears(1))
         val totaltAntallDagerPermisjon = allePermisjonerSomLøperForMindreEnEtÅrSiden.totaltantallDagerIKontrollPeriode(kontrollPeriodeForArbeidsforhold)
-        if (totaltAntallDagerPermisjon > 30){
+        if (totaltAntallDagerPermisjon > 60){
             return ja(regelId)
         }
         return nei(regelId)
@@ -36,8 +36,8 @@ class ErSummenAvPermisjonenMerEnn30DagerSiste12Mnd(
 
     companion object {
 
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErSummenAvPermisjonenMerEnn30DagerSiste12Mnd {
-            return ErSummenAvPermisjonenMerEnn30DagerSiste12Mnd(
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErSummenAvPermisjonenMerEnn60DagerSiste12Mnd {
+            return ErSummenAvPermisjonenMerEnn60DagerSiste12Mnd(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold,

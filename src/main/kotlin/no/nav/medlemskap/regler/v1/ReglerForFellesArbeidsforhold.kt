@@ -10,7 +10,6 @@ import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
 import no.nav.medlemskap.regler.common.Regler
 import no.nav.medlemskap.regler.common.Svar
-import no.nav.medlemskap.regler.v1.arbeidsforhold.ErSummenAvPermisjonenMerEnn30DagerSiste12Mnd
 
 class ReglerForFellesArbeidsforhold(
     val periode: InputPeriode,
