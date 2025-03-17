@@ -48,7 +48,7 @@ class ReglerForFellesArbeidsforhold(
         )
 */
 
-        val ErSummenAvPermisjonenMerEnn30DagerSiste12Mnd = lagRegelflyt(
+      /*  val ErSummenAvPermisjonenMerEnn30DagerSiste12Mnd = lagRegelflyt(
             regel = hentRegel(REGEL_33),
             hvisJa = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
             hvisNei = HarBrukerSammenhengendeArbeidsforholdRegelFlyt
@@ -58,11 +58,12 @@ class ReglerForFellesArbeidsforhold(
             regel = hentRegel(REGEL_32),
             hvisJa = ErSummenAvPermisjonenMerEnn30DagerSiste12Mnd,
             hvisNei = HarBrukerSammenhengendeArbeidsforholdRegelFlyt
-        )
+        ) */
+
         val HarPermitteringSiste12MånederFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_15),
             hvisJa = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
-            hvisNei = HarBrukerPermisjonSiste12MånederFlyt
+            hvisNei = HarBrukerSammenhengendeArbeidsforholdRegelFlyt
         )
 
         val ErBrukerFrilanserFlyt = lagRegelflyt(

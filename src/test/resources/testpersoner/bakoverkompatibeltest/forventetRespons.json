@@ -1,6 +1,6 @@
 {
   "vurderingsID" : "7b006d2c-ff75-4404-9663-7babf23f45de",
-  "tidspunkt" : "2025-03-14T10:24:33.511353",
+  "tidspunkt" : "2025-03-17T13:52:34.80521",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "kanal" : "/",
@@ -312,15 +312,6 @@
         "årsaker" : [ ],
         "avklaring" : "Arbeidsforhold siste 12 måneder: Finnes det en periode med permittering i et av disse arbeidsforholdene?"
       }, {
-        "regelId" : "REGEL_32",
-        "svar" : "NEI",
-        "begrunnelse" : "Bruker har ikke hatt permisjon siste 12 måneder",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Har bruker hatt permisjon siste 12 måneder?"
-      }, {
         "regelId" : "REGEL_3",
         "svar" : "JA",
         "begrunnelse" : "",
@@ -332,6 +323,24 @@
       } ],
       "årsaker" : [ ],
       "avklaring" : "Er felles regler for arbeidsforhold avklart?"
+    }, {
+      "regelId" : "REGEL_PERMISJONER",
+      "svar" : "JA",
+      "begrunnelse" : "",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_32",
+        "svar" : "NEI",
+        "begrunnelse" : "Bruker har ikke hatt permisjon siste 12 måneder",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Har bruker hatt permisjon siste 12 måneder?"
+      } ],
+      "årsaker" : [ ],
+      "avklaring" : "Finnes det permisjoner i noen av arbeidsforholdene?"
     }, {
       "regelId" : "REGEL_UTENLANDSFORHOLD",
       "svar" : "UAVKLART",

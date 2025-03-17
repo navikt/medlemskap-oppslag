@@ -13,6 +13,7 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.finnÅrsaker
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.common.Svar.*
+import no.nav.medlemskap.regler.v1.regelflyt.arbeid.ReglerForPermisjoner
 import no.nav.medlemskap.regler.v1.regelflyt.arbeid.ReglerForUtenlandsforhold
 
 class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResultat: Resultat? =null) {
@@ -135,6 +136,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
         val fellesRegler = listOf(
             ReglerForDoedsfall.fraDatagrunnlag(datagrunnlag),
             ReglerForFellesArbeidsforhold.fraDatagrunnlag(datagrunnlag),
+            ReglerForPermisjoner.fraDatagrunnlag(datagrunnlag),
             ReglerForUtenlandsforhold.fraDatagrunnlag(datagrunnlag),
             ReglerForStonader.fraDatagrunnlag(datagrunnlag)
         )
