@@ -2,7 +2,7 @@
 # encoding: UTF-8
 
 
-Egenskap: Regel 35: Er bruker i et maritimt arbeidsforhold på tidspunktet inputdato minus 1 dag??
+Egenskap: Regel 35: Er bruker i et maritimt arbeidsforhold på tidspunktet inputdato minus 1 dag?
 
   Scenariomal: Bruker med maritimt arbeidsforhold får "Ja"
     Gitt følgende arbeidsforhold fra AAReg
@@ -44,6 +44,5 @@ Egenskap: Regel 35: Er bruker i et maritimt arbeidsforhold på tidspunktet input
       | fom        | tom        | Svar |
       | 29.01.2020 |            | Ja   |
       | 30.01.2020 |            | Nei  |
-      | 20.02.2020 |            | Nei  |
       | 20.02.2020 |            | Nei  |
       | 01.01.2019 | 20.01.2020 | Nei  |

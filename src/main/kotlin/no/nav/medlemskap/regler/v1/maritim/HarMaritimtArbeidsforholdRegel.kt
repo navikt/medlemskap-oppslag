@@ -25,9 +25,7 @@ class HarMaritimtArbeidsforholdRegel(
     override fun operasjon(): Resultat {
         return when {
             arbeidsforhold.isEmpty() -> nei(regelId)
-            arbeidsforhold.maritimeArbeidsforholdForKontrollPeriode(kontrollPeriodeForArbeidsforhold).isNotNullOrEmpty() -> ja(
-                regelId
-            )
+            arbeidsforhold.maritimeArbeidsforholdForKontrollPeriode(kontrollPeriodeForArbeidsforhold).isNotNullOrEmpty() -> ja(regelId)
             else -> nei(regelId)
         }
     }

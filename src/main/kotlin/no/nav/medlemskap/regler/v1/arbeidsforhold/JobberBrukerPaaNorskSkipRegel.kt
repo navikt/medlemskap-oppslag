@@ -9,7 +9,7 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import java.time.LocalDate
-
+@Deprecated("Erstattes med egen regelflyt for maritime arbeidsforhold")
 class JobberBrukerPaaNorskSkipRegel(
     ytelse: Ytelse,
     private val startDatoForYtelse: LocalDate,

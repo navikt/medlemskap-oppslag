@@ -17,7 +17,8 @@ Egenskap: Regelflyt for regel 42
 
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Arbeidsgiver Id |
-      | 20.01.2018      | <tom>           | Organisasjon     | MARITIMT            | 1               |
+      | 20.01.2018      | 01.08.2019      | Organisasjon     | <Type>              | 1               |
+      | 02.08.2019      |                 | Organisasjon     | NORMALT             | 1               |
 
     Og følgende arbeidsgiver i arbeidsforholdet
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
@@ -33,8 +34,9 @@ Egenskap: Regelflyt for regel 42
 
     Så skal svaret være "<Medlemskap>"
     Og skal regel "42" gi svaret "<Regel 42>"
+    Og skal regel-årsaker være "<Årsak>"
 
     Eksempler:
-      | tom        | Regel 42 | Medlemskap |
-      | 31.12.2018 | Nei      | UAVKLART   |
-      | 28.01.2020 | Ja       | UAVKLART   |
+      | Type     | Regel 42 | Medlemskap | Årsak |
+      | NORMALT  | Nei      | Ja         |       |
+      | MARITIMT | Ja       | UAVKLART   | 42    |

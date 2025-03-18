@@ -2,7 +2,7 @@
 # encoding: UTF-8
 
 
-Egenskap: Regel 35: Har bruker maritimt arbeidsforhold siste 12 måneder?
+Egenskap: Regel 42: Har bruker hatt et maritimt arbeidsforhold i løpet av siste 12 måneder?
 
   Scenariomal: Bruker med maritimt arbeidsforhold får "Ja"
     Gitt følgende arbeidsforhold fra AAReg
@@ -13,7 +13,7 @@ Egenskap: Regel 35: Har bruker maritimt arbeidsforhold siste 12 måneder?
       | Identifikator | Arbeidsgivertype | Antall ansatte | Konkursstatus |
       | 1             | BEDR             | 9              |               |
 
-    Når regel "35" kjøres med følgende parametre
+    Når regel "42" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
@@ -25,14 +25,6 @@ Egenskap: Regel 35: Har bruker maritimt arbeidsforhold siste 12 måneder?
       | MARITIMT            | Ja   |
 
 
-  Scenario: Regel 35: Bruker uten arbeidsforhold får "Nei"
-
-    Når regel "35" kjøres med følgende parametre
-      | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-      | 30.01.2020      | 30.01.2021      | Nei                           |
-
-    Så skal svaret være "Nei"
-
   Scenariomal: Bruker med maritimt arbeidsforhold får "Ja"
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype    |
@@ -43,7 +35,7 @@ Egenskap: Regel 35: Har bruker maritimt arbeidsforhold siste 12 måneder?
       | Identifikator | Arbeidsgivertype | Antall ansatte | Konkursstatus |
       | 1             | BEDR             | 9              |               |
 
-    Når regel "35" kjøres med følgende parametre
+    Når regel "42" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
@@ -53,6 +45,7 @@ Egenskap: Regel 35: Har bruker maritimt arbeidsforhold siste 12 måneder?
       | Arbeidsforholdstype | Arbeidsforholdstype2 | Svar |
       | NORMALT             | NORMALT              | Nei  |
       | MARITIMT            | NORMALT              | Ja   |
+      | MARITIMT            | MARITIMT             | Ja   |
 
   Scenariomal: Bruker med maritimt arbeidsforhold får "Ja"
     Gitt følgende arbeidsforhold fra AAReg
@@ -63,7 +56,7 @@ Egenskap: Regel 35: Har bruker maritimt arbeidsforhold siste 12 måneder?
       | Identifikator | Arbeidsgivertype | Antall ansatte | Konkursstatus |
       | 1             | BEDR             | 9              |               |
 
-    Når regel "35" kjøres med følgende parametre
+    Når regel "42" kjøres med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
@@ -72,4 +65,7 @@ Egenskap: Regel 35: Har bruker maritimt arbeidsforhold siste 12 måneder?
     Eksempler:
       | tom        | Svar |
       | 31.12.2018 | Nei  |
+      | 28.01.2019 | Nei  |
+      | 29.01.2019 | Ja   |
+      | 28.01.2020 | Ja   |
       |            | Ja   |

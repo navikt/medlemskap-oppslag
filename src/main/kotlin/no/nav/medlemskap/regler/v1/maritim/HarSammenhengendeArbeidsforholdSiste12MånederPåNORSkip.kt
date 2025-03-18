@@ -3,7 +3,7 @@ package no.nav.medlemskap.regler.v1.maritim
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
-import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harMaritimtArbeidsforholdDagenFørStartDatoForYtelse
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harSammenhengendeMaritimtArbeidsforholdPåNORSkipIKontrollperiode
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
@@ -11,25 +11,26 @@ import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import no.nav.medlemskap.regler.v1.arbeidsforhold.ArbeidsforholdRegel
 import java.time.LocalDate
 
-class ErBrukerIMaritimtArbeidsforholdDagenFørStartdatoForYtelseMinus1Dag(
+class HarSammenhengendeArbeidsforholdSiste12MånederPåNORSkip(
     ytelse: Ytelse,
-    private val startDatoForYtelse: LocalDate,
+    startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    regelId: RegelId = RegelId.REGEL_35
+    regelId: RegelId = RegelId.REGEL_36
 ) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
         return when {
-            arbeidsforhold.harMaritimtArbeidsforholdDagenFørStartDatoForYtelse(startDatoForYtelse) -> ja(
-                regelId
-            )
-            else -> nei(regelId)
+            arbeidsforhold.isEmpty() -> nei(regelId)
+            !arbeidsforhold.harSammenhengendeMaritimtArbeidsforholdPåNORSkipIKontrollperiode(kontrollPeriodeForArbeidsforhold, ytelse, 1)
+                ->  nei(regelId)
+            else -> ja(regelId)
         }
     }
 
     companion object {
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErBrukerIMaritimtArbeidsforholdDagenFørStartdatoForYtelseMinus1Dag {
-            return ErBrukerIMaritimtArbeidsforholdDagenFørStartdatoForYtelseMinus1Dag(
+
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarSammenhengendeArbeidsforholdSiste12MånederPåNORSkip {
+            return HarSammenhengendeArbeidsforholdSiste12MånederPåNORSkip(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold

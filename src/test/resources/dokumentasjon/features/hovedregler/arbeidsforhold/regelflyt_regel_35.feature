@@ -12,7 +12,6 @@ Egenskap: Regelflyt for regel 35
       | Landkode | Fra og med dato | Til og med dato |
       | NOR      | 01.01.2000      |                 |
 
-
   Scenariomal: Regelflyt regel 35
 
     Gitt følgende arbeidsforhold fra AAReg
@@ -31,10 +30,9 @@ Egenskap: Regelflyt for regel 35
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
-    Så skal svaret være "<Medlemskap>"
     Og skal regel "35" gi svaret "<Regel 35>"
 
     Eksempler:
-      | Arbeidsforholdstype | Regel 35 | Medlemskap |
-      | NORMALT             | Nei      | UAVKLART   |
-      | MARITIMT            | Ja       | UAVKLART   |
+      | Arbeidsforholdstype | Regel 35 |
+      | NORMALT             | Nei      |
+      | MARITIMT            | Ja       |
