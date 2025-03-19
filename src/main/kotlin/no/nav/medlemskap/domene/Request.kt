@@ -13,6 +13,18 @@ data class Request(
     val overstyrteRegler: Map<RegelId, Svar> = mapOf()
 )
 
+data class RequestV2(
+    val fnr: String,
+    val førsteDagForYtelse: LocalDate?,
+    val periode: InputPeriode,
+    val brukerinput: Brukerinput,
+    val ytelse: Ytelse?,
+    val vurderingID:String,
+    val soknadID:String,
+    val brukerGruppe:String = "Arbeidstager",
+    val overstyrteRegler: Map<RegelId, Svar> = mapOf()
+)
+
 data class Brukerinput(
     val arbeidUtenforNorge: Boolean,
     val oppholdstilatelse: Oppholdstilatelse? = null,

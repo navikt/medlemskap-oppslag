@@ -280,7 +280,7 @@
       "avklaring" : "Er det avklart om brukeren er død eller ikke?"
     }, {
       "regelId" : "REGEL_FELLES_ARBEIDSFORHOLD",
-      "svar" : "UAVKLART",
+      "svar" : "JA",
       "begrunnelse" : "",
       "harDekning" : null,
       "dekning" : "",
@@ -312,6 +312,24 @@
         "årsaker" : [ ],
         "avklaring" : "Arbeidsforhold siste 12 måneder: Finnes det en periode med permittering i et av disse arbeidsforholdene?"
       }, {
+        "regelId" : "REGEL_3",
+        "svar" : "JA",
+        "begrunnelse" : "",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?"
+      } ],
+      "årsaker" : [ ],
+      "avklaring" : "Er felles regler for arbeidsforhold avklart?"
+    }, {
+      "regelId" : "REGEL_PERMISJONER",
+      "svar" : "JA",
+      "begrunnelse" : "",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
         "regelId" : "REGEL_32",
         "svar" : "NEI",
         "begrunnelse" : "Bruker har ikke hatt permisjon siste 12 måneder",
@@ -320,7 +338,16 @@
         "delresultat" : [ ],
         "årsaker" : [ ],
         "avklaring" : "Har bruker hatt permisjon siste 12 måneder?"
-      }, {
+      } ],
+      "årsaker" : [ ],
+      "avklaring" : "Finnes det permisjoner i noen av arbeidsforholdene?"
+    }, {
+      "regelId" : "REGEL_UTENLANDSFORHOLD",
+      "svar" : "UAVKLART",
+      "begrunnelse" : "",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
         "regelId" : "REGEL_22",
         "svar" : "JA",
         "begrunnelse" : "Det finnes utenlandsopphold i et av arbeidsforholdene de siste 12 månedene",
@@ -345,7 +372,7 @@
         "svar" : "JA",
         "begrunnelse" : "utenlandsoppholdet er innenfor siste 12 måneder"
       } ],
-      "avklaring" : "Er felles regler for arbeidsforhold avklart?"
+      "avklaring" : "Finnes det utenlandsforhold i noen av arbeidsforholdene?"
     }, {
       "regelId" : "REGEL_YTELSER",
       "svar" : "JA",
