@@ -49,6 +49,7 @@ Egenskap: Norsk borger med medl unntak.
       | REGEL_YTELSER         |
       | STATSBORGERSKAP       |
       | MEDL                  |
+      | REGEL_MARITIM         |
       | ARBEIDSFORHOLD        |
       | BOSATT                |
       | NORSK                 |

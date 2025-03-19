@@ -49,6 +49,7 @@ Egenskap: EØS-borger med medl unntak.
       | REGEL_YTELSER               |
       | REGEL_STATSBORGERSKAP       |
       | REGEL_MEDL                  |
+      | REGEL_MARITIM               |
       | REGEL_ARBEIDSFORHOLD        |
       | REGEL_BOSATT                |
       | REGEL_EØS_BOSATT            |

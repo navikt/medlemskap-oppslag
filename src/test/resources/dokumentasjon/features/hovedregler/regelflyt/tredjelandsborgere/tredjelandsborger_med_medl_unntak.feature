@@ -63,6 +63,7 @@ Egenskap: Tredjelandsborger med medl unntak.
       | REGEL_HOVEDSAKLIG_ARBEIDSTAKER  |
       | REGEL_OPPHOLDSTILLATELSE        |
       | REGEL_MEDL                      |
+      | REGEL_MARITIM                   |
 
     Eksempler:
       | Opphold til og med | Er medlem | Regel 19.3 | Medlemskap | Årsak  |
@@ -104,6 +105,7 @@ Egenskap: Tredjelandsborger med medl unntak.
       | REGEL_HOVEDSAKLIG_ARBEIDSTAKER  |
       | REGEL_OPPHOLDSTILLATELSE        |
       | REGEL_MEDL                      |
+      | REGEL_MARITIM                   |
 
     Eksempler:
       | Opphold til og med | Medlemskap |
@@ -177,4 +179,5 @@ Egenskap: Tredjelandsborger med medl unntak.
       | REGEL_HOVEDSAKLIG_ARBEIDSTAKER  |
       | REGEL_OPPHOLDSTILLATELSE        |
       | REGEL_MEDL                      |
+      | REGEL_MARITIM                   |
       | REGEL_ANDRE_BORGERE             |

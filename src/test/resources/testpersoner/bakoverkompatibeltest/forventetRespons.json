@@ -1,6 +1,6 @@
 {
   "vurderingsID" : "7b006d2c-ff75-4404-9663-7babf23f45de",
-  "tidspunkt" : "2024-11-15T12:53:44.1734035",
+  "tidspunkt" : "2025-03-19T12:07:20.842661",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "kanal" : "/",
@@ -477,6 +477,33 @@
         "begrunnelse" : "Det finnes hull i 12-måneders perioden for medlemskap"
       } ],
       "avklaring" : "Har bruker avklarte opplysninger i MEDL?"
+    }, {
+      "regelId" : "REGEL_MARITIM",
+      "svar" : "JA",
+      "begrunnelse" : "",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_35",
+        "svar" : "NEI",
+        "begrunnelse" : "",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Er bruker i et maritimt arbeidsforhold på tidspunktet inputdato minus 1 dag?"
+      }, {
+        "regelId" : "REGEL_42",
+        "svar" : "NEI",
+        "begrunnelse" : "",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Har bruker hatt et maritimt arbeidsforhold i løpet av siste 12 måneder? "
+      } ],
+      "årsaker" : [ ],
+      "avklaring" : "er arbeidsforholdet maritimt?"
     }, {
       "regelId" : "REGEL_ARBEIDSFORHOLD",
       "svar" : "JA",
