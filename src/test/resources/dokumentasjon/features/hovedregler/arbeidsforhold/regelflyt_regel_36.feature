@@ -1,7 +1,7 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regelflyt for regel 7.1
+Egenskap: Regelflyt for regel 36
 
   Bakgrunn:
     Gitt følgende bostedsadresser i personhistorikken
@@ -13,11 +13,11 @@ Egenskap: Regelflyt for regel 7.1
       | NOR      | 01.01.2000      |                 |
 
 
-  Scenariomal: Regelflyt regel 7.1: Bruker får "ja" på spørsmålet om medlemskap hvis brukeren jobber på norsk skip
+  Scenariomal: Regelflyt regel 36
 
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Arbeidsgiver Id |
-      | 01.01.2018      |                 | Organisasjon     | MARITIMT             | 1               |
+      | 20.01.2018      |                 | Organisasjon     | MARITIMT            | 1               |
 
     Og følgende arbeidsgiver i arbeidsforholdet
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
@@ -32,9 +32,10 @@ Egenskap: Regelflyt for regel 7.1
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Medlemskap>"
-    Og skal regel "7.1" gi svaret "<Regel 7.1>"
+    Og skal regel "36" gi svaret "<Regel 36>"
+    Og skal regel-årsaker være "<Årsak>"
 
     Eksempler:
-      | Skipsregister | Regel 7.1 | Medlemskap |
-      | NIS           | Nei       | UAVKLART   |
-      | NOR           | Ja        | Ja         |
+      | Skipsregister | Regel 36 | Medlemskap | Årsak |
+      | NOR           | Ja       | Ja         |       |
+      | NIS           | Nei      | UAVKLART   | 36    |

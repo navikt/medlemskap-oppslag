@@ -1,7 +1,7 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regelflyt for regel 7
+Egenskap: Regelflyt for regel 42
 
   Bakgrunn:
     Gitt følgende bostedsadresser i personhistorikken
@@ -13,29 +13,30 @@ Egenskap: Regelflyt for regel 7
       | NOR      | 01.01.2000      |                 |
 
 
-  Scenariomal: Regelflyt regel 7: Bruker får "ja" på spørsmålet om medlemskap hvis arbeidsforholdet er maritimt
+  Scenariomal: Regelflyt regel 42
 
     Gitt følgende arbeidsforhold fra AAReg
-      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype   | Arbeidsgiver Id |
-      | 01.01.2018      |                 | Organisasjon     | <Arbeidsforholdstype> | 1               |
+      | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Arbeidsgiver Id |
+      | 20.01.2018      | 01.08.2019      | Organisasjon     | <Type>              | 1               |
+      | 02.08.2019      |                 | Organisasjon     | NORMALT             | 1               |
 
     Og følgende arbeidsgiver i arbeidsforholdet
       | Identifikator | Arbeidsgivertype | Landkode | Antall ansatte |
       | 1             | BEDR             | NOR      | 9              |
 
     Og følgende arbeidsavtaler i arbeidsforholdet
-      | Fra og med dato | Til og med dato | Yrkeskode | Skipsregister   | Stillingsprosent |
-      | 01.01.2018      |                 | 001       | <Skipsregister> | 100              |
+      | Fra og med dato | Til og med dato | Yrkeskode | Skipsregister | Stillingsprosent |
+      | 01.01.2018      |                 | 001       | NOR           | 100              |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Medlemskap>"
-    Og skal regel "7" gi svaret "<Regel 7>"
+    Og skal regel "42" gi svaret "<Regel 42>"
+    Og skal regel-årsaker være "<Årsak>"
 
     Eksempler:
-      | Arbeidsforholdstype | Skipsregister | Regel 7 | Medlemskap |
-      | NORMALT             |               | Nei     | Ja         |
-      | MARITIMT            | NIS           | Ja      | UAVKLART   |
-      | MARITIMT            | NOR           | Ja      | Ja         |
+      | Type     | Regel 42 | Medlemskap | Årsak |
+      | NORMALT  | Nei      | Ja         |       |
+      | MARITIMT | Ja       | UAVKLART   | 42    |

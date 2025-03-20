@@ -1,38 +1,36 @@
-package no.nav.medlemskap.regler.v1.arbeidsforhold
+package no.nav.medlemskap.regler.v1.maritim
 
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
-import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.arbeidsforholdForYrkestype
-import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforholdstype
-import no.nav.medlemskap.regler.common.Funksjoner.alleEr
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harSammenhengendeMaritimtArbeidsforholdPåNORSkipIKontrollperiode
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
+import no.nav.medlemskap.regler.v1.arbeidsforhold.ArbeidsforholdRegel
 import java.time.LocalDate
-@Deprecated("Erstattes med egen regelflyt for maritime arbeidsforhold")
-class ErArbeidsforholdetMaritimtRegel(
+
+class HarSammenhengendeArbeidsforholdSiste12MånederPåNORSkip(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    regelId: RegelId = RegelId.REGEL_7
+    regelId: RegelId = RegelId.REGEL_36
 ) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
         return when {
             arbeidsforhold.isEmpty() -> nei(regelId)
-            arbeidsforhold.arbeidsforholdForYrkestype(kontrollPeriodeForArbeidsforhold) alleEr Arbeidsforholdstype.MARITIMT -> ja(
-                regelId
-            )
-            else -> nei(regelId)
+            !arbeidsforhold.harSammenhengendeMaritimtArbeidsforholdPåNORSkipIKontrollperiode(kontrollPeriodeForArbeidsforhold, ytelse, 1)
+                ->  nei(regelId)
+            else -> ja(regelId)
         }
     }
 
     companion object {
 
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErArbeidsforholdetMaritimtRegel {
-            return ErArbeidsforholdetMaritimtRegel(
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarSammenhengendeArbeidsforholdSiste12MånederPåNORSkip {
+            return HarSammenhengendeArbeidsforholdSiste12MånederPåNORSkip(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold

@@ -46,7 +46,10 @@ class AaregMapperTest {
         Assert.assertEquals("985672744", mappedAaregResultat.arbeidsgiver.organisasjonsnummer)
         Assert.assertEquals(5, mappedAaregResultat.arbeidsgiver.ansatte!!.first().antall)
         Assert.assertEquals(1, mappedAaregResultat.arbeidsgiver.juridiskeEnheter!!.size)
-        Assert.assertEquals("123456789", mappedAaregResultat.arbeidsgiver.juridiskeEnheter!!.first()?.organisasjonsnummer)
+        Assert.assertEquals(
+            "123456789",
+            mappedAaregResultat.arbeidsgiver.juridiskeEnheter!!.first()?.organisasjonsnummer
+        )
         Assert.assertEquals("AS", mappedAaregResultat.arbeidsgiver.juridiskeEnheter!!.first()?.enhetstype)
         Assert.assertEquals(40, mappedAaregResultat.arbeidsgiver.juridiskeEnheter!!.first()?.antallAnsatte)
 
@@ -59,17 +62,32 @@ class AaregMapperTest {
 
         Assert.assertEquals("Organisasjon", mappedAaregResultat.arbeidsgivertype.name)
         Assert.assertEquals(Arbeidsforholdstype.NORMALT, mappedAaregResultat.arbeidsforholdstype)
-        Assert.assertEquals(Periode(LocalDate.parse("2008-01-01"), LocalDate.parse("2018-10-30")), mappedAaregResultat.periode)
+        Assert.assertEquals(
+            Periode(LocalDate.parse("2008-01-01"), LocalDate.parse("2018-10-30")),
+            mappedAaregResultat.periode
+        )
 
         Assert.assertEquals(1, mappedAaregResultat.utenlandsopphold?.size)
         Assert.assertEquals("SWE", mappedAaregResultat.utenlandsopphold?.first()?.landkode)
-        Assert.assertEquals(Periode(LocalDate.parse("1975-10-10"), LocalDate.parse("2020-08-01")), mappedAaregResultat.utenlandsopphold?.first()?.periode)
-        Assert.assertEquals(YearMonth.parse("2010-01"), mappedAaregResultat.utenlandsopphold?.first()?.rapporteringsperiode)
+        Assert.assertEquals(
+            Periode(LocalDate.parse("1975-10-10"), LocalDate.parse("2020-08-01")),
+            mappedAaregResultat.utenlandsopphold?.first()?.periode
+        )
+        Assert.assertEquals(
+            YearMonth.parse("2010-01"),
+            mappedAaregResultat.utenlandsopphold?.first()?.rapporteringsperiode
+        )
 
-        Assert.assertEquals(Periode(LocalDate.parse("1975-10-10"), LocalDate.parse("2020-08-01")), mappedAaregResultat.permisjonPermittering?.get(0)?.periode)
+        Assert.assertEquals(
+            Periode(LocalDate.parse("1975-10-10"), LocalDate.parse("2020-08-01")),
+            mappedAaregResultat.permisjonPermittering?.get(0)?.periode
+        )
         Assert.assertEquals("000000", mappedAaregResultat.permisjonPermittering?.get(0)?.permisjonPermitteringId)
         Assert.assertEquals(100.0, mappedAaregResultat.permisjonPermittering?.get(0)?.prosent)
-        Assert.assertEquals(PermisjonPermitteringType.PERMISJON, mappedAaregResultat.permisjonPermittering?.get(0)?.type)
+        Assert.assertEquals(
+            PermisjonPermitteringType.PERMISJON,
+            mappedAaregResultat.permisjonPermittering?.get(0)?.type
+        )
         Assert.assertEquals("PPIDHI", mappedAaregResultat.permisjonPermittering?.get(0)?.varslingskode)
     }
 

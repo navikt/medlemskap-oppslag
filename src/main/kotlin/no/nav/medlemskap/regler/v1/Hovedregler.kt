@@ -95,6 +95,8 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
         val resultatMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag).kjørHovedflyt()
         resultater.add(resultatMedl)
 
+        resultater.add(ReglerForMaritim.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+
         if (resultatMedl.erRegelflytKonklusjon() && resultatMedl.svar == JA || resultatMedl.svar == UAVKLART) {
             resultater.add(ReglerForAndreStatsborgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         }
@@ -105,6 +107,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
     private fun kjørReglerForNorskeBorgere(overstyrteRegler: Map<RegelId, Svar>): List<Resultat> {
         return listOf(
             ReglerForMedl.fraDatagrunnlag(datagrunnlag),
+            ReglerForMaritim.fraDatagrunnlag(datagrunnlag),
             ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler),
             ReglerForBosatt.fraDatagrunnlag(datagrunnlag),
             ReglerForNorskeStatsborgere.fraDatagrunnlag(datagrunnlag, overstyrteRegler)
@@ -122,6 +125,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
         }
         val reglerForEØSBorgerResultater = listOf(
             ReglerForMedl.fraDatagrunnlag(datagrunnlag).kjørHovedflyt(),
+            ReglerForMaritim.fraDatagrunnlag(datagrunnlag).kjørHovedflyt(),
             ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler).kjørHovedflyt(),
             ReglerForBosatt.fraDatagrunnlag(datagrunnlag).kjørHovedflyt(),
             ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt()
