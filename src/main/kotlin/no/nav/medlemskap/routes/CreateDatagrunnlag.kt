@@ -11,8 +11,11 @@ import no.nav.medlemskap.common.exceptions.UdiHentPersonstatusFaultException
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.common.ytelseCounter
 import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.GjeldendeOppholdsstatus
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.startDatoForYtelse
+import no.nav.medlemskap.domene.Oppholdstillatelse
 import no.nav.medlemskap.domene.Request
+import no.nav.medlemskap.domene.Uavklart
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.fraOgMedDatoForArbeidsforhold
@@ -20,6 +23,7 @@ import no.nav.medlemskap.domene.personhistorikk.ForelderBarnRelasjon
 import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erAnnenStatsborger
 import no.nav.medlemskap.services.FamilieService
 import v1.mt_1067_nav.no.udi.HentPersonstatusFault
+import java.time.LocalDateTime
 
 private val secureLogger = KotlinLogging.logger("tjenestekall")
 
@@ -112,6 +116,32 @@ suspend fun defaultCreateDatagrunnlag(
                     kv("message", hpf.message)
                 }
                 throw UdiHentPersonstatusFaultException(ytelse)
+            }
+            catch (t: Throwable) {
+                secureLogger.error {
+                    "Kall mot UDI feilet for fnr: ${request.fnr}"
+                    kv("NAV-call-id", callId)
+                    kv("localized-message", t.localizedMessage)
+                    kv("suppressed", t.suppressed)
+                    kv("stacktrace", t.stackTrace)
+                    kv("cause", t.cause)
+                    kv("message", t.message)
+                }
+                Oppholdstillatelse(
+                    uttrekkstidspunkt = LocalDateTime.now(),
+                    foresporselsfodselsnummer = request.fnr,
+                    avgjoerelse = null,
+                    gjeldendeOppholdsstatus = GjeldendeOppholdsstatus(
+                        oppholdstillatelsePaSammeVilkar = null,
+                        eosellerEFTAOpphold = null,
+                        uavklart = Uavklart(uavklart = true),
+                        ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum = null
+
+                    ),
+                    arbeidsadgang = null,
+                    uavklartFlyktningstatus = null,
+                    harFlyktningstatus = null
+                )
             }
         }
         oppholdsstatusRequest.await()
