@@ -3,42 +3,33 @@ package no.nav.medlemskap.regler.v1.brukergruppe
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.RegelId
-import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.common.Regelflyt
-import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonJa
-import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
 import no.nav.medlemskap.regler.common.Regler
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.v1.RegelFactory
 
-class ReglerForBrukerGruppe(
+class ReglerForBrukerGruppeSelvstendigNearingsdrivende(
     ytelse: Ytelse,
     regelFactory: RegelFactory,
     overstyrteRegler: Map<RegelId, Svar>
 ) : Regler(ytelse, regelFactory, overstyrteRegler) {
 
     override fun hentHovedflyt(): Regelflyt {
-        val ErBrukerFrilanserFlyt = lagRegelflyt(
-            regel = hentRegel(REGEL_17_1),
-            hvisJa = konklusjonUavklart(ytelse, REGEL_BRUKERGRUPPE),
-            hvisNei = regelflytJa(ytelse, REGEL_BRUKERGRUPPE)
+        val harBrukerArbeidsforhold = lagRegelflyt(
+            regel = hentRegel(RegelId.REGEL_17),
+            hvisJa = regelflytJa(ytelse, RegelId.REGEL_BRUKERGRUPPESELVSTENDIG),
+            hvisNei = regelflytJa(ytelse, RegelId.REGEL_BRUKERGRUPPESELVSTENDIG)
         )
 
-
-        val HarBrukerArbeidsforholdFlyt = lagRegelflyt(
-            regel = hentRegel(REGEL_17),
-            hvisJa = ErBrukerFrilanserFlyt,
-            hvisNei = regelflytJa(ytelse, REGEL_BRUKERGRUPPE)
-        )
-        return HarBrukerArbeidsforholdFlyt
+        return harBrukerArbeidsforhold
     }
 
 
     companion object {
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForBrukerGruppe {
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForBrukerGruppeSelvstendigNearingsdrivende {
             with(datagrunnlag) {
-                return ReglerForBrukerGruppe(
+                return ReglerForBrukerGruppeSelvstendigNearingsdrivende(
                     ytelse = ytelse,
                     regelFactory = RegelFactory(datagrunnlag),
                     overstyrteRegler = datagrunnlag.overstyrteRegler

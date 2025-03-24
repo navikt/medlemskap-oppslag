@@ -66,7 +66,7 @@ class ReglerForFellesArbeidsforhold(
             hvisNei = HarBrukerSammenhengendeArbeidsforholdRegelFlyt
         )
 
-        val ErBrukerFrilanserFlyt = lagRegelflyt(
+       /* val ErBrukerFrilanserFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_17_1),
             hvisJa = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
             hvisNei = HarPermitteringSiste12MånederFlyt
@@ -77,9 +77,9 @@ class ReglerForFellesArbeidsforhold(
             regel = hentRegel(REGEL_17),
             hvisJa = ErBrukerFrilanserFlyt,
             hvisNei = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD)
-        )
+        ) */
 
-        return HarBrukerArbeidsforholdFlyt
+        return HarPermitteringSiste12MånederFlyt
     }
 
     companion object {

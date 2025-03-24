@@ -56,6 +56,7 @@ Egenskap: Tredjelandsborger med medl unntak.
       | Regel                           |
       #| REGEL_OVERSTYRING               |
       | REGEL_DOED                      |
+      | REGEL_BRUKERGRUPPE              |
       | REGEL_FELLES_ARBEIDSFORHOLD     |
       | REGEL_PERMISJONER               |
       | REGEL_UTENLANDSFORHOLD          |
@@ -100,6 +101,7 @@ Egenskap: Tredjelandsborger med medl unntak.
       | Regel                           |
       #| REGEL_OVERSTYRING               |
       | REGEL_DOED                      |
+      | REGEL_BRUKERGRUPPE              |
       | REGEL_FELLES_ARBEIDSFORHOLD     |
       | REGEL_PERMISJONER               |
       | REGEL_UTENLANDSFORHOLD          |
@@ -176,6 +178,7 @@ Egenskap: Tredjelandsborger med medl unntak.
       | Regel                           |
       #| REGEL_OVERSTYRING               |
       | REGEL_DOED                      |
+      | REGEL_BRUKERGRUPPE              |
       | REGEL_FELLES_ARBEIDSFORHOLD     |
       | REGEL_PERMISJONER               |
       | REGEL_UTENLANDSFORHOLD          |
