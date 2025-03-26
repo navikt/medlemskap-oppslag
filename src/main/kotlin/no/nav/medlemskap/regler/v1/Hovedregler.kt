@@ -142,6 +142,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
             ReglerForDoedsfall.fraDatagrunnlag(datagrunnlag),
             ReglerForBrukerGruppe.fraDatagrunnlag(datagrunnlag),
             ReglerForFellesArbeidsforhold.fraDatagrunnlag(datagrunnlag),
+            ReglerForPermittering.fraDatagrunnlag(datagrunnlag),
             ReglerForPermisjoner.fraDatagrunnlag(datagrunnlag),
             ReglerForUtenlandsforhold.fraDatagrunnlag(datagrunnlag),
             ReglerForStonader.fraDatagrunnlag(datagrunnlag)
