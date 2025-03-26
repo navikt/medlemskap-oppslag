@@ -40,8 +40,6 @@ private val defaultProperties = ConfigurationMap(
         "KAFKA_KEYSTORE_PATH" to "/Users/stians.douzette/Downloads/secrets/client.keystore.p12",
         "KAFKA_CREDSTORE_PASSWORD" to "changeme",
         "UDI_BASE_URL" to "",
-        "UDI_PROXY_API_KEY" to "",
-        "UDI_PROXY_CLIENT_ID" to "",
         "AZURE_SCOPE_OPPGAVE" to "",
         "AZURE_SCOPE_UDI" to "",
         "AZURE_SCOPE_MEDL" to "",
@@ -91,7 +89,6 @@ data class Configuration(
         val pdlApiKey: String = "PDL_API_KEY".configProperty(),
         val eregBaseUrl: String = "EREG_BASE_URL".configProperty(),
         val eregApiKey: String = "EREG_API_KEY".configProperty(),
-        val udiProxyApiKey: String = "UDI_PROXY_API_KEY".configProperty(), // Venter på  bestilling - legges inn i secrets
         val udiBaseUrl: String = "UDI_BASE_URL".configProperty(),
         val oppgaveScope: String = "AZURE_SCOPE_OPPGAVE".configProperty(),
         val aaregScope: String = "AZURE_SCOPE_AAREG".configProperty(),
