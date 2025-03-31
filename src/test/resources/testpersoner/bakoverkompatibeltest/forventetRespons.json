@@ -1,6 +1,6 @@
 {
   "vurderingsID" : "7b006d2c-ff75-4404-9663-7babf23f45de",
-  "tidspunkt" : "2025-03-24T10:31:00.189497",
+  "tidspunkt" : "2025-03-26T09:38:51.145646",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "kanal" : "/",
@@ -312,15 +312,6 @@
       "harDekning" : null,
       "dekning" : "",
       "delresultat" : [ {
-        "regelId" : "REGEL_15",
-        "svar" : "NEI",
-        "begrunnelse" : "Bruker har permittering i siste 12 mnd",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Arbeidsforhold siste 12 måneder: Finnes det en periode med permittering i et av disse arbeidsforholdene?"
-      }, {
         "regelId" : "REGEL_3",
         "svar" : "JA",
         "begrunnelse" : "",
@@ -332,6 +323,24 @@
       } ],
       "årsaker" : [ ],
       "avklaring" : "Er felles regler for arbeidsforhold avklart?"
+    }, {
+      "regelId" : "REGEL_PERMITTERING",
+      "svar" : "JA",
+      "begrunnelse" : "",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_15",
+        "svar" : "NEI",
+        "begrunnelse" : "Bruker har permittering i siste 12 mnd",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Arbeidsforhold siste 12 måneder: Finnes det en periode med permittering i et av disse arbeidsforholdene?"
+      } ],
+      "årsaker" : [ ],
+      "avklaring" : "Arbeidsforhold siste 12 måneder: Finnes det en periode med permittering i et av disse arbeidsforholdene?"
     }, {
       "regelId" : "REGEL_PERMISJONER",
       "svar" : "JA",
