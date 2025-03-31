@@ -76,6 +76,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_50("50", "Har bruker bare èn periode med permisjon siste 12 mnd ", "Bruker har flere en bare èn periode med permisjon siste 12 mnd", "bruker har bare èn periode med permisjoner siste 12 mnnd?"),
     REGEL_51("51", "Er summen av permisjonsdager mer enn 60 siste 12 måneder?", "Summen av permisjonsdager er mer enn 60 siste 12 måneder", "summen av permisjonsdager er ikke mer enn 60 siste 12 måneder?"),
     REGEL_54("54", "Har Bruker en løpende permisjon på første dag for ytelse dato", "Bruker har ikke en løpende permisjon på første dag for ytelse dato", "Bruker har  en løpende permisjon på første dag for ytelse dato?"),
+    REGEL_55("55", "Har bruker hatt mer enn 60 dager permisjon siste 12 måneder","Bruker har IKKE hatt mer enn 60 dager permisjon siste 12 måneder","Bruker har hatt mer enn 60 dager permisjon siste 12 måneder"),
     REGEL_57("57", "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk OG/eller permisjonstypen er ikke foreldrepermisjon?", "Er perioden med permisjon avsluttet for mer enn 30 dager før første dag syk OG permisjonstypen er foreldrepermisjon?", "perioden med permisjon er  avsluttet for mer enn 30 dager før første dag syk OG permisjonstypen er  foreldrepermisjon?"),
 
 

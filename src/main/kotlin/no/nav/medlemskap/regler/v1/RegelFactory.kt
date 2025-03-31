@@ -8,6 +8,7 @@ import no.nav.medlemskap.regler.v1.arbeidsforhold.*
 import no.nav.medlemskap.regler.v1.arbeidsforhold.permisjon.ErPeriodeForPermissjonAvsluttetForMedEn30DagerSidenOgTypeForelderRegel
 import no.nav.medlemskap.regler.v1.arbeidsforhold.permisjon.ErSummenAvPermisjonenMerEnn60DagerSiste12Mnd_v2
 import no.nav.medlemskap.regler.v1.arbeidsforhold.permisjon.HarBrukerBareEnPeriodeMedPermisjonSiste12MndRegel
+import no.nav.medlemskap.regler.v1.arbeidsforhold.permisjon.HarBrukerHattMerEnn60DagerPermisjonSiste12MndRegel
 import no.nav.medlemskap.regler.v1.arbeidsforhold.permisjon.HarbrukerEnPeriodeMedPermisjonSomLøperPåForsteDagForYtelseRegel
 import no.nav.medlemskap.regler.v1.frilanser.ErArbeidsforholdetFrilanserRegel
 import no.nav.medlemskap.regler.v1.grunnforordningen.ErBrukerEøsBorgerRegel
@@ -115,6 +116,7 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_50 -> HarBrukerBareEnPeriodeMedPermisjonSiste12MndRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_51 -> ErSummenAvPermisjonenMerEnn60DagerSiste12Mnd_v2.fraDatagrunnlag(datagrunnlag).regel
             REGEL_54 -> HarbrukerEnPeriodeMedPermisjonSomLøperPåForsteDagForYtelseRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_55 -> HarBrukerHattMerEnn60DagerPermisjonSiste12MndRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_57 -> ErPeriodeForPermissjonAvsluttetForMedEn30DagerSidenOgTypeForelderRegel.fraDatagrunnlag(datagrunnlag).regel
             else -> throw java.lang.RuntimeException("Ukjent regel: $regelId")
         }

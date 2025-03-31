@@ -33,14 +33,15 @@ Egenskap: Regel 57: Er Periode avsluttet for mer en 30 dager siden og foreldrePe
 
       Når regel "57" kjøres med følgende parametre
         | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-        | 30.01.2020      | 30.02.2021      | Nei                           |
+        | 29.02.2024      | 30.03.2024      | Nei                           |
 
       Så skal svaret være "<Svar>"
 
       Eksempler:
         | Fra og med | Til og med | Svar |
-        | 29.01.2020 | 30.02.2020 | Ja  |
-        | 29.01.2018 | 30.02.2019 | Nei  |
+        | 28.01.2024 | 28.01.2024 | Ja   |
+        | 29.01.2024 | 29.01.2024 | Nei  |
+        | 01.03.2024 | 01.03.2024 | Nei  |
 
 
     Scenariomal: Person som har en permisjon type barn som er avsluttet for mer en 30 dager siden som ikke har BarnePensjon
@@ -54,11 +55,11 @@ Egenskap: Regel 57: Er Periode avsluttet for mer en 30 dager siden og foreldrePe
 
       Når regel "57" kjøres med følgende parametre
         | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
-        | 30.01.2020      | 30.02.2021      | Nei                           |
+        | 29.02.2024      | 30.03.2024      | Nei                           |
 
       Så skal svaret være "<Svar>"
 
       Eksempler:
         | Fra og med | Til og med | Svar |
-        | 29.01.2020 | 30.02.2020 | Nei  |
-        | 29.01.2018 | 30.02.2019 | Nei  |
+        | 28.01.2024 | 28.01.2024 | Nei  |
+        | 01.03.2024 | 01.03.2024 | Nei  |
