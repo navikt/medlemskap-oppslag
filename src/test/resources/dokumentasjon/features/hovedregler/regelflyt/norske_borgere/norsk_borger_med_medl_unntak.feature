@@ -47,6 +47,7 @@ Egenskap: Norsk borger med medl unntak.
       | DOED                  |
       | REGEL_BRUKERGRUPPE    |
       | FELLES ARBEIDSFORHOLD |
+      | REGEL_PERMITTERING              |
       | REGEL_PERMISJONER     |
       | REGEL_UTENLANDSFORHOLD|
       | REGEL_YTELSER         |

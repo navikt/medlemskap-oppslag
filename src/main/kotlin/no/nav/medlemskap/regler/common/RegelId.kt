@@ -107,7 +107,9 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_UTENLANDSFORHOLD("Utenlandsforhold", "Finnes det utenlandsforhold i noen av arbeidsforholdene?"),
     REGEL_PERMISJONER("Permisjoner", "Finnes det permisjoner i noen av arbeidsforholdene?"),
     REGEL_BRUKERGRUPPE("BRUKERGRUPPE", "Har bruker arbeidsforhold?"),
-    REGEL_BRUKERGRUPPESELVSTENDIG("BRUKERGRUPPESELVSTENDIG", "Er det avklart om brukeren er har en brukerGruppe eller ikke?")
+    REGEL_BRUKERGRUPPESELVSTENDIG("BRUKERGRUPPESELVSTENDIG", "Er det avklart om brukeren er har en brukerGruppe eller ikke?"),
+    REGEL_PERMITTERING("PERMITTERING", "Arbeidsforhold siste 12 måneder: Finnes det en periode med permittering i et av disse arbeidsforholdene?")
+
 
 
     ;
