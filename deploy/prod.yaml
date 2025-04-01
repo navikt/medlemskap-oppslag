@@ -31,7 +31,7 @@ spec:
   ingresses:
     - https://medlemskap-oppslag.intern.nav.no
   envFrom:
-    - secret: medlemskap-oppslag
+    - secret: medlemskap-prod
   replicas:
     min: 3
     max: 4
