@@ -1,9 +1,9 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regel 33: Har bruker permisjoner med mer en 60 dager totalt?
+Egenskap: Regel 51: Har bruker permisjoner med mer en 60 dager totalt?
 
-  Regel: Regel 33: Har bruker mer en 60 dager i permisjon siste 12 mnd
+  Regel: Regel 51: Har bruker mer en 60 dager i permisjon siste 12 mnd
 
     Scenariomal: Person som har ett arbeidsforhold uten permisjoner får Nei
       Gitt følgende arbeidsforhold fra AAReg
@@ -11,7 +11,7 @@ Egenskap: Regel 33: Har bruker permisjoner med mer en 60 dager totalt?
         | <Fra og med>    | <Til og med>    | Organisasjon     | NORMALT             |
 
 
-      Når regel "33" kjøres med følgende parametre
+      Når regel "51" kjøres med følgende parametre
         | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
         | 30.01.2020      | 30.01.2021      | Nei                           |
 
@@ -30,7 +30,7 @@ Egenskap: Regel 33: Har bruker permisjoner med mer en 60 dager totalt?
         | Fra og med dato | Til og med dato | PermisjonPermitteringId | Prosent   | Type      | Varslingkode  |
         | 30.01.2020      | 30.01.2021      | permisjonPermitteringId | 10        | PERMISJON | varslingskode |
 
-      Når regel "33" kjøres med følgende parametre
+      Når regel "51" kjøres med følgende parametre
         | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
         | 30.01.2020      | 30.01.2021      | Nei                           |
 
@@ -50,7 +50,7 @@ Egenskap: Regel 33: Har bruker permisjoner med mer en 60 dager totalt?
         | Fra og med dato | Til og med dato | PermisjonPermitteringId | Prosent   | Type      | Varslingkode  |
         | 30.01.2020      | 10.03.2020      | permisjonPermitteringId | 10        | PERMISJON | varslingskode |
 
-      Når regel "33" kjøres med følgende parametre
+      Når regel "51" kjøres med følgende parametre
         | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
         | 30.01.2020      | 30.01.2021      | Nei                           |
 
@@ -69,7 +69,7 @@ Egenskap: Regel 33: Har bruker permisjoner med mer en 60 dager totalt?
         | Fra og med dato | Til og med dato | PermisjonPermitteringId | Prosent   | Type      | Varslingkode  |
         | 30.01.2020      | 30.03.2020      | permisjonPermitteringId | 10        | PERMISJON | varslingskode |
 
-      Når regel "33" kjøres med følgende parametre
+      Når regel "51" kjøres med følgende parametre
         | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
         | 30.01.2020      | 30.01.2021      | Nei                           |
 
@@ -88,7 +88,7 @@ Egenskap: Regel 33: Har bruker permisjoner med mer en 60 dager totalt?
         | Fra og med dato | Til og med dato | PermisjonPermitteringId | Prosent   | Type      | Varslingkode  |
         | 30.01.2020      | 31.03.2020      | permisjonPermitteringId | 10        | PERMISJON | varslingskode |
 
-      Når regel "33" kjøres med følgende parametre
+      Når regel "51" kjøres med følgende parametre
         | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
         | 30.01.2020      | 30.01.2021      | Nei                           |
 
