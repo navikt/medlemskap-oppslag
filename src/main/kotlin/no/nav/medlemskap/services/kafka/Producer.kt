@@ -22,6 +22,7 @@ class Producer {
         properties.put(SslConfigs.SSL_KEYSTORE_TYPE_CONFIG, producerConfig.keystoreType)
         properties.put(SslConfigs.SSL_KEYSTORE_LOCATION_CONFIG, producerConfig.keystoreLocation)
         properties.put(SslConfigs.SSL_KEYSTORE_PASSWORD_CONFIG, producerConfig.keystorePassword)
+        properties["enable.idempotence"] = "true"
 
         return KafkaProducer(properties)
     }
