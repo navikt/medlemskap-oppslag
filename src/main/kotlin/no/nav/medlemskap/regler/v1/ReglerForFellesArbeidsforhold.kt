@@ -6,8 +6,8 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.common.Regelflyt
-import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytUavklart
 import no.nav.medlemskap.regler.common.Regler
 import no.nav.medlemskap.regler.common.Svar
 
@@ -32,7 +32,7 @@ class ReglerForFellesArbeidsforhold(
         val HarBrukerSammenhengendeArbeidsforholdRegelFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_3),
             hvisJa = regelflytJa(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
-            hvisNei = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
+            hvisNei = regelflytUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
         )
 
     /*    val ErPeriodenForUtenlandsoppholdetInnenforSiste12MånederFlyt = lagRegelflyt(

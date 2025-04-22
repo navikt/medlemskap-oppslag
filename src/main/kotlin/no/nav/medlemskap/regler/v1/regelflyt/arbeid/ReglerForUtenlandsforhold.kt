@@ -1,11 +1,11 @@
 package no.nav.medlemskap.regler.v1.regelflyt.arbeid
 
-import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Regelflyt
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytUavklart
 import no.nav.medlemskap.regler.common.Regler
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.v1.RegelFactory
@@ -19,7 +19,7 @@ class ReglerForUtenlandsforhold(
     override fun hentHovedflyt(): Regelflyt {
         val ErPeriodenForUtenlandsoppholdetInnenforSiste12MånederFlyt = lagRegelflyt(
             regel = hentRegel(RegelId.REGEL_25),
-            hvisJa = konklusjonUavklart(ytelse, RegelId.REGEL_UTENLANDSFORHOLD),
+            hvisJa = regelflytUavklart(ytelse, RegelId.REGEL_UTENLANDSFORHOLD),
             hvisNei = regelflytJa(ytelse, RegelId.REGEL_UTENLANDSFORHOLD),
         )
 

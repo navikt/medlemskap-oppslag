@@ -5,12 +5,11 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.common.Regelflyt
-import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonJa
-import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytUavklart
 import no.nav.medlemskap.regler.common.Regler
 import no.nav.medlemskap.regler.common.Svar
-import no.nav.medlemskap.regler.v1.RegelFactory
+
 
 class ReglerForPermittering(
     ytelse: Ytelse,
@@ -21,7 +20,7 @@ class ReglerForPermittering(
     override fun hentHovedflyt(): Regelflyt {
         val HarPermitteringSiste12MånederFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_15),
-            hvisJa = konklusjonUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
+            hvisJa = regelflytUavklart(ytelse, REGEL_FELLES_ARBEIDSFORHOLD),
             hvisNei = regelflytJa(ytelse, REGEL_PERMITTERING)
         )
         return HarPermitteringSiste12MånederFlyt

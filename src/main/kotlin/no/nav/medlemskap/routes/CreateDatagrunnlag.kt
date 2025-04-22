@@ -128,19 +128,19 @@ suspend fun defaultCreateDatagrunnlag(
                     kv("message", t.message)
                 }
                 Oppholdstillatelse(
-                    uttrekkstidspunkt = LocalDateTime.now(),
-                    foresporselsfodselsnummer = request.fnr,
-                    avgjoerelse = null,
-                    gjeldendeOppholdsstatus = GjeldendeOppholdsstatus(
-                        oppholdstillatelsePaSammeVilkar = null,
-                        eosellerEFTAOpphold = null,
-                        uavklart = Uavklart(uavklart = true),
-                        ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum = null
+                        uttrekkstidspunkt = LocalDateTime.now(),
+                foresporselsfodselsnummer = request.fnr,
+                avgjoerelse = null,
+                gjeldendeOppholdsstatus = GjeldendeOppholdsstatus(
+                    oppholdstillatelsePaSammeVilkar = null,
+                    eosellerEFTAOpphold = null,
+                    uavklart = Uavklart(uavklart = true),
+                    ikkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum = null
 
-                    ),
-                    arbeidsadgang = null,
-                    uavklartFlyktningstatus = null,
-                    harFlyktningstatus = null
+                ),
+                arbeidsadgang = null,
+                uavklartFlyktningstatus = null,
+                harFlyktningstatus = null
                 )
             }
         }
