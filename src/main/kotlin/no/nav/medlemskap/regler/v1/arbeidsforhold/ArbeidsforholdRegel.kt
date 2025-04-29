@@ -28,7 +28,6 @@ abstract class ArbeidsforholdRegel(
             Ytelse.LOVME_GCP -> return kontrollperiodeForSykepenger
             Ytelse.MEDLEMSKAP_BARN -> return kontrollperiodeForBarnbriller
             Ytelse.MIN_VEI -> return kontrollperiodeForSykepenger
-            Ytelse.LOVME_FUNKSJONELLE_TESTER -> return kontrollperiodeForSykepenger
         }
     }
 }

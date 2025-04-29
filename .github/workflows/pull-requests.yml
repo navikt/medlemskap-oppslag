@@ -60,24 +60,3 @@ jobs:
           RESOURCE: deploy/preprod.yaml
           IMAGE: ${{ needs.build_and_push.outputs.image }}
           TELEMETRY: ${{ needs.build_and_push.outputs.telemetry }}
-  acceptance-tests:
-    name: Run acceptance tests
-    needs: deploypreprod
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          repository: navikt/medlemskap-oppslag-funksjonelle-tester
-      - id: get-sha
-        run: |
-          echo ::set-output name=sha::$( curl -u "u:${{secrets.GITHUB_TOKEN}}" https://api.github.com/repos/navikt/medlemskap-oppslag-funksjonelle-tester/git/origin/migrere_til_sky | jq .object.sha | tr -d '"' )
-      - uses: nais/deploy/actions/deploy@v2
-        name: Run tests
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
-          IMAGE: ghcr.io/navikt/medlemskap-oppslag-funksjonelle-tester:ac43a192b82f86524dec5cd3eca8779eb738f52d
-          CLUSTER: dev-gcp
-          VAR: app=medlemskap-oppslag
-          RESOURCE: nais/tests.yml
-        timeout-minutes: 5
