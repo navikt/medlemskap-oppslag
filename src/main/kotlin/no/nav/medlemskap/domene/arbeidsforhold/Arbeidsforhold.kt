@@ -64,6 +64,19 @@ data class Arbeidsforhold(
             return this.arbeidsforholdForDato(startDatoForYtelse).any { it.arbeidsforholdstype == Arbeidsforholdstype.MARITIMT }
         }
 
+        fun Arbeidsforhold.erArbeidsforholdetLøpendeIHelePerioden(periode: Kontrollperiode): Boolean {
+
+            return this.starterFørKontrollPerioden(periode) && this.slutterEtterKontrollPerioden(periode)
+        }
+
+        fun Arbeidsforhold.starterFørKontrollPerioden(periode: Kontrollperiode): Boolean {
+            return this.periode.fom != null && this.periode.fom.isBefore(periode.fom)
+        }
+        fun Arbeidsforhold.slutterEtterKontrollPerioden(periode: Kontrollperiode): Boolean {
+            return this.periode.tom == null || this.periode.tom.isAfter(periode.tom)
+        }
+
+
         fun List<Arbeidsforhold>.harSammenhengendeMaritimtArbeidsforholdPåNORSkipIKontrollperiode(kontrollperiode: Kontrollperiode, ytelse: Ytelse, tillatDagersHullIPeriode: Long): Boolean {
             val maritimeArbeidsforhold = this.maritimeArbeidsforholdForKontrollPeriode(kontrollperiode)
                 .filter { it.arbeidsavtaler.all { it.skipsregister == Skipsregister.NOR } }
