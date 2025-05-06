@@ -120,6 +120,7 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_57 -> ErPeriodeForPermissjonAvsluttetForMedEn30DagerSidenOgTypeForelderRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_60 -> HarBrukerKunEttArbeidsforholdRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_61 -> HarArbeidsforholdetVartHeleKontrollPeriodenRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_64 -> HarBrukerVartI60ProsentStillingSiste12Mnd.fraDatagrunnlag(datagrunnlag).regel
 
             else -> throw java.lang.RuntimeException("Ukjent regel: $regelId")
         }

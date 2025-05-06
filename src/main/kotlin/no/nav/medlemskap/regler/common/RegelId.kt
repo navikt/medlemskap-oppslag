@@ -81,6 +81,8 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
 
     REGEL_60("60", "Har bruker kun ett arbeidsforhold de siste 12 månedene?", "Bruker har flere enn ett arbeidsforhold de siste 12 månedene", "Bruker har kun ett arbeidsforhold de siste 12 månedene"),
     REGEL_61("61", "Har arbeidsforholdet vart i hele kontrollperioden", "Arbeidsforholdet har ikke vart i hele kontrollperioden", "Arbeidsforholdet har vart i hele kontrollperioden"),
+    REGEL_64("64", "Har bruker vært i minst 60 % stilling de siste 12 månedene?", "Bruker har ikke vært i 60% stilling de siste 12 månedene", "Bruker har vært i minst 60 % stilling de siste 12 månedene"),
+
     REGEL_35("35","Er bruker i et maritimt arbeidsforhold på tidspunktet inputdato minus 1 dag?"),
     REGEL_36("36","Har bruker hatt et sammenhengende maritimt arbeidsforhold på et NOR-skip i løpet av de siste 12 månedene?"),
     REGEL_42("42","Har bruker hatt et maritimt arbeidsforhold i løpet av siste 12 måneder? "),
