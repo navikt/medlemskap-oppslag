@@ -2,9 +2,9 @@ package no.nav.medlemskap.regler.v1.arbeidsforhold
 
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale.Companion.sammenhengendeArbeidsavtaler
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.arbeidsforholdForKontrollPeriode
-import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.erArbeidsforholdetLøpendeIHelePerioden
 
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
@@ -21,18 +21,20 @@ class HarBrukerVartI60ProsentStillingSiste12Mnd(
 
     override fun operasjon(): Resultat {
 
-        val arbeidforholdForKontrollPeriode = arbeidsforhold.arbeidsforholdForKontrollPeriode(kontrollPeriodeForArbeidsforhold)
-        if (arbeidforholdForKontrollPeriode.isEmpty()) {
-            return nei(regelId)
+        val arbeidforholdForKontrollPeriode = arbeidsforhold.arbeidsforholdForKontrollPeriode(kontrollPeriodeForArbeidsforhold).first()
+        val arbeidsavtaler = arbeidforholdForKontrollPeriode.arbeidsavtaler
+        val sammenhengendeAvtaler = arbeidsavtaler.sammenhengendeArbeidsavtaler(kontrollPeriodeForArbeidsforhold, 0)
+
+        sammenhengendeAvtaler.all {
+            return if (it.stillingsprosent!! >= 60) {
+                ja(regelId)
+            } else {
+                nei(regelId)
+            }
         }
 
-        if (arbeidforholdForKontrollPeriode.first()
-                .erArbeidsforholdetLøpendeIHelePerioden(kontrollPeriodeForArbeidsforhold) == null){
-            return ja(regelId)
-        }
         return nei(regelId)
     }
-
 
 
     companion object {
