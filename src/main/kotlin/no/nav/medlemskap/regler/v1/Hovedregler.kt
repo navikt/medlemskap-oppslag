@@ -91,6 +91,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
 
         resultater.add(ReglerForOppholdstillatelse.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         resultater.add(ReglerForMedl.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+        resultater.add(ReglerForBosatt.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         resultater.add(ReglerForArbeidstakerAndreBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         resultater.add(ReglerForMaritim.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
 
