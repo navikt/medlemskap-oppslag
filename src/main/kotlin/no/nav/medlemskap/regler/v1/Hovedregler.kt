@@ -3,7 +3,6 @@ package no.nav.medlemskap.regler.v1
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Statsborgerskapskategori
 import no.nav.medlemskap.domene.Ytelse
-import no.nav.medlemskap.regler.ReglerForHovedsakligArbeidstaker
 import no.nav.medlemskap.regler.common.Regel.Companion.jaKonklusjon
 import no.nav.medlemskap.regler.common.Regel.Companion.neiKonklusjon
 import no.nav.medlemskap.regler.common.Regel.Companion.uavklartKonklusjon
@@ -90,17 +89,10 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
     private fun kjørReglerForTredjelandsborgere(): List<Resultat> {
         val resultater = mutableListOf<Resultat>()
 
-        resultater.add(ReglerForHovedsakligArbeidstaker.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         resultater.add(ReglerForOppholdstillatelse.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
-
-        val resultatMedl = ReglerForMedl.fraDatagrunnlag(datagrunnlag).kjørHovedflyt()
-        resultater.add(resultatMedl)
-
+        resultater.add(ReglerForMedl.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+        resultater.add(ReglerForArbeidstakerAndreBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         resultater.add(ReglerForMaritim.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
-
-        if (resultatMedl.erRegelflytKonklusjon() && resultatMedl.svar == JA || resultatMedl.svar == UAVKLART) {
-            resultater.add(ReglerForAndreStatsborgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
-        }
 
         return resultater
     }

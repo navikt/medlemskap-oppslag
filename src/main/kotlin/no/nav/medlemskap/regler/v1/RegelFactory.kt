@@ -97,7 +97,6 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_19_6_1 -> DekkerArbeidstillatelsenArbeidsperiodenRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_19_7 -> ErBrukerBritiskBorgerRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_19_8 -> HarBrukerOppholdPåSammeVilkårFlagg.fraDatagrunnlag(datagrunnlag).regel
-            REGEL_20 -> HarBrukerJobbet80ProsentEllerMerSiste3MånedeneRegel.fraDatagrunnlag(datagrunnlag, REGEL_20).regel
             REGEL_22 -> HarBrukerUtenlandsoppholdIArbeidsforholdet.fraDatagrunnlag(datagrunnlag).regel
             REGEL_23 -> HarIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum.fraDatagrunnlag(datagrunnlag).regel
             REGEL_21 -> ErBrukerArbeidstakerIKontrollperiodeForStønadsområde.fraDatagrunnlag(datagrunnlag).regel
@@ -109,7 +108,6 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_31 -> HarBrukerPermanentOppholdstillatelse.fraDatagrunnlag(datagrunnlag).regel
             REGEL_32 -> HarBrukerPermisjonSiste12Måneder.fraDatagrunnlag(datagrunnlag).regel
             REGEL_33 -> ErSummenAvPermisjonenMerEnn60DagerSiste12Mnd.fraDatagrunnlag(datagrunnlag).regel
-            REGEL_34 -> HarBrukerMinst60StillingsprosentRegel.fraDatagrunnlag(datagrunnlag, REGEL_34).regel
             REGEL_35 -> ErBrukerIMaritimtArbeidsforholdDagenFørStartdatoForYtelse.fraDatagrunnlag(datagrunnlag).regel
             REGEL_36 -> HarSammenhengendeArbeidsforholdSiste12MånederPåNORSkip.fraDatagrunnlag(datagrunnlag).regel
             REGEL_42 -> HarMaritimtArbeidsforholdRegel.fraDatagrunnlag(datagrunnlag).regel

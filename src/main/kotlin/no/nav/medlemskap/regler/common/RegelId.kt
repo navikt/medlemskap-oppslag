@@ -60,7 +60,6 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_19_6_1("19.6.1", "Dekker arbeidstillatelsen arbeidsperioden bakover i tid?", "arbeidstillatelsen dekker ikke arbeidsperioden"),
     REGEL_19_7("19.7", "Er bruker britisk borger?", "", "Bruker er britisk borger"),
     REGEL_19_8("19.8", "Har bruker opphold på samme vilkår flagg?", "Opphold på samme vilkår flagget er ikke satt", "Opphold på samme vilkår flagget er satt"),
-    REGEL_20("20", "Har bruker mer enn 80% arbeid i Norge de siste 3 månedene?", "Bruker har ikke utført mer enn 80% arbeid de siste 3 månedene", "Bruker har utført mer enn 80% arbeid de siste 3 månedene"),
     REGEL_21("21", "Er bruker arbeidstaker i kontrollperiode for stønadsområde?", "Bruker er ikke arbeidstaker i kontrollperiode for stønadsområde", "Bruker er arbeidstaker i kontrollperiode for stønadsområde"),
     REGEL_22("22", "Arbeidsforhold siste 12 måneder: finnes det utenlandsopphold i et av disse arbeidsforholdene?", "Det finnes ikke utenlandsopphold i et av arbeidsforholdene de siste 12 månedene", "Det finnes utenlandsopphold i et av arbeidsforholdene de siste 12 månedene"),
     REGEL_23("23", "Returnerer UDI Ikke oppholdstillatelse eller ikke opphold på samme vilkår?", "", ""),
@@ -72,7 +71,6 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_31("31", "Har bruker en permanent oppholdstillatelse?", "Bruker har ikke permanent oppholdstillatelse", "Bruker har permanent oppholdstillatelse"),
     REGEL_32("32", "Har bruker hatt permisjon siste 12 måneder?", "Bruker har ikke hatt permisjon siste 12 måneder", "Bruker har hatt permisjon de siste 12 måneder"),
     REGEL_33("33", "Er summen av permisjonsdager mer enn 60 siste 12 måneder?", "Summen av permisjonsdager er ikke mer enn 60 siste 12 måneder", "summen av permisjonsdager er mer enn 60 siste 12 måneder?"),
-    REGEL_34("34","Har bruker vært i minst 60 % stilling de siste 12 måneder?","Bruker har mindre enn 60% stilling de siste 12 måneder.","Bruker har 60% stilling eller mer de siste 12 måneder."),
     REGEL_50("50", "Har bruker bare èn periode med permisjon siste 12 mnd ", "Bruker har flere en bare èn periode med permisjon siste 12 mnd", "bruker har bare èn periode med permisjoner siste 12 mnnd?"),
     REGEL_51("51", "Er summen av permisjonsdager mer enn 60 siste 12 måneder?", "Summen av permisjonsdager er mer enn 60 siste 12 måneder", "summen av permisjonsdager er ikke mer enn 60 siste 12 måneder?"),
     REGEL_54("54", "Har Bruker en løpende permisjon på første dag for ytelse dato", "Bruker har ikke en løpende permisjon på første dag for ytelse dato", "Bruker har  en løpende permisjon på første dag for ytelse dato?"),
@@ -106,16 +104,13 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_OVERSTYRING("OVERSTYRING", "Er overstyringsregler avklart?"),
     REGEL_FELLES_ARBEIDSFORHOLD("FELLES ARBEIDSFORHOLD", "Er felles regler for arbeidsforhold avklart?"),
     REGEL_YTELSER("REGLER YTELSER", "Er felles regler for ytelser avklart?"),
-    REGEL_HOVEDSAKLIG_ARBEIDSTAKER("Hovedsaklig arbeidstaker", "Er arbeidstaker i hovedsak arbeidstaker?"),
     REGEL_OPPHOLDSTILLATELSE("Oppholdstillatelse", "Har bruker gyldig oppholdstillatelse?"),
     REGEL_UTENLANDSFORHOLD("Utenlandsforhold", "Finnes det utenlandsforhold i noen av arbeidsforholdene?"),
     REGEL_PERMISJONER("Permisjoner", "Finnes det permisjoner i noen av arbeidsforholdene?"),
     REGEL_BRUKERGRUPPE("BRUKERGRUPPE", "Har bruker arbeidsforhold?"),
     REGEL_BRUKERGRUPPESELVSTENDIG("BRUKERGRUPPESELVSTENDIG", "Er det avklart om brukeren er har en brukerGruppe eller ikke?"),
-    REGEL_PERMITTERING("PERMITTERING", "Arbeidsforhold siste 12 måneder: Finnes det en periode med permittering i et av disse arbeidsforholdene?")
-
-
-
+    REGEL_PERMITTERING("PERMITTERING", "Arbeidsforhold siste 12 måneder: Finnes det en periode med permittering i et av disse arbeidsforholdene?"),
+    REGEL_ARBEIDSTAKERE_ANDRE_BORGERE("ARBEIDSTAKERE ANDRE BORGERE", "Er andre borgere arbeidstakere?")
     ;
 
     fun begrunnelse(svar: Svar): String {
