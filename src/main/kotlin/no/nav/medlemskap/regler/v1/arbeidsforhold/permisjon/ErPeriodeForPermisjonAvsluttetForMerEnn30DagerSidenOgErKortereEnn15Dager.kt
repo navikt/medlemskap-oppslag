@@ -5,13 +5,13 @@ import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.hentAllePermisjonerSiden
+import no.nav.medlemskap.domene.arbeidsforhold.PermisjonPermittering.Companion.antallDagerPermisjon
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import no.nav.medlemskap.regler.v1.arbeidsforhold.ArbeidsforholdRegel
 import java.time.LocalDate
-import java.time.temporal.ChronoUnit
 
 class ErPeriodeForPermisjonAvsluttetForMerEnn30DagerSidenOgErKortereEnn15Dager(
     ytelse: Ytelse,
@@ -24,29 +24,18 @@ class ErPeriodeForPermisjonAvsluttetForMerEnn30DagerSidenOgErKortereEnn15Dager(
 
     override fun operasjon(): Resultat {
 
-        val allePermisjonerSomLøperForMindreEnnEttÅrSiden = arbeidsforhold.hentAllePermisjonerSiden(startDatoForYtelse.minusYears(1))
-        val permisjonerSomErAvsluttetForMerEnn30DagerSiden = allePermisjonerSomLøperForMindreEnnEttÅrSiden
+        val permisjonerEttÅrTilbake = arbeidsforhold.hentAllePermisjonerSiden(startDatoForYtelse.minusYears(1))
+
+        val permisjonerSomErAvsluttetForMerEnn30DagerSiden = permisjonerEttÅrTilbake
             .filter {
                 it.periode.tom!!.isBefore(startDatoForYtelse.minusDays(30))
             }
+        if(permisjonerSomErAvsluttetForMerEnn30DagerSiden.isEmpty()) return nei(regelId)
 
-        if (permisjonerSomErAvsluttetForMerEnn30DagerSiden.isEmpty()) {
-            return nei(regelId)
-        }
 
-        val permisjonSomErKortereEnn15Dager = erPeriodenMindreEnn15Dager(permisjonerSomErAvsluttetForMerEnn30DagerSiden.first().periode)
+        return if(permisjonerSomErAvsluttetForMerEnn30DagerSiden.first().antallDagerPermisjon() < 15) ja(regelId)
+        else nei(regelId)
 
-        if (permisjonSomErKortereEnn15Dager) {
-            return ja(regelId)
-        }
-
-        return nei(regelId)
-
-    }
-
-    fun erPeriodenMindreEnn15Dager(periode: Periode) : Boolean {
-        val antallDager = periode.fom!!.until(periode.tom, ChronoUnit.DAYS).toDouble() + 1
-        return antallDager < 15
     }
 
     companion object {
