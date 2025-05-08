@@ -78,7 +78,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_54("54", "Har Bruker en løpende permisjon på første dag for ytelse dato", "Bruker har ikke en løpende permisjon på første dag for ytelse dato", "Bruker har  en løpende permisjon på første dag for ytelse dato?"),
     REGEL_55("55", "Har bruker hatt mer enn 60 dager permisjon siste 12 måneder","Bruker har IKKE hatt mer enn 60 dager permisjon siste 12 måneder","Bruker har hatt mer enn 60 dager permisjon siste 12 måneder"),
     REGEL_57("57", "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk OG/eller permisjonstypen er ikke foreldrepermisjon?", "Er perioden med permisjon avsluttet for mer enn 30 dager før første dag syk OG permisjonstypen er foreldrepermisjon?", "perioden med permisjon er  avsluttet for mer enn 30 dager før første dag syk OG permisjonstypen er  foreldrepermisjon?"),
-
+    REGEL_58("58", "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk og permisjonen er kortere enn 15 dager", "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk og permisjonen er ikke kortere enn 15 dager", "Perioden med permisjon er avsluttet for mer enn 30 dager før første dag syk og permisjonen er kortere enn 15 dager"),
 
     REGEL_35("35","Er bruker i et maritimt arbeidsforhold på tidspunktet inputdato minus 1 dag?"),
     REGEL_36("36","Har bruker hatt et sammenhengende maritimt arbeidsforhold på et NOR-skip i løpet av de siste 12 månedene?"),
