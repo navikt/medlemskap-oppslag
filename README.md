@@ -111,3 +111,10 @@ Der `clientid` og `clientsecret` kan hentes fra kubernetes instansens miljøvari
 # Autentisere klienter
 Klienter som ønsker å kalle oss må generere et token med vår klientid som scope
 
+# Oppsett for bygge lokalt med Github bruker
+1. Opprett en gradle.properties fil under ./gradle mappen
+2. Fyll inn filen med følgende innhold:
+```
+githubUser=<brukernavn>
+githubPassword=<mysecrettoken>
+
