@@ -13,7 +13,7 @@ import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import no.nav.medlemskap.regler.v1.arbeidsforhold.ArbeidsforholdRegel
 import java.time.LocalDate
 
-class ErPeriodeForPermissjonAvsluttetForMedEn30DagerSidenOgTypeForelderRegel(
+class ErPeriodeForPermisjonAvsluttetForMerEnn30DagerSidenOgTypeForeldrepermisjon(
     ytelse: Ytelse,
     private val startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
@@ -26,7 +26,7 @@ class ErPeriodeForPermissjonAvsluttetForMedEn30DagerSidenOgTypeForelderRegel(
 
 
         val allePermisjonerSomLøperForMindreEnEtÅrSiden = arbeidsforhold.hentAllePermisjonerSiden(startDatoForYtelse.minusYears(1))
-        val permisjonerSomIkkeVarAvsluttet30DagerForForsteDagSykOgIkkeBarnePensjon =
+        val permisjonerSomIkkeVarAvsluttet30DagerFørAvklaringsdatoOgErIkkeForeldrepermisjon =
             allePermisjonerSomLøperForMindreEnEtÅrSiden
                 .filterNot {
                     (it.periode.tom==null || it.periode.tom.isBefore(startDatoForYtelse.minusDays(30))
@@ -35,8 +35,7 @@ class ErPeriodeForPermissjonAvsluttetForMedEn30DagerSidenOgTypeForelderRegel(
                 }
 
 
-
-        if (permisjonerSomIkkeVarAvsluttet30DagerForForsteDagSykOgIkkeBarnePensjon.isEmpty()){
+        if (permisjonerSomIkkeVarAvsluttet30DagerFørAvklaringsdatoOgErIkkeForeldrepermisjon.isEmpty()){
             return ja(regelId)
         }
         return nei(regelId)
@@ -46,8 +45,8 @@ class ErPeriodeForPermissjonAvsluttetForMedEn30DagerSidenOgTypeForelderRegel(
 
     companion object {
 
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErPeriodeForPermissjonAvsluttetForMedEn30DagerSidenOgTypeForelderRegel {
-            return ErPeriodeForPermissjonAvsluttetForMedEn30DagerSidenOgTypeForelderRegel(
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ErPeriodeForPermisjonAvsluttetForMerEnn30DagerSidenOgTypeForeldrepermisjon {
+            return ErPeriodeForPermisjonAvsluttetForMerEnn30DagerSidenOgTypeForeldrepermisjon(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold,

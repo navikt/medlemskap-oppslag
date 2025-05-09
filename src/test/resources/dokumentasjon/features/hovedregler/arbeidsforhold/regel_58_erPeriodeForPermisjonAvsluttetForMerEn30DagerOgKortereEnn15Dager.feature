@@ -37,7 +37,7 @@ Egenskap: Regel 58: Er periode avsluttet for mer en 30 dager siden og permisjone
       Så skal svaret være "<Svar>"
 
       Eksempler:
-        | Fra og med | Til og med | Svar |
-        | 28.01.2024 | 29.01.2024 | Ja   |
-        | 01.01.2024 | 15.01.2024 | Nei  |
-        | 20.02.2024 | 28.02.2024 | Nei  |
+        | Fra og med | Til og med | Svar | Kommentar                                                 |
+        | 28.01.2024 | 29.01.2024 | Ja   | 1 dag permisjon og mer enn 30 dager mellom første dag syk |
+        | 01.01.2024 | 15.01.2024 | Nei  | 15 dager permisjon                                        |
+        | 20.02.2024 | 28.02.2024 | Nei  | 8 dager permisjon og 15 dager mellom  første dag syk      |
