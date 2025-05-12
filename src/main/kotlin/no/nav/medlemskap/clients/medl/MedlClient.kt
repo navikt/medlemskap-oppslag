@@ -28,14 +28,12 @@ class MedlClient(
         val token = azureAdClient.hentToken(configuration.register.medlScope)
         return runCatching {
             runWithRetryAndMetrics<List<MedlMedlemskapsunntak>>("Medl", "MedlemskapsunntakV1", retry) {
-                httpClient.get() {
-                    url("$baseUrl/api/v1/medlemskapsunntak")
+                httpClient.post() {
+                    url("$baseUrl/rest/v1/periode/soek")
                     header(HttpHeaders.Authorization, "Bearer ${token.token}")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
                     header("Nav-Call-Id", callId)
-                    header("Nav-Personident", ident)
-                    fraOgMed?.let { parameter("fraOgMed", fraOgMed.tilIsoFormat()) }
-                    tilOgMed?.let { parameter("tilOgMed", tilOgMed.tilIsoFormat()) }
+                    setBody(medlQuery(ident, fraOgMed?.tilIsoFormat().toString(), tilOgMed?.tilIsoFormat().toString()))
                 }.body()
             }
         }.fold(
@@ -69,3 +67,5 @@ class MedlClient(
         }
     }
 }
+
+data class medlQuery(val personident: String, val fraOgMed: String, val tilOgMed: String)
