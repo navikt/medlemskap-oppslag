@@ -40,6 +40,10 @@ data class Arbeidsavtale(
             else emptyList()
         }
 
+        fun List<Arbeidsavtale>.harFlereArbeidsavtaler(): Boolean {
+            return this.size > 1
+        }
+
         fun List<Arbeidsavtale>.erSammenhengendeArbeidsavtaler(kontrollPeriode: Kontrollperiode, tillatDagersHullIPeriode: Long): Boolean {
             var totaltAntallDagerDiff: Long = 0
             var forrigeTilDato: LocalDate? = null
