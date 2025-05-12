@@ -33,7 +33,7 @@ class MedlClient(
                     header(HttpHeaders.Authorization, "Bearer ${token.token}")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
                     header("Nav-Call-Id", callId)
-                    setBody(medlQuery(ident, fraOgMed?.tilIsoFormat().toString(), tilOgMed?.tilIsoFormat().toString()))
+                    setBody(medlQuery(ident, fraOgMed?.tilIsoFormat().toString(), tilOgMed?.tilIsoFormat().toString()).toString())
                 }.body()
             }
         }.fold(
