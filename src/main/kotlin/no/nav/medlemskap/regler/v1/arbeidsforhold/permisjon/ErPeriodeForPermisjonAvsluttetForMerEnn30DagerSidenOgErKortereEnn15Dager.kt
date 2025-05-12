@@ -6,6 +6,7 @@ import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.hentAllePermisjonerSiden
 import no.nav.medlemskap.domene.arbeidsforhold.PermisjonPermittering.Companion.antallDagerPermisjon
+import no.nav.medlemskap.domene.arbeidsforhold.PermisjonPermittering.Companion.permisjonerIMellom
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
@@ -27,10 +28,9 @@ class ErPeriodeForPermisjonAvsluttetForMerEnn30DagerSidenOgErKortereEnn15Dager(
         val permisjonerEttÅrTilbake = arbeidsforhold.hentAllePermisjonerSiden(startDatoForYtelse.minusYears(1))
 
         val permisjonerSomErAvsluttetForMerEnn30DagerSiden = permisjonerEttÅrTilbake
-            .filter { it.periode.tom != null }
-            .filter { it.periode.tom!!.isBefore(startDatoForYtelse.minusDays(30)) }
-        if(permisjonerSomErAvsluttetForMerEnn30DagerSiden.isEmpty()) return nei(regelId)
+            .permisjonerIMellom(startDatoForYtelse.minusDays(30))
 
+        if(permisjonerSomErAvsluttetForMerEnn30DagerSiden.isEmpty()) return nei(regelId)
 
         return if(permisjonerSomErAvsluttetForMerEnn30DagerSiden.first().antallDagerPermisjon() < 15) ja(regelId)
         else nei(regelId)

@@ -3,6 +3,7 @@ package no.nav.medlemskap.domene.arbeidsforhold
 import no.nav.medlemskap.clients.ereg.Ansatte.Companion.finnesMindreEnn
 import no.nav.medlemskap.common.*
 import no.nav.medlemskap.domene.Kontrollperiode
+import no.nav.medlemskap.domene.Kontrollperiode.Companion.startDatoForYtelse
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
