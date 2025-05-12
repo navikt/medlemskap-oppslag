@@ -44,6 +44,18 @@ data class Arbeidsavtale(
             return this.size > 1
         }
 
+        fun Arbeidsavtale.erArbeidsavtalenLøpendeIHelePerioden(periode: Kontrollperiode): Boolean {
+            return this.starterFørKontrollPerioden(periode) && this.slutterEtterKontrollPerioden(periode)
+        }
+
+        fun Arbeidsavtale.starterFørKontrollPerioden(periode: Kontrollperiode): Boolean {
+            return this.gyldighetsperiode.fom != null && this.gyldighetsperiode.fom.isBefore(periode.fom)
+        }
+        fun Arbeidsavtale.slutterEtterKontrollPerioden(periode: Kontrollperiode): Boolean {
+            return this.gyldighetsperiode.tom == null || this.gyldighetsperiode.tom.isAfter(periode.tom)
+        }
+
+
         fun List<Arbeidsavtale>.erSammenhengendeArbeidsavtaler(kontrollPeriode: Kontrollperiode, tillatDagersHullIPeriode: Long): Boolean {
             var totaltAntallDagerDiff: Long = 0
             var forrigeTilDato: LocalDate? = null

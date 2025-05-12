@@ -78,7 +78,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_57("57", "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk OG/eller permisjonstypen er ikke foreldrepermisjon?", "Er perioden med permisjon avsluttet for mer enn 30 dager før første dag syk OG permisjonstypen er foreldrepermisjon?", "perioden med permisjon er  avsluttet for mer enn 30 dager før første dag syk OG permisjonstypen er  foreldrepermisjon?"),
 
     REGEL_60("60", "Har bruker kun ett arbeidsforhold de siste 12 månedene?", "Bruker har flere enn ett arbeidsforhold de siste 12 månedene", "Bruker har kun ett arbeidsforhold de siste 12 månedene"),
-    REGEL_61("61", "Har arbeidsforholdet vart i hele kontrollperioden", "Arbeidsforholdet har ikke vart i hele kontrollperioden", "Arbeidsforholdet har vart i hele kontrollperioden"),
+    REGEL_61("61", "Har arbeidsavtalen vart i hele kontrollperioden", "Arbeidsavtalen har ikke vart i hele kontrollperioden", "Arbeidsavtalen har vart i hele kontrollperioden"),
     REGEL_64("64", "Har bruker vært i minst 60 % stilling de siste 12 månedene?", "Bruker har ikke vært i 60% stilling de siste 12 månedene", "Bruker har vært i minst 60 % stilling de siste 12 månedene"),
     REGEL_65("65", "Har bruker flere arbeidsavtaler i kontrollperioden?", "Bruker har flere arbeidsavtaler i kontrollperioden", "Bruker har en arbeidsavtale i kontrollperioden"),
 

@@ -2,6 +2,7 @@ package no.nav.medlemskap.regler.v1.arbeidsforhold
 
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale.Companion.erArbeidsavtalenLøpendeIHelePerioden
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.arbeidsforholdForKontrollPeriode
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.erArbeidsforholdetLøpendeIHelePerioden
@@ -12,7 +13,7 @@ import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import java.time.LocalDate
 
-class HarArbeidsforholdetVartHeleKontrollPeriodenRegel(
+class HarArbeidsavtalenVartHeleKontrollPeriodenRegel(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
@@ -21,24 +22,26 @@ class HarArbeidsforholdetVartHeleKontrollPeriodenRegel(
 
     override fun operasjon(): Resultat {
 
-            val arbeidforholdForKontrollPeriode = arbeidsforhold.arbeidsforholdForKontrollPeriode(kontrollPeriodeForArbeidsforhold)
-            if (arbeidforholdForKontrollPeriode.isEmpty()) {
-                return nei(regelId)
-            }
+        val arbeidforholdForKontrollPeriode = arbeidsforhold.arbeidsforholdForKontrollPeriode(kontrollPeriodeForArbeidsforhold)
+        if (arbeidforholdForKontrollPeriode.isEmpty()) {
+            return nei(regelId)
+        }
+        val arbeidsavtaler = arbeidforholdForKontrollPeriode.first().arbeidsavtaler
 
-            if (arbeidforholdForKontrollPeriode.first()
-                .erArbeidsforholdetLøpendeIHelePerioden(kontrollPeriodeForArbeidsforhold)){
-                return ja(regelId)
-            }
-                return nei(regelId)
+        if (arbeidsavtaler.isEmpty()) {
+            return nei(regelId)
         }
 
-
+        if (arbeidsavtaler.first().erArbeidsavtalenLøpendeIHelePerioden(kontrollPeriodeForArbeidsforhold)) {
+            return ja(regelId)
+        }
+        return nei(regelId)
+    }
 
     companion object {
 
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarArbeidsforholdetVartHeleKontrollPeriodenRegel {
-            return HarArbeidsforholdetVartHeleKontrollPeriodenRegel(
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarArbeidsavtalenVartHeleKontrollPeriodenRegel {
+            return HarArbeidsavtalenVartHeleKontrollPeriodenRegel(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold
