@@ -27,9 +27,8 @@ class ErPeriodeForPermisjonAvsluttetForMerEnn30DagerSidenOgErKortereEnn15Dager(
         val permisjonerEttÅrTilbake = arbeidsforhold.hentAllePermisjonerSiden(startDatoForYtelse.minusYears(1))
 
         val permisjonerSomErAvsluttetForMerEnn30DagerSiden = permisjonerEttÅrTilbake
-            .filter {
-                it.periode.tom!!.isBefore(startDatoForYtelse.minusDays(30))
-            }
+            .filter { it.periode.tom != null }
+            .filter { it.periode.tom!!.isBefore(startDatoForYtelse.minusDays(30)) }
         if(permisjonerSomErAvsluttetForMerEnn30DagerSiden.isEmpty()) return nei(regelId)
 
 

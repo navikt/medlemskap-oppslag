@@ -159,23 +159,17 @@ data class Arbeidsforhold(
 
 
         fun List<Arbeidsforhold>.hentAllePermisjoner(): List<PermisjonPermittering> {
-            val permisjoner: MutableList<PermisjonPermittering> = mutableListOf()
-            this.forEach {
-                if (it.permisjonPermittering != null) {
-                    permisjoner.addAll(it.permisjonPermittering)
-                }
-            }
-            return permisjoner.filter { it.type != PermisjonPermitteringType.PERMITTERING }
+            return mapNotNull { it.permisjonPermittering }
+                .flatten()
+                .filter { it.type != PermisjonPermitteringType.PERMITTERING }
         }
 
         fun List<Arbeidsforhold>.hentAllePermisjonerSiden(dato: LocalDate): List<PermisjonPermittering> {
-            val permisjoner: MutableList<PermisjonPermittering> = mutableListOf()
-            this.forEach {
-                if (it.permisjonPermittering != null) {
-                    permisjoner.addAll(it.permisjonPermittering)
-                }
-            }
-            return permisjoner.filter { (it.periode.tom == null || it.periode.tom.isAfter(dato)) && it.type != PermisjonPermitteringType.PERMITTERING }
+
+            return mapNotNull { it.permisjonPermittering }
+                .flatten()
+                .filter { (it.periode.tom == null || it.periode.tom.isAfter(dato)) }
+                .filter { it.type != PermisjonPermitteringType.PERMITTERING }
         }
 
         fun List<Arbeidsforhold>.AlleArbeidsforholdPerioderIKontrollperiode(kontrollPeriode: Kontrollperiode) =
