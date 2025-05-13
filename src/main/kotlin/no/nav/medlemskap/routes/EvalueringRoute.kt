@@ -351,7 +351,15 @@ private fun lagResponse(callid: String, datagrunnlag: Datagrunnlag, resultat: Re
     )
 }
 
-private fun loggResponse(fnr: String, response: Response, endpoint: String = "/") {
+fun loggFerdig(callId: String, endpoint: String, resultat: String) {
+    logger.info("Regelmotor kjørt ferdig.",
+        kv("callId", callId),
+        kv("endpoint", endpoint),
+        kv("resultat", resultat)
+    )
+}
+
+private fun loggResponse(fnr: String, response: Response, endpoint: String = "/", callId: String? = "") {
     val startDatoForYtelse = response.datagrunnlag.startDatoForYtelse
     val kontrollperiode:Kontrollperiode = Kontrollperiode(startDatoForYtelse.minusMonths(12),startDatoForYtelse)
     val resultat = response.resultat
@@ -408,8 +416,12 @@ private fun loggResponse(fnr: String, response: Response, endpoint: String = "/"
                 )
             ),
             kv("endpoint", endpoint)
-            // kv("regleroverstyrt", response.resultat.erReglerOverstyrt())
         )
+
+        if (callId != null) {
+            loggFerdig(callId, endpoint, resultat.svar.name)
+        }
+
     }.onFailure {
         loggError(fnr, datagrunnlag = response.datagrunnlag, endpoint, it)
     }
@@ -417,6 +429,7 @@ private fun loggResponse(fnr: String, response: Response, endpoint: String = "/"
     if (årsaker.isNotEmpty()) {
         uavklartPåRegel(årsaker.first(), response.datagrunnlag.ytelse.name()).increment()
     }
+
 }
 
 private fun loggError(fnr: String, datagrunnlag: Datagrunnlag, endpoint: String = "/", throwable: Throwable) {
