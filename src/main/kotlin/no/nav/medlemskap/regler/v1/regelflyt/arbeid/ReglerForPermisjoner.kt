@@ -19,37 +19,42 @@ class ReglerForPermisjoner(
 
     override fun hentHovedflyt(): Regelflyt {
 
+        val erMerEnn30DagerMellomPermisjonOgAvklaringsdagOgPermisjonErMindreEnn15Dager = lagRegelflyt(
+            regel = hentRegel(REGEL_58),
+            hvisJa = regelflytJa(ytelse, REGEL_PERMISJONER),
+            hvisNei = konklusjonUavklart(ytelse, REGEL_PERMISJONER),
+        )
 
-        val HarBrukerHattMerEn60DagerPermisjonSiste12Mnd = lagRegelflyt(
+        val erPeriodeMerEnn30DagerMellomPermisjonogAvklaringsdagOgErForeldrePermisjon = lagRegelflyt(
+            regel = hentRegel(REGEL_57),
+            hvisJa = regelflytJa(ytelse, REGEL_PERMISJONER),
+            hvisNei = erMerEnn30DagerMellomPermisjonOgAvklaringsdagOgPermisjonErMindreEnn15Dager,
+        )
+
+        val harBrukerHattMerEn60DagerPermisjonSiste12Mnd = lagRegelflyt(
             regel = hentRegel(REGEL_55),
             hvisJa = konklusjonUavklart(ytelse, REGEL_PERMISJONER),
             hvisNei =  regelflytJa(ytelse, REGEL_PERMISJONER),
         )
 
-        val ErPeriodeMedEn30DagerSidenOgForeldrePermisjon = lagRegelflyt(
-            regel = hentRegel(REGEL_57),
-            hvisJa = regelflytJa(ytelse, REGEL_PERMISJONER),
-            hvisNei =konklusjonUavklart(ytelse, REGEL_PERMISJONER),
-        )
-
-        val HarBrukerEnPeriodeMedPermisjonNaa = lagRegelflyt(
+        val harBrukerEnPeriodeMedPermisjonNaa = lagRegelflyt(
             regel = hentRegel(REGEL_54),
-            hvisJa = HarBrukerHattMerEn60DagerPermisjonSiste12Mnd,
-            hvisNei = ErPeriodeMedEn30DagerSidenOgForeldrePermisjon,
+            hvisJa = harBrukerHattMerEn60DagerPermisjonSiste12Mnd,
+            hvisNei = erPeriodeMerEnn30DagerMellomPermisjonogAvklaringsdagOgErForeldrePermisjon,
         )
 
-        val ErSummenAvPermisjonerMerEn60Dager = lagRegelflyt(
+        val erSummenAvPermisjonerMerEn60Dager = lagRegelflyt(
             regel = hentRegel(REGEL_51),
             hvisJa = konklusjonUavklart(ytelse, REGEL_PERMISJONER),
             hvisNei = regelflytJa(ytelse, REGEL_PERMISJONER),
         )
 
-        val HarBrukerBareEPeriodeMedPensjon = lagRegelflyt(
+        val harBrukerBareEPeriodeMedPensjon = lagRegelflyt(
             regel = hentRegel(REGEL_50),
-            hvisJa = HarBrukerEnPeriodeMedPermisjonNaa,
-            hvisNei = ErSummenAvPermisjonerMerEn60Dager,
+            hvisJa = harBrukerEnPeriodeMedPermisjonNaa,
+            hvisNei = erSummenAvPermisjonerMerEn60Dager,
         )
-        return HarBrukerBareEPeriodeMedPensjon
+        return harBrukerBareEPeriodeMedPensjon
     }
 
     companion object {
