@@ -113,7 +113,6 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_55 -> HarBrukerHattMerEnn60DagerPermisjonSiste12MndRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_57 -> ErPeriodeForPermisjonAvsluttetForMerEnn30DagerSidenOgTypeForeldrepermisjon.fraDatagrunnlag(datagrunnlag).regel
             REGEL_58 -> ErPeriodeForPermisjonAvsluttetForMerEnn30DagerSidenOgErKortereEnn15Dager.fraDatagrunnlag(datagrunnlag).regel
-            REGEL_57 -> ErPeriodeForPermissjonAvsluttetForMedEn30DagerSidenOgTypeForelderRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_60 -> HarBrukerKunEttArbeidsforholdRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_61 -> HarArbeidsavtalenVartHeleKontrollPeriodenRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_64 -> HarBrukerVartI60ProsentStillingSiste12Mnd.fraDatagrunnlag(datagrunnlag).regel
