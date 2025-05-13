@@ -1,6 +1,6 @@
 {
   "vurderingsID" : "7b006d2c-ff75-4404-9663-7babf23f45de",
-  "tidspunkt" : "2025-03-31T14:35:21.3048295",
+  "tidspunkt" : "2025-05-09T13:29:22.351191",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "kanal" : "/",
@@ -374,12 +374,21 @@
         "delresultat" : [ ],
         "årsaker" : [ ],
         "avklaring" : "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk OG/eller permisjonstypen er ikke foreldrepermisjon?"
+      }, {
+        "regelId" : "REGEL_58",
+        "svar" : "NEI",
+        "begrunnelse" : "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk og permisjonen er ikke kortere enn 15 dager",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk og permisjonen er kortere enn 15 dager"
       } ],
       "årsaker" : [ {
-        "regelId" : "REGEL_57",
-        "avklaring" : "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk OG/eller permisjonstypen er ikke foreldrepermisjon?",
+        "regelId" : "REGEL_58",
+        "avklaring" : "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk og permisjonen er kortere enn 15 dager",
         "svar" : "NEI",
-        "begrunnelse" : "Er perioden med permisjon avsluttet for mer enn 30 dager før første dag syk OG permisjonstypen er foreldrepermisjon?"
+        "begrunnelse" : "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk og permisjonen er ikke kortere enn 15 dager"
       } ],
       "avklaring" : "Finnes det permisjoner i noen av arbeidsforholdene?"
     }, {
@@ -637,10 +646,10 @@
       "avklaring" : "Er regler for norske borgere avklart?"
     } ],
     "årsaker" : [ {
-      "regelId" : "REGEL_57",
-      "avklaring" : "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk OG/eller permisjonstypen er ikke foreldrepermisjon?",
+      "regelId" : "REGEL_58",
+      "avklaring" : "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk og permisjonen er kortere enn 15 dager",
       "svar" : "NEI",
-      "begrunnelse" : "Er perioden med permisjon avsluttet for mer enn 30 dager før første dag syk OG permisjonstypen er foreldrepermisjon?"
+      "begrunnelse" : "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk og permisjonen er ikke kortere enn 15 dager"
     }, {
       "regelId" : "REGEL_25",
       "avklaring" : "Er perioden for utenlandsopphold innenfor siste 12 måneder?",
