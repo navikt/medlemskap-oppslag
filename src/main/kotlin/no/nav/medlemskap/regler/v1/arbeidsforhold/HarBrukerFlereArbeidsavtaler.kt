@@ -6,7 +6,7 @@ import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale.Companion.arbeidsav
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale.Companion.harFlereArbeidsavtaler
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.arbeidsforholdForKontrollPeriode
-import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harFlereArbeidsforholdIKontrollperiode
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harIngenArbeidsforhold
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
@@ -23,18 +23,15 @@ class HarBrukerFlereArbeidsavtaler(
     override fun operasjon(): Resultat {
 
         val arbeidforholdForKontrollPeriode = arbeidsforhold.arbeidsforholdForKontrollPeriode(kontrollPeriodeForArbeidsforhold)
-        if (arbeidforholdForKontrollPeriode.isEmpty()) {
-            return nei(regelId)
-        }
+        if (arbeidforholdForKontrollPeriode.harIngenArbeidsforhold()) return nei(regelId)
 
         val arbeidsforholdet = arbeidforholdForKontrollPeriode.first()
         val arbeidsavtaler = arbeidsforholdet.arbeidsavtaler.arbeidsavtalerForKontrollperiode(kontrollPeriodeForArbeidsforhold)
 
-        if(arbeidsavtaler.harFlereArbeidsavtaler()) {
-            return ja(regelId)
+        return when {
+            arbeidsavtaler.harFlereArbeidsavtaler() -> ja(regelId)
+            else -> nei(regelId)
         }
-
-        return nei(regelId)
     }
 
 

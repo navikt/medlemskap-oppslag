@@ -3,10 +3,10 @@ package no.nav.medlemskap.regler.v1.arbeidsforhold
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale.Companion.erArbeidsavtalenLøpendeIHelePerioden
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale.Companion.harIngenArbeidsavtaler
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.arbeidsforholdForKontrollPeriode
-import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.erArbeidsforholdetLøpendeIHelePerioden
-
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harIngenArbeidsforhold
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
@@ -23,19 +23,15 @@ class HarArbeidsavtalenVartHeleKontrollPeriodenRegel(
     override fun operasjon(): Resultat {
 
         val arbeidforholdForKontrollPeriode = arbeidsforhold.arbeidsforholdForKontrollPeriode(kontrollPeriodeForArbeidsforhold)
-        if (arbeidforholdForKontrollPeriode.isEmpty()) {
-            return nei(regelId)
-        }
+        if (arbeidforholdForKontrollPeriode.harIngenArbeidsforhold()) return nei(regelId)
+
         val arbeidsavtaler = arbeidforholdForKontrollPeriode.first().arbeidsavtaler
+        if (arbeidsavtaler.harIngenArbeidsavtaler()) return nei(regelId)
 
-        if (arbeidsavtaler.isEmpty()) {
-            return nei(regelId)
+        return when {
+            arbeidsavtaler.first().erArbeidsavtalenLøpendeIHelePerioden(kontrollPeriodeForArbeidsforhold) -> ja(regelId)
+            else -> nei(regelId)
         }
-
-        if (arbeidsavtaler.first().erArbeidsavtalenLøpendeIHelePerioden(kontrollPeriodeForArbeidsforhold)) {
-            return ja(regelId)
-        }
-        return nei(regelId)
     }
 
     companion object {

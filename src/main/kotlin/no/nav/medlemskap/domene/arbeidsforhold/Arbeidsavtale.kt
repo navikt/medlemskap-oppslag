@@ -44,6 +44,10 @@ data class Arbeidsavtale(
             return this.size > 1
         }
 
+        fun List<Arbeidsavtale>.harIngenArbeidsavtaler(): Boolean {
+            return this.isEmpty()
+        }
+
         fun Arbeidsavtale.erArbeidsavtalenLøpendeIHelePerioden(periode: Kontrollperiode): Boolean {
             return this.starterFørKontrollPerioden(periode) && this.slutterEtterKontrollPerioden(periode)
         }
