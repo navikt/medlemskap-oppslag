@@ -26,6 +26,7 @@ class MedlClient(
 
     suspend fun hentMedlemskapsunntak(ident: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<MedlMedlemskapsunntak> {
         val token = azureAdClient.hentToken(configuration.register.medlScope)
+        val medlQuery = "{personident: ${ident}, fraOgMed: ${fraOgMed?.tilIsoFormat()}, tilOgMed: ${tilOgMed?.tilIsoFormat()}}"
         return runCatching {
             runWithRetryAndMetrics<List<MedlMedlemskapsunntak>>("Medl", "MedlemskapsunntakV1", retry) {
                 httpClient.post() {
@@ -33,7 +34,7 @@ class MedlClient(
                     header(HttpHeaders.Authorization, "Bearer ${token.token}")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
                     header("Nav-Call-Id", callId)
-                    setBody(medlQuery(ident, fraOgMed?.tilIsoFormat().toString(), tilOgMed?.tilIsoFormat().toString()).toString())
+                    setBody(medlQuery)
                 }.body()
             }
         }.fold(
@@ -67,5 +68,3 @@ class MedlClient(
         }
     }
 }
-
-data class medlQuery(val personident: String, val fraOgMed: String, val tilOgMed: String)

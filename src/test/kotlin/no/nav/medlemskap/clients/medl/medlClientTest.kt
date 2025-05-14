@@ -13,7 +13,6 @@ import kotlinx.coroutines.runBlocking
 import no.nav.medlemskap.clients.Token
 import no.nav.medlemskap.clients.azuread.AzureAdClient
 import no.nav.medlemskap.clients.medl.MedlClient
-import no.nav.medlemskap.clients.medl.medlQuery
 import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.config.Configuration
 import org.junit.jupiter.api.*
@@ -161,10 +160,11 @@ class medlClientTest {
         return MedlClient(server.baseUrl(), azureAdClient, config, cioHttpClient)
     }
 
+    private val medlQuery = "{personident: 10109000398, fraOgMed: 2010-01-01, tilOgMed: 2016-01-01}"
     private val queryMapping: MappingBuilder = WireMock.post(WireMock.urlPathEqualTo("/rest/v1/periode/soek"))
         .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
         .withHeader("Nav-Call-Id", equalTo("12345"))
-        .withRequestBody(equalTo(medlQuery("10109000398", "2010-01-01", "2016-01-01").toString()))
+        .withRequestBody(equalTo(medlQuery))
 
     private val medlResponse =
         """
