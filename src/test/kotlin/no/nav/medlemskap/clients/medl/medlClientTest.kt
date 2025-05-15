@@ -60,7 +60,7 @@ class medlClientTest {
         )
 
         val client = createMedlClient(azureAdClient)
-        val response = runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
+        val response = runBlocking { client.hentMedlemskapsunntak("10109000398", callId) }
 
         Assertions.assertEquals("Full", response[0].dekning)
         Assertions.assertEquals(100064642, response[0].unntakId)
@@ -108,7 +108,7 @@ class medlClientTest {
         val client = createMedlClient(azureAdClient)
 
         Assertions.assertThrows(ServerResponseException::class.java) {
-            runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
+            runBlocking { client.hentMedlemskapsunntak("10109000398", callId) }
         }
     }
 
@@ -131,7 +131,7 @@ class medlClientTest {
         val client = createMedlClient(azureAdClient)
 
         Assertions.assertThrows(ClientRequestException::class.java) {
-            runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
+            runBlocking { client.hentMedlemskapsunntak("10109000398", callId) }
         }
     }
 
@@ -151,7 +151,7 @@ class medlClientTest {
         )
 
         val client = createMedlClient(azureAdClient)
-        val response = runBlocking { client.hentMedlemskapsunntak("10109000398", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
+        val response = runBlocking { client.hentMedlemskapsunntak("10109000398", callId) }
 
         Assertions.assertEquals(0, response.size)
     }
@@ -160,7 +160,7 @@ class medlClientTest {
         return MedlClient(server.baseUrl(), azureAdClient, config, cioHttpClient)
     }
 
-    private val medlQuery = "{\"personident\": \"10109000398\", \"fraOgMed\": \"2010-01-01\", \"tilOgMed\": \"2016-01-01\"}"
+    private val medlQuery = "{\"personident\": \"10109000398\"}"
     private val queryMapping: MappingBuilder = WireMock.post(WireMock.urlPathEqualTo("/rest/v1/periode/soek"))
         .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
         .withHeader("Nav-Call-Id", equalTo("12345"))

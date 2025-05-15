@@ -7,6 +7,9 @@ import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.azuread.AzureAdClient
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
@@ -24,10 +27,13 @@ class MedlClient(
 
     private val logger = KotlinLogging.logger { }
 
-    suspend fun hentMedlemskapsunntak(ident: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<MedlMedlemskapsunntak> {
+    suspend fun hentMedlemskapsunntak(
+        ident: String,
+        callId: String
+    ): List<MedlMedlemskapsunntak> {
         val token = azureAdClient.hentToken(configuration.register.medlScope)
-        val medlQuery = "{\"personident\": \"${ident}\", \"fraOgMed\": \"${fraOgMed?.tilIsoFormat()}\", \"tilOgMed\": \"${tilOgMed?.tilIsoFormat()}\"}"
         return runCatching {
+            val medlQuery = "{\"personident\": \"${ident}\"}"
             runWithRetryAndMetrics<List<MedlMedlemskapsunntak>>("Medl", "MedlemskapsunntakV1", retry) {
                 httpClient.post() {
                     url("$baseUrl/rest/v1/periode/soek")
@@ -52,6 +58,7 @@ class MedlClient(
                             throw error
                         }
                     }
+
                     else -> throw error
                 }
             }
