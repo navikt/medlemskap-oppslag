@@ -16,7 +16,7 @@ class HarBrukerVartI60ProsentStillingSiste12Mnd(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    regelId: RegelId = RegelId.REGEL_64
+    regelId: RegelId = RegelId.REGEL_66
 ) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
