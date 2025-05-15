@@ -7,9 +7,6 @@ import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 import mu.KotlinLogging
 import no.nav.medlemskap.clients.azuread.AzureAdClient
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
