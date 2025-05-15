@@ -26,7 +26,7 @@ class MedlClient(
 
     suspend fun hentMedlemskapsunntak(ident: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<MedlMedlemskapsunntak> {
         val token = azureAdClient.hentToken(configuration.register.medlScope)
-        val medlQuery = "{personident: ${ident}, fraOgMed: ${fraOgMed?.tilIsoFormat()}, tilOgMed: ${tilOgMed?.tilIsoFormat()}}"
+        val medlQuery = "{\"personident\": \"${ident}\", \"fraOgMed\": \"${fraOgMed?.tilIsoFormat()}\", \"tilOgMed\": \"${tilOgMed?.tilIsoFormat()}\"}"
         return runCatching {
             runWithRetryAndMetrics<List<MedlMedlemskapsunntak>>("Medl", "MedlemskapsunntakV1", retry) {
                 httpClient.post() {
