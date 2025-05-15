@@ -33,6 +33,7 @@ class MedlClient(
                     url("$baseUrl/rest/v1/periode/soek")
                     header(HttpHeaders.Authorization, "Bearer ${token.token}")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
+                    header(HttpHeaders.ContentType, ContentType.Application.Json)
                     header("Nav-Call-Id", callId)
                     setBody(medlQuery)
                 }.body()
