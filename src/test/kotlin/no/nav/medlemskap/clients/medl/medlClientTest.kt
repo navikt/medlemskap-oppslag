@@ -160,7 +160,7 @@ class medlClientTest {
         return MedlClient(server.baseUrl(), azureAdClient, config, cioHttpClient)
     }
 
-    private val medlQuery = "{personident: 10109000398, fraOgMed: 2010-01-01, tilOgMed: 2016-01-01}"
+    private val medlQuery = "{\"personident\": \"10109000398\", \"fraOgMed\": \"2010-01-01\", \"tilOgMed\": \"2016-01-01\"}"
     private val queryMapping: MappingBuilder = WireMock.post(WireMock.urlPathEqualTo("/rest/v1/periode/soek"))
         .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
         .withHeader("Nav-Call-Id", equalTo("12345"))
