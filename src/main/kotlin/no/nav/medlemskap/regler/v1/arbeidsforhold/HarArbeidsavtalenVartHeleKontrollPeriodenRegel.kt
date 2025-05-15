@@ -2,6 +2,7 @@ package no.nav.medlemskap.regler.v1.arbeidsforhold
 
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale.Companion.arbeidsavtalerForKontrollperiode
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale.Companion.erArbeidsavtalenLøpendeIHelePerioden
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale.Companion.harIngenArbeidsavtaler
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
@@ -25,11 +26,13 @@ class HarArbeidsavtalenVartHeleKontrollPeriodenRegel(
         val arbeidforholdForKontrollPeriode = arbeidsforhold.arbeidsforholdForKontrollPeriode(kontrollPeriodeForArbeidsforhold)
         if (arbeidforholdForKontrollPeriode.harIngenArbeidsforhold()) return nei(regelId)
 
-        val arbeidsavtaler = arbeidforholdForKontrollPeriode.first().arbeidsavtaler
-        if (arbeidsavtaler.harIngenArbeidsavtaler()) return nei(regelId)
+        val arbeidsforholdet = arbeidforholdForKontrollPeriode.first()
+
+        val arbeidsavtalerForKontrollPeriode = arbeidsforholdet.arbeidsavtaler.arbeidsavtalerForKontrollperiode(kontrollPeriodeForArbeidsforhold)
+        if (arbeidsavtalerForKontrollPeriode.harIngenArbeidsavtaler()) return nei(regelId)
 
         return when {
-            arbeidsavtaler.first().erArbeidsavtalenLøpendeIHelePerioden(kontrollPeriodeForArbeidsforhold) -> ja(regelId)
+            arbeidsavtalerForKontrollPeriode.first().erArbeidsavtalenLøpendeIHelePerioden(kontrollPeriodeForArbeidsforhold) -> ja(regelId)
             else -> nei(regelId)
         }
     }

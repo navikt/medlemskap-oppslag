@@ -13,7 +13,7 @@ import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import java.time.LocalDate
 
-class HarBrukerFlereArbeidsavtaler(
+class HarBrukerFlereArbeidsavtalerSiste12Mnd(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
@@ -26,10 +26,10 @@ class HarBrukerFlereArbeidsavtaler(
         if (arbeidforholdForKontrollPeriode.harIngenArbeidsforhold()) return nei(regelId)
 
         val arbeidsforholdet = arbeidforholdForKontrollPeriode.first()
-        val arbeidsavtaler = arbeidsforholdet.arbeidsavtaler.arbeidsavtalerForKontrollperiode(kontrollPeriodeForArbeidsforhold)
+        val arbeidsavtalerForKontrollPerioden = arbeidsforholdet.arbeidsavtaler.arbeidsavtalerForKontrollperiode(kontrollPeriodeForArbeidsforhold)
 
         return when {
-            arbeidsavtaler.harFlereArbeidsavtaler() -> ja(regelId)
+            arbeidsavtalerForKontrollPerioden.harFlereArbeidsavtaler() -> ja(regelId)
             else -> nei(regelId)
         }
     }
@@ -37,8 +37,8 @@ class HarBrukerFlereArbeidsavtaler(
 
     companion object {
 
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerFlereArbeidsavtaler {
-            return HarBrukerFlereArbeidsavtaler(
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerFlereArbeidsavtalerSiste12Mnd {
+            return HarBrukerFlereArbeidsavtalerSiste12Mnd(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold

@@ -1,11 +1,11 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regel 65: Har bruker kun en arbeidsavtale siste 12 mnd ?
+Egenskap: Regel 65: Har bruker flere arbeidsavtaler siste 12 månedene ?
 
-  Regel: Regel 65: Har bruker kun ett arbeidsforhold siste 12 mnd ?
+  Regel: Regel 65: Har bruker flere arbeidsavtaler siste 12 månedene ?
 
-    Scenariomal: Person som har kun en arbeidsavtale får "Ja"
+    Scenariomal: Person som har hatt en arbeidsavtale får "Nei"
       Gitt følgende arbeidsforhold fra AAReg
         | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
         | <Fra og med 1>  |                 | Organisasjon     | NORMALT             |
@@ -24,7 +24,7 @@ Egenskap: Regel 65: Har bruker kun en arbeidsavtale siste 12 mnd ?
         | 01.01.2018   |              | 100              | Nei  |
 
 
-    Scenariomal: Person som har flere arbeidsavtaler får "Nei"
+    Scenariomal: Person som har hatt flere arbeidsavtaler får "Ja"
       Gitt følgende arbeidsforhold fra AAReg
         | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
         | <Fra og med 1>  |                 | Organisasjon     | NORMALT             |
