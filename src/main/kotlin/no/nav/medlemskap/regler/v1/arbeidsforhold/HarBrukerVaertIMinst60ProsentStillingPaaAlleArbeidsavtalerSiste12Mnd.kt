@@ -4,6 +4,7 @@ import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale.Companion.arbeidsavtalerForKontrollperiode
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale.Companion.harIngenArbeidsavtaler
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale.Companion.sammenhengendeArbeidsavtaler
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.arbeidsforholdForKontrollPeriode
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harIngenArbeidsforhold
@@ -13,27 +14,24 @@ import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import java.time.LocalDate
 
-class HarBrukerVartI60ProsentStillingSiste12MndPaaEnArbeidsavtale(
+class HarBrukerVaertIMinst60ProsentStillingPaaAlleArbeidsavtalerSiste12Mnd(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    regelId: RegelId = RegelId.REGEL_64
+    regelId: RegelId = RegelId.REGEL_66
 ) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
 
         val arbeidforholdForKontrollPeriode = arbeidsforhold.arbeidsforholdForKontrollPeriode(kontrollPeriodeForArbeidsforhold)
-        if (arbeidforholdForKontrollPeriode.harIngenArbeidsforhold()) return nei(regelId)
-
-        val arbeidsforholdet = arbeidforholdForKontrollPeriode.first()
-
-        val arbeidsavtalerForKontrollPeriode = arbeidsforholdet.arbeidsavtaler.arbeidsavtalerForKontrollperiode(kontrollPeriodeForArbeidsforhold)
-        if (arbeidsavtalerForKontrollPeriode.harIngenArbeidsavtaler()) return nei(regelId)
-
-        val arbeidsavtalen = arbeidsavtalerForKontrollPeriode.first()
+        val arbeidsavtalerForKonterollPeriode = arbeidforholdForKontrollPeriode.first().arbeidsavtaler
+            .arbeidsavtalerForKontrollperiode(kontrollPeriodeForArbeidsforhold)
 
         return when {
-            arbeidsavtalen.stillingsprosent!! >= 60 -> ja(regelId)
+            arbeidforholdForKontrollPeriode.harIngenArbeidsforhold() -> nei(regelId)
+            arbeidsavtalerForKonterollPeriode.harIngenArbeidsavtaler() -> nei(regelId)
+            arbeidsavtalerForKonterollPeriode.sammenhengendeArbeidsavtaler(kontrollPeriodeForArbeidsforhold, 0)
+                .firstOrNull { it.stillingsprosent!! >= 60 } != null -> ja(regelId)
             else -> nei(regelId)
         }
     }
@@ -41,8 +39,8 @@ class HarBrukerVartI60ProsentStillingSiste12MndPaaEnArbeidsavtale(
 
     companion object {
 
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerVartI60ProsentStillingSiste12MndPaaEnArbeidsavtale {
-            return HarBrukerVartI60ProsentStillingSiste12MndPaaEnArbeidsavtale(
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerVaertIMinst60ProsentStillingPaaAlleArbeidsavtalerSiste12Mnd {
+            return HarBrukerVaertIMinst60ProsentStillingPaaAlleArbeidsavtalerSiste12Mnd(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold

@@ -3,7 +3,6 @@ package no.nav.medlemskap.regler.v1.arbeidsforhold
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale.Companion.arbeidsavtalerForKontrollperiode
-import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale.Companion.erSammenhengendeArbeidsavtaler
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale.Companion.harIngenArbeidsavtaler
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.arbeidsforholdForKontrollPeriode
@@ -14,11 +13,11 @@ import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import java.time.LocalDate
 
-class HarBrukerSammenhengendeArbeidsavtalerSiste12Mnd(
+class HarBrukerVaertIMinst60ProsentStillingSiste12MndPaaEnArbeidsavtale(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    regelId: RegelId = RegelId.REGEL_66
+    regelId: RegelId = RegelId.REGEL_64
 ) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {
@@ -31,8 +30,10 @@ class HarBrukerSammenhengendeArbeidsavtalerSiste12Mnd(
         val arbeidsavtalerForKontrollPeriode = arbeidsforholdet.arbeidsavtaler.arbeidsavtalerForKontrollperiode(kontrollPeriodeForArbeidsforhold)
         if (arbeidsavtalerForKontrollPeriode.harIngenArbeidsavtaler()) return nei(regelId)
 
+        val arbeidsavtalen = arbeidsavtalerForKontrollPeriode.first()
+
         return when {
-            arbeidsavtalerForKontrollPeriode.erSammenhengendeArbeidsavtaler(kontrollPeriodeForArbeidsforhold, 0) -> ja(regelId)
+            arbeidsavtalen.stillingsprosent!! >= 60 -> ja(regelId)
             else -> nei(regelId)
         }
     }
@@ -40,8 +41,8 @@ class HarBrukerSammenhengendeArbeidsavtalerSiste12Mnd(
 
     companion object {
 
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerSammenhengendeArbeidsavtalerSiste12Mnd {
-            return HarBrukerSammenhengendeArbeidsavtalerSiste12Mnd(
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerVaertIMinst60ProsentStillingSiste12MndPaaEnArbeidsavtale {
+            return HarBrukerVaertIMinst60ProsentStillingSiste12MndPaaEnArbeidsavtale(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold

@@ -115,9 +115,9 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_58 -> ErPeriodeForPermisjonAvsluttetForMerEnn30DagerSidenOgErKortereEnn15Dager.fraDatagrunnlag(datagrunnlag).regel
             REGEL_60 -> HarBrukerKunEttArbeidsforholdRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_61 -> HarArbeidsavtalenVartHeleKontrollPeriodenRegel.fraDatagrunnlag(datagrunnlag).regel
-            REGEL_64 -> HarBrukerVartI60ProsentStillingSiste12MndPaaEnArbeidsavtale.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_64 -> HarBrukerVaertIMinst60ProsentStillingSiste12MndPaaEnArbeidsavtale.fraDatagrunnlag(datagrunnlag).regel
             REGEL_65 -> HarBrukerFlereArbeidsavtalerSiste12Mnd.fraDatagrunnlag(datagrunnlag).regel
-            REGEL_66 -> HarBrukerSammenhengendeArbeidsavtalerSiste12Mnd.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_66 -> HarBrukerVaertIMinst60ProsentStillingPaaAlleArbeidsavtalerSiste12Mnd.fraDatagrunnlag(datagrunnlag).regel
 
             else -> throw java.lang.RuntimeException("Ukjent regel: $regelId")
         }
