@@ -58,15 +58,15 @@ Egenskap: Regelflyt for regel 30
 
     Og følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype | Arbeidsgiver Id |
-      | 01.01.2017      |                 | Organisasjon     | NORMALT             | 1               |
+      | 01.01.2016      |                 | Organisasjon     | NORMALT             | 1               |
 
     Og følgende oppholdstillatelse
       | Gyldig fra og med | Gyldig til og med | Har tillatelse | Type      | Oppholdstillatelse på samme vilkår flagg |
-      | 01.01.2017        | 31.12.2030        | Ja             | PERMANENT | Nei                                      |
+      | 01.01.2016        | 31.12.2030        | Ja             | PERMANENT | Nei                                      |
 
     Og følgende arbeidsadgang
       | Gyldig fra og med | Gyldig til og med | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
-      | 01.01.2017        |                   | Ja            | GENERELL          | KUN_ARBEID_HELTID    |
+      | 01.01.2016        |                   | Ja            | GENERELL          | KUN_ARBEID_HELTID    |
 
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |

@@ -6,3 +6,5 @@ data class InnflyttingTilNorge(
     val folkeregistermetadata: Folkeregistermetadata,
     val metadata: Metadata
 )
+
+
