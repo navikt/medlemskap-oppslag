@@ -14,7 +14,7 @@ import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import java.time.LocalDate
 
-class HarBrukerVaertIMinst60ProsentStillingPaaAlleArbeidsavtalerSiste12Mnd(
+class HarBrukerVaertIMinst60ProsentStillingIEnArbeidsavtaleSiste12Mnd(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
@@ -24,11 +24,16 @@ class HarBrukerVaertIMinst60ProsentStillingPaaAlleArbeidsavtalerSiste12Mnd(
     override fun operasjon(): Resultat {
 
         val arbeidforholdForKontrollPeriode = arbeidsforhold.arbeidsforholdForKontrollPeriode(kontrollPeriodeForArbeidsforhold)
+        if (arbeidforholdForKontrollPeriode.harIngenArbeidsforhold()) return nei(regelId)
+
         val arbeidsavtalerForKonterollPeriode = arbeidforholdForKontrollPeriode.first().arbeidsavtaler
             .arbeidsavtalerForKontrollperiode(kontrollPeriodeForArbeidsforhold)
 
+        // Finnes det en arbeidsavtale som har vart 12 mnd +
+        // Er stillingsprosenten lik 60% eller mer?
+        // OK
+
         return when {
-            arbeidforholdForKontrollPeriode.harIngenArbeidsforhold() -> nei(regelId)
             arbeidsavtalerForKonterollPeriode.harIngenArbeidsavtaler() -> nei(regelId)
             arbeidsavtalerForKonterollPeriode.sammenhengendeArbeidsavtaler(kontrollPeriodeForArbeidsforhold, 0)
                 .firstOrNull { it.stillingsprosent!! >= 60 } != null -> ja(regelId)
@@ -39,8 +44,8 @@ class HarBrukerVaertIMinst60ProsentStillingPaaAlleArbeidsavtalerSiste12Mnd(
 
     companion object {
 
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerVaertIMinst60ProsentStillingPaaAlleArbeidsavtalerSiste12Mnd {
-            return HarBrukerVaertIMinst60ProsentStillingPaaAlleArbeidsavtalerSiste12Mnd(
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerVaertIMinst60ProsentStillingIEnArbeidsavtaleSiste12Mnd {
+            return HarBrukerVaertIMinst60ProsentStillingIEnArbeidsavtaleSiste12Mnd(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold
