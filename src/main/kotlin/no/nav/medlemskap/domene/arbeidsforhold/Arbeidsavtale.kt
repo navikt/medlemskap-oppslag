@@ -2,6 +2,8 @@ package no.nav.medlemskap.domene.arbeidsforhold
 
 import no.nav.medlemskap.domene.Kontrollperiode
 import no.nav.medlemskap.domene.Periode
+import no.nav.medlemskap.domene.Periode.Companion.slutterEtterKontrollPerioden
+import no.nav.medlemskap.domene.Periode.Companion.starterFørKontrollPerioden
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -152,6 +154,18 @@ data class Arbeidsavtale(
 
             return grupper
         }
+
+
+        fun List<Arbeidsavtale>.harVartHeleKontrollperioden(kontrollPeriode: Kontrollperiode): Boolean {
+            val førsteArbeidsavtale = this.firstOrNull()!!
+            val sisteArbeidsavtale = this.lastOrNull()!!
+            return førsteArbeidsavtale.periode.starterFørKontrollPerioden(kontrollPeriode) &&
+                    sisteArbeidsavtale.periode.slutterEtterKontrollPerioden(kontrollPeriode)
+        }
+
+
+
+
 
 
     }
