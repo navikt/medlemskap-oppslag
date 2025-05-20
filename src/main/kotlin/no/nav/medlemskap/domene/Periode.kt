@@ -1,5 +1,6 @@
 package no.nav.medlemskap.domene
 
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale
 import no.nav.medlemskap.regler.common.startOfDayInstant
 import org.threeten.extra.Interval
 import java.time.Instant
@@ -9,6 +10,20 @@ data class Periode(
     val fom: LocalDate?,
     val tom: LocalDate?
 ) {
+
+    companion object {
+
+        fun Periode.starterFørKontrollPerioden(periode: Kontrollperiode): Boolean {
+            return this.fom != null && this.fom.isBefore(periode.fom)
+        }
+
+        fun Periode.slutterEtterKontrollPerioden(periode: Kontrollperiode): Boolean {
+            return this.tom == null || this.tom.isAfter(periode.tom)
+        }
+    }
+
+
+
     fun erGyldigPeriode(): Boolean {
         return (fomNotNull().isBefore(tomNotNull()) || fomNotNull().isEqual(tomNotNull()))
     }
@@ -87,4 +102,6 @@ data class Periode(
     private fun intervalStartInclusive(): Instant = this.fom?.startOfDayInstant() ?: Instant.MIN
 
     private fun intervalEndExclusive(): Instant = this.tom?.plusDays(1)?.startOfDayInstant() ?: Instant.MAX
+
+
 }

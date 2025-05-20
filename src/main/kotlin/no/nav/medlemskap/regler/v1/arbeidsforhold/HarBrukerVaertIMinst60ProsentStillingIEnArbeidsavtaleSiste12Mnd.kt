@@ -1,8 +1,14 @@
 package no.nav.medlemskap.regler.v1.arbeidsforhold
 
 import no.nav.medlemskap.domene.Datagrunnlag
+import no.nav.medlemskap.domene.Periode
+import no.nav.medlemskap.domene.Periode.Companion.slutterEtterKontrollPerioden
+import no.nav.medlemskap.domene.Periode.Companion.starterFørKontrollPerioden
 import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale.Companion.arbeidsavtalerForKontrollperiode
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale.Companion.erArbeidsavtalenLøpendeIHelePerioden
+import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale.Companion.grupperAvtaler
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale.Companion.harIngenArbeidsavtaler
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale.Companion.sammenhengendeArbeidsavtaler
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
@@ -28,15 +34,22 @@ class HarBrukerVaertIMinst60ProsentStillingIEnArbeidsavtaleSiste12Mnd(
 
         val arbeidsavtalerForKonterollPeriode = arbeidforholdForKontrollPeriode.first().arbeidsavtaler
             .arbeidsavtalerForKontrollperiode(kontrollPeriodeForArbeidsforhold)
+        if (arbeidsavtalerForKonterollPeriode.harIngenArbeidsavtaler()) return nei(regelId)
 
-        // Finnes det en arbeidsavtale som har vart 12 mnd +
-        // Er stillingsprosenten lik 60% eller mer?
-        // OK
 
         return when {
-            arbeidsavtalerForKonterollPeriode.harIngenArbeidsavtaler() -> nei(regelId)
-            arbeidsavtalerForKonterollPeriode.sammenhengendeArbeidsavtaler(kontrollPeriodeForArbeidsforhold, 0)
-                .firstOrNull { it.stillingsprosent!! >= 60 } != null -> ja(regelId)
+            arbeidsavtalerForKonterollPeriode
+                .filter { it.stillingsprosent!! >= 60 }
+                .sammenhengendeArbeidsavtaler(kontrollPeriodeForArbeidsforhold, 0)
+                .grupperAvtaler()
+                .any {
+                    val førsteArbeidsavtale = it.firstOrNull()!!
+                    val sisteArbeidsavtale = it.lastOrNull()!!
+                    førsteArbeidsavtale.periode.starterFørKontrollPerioden(kontrollPeriodeForArbeidsforhold) &&
+                            sisteArbeidsavtale.periode.slutterEtterKontrollPerioden(kontrollPeriodeForArbeidsforhold) }
+                                -> ja(regelId)
+
+
             else -> nei(regelId)
         }
     }

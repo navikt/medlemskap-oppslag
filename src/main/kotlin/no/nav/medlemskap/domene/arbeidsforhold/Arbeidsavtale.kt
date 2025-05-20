@@ -35,7 +35,10 @@ data class Arbeidsavtale(
             return this.filter { it.gyldighetsperiode.overlapper(kontrollPeriode) }
         }
 
-        fun List<Arbeidsavtale>.sammenhengendeArbeidsavtaler(kontrollPeriode: Kontrollperiode, tillatDagersHullIPeriode: Long): List<Arbeidsavtale> {
+        fun List<Arbeidsavtale>.sammenhengendeArbeidsavtaler(
+            kontrollPeriode: Kontrollperiode,
+            tillatDagersHullIPeriode: Long
+        ): List<Arbeidsavtale> {
             return if (this.erSammenhengendeArbeidsavtaler(kontrollPeriode, tillatDagersHullIPeriode)) this
             else emptyList()
         }
@@ -55,27 +58,40 @@ data class Arbeidsavtale(
         fun Arbeidsavtale.starterFørKontrollPerioden(periode: Kontrollperiode): Boolean {
             return this.gyldighetsperiode.fom != null && this.gyldighetsperiode.fom.isBefore(periode.fom)
         }
+
         fun Arbeidsavtale.slutterEtterKontrollPerioden(periode: Kontrollperiode): Boolean {
             return this.gyldighetsperiode.tom == null || this.gyldighetsperiode.tom.isAfter(periode.tom)
         }
 
 
-        fun List<Arbeidsavtale>.erSammenhengendeArbeidsavtaler(kontrollPeriode: Kontrollperiode, tillatDagersHullIPeriode: Long): Boolean {
+        fun List<Arbeidsavtale>.erSammenhengendeArbeidsavtaler(
+            kontrollPeriode: Kontrollperiode,
+            tillatDagersHullIPeriode: Long
+        ): Boolean {
             var totaltAntallDagerDiff: Long = 0
             var forrigeTilDato: LocalDate? = null
 
-            val sortertArbeidsavtaleEtterPeriode = this.arbeidsavtalerForKontrollperiode(kontrollPeriode).sortertArbeidsavtaleEtterPeriode()
+            val sortertArbeidsavtaleEtterPeriode =
+                this.arbeidsavtalerForKontrollperiode(kontrollPeriode).sortertArbeidsavtaleEtterPeriode()
 
             for (arbeidsavtale in sortertArbeidsavtaleEtterPeriode) {
-                if (forrigeTilDato != null && !erDatoerSammenhengende(forrigeTilDato, arbeidsavtale.gyldighetsperiode.fom, tillatDagersHullIPeriode)
+                if (forrigeTilDato != null && !erDatoerSammenhengende(
+                        forrigeTilDato,
+                        arbeidsavtale.gyldighetsperiode.fom,
+                        tillatDagersHullIPeriode
+                    )
                 ) {
-                    val antallDagerDiff = abs(ChronoUnit.DAYS.between(forrigeTilDato, arbeidsavtale.gyldighetsperiode.fom))
+                    val antallDagerDiff =
+                        abs(ChronoUnit.DAYS.between(forrigeTilDato, arbeidsavtale.gyldighetsperiode.fom))
                     totaltAntallDagerDiff += antallDagerDiff
 
                     if (totaltAntallDagerDiff > tillatDagersHullIPeriode)
                         return false
                 }
-                if (arbeidsavtale.gyldighetsperiode.tom == null || forrigeTilDato == null || arbeidsavtale.gyldighetsperiode.tom.isAfter(forrigeTilDato))
+                if (arbeidsavtale.gyldighetsperiode.tom == null || forrigeTilDato == null || arbeidsavtale.gyldighetsperiode.tom.isAfter(
+                        forrigeTilDato
+                    )
+                )
                     forrigeTilDato = arbeidsavtale.gyldighetsperiode.tom
 
                 if (forrigeTilDato == null || forrigeTilDato.isAfter(kontrollPeriode.tom)) return true
@@ -86,5 +102,57 @@ data class Arbeidsavtale(
             }
             return true
         }
+
+
+        fun Arbeidsavtale.slutt(): LocalDate = this.gyldighetsperiode.tom ?: LocalDate.MAX
+        fun Arbeidsavtale.start(): LocalDate? = this.gyldighetsperiode.fom
+
+        fun Arbeidsavtale.erSekvensiellEtter(forrige: Arbeidsavtale): Boolean {
+            return this.start() == forrige.slutt()
+        }
+
+        fun Arbeidsavtale.overlapperMed(annen: Arbeidsavtale): Boolean {
+            return !(this.slutt().isBefore(annen.start()) || this.start()!!.isAfter(annen.slutt()))
+        }
+
+        fun List<Arbeidsavtale>.grupperAvtaler(): List<List<Arbeidsavtale>> {
+            val ubehandlet = this.toMutableSet()
+            val grupper = mutableListOf<List<Arbeidsavtale>>()
+
+            while (ubehandlet.isNotEmpty()) {
+                val start = ubehandlet.minByOrNull { it.start()!! }!!
+                val kjede = mutableListOf(start)
+                ubehandlet.remove(start)
+
+                var nåværende = start
+                var neste = ubehandlet.find { it.erSekvensiellEtter(nåværende) }
+
+                while (neste != null) {
+                    kjede.add(neste)
+                    ubehandlet.remove(neste)
+                    nåværende = neste
+                    neste = ubehandlet.find { it.erSekvensiellEtter(nåværende) }
+                }
+
+                if (kjede.size > 1) {
+                    grupper.add(kjede)
+                } else {
+                    // sjekk om den overlapper med noen
+                    val overlappende = ubehandlet.filter { it.overlapperMed(start) }
+                    if (overlappende.isEmpty()) {
+                        grupper.add(kjede)
+                    } else {
+                        grupper.add(listOf(start))
+                    }
+                }
+            }
+
+            // resterende overlappende eller isolerte
+            ubehandlet.forEach { grupper.add(listOf(it)) }
+
+            return grupper
+        }
+
+
     }
 }
