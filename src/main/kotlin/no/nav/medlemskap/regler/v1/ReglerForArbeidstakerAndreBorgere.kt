@@ -20,21 +20,34 @@ class ReglerForArbeidstakerAndreBorgere(
 
     override fun hentHovedflyt(): Regelflyt {
 
+
+        val HarBrukerVaertIMinst60ProsentStillingIEnArbeidsavtaleSiste12Mnd = lagRegelflyt (
+            regel = hentRegel(REGEL_66),
+            hvisJa = regelflytJa(ytelse, REGEL_ARBEIDSTAKERE_ANDRE_BORGERE),
+            hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSTAKERE_ANDRE_BORGERE)
+        )
+
         val harBrukerVærtIMinst60ProsentStillingIHeleKontrollperioden = lagRegelflyt(
             regel = hentRegel(REGEL_64),
             hvisJa = regelflytJa(ytelse, REGEL_ARBEIDSTAKERE_ANDRE_BORGERE),
             hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSTAKERE_ANDRE_BORGERE)
         )
 
-        val harArbeidsforholdetVartHeleKontrollperioden = lagRegelflyt(
+        val HarArbeidsavtalenVartHeleKontrollPeriodenRegel = lagRegelflyt(
             regel = hentRegel(REGEL_61),
             hvisJa = harBrukerVærtIMinst60ProsentStillingIHeleKontrollperioden,
             hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSTAKERE_ANDRE_BORGERE)
         )
 
+        val HarBrukerFlereArbeidsavtalerSiste12Mnd = lagRegelflyt(
+            regel = hentRegel(REGEL_65),
+            hvisJa = HarBrukerVaertIMinst60ProsentStillingIEnArbeidsavtaleSiste12Mnd,
+            hvisNei = HarArbeidsavtalenVartHeleKontrollPeriodenRegel
+        )
+
         val harBrukerBareEttArbeidisforhold = lagRegelflyt(
             regel = hentRegel(REGEL_60),
-            hvisJa = harArbeidsforholdetVartHeleKontrollperioden,
+            hvisJa = HarBrukerFlereArbeidsavtalerSiste12Mnd,
             hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSTAKERE_ANDRE_BORGERE)
         )
 
