@@ -157,16 +157,16 @@ data class Arbeidsavtale(
 
 
         fun List<Arbeidsavtale>.harVartHeleKontrollperioden(kontrollPeriode: Kontrollperiode): Boolean {
-            val førsteArbeidsavtale = this.firstOrNull()!!
-            val sisteArbeidsavtale = this.lastOrNull()!!
+            val førsteArbeidsavtale = this.firstOrNull()
+            val sisteArbeidsavtale = this.lastOrNull()
+
+            if (førsteArbeidsavtale == null || sisteArbeidsavtale == null) {
+                return false
+            }
+
             return førsteArbeidsavtale.periode.starterFørKontrollPerioden(kontrollPeriode) &&
                     sisteArbeidsavtale.periode.slutterEtterKontrollPerioden(kontrollPeriode)
         }
-
-
-
-
-
 
     }
 }

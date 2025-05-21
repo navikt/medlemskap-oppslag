@@ -16,7 +16,7 @@ import no.nav.medlemskap.regler.common.Resultat.Companion.ja
 import no.nav.medlemskap.regler.common.Resultat.Companion.nei
 import java.time.LocalDate
 
-class HarBrukerVaertIMinst60ProsentStillingIEnArbeidsavtaleSiste12Mnd(
+class HarBrukerVaertIMinst60ProsentStillingIEnAvArbeidsavtaleSiste12Mnd(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
@@ -48,8 +48,8 @@ class HarBrukerVaertIMinst60ProsentStillingIEnArbeidsavtaleSiste12Mnd(
 
     companion object {
 
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerVaertIMinst60ProsentStillingIEnArbeidsavtaleSiste12Mnd {
-            return HarBrukerVaertIMinst60ProsentStillingIEnArbeidsavtaleSiste12Mnd(
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): HarBrukerVaertIMinst60ProsentStillingIEnAvArbeidsavtaleSiste12Mnd {
+            return HarBrukerVaertIMinst60ProsentStillingIEnAvArbeidsavtaleSiste12Mnd(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
                 arbeidsforhold = datagrunnlag.arbeidsforhold
