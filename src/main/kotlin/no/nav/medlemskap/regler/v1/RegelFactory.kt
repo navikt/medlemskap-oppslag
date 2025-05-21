@@ -93,7 +93,6 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_19_6_1 -> DekkerArbeidstillatelsenArbeidsperiodenRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_19_7 -> ErBrukerBritiskBorgerRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_19_8 -> HarBrukerOppholdPåSammeVilkårFlagg.fraDatagrunnlag(datagrunnlag).regel
-            REGEL_20 -> HarBrukerJobbet80ProsentEllerMerSiste3MånedeneRegel.fraDatagrunnlag(datagrunnlag, REGEL_20).regel
             REGEL_22 -> HarBrukerUtenlandsoppholdIArbeidsforholdet.fraDatagrunnlag(datagrunnlag).regel
             REGEL_23 -> HarIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum.fraDatagrunnlag(datagrunnlag).regel
             REGEL_21 -> ErBrukerArbeidstakerIKontrollperiodeForStønadsområde.fraDatagrunnlag(datagrunnlag).regel
@@ -105,7 +104,6 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_31 -> HarBrukerPermanentOppholdstillatelse.fraDatagrunnlag(datagrunnlag).regel
             REGEL_32 -> HarBrukerPermisjonSiste12Måneder.fraDatagrunnlag(datagrunnlag).regel
             REGEL_33 -> ErSummenAvPermisjonenMerEnn60DagerSiste12Mnd.fraDatagrunnlag(datagrunnlag).regel
-            REGEL_34 -> HarBrukerMinst60StillingsprosentRegel.fraDatagrunnlag(datagrunnlag, REGEL_34).regel
             REGEL_35 -> ErBrukerIMaritimtArbeidsforholdDagenFørStartdatoForYtelse.fraDatagrunnlag(datagrunnlag).regel
             REGEL_36 -> HarSammenhengendeArbeidsforholdSiste12MånederPåNORSkip.fraDatagrunnlag(datagrunnlag).regel
             REGEL_42 -> HarMaritimtArbeidsforholdRegel.fraDatagrunnlag(datagrunnlag).regel
@@ -115,6 +113,12 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_55 -> HarBrukerHattMerEnn60DagerPermisjonSiste12MndRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_57 -> ErPeriodeForPermisjonAvsluttetForMerEnn30DagerSidenOgTypeForeldrepermisjon.fraDatagrunnlag(datagrunnlag).regel
             REGEL_58 -> ErPeriodeForPermisjonAvsluttetForMerEnn30DagerSidenOgErKortereEnn15Dager.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_60 -> HarBrukerKunEttArbeidsforholdRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_61 -> HarArbeidsavtalenVartHeleKontrollPeriodenRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_64 -> HarBrukerVaertIMinst60ProsentStillingSiste12MndPaaEnArbeidsavtale.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_65 -> HarBrukerFlereArbeidsavtalerSiste12Mnd.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_66 -> HarBrukerVaertIMinst60ProsentStillingIEnAvArbeidsavtaleSiste12Mnd.fraDatagrunnlag(datagrunnlag).regel
+
             else -> throw java.lang.RuntimeException("Ukjent regel: $regelId")
         }
     }
