@@ -8,6 +8,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import mu.KotlinLogging
+import no.nav.medlemskap.clients.azuread.AzureAdClient
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
 import no.nav.medlemskap.clients.saf.generated.Dokumenter
 import no.nav.medlemskap.clients.saf.generated.enums.BrukerIdType
@@ -18,11 +19,13 @@ import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.common.ytelse
+import no.nav.medlemskap.config.Configuration
 import kotlin.coroutines.coroutineContext
 
 class SafClient(
     private val baseUrl: String,
-    private val stsClient: StsRestClient,
+    private val azureAdClient: AzureAdClient,
+    private val configuration: Configuration,
     private val username: String,
     private val httpClient: HttpClient,
     private val safApiKey: String,
@@ -37,7 +40,7 @@ class SafClient(
 
         return runWithRetryAndMetrics("SAF", "DokumentoversiktBruker", retry) {
 
-            val stsToken = stsClient.oidcToken()
+            val token = azureAdClient.hentToken(configuration.register.safScope)
             val dokumenterQuery = Dokumenter(
                 variables = Dokumenter.Variables(
                     brukerId = BrukerIdInput(id = fnr, type = BrukerIdType.FNR),
@@ -51,7 +54,7 @@ class SafClient(
             val response: KotlinxGraphQLResponse<Dokumenter.Result> = httpClient.post() {
                 url(baseUrl)
                 setBody(dokumenterQuery)
-                header(HttpHeaders.Authorization, "Bearer $stsToken")
+                header(HttpHeaders.Authorization, "Bearer ${token.token}")
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
                 header("Nav-Callid", callId)

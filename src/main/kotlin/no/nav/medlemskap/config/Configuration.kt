@@ -44,7 +44,8 @@ private val defaultProperties = ConfigurationMap(
         "AZURE_SCOPE_UDI" to "",
         "AZURE_SCOPE_MEDL" to "",
         "AZURE_SCOPE_PDL" to "",
-        "AZURE_SCOPE_AAREG" to ""
+        "AZURE_SCOPE_AAREG" to "",
+        "AZURE_SCOPE_SAF" to ""
     )
 )
 
@@ -83,6 +84,7 @@ data class Configuration(
         val aaRegApiKey: String = "AAREG_API_KEY".configProperty(),
         val safBaseUrl: String = "SAF_BASE_URL".configProperty(),
         val safApiKey: String = "SAF_API_KEY".configProperty(),
+        val safScope: String = "AZURE_SCOPE_SAF".configProperty(),
         val oppgaveBaseUrl: String = "OPPGAVE_BASE_URL".configProperty(),
         val oppgaveApiKey: String = "OPPGAVE_API_KEY".configProperty(),
         val pdlBaseUrl: String = "PDL_BASE_URL".configProperty(),

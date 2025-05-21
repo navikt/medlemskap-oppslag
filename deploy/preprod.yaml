@@ -104,3 +104,5 @@ spec:
       value: api://dev-fss.pdl.pdl-api/.default
     - name: AZURE_SCOPE_AAREG
       value: api://dev-fss.arbeidsforhold.aareg-services-nais/.default
+    - name: AZURE_SCOPE_SAF
+      value: api://dev-fss.teamdokumenthandtering.saf-q1/.default

@@ -55,7 +55,6 @@ class Services(val configuration: Configuration) {
         val azureAdClient = AzureAdClient(configuration)
 
         val restClients = RestClients(
-            stsClientRest = stsRestClient,
             azureAdClient = azureAdClient,
             configuration = configuration
         )
