@@ -73,6 +73,7 @@ spec:
         - host: ereg-services.dev.intern.nav.no
         - host: medlemskap-medl-api.prod-fss-pub.nais.io
         - host: oppgave.prod-fss-pub.nais.io
+        - host: saf.prod-fss-pub.nais.io
   kafka:
     pool: nav-prod
 
