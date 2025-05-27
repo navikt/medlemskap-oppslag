@@ -42,21 +42,22 @@ Egenskap: Norsk borger med medl unntak.
     Så skal svaret være "<Medlemskap>"
 
     Og skal resultat gi følgende delresultater:
-      | Regel                 |
+      | Regel                   |
       #| OVERSTYRING           |
-      | DOED                  |
-      | REGEL_BRUKERGRUPPE    |
-      | FELLES ARBEIDSFORHOLD |
-      | REGEL_PERMITTERING              |
-      | REGEL_PERMISJONER     |
-      | REGEL_UTENLANDSFORHOLD|
-      | REGEL_YTELSER         |
-      | STATSBORGERSKAP       |
-      | MEDL                  |
-      | REGEL_MARITIM         |
-      | ARBEIDSFORHOLD        |
-      | BOSATT                |
-      | NORSK                 |
+      | DOED                    |
+      | REGEL_BRUKERGRUPPE      |
+      | FELLES ARBEIDSFORHOLD   |
+      | REGEL_BRUKERSVAR_ARBEID |
+      | REGEL_PERMITTERING      |
+      | REGEL_PERMISJONER       |
+      | REGEL_UTENLANDSFORHOLD  |
+      | REGEL_YTELSER           |
+      | STATSBORGERSKAP         |
+      | MEDL                    |
+      | REGEL_MARITIM           |
+      | ARBEIDSFORHOLD          |
+      | BOSATT                  |
+      | NORSK                   |
 
     Og skal regel "MEDL" gi svaret "<Regel MEDL>"
 

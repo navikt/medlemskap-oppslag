@@ -324,6 +324,24 @@
       "årsaker" : [ ],
       "avklaring" : "Er felles regler for arbeidsforhold avklart?"
     }, {
+      "regelId" : "REGEL_BRUKERSVAR_ARBEID",
+      "svar" : "JA",
+      "begrunnelse" : "",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_9",
+        "svar" : "NEI",
+        "begrunnelse" : "",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Har bruker utført arbeid utenfor Norge?"
+      } ],
+      "årsaker" : [ ],
+      "avklaring" : "Har bruker utført arbeid utenfor Norge?"
+    }, {
       "regelId" : "REGEL_PERMITTERING",
       "svar" : "JA",
       "begrunnelse" : "",
@@ -624,15 +642,6 @@
       "harDekning" : null,
       "dekning" : "",
       "delresultat" : [ {
-        "regelId" : "REGEL_9",
-        "svar" : "NEI",
-        "begrunnelse" : "",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Har bruker utført arbeid utenfor Norge?"
-      }, {
         "regelId" : "REGEL_12",
         "svar" : "JA",
         "begrunnelse" : "",

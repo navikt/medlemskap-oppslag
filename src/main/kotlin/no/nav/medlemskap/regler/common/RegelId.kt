@@ -113,7 +113,8 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_BRUKERGRUPPE("BRUKERGRUPPE", "Har bruker arbeidsforhold?"),
     REGEL_BRUKERGRUPPESELVSTENDIG("BRUKERGRUPPESELVSTENDIG", "Er det avklart om brukeren er har en brukerGruppe eller ikke?"),
     REGEL_PERMITTERING("PERMITTERING", "Arbeidsforhold siste 12 måneder: Finnes det en periode med permittering i et av disse arbeidsforholdene?"),
-    REGEL_ARBEIDSTAKERE_ANDRE_BORGERE("ARBEIDSTAKERE ANDRE BORGERE", "Er andre borgere arbeidstakere?")
+    REGEL_ARBEIDSTAKERE_ANDRE_BORGERE("ARBEIDSTAKERE ANDRE BORGERE", "Er andre borgere arbeidstakere?"),
+    REGEL_BRUKERSVAR_ARBEID("BRUKERSVAR ARBEID", "Har bruker utført arbeid utenfor Norge?")
     ;
 
     fun begrunnelse(svar: Svar): String {

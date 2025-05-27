@@ -16,12 +16,6 @@ class ReglerForEøsBorgere(
 ) : Regler(ytelse, regelFactory, overstyrteRegler) {
 
     override fun hentHovedflyt(): Regelflyt {
-        val harBrukerJobbetUtenforNorgeFlyt = lagRegelflyt(
-            regel = hentRegel(REGEL_9),
-            hvisJa = regelflytUavklart(ytelse, REGEL_EØS_BOSATT),
-            hvisNei = regelflytJa(ytelse, REGEL_EØS_BOSATT)
-        )
-
         val harBrukerMedBarn80ProsenStillingEllerMerRegelFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_2_2_2),
             hvisJa = regelflytUavklart(ytelse, REGEL_EØS_BOSATT),
@@ -50,13 +44,13 @@ class ReglerForEøsBorgere(
 
         val harBrukerMedFolkeregistrerteBarnJobbetMerEnn80ProsentFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_2_3),
-            hvisJa = harBrukerJobbetUtenforNorgeFlyt,
+            hvisJa = regelflytJa(ytelse, REGEL_EØS_BOSATT),
             hvisNei = regelflytUavklart(ytelse, REGEL_EØS_BOSATT)
         )
 
         val harBrukerJobbetMerEnn100ProsentFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_2_2_1),
-            hvisJa = harBrukerJobbetUtenforNorgeFlyt,
+            hvisJa = regelflytJa(ytelse, REGEL_EØS_BOSATT),
             hvisNei = regelflytUavklart(ytelse, REGEL_EØS_BOSATT)
         )
 
@@ -75,19 +69,19 @@ class ReglerForEøsBorgere(
 
         val harBarnloesBrukerMedFolkeregistrertEktefelleJobbetMerEnn100ProsentFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_3_1_1),
-            hvisJa = harBrukerJobbetUtenforNorgeFlyt,
+            hvisJa = regelflytJa(ytelse, REGEL_EØS_BOSATT),
             hvisNei = regelflytUavklart(ytelse, REGEL_EØS_BOSATT)
         )
 
         val harBrukersEktefelleJobbetMinst100ProsentSiste12MndFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_6_1),
-            hvisJa = harBrukerJobbetUtenforNorgeFlyt,
+            hvisJa = regelflytJa(ytelse, REGEL_EØS_BOSATT),
             hvisNei = regelflytUavklart(ytelse, REGEL_EØS_BOSATT)
         )
 
         val harBrukerJobbetMerEnn80ProsentFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_11_6),
-            hvisJa = harBrukerJobbetUtenforNorgeFlyt,
+            hvisJa = regelflytJa(ytelse, REGEL_EØS_BOSATT),
             hvisNei = harBrukersEktefelleJobbetMinst100ProsentSiste12MndFlyt
         )
 
