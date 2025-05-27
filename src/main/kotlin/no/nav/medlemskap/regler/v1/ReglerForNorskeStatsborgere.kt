@@ -26,13 +26,8 @@ class ReglerForNorskeStatsborgere(
             hvisJa = regelflytJa(ytelse, REGEL_NORSK),
             hvisNei = regelflytUavklart(ytelse, REGEL_NORSK)
         )
-        val harBrukerJobbetUtenforNorgeFlyt = lagRegelflyt(
-            regel = hentRegel(RegelId.REGEL_9),
-            hvisJa = regelflytUavklart(ytelse, REGEL_NORSK),
-            hvisNei = harBrukerJobbet25ProsentEllerMerFlyt
-        )
 
-        return harBrukerJobbetUtenforNorgeFlyt
+        return harBrukerJobbet25ProsentEllerMerFlyt
     }
 
     companion object {
