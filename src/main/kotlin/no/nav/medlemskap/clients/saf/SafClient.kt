@@ -15,7 +15,6 @@ import no.nav.medlemskap.clients.saf.generated.enums.BrukerIdType
 import no.nav.medlemskap.clients.saf.generated.enums.Journalstatus
 import no.nav.medlemskap.clients.saf.generated.enums.Tema
 import no.nav.medlemskap.clients.saf.generated.inputs.BrukerIdInput
-import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.common.exceptions.GraphqlError
 import no.nav.medlemskap.common.objectMapper
 import no.nav.medlemskap.common.ytelse
