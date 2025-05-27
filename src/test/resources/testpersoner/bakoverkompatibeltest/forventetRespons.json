@@ -340,7 +340,7 @@
         "avklaring" : "Har bruker utført arbeid utenfor Norge?"
       } ],
       "årsaker" : [ ],
-      "avklaring" : "Har bruker arbeidet utenfor EØS?"
+      "avklaring" : "Har bruker utført arbeid utenfor Norge?"
     }, {
       "regelId" : "REGEL_PERMITTERING",
       "svar" : "JA",
