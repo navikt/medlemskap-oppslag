@@ -40,16 +40,4 @@ class OppgaveClient(
             }.body()
         }
     }
-
-    // skrur av pga. 404 meldinger i kibana
-    /*
-    suspend fun healthCheck(): HttpResponse {
-        val token = stsClient.oidcToken()
-        return httpClient.get {
-            url("$baseUrl/ping")
-            header(HttpHeaders.Authorization, "Bearer $token")
-            header("x-nav-apiKey", oppgaveApiKey)
-        }
-    }
-     */
 }

@@ -45,7 +45,6 @@ class PdlClientHentEktefelleTest {
     @Test
     fun `henter person`() {
         val callId = "123456"
-        val username = "whatever"
         val azureAdClient: AzureAdClient = mockk()
         coEvery { azureAdClient.hentToken(config.register.pdlScope) } returns Token("dummytoken", "", 1)
 
@@ -59,7 +58,7 @@ class PdlClientHentEktefelleTest {
                 )
         )
 
-        val pdlClient = PdlClient(server.baseUrl(), azureAdClient, config, username, cioHttpClient, null, "123")
+        val pdlClient = PdlClient(server.baseUrl(), azureAdClient, config, cioHttpClient, null, "123")
 
         val pdlResponse = runBlocking { pdlClient.hentPersonV2("1234567890", callId) }
 

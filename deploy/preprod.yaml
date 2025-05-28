@@ -82,10 +82,6 @@ spec:
         - host: medlemskap-medl-api.dev-fss-pub.nais.io
         - host: oppgave.dev-fss-pub.nais.io
   env:
-    - name: SECURITY_TOKEN_SERVICE_URL
-      value: https://api-gw-q1.oera.no/sts/SecurityTokenServiceProvider/
-    - name: SECURITY_TOKEN_SERVICE_REST_URL
-      value: https://api-gw-q1.oera.no/security-token-service
     - name: MEDL2_BASE_URL
       value: https://medlemskap-medl-api.dev-fss-pub.nais.io
     - name: AAREG_BASE_URL

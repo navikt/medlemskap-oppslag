@@ -45,7 +45,6 @@ class PdlClientHentPersonTest {
     @Test
     fun `henter person som ikke finnes`() {
         val callId = "123455"
-        val username = "whatever"
         val azureAdClient: AzureAdClient = mockk()
         coEvery { azureAdClient.hentToken(config.register.pdlScope) } returns Token("dummytoken", "", 1)
         stubFor(
@@ -58,19 +57,18 @@ class PdlClientHentPersonTest {
                 )
         )
 
-        val pdlClient = createPdlClient(azureAdClient, username)
+        val pdlClient = createPdlClient(azureAdClient)
         val pdlResponse = runBlocking { pdlClient.hentPersonV2("1234", callId) }
         assertEquals("Fant ikke person", pdlResponse.errors?.get(0)?.message)
     }
 
-    private fun createPdlClient(azureAdClient: AzureAdClient, username: String): PdlClient {
-        return PdlClient(server.baseUrl(), azureAdClient, config, username, cioHttpClient, null, "123")
+    private fun createPdlClient(azureAdClient: AzureAdClient): PdlClient {
+        return PdlClient(server.baseUrl(), azureAdClient, config, cioHttpClient, null, "123")
     }
 
     @Test
     fun `henter person`() {
         val callId = "123456"
-        val username = "whatever"
         val azureAdClient: AzureAdClient = mockk()
         coEvery { azureAdClient.hentToken(config.register.pdlScope) } returns Token("dummytoken", "", 1)
 
@@ -84,7 +82,7 @@ class PdlClientHentPersonTest {
                 )
         )
 
-        val pdlClient = createPdlClient(azureAdClient, username)
+        val pdlClient = createPdlClient(azureAdClient)
 
         val pdlResponse = runBlocking { pdlClient.hentPersonV2("1234567890", callId) }
 

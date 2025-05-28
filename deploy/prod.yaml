@@ -78,10 +78,6 @@ spec:
     pool: nav-prod
 
   env:
-    - name: SECURITY_TOKEN_SERVICE_URL
-      value: https://api-gw.oera.no/sts/SecurityTokenServiceProvider/
-    - name: SECURITY_TOKEN_SERVICE_REST_URL
-      value: https://api-gw.oera.no/security-token-service
     - name: MEDL2_BASE_URL
       value: https://medlemskap-medl-api.prod-fss-pub.nais.io
     - name: AAREG_BASE_URL

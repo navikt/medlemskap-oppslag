@@ -7,9 +7,7 @@ import no.nav.medlemskap.clients.medl.MedlClient
 import no.nav.medlemskap.clients.oppgave.OppgaveClient
 import no.nav.medlemskap.clients.pdl.PdlClient
 import no.nav.medlemskap.clients.saf.SafClient
-import no.nav.medlemskap.clients.sts.StsRestClient
 import no.nav.medlemskap.clients.udi.UdiClient
-import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.common.healthcheck.HealthReporter
 import no.nav.medlemskap.common.healthcheck.HealthService
 import no.nav.medlemskap.common.healthcheck.HttpResponseHealthCheck
@@ -38,20 +36,7 @@ class Services(val configuration: Configuration) {
     val healthService: HealthService
     private val healthReporter: HealthReporter
     private val healthRetry = retryRegistry.retry("Helsesjekker")
-
-    private val stsRetry = retryRegistry.retry("STS")
-
     init {
-
-        val stsRestClient = StsRestClient(
-            baseUrl = configuration.sts.restUrl,
-            username = configuration.sts.username,
-            password = configuration.sts.password,
-            apiKey = configuration.sts.apiKey,
-            retry = stsRetry,
-            httpClient = cioHttpClient
-        )
-
         val azureAdClient = AzureAdClient(configuration)
 
         val restClients = RestClients(
@@ -76,10 +61,8 @@ class Services(val configuration: Configuration) {
             setOf(
                 // HttpResponseHealthCheck("AaReg", { aaRegClient.healthCheck() }),
                 HttpResponseHealthCheck("Medl", { medlClient.healthCheck() }, healthRetry),
-                // HttpResponseHealthCheck("Oppg", { oppgaveClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("PDL", { pdlClient.healthCheck() }, healthRetry),
                 HttpResponseHealthCheck("SAF", { safClient.healthCheck() }, healthRetry),
-                // HttpResponseHealthCheck("STS", { stsRestClient.healthCheck() }, healthRetry),
             )
         )
 

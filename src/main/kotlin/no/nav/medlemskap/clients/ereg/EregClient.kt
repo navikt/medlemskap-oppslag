@@ -27,7 +27,7 @@ class EregClient(
                     parameter("inkluderHierarki", true)
                     header(HttpHeaders.Accept, ContentType.Application.Json)
                     header("Nav-Call-Id", callId)
-                    header("Nav-Consumer-Id", configuration.sts.username)
+                    header("Nav-Consumer-Id", configuration.azureAd.clientId)
                     header("x-nav-apiKey", eregApiKey)
                 }.body()
             }
