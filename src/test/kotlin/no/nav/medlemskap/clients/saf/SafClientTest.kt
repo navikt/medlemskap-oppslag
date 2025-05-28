@@ -10,8 +10,6 @@ import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.medlemskap.clients.Token
 import no.nav.medlemskap.clients.azuread.AzureAdClient
-import no.nav.medlemskap.clients.ereg.EregClientTest
-import no.nav.medlemskap.clients.ereg.EregClientTest.Companion
 import no.nav.medlemskap.clients.saf.generated.enums.Journalposttype
 import no.nav.medlemskap.clients.saf.generated.enums.Journalstatus
 import no.nav.medlemskap.clients.saf.generated.enums.Tema
