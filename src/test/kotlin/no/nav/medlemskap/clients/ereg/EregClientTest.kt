@@ -20,6 +20,7 @@ class EregClientTest {
     companion object {
         val server: WireMockServer = WireMockServer(WireMockConfiguration.options().dynamicPort())
         val httpClient = cioHttpClient
+        val configuration = Configuration()
 
         @BeforeAll
         @JvmStatic
@@ -70,7 +71,7 @@ class EregClientTest {
 
     private val queryMappingForHentOrganisasjon: MappingBuilder = WireMock.get(WireMock.urlPathEqualTo("/v1/organisasjon/$orgnummer"))
         .withHeader("Nav-Call-Id", equalTo("12345"))
-        .withHeader("Nav-Consumer-Id", equalTo("test"))
+        .withHeader("Nav-Consumer-Id", equalTo(configuration.azureAd.clientId))
 
     private val eregHentOrganisasjonResponse =
         """

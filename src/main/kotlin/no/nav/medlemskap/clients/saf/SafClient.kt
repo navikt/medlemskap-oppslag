@@ -25,7 +25,6 @@ class SafClient(
     private val baseUrl: String,
     private val azureAdClient: AzureAdClient,
     private val configuration: Configuration,
-    private val username: String,
     private val httpClient: HttpClient,
     private val safApiKey: String,
     private val retry: Retry? = null
@@ -57,7 +56,7 @@ class SafClient(
                 header(HttpHeaders.ContentType, ContentType.Application.Json)
                 header(HttpHeaders.Accept, ContentType.Application.Json)
                 header("Nav-Callid", callId)
-                header("Nav-Consumer-Id", username)
+                header("Nav-Consumer-Id", configuration.azureAd.clientId)
                 header("x-nav-apiKey", safApiKey)
             }.body()
 
@@ -74,7 +73,7 @@ class SafClient(
             url(baseUrl)
             header(HttpHeaders.ContentType, ContentType.Application.Json)
             header(HttpHeaders.Accept, ContentType.Application.Json)
-            header("Nav-Consumer-Id", username)
+            header("Nav-Consumer-Id", configuration.azureAd.clientId)
             header("x-nav-apiKey", safApiKey)
         }
     }
