@@ -45,7 +45,6 @@ class SafClientTest {
     @Test
     fun `henter journalposter`() {
         val callId = "123456"
-        val username = "whatever"
         val azureAdClient: AzureAdClient = mockk()
         coEvery { azureAdClient.hentToken(configuration.register.safScope) } returns Token("dummytoken", "", 1)
 
@@ -59,7 +58,7 @@ class SafClientTest {
                 )
         )
 
-        val safClient = SafClient(server.baseUrl(), azureAdClient, configuration, username, cioHttpClient, "123")
+        val safClient = SafClient(server.baseUrl(), azureAdClient, configuration, cioHttpClient, "123")
 
         val safResponse = runBlocking { safClient.hentJournaldatav2("1234567890", callId) }
 
@@ -75,7 +74,7 @@ class SafClientTest {
     val safRequestMapping: MappingBuilder = post(urlPathEqualTo("/"))
         .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
         .withHeader("Accept", containing("application/json"))
-        .withHeader("Nav-Consumer-Id", equalTo("whatever"))
+        .withHeader("Nav-Consumer-Id", equalTo(configuration.azureAd.clientId))
 
     val safResponse =
         """{

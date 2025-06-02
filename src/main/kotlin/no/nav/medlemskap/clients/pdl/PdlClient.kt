@@ -20,7 +20,6 @@ class PdlClient(
     private val baseUrl: String,
     private val azureAdClient: AzureAdClient,
     private val configuration: Configuration,
-    private val username: String,
     private val httpClient: HttpClient,
     private val retry: Retry? = null,
     private val pdlApiKey: String

@@ -5,10 +5,8 @@ import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import io.ktor.http.*
-import io.mockk.coEvery
-import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import no.nav.medlemskap.clients.sts.StsRestClient
+import no.nav.medlemskap.clients.ereg.EregClientTest.Companion.configuration
 import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.config.Configuration
 import org.junit.jupiter.api.*
@@ -40,9 +38,6 @@ class EregOrgClientTest {
     @Test
     fun `tester response`() {
         val callId = "12345"
-
-        val stsClient: StsRestClient = mockk()
-        coEvery { stsClient.oidcToken() } returns "dummytoken"
 
         WireMock.stubFor(
             queryMapping.willReturn(
@@ -362,5 +357,5 @@ class EregOrgClientTest {
     private val orgnummer = "977074010"
     private val queryMapping: MappingBuilder = WireMock.get(WireMock.urlPathEqualTo("/v1/organisasjon/$orgnummer"))
         .withHeader("Nav-Call-Id", WireMock.equalTo("12345"))
-        .withHeader("Nav-Consumer-Id", WireMock.equalTo("test"))
+        .withHeader("Nav-Consumer-Id", WireMock.equalTo(configuration.azureAd.clientId))
 }
