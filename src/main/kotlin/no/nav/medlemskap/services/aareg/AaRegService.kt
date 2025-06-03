@@ -1,15 +1,11 @@
 package no.nav.medlemskap.services.aareg
 
-import mu.KotlinLogging
 import no.nav.medlemskap.clients.aareg.AaRegArbeidsforhold
 import no.nav.medlemskap.clients.aareg.AaRegClient
 import no.nav.medlemskap.clients.ereg.EregClient
 import no.nav.medlemskap.clients.ereg.Organisasjon
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import java.time.LocalDate
-
-private val secureLogger = KotlinLogging.logger("tjenestekall")
-private val logger = KotlinLogging.logger {}
 
 class AaRegService(
     private val aaRegClient: AaRegClient,
