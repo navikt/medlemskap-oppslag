@@ -71,6 +71,8 @@ spec:
         - application: udi-proxy
           namespace: medlemskap
           cluster: dev-fss
+        - application: logging
+          namespace: nais-system
       external:
         - host: api-gw-q1.oera.no
         - host: api-gw-q2.oera.no

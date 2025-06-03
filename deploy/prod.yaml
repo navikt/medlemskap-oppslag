@@ -65,6 +65,8 @@ spec:
         - application: udi-proxy
           namespace: medlemskap
           cluster: prod-fss
+        - application: logging
+          namespace: nais-system
       external:
         - host: api-gw.oera.no
         - host: login.microsoftonline.com
