@@ -47,6 +47,7 @@ Egenskap: EØS-borger med medl unntak.
       | REGEL_DOED                  |
       | REGEL_BOSATT                |
       | REGEL_MEDL                  |
+      | REGEL_FRILANSER             |
       | REGEL_BRUKERGRUPPE          |
       | REGEL_FELLES_ARBEIDSFORHOLD |
       | REGEL_BRUKERSVAR_ARBEID     |

@@ -1,4 +1,4 @@
-package no.nav.medlemskap.regler.v1.brukergruppe
+package no.nav.medlemskap.regler.v1.frilanser
 
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
@@ -12,26 +12,25 @@ import no.nav.medlemskap.regler.common.Regler
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.v1.RegelFactory
 
-class ReglerForBrukerGruppe(
+class ReglerForFrilanser(
     ytelse: Ytelse,
     regelFactory: RegelFactory,
     overstyrteRegler: Map<RegelId, Svar>
 ) : Regler(ytelse, regelFactory, overstyrteRegler) {
 
     override fun hentHovedflyt(): Regelflyt {
-        val HarBrukerArbeidsforholdFlyt = lagRegelflyt(
-            regel = hentRegel(REGEL_17),
-            hvisJa = regelflytJa(ytelse, REGEL_BRUKERGRUPPE),
-            hvisNei = konklusjonUavklart(ytelse, REGEL_BRUKERGRUPPE)
+        val ErBrukerFrilanserFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_16),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_FRILANSER),
+            hvisNei = regelflytJa(ytelse, REGEL_FRILANSER)
         )
-        return HarBrukerArbeidsforholdFlyt
+        return ErBrukerFrilanserFlyt
     }
 
-
     companion object {
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForBrukerGruppe {
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForFrilanser {
             with(datagrunnlag) {
-                return ReglerForBrukerGruppe(
+                return ReglerForFrilanser(
                     ytelse = ytelse,
                     regelFactory = RegelFactory(datagrunnlag),
                     overstyrteRegler = datagrunnlag.overstyrteRegler
