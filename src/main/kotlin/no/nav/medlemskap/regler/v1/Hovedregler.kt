@@ -90,20 +90,14 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
         val resultater = mutableListOf<Resultat>()
 
         resultater.add(ReglerForOppholdstillatelse.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
-        resultater.add(ReglerForMedl.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
-        resultater.add(ReglerForBosatt.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         resultater.add(ReglerForArbeidstakerAndreBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
-        resultater.add(ReglerForMaritim.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
 
         return resultater
     }
 
     private fun kjørReglerForNorskeBorgere(overstyrteRegler: Map<RegelId, Svar>): List<Resultat> {
         return listOf(
-            ReglerForMedl.fraDatagrunnlag(datagrunnlag),
-            ReglerForMaritim.fraDatagrunnlag(datagrunnlag),
             ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler),
-            ReglerForBosatt.fraDatagrunnlag(datagrunnlag),
             ReglerForNorskeStatsborgere.fraDatagrunnlag(datagrunnlag, overstyrteRegler)
         ).map { it.kjørHovedflyt() }
     }
@@ -118,10 +112,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
             resultater.add(ReglerForOppholdstillatelse.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         }
         val reglerForEØSBorgerResultater = listOf(
-            ReglerForMedl.fraDatagrunnlag(datagrunnlag).kjørHovedflyt(),
-            ReglerForMaritim.fraDatagrunnlag(datagrunnlag).kjørHovedflyt(),
             ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler).kjørHovedflyt(),
-            ReglerForBosatt.fraDatagrunnlag(datagrunnlag).kjørHovedflyt(),
             ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt()
         )
 
@@ -133,12 +124,15 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
     private fun kjørFellesRegler(): List<Resultat> {
         val fellesRegler = listOf(
             ReglerForDoedsfall.fraDatagrunnlag(datagrunnlag),
+            ReglerForBosatt.fraDatagrunnlag(datagrunnlag),
+            ReglerForMedl.fraDatagrunnlag(datagrunnlag),
             ReglerForBrukerGruppe.fraDatagrunnlag(datagrunnlag),
             ReglerForFellesArbeidsforhold.fraDatagrunnlag(datagrunnlag),
             ReglerForBrukersvarArbeid.fraDatagrunnlag(datagrunnlag),
             ReglerForPermittering.fraDatagrunnlag(datagrunnlag),
             ReglerForPermisjoner.fraDatagrunnlag(datagrunnlag),
             ReglerForUtenlandsforhold.fraDatagrunnlag(datagrunnlag),
+            ReglerForMaritim.fraDatagrunnlag(datagrunnlag),
             ReglerForStonader.fraDatagrunnlag(datagrunnlag)
         )
 

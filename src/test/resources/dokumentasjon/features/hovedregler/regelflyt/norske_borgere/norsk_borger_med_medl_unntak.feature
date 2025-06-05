@@ -45,18 +45,18 @@ Egenskap: Norsk borger med medl unntak.
       | Regel                   |
       #| OVERSTYRING           |
       | DOED                    |
+      | BOSATT                  |
+      | MEDL                    |
       | REGEL_BRUKERGRUPPE      |
       | FELLES ARBEIDSFORHOLD   |
       | REGEL_BRUKERSVAR_ARBEID |
       | REGEL_PERMITTERING      |
       | REGEL_PERMISJONER       |
       | REGEL_UTENLANDSFORHOLD  |
+      | REGEL_MARITIM           |
       | REGEL_YTELSER           |
       | STATSBORGERSKAP         |
-      | MEDL                    |
-      | REGEL_MARITIM           |
       | ARBEIDSFORHOLD          |
-      | BOSATT                  |
       | NORSK                   |
 
     Og skal regel "MEDL" gi svaret "<Regel MEDL>"

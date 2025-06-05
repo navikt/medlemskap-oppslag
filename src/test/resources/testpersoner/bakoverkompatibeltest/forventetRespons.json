@@ -1,6 +1,6 @@
 {
   "vurderingsID" : "7b006d2c-ff75-4404-9663-7babf23f45de",
-  "tidspunkt" : "2025-05-09T13:29:22.351191",
+  "tidspunkt" : "2025-06-04T13:11:01.791212",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "kanal" : "/",
@@ -279,6 +279,110 @@
       "årsaker" : [ ],
       "avklaring" : "Er det avklart om brukeren er død eller ikke?"
     }, {
+      "regelId" : "REGEL_BOSATT",
+      "svar" : "JA",
+      "begrunnelse" : "",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_10",
+        "svar" : "JA",
+        "begrunnelse" : "",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?"
+      } ],
+      "årsaker" : [ ],
+      "avklaring" : "Er det avklart om bruker bor i Norge?"
+    }, {
+      "regelId" : "REGEL_MEDL",
+      "svar" : "UAVKLART",
+      "begrunnelse" : "",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_OPPLYSNINGER",
+        "svar" : "JA",
+        "begrunnelse" : "",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ {
+          "regelId" : "REGEL_A",
+          "svar" : "JA",
+          "begrunnelse" : "Det finnes registrert opplysninger i Medl",
+          "harDekning" : null,
+          "dekning" : "",
+          "delresultat" : [ ],
+          "årsaker" : [ ],
+          "avklaring" : "Finnes det registrerte opplysninger i MEDL?"
+        }, {
+          "regelId" : "REGEL_C",
+          "svar" : "NEI",
+          "begrunnelse" : "",
+          "harDekning" : null,
+          "dekning" : "",
+          "delresultat" : [ ],
+          "årsaker" : [ ],
+          "avklaring" : "Finnes det dokumenter i JOARK på medlemskapsområdet?"
+        }, {
+          "regelId" : "REGEL_B",
+          "svar" : "NEI",
+          "begrunnelse" : "",
+          "harDekning" : null,
+          "dekning" : "",
+          "delresultat" : [ ],
+          "årsaker" : [ ],
+          "avklaring" : "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?"
+        } ],
+        "årsaker" : [ ],
+        "avklaring" : "Finnes det registrerte opplysninger på bruker?"
+      }, {
+        "regelId" : "REGEL_1_1",
+        "svar" : "JA",
+        "begrunnelse" : "",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Er alle perioder siste 12 mnd avklart (endelig/gyldig)?"
+      }, {
+        "regelId" : "REGEL_1_2",
+        "svar" : "NEI",
+        "begrunnelse" : "",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Er det periode både med og uten medlemskap innenfor 12 mnd?"
+      }, {
+        "regelId" : "REGEL_1_3",
+        "svar" : "JA",
+        "begrunnelse" : "",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Er det en periode med medlemskap?"
+      }, {
+        "regelId" : "REGEL_1_4",
+        "svar" : "NEI",
+        "begrunnelse" : "Det finnes hull i 12-måneders perioden for medlemskap",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?"
+      } ],
+      "årsaker" : [ {
+        "regelId" : "REGEL_1_4",
+        "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
+        "svar" : "NEI",
+        "begrunnelse" : "Det finnes hull i 12-måneders perioden for medlemskap"
+      } ],
+      "avklaring" : "Har bruker avklarte opplysninger i MEDL?"
+    }, {
       "regelId" : "REGEL_BRUKERGRUPPE",
       "svar" : "JA",
       "begrunnelse" : "",
@@ -442,6 +546,33 @@
       } ],
       "avklaring" : "Finnes det utenlandsforhold i noen av arbeidsforholdene?"
     }, {
+      "regelId" : "REGEL_MARITIM",
+      "svar" : "JA",
+      "begrunnelse" : "",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_35",
+        "svar" : "NEI",
+        "begrunnelse" : "",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Er bruker i et maritimt arbeidsforhold på tidspunktet inputdato minus 1 dag?"
+      }, {
+        "regelId" : "REGEL_42",
+        "svar" : "NEI",
+        "begrunnelse" : "",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Har bruker hatt et maritimt arbeidsforhold i løpet av siste 12 måneder? "
+      } ],
+      "årsaker" : [ ],
+      "avklaring" : "er arbeidsforholdet maritimt?"
+    }, {
       "regelId" : "REGEL_YTELSER",
       "svar" : "JA",
       "begrunnelse" : "",
@@ -487,119 +618,6 @@
       "årsaker" : [ ],
       "avklaring" : "Er statsborgerskap avklart?"
     }, {
-      "regelId" : "REGEL_MEDL",
-      "svar" : "UAVKLART",
-      "begrunnelse" : "",
-      "harDekning" : null,
-      "dekning" : "",
-      "delresultat" : [ {
-        "regelId" : "REGEL_OPPLYSNINGER",
-        "svar" : "JA",
-        "begrunnelse" : "",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ {
-          "regelId" : "REGEL_A",
-          "svar" : "JA",
-          "begrunnelse" : "Det finnes registrert opplysninger i Medl",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ],
-          "årsaker" : [ ],
-          "avklaring" : "Finnes det registrerte opplysninger i MEDL?"
-        }, {
-          "regelId" : "REGEL_C",
-          "svar" : "NEI",
-          "begrunnelse" : "",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ],
-          "årsaker" : [ ],
-          "avklaring" : "Finnes det dokumenter i JOARK på medlemskapsområdet?"
-        }, {
-          "regelId" : "REGEL_B",
-          "svar" : "NEI",
-          "begrunnelse" : "",
-          "harDekning" : null,
-          "dekning" : "",
-          "delresultat" : [ ],
-          "årsaker" : [ ],
-          "avklaring" : "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?"
-        } ],
-        "årsaker" : [ ],
-        "avklaring" : "Finnes det registrerte opplysninger på bruker?"
-      }, {
-        "regelId" : "REGEL_1_1",
-        "svar" : "JA",
-        "begrunnelse" : "",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Er alle perioder siste 12 mnd avklart (endelig/gyldig)?"
-      }, {
-        "regelId" : "REGEL_1_2",
-        "svar" : "NEI",
-        "begrunnelse" : "",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Er det periode både med og uten medlemskap innenfor 12 mnd?"
-      }, {
-        "regelId" : "REGEL_1_3",
-        "svar" : "JA",
-        "begrunnelse" : "",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Er det en periode med medlemskap?"
-      }, {
-        "regelId" : "REGEL_1_4",
-        "svar" : "NEI",
-        "begrunnelse" : "Det finnes hull i 12-måneders perioden for medlemskap",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?"
-      } ],
-      "årsaker" : [ {
-        "regelId" : "REGEL_1_4",
-        "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
-        "svar" : "NEI",
-        "begrunnelse" : "Det finnes hull i 12-måneders perioden for medlemskap"
-      } ],
-      "avklaring" : "Har bruker avklarte opplysninger i MEDL?"
-    }, {
-      "regelId" : "REGEL_MARITIM",
-      "svar" : "JA",
-      "begrunnelse" : "",
-      "harDekning" : null,
-      "dekning" : "",
-      "delresultat" : [ {
-        "regelId" : "REGEL_35",
-        "svar" : "NEI",
-        "begrunnelse" : "",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Er bruker i et maritimt arbeidsforhold på tidspunktet inputdato minus 1 dag?"
-      }, {
-        "regelId" : "REGEL_42",
-        "svar" : "NEI",
-        "begrunnelse" : "",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Har bruker hatt et maritimt arbeidsforhold i løpet av siste 12 måneder? "
-      } ],
-      "årsaker" : [ ],
-      "avklaring" : "er arbeidsforholdet maritimt?"
-    }, {
       "regelId" : "REGEL_ARBEIDSFORHOLD",
       "svar" : "JA",
       "begrunnelse" : "",
@@ -617,24 +635,6 @@
       } ],
       "årsaker" : [ ],
       "avklaring" : "Er arbeidsforhold avklart?"
-    }, {
-      "regelId" : "REGEL_BOSATT",
-      "svar" : "JA",
-      "begrunnelse" : "",
-      "harDekning" : null,
-      "dekning" : "",
-      "delresultat" : [ {
-        "regelId" : "REGEL_10",
-        "svar" : "JA",
-        "begrunnelse" : "",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?"
-      } ],
-      "årsaker" : [ ],
-      "avklaring" : "Er det avklart om bruker bor i Norge?"
     }, {
       "regelId" : "REGEL_NORSK",
       "svar" : "JA",
@@ -655,6 +655,11 @@
       "avklaring" : "Er regler for norske borgere avklart?"
     } ],
     "årsaker" : [ {
+      "regelId" : "REGEL_1_4",
+      "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
+      "svar" : "NEI",
+      "begrunnelse" : "Det finnes hull i 12-måneders perioden for medlemskap"
+    }, {
       "regelId" : "REGEL_58",
       "avklaring" : "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk og permisjonen er kortere enn 15 dager",
       "svar" : "NEI",
@@ -664,11 +669,6 @@
       "avklaring" : "Er perioden for utenlandsopphold innenfor siste 12 måneder?",
       "svar" : "JA",
       "begrunnelse" : "utenlandsoppholdet er innenfor siste 12 måneder"
-    }, {
-      "regelId" : "REGEL_1_4",
-      "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
-      "svar" : "NEI",
-      "begrunnelse" : "Det finnes hull i 12-måneders perioden for medlemskap"
     } ],
     "avklaring" : "Er bruker medlem?"
   }

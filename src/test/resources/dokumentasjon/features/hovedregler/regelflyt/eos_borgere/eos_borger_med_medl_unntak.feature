@@ -45,18 +45,18 @@ Egenskap: EØS-borger med medl unntak.
       | Regel                       |
       #| REGEL_OVERSTYRING           |
       | REGEL_DOED                  |
+      | REGEL_BOSATT                |
+      | REGEL_MEDL                  |
       | REGEL_BRUKERGRUPPE          |
       | REGEL_FELLES_ARBEIDSFORHOLD |
       | REGEL_BRUKERSVAR_ARBEID     |
       | REGEL_PERMITTERING          |
       | REGEL_PERMISJONER           |
       | REGEL_UTENLANDSFORHOLD      |
+      | REGEL_MARITIM               |
       | REGEL_YTELSER               |
       | REGEL_STATSBORGERSKAP       |
-      | REGEL_MEDL                  |
-      | REGEL_MARITIM               |
       | REGEL_ARBEIDSFORHOLD        |
-      | REGEL_BOSATT                |
       | REGEL_EØS_BOSATT            |
 
     Og skal regel "MEDL" gi svaret "<Regel MEDL>"
