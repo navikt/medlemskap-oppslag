@@ -12,6 +12,9 @@ spec:
         - id: loki
         - id: elastic
         - id: secure_logs
+    autoInstrumentation:
+      enabled: true
+      runtime: java
   azure:
     application:
       enabled: true
