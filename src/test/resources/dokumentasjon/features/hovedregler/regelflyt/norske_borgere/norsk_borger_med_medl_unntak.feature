@@ -47,6 +47,7 @@ Egenskap: Norsk borger med medl unntak.
       | DOED                    |
       | BOSATT                  |
       | MEDL                    |
+      | REGEL_FRILANSER         |
       | REGEL_BRUKERGRUPPE      |
       | FELLES ARBEIDSFORHOLD   |
       | REGEL_BRUKERSVAR_ARBEID |

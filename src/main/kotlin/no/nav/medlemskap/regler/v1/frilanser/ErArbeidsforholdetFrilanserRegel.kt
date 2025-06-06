@@ -16,7 +16,7 @@ class ErArbeidsforholdetFrilanserRegel(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    regelId: RegelId = RegelId.REGEL_17_1
+    regelId: RegelId = RegelId.REGEL_16
 ) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
 
     override fun operasjon(): Resultat {

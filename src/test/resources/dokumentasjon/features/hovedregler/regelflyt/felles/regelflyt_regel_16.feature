@@ -1,7 +1,7 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Regelflyt for regel 17.1
+Egenskap: Regelflyt for regel 16
 
   Bakgrunn:
     Gitt følgende bostedsadresser i personhistorikken
@@ -13,7 +13,7 @@ Egenskap: Regelflyt for regel 17.1
       | NOR      | 01.01.2000      |                 |
 
 
-  Scenariomal: Regelflyt regel 17.1: Bruker får "ja" på spørsmålet om medlemskap hvis arbeidsforholdet er frilanser
+  Scenariomal: Regelflyt regel 16: Bruker får "ja" på spørsmålet om medlemskap hvis arbeidsforholdet er frilanser
 
     Gitt følgende arbeidsforhold fra AAReg
       | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype   | Arbeidsgiver Id |
@@ -32,9 +32,9 @@ Egenskap: Regelflyt for regel 17.1
       | 30.01.2020      | 30.01.2021      | Nei                           |
 
     Så skal svaret være "<Medlemskap>"
-    Og skal regel "17.1" gi svaret "<Regel 17.1>"
+    Og skal regel "16" gi svaret "<Regel 16>"
 
     Eksempler:
-      | Arbeidsforholdstype | Regel 17.1 | Medlemskap |
+      | Arbeidsforholdstype | Regel 16 | Medlemskap |
       | NORMALT             | Nei        | Ja         |
       | FRILANSER           | Ja         | UAVKLART   |
