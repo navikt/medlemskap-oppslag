@@ -42,41 +42,6 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-
-  /regler:
-    post:
-      summary: Avgjør om bruker er medlem av folketrygden, gitt et datagrunnlag
-      operationId: avgjørMedlemskapFraDatagrunnlag
-      security:
-        - bearerAuth: [ ]
-      tags:
-        - Lovvalg
-        - Medlemskap
-      description: Avgjøre om lovvalg er norsk, og om bruker er medlem av folketrygden
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Datagrunnlag"
-      responses:
-        200:
-          description: Forventet response på en gyldig request
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Resultat"
-        400:
-          description: Ugyldig request eller annen feil
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
 components:
   securitySchemes:
     bearerAuth:
