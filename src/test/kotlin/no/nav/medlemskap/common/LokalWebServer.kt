@@ -111,21 +111,6 @@ class LokalWebServer {
                 .statusCode(200)
         }
 
-        fun validerKontraktRegler(datagrunnlag: Datagrunnlag): ValidatableResponse {
-            val validationFilter = OpenApiValidationFilter("src/main/resources/lovme.yaml")
-
-            val response = given()
-                .filter(validationFilter)
-                .body(datagrunnlag.tilJson())
-                .header(Header("Content-Type", "application/json"))
-                .header(Header("Authorization", "Bearer dummytoken"))
-                .post("regler")
-                .then()
-                .statusCode(200)
-
-            return response
-        }
-
         fun testResponsKode(input: String, statusKode: Int): String {
             return given()
                 .body(input)

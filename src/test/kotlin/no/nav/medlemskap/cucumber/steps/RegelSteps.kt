@@ -11,7 +11,6 @@ import no.nav.medlemskap.cucumber.DomenespråkParser
 import no.nav.medlemskap.cucumber.Medlemskapsparametre
 import no.nav.medlemskap.cucumber.SpraakParserDomene.*
 import no.nav.medlemskap.cucumber.steps.BakoverkompabilitetHjelper.medlemskapRequest
-import no.nav.medlemskap.cucumber.steps.BakoverkompabilitetHjelper.validerDatagrunnlagMotKontrakt
 import no.nav.medlemskap.cucumber.steps.BakoverkompabilitetHjelper.validerMedlemRequestMotKontrakt
 import no.nav.medlemskap.cucumber.steps.pdl.DataOmEktefelleBuilder
 import no.nav.medlemskap.cucumber.steps.pdl.PersonhistorikkBuilder
@@ -331,10 +330,6 @@ class RegelSteps : No {
             validerMedlemRequestMotKontrakt(medlemskapsparametre!!)
         }
 
-        Så("Skal kontrakt for Regler fra datagrunnlag være OK") {
-            validerDatagrunnlagMotKontrakt(datagrunnlag)
-        }
-
         Så("Skal input {string} gi statuskoden {int}") { filnavn: String, statusKode: Int ->
             val input = RegelSteps::class.java.getResource("/testpersoner/testinput/$filnavn.json").readText()
             LokalWebServer.testResponsKode(input, statusKode)
@@ -558,11 +553,4 @@ private object BakoverkompabilitetHjelper {
         LokalWebServer.validerKontraktMedlemskap(medlemskapsparametre)
     }
 
-    fun validerDatagrunnlagMotKontrakt(datagrunnlag: Datagrunnlag?) {
-        if (datagrunnlag == null) {
-            throw RuntimeException("Datagrunnlag er null")
-        }
-
-        LokalWebServer.validerKontraktRegler(datagrunnlag)
-    }
 }
