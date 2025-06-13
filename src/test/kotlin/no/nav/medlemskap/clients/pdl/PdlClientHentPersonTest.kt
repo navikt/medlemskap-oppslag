@@ -63,7 +63,7 @@ class PdlClientHentPersonTest {
     }
 
     private fun createPdlClient(azureAdClient: AzureAdClient): PdlClient {
-        return PdlClient(server.baseUrl(), azureAdClient, config, cioHttpClient, null, "123")
+        return PdlClient(server.baseUrl(), azureAdClient, config, cioHttpClient, null)
     }
 
     @Test

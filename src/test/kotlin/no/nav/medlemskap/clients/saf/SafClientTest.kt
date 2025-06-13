@@ -58,7 +58,7 @@ class SafClientTest {
                 )
         )
 
-        val safClient = SafClient(server.baseUrl(), azureAdClient, configuration, cioHttpClient, "123")
+        val safClient = SafClient(server.baseUrl(), azureAdClient, configuration, cioHttpClient)
 
         val safResponse = runBlocking { safClient.hentJournaldatav2("1234567890", callId) }
 

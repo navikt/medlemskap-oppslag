@@ -103,7 +103,7 @@ class AaregClientTest {
 
             )
         )
-        val client = AaRegClient(server.baseUrl(), azureAdClient, cioHttpClient, config, "123")
+        val client = AaRegClient(server.baseUrl(), azureAdClient, cioHttpClient, config)
 
         Assertions.assertThrows(ServerResponseException::class.java) {
             runBlocking { client.hentArbeidsforhold("26104635775", callId, LocalDate.of(2010, 1, 1), LocalDate.of(2016, 1, 1)) }
@@ -158,9 +158,7 @@ class AaregClientTest {
             baseUrl = server.baseUrl(),
             azureAdClient = azureAdClient,
             configuration = config,
-            httpClient = cioHttpClient,
-            aaRegApiKey = "123"
-        )
+            httpClient = cioHttpClient)
     }
 
     private val aaRegResponse =

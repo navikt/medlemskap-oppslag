@@ -27,11 +27,11 @@ class RestClients(
 
     private val httpClient = cioHttpClient
 
-    fun aaReg(endpointUrl: String) = AaRegClient(endpointUrl, azureAdClient, httpClient, configuration, configuration.register.aaRegApiKey, aaRegRetry)
+    fun aaReg(endpointUrl: String) = AaRegClient(endpointUrl, azureAdClient, httpClient, configuration, aaRegRetry)
     fun medl2(endpointBaseUrl: String) = MedlClient(endpointBaseUrl, azureAdClient, configuration, httpClient, medlRetry)
-    fun saf(endpointBaseUrl: String) = SafClient(endpointBaseUrl, azureAdClient, configuration, httpClient, configuration.register.safApiKey, safRetry)
+    fun saf(endpointBaseUrl: String) = SafClient(endpointBaseUrl, azureAdClient, configuration, httpClient, safRetry)
     fun oppgaver(endpointBaseUrl: String) = OppgaveClient(endpointBaseUrl, azureAdClient, configuration, httpClient, oppgaveRetry)
-    fun pdl(endpointBaseURl: String) = PdlClient(endpointBaseURl, azureAdClient, configuration, httpClient, pdlRetry, configuration.register.pdlApiKey)
+    fun pdl(endpointBaseURl: String) = PdlClient(endpointBaseURl, azureAdClient, configuration, httpClient, pdlRetry)
     fun ereg(endpointBaseUrl: String) = EregClient(endpointBaseUrl, httpClient, configuration, configuration.register.eregApiKey, eregRetry)
     fun udi(endpointBaseUrl: String) = UdiClient(endpointBaseUrl, azureAdClient, httpClient, udiRetry)
 }

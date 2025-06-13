@@ -18,7 +18,6 @@ class AaRegClient(
     private val azureAdClient: AzureAdClient,
     private val httpClient: HttpClient,
     private val configuration: Configuration,
-    private val aaRegApiKey: String,
     private val retry: Retry? = null
 ) {
 
@@ -37,7 +36,6 @@ class AaRegClient(
                     header(HttpHeaders.Accept, ContentType.Application.Json)
                     header("Nav-Call-Id", callId)
                     header("Nav-Personident", fnr)
-                    header("x-nav-apiKey", aaRegApiKey)
                     fraOgMed?.let { parameter("ansettelsesperiodeFom", fraOgMed.tilIsoFormat()) }
                     tilOgMed?.let { parameter("ansettelsesperiodeTom", tilOgMed.tilIsoFormat()) }
                     parameter("historikk", "true")
@@ -69,7 +67,6 @@ class AaRegClient(
             url("$baseUrl/ping")
             header(HttpHeaders.Accept, ContentType.Text.Plain)
             header("Nav-Consumer-Id", username)
-            header("x-nav-apiKey", aaRegApiKey)
         }
     }
 */
