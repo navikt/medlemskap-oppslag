@@ -21,8 +21,7 @@ class PdlClient(
     private val azureAdClient: AzureAdClient,
     private val configuration: Configuration,
     private val httpClient: HttpClient,
-    private val retry: Retry? = null,
-    private val pdlApiKey: String
+    private val retry: Retry? = null
 ) {
     companion object {
         private val logger = KotlinLogging.logger { }
@@ -47,7 +46,6 @@ class PdlClient(
                 header(HttpHeaders.Accept, ContentType.Application.Json)
                 header("Nav-Call-Id", callId)
                 header("Nav-Consumer-Id", configuration.azureAd.clientId)
-                header("x-nav-apiKey", pdlApiKey)
             }.body()
 
             if (!response.errors.isNullOrEmpty()) {
@@ -75,7 +73,6 @@ class PdlClient(
                 header("behandlingsnummer", "B451")
                 header("Nav-Call-Id", callId)
                 header("Nav-Consumer-Id", configuration.azureAd.clientId)
-                header("x-nav-apiKey", pdlApiKey)
             }.body()
 
             if (!response.extensions.isNullOrEmpty()) {
@@ -95,9 +92,10 @@ class PdlClient(
 
     suspend fun healthCheck(): HttpResponse {
         return httpClient.options {
+            val token = azureAdClient.hentToken(configuration.register.pdlScope)
             url(baseUrl)
             header(HttpHeaders.Accept, ContentType.Application.Json)
-            header("x-nav-apiKey", pdlApiKey)
+            header(HttpHeaders.Authorization, "Bearer ${token.token}")
             header("Nav-Consumer-Id", configuration.azureAd.clientId)
         }
     }
