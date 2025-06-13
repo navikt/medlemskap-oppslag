@@ -26,7 +26,6 @@ class SafClient(
     private val azureAdClient: AzureAdClient,
     private val configuration: Configuration,
     private val httpClient: HttpClient,
-    private val safApiKey: String,
     private val retry: Retry? = null
 ) {
     companion object {
@@ -57,7 +56,6 @@ class SafClient(
                 header(HttpHeaders.Accept, ContentType.Application.Json)
                 header("Nav-Callid", callId)
                 header("Nav-Consumer-Id", configuration.azureAd.clientId)
-                header("x-nav-apiKey", safApiKey)
             }.body()
 
             response.errors?.let { errors ->
@@ -69,12 +67,13 @@ class SafClient(
     }
 
     suspend fun healthCheck(): HttpResponse {
+        val token = azureAdClient.hentToken(configuration.register.safScope)
         return httpClient.options {
             url(baseUrl)
             header(HttpHeaders.ContentType, ContentType.Application.Json)
             header(HttpHeaders.Accept, ContentType.Application.Json)
+            header(HttpHeaders.Authorization, "Bearer ${token.token}")
             header("Nav-Consumer-Id", configuration.azureAd.clientId)
-            header("x-nav-apiKey", safApiKey)
         }
     }
 }
