@@ -58,7 +58,7 @@ class PdlClientHentEktefelleTest {
                 )
         )
 
-        val pdlClient = PdlClient(server.baseUrl(), azureAdClient, config, cioHttpClient, null, "123")
+        val pdlClient = PdlClient(server.baseUrl(), azureAdClient, config, cioHttpClient, null)
 
         val pdlResponse = runBlocking { pdlClient.hentPersonV2("1234567890", callId) }
 
