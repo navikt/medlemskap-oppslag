@@ -6,7 +6,9 @@ import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import io.ktor.http.*
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import no.nav.medlemskap.clients.azuread.AzureAdClient
 import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.config.Configuration
 import org.junit.jupiter.api.AfterAll
@@ -54,7 +56,7 @@ class EregClientTest {
             )
         )
 
-        val client = EregClient(server.baseUrl(), httpClient, config, "123")
+        val client = EregClient(server.baseUrl(), httpClient, config)
 
         val response = runBlocking { client.hentOrganisasjon("977074010", callId) }
         assertEquals(1, response.getOrganisasjonsnumreJuridiskeEnheter().size)

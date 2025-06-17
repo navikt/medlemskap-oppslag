@@ -7,6 +7,7 @@ import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import mu.KotlinLogging
+import no.nav.medlemskap.clients.azuread.AzureAdClient
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
 import no.nav.medlemskap.config.Configuration
 
@@ -14,7 +15,6 @@ class EregClient(
     private val baseUrl: String,
     private val httpClient: HttpClient,
     private val configuration: Configuration,
-    private val eregApiKey: String,
     private val retry: Retry? = null
 ) {
     private val logger = KotlinLogging.logger { }
@@ -28,7 +28,6 @@ class EregClient(
                     header(HttpHeaders.Accept, ContentType.Application.Json)
                     header("Nav-Call-Id", callId)
                     header("Nav-Consumer-Id", configuration.azureAd.clientId)
-                    header("x-nav-apiKey", eregApiKey)
                 }.body()
             }
         }.fold(
