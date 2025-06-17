@@ -25,7 +25,6 @@ private val defaultProperties = ConfigurationMap(
         "OPPGAVE_BASE_URL" to "",
         "PDL_BASE_URL" to "",
         "EREG_BASE_URL" to "",
-        "EREG_API_KEY" to "",
         "UDI_BASE_URL" to "",
         "KAFKA_BROKERS" to "nav-dev-kafka-nav-dev.aivencloud.com:26484",
         "KAFKA_TRUSTSTORE_PATH" to "/Users/stians.douzette/Downloads/secrets/client.truststore.jks",
@@ -38,6 +37,7 @@ private val defaultProperties = ConfigurationMap(
         "AZURE_SCOPE_MEDL" to "",
         "AZURE_SCOPE_PDL" to "",
         "AZURE_SCOPE_AAREG" to "",
+        "AZURE_SCOPE_EREG" to "",
         "AZURE_SCOPE_SAF" to ""
     )
 )
@@ -78,10 +78,10 @@ data class Configuration(
         val oppgaveBaseUrl: String = "OPPGAVE_BASE_URL".configProperty(),
         val pdlBaseUrl: String = "PDL_BASE_URL".configProperty(),
         val eregBaseUrl: String = "EREG_BASE_URL".configProperty(),
-        val eregApiKey: String = "EREG_API_KEY".configProperty(),
         val udiBaseUrl: String = "UDI_BASE_URL".configProperty(),
         val oppgaveScope: String = "AZURE_SCOPE_OPPGAVE".configProperty(),
         val aaregScope: String = "AZURE_SCOPE_AAREG".configProperty(),
+        val eregScope: String = "AZURE_SCOPE_EREG".configProperty(),
         val udiScope: String = "AZURE_SCOPE_UDI".configProperty(),
         val medlScope: String = "AZURE_SCOPE_MEDL".configProperty(),
         val pdlScope: String = "AZURE_SCOPE_PDL".configProperty()
