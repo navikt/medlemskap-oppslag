@@ -7,7 +7,6 @@ import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import mu.KotlinLogging
-import no.nav.medlemskap.clients.azuread.AzureAdClient
 import no.nav.medlemskap.clients.runWithRetryAndMetrics
 import no.nav.medlemskap.config.Configuration
 
