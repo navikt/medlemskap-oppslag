@@ -45,10 +45,16 @@ class ReglerForArbeidstakerAndreBorgere(
             hvisNei = harArbeidsavtalenVartHeleKontrollPeriodenRegel
         )
 
+        val harBrukerHatt60ProsentStillingiEnAvArbeidsavtalene = lagRegelflyt(
+            regel = hentRegel(REGEL_62),
+            hvisJa = regelflytJa(ytelse, REGEL_ARBEIDSTAKERE_ANDRE_BORGERE),
+            hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSTAKERE_ANDRE_BORGERE)
+        )
+
         val harBrukerBareEttArbeidisforhold = lagRegelflyt(
             regel = hentRegel(REGEL_60),
             hvisJa = harBrukerFlereArbeidsavtalerSiste12Mnd,
-            hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSTAKERE_ANDRE_BORGERE)
+            hvisNei = harBrukerHatt60ProsentStillingiEnAvArbeidsavtalene
         )
 
         return harBrukerBareEttArbeidisforhold

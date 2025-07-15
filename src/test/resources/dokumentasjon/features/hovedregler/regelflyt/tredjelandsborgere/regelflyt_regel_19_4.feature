@@ -55,5 +55,5 @@ Egenskap: Regelflyt for regel 19.4
     Og skal svaret være "<Medlemskap>"
 
     Eksempler:
-      | Statsborgerskap | Regel 19.4 | Medlemskap | Årsaker |
-      | GBR             | Ja         | Uavklart   | 19.4    |
+      | Statsborgerskap | Regel 19.4 | Medlemskap | Årsaker      |
+      | GBR             | Ja         | Uavklart   | 19.3.1, 19.4 |

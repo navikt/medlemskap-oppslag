@@ -15,7 +15,6 @@ import no.nav.medlemskap.regler.v1.maritim.HarSammenhengendeArbeidsforholdSiste1
 import no.nav.medlemskap.regler.v1.medlemskap.*
 import no.nav.medlemskap.regler.v1.overstyring.OverstyringRegel
 import no.nav.medlemskap.regler.v1.registrerteOpplysninger.HarBrukerRegistrerteOpplysningerRegel
-import no.nav.medlemskap.regler.v1.statsborgerskap.ErBrukerBritiskBorgerRegel
 import no.nav.medlemskap.regler.v1.udi.*
 import no.nav.medlemskap.regler.v1.validering.InputDatoValideringRegel
 
@@ -91,7 +90,6 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_19_5 -> ErArbeidsadgangUavklartRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_19_6 -> GyldigArbeidstillatelseIKontrollperiodeRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_19_6_1 -> DekkerArbeidstillatelsenArbeidsperiodenRegel.fraDatagrunnlag(datagrunnlag).regel
-            REGEL_19_7 -> ErBrukerBritiskBorgerRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_19_8 -> HarBrukerOppholdPåSammeVilkårFlagg.fraDatagrunnlag(datagrunnlag).regel
             REGEL_22 -> HarBrukerUtenlandsoppholdIArbeidsforholdet.fraDatagrunnlag(datagrunnlag).regel
             REGEL_23 -> HarIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisum.fraDatagrunnlag(datagrunnlag).regel
@@ -115,6 +113,7 @@ class RegelFactory(private val datagrunnlag: Datagrunnlag) {
             REGEL_58 -> ErPeriodeForPermisjonAvsluttetForMerEnn30DagerSidenOgErKortereEnn15Dager.fraDatagrunnlag(datagrunnlag).regel
             REGEL_60 -> HarBrukerKunEttArbeidsforholdRegel.fraDatagrunnlag(datagrunnlag).regel
             REGEL_61 -> HarArbeidsavtalenVartHeleKontrollPeriodenRegel.fraDatagrunnlag(datagrunnlag).regel
+            REGEL_62 -> HarBrukerHatt60ProsentStillingIEnAvArbeidsavtale.fraDatagrunnlag(datagrunnlag).regel
             REGEL_64 -> HarBrukerVaertIMinst60ProsentStillingSiste12MndPaaEnArbeidsavtale.fraDatagrunnlag(datagrunnlag).regel
             REGEL_65 -> HarBrukerFlereArbeidsavtalerSiste12Mnd.fraDatagrunnlag(datagrunnlag).regel
             REGEL_66 -> HarBrukerVaertIMinst60ProsentStillingIEnAvArbeidsavtaleSiste12Mnd.fraDatagrunnlag(datagrunnlag).regel

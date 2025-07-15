@@ -7,8 +7,8 @@ import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
-/*
-class ReglerForOppholdstillatelse(
+
+class UDI1Validering(
     val periode: InputPeriode,
     ytelse: Ytelse,
     regelFactory: RegelFactory,
@@ -18,27 +18,30 @@ class ReglerForOppholdstillatelse(
     override fun hentHovedflyt(): Regelflyt {
 
 
-        val erBrukerBritiskEllerSveitsiskBorgerRegelflyt = lagRegelflyt(
-            regel = hentRegel(REGEL_19_7),
-            hvisJa = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE),
-            hvisNei = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE),
-            årsak = Årsak(REGEL_19_3_1, REGEL_19_3_1.avklaring, Svar.UAVKLART)
+        val harBrukerFlereOppholdstillatelserSomOverlapper = lagRegelflyt(
+            regel = hentRegel(REGEL_19_2),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_UDIVALIDERING),
+            hvisNei = regelflytJa(ytelse, REGEL_UDIVALIDERING),
         )
 
+        val harBrukerOppholdPaSammeVilkarFlagg = lagRegelflyt(
+            regel = hentRegel(REGEL_19_8),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_UDIVALIDERING),
+            hvisNei = harBrukerFlereOppholdstillatelserSomOverlapper
+        )
 
-
-
-
-
-
-
-        return harIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisumFlyt
+        val erOppholdstillatelseUavklartRegelflyt = lagRegelflyt(
+            regel = hentRegel(REGEL_19_1),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_UDIVALIDERING),
+            hvisNei = harBrukerOppholdPaSammeVilkarFlagg
+        )
+        return erOppholdstillatelseUavklartRegelflyt
     }
 
     companion object {
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForOppholdstillatelse {
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): UDI1Validering {
             with(datagrunnlag) {
-                return ReglerForOppholdstillatelse(
+                return UDI1Validering(
                     periode = periode,
                     ytelse = ytelse,
                     regelFactory = RegelFactory(datagrunnlag),
@@ -48,4 +51,3 @@ class ReglerForOppholdstillatelse(
         }
     }
 }
-*/
