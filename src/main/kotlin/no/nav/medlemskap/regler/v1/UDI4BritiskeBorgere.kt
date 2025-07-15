@@ -7,8 +7,8 @@ import no.nav.medlemskap.regler.common.*
 import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
-/*
-class ReglerForOppholdstillatelse(
+
+class UDI4BritiskeBorgere(
     val periode: InputPeriode,
     ytelse: Ytelse,
     regelFactory: RegelFactory,
@@ -17,28 +17,25 @@ class ReglerForOppholdstillatelse(
 
     override fun hentHovedflyt(): Regelflyt {
 
-
-        val erBrukerBritiskEllerSveitsiskBorgerRegelflyt = lagRegelflyt(
-            regel = hentRegel(REGEL_19_7),
-            hvisJa = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE),
-            hvisNei = konklusjonUavklart(ytelse, REGEL_OPPHOLDSTILLATELSE),
-            årsak = Årsak(REGEL_19_3_1, REGEL_19_3_1.avklaring, Svar.UAVKLART)
+        val harBrukerEOSellerEFTAOppholdOgBritiskEktefelleRegelflyt = lagRegelflyt(
+            regel = hentRegel(REGEL_19_4),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_BRITISKEBORTERE),
+            hvisNei = regelflytJa(ytelse, REGEL_BRITISKEBORTERE)
         )
 
+        val harBritiskBrukerEOSellerEFTAOppholdRegelFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_30),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_BRITISKEBORTERE),
+            hvisNei = harBrukerEOSellerEFTAOppholdOgBritiskEktefelleRegelflyt
+        )
 
-
-
-
-
-
-
-        return harIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisumFlyt
+        return harBritiskBrukerEOSellerEFTAOppholdRegelFlyt
     }
 
     companion object {
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForOppholdstillatelse {
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): UDI4BritiskeBorgere {
             with(datagrunnlag) {
-                return ReglerForOppholdstillatelse(
+                return UDI4BritiskeBorgere(
                     periode = periode,
                     ytelse = ytelse,
                     regelFactory = RegelFactory(datagrunnlag),
@@ -48,4 +45,3 @@ class ReglerForOppholdstillatelse(
         }
     }
 }
-*/

@@ -90,7 +90,23 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
     private fun kjørReglerForTredjelandsborgere(): List<Resultat> {
         val resultater = mutableListOf<Resultat>()
 
-        resultater.add(ReglerForOppholdstillatelse.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+        /*
+
+        1 flyt
+        if flyt 1 ja -> hopp bukk over 2,3 og 4
+        2 flyt
+        3 flyt
+        4 flyt
+        */
+
+        /*resultater.add(ReglerForOppholdstillatelse.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())*/
+        resultater.add(UDI1Validering.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+        resultater.add(UDI2LovligOpphold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+        resultater.add(UDI3ArbeidsAdgang.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+        resultater.add(UDI4BritiskeBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+
+
+
         resultater.add(ReglerForArbeidstakerAndreBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
 
         return resultater
@@ -110,7 +126,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
         val resultater = mutableListOf<Resultat>()
 
         if (resultatEOSFamilie?.svar == JA) {
-            resultater.add(ReglerForOppholdstillatelse.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+            resultater.add(UDI2LovligOpphold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         }
         val reglerForEØSBorgerResultater = listOf(
             ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler).kjørHovedflyt(),
