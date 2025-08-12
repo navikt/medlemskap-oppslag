@@ -19,13 +19,13 @@ class UDI4BritiskeBorgere(
 
         val harBrukerEOSellerEFTAOppholdOgBritiskEktefelleRegelflyt = lagRegelflyt(
             regel = hentRegel(REGEL_19_4),
-            hvisJa = konklusjonUavklart(ytelse, REGEL_BRITISKEBORTERE),
-            hvisNei = regelflytJa(ytelse, REGEL_BRITISKEBORTERE)
+            hvisJa = konklusjonUavklart(ytelse, REGEL_BRITISKE_BORGERE),
+            hvisNei = regelflytJa(ytelse, REGEL_BRITISKE_BORGERE)
         )
 
         val harBritiskBrukerEOSellerEFTAOppholdRegelFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_30),
-            hvisJa = konklusjonUavklart(ytelse, REGEL_BRITISKEBORTERE),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_BRITISKE_BORGERE),
             hvisNei = harBrukerEOSellerEFTAOppholdOgBritiskEktefelleRegelflyt
         )
 

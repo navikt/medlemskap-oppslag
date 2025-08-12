@@ -20,19 +20,19 @@ class UDI1Validering(
 
         val harBrukerFlereOppholdstillatelserSomOverlapper = lagRegelflyt(
             regel = hentRegel(REGEL_19_2),
-            hvisJa = konklusjonUavklart(ytelse, REGEL_UDIVALIDERING),
-            hvisNei = regelflytJa(ytelse, REGEL_UDIVALIDERING),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_UDI_VALIDERING),
+            hvisNei = regelflytJa(ytelse, REGEL_UDI_VALIDERING),
         )
 
         val harBrukerOppholdPaSammeVilkarFlagg = lagRegelflyt(
             regel = hentRegel(REGEL_19_8),
-            hvisJa = konklusjonUavklart(ytelse, REGEL_UDIVALIDERING),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_UDI_VALIDERING),
             hvisNei = harBrukerFlereOppholdstillatelserSomOverlapper
         )
 
         val erOppholdstillatelseUavklartRegelflyt = lagRegelflyt(
             regel = hentRegel(REGEL_19_1),
-            hvisJa = konklusjonUavklart(ytelse, REGEL_UDIVALIDERING),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_UDI_VALIDERING),
             hvisNei = harBrukerOppholdPaSammeVilkarFlagg
         )
         return erOppholdstillatelseUavklartRegelflyt

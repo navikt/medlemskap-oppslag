@@ -19,14 +19,14 @@ class UDI2LovligOpphold(
 
         val harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt = lagRegelflyt(
             regel = hentRegel(REGEL_19_3),
-            hvisJa = regelflytJa(ytelse, REGEL_UDILOVLIGOPPHOLD),
-            hvisNei = konklusjonUavklart(ytelse, REGEL_UDILOVLIGOPPHOLD),
+            hvisJa = regelflytJa(ytelse, REGEL_UDI_LOVLIG_OPPHOLD),
+            hvisNei = konklusjonUavklart(ytelse, REGEL_UDI_LOVLIG_OPPHOLD),
         )
 
 
         val harIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisumFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_23),
-            hvisJa = konklusjonUavklart(ytelse, REGEL_UDILOVLIGOPPHOLD),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_UDI_LOVLIG_OPPHOLD),
             hvisNei = harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt
         )
 
