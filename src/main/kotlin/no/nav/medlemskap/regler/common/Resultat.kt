@@ -72,8 +72,7 @@ data class Resultat(
         return when {
             erNorskBorger() -> Statsborgerskapskategori.NORSK_BORGER
             erEøsBorger() -> Statsborgerskapskategori.EØS_BORGER
-            erFamilieEOS() -> Statsborgerskapskategori.TREDJELANDSBORGER_MED_EOS_FAMILIE
-            else -> Statsborgerskapskategori.TREDJELANDSBORGER
+            else -> Statsborgerskapskategori.ANDRE_BORGERE
         }
     }
 

@@ -57,13 +57,13 @@ Egenskap: Statsborgerskapskategori
     Så skal statsborgerskapskategorien være "<Statsborgerskapskategori>"
 
     Eksempler:
-      | Statsborgerskap | Statsborgerskapskategori          |
-      | JPN             | TREDJELANDSBORGER_MED_EOS_FAMILIE |
-      | DEU             | EØS_BORGER                        |
-      | NOR             | NORSK_BORGER                      |
+      | Statsborgerskap | Statsborgerskapskategori |
+      | JPN             | ANDRE_BORGERE            |
+      | DEU             | EØS_BORGER               |
+      | NOR             | NORSK_BORGER             |
 
 
-  Scenario: Statsborgerskapskategori tredjelandsborger
+  Scenario: Statsborgerskapskategori andre borgere
 
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
@@ -73,10 +73,10 @@ Egenskap: Statsborgerskapskategori
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 27.01.2021      | 12.02.2021      | Nei                           |
 
-    Så skal statsborgerskapskategorien være "TREDJELANDSBORGER"
+    Så skal statsborgerskapskategorien være "ANDRE_BORGERE"
 
 
-  Scenario: Statsborgerskapskategori tredjelandsborger med tredjelandsborger ektefelle
+  Scenario: Statsborgerskapskategori andre borgere med andre borgere ektefelle
 
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |
@@ -94,4 +94,4 @@ Egenskap: Statsborgerskapskategori
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 27.01.2021      | 12.02.2021      | Nei                           |
 
-    Så skal statsborgerskapskategorien være "TREDJELANDSBORGER"
+    Så skal statsborgerskapskategorien være "ANDRE_BORGERE"
