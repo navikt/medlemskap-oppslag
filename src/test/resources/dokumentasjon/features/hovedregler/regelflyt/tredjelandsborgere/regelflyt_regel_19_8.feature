@@ -47,6 +47,6 @@ Egenskap: Regelflyt for regel 19.8
     Og skal regel-årsaker være "<Årsaker>"
 
     Eksempler:
-      | Oppholdstillatelse på samme vilkår flagg | Regel 19.8 | Medlemskap | Årsaker |
-      | Nei                                      | Nei        | Uavklart   | 19.3    |
-      | Ja                                       | Ja         | Uavklart   | 19.8    |
+      | Oppholdstillatelse på samme vilkår flagg | Regel 19.8 | Medlemskap | Årsaker    |
+      | Nei                                      | Nei        | Uavklart   | 19.3       |
+      | Ja                                       | Ja         | Uavklart   | 19.8, 19.3 |
