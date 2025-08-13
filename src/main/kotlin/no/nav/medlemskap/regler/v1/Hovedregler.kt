@@ -19,9 +19,8 @@ import no.nav.medlemskap.regler.v1.regelflyt.arbeid.ReglerForUtenlandsforhold
 
 class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResultat: Resultat? = null) {
     private val reglerForRequestValidering = ReglerForRequestValidering.fraDatagrunnlag(datagrunnlag)
-    private val reglerForOverstyring = ReglerForOverstyring.fraDatagrunnlag(datagrunnlag)
     private val reglerForStatsborgerskap = ReglerForStatsborgerskap.fraDatagrunnlag(datagrunnlag)
-    private val reglerForTredjelandsborgerFamlie = ReglerForTredjelandsborgerFamilie.fraDatagrunnlag(datagrunnlag)
+    private val reglerForAndreBorgereMedFamilie = ReglerForAndreBorgereOgEktefelle.fraDatagrunnlag(datagrunnlag)
 
     fun kjørHovedregler(): Resultat {
 
@@ -35,40 +34,34 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
         if (brukerGrupeResultat != null) {
             resultater.add(brukerGrupeResultat)
         }
-        // val resultatForOverstyring = reglerForOverstyring.kjørHovedflyt()
-        // val reglerSomSkalOverstyres = reglerForOverstyring.reglerSomSkalOverstyres(resultatForOverstyring)
+
+        //TODO: Fjerne alle steder denne refereres til. Den er hardkodet til tom. Verdien settes aldri.
         val reglerSomSkalOverstyres = emptyMap<RegelId, Svar>()
 
-        // resultater.add(resultatForOverstyring)
         resultater.addAll(kjørFellesRegler())
 
         val resultatStatsborgerskap = reglerForStatsborgerskap.kjørHovedflyt()
         resultater.add(resultatStatsborgerskap)
 
-        var resultatEOSFamilie: Resultat? = null
-        if (!resultatStatsborgerskap.erNorskBorger() && !resultatStatsborgerskap.erEøsBorger()) {
-            resultatEOSFamilie = reglerForTredjelandsborgerFamlie.kjørHovedflyt()
-            resultater.add(resultatEOSFamilie)
-        }
-
-        val resultaterForStatsborger =
-            kjørReglerForStatsborgerskap(resultatStatsborgerskap, resultatEOSFamilie, reglerSomSkalOverstyres)
-        resultater.addAll(resultaterForStatsborger)
+        val resultaterForStatsborgerskapskategori = kjørReglerForStatsborgerskapskategori(
+            resultatStatsborgerskap, reglerSomSkalOverstyres
+        )
+        resultater.addAll(resultaterForStatsborgerskapskategori)
 
         return utledResultat(ytelse, resultater)
     }
 
-    private fun kjørReglerForStatsborgerskap(
+    private fun kjørReglerForStatsborgerskapskategori(
         resultatStatsborgerskap: Resultat,
-        resultatEOSFamilie: Resultat?,
         reglerSomSkalOverstyres: Map<RegelId, Svar>
     ): List<Resultat> {
-        val statsborgerskapskategori = velgStatsborgerskapKategori(resultatStatsborgerskap, resultatEOSFamilie)
+        val kanskjeAndreBorgereMedEØSFamilie = kanskjeAndreBorgereMedEØSFamilie(resultatStatsborgerskap)
+        val statsborgerskapskategori = velgStatsborgerskapKategori(resultatStatsborgerskap, kanskjeAndreBorgereMedEØSFamilie)
 
         return when (statsborgerskapskategori) {
             Statsborgerskapskategori.NORSK_BORGER -> kjørReglerForNorskeBorgere(reglerSomSkalOverstyres)
             Statsborgerskapskategori.EØS_BORGER -> kjørReglerForEøsBorgere(reglerSomSkalOverstyres)
-            Statsborgerskapskategori.ANDRE_BORGERE -> kjørReglerForAndreBorgere(resultatEOSFamilie)
+            Statsborgerskapskategori.ANDRE_BORGERE -> kjørReglerForAndreBorgere(kanskjeAndreBorgereMedEØSFamilie)
         }
     }
 
@@ -86,6 +79,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
         resultatEOSFamilie: Resultat?
     ): List<Resultat> {
         val resultater = mutableListOf<Resultat>()
+        resultatEOSFamilie?.let { resultater.add(it) }
 
         resultater.add(UDI1Validering.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         resultater.add(UDI2LovligOpphold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
@@ -99,6 +93,13 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
             resultater.add(ReglerForArbeidstakerAndreBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         }
             return resultater
+    }
+
+    private fun kanskjeAndreBorgereMedEØSFamilie(resultatStatsborgerskap: Resultat): Resultat? {
+        if (!resultatStatsborgerskap.erNorskBorger() && !resultatStatsborgerskap.erEøsBorger()) {
+            return reglerForAndreBorgereMedFamilie.kjørHovedflyt()
+        }
+        return null
     }
 
 
