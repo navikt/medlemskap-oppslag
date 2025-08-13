@@ -1,7 +1,7 @@
 # language: no
 # encoding: UTF-8
 
-Egenskap: Tredjelandsborger med medl unntak.
+Egenskap: Andre borgere med medl unntak.
 
   Bakgrunn:
 
@@ -30,7 +30,7 @@ Egenskap: Tredjelandsborger med medl unntak.
       | 01.01.2020        | 20.01.2023        | Ja            | GENERELL          | KUN_ARBEID_HELTID    |
 
 
-  Scenariomal: Tredjelandsborger med medl unntak "Ja" skal få uavklart medlemskap hvis oppholdstillatelse ikke er i orden.
+  Scenariomal: Andre borgere med medl unntak "Ja" skal få uavklart medlemskap hvis oppholdstillatelse ikke er i orden.
 
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode          | Fra og med dato | Til og med dato |

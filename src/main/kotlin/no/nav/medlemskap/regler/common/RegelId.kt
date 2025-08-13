@@ -96,7 +96,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_NORSK("NORSK", "Er regler for norske borgere avklart?"),
     REGEL_MEDL("MEDL", "Har bruker avklarte opplysninger i MEDL?"),
     REGEL_STATSBORGERSKAP("STATSBORGERSKAP", "Er statsborgerskap avklart?"),
-    REGEL_ANDRE_BORGERE_MED_EOS_FAMILIE("ANDRE_BORGERE_MED_EOS_FAMILIE", "Er tredjelandsborgers familie EØS medlem?"),
+    REGEL_ANDRE_BORGERE_MED_EOS_FAMILIE("ANDRE_BORGERE_MED_EOS_FAMILIE", "Er andre borgere med familie EØS medlem?"),
     REGEL_BOSATT("BOSATT", "Er det avklart om bruker bor i Norge?"),
     REGEL_DOED("DOED", "Er det avklart om brukeren er død eller ikke?"),
     REGEL_REQUEST_VALIDERING("Validering", "Er input-dataene gyldige?"),
