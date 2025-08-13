@@ -24,31 +24,32 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
 
     fun kjørHovedregler(): Resultat {
 
+        // 1. Validering av forespørsel
         val requestValideringResultat = reglerForRequestValidering.kjørRegel()
-        if (requestValideringResultat.svar != JA) {
-            return requestValideringResultat
-        }
+        if (requestValideringResultat.svar != JA) return requestValideringResultat
 
-        val ytelse = reglerForRequestValidering.ytelse
         val resultater = mutableListOf<Resultat>()
-        if (brukerGrupeResultat != null) {
-            resultater.add(brukerGrupeResultat)
-        }
+        brukerGrupeResultat?.let { resultater += it }
 
         //TODO: Fjerne alle steder denne refereres til. Den er hardkodet til tom. Verdien settes aldri.
         val reglerSomSkalOverstyres = emptyMap<RegelId, Svar>()
 
-        resultater.addAll(kjørFellesRegler())
+        // 2. Kjør felles regler
+        val resultatForFellesregler = kjørFellesRegler()
+        resultater += resultatForFellesregler
 
+        // 3. Kjør regler for statsborgerskap
         val resultatStatsborgerskap = reglerForStatsborgerskap.kjørHovedflyt()
-        resultater.add(resultatStatsborgerskap)
+        resultater += resultatStatsborgerskap
 
+
+        // 4. Kjør regler for statsborgerskapskategori (Norsk/EØS/andre borgere/andre borgere med EØS-familie)
         val resultaterForStatsborgerskapskategori = kjørReglerForStatsborgerskapskategori(
             resultatStatsborgerskap, reglerSomSkalOverstyres
         )
-        resultater.addAll(resultaterForStatsborgerskapskategori)
+        resultater += resultaterForStatsborgerskapskategori
 
-        return utledResultat(ytelse, resultater)
+        return utledResultat(reglerForRequestValidering.ytelse, resultater)
     }
 
     private fun kjørReglerForStatsborgerskapskategori(
@@ -67,26 +68,24 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
 
     private fun velgStatsborgerskapKategori(
         resultatStatsborgerskap: Resultat,
-        resultatEOSFamilie: Resultat?
+        kanskjeAndreBorgereMedEØSFamilie: Resultat?
     ): Statsborgerskapskategori {
-        return when (resultatEOSFamilie?.svar) {
-            JA -> resultatEOSFamilie.bestemStatsborgerskapskategori()
-            else -> resultatStatsborgerskap.bestemStatsborgerskapskategori()
-        }
+        return if (kanskjeAndreBorgereMedEØSFamilie?.svar == JA) kanskjeAndreBorgereMedEØSFamilie.bestemStatsborgerskapskategori()
+        else resultatStatsborgerskap.bestemStatsborgerskapskategori()
     }
 
     private fun kjørReglerForAndreBorgere(
-        resultatEOSFamilie: Resultat?
+        kanskjeAndreBorgereMedEØSFamilie: Resultat?
     ): List<Resultat> {
         val resultater = mutableListOf<Resultat>()
-        resultatEOSFamilie?.let { resultater.add(it) }
+        kanskjeAndreBorgereMedEØSFamilie?.let { resultater.add(it) }
 
         resultater.add(UDI1Validering.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         resultater.add(UDI2LovligOpphold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         resultater.add(UDI3ArbeidsAdgang.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         resultater.add(UDI4BritiskeBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
 
-        if (resultatEOSFamilie?.svar == JA){
+        if (kanskjeAndreBorgereMedEØSFamilie?.svar == JA){
             resultater.add(ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
             resultater.add(ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         } else {
