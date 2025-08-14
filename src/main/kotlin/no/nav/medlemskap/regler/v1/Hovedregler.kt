@@ -80,12 +80,16 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
         val resultater = mutableListOf<Resultat>()
         kanskjeAndreBorgereMedEØSFamilie?.let { resultater.add(it) }
 
-        resultater.add(UDI1Validering.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
-        resultater.add(UDI2LovligOpphold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
-        resultater.add(UDI3ArbeidsAdgang.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
-        resultater.add(UDI4BritiskeBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+        val resultatAvUDI1Validering = UDI1Validering.fraDatagrunnlag(datagrunnlag).kjørHovedflyt()
+        resultater.add(resultatAvUDI1Validering)
 
-        if (kanskjeAndreBorgereMedEØSFamilie?.svar == JA){
+        if (regelflytErIkkeUavklart(resultatAvUDI1Validering)) {
+            resultater.add(UDI2LovligOpphold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+            resultater.add(UDI3ArbeidsAdgang.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+            resultater.add(UDI4BritiskeBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+        }
+
+        if (kanskjeAndreBorgereMedEØSFamilie?.svar == JA) {
             resultater.add(ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
             resultater.add(ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         } else {
@@ -93,6 +97,8 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
         }
             return resultater
     }
+
+    private fun regelflytErIkkeUavklart(resultat: Resultat): Boolean = resultat.svar != UAVKLART
 
     private fun kanskjeAndreBorgereMedEØSFamilie(resultatStatsborgerskap: Resultat): Resultat? {
         if (!resultatStatsborgerskap.erNorskBorger() && !resultatStatsborgerskap.erEøsBorger()) {
