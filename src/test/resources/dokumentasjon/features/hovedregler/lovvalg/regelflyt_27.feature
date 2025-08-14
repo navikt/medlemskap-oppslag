@@ -50,7 +50,7 @@ Egenskap: Regelflyt for regel 27, Når bruker har to statsborgerskap og det ene 
       | 01.05.2020 |            | Nei       | UAVKLART | Ja       |
 
 
-  Scenario: Regelflyt for regel 27, tredjelandsborger
+  Scenario: Regelflyt for regel 27, andre borgere
 
     Gitt følgende statsborgerskap i personhistorikken
       | Landkode | Fra og med dato | Til og med dato |

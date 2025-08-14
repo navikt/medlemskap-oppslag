@@ -17,84 +17,96 @@ import no.nav.medlemskap.regler.v1.frilanser.ReglerForFrilanser
 import no.nav.medlemskap.regler.v1.regelflyt.arbeid.ReglerForPermisjoner
 import no.nav.medlemskap.regler.v1.regelflyt.arbeid.ReglerForUtenlandsforhold
 
-class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResultat: Resultat? =null) {
+class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResultat: Resultat? = null) {
     private val reglerForRequestValidering = ReglerForRequestValidering.fraDatagrunnlag(datagrunnlag)
-    private val reglerForOverstyring = ReglerForOverstyring.fraDatagrunnlag(datagrunnlag)
     private val reglerForStatsborgerskap = ReglerForStatsborgerskap.fraDatagrunnlag(datagrunnlag)
-    private val reglerForTredjelandsborgerFamlie = ReglerForTredjelandsborgerFamilie.fraDatagrunnlag(datagrunnlag)
+    private val reglerForAndreBorgereMedFamilie = ReglerForAndreBorgereOgEktefelle.fraDatagrunnlag(datagrunnlag)
 
     fun kjørHovedregler(): Resultat {
 
+        // 1. Validering av forespørsel
         val requestValideringResultat = reglerForRequestValidering.kjørRegel()
-        if (requestValideringResultat.svar != JA) {
-            return requestValideringResultat
-        }
+        if (requestValideringResultat.svar != JA) return requestValideringResultat
 
-        val ytelse = reglerForRequestValidering.ytelse
         val resultater = mutableListOf<Resultat>()
-        if (brukerGrupeResultat!=null){
-            resultater.add(brukerGrupeResultat)
-        }
-        // val resultatForOverstyring = reglerForOverstyring.kjørHovedflyt()
-        // val reglerSomSkalOverstyres = reglerForOverstyring.reglerSomSkalOverstyres(resultatForOverstyring)
+        brukerGrupeResultat?.let { resultater += it }
+
+        //TODO: Fjerne alle steder denne refereres til. Den er hardkodet til tom. Verdien settes aldri.
         val reglerSomSkalOverstyres = emptyMap<RegelId, Svar>()
 
-        // resultater.add(resultatForOverstyring)
-        resultater.addAll(kjørFellesRegler())
+        // 2. Kjør felles regler
+        val resultatForFellesregler = kjørFellesRegler()
+        resultater += resultatForFellesregler
 
+        // 3. Kjør regler for statsborgerskap
         val resultatStatsborgerskap = reglerForStatsborgerskap.kjørHovedflyt()
-        resultater.add(resultatStatsborgerskap)
+        resultater += resultatStatsborgerskap
 
-        var resultatEOSFamilie: Resultat? = null
-        if (!resultatStatsborgerskap.erNorskBorger() && !resultatStatsborgerskap.erEøsBorger()) {
-            resultatEOSFamilie = reglerForTredjelandsborgerFamlie.kjørHovedflyt()
-            resultater.add(resultatEOSFamilie)
-        }
 
-        val resultaterForStatsborger =
-            kjørReglerForStatsborgerskap(resultatStatsborgerskap, resultatEOSFamilie, reglerSomSkalOverstyres)
-        resultater.addAll(resultaterForStatsborger)
+        // 4. Kjør regler for statsborgerskapskategori (Norsk/EØS/andre borgere/andre borgere med EØS-familie)
+        val resultaterForStatsborgerskapskategori = kjørReglerForStatsborgerskapskategori(
+            resultatStatsborgerskap, reglerSomSkalOverstyres
+        )
+        resultater += resultaterForStatsborgerskapskategori
 
-        return utledResultat(ytelse, resultater)
+        return utledResultat(reglerForRequestValidering.ytelse, resultater)
     }
 
-    private fun kjørReglerForStatsborgerskap(
+    private fun kjørReglerForStatsborgerskapskategori(
         resultatStatsborgerskap: Resultat,
-        resultatEOSFamilie: Resultat?,
         reglerSomSkalOverstyres: Map<RegelId, Svar>
     ): List<Resultat> {
-        val statsborgerskapskategori = velgStatsborgerskapKategori(resultatStatsborgerskap, resultatEOSFamilie)
+        val kanskjeAndreBorgereMedEØSFamilie = kanskjeAndreBorgereMedEØSFamilie(resultatStatsborgerskap)
+        val statsborgerskapskategori = velgStatsborgerskapKategori(resultatStatsborgerskap, kanskjeAndreBorgereMedEØSFamilie)
 
         return when (statsborgerskapskategori) {
-            Statsborgerskapskategori.TREDJELANDSBORGER -> kjørReglerForTredjelandsborgere()
-            Statsborgerskapskategori.EØS_BORGER -> kjørReglerForEøsBorgere(reglerSomSkalOverstyres, resultatEOSFamilie)
-            Statsborgerskapskategori.TREDJELANDSBORGER_MED_EOS_FAMILIE -> kjørReglerForEøsBorgere(
-                reglerSomSkalOverstyres,
-                resultatEOSFamilie
-            )
-
             Statsborgerskapskategori.NORSK_BORGER -> kjørReglerForNorskeBorgere(reglerSomSkalOverstyres)
+            Statsborgerskapskategori.EØS_BORGER -> kjørReglerForEøsBorgere(reglerSomSkalOverstyres)
+            Statsborgerskapskategori.ANDRE_BORGERE -> kjørReglerForAndreBorgere(kanskjeAndreBorgereMedEØSFamilie)
         }
     }
 
     private fun velgStatsborgerskapKategori(
         resultatStatsborgerskap: Resultat,
-        resultatEOSFamilie: Resultat?
+        kanskjeAndreBorgereMedEØSFamilie: Resultat?
     ): Statsborgerskapskategori {
-        return when (resultatEOSFamilie?.svar) {
-            JA -> resultatEOSFamilie.bestemStatsborgerskapskategori()
-            else -> resultatStatsborgerskap.bestemStatsborgerskapskategori()
-        }
+        return if (kanskjeAndreBorgereMedEØSFamilie?.svar == JA) kanskjeAndreBorgereMedEØSFamilie.bestemStatsborgerskapskategori()
+        else resultatStatsborgerskap.bestemStatsborgerskapskategori()
     }
 
-    private fun kjørReglerForTredjelandsborgere(): List<Resultat> {
+    private fun kjørReglerForAndreBorgere(
+        kanskjeAndreBorgereMedEØSFamilie: Resultat?
+    ): List<Resultat> {
         val resultater = mutableListOf<Resultat>()
+        kanskjeAndreBorgereMedEØSFamilie?.let { resultater.add(it) }
 
-        resultater.add(ReglerForOppholdstillatelse.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
-        resultater.add(ReglerForArbeidstakerAndreBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+        val resultatAvUDI1Validering = UDI1Validering.fraDatagrunnlag(datagrunnlag).kjørHovedflyt()
+        resultater.add(resultatAvUDI1Validering)
 
-        return resultater
+        if (regelflytErIkkeUavklart(resultatAvUDI1Validering)) {
+            resultater.add(UDI2LovligOpphold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+            resultater.add(UDI3ArbeidsAdgang.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+            resultater.add(UDI4BritiskeBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+        }
+
+        if (kanskjeAndreBorgereMedEØSFamilie?.svar == JA) {
+            resultater.add(ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+            resultater.add(ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+        } else {
+            resultater.add(ReglerForArbeidstakerAndreBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+        }
+            return resultater
     }
+
+    private fun regelflytErIkkeUavklart(resultat: Resultat): Boolean = resultat.svar != UAVKLART
+
+    private fun kanskjeAndreBorgereMedEØSFamilie(resultatStatsborgerskap: Resultat): Resultat? {
+        if (!resultatStatsborgerskap.erNorskBorger() && !resultatStatsborgerskap.erEøsBorger()) {
+            return reglerForAndreBorgereMedFamilie.kjørHovedflyt()
+        }
+        return null
+    }
+
 
     private fun kjørReglerForNorskeBorgere(overstyrteRegler: Map<RegelId, Svar>): List<Resultat> {
         return listOf(
@@ -104,14 +116,9 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
     }
 
     private fun kjørReglerForEøsBorgere(
-        overstyrteRegler: Map<RegelId, Svar>,
-        resultatEOSFamilie: Resultat?
+        overstyrteRegler: Map<RegelId, Svar>
     ): List<Resultat> {
         val resultater = mutableListOf<Resultat>()
-
-        if (resultatEOSFamilie?.svar == JA) {
-            resultater.add(ReglerForOppholdstillatelse.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
-        }
         val reglerForEØSBorgerResultater = listOf(
             ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler).kjørHovedflyt(),
             ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt()
@@ -173,7 +180,8 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
             return when (resultat.svar) {
                 JA -> jaKonklusjon(ytelse).utfør().copy(harDekning = resultat.harDekning, dekning = resultat.dekning)
                 NEI -> neiKonklusjon(ytelse).utfør().copy(harDekning = resultat.harDekning, dekning = resultat.dekning)
-                UAVKLART -> uavklartKonklusjon(ytelse).utfør().copy(harDekning = resultat.harDekning, dekning = resultat.dekning)
+                UAVKLART -> uavklartKonklusjon(ytelse).utfør()
+                    .copy(harDekning = resultat.harDekning, dekning = resultat.dekning)
             }
         }
 

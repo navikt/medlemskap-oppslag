@@ -16,13 +16,13 @@ import no.nav.medlemskap.regler.v1.ReglerForDoedsfall
 import no.nav.medlemskap.regler.v1.ReglerForMedl
 import no.nav.medlemskap.regler.v1.ReglerForRequestValidering
 import no.nav.medlemskap.regler.v1.ReglerForStatsborgerskap
-import no.nav.medlemskap.regler.v1.ReglerForTredjelandsborgerFamilie
+import no.nav.medlemskap.regler.v1.ReglerForAndreBorgereOgEktefelle
 
 
 class HovedreglerForSelvstendigNaringsdrivende(private val datagrunnlag: Datagrunnlag,val brukerGruppeResultat: Resultat) {
     private val reglerForRequestValidering = ReglerForRequestValidering.fraDatagrunnlag(datagrunnlag)
     private val reglerForStatsborgerskap = ReglerForStatsborgerskap.fraDatagrunnlag(datagrunnlag)
-    private val reglerForTredjelandsborgerFamlie = ReglerForTredjelandsborgerFamilie.fraDatagrunnlag(datagrunnlag)
+    private val reglerForTredjelandsborgerFamlie = ReglerForAndreBorgereOgEktefelle.fraDatagrunnlag(datagrunnlag)
 
     fun kjørHovedregler(): Resultat {
 
