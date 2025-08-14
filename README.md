@@ -117,4 +117,10 @@ Klienter som ønsker å kalle oss må generere et token med vår klientid som sc
 ```
 githubUser=<brukernavn>
 githubPassword=<mysecrettoken>
+```
+```githubUser``` er brukernavnet ditt, og ```githubPassword``` er et token du kan generere i github settings -> developer settings -> personal access tokens -> tokens (classic) -> Generate new token (classic)
+* Huk av for ```repo``` og ```write:packages```
+* Etter at tokenet er opprettet, velg ```Configure SSO``` og velg ```Authorize``` på ```Navikt``` organisasjonen.
+
+
 
