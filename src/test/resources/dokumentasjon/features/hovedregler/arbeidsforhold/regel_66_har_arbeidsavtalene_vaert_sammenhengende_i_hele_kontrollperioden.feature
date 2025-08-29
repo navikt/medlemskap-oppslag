@@ -58,3 +58,29 @@ Egenskap: Regel 66: Har bruker vært sammenhengende i minst 60 % stilling i èn 
         | 01.01.2023   | 01.04.2023   | 01.04.2023   |              | 01.01.2023   |              | 55                 | 55                 | 55                 | Nei  |
         | 01.03.2023   | 01.04.2023   | 01.04.2023   |              | 01.01.2023   |              | 100                | 100                | 55                 | Nei  |
         | 01.03.2023   | 01.04.2023   | 01.04.2023   |              | 01.01.2023   |              | 100                | 100                | 100                | Ja   |
+
+    Scenariomal:  får "Ja"
+      Gitt følgende arbeidsforhold fra AAReg
+        | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
+        | 01.01.1994      |                 | Organisasjon     | NORMALT             |
+
+      Og følgende arbeidsavtaler i arbeidsforholdet
+        | Fra og med dato | Til og med dato | Yrkeskode | Stillingsprosent   | Skipsregister |
+        | 01.01.1994      |                 | 001       | <Stillingsprosent> |               |
+
+      Og følgende statsborgerskap i personhistorikken
+        | Landkode   | Fra og med dato | Til og med dato |
+        | <Landkode> | 01.01.1980      |                 |
+
+      Når regel "66" kjøres med følgende parametre
+        | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
+        | 30.01.2024      | 30.01.2025      | Nei                           |
+
+      Så skal svaret være "<Svar>"
+
+      Eksempler:
+        | Landkode | Stillingsprosent | Svar | kommentar
+        | NOR      | 20               | Nei  | Norsk statsborger med under 25 prosent stilling får Nei
+        | NOR      | 30               | Ja   | Norsk statsborger med mer enn 25 prosent stilling får Ja
+        | JPN      | 70               | Ja   | Tredjelandsborger med mer enn 60 prosent stilling får Ja
+        | JPN      | 50               | Nei  | Tredjelandsborger med under 60 prosent stilling får Nei
