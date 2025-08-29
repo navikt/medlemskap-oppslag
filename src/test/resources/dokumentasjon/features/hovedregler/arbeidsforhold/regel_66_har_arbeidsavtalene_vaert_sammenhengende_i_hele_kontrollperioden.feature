@@ -59,7 +59,7 @@ Egenskap: Regel 66: Har bruker vært sammenhengende i minst 60 % stilling i èn 
         | 01.03.2023   | 01.04.2023   | 01.04.2023   |              | 01.01.2023   |              | 100                | 100                | 55                 | Nei  |
         | 01.03.2023   | 01.04.2023   | 01.04.2023   |              | 01.01.2023   |              | 100                | 100                | 100                | Ja   |
 
-    Scenariomal:  får "Ja"
+    Scenariomal: Akseptert stillingsprosent endres basert på statsborgerskapet
       Gitt følgende arbeidsforhold fra AAReg
         | Fra og med dato | Til og med dato | Arbeidsgivertype | Arbeidsforholdstype |
         | 01.01.1994      |                 | Organisasjon     | NORMALT             |
