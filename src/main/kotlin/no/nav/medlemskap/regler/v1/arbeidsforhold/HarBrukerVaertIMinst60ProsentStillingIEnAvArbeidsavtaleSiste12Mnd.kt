@@ -38,7 +38,7 @@ class HarBrukerVaertIMinst60ProsentStillingIEnAvArbeidsavtaleSiste12Mnd(
 
         return when {
             arbeidsavtalerForKontrollPeriode
-                .filter { it.stillingsprosent!! >= statsborgerskapsrelatertStillingsprosent }
+                .filter { it.stillingsprosent!! >= stillingsprosentForStatsborgerskapsgruppe }
                 .sammenhengendeArbeidsavtaler(kontrollPeriodeForArbeidsforhold, 0)
                 .grupperAvtaler()
                 .any { it.harVartHeleKontrollperioden(kontrollPeriodeForArbeidsforhold) }

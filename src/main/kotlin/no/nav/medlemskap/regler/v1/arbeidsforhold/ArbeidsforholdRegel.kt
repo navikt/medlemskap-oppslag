@@ -19,7 +19,7 @@ abstract class ArbeidsforholdRegel(
     val kontrollPeriodeForArbeidsforhold = kontrollPeriodeForArbeidsforhold(startDatoForYtelse)
     val kontrollperiodeForSykepenger = kontrollperiodeForSykepenger(startDatoForYtelse)
     val kontrollperiodeForBarnbriller = kontrollperiodeForBarneBriller(startDatoForYtelse)
-    val statsborgerskapsrelatertStillingsprosent = hentStillingsprosentForStatsborgerskapsgruppe(personhistorikk)
+    val stillingsprosentForStatsborgerskapsgruppe = hentStillingsprosentForStatsborgerskapsgruppe(personhistorikk)
 
     fun finnKOntrollPeriode(ytelse: Ytelse): Kontrollperiode {
         when (ytelse){

@@ -35,7 +35,7 @@ class HarBrukerVaertIMinst60ProsentStillingSiste12MndPaaEnArbeidsavtale(
         val arbeidsavtalen = arbeidsavtalerForKontrollPeriode.first()
 
         return when {
-            arbeidsavtalen.stillingsprosent!! >= statsborgerskapsrelatertStillingsprosent -> ja(regelId)
+            arbeidsavtalen.stillingsprosent!! >= stillingsprosentForStatsborgerskapsgruppe -> ja(regelId)
             else -> nei(regelId)
         }
     }
