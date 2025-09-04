@@ -6,7 +6,6 @@ import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollperiodeForBarn
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollperiodeForSykepenger
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.personhistorikk.Personhistorikk
-import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap
 import no.nav.medlemskap.regler.common.BasisRegel
 import no.nav.medlemskap.regler.common.RegelId
 import java.time.LocalDate
@@ -20,7 +19,7 @@ abstract class ArbeidsforholdRegel(
     val kontrollPeriodeForArbeidsforhold = kontrollPeriodeForArbeidsforhold(startDatoForYtelse)
     val kontrollperiodeForSykepenger = kontrollperiodeForSykepenger(startDatoForYtelse)
     val kontrollperiodeForBarnbriller = kontrollperiodeForBarneBriller(startDatoForYtelse)
-    val statsborgerskapsrelatertStillingsprosent = statsborgerskapsrelatertStillingsprosent(personhistorikk)
+    val statsborgerskapsrelatertStillingsprosent = hentStillingsprosentForStatsborgerskapsgruppe(personhistorikk)
 
     fun finnKOntrollPeriode(ytelse: Ytelse): Kontrollperiode {
         when (ytelse){
@@ -33,23 +32,5 @@ abstract class ArbeidsforholdRegel(
             Ytelse.MEDLEMSKAP_BARN -> return kontrollperiodeForBarnbriller
             Ytelse.MIN_VEI -> return kontrollperiodeForSykepenger
         }
-    }
-
-    private fun statsborgerskapsrelatertStillingsprosent(personhistorikk: Personhistorikk?): Int {
-        val statsborgerskap = personhistorikk?.statsborgerskap?.filter { it.historisk != true }
-        return when {
-            erNorskBorger(statsborgerskap) -> Statsborgerskapstype.NORSK_BORGER.stillingsprosent
-            else -> Statsborgerskapstype.ANDRE_BORGERE.stillingsprosent
-        }
-    }
-
-    private fun erNorskBorger(statsborgerskap: List<Statsborgerskap>?): Boolean {
-        return statsborgerskap?.any{ it.landkode == "NOR" } == true
-    }
-
-    enum class Statsborgerskapstype(val stillingsprosent: Int) {
-        NORSK_BORGER(25),
-        EOS_BORGER(100),
-        ANDRE_BORGERE(60)
     }
 }
