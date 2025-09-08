@@ -10,6 +10,7 @@ import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsavtale.Companion.sammenhen
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.arbeidsforholdForKontrollPeriode
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harIngenArbeidsforhold
+import no.nav.medlemskap.domene.personhistorikk.Personhistorikk
 import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.ja
@@ -20,8 +21,9 @@ class HarBrukerVaertIMinst60ProsentStillingIEnAvArbeidsavtaleSiste12Mnd(
     ytelse: Ytelse,
     startDatoForYtelse: LocalDate,
     private val arbeidsforhold: List<Arbeidsforhold>,
-    regelId: RegelId = RegelId.REGEL_66
-) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse) {
+    regelId: RegelId = RegelId.REGEL_66,
+    personhistorikk: Personhistorikk
+) : ArbeidsforholdRegel(regelId, ytelse, startDatoForYtelse, personhistorikk) {
 
     override fun operasjon(): Resultat {
 
@@ -36,7 +38,7 @@ class HarBrukerVaertIMinst60ProsentStillingIEnAvArbeidsavtaleSiste12Mnd(
 
         return when {
             arbeidsavtalerForKontrollPeriode
-                .filter { it.stillingsprosent!! >= 60 }
+                .filter { it.stillingsprosent!! >= stillingsprosentForStatsborgerskapsgruppe }
                 .sammenhengendeArbeidsavtaler(kontrollPeriodeForArbeidsforhold, 0)
                 .grupperAvtaler()
                 .any { it.harVartHeleKontrollperioden(kontrollPeriodeForArbeidsforhold) }
@@ -52,7 +54,8 @@ class HarBrukerVaertIMinst60ProsentStillingIEnAvArbeidsavtaleSiste12Mnd(
             return HarBrukerVaertIMinst60ProsentStillingIEnAvArbeidsavtaleSiste12Mnd(
                 ytelse = datagrunnlag.ytelse,
                 startDatoForYtelse = datagrunnlag.startDatoForYtelse,
-                arbeidsforhold = datagrunnlag.arbeidsforhold
+                arbeidsforhold = datagrunnlag.arbeidsforhold,
+                personhistorikk = datagrunnlag.pdlpersonhistorikk
             )
         }
     }
