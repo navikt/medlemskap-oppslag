@@ -57,8 +57,7 @@
         "fornavn" : "Test",
         "mellomnavn" : null,
         "etternavn" : "Person"
-      } ],
-      "oppholdstilatelser" : [ ]
+      } ]
     },
     "medlemskap" : [ {
       "dekning" : "dekning",
