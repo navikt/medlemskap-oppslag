@@ -89,7 +89,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
             resultater.add(UDI4BritiskeBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         }
 
-        if (kanskjeAndreBorgereMedEØSFamilie?.svar == JA) {
+        if (kanskjeAndreBorgereMedEØSFamilie?.erFamilieEOS() == true) {
             resultater.add(ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
             resultater.add(ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         } else {
