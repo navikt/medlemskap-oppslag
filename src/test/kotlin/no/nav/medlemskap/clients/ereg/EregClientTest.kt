@@ -6,6 +6,7 @@ import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import io.ktor.http.*
+import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.medlemskap.clients.azuread.AzureAdClient
@@ -45,6 +46,8 @@ class EregClientTest {
     @Test
     fun `tester response med juridisk enhet`() {
         val callId = "12345"
+        val azureAdClient: AzureAdClient = mockk()
+        coEvery { azureAdClient.hentToken(config.register.aaregScope).token } returns "dummytoken"
 
         WireMock.stubFor(
             queryMappingForHentOrganisasjon.willReturn(
@@ -56,7 +59,7 @@ class EregClientTest {
             )
         )
 
-        val client = EregClient(server.baseUrl(), httpClient, config)
+        val client = EregClient(server.baseUrl(), azureAdClient, httpClient, config)
 
         val response = runBlocking { client.hentOrganisasjon("977074010", callId) }
         assertEquals(1, response.getOrganisasjonsnumreJuridiskeEnheter().size)
