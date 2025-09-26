@@ -98,7 +98,7 @@ spec:
     - name: PDL_BASE_URL
       value: https://pdl-api.dev-fss-pub.nais.io/graphql
     - name: EREG_BASE_URL
-      value: https://ereg-services.dev-fss-pub.nais.io/
+      value: https://ereg-services.dev-fss-pub.nais.io
     - name: UDI_BASE_URL
       value: https://udi-proxy.dev-fss-pub.nais.io
     - name: AZURE_SCOPE_OPPGAVE
