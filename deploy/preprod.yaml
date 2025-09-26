@@ -83,7 +83,7 @@ spec:
         - host: login.microsoftonline.com
         - host: udi-proxy.dev-fss-pub.nais.io
         - host: aareg-services-q1.dev-fss-pub.nais.io
-        - host: dev-fss.arbeidsforhold.ereg-services-q1
+        - host: ereg-services.dev-fss-pub.nais.io
         - host: medlemskap-medl-api.dev-fss-pub.nais.io
         - host: oppgave.dev-fss-pub.nais.io
   env:
@@ -98,7 +98,7 @@ spec:
     - name: PDL_BASE_URL
       value: https://pdl-api.dev-fss-pub.nais.io/graphql
     - name: EREG_BASE_URL
-      value: https://dev-fss.arbeidsforhold.ereg-services-q1/.default
+      value: https://ereg-services.dev-fss-pub.nais.io/
     - name: UDI_BASE_URL
       value: https://udi-proxy.dev-fss-pub.nais.io
     - name: AZURE_SCOPE_OPPGAVE
