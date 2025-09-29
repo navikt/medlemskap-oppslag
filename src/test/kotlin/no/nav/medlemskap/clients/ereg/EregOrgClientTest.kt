@@ -5,7 +5,10 @@ import com.github.tomakehurst.wiremock.client.MappingBuilder
 import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import io.ktor.http.*
+import io.mockk.coEvery
+import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import no.nav.medlemskap.clients.azuread.AzureAdClient
 import no.nav.medlemskap.clients.ereg.EregClientTest.Companion.configuration
 import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.config.Configuration
@@ -38,6 +41,8 @@ class EregOrgClientTest {
     @Test
     fun `tester response`() {
         val callId = "12345"
+        val azureAdClient: AzureAdClient = mockk()
+        coEvery { azureAdClient.hentToken(config.register.aaregScope).token } returns "dummytoken"
 
         WireMock.stubFor(
             queryMapping.willReturn(
@@ -48,7 +53,7 @@ class EregOrgClientTest {
             )
         )
 
-        val client = EregClient(server.baseUrl(), httpClient, config, "123")
+        val client = EregClient(server.baseUrl(), azureAdClient, httpClient, config)
 
         val response = runBlocking { client.hentOrganisasjon("977074010", callId) }
         println(response)

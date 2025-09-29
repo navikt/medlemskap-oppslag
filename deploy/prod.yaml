@@ -75,7 +75,7 @@ spec:
         - host: login.microsoftonline.com
         - host: udi-proxy.prod-fss-pub.nais.io
         - host: aareg-services.prod-fss-pub.nais.io
-        - host: ereg-services.dev.intern.nav.no
+        - host: ereg-services.prod-fss-pub.nais.io
         - host: medlemskap-medl-api.prod-fss-pub.nais.io
         - host: oppgave.prod-fss-pub.nais.io
         - host: saf.prod-fss-pub.nais.io
@@ -94,7 +94,7 @@ spec:
     - name: PDL_BASE_URL
       value: https://pdl-api.prod-fss-pub.nais.io/graphql
     - name: EREG_BASE_URL
-      value: https://api-gw.oera.no/ereg-services/api
+      value: https://ereg-services.prod-fss-pub.nais.io
     - name: UDI_BASE_URL
       value: https://udi-proxy.prod-fss-pub.nais.io
     - name: AZURE_SCOPE_OPPGAVE
@@ -107,5 +107,7 @@ spec:
       value: api://prod-fss.pdl.pdl-api/.default
     - name: AZURE_SCOPE_AAREG
       value: api://prod-fss.arbeidsforhold.aareg-services-nais/.default
+    - name: AZURE_SCOPE_EREG
+      value: api://prod-fss.arbeidsforhold.ereg-services/.default
     - name: AZURE_SCOPE_SAF
       value: api://prod-fss.teamdokumenthandtering.saf/.default
