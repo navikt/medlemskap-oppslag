@@ -42,7 +42,7 @@ class HarBrukerHatt60ProsentStillingIEnAvArbeidsavtale(
 
         return when {
             arbeidsavtalerForKontrollPeriode
-                .filter { it.stillingsprosent!! >= stillingsprosentForStatsborgerskapsgruppe }
+                .filter { (it.stillingsprosent ?: 0.0) >= stillingsprosentForStatsborgerskapsgruppe }
                 .sammenhengendeArbeidsavtaler(kontrollPeriodeForArbeidsforhold, 0)
                 .grupperAvtaler()
                 .any { it.harVartHeleKontrollperioden(kontrollPeriodeForArbeidsforhold) }
