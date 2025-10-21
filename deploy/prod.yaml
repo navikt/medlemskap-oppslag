@@ -76,7 +76,7 @@ spec:
         - host: udi-proxy.prod-fss-pub.nais.io
         - host: aareg-services.prod-fss-pub.nais.io
         - host: ereg-services.prod-fss-pub.nais.io
-        - host: medlemskap-medl-api.prod-fss-pub.nais.io
+        - host: medlemskap-medl-api-gcp.intern.nav.no
         - host: oppgave.prod-fss-pub.nais.io
         - host: saf.prod-fss-pub.nais.io
   kafka:
@@ -84,7 +84,7 @@ spec:
 
   env:
     - name: MEDL2_BASE_URL
-      value: https://medlemskap-medl-api.prod-fss-pub.nais.io
+      value: https://medlemskap-medl-api-gcp.intern.nav.no
     - name: AAREG_BASE_URL
       value: https://aareg-services.prod-fss-pub.nais.io/api
     - name: SAF_BASE_URL
@@ -102,7 +102,7 @@ spec:
     - name: AZURE_SCOPE_UDI
       value: api://prod-fss.medlemskap.udi-proxy/.default
     - name: AZURE_SCOPE_MEDL
-      value: api://prod-fss.team-rocket.medlemskap-medl-api/.default
+      value: api://prod-gcp.team-rocket.medlemskap-medl-api/.default
     - name: AZURE_SCOPE_PDL
       value: api://prod-fss.pdl.pdl-api/.default
     - name: AZURE_SCOPE_AAREG
