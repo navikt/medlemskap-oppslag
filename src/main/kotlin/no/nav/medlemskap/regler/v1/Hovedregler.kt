@@ -84,6 +84,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
         resultater.add(resultatAvUDI1Validering)
 
         if (regelflytErIkkeUavklart(resultatAvUDI1Validering)) {
+            resultater.add(UDIIkkeLovligOpphold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
             resultater.add(UDI2LovligOpphold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
             resultater.add(UDI3ArbeidsAdgang.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
             resultater.add(UDI4BritiskeBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())

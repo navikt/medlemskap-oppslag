@@ -8,7 +8,7 @@ import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
 
-class UDI2LovligOpphold(
+class UDIIkkeLovligOpphold(
     val periode: InputPeriode,
     ytelse: Ytelse,
     regelFactory: RegelFactory,
@@ -17,19 +17,20 @@ class UDI2LovligOpphold(
 
     override fun hentHovedflyt(): Regelflyt {
 
-        val harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt = lagRegelflyt(
-            regel = hentRegel(REGEL_19_3),
-            hvisJa = regelflytJa(ytelse, REGEL_UDI_LOVLIG_OPPHOLD),
-            hvisNei = konklusjonUavklart(ytelse, REGEL_UDI_LOVLIG_OPPHOLD),
+        val harIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisumFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_23),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_UDI_IKKE_LOVLIG_OPPHOLD),
+            hvisNei = regelflytJa(ytelse, REGEL_UDI_IKKE_LOVLIG_OPPHOLD)
         )
 
-        return harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt
+
+        return harIkkeOppholdstillatelseIkkeOppholdsPaSammeVilkarIkkeVisumFlyt
     }
 
     companion object {
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): UDI2LovligOpphold {
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): UDIIkkeLovligOpphold {
             with(datagrunnlag) {
-                return UDI2LovligOpphold(
+                return UDIIkkeLovligOpphold(
                     periode = periode,
                     ytelse = ytelse,
                     regelFactory = RegelFactory(datagrunnlag),
