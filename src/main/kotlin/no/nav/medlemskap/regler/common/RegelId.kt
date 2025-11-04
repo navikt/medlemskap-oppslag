@@ -106,6 +106,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_YTELSER("REGLER YTELSER", "Er felles regler for ytelser avklart?"),
     REGEL_OPPHOLDSTILLATELSE("Oppholdstillatelse", "Har bruker gyldig oppholdstillatelse?"),
     REGEL_UDI_VALIDERING("UDIVALIDERING", "Validering"),
+    REGEL_UDI_IKKE_LOVLIG_OPPHOLD("UDI_IKKE_LOVLIG_OPPHOLD", "Har bruker gyldig oppholdstillatelse?"),
     REGEL_UDI_LOVLIG_OPPHOLD("UDILOVLIGOPPHOLD", "Har bruker gyldig oppholdstillatelse?"),
     REGEL_ARBEIDSADGANG("ARBEIDSADGANG", "Har bruker arbeidsadgang?"),
     REGEL_BRITISKE_BORGERE("BRITISKEBORGERE", "Er bruker eller brukers ektefelle britisk statsborger?"),
