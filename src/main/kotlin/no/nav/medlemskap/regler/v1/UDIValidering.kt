@@ -8,7 +8,7 @@ import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
 
-class UDI2LovligOpphold(
+class UDIValidering(
     val periode: InputPeriode,
     ytelse: Ytelse,
     regelFactory: RegelFactory,
@@ -17,19 +17,31 @@ class UDI2LovligOpphold(
 
     override fun hentHovedflyt(): Regelflyt {
 
-        val harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt = lagRegelflyt(
-            regel = hentRegel(REGEL_19_3),
-            hvisJa = regelflytJa(ytelse, REGEL_UDI_LOVLIG_OPPHOLD),
-            hvisNei = konklusjonUavklart(ytelse, REGEL_UDI_LOVLIG_OPPHOLD),
+
+        val harBrukerFlereOppholdstillatelserSomOverlapper = lagRegelflyt(
+            regel = hentRegel(REGEL_19_2),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_UDI_VALIDERING),
+            hvisNei = regelflytJa(ytelse, REGEL_UDI_VALIDERING),
         )
 
-        return harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt
+        val harBrukerOppholdPaSammeVilkarFlagg = lagRegelflyt(
+            regel = hentRegel(REGEL_19_8),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_UDI_VALIDERING),
+            hvisNei = harBrukerFlereOppholdstillatelserSomOverlapper
+        )
+
+        val erOppholdstillatelseUavklartRegelflyt = lagRegelflyt(
+            regel = hentRegel(REGEL_19_1),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_UDI_VALIDERING),
+            hvisNei = harBrukerOppholdPaSammeVilkarFlagg
+        )
+        return erOppholdstillatelseUavklartRegelflyt
     }
 
     companion object {
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): UDI2LovligOpphold {
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): UDIValidering {
             with(datagrunnlag) {
-                return UDI2LovligOpphold(
+                return UDIValidering(
                     periode = periode,
                     ytelse = ytelse,
                     regelFactory = RegelFactory(datagrunnlag),

@@ -8,7 +8,7 @@ import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
 
-class UDI4BritiskeBorgere(
+class UDIBritiskeBorgere(
     val periode: InputPeriode,
     ytelse: Ytelse,
     regelFactory: RegelFactory,
@@ -33,9 +33,9 @@ class UDI4BritiskeBorgere(
     }
 
     companion object {
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): UDI4BritiskeBorgere {
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): UDIBritiskeBorgere {
             with(datagrunnlag) {
-                return UDI4BritiskeBorgere(
+                return UDIBritiskeBorgere(
                     periode = periode,
                     ytelse = ytelse,
                     regelFactory = RegelFactory(datagrunnlag),

@@ -8,7 +8,7 @@ import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
 
-class UDI1Validering(
+class UDILovligOpphold(
     val periode: InputPeriode,
     ytelse: Ytelse,
     regelFactory: RegelFactory,
@@ -17,31 +17,19 @@ class UDI1Validering(
 
     override fun hentHovedflyt(): Regelflyt {
 
-
-        val harBrukerFlereOppholdstillatelserSomOverlapper = lagRegelflyt(
-            regel = hentRegel(REGEL_19_2),
-            hvisJa = konklusjonUavklart(ytelse, REGEL_UDI_VALIDERING),
-            hvisNei = regelflytJa(ytelse, REGEL_UDI_VALIDERING),
+        val harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt = lagRegelflyt(
+            regel = hentRegel(REGEL_19_3),
+            hvisJa = regelflytJa(ytelse, REGEL_UDI_LOVLIG_OPPHOLD),
+            hvisNei = konklusjonUavklart(ytelse, REGEL_UDI_LOVLIG_OPPHOLD),
         )
 
-        val harBrukerOppholdPaSammeVilkarFlagg = lagRegelflyt(
-            regel = hentRegel(REGEL_19_8),
-            hvisJa = konklusjonUavklart(ytelse, REGEL_UDI_VALIDERING),
-            hvisNei = harBrukerFlereOppholdstillatelserSomOverlapper
-        )
-
-        val erOppholdstillatelseUavklartRegelflyt = lagRegelflyt(
-            regel = hentRegel(REGEL_19_1),
-            hvisJa = konklusjonUavklart(ytelse, REGEL_UDI_VALIDERING),
-            hvisNei = harBrukerOppholdPaSammeVilkarFlagg
-        )
-        return erOppholdstillatelseUavklartRegelflyt
+        return harBrukerGyldigOppholdstillatelseIKontrollperiodeRegelflyt
     }
 
     companion object {
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): UDI1Validering {
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): UDILovligOpphold {
             with(datagrunnlag) {
-                return UDI1Validering(
+                return UDILovligOpphold(
                     periode = periode,
                     ytelse = ytelse,
                     regelFactory = RegelFactory(datagrunnlag),

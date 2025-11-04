@@ -80,14 +80,14 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
         val resultater = mutableListOf<Resultat>()
         kanskjeAndreBorgereMedEØSFamilie?.let { resultater.add(it) }
 
-        val resultatAvUDI1Validering = UDI1Validering.fraDatagrunnlag(datagrunnlag).kjørHovedflyt()
-        resultater.add(resultatAvUDI1Validering)
+        val resultatAvUDIValidering = UDIValidering.fraDatagrunnlag(datagrunnlag).kjørHovedflyt()
+        resultater.add(resultatAvUDIValidering)
 
-        if (regelflytErIkkeUavklart(resultatAvUDI1Validering)) {
+        if (regelflytErIkkeUavklart(resultatAvUDIValidering)) {
             resultater.add(UDIIkkeLovligOpphold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
-            resultater.add(UDI2LovligOpphold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
-            resultater.add(UDI3ArbeidsAdgang.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
-            resultater.add(UDI4BritiskeBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+            resultater.add(UDILovligOpphold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+            resultater.add(UDIArbeidsAdgang.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+            resultater.add(UDIBritiskeBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         }
 
         if (kanskjeAndreBorgereMedEØSFamilie?.erFamilieEOS() == true) {
