@@ -84,10 +84,15 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
         resultater.add(resultatAvUDIValidering)
 
         if (regelflytErIkkeUavklart(resultatAvUDIValidering)) {
-            resultater.add(UDIIkkeLovligOpphold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
-            resultater.add(UDILovligOpphold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
-            resultater.add(UDIArbeidsAdgang.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
-            resultater.add(UDIBritiskeBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+
+            val resultatUDIIkkeLovligOpphold = UDIIkkeLovligOpphold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt()
+            resultater.add(resultatUDIIkkeLovligOpphold)
+
+            if (regelflytErIkkeUavklart(resultatUDIIkkeLovligOpphold)){
+                resultater.add(UDILovligOpphold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+                resultater.add(UDIArbeidsAdgang.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+                resultater.add(UDIBritiskeBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+            }
         }
 
         if (kanskjeAndreBorgereMedEØSFamilie?.erFamilieEOS() == true) {
