@@ -8,7 +8,7 @@ import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
 
-class UDI1Validering(
+class UDIBritiskeBorgere(
     val periode: InputPeriode,
     ytelse: Ytelse,
     regelFactory: RegelFactory,
@@ -17,31 +17,25 @@ class UDI1Validering(
 
     override fun hentHovedflyt(): Regelflyt {
 
-
-        val harBrukerFlereOppholdstillatelserSomOverlapper = lagRegelflyt(
-            regel = hentRegel(REGEL_19_2),
-            hvisJa = konklusjonUavklart(ytelse, REGEL_UDI_VALIDERING),
-            hvisNei = regelflytJa(ytelse, REGEL_UDI_VALIDERING),
+        val harBrukerEOSellerEFTAOppholdOgBritiskEktefelleRegelflyt = lagRegelflyt(
+            regel = hentRegel(REGEL_19_4),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_BRITISKE_BORGERE),
+            hvisNei = regelflytJa(ytelse, REGEL_BRITISKE_BORGERE)
         )
 
-        val harBrukerOppholdPaSammeVilkarFlagg = lagRegelflyt(
-            regel = hentRegel(REGEL_19_8),
-            hvisJa = konklusjonUavklart(ytelse, REGEL_UDI_VALIDERING),
-            hvisNei = harBrukerFlereOppholdstillatelserSomOverlapper
+        val harBritiskBrukerEOSellerEFTAOppholdRegelFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_30),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_BRITISKE_BORGERE),
+            hvisNei = harBrukerEOSellerEFTAOppholdOgBritiskEktefelleRegelflyt
         )
 
-        val erOppholdstillatelseUavklartRegelflyt = lagRegelflyt(
-            regel = hentRegel(REGEL_19_1),
-            hvisJa = konklusjonUavklart(ytelse, REGEL_UDI_VALIDERING),
-            hvisNei = harBrukerOppholdPaSammeVilkarFlagg
-        )
-        return erOppholdstillatelseUavklartRegelflyt
+        return harBritiskBrukerEOSellerEFTAOppholdRegelFlyt
     }
 
     companion object {
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): UDI1Validering {
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): UDIBritiskeBorgere {
             with(datagrunnlag) {
-                return UDI1Validering(
+                return UDIBritiskeBorgere(
                     periode = periode,
                     ytelse = ytelse,
                     regelFactory = RegelFactory(datagrunnlag),
