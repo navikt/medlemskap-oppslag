@@ -109,7 +109,7 @@ enum class AaRegPersonType {
 data class AaRegPerson(
     val type: AaRegPersonType,
     val aktoerId: String,
-    val offentligIdent: String
+    val offentligIdent: String?
 )
 
 data class AaRegSporingsinformasjon(
