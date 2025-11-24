@@ -84,6 +84,7 @@ enum class RegelId(val identifikator: String, val avklaring: String, val neiBegr
     REGEL_64("64", "Har bruker vært i minst 60 % stilling de siste 12 månedene?", "Bruker har ikke vært i 60% stilling de siste 12 månedene", "Bruker har vært i minst 60 % stilling de siste 12 månedene"),
     REGEL_65("65", "Har bruker flere arbeidsavtaler i kontrollperioden?", "Bruker har flere arbeidsavtaler i kontrollperioden", "Bruker har en arbeidsavtale i kontrollperioden"),
     REGEL_66("66", "Har arbeidsavtalene vært sammenhengende de siste 12 månedene?",  "Arbeidsavtalene har ikke vært sammenhengende de siste 12 månedene", "Arbeidsavtalene vært sammenhengende de siste 12 månedene"),
+    REGEL_70("70", "Har bruker EØS eller EFTA oppholdstillatelse?", "Britisk bruker har ikke EØS eller EFTA oppholdstillatelse", "Britisk bruker har EØS eller EFTA oppholdstillatelse"),
     REGEL_OPPLYSNINGER("OPPLYSNINGER", "Finnes det registrerte opplysninger på bruker?", "Alle de følgende ble NEI"),
     REGEL_A("OPPLYSNINGER-MEDL", "Finnes det registrerte opplysninger i MEDL?", "", "Det finnes registrert opplysninger i Medl"),
     REGEL_B("OPPLYSNINGER-GOSYS", "Finnes det åpne oppgaver i GOSYS på medlemskapsområdet?", "", "Det finnes registrerte opplysninger i GOSYS"),
