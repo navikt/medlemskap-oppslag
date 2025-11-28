@@ -7,8 +7,8 @@ Egenskap: Regel 70: Har bruker EOS eller EFTA opphold?
 
 
     Gitt følgende oppholdstillatelse
-      | Klasse              | Gyldig fra og med | Gyldig til og med | EOSEllerEFTAOpphold                       | EOSellerEFTAGrunnlagskategoriOppholdstillatelse |
-      | EOSellerEFTAOpphold | 01.12.2018        | 01.12.2023        | EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT | ARBEID                                          |
+      | Klasse              | Gyldig fra og med | Gyldig til og med | EOSEllerEFTAOpphold                         | EOSellerEFTAGrunnlagskategoriOppholdsrett |  | EOSellerEFTAGrunnlagskategoriOppholdstillatelse |
+      | EOSellerEFTAOpphold | 01.12.2018        | 01.12.2023        | EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT | VARIG                                     |  | ARBEID                                          |
 
 
     Når regel "70" kjøres med følgende parametre
@@ -79,8 +79,8 @@ Egenskap: Regel 70: Har bruker EOS eller EFTA opphold?
 
   Scenariomal: Kontrollperioden overlapper med varig oppholdstillatelse
     Gitt følgende oppholdstillatelse
-      | Klasse              | Gyldig fra og med | Gyldig til og med | EOSEllerEFTAOpphold                       | EOSellerEFTAGrunnlagskategoriOppholdstillatelse |
-      | EOSellerEFTAOpphold | 30.12.2019        |                   | EOS_ELLER_EFTA_BESLUTNING_OM_OPPHOLDSRETT | ARBEID                                          |
+      | Klasse              | Gyldig fra og med | Gyldig til og med | EOSEllerEFTAOpphold                         | EOSellerEFTAGrunnlagskategoriOppholdstillatelse | EOSellerEFTAGrunnlagskategoriOppholdsrett |
+      | EOSellerEFTAOpphold | 30.12.2019        |                   | EOS_ELLER_EFTA_VEDTAK_OM_VARIG_OPPHOLDSRETT | ARBEID                                          | VARIG                                     |
 
 
     Når regel "70" kjøres med følgende parametre
