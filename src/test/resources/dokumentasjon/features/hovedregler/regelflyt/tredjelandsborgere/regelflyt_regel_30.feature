@@ -38,6 +38,10 @@ Egenskap: Regelflyt for regel 30
       | Gyldig fra og med | Gyldig til og med | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
       | 01.01.2017        |                   | Ja            | GENERELL          | KUN_ARBEID_HELTID    |
 
+    Og følgende personhistorikk for ektefelle fra PDL
+      | Ident       | Bosted | Kontaktadresse | Oppholdsadresse | Statsborgerskap | Fra og med dato |
+      | 10108000398 | NOR    | NOR            | NOR             | GBR             | 18.07.2010      |
+
     Når medlemskap beregnes med følgende parametre
       | Fra og med dato | Til og med dato | Har hatt arbeid utenfor Norge |
       | 01.01.2018      | 12.02.2018      | Nei                           |

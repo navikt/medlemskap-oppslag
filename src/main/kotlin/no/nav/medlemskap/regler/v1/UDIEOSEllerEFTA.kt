@@ -8,7 +8,7 @@ import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
 
-class UDIEosEfta(
+class UDIEOSEllerEFTA(
     val periode: InputPeriode,
     ytelse: Ytelse,
     regelFactory: RegelFactory,
@@ -28,9 +28,9 @@ class UDIEosEfta(
     }
 
     companion object {
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): UDIEosEfta {
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): UDIEOSEllerEFTA {
             with(datagrunnlag) {
-                return UDIEosEfta(
+                return UDIEOSEllerEFTA(
                     periode = periode,
                     ytelse = ytelse,
                     regelFactory = RegelFactory(datagrunnlag),
