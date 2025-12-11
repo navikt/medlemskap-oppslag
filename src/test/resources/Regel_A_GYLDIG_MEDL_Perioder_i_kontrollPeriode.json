@@ -1,5 +1,5 @@
 {
-  "fnr": "08026644373",
+  "fnr": "12345678910",
   "periode": {
     "fom": "2022-08-15",
     "tom": "2022-09-02"
@@ -50,66 +50,66 @@
         "type": "GIFT",
         "gyldigFraOgMed": "1986-03-26",
         "gyldigTilOgMed": "1997-09-18",
-        "relatertVedSivilstand": "04056746833"
+        "relatertVedSivilstand": "123"
       },
       {
         "type": "SEPARERT",
         "gyldigFraOgMed": "1997-09-19",
         "gyldigTilOgMed": "1998-05-27",
-        "relatertVedSivilstand": "04056746833"
+        "relatertVedSivilstand": "123"
       },
       {
         "type": "GIFT",
         "gyldigFraOgMed": "1998-05-28",
         "gyldigTilOgMed": "2006-02-22",
-        "relatertVedSivilstand": "04056746833"
+        "relatertVedSivilstand": "123"
       },
       {
         "type": "SEPARERT",
         "gyldigFraOgMed": "2006-02-23",
         "gyldigTilOgMed": "2007-03-11",
-        "relatertVedSivilstand": "04056746833"
+        "relatertVedSivilstand": "123"
       },
       {
         "type": "SKILT",
         "gyldigFraOgMed": "2007-03-12",
         "gyldigTilOgMed": null,
-        "relatertVedSivilstand": "04056746833"
+        "relatertVedSivilstand": "123"
       }
     ],
     "forelderBarnRelasjon": [
       {
-        "relatertPersonsIdent": "01014135967",
+        "relatertPersonsIdent": "12345678910",
         "relatertPersonsRolle": "FAR",
         "minRolleForPerson": "BARN"
       },
       {
-        "relatertPersonsIdent": "27088632066",
+        "relatertPersonsIdent": "12345678910",
         "relatertPersonsRolle": "BARN",
         "minRolleForPerson": "FAR"
       },
       {
-        "relatertPersonsIdent": "10048937182",
+        "relatertPersonsIdent": "12345678910",
         "relatertPersonsRolle": "BARN",
         "minRolleForPerson": "FAR"
       },
       {
-        "relatertPersonsIdent": "22041694363",
+        "relatertPersonsIdent": "12345678910",
         "relatertPersonsRolle": "BARN",
         "minRolleForPerson": "FAR"
       },
       {
-        "relatertPersonsIdent": "13111395998",
+        "relatertPersonsIdent": "12345678910",
         "relatertPersonsRolle": "BARN",
         "minRolleForPerson": "FAR"
       },
       {
-        "relatertPersonsIdent": "15034542268",
+        "relatertPersonsIdent": "12345678910",
         "relatertPersonsRolle": "MOR",
         "minRolleForPerson": "BARN"
       },
       {
-        "relatertPersonsIdent": "04029140648",
+        "relatertPersonsIdent": "12345678910",
         "relatertPersonsRolle": "BARN",
         "minRolleForPerson": "FAR"
       }
@@ -117,13 +117,7 @@
     "doedsfall": [],
     "innflyttingTilNorge": [],
     "utflyttingFraNorge": [],
-    "navn": [
-      {
-        "fornavn": "JONNY",
-        "mellomnavn": null,
-        "etternavn": "SJURSEN"
-      }
-    ]
+    "navn": "Anonymisert Navn"
   },
   "medlemskap": [
     {
@@ -172,7 +166,7 @@
       "utenlandsopphold": null,
       "arbeidsgivertype": "Organisasjon",
       "arbeidsgiver": {
-        "organisasjonsnummer": "972427373",
+        "organisasjonsnummer": "123456789",
         "ansatte": [
           {
             "antall": 639,
@@ -185,8 +179,8 @@
         "konkursStatus": null,
         "juridiskeEnheter": [
           {
-            "organisasjonsnummer": "930694533",
-            "enhetstype": "AS",
+            "organisasjonsnummer": "123456789",
+            "enhetstype": "Anonymisert Bedrift AS",
             "antallAnsatte": 740
           }
         ]
@@ -205,7 +199,7 @@
           "yrkeskode": "2147155",
           "skipsregister": null,
           "fartsomraade": null,
-          "stillingsprosent": 100.0,
+          "stillingsprosent": 100,
           "beregnetAntallTimerPrUke": 37.5,
           "skipstype": null
         },
@@ -221,7 +215,7 @@
           "yrkeskode": "2147155",
           "skipsregister": null,
           "fartsomraade": null,
-          "stillingsprosent": 100.0,
+          "stillingsprosent": 100,
           "beregnetAntallTimerPrUke": 37.5,
           "skipstype": null
         },
@@ -237,7 +231,7 @@
           "yrkeskode": "2147155",
           "skipsregister": null,
           "fartsomraade": null,
-          "stillingsprosent": 100.0,
+          "stillingsprosent": 100,
           "beregnetAntallTimerPrUke": 37.5,
           "skipstype": null
         },
@@ -253,7 +247,7 @@
           "yrkeskode": "2147155",
           "skipsregister": null,
           "fartsomraade": null,
-          "stillingsprosent": 100.0,
+          "stillingsprosent": 100,
           "beregnetAntallTimerPrUke": 37.5,
           "skipstype": null
         }
@@ -265,7 +259,7 @@
   "dokument": [
     {
       "datoOpprettet": "2021-11-26T14:26:42",
-      "journalpostId": "520761572",
+      "journalpostId": "123456789",
       "journalfortAvNavn": "MHD2101",
       "tittel": "Varsel om saksbehandlingstid",
       "journalposttype": "U",
@@ -276,14 +270,14 @@
       },
       "dokumenter": [
         {
-          "dokumentId": "544399664",
+          "dokumentId": "123456789",
           "tittel": "Varsel om saksbehandlingstid"
         }
       ]
     },
     {
       "datoOpprettet": "2021-11-26T14:26:42",
-      "journalpostId": "520761489",
+      "journalpostId": "123456789",
       "journalfortAvNavn": "MHD2101",
       "tittel": "Varsel om saksbehandlingstid",
       "journalposttype": "U",
@@ -294,7 +288,7 @@
       },
       "dokumenter": [
         {
-          "dokumentId": "544399729",
+          "dokumentId": "123456789",
           "tittel": "Varsel om saksbehandlingstid"
         }
       ]
@@ -304,7 +298,7 @@
   "dataOmBarn": [
     {
       "personhistorikkBarn": {
-        "ident": "22041694363",
+        "ident": "123",
         "bostedsadresser": [
           {
             "landkode": "NOR",
@@ -317,12 +311,12 @@
         "oppholdsadresser": [],
         "forelderBarnRelasjon": [
           {
-            "relatertPersonsIdent": "08026644373",
+            "relatertPersonsIdent": "12345678910",
             "relatertPersonsRolle": "FAR",
             "minRolleForPerson": "BARN"
           },
           {
-            "relatertPersonsIdent": "01037834498",
+            "relatertPersonsIdent": "12345678910",
             "relatertPersonsRolle": "MOR",
             "minRolleForPerson": "BARN"
           }
@@ -331,7 +325,7 @@
     },
     {
       "personhistorikkBarn": {
-        "ident": "13111395998",
+        "ident": "123",
         "bostedsadresser": [
           {
             "landkode": "NOR",
@@ -344,12 +338,12 @@
         "oppholdsadresser": [],
         "forelderBarnRelasjon": [
           {
-            "relatertPersonsIdent": "01037834498",
+            "relatertPersonsIdent": "12345678910",
             "relatertPersonsRolle": "MOR",
             "minRolleForPerson": "BARN"
           },
           {
-            "relatertPersonsIdent": "08026644373",
+            "relatertPersonsIdent": "12345678910",
             "relatertPersonsRolle": "FAR",
             "minRolleForPerson": "BARN"
           }
@@ -359,7 +353,7 @@
   ],
   "dataOmEktefelle": {
     "personhistorikkEktefelle": {
-      "ident": "04056746833",
+      "ident": "123",
       "statsborgerskap": [
         {
           "landkode": "NOR",
