@@ -1,5 +1,5 @@
 {
-  "fnr": "12345678910",
+  "fnr": "123",
   "periode": {
     "fom": "2022-08-15",
     "tom": "2022-09-02"
@@ -79,37 +79,37 @@
     ],
     "forelderBarnRelasjon": [
       {
-        "relatertPersonsIdent": "12345678910",
+        "relatertPersonsIdent": "123",
         "relatertPersonsRolle": "FAR",
         "minRolleForPerson": "BARN"
       },
       {
-        "relatertPersonsIdent": "12345678910",
+        "relatertPersonsIdent": "123",
         "relatertPersonsRolle": "BARN",
         "minRolleForPerson": "FAR"
       },
       {
-        "relatertPersonsIdent": "12345678911",
+        "relatertPersonsIdent": "123",
         "relatertPersonsRolle": "BARN",
         "minRolleForPerson": "FAR"
       },
       {
-        "relatertPersonsIdent": "12345678910",
+        "relatertPersonsIdent": "123",
         "relatertPersonsRolle": "BARN",
         "minRolleForPerson": "FAR"
       },
       {
-        "relatertPersonsIdent": "12345678910",
+        "relatertPersonsIdent": "123",
         "relatertPersonsRolle": "BARN",
         "minRolleForPerson": "FAR"
       },
       {
-        "relatertPersonsIdent": "12345678910",
+        "relatertPersonsIdent": "123",
         "relatertPersonsRolle": "MOR",
         "minRolleForPerson": "BARN"
       },
       {
-        "relatertPersonsIdent": "12345678910",
+        "relatertPersonsIdent": "123",
         "relatertPersonsRolle": "BARN",
         "minRolleForPerson": "FAR"
       }
@@ -117,7 +117,13 @@
     "doedsfall": [],
     "innflyttingTilNorge": [],
     "utflyttingFraNorge": [],
-    "navn": "Anonymisert Navn"
+    "navn": [
+      {
+        "fornavn": "Navn",
+        "mellomnavn": null,
+        "etternavn": "Navne"
+      }
+    ]
   },
   "medlemskap": [
     {
@@ -166,7 +172,7 @@
       "utenlandsopphold": null,
       "arbeidsgivertype": "Organisasjon",
       "arbeidsgiver": {
-        "organisasjonsnummer": "123456789",
+        "organisasjonsnummer": "972427373",
         "ansatte": [
           {
             "antall": 639,
@@ -179,8 +185,8 @@
         "konkursStatus": null,
         "juridiskeEnheter": [
           {
-            "organisasjonsnummer": "123456789",
-            "enhetstype": "Anonymisert Bedrift AS",
+            "organisasjonsnummer": "930694533",
+            "enhetstype": "AS",
             "antallAnsatte": 740
           }
         ]
@@ -199,7 +205,7 @@
           "yrkeskode": "2147155",
           "skipsregister": null,
           "fartsomraade": null,
-          "stillingsprosent": 100,
+          "stillingsprosent": 100.0,
           "beregnetAntallTimerPrUke": 37.5,
           "skipstype": null
         },
@@ -215,7 +221,7 @@
           "yrkeskode": "2147155",
           "skipsregister": null,
           "fartsomraade": null,
-          "stillingsprosent": 100,
+          "stillingsprosent": 100.0,
           "beregnetAntallTimerPrUke": 37.5,
           "skipstype": null
         },
@@ -231,7 +237,7 @@
           "yrkeskode": "2147155",
           "skipsregister": null,
           "fartsomraade": null,
-          "stillingsprosent": 100,
+          "stillingsprosent": 100.0,
           "beregnetAntallTimerPrUke": 37.5,
           "skipstype": null
         },
@@ -247,7 +253,7 @@
           "yrkeskode": "2147155",
           "skipsregister": null,
           "fartsomraade": null,
-          "stillingsprosent": 100,
+          "stillingsprosent": 100.0,
           "beregnetAntallTimerPrUke": 37.5,
           "skipstype": null
         }
@@ -259,7 +265,7 @@
   "dokument": [
     {
       "datoOpprettet": "2021-11-26T14:26:42",
-      "journalpostId": "123456789",
+      "journalpostId": "520761572",
       "journalfortAvNavn": "MHD2101",
       "tittel": "Varsel om saksbehandlingstid",
       "journalposttype": "U",
@@ -270,14 +276,14 @@
       },
       "dokumenter": [
         {
-          "dokumentId": "123456789",
+          "dokumentId": "544399664",
           "tittel": "Varsel om saksbehandlingstid"
         }
       ]
     },
     {
       "datoOpprettet": "2021-11-26T14:26:42",
-      "journalpostId": "123456789",
+      "journalpostId": "520761489",
       "journalfortAvNavn": "MHD2101",
       "tittel": "Varsel om saksbehandlingstid",
       "journalposttype": "U",
@@ -288,7 +294,7 @@
       },
       "dokumenter": [
         {
-          "dokumentId": "123456789",
+          "dokumentId": "544399729",
           "tittel": "Varsel om saksbehandlingstid"
         }
       ]
@@ -311,12 +317,12 @@
         "oppholdsadresser": [],
         "forelderBarnRelasjon": [
           {
-            "relatertPersonsIdent": "12345678910",
+            "relatertPersonsIdent": "123",
             "relatertPersonsRolle": "FAR",
             "minRolleForPerson": "BARN"
           },
           {
-            "relatertPersonsIdent": "12345678910",
+            "relatertPersonsIdent": "123",
             "relatertPersonsRolle": "MOR",
             "minRolleForPerson": "BARN"
           }
@@ -338,12 +344,12 @@
         "oppholdsadresser": [],
         "forelderBarnRelasjon": [
           {
-            "relatertPersonsIdent": "12345678910",
+            "relatertPersonsIdent": "123",
             "relatertPersonsRolle": "MOR",
             "minRolleForPerson": "BARN"
           },
           {
-            "relatertPersonsIdent": "12345678910",
+            "relatertPersonsIdent": "123",
             "relatertPersonsRolle": "FAR",
             "minRolleForPerson": "BARN"
           }
