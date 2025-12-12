@@ -12,6 +12,7 @@ import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Resultat.Companion.finnÅrsaker
 import no.nav.medlemskap.regler.common.Svar
 import no.nav.medlemskap.regler.common.Svar.*
+import no.nav.medlemskap.regler.common.harEØSEllerEftaOppholdstillatelse
 import no.nav.medlemskap.regler.v1.brukergruppe.ReglerForBrukerGruppe
 import no.nav.medlemskap.regler.v1.frilanser.ReglerForFrilanser
 import no.nav.medlemskap.regler.v1.regelflyt.arbeid.ReglerForPermisjoner
@@ -89,8 +90,14 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
             resultater.add(resultatUDIIkkeLovligOpphold)
 
             if (regelflytErIkkeUavklart(resultatUDIIkkeLovligOpphold)){
-                resultater.add(UDILovligOpphold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
-                resultater.add(UDIArbeidsAdgang.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+
+                if (harEØSEllerEftaOppholdstillatelse(datagrunnlag)) {
+                    resultater.add(UDIEOSEllerEFTA.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+                } else {
+                    resultater.add(UDILovligOpphold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+                    resultater.add(UDIArbeidsAdgang.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+                }
+
                 resultater.add(UDIBritiskeBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
             }
         }
