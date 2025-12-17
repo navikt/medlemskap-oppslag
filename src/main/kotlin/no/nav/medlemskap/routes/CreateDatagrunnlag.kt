@@ -188,6 +188,14 @@ suspend fun defaultCreateDatagrunnlag(
                     kv("feilmelding", t.message)
                 )
 
+                logger.error {
+                    teamLogs
+                    "Feil oppstått ved hentingg av oppholdstillatelsen ${request.fnr}"
+                    kv("fnr", request.fnr)
+                    kv("stacktrace", t.stackTraceToString())
+                    kv("feilmelding", t.message)
+                }
+
                 Oppholdstillatelse(
                     uttrekkstidspunkt = LocalDateTime.now(),
                     foresporselsfodselsnummer = request.fnr,
