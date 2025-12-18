@@ -180,6 +180,23 @@ suspend fun defaultCreateDatagrunnlag(
                     kv("message", t.message)
                 }
 
+                logger.info(
+                    teamLogs,
+                    "Feil oppstått ved hentingg av oppholdstillatelsen",
+                    kv("fnr", request.fnr),
+                    kv("stacktrace", t.stackTraceToString()),
+                    kv("feilmelding", t.message),
+                    kv("cause", t.cause)
+                )
+
+                logger.error {
+                    teamLogs
+                    "Feil oppstått ved hentingg av oppholdstillatelsen ${request.fnr}"
+                    kv("fnr", request.fnr)
+                    kv("stacktrace", t.stackTraceToString())
+                    kv("feilmelding", t.message)
+                }
+
                 Oppholdstillatelse(
                     uttrekkstidspunkt = LocalDateTime.now(),
                     foresporselsfodselsnummer = request.fnr,
@@ -203,6 +220,11 @@ suspend fun defaultCreateDatagrunnlag(
     }
 
     ytelseCounter(ytelse.name()).increment()
+
+    logger.info(
+        teamLogs,
+        "Mottatt oppholdstillatelse: ${oppholdstillatelse?.gjeldendeOppholdsstatus}"
+    )
 
     Datagrunnlag(
         fnr = request.fnr,
