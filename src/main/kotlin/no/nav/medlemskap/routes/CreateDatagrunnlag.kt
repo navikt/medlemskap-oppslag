@@ -185,7 +185,8 @@ suspend fun defaultCreateDatagrunnlag(
                     "Feil oppstått ved hentingg av oppholdstillatelsen",
                     kv("fnr", request.fnr),
                     kv("stacktrace", t.stackTraceToString()),
-                    kv("feilmelding", t.message)
+                    kv("feilmelding", t.message),
+                    kv("cause", t.cause)
                 )
 
                 logger.error {
