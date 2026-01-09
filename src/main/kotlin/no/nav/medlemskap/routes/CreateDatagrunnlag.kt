@@ -24,7 +24,6 @@ import no.nav.medlemskap.domene.personhistorikk.Statsborgerskap.Companion.erAnne
 import no.nav.medlemskap.services.FamilieService
 import org.slf4j.MarkerFactory
 import v1.mt_1067_nav.no.udi.HentPersonstatusFault
-import java.lang.Exception
 import java.time.LocalDateTime
 
 private val logger = KotlinLogging.logger { }
