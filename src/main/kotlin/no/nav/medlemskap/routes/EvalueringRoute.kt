@@ -37,7 +37,6 @@ import java.time.LocalDateTime
 import java.util.*
 
 private val logger = KotlinLogging.logger { }
-private val secureLogger = KotlinLogging.logger("tjenestekall")
 private val teamLogs = MarkerFactory.getMarker("TEAM_LOGS")
 private val TOPIC = "medlemskap.medlemskap-stage1"
 
@@ -55,7 +54,6 @@ fun Routing.evalueringRoute(
             val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
             val azp = callerPrincipal.payload.getClaim("azp").asString()
             val endpoint = "/"
-            secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
             logger.info(teamLogs, "EvalueringRoute: azp-claim i principal-token: {}", azp)
             val callId = call.callId ?: UUID.randomUUID().toString()
             val request = validerRequest(call.receive(), azp)
@@ -371,56 +369,6 @@ private fun loggResponse(fnr: String, response: Response, endpoint: String = "/"
     val årsak = årsaker.map { it.regelId.toString() }.firstOrNull()
     val aarsaksAnt = årsaker.size
     runCatching {
-        secureLogger.info(
-            "{} konklusjon gitt for bruker {}, ytelse {}", resultat.svar.name, fnr, response.datagrunnlag.ytelse,
-            kv("fnr", fnr),
-            kv("orgnummer", response.datagrunnlag.gyldigeOrgnummer()),
-            kv("fom", response.datagrunnlag.periode.fom.toString()),
-            kv("tom", response.datagrunnlag.periode.tom.toString()),
-            kv("førsteDagForYtelse", response.datagrunnlag.førsteDagForYtelse.toString()),
-            kv("brukerInput", response.datagrunnlag.brukerinput.toString()),
-            kv("startdatoForYtelse", response.datagrunnlag.startDatoForYtelse.toString()),
-            kv("ytelse", response.datagrunnlag.ytelse),
-            kv("svar", response.resultat.svar),
-            kv("årsak", årsak),
-            kv("årsaker", årsakerSomRegelIdStr),
-            kv("aarsaksAnt", aarsaksAnt),
-            kv("aarsaker", årsakerSomRegelIdStr.toString()),
-            kv("statsborgerskap", response.datagrunnlag.gyldigeStatsborgerskap().toString()),
-            kv("statsborgerskapAnt", response.datagrunnlag.gyldigeStatsborgerskap().size),
-            kv("erTredjelandsborger", response.resultat.erTredjelandsborger()),
-            kv("erEosBorger", response.resultat.erEøsBorger()),
-            kv("erNorskBorger", response.resultat.erNorskBorger()),
-            kv("erTredjelandsborgerMedEØSFamilie", response.resultat.erFamilieEOS()),
-            kv("AaRegUtenlandsoppholdLandkode", response.datagrunnlag.gyldigeAaRegUtenlandsopphold()),
-            kv("AaRegUtenlandsoppsholdPeriodeFom", response.datagrunnlag.gyldigeAaRegUtenlandsoppholdPeriodeFom().toString()),
-            kv("AaRegUtenlandsoppsholdPeriodeTom", response.datagrunnlag.gyldigeAaRegUtenlandsoppholdPeriodeTom().toString()),
-            kv("skipsinfo", response.datagrunnlag.kombinasjonAvSkipsregisterFartsomradeOgSkipstype()),
-            kv("response", objectMapper.writeValueAsString(response)),
-            kv("gjeldendeOppholdsstatus", response.datagrunnlag.oppholdstillatelse?.gjeldendeOppholdsstatus.toString()),
-            kv("arbeidsadgangtype", response.datagrunnlag.oppholdstillatelse?.arbeidsadgang?.arbeidsadgangType.toString()),
-            kv("fagsak_id", response.datagrunnlag.dokument.alleFagsakIDer()),
-            kv("har_dokument", response.datagrunnlag.dokument.harDokument()),
-            kv("har_innflytting", response.datagrunnlag.pdlpersonhistorikk.harInnflyttingTilNorge()),
-            kv("har_utflytting", response.datagrunnlag.pdlpersonhistorikk.harUtflyttingFraNorge()),
-            kv("yrkeskoder", response.datagrunnlag.arbeidsforhold.alleAktiveYrkeskoderDerTomErNull()),
-            kv("vektetStillingsProsent", response.datagrunnlag.arbeidsforhold.summVektetStilingsProsentIKontrollPeriode(kontrollperiode)),
-            kv("har_medlperiode_uten_arbeidsforhold", response.datagrunnlag.harPeriodeUtenMedlemskapOgIkkeArbeidsforhold()),
-            kv(
-                "Antall_ansatte_hos_arbeidsgiver",
-                response.datagrunnlag.arbeidsforhold.antallAnsatteHosArbeidsgivere(
-                    Kontrollperiode.kontrollPeriodeForArbeidsforhold(response.datagrunnlag.startDatoForYtelse)
-                )
-            ),
-            kv(
-                "antall_ansatte_for_juridiske_enheter",
-                response.datagrunnlag.arbeidsforhold.antallAnsatteHosArbeidsgiversJuridiskeEnheter(
-                    Kontrollperiode.kontrollPeriodeForArbeidsforhold(response.datagrunnlag.startDatoForYtelse)
-                )
-            ),
-            kv("endpoint", endpoint)
-        )
-
 
         logger.info(
             teamLogs,
@@ -449,7 +397,7 @@ private fun loggResponse(fnr: String, response: Response, endpoint: String = "/"
             kv("AaRegUtenlandsoppsholdPeriodeTom", response.datagrunnlag.gyldigeAaRegUtenlandsoppholdPeriodeTom().toString()),
             kv("skipsinfo", response.datagrunnlag.kombinasjonAvSkipsregisterFartsomradeOgSkipstype()),
             kv("response", objectMapper.writeValueAsString(response)),
-            kv("gjeldendeOppholdsstatus", response.datagrunnlag.oppholdstillatelse?.gjeldendeOppholdsstatus.toString()),
+            kv("gjeldendeOppholdsstatus", response.datagrunnlag.oppholdstillatelse?.gjeldendeOppholdsstatus),
             kv("arbeidsadgangtype", response.datagrunnlag.oppholdstillatelse?.arbeidsadgang?.arbeidsadgangType.toString()),
             kv("fagsak_id", response.datagrunnlag.dokument.alleFagsakIDer()),
             kv("har_dokument", response.datagrunnlag.dokument.harDokument()),
@@ -489,22 +437,6 @@ private fun loggResponse(fnr: String, response: Response, endpoint: String = "/"
 }
 
 private fun loggError(fnr: String, datagrunnlag: Datagrunnlag, endpoint: String = "/", throwable: Throwable) {
-    secureLogger.error(
-        "teknisk feil i regelkjøring for bruker {}, ytelse {}", fnr, datagrunnlag.ytelse,
-        kv("fnr", fnr),
-        kv("fom", datagrunnlag.periode.fom.toString()),
-        kv("tom", datagrunnlag.periode.tom.toString()),
-        kv("førsteDagForYtelse", datagrunnlag.førsteDagForYtelse.toString()),
-        kv("brukerInput", datagrunnlag.brukerinput.toString()),
-        kv("startdatoForYtelse", datagrunnlag.startDatoForYtelse.toString()),
-        kv("ytelse", datagrunnlag.ytelse),
-        kv("statsborgerskap", datagrunnlag.gyldigeStatsborgerskap().toString()),
-        kv("statsborgerskapAnt", datagrunnlag.gyldigeStatsborgerskap().size),
-        kv("datagrunnlag", objectMapper.writeValueAsString(datagrunnlag)),
-        kv("endpoint", endpoint),
-        kv("stacktrace", throwable.stackTrace)
-    )
-
     logger.error(
         teamLogs,
         "teknisk feil i regelkjøring for bruker {}, ytelse {}", fnr, datagrunnlag.ytelse,
