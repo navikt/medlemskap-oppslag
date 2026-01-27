@@ -17,7 +17,6 @@ import org.slf4j.MarkerFactory
 import v1.mt_1067_nav.no.udi.HentPersonstatusFault
 
 private val logger = KotlinLogging.logger { }
-private val secureLogger = KotlinLogging.logger("tjenestekall")
 private val teamLogs = MarkerFactory.getMarker("TEAM_LOGS")
 
 fun StatusPagesConfig.exceptionHandler() {
@@ -158,12 +157,6 @@ private suspend inline fun ApplicationCall.logSecureWarningAndRespond(
     lazyMessage: () -> String
 ) {
     val message = lazyMessage()
-    secureLogger.warn(
-        message,
-        kv("cause", cause),
-        kv("callId", callId)
-    )
-
     logger.warn(
         teamLogs,
         message,
