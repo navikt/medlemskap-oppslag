@@ -47,8 +47,6 @@ spec:
   prometheus:
     enabled: true
     path: /metrics
-  secureLogs:
-    enabled: true
   webproxy: true
   accessPolicy:
     inbound:
