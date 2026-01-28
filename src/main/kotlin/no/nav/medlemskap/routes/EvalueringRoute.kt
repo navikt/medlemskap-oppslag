@@ -448,7 +448,6 @@ private fun loggError(fnr: String, datagrunnlag: Datagrunnlag, endpoint: String 
         kv("ytelse", datagrunnlag.ytelse),
         kv("statsborgerskap", datagrunnlag.gyldigeStatsborgerskap().toString()),
         kv("statsborgerskapAnt", datagrunnlag.gyldigeStatsborgerskap().size),
-        kv("datagrunnlag", objectMapper.writeValueAsString(datagrunnlag)),
         kv("endpoint", endpoint),
         kv("stacktrace", throwable.stackTrace)
     )

@@ -82,33 +82,6 @@ suspend fun defaultCreateDatagrunnlag(
             try {
                 services.udiClient.oppholdstillatelse(UdiRequest(request.fnr), callId)
             } catch (hpf: HentPersonstatusFault) {
-                logger.warn(
-                    teamLogs,
-                    "Datagrunnlaget for feilen",
-                    kv("fnr", request.fnr),
-                    kv("NAV-call-id", callId),
-                    kv("datagrunnlag",
-                        objectMapper.writeValueAsString(
-                            Datagrunnlag(
-                                fnr = request.fnr,
-                                periode = request.periode,
-                                førsteDagForYtelse = request.førsteDagForYtelse,
-                                brukerinput = request.brukerinput,
-                                pdlpersonhistorikk = personHistorikk,
-                                medlemskap = medlemskap,
-                                arbeidsforhold = arbeidsforhold,
-                                oppgaver = oppgaver,
-                                dokument = journalPoster,
-                                ytelse = ytelse,
-                                dataOmBarn = dataOmBrukersBarn,
-                                dataOmEktefelle = dataOmEktefelle,
-                                overstyrteRegler = request.overstyrteRegler,
-                                oppholdstillatelse = null
-                            )
-                        )
-                    )
-                )
-
                 logger.error(
                     teamLogs,
                     "HentPersonstatusFault - Kall mot UDI feilet for fnr: ${request.fnr}",
