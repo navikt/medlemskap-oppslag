@@ -15,14 +15,12 @@ jobs:
   build_and_push:
     name: Build and publish Docker image for PR-branch
     runs-on: ubuntu-latest
-    env:
-      IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.sha }}
-
+        uses: actions/checkout@v6
       - name: Set up Java
         uses: actions/setup-java@v4.3.0
         with:
