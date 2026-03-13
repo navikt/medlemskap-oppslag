@@ -21,7 +21,7 @@ data class Oppgave(
 }
 
 enum class Prioritet {
-    HOY, NORM, LAV
+     KRITISK, HOY, NORM, LAV
 }
 
 enum class Status {
