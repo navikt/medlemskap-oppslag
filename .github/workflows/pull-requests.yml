@@ -57,6 +57,6 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
           CLUSTER: dev-gcp
-          RESOURCE: deploy/preprod.yaml
+          RESOURCE: deploy/preprod.yaml,deploy/topics/topic-medlemskap-stage1-dev.yaml
           IMAGE: ${{ needs.build_and_push.outputs.image }}
           TELEMETRY: ${{ needs.build_and_push.outputs.telemetry }}
