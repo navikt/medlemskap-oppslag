@@ -1,6 +1,6 @@
 {
   "vurderingsID" : "7b006d2c-ff75-4404-9663-7babf23f45de",
-  "tidspunkt" : "2025-03-31T14:35:21.3048295",
+  "tidspunkt" : "2025-06-05T12:40:48.471663",
   "versjonTjeneste" : "",
   "versjonRegler" : "v1",
   "kanal" : "/",
@@ -57,8 +57,7 @@
         "fornavn" : "Test",
         "mellomnavn" : null,
         "etternavn" : "Person"
-      } ],
-      "oppholdstilatelser" : [ ]
+      } ]
     },
     "medlemskap" : [ {
       "dekning" : "dekning",
@@ -279,186 +278,23 @@
       "årsaker" : [ ],
       "avklaring" : "Er det avklart om brukeren er død eller ikke?"
     }, {
-      "regelId" : "REGEL_BRUKERGRUPPE",
+      "regelId" : "REGEL_BOSATT",
       "svar" : "JA",
       "begrunnelse" : "",
       "harDekning" : null,
       "dekning" : "",
       "delresultat" : [ {
-        "regelId" : "REGEL_17",
+        "regelId" : "REGEL_10",
         "svar" : "JA",
         "begrunnelse" : "",
         "harDekning" : null,
         "dekning" : "",
         "delresultat" : [ ],
         "årsaker" : [ ],
-        "avklaring" : "Har bruker arbeidsforhold?"
-      }, {
-        "regelId" : "REGEL_17_1",
-        "svar" : "NEI",
-        "begrunnelse" : "Bruker er ikke frilanser",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Er bruker frilanser?"
+        "avklaring" : "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?"
       } ],
       "årsaker" : [ ],
-      "avklaring" : "Har bruker arbeidsforhold?"
-    }, {
-      "regelId" : "REGEL_FELLES_ARBEIDSFORHOLD",
-      "svar" : "JA",
-      "begrunnelse" : "",
-      "harDekning" : null,
-      "dekning" : "",
-      "delresultat" : [ {
-        "regelId" : "REGEL_3",
-        "svar" : "JA",
-        "begrunnelse" : "",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?"
-      } ],
-      "årsaker" : [ ],
-      "avklaring" : "Er felles regler for arbeidsforhold avklart?"
-    }, {
-      "regelId" : "REGEL_PERMITTERING",
-      "svar" : "JA",
-      "begrunnelse" : "",
-      "harDekning" : null,
-      "dekning" : "",
-      "delresultat" : [ {
-        "regelId" : "REGEL_15",
-        "svar" : "NEI",
-        "begrunnelse" : "Bruker har permittering i siste 12 mnd",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Arbeidsforhold siste 12 måneder: Finnes det en periode med permittering i et av disse arbeidsforholdene?"
-      } ],
-      "årsaker" : [ ],
-      "avklaring" : "Arbeidsforhold siste 12 måneder: Finnes det en periode med permittering i et av disse arbeidsforholdene?"
-    }, {
-      "regelId" : "REGEL_PERMISJONER",
-      "svar" : "UAVKLART",
-      "begrunnelse" : "",
-      "harDekning" : null,
-      "dekning" : "",
-      "delresultat" : [ {
-        "regelId" : "REGEL_50",
-        "svar" : "JA",
-        "begrunnelse" : "bruker har bare èn periode med permisjoner siste 12 mnnd?",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Har bruker bare èn periode med permisjon siste 12 mnd "
-      }, {
-        "regelId" : "REGEL_54",
-        "svar" : "NEI",
-        "begrunnelse" : "Bruker har ikke en løpende permisjon på første dag for ytelse dato",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Har Bruker en løpende permisjon på første dag for ytelse dato"
-      }, {
-        "regelId" : "REGEL_57",
-        "svar" : "NEI",
-        "begrunnelse" : "Er perioden med permisjon avsluttet for mer enn 30 dager før første dag syk OG permisjonstypen er foreldrepermisjon?",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk OG/eller permisjonstypen er ikke foreldrepermisjon?"
-      } ],
-      "årsaker" : [ {
-        "regelId" : "REGEL_57",
-        "avklaring" : "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk OG/eller permisjonstypen er ikke foreldrepermisjon?",
-        "svar" : "NEI",
-        "begrunnelse" : "Er perioden med permisjon avsluttet for mer enn 30 dager før første dag syk OG permisjonstypen er foreldrepermisjon?"
-      } ],
-      "avklaring" : "Finnes det permisjoner i noen av arbeidsforholdene?"
-    }, {
-      "regelId" : "REGEL_UTENLANDSFORHOLD",
-      "svar" : "UAVKLART",
-      "begrunnelse" : "",
-      "harDekning" : null,
-      "dekning" : "",
-      "delresultat" : [ {
-        "regelId" : "REGEL_22",
-        "svar" : "JA",
-        "begrunnelse" : "Det finnes utenlandsopphold i et av arbeidsforholdene de siste 12 månedene",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Arbeidsforhold siste 12 måneder: finnes det utenlandsopphold i et av disse arbeidsforholdene?"
-      }, {
-        "regelId" : "REGEL_25",
-        "svar" : "JA",
-        "begrunnelse" : "utenlandsoppholdet er innenfor siste 12 måneder",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Er perioden for utenlandsopphold innenfor siste 12 måneder?"
-      } ],
-      "årsaker" : [ {
-        "regelId" : "REGEL_25",
-        "avklaring" : "Er perioden for utenlandsopphold innenfor siste 12 måneder?",
-        "svar" : "JA",
-        "begrunnelse" : "utenlandsoppholdet er innenfor siste 12 måneder"
-      } ],
-      "avklaring" : "Finnes det utenlandsforhold i noen av arbeidsforholdene?"
-    }, {
-      "regelId" : "REGEL_YTELSER",
-      "svar" : "JA",
-      "begrunnelse" : "",
-      "harDekning" : null,
-      "dekning" : "",
-      "delresultat" : [ {
-        "regelId" : "REGEL_21",
-        "svar" : "JA",
-        "begrunnelse" : "Bruker er arbeidstaker i kontrollperiode for stønadsområde",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Er bruker arbeidstaker i kontrollperiode for stønadsområde?"
-      } ],
-      "årsaker" : [ ],
-      "avklaring" : "Er felles regler for ytelser avklart?"
-    }, {
-      "regelId" : "REGEL_STATSBORGERSKAP",
-      "svar" : "JA",
-      "begrunnelse" : "",
-      "harDekning" : null,
-      "dekning" : "",
-      "delresultat" : [ {
-        "regelId" : "REGEL_2",
-        "svar" : "JA",
-        "begrunnelse" : "",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?"
-      }, {
-        "regelId" : "REGEL_11",
-        "svar" : "JA",
-        "begrunnelse" : "",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Er bruker norsk statsborger?"
-      } ],
-      "årsaker" : [ ],
-      "avklaring" : "Er statsborgerskap avklart?"
+      "avklaring" : "Er det avklart om bruker bor i Norge?"
     }, {
       "regelId" : "REGEL_MEDL",
       "svar" : "UAVKLART",
@@ -546,6 +382,178 @@
       } ],
       "avklaring" : "Har bruker avklarte opplysninger i MEDL?"
     }, {
+      "regelId" : "REGEL_FRILANSER",
+      "svar" : "JA",
+      "begrunnelse" : "",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_16",
+        "svar" : "NEI",
+        "begrunnelse" : "Bruker er ikke frilanser",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Er bruker frilanser?"
+      } ],
+      "årsaker" : [ ],
+      "avklaring" : "Er bruker frilanser?"
+    }, {
+      "regelId" : "REGEL_BRUKERGRUPPE",
+      "svar" : "JA",
+      "begrunnelse" : "",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_17",
+        "svar" : "JA",
+        "begrunnelse" : "",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Har bruker arbeidsforhold?"
+      } ],
+      "årsaker" : [ ],
+      "avklaring" : "Har bruker arbeidsforhold?"
+    }, {
+      "regelId" : "REGEL_FELLES_ARBEIDSFORHOLD",
+      "svar" : "JA",
+      "begrunnelse" : "",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_3",
+        "svar" : "JA",
+        "begrunnelse" : "",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Har bruker hatt et sammenhengende arbeidsforhold i Aa-registeret de siste 12 månedene?"
+      } ],
+      "årsaker" : [ ],
+      "avklaring" : "Er felles regler for arbeidsforhold avklart?"
+    }, {
+      "regelId" : "REGEL_BRUKERSVAR_ARBEID",
+      "svar" : "JA",
+      "begrunnelse" : "",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_9",
+        "svar" : "NEI",
+        "begrunnelse" : "",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Har bruker utført arbeid utenfor Norge?"
+      } ],
+      "årsaker" : [ ],
+      "avklaring" : "Har bruker utført arbeid utenfor Norge?"
+    }, {
+      "regelId" : "REGEL_PERMITTERING",
+      "svar" : "JA",
+      "begrunnelse" : "",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_15",
+        "svar" : "NEI",
+        "begrunnelse" : "Bruker har permittering i siste 12 mnd",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Arbeidsforhold siste 12 måneder: Finnes det en periode med permittering i et av disse arbeidsforholdene?"
+      } ],
+      "årsaker" : [ ],
+      "avklaring" : "Arbeidsforhold siste 12 måneder: Finnes det en periode med permittering i et av disse arbeidsforholdene?"
+    }, {
+      "regelId" : "REGEL_PERMISJONER",
+      "svar" : "UAVKLART",
+      "begrunnelse" : "",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_50",
+        "svar" : "JA",
+        "begrunnelse" : "bruker har bare èn periode med permisjoner siste 12 mnnd?",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Har bruker bare èn periode med permisjon siste 12 mnd "
+      }, {
+        "regelId" : "REGEL_54",
+        "svar" : "NEI",
+        "begrunnelse" : "Bruker har ikke en løpende permisjon på første dag for ytelse dato",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Har Bruker en løpende permisjon på første dag for ytelse dato"
+      }, {
+        "regelId" : "REGEL_57",
+        "svar" : "NEI",
+        "begrunnelse" : "Er perioden med permisjon avsluttet for mer enn 30 dager før første dag syk OG permisjonstypen er foreldrepermisjon?",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk OG/eller permisjonstypen er ikke foreldrepermisjon?"
+      }, {
+        "regelId" : "REGEL_58",
+        "svar" : "NEI",
+        "begrunnelse" : "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk og permisjonen er ikke kortere enn 15 dager",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk og permisjonen er kortere enn 15 dager"
+      } ],
+      "årsaker" : [ {
+        "regelId" : "REGEL_58",
+        "avklaring" : "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk og permisjonen er kortere enn 15 dager",
+        "svar" : "NEI",
+        "begrunnelse" : "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk og permisjonen er ikke kortere enn 15 dager"
+      } ],
+      "avklaring" : "Finnes det permisjoner i noen av arbeidsforholdene?"
+    }, {
+      "regelId" : "REGEL_UTENLANDSFORHOLD",
+      "svar" : "UAVKLART",
+      "begrunnelse" : "",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_22",
+        "svar" : "JA",
+        "begrunnelse" : "Det finnes utenlandsopphold i et av arbeidsforholdene de siste 12 månedene",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Arbeidsforhold siste 12 måneder: finnes det utenlandsopphold i et av disse arbeidsforholdene?"
+      }, {
+        "regelId" : "REGEL_25",
+        "svar" : "JA",
+        "begrunnelse" : "utenlandsoppholdet er innenfor siste 12 måneder",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Er perioden for utenlandsopphold innenfor siste 12 måneder?"
+      } ],
+      "årsaker" : [ {
+        "regelId" : "REGEL_25",
+        "avklaring" : "Er perioden for utenlandsopphold innenfor siste 12 måneder?",
+        "svar" : "JA",
+        "begrunnelse" : "utenlandsoppholdet er innenfor siste 12 måneder"
+      } ],
+      "avklaring" : "Finnes det utenlandsforhold i noen av arbeidsforholdene?"
+    }, {
       "regelId" : "REGEL_MARITIM",
       "svar" : "JA",
       "begrunnelse" : "",
@@ -573,6 +581,51 @@
       "årsaker" : [ ],
       "avklaring" : "er arbeidsforholdet maritimt?"
     }, {
+      "regelId" : "REGEL_YTELSER",
+      "svar" : "JA",
+      "begrunnelse" : "",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_21",
+        "svar" : "JA",
+        "begrunnelse" : "Bruker er arbeidstaker i kontrollperiode for stønadsområde",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Er bruker arbeidstaker i kontrollperiode for stønadsområde?"
+      } ],
+      "årsaker" : [ ],
+      "avklaring" : "Er felles regler for ytelser avklart?"
+    }, {
+      "regelId" : "REGEL_STATSBORGERSKAP",
+      "svar" : "JA",
+      "begrunnelse" : "",
+      "harDekning" : null,
+      "dekning" : "",
+      "delresultat" : [ {
+        "regelId" : "REGEL_2",
+        "svar" : "JA",
+        "begrunnelse" : "",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Er bruker omfattet av grunnforordningen (EØS)? Dvs er bruker statsborger i et EØS-land inkl. Norge?"
+      }, {
+        "regelId" : "REGEL_11",
+        "svar" : "JA",
+        "begrunnelse" : "",
+        "harDekning" : null,
+        "dekning" : "",
+        "delresultat" : [ ],
+        "årsaker" : [ ],
+        "avklaring" : "Er bruker norsk statsborger?"
+      } ],
+      "årsaker" : [ ],
+      "avklaring" : "Er statsborgerskap avklart?"
+    }, {
       "regelId" : "REGEL_ARBEIDSFORHOLD",
       "svar" : "JA",
       "begrunnelse" : "",
@@ -591,39 +644,12 @@
       "årsaker" : [ ],
       "avklaring" : "Er arbeidsforhold avklart?"
     }, {
-      "regelId" : "REGEL_BOSATT",
-      "svar" : "JA",
-      "begrunnelse" : "",
-      "harDekning" : null,
-      "dekning" : "",
-      "delresultat" : [ {
-        "regelId" : "REGEL_10",
-        "svar" : "JA",
-        "begrunnelse" : "",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Er bruker folkeregistrert som bosatt i Norge og har vært det i 12 mnd?"
-      } ],
-      "årsaker" : [ ],
-      "avklaring" : "Er det avklart om bruker bor i Norge?"
-    }, {
       "regelId" : "REGEL_NORSK",
       "svar" : "JA",
       "begrunnelse" : "",
       "harDekning" : null,
       "dekning" : "",
       "delresultat" : [ {
-        "regelId" : "REGEL_9",
-        "svar" : "NEI",
-        "begrunnelse" : "",
-        "harDekning" : null,
-        "dekning" : "",
-        "delresultat" : [ ],
-        "årsaker" : [ ],
-        "avklaring" : "Har bruker utført arbeid utenfor Norge?"
-      }, {
         "regelId" : "REGEL_12",
         "svar" : "JA",
         "begrunnelse" : "",
@@ -637,20 +663,20 @@
       "avklaring" : "Er regler for norske borgere avklart?"
     } ],
     "årsaker" : [ {
-      "regelId" : "REGEL_57",
-      "avklaring" : "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk OG/eller permisjonstypen er ikke foreldrepermisjon?",
+      "regelId" : "REGEL_1_4",
+      "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
       "svar" : "NEI",
-      "begrunnelse" : "Er perioden med permisjon avsluttet for mer enn 30 dager før første dag syk OG permisjonstypen er foreldrepermisjon?"
+      "begrunnelse" : "Det finnes hull i 12-måneders perioden for medlemskap"
+    }, {
+      "regelId" : "REGEL_58",
+      "avklaring" : "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk og permisjonen er kortere enn 15 dager",
+      "svar" : "NEI",
+      "begrunnelse" : "Perioden med permisjon er ikke avsluttet for mer enn 30 dager før første dag syk og permisjonen er ikke kortere enn 15 dager"
     }, {
       "regelId" : "REGEL_25",
       "avklaring" : "Er perioden for utenlandsopphold innenfor siste 12 måneder?",
       "svar" : "JA",
       "begrunnelse" : "utenlandsoppholdet er innenfor siste 12 måneder"
-    }, {
-      "regelId" : "REGEL_1_4",
-      "avklaring" : "Er hele perioden med medlemskap innenfor 12-måneders perioden?",
-      "svar" : "NEI",
-      "begrunnelse" : "Det finnes hull i 12-måneders perioden for medlemskap"
     } ],
     "avklaring" : "Er bruker medlem?"
   }

@@ -24,18 +24,21 @@ class MedlClient(
 
     private val logger = KotlinLogging.logger { }
 
-    suspend fun hentMedlemskapsunntak(ident: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<MedlMedlemskapsunntak> {
+    suspend fun hentMedlemskapsunntak(
+        ident: String,
+        callId: String
+    ): List<MedlMedlemskapsunntak> {
         val token = azureAdClient.hentToken(configuration.register.medlScope)
         return runCatching {
+            val medlQuery = "{\"personident\": \"${ident}\"}"
             runWithRetryAndMetrics<List<MedlMedlemskapsunntak>>("Medl", "MedlemskapsunntakV1", retry) {
-                httpClient.get() {
-                    url("$baseUrl/api/v1/medlemskapsunntak")
+                httpClient.post() {
+                    url("$baseUrl/rest/v1/periode/soek")
                     header(HttpHeaders.Authorization, "Bearer ${token.token}")
                     header(HttpHeaders.Accept, ContentType.Application.Json)
+                    header(HttpHeaders.ContentType, ContentType.Application.Json)
                     header("Nav-Call-Id", callId)
-                    header("Nav-Personident", ident)
-                    fraOgMed?.let { parameter("fraOgMed", fraOgMed.tilIsoFormat()) }
-                    tilOgMed?.let { parameter("tilOgMed", tilOgMed.tilIsoFormat()) }
+                    setBody(medlQuery)
                 }.body()
             }
         }.fold(
@@ -52,6 +55,7 @@ class MedlClient(
                             throw error
                         }
                     }
+
                     else -> throw error
                 }
             }

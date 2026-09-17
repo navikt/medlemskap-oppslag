@@ -48,5 +48,5 @@ Egenskap: Regelflyt for regel 19.8
 
     Eksempler:
       | Oppholdstillatelse på samme vilkår flagg | Regel 19.8 | Medlemskap | Årsaker |
-      | Nei                                      | Nei        | Ja         |         |
+      | Nei                                      | Nei        | Uavklart   | 19.3    |
       | Ja                                       | Ja         | Uavklart   | 19.8    |

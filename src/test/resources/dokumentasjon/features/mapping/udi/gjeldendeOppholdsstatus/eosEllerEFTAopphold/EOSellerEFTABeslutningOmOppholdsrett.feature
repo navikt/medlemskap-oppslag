@@ -11,7 +11,7 @@
 # utlendingsmyndighetene, det vil si om han eller hun er registrert i EØS-registreringsordningen eller ikke,
 # og ikke om en person har oppholdsrett eller faktisk utøver oppholds retten i Norge.
 #
-# For tredjelandsborgere med beslutning om oppholdsrett, vil tjenesten gi ut
+# For andre borgere med beslutning om oppholdsrett, vil tjenesten gi ut
 # oppholdsrettsperioden – fradato og tildato – på beslutningen om oppholdsrett,
 # mens den for EØS-borgere ikke vil gi ut oppholdsrettsperioden.
 # Videre vil tjenesten utlevere oppholdsgrunnlaget for oppholdsretten,

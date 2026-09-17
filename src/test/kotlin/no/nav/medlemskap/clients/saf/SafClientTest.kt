@@ -8,10 +8,12 @@ import io.ktor.http.*
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
+import no.nav.medlemskap.clients.Token
+import no.nav.medlemskap.clients.azuread.AzureAdClient
 import no.nav.medlemskap.clients.saf.generated.enums.Journalposttype
 import no.nav.medlemskap.clients.saf.generated.enums.Journalstatus
 import no.nav.medlemskap.clients.saf.generated.enums.Tema
-import no.nav.medlemskap.clients.sts.StsRestClient
+import no.nav.medlemskap.config.Configuration
 import no.nav.medlemskap.common.cioHttpClient
 import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -20,6 +22,7 @@ class SafClientTest {
 
     companion object {
         val server: WireMockServer = WireMockServer(WireMockConfiguration.options().dynamicPort())
+        val configuration = Configuration()
 
         @BeforeAll
         @JvmStatic
@@ -42,9 +45,8 @@ class SafClientTest {
     @Test
     fun `henter journalposter`() {
         val callId = "123456"
-        val username = "whatever"
-        val stsClient: StsRestClient = mockk()
-        coEvery { stsClient.oidcToken() } returns "dummytoken"
+        val azureAdClient: AzureAdClient = mockk()
+        coEvery { azureAdClient.hentToken(configuration.register.safScope) } returns Token("dummytoken", "", 1)
 
         stubFor(
             safRequestMapping
@@ -56,7 +58,7 @@ class SafClientTest {
                 )
         )
 
-        val safClient = SafClient(server.baseUrl(), stsClient, username, cioHttpClient, "123")
+        val safClient = SafClient(server.baseUrl(), azureAdClient, configuration, cioHttpClient)
 
         val safResponse = runBlocking { safClient.hentJournaldatav2("1234567890", callId) }
 
@@ -72,7 +74,7 @@ class SafClientTest {
     val safRequestMapping: MappingBuilder = post(urlPathEqualTo("/"))
         .withHeader(HttpHeaders.Authorization, equalTo("Bearer dummytoken"))
         .withHeader("Accept", containing("application/json"))
-        .withHeader("Nav-Consumer-Id", equalTo("whatever"))
+        .withHeader("Nav-Consumer-Id", equalTo(configuration.azureAd.clientId))
 
     val safResponse =
         """{

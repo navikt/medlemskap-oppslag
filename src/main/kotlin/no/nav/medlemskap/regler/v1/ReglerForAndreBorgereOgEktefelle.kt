@@ -9,7 +9,7 @@ import no.nav.medlemskap.regler.common.Regelflyt
 import no.nav.medlemskap.regler.common.Regler
 import no.nav.medlemskap.regler.common.Svar
 
-class ReglerForTredjelandsborgerFamilie(
+class ReglerForAndreBorgereOgEktefelle(
     val periode: InputPeriode,
     ytelse: Ytelse,
     regelFactory: RegelFactory,
@@ -20,23 +20,23 @@ class ReglerForTredjelandsborgerFamilie(
 
         val erEktefelleEOSborgerFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_29),
-            hvisJa = Regelflyt.regelflytJa(ytelse, REGEL_TREDJELANDSBORGER_FAMILIE),
-            hvisNei = Regelflyt.regelflytJa(ytelse, REGEL_TREDJELANDSBORGER_FAMILIE)
+            hvisJa = Regelflyt.regelflytJa(ytelse, REGEL_ANDRE_BORGERE_MED_EOS_FAMILIE),
+            hvisNei = Regelflyt.regelflytJa(ytelse, REGEL_ANDRE_BORGERE_MED_EOS_FAMILIE)
         )
 
         val harBrukerEktefelleFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_28),
             hvisJa = erEktefelleEOSborgerFlyt,
-            hvisNei = Regelflyt.regelflytJa(ytelse, REGEL_TREDJELANDSBORGER_FAMILIE)
+            hvisNei = Regelflyt.regelflytJa(ytelse, REGEL_ANDRE_BORGERE_MED_EOS_FAMILIE)
         )
 
         return harBrukerEktefelleFlyt
     }
 
     companion object {
-        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForTredjelandsborgerFamilie {
+        fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForAndreBorgereOgEktefelle {
             with(datagrunnlag) {
-                return ReglerForTredjelandsborgerFamilie(
+                return ReglerForAndreBorgereOgEktefelle(
                     periode = periode,
                     ytelse = ytelse,
                     regelFactory = RegelFactory(datagrunnlag),

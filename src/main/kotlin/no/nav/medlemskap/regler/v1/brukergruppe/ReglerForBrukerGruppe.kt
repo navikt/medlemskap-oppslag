@@ -19,17 +19,10 @@ class ReglerForBrukerGruppe(
 ) : Regler(ytelse, regelFactory, overstyrteRegler) {
 
     override fun hentHovedflyt(): Regelflyt {
-        val ErBrukerFrilanserFlyt = lagRegelflyt(
-            regel = hentRegel(REGEL_17_1),
-            hvisJa = konklusjonUavklart(ytelse, REGEL_BRUKERGRUPPE),
-            hvisNei = regelflytJa(ytelse, REGEL_BRUKERGRUPPE)
-        )
-
-
         val HarBrukerArbeidsforholdFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_17),
-            hvisJa = ErBrukerFrilanserFlyt,
-            hvisNei = regelflytJa(ytelse, REGEL_BRUKERGRUPPE)
+            hvisJa = regelflytJa(ytelse, REGEL_BRUKERGRUPPE),
+            hvisNei = konklusjonUavklart(ytelse, REGEL_BRUKERGRUPPE)
         )
         return HarBrukerArbeidsforholdFlyt
     }

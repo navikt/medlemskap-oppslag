@@ -21,7 +21,7 @@ data class OppgOppgave(
 )
 
 enum class OppgPrioritet {
-    HOY, NORM, LAV
+    KRITISK, HOY, NORM, LAV
 }
 
 enum class OppgStatus {

@@ -1,5 +1,5 @@
 {
-  "fnr": "08026644373",
+  "fnr": "123",
   "periode": {
     "fom": "2022-08-15",
     "tom": "2022-09-02"
@@ -50,66 +50,66 @@
         "type": "GIFT",
         "gyldigFraOgMed": "1986-03-26",
         "gyldigTilOgMed": "1997-09-18",
-        "relatertVedSivilstand": "04056746833"
+        "relatertVedSivilstand": "123"
       },
       {
         "type": "SEPARERT",
         "gyldigFraOgMed": "1997-09-19",
         "gyldigTilOgMed": "1998-05-27",
-        "relatertVedSivilstand": "04056746833"
+        "relatertVedSivilstand": "123"
       },
       {
         "type": "GIFT",
         "gyldigFraOgMed": "1998-05-28",
         "gyldigTilOgMed": "2006-02-22",
-        "relatertVedSivilstand": "04056746833"
+        "relatertVedSivilstand": "123"
       },
       {
         "type": "SEPARERT",
         "gyldigFraOgMed": "2006-02-23",
         "gyldigTilOgMed": "2007-03-11",
-        "relatertVedSivilstand": "04056746833"
+        "relatertVedSivilstand": "123"
       },
       {
         "type": "SKILT",
         "gyldigFraOgMed": "2007-03-12",
         "gyldigTilOgMed": null,
-        "relatertVedSivilstand": "04056746833"
+        "relatertVedSivilstand": "123"
       }
     ],
     "forelderBarnRelasjon": [
       {
-        "relatertPersonsIdent": "01014135967",
+        "relatertPersonsIdent": "123",
         "relatertPersonsRolle": "FAR",
         "minRolleForPerson": "BARN"
       },
       {
-        "relatertPersonsIdent": "27088632066",
+        "relatertPersonsIdent": "123",
         "relatertPersonsRolle": "BARN",
         "minRolleForPerson": "FAR"
       },
       {
-        "relatertPersonsIdent": "10048937182",
+        "relatertPersonsIdent": "123",
         "relatertPersonsRolle": "BARN",
         "minRolleForPerson": "FAR"
       },
       {
-        "relatertPersonsIdent": "22041694363",
+        "relatertPersonsIdent": "123",
         "relatertPersonsRolle": "BARN",
         "minRolleForPerson": "FAR"
       },
       {
-        "relatertPersonsIdent": "13111395998",
+        "relatertPersonsIdent": "123",
         "relatertPersonsRolle": "BARN",
         "minRolleForPerson": "FAR"
       },
       {
-        "relatertPersonsIdent": "15034542268",
+        "relatertPersonsIdent": "123",
         "relatertPersonsRolle": "MOR",
         "minRolleForPerson": "BARN"
       },
       {
-        "relatertPersonsIdent": "04029140648",
+        "relatertPersonsIdent": "123",
         "relatertPersonsRolle": "BARN",
         "minRolleForPerson": "FAR"
       }
@@ -119,9 +119,9 @@
     "utflyttingFraNorge": [],
     "navn": [
       {
-        "fornavn": "JONNY",
+        "fornavn": "Navn",
         "mellomnavn": null,
-        "etternavn": "SJURSEN"
+        "etternavn": "Navne"
       }
     ]
   },
@@ -304,7 +304,7 @@
   "dataOmBarn": [
     {
       "personhistorikkBarn": {
-        "ident": "22041694363",
+        "ident": "123",
         "bostedsadresser": [
           {
             "landkode": "NOR",
@@ -317,12 +317,12 @@
         "oppholdsadresser": [],
         "forelderBarnRelasjon": [
           {
-            "relatertPersonsIdent": "08026644373",
+            "relatertPersonsIdent": "123",
             "relatertPersonsRolle": "FAR",
             "minRolleForPerson": "BARN"
           },
           {
-            "relatertPersonsIdent": "01037834498",
+            "relatertPersonsIdent": "123",
             "relatertPersonsRolle": "MOR",
             "minRolleForPerson": "BARN"
           }
@@ -331,7 +331,7 @@
     },
     {
       "personhistorikkBarn": {
-        "ident": "13111395998",
+        "ident": "123",
         "bostedsadresser": [
           {
             "landkode": "NOR",
@@ -344,12 +344,12 @@
         "oppholdsadresser": [],
         "forelderBarnRelasjon": [
           {
-            "relatertPersonsIdent": "01037834498",
+            "relatertPersonsIdent": "123",
             "relatertPersonsRolle": "MOR",
             "minRolleForPerson": "BARN"
           },
           {
-            "relatertPersonsIdent": "08026644373",
+            "relatertPersonsIdent": "123",
             "relatertPersonsRolle": "FAR",
             "minRolleForPerson": "BARN"
           }
@@ -359,7 +359,7 @@
   ],
   "dataOmEktefelle": {
     "personhistorikkEktefelle": {
-      "ident": "04056746833",
+      "ident": "123",
       "statsborgerskap": [
         {
           "landkode": "NOR",
