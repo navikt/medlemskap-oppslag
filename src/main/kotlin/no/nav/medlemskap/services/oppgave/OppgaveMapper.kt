@@ -32,6 +32,7 @@ fun mapStatus(oppgave: OppgOppgave): Status {
 
 fun mapPrioritert(oppgave: OppgOppgave): Prioritet {
     return when (oppgave.prioritet) {
+        OppgPrioritet.KRITISK -> Prioritet.KRITISK
         OppgPrioritet.HOY -> Prioritet.HOY
         OppgPrioritet.LAV -> Prioritet.LAV
         else -> {

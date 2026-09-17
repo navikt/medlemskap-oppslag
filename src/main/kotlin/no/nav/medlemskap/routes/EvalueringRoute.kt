@@ -29,13 +29,15 @@ import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.antallAn
 import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.summVektetStilingsProsentIKontrollPeriode
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.v1.Hovedregler
+import no.nav.medlemskap.regler.v1.ReglerService
 import no.nav.medlemskap.services.kafka.Producer
 import org.apache.kafka.clients.producer.ProducerRecord
+import org.slf4j.MarkerFactory
 import java.time.LocalDateTime
 import java.util.*
 
 private val logger = KotlinLogging.logger { }
-private val secureLogger = KotlinLogging.logger("tjenestekall")
+private val teamLogs = MarkerFactory.getMarker("TEAM_LOGS")
 private val TOPIC = "medlemskap.medlemskap-stage1"
 
 fun Routing.evalueringRoute(
@@ -52,7 +54,7 @@ fun Routing.evalueringRoute(
             val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
             val azp = callerPrincipal.payload.getClaim("azp").asString()
             val endpoint = "/"
-            secureLogger.info("EvalueringRoute: azp-claim i principal-token: {}", azp)
+            logger.info(teamLogs, "EvalueringRoute: azp-claim i principal-token: {}", azp)
             val callId = call.callId ?: UUID.randomUUID().toString()
             val request = validerRequest(call.receive(), azp)
 
@@ -206,6 +208,44 @@ fun Routing.evalueringRoute(
                 throw t
             }
         }
+        post("/selvstendignaringsdrivende") {
+            val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
+            val azp = callerPrincipal.payload.getClaim("azp").asString()
+            val endpoint = "selvstendignaringsdrivende"
+            val callId = call.callId ?: UUID.randomUUID().toString()
+            val request = validerRequestV2(call.receive(), azp)
+
+            val datagrunnlag = withContext(
+                requestContextService.getCoroutineContext(
+                    context = coroutineContext,
+                    ytelse = finnYtelse(request.ytelse, azp)
+                )
+            ) {
+                //TODO: Dette må vi rette på før vi går i produksjon
+                createDatagrunnlag.invoke(
+                    Request(request.fnr,request.førsteDagForYtelse,request.periode,request.brukerinput,request.ytelse),
+                    callId,
+                    services,
+                    azp
+                )
+            }
+            try {
+                val resultat = ReglerService.kjørReglerv2(datagrunnlag)
+
+                val response = lagResponse(
+                    callid = callId,
+                    versjonTjeneste = configuration.commitSha,
+                    endpoint = endpoint,
+                    datagrunnlag = datagrunnlag,
+                    resultat = resultat
+                )
+                loggResponse(request.fnr, response, endpoint)
+                call.respond(response)
+            } catch (t: Throwable) {
+                loggError(fnr = request.fnr, datagrunnlag = datagrunnlag, endpoint = endpoint, throwable = t)
+                throw t
+            }
+        }
         post("/brukersporsmaal") {
             val callerPrincipal: JWTPrincipal = call.authentication.principal()!!
             val azp = callerPrincipal.payload.getClaim("azp").asString()
@@ -312,7 +352,15 @@ private fun lagResponse(callid: String, datagrunnlag: Datagrunnlag, resultat: Re
     )
 }
 
-private fun loggResponse(fnr: String, response: Response, endpoint: String = "/") {
+fun loggFerdig(callId: String, endpoint: String, resultat: String) {
+    logger.info("Regelmotor kjørt ferdig.",
+        kv("callId", callId),
+        kv("endpoint", endpoint),
+        kv("resultat", resultat)
+    )
+}
+
+private fun loggResponse(fnr: String, response: Response, endpoint: String = "/", callId: String? = "") {
     val startDatoForYtelse = response.datagrunnlag.startDatoForYtelse
     val kontrollperiode:Kontrollperiode = Kontrollperiode(startDatoForYtelse.minusMonths(12),startDatoForYtelse)
     val resultat = response.resultat
@@ -321,7 +369,9 @@ private fun loggResponse(fnr: String, response: Response, endpoint: String = "/"
     val årsak = årsaker.map { it.regelId.toString() }.firstOrNull()
     val aarsaksAnt = årsaker.size
     runCatching {
-        secureLogger.info(
+
+        logger.info(
+            teamLogs,
             "{} konklusjon gitt for bruker {}, ytelse {}", resultat.svar.name, fnr, response.datagrunnlag.ytelse,
             kv("fnr", fnr),
             kv("orgnummer", response.datagrunnlag.gyldigeOrgnummer()),
@@ -346,8 +396,7 @@ private fun loggResponse(fnr: String, response: Response, endpoint: String = "/"
             kv("AaRegUtenlandsoppsholdPeriodeFom", response.datagrunnlag.gyldigeAaRegUtenlandsoppholdPeriodeFom().toString()),
             kv("AaRegUtenlandsoppsholdPeriodeTom", response.datagrunnlag.gyldigeAaRegUtenlandsoppholdPeriodeTom().toString()),
             kv("skipsinfo", response.datagrunnlag.kombinasjonAvSkipsregisterFartsomradeOgSkipstype()),
-            kv("response", objectMapper.writeValueAsString(response)),
-            kv("gjeldendeOppholdsstatus", response.datagrunnlag.oppholdstillatelse?.gjeldendeOppholdsstatus.toString()),
+            kv("gjeldendeOppholdsstatus", response.datagrunnlag.oppholdstillatelse?.gjeldendeOppholdsstatus),
             kv("arbeidsadgangtype", response.datagrunnlag.oppholdstillatelse?.arbeidsadgang?.arbeidsadgangType.toString()),
             kv("fagsak_id", response.datagrunnlag.dokument.alleFagsakIDer()),
             kv("har_dokument", response.datagrunnlag.dokument.harDokument()),
@@ -369,8 +418,13 @@ private fun loggResponse(fnr: String, response: Response, endpoint: String = "/"
                 )
             ),
             kv("endpoint", endpoint)
-            // kv("regleroverstyrt", response.resultat.erReglerOverstyrt())
         )
+
+
+        if (callId != null) {
+            loggFerdig(callId, endpoint, resultat.svar.name)
+        }
+
     }.onFailure {
         loggError(fnr, datagrunnlag = response.datagrunnlag, endpoint, it)
     }
@@ -378,10 +432,12 @@ private fun loggResponse(fnr: String, response: Response, endpoint: String = "/"
     if (årsaker.isNotEmpty()) {
         uavklartPåRegel(årsaker.first(), response.datagrunnlag.ytelse.name()).increment()
     }
+
 }
 
 private fun loggError(fnr: String, datagrunnlag: Datagrunnlag, endpoint: String = "/", throwable: Throwable) {
-    secureLogger.error(
+    logger.error(
+        teamLogs,
         "teknisk feil i regelkjøring for bruker {}, ytelse {}", fnr, datagrunnlag.ytelse,
         kv("fnr", fnr),
         kv("fom", datagrunnlag.periode.fom.toString()),
@@ -392,13 +448,29 @@ private fun loggError(fnr: String, datagrunnlag: Datagrunnlag, endpoint: String 
         kv("ytelse", datagrunnlag.ytelse),
         kv("statsborgerskap", datagrunnlag.gyldigeStatsborgerskap().toString()),
         kv("statsborgerskapAnt", datagrunnlag.gyldigeStatsborgerskap().size),
-        kv("datagrunnlag", objectMapper.writeValueAsString(datagrunnlag)),
         kv("endpoint", endpoint),
         kv("stacktrace", throwable.stackTrace)
     )
 }
 
 private fun validerRequest(request: Request, azp: String): Request {
+    val ytelse = finnYtelse(request.ytelse, azp)
+    if (ytelse != Ytelse.SYKEPENGER && request.førsteDagForYtelse == null) {
+        throw UgyldigRequestException("Første dag for ytelse kan ikke være null (inputperiode skal ikke lenger brukes)", ytelse)
+    }
+
+    if (request.periode.tom.isBefore(request.periode.fom)) {
+        throw UgyldigRequestException("Periode tom kan ikke være før periode fom", ytelse)
+    }
+
+    if (!gyldigFnr(request.fnr)) {
+        throw UgyldigRequestException("Ugyldig fødselsnummer", ytelse)
+    }
+
+    return request
+}
+
+private fun validerRequestV2(request: RequestV2, azp: String): RequestV2 {
     val ytelse = finnYtelse(request.ytelse, azp)
     if (ytelse != Ytelse.SYKEPENGER && request.førsteDagForYtelse == null) {
         throw UgyldigRequestException("Første dag for ytelse kan ikke være null (inputperiode skal ikke lenger brukes)", ytelse)

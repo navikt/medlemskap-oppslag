@@ -1,22 +1,17 @@
 package no.nav.medlemskap.domene.arbeidsforhold
 
-import mu.KotlinLogging
-import net.logstash.logback.argument.StructuredArguments.kv
 import no.nav.medlemskap.clients.ereg.Ansatte.Companion.finnesMindreEnn
 import no.nav.medlemskap.common.*
 import no.nav.medlemskap.domene.Kontrollperiode
+import no.nav.medlemskap.domene.Kontrollperiode.Companion.startDatoForYtelse
 import no.nav.medlemskap.domene.Periode
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.domene.Ytelse.Companion.name
-import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harFlereArbeidsforholdIKontrollperiode
-import no.nav.medlemskap.domene.arbeidsforhold.Arbeidsforhold.Companion.harPermisjonerIKontrollPerioden
 import no.nav.medlemskap.regler.common.Funksjoner.isNotNullOrEmpty
 import no.nav.medlemskap.regler.common.erDatoerSammenhengende
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 import kotlin.math.abs
-
-private val secureLogger = KotlinLogging.logger("tjenestekall")
 
 data class Arbeidsforhold(
     val periode: Periode,
@@ -51,13 +46,6 @@ data class Arbeidsforhold(
     companion object {
         private val offentligSektorJuridiskeEnhetstyper = listOf("STAT", "FKF", "FYLK", "KF", "KOMM", "SF", "SÆR")
 
-        private fun loggTilInfoSecurelogs(melding: String, fnr: String) {
-            secureLogger.info(
-                melding,
-                kv("fnr", fnr)
-            )
-        }
-
         fun harPermisjonerSiste12Måneder(
             arbeidsforhold: List<Arbeidsforhold>,
             kontrollPeriode: Kontrollperiode
@@ -71,6 +59,17 @@ data class Arbeidsforhold(
             } else {
                 true
             }
+        }
+
+        fun List<Arbeidsforhold>.harMaritimtArbeidsforholdDagenFørStartDatoForYtelse(startDatoForYtelse: LocalDate): Boolean {
+            return this.arbeidsforholdForDato(startDatoForYtelse).any { it.arbeidsforholdstype == Arbeidsforholdstype.MARITIMT }
+        }
+
+        fun List<Arbeidsforhold>.harSammenhengendeMaritimtArbeidsforholdPåNORSkipIKontrollperiode(kontrollperiode: Kontrollperiode, ytelse: Ytelse, tillatDagersHullIPeriode: Long): Boolean {
+            val maritimeArbeidsforhold = this.maritimeArbeidsforholdForKontrollPeriode(kontrollperiode)
+                .filter { it.arbeidsavtaler.all { it.skipsregister == Skipsregister.NOR } }
+            if (maritimeArbeidsforhold.isEmpty()) return false
+            return erAvvikIArbeidsavtale(ytelse, maritimeArbeidsforhold, kontrollperiode, tillatDagersHullIPeriode)
         }
 
         fun List<Arbeidsforhold>.harKunEttArbeidsforholdMedPermisjoner(kontrollPeriode: Kontrollperiode): Boolean {
@@ -96,16 +95,6 @@ data class Arbeidsforhold(
             return this.filter {
                 it.periode.overlapper(kontrollPeriode.periode)
             }
-        }
-
-        fun List<PermisjonPermittering>.totaltantallDager(): Int {
-
-            val antallDagerIHverPermisjon = this.map {
-                val fom = it.periode.fom ?: LocalDate.now().minusYears(1)
-                val tom = it.periode.tom ?: LocalDate.now()
-                ChronoUnit.DAYS.between(fom, tom)
-            }
-            return antallDagerIHverPermisjon.sum().toInt()
         }
 
         fun List<PermisjonPermittering>.totaltantallDagerIKontrollPeriode(kontrollPeriode: Kontrollperiode): Int {
@@ -145,10 +134,6 @@ data class Arbeidsforhold(
                 .filter { it.type != PermisjonPermitteringType.PERMITTERING }.isNotEmpty()
         }
 
-        fun List<Arbeidsforhold>.harNoenArbeidsforhold100ProsentPermisjon(): Boolean {
-            return this.hentAllePermisjoner().any { it.prosent == 100.0 }
-        }
-
         fun List<Arbeidsforhold>.harNoenArbeidsforhold100ProsentPermisjonIKontrollPerioden(kontrollPeriode: Kontrollperiode): Boolean {
             return this.hentAllePermisjoner().permisjonPermitteringerForKontrollPeriode(kontrollPeriode)
                 .any { it.prosent == 100.0 }
@@ -161,23 +146,16 @@ data class Arbeidsforhold(
 
 
         fun List<Arbeidsforhold>.hentAllePermisjoner(): List<PermisjonPermittering> {
-            val permisjoner: MutableList<PermisjonPermittering> = mutableListOf()
-            this.forEach {
-                if (it.permisjonPermittering != null) {
-                    permisjoner.addAll(it.permisjonPermittering)
-                }
-            }
-            return permisjoner.filter { it.type != PermisjonPermitteringType.PERMITTERING }
+            return mapNotNull { it.permisjonPermittering }
+                .flatten()
+                .filter { it.type != PermisjonPermitteringType.PERMITTERING }
         }
 
         fun List<Arbeidsforhold>.hentAllePermisjonerSiden(dato: LocalDate): List<PermisjonPermittering> {
-            val permisjoner: MutableList<PermisjonPermittering> = mutableListOf()
-            this.forEach {
-                if (it.permisjonPermittering != null) {
-                    permisjoner.addAll(it.permisjonPermittering)
-                }
-            }
-            return permisjoner.filter { (it.periode.tom == null || it.periode.tom.isAfter(dato)) && it.type != PermisjonPermitteringType.PERMITTERING }
+            return mapNotNull { it.permisjonPermittering }
+                .flatten()
+                .filter { (it.periode.tom == null || it.periode.tom.isAfter(dato)) }
+                .filter { it.type != PermisjonPermitteringType.PERMITTERING }
         }
 
         fun List<Arbeidsforhold>.AlleArbeidsforholdPerioderIKontrollperiode(kontrollPeriode: Kontrollperiode) =
@@ -285,6 +263,36 @@ data class Arbeidsforhold(
                 ytelse
             )
         }
+
+        fun erAvvikIArbeidsavtale(ytelse: Ytelse, arbeidsforhold: List<Arbeidsforhold>, kontrollPeriode: Kontrollperiode, tillatDagersHullIPeriode: Long): Boolean {
+            var totaltAntallDagerDiff: Long = 0
+            var forrigeTilDato: LocalDate? = null
+
+            val sortertArbeidsavtaleEtterPeriode = arbeidsforhold.arbeidsavtalerForKontrollperiode(kontrollPeriode).sortertArbeidsavtaleEtterPeriode()
+
+            for (arbeidsavtale in sortertArbeidsavtaleEtterPeriode) {
+                if (forrigeTilDato != null && !erDatoerSammenhengende(forrigeTilDato, arbeidsavtale.gyldighetsperiode.fom, tillatDagersHullIPeriode)
+                ) {
+                    val antallDagerDiff = abs(ChronoUnit.DAYS.between(forrigeTilDato, arbeidsavtale.gyldighetsperiode.fom))
+                    totaltAntallDagerDiff += antallDagerDiff
+
+                    if (totaltAntallDagerDiff > tillatDagersHullIPeriode)
+                        return false
+                }
+                if (arbeidsavtale.gyldighetsperiode.tom == null || forrigeTilDato == null || arbeidsavtale.gyldighetsperiode.tom.isAfter(forrigeTilDato))
+                    forrigeTilDato = arbeidsavtale.gyldighetsperiode.tom
+
+                if (forrigeTilDato == null || forrigeTilDato.isAfter(kontrollPeriode.tom)) return true
+            }
+
+            if (forrigeTilDato != null) {
+                return !forrigeTilDato.isBefore(kontrollPeriode.tom)
+            }
+            return true
+        }
+
+        fun List<Arbeidsavtale>.sortertArbeidsavtaleEtterPeriode(): List<Arbeidsavtale> =
+            this.sortedBy { it.periode.fom }
 
         private fun erAvvikIArbeidsforhold(
             arbeidsforholdForNorskArbeidsgiver: List<Arbeidsforhold>,
@@ -553,6 +561,10 @@ data class Arbeidsforhold(
                 it.periode.overlapper(kontrollPeriode.periode)
             }
 
+        fun List<Arbeidsforhold>.maritimeArbeidsforholdForKontrollPeriode(kontrollPeriode: Kontrollperiode): List<Arbeidsforhold> =
+            this.filter { it.arbeidsforholdstype == Arbeidsforholdstype.MARITIMT }
+                .filter { it.periode.overlapper(kontrollPeriode.periode) }
+
         private fun List<Arbeidsforhold>.arbeidsavtalerForKontrollperiode(kontrollPeriode: Kontrollperiode): List<Arbeidsavtale> {
             return arbeidsforholdForKontrollPeriode(kontrollPeriode).flatMap { it.arbeidsavtaler }
         }
@@ -565,6 +577,10 @@ data class Arbeidsforhold(
 
         fun fraOgMedDatoForArbeidsforhold(førsteDatoForYtelse: LocalDate): LocalDate {
             return førsteDatoForYtelse.minusYears(1).minusDays(1)
+        }
+
+        fun List<Arbeidsforhold>.harIngenArbeidsforhold(): Boolean {
+            return this.isEmpty()
         }
     }
 }

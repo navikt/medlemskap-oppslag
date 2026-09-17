@@ -154,7 +154,7 @@ object ArbeidsforholdDomeneSpraakParser : BasisDomeneParser() {
                 antall = parseInt(ArbeidDomenebegrep.ANTALL_ANSATTE, rad),
                 gyldighetsperiode = Periode(
                     parseDato(ArbeidDomenebegrep.GYLDIGHETSPERIODE_FRA_OG_MED, rad),
-                    parseDato(ArbeidDomenebegrep.GYLDIGHETSPERIODE_TIL_OG_MED, rad)
+                    parseValgfriDato(ArbeidDomenebegrep.GYLDIGHETSPERIODE_TIL_OG_MED, rad)
                 )
             )
         }

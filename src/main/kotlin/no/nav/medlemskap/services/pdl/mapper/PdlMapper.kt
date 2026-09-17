@@ -37,7 +37,6 @@ object PdlMapper {
         val innflyttingTilNorge: List<InnflyttingTilNorge> = mapInnflyttingTilNorge(person.innflyttingTilNorge)
         val utflyttingFraNorge: List<UtflyttingFraNorge> = mapUtflyttingFraNorge(person.utflyttingFraNorge)
         val navn: List<Navn> = mapNavn(person.navn)
-        val opphold: List<Opphold> = mapOppholdsTilatelser(person.opphold)
 
         return Personhistorikk(
             statsborgerskap = statsborgerskap,
@@ -49,46 +48,8 @@ object PdlMapper {
             doedsfall = doedsfall,
             innflyttingTilNorge = innflyttingTilNorge,
             utflyttingFraNorge = utflyttingFraNorge,
-            navn = navn,
-            oppholdstilatelser = opphold
-
+            navn = navn
         )
-    }
-
-    private fun mapOppholdsTilatelser(opphold: List<no.nav.medlemskap.clients.pdl.generated.hentperson.Opphold>): List<Opphold> {
-
-        return opphold.map {
-            Opphold(
-                type = OppholdstillatelseType.valueOf(it.type.name),
-                oppholdFra = mapDate(it.oppholdFra),
-                oppholdTil = mapDate(it.oppholdTil),
-                medtadata = OppholdMetadata(it.metadata.historisk, it.metadata.master, mapEnringer(it.metadata.endringer)),
-                folkeregistermetadata = mapFolkeregistermetadata(it.folkeregistermetadata)
-            )
-        }
-    }
-
-    private fun mapDateTime(registrert: String): LocalDateTime {
-        return LocalDateTime.parse(registrert)
-    }
-
-    private fun mapEnringer(endringer: List<no.nav.medlemskap.clients.pdl.generated.hentperson.Endring>): List<Endring> {
-        return endringer.map {
-            Endring(
-                type = Endringstype.valueOf(it.type.name),
-                kilde = it.kilde,
-                registrert = mapDateTime(it.registrert),
-                registrertAv = it.registrertAv,
-                systemkilde = it.systemkilde
-            )
-        }
-    }
-
-    private fun mapDate(dato: String?): LocalDate? {
-        if (dato != null) {
-            return LocalDate.parse(dato)
-        }
-        return null
     }
 
     private fun mapInnflyttingTilNorge(innflyttingTilNorge: List<no.nav.medlemskap.clients.pdl.generated.hentperson.InnflyttingTilNorge>): List<InnflyttingTilNorge> {

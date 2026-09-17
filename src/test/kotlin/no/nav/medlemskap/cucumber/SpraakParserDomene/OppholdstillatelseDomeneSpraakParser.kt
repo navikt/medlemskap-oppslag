@@ -31,7 +31,7 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
         return mapDataTable(dataTable, ArbeidsomfangKategoriMapper())[0]
     }
 
-    fun mapArbeidsadgangType(dataTable: DataTable): ArbeidsadgangType {
+    fun mapArbeidsadgangType(dataTable: DataTable): ArbeidsadgangType? {
         return mapDataTable(dataTable, ArbeidsadgangTypeMapper())[0]
     }
 
@@ -220,9 +220,12 @@ object OppholdstillatelseDomeneSpraakParser : BasisDomeneParser() {
         }
     }
 
-    class ArbeidsadgangTypeMapper() : RadMapper<ArbeidsadgangType> {
-        override fun mapRad(rad: Map<String, String>): ArbeidsadgangType {
-            return ArbeidsadgangType.valueOf(parseString(OppholdstillatelseDomenebegrep.ARBEIDSADGANG_TYPE, rad))
+    class ArbeidsadgangTypeMapper() : RadMapper<ArbeidsadgangType?> {
+        override fun mapRad(rad: Map<String, String>): ArbeidsadgangType? {
+            return parseValgfriString(OppholdstillatelseDomenebegrep.ARBEIDSADGANG_TYPE, rad)?.let {
+                ArbeidsadgangType.valueOf(it)
+            }
+
         }
     }
 

@@ -203,8 +203,7 @@ class PdlMapperSteps : No {
                 adressebeskyttelse = adressebeskyttelse,
                 innflyttingTilNorge = innflyttingTilNorge,
                 utflyttingFraNorge = utflyttingFraNorge,
-                navn = navn,
-                opphold = emptyList()
+                navn = navn
             )
         }
     }

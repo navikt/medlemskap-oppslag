@@ -5,6 +5,7 @@ import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollPeriodeForArbe
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollperiodeForBarneBriller
 import no.nav.medlemskap.domene.Kontrollperiode.Companion.kontrollperiodeForSykepenger
 import no.nav.medlemskap.domene.Ytelse
+import no.nav.medlemskap.domene.personhistorikk.Personhistorikk
 import no.nav.medlemskap.regler.common.BasisRegel
 import no.nav.medlemskap.regler.common.RegelId
 import java.time.LocalDate
@@ -12,11 +13,13 @@ import java.time.LocalDate
 abstract class ArbeidsforholdRegel(
     regelId: RegelId,
     ytelse: Ytelse,
-    startDatoForYtelse: LocalDate
+    startDatoForYtelse: LocalDate,
+    personhistorikk: Personhistorikk? = null
 ) : BasisRegel(regelId, ytelse) {
     val kontrollPeriodeForArbeidsforhold = kontrollPeriodeForArbeidsforhold(startDatoForYtelse)
     val kontrollperiodeForSykepenger = kontrollperiodeForSykepenger(startDatoForYtelse)
     val kontrollperiodeForBarnbriller = kontrollperiodeForBarneBriller(startDatoForYtelse)
+    val stillingsprosentForStatsborgerskapsgruppe = hentStillingsprosentForStatsborgerskapsgruppe(personhistorikk)
 
     fun finnKOntrollPeriode(ytelse: Ytelse): Kontrollperiode {
         when (ytelse){
@@ -28,7 +31,6 @@ abstract class ArbeidsforholdRegel(
             Ytelse.LOVME_GCP -> return kontrollperiodeForSykepenger
             Ytelse.MEDLEMSKAP_BARN -> return kontrollperiodeForBarnbriller
             Ytelse.MIN_VEI -> return kontrollperiodeForSykepenger
-            Ytelse.LOVME_FUNKSJONELLE_TESTER -> return kontrollperiodeForSykepenger
         }
     }
 }

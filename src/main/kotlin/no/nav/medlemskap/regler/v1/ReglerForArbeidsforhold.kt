@@ -17,28 +17,16 @@ class ReglerForArbeidsforhold(
 ) : Regler(ytelse, regelFactory, overstyrteRegler) {
 
     override fun hentHovedflyt(): Regelflyt {
-        val jobberBrukerPaaNorskSkipFlyt = lagRegelflyt(
-            regel = hentRegel(REGEL_7_1),
-            hvisJa = regelflytJa(ytelse, REGEL_ARBEIDSFORHOLD),
-            hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD)
-        )
-
         val erBrukerPilotEllerKabinansattFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_8),
             hvisJa = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD),
             hvisNei = regelflytJa(ytelse, REGEL_ARBEIDSFORHOLD)
         )
 
-        val erArbeidsforholdetMaritimtFlyt = lagRegelflyt(
-            regel = hentRegel(REGEL_7),
-            hvisJa = jobberBrukerPaaNorskSkipFlyt,
-            hvisNei = erBrukerPilotEllerKabinansattFlyt
-        )
-
 
         val harForetakMerEnn5AnsatteFlyt = lagRegelflyt(
             regel = hentRegel(REGEL_5),
-            hvisJa = erArbeidsforholdetMaritimtFlyt,
+            hvisJa = erBrukerPilotEllerKabinansattFlyt,
             hvisNei = regelflytUavklart(ytelse, REGEL_ARBEIDSFORHOLD)
         )
 

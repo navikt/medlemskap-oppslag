@@ -18,7 +18,6 @@ class AaRegClient(
     private val azureAdClient: AzureAdClient,
     private val httpClient: HttpClient,
     private val configuration: Configuration,
-    private val aaRegApiKey: String,
     private val retry: Retry? = null
 ) {
 
@@ -37,46 +36,11 @@ class AaRegClient(
                     header(HttpHeaders.Accept, ContentType.Application.Json)
                     header("Nav-Call-Id", callId)
                     header("Nav-Personident", fnr)
-                    header("x-nav-apiKey", aaRegApiKey)
                     fraOgMed?.let { parameter("ansettelsesperiodeFom", fraOgMed.tilIsoFormat()) }
                     tilOgMed?.let { parameter("ansettelsesperiodeTom", tilOgMed.tilIsoFormat()) }
                     parameter("historikk", "true")
                     parameter("regelverk", "ALLE")
                 }.body<List<AaRegArbeidsforhold>>()
-            }
-        }.fold(
-            onSuccess = { it },
-            onFailure = { error ->
-                when (error) {
-                    is ClientRequestException -> {
-                        if (error.response.status.value == 404) {
-                            logger.warn("404, fra AAREG på url (GET) $baseUrl/v1/arbeidstaker/arbeidsforhold")
-                            listOf()
-                        } else {
-                            throw error
-                        }
-                    }
-                    else -> throw error
-                }
-            }
-        )
-    }
-
-    suspend fun hentArbeidsforholdV2(fnr: String, callId: String, fraOgMed: LocalDate? = null, tilOgMed: LocalDate? = null): List<no.nav.medlemskap.clients.aareg.Arbeidsforhold> {
-        val token = azureAdClient.hentToken(configuration.register.aaregScope)
-        return runCatching {
-            runWithRetryAndMetrics("AaReg", "ArbeidsforholdV2", retry) {
-                httpClient.get() {
-                    url("$baseUrl/v2/arbeidstaker/arbeidsforhold")
-                    header(HttpHeaders.Authorization, "Bearer ${token.token}")
-                    header(HttpHeaders.Accept, ContentType.Application.Json)
-                    header("Nav-Call-Id", callId)
-                    header("Nav-Personident", fnr)
-                    header("x-nav-apiKey", aaRegApiKey)
-                    parameter("historikk", "true")
-                    parameter("arbeidsforholdstatus", "AKTIV,AVSLUTTET,FREMTIDIG")
-                    parameter("rapporteringsordning", "FOER_A_ORDNINGEN, A_ORDNINGEN")
-                }.body<List<Arbeidsforhold>>()
             }
         }.fold(
             onSuccess = { it },
@@ -103,7 +67,6 @@ class AaRegClient(
             url("$baseUrl/ping")
             header(HttpHeaders.Accept, ContentType.Text.Plain)
             header("Nav-Consumer-Id", username)
-            header("x-nav-apiKey", aaRegApiKey)
         }
     }
 */

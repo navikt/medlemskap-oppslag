@@ -6,6 +6,14 @@ metadata:
   labels:
     team: medlemskap
 spec:
+  observability:
+    logging:
+      destinations:
+        - id: loki
+        - id: elastic
+    autoInstrumentation:
+      enabled: true
+      runtime: java
   azure:
     application:
       enabled: true
@@ -30,8 +38,6 @@ spec:
       memory: 128Mi
   ingresses:
     - https://medlemskap-oppslag.intern.nav.no
-  envFrom:
-    - secret: medlemskap-oppslag
   replicas:
     min: 3
     max: 4
@@ -39,8 +45,6 @@ spec:
   prometheus:
     enabled: true
     path: /metrics
-  secureLogs:
-    enabled: true
   webproxy: true
   accessPolicy:
     inbound:
@@ -59,24 +63,23 @@ spec:
         - application: udi-proxy
           namespace: medlemskap
           cluster: prod-fss
+        - application: logging
+          namespace: nais-system
       external:
         - host: api-gw.oera.no
         - host: login.microsoftonline.com
         - host: udi-proxy.prod-fss-pub.nais.io
         - host: aareg-services.prod-fss-pub.nais.io
-        - host: ereg-services.dev.intern.nav.no
-        - host: medlemskap-medl-api.prod-fss-pub.nais.io
+        - host: ereg-services.prod-fss-pub.nais.io
+        - host: medlemskap-medl-api.intern.nav.no
         - host: oppgave.prod-fss-pub.nais.io
+        - host: saf.prod-fss-pub.nais.io
   kafka:
     pool: nav-prod
 
   env:
-    - name: SECURITY_TOKEN_SERVICE_URL
-      value: https://api-gw.oera.no/sts/SecurityTokenServiceProvider/
-    - name: SECURITY_TOKEN_SERVICE_REST_URL
-      value: https://api-gw.oera.no/security-token-service
     - name: MEDL2_BASE_URL
-      value: https://medlemskap-medl-api.prod-fss-pub.nais.io
+      value: https://medlemskap-medl-api.intern.nav.no
     - name: AAREG_BASE_URL
       value: https://aareg-services.prod-fss-pub.nais.io/api
     - name: SAF_BASE_URL
@@ -86,7 +89,7 @@ spec:
     - name: PDL_BASE_URL
       value: https://pdl-api.prod-fss-pub.nais.io/graphql
     - name: EREG_BASE_URL
-      value: https://api-gw.oera.no/ereg-services/api
+      value: https://ereg-services.prod-fss-pub.nais.io
     - name: UDI_BASE_URL
       value: https://udi-proxy.prod-fss-pub.nais.io
     - name: AZURE_SCOPE_OPPGAVE
@@ -94,8 +97,12 @@ spec:
     - name: AZURE_SCOPE_UDI
       value: api://prod-fss.medlemskap.udi-proxy/.default
     - name: AZURE_SCOPE_MEDL
-      value: api://prod-fss.team-rocket.medlemskap-medl-api/.default
+      value: api://prod-gcp.team-rocket.medlemskap-medl-api/.default
     - name: AZURE_SCOPE_PDL
       value: api://prod-fss.pdl.pdl-api/.default
     - name: AZURE_SCOPE_AAREG
       value: api://prod-fss.arbeidsforhold.aareg-services-nais/.default
+    - name: AZURE_SCOPE_EREG
+      value: api://prod-fss.arbeidsforhold.ereg-services/.default
+    - name: AZURE_SCOPE_SAF
+      value: api://prod-fss.teamdokumenthandtering.saf/.default

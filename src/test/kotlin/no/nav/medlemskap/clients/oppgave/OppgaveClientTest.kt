@@ -75,6 +75,38 @@ class OppgaveClientTest {
     }
 
     @Test
+    fun `henter oppgaver med KRITISK response`() {
+        val callId = "123456"
+
+        val azureAdClient: AzureAdClient = mockk()
+        coEvery { azureAdClient.hentToken(config.register.oppgaveScope) } returns Token("dummytoken", "", 1)
+
+        stubFor(
+            oppgaveRequestMapping
+                .willReturn(
+                    aResponse()
+                        .withStatus(HttpStatusCode.OK.value)
+                        .withHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+                        .withBody(kritiskResponse)
+                )
+        )
+
+        val oppgaveclient = createOppgaveClient(azureAdClient)
+
+        val oppgaveResponse = runBlocking { oppgaveclient.hentOppgaver(listOf("1234567890"), callId) }
+        val oppgave = oppgaveResponse.oppgaver[0]
+
+        assertEquals(1, oppgaveResponse.antallTreffTotalt)
+        assertEquals("Z000001", oppgave.tilordnetRessurs)
+        assertEquals(LocalDate.of(2010, 1, 1), oppgave.aktivDato)
+        assertEquals(OppgPrioritet.KRITISK, oppgave.prioritet)
+        assertEquals(OppgStatus.AAPNET, oppgave.status)
+        assertEquals(1, oppgave.versjon)
+        assertEquals("Z000001", oppgave.tilordnetRessurs)
+        assertEquals("Testbeskrivelse", oppgave.beskrivelse)
+    }
+
+    @Test
     fun `tester ServerResponseException`() {
         val callId = "123456"
         val azureAdClient: AzureAdClient = mockk()
@@ -140,6 +172,25 @@ val oppgaveResponse =
             {
                 "aktivDato": "2010-01-01",
                 "prioritet": "HOY",
+                "status": "AAPNET",
+                "versjon": 1,
+                "tilordnetRessurs": "Z000001",
+                "tema": "MED",
+                "beskrivelse": "Testbeskrivelse",
+                "shouldBeIgnored": "ign"
+            }
+        ]
+    }
+    """.trimIndent()
+
+val kritiskResponse =
+    """
+    {
+        "antallTreffTotalt": 1,
+        "oppgaver": [
+            {
+                "aktivDato": "2010-01-01",
+                "prioritet": "KRITISK",
                 "status": "AAPNET",
                 "versjon": 1,
                 "tilordnetRessurs": "Z000001",
