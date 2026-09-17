@@ -3,7 +3,10 @@ package no.nav.medlemskap.regler.v1.brukergruppe
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Ytelse
 import no.nav.medlemskap.regler.common.RegelId
+import no.nav.medlemskap.regler.common.RegelId.*
 import no.nav.medlemskap.regler.common.Regelflyt
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonJa
+import no.nav.medlemskap.regler.common.Regelflyt.Companion.konklusjonUavklart
 import no.nav.medlemskap.regler.common.Regelflyt.Companion.regelflytJa
 import no.nav.medlemskap.regler.common.Regler
 import no.nav.medlemskap.regler.common.Svar
@@ -16,13 +19,14 @@ class ReglerForBrukerGruppe(
 ) : Regler(ytelse, regelFactory, overstyrteRegler) {
 
     override fun hentHovedflyt(): Regelflyt {
-        val harBrukerArbeidsforhold = lagRegelflyt(
-            regel = hentRegel(RegelId.REGEL_17),
-            hvisJa = regelflytJa(ytelse, RegelId.REGEL_BRUKERGRUPPE),
-            hvisNei = regelflytJa(ytelse, RegelId.REGEL_BRUKERGRUPPE)
+        val HarBrukerArbeidsforholdFlyt = lagRegelflyt(
+            regel = hentRegel(REGEL_17),
+            hvisJa = regelflytJa(ytelse, REGEL_BRUKERGRUPPE),
+            hvisNei = konklusjonUavklart(ytelse, REGEL_BRUKERGRUPPE)
         )
-        return harBrukerArbeidsforhold
+        return HarBrukerArbeidsforholdFlyt
     }
+
 
     companion object {
         fun fraDatagrunnlag(datagrunnlag: Datagrunnlag): ReglerForBrukerGruppe {

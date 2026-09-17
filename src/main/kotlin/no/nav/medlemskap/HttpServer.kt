@@ -103,14 +103,12 @@ createHttpServer(
                 readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = CollectorRegistry.defaultRegistry
             )
             evalueringRoute(services, configuration, requestContextService, createDatagrunnlag)
-            reglerRoute()
             healthRoute("/healthCheck", services.healthService)
         }
     } else {
         routing {
             naisRoutes(readinessCheck = { applicationState.initialized }, livenessCheck = { applicationState.running }, collectorRegistry = CollectorRegistry.defaultRegistry)
             evalueringTestRoute(services, configuration, requestContextService, createDatagrunnlag)
-            reglerRoute()
             healthRoute("/healthCheck", services.healthService)
         }
     }

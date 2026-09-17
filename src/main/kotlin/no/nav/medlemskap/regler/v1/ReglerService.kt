@@ -5,7 +5,7 @@ import no.nav.medlemskap.regler.common.RegelId
 import no.nav.medlemskap.regler.common.Resultat
 import no.nav.medlemskap.regler.common.Svar
 
-import no.nav.medlemskap.regler.v1.brukergruppe.ReglerForBrukerGruppe
+import no.nav.medlemskap.regler.v1.brukergruppe.ReglerForBrukerGruppeSelvstendigNearingsdrivende
 import no.nav.medlemskap.selvstendignaringsdrivende.HovedreglerForSelvstendigNaringsdrivende
 
 object ReglerService {
@@ -19,7 +19,7 @@ object ReglerService {
     }
 
     fun kjørReglerv2(datagrunnlag: Datagrunnlag): Resultat {
-        val brukerGruppRegelkjøring = ReglerForBrukerGruppe.fraDatagrunnlag(datagrunnlag).kjørHovedflyt()
+        val brukerGruppRegelkjøring = ReglerForBrukerGruppeSelvstendigNearingsdrivende.fraDatagrunnlag(datagrunnlag).kjørHovedflyt()
         when (avklarBrukerGruppe(brukerGruppRegelkjøring)){
             BrukerGruppe.Arbeidstager -> return kjørRegler(datagrunnlag,brukerGruppRegelkjøring)
             BrukerGruppe.Selvstendig_næringsdrivende -> return kjørReglerForSelvstendigNæringsdrivende(datagrunnlag,brukerGruppRegelkjøring)

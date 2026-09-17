@@ -37,7 +37,7 @@ Egenskap: Regelflyt for reglene 28 for bruker som har ektefelle i PDL
       | Gyldig fra og med | Gyldig til og med | Arbeidsadgang | ArbeidsadgangType | ArbeidomfangKategori |
       | 01.01.2020        |                   | Ja            | GENERELL          | KUN_ARBEID_HELTID    |
 
-  Scenario: Regelflyt regel 28, for tredjelandsborger
+  Scenario: Regelflyt regel 28, for andre borgere
 
     Gitt følgende sivilstand i personhistorikk fra PDL
       | Sivilstandstype | Gyldig fra og med dato | Relatert ved sivilstand |

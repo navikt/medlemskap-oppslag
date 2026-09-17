@@ -18,18 +18,43 @@ class ReglerForPermisjoner(
 ) : Regler(ytelse, regelFactory, overstyrteRegler) {
 
     override fun hentHovedflyt(): Regelflyt {
-        val ErSummenAvPermisjonenMerEnn60DagerSiste12Mnd = lagRegelflyt(
-            regel = hentRegel(REGEL_33),
+
+        val erMerEnn30DagerMellomPermisjonOgAvklaringsdagOgPermisjonErMindreEnn15Dager = lagRegelflyt(
+            regel = hentRegel(REGEL_58),
+            hvisJa = regelflytJa(ytelse, REGEL_PERMISJONER),
+            hvisNei = konklusjonUavklart(ytelse, REGEL_PERMISJONER),
+        )
+
+        val erPeriodeMerEnn30DagerMellomPermisjonogAvklaringsdagOgErForeldrePermisjon = lagRegelflyt(
+            regel = hentRegel(REGEL_57),
+            hvisJa = regelflytJa(ytelse, REGEL_PERMISJONER),
+            hvisNei = erMerEnn30DagerMellomPermisjonOgAvklaringsdagOgPermisjonErMindreEnn15Dager,
+        )
+
+        val harBrukerHattMerEn60DagerPermisjonSiste12Mnd = lagRegelflyt(
+            regel = hentRegel(REGEL_55),
+            hvisJa = konklusjonUavklart(ytelse, REGEL_PERMISJONER),
+            hvisNei =  regelflytJa(ytelse, REGEL_PERMISJONER),
+        )
+
+        val harBrukerEnPeriodeMedPermisjonNaa = lagRegelflyt(
+            regel = hentRegel(REGEL_54),
+            hvisJa = harBrukerHattMerEn60DagerPermisjonSiste12Mnd,
+            hvisNei = erPeriodeMerEnn30DagerMellomPermisjonogAvklaringsdagOgErForeldrePermisjon,
+        )
+
+        val erSummenAvPermisjonerMerEn60Dager = lagRegelflyt(
+            regel = hentRegel(REGEL_51),
             hvisJa = konklusjonUavklart(ytelse, REGEL_PERMISJONER),
             hvisNei = regelflytJa(ytelse, REGEL_PERMISJONER),
         )
 
-        val HarBrukerPermisjonSiste12MånederFlyt = lagRegelflyt(
-            regel = hentRegel(REGEL_32),
-            hvisJa = ErSummenAvPermisjonenMerEnn60DagerSiste12Mnd,
-            hvisNei = regelflytJa(ytelse, REGEL_PERMISJONER),
+        val harBrukerBareEPeriodeMedPensjon = lagRegelflyt(
+            regel = hentRegel(REGEL_50),
+            hvisJa = harBrukerEnPeriodeMedPermisjonNaa,
+            hvisNei = erSummenAvPermisjonerMerEn60Dager,
         )
-        return HarBrukerPermisjonSiste12MånederFlyt
+        return harBrukerBareEPeriodeMedPensjon
     }
 
     companion object {

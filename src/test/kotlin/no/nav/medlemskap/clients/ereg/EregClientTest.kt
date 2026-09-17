@@ -9,7 +9,7 @@ import io.ktor.http.*
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import no.nav.medlemskap.clients.sts.StsRestClient
+import no.nav.medlemskap.clients.azuread.AzureAdClient
 import no.nav.medlemskap.common.cioHttpClient
 import no.nav.medlemskap.config.Configuration
 import org.junit.jupiter.api.AfterAll
@@ -23,6 +23,7 @@ class EregClientTest {
     companion object {
         val server: WireMockServer = WireMockServer(WireMockConfiguration.options().dynamicPort())
         val httpClient = cioHttpClient
+        val configuration = Configuration()
 
         @BeforeAll
         @JvmStatic
@@ -45,9 +46,8 @@ class EregClientTest {
     @Test
     fun `tester response med juridisk enhet`() {
         val callId = "12345"
-
-        val stsClient: StsRestClient = mockk()
-        coEvery { stsClient.oidcToken() } returns "dummytoken"
+        val azureAdClient: AzureAdClient = mockk()
+        coEvery { azureAdClient.hentToken(config.register.aaregScope).token } returns "dummytoken"
 
         WireMock.stubFor(
             queryMappingForHentOrganisasjon.willReturn(
@@ -59,7 +59,7 @@ class EregClientTest {
             )
         )
 
-        val client = EregClient(server.baseUrl(), httpClient, config, "123")
+        val client = EregClient(server.baseUrl(), azureAdClient, httpClient, config)
 
         val response = runBlocking { client.hentOrganisasjon("977074010", callId) }
         assertEquals(1, response.getOrganisasjonsnumreJuridiskeEnheter().size)
@@ -76,7 +76,7 @@ class EregClientTest {
 
     private val queryMappingForHentOrganisasjon: MappingBuilder = WireMock.get(WireMock.urlPathEqualTo("/v1/organisasjon/$orgnummer"))
         .withHeader("Nav-Call-Id", equalTo("12345"))
-        .withHeader("Nav-Consumer-Id", equalTo("test"))
+        .withHeader("Nav-Consumer-Id", equalTo(configuration.azureAd.clientId))
 
     private val eregHentOrganisasjonResponse =
         """
