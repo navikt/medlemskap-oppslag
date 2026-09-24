@@ -20,7 +20,7 @@ jobs:
       id-token: write
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
       - name: Set up Java
         uses: actions/setup-java@v4.7.1
         with:
@@ -53,7 +53,7 @@ jobs:
     needs: [build_and_push]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: nais/deploy/actions/deploy@v2
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
@@ -66,7 +66,7 @@ jobs:
     needs: [ build_and_push ]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         name: Checkout code
       - uses: nais/deploy/actions/deploy@v2
         env:
