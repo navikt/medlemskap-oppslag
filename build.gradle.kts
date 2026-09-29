@@ -1,53 +1,53 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val ktorVersion = "2.1.3"
-val kafkaVersion = "3.3.1"
-val jacksonVersion = "2.14.1"
+val ktorVersion = "2.3.13"
+val kafkaVersion = "3.9.2"
+val jacksonVersion = "2.22"
 val prometheusVersion = "0.16.0"
-val logbackVersion = "1.5.16"
+val logbackVersion = "1.6.4"
 val logstashVersion = "8.1"
 val konfigVersion = "1.6.10.0"
-val kotlinLoggerVersion = "1.8.3"
+val kotlinLoggerVersion = "1.12.5"
 val tjenestespesifikasjonerVersion = "1.2019.12.18-12.22-ce897c4eb2c1"
-val coroutinesVersion = "1.5.2"
-val wireMockVersion = "2.35.0"
-val mockkVersion = "1.10.5"
-val junitJupiterVersion = "5.7.0"
-val assertkVersion = "0.23"
-val restAssuredVersion = "4.3.3"
-val resilience4jVersion = "2.3.0"
-val threetenVersion = "1.5.0"
-val kotlinReflectVersion = "1.7.21"
-val cucumberVersion = "7.17.0"
-val nocommonsVersion = "0.9.0"
-val graphqlKotlinClientVersion = "5.3.1"
-val archUnitVersion = "0.14.1"
+val coroutinesVersion = "1.11.0"
+val wireMockVersion = "2.35.2"
+val mockkVersion = "1.14.11"
+val junitJupiterVersion = "5.14.4"
+val assertkVersion = "0.28.1"
+val restAssuredVersion = "4.5.1"
+val resilience4jVersion = "2.4.0"
+val threetenVersion = "1.10.0"
+val kotlinReflectVersion = "1.9.25"
+val cucumberVersion = "7.34.9"
+val nocommonsVersion = "0.17.0"
+val graphqlKotlinClientVersion = "5.5.0"
+val archUnitVersion = "0.23.1"
 val jsonassertVersion = "1.5.3"
-val xmlSchemaVersion = "2.2.5"
-val jaxwsToolsVersion = "2.3.1"
+val xmlSchemaVersion = "2.3.2"
+val jaxwsToolsVersion = "2.3.7"
 val activationVersion = "1.1.1"
-val nvi18nVersion = "1.27"
-val kotestVersion = "4.2.5"
-val swaggerRequestValidatorVersion = "2.40.0"
+val nvi18nVersion = "1.29"
+val kotestVersion = "4.6.4"
+val swaggerRequestValidatorVersion = "2.46.1"
 // Temporary to fix high severity Snyk vulnerabilities:
 val nettyVersion = "4.1.116.Final"
 val commonsCodecVersion = "3.2.2"
 val httpClientVersion = "4.5.14"
 val jettyWebAppVersion = "9.4.43.v20210629"
 val jacksonDataformatYamlVersion = "2.10.4"
-val guavaVersion = "33.4.0-jre"
+val guavaVersion = "33.7.1-jre"
 
 val mainClass = "no.nav.medlemskap.ApplicationKt"
 
 fun tjenestespesifikasjon(name: String) = "no.nav.tjenestespesifikasjoner:$name:$tjenestespesifikasjonerVersion"
 
 plugins {
-    kotlin("jvm") version "1.9.20"
-    id("com.github.johnrengelman.shadow") version "7.0.0"
-    id("com.expediagroup.graphql") version "4.0.0" apply false
-    id("com.github.ben-manes.versions") version "0.29.0"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.7.10"
+    kotlin("jvm") version "1.9.25"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("com.expediagroup.graphql") version "4.2.0" apply false
+    id("com.github.ben-manes.versions") version "0.64.0"
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.25"
 }
 
 val githubUser: String by project
@@ -100,8 +100,8 @@ dependencies {
     implementation("io.ktor:ktor-server-call-logging-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-call-id-jvm:$ktorVersion")
     implementation("com.expediagroup:graphql-kotlin-ktor-client:$graphqlKotlinClientVersion")
-    implementation("io.ktor:ktor-client-serialization-jvm:2.1.0")
-    implementation("com.fasterxml.jackson.core:jackson-annotations:2.13.1")
+    implementation("io.ktor:ktor-client-serialization-jvm:2.3.13")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.22")
     implementation("io.ktor:ktor-server-auth:$ktorVersion")
     implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
@@ -153,7 +153,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
     testImplementation("com.github.tomakehurst:wiremock-jre8:$wireMockVersion") {
-        implementation("commons-fileupload:commons-fileupload:1.5")
+        implementation("commons-fileupload:commons-fileupload:1.6.0")
         exclude(group = "junit")
         exclude(group = "org.eclipse.jetty", module = "jetty-server")
     }
@@ -162,7 +162,7 @@ dependencies {
     testImplementation("com.willowtreeapps.assertk:assertk-jvm:$assertkVersion")
     testImplementation("io.rest-assured:rest-assured:$restAssuredVersion")
 
-    testImplementation(platform("io.cucumber:cucumber-bom:7.11.0"))
+    testImplementation(platform("io.cucumber:cucumber-bom:7.34.9"))
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation("io.cucumber:cucumber-junit-platform-engine")
     testImplementation("org.junit.platform:junit-platform-suite")
@@ -174,7 +174,7 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")
 
     testImplementation("com.atlassian.oai:swagger-request-validator-core:$swaggerRequestValidatorVersion") {
-        implementation("org.mozilla:rhino:1.7.14")
+        implementation("org.mozilla:rhino:1.9.1")
         exclude(group = "com.fasterxml.jackson.dataformat", module = "jackson-dataformat-yaml")
     }
     testImplementation("com.atlassian.oai:swagger-request-validator-restassured:$swaggerRequestValidatorVersion")
