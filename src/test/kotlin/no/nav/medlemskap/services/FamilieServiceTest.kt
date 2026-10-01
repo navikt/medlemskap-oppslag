@@ -1,10 +1,11 @@
 package no.nav.medlemskap.services
 
 import assertk.assertThat
+import assertk.assertions.isEqualTo
 import io.kotest.matchers.collections.shouldContainExactly
 import io.mockk.coEvery
 import io.mockk.mockkClass
-import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
 import no.nav.medlemskap.common.CoroutinesTestExtension
 import no.nav.medlemskap.domene.InputPeriode
 import no.nav.medlemskap.domene.Periode
@@ -37,7 +38,7 @@ internal class FamilieServiceTest {
     }
 
     @Test
-    fun hentDataOmBarn() = runBlockingTest {
+    fun hentDataOmBarn() = runTest {
         val fnrTilBarnUnder25år = "25079528660"
         val callId = "12"
 
@@ -51,7 +52,7 @@ internal class FamilieServiceTest {
     }
 
     @Test
-    fun hentDataOmEktefelle_som_finnes_i_pdl_uten_arbeidsforhold() = runBlockingTest {
+    fun hentDataOmEktefelle_som_finnes_i_pdl_uten_arbeidsforhold() = runTest {
         val fnrEktefelle = "10019448164"
         val callId = "12"
         val startDatoForYtelse = LocalDate.of(2020, 1, 1)
@@ -73,12 +74,12 @@ internal class FamilieServiceTest {
         val ektefelle =
             familieService.hentDataOmEktefelle(fnrEktefelle, callId, periode, startDatoForYtelse)
 
-        assertThat { ektefelle?.personhistorikkEktefelle?.ident == fnrEktefelle }
-        assertThat { ektefelle?.arbeidsforholdEktefelle?.isEmpty() }
+        assertThat(ektefelle?.personhistorikkEktefelle?.ident).isEqualTo(fnrEktefelle)
+        assertThat(ektefelle?.arbeidsforholdEktefelle?.isEmpty()).isEqualTo(true)
     }
 
     @Test
-    fun hentDataOmEktefelle_som_finnes_i_pdl_og_har_arbeidsforhold() = runBlockingTest {
+    fun hentDataOmEktefelle_som_finnes_i_pdl_og_har_arbeidsforhold() = runTest {
         val fnrEktefelle = "10019448164"
         val callId = "12"
         val startDatoForYtelse = LocalDate.of(2020, 1, 1)
@@ -100,12 +101,12 @@ internal class FamilieServiceTest {
         val ektefelle =
             familieService.hentDataOmEktefelle(fnrEktefelle, callId, periode, startDatoForYtelse)
 
-        assertThat { ektefelle?.personhistorikkEktefelle?.ident == fnrEktefelle }
-        assertThat { ektefelle?.arbeidsforholdEktefelle?.size == 1 }
+        assertThat(ektefelle?.personhistorikkEktefelle?.ident).isEqualTo(fnrEktefelle)
+        assertThat(ektefelle?.arbeidsforholdEktefelle?.size).isEqualTo(1)
     }
 
     @Test
-    fun hentDataOmEktefelle_som_ikke_finnes_i_pdl() = runBlockingTest {
+    fun hentDataOmEktefelle_som_ikke_finnes_i_pdl() = runTest {
         val fnrEktefelle = "10019448164"
         val callId = "12"
         val startDatoForYtelse = LocalDate.of(2020, 1, 1)
@@ -116,7 +117,7 @@ internal class FamilieServiceTest {
         val ektefelle =
             familieService.hentDataOmEktefelle(fnrEktefelle, callId, periode, startDatoForYtelse)
 
-        assertThat { ektefelle == null }
+        assertThat(ektefelle).isEqualTo(null)
     }
 
     private fun personhistorikkBarn(ident: String): PersonhistorikkBarn {

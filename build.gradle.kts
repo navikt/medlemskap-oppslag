@@ -1,16 +1,19 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val ktorVersion = "2.3.13"
 val kafkaVersion = "3.9.2"
-val jacksonVersion = "2.22"
+val jacksonVersion = "2.22.3"
+val jacksonAnnotationsVersion = "2.22"
+val micrometerVersion = "1.17.1"
 val prometheusVersion = "0.16.0"
 val logbackVersion = "1.6.4"
 val logstashVersion = "8.1"
 val konfigVersion = "1.6.10.0"
 val kotlinLoggerVersion = "1.12.5"
 val tjenestespesifikasjonerVersion = "1.2019.12.18-12.22-ce897c4eb2c1"
-val coroutinesVersion = "1.11.0"
+val coroutinesVersion = "1.7.1"
 val wireMockVersion = "2.35.2"
 val mockkVersion = "1.14.11"
 val junitJupiterVersion = "5.14.4"
@@ -18,11 +21,11 @@ val assertkVersion = "0.28.1"
 val restAssuredVersion = "4.5.1"
 val resilience4jVersion = "2.4.0"
 val threetenVersion = "1.10.0"
-val kotlinReflectVersion = "1.9.25"
+val kotlinReflectVersion = "2.2.20"
 val cucumberVersion = "7.34.9"
 val nocommonsVersion = "0.17.0"
 val graphqlKotlinClientVersion = "5.5.0"
-val archUnitVersion = "0.23.1"
+val archUnitVersion = "1.5.1"
 val jsonassertVersion = "1.5.3"
 val xmlSchemaVersion = "2.3.2"
 val jaxwsToolsVersion = "2.3.7"
@@ -43,11 +46,11 @@ val mainClass = "no.nav.medlemskap.ApplicationKt"
 fun tjenestespesifikasjon(name: String) = "no.nav.tjenestespesifikasjoner:$name:$tjenestespesifikasjonerVersion"
 
 plugins {
-    kotlin("jvm") version "1.9.25"
+    kotlin("jvm") version "2.2.20"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("com.expediagroup.graphql") version "4.2.0" apply false
     id("com.github.ben-manes.versions") version "0.64.0"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.25"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.2.20"
 }
 
 val githubUser: String by project
@@ -72,7 +75,7 @@ allprojects {
     }
 
     tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "20"
+        compilerOptions.jvmTarget.set(JvmTarget.JVM_20)
     }
 
     tasks.withType<Wrapper> {
@@ -101,7 +104,7 @@ dependencies {
     implementation("io.ktor:ktor-server-call-id-jvm:$ktorVersion")
     implementation("com.expediagroup:graphql-kotlin-ktor-client:$graphqlKotlinClientVersion")
     implementation("io.ktor:ktor-client-serialization-jvm:2.3.13")
-    implementation("com.fasterxml.jackson.core:jackson-annotations:2.22")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonAnnotationsVersion")
     implementation("io.ktor:ktor-server-auth:$ktorVersion")
     implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
@@ -110,8 +113,8 @@ dependencies {
     implementation("io.ktor:ktor-client-json:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-server-metrics-micrometer:$ktorVersion")
-    implementation("io.micrometer:micrometer-registry-prometheus:latest.release")
-    implementation("io.micrometer:micrometer-registry-influx:latest.release")
+    implementation("io.micrometer:micrometer-registry-prometheus:$micrometerVersion")
+    implementation("io.micrometer:micrometer-registry-influx:$micrometerVersion")
     implementation("io.prometheus:simpleclient_hotspot:$prometheusVersion")
     implementation("io.prometheus:simpleclient_common:$prometheusVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
@@ -122,7 +125,7 @@ dependencies {
     implementation("io.ktor:ktor-server-auth-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-auth-jwt-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
-    implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonVersion")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonAnnotationsVersion")
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:$jacksonVersion")
 
@@ -190,7 +193,7 @@ java {
 
 tasks {
     withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "20"
+        compilerOptions.jvmTarget.set(JvmTarget.JVM_20)
     }
 
     withType<Test> {

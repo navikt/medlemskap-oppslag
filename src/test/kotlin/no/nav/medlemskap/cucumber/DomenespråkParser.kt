@@ -83,7 +83,7 @@ object DomenespråkParser : BasisDomeneParser() {
     }
 
     fun parseSvar(verdi: String): Svar {
-        return when (verdi.toUpperCase()) {
+        return when (verdi.uppercase()) {
             "JA" -> Svar.JA
             "NEI" -> Svar.NEI
             else -> Svar.UAVKLART

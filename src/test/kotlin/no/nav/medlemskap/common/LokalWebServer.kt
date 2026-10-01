@@ -3,6 +3,7 @@ package no.nav.medlemskap.common
 import com.atlassian.oai.validator.restassured.OpenApiValidationFilter
 import io.restassured.RestAssured
 import io.restassured.RestAssured.given
+import io.restassured.config.HttpClientConfig
 import io.restassured.config.ObjectMapperConfig
 import io.restassured.config.RestAssuredConfig
 import io.restassured.http.Header
@@ -59,10 +60,17 @@ class LokalWebServer {
                 RestAssured.baseURI = "http://localhost"
                 RestAssured.basePath = "/"
                 RestAssured.port = 7071
-                RestAssured.config = RestAssuredConfig.config().objectMapperConfig(
-                    ObjectMapperConfig.objectMapperConfig()
-                        .jackson2ObjectMapperFactory { _, _ -> objectMapper }
-                )
+                RestAssured.config = RestAssuredConfig.config()
+                    .httpClient(
+                        HttpClientConfig.httpClientConfig()
+                            .setParam("http.connection.timeout", 5_000)
+                            .setParam("http.socket.timeout", 5_000)
+                            .setParam("http.connection-manager.timeout", 5_000L)
+                    )
+                    .objectMapperConfig(
+                        ObjectMapperConfig.objectMapperConfig()
+                            .jackson2ObjectMapperFactory { _, _ -> objectMapper }
+                    )
             }
         }
 

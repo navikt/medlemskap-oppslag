@@ -8,7 +8,7 @@ enum class Skipsregister(val beskrivelse: String) {
     companion object {
         fun fraSkipsregisterVerdi(skipsregisterValue: String?): Skipsregister? {
             if (skipsregisterValue.isNullOrEmpty()) return null
-            return valueOf(skipsregisterValue.toUpperCase())
+            return valueOf(skipsregisterValue.uppercase())
         }
     }
 }
