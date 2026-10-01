@@ -220,7 +220,7 @@ enum class JaNeiUavklart(val jaNeiUavklart: String) {
     companion object {
         fun fraJaNeiUavklartVerdi(jaNeiUavklartVerdi: String?): JaNeiUavklart? {
             if (jaNeiUavklartVerdi.isNullOrEmpty()) return null
-            return valueOf(jaNeiUavklartVerdi.toUpperCase())
+            return valueOf(jaNeiUavklartVerdi.uppercase())
         }
     }
 }

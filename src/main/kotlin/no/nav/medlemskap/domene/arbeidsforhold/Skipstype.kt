@@ -8,7 +8,7 @@ enum class Skipstype {
     companion object {
         fun fraSkipstypeVerdi(skipstypeValue: String?): Skipstype? {
             if (skipstypeValue.isNullOrEmpty()) return null
-            return valueOf(skipstypeValue.toUpperCase())
+            return valueOf(skipstypeValue.uppercase())
         }
     }
 }

@@ -26,6 +26,7 @@ class HealthReporter(
     init {
         timer = fixedRateTimer(
             name = "health_reporter",
+            daemon = true,
             initialDelay = Duration.ofMinutes(1).toMillis(),
             period = frequency.toMillis()
         ) {

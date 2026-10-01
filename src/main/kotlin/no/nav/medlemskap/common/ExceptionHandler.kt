@@ -1,7 +1,7 @@
 package no.nav.medlemskap.common
 
 import com.fasterxml.jackson.databind.exc.MismatchedInputException
-import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
+import com.fasterxml.jackson.module.kotlin.KotlinInvalidNullException
 import io.ktor.client.plugins.*
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -91,7 +91,7 @@ fun StatusPagesConfig.exceptionHandler() {
         }
     }
 
-    exception<MissingKotlinParameterException> { call, cause ->
+    exception<KotlinInvalidNullException> { call, cause ->
         call.logErrorAndRespond(cause, HttpStatusCode.BadRequest) {
             cause.message!!
         }

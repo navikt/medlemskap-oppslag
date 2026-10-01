@@ -1,8 +1,8 @@
 package no.nav.medlemskap.domene
 
 import assertk.assertThat
+import assertk.assertFailure
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFailure
 import assertk.assertions.isNull
 import com.fasterxml.jackson.module.kotlin.readValue
 import no.nav.medlemskap.common.objectMapper
@@ -75,8 +75,8 @@ internal class RequestTest {
         }    
             """.trimIndent()
 
-        assertThat {
+        assertFailure {
             objectMapper.readValue<Request>(json)
-        }.isFailure()
+        }
     }
 }
