@@ -17,7 +17,6 @@ spec:
   azure:
     application:
       enabled: true
-  image: {{ image }}
   port: 7070
   liveness:
     path: isAlive

@@ -22,6 +22,9 @@ Denne tjenesten gjør REST-kall mot følgende tjenester/registre:
 * preprod: https://medlemskap-oppslag.intern.dev.nav.no
 * prod: https://medlemskap-oppslag.intern.nav.no
 
+## Deploy
+Workflows i `.github/workflows/master.yml` og `.github/workflows/pull-requests.yml` bygger Docker-image og deployer med `nais/setup` og `nais apply`. Applikasjons- og topic-manifester ligger i `.nais/`. Image sendes til `nais apply` med `--set spec.image`, ikke via templating i manifestet. Pull requests deployer app og topic til dev-gcp; master deployer app til dev-gcp og app og topic til prod-gcp.
+
 ## Autentisering
 Forventer et AzureAD-token utstedt til servicebruker, satt Authorization-header (Bearer)
 
@@ -121,6 +124,5 @@ githubPassword=<mysecrettoken>
 ```githubUser``` er brukernavnet ditt, og ```githubPassword``` er et token du kan generere i github settings -> developer settings -> personal access tokens -> tokens (classic) -> Generate new token (classic)
 * Huk av for ```repo``` og ```write:packages```
 * Etter at tokenet er opprettet, velg ```Configure SSO``` og velg ```Authorize``` på ```Navikt``` organisasjonen.
-
 
 

@@ -1,40 +1,27 @@
-name: PR build
-
-on: [ pull_request ]
-
-env:
-  APP: medlemskap-oppslag
+name: build
 permissions:
   contents: "read"
-  id-token: "write"
-  packages: "write"
+on: [ pull_request ]
+
 jobs:
   build_and_push:
-    name: Build and publish Docker image for PR-branch
     runs-on: ubuntu-latest
-    env:
-      IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
+    permissions:
+      contents: "read"
+      id-token: "write"
+      packages: "read"
+    outputs:
+      image: ${{ steps.docker-push.outputs.image }}
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.sha }}
-
-      - name: Set up Java
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: test and build
         uses: actions/setup-java@v4.9.1
         with:
-          java-version: '20'
           distribution: 'temurin'
+          java-version: '20'
           check-latest: true
-      - name: Cache gradle dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Build with Gradle
-        run: ./gradlew test shadowJar --info
+      - run: ./gradlew test shadowJar
         env:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
@@ -42,21 +29,31 @@ jobs:
         id: docker-push
         with:
           team: medlemskap # required
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }} # required, but is defined as an organization variable
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }} # required, but is defined as an organization secret
-    outputs:
-      image: ${{ steps.docker-push.outputs.image }}
+      - name: Post failures to Slack
+        if: failure()
+        run: |
+          curl -X POST --data-urlencode "payload={\"channel\": \"$CHANNEL\", \"text\": \"$MESSAGE\", \"icon_emoji\": \":ghost:\"}" $WEBHOOK_URL
+        env:
+          MESSAGE: "Bygg feilet"
+          CHANNEL: "#lovme-teknisk"
+          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   deploypreprod:
-    name: Deploy PR-branch to dev
-    needs: [build_and_push]
+    name: Deploy to Preprod
+    needs: build_and_push
     runs-on: ubuntu-latest
+    permissions:
+      contents: "read"
+      id-token: "write"
     steps:
-      - uses: actions/checkout@v4
-      - uses: nais/deploy/actions/deploy@v2
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
-          CLUSTER: dev-gcp
-          RESOURCE: deploy/preprod.yaml,deploy/topics/topic-medlemskap-stage1-dev.yaml
-          IMAGE: ${{ needs.build_and_push.outputs.image }}
-          TELEMETRY: ${{ needs.build_and_push.outputs.telemetry }}
+      - uses: actions/checkout@v6
+      - uses: nais/setup@v1
+        with:
+          team: medlemskap
+      - name: Deploy to dev-gcp
+        run: |
+          nais apply .nais/topics/topic-medlemskap-stage1-dev.yaml --environment dev-gcp
+          nais apply .nais/preprod.yaml \
+            --environment dev-gcp \
+            --set spec.image="${{ needs.build_and_push.outputs.image }}" \
+            --wait

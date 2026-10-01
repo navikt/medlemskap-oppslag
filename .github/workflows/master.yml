@@ -1,41 +1,30 @@
 name: build
-
+permissions:
+  contents: "read"
 on:
   push:
     branches:
       - master
 
-env:
-  APP: medlemskap-oppslag
-permissions:
-  contents: "read"
-  id-token: "write"
-  packages: "write"
 jobs:
   build_and_push:
-    name: Build and publish Docker image for PR-branch
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      id-token: write
+      contents: "read"
+      id-token: "write"
+      packages: "read"
+    outputs:
+      image: ${{ steps.docker-push.outputs.image }}
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v6
-      - name: Set up Java
+      - name: test and build
         uses: actions/setup-java@v4.9.1
         with:
-          java-version: '20'
           distribution: 'temurin'
+          java-version: '20'
           check-latest: true
-      - name: Cache gradle dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle.kts') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-      - name: Build with Gradle
-        run: ./gradlew test shadowJar --info
+      - run: ./gradlew test shadowJar
         env:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
@@ -43,35 +32,49 @@ jobs:
         id: docker-push
         with:
           team: medlemskap # required
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }} # required, but is defined as an organization variable
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }} # required, but is defined as an organization secret
-    outputs:
-      image: ${{ steps.docker-push.outputs.image }}
+      - name: Post failures to Slack
+        if: failure()
+        run: |
+          curl -X POST --data-urlencode "payload={\"channel\": \"$CHANNEL\", \"text\": \"$MESSAGE\", \"icon_emoji\": \":ghost:\"}" $WEBHOOK_URL
+        env:
+          MESSAGE: "Bygg feilet"
+          CHANNEL: "#lovme-teknisk"
+          WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   deploypreprod:
-    name: Deploy to to preprod
-    needs: [build_and_push]
+    name: Deploy to preprod
+    needs: build_and_push
     runs-on: ubuntu-latest
+    permissions:
+      contents: "read"
+      id-token: "write"
     steps:
-      - uses: actions/checkout@v4
-      - uses: nais/deploy/actions/deploy@v2
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_API_KEY }}
-          CLUSTER: dev-gcp
-          RESOURCE: deploy/preprod.yaml
-          IMAGE: ${{ needs.build_and_push.outputs.image }}
-          TELEMETRY: ${{ needs.build_and_push.outputs.telemetry }}
+      - uses: actions/checkout@v6
+      - uses: nais/setup@v1
+        with:
+          team: medlemskap
+      - name: Deploy to dev-gcp
+        run: |
+          nais apply .nais/preprod.yaml \
+            --environment dev-gcp \
+            --set spec.image="${{ needs.build_and_push.outputs.image }}" \
+            --wait
   deployprod:
     name: Deploy to prod
-    needs: [ build_and_push ]
+    needs: build_and_push
     runs-on: ubuntu-latest
+    permissions:
+      contents: "read"
+      id-token: "write"
     steps:
-      - uses: actions/checkout@v4
-        name: Checkout code
-      - uses: nais/deploy/actions/deploy@v2
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: prod-gcp
-          RESOURCE: deploy/prod.yaml,deploy/topics/topic-medlemskap-stage1-prod.yaml
-          IMAGE: ${{ needs.build_and_push.outputs.image }}
-          TELEMETRY: ${{ needs.build_and_push.outputs.telemetry }}
+      - uses: actions/checkout@v6
+      - uses: nais/setup@v1
+        with:
+          team: medlemskap
+      - name: Deploy to prod-gcp
+        run: |
+          nais apply .nais/topics/topic-medlemskap-stage1-prod.yaml --environment prod-gcp
+          nais apply .nais/prod.yaml \
+            --environment prod-gcp \
+            --set spec.image="${{ needs.build_and_push.outputs.image }}" \
+            --wait
