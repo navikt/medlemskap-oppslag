@@ -18,7 +18,6 @@ spec:
     application:
       enabled: true
       tenant: trygdeetaten.no
-  image: {{ image }}
   port: 7070
   liveness:
     path: isAlive
