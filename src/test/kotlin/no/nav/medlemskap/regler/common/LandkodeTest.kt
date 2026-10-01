@@ -9,7 +9,7 @@ class LandkodeTest {
     @Test
     fun `ISO 3166-1 Alpha-2 (To bokstaver) landkoder gir tre-bokstav`() {
 
-        Assertions.assertEquals("NOR", CountryCode.getByCode("no".toUpperCase()).alpha3)
+        Assertions.assertEquals("NOR", CountryCode.getByCode("no".uppercase()).alpha3)
     }
 
     @Test

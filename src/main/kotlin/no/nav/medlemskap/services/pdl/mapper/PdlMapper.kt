@@ -238,7 +238,7 @@ object PdlMapper {
             return landkode
         }
         return try {
-            CountryCode.getByCode(landkode.toUpperCase()).alpha3
+            CountryCode.getByCode(landkode.uppercase()).alpha3
         } catch (e: Exception) {
             logger.warn("Klarte ikke å mappe {}", landkode, e)
             "UKJENT"

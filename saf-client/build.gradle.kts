@@ -1,8 +1,10 @@
 import com.expediagroup.graphql.plugin.gradle.config.GraphQLSerializer
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val graphqlKotlinClientVersion = "5.3.1"
-val coroutinesVersion = "1.5.2"
+val graphqlKotlinClientVersion = "5.5.0"
+val coroutinesVersion = "1.7.1"
+val jacksonAnnotationsVersion = "2.22"
 
 plugins {
     kotlin("jvm")
@@ -16,7 +18,7 @@ dependencies {
     implementation("com.expediagroup:graphql-kotlin-ktor-client:$graphqlKotlinClientVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
-    implementation("com.fasterxml.jackson.core:jackson-annotations:2.13.1")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:$jacksonAnnotationsVersion")
 }
 
 val graphqlGenerateClient by tasks.getting(com.expediagroup.graphql.plugin.gradle.tasks.GraphQLGenerateClientTask::class) {
@@ -33,6 +35,6 @@ java {
 
 tasks {
     withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "20"
+        compilerOptions.jvmTarget.set(JvmTarget.JVM_20)
     }
 }

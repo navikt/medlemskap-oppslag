@@ -122,14 +122,14 @@ class SensuInfluxMeterRegistry private constructor(config: SensuInfluxConfig, cl
                 continue
             }
             val fieldKey = measurement.statistic.tagValueRepresentation
-                .replace("(.)(\\p{Upper})".toRegex(), "$1_$2").toLowerCase()
+                .replace("(.)(\\p{Upper})".toRegex(), "$1_$2").lowercase()
             fields.add(Field(fieldKey, value))
         }
         if (fields.isEmpty()) {
             return Stream.empty()
         }
         val id = m.id
-        return Stream.of(influxLineProtocol(id, id.type.name.toLowerCase(), fields.stream()))
+        return Stream.of(influxLineProtocol(id, id.type.name.lowercase(), fields.stream()))
     }
 
     private fun writeLongTaskTimer(timer: LongTaskTimer): Stream<String?> {

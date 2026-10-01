@@ -1,8 +1,8 @@
 package no.nav.medlemskap.routes
 
 import assertk.assertThat
+import assertk.assertFailure
 import assertk.assertions.isEqualTo
-import assertk.assertions.isFailure
 import assertk.assertions.isInstanceOf
 import no.nav.medlemskap.common.exceptions.KonsumentIkkeFunnet
 import no.nav.medlemskap.domene.Ytelse
@@ -35,9 +35,9 @@ internal class FinnYtelseTest {
         val ytelseFraRequest = null
         val clientId = "ikke-eksisterende"
 
-        assertThat {
+        assertFailure {
             finnYtelse(ytelseFraRequest, clientId)
-        }.isFailure().isInstanceOf(KonsumentIkkeFunnet::class)
+        }.isInstanceOf(KonsumentIkkeFunnet::class)
     }
 
     @Test
@@ -45,8 +45,8 @@ internal class FinnYtelseTest {
         val ytelseFraRequest = null
         val clientId = null
 
-        assertThat {
+        assertFailure {
             finnYtelse(ytelseFraRequest, clientId)
-        }.isFailure().isInstanceOf(KonsumentIkkeFunnet::class)
+        }.isInstanceOf(KonsumentIkkeFunnet::class)
     }
 }

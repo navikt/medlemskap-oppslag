@@ -7,7 +7,7 @@ enum class Fartsomraade(val beskrivelse: String) {
     companion object {
         fun fraFartsomraadeVerdi(fartsomradeValue: String?): Fartsomraade? {
             if (fartsomradeValue.isNullOrEmpty()) return null
-            return valueOf(fartsomradeValue.toUpperCase())
+            return valueOf(fartsomradeValue.uppercase())
         }
     }
 }

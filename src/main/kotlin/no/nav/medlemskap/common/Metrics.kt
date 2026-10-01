@@ -27,13 +27,13 @@ fun configurePrometheusMeterRegistry(): PrometheusMeterRegistry {
 
 fun configureSensuInfluxMeterRegistry(): SensuInfluxMeterRegistry {
     val config: SensuInfluxConfig = object : SensuInfluxConfig {
-        override fun step(): Duration? {
+        override fun step(): Duration {
             return Duration.ofSeconds(10)
         }
 
         override fun sensuName(): String = "medlemskap-oppslag-events"
 
-        override operator fun get(k: String?): String? {
+        override operator fun get(k: String): String? {
             return null // accept the rest of the defaults
         }
     }
