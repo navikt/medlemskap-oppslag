@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val graphqlKotlinClientVersion = "5.5.0"
-val coroutinesVersion = "1.7.1"
+val coroutinesVersion = "1.11.0"
 val jacksonAnnotationsVersion = "2.22"
 
 plugins {
