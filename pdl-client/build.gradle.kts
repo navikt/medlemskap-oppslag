@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val graphqlKotlinClientVersion = "5.5.0"
-val coroutinesVersion = "1.10.2"
+val coroutinesVersion = "1.11.0"
 val jacksonAnnotationsVersion = "2.22"
 
 plugins {
@@ -13,7 +13,7 @@ plugins {
 }
 
 dependencies {
-    implementation(platform("io.netty:netty-bom:4.1.136.Final"))
+    implementation(platform("io.netty:netty-bom:4.2.19.Final"))
     implementation(kotlin("stdlib"))
     implementation("com.expediagroup:graphql-kotlin-ktor-client:$graphqlKotlinClientVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
