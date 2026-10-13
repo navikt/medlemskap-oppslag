@@ -14,7 +14,7 @@ plugins {
 }
 
 dependencies {
-    implementation(platform("io.netty:netty-bom:4.1.136.Final"))
+    implementation(platform("io.netty:netty-bom:4.2.19.Final"))
     implementation(kotlin("stdlib"))
     implementation("com.expediagroup:graphql-kotlin-ktor-client:$graphqlKotlinClientVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
