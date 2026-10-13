@@ -33,8 +33,7 @@ val activationVersion = "1.1.1"
 val nvi18nVersion = "1.29"
 val kotestVersion = "4.6.4"
 val swaggerRequestValidatorVersion = "2.46.1"
-// Temporary to fix high severity Snyk vulnerabilities:
-val nettyVersion = "4.1.116.Final"
+val nettyVersion = "4.1.136.Final"
 val commonsCodecVersion = "3.2.2"
 val httpClientVersion = "4.5.14"
 val jettyWebAppVersion = "9.4.43.v20210629"
@@ -84,6 +83,7 @@ allprojects {
 }
 
 dependencies {
+    implementation(platform("io.netty:netty-bom:$nettyVersion"))
     implementation(kotlin("stdlib"))
     implementation(project(path = ":pdl-client", configuration = "archives"))
     implementation(project(path = ":saf-client", configuration = "archives"))
