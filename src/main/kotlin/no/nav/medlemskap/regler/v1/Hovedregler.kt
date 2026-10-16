@@ -1,5 +1,6 @@
 package no.nav.medlemskap.regler.v1
 
+import mu.KotlinLogging
 import no.nav.medlemskap.domene.Datagrunnlag
 import no.nav.medlemskap.domene.Statsborgerskapskategori
 import no.nav.medlemskap.domene.Ytelse
@@ -17,6 +18,8 @@ import no.nav.medlemskap.regler.v1.brukergruppe.ReglerForBrukerGruppe
 import no.nav.medlemskap.regler.v1.frilanser.ReglerForFrilanser
 import no.nav.medlemskap.regler.v1.regelflyt.arbeid.ReglerForPermisjoner
 import no.nav.medlemskap.regler.v1.regelflyt.arbeid.ReglerForUtenlandsforhold
+
+private val logger = KotlinLogging.logger { }
 
 class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResultat: Resultat? = null) {
     private val reglerForRequestValidering = ReglerForRequestValidering.fraDatagrunnlag(datagrunnlag)
@@ -104,7 +107,9 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
 
         if (kanskjeAndreBorgereMedEØSFamilie?.erFamilieEOS() == true) {
             resultater.add(ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
-            resultater.add(ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+            val resultatForEøsBorgere = ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt()
+            logArbeidsforholdMedEnAvtaleEtterRegel(resultatForEøsBorgere)
+            resultater.add(resultatForEøsBorgere)
         } else {
             resultater.add(ReglerForArbeidstakerAndreBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         }
@@ -112,6 +117,26 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
     }
 
     private fun regelflytErIkkeUavklart(resultat: Resultat): Boolean = resultat.svar != UAVKLART
+
+    //Dette er en hjelpelogg som skal fjernes når vi er ferdig med å få innsikt i andelen som jobber 100% for EØS borgere og EØS med familie.
+    //Den skal ikke brukes til noe annet
+    private fun logArbeidsforholdMedEnAvtaleEtterRegel(resultat: Resultat) {
+        if (resultat.finnRegelResultat(RegelId.REGEL_11_6) != null) {
+            logArbeidsforholdMedEnAvtale()
+        }
+    }
+
+    private fun logArbeidsforholdMedEnAvtale() {
+        val harEttArbeidsforholdOgEnArbeidsavtale =
+            datagrunnlag.arbeidsforhold.singleOrNull()?.arbeidsavtaler?.size == 1
+        val melding = if (harEttArbeidsforholdOgEnArbeidsavtale) {
+            "Midlertidig hjelpelogg: Stillingsprosent er 100"
+        } else {
+            "Midlertidig hjelpelogg: Stillingsprosent er under 100"
+        }
+
+        logger.info(melding)
+    }
 
     private fun kanskjeAndreBorgereMedEØSFamilie(resultatStatsborgerskap: Resultat): Resultat? {
         if (!resultatStatsborgerskap.erNorskBorger() && !resultatStatsborgerskap.erEøsBorger()) {
@@ -132,12 +157,12 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
         overstyrteRegler: Map<RegelId, Svar>
     ): List<Resultat> {
         val resultater = mutableListOf<Resultat>()
-        val reglerForEØSBorgerResultater = listOf(
-            ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler).kjørHovedflyt(),
-            ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt()
-        )
+        val resultatForArbeidsforhold =
+            ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler).kjørHovedflyt()
+        val resultatForEøsBorgere = ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt()
+        logArbeidsforholdMedEnAvtaleEtterRegel(resultatForEøsBorgere)
 
-        resultater.addAll(reglerForEØSBorgerResultater)
+        resultater.addAll(listOf(resultatForArbeidsforhold, resultatForEøsBorgere))
 
         return resultater
     }
