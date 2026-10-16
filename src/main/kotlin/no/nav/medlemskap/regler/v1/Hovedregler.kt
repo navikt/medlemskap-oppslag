@@ -127,9 +127,12 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
     }
 
     private fun logArbeidsforholdMedEnAvtale() {
-        val harEttArbeidsforholdOgEnArbeidsavtale =
-            datagrunnlag.arbeidsforhold.singleOrNull()?.arbeidsavtaler?.size == 1
-        val melding = if (harEttArbeidsforholdOgEnArbeidsavtale) {
+        val rapportertStillingsprosentEr100 =
+            datagrunnlag.arbeidsforhold.singleOrNull()
+                ?.arbeidsavtaler
+                ?.singleOrNull()
+                ?.stillingsprosent == 100.0
+        val melding = if (rapportertStillingsprosentEr100) {
             "Midlertidig hjelpelogg: Stillingsprosent er 100"
         } else {
             "Midlertidig hjelpelogg: Stillingsprosent er under 100"
