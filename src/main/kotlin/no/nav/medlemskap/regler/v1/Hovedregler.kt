@@ -107,9 +107,8 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
 
         if (kanskjeAndreBorgereMedEØSFamilie?.erFamilieEOS() == true) {
             resultater.add(ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
-            val resultatForEøsBorgere = ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt()
-            logArbeidsforholdMedEnAvtaleEtterRegel(resultatForEøsBorgere)
-            resultater.add(resultatForEøsBorgere)
+            resultater.add(ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
+            logArbeidsforholdMedEnAvtale()
         } else {
             resultater.add(ReglerForArbeidstakerAndreBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt())
         }
@@ -120,12 +119,6 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
 
     //Dette er en hjelpelogg som skal fjernes når vi er ferdig med å få innsikt i andelen som jobber 100% for EØS borgere og EØS med familie.
     //Den skal ikke brukes til noe annet
-    private fun logArbeidsforholdMedEnAvtaleEtterRegel(resultat: Resultat) {
-        if (resultat.finnRegelResultat(RegelId.REGEL_11_6) != null) {
-            logArbeidsforholdMedEnAvtale()
-        }
-    }
-
     private fun logArbeidsforholdMedEnAvtale() {
         val rapportertStillingsprosentEr100 =
             datagrunnlag.arbeidsforhold.singleOrNull()
@@ -163,7 +156,7 @@ class Hovedregler(private val datagrunnlag: Datagrunnlag, val brukerGrupeResulta
         val resultatForArbeidsforhold =
             ReglerForArbeidsforhold.fraDatagrunnlag(datagrunnlag, overstyrteRegler).kjørHovedflyt()
         val resultatForEøsBorgere = ReglerForEøsBorgere.fraDatagrunnlag(datagrunnlag).kjørHovedflyt()
-        logArbeidsforholdMedEnAvtaleEtterRegel(resultatForEøsBorgere)
+        logArbeidsforholdMedEnAvtale()
 
         resultater.addAll(listOf(resultatForArbeidsforhold, resultatForEøsBorgere))
 
