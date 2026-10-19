@@ -2,6 +2,9 @@ package no.nav.medlemskap.services
 
 import assertk.assertThat
 import assertk.assertions.isEqualTo
+import ch.qos.logback.classic.Logger
+import ch.qos.logback.classic.spi.ILoggingEvent
+import ch.qos.logback.core.read.ListAppender
 import io.kotest.matchers.collections.shouldContainExactly
 import io.mockk.coEvery
 import io.mockk.mockkClass
@@ -15,15 +18,19 @@ import no.nav.medlemskap.domene.ektefelle.PersonhistorikkEktefelle
 import no.nav.medlemskap.domene.personhistorikk.Adresse
 import no.nav.medlemskap.services.aareg.AaRegService
 import no.nav.medlemskap.services.pdl.PdlService
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
+import org.slf4j.LoggerFactory
 import java.time.LocalDate
 
 internal class FamilieServiceTest {
     lateinit var aaRegService: AaRegService
     lateinit var pdlService: PdlService
     lateinit var familieService: FamilieService
+    private val logger = LoggerFactory.getLogger(FamilieService::class.java) as Logger
+    private lateinit var logAppender: ListAppender<ILoggingEvent>
 
     @JvmField
     @RegisterExtension
@@ -35,6 +42,14 @@ internal class FamilieServiceTest {
         pdlService = mockkClass(PdlService::class)
 
         familieService = FamilieService(aaRegService, pdlService)
+        logAppender = ListAppender<ILoggingEvent>().apply { start() }
+        logger.addAppender(logAppender)
+    }
+
+    @AfterEach
+    fun tearDown() {
+        logger.detachAppender(logAppender)
+        logAppender.stop()
     }
 
     @Test
@@ -103,6 +118,10 @@ internal class FamilieServiceTest {
 
         assertThat(ektefelle?.personhistorikkEktefelle?.ident).isEqualTo(fnrEktefelle)
         assertThat(ektefelle?.arbeidsforholdEktefelle?.size).isEqualTo(1)
+        val event = logAppender.list.last()
+        assertThat(event.message).isEqualTo("Hentet data om ektefelle.")
+        assertThat(event.markerList.any { it.name == "TEAM_LOGS" }).isEqualTo(true)
+        event.argumentArray.map { it.toString() }.shouldContainExactly("callId=$callId", "dataOmEktefelle=$ektefelle")
     }
 
     @Test
@@ -118,6 +137,41 @@ internal class FamilieServiceTest {
             familieService.hentDataOmEktefelle(fnrEktefelle, callId, periode, startDatoForYtelse)
 
         assertThat(ektefelle).isEqualTo(null)
+        logAppender.list.map { it.message }.shouldContainExactly(
+            "Henter personhistorikk til ektefelle fra PDL.",
+            "Ingen tilgjengelig personhistorikk til ektefelle fra PDL. Hopper over AaReg."
+        )
+    }
+
+    @Test
+    fun logger_at_oppslag_hoppes_over_uten_ektefelleident() = runTest {
+        val startDatoForYtelse = LocalDate.of(2020, 1, 1)
+        val periode = InputPeriode(startDatoForYtelse, startDatoForYtelse.plusDays(10))
+
+        val ektefelle = familieService.hentDataOmEktefelle(null, "12", periode, startDatoForYtelse)
+
+        assertThat(ektefelle).isEqualTo(null)
+        logAppender.list.map { it.message }.shouldContainExactly(
+            "Hopper over ektefelleoppslag: fant ikke gyldig ident i sivilstand."
+        )
+    }
+
+    @Test
+    fun logger_feil_fra_aareg_og_beholder_personhistorikk() = runTest {
+        val fnrEktefelle = "10019448164"
+        val startDatoForYtelse = LocalDate.of(2020, 1, 1)
+        val periode = InputPeriode(startDatoForYtelse, startDatoForYtelse.plusDays(10))
+        coEvery { pdlService.hentPersonHistorikkTilEktefelle(fnrEktefelle, startDatoForYtelse, "12") } returns
+            personhistorikkEktefelle(fnrEktefelle)
+        coEvery { aaRegService.hentArbeidsforhold(any(), any(), any(), any()) } throws IllegalStateException("AaReg feilet")
+
+        val ektefelle = familieService.hentDataOmEktefelle(fnrEktefelle, "12", periode, startDatoForYtelse)
+
+        assertThat(ektefelle?.arbeidsforholdEktefelle).isEqualTo(emptyList())
+        val warning = logAppender.list.single { it.level == ch.qos.logback.classic.Level.WARN }
+        assertThat(warning.message).isEqualTo("Henting av arbeidsforhold til ektefelle feilet. Bruker tom liste.")
+        assertThat(warning.markerList.any { it.name == "TEAM_LOGS" }).isEqualTo(true)
+        assertThat(warning.throwableProxy.message).isEqualTo("AaReg feilet")
     }
 
     private fun personhistorikkBarn(ident: String): PersonhistorikkBarn {
