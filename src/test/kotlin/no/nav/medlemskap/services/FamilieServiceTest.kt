@@ -120,6 +120,30 @@ internal class FamilieServiceTest {
         assertThat(ektefelle).isEqualTo(null)
     }
 
+    @Test
+    fun oppslag_hoppes_over_uten_ektefelleident() = runTest {
+        val startDatoForYtelse = LocalDate.of(2020, 1, 1)
+        val periode = InputPeriode(startDatoForYtelse, startDatoForYtelse.plusDays(10))
+
+        val ektefelle = familieService.hentDataOmEktefelle(null, "12", periode, startDatoForYtelse)
+
+        assertThat(ektefelle).isEqualTo(null)
+    }
+
+    @Test
+    fun feil_fra_aareg_beholder_personhistorikk() = runTest {
+        val fnrEktefelle = "10019448164"
+        val startDatoForYtelse = LocalDate.of(2020, 1, 1)
+        val periode = InputPeriode(startDatoForYtelse, startDatoForYtelse.plusDays(10))
+        coEvery { pdlService.hentPersonHistorikkTilEktefelle(fnrEktefelle, startDatoForYtelse, "12") } returns
+            personhistorikkEktefelle(fnrEktefelle)
+        coEvery { aaRegService.hentArbeidsforhold(any(), any(), any(), any()) } throws IllegalStateException("AaReg feilet")
+
+        val ektefelle = familieService.hentDataOmEktefelle(fnrEktefelle, "12", periode, startDatoForYtelse)
+
+        assertThat(ektefelle?.arbeidsforholdEktefelle).isEqualTo(emptyList())
+    }
+
     private fun personhistorikkBarn(ident: String): PersonhistorikkBarn {
         val barn = PersonhistorikkBarn(ident, listOf(Adresse("NOR", null, null, false)), emptyList(), emptyList(), emptyList())
 
