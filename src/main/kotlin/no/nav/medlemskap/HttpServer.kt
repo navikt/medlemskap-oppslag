@@ -60,7 +60,13 @@ createHttpServer(
     }
 
     install(ContentNegotiation) {
-        register(ContentType.Application.Json, JacksonConverter(objectMapper))
+        register(
+            ContentType.Application.Json,
+            JacksonConverter(
+                objectMapper = objectMapper,
+                streamRequestBody = false
+            )
+        )
     }
 
     install(CallId) {
