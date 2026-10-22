@@ -25,6 +25,10 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
+      # Ktor 2.3.13 bruker coroutine-API-er som er inkompatible med coroutines 1.11.0.
+      # Unntaket kan fjernes ved oppgradering til en annen Ktor-versjon med verifisert kompatibilitet.
+      - dependency-name: "org.jetbrains.kotlinx:kotlinx-coroutines-*"
+        versions: [">=1.11.0"]
     groups:
       dependencies:
         patterns:

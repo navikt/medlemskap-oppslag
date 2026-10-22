@@ -20,7 +20,7 @@ val junitJupiterVersion = "5.14.4"
 val assertkVersion = "0.28.1"
 val restAssuredVersion = "4.5.1"
 val resilience4jVersion = "2.4.0"
-val threetenVersion = "1.10.0"
+val threetenVersion = "1.11.0"
 val kotlinReflectVersion = "2.4.21"
 val cucumberVersion = "7.34.9"
 val nocommonsVersion = "0.17.0"
@@ -48,7 +48,7 @@ plugins {
     kotlin("jvm") version "2.4.21"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("com.expediagroup.graphql") version "4.2.0" apply false
-    id("com.github.ben-manes.versions") version "0.65.0"
+    id("com.github.ben-manes.versions") version "0.66.0"
     id("org.jetbrains.kotlin.plugin.serialization") version "2.4.21"
 }
 
