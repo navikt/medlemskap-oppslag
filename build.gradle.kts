@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val ktorVersion = "2.3.13"
 val kafkaVersion = "3.9.2"
-val jacksonVersion = "2.22.3"
+val jacksonVersion = "2.22.4"
 val jacksonAnnotationsVersion = "2.22"
 val micrometerVersion = "1.17.1"
 val prometheusVersion = "0.16.0"
